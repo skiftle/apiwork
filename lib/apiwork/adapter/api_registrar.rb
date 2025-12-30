@@ -59,11 +59,11 @@ module Apiwork
       #   @param name [Symbol] the enum name
       #   @return [Array, nil] the enum values if registered
 
-      delegate :type,
-               :enum,
-               :union,
-               :resolve_type,
+      delegate :enum,
                :resolve_enum,
+               :resolve_type,
+               :type,
+               :union,
                to: :api_class
 
       private

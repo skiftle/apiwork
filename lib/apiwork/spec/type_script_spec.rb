@@ -54,35 +54,35 @@ module Apiwork
             request_data = action_data[:request]
             if request_data && (request_data[:query]&.any? || request_data[:body]&.any?)
               if request_data[:query]&.any?
-                type_name = mapper.action_type_name(resource_name, action_name, 'RequestQuery', parent_path: parent_path)
-                code = mapper.build_action_request_query_type(resource_name, action_name, request_data[:query], parent_path: parent_path)
-                all_types << { code: code, name: type_name }
+                type_name = mapper.action_type_name(resource_name, action_name, 'RequestQuery', parent_path:)
+                code = mapper.build_action_request_query_type(resource_name, action_name, request_data[:query], parent_path:)
+                all_types << { code:, name: type_name }
               end
 
               if request_data[:body]&.any?
-                type_name = mapper.action_type_name(resource_name, action_name, 'RequestBody', parent_path: parent_path)
-                code = mapper.build_action_request_body_type(resource_name, action_name, request_data[:body], parent_path: parent_path)
-                all_types << { code: code, name: type_name }
+                type_name = mapper.action_type_name(resource_name, action_name, 'RequestBody', parent_path:)
+                code = mapper.build_action_request_body_type(resource_name, action_name, request_data[:body], parent_path:)
+                all_types << { code:, name: type_name }
               end
 
-              type_name = mapper.action_type_name(resource_name, action_name, 'Request', parent_path: parent_path)
-              code = mapper.build_action_request_type(resource_name, action_name, request_data, parent_path: parent_path)
-              all_types << { code: code, name: type_name }
+              type_name = mapper.action_type_name(resource_name, action_name, 'Request', parent_path:)
+              code = mapper.build_action_request_type(resource_name, action_name, request_data, parent_path:)
+              all_types << { code:, name: type_name }
             end
 
             response_data = action_data[:response]
 
             if response_data&.dig(:no_content)
-              type_name = mapper.action_type_name(resource_name, action_name, 'Response', parent_path: parent_path)
+              type_name = mapper.action_type_name(resource_name, action_name, 'Response', parent_path:)
               all_types << { code: "export type #{type_name} = never;", name: type_name }
             elsif response_data && response_data[:body]
-              type_name = mapper.action_type_name(resource_name, action_name, 'ResponseBody', parent_path: parent_path)
-              code = mapper.build_action_response_body_type(resource_name, action_name, response_data[:body], parent_path: parent_path)
-              all_types << { code: code, name: type_name }
+              type_name = mapper.action_type_name(resource_name, action_name, 'ResponseBody', parent_path:)
+              code = mapper.build_action_response_body_type(resource_name, action_name, response_data[:body], parent_path:)
+              all_types << { code:, name: type_name }
 
-              type_name = mapper.action_type_name(resource_name, action_name, 'Response', parent_path: parent_path)
-              code = mapper.build_action_response_type(resource_name, action_name, response_data, parent_path: parent_path)
-              all_types << { code: code, name: type_name }
+              type_name = mapper.action_type_name(resource_name, action_name, 'Response', parent_path:)
+              code = mapper.build_action_response_type(resource_name, action_name, response_data, parent_path:)
+              all_types << { code:, name: type_name }
             end
           end
         end

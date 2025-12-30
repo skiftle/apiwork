@@ -11,7 +11,7 @@ module Apiwork
             definition.params.each do |name, param_options|
               next unless coerced.key?(name)
 
-              coerced[name] = coerce_value(coerced[name], param_options, definition, type_cache: type_cache)
+              coerced[name] = coerce_value(coerced[name], param_options, definition, type_cache:)
             end
 
             coerced
@@ -20,9 +20,9 @@ module Apiwork
           def coerce_value(value, param_options, definition, type_cache: nil)
             type = param_options[:type]
 
-            return coerce_union(value, param_options[:union], definition, type_cache: type_cache) if type == :union
-            return coerce_array(value, param_options, definition, type_cache: type_cache) if type == :array && value.is_a?(Array)
-            return coerce_hash(value, param_options[:shape], type_cache: type_cache) if param_options[:shape] && value.is_a?(Hash)
+            return coerce_union(value, param_options[:union], definition, type_cache:) if type == :union
+            return coerce_array(value, param_options, definition, type_cache:) if type == :array && value.is_a?(Array)
+            return coerce_hash(value, param_options[:shape], type_cache:) if param_options[:shape] && value.is_a?(Hash)
 
             if Coercer.performable?(type)
               coerced = Coercer.perform(value, type)
@@ -42,12 +42,12 @@ module Apiwork
 
             array.map do |item|
               if param_options[:shape] && item.is_a?(Hash)
-                coerce_hash(item, param_options[:shape], type_cache: type_cache)
+                coerce_hash(item, param_options[:shape], type_cache:)
               elsif param_options[:of] && Coercer.performable?(param_options[:of])
                 coerced = Coercer.perform(item, param_options[:of])
                 coerced.nil? ? item : coerced
               elsif custom_param_definition && item.is_a?(Hash)
-                coerce_hash(item, custom_param_definition, type_cache: type_cache)
+                coerce_hash(item, custom_param_definition, type_cache:)
               else
                 item
               end
@@ -70,7 +70,7 @@ module Apiwork
                 custom_param_definition = resolve_custom_param_definition(variant_of, definition, type_cache)
                 if custom_param_definition
                   coerced_array = value.map do |item|
-                    item.is_a?(Hash) ? coerce_hash(item, custom_param_definition, type_cache: type_cache) : item
+                    item.is_a?(Hash) ? coerce_hash(item, custom_param_definition, type_cache:) : item
                   end
                   return coerced_array
                 end
@@ -80,7 +80,7 @@ module Apiwork
               next unless custom_param_definition
 
               if value.is_a?(Hash)
-                coerced = coerce_hash(value, custom_param_definition, type_cache: type_cache)
+                coerced = coerce_hash(value, custom_param_definition, type_cache:)
                 return coerced
               end
             end

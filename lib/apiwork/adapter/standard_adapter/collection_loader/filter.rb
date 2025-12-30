@@ -199,14 +199,14 @@ module Apiwork
 
           def collect_filterable_error(key, target_klass)
             available = schema_class.attribute_definitions
-                                    .select { |_, definition| definition.filterable? }
-                                    .keys
+              .select { |_, definition| definition.filterable? }
+              .keys
 
             @issues << Issue.new(
               code: :field_not_filterable,
               detail: 'Not filterable',
+              meta: { available:, field: key },
               path: [:filter, key],
-              meta: { available: available, field: key },
             )
           end
 
@@ -218,8 +218,8 @@ module Apiwork
               @issues << Issue.new(
                 code: :column_unknown,
                 detail: 'Unknown column type',
-                path: [:filter, key],
                 meta: { field: key },
+                path: [:filter, key],
               )
               return nil
             end
@@ -239,8 +239,8 @@ module Apiwork
               @issues << Issue.new(
                 code: :column_unsupported,
                 detail: 'Unsupported column type',
-                path: [:filter, key],
                 meta: { field: key, type: column_type },
+                path: [:filter, key],
               )
               nil
             end
@@ -255,12 +255,12 @@ module Apiwork
             @issues << Issue.new(
               code: :enum_invalid,
               detail: 'Invalid enum value',
-              path: [:filter, key],
               meta: {
                 allowed: enum_values,
                 field: key,
                 value: invalid_values,
               },
+              path: [:filter, key],
             )
           end
 
@@ -293,8 +293,8 @@ module Apiwork
               @issues << Issue.new(
                 code: :association_schema_missing,
                 detail: 'Association schema missing',
-                path: [:filter, key],
                 meta: { association: key },
+                path: [:filter, key],
               )
               return [[], {}]
             end
@@ -304,8 +304,8 @@ module Apiwork
               @issues << Issue.new(
                 code: :association_not_found,
                 detail: 'Association not found',
-                path: [:filter, key],
                 meta: { association: key },
+                path: [:filter, key],
               )
               return [[], {}]
             end
@@ -331,13 +331,13 @@ module Apiwork
             end
 
             builder = Builder.new(
-              column: column,
+              column:,
+              allowed_types: [Hash],
               field_name: key,
               issues: @issues,
-              allowed_types: [Hash],
             )
 
-            builder.build(value, normalizer: normalizer, valid_operators: NULLABLE_UUID_OPERATORS) do |operator, compare|
+            builder.build(value, normalizer:, valid_operators: NULLABLE_UUID_OPERATORS) do |operator, compare|
               case operator
               when :eq then column.eq(compare)
               when :in then column.in(compare)
@@ -352,16 +352,16 @@ module Apiwork
             normalizer = ->(val) { val.is_a?(String) || val.nil? ? { eq: val } : val }
 
             builder = Builder.new(
-              column: column,
+              column:,
+              allowed_types: [Hash],
               field_name: key,
               issues: @issues,
-              allowed_types: [Hash],
             )
 
             builder.build(
               value,
+              normalizer:,
               valid_operators: NULLABLE_STRING_OPERATORS,
-              normalizer: normalizer,
             ) do |operator, compare|
               case operator
               when :eq then column.eq(compare)
@@ -388,13 +388,13 @@ module Apiwork
             normalizer = ->(val) { val }
 
             builder = Builder.new(
-              column: column,
+              column:,
+              allowed_types: [Hash],
               field_name: key,
               issues: @issues,
-              allowed_types: [Hash],
             )
 
-            builder.build(value, normalizer: normalizer, valid_operators: NULLABLE_DATE_OPERATORS) do |operator, compare|
+            builder.build(value, normalizer:, valid_operators: NULLABLE_DATE_OPERATORS) do |operator, compare|
               if operator == :null
                 handle_null_operator(column, compare)
               elsif compare.blank?
@@ -424,8 +424,8 @@ module Apiwork
               @issues << Issue.new(
                 code: :value_null,
                 detail: 'Cannot be null',
-                path: [:filter, key],
                 meta: { field: key },
+                path: [:filter, key],
               )
             end
 
@@ -438,16 +438,16 @@ module Apiwork
             normalizer = ->(val) { [String, Numeric, NilClass].any? { |t| val.is_a?(t) } ? { eq: val } : val }
 
             builder = Builder.new(
-              column: column,
+              column:,
+              allowed_types: [Hash],
               field_name: key,
               issues: @issues,
-              allowed_types: [Hash],
             )
 
             builder.build(
               value,
+              normalizer:,
               valid_operators: NULLABLE_NUMERIC_OPERATORS,
-              normalizer: normalizer,
             ) do |operator, compare|
               case operator
               when :eq
@@ -501,16 +501,16 @@ module Apiwork
             end
 
             builder = Builder.new(
-              column: column,
+              column:,
+              allowed_types: [Hash],
               field_name: key,
               issues: @issues,
-              allowed_types: [Hash],
             )
 
             builder.build(
               value,
+              normalizer:,
               valid_operators: NULLABLE_BOOLEAN_OPERATORS,
-              normalizer: normalizer,
             ) do |operator, compare|
               case operator
               when :eq
@@ -542,8 +542,8 @@ module Apiwork
             @issues << Issue.new(
               code: :date_invalid,
               detail: 'Invalid date',
+              meta: { field:, value: },
               path: [:filter, field],
-              meta: { field: field, value: value },
             )
             nil
           end
@@ -556,8 +556,8 @@ module Apiwork
               @issues << Issue.new(
                 code: :number_invalid,
                 detail: 'Invalid number',
+                meta: { field:, value: },
                 path: [:filter, field],
-                meta: { field: field, value: value },
               )
               nil
             end
@@ -565,8 +565,8 @@ module Apiwork
             @issues << Issue.new(
               code: :number_invalid,
               detail: 'Invalid number',
+              meta: { field:, value: },
               path: [:filter, field],
-              meta: { field: field, value: value },
             )
             nil
           end

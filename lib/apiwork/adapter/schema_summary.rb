@@ -89,8 +89,8 @@ module Apiwork
 
       def extract_filterable_type_variants(schemas)
         filterable_attributes = schemas
-                                .flat_map { |schema| schema.attribute_definitions.values }
-                                .select(&:filterable?)
+          .flat_map { |schema| schema.attribute_definitions.values }
+          .select(&:filterable?)
 
         filterable = filterable_attributes.map(&:type).to_set
         nullable = filterable_attributes.select(&:nullable?).map(&:type).to_set

@@ -143,8 +143,8 @@ module Apiwork
           return nil unless schema_class&.name
 
           schema_class.name
-                      .sub(/Schema\z/, 'Contract')
-                      .safe_constantize
+            .sub(/Schema\z/, 'Contract')
+            .safe_constantize
         end
 
         def register_sti_variants(*variant_schema_classes)
@@ -214,17 +214,23 @@ module Apiwork
         #       end
         #     end
         #   end
-        def type(name,
-                 description: nil,
-                 example: nil,
-                 format: nil,
-                 deprecated: false,
-                 schema_class: nil,
-                 &block)
+        def type(
+          name,
+          description: nil,
+          example: nil,
+          format: nil,
+          deprecated: false,
+          schema_class: nil,
+          &block
+        )
           api_class.type(
             name,
-            scope: self, description:, example:, format:, deprecated:,
+            deprecated:,
+            description:,
+            example:,
+            format:,
             schema_class:,
+            scope: self,
             &block
           )
         end
@@ -249,12 +255,14 @@ module Apiwork
         #       request { body { param :status, enum: :status } }
         #     end
         #   end
-        def enum(name,
-                 values: nil,
-                 description: nil,
-                 example: nil,
-                 deprecated: false)
-          api_class.enum(name, deprecated:, description:, example:, scope: self, values:)
+        def enum(
+          name,
+          values: nil,
+          description: nil,
+          example: nil,
+          deprecated: false
+        )
+          api_class.enum(name, deprecated:, description:, example:, values:, scope: self)
         end
 
         # @api public
@@ -374,7 +382,7 @@ module Apiwork
         def action(action_name, replace: false, &block)
           action_name = action_name.to_sym
 
-          action_definition = ActionDefinition.new(action_name:, contract_class: self, replace:)
+          action_definition = ActionDefinition.new(action_name:, replace:, contract_class: self)
           action_definition.instance_eval(&block) if block_given?
 
           action_definitions[action_name] = action_definition

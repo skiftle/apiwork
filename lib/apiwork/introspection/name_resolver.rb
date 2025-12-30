@@ -21,7 +21,7 @@ module Apiwork
         api_class = definition.contract_class.api_class
         return false unless api_class
 
-        type_global_for_api?(type_name, api_class: api_class)
+        type_global_for_api?(type_name, api_class:)
       end
 
       def type_global_for_api?(type_name, api_class:)
@@ -65,7 +65,7 @@ module Apiwork
         api_class = definition.contract_class.api_class
         return false unless api_class
 
-        enum_global_for_api?(enum_name, api_class: api_class)
+        enum_global_for_api?(enum_name, api_class:)
       end
 
       private
@@ -73,7 +73,7 @@ module Apiwork
       def import_prefix_cache(contract_class)
         @import_prefix_cache[contract_class] ||= begin
           direct = Set.new(contract_class.imports.keys)
-          { direct: direct, prefixes: contract_class.imports.keys.map { |alias_name| "#{alias_name}_" } }
+          { direct:, prefixes: contract_class.imports.keys.map { |alias_name| "#{alias_name}_" } }
         end
       end
     end

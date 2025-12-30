@@ -218,46 +218,48 @@ module Apiwork
         #
         # @example Writable only on create
         #   attribute :email, writable: { on: [:create] }
-        def attribute(name,
-                      decode: nil,
-                      deprecated: false,
-                      description: nil,
-                      empty: nil,
-                      encode: nil,
-                      enum: nil,
-                      example: nil,
-                      filterable: nil,
-                      format: nil,
-                      max: nil,
-                      min: nil,
-                      nullable: nil,
-                      of: nil,
-                      optional: nil,
-                      sortable: nil,
-                      type: nil,
-                      writable: nil,
-                      &block)
+        def attribute(
+          name,
+          decode: nil,
+          deprecated: false,
+          description: nil,
+          empty: nil,
+          encode: nil,
+          enum: nil,
+          example: nil,
+          filterable: nil,
+          format: nil,
+          max: nil,
+          min: nil,
+          nullable: nil,
+          of: nil,
+          optional: nil,
+          sortable: nil,
+          type: nil,
+          writable: nil,
+          &block
+        )
           self.attribute_definitions = attribute_definitions.merge(
             name => AttributeDefinition.new(
               name,
               self,
-              decode: decode,
-              deprecated: deprecated,
-              description: description,
-              empty: empty,
-              encode: encode,
-              enum: enum,
-              example: example,
-              filterable: filterable,
-              format: format,
-              max: max,
-              min: min,
-              nullable: nullable,
-              of: of,
-              optional: optional,
-              sortable: sortable,
-              type: type,
-              writable: writable,
+              decode:,
+              deprecated:,
+              description:,
+              empty:,
+              encode:,
+              enum:,
+              example:,
+              filterable:,
+              format:,
+              max:,
+              min:,
+              nullable:,
+              of:,
+              optional:,
+              sortable:,
+              type:,
+              writable:,
               &block
             ),
           )
@@ -294,36 +296,38 @@ module Apiwork
         #
         # @example Polymorphic
         #   has_one :imageable, polymorphic: [:product, :user]
-        def has_one(name,
-                    class_name: nil,
-                    deprecated: false,
-                    description: nil,
-                    example: nil,
-                    filterable: false,
-                    include: :optional,
-                    nullable: nil,
-                    optional: nil,
-                    polymorphic: nil,
-                    schema: nil,
-                    sortable: false,
-                    writable: false)
+        def has_one(
+          name,
+          class_name: nil,
+          deprecated: false,
+          description: nil,
+          example: nil,
+          filterable: false,
+          include: :optional,
+          nullable: nil,
+          optional: nil,
+          polymorphic: nil,
+          schema: nil,
+          sortable: false,
+          writable: false
+        )
           self.association_definitions = association_definitions.merge(
             name => AssociationDefinition.new(
               name,
               :has_one,
               self,
-              class_name: class_name,
-              deprecated: deprecated,
-              description: description,
-              example: example,
-              filterable: filterable,
-              include: include,
-              nullable: nullable,
-              optional: optional,
-              polymorphic: polymorphic,
-              schema: schema,
-              sortable: sortable,
-              writable: writable,
+              class_name:,
+              deprecated:,
+              description:,
+              example:,
+              filterable:,
+              include:,
+              nullable:,
+              optional:,
+              polymorphic:,
+              schema:,
+              sortable:,
+              writable:,
             ),
           )
         end
@@ -346,38 +350,40 @@ module Apiwork
         #
         # @example Always include
         #   has_many :tags, include: :always
-        def has_many(name,
-                     allow_destroy: false,
-                     class_name: nil,
-                     deprecated: false,
-                     description: nil,
-                     example: nil,
-                     filterable: false,
-                     include: :optional,
-                     nullable: nil,
-                     optional: nil,
-                     polymorphic: nil,
-                     schema: nil,
-                     sortable: false,
-                     writable: false)
+        def has_many(
+          name,
+          allow_destroy: false,
+          class_name: nil,
+          deprecated: false,
+          description: nil,
+          example: nil,
+          filterable: false,
+          include: :optional,
+          nullable: nil,
+          optional: nil,
+          polymorphic: nil,
+          schema: nil,
+          sortable: false,
+          writable: false
+        )
           self.association_definitions = association_definitions.merge(
             name => AssociationDefinition.new(
               name,
               :has_many,
               self,
-              allow_destroy: allow_destroy,
-              class_name: class_name,
-              deprecated: deprecated,
-              description: description,
-              example: example,
-              filterable: filterable,
-              include: include,
-              nullable: nullable,
-              optional: optional,
-              polymorphic: polymorphic,
-              schema: schema,
-              sortable: sortable,
-              writable: writable,
+              allow_destroy:,
+              class_name:,
+              deprecated:,
+              description:,
+              example:,
+              filterable:,
+              include:,
+              nullable:,
+              optional:,
+              polymorphic:,
+              schema:,
+              sortable:,
+              writable:,
             ),
           )
         end
@@ -396,36 +402,38 @@ module Apiwork
         #
         # @example Filterable
         #   belongs_to :category, filterable: true
-        def belongs_to(name,
-                       class_name: nil,
-                       deprecated: false,
-                       description: nil,
-                       example: nil,
-                       filterable: false,
-                       include: :optional,
-                       nullable: nil,
-                       optional: nil,
-                       polymorphic: nil,
-                       schema: nil,
-                       sortable: false,
-                       writable: false)
+        def belongs_to(
+          name,
+          class_name: nil,
+          deprecated: false,
+          description: nil,
+          example: nil,
+          filterable: false,
+          include: :optional,
+          nullable: nil,
+          optional: nil,
+          polymorphic: nil,
+          schema: nil,
+          sortable: false,
+          writable: false
+        )
           self.association_definitions = association_definitions.merge(
             name => AssociationDefinition.new(
               name,
               :belongs_to,
               self,
-              class_name: class_name,
-              deprecated: deprecated,
-              description: description,
-              example: example,
-              filterable: filterable,
-              include: include,
-              nullable: nullable,
-              optional: optional,
-              polymorphic: polymorphic,
-              schema: schema,
-              sortable: sortable,
-              writable: writable,
+              class_name:,
+              deprecated:,
+              description:,
+              example:,
+              filterable:,
+              include:,
+              nullable:,
+              optional:,
+              polymorphic:,
+              schema:,
+              sortable:,
+              writable:,
             ),
           )
         end
@@ -487,7 +495,7 @@ module Apiwork
         end
 
         def register_variant(schema:, sti_type:, tag:)
-          self.variants = variants.merge(tag => { schema: schema, sti_type: sti_type })
+          self.variants = variants.merge(tag => { schema:, sti_type: })
           self._abstract = true
         end
 
@@ -600,9 +608,9 @@ module Apiwork
         #   InvoiceSchema.serialize(Invoice.all)
         def serialize(object_or_collection, context: {}, include: nil)
           if object_or_collection.respond_to?(:each)
-            object_or_collection.map { |obj| serialize_single(obj, context: context, include: include) }
+            object_or_collection.map { |obj| serialize_single(obj, context:, include: include) }
           else
-            serialize_single(object_or_collection, context: context, include: include)
+            serialize_single(object_or_collection, context:, include:)
           end
         end
 
@@ -664,10 +672,10 @@ module Apiwork
         def serialize_single(obj, context: {}, include: nil)
           if respond_to?(:sti_base?) && sti_base?
             variant_schema = resolve_sti_variant(obj)
-            return variant_schema.new(obj, context: context, include: include).as_json if variant_schema
+            return variant_schema.new(obj, context:, include:).as_json if variant_schema
           end
 
-          new(obj, context: context, include: include).as_json
+          new(obj, context:, include:).as_json
         end
 
         def resolve_sti_variant(obj)

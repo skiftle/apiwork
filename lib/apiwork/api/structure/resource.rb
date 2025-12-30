@@ -16,14 +16,16 @@ module Apiwork
 
         attr_accessor :contract_class
 
-        def initialize(name:,
-                       singular:,
-                       contract_class_name:,
-                       controller: nil,
-                       parent: nil,
-                       path: nil,
-                       only: nil,
-                       except: nil)
+        def initialize(
+          name:,
+          singular:,
+          contract_class_name:,
+          controller: nil,
+          parent: nil,
+          path: nil,
+          only: nil,
+          except: nil
+        )
           @name = name
           @singular = singular
           @contract_class_name = contract_class_name

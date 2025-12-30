@@ -12,13 +12,13 @@ module Apiwork
         resources = serialize_resources
 
         {
-          path: @api_class.path,
-          info: serialize_info.presence,
-          types: @type_serializer.serialize_types.presence,
-          enums: @type_serializer.serialize_enums.presence,
-          raises: @api_class.structure.raises.presence,
-          error_codes: serialize_error_codes(collect_all_error_codes(resources)).presence,
           resources:,
+          enums: @type_serializer.serialize_enums.presence,
+          error_codes: serialize_error_codes(collect_all_error_codes(resources)).presence,
+          info: serialize_info.presence,
+          path: @api_class.path,
+          raises: @api_class.structure.raises.presence,
+          types: @type_serializer.serialize_types.presence,
         }.compact
       end
 
@@ -48,8 +48,8 @@ module Apiwork
         codes.each_with_object({}) do |code, hash|
           error_code = ErrorCode.fetch(code)
           hash[code] = {
-            status: error_code.status,
             description: error_code.description(locale_key:),
+            status: error_code.status,
           }
         end
       end
@@ -65,14 +65,14 @@ module Apiwork
         return nil unless info
 
         {
-          title: info[:title],
-          version: info[:version],
-          description: info[:description],
-          summary: info[:summary],
-          terms_of_service: info[:terms_of_service],
           contact: info[:contact],
+          description: info[:description],
           license: info[:license],
           servers: info[:servers],
+          summary: info[:summary],
+          terms_of_service: info[:terms_of_service],
+          title: info[:title],
+          version: info[:version],
         }.compact.presence
       end
     end

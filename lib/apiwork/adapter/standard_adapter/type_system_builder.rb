@@ -5,72 +5,9 @@ module Apiwork
     class StandardAdapter < Base
       class TypeSystemBuilder
         FILTER_DEFINITIONS = {
-          string_filter: {
-            params: [
-              { name: :eq, type: :string },
-              {
-                name: :in,
-                of: :string,
-                type: :array,
-              },
-              { name: :contains, type: :string },
-              { name: :starts_with, type: :string },
-              { name: :ends_with, type: :string },
-            ],
-          },
-          integer_filter_between: {
-            params: [
-              { name: :from, type: :integer },
-              { name: :to, type: :integer },
-            ],
-          },
-          integer_filter: {
-            depends_on: :integer_filter_between,
-            params: [
-              { name: :eq, type: :integer },
-              { name: :gt, type: :integer },
-              { name: :gte, type: :integer },
-              { name: :lt, type: :integer },
-              { name: :lte, type: :integer },
-              {
-                name: :in,
-                of: :integer,
-                type: :array,
-              },
-              { name: :between, type: :integer_filter_between },
-            ],
-          },
-          decimal_filter_between: {
-            params: [
-              { name: :from, type: :decimal },
-              { name: :to, type: :decimal },
-            ],
-          },
-          decimal_filter: {
-            depends_on: :decimal_filter_between,
-            params: [
-              { name: :eq, type: :decimal },
-              { name: :gt, type: :decimal },
-              { name: :gte, type: :decimal },
-              { name: :lt, type: :decimal },
-              { name: :lte, type: :decimal },
-              {
-                name: :in,
-                of: :decimal,
-                type: :array,
-              },
-              { name: :between, type: :decimal_filter_between },
-            ],
-          },
           boolean_filter: {
             params: [
               { name: :eq, type: :boolean },
-            ],
-          },
-          date_filter_between: {
-            params: [
-              { name: :from, type: :date },
-              { name: :to, type: :date },
             ],
           },
           date_filter: {
@@ -89,10 +26,10 @@ module Apiwork
               },
             ],
           },
-          datetime_filter_between: {
+          date_filter_between: {
             params: [
-              { name: :from, type: :datetime },
-              { name: :to, type: :datetime },
+              { name: :from, type: :date },
+              { name: :to, type: :date },
             ],
           },
           datetime_filter: {
@@ -109,6 +46,69 @@ module Apiwork
                 of: :datetime,
                 type: :array,
               },
+            ],
+          },
+          datetime_filter_between: {
+            params: [
+              { name: :from, type: :datetime },
+              { name: :to, type: :datetime },
+            ],
+          },
+          decimal_filter: {
+            depends_on: :decimal_filter_between,
+            params: [
+              { name: :eq, type: :decimal },
+              { name: :gt, type: :decimal },
+              { name: :gte, type: :decimal },
+              { name: :lt, type: :decimal },
+              { name: :lte, type: :decimal },
+              {
+                name: :in,
+                of: :decimal,
+                type: :array,
+              },
+              { name: :between, type: :decimal_filter_between },
+            ],
+          },
+          decimal_filter_between: {
+            params: [
+              { name: :from, type: :decimal },
+              { name: :to, type: :decimal },
+            ],
+          },
+          integer_filter: {
+            depends_on: :integer_filter_between,
+            params: [
+              { name: :eq, type: :integer },
+              { name: :gt, type: :integer },
+              { name: :gte, type: :integer },
+              { name: :lt, type: :integer },
+              { name: :lte, type: :integer },
+              {
+                name: :in,
+                of: :integer,
+                type: :array,
+              },
+              { name: :between, type: :integer_filter_between },
+            ],
+          },
+          integer_filter_between: {
+            params: [
+              { name: :from, type: :integer },
+              { name: :to, type: :integer },
+            ],
+          },
+          string_filter: {
+            params: [
+              { name: :eq, type: :string },
+              {
+                name: :in,
+                of: :string,
+                type: :array,
+              },
+              { name: :contains, type: :string },
+              { name: :starts_with, type: :string },
+              { name: :ends_with, type: :string },
             ],
           },
           uuid_filter: {

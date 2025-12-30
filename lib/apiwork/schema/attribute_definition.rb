@@ -3,48 +3,50 @@
 module Apiwork
   module Schema
     class AttributeDefinition
-      attr_reader :name,
-                  :type,
-                  :enum,
-                  :optional,
-                  :empty,
-                  :min,
-                  :max,
+      attr_reader :deprecated,
                   :description,
+                  :empty,
+                  :enum,
                   :example,
                   :format,
-                  :deprecated,
                   :inline_shape,
-                  :of
+                  :max,
+                  :min,
+                  :name,
+                  :of,
+                  :optional,
+                  :type
 
       ALLOWED_FORMATS = {
-        string: %i[email uuid uri url date date_time ipv4 ipv6 password hostname],
-        integer: %i[int32 int64],
-        float: %i[float double],
         decimal: %i[float double],
+        float: %i[float double],
+        integer: %i[int32 int64],
         number: %i[float double],
+        string: %i[email uuid uri url date date_time ipv4 ipv6 password hostname],
       }.freeze
 
-      def initialize(name,
-                     schema_class,
-                     type: nil,
-                     optional: nil,
-                     nullable: nil,
-                     enum: nil,
-                     of: nil,
-                     min: nil,
-                     max: nil,
-                     empty: nil,
-                     format: nil,
-                     filterable: nil,
-                     sortable: nil,
-                     writable: nil,
-                     encode: nil,
-                     decode: nil,
-                     description: nil,
-                     example: nil,
-                     deprecated: false,
-                     &block)
+      def initialize(
+        name,
+        schema_class,
+        type: nil,
+        optional: nil,
+        nullable: nil,
+        enum: nil,
+        of: nil,
+        min: nil,
+        max: nil,
+        empty: nil,
+        format: nil,
+        filterable: nil,
+        sortable: nil,
+        writable: nil,
+        encode: nil,
+        decode: nil,
+        description: nil,
+        example: nil,
+        deprecated: false,
+        &block
+      )
         @name = name
         @owner_schema_class = schema_class
         @inline_shape = block
@@ -141,10 +143,10 @@ module Apiwork
 
       def schema_class_name
         @schema_class_name ||= @owner_schema_class
-                               .name
-                               .demodulize
-                               .delete_suffix('Schema')
-                               .underscore
+          .name
+          .demodulize
+          .delete_suffix('Schema')
+          .underscore
       end
 
       private
@@ -195,12 +197,12 @@ module Apiwork
         issue = Issue.new(
           code: :value_invalid,
           detail: 'Invalid value',
-          path: [name],
           meta: {
             actual: value,
             expected: enum_values,
             field: name,
           },
+          path: [name],
         )
         raise ContractError, [issue]
       end

@@ -25,9 +25,9 @@ module Apiwork
         contract_class = resolve_contract_class
 
         {
+          actions: build_actions(contract_class),
           identifier: @resource.name.to_s,
           path: resource_path,
-          actions: build_actions(contract_class),
           resources: build_nested_resources(resource_path),
         }.compact
       end
@@ -39,7 +39,7 @@ module Apiwork
 
         @resource.actions.each do |action_name, action|
           path = action_path(action_name, action)
-          actions[action_name] = { method: action.method, path: }
+          actions[action_name] = { path:, method: action.method }
 
           action_definition = contract_class&.action_definition(action_name)
           next unless action_definition

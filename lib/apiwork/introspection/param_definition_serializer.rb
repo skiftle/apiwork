@@ -73,8 +73,8 @@ module Apiwork
         return if type_system.types.key?(type_name)
 
         type_system.types[type_name] = {
-          scope: nil,
           expanded_payload: shape,
+          scope: nil,
         }
       end
 
@@ -85,12 +85,12 @@ module Apiwork
         type_value = resolve_type(options[:type])
 
         result = {
-          type: type_value,
-          value: options[:type] == :literal ? options[:value] : nil,
-          enum: resolve_enum(options),
           as: options[:as],
+          enum: resolve_enum(options),
           of: resolve_of(options),
           shape: options[:shape]&.then { serialize_nested_shape(_1).presence },
+          type: type_value,
+          value: options[:type] == :literal ? options[:value] : nil,
         }.compact
 
         apply_boolean_flags(result, options)
@@ -238,8 +238,8 @@ module Apiwork
             description: resolve_attribute_description(options),
             example: options[:example],
             format: options[:format],
-            min: options[:min],
             max: options[:max],
+            min: options[:min],
           }.compact,
         )
 

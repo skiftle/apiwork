@@ -49,9 +49,9 @@ module Apiwork
 
       def serialize_enum(qualified_name, metadata)
         result = {
-          values: metadata[:values],
           description: resolve_enum_description(qualified_name, metadata),
           example: metadata[:example],
+          values: metadata[:values],
         }.compact
 
         result[:deprecated] = true if metadata[:deprecated]

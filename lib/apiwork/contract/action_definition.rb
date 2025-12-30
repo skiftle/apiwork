@@ -210,7 +210,7 @@ module Apiwork
       def serialize_data(data, context: {}, include: nil)
         return data if already_serialized?(data)
 
-        schema_class.serialize(data, context: context, include: include)
+        schema_class.serialize(data, context:, include:)
       end
 
       private

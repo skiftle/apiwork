@@ -78,7 +78,7 @@ module Apiwork
           else
             action_name = type_name.to_s.end_with?('_update_payload') ? 'update' : nil
             recursive = TypeAnalysis.circular_reference?(type_name, type_shape, filter: :custom_only)
-            zod_mapper.build_object_schema(type_name, type_shape, action_name: action_name, recursive: recursive)
+            zod_mapper.build_object_schema(type_name, type_shape, action_name:, recursive:)
           end
         end
 
@@ -116,7 +116,7 @@ module Apiwork
                   resource_name,
                   action_name,
                   request_data[:query],
-                  parent_path: parent_path,
+                  parent_path:,
                 )
               end
               if request_data[:body]&.any?
@@ -124,19 +124,19 @@ module Apiwork
                   resource_name,
                   action_name,
                   request_data[:body],
-                  parent_path: parent_path,
+                  parent_path:,
                 )
               end
-              schemas << zod_mapper.build_action_request_schema(resource_name, action_name, request_data, parent_path: parent_path)
+              schemas << zod_mapper.build_action_request_schema(resource_name, action_name, request_data, parent_path:)
             end
 
             response_data = action_data[:response]
             if response_data&.dig(:no_content)
-              schema_name = zod_mapper.action_schema_name(resource_name, action_name, 'Response', parent_path: parent_path)
+              schema_name = zod_mapper.action_schema_name(resource_name, action_name, 'Response', parent_path:)
               schemas << "export const #{schema_name} = z.never();"
             elsif response_data && response_data[:body]
-              schemas << zod_mapper.build_action_response_body_schema(resource_name, action_name, response_data[:body], parent_path: parent_path)
-              schemas << zod_mapper.build_action_response_schema(resource_name, action_name, response_data, parent_path: parent_path)
+              schemas << zod_mapper.build_action_response_body_schema(resource_name, action_name, response_data[:body], parent_path:)
+              schemas << zod_mapper.build_action_response_schema(resource_name, action_name, response_data, parent_path:)
             end
           end
         end
@@ -161,9 +161,9 @@ module Apiwork
                  else
                    action_name = type_name.to_s.end_with?('_update_payload') ? 'update' : nil
                    recursive = TypeAnalysis.circular_reference?(type_name, type_shape, filter: :custom_only)
-                   typescript_mapper.build_interface(type_name, type_shape, action_name: action_name, recursive: recursive)
+                   typescript_mapper.build_interface(type_name, type_shape, action_name:, recursive:)
                  end
-          all_types << { code: code, name: type_name_pascal }
+          all_types << { code:, name: type_name_pascal }
         end
 
         each_resource do |resource_name, resource_data, parent_path|
@@ -175,7 +175,7 @@ module Apiwork
             unless types.key?(type_sym)
               code = typescript_mapper.build_interface(type_sym, resource_data[:schema], action_name: nil, recursive: false)
               type_name = typescript_mapper.pascal_case(singular_name)
-              all_types << { code: code, name: type_name }
+              all_types << { code:, name: type_name }
             end
           end
 
@@ -183,35 +183,35 @@ module Apiwork
             request_data = action_data[:request]
             if request_data && (request_data[:query]&.any? || request_data[:body]&.any?)
               if request_data[:query]&.any?
-                type_name = typescript_mapper.action_type_name(resource_name, action_name, 'RequestQuery', parent_path: parent_path)
-                code = typescript_mapper.build_action_request_query_type(resource_name, action_name, request_data[:query], parent_path: parent_path)
-                all_types << { code: code, name: type_name }
+                type_name = typescript_mapper.action_type_name(resource_name, action_name, 'RequestQuery', parent_path:)
+                code = typescript_mapper.build_action_request_query_type(resource_name, action_name, request_data[:query], parent_path:)
+                all_types << { code:, name: type_name }
               end
 
               if request_data[:body]&.any?
-                type_name = typescript_mapper.action_type_name(resource_name, action_name, 'RequestBody', parent_path: parent_path)
-                code = typescript_mapper.build_action_request_body_type(resource_name, action_name, request_data[:body], parent_path: parent_path)
-                all_types << { code: code, name: type_name }
+                type_name = typescript_mapper.action_type_name(resource_name, action_name, 'RequestBody', parent_path:)
+                code = typescript_mapper.build_action_request_body_type(resource_name, action_name, request_data[:body], parent_path:)
+                all_types << { code:, name: type_name }
               end
 
-              type_name = typescript_mapper.action_type_name(resource_name, action_name, 'Request', parent_path: parent_path)
-              code = typescript_mapper.build_action_request_type(resource_name, action_name, request_data, parent_path: parent_path)
-              all_types << { code: code, name: type_name }
+              type_name = typescript_mapper.action_type_name(resource_name, action_name, 'Request', parent_path:)
+              code = typescript_mapper.build_action_request_type(resource_name, action_name, request_data, parent_path:)
+              all_types << { code:, name: type_name }
             end
 
             response_data = action_data[:response]
 
             if response_data&.dig(:no_content)
-              type_name = typescript_mapper.action_type_name(resource_name, action_name, 'Response', parent_path: parent_path)
+              type_name = typescript_mapper.action_type_name(resource_name, action_name, 'Response', parent_path:)
               all_types << { code: "export type #{type_name} = never;", name: type_name }
             elsif response_data && response_data[:body]
-              type_name = typescript_mapper.action_type_name(resource_name, action_name, 'ResponseBody', parent_path: parent_path)
-              code = typescript_mapper.build_action_response_body_type(resource_name, action_name, response_data[:body], parent_path: parent_path)
-              all_types << { code: code, name: type_name }
+              type_name = typescript_mapper.action_type_name(resource_name, action_name, 'ResponseBody', parent_path:)
+              code = typescript_mapper.build_action_response_body_type(resource_name, action_name, response_data[:body], parent_path:)
+              all_types << { code:, name: type_name }
 
-              type_name = typescript_mapper.action_type_name(resource_name, action_name, 'Response', parent_path: parent_path)
-              code = typescript_mapper.build_action_response_type(resource_name, action_name, response_data, parent_path: parent_path)
-              all_types << { code: code, name: type_name }
+              type_name = typescript_mapper.action_type_name(resource_name, action_name, 'Response', parent_path:)
+              code = typescript_mapper.build_action_response_type(resource_name, action_name, response_data, parent_path:)
+              all_types << { code:, name: type_name }
             end
           end
         end

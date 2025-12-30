@@ -82,8 +82,8 @@ module Apiwork
         raise "API not found at path: #{api_path}" unless @api_class
 
         @options = self.class.default_options
-                       .merge(key_format: @api_class.key_format)
-                       .merge(options)
+          .merge(key_format: @api_class.key_format)
+          .merge(options)
         validate_options!
 
         @data = @api_class.introspect(locale: @options[:locale])

@@ -4,30 +4,30 @@ module Apiwork
   # @api public
   module ErrorCode
     DEFAULTS = {
+      bad_gateway: { status: 502 },
       bad_request: { status: 400 },
-      unauthorized: { status: 401 },
-      payment_required: { status: 402 },
+      conflict: { status: 409 },
       forbidden: { status: 403 },
-      not_found: { attach_path: true, status: 404 },
+      gateway_timeout: { status: 504 },
+      gone: { status: 410 },
+      internal_server_error: { status: 500 },
+      locked: { status: 423 },
       method_not_allowed: { status: 405 },
       not_acceptable: { status: 406 },
-      request_timeout: { status: 408 },
-      conflict: { status: 409 },
-      gone: { status: 410 },
-      precondition_failed: { status: 412 },
-      unsupported_media_type: { status: 415 },
-      unprocessable_entity: { status: 422 },
-      locked: { status: 423 },
-      too_many_requests: { status: 429 },
-      internal_server_error: { status: 500 },
+      not_found: { attach_path: true, status: 404 },
       not_implemented: { status: 501 },
-      bad_gateway: { status: 502 },
+      payment_required: { status: 402 },
+      precondition_failed: { status: 412 },
+      request_timeout: { status: 408 },
       service_unavailable: { status: 503 },
-      gateway_timeout: { status: 504 },
+      too_many_requests: { status: 429 },
+      unauthorized: { status: 401 },
+      unprocessable_entity: { status: 422 },
+      unsupported_media_type: { status: 415 },
     }.freeze
 
     class << self
-      delegate :fetch, :registered?, :all, to: Registry
+      delegate :all, :fetch, :registered?, to: Registry
 
       # @api public
       # Registers a custom error code for use in API responses.

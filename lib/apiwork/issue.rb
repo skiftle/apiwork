@@ -42,9 +42,9 @@ module Apiwork
       {
         code: code,
         detail: detail,
+        meta: meta,
         path: path.map(&:to_s),
         pointer: pointer,
-        meta: meta,
       }
     end
 

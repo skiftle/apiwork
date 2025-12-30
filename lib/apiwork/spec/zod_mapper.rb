@@ -4,18 +4,18 @@ module Apiwork
   module Spec
     class ZodMapper
       TYPE_MAP = {
-        string: 'z.string()',
-        uuid: 'z.uuid()',
-        integer: 'z.number().int()',
-        float: 'z.number()',
-        decimal: 'z.number()',
+        binary: 'z.string()',
         boolean: 'z.boolean()',
         date: 'z.iso.date()',
         datetime: 'z.iso.datetime()',
-        time: 'z.iso.time()',
+        decimal: 'z.number()',
+        float: 'z.number()',
+        integer: 'z.number().int()',
         json: 'z.record(z.string(), z.any())',
-        binary: 'z.string()',
+        string: 'z.string()',
+        time: 'z.iso.time()',
         unknown: 'z.unknown()',
+        uuid: 'z.uuid()',
       }.freeze
 
       attr_reader :data,
@@ -33,7 +33,7 @@ module Apiwork
 
         properties = fields.sort_by { |property_name, _| property_name.to_s }.map do |property_name, property_definition|
           key = transform_key(property_name)
-          zod_type = map_field_definition(property_definition, action_name: action_name)
+          zod_type = map_field_definition(property_definition, action_name:)
           "  #{key}: #{zod_type}"
         end.join(",\n")
 
@@ -62,7 +62,7 @@ module Apiwork
       end
 
       def build_action_request_query_schema(resource_name, action_name, query_params, parent_path: nil)
-        schema_name = action_schema_name(resource_name, action_name, 'RequestQuery', parent_path: parent_path)
+        schema_name = action_schema_name(resource_name, action_name, 'RequestQuery', parent_path:)
 
         properties = query_params.sort_by { |k, _| k.to_s }.map do |param_name, param_definition|
           key = transform_key(param_name)
@@ -74,7 +74,7 @@ module Apiwork
       end
 
       def build_action_request_body_schema(resource_name, action_name, body_params, parent_path: nil)
-        schema_name = action_schema_name(resource_name, action_name, 'RequestBody', parent_path: parent_path)
+        schema_name = action_schema_name(resource_name, action_name, 'RequestBody', parent_path:)
 
         properties = body_params.sort_by { |k, _| k.to_s }.map do |param_name, param_definition|
           key = transform_key(param_name)
@@ -86,17 +86,17 @@ module Apiwork
       end
 
       def build_action_request_schema(resource_name, action_name, request_data, parent_path: nil)
-        schema_name = action_schema_name(resource_name, action_name, 'Request', parent_path: parent_path)
+        schema_name = action_schema_name(resource_name, action_name, 'Request', parent_path:)
 
         nested_properties = []
 
         if request_data[:query]&.any?
-          query_schema_name = action_schema_name(resource_name, action_name, 'RequestQuery', parent_path: parent_path)
+          query_schema_name = action_schema_name(resource_name, action_name, 'RequestQuery', parent_path:)
           nested_properties << "  query: #{query_schema_name}Schema"
         end
 
         if request_data[:body]&.any?
-          body_schema_name = action_schema_name(resource_name, action_name, 'RequestBody', parent_path: parent_path)
+          body_schema_name = action_schema_name(resource_name, action_name, 'RequestBody', parent_path:)
           nested_properties << "  body: #{body_schema_name}Schema"
         end
 
@@ -104,7 +104,7 @@ module Apiwork
       end
 
       def build_action_response_body_schema(resource_name, action_name, response_body_definition, parent_path: nil)
-        schema_name = action_schema_name(resource_name, action_name, 'ResponseBody', parent_path: parent_path)
+        schema_name = action_schema_name(resource_name, action_name, 'ResponseBody', parent_path:)
 
         zod_schema = map_type_definition(response_body_definition, action_name: nil)
 
@@ -112,8 +112,8 @@ module Apiwork
       end
 
       def build_action_response_schema(resource_name, action_name, response_data, parent_path: nil)
-        schema_name = action_schema_name(resource_name, action_name, 'Response', parent_path: parent_path)
-        body_schema_name = action_schema_name(resource_name, action_name, 'ResponseBody', parent_path: parent_path)
+        schema_name = action_schema_name(resource_name, action_name, 'Response', parent_path:)
+        body_schema_name = action_schema_name(resource_name, action_name, 'ResponseBody', parent_path:)
 
         "export const #{schema_name}Schema = z.object({\n  body: #{body_schema_name}Schema\n});"
       end
@@ -135,7 +135,7 @@ module Apiwork
           return apply_modifiers(type, definition, action_name)
         end
 
-        type = map_type_definition(definition, action_name: action_name)
+        type = map_type_definition(definition, action_name:)
         type = resolve_enum_schema(definition) || type
 
         apply_modifiers(type, definition, action_name)
@@ -148,11 +148,11 @@ module Apiwork
 
         case type
         when :object
-          map_object_type(definition, action_name: action_name)
+          map_object_type(definition, action_name:)
         when :array
-          map_array_type(definition, action_name: action_name)
+          map_array_type(definition, action_name:)
         when :union
-          map_union_type(definition, action_name: action_name)
+          map_union_type(definition, action_name:)
         when :literal
           map_literal_type(definition)
         when nil
@@ -173,7 +173,7 @@ module Apiwork
           zod_type = if partial
                        map_field_definition(property_definition.merge(optional: false), action_name: nil)
                      else
-                       map_field_definition(property_definition, action_name: action_name)
+                       map_field_definition(property_definition, action_name:)
                      end
           "#{key}: #{zod_type}"
         end.join(', ')
@@ -186,7 +186,7 @@ module Apiwork
         items_type = definition[:of]
 
         if items_type.nil? && definition[:shape]
-          items_schema = map_object_type({ shape: definition[:shape], type: :object }, action_name: action_name)
+          items_schema = map_object_type({ shape: definition[:shape], type: :object }, action_name:)
           return "z.array(#{items_schema})"
         end
 
@@ -195,7 +195,7 @@ module Apiwork
         if items_type.is_a?(Symbol) && enum_or_type_reference?(items_type)
           "z.array(#{schema_reference(items_type)})"
         elsif items_type.is_a?(Hash)
-          items_schema = map_type_definition(items_type, action_name: action_name)
+          items_schema = map_type_definition(items_type, action_name:)
           "z.array(#{items_schema})"
         else
           primitive = map_primitive({ type: items_type })
@@ -205,7 +205,7 @@ module Apiwork
 
       def map_union_type(definition, action_name: nil)
         if definition[:discriminator]
-          map_discriminated_union(definition, action_name: action_name)
+          map_discriminated_union(definition, action_name:)
         else
           variants = definition[:variants].map { |variant| map_type_definition(variant, action_name: action_name) }
           "z.union([#{variants.join(', ')}])"

@@ -29,9 +29,9 @@ module Apiwork
           api_classes.each do |api_class|
             spec_names.each do |name|
               count += generate_file(
-                api_class: api_class,
-                options: options,
-                output: output,
+                api_class:,
+                options:,
+                output:,
                 spec_name: name,
               )
             end
@@ -46,7 +46,7 @@ module Apiwork
         def clean(output:)
           raise ArgumentError, 'output path required' unless output
 
-          Writer.clean(output: output)
+          Writer.clean(output:)
         end
 
         private
@@ -76,11 +76,11 @@ module Apiwork
           extension = generator_class.file_extension
 
           file_path = Writer.write(
-            content: content,
-            output: output,
-            api_path: api_path,
-            spec_name: spec_name,
-            extension: extension,
+            api_path:,
+            content:,
+            extension:,
+            output:,
+            spec_name:,
           )
 
           Rails.logger.debug "    → #{file_path}"

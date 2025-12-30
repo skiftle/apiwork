@@ -3,33 +3,35 @@
 module Apiwork
   module Schema
     class AssociationDefinition
-      attr_reader :name,
-                  :type,
-                  :schema_class,
-                  :allow_destroy,
-                  :model_class,
-                  :description,
-                  :example,
+      attr_reader :allow_destroy,
                   :deprecated,
+                  :description,
+                  :discriminator,
+                  :example,
+                  :model_class,
+                  :name,
                   :polymorphic,
-                  :discriminator
+                  :schema_class,
+                  :type
 
-      def initialize(name,
-                     type,
-                     schema_class,
-                     allow_destroy: false,
-                     class_name: nil,
-                     deprecated: false,
-                     description: nil,
-                     example: nil,
-                     filterable: false,
-                     include: :optional,
-                     nullable: nil,
-                     optional: nil,
-                     polymorphic: nil,
-                     schema: nil,
-                     sortable: false,
-                     writable: false)
+      def initialize(
+        name,
+        type,
+        schema_class,
+        allow_destroy: false,
+        class_name: nil,
+        deprecated: false,
+        description: nil,
+        example: nil,
+        filterable: false,
+        include: :optional,
+        nullable: nil,
+        optional: nil,
+        polymorphic: nil,
+        schema: nil,
+        sortable: false,
+        writable: false
+      )
         @name = name
         @type = type
         @owner_schema_class = schema_class
@@ -107,10 +109,10 @@ module Apiwork
 
       def schema_class_name
         @schema_class_name ||= @owner_schema_class
-                               .name
-                               .demodulize
-                               .delete_suffix('Schema')
-                               .underscore
+          .name
+          .demodulize
+          .delete_suffix('Schema')
+          .underscore
       end
 
       def resolve_polymorphic_schema(tag)
@@ -215,8 +217,8 @@ module Apiwork
         detail = "Invalid include option ':#{@include}' for association '#{@name}'. " \
                  'Must be :always or :optional'
         error = ConfigurationError.new(
+          detail:,
           code: :invalid_include_option,
-          detail: detail,
           path: [@name],
         )
 
@@ -233,8 +235,8 @@ module Apiwork
 
         detail = "Undefined association '#{@name}' in #{@owner_schema_class.name}: no association on model"
         error = ConfigurationError.new(
+          detail:,
           code: :invalid_association,
-          detail: detail,
           path: [@name],
         )
 
@@ -250,8 +252,8 @@ module Apiwork
           detail = "#{@model_class.name} doesn't accept nested attributes for #{@name}. " \
                    "Add: accepts_nested_attributes_for :#{@name}"
           error = ConfigurationError.new(
+            detail:,
             code: :missing_nested_attributes,
-            detail: detail,
             path: [@name],
           )
 

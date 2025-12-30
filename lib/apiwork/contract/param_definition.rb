@@ -70,52 +70,65 @@ module Apiwork
       #     param :product_id, type: :integer
       #     param :quantity, type: :integer, min: 1
       #   end
-      def param(name,
-                as: nil,
-                default: nil,
-                deprecated: nil,
-                description: nil,
-                discriminator: nil,
-                enum: nil,
-                example: nil,
-                format: nil,
-                max: nil,
-                min: nil,
-                nullable: nil,
-                of: nil,
-                optional: nil,
-                required: nil,
-                source: nil,
-                type: nil,
-                value: nil,
-                internal: {},
-                &block)
+      def param(
+        name,
+        as: nil,
+        association_definition: nil,
+        attribute_definition: nil,
+        default: nil,
+        deprecated: nil,
+        description: nil,
+        discriminator: nil,
+        enum: nil,
+        example: nil,
+        format: nil,
+        max: nil,
+        min: nil,
+        nullable: nil,
+        of: nil,
+        optional: nil,
+        required: nil,
+        source: nil,
+        type: nil,
+        value: nil,
+        internal: {},
+        &block
+      )
         visited_types = internal[:visited_types]
         decoder = internal[:decoder]
         sti_mapping = internal[:sti_mapping]
         type_contract_class = internal[:type_contract_class]
 
         options = {
-          decoder: decoder,
-          deprecated: deprecated,
-          description: description,
-          example: example,
-          format: format,
-          internal: internal,
-          max: max,
-          min: min,
-          source: source,
-          nullable: nullable,
-          required: required,
-          sti_mapping: sti_mapping,
-          type_contract_class: type_contract_class,
+          association_definition:,
+          attribute_definition:,
+          decoder:,
+          deprecated:,
+          description:,
+          example:,
+          format:,
+          internal:,
+          max:,
+          min:,
+          nullable:,
+          required:,
+          source:,
+          sti_mapping:,
+          type_contract_class:,
         }.compact
         if type.nil? && (existing_param = @params[name])
           merge_existing_param(
             name,
             existing_param,
-            type:, optional:, default:, enum:, of:, as:,
-            discriminator:, value:, options:,
+            as:,
+            default:,
+            discriminator:,
+            enum:,
+            of:,
+            optional:,
+            options:,
+            type:,
+            value:,
             &block
           )
           return
@@ -130,20 +143,29 @@ module Apiwork
 
         case type
         when :literal
-          define_literal_param(name, as: as, default: default, optional: optional || false, options: options, value: value)
+          define_literal_param(name, as:, default:, options:, value:, optional: optional || false)
         when :union
           define_union_param(
             name,
-            discriminator: discriminator, resolved_enum: resolved_enum,
-            optional: optional || false, default: default, as: as, options: options,
+            as:,
+            default:,
+            discriminator:,
+            options:,
+            resolved_enum:,
+            optional: optional || false,
             &block
           )
         else
           define_regular_param(
             name,
-            type: type, resolved_enum: resolved_enum,
-            optional: optional || false, default: default, of: of, as: as,
-            visited_types: visited_types, options: options,
+            as:,
+            default:,
+            of:,
+            options:,
+            resolved_enum:,
+            type:,
+            visited_types:,
+            optional: optional || false,
             &block
           )
         end
@@ -182,7 +204,7 @@ module Apiwork
         if existing_meta && existing_meta[:shape]
           existing_meta[:shape].instance_eval(&block)
         else
-          param :meta, optional: optional, type: :object, &block
+          param :meta, optional:, type: :object, &block
         end
       end
 
@@ -192,18 +214,20 @@ module Apiwork
 
       private
 
-      def merge_existing_param(name,
-                               existing_param,
-                               type:,
-                               optional:,
-                               default:,
-                               enum:,
-                               of:,
-                               as:,
-                               discriminator:,
-                               value:,
-                               options:,
-                               &block)
+      def merge_existing_param(
+        name,
+        existing_param,
+        type:,
+        optional:,
+        default:,
+        enum:,
+        of:,
+        as:,
+        discriminator:,
+        value:,
+        options:,
+        &block
+      )
         resolved_enum = enum ? resolve_enum_value(enum) : nil
 
         merged_param = existing_param.merge(options.compact)
@@ -233,12 +257,12 @@ module Apiwork
 
       def apply_param_defaults(param_hash)
         {
-          optional: false,
-          nullable: nil,
-          default: nil,
           as: nil,
+          default: nil,
           enum: nil,
+          nullable: nil,
           of: nil,
+          optional: false,
           shape: nil,
         }.merge(param_hash)
       end
@@ -250,12 +274,12 @@ module Apiwork
 
         @params[name] = apply_param_defaults(
           {
-            name: name,
+            name:,
             type: :literal,
             value: literal_value,
-            optional: optional,
-            default: default,
-            as: as,
+            optional:,
+            default:,
+            as:,
             **options.except(:value), # Remove :value from options to avoid duplication
           },
         )
@@ -264,18 +288,18 @@ module Apiwork
       def define_union_param(name, as:, default:, discriminator:, optional:, options:, resolved_enum:, &block)
         raise ArgumentError, 'Union type requires a block with variant definitions' unless block_given?
 
-        union_builder = UnionBuilder.new(@contract_class, discriminator: discriminator)
+        union_builder = UnionBuilder.new(@contract_class, discriminator:)
         union_builder.instance_eval(&block)
 
         @params[name] = apply_param_defaults(
           {
-            name: name,
+            name:,
             type: :union,
-            optional: optional,
-            default: default,
-            as: as,
+            optional:,
+            default:,
+            as:,
             union: union_builder,
-            discriminator: discriminator,
+            discriminator:,
             enum: resolved_enum, # Store resolved enum (values or reference)
             **options,
           },
@@ -294,33 +318,45 @@ module Apiwork
         if custom_type_block
           define_custom_type_param(
             name,
-            type: type, custom_type_block: custom_type_block,
-            resolved_enum: resolved_enum, optional: optional,
-            default: default, of: of, as: as, visited_types: visited_types,
-            options: options,
+            as:,
+            custom_type_block:,
+            default:,
+            of:,
+            optional:,
+            options:,
+            resolved_enum:,
+            type:,
+            visited_types:,
             &block
           )
         else
           define_standard_param(
             name,
-            type: type, resolved_enum: resolved_enum,
-            optional: optional, default: default, of: of, as: as, options: options,
+            as:,
+            default:,
+            of:,
+            optional:,
+            options:,
+            resolved_enum:,
+            type:,
             &block
           )
         end
       end
 
-      def define_custom_type_param(name,
-                                   type:,
-                                   custom_type_block:,
-                                   resolved_enum:,
-                                   optional:,
-                                   default:,
-                                   of:,
-                                   as:,
-                                   visited_types:,
-                                   options:,
-                                   &block)
+      def define_custom_type_param(
+        name,
+        type:,
+        custom_type_block:,
+        resolved_enum:,
+        optional:,
+        default:,
+        of:,
+        as:,
+        visited_types:,
+        options:,
+        &block
+      )
         expansion_key = [@contract_class.object_id, type]
 
         visited_with_current = visited_types.dup.add(expansion_key)
@@ -337,13 +373,13 @@ module Apiwork
 
         @params[name] = apply_param_defaults(
           {
-            name: name,
+            name:,
             type: :object, # Custom types are objects internally
-            optional: optional,
-            default: default,
+            optional:,
+            default:,
             enum: resolved_enum, # Store resolved enum (values or reference)
-            of: of,
-            as: as,
+            of:,
+            as:,
             custom_type: type, # Track original custom type name
             shape: shape_param_definition,
             **options,
@@ -354,13 +390,13 @@ module Apiwork
       def define_standard_param(name, as:, default:, of:, optional:, options:, resolved_enum:, type:, &block)
         @params[name] = apply_param_defaults(
           {
-            name: name,
-            type: type,
-            optional: optional,
-            default: default,
+            name:,
+            type:,
+            optional:,
+            default:,
             enum: resolved_enum, # Store resolved enum (values or reference)
-            of: of,
-            as: as,
+            of:,
+            as:,
             **options,
           },
         )
@@ -381,7 +417,7 @@ module Apiwork
         values = @contract_class.resolve_enum(enum)
 
         if values
-          { ref: enum, values: values }
+          { values:, ref: enum }
         else
           raise ArgumentError,
                 "Enum :#{enum} not found. Define it using `enum :#{enum}, %w[...]` in contract or definition scope."

@@ -80,7 +80,7 @@ module Apiwork
         #   end
         def server(description: nil, url:)
           @info[:servers] ||= []
-          @info[:servers] << { description: description, url: url }.compact
+          @info[:servers] << { description:, url: }.compact
         end
 
         # Sets a short API summary.

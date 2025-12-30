@@ -5,56 +5,56 @@ module Apiwork
     class StandardAdapter < Base
       class DomainIssueMapper
         CODE_MAP = {
-          blank: :required,
-          present: :forbidden,
-          empty: :required,
-          taken: :unique,
           accepted: :accepted,
+          blank: :required,
           confirmation: :confirmed,
-          too_short: :min,
-          too_long: :max,
-          wrong_length: :length,
-          not_a_number: :number,
-          not_an_integer: :integer,
+          empty: :required,
+          equal_to: :eq,
+          even: :even,
+          exclusion: :not_in,
           greater_than: :gt,
           greater_than_or_equal_to: :gte,
+          in: :in,
+          inclusion: :in,
+          invalid: :invalid,
           less_than: :lt,
           less_than_or_equal_to: :lte,
-          equal_to: :eq,
-          other_than: :ne,
+          not_a_number: :number,
+          not_an_integer: :integer,
           odd: :odd,
-          even: :even,
-          inclusion: :in,
-          exclusion: :not_in,
-          in: :in,
-          invalid: :invalid,
+          other_than: :ne,
+          present: :forbidden,
           restrict_dependent_destroy: :associated,
+          taken: :unique,
+          too_long: :max,
+          too_short: :min,
+          wrong_length: :length,
         }.freeze
 
         DETAIL_MAP = {
-          required: 'Required',
-          forbidden: 'Must be blank',
-          unique: 'Already taken',
-          format: 'Invalid format',
           accepted: 'Must be accepted',
+          associated: 'Invalid',
           confirmed: 'Does not match',
-          min: 'Too short',
-          max: 'Too long',
-          length: 'Wrong length',
-          number: 'Not a number',
-          integer: 'Not an integer',
+          eq: 'Wrong value',
+          even: 'Must be even',
+          forbidden: 'Must be blank',
+          format: 'Invalid format',
           gt: 'Too small',
           gte: 'Too small',
+          in: 'Invalid value',
+          integer: 'Not an integer',
+          invalid: 'Invalid',
+          length: 'Wrong length',
           lt: 'Too large',
           lte: 'Too large',
-          eq: 'Wrong value',
+          max: 'Too long',
+          min: 'Too short',
           ne: 'Reserved value',
-          odd: 'Must be odd',
-          even: 'Must be even',
-          in: 'Invalid value',
           not_in: 'Reserved value',
-          associated: 'Invalid',
-          invalid: 'Invalid',
+          number: 'Not a number',
+          odd: 'Must be odd',
+          required: 'Required',
+          unique: 'Already taken',
         }.freeze
 
         META_CODES = %i[min max length gt gte lt lte eq ne in].freeze
@@ -131,8 +131,8 @@ module Apiwork
 
           Issue.new(
             code:,
-            detail: detail_for(code),
             path:,
+            detail: detail_for(code),
             meta: build_meta(code, error),
           )
         end
@@ -182,9 +182,9 @@ module Apiwork
           return {} unless range.begin.is_a?(Numeric) && range.end.is_a?(Numeric)
 
           {
-            min: range.begin,
             max: range.end,
             max_exclusive: range.exclude_end?,
+            min: range.begin,
           }
         end
 

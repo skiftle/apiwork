@@ -48,12 +48,14 @@ module Apiwork
       # @return [Hash] metadata for the response
       attr_reader :meta
 
-      def initialize(name,
-                     method,
-                     type: nil,
-                     context: {},
-                     query: {},
-                     meta: {})
+      def initialize(
+        name,
+        method,
+        type: nil,
+        context: {},
+        query: {},
+        meta: {}
+      )
         @name = name.to_sym
         @method = method.to_sym
         @type = type&.to_sym

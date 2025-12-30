@@ -55,10 +55,10 @@ module Apiwork
     #   end
     def contract
       @contract ||= contract_class.new(
-        query: transformed_query_parameters,
-        body: transformed_body_parameters,
         action_name: action_name,
+        body: transformed_body_parameters,
         coerce: true,
+        query: transformed_query_parameters,
       )
     end
 
@@ -118,7 +118,7 @@ module Apiwork
 
       json = adapter.transform_response(json, schema_class)
       json = api_class.transform_response(json)
-      render json: json, status: status || (action_name.to_sym == :create ? :created : :ok)
+      render json:, status: status || (action_name.to_sym == :create ? :created : :ok)
     end
 
     # @api public
@@ -145,19 +145,21 @@ module Apiwork
     #
     # @example With I18n interpolation
     #   expose_error :not_found, i18n: { resource: 'Invoice' }
-    def expose_error(code_key,
-                     detail: nil,
-                     path: nil,
-                     meta: {},
-                     i18n: {})
+    def expose_error(
+      code_key,
+      detail: nil,
+      path: nil,
+      meta: {},
+      i18n: {}
+    )
       error_code = ErrorCode.fetch(code_key)
       locale_key = api_class.structure.locale_key
 
       issue = Issue.new(
+        meta:,
         code: error_code.key,
         detail: detail || error_code.description(locale_key:, options: i18n),
         path: path || (error_code.attach_path? ? request.path.delete_prefix(api_class.path).split('/').reject(&:blank?) : []),
-        meta:,
       )
 
       render_error :http, [issue], error_code.status
@@ -190,17 +192,17 @@ module Apiwork
 
     def render_error(layer, issues, status)
       json = adapter.render_error(layer, issues, build_action_summary)
-      render json: json, status: status
+      render json:, status:
     end
 
     def build_action_summary(meta = {})
       Adapter::ActionSummary.new(
         action_name,
         request.method_symbol,
-        type: resource&.actions&.dig(action_name.to_sym)&.type,
         context:,
-        query: resource ? contract.query : {},
         meta:,
+        query: resource ? contract.query : {},
+        type: resource&.actions&.dig(action_name.to_sym)&.type,
       )
     end
 

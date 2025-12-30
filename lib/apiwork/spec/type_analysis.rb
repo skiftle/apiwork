@@ -54,7 +54,7 @@ module Apiwork
               add_type_if_matches(referenced_types, variant[:type], filter)
               add_type_if_matches(referenced_types, variant[:of], filter)
 
-              referenced_types.concat(type_references(variant[:shape], filter: filter)) if variant[:shape].is_a?(Hash)
+              referenced_types.concat(type_references(variant[:shape], filter:)) if variant[:shape].is_a?(Hash)
             end
           end
 
@@ -78,18 +78,18 @@ module Apiwork
                 add_type_if_matches(referenced_types, variant[:type], filter)
                 add_type_if_matches(referenced_types, variant[:of], filter)
 
-                referenced_types.concat(type_references(variant[:shape], filter: filter)) if variant[:shape].is_a?(Hash)
+                referenced_types.concat(type_references(variant[:shape], filter:)) if variant[:shape].is_a?(Hash)
               end
             end
 
-            referenced_types.concat(type_references(param[:shape], filter: filter)) if param[:shape].is_a?(Hash)
+            referenced_types.concat(type_references(param[:shape], filter:)) if param[:shape].is_a?(Hash)
           end
 
           referenced_types.uniq
         end
 
         def circular_reference?(type_name, type_definition, filter: :custom_only)
-          refs = type_references(type_definition, filter: filter)
+          refs = type_references(type_definition, filter:)
           refs.include?(type_name)
         end
 

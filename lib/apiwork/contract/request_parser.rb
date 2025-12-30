@@ -17,9 +17,9 @@ module Apiwork
         body_data, body_issues = parse_part(body, :body)
 
         RequestResult.new(
-          query: query_data,
           body: body_data,
           issues: query_issues + body_issues,
+          query: query_data,
         )
       end
 

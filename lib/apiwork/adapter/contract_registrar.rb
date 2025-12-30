@@ -94,16 +94,16 @@ module Apiwork
       #   Returns the hash of imported types.
       #   @return [Hash] imported types
 
-      delegate :type,
+      delegate :define_action,
                :enum,
-               :union,
-               :define_action,
-               :import,
-               :resolve_type,
-               :resolve_enum,
-               :scoped_name,
                :find_contract_for_schema,
+               :import,
                :imports,
+               :resolve_enum,
+               :resolve_type,
+               :scoped_name,
+               :type,
+               :union,
                to: :contract_class
 
       # @api public

@@ -12,13 +12,13 @@ module Apiwork
 
       def generate
         {
-          openapi: version,
-          info: build_info,
-          servers: build_servers,
-          paths: build_paths,
           components: {
             schemas: build_schemas,
           },
+          info: build_info,
+          openapi: version,
+          paths: build_paths,
+          servers: build_servers,
         }.compact
       end
 
@@ -28,13 +28,13 @@ module Apiwork
         info_data = data[:info] || {}
 
         {
+          contact: build_contact(info_data[:contact]),
+          description: info_data[:description],
+          license: build_license(info_data[:license]),
+          summary: info_data[:summary],
+          termsOfService: info_data[:terms_of_service],
           title: info_data[:title] || "#{api_path} API",
           version: info_data[:version] || '1.0.0',
-          summary: info_data[:summary],
-          description: info_data[:description],
-          termsOfService: info_data[:terms_of_service],
-          contact: build_contact(info_data[:contact]),
-          license: build_license(info_data[:license]),
         }.compact
       end
 
@@ -51,8 +51,8 @@ module Apiwork
         return nil unless contact_data
 
         {
-          name: contact_data[:name],
           email: contact_data[:email],
+          name: contact_data[:name],
           url: contact_data[:url],
         }.compact.presence
       end
@@ -99,11 +99,11 @@ module Apiwork
 
       def build_operation(resource_name, resource_path, action_name, action_data, resource, parent_paths = [], full_path = nil)
         operation = {
+          deprecated: action_data[:deprecated] || nil,
+          description: action_data[:description],
           operationId: action_data[:operation_id] || operation_id(resource_name, resource_path, action_name, parent_paths),
           summary: action_data[:summary],
-          description: action_data[:description],
           tags: build_tags(resource[:tags], action_data[:tags]),
-          deprecated: action_data[:deprecated] || nil,
         }
 
         path_params = extract_path_parameters(full_path)
@@ -174,8 +174,8 @@ module Apiwork
 
         path.to_s.scan(/:(\w+)/).flatten.map do |param_name|
           {
-            name: transform_key(param_name),
             in: 'path',
+            name: transform_key(param_name),
             required: true,
             schema: { type: 'string' },
           }
@@ -209,12 +209,12 @@ module Apiwork
 
       def build_request_body(request_params, action_name)
         {
-          required: true,
           content: {
             'application/json': {
               schema: build_params_object(request_params, action_name),
             },
           },
+          required: true,
         }
       end
 
@@ -233,12 +233,12 @@ module Apiwork
             error_variant = response_params[:variants][1]
 
             responses[:'200'] = {
-              description: 'Successful response',
               content: {
                 'application/json': {
                   schema: map_type_definition(success_variant, action_name),
                 },
               },
+              description: 'Successful response',
             }
 
             combined_raises.each do |code|
@@ -247,12 +247,12 @@ module Apiwork
             end
           else
             responses[:'200'] = {
-              description: 'Successful response',
               content: {
                 'application/json': {
                   schema: build_params_object(response_params),
                 },
               },
+              description: 'Successful response',
             }
 
             combined_raises.each do |code|
@@ -263,17 +263,17 @@ module Apiwork
         elsif response_data
           # Empty response {} - 200 with optional meta
           responses[:'200'] = {
-            description: 'Successful response',
             content: {
               'application/json': {
                 schema: {
-                  type: 'object',
                   properties: {
                     meta: { type: 'object' },
                   },
+                  type: 'object',
                 },
               },
             },
+            description: 'Successful response',
           }
         else
           # No response definition at all - default to 204
@@ -289,16 +289,16 @@ module Apiwork
           content: {
             'application/json': {
               schema: {
-                type: 'object',
                 properties: {
                   issues: {
-                    type: 'array',
                     items: {
                       '$ref': "#/components/schemas/#{schema_name(:error)}",
                     },
+                    type: 'array',
                   },
                 },
                 required: ['issues'],
+                type: 'object',
               },
             },
           },
@@ -404,8 +404,8 @@ module Apiwork
 
       def map_object(definition, action_name = nil)
         result = {
-          type: 'object',
           properties: {},
+          type: 'object',
         }
 
         result[:description] = definition[:description] if definition[:description]
@@ -447,8 +447,8 @@ module Apiwork
                        end
 
         {
-          type: 'array',
           items: items_schema,
+          type: 'array',
         }
       end
 
@@ -484,8 +484,8 @@ module Apiwork
 
         result[:discriminator] = if mapping.any?
                                    {
-                                     propertyName: transform_key(discriminator_field),
                                      mapping:,
+                                     propertyName: transform_key(discriminator_field),
                                    }
                                  else
                                    {
@@ -498,8 +498,8 @@ module Apiwork
 
       def map_literal(definition)
         {
-          type: openapi_type_for_value(definition[:value]),
           const: definition[:value],
+          type: openapi_type_for_value(definition[:value]),
         }
       end
 

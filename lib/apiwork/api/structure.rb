@@ -67,24 +67,26 @@ module Apiwork
         end
       end
 
-      def resources(name = nil,
-                    concerns: nil,
-                    contract: nil,
-                    controller: nil,
-                    except: nil,
-                    only: nil,
-                    path: nil,
-                    &block)
+      def resources(
+        name = nil,
+        concerns: nil,
+        contract: nil,
+        controller: nil,
+        except: nil,
+        only: nil,
+        path: nil,
+        &block
+      )
         return @resources if name.nil?
 
         options = {
-          contract: contract,
-          controller: controller,
-          except: except,
-          only: only,
-          path: path,
+          contract:,
+          controller:,
+          except:,
+          only:,
+          path:,
         }.compact
-        create_resource(name, options: options, singular: false)
+        create_resource(name, options:, singular: false)
 
         @resource_stack.push(name)
 
@@ -94,22 +96,24 @@ module Apiwork
         @resource_stack.pop
       end
 
-      def resource(name,
-                   concerns: nil,
-                   contract: nil,
-                   controller: nil,
-                   except: nil,
-                   only: nil,
-                   path: nil,
-                   &block)
+      def resource(
+        name,
+        concerns: nil,
+        contract: nil,
+        controller: nil,
+        except: nil,
+        only: nil,
+        path: nil,
+        &block
+      )
         options = {
-          contract: contract,
-          controller: controller,
-          except: except,
-          only: only,
-          path: path,
+          contract:,
+          controller:,
+          except:,
+          only:,
+          path:,
         }.compact
-        create_resource(name, options: options, singular: true)
+        create_resource(name, options:, singular: true)
 
         @resource_stack.push(name)
 
@@ -141,23 +145,23 @@ module Apiwork
       end
 
       def patch(actions, on: nil)
-        capture_actions(actions, method: :patch, on: on)
+        capture_actions(actions, on:, method: :patch)
       end
 
       def get(actions, on: nil)
-        capture_actions(actions, method: :get, on: on)
+        capture_actions(actions, on:, method: :get)
       end
 
       def post(actions, on: nil)
-        capture_actions(actions, method: :post, on: on)
+        capture_actions(actions, on:, method: :post)
       end
 
       def put(actions, on: nil)
-        capture_actions(actions, method: :put, on: on)
+        capture_actions(actions, on:, method: :put)
       end
 
       def delete(actions, on: nil)
-        capture_actions(actions, method: :delete, on: on)
+        capture_actions(actions, on:, method: :delete)
       end
 
       def concern(name, callable = nil, &block)
@@ -227,9 +231,9 @@ module Apiwork
                               end
 
         resource = Resource.new(
-          name: name,
-          singular: singular,
-          contract_class_name: contract_class_name,
+          name:,
+          singular:,
+          contract_class_name:,
           parent: parent_name,
           **merged,
         )
@@ -243,7 +247,7 @@ module Apiwork
 
       def capture_actions(actions, method:, on:)
         Array(actions).each do |action|
-          capture_action(action, method: method, on: on)
+          capture_action(action, method:, on: on)
         end
       end
 
@@ -266,7 +270,7 @@ module Apiwork
                       end
 
         if action_type
-          resource.add_action(action, method: method, type: action_type)
+          resource.add_action(action, method:, type: action_type)
         else
           raise ConfigurationError,
                 "Action '#{action}' on resource '#{resource_name}' must be declared " \

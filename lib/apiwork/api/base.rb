@@ -238,22 +238,24 @@ module Apiwork
         #
         # @example Using in a contract
         #   param :shipping_address, type: :address
-        def type(name,
-                 scope: nil,
-                 description: nil,
-                 example: nil,
-                 format: nil,
-                 deprecated: false,
-                 schema_class: nil,
-                 &block)
+        def type(
+          name,
+          scope: nil,
+          description: nil,
+          example: nil,
+          format: nil,
+          deprecated: false,
+          schema_class: nil,
+          &block
+        )
           type_system.register_type(
             name,
-            scope: scope,
-            description: description,
-            example: example,
-            format: format,
-            deprecated: deprecated,
-            schema_class: schema_class,
+            deprecated:,
+            description:,
+            example:,
+            format:,
+            schema_class:,
+            scope:,
             &block
           )
         end
@@ -276,21 +278,23 @@ module Apiwork
         #
         #   # Later in contract:
         #   param :status, enum: :status
-        def enum(name,
-                 values: nil,
-                 scope: nil,
-                 description: nil,
-                 example: nil,
-                 deprecated: false)
+        def enum(
+          name,
+          values: nil,
+          scope: nil,
+          description: nil,
+          example: nil,
+          deprecated: false
+        )
           raise ArgumentError, 'Values must be an array' if values && !values.is_a?(Array)
 
           type_system.register_enum(
             name,
             values,
-            scope: scope,
-            description: description,
-            example: example,
-            deprecated: deprecated,
+            deprecated:,
+            description:,
+            example:,
+            scope:,
           )
         end
 
@@ -317,17 +321,17 @@ module Apiwork
         def union(name, discriminator: nil, scope: nil, &block)
           raise ArgumentError, 'Union requires a block' unless block_given?
 
-          union_builder = TypeSystem::UnionBuilder.new(discriminator: discriminator)
+          union_builder = TypeSystem::UnionBuilder.new(discriminator:)
           union_builder.instance_eval(&block)
-          type_system.register_union(name, union_builder.serialize, scope: scope)
+          type_system.register_union(name, union_builder.serialize, scope:)
         end
 
         def resolve_type(name, scope: nil)
-          type_system.resolve_type(name, scope: scope)
+          type_system.resolve_type(name, scope:)
         end
 
         def resolve_enum(name, scope: nil)
-          type_system.resolve_enum(name, scope: scope)
+          type_system.resolve_enum(name, scope:)
         end
 
         def scoped_name(scope, name)
@@ -385,22 +389,24 @@ module Apiwork
         #     member { post :archive }
         #     resources :line_items
         #   end
-        def resources(name,
-                      concerns: nil,
-                      contract: nil,
-                      controller: nil,
-                      except: nil,
-                      only: nil,
-                      path: nil,
-                      &block)
+        def resources(
+          name,
+          concerns: nil,
+          contract: nil,
+          controller: nil,
+          except: nil,
+          only: nil,
+          path: nil,
+          &block
+        )
           @structure.resources(
             name,
-            concerns: concerns,
-            contract: contract,
-            controller: controller,
-            except: except,
-            only: only,
-            path: path,
+            concerns:,
+            contract:,
+            controller:,
+            except:,
+            only:,
+            path:,
             &block
           )
         end
@@ -425,22 +431,24 @@ module Apiwork
         #     resource :profile
         #     # Routes: GET /profile, PATCH /profile (no index, no :id)
         #   end
-        def resource(name,
-                     concerns: nil,
-                     contract: nil,
-                     controller: nil,
-                     except: nil,
-                     only: nil,
-                     path: nil,
-                     &block)
+        def resource(
+          name,
+          concerns: nil,
+          contract: nil,
+          controller: nil,
+          except: nil,
+          only: nil,
+          path: nil,
+          &block
+        )
           @structure.resource(
             name,
-            concerns: concerns,
-            contract: contract,
-            controller: controller,
-            except: except,
-            only: only,
-            path: path,
+            concerns:,
+            contract:,
+            controller:,
+            except:,
+            only:,
+            path:,
             &block
           )
         end
@@ -491,13 +499,13 @@ module Apiwork
 
         def introspect(locale: nil)
           ensure_all_contracts_built!
-          @introspect_cache[locale] ||= Introspection.api(self, locale: locale)
+          @introspect_cache[locale] ||= Introspection.api(self, locale:)
         end
 
         def introspect_contract(contract_class, expand:, locale:)
           ensure_all_contracts_built!
           cache_key = [contract_class, locale, expand]
-          @introspect_contract_cache[cache_key] ||= Introspection.contract(contract_class, expand: expand, locale: locale)
+          @introspect_contract_cache[cache_key] ||= Introspection.contract(contract_class, expand:, locale:)
         end
 
         def reset_contracts!

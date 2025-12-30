@@ -18,7 +18,7 @@ module Apiwork
                 api_class.specs.each do |spec_name|
                   get api_class.spec_path(spec_name),
                       defaults: {
-                        spec_name: spec_name,
+                        spec_name:,
                         api_path: api_class.path,
                       },
                       to: 'apiwork/specs#show'

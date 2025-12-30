@@ -13,21 +13,23 @@ module Apiwork
         @variants = []
       end
 
-      def variant(type:,
-                  of: nil,
-                  enum: nil,
-                  tag: nil,
-                  partial: nil,
-                  &block)
+      def variant(
+        type:,
+        of: nil,
+        enum: nil,
+        tag: nil,
+        partial: nil,
+        &block
+      )
         raise ArgumentError, 'tag can only be used when union has a discriminator' if tag.present? && @discriminator.blank?
 
         raise ArgumentError, 'tag is required for all variants when union has a discriminator' if @discriminator.present? && tag.blank?
 
         variant_definition = {
-          type: type,
-          of: of,
-          enum: enum,
-          tag: tag,
+          enum:,
+          of:,
+          tag:,
+          type:,
         }.compact
         variant_definition[:partial] = true if partial
 
@@ -48,9 +50,9 @@ module Apiwork
         end
 
         {
+          discriminator: @discriminator,
           type: :union,
           variants: serialized_variants,
-          discriminator: @discriminator,
         }.compact
       end
     end

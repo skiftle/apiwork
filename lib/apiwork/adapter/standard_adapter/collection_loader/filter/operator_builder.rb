@@ -37,12 +37,12 @@ module Apiwork
               issues << Issue.new(
                 code: :operator_invalid,
                 detail: 'Invalid operator',
-                path: [:filter, field_name, operator],
                 meta: {
+                  operator:,
                   allowed: valid_operators,
                   field: field_name,
-                  operator: operator,
                 },
+                path: [:filter, field_name, operator],
               )
             end
           end

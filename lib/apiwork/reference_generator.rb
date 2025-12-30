@@ -30,11 +30,11 @@ module Apiwork
 
     def extract_modules
       YARD::Registry.all(:class, :module)
-                    .select { |obj| obj.path.start_with?('Apiwork') }
-                    .select { |obj| public_api?(obj) }
-                    .map { |obj| serialize_module(obj) }
-                    .reject { |mod| mod[:class_methods].empty? && mod[:instance_methods].empty? }
-                    .sort_by { |mod| mod[:path] }
+        .select { |obj| obj.path.start_with?('Apiwork') }
+        .select { |obj| public_api?(obj) }
+        .map { |obj| serialize_module(obj) }
+        .reject { |mod| mod[:class_methods].empty? && mod[:instance_methods].empty? }
+        .sort_by { |mod| mod[:path] }
     end
 
     def public_api?(obj)
@@ -75,15 +75,15 @@ module Apiwork
 
     def serialize_module(obj)
       {
-        name: obj.name.to_s,
-        path: obj.path,
-        type: obj.type,
+        class_methods: extract_methods(obj, :class),
         docstring: obj.docstring.to_s,
         examples: extract_examples(obj),
         file: relative_path(obj.file),
-        line: obj.line,
-        class_methods: extract_methods(obj, :class),
         instance_methods: extract_methods(obj, :instance),
+        line: obj.line,
+        name: obj.name.to_s,
+        path: obj.path,
+        type: obj.type,
       }
     end
 
@@ -125,15 +125,15 @@ module Apiwork
 
     def serialize_method(method)
       {
-        name: method.name.to_s,
-        signature: build_signature(method),
         docstring: method.docstring.to_s,
-        summary: method.docstring.summary,
-        params: extract_params(method),
-        returns: extract_return(method),
         examples: extract_examples(method),
         file: relative_path(method.file),
         line: method.line,
+        name: method.name.to_s,
+        params: extract_params(method),
+        returns: extract_return(method),
+        signature: build_signature(method),
+        summary: method.docstring.summary,
       }
     end
 
@@ -158,9 +158,9 @@ module Apiwork
     def extract_params(method)
       method.docstring.tags(:param).map do |tag|
         {
+          description: tag.text,
           name: tag.name,
           types: tag.types || [],
-          description: tag.text,
         }
       end
     end
@@ -170,16 +170,16 @@ module Apiwork
       return nil unless tag
 
       {
-        types: tag.types || [],
         description: tag.text,
+        types: tag.types || [],
       }
     end
 
     def extract_examples(method)
       method.docstring.tags(:example).map do |tag|
         {
-          title: tag.name,
           code: tag.text,
+          title: tag.name,
         }
       end
     end
@@ -249,10 +249,10 @@ module Apiwork
 
     def build_linkable_types
       YARD::Registry.all(:class, :module)
-                    .select { |obj| obj.path.start_with?('Apiwork') }
-                    .select { |obj| public_api?(obj) }
-                    .flat_map { |obj| [obj.name.to_s, obj.path.delete_prefix('Apiwork::')] }
-                    .to_set
+        .select { |obj| obj.path.start_with?('Apiwork') }
+        .select { |obj| public_api?(obj) }
+        .flat_map { |obj| [obj.name.to_s, obj.path.delete_prefix('Apiwork::')] }
+        .to_set
     end
 
     def yard_ref_to_path(ref)
@@ -296,9 +296,9 @@ module Apiwork
 
     def build_contract_classes
       YARD::Registry.all(:class, :module)
-                    .select { |obj| obj.path.start_with?('Apiwork::Contract::') }
-                    .map { |obj| obj.name.to_s }
-                    .to_set
+        .select { |obj| obj.path.start_with?('Apiwork::Contract::') }
+        .map { |obj| obj.name.to_s }
+        .to_set
     end
 
     def render_module(mod, order)

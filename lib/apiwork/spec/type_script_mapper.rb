@@ -11,12 +11,14 @@ module Apiwork
         @key_format = key_format
       end
 
-      def build_interface(type_name,
-                          type_shape,
-                          action_name: nil,
-                          recursive: false,
-                          description: nil,
-                          example: nil)
+      def build_interface(
+        type_name,
+        type_shape,
+        action_name: nil,
+        recursive: false,
+        description: nil,
+        example: nil
+      )
         type_name_pascal = pascal_case(type_name)
 
         fields = type_shape[:shape] || {}
@@ -26,7 +28,7 @@ module Apiwork
           update = action_name.to_s == 'update'
           optional = property_definition[:optional]
 
-          ts_type = map_field(property_definition, action_name: action_name)
+          ts_type = map_field(property_definition, action_name:)
           optional_marker = update || optional ? '?' : ''
 
           prop_jsdoc = jsdoc(
@@ -83,11 +85,11 @@ module Apiwork
       end
 
       def build_action_request_query_type(resource_name, action_name, query_params, parent_path: nil)
-        type_name = action_type_name(resource_name, action_name, 'RequestQuery', parent_path: parent_path)
+        type_name = action_type_name(resource_name, action_name, 'RequestQuery', parent_path:)
 
         properties = query_params.sort_by { |k, _| k.to_s }.map do |param_name, param_definition|
           key = transform_key(param_name)
-          ts_type = map_field(param_definition, action_name: action_name)
+          ts_type = map_field(param_definition, action_name:)
           optional = param_definition[:optional]
           optional_marker = optional ? '?' : ''
           "  #{key}#{optional_marker}: #{ts_type};"
@@ -97,11 +99,11 @@ module Apiwork
       end
 
       def build_action_request_body_type(resource_name, action_name, body_params, parent_path: nil)
-        type_name = action_type_name(resource_name, action_name, 'RequestBody', parent_path: parent_path)
+        type_name = action_type_name(resource_name, action_name, 'RequestBody', parent_path:)
 
         properties = body_params.sort_by { |k, _| k.to_s }.map do |param_name, param_definition|
           key = transform_key(param_name)
-          ts_type = map_field(param_definition, action_name: action_name)
+          ts_type = map_field(param_definition, action_name:)
           optional = param_definition[:optional]
           optional_marker = optional ? '?' : ''
           "  #{key}#{optional_marker}: #{ts_type};"
@@ -111,17 +113,17 @@ module Apiwork
       end
 
       def build_action_request_type(resource_name, action_name, request_data, parent_path: nil)
-        type_name = action_type_name(resource_name, action_name, 'Request', parent_path: parent_path)
+        type_name = action_type_name(resource_name, action_name, 'Request', parent_path:)
 
         nested_properties = []
 
         if request_data[:query]&.any?
-          query_type_name = action_type_name(resource_name, action_name, 'RequestQuery', parent_path: parent_path)
+          query_type_name = action_type_name(resource_name, action_name, 'RequestQuery', parent_path:)
           nested_properties << "  query: #{query_type_name};"
         end
 
         if request_data[:body]&.any?
-          body_type_name = action_type_name(resource_name, action_name, 'RequestBody', parent_path: parent_path)
+          body_type_name = action_type_name(resource_name, action_name, 'RequestBody', parent_path:)
           nested_properties << "  body: #{body_type_name};"
         end
 
@@ -129,14 +131,14 @@ module Apiwork
       end
 
       def build_action_response_body_type(resource_name, action_name, response_body_definition, parent_path: nil)
-        type_name = action_type_name(resource_name, action_name, 'ResponseBody', parent_path: parent_path)
-        ts_type = map_type_definition(response_body_definition, action_name: action_name)
+        type_name = action_type_name(resource_name, action_name, 'ResponseBody', parent_path:)
+        ts_type = map_type_definition(response_body_definition, action_name:)
         "export type #{type_name} = #{ts_type};"
       end
 
       def build_action_response_type(resource_name, action_name, response_data, parent_path: nil)
-        type_name = action_type_name(resource_name, action_name, 'Response', parent_path: parent_path)
-        body_type_name = action_type_name(resource_name, action_name, 'ResponseBody', parent_path: parent_path)
+        type_name = action_type_name(resource_name, action_name, 'Response', parent_path:)
+        body_type_name = action_type_name(resource_name, action_name, 'ResponseBody', parent_path:)
         "export interface #{type_name} {\n  body: #{body_type_name};\n}"
       end
 
@@ -155,7 +157,7 @@ module Apiwork
         base_type = if definition[:type].is_a?(Symbol) && enum_or_type_reference?(definition[:type])
                       type_reference(definition[:type])
                     else
-                      map_type_definition(definition, action_name: action_name)
+                      map_type_definition(definition, action_name:)
                     end
 
         if definition[:enum]
@@ -182,11 +184,11 @@ module Apiwork
 
         case type
         when :object
-          map_object_type(definition, action_name: action_name)
+          map_object_type(definition, action_name:)
         when :array
-          map_array_type(definition, action_name: action_name)
+          map_array_type(definition, action_name:)
         when :union
-          map_union_type(definition, action_name: action_name)
+          map_union_type(definition, action_name:)
         when :literal
           map_literal_type(definition)
         when nil
@@ -203,7 +205,7 @@ module Apiwork
 
         properties = definition[:shape].sort_by { |property_name, _| property_name.to_s }.map do |property_name, property_definition|
           key = transform_key(property_name)
-          ts_type = map_field(property_definition, action_name: action_name)
+          ts_type = map_field(property_definition, action_name:)
           optional = property_definition[:optional]
           optional_marker = partial || optional ? '?' : ''
           "#{key}#{optional_marker}: #{ts_type}"
@@ -216,7 +218,7 @@ module Apiwork
         items_type = definition[:of]
 
         if items_type.nil? && definition[:shape]
-          element_type = map_object_type({ shape: definition[:shape], type: :object }, action_name: action_name)
+          element_type = map_object_type({ shape: definition[:shape], type: :object }, action_name:)
           return "#{element_type}[]"
         end
 
@@ -225,7 +227,7 @@ module Apiwork
         element_type = if items_type.is_a?(Symbol) && enum_or_type_reference?(items_type)
                          type_reference(items_type)
                        elsif items_type.is_a?(Hash)
-                         map_type_definition(items_type, action_name: action_name)
+                         map_type_definition(items_type, action_name:)
                        else
                          map_primitive(items_type)
                        end

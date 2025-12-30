@@ -24,9 +24,9 @@ module Apiwork
               return nil unless validate_value_type(value)
 
               builder = OperatorBuilder.new(
+                valid_operators:,
                 column: column,
                 field_name: field_name,
-                valid_operators: valid_operators,
                 issues: issues,
               )
 
@@ -46,12 +46,12 @@ module Apiwork
               issues << Issue.new(
                 code: :filter_value_invalid,
                 detail: 'Invalid filter value',
-                path: [:filter, field_name],
                 meta: {
                   allowed: allowed_types.map(&:name),
                   field: field_name,
                   type: value.class.name,
                 },
+                path: [:filter, field_name],
               )
               false
             end
