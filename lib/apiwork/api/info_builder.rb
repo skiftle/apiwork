@@ -57,18 +57,15 @@ module Apiwork
       end
 
       # @api public
-      # Defines contact information for the API.
+      # Defines contact information.
       #
-      # @yield block to configure contact details
+      # @yield block evaluated in {ContactBuilder} context
       # @return [void]
+      # @see API::InfoBuilder::ContactBuilder
       #
       # @example
-      #   info do
-      #     contact do
-      #       name 'API Support'
-      #       email 'support@example.com'
-      #       url 'https://example.com/support'
-      #     end
+      #   contact do
+      #     name 'Support'
       #   end
       def contact(&block)
         builder = ContactBuilder.new
@@ -77,17 +74,15 @@ module Apiwork
       end
 
       # @api public
-      # Defines license information for the API.
+      # Defines license information.
       #
-      # @yield block to configure license details
+      # @yield block evaluated in {LicenseBuilder} context
       # @return [void]
+      # @see API::InfoBuilder::LicenseBuilder
       #
       # @example
-      #   info do
-      #     license do
-      #       name 'MIT'
-      #       url 'https://opensource.org/licenses/MIT'
-      #     end
+      #   license do
+      #     name 'MIT'
       #   end
       def license(&block)
         builder = LicenseBuilder.new
@@ -107,7 +102,7 @@ module Apiwork
       #     server url: 'https://api.example.com', description: 'Production'
       #     server url: 'https://staging-api.example.com', description: 'Staging'
       #   end
-      def server(url:, description: nil)
+      def server(description: nil, url:)
         @info[:servers] ||= []
         @info[:servers] << { description:, url: }.compact
       end

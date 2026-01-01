@@ -19,23 +19,23 @@ Used by spec generators via [Spec.generate](spec#generate).
 
 `#contact(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info_builder.rb#L73)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info_builder.rb#L70)
 
-Defines contact information for the API.
+Defines contact information.
 
 **Returns**
 
 `void`
 
+**See also**
+
+- [API::InfoBuilder::ContactBuilder](api-info-builder-contact-builder)
+
 **Example**
 
 ```ruby
-info do
-  contact do
-    name 'API Support'
-    email 'support@example.com'
-    url 'https://example.com/support'
-  end
+contact do
+  name 'Support'
 end
 ```
 
@@ -45,7 +45,7 @@ end
 
 `#deprecated(value = true)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info_builder.rb#L167)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info_builder.rb#L162)
 
 Marks the API as deprecated.
 
@@ -73,7 +73,7 @@ end
 
 `#description(text)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info_builder.rb#L139)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info_builder.rb#L134)
 
 Sets a detailed description for the API.
 
@@ -101,22 +101,23 @@ end
 
 `#license(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info_builder.rb#L92)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info_builder.rb#L87)
 
-Defines license information for the API.
+Defines license information.
 
 **Returns**
 
 `void`
 
+**See also**
+
+- [API::InfoBuilder::LicenseBuilder](api-info-builder-license-builder)
+
 **Example**
 
 ```ruby
-info do
-  license do
-    name 'MIT'
-    url 'https://opensource.org/licenses/MIT'
-  end
+license do
+  name 'MIT'
 end
 ```
 
@@ -126,7 +127,7 @@ end
 
 `#server(url:, description: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info_builder.rb#L110)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info_builder.rb#L105)
 
 Adds a server to the API specification.
 
@@ -156,7 +157,7 @@ end
 
 `#summary(text)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info_builder.rb#L125)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info_builder.rb#L120)
 
 Sets a short summary for the API.
 
@@ -184,7 +185,7 @@ end
 
 `#tags(*tags_list)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info_builder.rb#L153)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info_builder.rb#L148)
 
 Sets tags for the API.
 

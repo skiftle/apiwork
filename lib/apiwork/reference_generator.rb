@@ -132,6 +132,7 @@ module Apiwork
         name: method.name.to_s,
         params: extract_params(method),
         returns: extract_return(method),
+        see: extract_see(method),
         signature: build_signature(method),
         summary: method.docstring.summary,
       }
@@ -182,6 +183,10 @@ module Apiwork
           title: tag.name,
         }
       end
+    end
+
+    def extract_see(method)
+      method.docstring.tags(:see).map(&:name)
     end
 
     def write_files(modules)
@@ -378,6 +383,15 @@ module Apiwork
         description = linkify_yard_refs(method[:returns][:description])
         parts << "**Returns**\n"
         parts << (description.blank? ? "#{types}\n" : "#{types} — #{description}\n")
+      end
+
+      if method[:see].any?
+        parts << "**See also**\n"
+        method[:see].each do |ref|
+          link_path = yard_ref_to_path(ref)
+          parts << "- [#{ref}](#{link_path})"
+        end
+        parts << ''
       end
 
       if method[:examples].any?

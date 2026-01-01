@@ -50,6 +50,10 @@ Defines an enum type.
 | `name` | `Symbol` | the enum name |
 | `values` | `Array<String>` | allowed values |
 
+**See also**
+
+- [Apiwork::Api::Base.enum](api-base#enum)
+
 ---
 
 ### #resolve_enum
@@ -106,6 +110,10 @@ Defines a named type.
 |------|------|-------------|
 | `name` | `Symbol` | the type name |
 
+**See also**
+
+- [Apiwork::Api::Base.type](api-base#type)
+
 ---
 
 ### #union
@@ -121,5 +129,9 @@ Defines a union type.
 | Name | Type | Description |
 |------|------|-------------|
 | `name` | `Symbol` | the union name |
+
+**See also**
+
+- [Apiwork::Api::Base.union](api-base#union)
 
 ---

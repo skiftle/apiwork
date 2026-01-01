@@ -339,23 +339,16 @@ module Apiwork
         end
 
         # @api public
-        # Defines information about this API.
+        # Defines API metadata.
         #
-        # Used to set title, version, contact, license,
-        # and other API information for generated specs.
-        #
-        # @yield block with info methods (title, version, contact, license, server, etc.)
+        # @yield block evaluated in {InfoBuilder} context
+        # @return [void]
+        # @see API::InfoBuilder
         #
         # @example
-        #   Apiwork::API.define '/api/v1' do
-        #     info do
-        #       title 'My API'
-        #       version '1.0.0'
-        #       contact do
-        #         name 'Support'
-        #         email 'support@example.com'
-        #       end
-        #     end
+        #   info do
+        #     title 'My API'
+        #     version '1.0.0'
         #   end
         def info(&block)
           builder = InfoBuilder.new
