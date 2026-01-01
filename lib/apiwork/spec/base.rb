@@ -46,11 +46,13 @@ module Apiwork
         # Generates a spec for the given API path.
         #
         # @param api_path [String] the API mount path
-        # @param options [Hash] spec-specific options
+        # @param locale [Symbol, nil] locale for translations (default: nil)
+        # @param key_format [Symbol, nil] key casing (:camel, :underscore, :kebab, :keep)
+        # @param version [String, nil] spec version (default varies by spec)
         # @return [String] the generated spec
         # @see API::Base
-        def generate(api_path, **options)
-          new(api_path, **options).generate
+        def generate(api_path, key_format: nil, locale: nil, version: nil)
+          new(api_path, key_format:, locale:, version:).generate
         end
 
         def content_type(type = nil)
@@ -77,14 +79,15 @@ module Apiwork
         end
       end
 
-      def initialize(api_path, **options)
+      def initialize(api_path, key_format: nil, locale: nil, version: nil)
         @api_path = api_path
         @api_class = API.find(api_path)
         raise "API not found at path: #{api_path}" unless @api_class
 
         @options = self.class.default_options
-          .merge(key_format: @api_class.key_format)
-          .merge(options)
+        @options[:key_format] = key_format || @api_class.key_format
+        @options[:locale] = locale if locale
+        @options[:version] = version if version
         validate_options!
 
         @data = @api_class.introspect(locale: @options[:locale])

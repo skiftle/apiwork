@@ -141,8 +141,8 @@ module Apiwork
 
         private
 
-        attr_reader :registrar,
-                    :capabilities
+        attr_reader :capabilities,
+                    :registrar
 
         def register_pagination_types
           register_offset_pagination if capabilities.offset_pagination?

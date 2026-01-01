@@ -4,13 +4,12 @@ module Apiwork
   module Spec
     class Pipeline
       class << self
-        def generate(spec_name, api_path, **options)
+        def generate(spec_name, api_path, key_format: nil, locale: nil, version: nil)
           generator_class = Registry.find(spec_name)
-          filtered_options = options.except(:path).compact
-          generator_class.generate(api_path, **filtered_options)
+          generator_class.generate(api_path, key_format:, locale:, version:)
         end
 
-        def write(output:, api_path: nil, spec_name: nil, **options)
+        def write(api_path: nil, key_format: nil, locale: nil, output:, spec_name: nil, version: nil)
           raise ArgumentError, 'output path required' unless output
 
           if Writer.file_path?(output) && (api_path.nil? || spec_name.nil?)
@@ -30,8 +29,10 @@ module Apiwork
             spec_names.each do |name|
               count += generate_file(
                 api_class:,
-                options:,
+                key_format:,
+                locale:,
                 output:,
+                version:,
                 spec_name: name,
               )
             end
@@ -60,7 +61,7 @@ module Apiwork
                 "API not found: #{api_path}. Available APIs: #{available.join(', ')}"
         end
 
-        def generate_file(api_class:, options:, output:, spec_name:)
+        def generate_file(api_class:, key_format:, locale:, output:, spec_name:, version:)
           api_path = api_class.path
 
           unless api_class.specs&.include?(spec_name)
@@ -68,10 +69,11 @@ module Apiwork
             return 0
           end
 
+          options = { key_format:, locale:, version: }.compact
           options_label = options.any? ? " (#{options.map { |k, v| "#{k}: #{v}" }.join(', ')})" : ''
           Rails.logger.debug "  ✓ #{api_path} → #{spec_name}#{options_label}"
 
-          content = generate(spec_name, api_path, **options)
+          content = generate(spec_name, api_path, key_format:, locale:, version:)
           generator_class = Registry.find(spec_name)
           extension = generator_class.file_extension
 

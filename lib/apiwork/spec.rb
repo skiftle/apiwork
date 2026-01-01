@@ -37,15 +37,17 @@ module Apiwork
       #
       # @param spec_name [Symbol] the spec name (:openapi, :typescript, :zod)
       # @param api_path [String] the API mount path
-      # @param options [Hash] spec-specific options
+      # @param locale [Symbol, nil] locale for translations (default: nil)
+      # @param key_format [Symbol, nil] key casing (:camel, :underscore, :kebab, :keep)
+      # @param version [String, nil] spec version (spec-specific)
       # @return [String] the generated spec
       # @see Spec::Base
       #
       # @example
       #   Apiwork::Spec.generate(:openapi, '/api/v1')
       #   Apiwork::Spec.generate(:typescript, '/api/v1', locale: :sv, key_format: :camel)
-      def generate(spec_name, api_path, **options)
-        find(spec_name)&.generate(api_path, **options)
+      def generate(spec_name, api_path, key_format: nil, locale: nil, version: nil)
+        find(spec_name)&.generate(api_path, key_format:, locale:, version:)
       end
 
       # @api public

@@ -33,9 +33,9 @@ Apiwork::Spec.register(ProtobufSpec)
 
 ### .generate
 
-`.generate(api_path, **options)`
+`.generate(api_path, key_format: nil, locale: nil, version: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L52)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L54)
 
 Generates a spec for the given API path.
 
@@ -44,7 +44,9 @@ Generates a spec for the given API path.
 | Name | Type | Description |
 |------|------|-------------|
 | `api_path` | `String` | the API mount path |
-| `options` | `Hash` | spec-specific options |
+| `locale` | `Symbol, nil` | locale for translations (default: nil) |
+| `key_format` | `Symbol, nil` | key casing (:camel, :underscore, :kebab, :keep) |
+| `version` | `String, nil` | spec version (default varies by spec) |
 
 **Returns**
 
@@ -119,7 +121,7 @@ Sets or returns the spec name identifier.
 
 `#generate`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L107)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L110)
 
 Generates the spec output.
 
