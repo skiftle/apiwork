@@ -3,65 +3,46 @@
 module Apiwork
   module Adapter
     # @api public
-    # Request context passed to adapter render methods.
+    # Describes a resource action.
     #
-    # Contains the action name, HTTP method, and optional context.
-    # Use predicates to branch logic based on action or method.
+    # Passed in the `actions` hash to {Adapter::Base#register_contract}.
+    # Available at runtime via {Adapter::RenderState#action}.
     #
-    # @example Check action type
-    #   def render_record(record, schema_class, action_summary)
-    #     if action_summary.show?
-    #       { data: serialize(record) }
-    #     else
-    #       { data: serialize(record), links: { self: url_for(record) } }
+    # @example
+    #   actions.each do |name, action|
+    #     if action.collection?
+    #       # index-style
     #     end
     #   end
-    #
-    # @example Check HTTP method
-    #   def render_collection(collection, schema_class, action_summary)
-    #     response = { data: collection.map { |r| serialize(r) } }
-    #     response[:cache] = true if action_summary.get?
-    #     response
-    #   end
-    class ActionSummary
+    class Action
       # @api public
-      # @return [Symbol] the action name (:index, :show, :create, :update, :destroy, or custom)
+      # @return [Symbol] action name (:index, :show, :create, :update, :destroy, or custom)
       attr_reader :name
 
       # @api public
-      # @return [Symbol] the HTTP method (:get, :post, :patch, :put, :delete)
+      # @return [Symbol] HTTP method (:get, :post, :patch, :delete)
       attr_reader :method
 
       # @api public
-      # @return [Symbol, nil] the action type (:member or :collection)
+      # @return [Symbol] action type (:member or :collection)
       attr_reader :type
 
-      # @api public
-      # @return [Hash] arbitrary context passed from the controller
-      attr_reader :context
-
-      # @api public
-      # @return [Hash] parsed query parameters
-      attr_reader :query
-
-      # @api public
-      # @return [Hash] metadata for the response
-      attr_reader :meta
-
-      def initialize(
-        name,
-        method,
-        type: nil,
-        context: {},
-        query: {},
-        meta: {}
-      )
+      def initialize(name, method, type)
         @name = name.to_sym
         @method = method.to_sym
         @type = type&.to_sym
-        @context = context
-        @query = query
-        @meta = meta
+      end
+
+      # @api public
+      # @return [Boolean] true if action operates on a single resource
+      def member?
+        type == :member
+      end
+
+      # @api public
+      # @return [Boolean] true if action operates on a collection
+      def collection?
+        type == :collection
       end
 
       # @api public
@@ -92,18 +73,6 @@ module Apiwork
       # @return [Boolean] true if this is a destroy action
       def destroy?
         name == :destroy
-      end
-
-      # @api public
-      # @return [Boolean] true if action operates on a single resource
-      def member?
-        type == :member
-      end
-
-      # @api public
-      # @return [Boolean] true if action operates on a collection
-      def collection?
-        type == :collection
       end
 
       # @api public

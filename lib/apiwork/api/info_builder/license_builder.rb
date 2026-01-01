@@ -6,7 +6,7 @@ module Apiwork
       # @api public
       # Defines license information for the API.
       #
-      # Used within the `license` block in {InfoBuilder}.
+      # Used within the `license` block in {API::InfoBuilder}.
       class LicenseBuilder
         attr_reader :data
 

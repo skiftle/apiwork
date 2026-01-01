@@ -558,7 +558,8 @@ module Apiwork
           built_contracts.add(contract_class)
 
           contract_registrar = adapter.build_contract_registrar(contract_class)
-          adapter.register_contract(contract_registrar, schema_class, actions: resource.actions)
+          wrapped_actions = resource.actions.transform_values { |a| Adapter::Action.new(a.name, a.method, a.type) }
+          adapter.register_contract(contract_registrar, schema_class, wrapped_actions)
         end
 
         def ensure_all_contracts_built!
@@ -604,7 +605,8 @@ module Apiwork
           built_contracts.add(contract_class)
 
           contract_registrar = adapter.build_contract_registrar(contract_class)
-          adapter.register_contract(contract_registrar, schema_class, actions: resource.actions)
+          wrapped_actions = resource.actions.transform_values { |a| Adapter::Action.new(a.name, a.method, a.type) }
+          adapter.register_contract(contract_registrar, schema_class, wrapped_actions)
         end
       end
     end

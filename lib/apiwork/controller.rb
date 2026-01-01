@@ -127,9 +127,9 @@ module Apiwork
 
       json = if schema_class
                if data.is_a?(Enumerable)
-                 adapter.render_collection(data, schema_class, build_action_summary(meta))
+                 adapter.render_collection(data, schema_class, build_render_state(meta))
                else
-                 adapter.render_record(data, schema_class, build_action_summary(meta))
+                 adapter.render_record(data, schema_class, build_render_state(meta))
                end
              else
                data[:meta] = meta if meta.present?
@@ -218,18 +218,21 @@ module Apiwork
     end
 
     def render_error(layer, issues, status)
-      json = adapter.render_error(layer, issues, build_action_summary)
+      json = adapter.render_error(layer, issues, build_render_state)
       render json:, status:
     end
 
-    def build_action_summary(meta = {})
-      Adapter::ActionSummary.new(
+    def build_render_state(meta = {})
+      action = Adapter::Action.new(
         action_name,
         request.method_symbol,
+        resource&.actions&.dig(action_name.to_sym)&.type,
+      )
+      Adapter::RenderState.new(
+        action,
         context:,
         meta:,
         query: resource ? contract.query : {},
-        type: resource&.actions&.dig(action_name.to_sym)&.type,
       )
     end
 

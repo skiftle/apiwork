@@ -12,7 +12,7 @@ module Apiwork
     #   class JSONAPIAdapter < Apiwork::Adapter::Base
     #     adapter_name :jsonapi
     #
-    #     def render_record(record, schema_class, action_summary)
+    #     def render_record(record, schema_class, render_state)
     #       { data: { type: '...', attributes: '...' } }
     #     end
     #   end
@@ -45,9 +45,34 @@ module Apiwork
 
       # @api public
       # Registers types for a contract.
-      # Override to customize contract type registration.
-      # @see Adapter::ContractRegistrar
-      def register_contract(registrar, schema_class, actions:)
+      #
+      # Called once per contract during API initialization. Override to customize
+      # how request/response types are generated from schema definitions.
+      #
+      # @param registrar [ContractRegistrar] for defining contract-scoped types
+      # @param schema_class [Class] a {Schema::Base} subclass with attribute/association metadata
+      # @param actions [Hash{Symbol => Action}] resource actions.
+      #   Keys are action names (:index, :show, :create, :update, :destroy, or custom)
+      #
+      # @see ContractRegistrar
+      # @see Schema::Base
+      # @see Action
+      #
+      # @example
+      #   def register_contract(registrar, schema_class, actions)
+      #     actions.each do |name, action|
+      #       definition = registrar.define_action(name)
+      #
+      #       if action.collection?
+      #         definition.request do
+      #           query do
+      #             param :page, type: :integer, optional: true
+      #           end
+      #         end
+      #       end
+      #     end
+      #   end
+      def register_contract(registrar, schema_class, actions)
         raise NotImplementedError
       end
 
@@ -56,10 +81,10 @@ module Apiwork
       #
       # @param collection [Enumerable] the records to render
       # @param schema_class [Class] a {Schema::Base} subclass
-      # @param action_summary [ActionSummary] request context
+      # @param render_state [RenderState] runtime context
       # @return [Hash] the response hash
-      # @see Adapter::ActionSummary
-      def render_collection(collection, schema_class, action_summary)
+      # @see RenderState
+      def render_collection(collection, schema_class, render_state)
         raise NotImplementedError
       end
 
@@ -68,10 +93,10 @@ module Apiwork
       #
       # @param record [Object] the record to render
       # @param schema_class [Class] a {Schema::Base} subclass
-      # @param action_summary [ActionSummary] request context
+      # @param render_state [RenderState] runtime context
       # @return [Hash] the response hash
-      # @see Adapter::ActionSummary
-      def render_record(record, schema_class, action_summary)
+      # @see RenderState
+      def render_record(record, schema_class, render_state)
         raise NotImplementedError
       end
 
@@ -80,10 +105,10 @@ module Apiwork
       #
       # @param layer [Symbol] the error layer (:http, :contract, :domain)
       # @param issues [Array<Issue>] the validation issues
-      # @param action_summary [ActionSummary] request context
+      # @param render_state [RenderState] runtime context
       # @return [Hash] the error response hash
       # @see Issue
-      def render_error(layer, issues, action_summary)
+      def render_error(layer, issues, render_state)
         raise NotImplementedError
       end
 

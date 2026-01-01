@@ -6,22 +6,22 @@ module Apiwork
       class CollectionLoader
         attr_reader :schema_class
 
-        def self.load(collection, schema_class, action_summary)
-          new(collection, schema_class, action_summary).load
+        def self.load(collection, schema_class, render_state)
+          new(collection, schema_class, render_state).load
         end
 
-        def initialize(collection, schema_class, action_summary)
+        def initialize(collection, schema_class, render_state)
           @schema_class = schema_class
-          @action_summary = action_summary
+          @render_state = render_state
           @collection = collection
           @result_metadata = {}
         end
 
         def load
-          return { data: @collection, metadata: {} } unless @action_summary.index?
+          return { data: @collection, metadata: {} } unless @render_state.action.index?
           return { data: @collection, metadata: {} } unless @collection.is_a?(ActiveRecord::Relation)
 
-          params = @action_summary.query.slice(:filter, :sort, :page, :include)
+          params = @render_state.query.slice(:filter, :include, :page, :sort)
 
           issues = []
 

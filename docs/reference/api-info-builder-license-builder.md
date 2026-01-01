@@ -10,7 +10,7 @@ next: false
 
 Defines license information for the API.
 
-Used within the `license` block in [InfoBuilder](info-builder).
+Used within the `license` block in [API::InfoBuilder](api-info-builder).
 
 ## Instance Methods
 

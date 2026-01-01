@@ -19,7 +19,7 @@ Override the render and transform methods to customize behavior.
 class JSONAPIAdapter < Apiwork::Adapter::Base
   adapter_name :jsonapi
 
-  def render_record(record, schema_class, action_summary)
+  def render_record(record, schema_class, render_state)
     { data: { type: '...', attributes: '...' } }
   end
 end
@@ -107,24 +107,54 @@ Override to customize type registration.
 
 ### #register_contract
 
-`#register_contract(registrar, schema_class, actions:)`
+`#register_contract(registrar, schema_class, actions)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L50)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L75)
 
 Registers types for a contract.
-Override to customize contract type registration.
+
+Called once per contract during API initialization. Override to customize
+how request/response types are generated from schema definitions.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `registrar` | `ContractRegistrar` | for defining contract-scoped types |
+| `schema_class` | `Class` | a [Schema::Base](schema-base) subclass with attribute/association metadata |
+| `actions` | `Hash{Symbol => Action}` | resource actions. Keys are action names (:index, :show, :create, :update, :destroy, or custom) |
 
 **See also**
 
-- [Adapter::ContractRegistrar](adapter-contract-registrar)
+- [ContractRegistrar](contract-registrar)
+- [Schema::Base](schema-base)
+- [Action](action)
+
+**Example**
+
+```ruby
+def register_contract(registrar, schema_class, actions)
+  actions.each do |name, action|
+    definition = registrar.define_action(name)
+
+    if action.collection?
+      definition.request do
+        query do
+          param :page, type: :integer, optional: true
+        end
+      end
+    end
+  end
+end
+```
 
 ---
 
 ### #render_collection
 
-`#render_collection(collection, schema_class, action_summary)`
+`#render_collection(collection, schema_class, render_state)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L62)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L87)
 
 Renders a collection response.
 
@@ -134,7 +164,7 @@ Renders a collection response.
 |------|------|-------------|
 | `collection` | `Enumerable` | the records to render |
 | `schema_class` | `Class` | a [Schema::Base](schema-base) subclass |
-| `action_summary` | `ActionSummary` | request context |
+| `render_state` | `RenderState` | runtime context |
 
 **Returns**
 
@@ -142,15 +172,15 @@ Renders a collection response.
 
 **See also**
 
-- [Adapter::ActionSummary](adapter-action-summary)
+- [RenderState](render-state)
 
 ---
 
 ### #render_error
 
-`#render_error(layer, issues, action_summary)`
+`#render_error(layer, issues, render_state)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L86)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L111)
 
 Renders an error response.
 
@@ -160,7 +190,7 @@ Renders an error response.
 |------|------|-------------|
 | `layer` | `Symbol` | the error layer (:http, :contract, :domain) |
 | `issues` | `Array<Issue>` | the validation issues |
-| `action_summary` | `ActionSummary` | request context |
+| `render_state` | `RenderState` | runtime context |
 
 **Returns**
 
@@ -174,9 +204,9 @@ Renders an error response.
 
 ### #render_record
 
-`#render_record(record, schema_class, action_summary)`
+`#render_record(record, schema_class, render_state)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L74)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L99)
 
 Renders a single record response.
 
@@ -186,7 +216,7 @@ Renders a single record response.
 |------|------|-------------|
 | `record` | `Object` | the record to render |
 | `schema_class` | `Class` | a [Schema::Base](schema-base) subclass |
-| `action_summary` | `ActionSummary` | request context |
+| `render_state` | `RenderState` | runtime context |
 
 **Returns**
 
@@ -194,7 +224,7 @@ Renders a single record response.
 
 **See also**
 
-- [Adapter::ActionSummary](adapter-action-summary)
+- [RenderState](render-state)
 
 ---
 
@@ -202,7 +232,7 @@ Renders a single record response.
 
 `#transform_request(hash, schema_class)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L97)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L122)
 
 Transforms incoming request parameters.
 Override to customize key casing, unwrapping, etc.
@@ -224,7 +254,7 @@ Override to customize key casing, unwrapping, etc.
 
 `#transform_response(hash, schema_class)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L108)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L133)
 
 Transforms outgoing response data.
 Override to customize key casing, wrapping, etc.

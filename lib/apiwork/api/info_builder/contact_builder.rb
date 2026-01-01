@@ -6,7 +6,7 @@ module Apiwork
       # @api public
       # Defines contact information for the API.
       #
-      # Used within the `contact` block in {InfoBuilder}.
+      # Used within the `contact` block in {API::InfoBuilder}.
       class ContactBuilder
         attr_reader :data
 

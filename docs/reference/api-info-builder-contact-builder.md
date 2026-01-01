@@ -10,7 +10,7 @@ next: false
 
 Defines contact information for the API.
 
-Used within the `contact` block in [InfoBuilder](info-builder).
+Used within the `contact` block in [API::InfoBuilder](api-info-builder).
 
 ## Instance Methods
 

@@ -15,33 +15,33 @@ module Apiwork
         TypeSystemBuilder.build(registrar, schema_summary)
       end
 
-      def register_contract(registrar, schema_class, actions:)
+      def register_contract(registrar, schema_class, actions)
         ContractBuilder.build(registrar, schema_class, actions)
       end
 
-      def render_collection(collection, schema_class, action_summary)
-        CollectionLoader.load(collection, schema_class, action_summary) => { data:, metadata: }
-        serialized = schema_class.serialize(data, context: action_summary.context, include: action_summary.query[:include])
+      def render_collection(collection, schema_class, render_state)
+        CollectionLoader.load(collection, schema_class, render_state) => { data:, metadata: }
+        serialized = schema_class.serialize(data, context: render_state.context, include: render_state.query[:include])
 
         {
           schema_class.root_key.plural => serialized,
           pagination: metadata[:pagination],
-          meta: action_summary.meta.presence,
+          meta: render_state.meta.presence,
         }.compact
       end
 
-      def render_record(record, schema_class, action_summary)
+      def render_record(record, schema_class, render_state)
         RecordValidator.validate(record, schema_class)
-        data = RecordLoader.load(record, schema_class, action_summary.query)
-        serialized = schema_class.serialize(data, context: action_summary.context, include: action_summary.query[:include])
+        data = RecordLoader.load(record, schema_class, render_state.query)
+        serialized = schema_class.serialize(data, context: render_state.context, include: render_state.query[:include])
 
         {
           schema_class.root_key.singular => serialized,
-          meta: action_summary.meta.presence,
+          meta: render_state.meta.presence,
         }.compact
       end
 
-      def render_error(layer, issues, action_summary)
+      def render_error(layer, issues, render_state)
         {
           layer:,
           issues: issues.map(&:to_h),
