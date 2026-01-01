@@ -6,7 +6,7 @@ next: false
 
 # Adapter::Capabilities
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capabilities.rb#L27)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capabilities.rb#L30)
 
 API capabilities for conditional type registration.
 
@@ -17,13 +17,6 @@ what types to register based on API structure and schema definitions.
 
 ```ruby
 def register_api(registrar, capabilities)
-  if capabilities.offset_pagination?
-    registrar.type :offset_pagination do
-      param :page, type: :integer
-      param :per_page, type: :integer
-    end
-  end
-
   if capabilities.sortable?
     registrar.type :sort_param do
       param :field, type: :string
@@ -33,25 +26,26 @@ def register_api(registrar, capabilities)
 end
 ```
 
+**Example: Query adapter option values**
+
+```ruby
+def register_api(registrar, capabilities)
+  strategies = capabilities.options_for(:pagination, :strategy)
+  if strategies.include?(:offset)
+    registrar.type :offset_pagination do
+      param :page, type: :integer
+    end
+  end
+end
+```
+
 ## Instance Methods
-
-### #cursor_pagination?
-
-`#cursor_pagination?`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capabilities.rb#L84)
-
-**Returns**
-
-`Boolean` — true if any schema uses cursor pagination
-
----
 
 ### #filter_types
 
 `#filter_types`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capabilities.rb#L30)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capabilities.rb#L33)
 
 **Returns**
 
@@ -63,7 +57,7 @@ end
 
 `#filterable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capabilities.rb#L54)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capabilities.rb#L56)
 
 **Returns**
 
@@ -75,7 +69,7 @@ end
 
 `#index_actions?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capabilities.rb#L72)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capabilities.rb#L68)
 
 **Returns**
 
@@ -87,7 +81,7 @@ end
 
 `#nullable_filter_types`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capabilities.rb#L34)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capabilities.rb#L37)
 
 **Returns**
 
@@ -95,27 +89,24 @@ end
 
 ---
 
-### #offset_pagination?
+### #options_for
 
-`#offset_pagination?`
+`#options_for(option, key = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capabilities.rb#L78)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capabilities.rb#L77)
 
-**Returns**
+Returns all unique values for an adapter option across schemas.
 
-`Boolean` — true if any schema uses offset pagination
+**Parameters**
 
----
-
-### #pagination?
-
-`#pagination?`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capabilities.rb#L60)
+| Name | Type | Description |
+|------|------|-------------|
+| `option` | `Symbol` | the option name |
+| `key` | `Symbol, nil` | optional nested key |
 
 **Returns**
 
-`Boolean` — true if any pagination strategy is used
+`Set<Object>` — unique option values
 
 ---
 
@@ -123,7 +114,7 @@ end
 
 `#resources?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capabilities.rb#L66)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capabilities.rb#L62)
 
 **Returns**
 
@@ -135,7 +126,7 @@ end
 
 `#sortable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capabilities.rb#L48)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capabilities.rb#L50)
 
 **Returns**
 

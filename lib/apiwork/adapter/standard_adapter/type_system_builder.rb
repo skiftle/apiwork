@@ -145,8 +145,9 @@ module Apiwork
                     :registrar
 
         def register_pagination_types
-          register_offset_pagination if capabilities.offset_pagination?
-          register_cursor_pagination if capabilities.cursor_pagination?
+          strategies = capabilities.options_for(:pagination, :strategy)
+          register_offset_pagination if strategies.include?(:offset)
+          register_cursor_pagination if strategies.include?(:cursor)
         end
 
         def register_offset_pagination

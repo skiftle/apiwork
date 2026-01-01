@@ -10,17 +10,20 @@ module Apiwork
     #
     # @example Conditional type registration
     #   def register_api(registrar, capabilities)
-    #     if capabilities.offset_pagination?
-    #       registrar.type :offset_pagination do
-    #         param :page, type: :integer
-    #         param :per_page, type: :integer
-    #       end
-    #     end
-    #
     #     if capabilities.sortable?
     #       registrar.type :sort_param do
     #         param :field, type: :string
     #         param :direction, type: :string
+    #       end
+    #     end
+    #   end
+    #
+    # @example Query adapter option values
+    #   def register_api(registrar, capabilities)
+    #     strategies = capabilities.options_for(:pagination, :strategy)
+    #     if strategies.include?(:offset)
+    #       registrar.type :offset_pagination do
+    #         param :page, type: :integer
     #       end
     #     end
     #   end
@@ -40,7 +43,6 @@ module Apiwork
         @sortable = check_sortable(schema_classes)
         @resources = structure.has_resources?
         @index_actions = structure.has_index_actions?
-        @pagination_strategies = extract_pagination_strategies(schema_classes)
       end
 
       # @api public
@@ -56,12 +58,6 @@ module Apiwork
       end
 
       # @api public
-      # @return [Boolean] true if any pagination strategy is used
-      def pagination?
-        offset_pagination? || cursor_pagination?
-      end
-
-      # @api public
       # @return [Boolean] true if the API has any resources registered
       def resources?
         @resources
@@ -74,15 +70,14 @@ module Apiwork
       end
 
       # @api public
-      # @return [Boolean] true if any schema uses offset pagination
-      def offset_pagination?
-        @pagination_strategies.include?(:offset)
-      end
-
-      # @api public
-      # @return [Boolean] true if any schema uses cursor pagination
-      def cursor_pagination?
-        @pagination_strategies.include?(:cursor)
+      # Returns all unique values for an adapter option across schemas.
+      # @param option [Symbol] the option name
+      # @param key [Symbol, nil] optional nested key
+      # @return [Set<Object>] unique option values
+      def options_for(option, key = nil)
+        @structure.schema_classes
+          .filter_map { |schema| schema.resolve_option(option, key) }
+          .to_set
       end
 
       private
@@ -103,12 +98,6 @@ module Apiwork
           schema.attribute_definitions.values.any?(&:sortable?) ||
             schema.association_definitions.values.any?(&:sortable?)
         end
-      end
-
-      def extract_pagination_strategies(schemas)
-        schemas
-          .filter_map { |schema| schema.resolve_option(:pagination, :strategy) }
-          .to_set
       end
     end
   end
