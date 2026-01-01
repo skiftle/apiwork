@@ -2,7 +2,7 @@
 
 module Apiwork
   module Spec
-    module Data
+    class Data
       # @api public
       # Wraps API server information.
       #
@@ -16,11 +16,13 @@ module Apiwork
           @data = data || {}
         end
 
+        # @api public
         # @return [String, nil] server URL
         def url
           @data[:url]
         end
 
+        # @api public
         # @return [String, nil] server description
         def description
           @data[:description]

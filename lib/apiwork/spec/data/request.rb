@@ -2,7 +2,7 @@
 
 module Apiwork
   module Spec
-    module Data
+    class Data
       # @api public
       # Wraps action request definitions.
       #
@@ -19,33 +19,39 @@ module Apiwork
           @data = data || {}
         end
 
+        # @api public
         # @return [Hash{Symbol => Param}] query parameters as Param objects
         # @see Param
         def query
           @query ||= build_params(@data[:query])
         end
 
+        # @api public
         # @return [Hash{Symbol => Param}] body parameters as Param objects
         # @see Param
         def body
           @body ||= build_params(@data[:body])
         end
 
+        # @api public
         # @return [Boolean] whether query parameters are defined
         def query?
           query.any?
         end
 
+        # @api public
         # @return [Boolean] whether body parameters are defined
         def body?
           body.any?
         end
 
+        # @api public
         # @return [Hash] raw query hash for mappers that need hash access
         def query_hash
           @data[:query] || {}
         end
 
+        # @api public
         # @return [Hash] raw body hash for mappers that need hash access
         def body_hash
           @data[:body] || {}

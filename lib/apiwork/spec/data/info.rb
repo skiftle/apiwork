@@ -2,12 +2,12 @@
 
 module Apiwork
   module Spec
-    module Data
+    class Data
       # @api public
       # Wraps API metadata/info.
       #
       # @example
-      #   info = api.info
+      #   info = data.info
       #   info.title            # => "My API"
       #   info.version          # => "1.0.0"
       #   info.description      # => "API for managing resources"
@@ -18,43 +18,51 @@ module Apiwork
           @data = data || {}
         end
 
+        # @api public
         # @return [String, nil] API title
         def title
           @data[:title]
         end
 
+        # @api public
         # @return [String, nil] API version
         def version
           @data[:version]
         end
 
+        # @api public
         # @return [String, nil] API description
         def description
           @data[:description]
         end
 
+        # @api public
         # @return [String, nil] short summary
         def summary
           @data[:summary]
         end
 
+        # @api public
         # @return [String, nil] terms of service URL
         def terms_of_service
           @data[:terms_of_service]
         end
 
+        # @api public
         # @return [Contact, nil] contact information
         # @see Contact
         def contact
           @contact ||= @data[:contact] ? Contact.new(@data[:contact]) : nil
         end
 
+        # @api public
         # @return [License, nil] license information
         # @see License
         def license
           @license ||= @data[:license] ? License.new(@data[:license]) : nil
         end
 
+        # @api public
         # @return [Array<Server>] server definitions
         # @see Server
         def servers

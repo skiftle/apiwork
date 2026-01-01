@@ -2,7 +2,7 @@
 
 module Apiwork
   module Spec
-    module Data
+    class Data
       # @api public
       # Wraps error code definitions.
       #
@@ -20,11 +20,13 @@ module Apiwork
           @data = data || {}
         end
 
+        # @api public
         # @return [Integer] HTTP status code (e.g., 422, 404)
         def status
           @data[:status]
         end
 
+        # @api public
         # @return [String, nil] error description
         def description
           @data[:description]

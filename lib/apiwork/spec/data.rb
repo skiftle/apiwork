@@ -30,17 +30,20 @@ module Apiwork
         @introspection = introspection || {}
       end
 
+      # @api public
       # @return [String, nil] API mount path (e.g., "/api/v1")
       def path
         @introspection[:path]
       end
 
+      # @api public
       # @return [Data::Info] API metadata
       # @see Data::Info
       def info
         @info ||= Info.new(@introspection[:info])
       end
 
+      # @api public
       # @return [Array<Data::Resource>] top-level resources
       # @see Data::Resource
       def resources
@@ -49,6 +52,7 @@ module Apiwork
         end
       end
 
+      # @api public
       # @return [Array<Data::Type>] registered custom types
       # @see Data::Type
       def types
@@ -57,6 +61,7 @@ module Apiwork
         end
       end
 
+      # @api public
       # @return [Array<Data::Enum>] registered enums
       # @see Data::Enum
       def enums
@@ -65,11 +70,13 @@ module Apiwork
         end
       end
 
+      # @api public
       # @return [Array<Symbol>] API-level error codes that may be raised
       def raises
         @introspection[:raises] || []
       end
 
+      # @api public
       # @return [Array<Data::ErrorCode>] error code definitions
       # @see Data::ErrorCode
       def error_codes
@@ -78,6 +85,7 @@ module Apiwork
         end
       end
 
+      # @api public
       # Iterates over all resources recursively (including nested).
       #
       # @yieldparam resource [Data::Resource] the resource
@@ -87,6 +95,7 @@ module Apiwork
         iterate_resources(resources, nil, &block)
       end
 
+      # @api public
       # @return [Hash] the raw underlying data hash
       def to_h
         @introspection

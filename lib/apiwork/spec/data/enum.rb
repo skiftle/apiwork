@@ -2,7 +2,7 @@
 
 module Apiwork
   module Spec
-    module Data
+    class Data
       # @api public
       # Wraps enum type definitions.
       #
@@ -21,21 +21,25 @@ module Apiwork
           @data = data || {}
         end
 
+        # @api public
         # @return [Array<String>] allowed enum values
         def values
           @data[:values] || []
         end
 
+        # @api public
         # @return [String, nil] enum description
         def description
           @data[:description]
         end
 
+        # @api public
         # @return [String, nil] example value
         def example
           @data[:example]
         end
 
+        # @api public
         # @return [Boolean] whether this enum is deprecated
         def deprecated?
           @data[:deprecated] == true

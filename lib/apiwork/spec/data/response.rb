@@ -2,7 +2,7 @@
 
 module Apiwork
   module Spec
-    module Data
+    class Data
       # @api public
       # Wraps action response definitions.
       #
@@ -21,22 +21,26 @@ module Apiwork
           @data = data || {}
         end
 
+        # @api public
         # @return [Param, nil] response body definition
         # @see Param
         def body
           @body ||= @data[:body] ? Param.new(@data[:body]) : nil
         end
 
+        # @api public
         # @return [Boolean] whether this is a no-content response (204)
         def no_content?
           @data[:no_content] == true
         end
 
+        # @api public
         # @return [Boolean] whether a body is defined
         def body?
           body.present?
         end
 
+        # @api public
         # @return [Hash, nil] raw body hash for mappers that need hash access
         def body_hash
           @data[:body]

@@ -2,7 +2,7 @@
 
 module Apiwork
   module Spec
-    module Data
+    class Data
       # @api public
       # Wraps action definitions within a resource.
       #
@@ -23,68 +23,81 @@ module Apiwork
           @data = data || {}
         end
 
+        # @api public
         # @return [String] action path segment (e.g., "/:id", "/")
         def path
           @data[:path]
         end
 
+        # @api public
         # @return [Symbol] HTTP method (:get, :post, :patch, :delete, :put)
         def http_method
           @data[:method]
         end
 
+        # @api public
         # @return [Request, nil] request definition
         # @see Request
         def request
           @request ||= @data[:request] ? Request.new(@data[:request]) : nil
         end
 
+        # @api public
         # @return [Response, nil] response definition
         # @see Response
         def response
           @response ||= @data[:response] ? Response.new(@data[:response]) : nil
         end
 
+        # @api public
         # @return [Array<Symbol>] error codes this action may raise
         def raises
           @data[:raises] || []
         end
 
+        # @api public
         # @return [String, nil] short summary
         def summary
           @data[:summary]
         end
 
+        # @api public
         # @return [String, nil] full description
         def description
           @data[:description]
         end
 
+        # @api public
         # @return [Array<String>] OpenAPI tags
         def tags
           @data[:tags] || []
         end
 
+        # @api public
         # @return [String, nil] OpenAPI operation ID
         def operation_id
           @data[:operation_id]
         end
 
+        # @api public
         # @return [Boolean] whether this action is deprecated
         def deprecated?
           @data[:deprecated] == true
         end
 
+        # @api public
         # @return [Boolean] whether a request is defined
         def request?
           request.present?
         end
 
+        # @api public
         # @return [Boolean] whether a response is defined
         def response?
           response.present?
         end
 
+        # @api public
         # @return [Hash] the raw underlying data hash
         def to_h
           @data

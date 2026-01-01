@@ -2,7 +2,7 @@
 
 module Apiwork
   module Spec
-    module Data
+    class Data
       # @api public
       # Wraps custom type definitions.
       #
@@ -26,52 +26,62 @@ module Apiwork
           @data = data || {}
         end
 
+        # @api public
         # @return [Symbol, nil] type kind (:object or :union)
         def type
           @data[:type]
         end
 
+        # @api public
         # @return [Boolean] whether this is an object type
         def object?
           type == :object || type.nil?
         end
 
+        # @api public
         # @return [Boolean] whether this is a union type
         def union?
           type == :union
         end
 
+        # @api public
         # @return [Hash{Symbol => Param}] nested fields for object types
         # @see Param
         def shape
           @shape ||= (@data[:shape] || {}).transform_values { |d| Param.new(d) }
         end
 
+        # @api public
         # @return [Array<Hash>] variants for union types
         def variants
           @data[:variants] || []
         end
 
+        # @api public
         # @return [Symbol, nil] discriminator field for discriminated unions
         def discriminator
           @data[:discriminator]
         end
 
+        # @api public
         # @return [String, nil] type description
         def description
           @data[:description]
         end
 
+        # @api public
         # @return [Object, nil] example value
         def example
           @data[:example]
         end
 
+        # @api public
         # @return [Boolean] whether this type is deprecated
         def deprecated?
           @data[:deprecated] == true
         end
 
+        # @api public
         # @return [Hash] the raw underlying data hash
         def to_h
           @data

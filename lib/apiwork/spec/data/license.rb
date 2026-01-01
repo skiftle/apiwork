@@ -2,12 +2,12 @@
 
 module Apiwork
   module Spec
-    module Data
+    class Data
       # @api public
       # Wraps API license information.
       #
       # @example
-      #   license = api.info.license
+      #   license = data.info.license
       #   license.name  # => "MIT"
       #   license.url   # => "https://opensource.org/licenses/MIT"
       class License
@@ -15,11 +15,13 @@ module Apiwork
           @data = data || {}
         end
 
+        # @api public
         # @return [String, nil] license name
         def name
           @data[:name]
         end
 
+        # @api public
         # @return [String, nil] license URL
         def url
           @data[:url]

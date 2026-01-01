@@ -2,7 +2,7 @@
 
 module Apiwork
   module Spec
-    module Data
+    class Data
       # @api public
       # Wraps resource definitions.
       #
@@ -30,16 +30,19 @@ module Apiwork
           @data = data || {}
         end
 
+        # @api public
         # @return [String] resource identifier
         def identifier
           @data[:identifier]
         end
 
+        # @api public
         # @return [String] URL path segment
         def path
           @data[:path]
         end
 
+        # @api public
         # @return [Array<Action>] actions defined on this resource
         # @see Action
         def actions
@@ -48,6 +51,7 @@ module Apiwork
           end
         end
 
+        # @api public
         # @return [Array<Resource>] nested resources
         # @see Resource
         def resources
@@ -56,21 +60,25 @@ module Apiwork
           end
         end
 
+        # @api public
         # @return [Boolean] whether this resource has nested resources
         def nested?
           resources.any?
         end
 
+        # @api public
         # @return [Hash, nil] schema definition if this resource has a schema
         def schema
           @data[:schema]
         end
 
+        # @api public
         # @return [Boolean] whether this resource has a schema
         def schema?
           schema.present?
         end
 
+        # @api public
         # Iterates over all actions.
         #
         # @yieldparam action [Action] each action
@@ -79,6 +87,7 @@ module Apiwork
           actions.each(&block)
         end
 
+        # @api public
         # @return [Hash] the raw underlying data hash
         def to_h
           @data
