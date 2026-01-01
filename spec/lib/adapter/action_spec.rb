@@ -94,29 +94,4 @@ RSpec.describe Apiwork::Adapter::Action do
     end
   end
 
-  describe '#read? and #write?' do
-    it 'returns true for read? on GET requests' do
-      action = described_class.new(:index, :get, :collection)
-      expect(action.read?).to be true
-      expect(action.write?).to be false
-    end
-
-    it 'returns true for write? on POST requests' do
-      action = described_class.new(:create, :post, :collection)
-      expect(action.read?).to be false
-      expect(action.write?).to be true
-    end
-
-    it 'returns true for write? on PATCH requests' do
-      action = described_class.new(:update, :patch, :member)
-      expect(action.read?).to be false
-      expect(action.write?).to be true
-    end
-
-    it 'returns true for write? on DELETE requests' do
-      action = described_class.new(:destroy, :delete, :member)
-      expect(action.read?).to be false
-      expect(action.write?).to be true
-    end
-  end
 end

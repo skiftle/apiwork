@@ -6,11 +6,11 @@ module Apiwork
     # Runtime state passed to adapter render methods.
     #
     # Contains the action and optional context.
-    # Access action predicates via `render_state.action.index?`.
+    # Access action predicates via `state.action.index?`.
     #
     # @example Check action type
-    #   def render_record(record, schema_class, render_state)
-    #     if render_state.action.show?
+    #   def render_record(record, schema_class, state)
+    #     if state.action.show?
     #       { data: serialize(record) }
     #     else
     #       { data: serialize(record), links: { self: url_for(record) } }
@@ -18,14 +18,14 @@ module Apiwork
     #   end
     #
     # @example Check HTTP method
-    #   def render_collection(collection, schema_class, render_state)
+    #   def render_collection(collection, schema_class, state)
     #     response = { data: collection.map { |r| serialize(r) } }
-    #     response[:cache] = true if render_state.action.get?
+    #     response[:cache] = true if state.action.get?
     #     response
     #   end
     class RenderState
       # @api public
-      # @return [Action] the action definition
+      # @return [Adapter::Action] the current action
       attr_reader :action
 
       # @api public

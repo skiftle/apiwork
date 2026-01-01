@@ -19,7 +19,7 @@ Override the render and transform methods to customize behavior.
 class JSONAPIAdapter < Apiwork::Adapter::Base
   adapter_name :jsonapi
 
-  def render_record(record, schema_class, render_state)
+  def render_record(record, schema_class, state)
     { data: { type: '...', attributes: '...' } }
   end
 end
@@ -120,15 +120,15 @@ how request/response types are generated from schema definitions.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `registrar` | `ContractRegistrar` | for defining contract-scoped types |
+| `registrar` | `Adapter::ContractRegistrar` | for defining contract-scoped types |
 | `schema_class` | `Class` | a [Schema::Base](schema-base) subclass with attribute/association metadata |
-| `actions` | `Hash{Symbol => Action}` | resource actions. Keys are action names (:index, :show, :create, :update, :destroy, or custom) |
+| `actions` | `Hash{Symbol => Adapter::Action}` | resource actions. Keys are action names (:index, :show, :create, :update, :destroy, or custom) |
 
 **See also**
 
-- [ContractRegistrar](contract-registrar)
+- [Adapter::ContractRegistrar](adapter-contract-registrar)
 - [Schema::Base](schema-base)
-- [Action](action)
+- [Adapter::Action](adapter-action)
 
 **Example**
 
@@ -152,7 +152,7 @@ end
 
 ### #render_collection
 
-`#render_collection(collection, schema_class, render_state)`
+`#render_collection(collection, schema_class, state)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L87)
 
@@ -164,7 +164,7 @@ Renders a collection response.
 |------|------|-------------|
 | `collection` | `Enumerable` | the records to render |
 | `schema_class` | `Class` | a [Schema::Base](schema-base) subclass |
-| `render_state` | `RenderState` | runtime context |
+| `state` | `Adapter::RenderState` | runtime context |
 
 **Returns**
 
@@ -172,13 +172,13 @@ Renders a collection response.
 
 **See also**
 
-- [RenderState](render-state)
+- [Adapter::RenderState](adapter-render-state)
 
 ---
 
 ### #render_error
 
-`#render_error(layer, issues, render_state)`
+`#render_error(layer, issues, state)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L111)
 
@@ -190,7 +190,7 @@ Renders an error response.
 |------|------|-------------|
 | `layer` | `Symbol` | the error layer (:http, :contract, :domain) |
 | `issues` | `Array<Issue>` | the validation issues |
-| `render_state` | `RenderState` | runtime context |
+| `state` | `Adapter::RenderState` | runtime context |
 
 **Returns**
 
@@ -204,7 +204,7 @@ Renders an error response.
 
 ### #render_record
 
-`#render_record(record, schema_class, render_state)`
+`#render_record(record, schema_class, state)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L99)
 
@@ -216,7 +216,7 @@ Renders a single record response.
 |------|------|-------------|
 | `record` | `Object` | the record to render |
 | `schema_class` | `Class` | a [Schema::Base](schema-base) subclass |
-| `render_state` | `RenderState` | runtime context |
+| `state` | `Adapter::RenderState` | runtime context |
 
 **Returns**
 
@@ -224,7 +224,7 @@ Renders a single record response.
 
 **See also**
 
-- [RenderState](render-state)
+- [Adapter::RenderState](adapter-render-state)
 
 ---
 

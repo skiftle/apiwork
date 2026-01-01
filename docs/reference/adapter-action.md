@@ -169,18 +169,6 @@ end
 
 ---
 
-### #read?
-
-`#read?`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/action.rb#L110)
-
-**Returns**
-
-`Boolean` — true if this is a read operation (GET request)
-
----
-
 ### #show?
 
 `#show?`
@@ -214,17 +202,5 @@ end
 **Returns**
 
 `Boolean` — true if this is an update action
-
----
-
-### #write?
-
-`#write?`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/action.rb#L116)
-
-**Returns**
-
-`Boolean` — true if this is a write operation (POST, PATCH, PUT, DELETE)
 
 ---

@@ -104,18 +104,6 @@ module Apiwork
       def delete?
         method == :delete
       end
-
-      # @api public
-      # @return [Boolean] true if this is a read operation (GET request)
-      def read?
-        get?
-      end
-
-      # @api public
-      # @return [Boolean] true if this is a write operation (POST, PATCH, PUT, DELETE)
-      def write?
-        !read?
-      end
     end
   end
 end

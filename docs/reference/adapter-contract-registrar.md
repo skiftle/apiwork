@@ -16,7 +16,7 @@ types specific to a resource contract (request/response shapes).
 **Example: Register request body type**
 
 ```ruby
-def register_contract(registrar, schema_class, actions:)
+def register_contract(registrar, schema_class, actions)
   registrar.type :user_input do
     param :name, type: :string
     param :email, type: :string
@@ -27,10 +27,10 @@ end
 **Example: Define action contracts**
 
 ```ruby
-def register_contract(registrar, schema_class, actions:)
-  registrar.define_action :index do
-    response do
-      param :users, type: :array, of: :user
+def register_contract(registrar, schema_class, actions)
+  actions.each do |name, action|
+    registrar.define_action(name) do
+      # ...
     end
   end
 end

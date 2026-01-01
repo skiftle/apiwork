@@ -19,29 +19,29 @@ module Apiwork
         ContractBuilder.build(registrar, schema_class, actions)
       end
 
-      def render_collection(collection, schema_class, render_state)
-        CollectionLoader.load(collection, schema_class, render_state) => { data:, metadata: }
-        serialized = schema_class.serialize(data, context: render_state.context, include: render_state.query[:include])
+      def render_collection(collection, schema_class, state)
+        CollectionLoader.load(collection, schema_class, state) => { data:, metadata: }
+        serialized = schema_class.serialize(data, context: state.context, include: state.query[:include])
 
         {
           schema_class.root_key.plural => serialized,
           pagination: metadata[:pagination],
-          meta: render_state.meta.presence,
+          meta: state.meta.presence,
         }.compact
       end
 
-      def render_record(record, schema_class, render_state)
+      def render_record(record, schema_class, state)
         RecordValidator.validate(record, schema_class)
-        data = RecordLoader.load(record, schema_class, render_state.query)
-        serialized = schema_class.serialize(data, context: render_state.context, include: render_state.query[:include])
+        data = RecordLoader.load(record, schema_class, state.query)
+        serialized = schema_class.serialize(data, context: state.context, include: state.query[:include])
 
         {
           schema_class.root_key.singular => serialized,
-          meta: render_state.meta.presence,
+          meta: state.meta.presence,
         }.compact
       end
 
-      def render_error(layer, issues, render_state)
+      def render_error(layer, issues, state)
         {
           layer:,
           issues: issues.map(&:to_h),

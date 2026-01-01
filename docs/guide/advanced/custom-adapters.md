@@ -159,7 +159,7 @@ The `schema_data` provides information about all schemas in the API:
 Called for each contract. Use this to register types specific to that contract:
 
 ```ruby
-def register_contract(registrar, schema_class, actions:)
+def register_contract(registrar, schema_class, actions)
   # Register enums from schema attributes
   schema_class.attribute_definitions.each do |name, attr|
     if attr.enum&.any?
