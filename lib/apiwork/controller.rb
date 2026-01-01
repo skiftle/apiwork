@@ -40,6 +40,7 @@ module Apiwork
     # and {Contract::Base#body}.
     #
     # @return [Contract::Base] the contract instance
+    # @see Contract::Base
     #
     # @example Access parsed parameters
     #   def create
@@ -72,6 +73,7 @@ module Apiwork
     # @param data [Object, Array] the record(s) to expose
     # @param meta [Hash] metadata to include in response (pagination, etc.)
     # @param status [Symbol, Integer] HTTP status (default: :ok, or :created for create action)
+    # @see Schema::Base
     #
     # @example Expose a single record
     #   def show
@@ -132,6 +134,8 @@ module Apiwork
     # @param path [Array<String,Symbol>] JSON path to the error (optional)
     # @param meta [Hash] additional metadata to include (optional)
     # @param i18n [Hash] interpolation values for I18n lookup (optional)
+    # @see ErrorCode
+    # @see Issue
     #
     # @example Not found error
     #   def show

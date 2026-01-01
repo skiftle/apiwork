@@ -68,6 +68,7 @@ module Apiwork
       #     param :product_id, type: :integer
       #     param :quantity, type: :integer, min: 1
       #   end
+      # @see Contract::ParamDefinition
       def param(
         name,
         as: nil,

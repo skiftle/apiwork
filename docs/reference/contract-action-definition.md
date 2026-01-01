@@ -108,7 +108,7 @@ end
 
 `#raises(*error_code_keys)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L137)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L138)
 
 Declares error codes this action may return.
 
@@ -120,6 +120,10 @@ registered via ErrorCode.register. These appear in generated specs.
 | Name | Type | Description |
 |------|------|-------------|
 | `error_code_keys` | `Array<Symbol>` | error code keys |
+
+**See also**
+
+- [ErrorCode](error-code)
 
 **Example**
 
@@ -135,7 +139,7 @@ end
 
 `#request(replace: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L170)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L172)
 
 Defines the request structure for this action.
 
@@ -150,6 +154,10 @@ Use the block to define query parameters and request body.
 **Returns**
 
 [RequestDefinition](contract-request-definition) — the request definition
+
+**See also**
+
+- [Contract::RequestDefinition](contract-request-definition)
 
 **Example**
 
@@ -168,7 +176,7 @@ end
 
 `#response(replace: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L203)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L206)
 
 Defines the response structure for this action.
 
@@ -183,6 +191,10 @@ Use the block to define response body or declare no_content.
 **Returns**
 
 [ResponseDefinition](contract-response-definition) — the response definition
+
+**See also**
+
+- [Contract::ResponseDefinition](contract-response-definition)
 
 **Example**
 

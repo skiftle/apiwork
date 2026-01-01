@@ -114,6 +114,7 @@ module Apiwork
         #
         # @return [Class] a {Schema::Base} subclass
         # @raise [ArgumentError] if schema class not found
+        # @see Schema::Base
         #
         # @example
         #   class Api::V1::UserContract < Apiwork::Contract::Base
@@ -205,6 +206,7 @@ module Apiwork
         # @param deprecated [Boolean] mark as deprecated
         # @param schema_class [Class] a {Schema::Base} subclass for type inference
         # @yield block defining the type's params
+        # @see API::Base
         #
         # @example Reusable address type
         #   class OrderContract < Apiwork::Contract::Base
@@ -254,6 +256,7 @@ module Apiwork
         # @param description [String] documentation description
         # @param example [String] example value for docs
         # @param deprecated [Boolean] mark as deprecated
+        # @see API::Base
         #
         # @example Status enum
         #   class InvoiceContract < Apiwork::Contract::Base
@@ -287,6 +290,7 @@ module Apiwork
         # @param name [Symbol] union name
         # @param discriminator [Symbol] field that identifies the variant
         # @yield block defining variants
+        # @see API::Base
         #
         # @example Payment method union
         #   class PaymentContract < Apiwork::Contract::Base
@@ -312,6 +316,7 @@ module Apiwork
         #
         # @param contract_class [Class] a {Contract::Base} subclass to import from
         # @param as [Symbol] alias prefix for imported types
+        # @see Contract::Base
         #
         # @example Import types from another contract
         #   # UserContract has: type :address, enum :role
@@ -360,6 +365,7 @@ module Apiwork
         # @param replace [Boolean] replace existing action definition (default: false)
         # @yield block for defining request/response contract
         # @return [ActionDefinition] the action definition
+        # @see Contract::ActionDefinition
         #
         # @example Basic CRUD action
         #   class InvoiceContract < Apiwork::Contract::Base

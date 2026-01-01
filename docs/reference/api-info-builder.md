@@ -125,7 +125,7 @@ end
 
 ### #server
 
-`#server(url:, description: nil)`
+`#server(description: nil, url:)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info_builder.rb#L105)
 

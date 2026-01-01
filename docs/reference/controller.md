@@ -45,7 +45,7 @@ skip_contract_validation!
 
 `#context`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L180)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L184)
 
 Returns the serialization context passed to schemas.
 
@@ -70,7 +70,7 @@ end
 
 `#contract`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L56)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L57)
 
 Returns the parsed and validated request contract.
 
@@ -81,6 +81,10 @@ and [Contract::Base#body](contract-base#body).
 **Returns**
 
 [Contract::Base](contract-base) — the contract instance
+
+**See also**
+
+- [Contract::Base](contract-base)
 
 **Example: Access parsed parameters**
 
@@ -107,7 +111,7 @@ end
 
 `#expose(data, meta: {}, status: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L93)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L95)
 
 Exposes data as an API response.
 
@@ -122,6 +126,10 @@ response transformations (key casing, wrapping, etc.).
 | `data` | `Object, Array` | the record(s) to expose |
 | `meta` | `Hash` | metadata to include in response (pagination, etc.) |
 | `status` | `Symbol, Integer` | HTTP status (default: :ok, or :created for create action) |
+
+**See also**
+
+- [Schema::Base](schema-base)
 
 **Example: Expose a single record**
 
@@ -156,7 +164,7 @@ end
 
 `#expose_error(code_key, detail: nil, path: nil, meta: {}, i18n: {})`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L148)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L152)
 
 Exposes an error response using a registered error code.
 
@@ -172,6 +180,11 @@ The detail message is looked up from I18n if not provided.
 | `path` | `Array<String,Symbol>` | JSON path to the error (optional) |
 | `meta` | `Hash` | additional metadata to include (optional) |
 | `i18n` | `Hash` | interpolation values for I18n lookup (optional) |
+
+**See also**
+
+- [ErrorCode](error-code)
+- [Issue](issue)
 
 **Example: Not found error**
 

@@ -8,6 +8,7 @@ module Apiwork
       # Registers an adapter.
       #
       # @param klass [Class] an {Adapter::Base} subclass with adapter_name set
+      # @see Adapter::Base
       #
       # @example
       #   Apiwork::Adapter.register(JSONAPIAdapter)

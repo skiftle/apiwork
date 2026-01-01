@@ -129,6 +129,7 @@ module Apiwork
       #
       # @param error_code_keys [Array<Symbol>] error code keys
       # @raise [ConfigurationError] if error code is not registered
+      # @see ErrorCode
       #
       # @example
       #   action :show do
@@ -159,6 +160,7 @@ module Apiwork
       # @param replace [Boolean] replace inherited definition (default: false)
       # @yield block for defining query and body
       # @return [RequestDefinition] the request definition
+      # @see Contract::RequestDefinition
       #
       # @example
       #   action :create do
@@ -185,6 +187,7 @@ module Apiwork
       # @param replace [Boolean] replace inherited definition (default: false)
       # @yield block for defining body or no_content
       # @return [ResponseDefinition] the response definition
+      # @see Contract::ResponseDefinition
       #
       # @example
       #   action :show do

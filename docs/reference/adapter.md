@@ -14,7 +14,7 @@ next: false
 
 `.register(klass)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter.rb#L14)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter.rb#L15)
 
 Registers an adapter.
 
@@ -23,6 +23,10 @@ Registers an adapter.
 | Name | Type | Description |
 |------|------|-------------|
 | `klass` | `Class` | an [Adapter::Base](adapter-base) subclass with adapter_name set |
+
+**See also**
+
+- [Adapter::Base](adapter-base)
 
 **Example**
 
@@ -36,7 +40,7 @@ Apiwork::Adapter.register(JSONAPIAdapter)
 
 `.reset!`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter.rb#L35)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter.rb#L36)
 
 Clears all registered adapters. Intended for test cleanup.
 

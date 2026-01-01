@@ -40,6 +40,7 @@ module Apiwork
       # @param attach_path [Boolean] include request path in error response (default: false)
       # @return [ErrorCode::Definition] the registered error code
       # @raise [ArgumentError] if status is outside 400-599 range
+      # @see Issue
       #
       # @example Register custom error code
       #   Apiwork::ErrorCode.register :resource_locked, status: 423

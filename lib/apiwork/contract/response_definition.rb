@@ -57,6 +57,7 @@ module Apiwork
       #
       # @yield block defining body params
       # @return [ParamDefinition] the body param definition
+      # @see Contract::ParamDefinition
       #
       # @example
       #   response do

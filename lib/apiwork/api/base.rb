@@ -103,6 +103,7 @@ module Apiwork
         #
         # @param name [Symbol] spec name to enable
         # @yield optional configuration block
+        # @see Spec::Base
         #
         # @example Enable OpenAPI spec
         #   Apiwork::API.define '/api/v1' do
@@ -182,6 +183,7 @@ module Apiwork
         #
         # @param name [Symbol] adapter name (:apiwork, or a registered custom adapter)
         # @yield optional configuration block
+        # @see Adapter::Base
         #
         # @example Use a custom adapter
         #   Apiwork::API.define '/api/v1' do
@@ -228,6 +230,8 @@ module Apiwork
         # @param deprecated [Boolean] mark as deprecated
         # @param schema_class [Class] a {Schema::Base} subclass for type inference
         # @yield block defining the type's params
+        # @see Contract::Base
+        # @see Schema::Base
         #
         # @example Global type
         #   type :address do
@@ -272,6 +276,7 @@ module Apiwork
         # @param description [String] documentation description
         # @param example [String] example value for docs
         # @param deprecated [Boolean] mark as deprecated
+        # @see Contract::Base
         #
         # @example
         #   enum :status, values: %w[draft published archived]
@@ -308,6 +313,7 @@ module Apiwork
         # @param scope [Class] a {Contract::Base} subclass for scoping (nil for global)
         # @param discriminator [Symbol] field name that identifies the variant
         # @yield block defining variants using `variant`
+        # @see Contract::Base
         #
         # @example
         #   union :payment_method, discriminator: :type do
@@ -374,6 +380,7 @@ module Apiwork
         # @param param [Symbol] custom parameter name for ID
         # @param path [String] custom URL path segment
         # @yield block for nested resources and custom actions
+        # @see Contract::Base
         #
         # @example Basic resource
         #   Apiwork::API.define '/api/v1' do
@@ -430,6 +437,7 @@ module Apiwork
         # @param param [Symbol] custom parameter name for ID
         # @param path [String] custom URL path segment
         # @yield block for nested resources and custom actions
+        # @see Contract::Base
         #
         # @example
         #   Apiwork::API.define '/api/v1' do

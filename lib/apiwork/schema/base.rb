@@ -148,6 +148,7 @@ module Apiwork
         # resource. Available options depend on the adapter being used.
         #
         # @yield block for adapter configuration
+        # @see Adapter::Base
         #
         # @example Custom pagination for this resource
         #   class ActivitySchema < Apiwork::Schema::Base

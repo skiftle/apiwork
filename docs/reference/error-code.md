@@ -14,7 +14,7 @@ next: false
 
 `.register(key, attach_path: false, status:)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code.rb#L49)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code.rb#L50)
 
 Registers a custom error code for use in API responses.
 
@@ -32,6 +32,10 @@ in controllers. Built-in codes (400-504) are pre-registered.
 **Returns**
 
 `ErrorCode::Definition` — the registered error code
+
+**See also**
+
+- [Issue](issue)
 
 **Example: Register custom error code**
 

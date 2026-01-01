@@ -20,7 +20,7 @@ Use as a declarative builder - do not rely on internal state.
 
 `#meta(optional: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/param_definition.rb#L191)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/param_definition.rb#L192)
 
 Shorthand for `param :meta, type: :object do ... end`.
 
@@ -62,7 +62,7 @@ end
 
 `#param(name, as: nil, default: nil, deprecated: nil, description: nil, discriminator: nil, enum: nil, example: nil, format: nil, max: nil, min: nil, nullable: nil, of: nil, optional: nil, required: nil, type: nil, value: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/param_definition.rb#L71)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/param_definition.rb#L72)
 
 Defines a parameter/field in a request or response body.
 
@@ -87,6 +87,10 @@ Defines a parameter/field in a request or response body.
 | `min` | `Integer` | minimum value (numeric) or length (string/array) |
 | `nullable` | `Boolean` | whether null is allowed |
 | `required` | `Boolean` | alias for optional: false (for readability) |
+
+**See also**
+
+- [Contract::ParamDefinition](contract-param-definition)
 
 **Example: Basic types**
 

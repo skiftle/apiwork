@@ -93,10 +93,15 @@ option :format, type: :symbol, enum: [:json, :yaml]
 
 `#register_api(registrar, schema_summary)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L40)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L42)
 
 Registers types from schemas for the API.
 Override to customize type registration.
+
+**See also**
+
+- [Adapter::APIRegistrar](adapter-api-registrar)
+- [Adapter::SchemaSummary](adapter-schema-summary)
 
 ---
 
@@ -104,10 +109,14 @@ Override to customize type registration.
 
 `#register_contract(registrar, schema_class, actions:)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L47)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L50)
 
 Registers types for a contract.
 Override to customize contract type registration.
+
+**See also**
+
+- [Adapter::ContractRegistrar](adapter-contract-registrar)
 
 ---
 
@@ -115,7 +124,7 @@ Override to customize contract type registration.
 
 `#render_collection(collection, schema_class, action_summary)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L58)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L62)
 
 Renders a collection response.
 
@@ -131,13 +140,17 @@ Renders a collection response.
 
 `Hash` — the response hash
 
+**See also**
+
+- [Adapter::ActionSummary](adapter-action-summary)
+
 ---
 
 ### #render_error
 
 `#render_error(layer, issues, action_summary)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L80)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L86)
 
 Renders an error response.
 
@@ -153,13 +166,17 @@ Renders an error response.
 
 `Hash` — the error response hash
 
+**See also**
+
+- [Issue](issue)
+
 ---
 
 ### #render_record
 
 `#render_record(record, schema_class, action_summary)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L69)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L74)
 
 Renders a single record response.
 
@@ -175,13 +192,17 @@ Renders a single record response.
 
 `Hash` — the response hash
 
+**See also**
+
+- [Adapter::ActionSummary](adapter-action-summary)
+
 ---
 
 ### #transform_request
 
 `#transform_request(hash, schema_class)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L91)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L97)
 
 Transforms incoming request parameters.
 Override to customize key casing, unwrapping, etc.
@@ -203,7 +224,7 @@ Override to customize key casing, unwrapping, etc.
 
 `#transform_response(hash, schema_class)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L102)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L108)
 
 Transforms outgoing response data.
 Override to customize key casing, wrapping, etc.

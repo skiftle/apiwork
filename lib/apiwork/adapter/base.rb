@@ -37,6 +37,8 @@ module Apiwork
       # @api public
       # Registers types from schemas for the API.
       # Override to customize type registration.
+      # @see Adapter::APIRegistrar
+      # @see Adapter::SchemaSummary
       def register_api(registrar, schema_summary)
         raise NotImplementedError
       end
@@ -44,6 +46,7 @@ module Apiwork
       # @api public
       # Registers types for a contract.
       # Override to customize contract type registration.
+      # @see Adapter::ContractRegistrar
       def register_contract(registrar, schema_class, actions:)
         raise NotImplementedError
       end
@@ -55,6 +58,7 @@ module Apiwork
       # @param schema_class [Class] a {Schema::Base} subclass
       # @param action_summary [ActionSummary] request context
       # @return [Hash] the response hash
+      # @see Adapter::ActionSummary
       def render_collection(collection, schema_class, action_summary)
         raise NotImplementedError
       end
@@ -66,6 +70,7 @@ module Apiwork
       # @param schema_class [Class] a {Schema::Base} subclass
       # @param action_summary [ActionSummary] request context
       # @return [Hash] the response hash
+      # @see Adapter::ActionSummary
       def render_record(record, schema_class, action_summary)
         raise NotImplementedError
       end
@@ -77,6 +82,7 @@ module Apiwork
       # @param issues [Array<Issue>] the validation issues
       # @param action_summary [ActionSummary] request context
       # @return [Hash] the error response hash
+      # @see Issue
       def render_error(layer, issues, action_summary)
         raise NotImplementedError
       end

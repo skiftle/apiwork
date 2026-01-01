@@ -48,6 +48,7 @@ module Apiwork
         # @param api_path [String] the API mount path
         # @param options [Hash] spec-specific options
         # @return [String] the generated spec
+        # @see API::Base
         def generate(api_path, **options)
           new(api_path, **options).generate
         end

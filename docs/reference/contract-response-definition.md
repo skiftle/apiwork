@@ -19,7 +19,7 @@ Use as a declarative builder - do not rely on internal state.
 
 `#body(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response_definition.rb#L69)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response_definition.rb#L70)
 
 Defines the response body for this response.
 
@@ -29,6 +29,10 @@ When using schema!, body is auto-generated from schema attributes.
 **Returns**
 
 [ParamDefinition](contract-param-definition) — the body param definition
+
+**See also**
+
+- [Contract::ParamDefinition](contract-param-definition)
 
 **Example**
 

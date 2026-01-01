@@ -8,6 +8,7 @@ module Apiwork
       # Registers a spec generator.
       #
       # @param klass [Class] a {Spec::Base} subclass with spec_name set
+      # @see Spec::Base
       #
       # @example
       #   Apiwork::Spec.register(JSONSchemaSpec)
@@ -34,6 +35,7 @@ module Apiwork
       # @param api_path [String] the API mount path
       # @param options [Hash] spec-specific options
       # @return [String] the generated spec
+      # @see Spec::Base
       #
       # @example
       #   Apiwork::Spec.generate(:openapi, '/api/v1')
