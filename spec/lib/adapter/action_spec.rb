@@ -93,5 +93,4 @@ RSpec.describe Apiwork::Adapter::Action do
       expect(action.delete?).to be true
     end
   end
-
 end
