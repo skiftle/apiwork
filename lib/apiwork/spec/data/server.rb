@@ -7,7 +7,7 @@ module Apiwork
       # Wraps API server information.
       #
       # @example
-      #   api.info.servers.each do |server|
+      #   data.info.servers.each do |server|
       #     puts server.url          # => "https://api.example.com"
       #     puts server.description  # => "Production server"
       #   end

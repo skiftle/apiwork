@@ -98,7 +98,7 @@ module Apiwork
         # Only valid for specs with `output :text`. Data specs derive
         # their extension from the format (:json → .json, :yaml → .yaml).
         #
-        # @param ext [String, nil] the file extension (e.g., '.ts')
+        # @param file_extension [String, nil] the file extension (e.g., '.ts')
         # @return [String, nil] the file extension
         def file_extension(file_extension = nil)
           return @file_extension unless file_extension
@@ -198,7 +198,7 @@ module Apiwork
         @options[:version] = version if version
         validate_options!
 
-        @data = @api_class.introspect(locale: @options[:locale])
+        @introspection = @api_class.introspect(locale: @options[:locale])
       end
 
       def validate_options!
@@ -268,15 +268,15 @@ module Apiwork
       protected
 
       # @api public
-      # Returns the API data wrapper for introspection data.
+      # Returns the data wrapper for introspection data.
       #
-      # This is the primary API for accessing introspection data in spec generators.
+      # This is the primary interface for accessing introspection data in spec generators.
       # Use this instead of accessing raw hash data directly.
       #
-      # @return [Spec::Data::API]
-      # @see Spec::Data::API
-      def api
-        @api ||= Data::API.new(@data)
+      # @return [Spec::Data]
+      # @see Spec::Data
+      def data
+        @data ||= Data.new(@introspection)
       end
 
       def key_format
@@ -319,7 +319,7 @@ module Apiwork
       #   - :summary [String] short summary
       #   - :terms_of_service [String] ToS URL
       def info
-        @data[:info] || {}
+        @introspection[:info] || {}
       end
 
       # @api public
@@ -334,7 +334,7 @@ module Apiwork
       #   - :example [Object] example value
       #   - :deprecated [Boolean] deprecation flag
       def types
-        @data[:types] || {}
+        @introspection[:types] || {}
       end
 
       # @api public
@@ -346,7 +346,7 @@ module Apiwork
       #   - :example [String] example value
       #   - :deprecated [Boolean] deprecation flag
       def enums
-        @data[:enums] || {}
+        @introspection[:enums] || {}
       end
 
       # @api public
@@ -354,7 +354,7 @@ module Apiwork
       #
       # @return [Array<Symbol>] error code keys (e.g., [:unauthorized, :not_found])
       def raises
-        @data[:raises] || []
+        @introspection[:raises] || []
       end
 
       # @api public
@@ -364,7 +364,7 @@ module Apiwork
       #   - :status [Integer] HTTP status code
       #   - :description [String] error description
       def error_codes
-        @data[:error_codes] || {}
+        @introspection[:error_codes] || {}
       end
 
       # @api public
@@ -431,7 +431,7 @@ module Apiwork
       private
 
       def resources
-        @data[:resources] || {}
+        @introspection[:resources] || {}
       end
 
       def iterate_resources(resources_hash, parent_path = nil, &block)

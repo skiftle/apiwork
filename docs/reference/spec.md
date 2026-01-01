@@ -17,9 +17,9 @@ Use [.generate](#generate) to produce specs for an API.
 
 ### .generate
 
-`.generate(spec_name, api_path, key_format: nil, locale: nil, version: nil)`
+`.generate(spec_name, api_path, format: nil, key_format: nil, locale: nil, version: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec.rb#L49)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec.rb#L52)
 
 Generates a spec for an API.
 
@@ -29,6 +29,7 @@ Generates a spec for an API.
 |------|------|-------------|
 | `spec_name` | `Symbol` | the spec name (:openapi, :typescript, :zod) |
 | `api_path` | `String` | the API mount path |
+| `format` | `Symbol` | output format (:json, :yaml) - only for data specs |
 | `locale` | `Symbol, nil` | locale for translations (default: nil) |
 | `key_format` | `Symbol, nil` | key casing (:camel, :underscore, :kebab, :keep) |
 | `version` | `String, nil` | spec version (spec-specific) |
@@ -45,6 +46,7 @@ Generates a spec for an API.
 
 ```ruby
 Apiwork::Spec.generate(:openapi, '/api/v1')
+Apiwork::Spec.generate(:openapi, '/api/v1', format: :yaml)
 Apiwork::Spec.generate(:typescript, '/api/v1', locale: :sv, key_format: :camel)
 ```
 
@@ -80,7 +82,7 @@ Apiwork::Spec.register(JSONSchemaSpec)
 
 `.reset!`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec.rb#L58)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec.rb#L61)
 
 Clears all registered specs. Intended for test cleanup.
 

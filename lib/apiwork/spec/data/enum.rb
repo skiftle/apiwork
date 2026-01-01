@@ -7,7 +7,7 @@ module Apiwork
       # Wraps enum type definitions.
       #
       # @example
-      #   api.enums.each do |enum|
+      #   data.enums.each do |enum|
       #     enum.name         # => :status
       #     enum.values       # => ["draft", "published", "archived"]
       #     enum.description  # => "Document status"

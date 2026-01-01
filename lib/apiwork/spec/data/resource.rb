@@ -6,10 +6,9 @@ module Apiwork
       # @api public
       # Wraps resource definitions.
       #
-      # @see API
       # @see Action
       # @example
-      #   api.resources.each do |resource|
+      #   data.resources.each do |resource|
       #     resource.name       # => :invoices
       #     resource.identifier # => "invoices"
       #     resource.path       # => "invoices"
@@ -47,11 +46,6 @@ module Apiwork
           @actions ||= (@data[:actions] || {}).map do |action_name, action_data|
             Action.new(action_name, action_data)
           end
-        end
-
-        # @return [Hash{Symbol => Action}] actions indexed by name
-        def actions_by_name
-          @actions_by_name ||= actions.index_by(&:name)
         end
 
         # @return [Array<Resource>] nested resources

@@ -7,7 +7,7 @@ module Apiwork
       # Wraps error code definitions.
       #
       # @example
-      #   api.error_codes.each do |error_code|
+      #   data.error_codes.each do |error_code|
       #     error_code.code         # => :not_found
       #     error_code.status       # => 404
       #     error_code.description  # => "Resource not found"
