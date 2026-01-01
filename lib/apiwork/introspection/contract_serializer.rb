@@ -64,7 +64,7 @@ module Apiwork
           .select { |_, metadata| metadata[:scope] == @contract_class }
           .sort_by { |name, _| name.to_s }
           .each_with_object({}) do |(name, metadata), result|
-          result[name] = @type_serializer.serialize_type(name, metadata)
+            result[name] = @type_serializer.serialize_type(name, metadata)
         end
       end
 
@@ -73,7 +73,7 @@ module Apiwork
           .select { |_, metadata| metadata[:scope] == @contract_class }
           .sort_by { |name, _| name.to_s }
           .each_with_object({}) do |(name, metadata), result|
-          result[name] = @type_serializer.serialize_enum(name, metadata)
+            result[name] = @type_serializer.serialize_enum(name, metadata)
         end
       end
 

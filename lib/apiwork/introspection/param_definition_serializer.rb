@@ -7,7 +7,7 @@ module Apiwork
         @param_definition = param_definition
         @result_wrapper = result_wrapper
         @visited = visited
-        @name_resolver = NameResolver.new
+        @import_prefix_cache = {}
       end
 
       def serialize
@@ -110,7 +110,7 @@ module Apiwork
       def serialize_custom_type_param(options)
         custom_type_name = options[:custom_type]
         if @param_definition.contract_class.resolve_custom_type(custom_type_name)
-          custom_type_name = @name_resolver.qualified_name(
+          custom_type_name = qualified_name(
             custom_type_name,
             @param_definition,
           )
@@ -131,7 +131,7 @@ module Apiwork
         return type_value unless type_value
 
         if registered_type?(type_value)
-          @name_resolver.qualified_name(type_value, @param_definition)
+          qualified_name(type_value, @param_definition)
         else
           type_value
         end
@@ -155,7 +155,7 @@ module Apiwork
         return nil unless options[:enum]
 
         if options[:enum].is_a?(Hash) && options[:enum][:ref]
-          scope = @name_resolver.scope_for_enum(@param_definition, options[:enum][:ref])
+          scope = scope_for_enum(@param_definition, options[:enum][:ref])
           api_class = @param_definition.contract_class.api_class
           api_class&.scoped_name(scope, options[:enum][:ref]) || options[:enum][:ref]
         else
@@ -167,7 +167,7 @@ module Apiwork
         return nil unless options[:of]
 
         if @param_definition.contract_class.resolve_custom_type(options[:of])
-          @name_resolver.qualified_name(options[:of], @param_definition)
+          qualified_name(options[:of], @param_definition)
         else
           options[:of]
         end
@@ -187,7 +187,7 @@ module Apiwork
 
         custom_type_block = @param_definition.contract_class.resolve_custom_type(variant_type)
         if custom_type_block
-          qualified_variant_type = @name_resolver.qualified_name(variant_type, @param_definition)
+          qualified_variant_type = qualified_name(variant_type, @param_definition)
           result = { type: qualified_variant_type }
           result[:tag] = variant_definition[:tag] if variant_definition[:tag]
           return result
@@ -199,7 +199,7 @@ module Apiwork
 
         if variant_definition[:of]
           result[:of] = if @param_definition.contract_class.resolve_custom_type(variant_definition[:of])
-                          @name_resolver.qualified_name(variant_definition[:of], @param_definition)
+                          qualified_name(variant_definition[:of], @param_definition)
                         else
                           variant_definition[:of]
                         end
@@ -209,7 +209,7 @@ module Apiwork
           result[:enum] = if variant_definition[:enum].is_a?(Symbol)
                             if @param_definition.contract_class.respond_to?(:schema_class) &&
                                @param_definition.contract_class.schema_class
-                              scope = @name_resolver.scope_for_enum(@param_definition, variant_definition[:enum])
+                              scope = scope_for_enum(@param_definition, variant_definition[:enum])
                               api_class = @param_definition.contract_class.api_class
                               api_class&.scoped_name(scope, variant_definition[:enum]) || variant_definition[:enum]
                             else
@@ -293,6 +293,62 @@ module Apiwork
         association_name = association_definition.name
 
         api_class.structure.i18n_lookup(:schemas, schema_name, :associations, association_name, :description)
+      end
+
+      def scope_for_enum(definition, _enum_name)
+        definition.contract_class
+      end
+
+      def qualified_name(type_name, definition)
+        return type_name if global_type?(type_name, definition)
+        return type_name if global_enum?(type_name, definition)
+        return type_name if imported_type?(type_name, definition)
+
+        scope = definition.contract_class
+        api_class = definition.contract_class.api_class
+        api_class&.scoped_name(scope, type_name) || type_name
+      end
+
+      def global_type?(type_name, definition)
+        return false unless definition.contract_class.respond_to?(:api_class)
+
+        api_class = definition.contract_class.api_class
+        return false unless api_class
+
+        metadata = api_class.type_system.type_metadata(type_name)
+        return false unless metadata
+
+        metadata[:scope].nil?
+      end
+
+      def global_enum?(enum_name, definition)
+        return false unless definition.contract_class.respond_to?(:api_class)
+
+        api_class = definition.contract_class.api_class
+        return false unless api_class
+
+        metadata = api_class.type_system.enum_metadata(enum_name)
+        return false unless metadata
+
+        metadata[:scope].nil?
+      end
+
+      def imported_type?(type_name, definition)
+        return false unless definition.contract_class.respond_to?(:imports)
+
+        import_prefixes = import_prefix_cache(definition.contract_class)
+
+        return true if import_prefixes[:direct].include?(type_name)
+
+        type_name = type_name.to_s
+        import_prefixes[:prefixes].any? { |prefix| type_name.start_with?(prefix) }
+      end
+
+      def import_prefix_cache(contract_class)
+        @import_prefix_cache[contract_class] ||= begin
+          direct = Set.new(contract_class.imports.keys)
+          { direct:, prefixes: contract_class.imports.keys.map { |alias_name| "#{alias_name}_" } }
+        end
       end
     end
   end
