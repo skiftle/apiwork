@@ -3,28 +3,28 @@
 module Apiwork
   module Adapter
     # @api public
-    # Aggregated schema information for type registration.
+    # API capabilities for conditional type registration.
     #
-    # Passed to `register_api` in your adapter. Use to conditionally
-    # register types based on what schemas define (filtering, sorting, pagination).
+    # Passed to `register_api` in your adapter. Query to determine
+    # what types to register based on API structure and schema definitions.
     #
     # @example Conditional type registration
-    #   def register_api(registrar, schema_summary)
-    #     if schema_summary.uses_offset_pagination?
+    #   def register_api(registrar, capabilities)
+    #     if capabilities.uses_offset_pagination?
     #       registrar.type :offset_pagination do
     #         param :page, type: :integer
     #         param :per_page, type: :integer
     #       end
     #     end
     #
-    #     if schema_summary.sortable?
+    #     if capabilities.sortable?
     #       registrar.type :sort_param do
     #         param :field, type: :string
     #         param :direction, type: :string
     #       end
     #     end
     #   end
-    class SchemaSummary
+    class Capabilities
       # @api public
       # @return [Array<Symbol>] data types used in filterable attributes
       attr_reader :filterable_types

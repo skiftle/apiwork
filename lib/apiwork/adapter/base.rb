@@ -38,8 +38,8 @@ module Apiwork
       # Registers types from schemas for the API.
       # Override to customize type registration.
       # @see Adapter::APIRegistrar
-      # @see Adapter::SchemaSummary
-      def register_api(registrar, schema_summary)
+      # @see Adapter::Capabilities
+      def register_api(registrar, capabilities)
         raise NotImplementedError
       end
 
@@ -142,8 +142,8 @@ module Apiwork
         ContractRegistrar.new(contract_class)
       end
 
-      def build_schema_summary(structure)
-        SchemaSummary.new(structure)
+      def build_capabilities(structure)
+        Capabilities.new(structure)
       end
     end
   end

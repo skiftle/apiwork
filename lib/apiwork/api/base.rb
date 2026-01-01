@@ -566,9 +566,9 @@ module Apiwork
             build_contracts_for_resource(resource)
           end
 
-          schema_summary = adapter.build_schema_summary(@structure)
+          capabilities = adapter.build_capabilities(@structure)
           registrar = adapter.build_api_registrar(self)
-          adapter.register_api(registrar, schema_summary)
+          adapter.register_api(registrar, capabilities)
         end
 
         private

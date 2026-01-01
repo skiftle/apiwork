@@ -91,7 +91,7 @@ option :format, type: :symbol, enum: [:json, :yaml]
 
 ### #register_api
 
-`#register_api(registrar, schema_summary)`
+`#register_api(registrar, capabilities)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L42)
 
@@ -101,7 +101,7 @@ Override to customize type registration.
 **See also**
 
 - [Adapter::APIRegistrar](adapter-api-registrar)
-- [Adapter::SchemaSummary](adapter-schema-summary)
+- [Adapter::Capabilities](adapter-capabilities)
 
 ---
 

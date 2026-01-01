@@ -11,8 +11,8 @@ module Apiwork
         option :max_size, default: 100, type: :integer
       end
 
-      def register_api(registrar, schema_summary)
-        TypeSystemBuilder.build(registrar, schema_summary)
+      def register_api(registrar, capabilities)
+        TypeSystemBuilder.build(registrar, capabilities)
       end
 
       def register_contract(registrar, schema_class, actions)

@@ -16,7 +16,7 @@ shared types like pagination, error responses, or enums.
 **Example: Register pagination type**
 
 ```ruby
-def register_api(registrar, schema_summary)
+def register_api(registrar, capabilities)
   registrar.type :pagination do
     param :page, type: :integer
     param :per_page, type: :integer
@@ -28,7 +28,7 @@ end
 **Example: Register enum**
 
 ```ruby
-def register_api(registrar, schema_summary)
+def register_api(registrar, capabilities)
   registrar.enum :status, values: %w[pending active completed]
 end
 ```
