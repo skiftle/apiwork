@@ -103,17 +103,17 @@ module Apiwork
         # @return [Hash] structured representation
         def to_h
           {
-            name: name,
-            path: path,
+            deprecated: deprecated?,
+            description: description,
             method: method,
+            name: name,
+            operation_id: operation_id,
+            path: path,
+            raises: raises,
             request: request&.to_h,
             response: response&.to_h,
-            raises: raises,
             summary: summary,
-            description: description,
             tags: tags,
-            operation_id: operation_id,
-            deprecated: deprecated?
           }
         end
       end

@@ -172,23 +172,23 @@ module Apiwork
         # @return [Hash] structured representation
         def to_h
           {
-            type: type,
-            of: of,
-            shape: shape.transform_values(&:to_h),
-            variants: variants,
-            discriminator: discriminator,
-            value: value,
-            enum: enum,
-            nullable: nullable?,
-            optional: optional?,
+            default: default,
             deprecated: deprecated?,
             description: description,
+            discriminator: discriminator,
+            enum: enum,
             example: example,
             format: format,
-            min: min,
             max: max,
-            default: default,
-            partial: partial?
+            min: min,
+            nullable: nullable?,
+            of: of,
+            optional: optional?,
+            partial: partial?,
+            shape: shape.transform_values(&:to_h),
+            type: type,
+            value: value,
+            variants: variants,
           }.compact
         end
       end

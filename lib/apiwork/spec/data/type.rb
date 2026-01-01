@@ -87,14 +87,14 @@ module Apiwork
         # @return [Hash] structured representation
         def to_h
           {
-            name: name,
-            type: type,
-            shape: shape.transform_values(&:to_h),
-            variants: variants,
-            discriminator: discriminator,
+            deprecated: deprecated?,
             description: description,
+            discriminator: discriminator,
             example: example,
-            deprecated: deprecated?
+            name: name,
+            shape: shape.transform_values(&:to_h),
+            type: type,
+            variants: variants,
           }
         end
       end

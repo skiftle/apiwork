@@ -99,13 +99,13 @@ module Apiwork
       # @return [Hash] structured representation
       def to_h
         {
-          path: path,
+          enums: enums.map(&:to_h),
+          error_codes: error_codes.map(&:to_h),
           info: info.to_h,
+          path: path,
+          raises: raises,
           resources: resources.map(&:to_h),
           types: types.map(&:to_h),
-          enums: enums.map(&:to_h),
-          raises: raises,
-          error_codes: error_codes.map(&:to_h)
         }
       end
 

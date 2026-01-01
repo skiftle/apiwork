@@ -8,20 +8,20 @@ module Apiwork
     # Subclass this to create custom spec formats. Declare output type
     # and override `#generate` to produce output.
     #
-    # @example Data spec (supports json/yaml)
+    # @example Hash spec (supports json/yaml)
     #   class OpenAPISpec < Apiwork::Spec::Base
     #     spec_name :openapi
-    #     output :data
+    #     output :hash
     #
     #     def generate
     #       { openapi: '3.1.0', ... }  # Returns Hash
     #     end
     #   end
     #
-    # @example Text spec (fixed format)
+    # @example String spec (fixed format)
     #   class ProtobufSpec < Apiwork::Spec::Base
     #     spec_name :protobuf
-    #     output :text
+    #     output :string
     #     file_extension '.proto'
     #
     #     def generate
@@ -48,32 +48,25 @@ module Apiwork
         # @api public
         # Declares the output type for this spec.
         #
-        # @param type [Symbol] :data for Hash output (json/yaml), :text for String output
+        # @param type [Symbol] :hash for Hash output (json/yaml), :string for String output
         def output(type = nil)
           return @output_type unless type
 
-          raise ArgumentError, "output must be :data or :text, got #{type.inspect}" unless %i[data text].include?(type)
+          raise ArgumentError, "output must be :hash or :string, got #{type.inspect}" unless %i[hash string].include?(type)
 
           @output_type = type
         end
 
         attr_reader :output_type
-      end
 
-      option :locale, default: nil, type: :symbol
-
-      attr_reader :api_path,
-                  :options
-
-      class << self
         def generate(api_path, format: nil, key_format: nil, locale: nil, version: nil)
           spec = new(api_path, key_format:, locale:, version:)
 
-          raise ArgumentError, "#{spec_name} spec does not support format options" if spec.text_output? && format
+          raise ArgumentError, "#{spec_name} spec does not support format options" if spec.string_output? && format
 
           resolved_format = format || :json
 
-          if spec.data_output? && !spec.supports_format?(resolved_format)
+          if spec.hash_output? && !spec.supports_format?(resolved_format)
             raise ArgumentError, "#{spec_name} spec does not support #{resolved_format} format"
           end
 
@@ -82,9 +75,9 @@ module Apiwork
         end
 
         # @api public
-        # Sets the file extension for text specs.
+        # Sets the file extension for string specs.
         #
-        # Only valid for specs with `output :text`. Data specs derive
+        # Only valid for specs with `output :string`. Hash specs derive
         # their extension from the format (:json → .json, :yaml → .yaml).
         #
         # @param file_extension [String, nil] the file extension (e.g., '.ts')
@@ -92,7 +85,7 @@ module Apiwork
         def file_extension(file_extension = nil)
           return @file_extension unless file_extension
 
-          raise ConfigurationError, 'file_extension not allowed for output :data specs' if output_type == :data
+          raise ConfigurationError, 'file_extension not allowed for output :hash specs' if output_type == :hash
 
           @file_extension = file_extension
         end
@@ -176,6 +169,11 @@ module Apiwork
         end
       end
 
+      option :locale, default: nil, type: :symbol
+
+      attr_reader :api_path,
+                  :options
+
       def initialize(api_path, key_format: nil, locale: nil, version: nil)
         @api_path = api_path
         @api_class = API.find(api_path)
@@ -204,21 +202,21 @@ module Apiwork
       # Access API data via helper methods: {#types}, {#enums}, {#raises},
       # {#error_codes}, {#info}, {#each_resource}, {#each_action}.
       #
-      # @return [Hash, String] Hash for data specs, String for text specs
+      # @return [Hash, String] Hash for hash specs, String for string specs
       def generate
         raise NotImplementedError, "#{self.class} must implement #generate"
       end
 
-      def data_output?
-        self.class.output_type == :data
+      def hash_output?
+        self.class.output_type == :hash
       end
 
-      def text_output?
-        self.class.output_type == :text
+      def string_output?
+        self.class.output_type == :string
       end
 
       def supports_format?(format)
-        return true if data_output? && %i[json yaml].include?(format)
+        return true if hash_output? && %i[json yaml].include?(format)
 
         false
       end
@@ -226,7 +224,7 @@ module Apiwork
       def file_extension_for(format: nil)
         resolved = format || :json
 
-        if data_output?
+        if hash_output?
           resolved == :yaml ? '.yaml' : '.json'
         else
           self.class.file_extension
@@ -236,7 +234,7 @@ module Apiwork
       def content_type_for(format: nil)
         resolved = format || :json
 
-        if data_output?
+        if hash_output?
           resolved == :yaml ? 'application/yaml' : 'application/json'
         else
           'text/plain; charset=utf-8'

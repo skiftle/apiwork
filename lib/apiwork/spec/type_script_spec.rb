@@ -4,7 +4,7 @@ module Apiwork
   module Spec
     class TypeScriptSpec < Base
       spec_name :typescript
-      output :text
+      output :string
       file_extension '.ts'
 
       option :version, default: '5', enum: %w[4 5], type: :string

@@ -31,7 +31,7 @@ module Apiwork
         # @api public
         # @return [Hash] structured representation
         def to_h
-          { url: url, description: description }
+          { description: description, url: url }
         end
       end
     end

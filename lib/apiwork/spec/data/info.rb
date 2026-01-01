@@ -73,14 +73,14 @@ module Apiwork
         # @return [Hash] structured representation
         def to_h
           {
-            title: title,
-            version: version,
+            contact: contact&.to_h,
             description: description,
+            license: license&.to_h,
+            servers: servers.map(&:to_h),
             summary: summary,
             terms_of_service: terms_of_service,
-            contact: contact&.to_h,
-            license: license&.to_h,
-            servers: servers.map(&:to_h)
+            title: title,
+            version: version,
           }
         end
       end

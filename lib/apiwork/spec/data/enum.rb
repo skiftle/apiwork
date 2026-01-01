@@ -51,11 +51,11 @@ module Apiwork
         # @return [Hash] structured representation
         def to_h
           {
-            name: name,
-            values: values,
+            deprecated: deprecated?,
             description: description,
             example: example,
-            deprecated: deprecated?
+            name: name,
+            values: values,
           }
         end
       end

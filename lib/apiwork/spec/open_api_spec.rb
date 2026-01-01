@@ -4,7 +4,7 @@ module Apiwork
   module Spec
     class OpenAPISpec < Base
       spec_name :openapi
-      output :data
+      output :hash
 
       option :version, default: '3.1.0', enum: %w[3.1.0], type: :string
       option :key_format, default: :keep, enum: %i[keep camel underscore kebab], type: :symbol

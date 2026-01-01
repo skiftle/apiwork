@@ -4,7 +4,7 @@ module Apiwork
   module Spec
     class Zod < Base
       spec_name :zod
-      output :text
+      output :string
       file_extension '.ts'
 
       option :version, default: '4', enum: %w[4], type: :string

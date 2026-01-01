@@ -48,8 +48,8 @@ module Apiwork
         # @return [Hash] structured representation
         def to_h
           {
+            body: body.transform_values(&:to_h),
             query: query.transform_values(&:to_h),
-            body: body.transform_values(&:to_h)
           }
         end
 
