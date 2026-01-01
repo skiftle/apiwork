@@ -18,11 +18,13 @@ module Apiwork
         uuid: 'z.uuid()',
       }.freeze
 
-      attr_reader :data,
-                  :key_format
+      attr_reader :enums,
+                  :key_format,
+                  :types
 
-      def initialize(data:, key_format: :keep)
-        @data = data
+      def initialize(enums:, key_format: :keep, types:)
+        @types = types
+        @enums = enums
         @key_format = key_format
       end
 
@@ -273,14 +275,6 @@ module Apiwork
       end
 
       private
-
-      def types
-        data[:types] || {}
-      end
-
-      def enums
-        data[:enums] || {}
-      end
 
       def enum_or_type_reference?(symbol)
         types.key?(symbol) || enums.key?(symbol)

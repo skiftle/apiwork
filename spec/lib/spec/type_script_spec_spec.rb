@@ -449,7 +449,7 @@ RSpec.describe Apiwork::Spec::TypeScriptSpec do
 
   describe 'unknown type mapping' do
     let(:introspection) { Apiwork::API.introspect('/api/v1') }
-    let(:mapper) { Apiwork::Spec::TypeScriptMapper.new(data: introspection) }
+    let(:mapper) { Apiwork::Spec::TypeScriptMapper.new(enums: introspection[:enums], types: introspection[:types]) }
 
     it 'maps :unknown to unknown' do
       result = mapper.send(:map_primitive, :unknown)

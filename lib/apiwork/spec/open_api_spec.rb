@@ -24,24 +24,21 @@ module Apiwork
       private
 
       def build_info
-        info_data = data[:info] || {}
-
         {
-          contact: build_contact(info_data[:contact]),
-          description: info_data[:description],
-          license: build_license(info_data[:license]),
-          summary: info_data[:summary],
-          termsOfService: info_data[:terms_of_service],
-          title: info_data[:title] || "#{api_path} API",
-          version: info_data[:version] || '1.0.0',
+          contact: build_contact(info[:contact]),
+          description: info[:description],
+          license: build_license(info[:license]),
+          summary: info[:summary],
+          termsOfService: info[:terms_of_service],
+          title: info[:title] || "#{api_path} API",
+          version: info[:version] || '1.0.0',
         }.compact
       end
 
       def build_servers
-        servers_data = data.dig(:info, :servers)
-        return nil unless servers_data&.any?
+        return nil unless info[:servers]&.any?
 
-        servers_data.map do |server|
+        info[:servers].map do |server|
           { description: server[:description], url: server[:url] }.compact
         end
       end

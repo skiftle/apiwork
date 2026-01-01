@@ -51,11 +51,11 @@ module Apiwork
       private
 
       def zod_mapper
-        @zod_mapper ||= ZodMapper.new(data:, key_format:)
+        @zod_mapper ||= ZodMapper.new(enums:, key_format:, types:)
       end
 
       def typescript_mapper
-        @typescript_mapper ||= TypeScriptMapper.new(data:, key_format:)
+        @typescript_mapper ||= TypeScriptMapper.new(enums:, key_format:, types:)
       end
 
       def build_enum_schemas

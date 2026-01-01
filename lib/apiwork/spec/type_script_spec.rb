@@ -17,7 +17,7 @@ module Apiwork
       private
 
       def mapper
-        @mapper ||= TypeScriptMapper.new(data:, key_format:)
+        @mapper ||= TypeScriptMapper.new(enums:, key_format:, types:)
       end
 
       def build_all_typescript_types
