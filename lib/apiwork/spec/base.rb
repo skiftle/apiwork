@@ -101,12 +101,12 @@ module Apiwork
         #
         # @param ext [String, nil] the file extension (e.g., '.ts')
         # @return [String, nil] the file extension
-        def file_extension(ext = nil)
-          return @file_extension unless ext
+        def file_extension(file_extension = nil)
+          return @file_extension unless file_extension
 
           raise ConfigurationError, 'file_extension not allowed for output :data specs' if output_type == :data
 
-          @file_extension = ext
+          @file_extension = file_extension
         end
 
         CORE_OPTIONS_TYPES = {
@@ -127,32 +127,64 @@ module Apiwork
           end
 
           options.each do |name, option|
-            next if option.nested?
             next if CORE_OPTIONS_TYPES.key?(name)
 
             value = source[name] || source[name.to_s]
             next if value.nil?
 
-            result[name] = option.cast(value)
+            result[name] = if option.nested?
+                             extract_nested_option(option, value)
+                           else
+                             option.cast(value)
+                           end
           end
 
           result
+        end
+
+        def extract_nested_option(option, value)
+          return nil unless value.is_a?(Hash)
+
+          nested = {}
+          option.children.each do |child_name, child_option|
+            child_value = value[child_name] || value[child_name.to_s]
+            next if child_value.nil?
+
+            nested[child_name] = child_option.cast(child_value)
+          end
+          nested
         end
 
         def extract_options_from_env
           result = {}
 
           options.each do |name, option|
-            next if option.nested?
-
-            env_key = name.to_s.upcase
-            value = ENV[env_key]
-            next if value.nil?
-
-            result[name] = option.cast(value)
+            if option.nested?
+              nested = extract_nested_option_from_env(name, option)
+              result[name] = nested if nested.any?
+            else
+              env_key = name.to_s.upcase
+              value = ENV[env_key]
+              result[name] = option.cast(value) unless value.nil?
+            end
           end
 
           result
+        end
+
+        def extract_nested_option_from_env(parent_name, option)
+          nested = {}
+          prefix = parent_name.to_s.upcase
+
+          option.children.each do |child_name, child_option|
+            env_key = "#{prefix}_#{child_name.to_s.upcase}"
+            value = ENV[env_key]
+            next if value.nil?
+
+            nested[child_name] = child_option.cast(value)
+          end
+
+          nested
         end
       end
 
@@ -294,21 +326,6 @@ module Apiwork
         return unless resource_data[:actions]
 
         resource_data[:actions].each(&block)
-      end
-
-      def http_method_for_action(action)
-        case action.to_sym
-        when :index, :show
-          'GET'
-        when :create
-          'POST'
-        when :update
-          'PATCH'
-        when :destroy
-          'DELETE'
-        else
-          'GET'
-        end
       end
 
       def build_full_resource_path(resource_data, parent_path = nil)
