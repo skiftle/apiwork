@@ -282,7 +282,7 @@ Access raw data for edge cases not covered by accessors.
 
 **Returns**
 
-`Hash` — the raw underlying data hash
+`Hash` — structured representation
 
 ---
 

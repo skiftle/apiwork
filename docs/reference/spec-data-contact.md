@@ -45,6 +45,18 @@ contact.url    # => "https://example.com/support"
 
 ---
 
+### #to_h
+
+`#to_h`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/contact.rb#L39)
+
+**Returns**
+
+`Hash` — structured representation
+
+---
+
 ### #url
 
 `#url`

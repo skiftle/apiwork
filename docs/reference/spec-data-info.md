@@ -119,6 +119,18 @@ info.license&.name    # => "MIT"
 
 ---
 
+### #to_h
+
+`#to_h`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/info.rb#L74)
+
+**Returns**
+
+`Hash` — structured representation
+
+---
+
 ### #version
 
 `#version`

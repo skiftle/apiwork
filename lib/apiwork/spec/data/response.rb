@@ -38,6 +38,12 @@ module Apiwork
         def body?
           body.present?
         end
+
+        # @api public
+        # @return [Hash] structured representation
+        def to_h
+          { body: body&.to_h, no_content: no_content? }
+        end
       end
     end
   end

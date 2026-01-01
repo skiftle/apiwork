@@ -78,3 +78,15 @@ request.query[:page]        # => Param for page param
 `Boolean` — whether query parameters are defined
 
 ---
+
+### #to_h
+
+`#to_h`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/request.rb#L49)
+
+**Returns**
+
+`Hash` — structured representation
+
+---

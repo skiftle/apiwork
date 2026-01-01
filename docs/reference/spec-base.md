@@ -49,7 +49,7 @@ Apiwork::Spec.register(ProtobufSpec)
 
 `.file_extension(file_extension = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L103)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L92)
 
 Sets the file extension for text specs.
 
@@ -65,34 +65,6 @@ their extension from the format (:json → .json, :yaml → .yaml).
 **Returns**
 
 `String`, `nil` — the file extension
-
----
-
-### .generate
-
-`.generate(api_path, format: nil, key_format: nil, locale: nil, version: nil)`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L80)
-
-Generates a spec for the given API path.
-
-**Parameters**
-
-| Name | Type | Description |
-|------|------|-------------|
-| `api_path` | `String` | the API mount path |
-| `format` | `Symbol` | output format (:json, :yaml) - only for data specs |
-| `locale` | `Symbol, nil` | locale for translations (default: nil) |
-| `key_format` | `Symbol, nil` | key casing (:camel, :underscore, :kebab, :keep) |
-| `version` | `String, nil` | spec version (default varies by spec) |
-
-**Returns**
-
-`String` — the generated spec
-
-**See also**
-
-- [API::Base](api-base)
 
 ---
 
@@ -171,11 +143,135 @@ Sets or returns the spec name identifier.
 
 ## Instance Methods
 
+### #build_full_action_path
+
+`#build_full_action_path(resource_data, action_data, parent_path = nil)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L413)
+
+Builds the full URL path for an action.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `resource_data` | `Hash` | resource data |
+| `action_data` | `Hash` | action data |
+| `parent_path` | `String, nil` | parent resource path |
+
+**Returns**
+
+`String` — full action path (e.g., "users/:user_id/posts/:id")
+
+---
+
+### #build_full_resource_path
+
+`#build_full_resource_path(resource_data, parent_path = nil)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L398)
+
+Builds the full URL path for a resource.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `resource_data` | `Hash` | resource data |
+| `parent_path` | `String, nil` | parent resource path |
+
+**Returns**
+
+`String` — full resource path (e.g., "users/:user_id/posts")
+
+---
+
+### #data
+
+`#data`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L265)
+
+Returns the data wrapper for introspection data.
+
+This is the primary interface for accessing introspection data in spec generators.
+Use this instead of accessing raw hash data directly.
+
+**Returns**
+
+[Spec::Data](spec-data)
+
+**See also**
+
+- [Spec::Data](spec-data)
+
+---
+
+### #each_action
+
+`#each_action(resource_data, &block)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L386)
+
+Iterates over actions in a resource.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `resource_data` | `Hash` | resource data |
+
+---
+
+### #each_resource
+
+`#each_resource(&block)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L367)
+
+Iterates over all resources recursively (including nested).
+
+---
+
+### #enums
+
+`#enums`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L335)
+
+Returns all registered enums.
+
+**Returns**
+
+`Hash{Symbol => Hash}` — enum definitions with structure:
+- :values [Array&lt;String&gt;] allowed values
+- :description [String] enum description
+- :example [String] example value
+- :deprecated [Boolean] deprecation flag
+
+---
+
+### #error_codes
+
+`#error_codes`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L353)
+
+Returns detailed error code information.
+
+**Returns**
+
+`Hash{Symbol => Hash}` — error codes with structure:
+- :status [Integer] HTTP status code
+- :description [String] error description
+
+---
+
 ### #generate
 
 `#generate`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L219)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L208)
 
 Generates the spec output.
 
@@ -186,5 +282,62 @@ Access API data via helper methods: [#types](#types), [#enums](#enums), [#raises
 **Returns**
 
 `Hash`, `String` — Hash for data specs, String for text specs
+
+---
+
+### #info
+
+`#info`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L308)
+
+Returns API metadata.
+
+**Returns**
+
+`Hash` — API info with structure:
+- :title [String] API title
+- :version [String] API version
+- :description [String] API description
+- :contact [Hash] contact info (:name, :email, :url)
+- :license [Hash] license info (:name, :url)
+- :servers [Array&lt;Hash&gt;] server URLs
+- :summary [String] short summary
+- :terms_of_service [String] ToS URL
+
+---
+
+### #raises
+
+`#raises`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L343)
+
+Returns API-level error codes that may be raised.
+
+**Returns**
+
+`Array<Symbol>` — error code keys (e.g., [:unauthorized, :not_found])
+
+---
+
+### #types
+
+`#types`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L323)
+
+Returns all registered custom types.
+
+**Returns**
+
+`Hash{Symbol => Hash}` — type definitions with structure:
+- :type [Symbol] :object or :union
+- :shape [Hash] param definitions (for objects)
+- :variants [Array&lt;Hash&gt;] union variants
+- :discriminator [Symbol] union discriminator field
+- :description [String] type description
+- :example [Object] example value
+- :deprecated [Boolean] deprecation flag
 
 ---

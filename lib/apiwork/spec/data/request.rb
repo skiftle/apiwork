@@ -44,6 +44,15 @@ module Apiwork
           body.any?
         end
 
+        # @api public
+        # @return [Hash] structured representation
+        def to_h
+          {
+            query: query.transform_values(&:to_h),
+            body: body.transform_values(&:to_h)
+          }
+        end
+
         private
 
         def build_params(hash)

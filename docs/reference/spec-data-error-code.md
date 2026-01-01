@@ -57,3 +57,15 @@ end
 `Integer` — HTTP status code (e.g., 422, 404)
 
 ---
+
+### #to_h
+
+`#to_h`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/error_code.rb#L39)
+
+**Returns**
+
+`Hash` — structured representation
+
+---

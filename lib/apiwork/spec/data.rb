@@ -96,9 +96,17 @@ module Apiwork
       end
 
       # @api public
-      # @return [Hash] the raw underlying data hash
+      # @return [Hash] structured representation
       def to_h
-        @introspection
+        {
+          path: path,
+          info: info.to_h,
+          resources: resources.map(&:to_h),
+          types: types.map(&:to_h),
+          enums: enums.map(&:to_h),
+          raises: raises,
+          error_codes: error_codes.map(&:to_h)
+        }
       end
 
       private

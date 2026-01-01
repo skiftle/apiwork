@@ -71,6 +71,18 @@ end
 
 ---
 
+### #to_h
+
+`#to_h`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/enum.rb#L52)
+
+**Returns**
+
+`Hash` — structured representation
+
+---
+
 ### #values
 
 `#values`

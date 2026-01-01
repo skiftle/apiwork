@@ -33,6 +33,12 @@ module Apiwork
         def description
           @data[:description]
         end
+
+        # @api public
+        # @return [Hash] structured representation
+        def to_h
+          { code: code, status: status, description: description }
+        end
       end
     end
   end

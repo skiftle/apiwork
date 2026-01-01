@@ -32,6 +32,18 @@ license.url   # => "https://opensource.org/licenses/MIT"
 
 ---
 
+### #to_h
+
+`#to_h`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/license.rb#L32)
+
+**Returns**
+
+`Hash` — structured representation
+
+---
+
 ### #url
 
 `#url`

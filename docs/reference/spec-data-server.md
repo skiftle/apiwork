@@ -33,6 +33,18 @@ end
 
 ---
 
+### #to_h
+
+`#to_h`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/server.rb#L33)
+
+**Returns**
+
+`Hash` — structured representation
+
+---
+
 ### #url
 
 `#url`

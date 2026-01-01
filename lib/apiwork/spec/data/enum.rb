@@ -46,6 +46,18 @@ module Apiwork
         def deprecated?
           @data[:deprecated] == true
         end
+
+        # @api public
+        # @return [Hash] structured representation
+        def to_h
+          {
+            name: name,
+            values: values,
+            description: description,
+            example: example,
+            deprecated: deprecated?
+          }
+        end
       end
     end
   end

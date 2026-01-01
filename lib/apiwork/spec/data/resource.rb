@@ -90,9 +90,16 @@ module Apiwork
         end
 
         # @api public
-        # @return [Hash] the raw underlying data hash
+        # @return [Hash] structured representation
         def to_h
-          @data
+          {
+            actions: actions.map(&:to_h),
+            identifier: identifier,
+            name: name,
+            path: path,
+            resources: resources.map(&:to_h),
+            schema: schema,
+          }
         end
       end
     end

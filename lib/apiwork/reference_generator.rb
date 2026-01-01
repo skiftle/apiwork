@@ -228,11 +228,18 @@ module Apiwork
     def linkify_yard_refs(text)
       return text if text.blank?
 
-      text.gsub(/\{([^}]+)\}/) do
+      result = text.gsub(/\{([^}]+)\}/) do
         ref = ::Regexp.last_match(1)
         link_path = yard_ref_to_path(ref)
         "[#{ref}](#{link_path})"
       end
+      escape_html(result)
+    end
+
+    def escape_html(text)
+      return text if text.blank?
+
+      text.gsub('<', '&lt;').gsub('>', '&gt;')
     end
 
     def linkify_type(type_str)

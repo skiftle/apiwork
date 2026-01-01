@@ -66,17 +66,6 @@ module Apiwork
                   :options
 
       class << self
-        # @api public
-        # Generates a spec for the given API path.
-        #
-        # @param api_path [String] the API mount path
-        # @param format [Symbol] output format (:json, :yaml) - only for data specs
-        # @param locale [Symbol, nil] locale for translations (default: nil)
-        # @param key_format [Symbol, nil] key casing (:camel, :underscore, :kebab, :keep)
-        # @param version [String, nil] spec version (default varies by spec)
-        # @return [String] the generated spec
-        # @raise [ArgumentError] if format is not supported
-        # @see API::Base
         def generate(api_path, format: nil, key_format: nil, locale: nil, version: nil)
           spec = new(api_path, key_format:, locale:, version:)
 
@@ -264,8 +253,6 @@ module Apiwork
           JSON.pretty_generate(content)
         end
       end
-
-      protected
 
       # @api public
       # Returns the data wrapper for introspection data.

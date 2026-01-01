@@ -67,3 +67,15 @@ response.body?        # => false
 `Boolean` — whether this is a no-content response (204)
 
 ---
+
+### #to_h
+
+`#to_h`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/response.rb#L44)
+
+**Returns**
+
+`Hash` — structured representation
+
+---

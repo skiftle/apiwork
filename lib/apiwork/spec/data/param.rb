@@ -169,9 +169,27 @@ module Apiwork
         end
 
         # @api public
-        # @return [Hash] the raw underlying data hash
+        # @return [Hash] structured representation
         def to_h
-          @data
+          {
+            type: type,
+            of: of,
+            shape: shape.transform_values(&:to_h),
+            variants: variants,
+            discriminator: discriminator,
+            value: value,
+            enum: enum,
+            nullable: nullable?,
+            optional: optional?,
+            deprecated: deprecated?,
+            description: description,
+            example: example,
+            format: format,
+            min: min,
+            max: max,
+            default: default,
+            partial: partial?
+          }.compact
         end
       end
     end

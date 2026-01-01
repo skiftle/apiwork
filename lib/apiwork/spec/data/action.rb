@@ -100,9 +100,21 @@ module Apiwork
         end
 
         # @api public
-        # @return [Hash] the raw underlying data hash
+        # @return [Hash] structured representation
         def to_h
-          @data
+          {
+            name: name,
+            path: path,
+            method: method,
+            request: request&.to_h,
+            response: response&.to_h,
+            raises: raises,
+            summary: summary,
+            description: description,
+            tags: tags,
+            operation_id: operation_id,
+            deprecated: deprecated?
+          }
         end
       end
     end

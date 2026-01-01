@@ -141,7 +141,7 @@ Iterates over all resources recursively (including nested).
 
 **Returns**
 
-`Hash` — the raw underlying data hash
+`Hash` — structured representation
 
 ---
 

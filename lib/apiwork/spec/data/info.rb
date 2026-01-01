@@ -68,6 +68,21 @@ module Apiwork
         def servers
           @servers ||= (@data[:servers] || []).map { |s| Server.new(s) }
         end
+
+        # @api public
+        # @return [Hash] structured representation
+        def to_h
+          {
+            title: title,
+            version: version,
+            description: description,
+            summary: summary,
+            terms_of_service: terms_of_service,
+            contact: contact&.to_h,
+            license: license&.to_h,
+            servers: servers.map(&:to_h)
+          }
+        end
       end
     end
   end

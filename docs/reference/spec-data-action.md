@@ -197,6 +197,6 @@ end
 
 **Returns**
 
-`Hash` — the raw underlying data hash
+`Hash` — structured representation
 
 ---
