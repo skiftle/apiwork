@@ -69,18 +69,6 @@ module Apiwork
         end
 
         # @api public
-        # @return [Hash, nil] schema definition if this resource has a schema
-        def schema
-          @data[:schema]
-        end
-
-        # @api public
-        # @return [Boolean] whether this resource has a schema
-        def schema?
-          schema.present?
-        end
-
-        # @api public
         # Iterates over all actions.
         #
         # @yieldparam action [Action] each action
@@ -98,7 +86,6 @@ module Apiwork
             name: name,
             path: path,
             resources: resources.map(&:to_h),
-            schema: schema,
           }
         end
       end
