@@ -7,18 +7,17 @@ module Apiwork
       spec_name = params[:spec_name].to_sym
       spec_class = Spec.find(spec_name)
 
-      options = { key_format: api_class.key_format }
+      raw = { key_format: api_class.key_format }
         .merge(api_class.spec_config(spec_name))
-        .merge(spec_class.extract_options(params))
-        .compact
+        .merge(params.to_unsafe_h.symbolize_keys)
 
+      options = spec_class.extract_options(raw)
+
+      format = options[:format]
       result = Spec.generate(spec_name, api_class.path, **options)
+      spec = spec_class.new(api_class.path)
 
-      if spec_class.content_type.start_with?('application/json')
-        render json: result
-      else
-        render content_type: spec_class.content_type, plain: result
-      end
+      render content_type: spec.content_type_for(format:), plain: result
     end
   end
 end

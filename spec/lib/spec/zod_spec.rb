@@ -533,9 +533,10 @@ RSpec.describe Apiwork::Spec::Zod do
     end
   end
 
-  describe '.content_type' do
+  describe '#content_type_for' do
     it 'returns text/plain; charset=utf-8' do
-      expect(described_class.content_type).to eq('text/plain; charset=utf-8')
+      spec = described_class.new('/api/v1')
+      expect(spec.content_type_for).to eq('text/plain; charset=utf-8')
     end
   end
 

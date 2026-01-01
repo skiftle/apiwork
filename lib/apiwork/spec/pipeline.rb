@@ -4,12 +4,11 @@ module Apiwork
   module Spec
     class Pipeline
       class << self
-        def generate(spec_name, api_path, key_format: nil, locale: nil, version: nil)
-          generator_class = Registry.find(spec_name)
-          generator_class.generate(api_path, key_format:, locale:, version:)
+        def generate(spec_name, api_path, format: nil, key_format: nil, locale: nil, version: nil)
+          Spec.generate(spec_name, api_path, format:, key_format:, locale:, version:)
         end
 
-        def write(api_path: nil, key_format: nil, locale: nil, output:, spec_name: nil, version: nil)
+        def write(api_path: nil, format: nil, key_format: nil, locale: nil, output:, spec_name: nil, version: nil)
           raise ArgumentError, 'output path required' unless output
 
           if Writer.file_path?(output) && (api_path.nil? || spec_name.nil?)
@@ -29,6 +28,7 @@ module Apiwork
             spec_names.each do |name|
               count += generate_file(
                 api_class:,
+                format:,
                 key_format:,
                 locale:,
                 output:,
@@ -61,7 +61,7 @@ module Apiwork
                 "API not found: #{api_path}. Available APIs: #{available.join(', ')}"
         end
 
-        def generate_file(api_class:, key_format:, locale:, output:, spec_name:, version:)
+        def generate_file(api_class:, format:, key_format:, locale:, output:, spec_name:, version:)
           api_path = api_class.path
 
           unless api_class.specs&.include?(spec_name)
@@ -69,13 +69,13 @@ module Apiwork
             return 0
           end
 
-          options = { key_format:, locale:, version: }.compact
+          options = { format:, key_format:, locale:, version: }.compact
           options_label = options.any? ? " (#{options.map { |k, v| "#{k}: #{v}" }.join(', ')})" : ''
           Rails.logger.debug "  ✓ #{api_path} → #{spec_name}#{options_label}"
 
-          content = generate(spec_name, api_path, key_format:, locale:, version:)
-          generator_class = Registry.find(spec_name)
-          extension = generator_class.file_extension
+          content = generate(spec_name, api_path, format:, key_format:, locale:, version:)
+          spec = Registry.find(spec_name).new(api_path, key_format:, locale:, version:)
+          extension = spec.file_extension_for(format:)
 
           file_path = Writer.write(
             api_path:,

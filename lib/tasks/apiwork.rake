@@ -17,6 +17,7 @@ namespace :apiwork do
       Dir[Rails.root.join('config/apis/**/*.rb')].sort.each { |f| load f }
 
       api_path = ENV['API_PATH']
+      format = ENV['FORMAT']&.to_sym
       output = ENV['OUTPUT']
       spec_name = ENV['SPEC_NAME']&.to_sym
 
@@ -29,6 +30,7 @@ namespace :apiwork do
         puts '  rake apiwork:spec:write OUTPUT=public/specs'
         puts '  rake apiwork:spec:write API_PATH=/api/v1 OUTPUT=public/specs'
         puts '  rake apiwork:spec:write API_PATH=/api/v1 SPEC_NAME=openapi OUTPUT=public/openapi.json'
+        puts '  rake apiwork:spec:write SPEC_NAME=openapi FORMAT=yaml OUTPUT=public/openapi.yaml'
         puts '  rake apiwork:spec:write SPEC_NAME=zod KEY_FORMAT=camel OUTPUT=public/specs'
         puts '  rake apiwork:spec:write OUTPUT=public/specs LOCALE=sv'
         puts ''
@@ -36,6 +38,7 @@ namespace :apiwork do
         puts "  #{Apiwork::Spec.all.join(', ')}"
         puts ''
         puts 'Built-in options (uppercase ENV vars):'
+        puts '  FORMAT: json, yaml (only for data specs like openapi)'
         puts '  KEY_FORMAT: keep, camel, underscore'
         puts "  LOCALE: #{I18n.available_locales.join(', ')}"
         puts ''
@@ -52,6 +55,7 @@ namespace :apiwork do
       begin
         Apiwork::Spec::Pipeline.write(
           api_path:,
+          format:,
           output:,
           spec_name:,
           **custom_options,

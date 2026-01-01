@@ -320,7 +320,8 @@ RSpec.describe Apiwork::Spec::TypeScriptSpec do
 
   describe 'content type' do
     it 'returns text/plain content type' do
-      expect(described_class.content_type).to eq('text/plain; charset=utf-8')
+      spec = described_class.new('/api/v1')
+      expect(spec.content_type_for).to eq('text/plain; charset=utf-8')
     end
   end
 

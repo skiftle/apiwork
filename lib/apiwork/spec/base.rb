@@ -5,16 +5,27 @@ module Apiwork
     # @api public
     # Base class for spec generators.
     #
-    # Subclass this to create custom spec formats (Protobuf, GraphQL, etc.).
-    # Set `file_extension` and override `#generate` to produce output.
+    # Subclass this to create custom spec formats. Declare output type
+    # and override `#generate` to produce output.
     #
-    # @example Custom spec generator
+    # @example Data spec (supports json/yaml)
+    #   class OpenAPISpec < Apiwork::Spec::Base
+    #     spec_name :openapi
+    #     output :data
+    #
+    #     def generate
+    #       { openapi: '3.1.0', ... }  # Returns Hash
+    #     end
+    #   end
+    #
+    # @example Text spec (fixed format)
     #   class ProtobufSpec < Apiwork::Spec::Base
     #     spec_name :protobuf
+    #     output :text
     #     file_extension '.proto'
     #
     #     def generate
-    #       # Build Protobuf schema from data (introspection hash)
+    #       "syntax = \"proto3\";\n..."  # Returns String
     #     end
     #   end
     #
@@ -33,6 +44,20 @@ module Apiwork
           @spec_name = name.to_sym if name
           @spec_name
         end
+
+        # @api public
+        # Declares the output type for this spec.
+        #
+        # @param type [Symbol] :data for Hash output (json/yaml), :text for String output
+        def output(type = nil)
+          return @output_type unless type
+
+          raise ArgumentError, "output must be :data or :text, got #{type.inspect}" unless %i[data text].include?(type)
+
+          @output_type = type
+        end
+
+        attr_reader :output_type
       end
 
       option :locale, default: nil, type: :symbol
@@ -46,35 +71,87 @@ module Apiwork
         # Generates a spec for the given API path.
         #
         # @param api_path [String] the API mount path
+        # @param format [Symbol] output format (:json, :yaml) - only for data specs
         # @param locale [Symbol, nil] locale for translations (default: nil)
         # @param key_format [Symbol, nil] key casing (:camel, :underscore, :kebab, :keep)
         # @param version [String, nil] spec version (default varies by spec)
         # @return [String] the generated spec
+        # @raise [ArgumentError] if format is not supported
         # @see API::Base
-        def generate(api_path, key_format: nil, locale: nil, version: nil)
-          new(api_path, key_format:, locale:, version:).generate
+        def generate(api_path, format: nil, key_format: nil, locale: nil, version: nil)
+          spec = new(api_path, key_format:, locale:, version:)
+
+          raise ArgumentError, "#{spec_name} spec does not support format options" if spec.text_output? && format
+
+          resolved_format = format || :json
+
+          if spec.data_output? && !spec.supports_format?(resolved_format)
+            raise ArgumentError, "#{spec_name} spec does not support #{resolved_format} format"
+          end
+
+          content = spec.generate
+          spec.serialize(content, format: resolved_format)
         end
 
-        def content_type(type = nil)
-          @content_type = type if type
-          @content_type || 'application/json'
-        end
-
+        # @api public
+        # Sets the file extension for text specs.
+        #
+        # Only valid for specs with `output :text`. Data specs derive
+        # their extension from the format (:json → .json, :yaml → .yaml).
+        #
+        # @param ext [String, nil] the file extension (e.g., '.ts')
+        # @return [String, nil] the file extension
         def file_extension(ext = nil)
-          @file_extension = ext if ext
-          @file_extension or raise NotImplementedError, "#{self} must set file_extension"
+          return @file_extension unless ext
+
+          raise ConfigurationError, 'file_extension not allowed for output :data specs' if output_type == :data
+
+          @file_extension = ext
         end
 
-        def extract_options(params)
+        CORE_OPTIONS_TYPES = {
+          format: :symbol,
+          key_format: :symbol,
+          locale: :symbol,
+          version: :string,
+        }.freeze
+
+        def extract_options(source)
           result = {}
+
+          CORE_OPTIONS_TYPES.each do |name, type|
+            value = source[name] || source[name.to_s]
+            next if value.nil?
+
+            result[name] = type == :symbol ? value.to_sym : value
+          end
+
+          options.each do |name, option|
+            next if option.nested?
+            next if CORE_OPTIONS_TYPES.key?(name)
+
+            value = source[name] || source[name.to_s]
+            next if value.nil?
+
+            result[name] = option.cast(value)
+          end
+
+          result
+        end
+
+        def extract_options_from_env
+          result = {}
+
           options.each do |name, option|
             next if option.nested?
 
-            param_value = params[name] || params[name.to_s]
-            next if param_value.nil?
+            env_key = name.to_s.upcase
+            value = ENV[env_key]
+            next if value.nil?
 
-            result[name] = option.cast(param_value)
+            result[name] = option.cast(value)
           end
+
           result
         end
       end
@@ -106,9 +183,54 @@ module Apiwork
       # Override this method in subclasses to produce the spec format.
       # Access API data via `data` (introspection hash).
       #
-      # @return [String] the generated spec
+      # @return [Hash, String] Hash for data specs, String for text specs
       def generate
         raise NotImplementedError, "#{self.class} must implement #generate"
+      end
+
+      def data_output?
+        self.class.output_type == :data
+      end
+
+      def text_output?
+        self.class.output_type == :text
+      end
+
+      def supports_format?(format)
+        return true if data_output? && %i[json yaml].include?(format)
+
+        false
+      end
+
+      def file_extension_for(format: nil)
+        resolved = format || :json
+
+        if data_output?
+          resolved == :yaml ? '.yaml' : '.json'
+        else
+          self.class.file_extension
+        end
+      end
+
+      def content_type_for(format: nil)
+        resolved = format || :json
+
+        if data_output?
+          resolved == :yaml ? 'application/yaml' : 'application/json'
+        else
+          'text/plain; charset=utf-8'
+        end
+      end
+
+      def serialize(content, format:)
+        return content unless content.is_a?(Hash)
+
+        case format
+        when :yaml
+          content.deep_stringify_keys.to_yaml
+        else
+          JSON.pretty_generate(content)
+        end
       end
 
       protected
