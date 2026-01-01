@@ -2,6 +2,9 @@
 
 module Apiwork
   # @api public
+  # Entry point for defining APIs.
+  #
+  # Use {.define} to create an API with resources, types, and configuration.
   module API
     class << self
       # @api public

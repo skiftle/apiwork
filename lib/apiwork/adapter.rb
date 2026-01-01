@@ -2,6 +2,10 @@
 
 module Apiwork
   # @api public
+  # Registry for response adapters.
+  #
+  # Adapters control serialization, pagination, filtering, and response formatting.
+  # The built-in :standard adapter is used by default.
   module Adapter
     class << self
       # @api public

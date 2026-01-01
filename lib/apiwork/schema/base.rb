@@ -3,6 +3,21 @@
 module Apiwork
   module Schema
     # @api public
+    # Base class for resource schemas.
+    #
+    # Schemas define attributes and associations for serialization.
+    # Types and nullability are auto-detected from the model's database columns.
+    #
+    # @example Basic schema
+    #   class InvoiceSchema < Apiwork::Schema::Base
+    #     attribute :id
+    #     attribute :title
+    #     attribute :amount, type: :decimal
+    #     attribute :status, filterable: true, sortable: true
+    #
+    #     belongs_to :customer
+    #     has_many :line_items
+    #   end
     #
     # @!scope class
     # @!method abstract!

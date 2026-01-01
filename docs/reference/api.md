@@ -6,7 +6,11 @@ next: false
 
 # API
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L5)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L8)
+
+Entry point for defining APIs.
+
+Use [.define](#define) to create an API with resources, types, and configuration.
 
 ## Class Methods
 
@@ -14,7 +18,7 @@ next: false
 
 `.define(path, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L30)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L33)
 
 Defines a new API at the given path.
 
@@ -57,7 +61,7 @@ end
 
 `.introspect(path, locale: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L60)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L63)
 
 Returns introspection data for an API.
 
@@ -84,7 +88,7 @@ Apiwork::API.introspect('/api/v1')
 
 `.reset!`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L69)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L72)
 
 Clears all registered APIs. Intended for test cleanup.
 

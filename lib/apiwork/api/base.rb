@@ -3,6 +3,19 @@
 module Apiwork
   module API
     # @api public
+    # Base class for API definitions.
+    #
+    # Created via {API.define}. Configure resources, types, enums,
+    # adapters, and specs. Each API is mounted at a unique path.
+    #
+    # @example Define an API
+    #   Apiwork::API.define '/api/v1' do
+    #     key_format :camel
+    #
+    #     resources :invoices do
+    #       resources :line_items
+    #     end
+    #   end
     class Base
       class << self
         attr_reader :adapter_config,

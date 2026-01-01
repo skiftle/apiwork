@@ -6,7 +6,12 @@ next: false
 
 # Spec
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec.rb#L5)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec.rb#L9)
+
+Registry for spec generators.
+
+Built-in specs: :openapi, :typescript, :zod, :introspection.
+Use [.generate](#generate) to produce specs for an API.
 
 ## Class Methods
 
@@ -14,7 +19,7 @@ next: false
 
 `.generate(spec_name, api_path, **options)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec.rb#L43)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec.rb#L47)
 
 Generates a spec for an API.
 
@@ -47,7 +52,7 @@ Apiwork::Spec.generate(:typescript, '/api/v1', locale: :sv, key_format: :camel)
 
 `.register(klass)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec.rb#L15)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec.rb#L19)
 
 Registers a spec generator.
 
@@ -73,7 +78,7 @@ Apiwork::Spec.register(JSONSchemaSpec)
 
 `.reset!`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec.rb#L52)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec.rb#L56)
 
 Clears all registered specs. Intended for test cleanup.
 

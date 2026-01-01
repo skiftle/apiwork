@@ -2,6 +2,10 @@
 
 module Apiwork
   # @api public
+  # Registry for spec generators.
+  #
+  # Built-in specs: :openapi, :typescript, :zod, :introspection.
+  # Use {.generate} to produce specs for an API.
   module Spec
     class << self
       # @api public

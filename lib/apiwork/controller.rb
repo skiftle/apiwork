@@ -2,6 +2,29 @@
 
 module Apiwork
   # @api public
+  # Mixin for API controllers that provides request validation and response helpers.
+  #
+  # Include in controllers to access {#contract}, {#expose}, and {#expose_error}.
+  # Automatically validates requests against the contract before actions run.
+  #
+  # @example Basic controller
+  #   class InvoicesController < ApplicationController
+  #     include Apiwork::Controller
+  #
+  #     def index
+  #       expose Invoice.all
+  #     end
+  #
+  #     def show
+  #       invoice = Invoice.find(params[:id])
+  #       expose invoice
+  #     end
+  #
+  #     def create
+  #       invoice = Invoice.create!(contract.body)
+  #       expose invoice, status: :created
+  #     end
+  #   end
   module Controller
     extend ActiveSupport::Concern
 

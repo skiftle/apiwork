@@ -3,6 +3,30 @@
 module Apiwork
   module Contract
     # @api public
+    # Base class for API contracts.
+    #
+    # Contracts define request/response structure for a resource.
+    # Link to a schema with {.schema!} for automatic serialization.
+    # Define actions with {.action} for custom validation and response shapes.
+    #
+    # @example Basic contract
+    #   class InvoiceContract < Apiwork::Contract::Base
+    #     schema! InvoiceSchema
+    #   end
+    #
+    # @example With custom actions
+    #   class InvoiceContract < Apiwork::Contract::Base
+    #     schema! InvoiceSchema
+    #
+    #     action :create do
+    #       request do
+    #         body do
+    #           param :title, type: :string
+    #           param :amount, type: :decimal, min: 0
+    #         end
+    #       end
+    #     end
+    #   end
     #
     # @!scope class
     # @!method abstract!

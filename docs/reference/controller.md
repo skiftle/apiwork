@@ -6,7 +6,34 @@ next: false
 
 # Controller
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L5)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L28)
+
+Mixin for API controllers that provides request validation and response helpers.
+
+Include in controllers to access [#contract](#contract), [#expose](#expose), and [#expose_error](#expose-error).
+Automatically validates requests against the contract before actions run.
+
+**Example: Basic controller**
+
+```ruby
+class InvoicesController < ApplicationController
+  include Apiwork::Controller
+
+  def index
+    expose Invoice.all
+  end
+
+  def show
+    invoice = Invoice.find(params[:id])
+    expose invoice
+  end
+
+  def create
+    invoice = Invoice.create!(contract.body)
+    expose invoice, status: :created
+  end
+end
+```
 
 ## Class Methods
 
@@ -14,7 +41,7 @@ next: false
 
 `.skip_contract_validation!(only: nil, except: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L29)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L52)
 
 Skips contract validation for specified actions.
 
@@ -45,7 +72,7 @@ skip_contract_validation!
 
 `#context`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L184)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L207)
 
 Returns the serialization context passed to schemas.
 
@@ -70,7 +97,7 @@ end
 
 `#contract`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L57)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L80)
 
 Returns the parsed and validated request contract.
 
@@ -111,7 +138,7 @@ end
 
 `#expose(data, meta: {}, status: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L95)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L118)
 
 Exposes data as an API response.
 
@@ -164,7 +191,7 @@ end
 
 `#expose_error(code_key, detail: nil, path: nil, meta: {}, i18n: {})`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L152)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L175)
 
 Exposes an error response using a registered error code.
 

@@ -3,6 +3,15 @@
 require 'zeitwerk'
 require_relative 'apiwork/version'
 
+# Apiwork is a Rails framework for building type-safe JSON APIs.
+#
+# Define APIs with resources, contracts, and schemas. Apiwork handles
+# request validation, response serialization, and generates specs.
+#
+# @example Mount in routes
+#   Rails.application.routes.draw do
+#     mount Apiwork, at: '/'
+#   end
 module Apiwork
   class << self
     def call(env)
