@@ -6,6 +6,8 @@ module Apiwork
       # @api public
       # Wraps resource definitions.
       #
+      # @see API
+      # @see Action
       # @example
       #   api.resources.each do |resource|
       #     resource.name       # => :invoices
@@ -40,6 +42,7 @@ module Apiwork
         end
 
         # @return [Array<Action>] actions defined on this resource
+        # @see Action
         def actions
           @actions ||= (@data[:actions] || {}).map do |action_name, action_data|
             Action.new(action_name, action_data)
@@ -52,6 +55,7 @@ module Apiwork
         end
 
         # @return [Array<Resource>] nested resources
+        # @see Resource
         def resources
           @resources ||= (@data[:resources] || {}).map do |resource_name, resource_data|
             Resource.new(resource_name, resource_data)
@@ -76,6 +80,7 @@ module Apiwork
         # Iterates over all actions.
         #
         # @yieldparam action [Action] each action
+        # @see Action
         def each_action(&block)
           actions.each(&block)
         end

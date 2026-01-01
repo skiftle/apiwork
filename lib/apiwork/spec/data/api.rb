@@ -32,11 +32,13 @@ module Apiwork
         end
 
         # @return [Info] API metadata
+        # @see Info
         def info
           @info ||= Info.new(@data[:info])
         end
 
         # @return [Array<Resource>] top-level resources
+        # @see Resource
         def resources
           @resources ||= (@data[:resources] || {}).map do |name, data|
             Resource.new(name, data)
@@ -49,6 +51,7 @@ module Apiwork
         end
 
         # @return [Array<Type>] registered custom types
+        # @see Type
         def types
           @types ||= (@data[:types] || {}).map do |name, data|
             Type.new(name, data)
@@ -66,6 +69,7 @@ module Apiwork
         end
 
         # @return [Array<Enum>] registered enums
+        # @see Enum
         def enums
           @enums ||= (@data[:enums] || {}).map do |name, data|
             Enum.new(name, data)
@@ -88,6 +92,7 @@ module Apiwork
         end
 
         # @return [Array<ErrorCode>] error code definitions
+        # @see ErrorCode
         def error_codes
           @error_codes ||= (@data[:error_codes] || {}).map do |code, data|
             ErrorCode.new(code, data)
@@ -108,6 +113,7 @@ module Apiwork
         #
         # @yieldparam resource [Resource] the resource
         # @yieldparam parent_path [String, nil] parent resource path
+        # @see Resource
         def each_resource(&block)
           iterate_resources(resources, nil, &block)
         end

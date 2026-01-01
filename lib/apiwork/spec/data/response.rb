@@ -22,6 +22,7 @@ module Apiwork
         end
 
         # @return [Param, nil] response body definition
+        # @see Param
         def body
           @body ||= @data[:body] ? Param.new(@data[:body]) : nil
         end

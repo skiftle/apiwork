@@ -42,6 +42,7 @@ module Apiwork
         end
 
         # @return [Hash{Symbol => Param}] nested fields for object types
+        # @see Param
         def shape
           @shape ||= (@data[:shape] || {}).transform_values { |d| Param.new(d) }
         end

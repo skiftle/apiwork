@@ -34,11 +34,13 @@ module Apiwork
         end
 
         # @return [Request, nil] request definition
+        # @see Request
         def request
           @request ||= @data[:request] ? Request.new(@data[:request]) : nil
         end
 
         # @return [Response, nil] response definition
+        # @see Response
         def response
           @response ||= @data[:response] ? Response.new(@data[:response]) : nil
         end

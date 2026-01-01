@@ -20,11 +20,13 @@ module Apiwork
         end
 
         # @return [Hash{Symbol => Param}] query parameters as Param objects
+        # @see Param
         def query
           @query ||= build_params(@data[:query])
         end
 
         # @return [Hash{Symbol => Param}] body parameters as Param objects
+        # @see Param
         def body
           @body ||= build_params(@data[:body])
         end

@@ -44,16 +44,19 @@ module Apiwork
         end
 
         # @return [Contact, nil] contact information
+        # @see Contact
         def contact
           @contact ||= @data[:contact] ? Contact.new(@data[:contact]) : nil
         end
 
         # @return [License, nil] license information
+        # @see License
         def license
           @license ||= @data[:license] ? License.new(@data[:license]) : nil
         end
 
         # @return [Array<Server>] server definitions
+        # @see Server
         def servers
           @servers ||= (@data[:servers] || []).map { |s| Server.new(s) }
         end
