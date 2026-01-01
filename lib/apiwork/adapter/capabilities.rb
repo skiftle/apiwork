@@ -10,7 +10,7 @@ module Apiwork
     #
     # @example Conditional type registration
     #   def register_api(registrar, capabilities)
-    #     if capabilities.uses_offset_pagination?
+    #     if capabilities.offset_pagination?
     #       registrar.type :offset_pagination do
     #         param :page, type: :integer
     #         param :per_page, type: :integer
@@ -27,19 +27,19 @@ module Apiwork
     class Capabilities
       # @api public
       # @return [Array<Symbol>] data types used in filterable attributes
-      attr_reader :filterable_types
+      attr_reader :filter_types
 
       # @api public
       # @return [Array<Symbol>] data types used in nullable filterable attributes
-      attr_reader :nullable_filterable_types
+      attr_reader :nullable_filter_types
 
       def initialize(structure)
         @structure = structure
         schema_classes = structure.schema_classes
-        @filterable_types, @nullable_filterable_types = extract_filterable_type_variants(schema_classes)
+        @filter_types, @nullable_filter_types = extract_filterable_type_variants(schema_classes)
         @sortable = check_sortable(schema_classes)
-        @has_resources = structure.has_resources?
-        @has_index_actions = structure.has_index_actions?
+        @resources = structure.has_resources?
+        @index_actions = structure.has_index_actions?
         @pagination_strategies = extract_pagination_strategies(schema_classes)
       end
 
@@ -52,36 +52,36 @@ module Apiwork
       # @api public
       # @return [Boolean] true if any schema has filterable attributes
       def filterable?
-        filterable_types.any?
+        filter_types.any?
       end
 
       # @api public
       # @return [Boolean] true if any pagination strategy is used
-      def paginatable?
-        uses_offset_pagination? || uses_cursor_pagination?
+      def pagination?
+        offset_pagination? || cursor_pagination?
       end
 
       # @api public
       # @return [Boolean] true if the API has any resources registered
-      def has_resources?
-        @has_resources
+      def resources?
+        @resources
       end
 
       # @api public
       # @return [Boolean] true if any resource has an index action
-      def has_index_actions?
-        @has_index_actions
+      def index_actions?
+        @index_actions
       end
 
       # @api public
       # @return [Boolean] true if any schema uses offset pagination
-      def uses_offset_pagination?
+      def offset_pagination?
         @pagination_strategies.include?(:offset)
       end
 
       # @api public
       # @return [Boolean] true if any schema uses cursor pagination
-      def uses_cursor_pagination?
+      def cursor_pagination?
         @pagination_strategies.include?(:cursor)
       end
 

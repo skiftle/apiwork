@@ -13,39 +13,39 @@ RSpec.describe Apiwork::Adapter::Capabilities do
   end
 
   describe '#filterable?' do
-    it 'returns true when filterable_types is not empty' do
+    it 'returns true when filter_types is not empty' do
       capabilities = described_class.new(structure)
-      allow(capabilities).to receive(:filterable_types).and_return([:string, :integer])
+      allow(capabilities).to receive(:filter_types).and_return([:string, :integer])
 
       expect(capabilities.filterable?).to be true
     end
 
-    it 'returns false when filterable_types is empty' do
+    it 'returns false when filter_types is empty' do
       capabilities = described_class.new(structure)
 
       expect(capabilities.filterable?).to be false
     end
   end
 
-  describe '#paginatable?' do
+  describe '#pagination?' do
     it 'returns true when offset pagination is used' do
       capabilities = described_class.new(structure)
-      allow(capabilities).to receive(:uses_offset_pagination?).and_return(true)
+      allow(capabilities).to receive(:offset_pagination?).and_return(true)
 
-      expect(capabilities.paginatable?).to be true
+      expect(capabilities.pagination?).to be true
     end
 
     it 'returns true when cursor pagination is used' do
       capabilities = described_class.new(structure)
-      allow(capabilities).to receive(:uses_cursor_pagination?).and_return(true)
+      allow(capabilities).to receive(:cursor_pagination?).and_return(true)
 
-      expect(capabilities.paginatable?).to be true
+      expect(capabilities.pagination?).to be true
     end
 
     it 'returns false when no pagination is used' do
       capabilities = described_class.new(structure)
 
-      expect(capabilities.paginatable?).to be false
+      expect(capabilities.pagination?).to be false
     end
   end
 end

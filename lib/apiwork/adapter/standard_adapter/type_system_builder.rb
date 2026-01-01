@@ -133,9 +133,9 @@ module Apiwork
           @registrar = registrar
           @capabilities = capabilities
 
-          register_pagination_types if capabilities.has_index_actions?
-          register_error_type if capabilities.has_resources?
-          register_global_filter_types if capabilities.filterable_types.any?
+          register_pagination_types if capabilities.index_actions?
+          register_error_type if capabilities.resources?
+          register_global_filter_types if capabilities.filter_types.any?
           register_sort_direction if capabilities.sortable?
         end
 
@@ -145,8 +145,8 @@ module Apiwork
                     :capabilities
 
         def register_pagination_types
-          register_offset_pagination if capabilities.uses_offset_pagination?
-          register_cursor_pagination if capabilities.uses_cursor_pagination?
+          register_offset_pagination if capabilities.offset_pagination?
+          register_cursor_pagination if capabilities.cursor_pagination?
         end
 
         def register_offset_pagination
@@ -186,11 +186,11 @@ module Apiwork
         def register_global_filter_types
           filter_types_to_register = Set.new
 
-          capabilities.filterable_types.each do |type|
+          capabilities.filter_types.each do |type|
             filter_types_to_register.add(determine_filter_type(type, nullable: false))
           end
 
-          capabilities.nullable_filterable_types.each do |type|
+          capabilities.nullable_filter_types.each do |type|
             filter_types_to_register.add(determine_filter_type(type, nullable: true))
           end
 
