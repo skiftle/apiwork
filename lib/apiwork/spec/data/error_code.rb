@@ -37,7 +37,11 @@ module Apiwork
         # @api public
         # @return [Hash] structured representation
         def to_h
-          { code: code, description: description, status: status }
+          {
+            code:,
+            description:,
+            status:,
+          }
         end
       end
     end
