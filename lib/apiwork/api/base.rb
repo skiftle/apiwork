@@ -358,7 +358,7 @@ module Apiwork
         #     end
         #   end
         def info(&block)
-          builder = Info::Builder.new
+          builder = InfoBuilder.new
           builder.instance_eval(&block)
           @structure.info = builder.info
         end
