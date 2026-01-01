@@ -41,7 +41,7 @@ Iterates over all resources recursively (including nested).
 
 **See also**
 
-- [Data::Resource](data-resource)
+- [Data::Resource](spec-data-resource)
 
 ---
 
@@ -57,7 +57,7 @@ Iterates over all resources recursively (including nested).
 
 **See also**
 
-- [Data::Enum](data-enum)
+- [Data::Enum](spec-data-enum)
 
 ---
 
@@ -73,7 +73,7 @@ Iterates over all resources recursively (including nested).
 
 **See also**
 
-- [Data::ErrorCode](data-error-code)
+- [Data::ErrorCode](spec-data-error-code)
 
 ---
 
@@ -89,7 +89,7 @@ Iterates over all resources recursively (including nested).
 
 **See also**
 
-- [Data::Info](data-info)
+- [Data::Info](spec-data-info)
 
 ---
 
@@ -129,7 +129,7 @@ Iterates over all resources recursively (including nested).
 
 **See also**
 
-- [Data::Resource](data-resource)
+- [Data::Resource](spec-data-resource)
 
 ---
 
@@ -157,6 +157,6 @@ Iterates over all resources recursively (including nested).
 
 **See also**
 
-- [Data::Type](data-type)
+- [Data::Type](spec-data-type)
 
 ---

@@ -22,11 +22,23 @@ end
 
 ## Instance Methods
 
+### #code
+
+`#code`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/error_code.rb#L18)
+
+**Returns**
+
+`Symbol` — error code identifier
+
+---
+
 ### #description
 
 `#description`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/error_code.rb#L31)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/error_code.rb#L33)
 
 **Returns**
 
@@ -38,7 +50,7 @@ end
 
 `#status`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/error_code.rb#L25)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/error_code.rb#L27)
 
 **Returns**
 

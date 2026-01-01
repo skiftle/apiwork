@@ -19,6 +19,8 @@ module Apiwork
       #   type.variants      # => [{ type: :credit_card, ... }, ...]
       #   type.discriminator # => :type
       class Type
+        # @api public
+        # @return [Symbol] type name
         attr_reader :name
 
         def initialize(name, data)

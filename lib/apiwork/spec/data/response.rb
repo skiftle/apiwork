@@ -11,7 +11,6 @@ module Apiwork
       #   response.body?        # => true
       #   response.no_content?  # => false
       #   response.body         # => Param for response body
-      #   response.body_hash    # => raw hash for mappers
       #
       # @example No content response
       #   response.no_content?  # => true
@@ -38,12 +37,6 @@ module Apiwork
         # @return [Boolean] whether a body is defined
         def body?
           body.present?
-        end
-
-        # @api public
-        # @return [Hash, nil] raw body hash for mappers that need hash access
-        def body_hash
-          @data[:body]
         end
       end
     end

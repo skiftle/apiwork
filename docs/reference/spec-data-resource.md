@@ -35,7 +35,7 @@ end
 
 `#actions`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/resource.rb#L48)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/resource.rb#L50)
 
 **Returns**
 
@@ -43,7 +43,7 @@ end
 
 **See also**
 
-- [Action](action)
+- [Action](spec-data-action)
 
 ---
 
@@ -51,13 +51,13 @@ end
 
 `#each_action(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/resource.rb#L86)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/resource.rb#L88)
 
 Iterates over all actions.
 
 **See also**
 
-- [Action](action)
+- [Action](spec-data-action)
 
 ---
 
@@ -65,7 +65,7 @@ Iterates over all actions.
 
 `#identifier`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/resource.rb#L35)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/resource.rb#L37)
 
 **Returns**
 
@@ -73,11 +73,23 @@ Iterates over all actions.
 
 ---
 
+### #name
+
+`#name`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/resource.rb#L28)
+
+**Returns**
+
+`Symbol` — resource name
+
+---
+
 ### #nested?
 
 `#nested?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/resource.rb#L65)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/resource.rb#L67)
 
 **Returns**
 
@@ -89,7 +101,7 @@ Iterates over all actions.
 
 `#path`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/resource.rb#L41)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/resource.rb#L43)
 
 **Returns**
 
@@ -101,7 +113,7 @@ Iterates over all actions.
 
 `#resources`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/resource.rb#L57)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/resource.rb#L59)
 
 **Returns**
 
@@ -109,7 +121,7 @@ Iterates over all actions.
 
 **See also**
 
-- [Resource](resource)
+- [Resource](spec-data-resource)
 
 ---
 
@@ -117,7 +129,7 @@ Iterates over all actions.
 
 `#schema`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/resource.rb#L71)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/resource.rb#L73)
 
 **Returns**
 
@@ -129,7 +141,7 @@ Iterates over all actions.
 
 `#schema?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/resource.rb#L77)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/resource.rb#L79)
 
 **Returns**
 
@@ -141,7 +153,7 @@ Iterates over all actions.
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/resource.rb#L92)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/resource.rb#L94)
 
 **Returns**
 

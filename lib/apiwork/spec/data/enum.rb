@@ -14,6 +14,8 @@ module Apiwork
       #     enum.deprecated?  # => false
       #   end
       class Enum
+        # @api public
+        # @return [Symbol] enum name
         attr_reader :name
 
         def initialize(name, data)

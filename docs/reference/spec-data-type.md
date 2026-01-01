@@ -35,7 +35,7 @@ type.discriminator # => :type
 
 `#deprecated?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/type.rb#L80)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/type.rb#L82)
 
 **Returns**
 
@@ -47,7 +47,7 @@ type.discriminator # => :type
 
 `#description`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/type.rb#L68)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/type.rb#L70)
 
 **Returns**
 
@@ -59,7 +59,7 @@ type.discriminator # => :type
 
 `#discriminator`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/type.rb#L62)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/type.rb#L64)
 
 **Returns**
 
@@ -71,7 +71,7 @@ type.discriminator # => :type
 
 `#example`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/type.rb#L74)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/type.rb#L76)
 
 **Returns**
 
@@ -79,11 +79,23 @@ type.discriminator # => :type
 
 ---
 
+### #name
+
+`#name`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/type.rb#L24)
+
+**Returns**
+
+`Symbol` — type name
+
+---
+
 ### #object?
 
 `#object?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/type.rb#L37)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/type.rb#L39)
 
 **Returns**
 
@@ -95,7 +107,7 @@ type.discriminator # => :type
 
 `#shape`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/type.rb#L50)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/type.rb#L52)
 
 **Returns**
 
@@ -103,7 +115,7 @@ type.discriminator # => :type
 
 **See also**
 
-- [Param](param)
+- [Param](spec-data-param)
 
 ---
 
@@ -111,7 +123,7 @@ type.discriminator # => :type
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/type.rb#L86)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/type.rb#L88)
 
 **Returns**
 
@@ -123,7 +135,7 @@ type.discriminator # => :type
 
 `#type`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/type.rb#L31)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/type.rb#L33)
 
 **Returns**
 
@@ -135,7 +147,7 @@ type.discriminator # => :type
 
 `#union?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/type.rb#L43)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/type.rb#L45)
 
 **Returns**
 
@@ -147,7 +159,7 @@ type.discriminator # => :type
 
 `#variants`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/type.rb#L56)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/type.rb#L58)
 
 **Returns**
 

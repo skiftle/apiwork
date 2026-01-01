@@ -31,11 +31,11 @@ info.license&.name    # => "MIT"
 
 **Returns**
 
-[Contact](contact), `nil` — contact information
+[Contact](spec-data-contact), `nil` — contact information
 
 **See also**
 
-- [Contact](contact)
+- [Contact](spec-data-contact)
 
 ---
 
@@ -59,11 +59,11 @@ info.license&.name    # => "MIT"
 
 **Returns**
 
-[License](license), `nil` — license information
+[License](spec-data-license), `nil` — license information
 
 **See also**
 
-- [License](license)
+- [License](spec-data-license)
 
 ---
 
@@ -79,7 +79,7 @@ info.license&.name    # => "MIT"
 
 **See also**
 
-- [Server](server)
+- [Server](spec-data-server)
 
 ---
 

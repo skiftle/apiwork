@@ -277,17 +277,18 @@ module Apiwork
     end
 
     def class_to_filepath(class_name)
-      # "Adapter::ContractRegistrar" → "adapter-contract-registrar"
-      # "Contract::RequestDefinition" → "contract-request-definition"
-      # "ActionDefinition" → "contract-action-definition"
       without_apiwork = class_name.delete_prefix('Apiwork::')
 
-      # If it was under Contract::, keep that as a prefix
       if without_apiwork.start_with?('Contract::')
         normalized = without_apiwork.delete_prefix('Contract::')
         "contract-#{dasherize(normalized)}"
+      elsif without_apiwork.start_with?('Spec::Data::')
+        dasherize(without_apiwork.gsub('::', '-'))
+      elsif without_apiwork.start_with?('Data::')
+        "spec-#{dasherize(without_apiwork.gsub('::', '-'))}"
+      elsif spec_data_class?(class_name)
+        "spec-data-#{dasherize(without_apiwork)}"
       elsif contract_class?(class_name)
-        # Short name like "ActionDefinition" that belongs to Contract
         "contract-#{dasherize(without_apiwork)}"
       else
         dasherize(without_apiwork.gsub('::', '-'))
@@ -302,6 +303,18 @@ module Apiwork
     def build_contract_classes
       YARD::Registry.all(:class, :module)
         .select { |obj| obj.path.start_with?('Apiwork::Contract::') }
+        .map { |obj| obj.name.to_s }
+        .to_set
+    end
+
+    def spec_data_class?(class_name)
+      @spec_data_classes ||= build_spec_data_classes
+      @spec_data_classes.include?(class_name)
+    end
+
+    def build_spec_data_classes
+      YARD::Registry.all(:class, :module)
+        .select { |obj| obj.path.start_with?('Apiwork::Spec::Data::') }
         .map { |obj| obj.name.to_s }
         .to_set
     end

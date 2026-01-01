@@ -6,7 +6,7 @@ next: false
 
 # Spec::Data::Response
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/response.rb#L19)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/response.rb#L18)
 
 Wraps action response definitions.
 
@@ -17,7 +17,6 @@ response = action.response
 response.body?        # => true
 response.no_content?  # => false
 response.body         # => Param for response body
-response.body_hash    # => raw hash for mappers
 ```
 
 **Example: No content response**
@@ -33,15 +32,15 @@ response.body?        # => false
 
 `#body`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/response.rb#L27)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/response.rb#L26)
 
 **Returns**
 
-[Param](param), `nil` — response body definition
+[Param](spec-data-param), `nil` — response body definition
 
 **See also**
 
-- [Param](param)
+- [Param](spec-data-param)
 
 ---
 
@@ -49,7 +48,7 @@ response.body?        # => false
 
 `#body?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/response.rb#L39)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/response.rb#L38)
 
 **Returns**
 
@@ -57,23 +56,11 @@ response.body?        # => false
 
 ---
 
-### #body_hash
-
-`#body_hash`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/response.rb#L45)
-
-**Returns**
-
-`Hash`, `nil` — raw body hash for mappers that need hash access
-
----
-
 ### #no_content?
 
 `#no_content?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/response.rb#L33)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/response.rb#L32)
 
 **Returns**
 

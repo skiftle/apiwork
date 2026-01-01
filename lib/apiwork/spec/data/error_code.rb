@@ -13,6 +13,8 @@ module Apiwork
       #     error_code.description  # => "Resource not found"
       #   end
       class ErrorCode
+        # @api public
+        # @return [Symbol] error code identifier
         attr_reader :code
 
         def initialize(code, data)

@@ -13,7 +13,6 @@ module Apiwork
       #   request.query?              # => true
       #   request.body?               # => false
       #   request.query[:page]        # => Param for page param
-      #   request.query_hash          # => raw hash for mappers
       class Request
         def initialize(data)
           @data = data || {}
@@ -43,18 +42,6 @@ module Apiwork
         # @return [Boolean] whether body parameters are defined
         def body?
           body.any?
-        end
-
-        # @api public
-        # @return [Hash] raw query hash for mappers that need hash access
-        def query_hash
-          @data[:query] || {}
-        end
-
-        # @api public
-        # @return [Hash] raw body hash for mappers that need hash access
-        def body_hash
-          @data[:body] || {}
         end
 
         private

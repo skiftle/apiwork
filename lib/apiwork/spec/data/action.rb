@@ -16,6 +16,8 @@ module Apiwork
       #     action.deprecated? # => false
       #   end
       class Action
+        # @api public
+        # @return [Symbol] action name
         attr_reader :name
 
         def initialize(name, data)
@@ -31,7 +33,7 @@ module Apiwork
 
         # @api public
         # @return [Symbol] HTTP method (:get, :post, :patch, :delete, :put)
-        def http_method
+        def method
           @data[:method]
         end
 

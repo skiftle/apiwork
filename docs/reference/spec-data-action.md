@@ -29,7 +29,7 @@ end
 
 `#deprecated?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/action.rb#L84)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/action.rb#L86)
 
 **Returns**
 
@@ -41,7 +41,7 @@ end
 
 `#description`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/action.rb#L66)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/action.rb#L68)
 
 **Returns**
 
@@ -49,11 +49,11 @@ end
 
 ---
 
-### #http_method
+### #method
 
-`#http_method`
+`#method`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/action.rb#L34)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/action.rb#L36)
 
 **Returns**
 
@@ -61,11 +61,23 @@ end
 
 ---
 
+### #name
+
+`#name`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/action.rb#L21)
+
+**Returns**
+
+`Symbol` — action name
+
+---
+
 ### #operation_id
 
 `#operation_id`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/action.rb#L78)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/action.rb#L80)
 
 **Returns**
 
@@ -77,7 +89,7 @@ end
 
 `#path`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/action.rb#L28)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/action.rb#L30)
 
 **Returns**
 
@@ -89,7 +101,7 @@ end
 
 `#raises`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/action.rb#L54)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/action.rb#L56)
 
 **Returns**
 
@@ -101,15 +113,15 @@ end
 
 `#request`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/action.rb#L41)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/action.rb#L43)
 
 **Returns**
 
-[Request](request), `nil` — request definition
+[Request](spec-data-request), `nil` — request definition
 
 **See also**
 
-- [Request](request)
+- [Request](spec-data-request)
 
 ---
 
@@ -117,7 +129,7 @@ end
 
 `#request?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/action.rb#L90)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/action.rb#L92)
 
 **Returns**
 
@@ -129,15 +141,15 @@ end
 
 `#response`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/action.rb#L48)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/action.rb#L50)
 
 **Returns**
 
-[Response](response), `nil` — response definition
+[Response](spec-data-response), `nil` — response definition
 
 **See also**
 
-- [Response](response)
+- [Response](spec-data-response)
 
 ---
 
@@ -145,7 +157,7 @@ end
 
 `#response?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/action.rb#L96)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/action.rb#L98)
 
 **Returns**
 
@@ -157,7 +169,7 @@ end
 
 `#summary`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/action.rb#L60)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/action.rb#L62)
 
 **Returns**
 
@@ -169,7 +181,7 @@ end
 
 `#tags`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/action.rb#L72)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/action.rb#L74)
 
 **Returns**
 
@@ -181,7 +193,7 @@ end
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/action.rb#L102)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/action.rb#L104)
 
 **Returns**
 

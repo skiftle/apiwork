@@ -123,7 +123,7 @@ registered via ErrorCode.register. These appear in generated specs.
 
 **See also**
 
-- [ErrorCode](error-code)
+- [ErrorCode](spec-data-error-code)
 
 **Example**
 

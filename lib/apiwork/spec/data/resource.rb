@@ -23,6 +23,8 @@ module Apiwork
       #     end
       #   end
       class Resource
+        # @api public
+        # @return [Symbol] resource name
         attr_reader :name
 
         def initialize(name, data)

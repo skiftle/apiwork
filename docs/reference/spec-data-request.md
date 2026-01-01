@@ -6,7 +6,7 @@ next: false
 
 # Spec::Data::Request
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/request.rb#L17)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/request.rb#L16)
 
 Wraps action request definitions.
 
@@ -19,7 +19,6 @@ request = action.request
 request.query?              # => true
 request.body?               # => false
 request.query[:page]        # => Param for page param
-request.query_hash          # => raw hash for mappers
 ```
 
 ## Instance Methods
@@ -28,7 +27,7 @@ request.query_hash          # => raw hash for mappers
 
 `#body`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/request.rb#L32)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/request.rb#L31)
 
 **Returns**
 
@@ -36,7 +35,7 @@ request.query_hash          # => raw hash for mappers
 
 **See also**
 
-- [Param](param)
+- [Param](spec-data-param)
 
 ---
 
@@ -44,7 +43,7 @@ request.query_hash          # => raw hash for mappers
 
 `#body?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/request.rb#L44)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/request.rb#L43)
 
 **Returns**
 
@@ -52,23 +51,11 @@ request.query_hash          # => raw hash for mappers
 
 ---
 
-### #body_hash
-
-`#body_hash`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/request.rb#L56)
-
-**Returns**
-
-`Hash` — raw body hash for mappers that need hash access
-
----
-
 ### #query
 
 `#query`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/request.rb#L25)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/request.rb#L24)
 
 **Returns**
 
@@ -76,7 +63,7 @@ request.query_hash          # => raw hash for mappers
 
 **See also**
 
-- [Param](param)
+- [Param](spec-data-param)
 
 ---
 
@@ -84,22 +71,10 @@ request.query_hash          # => raw hash for mappers
 
 `#query?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/request.rb#L38)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/request.rb#L37)
 
 **Returns**
 
 `Boolean` — whether query parameters are defined
-
----
-
-### #query_hash
-
-`#query_hash`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/request.rb#L50)
-
-**Returns**
-
-`Hash` — raw query hash for mappers that need hash access
 
 ---

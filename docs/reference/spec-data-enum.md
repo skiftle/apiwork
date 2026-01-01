@@ -27,7 +27,7 @@ end
 
 `#deprecated?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/enum.rb#L44)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/enum.rb#L46)
 
 **Returns**
 
@@ -39,7 +39,7 @@ end
 
 `#description`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/enum.rb#L32)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/enum.rb#L34)
 
 **Returns**
 
@@ -51,7 +51,7 @@ end
 
 `#example`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/enum.rb#L38)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/enum.rb#L40)
 
 **Returns**
 
@@ -59,11 +59,23 @@ end
 
 ---
 
+### #name
+
+`#name`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/enum.rb#L19)
+
+**Returns**
+
+`Symbol` — enum name
+
+---
+
 ### #values
 
 `#values`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/enum.rb#L26)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/enum.rb#L28)
 
 **Returns**
 
