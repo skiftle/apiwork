@@ -1,12 +1,12 @@
 ---
-order: 32
+order: 27
 prev: false
 next: false
 ---
 
-# Spec::Data::Request
+# Introspection::Action::Request
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/request.rb#L16)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/request.rb#L16)
 
 Wraps action request definitions.
 
@@ -27,7 +27,7 @@ request.query[:page]        # => Param for page param
 
 `#body`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/request.rb#L31)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/request.rb#L31)
 
 **Returns**
 
@@ -35,7 +35,7 @@ request.query[:page]        # => Param for page param
 
 **See also**
 
-- [Param](spec-data-param)
+- [Param](introspection-param)
 
 ---
 
@@ -43,7 +43,7 @@ request.query[:page]        # => Param for page param
 
 `#body?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/request.rb#L43)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/request.rb#L43)
 
 **Returns**
 
@@ -55,7 +55,7 @@ request.query[:page]        # => Param for page param
 
 `#query`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/request.rb#L24)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/request.rb#L24)
 
 **Returns**
 
@@ -63,7 +63,7 @@ request.query[:page]        # => Param for page param
 
 **See also**
 
-- [Param](spec-data-param)
+- [Param](introspection-param)
 
 ---
 
@@ -71,7 +71,7 @@ request.query[:page]        # => Param for page param
 
 `#query?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/request.rb#L37)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/request.rb#L37)
 
 **Returns**
 
@@ -83,7 +83,7 @@ request.query[:page]        # => Param for page param
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/request.rb#L49)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/request.rb#L49)
 
 **Returns**
 

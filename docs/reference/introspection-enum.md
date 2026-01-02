@@ -1,12 +1,12 @@
 ---
-order: 27
+order: 30
 prev: false
 next: false
 ---
 
-# Spec::Data::Enum
+# Introspection::Enum
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/enum.rb#L16)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum.rb#L15)
 
 Wraps enum type definitions.
 
@@ -27,7 +27,7 @@ end
 
 `#deprecated?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/enum.rb#L46)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum.rb#L45)
 
 **Returns**
 
@@ -39,7 +39,7 @@ end
 
 `#description`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/enum.rb#L34)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum.rb#L33)
 
 **Returns**
 
@@ -51,7 +51,7 @@ end
 
 `#example`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/enum.rb#L40)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum.rb#L39)
 
 **Returns**
 
@@ -63,7 +63,7 @@ end
 
 `#name`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/enum.rb#L19)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum.rb#L18)
 
 **Returns**
 
@@ -75,7 +75,7 @@ end
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/enum.rb#L52)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum.rb#L51)
 
 **Returns**
 
@@ -87,7 +87,7 @@ end
 
 `#values`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/enum.rb#L28)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum.rb#L27)
 
 **Returns**
 

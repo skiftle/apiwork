@@ -1,12 +1,12 @@
 ---
-order: 34
+order: 28
 prev: false
 next: false
 ---
 
-# Spec::Data::Response
+# Introspection::Action::Response
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/response.rb#L18)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/response.rb#L18)
 
 Wraps action response definitions.
 
@@ -32,15 +32,15 @@ response.body?        # => false
 
 `#body`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/response.rb#L26)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/response.rb#L26)
 
 **Returns**
 
-[Param](spec-data-param), `nil` — response body definition
+[Param](introspection-param), `nil` — response body definition
 
 **See also**
 
-- [Param](spec-data-param)
+- [Param](introspection-param)
 
 ---
 
@@ -48,7 +48,7 @@ response.body?        # => false
 
 `#body?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/response.rb#L38)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/response.rb#L38)
 
 **Returns**
 
@@ -60,7 +60,7 @@ response.body?        # => false
 
 `#no_content?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/response.rb#L32)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/response.rb#L32)
 
 **Returns**
 
@@ -72,7 +72,7 @@ response.body?        # => false
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/response.rb#L44)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/response.rb#L44)
 
 **Returns**
 

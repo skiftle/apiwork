@@ -1,12 +1,12 @@
 ---
-order: 31
+order: 32
 prev: false
 next: false
 ---
 
-# Spec::Data::Param
+# Introspection::Param
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/param.rb#L25)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L24)
 
 Wraps parameter/field definitions.
 
@@ -26,7 +26,7 @@ param.description  # => "User email address"
 
 ```ruby
 param.array?       # => true
-param.of           # => :string or { type: :object, shape: {...} }
+param.of           # => Param for element type
 ```
 
 **Example: Object type**
@@ -42,7 +42,7 @@ param.shape[:name] # => Param for the name field
 
 `#\[\](key)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/param.rb#L167)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L172)
 
 Access raw data for edge cases not covered by accessors.
 
@@ -62,7 +62,7 @@ Access raw data for edge cases not covered by accessors.
 
 `#array?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/param.rb#L38)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L37)
 
 **Returns**
 
@@ -74,7 +74,7 @@ Access raw data for edge cases not covered by accessors.
 
 `#default`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/param.rb#L146)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L151)
 
 **Returns**
 
@@ -86,7 +86,7 @@ Access raw data for edge cases not covered by accessors.
 
 `#default?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/param.rb#L152)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L157)
 
 **Returns**
 
@@ -98,7 +98,7 @@ Access raw data for edge cases not covered by accessors.
 
 `#deprecated?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/param.rb#L110)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L115)
 
 **Returns**
 
@@ -110,7 +110,7 @@ Access raw data for edge cases not covered by accessors.
 
 `#description`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/param.rb#L116)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L121)
 
 **Returns**
 
@@ -122,7 +122,7 @@ Access raw data for edge cases not covered by accessors.
 
 `#discriminator`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/param.rb#L80)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L85)
 
 **Returns**
 
@@ -134,7 +134,7 @@ Access raw data for edge cases not covered by accessors.
 
 `#enum`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/param.rb#L92)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L97)
 
 **Returns**
 
@@ -146,7 +146,7 @@ Access raw data for edge cases not covered by accessors.
 
 `#example`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/param.rb#L122)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L127)
 
 **Returns**
 
@@ -158,7 +158,7 @@ Access raw data for edge cases not covered by accessors.
 
 `#format`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/param.rb#L128)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L133)
 
 **Returns**
 
@@ -170,7 +170,7 @@ Access raw data for edge cases not covered by accessors.
 
 `#literal?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/param.rb#L56)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L55)
 
 **Returns**
 
@@ -182,7 +182,7 @@ Access raw data for edge cases not covered by accessors.
 
 `#max`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/param.rb#L140)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L145)
 
 **Returns**
 
@@ -194,7 +194,7 @@ Access raw data for edge cases not covered by accessors.
 
 `#min`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/param.rb#L134)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L139)
 
 **Returns**
 
@@ -206,7 +206,7 @@ Access raw data for edge cases not covered by accessors.
 
 `#nullable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/param.rb#L98)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L103)
 
 **Returns**
 
@@ -218,7 +218,7 @@ Access raw data for edge cases not covered by accessors.
 
 `#object?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/param.rb#L44)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L43)
 
 **Returns**
 
@@ -230,11 +230,11 @@ Access raw data for edge cases not covered by accessors.
 
 `#of`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/param.rb#L62)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L61)
 
 **Returns**
 
-`Symbol`, `Hash`, `nil` — element type for arrays
+[Param](introspection-param), `nil` — element type for arrays
 
 ---
 
@@ -242,7 +242,7 @@ Access raw data for edge cases not covered by accessors.
 
 `#optional?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/param.rb#L104)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L109)
 
 **Returns**
 
@@ -254,7 +254,7 @@ Access raw data for edge cases not covered by accessors.
 
 `#partial?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/param.rb#L158)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L163)
 
 **Returns**
 
@@ -266,7 +266,7 @@ Access raw data for edge cases not covered by accessors.
 
 `#shape`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/param.rb#L68)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L73)
 
 **Returns**
 
@@ -278,7 +278,7 @@ Access raw data for edge cases not covered by accessors.
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/param.rb#L173)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L178)
 
 **Returns**
 
@@ -290,7 +290,7 @@ Access raw data for edge cases not covered by accessors.
 
 `#type`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/param.rb#L32)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L31)
 
 **Returns**
 
@@ -302,7 +302,7 @@ Access raw data for edge cases not covered by accessors.
 
 `#union?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/param.rb#L50)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L49)
 
 **Returns**
 
@@ -314,7 +314,7 @@ Access raw data for edge cases not covered by accessors.
 
 `#value`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/param.rb#L86)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L91)
 
 **Returns**
 
@@ -326,10 +326,10 @@ Access raw data for edge cases not covered by accessors.
 
 `#variants`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/param.rb#L74)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L79)
 
 **Returns**
 
-`Array<Hash>` — variants for unions
+`Array<Param>` — variants for unions
 
 ---

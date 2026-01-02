@@ -1,12 +1,12 @@
 ---
-order: 28
+order: 31
 prev: false
 next: false
 ---
 
-# Spec::Data::ErrorCode
+# Introspection::ErrorCode
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/error_code.rb#L15)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/error_code.rb#L14)
 
 Wraps error code definitions.
 
@@ -26,7 +26,7 @@ end
 
 `#code`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/error_code.rb#L18)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/error_code.rb#L17)
 
 **Returns**
 
@@ -38,7 +38,7 @@ end
 
 `#description`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/error_code.rb#L33)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/error_code.rb#L32)
 
 **Returns**
 
@@ -50,7 +50,7 @@ end
 
 `#status`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/error_code.rb#L27)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/error_code.rb#L26)
 
 **Returns**
 
@@ -62,7 +62,7 @@ end
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/data/error_code.rb#L39)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/error_code.rb#L38)
 
 **Returns**
 

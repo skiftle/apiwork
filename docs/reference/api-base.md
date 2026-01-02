@@ -10,7 +10,7 @@ next: false
 
 Base class for API definitions.
 
-Created via [API.define](api#define). Configure resources, types, enums,
+Created via [API.define](introspection-api#define). Configure resources, types, enums,
 adapters, and specs. Each API is mounted at a unique path.
 
 **Example: Define an API**

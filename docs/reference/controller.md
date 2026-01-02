@@ -195,7 +195,7 @@ end
 
 Exposes an error response using a registered error code.
 
-Error codes are registered via [ErrorCode.register](spec-data-error-code#register).
+Error codes are registered via [ErrorCode.register](introspection-error-code#register).
 The detail message is looked up from I18n if not provided.
 
 **Parameters**
@@ -210,7 +210,7 @@ The detail message is looked up from I18n if not provided.
 
 **See also**
 
-- [ErrorCode](spec-data-error-code)
+- [ErrorCode](introspection-error-code)
 - [Issue](issue)
 
 **Example: Not found error**
