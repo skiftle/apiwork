@@ -14,7 +14,7 @@ module Apiwork
         #   contact.url    # => "https://example.com/support"
         class Contact
           def initialize(data)
-            @data = data || {}
+            @data = data
           end
 
           # @api public

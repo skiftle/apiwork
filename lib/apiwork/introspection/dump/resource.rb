@@ -53,7 +53,7 @@ module Apiwork
         end
 
         def build_nested_resources(resource_path)
-          return nil unless @resource.resources.any?
+          return {} unless @resource.resources.any?
 
           @resource.resources.transform_values do |nested_resource|
             Resource.new(

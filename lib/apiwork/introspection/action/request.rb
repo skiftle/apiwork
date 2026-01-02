@@ -15,7 +15,7 @@ module Apiwork
       #   request.query[:page]        # => Param for page param
       class Request
         def initialize(data)
-          @data = data || {}
+          @data = data
         end
 
         # @api public

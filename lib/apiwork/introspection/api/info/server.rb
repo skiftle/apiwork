@@ -14,7 +14,7 @@ module Apiwork
         #   end
         class Server
           def initialize(data)
-            @data = data || {}
+            @data = data
           end
 
           # @api public

@@ -17,7 +17,7 @@ module Apiwork
       #   response.body?        # => false
       class Response
         def initialize(data)
-          @data = data || {}
+          @data = data
         end
 
         # @api public

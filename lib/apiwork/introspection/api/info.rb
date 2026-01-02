@@ -15,7 +15,7 @@ module Apiwork
       #   info.license&.name    # => "MIT"
       class Info
         def initialize(data)
-          @data = data || {}
+          @data = data
         end
 
         # @api public
@@ -66,7 +66,7 @@ module Apiwork
         # @return [Array<Info::Server>] server definitions
         # @see Info::Server
         def servers
-          @servers ||= (@data[:servers] || []).map { |s| Server.new(s) }
+          @servers ||= @data[:servers].map { |s| Server.new(s) }
         end
 
         # @api public

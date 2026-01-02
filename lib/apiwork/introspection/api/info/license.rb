@@ -13,7 +13,7 @@ module Apiwork
         #   license.url   # => "https://opensource.org/licenses/MIT"
         class License
           def initialize(data)
-            @data = data || {}
+            @data = data
           end
 
           # @api public

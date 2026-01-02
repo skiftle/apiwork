@@ -13,12 +13,12 @@ module Apiwork
           resources = dump_resources
 
           {
+            resources:,
             enums: @type_dump.enums,
             error_codes: dump_error_codes(collect_all_error_codes(resources)),
             info: dump_info,
             path: @api_class.path,
             raises: @api_class.structure.raises,
-            resources: resources,
             types: @type_dump.types,
           }
         end
@@ -63,13 +63,13 @@ module Apiwork
 
         def dump_info
           info = @api_class.structure.info
-          return nil unless info
+          return {} unless info
 
           {
             contact: info[:contact],
             description: info[:description],
             license: info[:license],
-            servers: info[:servers],
+            servers: info[:servers] || [],
             summary: info[:summary],
             terms_of_service: info[:terms_of_service],
             title: info[:title],

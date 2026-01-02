@@ -42,7 +42,7 @@ module Apiwork
       # @return [Array<API::Resource>] top-level resources
       # @see API::Resource
       def resources
-        @resources ||= (@dump[:resources] || {}).map do |name, data|
+        @resources ||= @dump[:resources].map do |name, data|
           Resource.new(name, data)
         end
       end
@@ -51,7 +51,7 @@ module Apiwork
       # @return [Array<Type>] registered custom types
       # @see Type
       def types
-        @types ||= (@dump[:types] || {}).map do |name, data|
+        @types ||= @dump[:types].map do |name, data|
           Type.new(name, data)
         end
       end
@@ -60,7 +60,7 @@ module Apiwork
       # @return [Array<Enum>] registered enums
       # @see Enum
       def enums
-        @enums ||= (@dump[:enums] || {}).map do |name, data|
+        @enums ||= @dump[:enums].map do |name, data|
           Enum.new(name, data)
         end
       end
@@ -68,14 +68,14 @@ module Apiwork
       # @api public
       # @return [Array<Symbol>] API-level error codes that may be raised
       def raises
-        @dump[:raises] || []
+        @dump[:raises]
       end
 
       # @api public
       # @return [Array<ErrorCode>] error code definitions
       # @see ErrorCode
       def error_codes
-        @error_codes ||= (@dump[:error_codes] || {}).map do |code, data|
+        @error_codes ||= @dump[:error_codes].map do |code, data|
           ErrorCode.new(code, data)
         end
       end

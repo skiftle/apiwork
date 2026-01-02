@@ -53,7 +53,7 @@ module Apiwork
       # @api public
       # @return [Array<Symbol>] error codes this action may raise
       def raises
-        @dump[:raises] || []
+        @dump[:raises]
       end
 
       # @api public
@@ -71,7 +71,7 @@ module Apiwork
       # @api public
       # @return [Array<String>] OpenAPI tags
       def tags
-        @dump[:tags] || []
+        @dump[:tags]
       end
 
       # @api public

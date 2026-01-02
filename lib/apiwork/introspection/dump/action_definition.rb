@@ -16,7 +16,7 @@ module Apiwork
             request: dump_request(@action_definition.request_definition),
             response: dump_response(@action_definition.response_definition),
             summary: resolve_summary,
-            tags: @action_definition.tags,
+            tags: @action_definition.tags || [],
           }
 
           result[:deprecated] = true if @action_definition.deprecated
@@ -49,7 +49,7 @@ module Apiwork
         end
 
         def dump_request(request_definition)
-          return nil unless request_definition
+          return {} unless request_definition
 
           {
             body: request_definition.body_param_definition&.then { ParamDefinition.new(_1).to_h },
@@ -58,11 +58,11 @@ module Apiwork
         end
 
         def dump_response(response_definition)
-          return nil unless response_definition
+          return {} unless response_definition
           return { no_content: true } if response_definition.no_content?
 
           body_param_definition = response_definition.body_param_definition
-          return nil unless body_param_definition
+          return {} unless body_param_definition
 
           result_wrapper = response_definition.result_wrapper
           dumped = ParamDefinition.new(body_param_definition, result_wrapper:).to_h

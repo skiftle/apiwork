@@ -28,7 +28,7 @@ module Apiwork
 
         def initialize(name, data)
           @name = name.to_sym
-          @data = data || {}
+          @data = data
         end
 
         # @api public
@@ -47,7 +47,7 @@ module Apiwork
         # @return [Array<Action>] actions defined on this resource
         # @see Action
         def actions
-          @actions ||= (@data[:actions] || {}).map do |action_name, action_data|
+          @actions ||= @data[:actions].map do |action_name, action_data|
             Action.new(action_name, action_data)
           end
         end
@@ -55,7 +55,7 @@ module Apiwork
         # @api public
         # @return [Array<Resource>] nested resources
         def resources
-          @resources ||= (@data[:resources] || {}).map do |resource_name, resource_data|
+          @resources ||= @data[:resources].map do |resource_name, resource_data|
             Resource.new(resource_name, resource_data)
           end
         end
