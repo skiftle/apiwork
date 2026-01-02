@@ -28,7 +28,7 @@ param.inline?  # => true/false depending on subclass
 
 `#array?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L118)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L122)
 
 **Returns**
 
@@ -40,7 +40,7 @@ param.inline?  # => true/false depending on subclass
 
 `#default`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L94)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L98)
 
 **Returns**
 
@@ -52,7 +52,7 @@ param.inline?  # => true/false depending on subclass
 
 `#default?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L100)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L104)
 
 **Returns**
 
@@ -64,7 +64,7 @@ param.inline?  # => true/false depending on subclass
 
 `#deprecated?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L76)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L80)
 
 **Returns**
 
@@ -76,7 +76,7 @@ param.inline?  # => true/false depending on subclass
 
 `#description`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L82)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L86)
 
 **Returns**
 
@@ -112,7 +112,7 @@ param.inline?  # => true/false depending on subclass
 
 `#example`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L88)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L92)
 
 **Returns**
 
@@ -136,7 +136,7 @@ param.inline?  # => true/false depending on subclass
 
 `#literal?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L136)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L140)
 
 **Returns**
 
@@ -148,7 +148,7 @@ param.inline?  # => true/false depending on subclass
 
 `#nullable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L64)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L68)
 
 **Returns**
 
@@ -160,7 +160,7 @@ param.inline?  # => true/false depending on subclass
 
 `#object?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L124)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L128)
 
 **Returns**
 
@@ -172,7 +172,7 @@ param.inline?  # => true/false depending on subclass
 
 `#optional?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L70)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L74)
 
 **Returns**
 
@@ -208,7 +208,7 @@ param.inline?  # => true/false depending on subclass
 
 `#tag`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L106)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L110)
 
 **Returns**
 
@@ -232,11 +232,15 @@ param.inline?  # => true/false depending on subclass
 
 `#type`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L58)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L62)
 
 **Returns**
 
-`Symbol`, `nil` — type (:string, :integer, :array, :object, :union, etc.)
+`Symbol`, `nil` — the parameter type
+Scalar types: :string, :integer, :float, :decimal, :boolean,
+:datetime, :date, :time, :uuid, :binary, :json, :unknown
+Container types: :array, :object, :union, :literal
+Reference types: any Symbol (custom type reference)
 
 ---
 
@@ -244,7 +248,7 @@ param.inline?  # => true/false depending on subclass
 
 `#union?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L130)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L134)
 
 **Returns**
 

@@ -178,13 +178,17 @@ module Apiwork
 
         if items_type.nil? && param.shape.any?
           items_schema = map_object_type(param, action_name:)
-          return "z.array(#{items_schema})"
+          base = "z.array(#{items_schema})"
+        elsif items_type
+          items_schema = map_type_definition(items_type, action_name:)
+          base = "z.array(#{items_schema})"
+        else
+          base = 'z.array(z.string())'
         end
 
-        return 'z.array(z.string())' unless items_type
-
-        items_schema = map_type_definition(items_type, action_name:)
-        "z.array(#{items_schema})"
+        base += ".min(#{param.min})" if param.respond_to?(:min) && param.min
+        base += ".max(#{param.max})" if param.respond_to?(:max) && param.max
+        base
       end
 
       def map_union_type(param, action_name: nil)

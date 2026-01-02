@@ -35,7 +35,7 @@ param.of                      # => ObjectParam (element type)
 
 `#array?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L118)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L122)
 
 **Returns**
 
@@ -47,7 +47,7 @@ param.of                      # => ObjectParam (element type)
 
 `#default`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L94)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L98)
 
 **Returns**
 
@@ -59,7 +59,7 @@ param.of                      # => ObjectParam (element type)
 
 `#default?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L100)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L104)
 
 **Returns**
 
@@ -71,7 +71,7 @@ param.of                      # => ObjectParam (element type)
 
 `#deprecated?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L76)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L80)
 
 **Returns**
 
@@ -83,7 +83,7 @@ param.of                      # => ObjectParam (element type)
 
 `#description`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L82)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L86)
 
 **Returns**
 
@@ -95,7 +95,7 @@ param.of                      # => ObjectParam (element type)
 
 `#example`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L88)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L92)
 
 **Returns**
 
@@ -107,7 +107,7 @@ param.of                      # => ObjectParam (element type)
 
 `#literal?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L136)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L140)
 
 **Returns**
 
@@ -119,7 +119,7 @@ param.of                      # => ObjectParam (element type)
 
 `#nullable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L64)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L68)
 
 **Returns**
 
@@ -131,7 +131,7 @@ param.of                      # => ObjectParam (element type)
 
 `#object?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L124)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L128)
 
 **Returns**
 
@@ -143,7 +143,7 @@ param.of                      # => ObjectParam (element type)
 
 `#optional?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L70)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L74)
 
 **Returns**
 
@@ -155,7 +155,7 @@ param.of                      # => ObjectParam (element type)
 
 `#scalar?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L112)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L116)
 
 **Returns**
 
@@ -167,7 +167,7 @@ param.of                      # => ObjectParam (element type)
 
 `#tag`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L106)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L110)
 
 **Returns**
 
@@ -179,7 +179,7 @@ param.of                      # => ObjectParam (element type)
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L142)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L146)
 
 **Returns**
 
@@ -191,11 +191,15 @@ param.of                      # => ObjectParam (element type)
 
 `#type`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L58)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L62)
 
 **Returns**
 
-`Symbol`, `nil` — type (:string, :integer, :array, :object, :union, etc.)
+`Symbol`, `nil` — the parameter type
+Scalar types: :string, :integer, :float, :decimal, :boolean,
+:datetime, :date, :time, :uuid, :binary, :json, :unknown
+Container types: :array, :object, :union, :literal
+Reference types: any Symbol (custom type reference)
 
 ---
 
@@ -203,7 +207,7 @@ param.of                      # => ObjectParam (element type)
 
 `#union?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L130)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L134)
 
 **Returns**
 

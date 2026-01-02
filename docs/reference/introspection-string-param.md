@@ -6,7 +6,7 @@ next: false
 
 # Introspection::StringParam
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/string_param.rb#L12)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/string_param.rb#L14)
 
 Param subclass for string types.
 
@@ -14,7 +14,9 @@ Param subclass for string types.
 
 ```ruby
 param.type    # => :string
-param.format  # => :email, :uuid, :uri, etc.
+param.format  # => :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
+param.min     # => 1 (minimum string length)
+param.max     # => 255 (maximum string length)
 param.scalar? # => true
 ```
 
@@ -24,7 +26,7 @@ param.scalar? # => true
 
 `#array?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L118)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L122)
 
 **Returns**
 
@@ -36,7 +38,7 @@ param.scalar? # => true
 
 `#default`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L94)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L98)
 
 **Returns**
 
@@ -48,7 +50,7 @@ param.scalar? # => true
 
 `#default?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L100)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L104)
 
 **Returns**
 
@@ -60,7 +62,7 @@ param.scalar? # => true
 
 `#deprecated?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L76)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L80)
 
 **Returns**
 
@@ -72,7 +74,7 @@ param.scalar? # => true
 
 `#description`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L82)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L86)
 
 **Returns**
 
@@ -96,7 +98,7 @@ param.scalar? # => true
 
 `#example`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L88)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L92)
 
 **Returns**
 
@@ -108,11 +110,12 @@ param.scalar? # => true
 
 `#format`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/string_param.rb#L15)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/string_param.rb#L18)
 
 **Returns**
 
-`Symbol`, `nil` — format constraint (:email, :uuid, :uri, etc.)
+`Symbol`, `nil` — format constraint
+Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
 
 ---
 
@@ -120,7 +123,7 @@ param.scalar? # => true
 
 `#literal?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L136)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L140)
 
 **Returns**
 
@@ -128,11 +131,35 @@ param.scalar? # => true
 
 ---
 
+### #max
+
+`#max`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/string_param.rb#L30)
+
+**Returns**
+
+`Integer`, `nil` — maximum string length
+
+---
+
+### #min
+
+`#min`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/string_param.rb#L24)
+
+**Returns**
+
+`Integer`, `nil` — minimum string length
+
+---
+
 ### #nullable?
 
 `#nullable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L64)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L68)
 
 **Returns**
 
@@ -144,7 +171,7 @@ param.scalar? # => true
 
 `#object?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L124)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L128)
 
 **Returns**
 
@@ -156,7 +183,7 @@ param.scalar? # => true
 
 `#optional?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L70)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L74)
 
 **Returns**
 
@@ -180,7 +207,7 @@ param.scalar? # => true
 
 `#tag`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L106)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L110)
 
 **Returns**
 
@@ -192,7 +219,7 @@ param.scalar? # => true
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L142)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L146)
 
 **Returns**
 
@@ -204,11 +231,15 @@ param.scalar? # => true
 
 `#type`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L58)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L62)
 
 **Returns**
 
-`Symbol`, `nil` — type (:string, :integer, :array, :object, :union, etc.)
+`Symbol`, `nil` — the parameter type
+Scalar types: :string, :integer, :float, :decimal, :boolean,
+:datetime, :date, :time, :uuid, :binary, :json, :unknown
+Container types: :array, :object, :union, :literal
+Reference types: any Symbol (custom type reference)
 
 ---
 
@@ -216,7 +247,7 @@ param.scalar? # => true
 
 `#union?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L130)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L134)
 
 **Returns**
 

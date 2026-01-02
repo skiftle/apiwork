@@ -9,6 +9,8 @@ module Apiwork
     #   param.type   # => :array
     #   param.of     # => Param for element type
     #   param.shape  # => Hash for array-of-objects
+    #   param.min    # => 1 (minimum array length)
+    #   param.max    # => 10 (maximum array length)
     #   param.array? # => true
     class ArrayParam < Param
       # @api public
@@ -27,6 +29,18 @@ module Apiwork
       # @return [Hash{Symbol => Param}] nested fields for array-of-objects
       def shape
         @shape ||= (@dump[:shape] || {}).transform_values { |dump| Param.build(dump) }
+      end
+
+      # @api public
+      # @return [Integer, nil] minimum array length
+      def min
+        @dump[:min]
+      end
+
+      # @api public
+      # @return [Integer, nil] maximum array length
+      def max
+        @dump[:max]
       end
 
       # @api public

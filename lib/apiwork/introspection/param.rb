@@ -54,7 +54,11 @@ module Apiwork
       end
 
       # @api public
-      # @return [Symbol, nil] type (:string, :integer, :array, :object, :union, etc.)
+      # @return [Symbol, nil] the parameter type
+      #   Scalar types: :string, :integer, :float, :decimal, :boolean,
+      #   :datetime, :date, :time, :uuid, :binary, :json, :unknown
+      #   Container types: :array, :object, :union, :literal
+      #   Reference types: any Symbol (custom type reference)
       def type
         @dump[:type]
       end
