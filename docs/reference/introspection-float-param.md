@@ -1,5 +1,5 @@
 ---
-order: 39
+order: 38
 prev: false
 next: false
 ---
@@ -85,7 +85,7 @@ param.scalar? # => true
 
 `#enum?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/scalar_param.rb#L23)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/scalar_param.rb#L14)
 
 **Returns**
 
@@ -181,7 +181,7 @@ param.scalar? # => true
 
 `#scalar?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/scalar_param.rb#L17)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/scalar_param.rb#L8)
 
 **Returns**
 

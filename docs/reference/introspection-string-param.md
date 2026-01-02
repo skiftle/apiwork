@@ -1,5 +1,5 @@
 ---
-order: 49
+order: 47
 prev: false
 next: false
 ---
@@ -86,7 +86,7 @@ param.scalar? # => true
 
 `#enum?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/scalar_param.rb#L23)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/scalar_param.rb#L14)
 
 **Returns**
 
@@ -195,7 +195,7 @@ Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
 
 `#scalar?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/scalar_param.rb#L17)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/scalar_param.rb#L8)
 
 **Returns**
 

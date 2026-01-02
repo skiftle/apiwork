@@ -18,7 +18,6 @@ module Apiwork
     #   param = action.response.body  # => ArrayParam
     #   param.of                      # => ObjectParam (element type)
     class Param
-      # @api private
       def self.build(dump)
         type = dump[:type]
 

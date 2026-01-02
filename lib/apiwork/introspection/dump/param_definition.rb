@@ -221,9 +221,7 @@ module Apiwork
                             end
           end
 
-          if variant_definition[:shape]
-            result[:shape] = dump_nested_shape(variant_definition[:shape])
-          end
+          result[:shape] = dump_nested_shape(variant_definition[:shape]) if variant_definition[:shape]
 
           result
         end

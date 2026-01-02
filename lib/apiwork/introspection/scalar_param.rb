@@ -2,15 +2,6 @@
 
 module Apiwork
   module Introspection
-    # @api public
-    # Base class for scalar params.
-    #
-    # Scalars are simple value types: string, integer, float, decimal,
-    # boolean, datetime, date, time, uuid, binary.
-    #
-    # @example
-    #   param.scalar?  # => true
-    #   param.enum?    # => false (unless it's an EnumParam)
     class ScalarParam < Param
       # @api public
       # @return [Boolean] true for all scalar types

@@ -1,5 +1,5 @@
 ---
-order: 46
+order: 45
 prev: false
 next: false
 ---
@@ -86,7 +86,7 @@ param.ref?    # => true
 
 `#enum`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum_param.rb#L37)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum_param.rb#L26)
 
 **Returns**
 
@@ -98,7 +98,7 @@ param.ref?    # => true
 
 `#enum?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum_param.rb#L19)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum_param.rb#L8)
 
 **Returns**
 
@@ -122,7 +122,7 @@ param.ref?    # => true
 
 `#inline?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum_param.rb#L31)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum_param.rb#L20)
 
 **Returns**
 
@@ -194,7 +194,7 @@ param.ref?    # => true
 
 `#scalar?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/scalar_param.rb#L17)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/scalar_param.rb#L8)
 
 **Returns**
 
@@ -218,7 +218,7 @@ param.ref?    # => true
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum_param.rb#L43)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum_param.rb#L32)
 
 **Returns**
 
