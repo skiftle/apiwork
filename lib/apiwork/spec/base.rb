@@ -199,10 +199,11 @@ module Apiwork
       # Generates the spec output.
       #
       # Override this method in subclasses to produce the spec format.
-      # Access API data via helper methods: {#types}, {#enums}, {#raises},
-      # {#error_codes}, {#info}, {#each_resource}, {#each_action}.
+      # Access API data via the {#data} wrapper which provides typed access
+      # to types, enums, resources, actions, and other introspection data.
       #
       # @return [Hash, String] Hash for hash specs, String for string specs
+      # @see Spec::Data
       def generate
         raise NotImplementedError, "#{self.class} must implement #generate"
       end
@@ -289,145 +290,6 @@ module Apiwork
 
         prefix = key[/^_+/]
         "#{prefix}#{transform.call(key.delete_prefix(prefix))}"
-      end
-
-      # @api public
-      # Returns API metadata.
-      #
-      # @return [Hash] API info with structure:
-      #   - :title [String] API title
-      #   - :version [String] API version
-      #   - :description [String] API description
-      #   - :contact [Hash] contact info (:name, :email, :url)
-      #   - :license [Hash] license info (:name, :url)
-      #   - :servers [Array<Hash>] server URLs
-      #   - :summary [String] short summary
-      #   - :terms_of_service [String] ToS URL
-      def info
-        @introspection[:info] || {}
-      end
-
-      # @api public
-      # Returns all registered custom types.
-      #
-      # @return [Hash{Symbol => Hash}] type definitions with structure:
-      #   - :type [Symbol] :object or :union
-      #   - :shape [Hash] param definitions (for objects)
-      #   - :variants [Array<Hash>] union variants
-      #   - :discriminator [Symbol] union discriminator field
-      #   - :description [String] type description
-      #   - :example [Object] example value
-      #   - :deprecated [Boolean] deprecation flag
-      def types
-        @introspection[:types] || {}
-      end
-
-      # @api public
-      # Returns all registered enums.
-      #
-      # @return [Hash{Symbol => Hash}] enum definitions with structure:
-      #   - :values [Array<String>] allowed values
-      #   - :description [String] enum description
-      #   - :example [String] example value
-      #   - :deprecated [Boolean] deprecation flag
-      def enums
-        @introspection[:enums] || {}
-      end
-
-      # @api public
-      # Returns API-level error codes that may be raised.
-      #
-      # @return [Array<Symbol>] error code keys (e.g., [:unauthorized, :not_found])
-      def raises
-        @introspection[:raises] || []
-      end
-
-      # @api public
-      # Returns detailed error code information.
-      #
-      # @return [Hash{Symbol => Hash}] error codes with structure:
-      #   - :status [Integer] HTTP status code
-      #   - :description [String] error description
-      def error_codes
-        @introspection[:error_codes] || {}
-      end
-
-      # @api public
-      # Iterates over all resources recursively (including nested).
-      #
-      # @yieldparam name [Symbol] resource name
-      # @yieldparam data [Hash] resource data with structure:
-      #   - :identifier [String] resource identifier
-      #   - :path [String] URL path segment
-      #   - :actions [Hash{Symbol => Hash}] action definitions
-      #   - :resources [Hash] nested resources (optional)
-      # @yieldparam parent_path [String, nil] parent resource path
-      def each_resource(&block)
-        iterate_resources(resources, &block)
-      end
-
-      # @api public
-      # Iterates over actions in a resource.
-      #
-      # @param resource_data [Hash] resource data
-      # @yieldparam action_name [Symbol] action name (:index, :show, etc.)
-      # @yieldparam action_data [Hash] action data with structure:
-      #   - :path [String] action path (e.g., "/:id")
-      #   - :method [Symbol] HTTP method (:get, :post, etc.)
-      #   - :request [Hash] request definition (optional)
-      #   - :response [Hash] response definition (optional)
-      #   - :raises [Array<Symbol>] error codes (optional)
-      #   - :tags [Array<String>] OpenAPI tags (optional)
-      #   - :summary [String] short description (optional)
-      #   - :description [String] full description (optional)
-      #   - :deprecated [Boolean] deprecation flag (optional)
-      def each_action(resource_data, &block)
-        return unless resource_data[:actions]
-
-        resource_data[:actions].each(&block)
-      end
-
-      # @api public
-      # Builds the full URL path for a resource.
-      #
-      # @param resource_data [Hash] resource data
-      # @param parent_path [String, nil] parent resource path
-      # @return [String] full resource path (e.g., "users/:user_id/posts")
-      def build_full_resource_path(resource_data, parent_path = nil)
-        if parent_path
-          "#{parent_path}/#{resource_data[:path]}"
-        else
-          resource_data[:path]
-        end
-      end
-
-      # @api public
-      # Builds the full URL path for an action.
-      #
-      # @param resource_data [Hash] resource data
-      # @param action_data [Hash] action data
-      # @param parent_path [String, nil] parent resource path
-      # @return [String] full action path (e.g., "users/:user_id/posts/:id")
-      def build_full_action_path(resource_data, action_data, parent_path = nil)
-        resource_path = build_full_resource_path(resource_data, parent_path)
-        "#{resource_path}#{action_data[:path]}"
-      end
-
-      private
-
-      def resources
-        @introspection[:resources] || {}
-      end
-
-      def iterate_resources(resources_hash, parent_path = nil, &block)
-        resources_hash.each do |resource_name, resource_data|
-          yield(resource_name, resource_data, parent_path)
-
-          if resource_data[:resources]
-            current_path = build_full_resource_path(resource_data, parent_path)
-            iterate_resources(resource_data[:resources], current_path, &block)
-          end
-        end
       end
     end
   end

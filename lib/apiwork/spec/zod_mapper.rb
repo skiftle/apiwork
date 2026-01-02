@@ -18,13 +18,11 @@ module Apiwork
         uuid: 'z.uuid()',
       }.freeze
 
-      attr_reader :enums,
-                  :key_format,
-                  :types
+      attr_reader :data,
+                  :key_format
 
-      def initialize(enums:, key_format: :keep, types:)
-        @types = types
-        @enums = enums
+      def initialize(data:, key_format: :keep)
+        @data = data
         @key_format = key_format
       end
 
@@ -131,7 +129,7 @@ module Apiwork
       def map_field_definition(definition, action_name: nil)
         return 'z.string()' unless definition.is_a?(Hash)
 
-        if definition[:type].is_a?(Symbol) && (types.key?(definition[:type]) || enums.key?(definition[:type]))
+        if definition[:type].is_a?(Symbol) && type_or_enum_reference?(definition[:type])
           schema_name = pascal_case(definition[:type])
           type = "#{schema_name}Schema"
           return apply_modifiers(type, definition, action_name)
@@ -160,7 +158,7 @@ module Apiwork
         when nil
           'z.never()'
         else
-          result = enum_or_type_reference?(type) ? schema_reference(type) : map_primitive(definition)
+          result = type_or_enum_reference?(type) ? schema_reference(type) : map_primitive(definition)
           resolve_enum_schema(definition) || result
         end
       end
@@ -194,7 +192,7 @@ module Apiwork
 
         return 'z.array(z.string())' unless items_type
 
-        if items_type.is_a?(Symbol) && enum_or_type_reference?(items_type)
+        if items_type.is_a?(Symbol) && type_or_enum_reference?(items_type)
           "z.array(#{schema_reference(items_type)})"
         elsif items_type.is_a?(Hash)
           items_schema = map_type_definition(items_type, action_name:)
@@ -276,15 +274,15 @@ module Apiwork
 
       private
 
-      def enum_or_type_reference?(symbol)
-        types.key?(symbol) || enums.key?(symbol)
+      def type_or_enum_reference?(symbol)
+        data.types.any? { |t| t.name == symbol } || data.enums.any? { |e| e.name == symbol }
       end
 
       def resolve_enum_schema(definition)
         return nil unless definition[:enum]
 
         enum_reference = definition[:enum]
-        if enum_reference.is_a?(Symbol) && enums.key?(enum_reference)
+        if enum_reference.is_a?(Symbol) && data.enums.any? { |e| e.name == enum_reference }
           "#{pascal_case(enum_reference)}Schema"
         elsif enum_reference.is_a?(Array)
           enum_literal = enum_reference.map { |v| "'#{v}'" }.join(', ')

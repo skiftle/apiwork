@@ -17,22 +17,23 @@ module Apiwork
       private
 
       def mapper
-        @mapper ||= TypeScriptMapper.new(enums:, key_format:, types:)
+        @mapper ||= TypeScriptMapper.new(data:, key_format:)
       end
 
       def build_all_typescript_types
         all_types = []
 
-        enums.each do |enum_name, enum_data|
-          type_name = mapper.pascal_case(enum_name)
-          code = mapper.build_enum_type(enum_name, enum_data)
+        data.enums.each do |enum|
+          type_name = mapper.pascal_case(enum.name)
+          code = mapper.build_enum_type(enum.name, enum.to_h.except(:name))
           all_types << { code:, name: type_name }
         end
 
-        sorted_types = TypeAnalysis.topological_sort_types(types)
+        types_hash = data.types.to_h { |t| [t.name, t.to_h.except(:name)] }
+        sorted_types = TypeAnalysis.topological_sort_types(types_hash)
         sorted_types.each do |type_name, type_shape|
           type_name_pascal = mapper.pascal_case(type_name)
-          code = if type_shape.is_a?(Hash) && type_shape[:type] == :union
+          code = if type_shape[:type] == :union
                    mapper.build_union_type(type_name, type_shape, description: type_shape[:description])
                  else
                    action_name = type_name.to_s.end_with?('_update_payload') ? 'update' : nil
@@ -49,39 +50,43 @@ module Apiwork
           all_types << { code:, name: type_name_pascal }
         end
 
-        each_resource do |resource_name, resource_data, parent_path|
-          each_action(resource_data) do |action_name, action_data|
-            request_data = action_data[:request]
-            if request_data && (request_data[:query]&.any? || request_data[:body]&.any?)
-              if request_data[:query]&.any?
-                type_name = mapper.action_type_name(resource_name, action_name, 'RequestQuery', parent_path:)
-                code = mapper.build_action_request_query_type(resource_name, action_name, request_data[:query], parent_path:)
+        data.each_resource do |resource, parent_path|
+          resource.actions.each do |action|
+            request = action.request
+            if request && (request.query? || request.body?)
+              query_hash = request.query.transform_values(&:to_h)
+              body_hash = request.body.transform_values(&:to_h)
+              request_hash = { body: body_hash, query: query_hash }
+
+              if request.query?
+                type_name = mapper.action_type_name(resource.name, action.name, 'RequestQuery', parent_path:)
+                code = mapper.build_action_request_query_type(resource.name, action.name, query_hash, parent_path:)
                 all_types << { code:, name: type_name }
               end
 
-              if request_data[:body]&.any?
-                type_name = mapper.action_type_name(resource_name, action_name, 'RequestBody', parent_path:)
-                code = mapper.build_action_request_body_type(resource_name, action_name, request_data[:body], parent_path:)
+              if request.body?
+                type_name = mapper.action_type_name(resource.name, action.name, 'RequestBody', parent_path:)
+                code = mapper.build_action_request_body_type(resource.name, action.name, body_hash, parent_path:)
                 all_types << { code:, name: type_name }
               end
 
-              type_name = mapper.action_type_name(resource_name, action_name, 'Request', parent_path:)
-              code = mapper.build_action_request_type(resource_name, action_name, request_data, parent_path:)
+              type_name = mapper.action_type_name(resource.name, action.name, 'Request', parent_path:)
+              code = mapper.build_action_request_type(resource.name, action.name, request_hash, parent_path:)
               all_types << { code:, name: type_name }
             end
 
-            response_data = action_data[:response]
+            response = action.response
 
-            if response_data&.dig(:no_content)
-              type_name = mapper.action_type_name(resource_name, action_name, 'Response', parent_path:)
+            if response&.no_content?
+              type_name = mapper.action_type_name(resource.name, action.name, 'Response', parent_path:)
               all_types << { code: "export type #{type_name} = never;", name: type_name }
-            elsif response_data && response_data[:body]
-              type_name = mapper.action_type_name(resource_name, action_name, 'ResponseBody', parent_path:)
-              code = mapper.build_action_response_body_type(resource_name, action_name, response_data[:body], parent_path:)
+            elsif response&.body?
+              type_name = mapper.action_type_name(resource.name, action.name, 'ResponseBody', parent_path:)
+              code = mapper.build_action_response_body_type(resource.name, action.name, response.body.to_h, parent_path:)
               all_types << { code:, name: type_name }
 
-              type_name = mapper.action_type_name(resource_name, action_name, 'Response', parent_path:)
-              code = mapper.build_action_response_type(resource_name, action_name, response_data, parent_path:)
+              type_name = mapper.action_type_name(resource.name, action.name, 'Response', parent_path:)
+              code = mapper.build_action_response_type(resource.name, action.name, { body: response.body.to_h }, parent_path:)
               all_types << { code:, name: type_name }
             end
           end

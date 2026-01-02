@@ -24,98 +24,104 @@ module Apiwork
       private
 
       def build_info
+        info = data.info
         {
-          contact: build_contact(info[:contact]),
-          description: info[:description],
-          license: build_license(info[:license]),
-          summary: info[:summary],
-          termsOfService: info[:terms_of_service],
-          title: info[:title] || "#{api_path} API",
-          version: info[:version] || '1.0.0',
+          contact: build_contact(info.contact),
+          description: info.description,
+          license: build_license(info.license),
+          summary: info.summary,
+          termsOfService: info.terms_of_service,
+          title: info.title || "#{api_path} API",
+          version: info.version || '1.0.0',
         }.compact
       end
 
       def build_servers
-        return nil unless info[:servers]&.any?
+        return nil unless data.info.servers.any?
 
-        info[:servers].map do |server|
-          { description: server[:description], url: server[:url] }.compact
+        data.info.servers.map do |server|
+          { description: server.description, url: server.url }.compact
         end
       end
 
-      def build_contact(contact_data)
-        return nil unless contact_data
+      def build_contact(contact)
+        return nil unless contact
 
         {
-          email: contact_data[:email],
-          name: contact_data[:name],
-          url: contact_data[:url],
+          email: contact.email,
+          name: contact.name,
+          url: contact.url,
         }.compact.presence
       end
 
-      def build_license(license_data)
-        return nil unless license_data
+      def build_license(license)
+        return nil unless license
 
         {
-          name: license_data[:name],
-          url: license_data[:url],
+          name: license.name,
+          url: license.url,
         }.compact.presence
       end
 
       def build_paths
         paths = {}
 
-        each_resource do |resource_name, resource_data, parent_path|
-          build_resource_paths(paths, resource_name, resource_data, parent_path)
+        data.each_resource do |resource, parent_path|
+          build_resource_paths(paths, resource, parent_path)
         end
 
         paths
       end
 
-      def build_resource_paths(paths, resource_name, resource_data, parent_path)
+      def build_resource_paths(paths, resource, parent_path)
         parent_paths = extract_parent_resource_paths(parent_path)
 
-        each_action(resource_data) do |action_name, action_data|
-          full_path = build_full_action_path(resource_data, action_data, parent_path)
+        resource.actions.each do |action|
+          full_path = build_full_action_path(resource, action, parent_path)
           openapi_formatted_path = openapi_path(full_path)
-          method = action_data[:method].to_s.downcase
+          method = action.method.to_s.downcase
 
           paths[openapi_formatted_path] ||= {}
           paths[openapi_formatted_path][method] = build_operation(
-            resource_name,
-            resource_data[:path],
-            action_name,
-            action_data,
-            resource_data,
+            resource,
+            action,
             parent_paths,
             full_path,
           )
         end
       end
 
-      def build_operation(resource_name, resource_path, action_name, action_data, resource, parent_paths = [], full_path = nil)
+      def build_full_action_path(resource, action, parent_path)
+        resource_path = parent_path ? "#{parent_path}/#{resource.path}" : resource.path
+        "#{resource_path}#{action.path}"
+      end
+
+      def build_operation(resource, action, parent_paths, full_path)
         operation = {
-          deprecated: action_data[:deprecated] || nil,
-          description: action_data[:description],
-          operationId: action_data[:operation_id] || operation_id(resource_name, resource_path, action_name, parent_paths),
-          summary: action_data[:summary],
-          tags: build_tags(resource[:tags], action_data[:tags]),
+          deprecated: action.deprecated? || nil,
+          description: action.description,
+          operationId: action.operation_id || operation_id(resource.name, resource.path, action.name, parent_paths),
+          summary: action.summary,
+          tags: build_tags(resource.to_h[:tags], action.tags),
         }
 
         path_params = extract_path_parameters(full_path)
 
-        request_data = action_data[:request]
-        if request_data
-          query_params = request_data[:query]&.any? ? build_query_parameters(request_data[:query]) : []
+        request = action.request
+        if request
+          query_hash = request.query.transform_values(&:to_h)
+          body_hash = request.body.transform_values(&:to_h)
+          query_params = request.query? ? build_query_parameters(query_hash) : []
           all_params = path_params + query_params
           operation[:parameters] = all_params if all_params.any?
-          operation[:requestBody] = build_request_body(request_data[:body], action_name) if request_data[:body]&.any?
+          operation[:requestBody] = build_request_body(body_hash, action.name) if request.body?
         elsif path_params.any?
           operation[:parameters] = path_params
         end
 
-        response_data = action_data[:response]
-        operation[:responses] = build_responses(action_name, response_data, action_data[:raises] || [])
+        response = action.response
+        response_hash = response ? { body: response.body&.to_h, no_content: response.no_content? } : nil
+        operation[:responses] = build_responses(action.name, response_hash, action.raises)
 
         operation.compact
       end
@@ -196,7 +202,7 @@ module Apiwork
       def build_parameter_schema(param_definition)
         return { type: 'string' } unless param_definition.is_a?(Hash)
 
-        if param_definition[:type].is_a?(Symbol) && types.key?(param_definition[:type])
+        if param_definition[:type].is_a?(Symbol) && type_exists?(param_definition[:type])
           return { '$ref': "#/components/schemas/#{schema_name(param_definition[:type])}" }
         end
 
@@ -216,7 +222,7 @@ module Apiwork
 
       def build_responses(action_name, response_data, action_raises = [])
         responses = {}
-        combined_raises = (raises + action_raises).uniq
+        combined_raises = (data.raises + action_raises).uniq
 
         if response_data&.dig(:no_content)
           responses[:'204'] = { description: 'No content' }
@@ -238,8 +244,8 @@ module Apiwork
             }
 
             combined_raises.each do |code|
-              error_data = error_codes[code]
-              responses[error_data[:status].to_s.to_sym] = build_union_error_response(error_data[:description], error_variant)
+              error_code = data.error_codes.find { |e| e.code == code }
+              responses[error_code.status.to_s.to_sym] = build_union_error_response(error_code.description, error_variant)
             end
           else
             responses[:'200'] = {
@@ -252,8 +258,8 @@ module Apiwork
             }
 
             combined_raises.each do |code|
-              error_data = error_codes[code]
-              responses[error_data[:status].to_s.to_sym] = build_error_response(error_data[:description])
+              error_code = data.error_codes.find { |e| e.code == code }
+              responses[error_code.status.to_s.to_sym] = build_error_response(error_code.description)
             end
           end
         elsif response_data
@@ -315,10 +321,11 @@ module Apiwork
       def build_schemas
         schemas = {}
 
-        types.each do |type_name, type_shape|
-          component_name = schema_name(type_name)
+        data.types.each do |type|
+          component_name = schema_name(type.name)
+          type_shape = type.to_h.except(:name)
 
-          schemas[component_name] = if type_shape.is_a?(Hash) && type_shape[:type] == :union
+          schemas[component_name] = if type.union?
                                       map_union(type_shape)
                                     else
                                       map_object(type_shape)
@@ -352,13 +359,14 @@ module Apiwork
       def map_field_definition(definition, action_name = nil)
         return { type: 'string' } unless definition.is_a?(Hash)
 
-        if definition[:type].is_a?(Symbol) && types.key?(definition[:type])
+        if definition[:type].is_a?(Symbol) && type_exists?(definition[:type])
           schema = { '$ref': "#/components/schemas/#{schema_name(definition[:type])}" }
           return apply_nullable(schema, definition[:nullable])
         end
 
-        if definition[:type].is_a?(Symbol) && enums.key?(definition[:type])
-          schema = { enum: enums[definition[:type]][:values], type: 'string' }
+        if definition[:type].is_a?(Symbol) && enum_exists?(definition[:type])
+          enum_obj = find_enum(definition[:type])
+          schema = { enum: enum_obj.values, type: 'string' }
           return apply_nullable(schema, definition[:nullable])
         end
 
@@ -388,10 +396,11 @@ module Apiwork
         when :literal
           map_literal(definition)
         else
-          if types.key?(type)
+          if type_exists?(type)
             { '$ref': "#/components/schemas/#{schema_name(type)}" }
-          elsif enums.key?(type)
-            { enum: enums[type][:values], type: 'string' }
+          elsif enum_exists?(type)
+            enum_obj = find_enum(type)
+            { enum: enum_obj.values, type: 'string' }
           else
             map_primitive(definition)
           end
@@ -434,7 +443,7 @@ module Apiwork
 
         return { items: { type: 'string' }, type: 'array' } unless items_type
 
-        items_schema = if items_type.is_a?(Symbol) && types.key?(items_type)
+        items_schema = if items_type.is_a?(Symbol) && type_exists?(items_type)
                          { '$ref': "#/components/schemas/#{schema_name(items_type)}" }
                        elsif items_type.is_a?(Hash)
                          map_type_definition(items_type, action_name)
@@ -470,7 +479,7 @@ module Apiwork
           next unless tag
 
           transformed_tag = transform_key(tag.to_s)
-          if variant[:type].is_a?(Symbol) && types.key?(variant[:type])
+          if variant[:type].is_a?(Symbol) && type_exists?(variant[:type])
             mapping[transformed_tag] =
               "#/components/schemas/#{schema_name(variant[:type])}"
           end
@@ -574,8 +583,8 @@ module Apiwork
       end
 
       def resolve_enum(enum_ref_or_array)
-        if enum_ref_or_array.is_a?(Symbol) && enums.key?(enum_ref_or_array)
-          enums[enum_ref_or_array][:values]
+        if enum_ref_or_array.is_a?(Symbol) && enum_exists?(enum_ref_or_array)
+          find_enum(enum_ref_or_array).values
         else
           enum_ref_or_array
         end
@@ -587,6 +596,22 @@ module Apiwork
 
       def numeric_type?(type)
         [:integer, :float, :decimal].include?(type&.to_sym)
+      end
+
+      def type_exists?(symbol)
+        return false unless symbol
+
+        data.types.any? { |t| t.name == symbol }
+      end
+
+      def enum_exists?(symbol)
+        return false unless symbol
+
+        data.enums.any? { |e| e.name == symbol }
+      end
+
+      def find_enum(symbol)
+        data.enums.find { |e| e.name == symbol }
       end
     end
   end

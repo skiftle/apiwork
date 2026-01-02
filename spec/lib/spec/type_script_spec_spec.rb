@@ -225,10 +225,12 @@ RSpec.describe Apiwork::Spec::TypeScriptSpec do
     end
 
     describe 'JSON column type mapping' do
-      it 'generates object type for :json columns' do
-        # Post has metadata :json column, which maps to :object type
-        # Since the column is nullable, it generates: metadata?: null | object
-        expect(output).to match(/metadata\?: null \| object/)
+      it 'maps :json type to Record<string, any>' do
+        data = Apiwork::Spec::Data.new({})
+        mapper = Apiwork::Spec::TypeScriptMapper.new(data:)
+
+        result = mapper.send(:map_primitive, :json)
+        expect(result).to eq('Record<string, any>')
       end
     end
 
@@ -449,7 +451,8 @@ RSpec.describe Apiwork::Spec::TypeScriptSpec do
 
   describe 'unknown type mapping' do
     let(:introspection) { Apiwork::API.introspect('/api/v1') }
-    let(:mapper) { Apiwork::Spec::TypeScriptMapper.new(enums: introspection[:enums], types: introspection[:types]) }
+    let(:data) { Apiwork::Spec::Data.new(introspection) }
+    let(:mapper) { Apiwork::Spec::TypeScriptMapper.new(data:) }
 
     it 'maps :unknown to unknown' do
       result = mapper.send(:map_primitive, :unknown)

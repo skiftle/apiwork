@@ -3,13 +3,11 @@
 module Apiwork
   module Spec
     class TypeScriptMapper
-      attr_reader :enums,
-                  :key_format,
-                  :types
+      attr_reader :data,
+                  :key_format
 
-      def initialize(enums:, key_format: :keep, types:)
-        @types = types
-        @enums = enums
+      def initialize(data:, key_format: :keep)
+        @data = data
         @key_format = key_format
       end
 
@@ -156,7 +154,7 @@ module Apiwork
 
         nullable = definition[:nullable]
 
-        base_type = if definition[:type].is_a?(Symbol) && enum_or_type_reference?(definition[:type])
+        base_type = if definition[:type].is_a?(Symbol) && type_or_enum_reference?(definition[:type])
                       type_reference(definition[:type])
                     else
                       map_type_definition(definition, action_name:)
@@ -164,7 +162,7 @@ module Apiwork
 
         if definition[:enum]
           enum_reference = definition[:enum]
-          if enum_reference.is_a?(Symbol) && enums.key?(enum_reference)
+          if enum_reference.is_a?(Symbol) && data.enums.any? { |e| e.name == enum_reference }
             base_type = pascal_case(enum_reference)
           elsif enum_reference.is_a?(Array)
             base_type = enum_reference.sort.map { |v| "'#{v}'" }.join(' | ')
@@ -196,7 +194,7 @@ module Apiwork
         when nil
           'never'
         else
-          enum_or_type_reference?(type) ? type_reference(type) : map_primitive(type)
+          type_or_enum_reference?(type) ? type_reference(type) : map_primitive(type)
         end
       end
 
@@ -226,7 +224,7 @@ module Apiwork
 
         return 'string[]' unless items_type
 
-        element_type = if items_type.is_a?(Symbol) && enum_or_type_reference?(items_type)
+        element_type = if items_type.is_a?(Symbol) && type_or_enum_reference?(items_type)
                          type_reference(items_type)
                        elsif items_type.is_a?(Hash)
                          map_type_definition(items_type, action_name:)
@@ -306,8 +304,8 @@ module Apiwork
 
       private
 
-      def enum_or_type_reference?(symbol)
-        types.key?(symbol) || enums.key?(symbol)
+      def type_or_enum_reference?(symbol)
+        data.types.any? { |t| t.name == symbol } || data.enums.any? { |e| e.name == symbol }
       end
 
       def extract_parent_resource_names(parent_path)
