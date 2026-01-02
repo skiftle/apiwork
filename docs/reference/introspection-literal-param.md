@@ -20,31 +20,11 @@ param.literal? # => true
 
 ## Instance Methods
 
-### #\[\]
-
-`#\[\](key)`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L109)
-
-Access raw data for edge cases not covered by accessors.
-
-**Parameters**
-
-| Name | Type | Description |
-|------|------|-------------|
-| `key` | `Symbol` | the data key to access |
-
-**Returns**
-
-`Object`, `nil` — the raw value
-
----
-
 ### #array?
 
 `#array?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L121)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L118)
 
 **Returns**
 
@@ -140,7 +120,7 @@ Access raw data for edge cases not covered by accessors.
 
 `#object?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L127)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L124)
 
 **Returns**
 
@@ -164,11 +144,23 @@ Access raw data for edge cases not covered by accessors.
 
 `#scalar?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L115)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L112)
 
 **Returns**
 
 `Boolean` — whether this is a scalar type
+
+---
+
+### #tag
+
+`#tag`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L106)
+
+**Returns**
+
+`String`, `nil` — discriminator tag for union variants
 
 ---
 
@@ -200,7 +192,7 @@ Access raw data for edge cases not covered by accessors.
 
 `#union?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L133)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L130)
 
 **Returns**
 

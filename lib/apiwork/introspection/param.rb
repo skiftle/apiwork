@@ -102,12 +102,9 @@ module Apiwork
       end
 
       # @api public
-      # Access raw data for edge cases not covered by accessors.
-      #
-      # @param key [Symbol] the data key to access
-      # @return [Object, nil] the raw value
-      def [](key)
-        @dump[key]
+      # @return [String, nil] discriminator tag for union variants
+      def tag
+        @dump[:tag]
       end
 
       # @api public

@@ -46,9 +46,9 @@ module Apiwork
         variant_types = type.variants.map do |variant|
           base_type = map_type_definition(variant, action_name: nil)
 
-          if type.discriminator && variant[:tag]
+          if type.discriminator && variant.tag
             discriminator_key = transform_key(type.discriminator)
-            "{ #{discriminator_key}: '#{variant[:tag]}' } & #{base_type}"
+            "{ #{discriminator_key}: '#{variant.tag}' } & #{base_type}"
           else
             base_type
           end
