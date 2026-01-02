@@ -6,30 +6,21 @@ module Apiwork
     # Param subclass for decimal types.
     #
     # @example
-    #   param.type     # => :decimal
-    #   param.min      # => 0.0
-    #   param.max      # => 100.0
+    #   param.type    # => :decimal
+    #   param.min     # => 0.0
+    #   param.max     # => 100.0
     #   param.scalar? # => true
     class DecimalParam < ScalarParam
       # @api public
-      # @return [Numeric, nil] minimum value
+      # @return [BigDecimal, nil] minimum value constraint
       def min
         @dump[:min]
       end
 
       # @api public
-      # @return [Numeric, nil] maximum value
+      # @return [BigDecimal, nil] maximum value constraint
       def max
         @dump[:max]
-      end
-
-      # @api public
-      # @return [Hash] structured representation
-      def to_h
-        result = super
-        result[:max] = max
-        result[:min] = min
-        result
       end
     end
   end

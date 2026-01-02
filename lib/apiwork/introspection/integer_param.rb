@@ -6,38 +6,28 @@ module Apiwork
     # Param subclass for integer types.
     #
     # @example
-    #   param.type     # => :integer
-    #   param.min      # => 0
-    #   param.max      # => 100
-    #   param.format   # => :int32, :int64
-    #   param.scalar?  # => true
+    #   param.type    # => :integer
+    #   param.min     # => 0
+    #   param.max     # => 100
+    #   param.format  # => :int32, :int64
+    #   param.scalar? # => true
     class IntegerParam < ScalarParam
       # @api public
-      # @return [Symbol, nil] format hint (:int32, :int64)
+      # @return [Symbol, nil] format constraint (:int32, :int64)
       def format
         @dump[:format]
       end
 
       # @api public
-      # @return [Integer, nil] minimum value
+      # @return [Integer, nil] minimum value constraint
       def min
         @dump[:min]
       end
 
       # @api public
-      # @return [Integer, nil] maximum value
+      # @return [Integer, nil] maximum value constraint
       def max
         @dump[:max]
-      end
-
-      # @api public
-      # @return [Hash] structured representation
-      def to_h
-        result = super
-        result[:format] = format
-        result[:max] = max
-        result[:min] = min
-        result
       end
     end
   end

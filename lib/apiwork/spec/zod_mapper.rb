@@ -222,7 +222,7 @@ module Apiwork
                       TYPE_MAP[param.type.to_sym] || 'z.unknown()'
                     end
 
-        if numeric_type?(param.type) && param.respond_to?(:min)
+        if param.respond_to?(:min)
           base_type += ".min(#{param.min})" if param.min
           base_type += ".max(#{param.max})" if param.max
         end

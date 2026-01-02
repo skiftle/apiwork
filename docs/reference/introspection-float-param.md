@@ -13,9 +13,9 @@ Param subclass for float types.
 **Example**
 
 ```ruby
-param.type   # => :float
-param.min    # => 0.0
-param.max    # => 100.0
+param.type    # => :float
+param.min     # => 0.0
+param.max     # => 100.0
 param.scalar? # => true
 ```
 
@@ -125,7 +125,7 @@ param.scalar? # => true
 
 **Returns**
 
-`Numeric`, `nil` — maximum value
+`Float`, `nil` — maximum value constraint
 
 ---
 
@@ -137,7 +137,7 @@ param.scalar? # => true
 
 **Returns**
 
-`Numeric`, `nil` — minimum value
+`Float`, `nil` — minimum value constraint
 
 ---
 
@@ -205,7 +205,7 @@ param.scalar? # => true
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/float_param.rb#L28)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L142)
 
 **Returns**
 

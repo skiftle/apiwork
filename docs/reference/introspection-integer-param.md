@@ -13,11 +13,11 @@ Param subclass for integer types.
 **Example**
 
 ```ruby
-param.type     # => :integer
-param.min      # => 0
-param.max      # => 100
-param.format   # => :int32, :int64
-param.scalar?  # => true
+param.type    # => :integer
+param.min     # => 0
+param.max     # => 100
+param.format  # => :int32, :int64
+param.scalar? # => true
 ```
 
 ## Instance Methods
@@ -114,7 +114,7 @@ param.scalar?  # => true
 
 **Returns**
 
-`Symbol`, `nil` — format hint (:int32, :int64)
+`Symbol`, `nil` — format constraint (:int32, :int64)
 
 ---
 
@@ -138,7 +138,7 @@ param.scalar?  # => true
 
 **Returns**
 
-`Integer`, `nil` — maximum value
+`Integer`, `nil` — maximum value constraint
 
 ---
 
@@ -150,7 +150,7 @@ param.scalar?  # => true
 
 **Returns**
 
-`Integer`, `nil` — minimum value
+`Integer`, `nil` — minimum value constraint
 
 ---
 
@@ -218,7 +218,7 @@ param.scalar?  # => true
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/integer_param.rb#L35)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L142)
 
 **Returns**
 

@@ -13,9 +13,9 @@ Param subclass for string types.
 **Example**
 
 ```ruby
-param.type        # => :string
-param.format      # => :email, :uuid, :uri, etc.
-param.scalar?     # => true
+param.type    # => :string
+param.format  # => :email, :uuid, :uri, etc.
+param.scalar? # => true
 ```
 
 ## Instance Methods
@@ -112,7 +112,7 @@ param.scalar?     # => true
 
 **Returns**
 
-`Symbol`, `nil` — format hint (:email, :uuid, :uri, etc.)
+`Symbol`, `nil` — format constraint (:email, :uuid, :uri, etc.)
 
 ---
 
@@ -192,7 +192,7 @@ param.scalar?     # => true
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/string_param.rb#L21)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L142)
 
 **Returns**
 
