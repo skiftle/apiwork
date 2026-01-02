@@ -42,21 +42,21 @@ module Apiwork
       # @return [Hash{Symbol => API::Resource}] top-level resources
       # @see API::Resource
       def resources
-        @resources ||= @dump[:resources].transform_values { |data| Resource.new(data) }
+        @resources ||= @dump[:resources].transform_values { |dump| Resource.new(dump) }
       end
 
       # @api public
       # @return [Hash{Symbol => Type}] registered custom types
       # @see Type
       def types
-        @types ||= @dump[:types].transform_values { |data| Type.new(data) }
+        @types ||= @dump[:types].transform_values { |dump| Type.new(dump) }
       end
 
       # @api public
       # @return [Hash{Symbol => Enum}] registered enums
       # @see Enum
       def enums
-        @enums ||= @dump[:enums].transform_values { |data| Enum.new(data) }
+        @enums ||= @dump[:enums].transform_values { |dump| Enum.new(dump) }
       end
 
       # @api public
@@ -69,7 +69,7 @@ module Apiwork
       # @return [Hash{Symbol => ErrorCode}] error code definitions
       # @see ErrorCode
       def error_codes
-        @error_codes ||= @dump[:error_codes].transform_values { |data| ErrorCode.new(data) }
+        @error_codes ||= @dump[:error_codes].transform_values { |dump| ErrorCode.new(dump) }
       end
 
       # @api public

@@ -43,13 +43,13 @@ module Apiwork
         # @return [Hash{Symbol => Action}] actions defined on this resource
         # @see Action
         def actions
-          @actions ||= @data[:actions].transform_values { |data| Action.new(data) }
+          @actions ||= @data[:actions].transform_values { |dump| Action.new(dump) }
         end
 
         # @api public
         # @return [Hash{Symbol => Resource}] nested resources
         def resources
-          @resources ||= @data[:resources].transform_values { |data| Resource.new(data) }
+          @resources ||= @data[:resources].transform_values { |dump| Resource.new(dump) }
         end
 
         # @api public

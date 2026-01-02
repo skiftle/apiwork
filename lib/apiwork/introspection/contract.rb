@@ -27,21 +27,21 @@ module Apiwork
       # @return [Hash{Symbol => Action}] actions defined on this contract
       # @see Action
       def actions
-        @actions ||= @dump[:actions].transform_values { |data| Action.new(data) }
+        @actions ||= @dump[:actions].transform_values { |dump| Action.new(dump) }
       end
 
       # @api public
       # @return [Hash{Symbol => Type}] custom types defined or referenced by this contract
       # @see Type
       def types
-        @types ||= @dump[:types].transform_values { |data| Type.new(data) }
+        @types ||= @dump[:types].transform_values { |dump| Type.new(dump) }
       end
 
       # @api public
       # @return [Hash{Symbol => Enum}] enums defined or referenced by this contract
       # @see Enum
       def enums
-        @enums ||= @dump[:enums].transform_values { |data| Enum.new(data) }
+        @enums ||= @dump[:enums].transform_values { |dump| Enum.new(dump) }
       end
 
       # @api public
