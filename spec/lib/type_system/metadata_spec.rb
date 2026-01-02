@@ -87,7 +87,7 @@ RSpec.describe 'TypeSystem Metadata' do
       )
     end
 
-    it 'omits metadata fields when not set' do
+    it 'includes metadata fields with nil when not set' do
       api = Apiwork::API.define '/api/test' do
         type :simple_type do
           param :field, type: :string
@@ -96,10 +96,10 @@ RSpec.describe 'TypeSystem Metadata' do
 
       types = Apiwork::Introspection::Dump::Type.new(api).types
 
-      # Metadata fields should be absent when not set
-      expect(types[:simple_type]).not_to have_key(:description)
-      expect(types[:simple_type]).not_to have_key(:example)
-      expect(types[:simple_type]).not_to have_key(:format)
+      # Metadata fields are present with nil values when not set
+      expect(types[:simple_type][:description]).to be_nil
+      expect(types[:simple_type][:example]).to be_nil
+      expect(types[:simple_type][:format]).to be_nil
       expect(types[:simple_type]).not_to have_key(:deprecated)
     end
 
@@ -201,20 +201,20 @@ RSpec.describe 'TypeSystem Metadata' do
       expect(enums[:simple_enum][:values]).to eq(%i[a b c])
     end
 
-    it 'omits metadata fields when not set' do
+    it 'includes metadata fields with nil when not set' do
       api = Apiwork::API.define '/api/test' do
         enum :minimal_enum, values: %i[x y z]
       end
 
       enums = Apiwork::Introspection::Dump::Type.new(api).enums
 
-      # Only values should be present
+      # Values should be present
       expect(enums[:minimal_enum]).to have_key(:values)
       expect(enums[:minimal_enum][:values]).to eq(%i[x y z])
 
-      # Metadata fields should be absent when not set
-      expect(enums[:minimal_enum]).not_to have_key(:description)
-      expect(enums[:minimal_enum]).not_to have_key(:example)
+      # Metadata fields are present with nil values when not set
+      expect(enums[:minimal_enum][:description]).to be_nil
+      expect(enums[:minimal_enum][:example]).to be_nil
       expect(enums[:minimal_enum]).not_to have_key(:deprecated)
     end
 

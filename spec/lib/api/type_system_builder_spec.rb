@@ -14,13 +14,9 @@ RSpec.describe 'API TypeSystem Builder' do
     types = Apiwork::Introspection::Dump::Type.new(api).types
 
     expect(types).to have_key(:error)
-    expect(types[:error]).to include(
-      shape: {
-        code: { type: :integer },
-        error: { type: :string },
-      },
-      type: :object,
-    )
+    expect(types[:error][:type]).to eq(:object)
+    expect(types[:error][:shape][:code][:type]).to eq(:integer)
+    expect(types[:error][:shape][:error][:type]).to eq(:string)
   end
 
   it 'allows defining enums via descriptors block' do

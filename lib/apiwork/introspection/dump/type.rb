@@ -36,11 +36,9 @@ module Apiwork
                  end
 
           result = base.merge(
-            {
-              description: resolve_type_description(qualified_name, metadata),
-              example: resolve_type_example(metadata),
-              format: metadata[:format],
-            }.compact,
+            description: resolve_type_description(qualified_name, metadata),
+            example: resolve_type_example(metadata),
+            format: metadata[:format],
           )
 
           result[:deprecated] = true if metadata[:deprecated]
@@ -53,7 +51,7 @@ module Apiwork
             description: resolve_enum_description(qualified_name, metadata),
             example: metadata[:example],
             values: metadata[:values],
-          }.compact
+          }
 
           result[:deprecated] = true if metadata[:deprecated]
 

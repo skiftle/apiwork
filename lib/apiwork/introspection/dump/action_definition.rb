@@ -12,12 +12,12 @@ module Apiwork
           result = {
             description: resolve_description,
             operation_id: @action_definition.operation_id,
-            raises: raises.presence,
+            raises: raises,
             request: dump_request(@action_definition.request_definition),
             response: dump_response(@action_definition.response_definition),
             summary: resolve_summary,
-            tags: @action_definition.tags.presence,
-          }.compact
+            tags: @action_definition.tags,
+          }
 
           result[:deprecated] = true if @action_definition.deprecated
 
@@ -54,7 +54,7 @@ module Apiwork
           {
             body: request_definition.body_param_definition&.then { ParamDefinition.new(_1).to_h },
             query: request_definition.query_param_definition&.then { ParamDefinition.new(_1).to_h },
-          }.compact.presence
+          }
         end
 
         def dump_response(response_definition)
@@ -66,7 +66,7 @@ module Apiwork
 
           result_wrapper = response_definition.result_wrapper
           dumped = ParamDefinition.new(body_param_definition, result_wrapper:).to_h
-          { body: dumped }.compact.presence
+          { body: dumped }
         end
 
         def raises

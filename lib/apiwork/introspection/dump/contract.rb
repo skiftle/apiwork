@@ -52,8 +52,8 @@ module Apiwork
             enums = dump_local_enums
           end
 
-          result[:types] = types if types.any?
-          result[:enums] = enums if enums.any?
+          result[:types] = types
+          result[:enums] = enums
 
           result
         end

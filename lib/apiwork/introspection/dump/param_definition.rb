@@ -23,9 +23,9 @@ module Apiwork
           end
 
           if @param_definition.wrapped?
-            result.empty? ? nil : { shape: result, type: :object }
+            { shape: result, type: :object }
           else
-            result.presence
+            result
           end
         end
 
@@ -89,10 +89,10 @@ module Apiwork
             as: options[:as],
             enum: resolve_enum(options),
             of: resolve_of(options),
-            shape: options[:shape]&.then { dump_nested_shape(_1).presence },
+            shape: options[:shape]&.then { dump_nested_shape(_1) },
             type: type_value,
             value: options[:type] == :literal ? options[:value] : nil,
-          }.compact
+          }
 
           apply_boolean_flags(result, options)
           apply_metadata_fields(result, options)
@@ -117,7 +117,7 @@ module Apiwork
             )
           end
 
-          result = { as: options[:as], type: custom_type_name }.compact
+          result = { as: options[:as], type: custom_type_name }
           apply_boolean_flags(result, options)
           apply_metadata_fields(result, options)
           result
@@ -222,8 +222,7 @@ module Apiwork
           end
 
           if variant_definition[:shape]
-            nested = dump_nested_shape(variant_definition[:shape])
-            result[:shape] = nested if nested.present?
+            result[:shape] = dump_nested_shape(variant_definition[:shape])
           end
 
           result
@@ -234,16 +233,11 @@ module Apiwork
         end
 
         def apply_metadata_fields(result, options)
-          result.merge!(
-            {
-              description: resolve_attribute_description(options),
-              example: options[:example],
-              format: options[:format],
-              max: options[:max],
-              min: options[:min],
-            }.compact,
-          )
-
+          result[:description] = resolve_attribute_description(options)
+          result[:example] = options[:example]
+          result[:format] = options[:format]
+          result[:max] = options[:max]
+          result[:min] = options[:min]
           result[:deprecated] = true if options[:deprecated]
         end
 

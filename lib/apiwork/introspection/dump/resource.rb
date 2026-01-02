@@ -30,7 +30,7 @@ module Apiwork
             identifier: @resource.name.to_s,
             path: resource_path,
             resources: build_nested_resources(resource_path),
-          }.compact
+          }
         end
 
         private
@@ -45,7 +45,7 @@ module Apiwork
             action_definition = contract_class&.action_definition(action_name)
             next unless action_definition
 
-            actions[action_name].merge!(ActionDefinition.new(action_definition).to_h.except(:deprecated).compact)
+            actions[action_name].merge!(ActionDefinition.new(action_definition).to_h.except(:deprecated))
             actions[action_name][:deprecated] = true if action_definition.deprecated
           end
 

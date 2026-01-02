@@ -13,14 +13,14 @@ module Apiwork
           resources = dump_resources
 
           {
-            resources:,
-            enums: @type_dump.enums.presence,
-            error_codes: dump_error_codes(collect_all_error_codes(resources)).presence,
-            info: dump_info.presence,
+            enums: @type_dump.enums,
+            error_codes: dump_error_codes(collect_all_error_codes(resources)),
+            info: dump_info,
             path: @api_class.path,
-            raises: @api_class.structure.raises.presence,
-            types: @type_dump.types.presence,
-          }.compact
+            raises: @api_class.structure.raises,
+            resources: resources,
+            types: @type_dump.types,
+          }
         end
 
         private
@@ -74,7 +74,7 @@ module Apiwork
             terms_of_service: info[:terms_of_service],
             title: info[:title],
             version: info[:version],
-          }.compact.presence
+          }
         end
       end
     end
