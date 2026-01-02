@@ -4,13 +4,11 @@ module Apiwork
   module Introspection
     class << self
       def api(api_class, locale: nil)
-        data = with_locale(locale) { APISerializer.new(api_class).serialize }
-        API.new(data)
+        with_locale(locale) { API.new(Dump.api(api_class)) }
       end
 
       def contract(contract_class, expand: false, locale: nil)
-        data = with_locale(locale) { ContractSerializer.new(contract_class, expand:).serialize }
-        Contract.new(data)
+        with_locale(locale) { Contract.new(Dump.contract(contract_class, expand:)) }
       end
 
       private

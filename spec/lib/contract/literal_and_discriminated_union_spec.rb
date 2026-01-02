@@ -33,7 +33,7 @@ RSpec.describe 'Literal and Discriminated Union Features' do
     end
 
     it 'serializes with value in AST' do
-      serialized = Apiwork::Introspection::ParamDefinitionSerializer.new(definition).serialize
+      serialized = Apiwork::Introspection::Dump::ParamDefinition.new(definition).to_h
       expect(serialized[:status][:type]).to eq(:literal)
       expect(serialized[:status][:value]).to eq('archived')
     end
@@ -119,7 +119,7 @@ RSpec.describe 'Literal and Discriminated Union Features' do
     end
 
     it 'serializes with discriminator in AST' do
-      serialized = Apiwork::Introspection::ParamDefinitionSerializer.new(definition).serialize
+      serialized = Apiwork::Introspection::Dump::ParamDefinition.new(definition).to_h
       expect(serialized[:filter][:type]).to eq(:union)
       expect(serialized[:filter][:discriminator]).to eq(:kind)
       expect(serialized[:filter][:variants]).to be_an(Array)

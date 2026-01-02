@@ -11,7 +11,7 @@ RSpec.describe 'API TypeSystem Builder' do
       end
     end
 
-    types = Apiwork::Introspection::TypeSerializer.new(api).serialize_types
+    types = Apiwork::Introspection::Dump::Type.new(api).types
 
     expect(types).to have_key(:error)
     expect(types[:error]).to include(
@@ -28,7 +28,7 @@ RSpec.describe 'API TypeSystem Builder' do
       enum :sort_direction, values: %i[asc desc]
     end
 
-    enums = Apiwork::Introspection::TypeSerializer.new(api).serialize_enums
+    enums = Apiwork::Introspection::Dump::Type.new(api).enums
 
     expect(enums).to have_key(:sort_direction)
     expect(enums[:sort_direction][:values]).to eq(%i[asc desc])
@@ -39,7 +39,7 @@ RSpec.describe 'API TypeSystem Builder' do
       enum :status, values: %i[active inactive pending]
     end
 
-    types = Apiwork::Introspection::TypeSerializer.new(api).serialize_types
+    types = Apiwork::Introspection::Dump::Type.new(api).types
 
     # Enum filter types should ONLY be generated when the enum is used
     # by a schema attribute with filterable: true
@@ -53,7 +53,7 @@ RSpec.describe 'API TypeSystem Builder' do
       end
     end
 
-    types = Apiwork::Introspection::TypeSerializer.new(api).serialize_types
+    types = Apiwork::Introspection::Dump::Type.new(api).types
 
     # Should be registered as :global_type, not qualified with any contract prefix
     expect(types).to have_key(:global_type)
@@ -69,8 +69,8 @@ RSpec.describe 'API TypeSystem Builder' do
       enum :priority, values: %i[low medium high]
     end
 
-    types = Apiwork::Introspection::TypeSerializer.new(api).serialize_types
-    enums = Apiwork::Introspection::TypeSerializer.new(api).serialize_enums
+    types = Apiwork::Introspection::Dump::Type.new(api).types
+    enums = Apiwork::Introspection::Dump::Type.new(api).enums
 
     expect(types).to have_key(:error)
     expect(enums).to have_key(:priority)
@@ -84,7 +84,7 @@ RSpec.describe 'API TypeSystem Builder' do
         end
       end
 
-      types = Apiwork::Introspection::TypeSerializer.new(api).serialize_types
+      types = Apiwork::Introspection::Dump::Type.new(api).types
 
       expect(types[:documented_type]).to include(description: 'A type with description')
     end
@@ -96,7 +96,7 @@ RSpec.describe 'API TypeSystem Builder' do
         end
       end
 
-      types = Apiwork::Introspection::TypeSerializer.new(api).serialize_types
+      types = Apiwork::Introspection::Dump::Type.new(api).types
 
       expect(types[:example_type]).to include(example: { field: 'value' })
     end
@@ -108,7 +108,7 @@ RSpec.describe 'API TypeSystem Builder' do
         end
       end
 
-      types = Apiwork::Introspection::TypeSerializer.new(api).serialize_types
+      types = Apiwork::Introspection::Dump::Type.new(api).types
 
       expect(types[:formatted_type]).to include(format: 'email')
     end
@@ -120,7 +120,7 @@ RSpec.describe 'API TypeSystem Builder' do
         end
       end
 
-      types = Apiwork::Introspection::TypeSerializer.new(api).serialize_types
+      types = Apiwork::Introspection::Dump::Type.new(api).types
 
       expect(types[:legacy_type]).to include(deprecated: true)
     end
@@ -132,7 +132,7 @@ RSpec.describe 'API TypeSystem Builder' do
         end
       end
 
-      types = Apiwork::Introspection::TypeSerializer.new(api).serialize_types
+      types = Apiwork::Introspection::Dump::Type.new(api).types
 
       expect(types[:full_metadata_type]).to include(
         deprecated: true,
@@ -147,7 +147,7 @@ RSpec.describe 'API TypeSystem Builder' do
         enum :documented_enum, description: 'An enum with description', values: %i[a b c]
       end
 
-      enums = Apiwork::Introspection::TypeSerializer.new(api).serialize_enums
+      enums = Apiwork::Introspection::Dump::Type.new(api).enums
 
       expect(enums[:documented_enum]).to include(description: 'An enum with description')
     end
@@ -157,7 +157,7 @@ RSpec.describe 'API TypeSystem Builder' do
         enum :example_enum, example: :red, values: %i[red green blue]
       end
 
-      enums = Apiwork::Introspection::TypeSerializer.new(api).serialize_enums
+      enums = Apiwork::Introspection::Dump::Type.new(api).enums
 
       expect(enums[:example_enum]).to include(example: :red)
     end
@@ -167,7 +167,7 @@ RSpec.describe 'API TypeSystem Builder' do
         enum :legacy_enum, deprecated: true, values: %i[old new]
       end
 
-      enums = Apiwork::Introspection::TypeSerializer.new(api).serialize_enums
+      enums = Apiwork::Introspection::Dump::Type.new(api).enums
 
       expect(enums[:legacy_enum]).to include(deprecated: true)
     end
@@ -177,7 +177,7 @@ RSpec.describe 'API TypeSystem Builder' do
         enum :full_metadata_enum, deprecated: true, description: 'Complete enum metadata', example: 'option1', values: %w[option1 option2]
       end
 
-      enums = Apiwork::Introspection::TypeSerializer.new(api).serialize_enums
+      enums = Apiwork::Introspection::Dump::Type.new(api).enums
 
       expect(enums[:full_metadata_enum]).to eq(
         deprecated: true,
@@ -197,8 +197,8 @@ RSpec.describe 'API TypeSystem Builder' do
         enum :chained_enum, description: 'Enum metadata flows through', values: %i[x y]
       end
 
-      types = Apiwork::Introspection::TypeSerializer.new(api).serialize_types
-      enums = Apiwork::Introspection::TypeSerializer.new(api).serialize_enums
+      types = Apiwork::Introspection::Dump::Type.new(api).types
+      enums = Apiwork::Introspection::Dump::Type.new(api).enums
 
       # Verify metadata is preserved through the chain
       expect(types[:chained_type][:description]).to eq('Metadata flows through')
