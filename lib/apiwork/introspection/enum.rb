@@ -6,19 +6,11 @@ module Apiwork
     # Wraps enum type definitions.
     #
     # @example
-    #   data.enums.each do |enum|
-    #     enum.name         # => :status
-    #     enum.values       # => ["draft", "published", "archived"]
-    #     enum.description  # => "Document status"
-    #     enum.deprecated?  # => false
-    #   end
+    #   api.enums[:status].values       # => ["draft", "published", "archived"]
+    #   api.enums[:status].description  # => "Document status"
+    #   api.enums[:status].deprecated?  # => false
     class Enum
-      # @api public
-      # @return [Symbol] enum name
-      attr_reader :name
-
-      def initialize(name, dump)
-        @name = name.to_sym
+      def initialize(dump)
         @dump = dump
       end
 
@@ -53,7 +45,6 @@ module Apiwork
           deprecated: deprecated?,
           description: description,
           example: example,
-          name: name,
           values: values,
         }
       end

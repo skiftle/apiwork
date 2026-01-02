@@ -10,53 +10,47 @@ module Apiwork
     # @example
     #   contract = InvoiceContract.introspect(expand: true)
     #
-    #   contract.actions.each do |action|
-    #     action.name      # => :index, :show, etc.
+    #   contract.actions[:show].response  # => Action::Response
+    #   contract.types[:address].shape    # => { street: ..., city: ... }
+    #   contract.enums[:status].values    # => ["draft", "published"]
+    #
+    #   contract.actions.each_value do |action|
     #     action.request   # => Action::Request or nil
     #     action.response  # => Action::Response or nil
     #   end
-    #
-    #   contract.types.each { |t| ... }  # iterate custom types
-    #   contract.enums.each { |e| ... }  # iterate enums
     class Contract
       def initialize(dump)
         @dump = dump
       end
 
       # @api public
-      # @return [Array<Action>] actions defined on this contract
+      # @return [Hash{Symbol => Action}] actions defined on this contract
       # @see Action
       def actions
-        @actions ||= @dump[:actions].map do |action_name, action_data|
-          Action.new(action_name, action_data)
-        end
+        @actions ||= @dump[:actions].transform_values { |data| Action.new(data) }
       end
 
       # @api public
-      # @return [Array<Type>] custom types defined or referenced by this contract
+      # @return [Hash{Symbol => Type}] custom types defined or referenced by this contract
       # @see Type
       def types
-        @types ||= @dump[:types].map do |name, data|
-          Type.new(name, data)
-        end
+        @types ||= @dump[:types].transform_values { |data| Type.new(data) }
       end
 
       # @api public
-      # @return [Array<Enum>] enums defined or referenced by this contract
+      # @return [Hash{Symbol => Enum}] enums defined or referenced by this contract
       # @see Enum
       def enums
-        @enums ||= @dump[:enums].map do |name, data|
-          Enum.new(name, data)
-        end
+        @enums ||= @dump[:enums].transform_values { |data| Enum.new(data) }
       end
 
       # @api public
       # @return [Hash] structured representation
       def to_h
         {
-          actions: actions.map(&:to_h),
-          enums: enums.map(&:to_h),
-          types: types.map(&:to_h),
+          actions: actions.transform_values(&:to_h),
+          enums: enums.transform_values(&:to_h),
+          types: types.transform_values(&:to_h),
         }
       end
     end

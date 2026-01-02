@@ -8,22 +8,15 @@ module Apiwork
     # Types can be objects (with shapes) or unions (with variants).
     #
     # @example Object type
-    #   type.name         # => :address
-    #   type.object?      # => true
-    #   type.shape[:city] # => Param for city field
+    #   api.types[:address].object?      # => true
+    #   api.types[:address].shape[:city] # => Param for city field
     #
     # @example Union type
-    #   type.name          # => :payment_method
-    #   type.union?        # => true
-    #   type.variants      # => [Param, ...]
-    #   type.discriminator # => :type
+    #   api.types[:payment_method].union?        # => true
+    #   api.types[:payment_method].variants      # => [Param, ...]
+    #   api.types[:payment_method].discriminator # => :type
     class Type
-      # @api public
-      # @return [Symbol] type name
-      attr_reader :name
-
-      def initialize(name, dump)
-        @name = name.to_sym
+      def initialize(dump)
         @dump = dump
       end
 
@@ -90,7 +83,6 @@ module Apiwork
           description: description,
           discriminator: discriminator,
           example: example,
-          name: name,
           shape: shape.transform_values(&:to_h),
           type: type,
           variants: variants.map(&:to_h),

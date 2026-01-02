@@ -26,8 +26,8 @@ module Apiwork
         @key_format = key_format
       end
 
-      def build_object_schema(type, action_name: nil, recursive: false)
-        schema_name = pascal_case(type.name)
+      def build_object_schema(type_name, type, action_name: nil, recursive: false)
+        schema_name = pascal_case(type_name)
 
         properties = type.shape.sort_by { |name, _| name.to_s }.map do |name, param|
           key = transform_key(name)
@@ -44,8 +44,8 @@ module Apiwork
         end
       end
 
-      def build_union_schema(type)
-        schema_name = pascal_case(type.name)
+      def build_union_schema(type_name, type)
+        schema_name = pascal_case(type_name)
 
         variant_schemas = type.variants.map { |variant| map_type_definition(variant, action_name: nil) }
         union_body = variant_schemas.map { |v| "  #{v}" }.join(",\n")
@@ -261,14 +261,14 @@ module Apiwork
       private
 
       def type_or_enum_reference?(symbol)
-        data.types.any? { |t| t.name == symbol } || data.enums.any? { |e| e.name == symbol }
+        data.types.key?(symbol) || data.enums.key?(symbol)
       end
 
       def resolve_enum_schema(param)
         return nil unless param.enum
 
         enum_reference = param.enum
-        if enum_reference.is_a?(Symbol) && data.enums.any? { |e| e.name == enum_reference }
+        if enum_reference.is_a?(Symbol) && data.enums.key?(enum_reference)
           "#{pascal_case(enum_reference)}Schema"
         elsif enum_reference.is_a?(Array)
           enum_literal = enum_reference.map { |v| "'#{v}'" }.join(', ')

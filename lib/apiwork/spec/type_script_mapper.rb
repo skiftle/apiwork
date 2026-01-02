@@ -11,8 +11,8 @@ module Apiwork
         @key_format = key_format
       end
 
-      def build_interface(type, action_name: nil, recursive: false)
-        type_name_pascal = pascal_case(type.name)
+      def build_interface(type_name, type, action_name: nil, recursive: false)
+        type_name_pascal = pascal_case(type_name)
 
         properties = type.shape.sort_by { |name, _| name.to_s }.map do |name, param|
           key = transform_key(name)
@@ -40,8 +40,8 @@ module Apiwork
         type_jsdoc ? "#{type_jsdoc}\n#{code}" : code
       end
 
-      def build_union_type(type)
-        type_name_pascal = pascal_case(type.name)
+      def build_union_type(type_name, type)
+        type_name_pascal = pascal_case(type_name)
 
         variant_types = type.variants.map do |variant|
           base_type = map_type_definition(variant, action_name: nil)
@@ -59,8 +59,8 @@ module Apiwork
         type_jsdoc ? "#{type_jsdoc}\n#{code}" : code
       end
 
-      def build_enum_type(enum)
-        type_name = pascal_case(enum.name)
+      def build_enum_type(enum_name, enum)
+        type_name = pascal_case(enum_name)
         type_literal = enum.values.sort.map { |v| "'#{v}'" }.join(' | ')
 
         code = "export type #{type_name} = #{type_literal};"
@@ -140,7 +140,7 @@ module Apiwork
 
         if param.enum
           enum_reference = param.enum
-          if enum_reference.is_a?(Symbol) && data.enums.any? { |e| e.name == enum_reference }
+          if enum_reference.is_a?(Symbol) && data.enums.key?(enum_reference)
             base_type = pascal_case(enum_reference)
           elsif enum_reference.is_a?(Array)
             base_type = enum_reference.sort.map { |v| "'#{v}'" }.join(' | ')
@@ -272,7 +272,7 @@ module Apiwork
       private
 
       def type_or_enum_reference?(symbol)
-        data.types.any? { |t| t.name == symbol } || data.enums.any? { |e| e.name == symbol }
+        data.types.key?(symbol) || data.enums.key?(symbol)
       end
 
       def extract_parent_resource_names(parent_path)

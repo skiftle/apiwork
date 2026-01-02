@@ -75,15 +75,18 @@ module Apiwork
 
       def build_resource_paths(paths, resource, parent_path)
         parent_paths = extract_parent_resource_paths(parent_path)
+        resource_name = resource.identifier.to_sym
 
-        resource.actions.each do |action|
+        resource.actions.each do |action_name, action|
           full_path = build_full_action_path(resource, action, parent_path)
           openapi_formatted_path = openapi_path(full_path)
           method = action.method.to_s.downcase
 
           paths[openapi_formatted_path] ||= {}
           paths[openapi_formatted_path][method] = build_operation(
+            resource_name,
             resource,
+            action_name,
             action,
             parent_paths,
             full_path,
@@ -96,11 +99,11 @@ module Apiwork
         "#{resource_path}#{action.path}"
       end
 
-      def build_operation(resource, action, parent_paths, full_path)
+      def build_operation(resource_name, resource, action_name, action, parent_paths, full_path)
         operation = {
           deprecated: action.deprecated? || nil,
           description: action.description,
-          operationId: action.operation_id || operation_id(resource.name, resource.path, action.name, parent_paths),
+          operationId: action.operation_id || operation_id(resource_name, resource.path, action_name, parent_paths),
           summary: action.summary,
           tags: build_tags(resource.to_h[:tags], action.tags),
         }
@@ -114,14 +117,14 @@ module Apiwork
           query_params = request.query? ? build_query_parameters(query_hash) : []
           all_params = path_params + query_params
           operation[:parameters] = all_params if all_params.any?
-          operation[:requestBody] = build_request_body(body_hash, action.name) if request.body?
+          operation[:requestBody] = build_request_body(body_hash, action_name) if request.body?
         elsif path_params.any?
           operation[:parameters] = path_params
         end
 
         response = action.response
         response_hash = response ? { body: response.body&.to_h, no_content: response.no_content? } : nil
-        operation[:responses] = build_responses(action.name, response_hash, action.raises)
+        operation[:responses] = build_responses(action_name, response_hash, action.raises)
 
         operation.compact
       end
@@ -244,7 +247,7 @@ module Apiwork
             }
 
             combined_raises.each do |code|
-              error_code = data.error_codes.find { |e| e.code == code }
+              error_code = data.error_codes[code]
               responses[error_code.status.to_s.to_sym] = build_union_error_response(error_code.description, error_variant)
             end
           else
@@ -258,7 +261,7 @@ module Apiwork
             }
 
             combined_raises.each do |code|
-              error_code = data.error_codes.find { |e| e.code == code }
+              error_code = data.error_codes[code]
               responses[error_code.status.to_s.to_sym] = build_error_response(error_code.description)
             end
           end
@@ -321,9 +324,9 @@ module Apiwork
       def build_schemas
         schemas = {}
 
-        data.types.each do |type|
-          component_name = schema_name(type.name)
-          type_shape = type.to_h.except(:name)
+        data.types.each do |name, type|
+          component_name = schema_name(name)
+          type_shape = type.to_h
 
           schemas[component_name] = if type.union?
                                       map_union(type_shape)
@@ -601,17 +604,17 @@ module Apiwork
       def type_exists?(symbol)
         return false unless symbol
 
-        data.types.any? { |t| t.name == symbol }
+        data.types.key?(symbol)
       end
 
       def enum_exists?(symbol)
         return false unless symbol
 
-        data.enums.any? { |e| e.name == symbol }
+        data.enums.key?(symbol)
       end
 
       def find_enum(symbol)
-        data.enums.find { |e| e.name == symbol }
+        data.enums[symbol]
       end
     end
   end

@@ -7,27 +7,23 @@ module Apiwork
       # Wraps resource definitions.
       #
       # @example
-      #   api.resources.each do |resource|
-      #     resource.name       # => :invoices
-      #     resource.identifier # => "invoices"
-      #     resource.path       # => "invoices"
-      #     resource.nested?    # => true if has nested resources
+      #   api.resources[:invoices].path    # => "invoices"
+      #   api.resources[:invoices].nested? # => true if has nested resources
       #
-      #     resource.actions.each do |action|
-      #       # ...
+      #   api.each_resource do |resource, parent_path|
+      #     resource.identifier # => "invoices"
+      #
+      #     resource.actions.each_value do |action|
+      #       action.request  # => Action::Request or nil
+      #       action.response # => Action::Response or nil
       #     end
       #
-      #     resource.resources.each do |nested|
-      #       # ...
+      #     resource.resources.each_value do |nested|
+      #       # nested resources...
       #     end
       #   end
       class Resource
-        # @api public
-        # @return [Symbol] resource name
-        attr_reader :name
-
-        def initialize(name, data)
-          @name = name.to_sym
+        def initialize(data)
           @data = data
         end
 
@@ -44,20 +40,16 @@ module Apiwork
         end
 
         # @api public
-        # @return [Array<Action>] actions defined on this resource
+        # @return [Hash{Symbol => Action}] actions defined on this resource
         # @see Action
         def actions
-          @actions ||= @data[:actions].map do |action_name, action_data|
-            Action.new(action_name, action_data)
-          end
+          @actions ||= @data[:actions].transform_values { |data| Action.new(data) }
         end
 
         # @api public
-        # @return [Array<Resource>] nested resources
+        # @return [Hash{Symbol => Resource}] nested resources
         def resources
-          @resources ||= @data[:resources].map do |resource_name, resource_data|
-            Resource.new(resource_name, resource_data)
-          end
+          @resources ||= @data[:resources].transform_values { |data| Resource.new(data) }
         end
 
         # @api public
@@ -72,18 +64,17 @@ module Apiwork
         # @yieldparam action [Action] each action
         # @see Action
         def each_action(&block)
-          actions.each(&block)
+          actions.each_value(&block)
         end
 
         # @api public
         # @return [Hash] structured representation
         def to_h
           {
-            actions: actions.map(&:to_h),
+            actions: actions.transform_values(&:to_h),
             identifier: identifier,
-            name: name,
             path: path,
-            resources: resources.map(&:to_h),
+            resources: resources.transform_values(&:to_h),
           }
         end
       end

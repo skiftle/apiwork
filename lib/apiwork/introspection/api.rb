@@ -11,12 +11,12 @@ module Apiwork
     # @example
     #   api = MyAPI.introspect(locale: :sv)
     #
-    #   api.info.title              # => "My API"
-    #   api.types.each { |t| ... }  # iterate custom types
-    #   api.enums.each { |e| ... }  # iterate enums
+    #   api.info.title                      # => "My API"
+    #   api.types[:address].description     # => "Address type"
+    #   api.enums[:status].values           # => ["draft", "published"]
     #
     #   api.each_resource do |resource, parent_path|
-    #     resource.actions.each do |action|
+    #     resource.actions.each_value do |action|
     #       # ...
     #     end
     #   end
@@ -39,30 +39,24 @@ module Apiwork
       end
 
       # @api public
-      # @return [Array<API::Resource>] top-level resources
+      # @return [Hash{Symbol => API::Resource}] top-level resources
       # @see API::Resource
       def resources
-        @resources ||= @dump[:resources].map do |name, data|
-          Resource.new(name, data)
-        end
+        @resources ||= @dump[:resources].transform_values { |data| Resource.new(data) }
       end
 
       # @api public
-      # @return [Array<Type>] registered custom types
+      # @return [Hash{Symbol => Type}] registered custom types
       # @see Type
       def types
-        @types ||= @dump[:types].map do |name, data|
-          Type.new(name, data)
-        end
+        @types ||= @dump[:types].transform_values { |data| Type.new(data) }
       end
 
       # @api public
-      # @return [Array<Enum>] registered enums
+      # @return [Hash{Symbol => Enum}] registered enums
       # @see Enum
       def enums
-        @enums ||= @dump[:enums].map do |name, data|
-          Enum.new(name, data)
-        end
+        @enums ||= @dump[:enums].transform_values { |data| Enum.new(data) }
       end
 
       # @api public
@@ -72,12 +66,10 @@ module Apiwork
       end
 
       # @api public
-      # @return [Array<ErrorCode>] error code definitions
+      # @return [Hash{Symbol => ErrorCode}] error code definitions
       # @see ErrorCode
       def error_codes
-        @error_codes ||= @dump[:error_codes].map do |code, data|
-          ErrorCode.new(code, data)
-        end
+        @error_codes ||= @dump[:error_codes].transform_values { |data| ErrorCode.new(data) }
       end
 
       # @api public
@@ -94,20 +86,20 @@ module Apiwork
       # @return [Hash] structured representation
       def to_h
         {
-          enums: enums.map(&:to_h),
-          error_codes: error_codes.map(&:to_h),
+          enums: enums.transform_values(&:to_h),
+          error_codes: error_codes.transform_values(&:to_h),
           info: info.to_h,
           path: path,
           raises: raises,
-          resources: resources.map(&:to_h),
-          types: types.map(&:to_h),
+          resources: resources.transform_values(&:to_h),
+          types: types.transform_values(&:to_h),
         }
       end
 
       private
 
       def iterate_resources(resource_list, parent_path, &block)
-        resource_list.each do |resource|
+        resource_list.each_value do |resource|
           yield(resource, parent_path)
 
           if resource.nested?

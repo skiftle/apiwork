@@ -6,18 +6,10 @@ module Apiwork
     # Wraps error code definitions.
     #
     # @example
-    #   data.error_codes.each do |error_code|
-    #     error_code.code         # => :not_found
-    #     error_code.status       # => 404
-    #     error_code.description  # => "Resource not found"
-    #   end
+    #   api.error_codes[:not_found].status      # => 404
+    #   api.error_codes[:not_found].description # => "Resource not found"
     class ErrorCode
-      # @api public
-      # @return [Symbol] error code identifier
-      attr_reader :code
-
-      def initialize(code, dump)
-        @code = code.to_sym
+      def initialize(dump)
         @dump = dump
       end
 
@@ -37,7 +29,6 @@ module Apiwork
       # @return [Hash] structured representation
       def to_h
         {
-          code: code,
           description: description,
           status: status,
         }

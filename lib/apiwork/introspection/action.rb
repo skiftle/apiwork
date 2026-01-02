@@ -6,21 +6,18 @@ module Apiwork
     # Wraps action definitions within a resource.
     #
     # @example
-    #   resource.actions.each do |action|
-    #     action.name        # => :index, :show, :create, etc.
+    #   resource.actions[:show].method     # => :get
+    #   resource.actions[:show].path       # => "/:id"
+    #   resource.actions[:create].request  # => Action::Request
+    #
+    #   resource.actions.each_value do |action|
     #     action.method      # => :get, :post, :patch, :delete
-    #     action.path        # => "/" or "/:id"
     #     action.request     # => Action::Request or nil
     #     action.response    # => Action::Response or nil
     #     action.deprecated? # => false
     #   end
     class Action
-      # @api public
-      # @return [Symbol] action name
-      attr_reader :name
-
-      def initialize(name, dump)
-        @name = name.to_sym
+      def initialize(dump)
         @dump = dump
       end
 
@@ -105,7 +102,6 @@ module Apiwork
           deprecated: deprecated?,
           description: description,
           method: method,
-          name: name,
           operation_id: operation_id,
           path: path,
           raises: raises,
