@@ -633,12 +633,14 @@ RSpec.describe Apiwork::Spec::Zod do
     let(:mapper) { Apiwork::Spec::ZodMapper.new(data:) }
 
     it 'maps :unknown to z.unknown()' do
-      result = mapper.send(:map_primitive, { type: :unknown })
+      param = Apiwork::Spec::Data::Param.new({ type: :unknown })
+      result = mapper.send(:map_primitive, param)
       expect(result).to eq('z.unknown()')
     end
 
     it 'uses z.unknown() as fallback for unmapped types' do
-      result = mapper.send(:map_primitive, { type: :some_unmapped_type })
+      param = Apiwork::Spec::Data::Param.new({ type: :some_unmapped_type })
+      result = mapper.send(:map_primitive, param)
       expect(result).to eq('z.unknown()')
     end
   end
@@ -647,92 +649,94 @@ RSpec.describe Apiwork::Spec::Zod do
     let(:data) { Apiwork::Spec::Data.new(introspect) }
     let(:mapper) { Apiwork::Spec::ZodMapper.new(data:) }
 
+    def param(attrs)
+      Apiwork::Spec::Data::Param.new(attrs)
+    end
+
     describe 'string formats' do
       it 'maps email format to z.email()' do
-        result = mapper.send(:map_primitive, { format: :email, type: :string })
+        result = mapper.send(:map_primitive, param(format: :email, type: :string))
         expect(result).to eq('z.email()')
       end
 
       it 'maps uuid format to z.uuid()' do
-        result = mapper.send(:map_primitive, { format: :uuid, type: :string })
+        result = mapper.send(:map_primitive, param(format: :uuid, type: :string))
         expect(result).to eq('z.uuid()')
       end
 
       it 'maps url format to z.url()' do
-        result = mapper.send(:map_primitive, { format: :url, type: :string })
+        result = mapper.send(:map_primitive, param(format: :url, type: :string))
         expect(result).to eq('z.url()')
       end
 
       it 'maps uri format to z.url()' do
-        result = mapper.send(:map_primitive, { format: :uri, type: :string })
+        result = mapper.send(:map_primitive, param(format: :uri, type: :string))
         expect(result).to eq('z.url()')
       end
 
       it 'maps ipv4 format to z.ipv4()' do
-        result = mapper.send(:map_primitive, { format: :ipv4, type: :string })
+        result = mapper.send(:map_primitive, param(format: :ipv4, type: :string))
         expect(result).to eq('z.ipv4()')
       end
 
       it 'maps ipv6 format to z.ipv6()' do
-        result = mapper.send(:map_primitive, { format: :ipv6, type: :string })
+        result = mapper.send(:map_primitive, param(format: :ipv6, type: :string))
         expect(result).to eq('z.ipv6()')
       end
 
       it 'maps date format to z.iso.date()' do
-        result = mapper.send(:map_primitive, { format: :date, type: :string })
+        result = mapper.send(:map_primitive, param(format: :date, type: :string))
         expect(result).to eq('z.iso.date()')
       end
 
       it 'maps date_time format to z.iso.datetime()' do
-        result = mapper.send(:map_primitive, { format: :date_time, type: :string })
+        result = mapper.send(:map_primitive, param(format: :date_time, type: :string))
         expect(result).to eq('z.iso.datetime()')
       end
 
       it 'maps password format to z.string()' do
-        result = mapper.send(:map_primitive, { format: :password, type: :string })
+        result = mapper.send(:map_primitive, param(format: :password, type: :string))
         expect(result).to eq('z.string()')
       end
 
       it 'maps hostname format to z.string()' do
-        result = mapper.send(:map_primitive, { format: :hostname, type: :string })
+        result = mapper.send(:map_primitive, param(format: :hostname, type: :string))
         expect(result).to eq('z.string()')
       end
     end
 
     describe 'integer formats' do
       it 'maps int32 format to z.number().int()' do
-        result = mapper.send(:map_primitive, { format: :int32, type: :integer })
+        result = mapper.send(:map_primitive, param(format: :int32, type: :integer))
         expect(result).to eq('z.number().int()')
       end
 
       it 'maps int64 format to z.number().int()' do
-        result = mapper.send(:map_primitive, { format: :int64, type: :integer })
+        result = mapper.send(:map_primitive, param(format: :int64, type: :integer))
         expect(result).to eq('z.number().int()')
       end
     end
 
     describe 'number formats' do
       it 'maps float format to z.number()' do
-        result = mapper.send(:map_primitive, { format: :float, type: :float })
+        result = mapper.send(:map_primitive, param(format: :float, type: :float))
         expect(result).to eq('z.number()')
       end
 
       it 'maps double format to z.number()' do
-        result = mapper.send(:map_primitive, { format: :double, type: :float })
+        result = mapper.send(:map_primitive, param(format: :double, type: :float))
         expect(result).to eq('z.number()')
       end
     end
 
     describe 'format overrides type' do
       it 'uses format mapping instead of type mapping when format is present' do
-        # String with email format should use z.email() not z.string()
-        result = mapper.send(:map_primitive, { format: :email, type: :string })
+        result = mapper.send(:map_primitive, param(format: :email, type: :string))
         expect(result).to eq('z.email()')
       end
 
       it 'falls back to type mapping when no format is specified' do
-        # String without format should use z.string()
-        result = mapper.send(:map_primitive, { type: :string })
+        result = mapper.send(:map_primitive, param(type: :string))
         expect(result).to eq('z.string()')
       end
     end

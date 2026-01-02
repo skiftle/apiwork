@@ -106,6 +106,7 @@ module Apiwork
         def add_type_if_matches(collection, type_reference, filter)
           return unless type_reference
 
+          type_reference = type_reference[:type] if type_reference.is_a?(Hash)
           type_reference = type_reference.to_sym if type_reference.is_a?(String)
           return unless type_reference.is_a?(Symbol)
 

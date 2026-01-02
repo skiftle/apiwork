@@ -54,9 +54,9 @@ module Apiwork
         end
 
         # @api public
-        # @return [Array<Hash>] variants for union types
+        # @return [Array<Param>] variants for union types
         def variants
-          @data[:variants] || []
+          @variants ||= (@data[:variants] || []).map { |v| Param.new(v) }
         end
 
         # @api public
@@ -94,7 +94,7 @@ module Apiwork
             name: name,
             shape: shape.transform_values(&:to_h),
             type: type,
-            variants: variants,
+            variants: variants.map(&:to_h),
           }
         end
       end

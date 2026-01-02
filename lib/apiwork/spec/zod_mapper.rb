@@ -124,8 +124,6 @@ module Apiwork
       end
 
       def map_field_definition(param, action_name: nil, force_optional: nil)
-        param = wrap_param(param)
-
         if param.type.is_a?(Symbol) && type_or_enum_reference?(param.type)
           schema_name = pascal_case(param.type)
           type = "#{schema_name}Schema"
@@ -139,8 +137,6 @@ module Apiwork
       end
 
       def map_type_definition(param, action_name: nil)
-        param = wrap_param(param)
-
         case param.type
         when :object
           map_object_type(param, action_name:)
@@ -159,7 +155,6 @@ module Apiwork
       end
 
       def map_object_type(param, action_name: nil)
-        param = wrap_param(param)
         return 'z.object({})' if param.shape.empty?
 
         partial = param.partial?
@@ -179,7 +174,6 @@ module Apiwork
       end
 
       def map_array_type(param, action_name: nil)
-        param = wrap_param(param)
         items_type = param.of
 
         if items_type.nil? && param.shape.any?
@@ -189,20 +183,11 @@ module Apiwork
 
         return 'z.array(z.string())' unless items_type
 
-        if items_type.is_a?(Symbol) && type_or_enum_reference?(items_type)
-          "z.array(#{schema_reference(items_type)})"
-        elsif items_type.is_a?(Hash)
-          items_schema = map_type_definition(items_type, action_name:)
-          "z.array(#{items_schema})"
-        else
-          primitive = map_primitive_type(items_type)
-          "z.array(#{primitive})"
-        end
+        items_schema = map_type_definition(items_type, action_name:)
+        "z.array(#{items_schema})"
       end
 
       def map_union_type(param, action_name: nil)
-        param = wrap_param(param)
-
         if param.discriminator
           map_discriminated_union(param, action_name:)
         else
@@ -220,8 +205,6 @@ module Apiwork
       end
 
       def map_literal_type(param)
-        param = wrap_param(param)
-
         case param.value
         when nil then 'z.null()'
         when String then "z.literal('#{param.value}')"
@@ -231,7 +214,6 @@ module Apiwork
       end
 
       def map_primitive(param)
-        param = wrap_param(param)
         format = param.format&.to_sym
 
         base_type = if format
@@ -283,7 +265,6 @@ module Apiwork
       end
 
       def resolve_enum_schema(param)
-        param = wrap_param(param)
         return nil unless param.enum
 
         enum_reference = param.enum
@@ -302,7 +283,6 @@ module Apiwork
       end
 
       def apply_modifiers(type, param, action_name, force_optional: nil)
-        param = wrap_param(param)
         update = action_name.to_s == 'update'
 
         type += '.nullable()' if param.nullable?
@@ -318,12 +298,6 @@ module Apiwork
         end
 
         type
-      end
-
-      def wrap_param(param_or_hash)
-        return param_or_hash if param_or_hash.is_a?(Data::Param)
-
-        Data::Param.new(param_or_hash)
       end
 
       def numeric_type?(type)

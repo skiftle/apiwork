@@ -72,7 +72,6 @@ module Apiwork
         type_name = action_type_name(resource_name, action_name, 'RequestQuery', parent_path:)
 
         properties = query_params.sort_by { |k, _| k.to_s }.map do |param_name, param|
-          param = wrap_param(param)
           key = transform_key(param_name)
           ts_type = map_field(param, action_name:)
           optional_marker = param.optional? ? '?' : ''
@@ -86,7 +85,6 @@ module Apiwork
         type_name = action_type_name(resource_name, action_name, 'RequestBody', parent_path:)
 
         properties = body_params.sort_by { |k, _| k.to_s }.map do |param_name, param|
-          param = wrap_param(param)
           key = transform_key(param_name)
           ts_type = map_field(param, action_name:)
           optional_marker = param.optional? ? '?' : ''
@@ -134,8 +132,6 @@ module Apiwork
       end
 
       def map_field(param, action_name: nil)
-        param = wrap_param(param)
-
         base_type = if param.type.is_a?(Symbol) && type_or_enum_reference?(param.type)
                       type_reference(param.type)
                     else
@@ -160,8 +156,6 @@ module Apiwork
       end
 
       def map_type_definition(param, action_name: nil)
-        param = wrap_param(param)
-
         case param.type
         when :object
           map_object_type(param, action_name:)
@@ -179,7 +173,6 @@ module Apiwork
       end
 
       def map_object_type(param, action_name: nil)
-        param = wrap_param(param)
         return 'object' if param.shape.empty?
 
         partial = param.partial?
@@ -195,7 +188,6 @@ module Apiwork
       end
 
       def map_array_type(param, action_name: nil)
-        param = wrap_param(param)
         items_type = param.of
 
         if items_type.nil? && param.shape.any?
@@ -205,13 +197,7 @@ module Apiwork
 
         return 'string[]' unless items_type
 
-        element_type = if items_type.is_a?(Symbol) && type_or_enum_reference?(items_type)
-                         type_reference(items_type)
-                       elsif items_type.is_a?(Hash)
-                         map_type_definition(items_type, action_name:)
-                       else
-                         map_primitive(items_type)
-                       end
+        element_type = map_type_definition(items_type, action_name:)
 
         if element_type.include?(' | ') || element_type.include?(' & ')
           "(#{element_type})[]"
@@ -221,8 +207,6 @@ module Apiwork
       end
 
       def map_union_type(param, action_name: nil)
-        param = wrap_param(param)
-
         variants = param.variants.map do |variant|
           map_type_definition(variant, action_name:)
         end
@@ -230,8 +214,6 @@ module Apiwork
       end
 
       def map_literal_type(param)
-        param = wrap_param(param)
-
         case param.value
         when nil then 'null'
         when String then "'#{param.value}'"
@@ -288,12 +270,6 @@ module Apiwork
       end
 
       private
-
-      def wrap_param(param_or_hash)
-        return param_or_hash if param_or_hash.is_a?(Data::Param)
-
-        Data::Param.new(param_or_hash)
-      end
 
       def type_or_enum_reference?(symbol)
         data.types.any? { |t| t.name == symbol } || data.enums.any? { |e| e.name == symbol }

@@ -58,9 +58,15 @@ module Apiwork
         end
 
         # @api public
-        # @return [Symbol, Hash, nil] element type for arrays
+        # @return [Param, nil] element type for arrays
         def of
-          @data[:of]
+          return @of if defined?(@of)
+
+          raw = @data[:of]
+          @of = case raw
+                when Hash then Param.new(raw)
+                when Symbol then Param.new(type: raw)
+                end
         end
 
         # @api public
@@ -70,9 +76,9 @@ module Apiwork
         end
 
         # @api public
-        # @return [Array<Hash>] variants for unions
+        # @return [Array<Param>] variants for unions
         def variants
-          @data[:variants] || []
+          @variants ||= (@data[:variants] || []).map { |v| Param.new(v) }
         end
 
         # @api public
@@ -182,14 +188,14 @@ module Apiwork
             max: max,
             min: min,
             nullable: nullable?,
-            of: of,
+            of: of&.to_h,
             optional: optional?,
             partial: partial?,
             shape: shape.transform_values(&:to_h),
             type: type,
             value: value,
-            variants: variants,
-          }.compact
+            variants: variants.map(&:to_h),
+          }
         end
       end
     end
