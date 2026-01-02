@@ -8,14 +8,8 @@ module Apiwork
     # The type field contains the symbol name of the referenced type.
     #
     # @example
-    #   param.type      # => :address (the custom type name)
-    #   param.type_ref? # => true
-    class TypeRefParam < Param
-      # @api public
-      # @return [Boolean] always true for TypeRefParam
-      def type_ref?
-        true
-      end
+    #   param.type # => :address (the custom type name)
+    class RefTypeParam < Param
     end
   end
 end

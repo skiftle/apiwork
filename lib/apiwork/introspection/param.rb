@@ -24,7 +24,7 @@ module Apiwork
 
         # Check for enum (inline or reference)
         if dump[:enum]
-          return dump[:enum].is_a?(Array) ? InlineEnumParam.new(dump) : EnumRefParam.new(dump)
+          return dump[:enum].is_a?(Array) ? InlineEnumParam.new(dump) : RefEnumParam.new(dump)
         end
 
         case type
@@ -44,7 +44,7 @@ module Apiwork
         when :object then ObjectParam.new(dump)
         when :union then UnionParam.new(dump)
         when :literal then LiteralParam.new(dump)
-        when Symbol then TypeRefParam.new(dump)
+        when Symbol then RefTypeParam.new(dump)
         else UnknownParam.new(dump)
         end
       end
@@ -110,77 +110,9 @@ module Apiwork
         @dump[key]
       end
 
-      # Predicate methods - return false by default, overridden in subclasses
-
       # @api public
-      # @return [Boolean] whether this is a string type
-      def string?
-        false
-      end
-
-      # @api public
-      # @return [Boolean] whether this is an integer type
-      def integer?
-        false
-      end
-
-      # @api public
-      # @return [Boolean] whether this is a float type
-      def float?
-        false
-      end
-
-      # @api public
-      # @return [Boolean] whether this is a decimal type
-      def decimal?
-        false
-      end
-
-      # @api public
-      # @return [Boolean] whether this is a boolean type
-      def boolean?
-        false
-      end
-
-      # @api public
-      # @return [Boolean] whether this is a datetime type
-      def datetime?
-        false
-      end
-
-      # @api public
-      # @return [Boolean] whether this is a date type
-      def date?
-        false
-      end
-
-      # @api public
-      # @return [Boolean] whether this is a time type
-      def time?
-        false
-      end
-
-      # @api public
-      # @return [Boolean] whether this is a uuid type
-      def uuid?
-        false
-      end
-
-      # @api public
-      # @return [Boolean] whether this is a binary type
-      def binary?
-        false
-      end
-
-      # @api public
-      # @return [Boolean] whether this is a json type
-      def json?
-        false
-      end
-
-      # @api public
-      # @return [Boolean] whether this is an unknown type
-      def unknown?
+      # @return [Boolean] whether this is a scalar type
+      def scalar?
         false
       end
 
@@ -205,24 +137,6 @@ module Apiwork
       # @api public
       # @return [Boolean] whether this is a literal type
       def literal?
-        false
-      end
-
-      # @api public
-      # @return [Boolean] whether this is a type reference
-      def type_ref?
-        false
-      end
-
-      # @api public
-      # @return [Boolean] whether this is an enum reference
-      def enum_ref?
-        false
-      end
-
-      # @api public
-      # @return [Boolean] whether this is an inline enum
-      def inline_enum?
         false
       end
 

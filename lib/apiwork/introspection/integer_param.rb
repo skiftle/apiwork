@@ -10,8 +10,8 @@ module Apiwork
     #   param.min      # => 0
     #   param.max      # => 100
     #   param.format   # => :int32, :int64
-    #   param.integer? # => true
-    class IntegerParam < Param
+    #   param.scalar?  # => true
+    class IntegerParam < ScalarParam
       # @api public
       # @return [Symbol, nil] format hint (:int32, :int64)
       def format
@@ -28,12 +28,6 @@ module Apiwork
       # @return [Integer, nil] maximum value
       def max
         @dump[:max]
-      end
-
-      # @api public
-      # @return [Boolean] always true for IntegerParam
-      def integer?
-        true
       end
 
       # @api public

@@ -16,7 +16,7 @@ Param subclass for float types.
 param.type   # => :float
 param.min    # => 0.0
 param.max    # => 100.0
-param.float? # => true
+param.scalar? # => true
 ```
 
 ## Instance Methods
@@ -45,71 +45,11 @@ Access raw data for edge cases not covered by accessors.
 
 `#array?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L189)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L121)
 
 **Returns**
 
 `Boolean` — whether this is an array type
-
----
-
-### #binary?
-
-`#binary?`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L171)
-
-**Returns**
-
-`Boolean` — whether this is a binary type
-
----
-
-### #boolean?
-
-`#boolean?`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L141)
-
-**Returns**
-
-`Boolean` — whether this is a boolean type
-
----
-
-### #date?
-
-`#date?`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L153)
-
-**Returns**
-
-`Boolean` — whether this is a date type
-
----
-
-### #datetime?
-
-`#datetime?`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L147)
-
-**Returns**
-
-`Boolean` — whether this is a datetime type
-
----
-
-### #decimal?
-
-`#decimal?`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L135)
-
-**Returns**
-
-`Boolean` — whether this is a decimal type
 
 ---
 
@@ -161,15 +101,15 @@ Access raw data for edge cases not covered by accessors.
 
 ---
 
-### #enum_ref?
+### #enum?
 
-`#enum_ref?`
+`#enum?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L219)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/scalar_param.rb#L23)
 
 **Returns**
 
-`Boolean` — whether this is an enum reference
+`Boolean` — whether this scalar has enum constraints
 
 ---
 
@@ -185,59 +125,11 @@ Access raw data for edge cases not covered by accessors.
 
 ---
 
-### #float?
-
-`#float?`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/float_param.rb#L28)
-
-**Returns**
-
-`Boolean` — always true for FloatParam
-
----
-
-### #inline_enum?
-
-`#inline_enum?`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L225)
-
-**Returns**
-
-`Boolean` — whether this is an inline enum
-
----
-
-### #integer?
-
-`#integer?`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L123)
-
-**Returns**
-
-`Boolean` — whether this is an integer type
-
----
-
-### #json?
-
-`#json?`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L177)
-
-**Returns**
-
-`Boolean` — whether this is a json type
-
----
-
 ### #literal?
 
 `#literal?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L207)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L139)
 
 **Returns**
 
@@ -285,7 +177,7 @@ Access raw data for edge cases not covered by accessors.
 
 `#object?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L195)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L127)
 
 **Returns**
 
@@ -305,27 +197,15 @@ Access raw data for edge cases not covered by accessors.
 
 ---
 
-### #string?
+### #scalar?
 
-`#string?`
+`#scalar?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L117)
-
-**Returns**
-
-`Boolean` — whether this is a string type
-
----
-
-### #time?
-
-`#time?`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L159)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/scalar_param.rb#L17)
 
 **Returns**
 
-`Boolean` — whether this is a time type
+`Boolean` — true for all scalar types
 
 ---
 
@@ -333,7 +213,7 @@ Access raw data for edge cases not covered by accessors.
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/float_param.rb#L34)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/float_param.rb#L28)
 
 **Returns**
 
@@ -353,50 +233,14 @@ Access raw data for edge cases not covered by accessors.
 
 ---
 
-### #type_ref?
-
-`#type_ref?`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L213)
-
-**Returns**
-
-`Boolean` — whether this is a type reference
-
----
-
 ### #union?
 
 `#union?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L201)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L133)
 
 **Returns**
 
 `Boolean` — whether this is a union type
-
----
-
-### #unknown?
-
-`#unknown?`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L183)
-
-**Returns**
-
-`Boolean` — whether this is an unknown type
-
----
-
-### #uuid?
-
-`#uuid?`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L165)
-
-**Returns**
-
-`Boolean` — whether this is a uuid type
 
 ---

@@ -1,22 +1,21 @@
 ---
-order: 52
+order: 47
 prev: false
 next: false
 ---
 
-# Introspection::UnionParam
+# Introspection::RefTypeParam
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/union_param.rb#L13)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/ref_type_param.rb#L12)
 
-Param subclass for union types.
+Param subclass for custom type references.
+
+The type field contains the symbol name of the referenced type.
 
 **Example**
 
 ```ruby
-param.type          # => :union
-param.variants      # => [Param, Param, ...]
-param.discriminator # => :type (for discriminated unions)
-param.union?        # => true
+param.type # => :address (the custom type name)
 ```
 
 ## Instance Methods
@@ -101,18 +100,6 @@ Access raw data for edge cases not covered by accessors.
 
 ---
 
-### #discriminator
-
-`#discriminator`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/union_param.rb#L22)
-
-**Returns**
-
-`Symbol`, `nil` — discriminator field for discriminated unions
-
----
-
 ### #example
 
 `#example`
@@ -189,7 +176,7 @@ Access raw data for edge cases not covered by accessors.
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/union_param.rb#L34)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L145)
 
 **Returns**
 
@@ -213,22 +200,10 @@ Access raw data for edge cases not covered by accessors.
 
 `#union?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/union_param.rb#L28)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L133)
 
 **Returns**
 
-`Boolean` — always true for UnionParam
-
----
-
-### #variants
-
-`#variants`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/union_param.rb#L16)
-
-**Returns**
-
-`Array<Param>` — variants for unions
+`Boolean` — whether this is a union type
 
 ---

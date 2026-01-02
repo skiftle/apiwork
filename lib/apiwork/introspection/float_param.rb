@@ -9,8 +9,8 @@ module Apiwork
     #   param.type   # => :float
     #   param.min    # => 0.0
     #   param.max    # => 100.0
-    #   param.float? # => true
-    class FloatParam < Param
+    #   param.scalar? # => true
+    class FloatParam < ScalarParam
       # @api public
       # @return [Numeric, nil] minimum value
       def min
@@ -21,12 +21,6 @@ module Apiwork
       # @return [Numeric, nil] maximum value
       def max
         @dump[:max]
-      end
-
-      # @api public
-      # @return [Boolean] always true for FloatParam
-      def float?
-        true
       end
 
       # @api public

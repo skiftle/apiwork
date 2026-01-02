@@ -6,16 +6,18 @@ next: false
 
 # Introspection::InlineEnumParam
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/inline_enum_param.rb#L12)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/inline_enum_param.rb#L14)
 
 Param subclass for inline enum values.
 
 **Example**
 
 ```ruby
-param.type         # => :string (base type)
-param.enum         # => ["draft", "published", "archived"]
-param.inline_enum? # => true
+param.type    # => :string (base type)
+param.enum    # => ["draft", "published", "archived"]
+param.scalar? # => true
+param.enum?   # => true
+param.inline? # => true
 ```
 
 ## Instance Methods
@@ -44,71 +46,11 @@ Access raw data for edge cases not covered by accessors.
 
 `#array?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L189)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L121)
 
 **Returns**
 
 `Boolean` — whether this is an array type
-
----
-
-### #binary?
-
-`#binary?`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L171)
-
-**Returns**
-
-`Boolean` — whether this is a binary type
-
----
-
-### #boolean?
-
-`#boolean?`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L141)
-
-**Returns**
-
-`Boolean` — whether this is a boolean type
-
----
-
-### #date?
-
-`#date?`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L153)
-
-**Returns**
-
-`Boolean` — whether this is a date type
-
----
-
-### #datetime?
-
-`#datetime?`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L147)
-
-**Returns**
-
-`Boolean` — whether this is a datetime type
-
----
-
-### #decimal?
-
-`#decimal?`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L135)
-
-**Returns**
-
-`Boolean` — whether this is a decimal type
 
 ---
 
@@ -164,23 +106,23 @@ Access raw data for edge cases not covered by accessors.
 
 `#enum`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/inline_enum_param.rb#L15)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum_param.rb#L37)
 
 **Returns**
 
-`Array<String>` — inline enum values
+`Symbol`, `Array` — enum reference or inline values
 
 ---
 
-### #enum_ref?
+### #enum?
 
-`#enum_ref?`
+`#enum?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L219)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum_param.rb#L19)
 
 **Returns**
 
-`Boolean` — whether this is an enum reference
+`Boolean` — true for all enum types
 
 ---
 
@@ -196,23 +138,11 @@ Access raw data for edge cases not covered by accessors.
 
 ---
 
-### #float?
+### #inline?
 
-`#float?`
+`#inline?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L129)
-
-**Returns**
-
-`Boolean` — whether this is a float type
-
----
-
-### #inline_enum?
-
-`#inline_enum?`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/inline_enum_param.rb#L21)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/inline_enum_param.rb#L17)
 
 **Returns**
 
@@ -220,35 +150,11 @@ Access raw data for edge cases not covered by accessors.
 
 ---
 
-### #integer?
-
-`#integer?`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L123)
-
-**Returns**
-
-`Boolean` — whether this is an integer type
-
----
-
-### #json?
-
-`#json?`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L177)
-
-**Returns**
-
-`Boolean` — whether this is a json type
-
----
-
 ### #literal?
 
 `#literal?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L207)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L139)
 
 **Returns**
 
@@ -272,7 +178,7 @@ Access raw data for edge cases not covered by accessors.
 
 `#object?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L195)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L127)
 
 **Returns**
 
@@ -292,27 +198,27 @@ Access raw data for edge cases not covered by accessors.
 
 ---
 
-### #string?
+### #ref?
 
-`#string?`
+`#ref?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L117)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum_param.rb#L25)
 
 **Returns**
 
-`Boolean` — whether this is a string type
+`Boolean` — whether this is a reference to a named enum
 
 ---
 
-### #time?
+### #scalar?
 
-`#time?`
+`#scalar?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L159)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/scalar_param.rb#L17)
 
 **Returns**
 
-`Boolean` — whether this is a time type
+`Boolean` — true for all scalar types
 
 ---
 
@@ -320,7 +226,7 @@ Access raw data for edge cases not covered by accessors.
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/inline_enum_param.rb#L27)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum_param.rb#L43)
 
 **Returns**
 
@@ -340,50 +246,14 @@ Access raw data for edge cases not covered by accessors.
 
 ---
 
-### #type_ref?
-
-`#type_ref?`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L213)
-
-**Returns**
-
-`Boolean` — whether this is a type reference
-
----
-
 ### #union?
 
 `#union?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L201)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L133)
 
 **Returns**
 
 `Boolean` — whether this is a union type
-
----
-
-### #unknown?
-
-`#unknown?`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L183)
-
-**Returns**
-
-`Boolean` — whether this is an unknown type
-
----
-
-### #uuid?
-
-`#uuid?`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L165)
-
-**Returns**
-
-`Boolean` — whether this is a uuid type
 
 ---

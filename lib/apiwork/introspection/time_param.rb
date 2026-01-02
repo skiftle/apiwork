@@ -6,14 +6,9 @@ module Apiwork
     # Param subclass for time types.
     #
     # @example
-    #   param.type  # => :time
-    #   param.time? # => true
-    class TimeParam < Param
-      # @api public
-      # @return [Boolean] always true for TimeParam
-      def time?
-        true
-      end
+    #   param.type    # => :time
+    #   param.scalar? # => true
+    class TimeParam < ScalarParam
     end
   end
 end

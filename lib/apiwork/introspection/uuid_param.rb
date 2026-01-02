@@ -6,14 +6,9 @@ module Apiwork
     # Param subclass for uuid types.
     #
     # @example
-    #   param.type  # => :uuid
-    #   param.uuid? # => true
-    class UuidParam < Param
-      # @api public
-      # @return [Boolean] always true for UuidParam
-      def uuid?
-        true
-      end
+    #   param.type    # => :uuid
+    #   param.scalar? # => true
+    class UuidParam < ScalarParam
     end
   end
 end

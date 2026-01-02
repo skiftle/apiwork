@@ -8,18 +8,12 @@ module Apiwork
     # @example
     #   param.type        # => :string
     #   param.format      # => :email, :uuid, :uri, etc.
-    #   param.string?     # => true
-    class StringParam < Param
+    #   param.scalar?     # => true
+    class StringParam < ScalarParam
       # @api public
       # @return [Symbol, nil] format hint (:email, :uuid, :uri, etc.)
       def format
         @dump[:format]
-      end
-
-      # @api public
-      # @return [Boolean] always true for StringParam
-      def string?
-        true
       end
 
       # @api public

@@ -6,14 +6,8 @@ module Apiwork
     # Param subclass for json types.
     #
     # @example
-    #   param.type  # => :json
-    #   param.json? # => true
+    #   param.type # => :json
     class JsonParam < Param
-      # @api public
-      # @return [Boolean] always true for JsonParam
-      def json?
-        true
-      end
     end
   end
 end

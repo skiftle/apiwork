@@ -1,22 +1,25 @@
 ---
-order: 52
+order: 37
 prev: false
 next: false
 ---
 
-# Introspection::UnionParam
+# Introspection::EnumParam
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/union_param.rb#L13)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum_param.rb#L16)
 
-Param subclass for union types.
+Base class for enum parameter types.
+
+Enum params are scalar types with constrained values.
+Subclasses: RefEnumParam (references named enum), InlineEnumParam (inline values).
 
 **Example**
 
 ```ruby
-param.type          # => :union
-param.variants      # => [Param, Param, ...]
-param.discriminator # => :type (for discriminated unions)
-param.union?        # => true
+param.scalar?  # => true (inherited from ScalarParam)
+param.enum?    # => true
+param.ref?     # => true/false depending on subclass
+param.inline?  # => true/false depending on subclass
 ```
 
 ## Instance Methods
@@ -101,15 +104,27 @@ Access raw data for edge cases not covered by accessors.
 
 ---
 
-### #discriminator
+### #enum
 
-`#discriminator`
+`#enum`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/union_param.rb#L22)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum_param.rb#L37)
 
 **Returns**
 
-`Symbol`, `nil` — discriminator field for discriminated unions
+`Symbol`, `Array` — enum reference or inline values
+
+---
+
+### #enum?
+
+`#enum?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum_param.rb#L19)
+
+**Returns**
+
+`Boolean` — true for all enum types
 
 ---
 
@@ -122,6 +137,18 @@ Access raw data for edge cases not covered by accessors.
 **Returns**
 
 `Object`, `nil` — example value
+
+---
+
+### #inline?
+
+`#inline?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum_param.rb#L31)
+
+**Returns**
+
+`Boolean` — whether this has inline enum values
 
 ---
 
@@ -173,15 +200,27 @@ Access raw data for edge cases not covered by accessors.
 
 ---
 
+### #ref?
+
+`#ref?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum_param.rb#L25)
+
+**Returns**
+
+`Boolean` — whether this is a reference to a named enum
+
+---
+
 ### #scalar?
 
 `#scalar?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L115)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/scalar_param.rb#L17)
 
 **Returns**
 
-`Boolean` — whether this is a scalar type
+`Boolean` — true for all scalar types
 
 ---
 
@@ -189,7 +228,7 @@ Access raw data for edge cases not covered by accessors.
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/union_param.rb#L34)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum_param.rb#L43)
 
 **Returns**
 
@@ -213,22 +252,10 @@ Access raw data for edge cases not covered by accessors.
 
 `#union?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/union_param.rb#L28)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L133)
 
 **Returns**
 
-`Boolean` — always true for UnionParam
-
----
-
-### #variants
-
-`#variants`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/union_param.rb#L16)
-
-**Returns**
-
-`Array<Param>` — variants for unions
+`Boolean` — whether this is a union type
 
 ---

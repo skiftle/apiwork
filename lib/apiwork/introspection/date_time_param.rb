@@ -6,14 +6,9 @@ module Apiwork
     # Param subclass for datetime types.
     #
     # @example
-    #   param.type      # => :datetime
-    #   param.datetime? # => true
-    class DateTimeParam < Param
-      # @api public
-      # @return [Boolean] always true for DateTimeParam
-      def datetime?
-        true
-      end
+    #   param.type    # => :datetime
+    #   param.scalar? # => true
+    class DateTimeParam < ScalarParam
     end
   end
 end

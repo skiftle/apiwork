@@ -3,18 +3,18 @@
 module Apiwork
   module Introspection
     # @api public
-    # Param subclass for inline enum values.
+    # Param subclass for enum references.
     #
     # @example
     #   param.type    # => :string (base type)
-    #   param.enum    # => ["draft", "published", "archived"]
+    #   param.enum    # => :status (enum name symbol)
     #   param.scalar? # => true
     #   param.enum?   # => true
-    #   param.inline? # => true
-    class InlineEnumParam < EnumParam
+    #   param.ref?    # => true
+    class RefEnumParam < EnumParam
       # @api public
-      # @return [Boolean] always true for InlineEnumParam
-      def inline?
+      # @return [Boolean] always true for RefEnumParam
+      def ref?
         true
       end
     end

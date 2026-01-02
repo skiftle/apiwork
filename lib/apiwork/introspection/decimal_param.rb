@@ -9,8 +9,8 @@ module Apiwork
     #   param.type     # => :decimal
     #   param.min      # => 0.0
     #   param.max      # => 100.0
-    #   param.decimal? # => true
-    class DecimalParam < Param
+    #   param.scalar? # => true
+    class DecimalParam < ScalarParam
       # @api public
       # @return [Numeric, nil] minimum value
       def min
@@ -21,12 +21,6 @@ module Apiwork
       # @return [Numeric, nil] maximum value
       def max
         @dump[:max]
-      end
-
-      # @api public
-      # @return [Boolean] always true for DecimalParam
-      def decimal?
-        true
       end
 
       # @api public
