@@ -22,15 +22,15 @@ module Apiwork
       # @return [Symbol] type name
       attr_reader :name
 
-      def initialize(name, data)
+      def initialize(name, dump)
         @name = name.to_sym
-        @data = data || {}
+        @dump = dump
       end
 
       # @api public
       # @return [Symbol, nil] type kind (:object or :union)
       def type
-        @data[:type]
+        @dump[:type]
       end
 
       # @api public
@@ -49,37 +49,37 @@ module Apiwork
       # @return [Hash{Symbol => Param}] nested fields for object types
       # @see Param
       def shape
-        @shape ||= (@data[:shape] || {}).transform_values { |d| Param.new(d) }
+        @shape ||= (@dump[:shape] || {}).transform_values { |d| Param.new(d) }
       end
 
       # @api public
       # @return [Array<Param>] variants for union types
       def variants
-        @variants ||= (@data[:variants] || []).map { |v| Param.new(v) }
+        @variants ||= (@dump[:variants] || []).map { |v| Param.new(v) }
       end
 
       # @api public
       # @return [Symbol, nil] discriminator field for discriminated unions
       def discriminator
-        @data[:discriminator]
+        @dump[:discriminator]
       end
 
       # @api public
       # @return [String, nil] type description
       def description
-        @data[:description]
+        @dump[:description]
       end
 
       # @api public
       # @return [Object, nil] example value
       def example
-        @data[:example]
+        @dump[:example]
       end
 
       # @api public
       # @return [Boolean] whether this type is deprecated
       def deprecated?
-        @data[:deprecated] == true
+        @dump[:deprecated] == true
       end
 
       # @api public

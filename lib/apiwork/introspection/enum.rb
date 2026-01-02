@@ -17,33 +17,33 @@ module Apiwork
       # @return [Symbol] enum name
       attr_reader :name
 
-      def initialize(name, data)
+      def initialize(name, dump)
         @name = name.to_sym
-        @data = data || {}
+        @dump = dump
       end
 
       # @api public
       # @return [Array<String>] allowed enum values
       def values
-        @data[:values] || []
+        @dump[:values] || []
       end
 
       # @api public
       # @return [String, nil] enum description
       def description
-        @data[:description]
+        @dump[:description]
       end
 
       # @api public
       # @return [String, nil] example value
       def example
-        @data[:example]
+        @dump[:example]
       end
 
       # @api public
       # @return [Boolean] whether this enum is deprecated
       def deprecated?
-        @data[:deprecated] == true
+        @dump[:deprecated] == true
       end
 
       # @api public

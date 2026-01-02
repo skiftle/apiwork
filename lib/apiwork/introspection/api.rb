@@ -21,28 +21,28 @@ module Apiwork
     #     end
     #   end
     class API
-      def initialize(data)
-        @data = data || {}
+      def initialize(dump)
+        @dump = dump
       end
 
       # @api public
       # @return [String, nil] API mount path (e.g., "/api/v1")
       def path
-        @data[:path]
+        @dump[:path]
       end
 
       # @api public
       # @return [API::Info] API metadata
       # @see API::Info
       def info
-        @info ||= Info.new(@data[:info])
+        @info ||= Info.new(@dump[:info])
       end
 
       # @api public
       # @return [Array<API::Resource>] top-level resources
       # @see API::Resource
       def resources
-        @resources ||= (@data[:resources] || {}).map do |name, data|
+        @resources ||= (@dump[:resources] || {}).map do |name, data|
           Resource.new(name, data)
         end
       end
@@ -51,7 +51,7 @@ module Apiwork
       # @return [Array<Type>] registered custom types
       # @see Type
       def types
-        @types ||= (@data[:types] || {}).map do |name, data|
+        @types ||= (@dump[:types] || {}).map do |name, data|
           Type.new(name, data)
         end
       end
@@ -60,7 +60,7 @@ module Apiwork
       # @return [Array<Enum>] registered enums
       # @see Enum
       def enums
-        @enums ||= (@data[:enums] || {}).map do |name, data|
+        @enums ||= (@dump[:enums] || {}).map do |name, data|
           Enum.new(name, data)
         end
       end
@@ -68,14 +68,14 @@ module Apiwork
       # @api public
       # @return [Array<Symbol>] API-level error codes that may be raised
       def raises
-        @data[:raises] || []
+        @dump[:raises] || []
       end
 
       # @api public
       # @return [Array<ErrorCode>] error code definitions
       # @see ErrorCode
       def error_codes
-        @error_codes ||= (@data[:error_codes] || {}).map do |code, data|
+        @error_codes ||= (@dump[:error_codes] || {}).map do |code, data|
           ErrorCode.new(code, data)
         end
       end

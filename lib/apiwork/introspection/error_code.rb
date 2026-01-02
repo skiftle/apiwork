@@ -16,21 +16,21 @@ module Apiwork
       # @return [Symbol] error code identifier
       attr_reader :code
 
-      def initialize(code, data)
+      def initialize(code, dump)
         @code = code.to_sym
-        @data = data || {}
+        @dump = dump
       end
 
       # @api public
       # @return [Integer] HTTP status code (e.g., 422, 404)
       def status
-        @data[:status]
+        @dump[:status]
       end
 
       # @api public
       # @return [String, nil] error description
       def description
-        @data[:description]
+        @dump[:description]
       end
 
       # @api public

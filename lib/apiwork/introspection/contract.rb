@@ -19,15 +19,15 @@ module Apiwork
     #   contract.types.each { |t| ... }  # iterate custom types
     #   contract.enums.each { |e| ... }  # iterate enums
     class Contract
-      def initialize(data)
-        @data = data || {}
+      def initialize(dump)
+        @dump = dump
       end
 
       # @api public
       # @return [Array<Action>] actions defined on this contract
       # @see Action
       def actions
-        @actions ||= (@data[:actions] || {}).map do |action_name, action_data|
+        @actions ||= (@dump[:actions] || {}).map do |action_name, action_data|
           Action.new(action_name, action_data)
         end
       end
@@ -36,7 +36,7 @@ module Apiwork
       # @return [Array<Type>] custom types defined or referenced by this contract
       # @see Type
       def types
-        @types ||= (@data[:types] || {}).map do |name, data|
+        @types ||= (@dump[:types] || {}).map do |name, data|
           Type.new(name, data)
         end
       end
@@ -45,7 +45,7 @@ module Apiwork
       # @return [Array<Enum>] enums defined or referenced by this contract
       # @see Enum
       def enums
-        @enums ||= (@data[:enums] || {}).map do |name, data|
+        @enums ||= (@dump[:enums] || {}).map do |name, data|
           Enum.new(name, data)
         end
       end

@@ -19,71 +19,71 @@ module Apiwork
       # @return [Symbol] action name
       attr_reader :name
 
-      def initialize(name, data)
+      def initialize(name, dump)
         @name = name.to_sym
-        @data = data || {}
+        @dump = dump
       end
 
       # @api public
       # @return [String] action path segment (e.g., "/:id", "/")
       def path
-        @data[:path]
+        @dump[:path]
       end
 
       # @api public
       # @return [Symbol] HTTP method (:get, :post, :patch, :delete, :put)
       def method
-        @data[:method]
+        @dump[:method]
       end
 
       # @api public
       # @return [Action::Request, nil] request definition
       # @see Action::Request
       def request
-        @request ||= @data[:request] ? Request.new(@data[:request]) : nil
+        @request ||= @dump[:request] ? Request.new(@dump[:request]) : nil
       end
 
       # @api public
       # @return [Action::Response, nil] response definition
       # @see Action::Response
       def response
-        @response ||= @data[:response] ? Response.new(@data[:response]) : nil
+        @response ||= @dump[:response] ? Response.new(@dump[:response]) : nil
       end
 
       # @api public
       # @return [Array<Symbol>] error codes this action may raise
       def raises
-        @data[:raises] || []
+        @dump[:raises] || []
       end
 
       # @api public
       # @return [String, nil] short summary
       def summary
-        @data[:summary]
+        @dump[:summary]
       end
 
       # @api public
       # @return [String, nil] full description
       def description
-        @data[:description]
+        @dump[:description]
       end
 
       # @api public
       # @return [Array<String>] OpenAPI tags
       def tags
-        @data[:tags] || []
+        @dump[:tags] || []
       end
 
       # @api public
       # @return [String, nil] OpenAPI operation ID
       def operation_id
-        @data[:operation_id]
+        @dump[:operation_id]
       end
 
       # @api public
       # @return [Boolean] whether this action is deprecated
       def deprecated?
-        @data[:deprecated] == true
+        @dump[:deprecated] == true
       end
 
       # @api public

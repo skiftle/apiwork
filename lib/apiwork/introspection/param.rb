@@ -22,14 +22,14 @@ module Apiwork
     #   param.object?      # => true
     #   param.shape[:name] # => Param for the name field
     class Param
-      def initialize(data)
-        @data = data || {}
+      def initialize(dump)
+        @dump = dump
       end
 
       # @api public
       # @return [Symbol, nil] type (:string, :integer, :array, :object, :union, etc.)
       def type
-        @data[:type]
+        @dump[:type]
       end
 
       # @api public
@@ -61,7 +61,7 @@ module Apiwork
       def of
         return @of if defined?(@of)
 
-        raw = @data[:of]
+        raw = @dump[:of]
         @of = case raw
               when Hash then Param.new(raw)
               when Symbol then Param.new(type: raw)
@@ -71,97 +71,97 @@ module Apiwork
       # @api public
       # @return [Hash{Symbol => Param}] nested fields for objects
       def shape
-        @shape ||= (@data[:shape] || {}).transform_values { |d| Param.new(d) }
+        @shape ||= (@dump[:shape] || {}).transform_values { |d| Param.new(d) }
       end
 
       # @api public
       # @return [Array<Param>] variants for unions
       def variants
-        @variants ||= (@data[:variants] || []).map { |v| Param.new(v) }
+        @variants ||= (@dump[:variants] || []).map { |v| Param.new(v) }
       end
 
       # @api public
       # @return [Symbol, nil] discriminator field for discriminated unions
       def discriminator
-        @data[:discriminator]
+        @dump[:discriminator]
       end
 
       # @api public
       # @return [Object, nil] literal value
       def value
-        @data[:value]
+        @dump[:value]
       end
 
       # @api public
       # @return [Symbol, Array, nil] enum name reference or inline values
       def enum
-        @data[:enum]
+        @dump[:enum]
       end
 
       # @api public
       # @return [Boolean] whether this field can be null
       def nullable?
-        @data[:nullable] == true
+        @dump[:nullable] == true
       end
 
       # @api public
       # @return [Boolean] whether this field is optional
       def optional?
-        @data[:optional] == true
+        @dump[:optional] == true
       end
 
       # @api public
       # @return [Boolean] whether this field is deprecated
       def deprecated?
-        @data[:deprecated] == true
+        @dump[:deprecated] == true
       end
 
       # @api public
       # @return [String, nil] field description
       def description
-        @data[:description]
+        @dump[:description]
       end
 
       # @api public
       # @return [Object, nil] example value
       def example
-        @data[:example]
+        @dump[:example]
       end
 
       # @api public
       # @return [Symbol, nil] format hint (e.g., :uuid, :email)
       def format
-        @data[:format]
+        @dump[:format]
       end
 
       # @api public
       # @return [Integer, nil] minimum value for numeric types
       def min
-        @data[:min]
+        @dump[:min]
       end
 
       # @api public
       # @return [Integer, nil] maximum value for numeric types
       def max
-        @data[:max]
+        @dump[:max]
       end
 
       # @api public
       # @return [Object, nil] default value
       def default
-        @data[:default]
+        @dump[:default]
       end
 
       # @api public
       # @return [Boolean] whether a default value is defined
       def default?
-        @data.key?(:default)
+        @dump.key?(:default)
       end
 
       # @api public
       # @return [Boolean] whether this param is partial (for update payloads)
       def partial?
-        @data[:partial] == true
+        @dump[:partial] == true
       end
 
       # @api public
@@ -170,7 +170,7 @@ module Apiwork
       # @param key [Symbol] the data key to access
       # @return [Object, nil] the raw value
       def [](key)
-        @data[key]
+        @dump[key]
       end
 
       # @api public
