@@ -1,12 +1,12 @@
 ---
-order: 33
+order: 48
 prev: false
 next: false
 ---
 
 # Introspection::Type
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L20)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L18)
 
 Wraps custom type definitions.
 
@@ -15,18 +15,16 @@ Types can be objects (with shapes) or unions (with variants).
 **Example: Object type**
 
 ```ruby
-type.name         # => :address
-type.object?      # => true
-type.shape[:city] # => Param for city field
+api.types[:address].object?      # => true
+api.types[:address].shape[:city] # => Param for city field
 ```
 
 **Example: Union type**
 
 ```ruby
-type.name          # => :payment_method
-type.union?        # => true
-type.variants      # => [Param, ...]
-type.discriminator # => :type
+api.types[:payment_method].union?        # => true
+api.types[:payment_method].variants      # => [Param, ...]
+api.types[:payment_method].discriminator # => :type
 ```
 
 ## Instance Methods
@@ -35,7 +33,7 @@ type.discriminator # => :type
 
 `#deprecated?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L81)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L74)
 
 **Returns**
 
@@ -47,7 +45,7 @@ type.discriminator # => :type
 
 `#description`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L69)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L62)
 
 **Returns**
 
@@ -59,7 +57,7 @@ type.discriminator # => :type
 
 `#discriminator`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L63)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L56)
 
 **Returns**
 
@@ -71,7 +69,7 @@ type.discriminator # => :type
 
 `#example`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L75)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L68)
 
 **Returns**
 
@@ -79,23 +77,11 @@ type.discriminator # => :type
 
 ---
 
-### #name
-
-`#name`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L23)
-
-**Returns**
-
-`Symbol` — type name
-
----
-
 ### #object?
 
 `#object?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L38)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L31)
 
 **Returns**
 
@@ -107,7 +93,7 @@ type.discriminator # => :type
 
 `#shape`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L51)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L44)
 
 **Returns**
 
@@ -123,7 +109,7 @@ type.discriminator # => :type
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L87)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L80)
 
 **Returns**
 
@@ -135,7 +121,7 @@ type.discriminator # => :type
 
 `#type`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L32)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L25)
 
 **Returns**
 
@@ -147,7 +133,7 @@ type.discriminator # => :type
 
 `#union?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L44)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L37)
 
 **Returns**
 
@@ -159,7 +145,7 @@ type.discriminator # => :type
 
 `#variants`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L57)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L50)
 
 **Returns**
 

@@ -1,32 +1,21 @@
 ---
-order: 45
+order: 43
 prev: false
 next: false
 ---
 
-# Introspection::Param
+# Introspection::LiteralParam
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L20)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/literal_param.rb#L12)
 
-Base class for parameter/field definitions.
+Param subclass for literal types.
 
-Params are accessed via introspection - you never create them directly.
-
-**Example: Accessing params via introspection**
+**Example**
 
 ```ruby
-api = Apiwork::Introspection::API.new(MyApi)
-action = api.resources[:invoices].actions[:show]
-param = action.request.query[:page]
-param.type         # => :integer
-param.optional?    # => true
-```
-
-**Example: Type-specific subclasses**
-
-```ruby
-param = action.response.body  # => ArrayParam
-param.of                      # => ObjectParam (element type)
+param.type     # => :literal
+param.value    # => "active" or 42 or true
+param.literal? # => true
 ```
 
 ## Instance Methods
@@ -247,11 +236,11 @@ Access raw data for edge cases not covered by accessors.
 
 `#literal?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L207)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/literal_param.rb#L21)
 
 **Returns**
 
-`Boolean` — whether this is a literal type
+`Boolean` — always true for LiteralParam
 
 ---
 
@@ -319,7 +308,7 @@ Access raw data for edge cases not covered by accessors.
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L231)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/literal_param.rb#L27)
 
 **Returns**
 
@@ -384,5 +373,17 @@ Access raw data for edge cases not covered by accessors.
 **Returns**
 
 `Boolean` — whether this is a uuid type
+
+---
+
+### #value
+
+`#value`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/literal_param.rb#L15)
+
+**Returns**
+
+`Object`, `nil` — literal value
 
 ---

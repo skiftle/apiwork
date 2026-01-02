@@ -1,32 +1,20 @@
 ---
-order: 45
+order: 42
 prev: false
 next: false
 ---
 
-# Introspection::Param
+# Introspection::JsonParam
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L20)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/json_param.rb#L11)
 
-Base class for parameter/field definitions.
+Param subclass for json types.
 
-Params are accessed via introspection - you never create them directly.
-
-**Example: Accessing params via introspection**
+**Example**
 
 ```ruby
-api = Apiwork::Introspection::API.new(MyApi)
-action = api.resources[:invoices].actions[:show]
-param = action.request.query[:page]
-param.type         # => :integer
-param.optional?    # => true
-```
-
-**Example: Type-specific subclasses**
-
-```ruby
-param = action.response.body  # => ArrayParam
-param.of                      # => ObjectParam (element type)
+param.type  # => :json
+param.json? # => true
 ```
 
 ## Instance Methods
@@ -235,11 +223,11 @@ Access raw data for edge cases not covered by accessors.
 
 `#json?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L177)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/json_param.rb#L14)
 
 **Returns**
 
-`Boolean` — whether this is a json type
+`Boolean` — always true for JsonParam
 
 ---
 

@@ -1,32 +1,22 @@
 ---
-order: 45
+order: 51
 prev: false
 next: false
 ---
 
-# Introspection::Param
+# Introspection::UnknownParam
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L20)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/unknown_param.rb#L13)
 
-Base class for parameter/field definitions.
+Param subclass for unknown types.
 
-Params are accessed via introspection - you never create them directly.
+Used as fallback when the type cannot be determined.
 
-**Example: Accessing params via introspection**
-
-```ruby
-api = Apiwork::Introspection::API.new(MyApi)
-action = api.resources[:invoices].actions[:show]
-param = action.request.query[:page]
-param.type         # => :integer
-param.optional?    # => true
-```
-
-**Example: Type-specific subclasses**
+**Example**
 
 ```ruby
-param = action.response.body  # => ArrayParam
-param.of                      # => ObjectParam (element type)
+param.type     # => :unknown
+param.unknown? # => true
 ```
 
 ## Instance Methods
@@ -367,11 +357,11 @@ Access raw data for edge cases not covered by accessors.
 
 `#unknown?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L183)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/unknown_param.rb#L16)
 
 **Returns**
 
-`Boolean` — whether this is an unknown type
+`Boolean` — always true for UnknownParam
 
 ---
 

@@ -1,32 +1,22 @@
 ---
-order: 45
+order: 50
 prev: false
 next: false
 ---
 
-# Introspection::Param
+# Introspection::UnionParam
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L20)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/union_param.rb#L13)
 
-Base class for parameter/field definitions.
+Param subclass for union types.
 
-Params are accessed via introspection - you never create them directly.
-
-**Example: Accessing params via introspection**
+**Example**
 
 ```ruby
-api = Apiwork::Introspection::API.new(MyApi)
-action = api.resources[:invoices].actions[:show]
-param = action.request.query[:page]
-param.type         # => :integer
-param.optional?    # => true
-```
-
-**Example: Type-specific subclasses**
-
-```ruby
-param = action.response.body  # => ArrayParam
-param.of                      # => ObjectParam (element type)
+param.type          # => :union
+param.variants      # => [Param, Param, ...]
+param.discriminator # => :type (for discriminated unions)
+param.union?        # => true
 ```
 
 ## Instance Methods
@@ -168,6 +158,18 @@ Access raw data for edge cases not covered by accessors.
 **Returns**
 
 `String`, `nil` — field description
+
+---
+
+### #discriminator
+
+`#discriminator`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/union_param.rb#L22)
+
+**Returns**
+
+`Symbol`, `nil` — discriminator field for discriminated unions
 
 ---
 
@@ -319,7 +321,7 @@ Access raw data for edge cases not covered by accessors.
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L231)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/union_param.rb#L34)
 
 **Returns**
 
@@ -355,11 +357,11 @@ Access raw data for edge cases not covered by accessors.
 
 `#union?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L201)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/union_param.rb#L28)
 
 **Returns**
 
-`Boolean` — whether this is a union type
+`Boolean` — always true for UnionParam
 
 ---
 
@@ -384,5 +386,17 @@ Access raw data for edge cases not covered by accessors.
 **Returns**
 
 `Boolean` — whether this is a uuid type
+
+---
+
+### #variants
+
+`#variants`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/union_param.rb#L16)
+
+**Returns**
+
+`Array<Param>` — variants for unions
 
 ---

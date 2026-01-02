@@ -1,32 +1,20 @@
 ---
-order: 45
+order: 31
 prev: false
 next: false
 ---
 
-# Introspection::Param
+# Introspection::BooleanParam
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L20)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/boolean_param.rb#L11)
 
-Base class for parameter/field definitions.
+Param subclass for boolean types.
 
-Params are accessed via introspection - you never create them directly.
-
-**Example: Accessing params via introspection**
+**Example**
 
 ```ruby
-api = Apiwork::Introspection::API.new(MyApi)
-action = api.resources[:invoices].actions[:show]
-param = action.request.query[:page]
-param.type         # => :integer
-param.optional?    # => true
-```
-
-**Example: Type-specific subclasses**
-
-```ruby
-param = action.response.body  # => ArrayParam
-param.of                      # => ObjectParam (element type)
+param.type     # => :boolean
+param.boolean? # => true
 ```
 
 ## Instance Methods
@@ -79,11 +67,11 @@ Access raw data for edge cases not covered by accessors.
 
 `#boolean?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L141)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/boolean_param.rb#L14)
 
 **Returns**
 
-`Boolean` — whether this is a boolean type
+`Boolean` — always true for BooleanParam
 
 ---
 

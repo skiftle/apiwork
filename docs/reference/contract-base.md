@@ -102,7 +102,7 @@ response format, and documentation.
 
 **Returns**
 
-[ActionDefinition](contract-action-definition) — the action definition
+[ActionDefinition](introspection-action-definition) — the action definition
 
 **See also**
 

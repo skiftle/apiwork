@@ -1,32 +1,22 @@
 ---
-order: 45
+order: 29
 prev: false
 next: false
 ---
 
-# Introspection::Param
+# Introspection::ArrayParam
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L20)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/array_param.rb#L13)
 
-Base class for parameter/field definitions.
+Param subclass for array types.
 
-Params are accessed via introspection - you never create them directly.
-
-**Example: Accessing params via introspection**
+**Example**
 
 ```ruby
-api = Apiwork::Introspection::API.new(MyApi)
-action = api.resources[:invoices].actions[:show]
-param = action.request.query[:page]
-param.type         # => :integer
-param.optional?    # => true
-```
-
-**Example: Type-specific subclasses**
-
-```ruby
-param = action.response.body  # => ArrayParam
-param.of                      # => ObjectParam (element type)
+param.type   # => :array
+param.of     # => Param for element type
+param.shape  # => Hash for array-of-objects
+param.array? # => true
 ```
 
 ## Instance Methods
@@ -55,11 +45,11 @@ Access raw data for edge cases not covered by accessors.
 
 `#array?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L189)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/array_param.rb#L34)
 
 **Returns**
 
-`Boolean` — whether this is an array type
+`Boolean` — always true for ArrayParam
 
 ---
 
@@ -279,6 +269,18 @@ Access raw data for edge cases not covered by accessors.
 
 ---
 
+### #of
+
+`#of`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/array_param.rb#L16)
+
+**Returns**
+
+[Param](introspection-param), `nil` — element type for arrays
+
+---
+
 ### #optional?
 
 `#optional?`
@@ -288,6 +290,18 @@ Access raw data for edge cases not covered by accessors.
 **Returns**
 
 `Boolean` — whether this field is optional
+
+---
+
+### #shape
+
+`#shape`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/array_param.rb#L28)
+
+**Returns**
+
+`Hash{Symbol => Param}` — nested fields for array-of-objects
 
 ---
 
@@ -319,7 +333,7 @@ Access raw data for edge cases not covered by accessors.
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L231)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/array_param.rb#L40)
 
 **Returns**
 

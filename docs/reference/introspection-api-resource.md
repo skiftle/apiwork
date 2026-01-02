@@ -6,25 +6,26 @@ next: false
 
 # Introspection::API::Resource
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L24)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L25)
 
 Wraps resource definitions.
 
 **Example**
 
 ```ruby
-api.resources.each do |resource|
-  resource.name       # => :invoices
-  resource.identifier # => "invoices"
-  resource.path       # => "invoices"
-  resource.nested?    # => true if has nested resources
+api.resources[:invoices].path    # => "invoices"
+api.resources[:invoices].nested? # => true if has nested resources
 
-  resource.actions.each do |action|
-    # ...
+api.each_resource do |resource, parent_path|
+  resource.identifier # => "invoices"
+
+  resource.actions.each_value do |action|
+    action.request  # => Action::Request or nil
+    action.response # => Action::Response or nil
   end
 
-  resource.resources.each do |nested|
-    # ...
+  resource.resources.each_value do |nested|
+    # nested resources...
   end
 end
 ```
@@ -35,11 +36,11 @@ end
 
 `#actions`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L49)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L45)
 
 **Returns**
 
-`Array<Action>` — actions defined on this resource
+`Hash{Symbol => Action}` — actions defined on this resource
 
 **See also**
 
@@ -51,7 +52,7 @@ end
 
 `#each_action(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L74)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L66)
 
 Iterates over all actions.
 
@@ -65,7 +66,7 @@ Iterates over all actions.
 
 `#identifier`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L36)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L32)
 
 **Returns**
 
@@ -73,23 +74,11 @@ Iterates over all actions.
 
 ---
 
-### #name
-
-`#name`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L27)
-
-**Returns**
-
-`Symbol` — resource name
-
----
-
 ### #nested?
 
 `#nested?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L65)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L57)
 
 **Returns**
 
@@ -101,7 +90,7 @@ Iterates over all actions.
 
 `#path`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L42)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L38)
 
 **Returns**
 
@@ -113,11 +102,11 @@ Iterates over all actions.
 
 `#resources`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L57)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L51)
 
 **Returns**
 
-`Array<Resource>` — nested resources
+`Hash{Symbol => Resource}` — nested resources
 
 ---
 
@@ -125,7 +114,7 @@ Iterates over all actions.
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L80)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L72)
 
 **Returns**
 

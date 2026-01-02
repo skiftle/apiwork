@@ -5,25 +5,20 @@ module Apiwork
     # @api public
     # Base class for parameter/field definitions.
     #
-    # Use {.build} to create the appropriate subclass based on type.
+    # Params are accessed via introspection - you never create them directly.
     #
-    # @example Basic usage
-    #   param = Param.build(dump)
-    #   param.type         # => :string
-    #   param.nullable?    # => false
+    # @example Accessing params via introspection
+    #   api = Apiwork::Introspection::API.new(MyApi)
+    #   action = api.resources[:invoices].actions[:show]
+    #   param = action.request.query[:page]
+    #   param.type         # => :integer
     #   param.optional?    # => true
     #
     # @example Type-specific subclasses
-    #   param = Param.build(type: :array, of: { type: :string })
-    #   param.class        # => ArrayParam
-    #   param.array?       # => true
-    #   param.of           # => StringParam
+    #   param = action.response.body  # => ArrayParam
+    #   param.of                      # => ObjectParam (element type)
     class Param
-      # @api public
-      # Factory method to create the appropriate Param subclass.
-      #
-      # @param dump [Hash] the param dump
-      # @return [Param] the appropriate subclass instance
+      # @api private
       def self.build(dump)
         type = dump[:type]
 

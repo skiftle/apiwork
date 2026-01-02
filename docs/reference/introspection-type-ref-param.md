@@ -1,32 +1,22 @@
 ---
-order: 45
+order: 49
 prev: false
 next: false
 ---
 
-# Introspection::Param
+# Introspection::TypeRefParam
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L20)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type_ref_param.rb#L13)
 
-Base class for parameter/field definitions.
+Param subclass for custom type references.
 
-Params are accessed via introspection - you never create them directly.
+The type field contains the symbol name of the referenced type.
 
-**Example: Accessing params via introspection**
-
-```ruby
-api = Apiwork::Introspection::API.new(MyApi)
-action = api.resources[:invoices].actions[:show]
-param = action.request.query[:page]
-param.type         # => :integer
-param.optional?    # => true
-```
-
-**Example: Type-specific subclasses**
+**Example**
 
 ```ruby
-param = action.response.body  # => ArrayParam
-param.of                      # => ObjectParam (element type)
+param.type      # => :address (the custom type name)
+param.type_ref? # => true
 ```
 
 ## Instance Methods
@@ -343,11 +333,11 @@ Access raw data for edge cases not covered by accessors.
 
 `#type_ref?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L213)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type_ref_param.rb#L16)
 
 **Returns**
 
-`Boolean` — whether this is a type reference
+`Boolean` — always true for TypeRefParam
 
 ---
 

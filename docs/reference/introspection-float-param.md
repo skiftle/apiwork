@@ -1,32 +1,22 @@
 ---
-order: 45
+order: 39
 prev: false
 next: false
 ---
 
-# Introspection::Param
+# Introspection::FloatParam
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L20)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/float_param.rb#L13)
 
-Base class for parameter/field definitions.
+Param subclass for float types.
 
-Params are accessed via introspection - you never create them directly.
-
-**Example: Accessing params via introspection**
+**Example**
 
 ```ruby
-api = Apiwork::Introspection::API.new(MyApi)
-action = api.resources[:invoices].actions[:show]
-param = action.request.query[:page]
-param.type         # => :integer
-param.optional?    # => true
-```
-
-**Example: Type-specific subclasses**
-
-```ruby
-param = action.response.body  # => ArrayParam
-param.of                      # => ObjectParam (element type)
+param.type   # => :float
+param.min    # => 0.0
+param.max    # => 100.0
+param.float? # => true
 ```
 
 ## Instance Methods
@@ -199,11 +189,11 @@ Access raw data for edge cases not covered by accessors.
 
 `#float?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L129)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/float_param.rb#L28)
 
 **Returns**
 
-`Boolean` — whether this is a float type
+`Boolean` — always true for FloatParam
 
 ---
 
@@ -252,6 +242,30 @@ Access raw data for edge cases not covered by accessors.
 **Returns**
 
 `Boolean` — whether this is a literal type
+
+---
+
+### #max
+
+`#max`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/float_param.rb#L22)
+
+**Returns**
+
+`Numeric`, `nil` — maximum value
+
+---
+
+### #min
+
+`#min`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/float_param.rb#L16)
+
+**Returns**
+
+`Numeric`, `nil` — minimum value
 
 ---
 
@@ -319,7 +333,7 @@ Access raw data for edge cases not covered by accessors.
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L231)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/float_param.rb#L34)
 
 **Returns**
 

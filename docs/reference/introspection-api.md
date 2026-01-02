@@ -18,12 +18,12 @@ types via [#types](#types), enums via [#enums](#enums).
 ```ruby
 api = MyAPI.introspect(locale: :sv)
 
-api.info.title              # => "My API"
-api.types.each { |t| ... }  # iterate custom types
-api.enums.each { |e| ... }  # iterate enums
+api.info.title                      # => "My API"
+api.types[:address].description     # => "Address type"
+api.enums[:status].values           # => ["draft", "published"]
 
 api.each_resource do |resource, parent_path|
-  resource.actions.each do |action|
+  resource.actions.each_value do |action|
     # ...
   end
 end
@@ -35,7 +35,7 @@ end
 
 `#each_resource(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L89)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L81)
 
 Iterates over all resources recursively (including nested).
 
@@ -49,11 +49,11 @@ Iterates over all resources recursively (including nested).
 
 `#enums`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L62)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L58)
 
 **Returns**
 
-`Array<Enum>` — registered enums
+`Hash{Symbol => Enum}` — registered enums
 
 **See also**
 
@@ -65,11 +65,11 @@ Iterates over all resources recursively (including nested).
 
 `#error_codes`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L77)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L71)
 
 **Returns**
 
-`Array<ErrorCode>` — error code definitions
+`Hash{Symbol => ErrorCode}` — error code definitions
 
 **See also**
 
@@ -109,7 +109,7 @@ Iterates over all resources recursively (including nested).
 
 `#raises`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L70)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L64)
 
 **Returns**
 
@@ -125,7 +125,7 @@ Iterates over all resources recursively (including nested).
 
 **Returns**
 
-`Array<API::Resource>` — top-level resources
+`Hash{Symbol => API::Resource}` — top-level resources
 
 **See also**
 
@@ -137,7 +137,7 @@ Iterates over all resources recursively (including nested).
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L95)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L87)
 
 **Returns**
 
@@ -149,11 +149,11 @@ Iterates over all resources recursively (including nested).
 
 `#types`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L53)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L51)
 
 **Returns**
 
-`Array<Type>` — registered custom types
+`Hash{Symbol => Type}` — registered custom types
 
 **See also**
 

@@ -94,7 +94,7 @@ module Apiwork
           return nil unless api_class
 
           contract_class = @action_definition.contract_class
-          resource = api_class.structure.find_resource { |res| res.contract_class == contract_class }
+          resource = api_class.structure.find_resource { |resource| resource.contract_class == contract_class }
           return nil unless resource
 
           resource.actions[@action_definition.action_name.to_sym]&.method

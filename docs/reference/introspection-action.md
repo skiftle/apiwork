@@ -6,17 +6,19 @@ next: false
 
 # Introspection::Action
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L17)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L19)
 
 Wraps action definitions within a resource.
 
 **Example**
 
 ```ruby
-resource.actions.each do |action|
-  action.name        # => :index, :show, :create, etc.
+resource.actions[:show].method     # => :get
+resource.actions[:show].path       # => "/:id"
+resource.actions[:create].request  # => Action::Request
+
+resource.actions.each_value do |action|
   action.method      # => :get, :post, :patch, :delete
-  action.path        # => "/" or "/:id"
   action.request     # => Action::Request or nil
   action.response    # => Action::Response or nil
   action.deprecated? # => false
@@ -29,7 +31,7 @@ end
 
 `#deprecated?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L85)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L82)
 
 **Returns**
 
@@ -41,7 +43,7 @@ end
 
 `#description`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L67)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L64)
 
 **Returns**
 
@@ -53,7 +55,7 @@ end
 
 `#method`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L35)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L32)
 
 **Returns**
 
@@ -61,23 +63,11 @@ end
 
 ---
 
-### #name
-
-`#name`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L20)
-
-**Returns**
-
-`Symbol` — action name
-
----
-
 ### #operation_id
 
 `#operation_id`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L79)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L76)
 
 **Returns**
 
@@ -89,7 +79,7 @@ end
 
 `#path`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L29)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L26)
 
 **Returns**
 
@@ -101,7 +91,7 @@ end
 
 `#raises`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L55)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L52)
 
 **Returns**
 
@@ -113,7 +103,7 @@ end
 
 `#request`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L42)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L39)
 
 **Returns**
 
@@ -129,7 +119,7 @@ end
 
 `#request?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L91)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L88)
 
 **Returns**
 
@@ -141,7 +131,7 @@ end
 
 `#response`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L49)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L46)
 
 **Returns**
 
@@ -157,7 +147,7 @@ end
 
 `#response?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L97)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L94)
 
 **Returns**
 
@@ -169,7 +159,7 @@ end
 
 `#summary`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L61)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L58)
 
 **Returns**
 
@@ -181,7 +171,7 @@ end
 
 `#tags`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L73)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L70)
 
 **Returns**
 
@@ -193,7 +183,7 @@ end
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L103)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L100)
 
 **Returns**
 

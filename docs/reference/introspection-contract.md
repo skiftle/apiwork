@@ -1,5 +1,5 @@
 ---
-order: 29
+order: 32
 prev: false
 next: false
 ---
@@ -17,14 +17,14 @@ Provides access to actions, types, and enums defined on a contract.
 ```ruby
 contract = InvoiceContract.introspect(expand: true)
 
-contract.actions.each do |action|
-  action.name      # => :index, :show, etc.
+contract.actions[:show].response  # => Action::Response
+contract.types[:address].shape    # => { street: ..., city: ... }
+contract.enums[:status].values    # => ["draft", "published"]
+
+contract.actions.each_value do |action|
   action.request   # => Action::Request or nil
   action.response  # => Action::Response or nil
 end
-
-contract.types.each { |t| ... }  # iterate custom types
-contract.enums.each { |e| ... }  # iterate enums
 ```
 
 ## Instance Methods
@@ -37,7 +37,7 @@ contract.enums.each { |e| ... }  # iterate enums
 
 **Returns**
 
-`Array<Action>` — actions defined on this contract
+`Hash{Symbol => Action}` — actions defined on this contract
 
 **See also**
 
@@ -49,11 +49,11 @@ contract.enums.each { |e| ... }  # iterate enums
 
 `#enums`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/contract.rb#L47)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/contract.rb#L43)
 
 **Returns**
 
-`Array<Enum>` — enums defined or referenced by this contract
+`Hash{Symbol => Enum}` — enums defined or referenced by this contract
 
 **See also**
 
@@ -65,7 +65,7 @@ contract.enums.each { |e| ... }  # iterate enums
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/contract.rb#L55)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/contract.rb#L49)
 
 **Returns**
 
@@ -77,11 +77,11 @@ contract.enums.each { |e| ... }  # iterate enums
 
 `#types`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/contract.rb#L38)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/contract.rb#L36)
 
 **Returns**
 
-`Array<Type>` — custom types defined or referenced by this contract
+`Hash{Symbol => Type}` — custom types defined or referenced by this contract
 
 **See also**
 

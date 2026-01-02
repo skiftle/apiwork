@@ -1,24 +1,21 @@
 ---
-order: 30
+order: 36
 prev: false
 next: false
 ---
 
 # Introspection::Enum
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum.rb#L15)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum.rb#L12)
 
 Wraps enum type definitions.
 
 **Example**
 
 ```ruby
-data.enums.each do |enum|
-  enum.name         # => :status
-  enum.values       # => ["draft", "published", "archived"]
-  enum.description  # => "Document status"
-  enum.deprecated?  # => false
-end
+api.enums[:status].values       # => ["draft", "published", "archived"]
+api.enums[:status].description  # => "Document status"
+api.enums[:status].deprecated?  # => false
 ```
 
 ## Instance Methods
@@ -27,7 +24,7 @@ end
 
 `#deprecated?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum.rb#L45)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum.rb#L37)
 
 **Returns**
 
@@ -39,7 +36,7 @@ end
 
 `#description`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum.rb#L33)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum.rb#L25)
 
 **Returns**
 
@@ -51,7 +48,7 @@ end
 
 `#example`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum.rb#L39)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum.rb#L31)
 
 **Returns**
 
@@ -59,23 +56,11 @@ end
 
 ---
 
-### #name
-
-`#name`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum.rb#L18)
-
-**Returns**
-
-`Symbol` — enum name
-
----
-
 ### #to_h
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum.rb#L51)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum.rb#L43)
 
 **Returns**
 
@@ -87,7 +72,7 @@ end
 
 `#values`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum.rb#L27)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum.rb#L19)
 
 **Returns**
 

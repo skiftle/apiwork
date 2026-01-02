@@ -69,7 +69,7 @@ Defines an action with query, body, and response.
 
 **Returns**
 
-[ActionDefinition](contract-action-definition) — the action definition
+[ActionDefinition](introspection-action-definition) — the action definition
 
 **See also**
 
