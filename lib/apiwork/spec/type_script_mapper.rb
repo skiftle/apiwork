@@ -11,30 +11,17 @@ module Apiwork
         @key_format = key_format
       end
 
-      def build_interface(
-        type_name,
-        type_shape,
-        action_name: nil,
-        recursive: false,
-        description: nil,
-        example: nil
-      )
-        type_name_pascal = pascal_case(type_name)
+      def build_interface(type, action_name: nil, recursive: false)
+        type_name_pascal = pascal_case(type.name)
 
-        fields = type_shape[:shape] || {}
-
-        properties = fields.sort_by { |property_name, _| property_name.to_s }.map do |property_name, property_definition|
-          key = transform_key(property_name)
+        properties = type.shape.sort_by { |name, _| name.to_s }.map do |name, param|
+          key = transform_key(name)
           update = action_name.to_s == 'update'
-          optional = property_definition[:optional]
 
-          ts_type = map_field(property_definition, action_name:)
-          optional_marker = update || optional ? '?' : ''
+          ts_type = map_field(param, action_name:)
+          optional_marker = update || param.optional? ? '?' : ''
 
-          prop_jsdoc = jsdoc(
-            description: property_definition[:description],
-            example: property_definition[:example],
-          )
+          prop_jsdoc = jsdoc(description: param.description, example: param.example)
           if prop_jsdoc
             indented_jsdoc = prop_jsdoc.lines.map { |line| "  #{line.chomp}" }.join("\n")
             "#{indented_jsdoc}\n  #{key}#{optional_marker}: #{ts_type};"
@@ -43,7 +30,7 @@ module Apiwork
           end
         end.join("\n")
 
-        type_jsdoc = jsdoc(description:, example:)
+        type_jsdoc = jsdoc(description: type.description, example: type.example)
 
         code = if properties.empty?
                  "export type #{type_name_pascal} = object;"
@@ -53,16 +40,14 @@ module Apiwork
         type_jsdoc ? "#{type_jsdoc}\n#{code}" : code
       end
 
-      def build_union_type(type_name, type_shape, description: nil)
-        type_name_pascal = pascal_case(type_name)
-        variants = type_shape[:variants]
-        discriminator = type_shape[:discriminator]
+      def build_union_type(type)
+        type_name_pascal = pascal_case(type.name)
 
-        variant_types = variants.map do |variant|
+        variant_types = type.variants.map do |variant|
           base_type = map_type_definition(variant, action_name: nil)
 
-          if discriminator && variant[:tag]
-            discriminator_key = transform_key(discriminator)
+          if type.discriminator && variant[:tag]
+            discriminator_key = transform_key(type.discriminator)
             "{ #{discriminator_key}: '#{variant[:tag]}' } & #{base_type}"
           else
             base_type
@@ -70,28 +55,27 @@ module Apiwork
         end
 
         code = "export type #{type_name_pascal} = #{variant_types.join(' | ')};"
-        type_jsdoc = jsdoc(description:)
+        type_jsdoc = jsdoc(description: type.description)
         type_jsdoc ? "#{type_jsdoc}\n#{code}" : code
       end
 
-      def build_enum_type(enum_name, enum_data)
-        type_name = pascal_case(enum_name)
-        enum_values = enum_data[:values]
-        type_literal = enum_values.sort.map { |v| "'#{v}'" }.join(' | ')
+      def build_enum_type(enum)
+        type_name = pascal_case(enum.name)
+        type_literal = enum.values.sort.map { |v| "'#{v}'" }.join(' | ')
 
         code = "export type #{type_name} = #{type_literal};"
-        type_jsdoc = jsdoc(description: enum_data[:description])
+        type_jsdoc = jsdoc(description: enum.description)
         type_jsdoc ? "#{type_jsdoc}\n#{code}" : code
       end
 
       def build_action_request_query_type(resource_name, action_name, query_params, parent_path: nil)
         type_name = action_type_name(resource_name, action_name, 'RequestQuery', parent_path:)
 
-        properties = query_params.sort_by { |k, _| k.to_s }.map do |param_name, param_definition|
+        properties = query_params.sort_by { |k, _| k.to_s }.map do |param_name, param|
+          param = wrap_param(param)
           key = transform_key(param_name)
-          ts_type = map_field(param_definition, action_name:)
-          optional = param_definition[:optional]
-          optional_marker = optional ? '?' : ''
+          ts_type = map_field(param, action_name:)
+          optional_marker = param.optional? ? '?' : ''
           "  #{key}#{optional_marker}: #{ts_type};"
         end.join("\n")
 
@@ -101,11 +85,11 @@ module Apiwork
       def build_action_request_body_type(resource_name, action_name, body_params, parent_path: nil)
         type_name = action_type_name(resource_name, action_name, 'RequestBody', parent_path:)
 
-        properties = body_params.sort_by { |k, _| k.to_s }.map do |param_name, param_definition|
+        properties = body_params.sort_by { |k, _| k.to_s }.map do |param_name, param|
+          param = wrap_param(param)
           key = transform_key(param_name)
-          ts_type = map_field(param_definition, action_name:)
-          optional = param_definition[:optional]
-          optional_marker = optional ? '?' : ''
+          ts_type = map_field(param, action_name:)
+          optional_marker = param.optional? ? '?' : ''
           "  #{key}#{optional_marker}: #{ts_type};"
         end.join("\n")
 
@@ -149,19 +133,17 @@ module Apiwork
         "#{base_name}#{suffix.camelize}"
       end
 
-      def map_field(definition, action_name: nil)
-        return 'string' unless definition.is_a?(Hash)
+      def map_field(param, action_name: nil)
+        param = wrap_param(param)
 
-        nullable = definition[:nullable]
-
-        base_type = if definition[:type].is_a?(Symbol) && type_or_enum_reference?(definition[:type])
-                      type_reference(definition[:type])
+        base_type = if param.type.is_a?(Symbol) && type_or_enum_reference?(param.type)
+                      type_reference(param.type)
                     else
-                      map_type_definition(definition, action_name:)
+                      map_type_definition(param, action_name:)
                     end
 
-        if definition[:enum]
-          enum_reference = definition[:enum]
+        if param.enum
+          enum_reference = param.enum
           if enum_reference.is_a?(Symbol) && data.enums.any? { |e| e.name == enum_reference }
             base_type = pascal_case(enum_reference)
           elsif enum_reference.is_a?(Array)
@@ -169,7 +151,7 @@ module Apiwork
           end
         end
 
-        if nullable
+        if param.nullable?
           members = [base_type, 'null'].sort
           base_type = members.join(' | ')
         end
@@ -177,48 +159,47 @@ module Apiwork
         base_type
       end
 
-      def map_type_definition(definition, action_name: nil)
-        return 'never' unless definition.is_a?(Hash)
+      def map_type_definition(param, action_name: nil)
+        param = wrap_param(param)
 
-        type = definition[:type]
-
-        case type
+        case param.type
         when :object
-          map_object_type(definition, action_name:)
+          map_object_type(param, action_name:)
         when :array
-          map_array_type(definition, action_name:)
+          map_array_type(param, action_name:)
         when :union
-          map_union_type(definition, action_name:)
+          map_union_type(param, action_name:)
         when :literal
-          map_literal_type(definition)
+          map_literal_type(param)
         when nil
           'never'
         else
-          type_or_enum_reference?(type) ? type_reference(type) : map_primitive(type)
+          type_or_enum_reference?(param.type) ? type_reference(param.type) : map_primitive(param.type)
         end
       end
 
-      def map_object_type(definition, action_name: nil)
-        return 'object' unless definition[:shape]
+      def map_object_type(param, action_name: nil)
+        param = wrap_param(param)
+        return 'object' if param.shape.empty?
 
-        partial = definition[:partial]
+        partial = param.partial?
 
-        properties = definition[:shape].sort_by { |property_name, _| property_name.to_s }.map do |property_name, property_definition|
-          key = transform_key(property_name)
-          ts_type = map_field(property_definition, action_name:)
-          optional = property_definition[:optional]
-          optional_marker = partial || optional ? '?' : ''
+        properties = param.shape.sort_by { |name, _| name.to_s }.map do |name, field_param|
+          key = transform_key(name)
+          ts_type = map_field(field_param, action_name:)
+          optional_marker = partial || field_param.optional? ? '?' : ''
           "#{key}#{optional_marker}: #{ts_type}"
         end.join('; ')
 
         "{ #{properties} }"
       end
 
-      def map_array_type(definition, action_name: nil)
-        items_type = definition[:of]
+      def map_array_type(param, action_name: nil)
+        param = wrap_param(param)
+        items_type = param.of
 
-        if items_type.nil? && definition[:shape]
-          element_type = map_object_type({ shape: definition[:shape], type: :object }, action_name:)
+        if items_type.nil? && param.shape.any?
+          element_type = map_object_type(param, action_name:)
           return "#{element_type}[]"
         end
 
@@ -239,19 +220,23 @@ module Apiwork
         end
       end
 
-      def map_union_type(definition, action_name: nil)
-        variants = definition[:variants].map do |variant|
-          map_type_definition(variant, action_name: action_name)
+      def map_union_type(param, action_name: nil)
+        param = wrap_param(param)
+
+        variants = param.variants.map do |variant|
+          map_type_definition(variant, action_name:)
         end
         variants.sort.join(' | ')
       end
 
-      def map_literal_type(definition)
-        case definition[:value]
+      def map_literal_type(param)
+        param = wrap_param(param)
+
+        case param.value
         when nil then 'null'
-        when String then "'#{definition[:value]}'"
-        when Numeric, TrueClass, FalseClass then definition[:value].to_s
-        else "'#{definition[:value]}'"
+        when String then "'#{param.value}'"
+        when Numeric, TrueClass, FalseClass then param.value.to_s
+        else "'#{param.value}'"
         end
       end
 
@@ -303,6 +288,12 @@ module Apiwork
       end
 
       private
+
+      def wrap_param(param_or_hash)
+        return param_or_hash if param_or_hash.is_a?(Data::Param)
+
+        Data::Param.new(param_or_hash)
+      end
 
       def type_or_enum_reference?(symbol)
         data.types.any? { |t| t.name == symbol } || data.enums.any? { |e| e.name == symbol }

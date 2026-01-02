@@ -26,14 +26,12 @@ module Apiwork
         @key_format = key_format
       end
 
-      def build_object_schema(type_name, type_shape, action_name: nil, recursive: false)
-        schema_name = pascal_case(type_name)
+      def build_object_schema(type, action_name: nil, recursive: false)
+        schema_name = pascal_case(type.name)
 
-        fields = type_shape[:shape] || {}
-
-        properties = fields.sort_by { |property_name, _| property_name.to_s }.map do |property_name, property_definition|
-          key = transform_key(property_name)
-          zod_type = map_field_definition(property_definition, action_name:)
+        properties = type.shape.sort_by { |name, _| name.to_s }.map do |name, param|
+          key = transform_key(name)
+          zod_type = map_field_definition(param, action_name:)
           "  #{key}: #{zod_type}"
         end.join(",\n")
 
@@ -46,15 +44,14 @@ module Apiwork
         end
       end
 
-      def build_union_schema(type_name, type_shape)
-        schema_name = pascal_case(type_name)
-        variants = type_shape[:variants]
+      def build_union_schema(type)
+        schema_name = pascal_case(type.name)
 
-        variant_schemas = variants.map { |variant| map_type_definition(variant, action_name: nil) }
+        variant_schemas = type.variants.map { |variant| map_type_definition(variant, action_name: nil) }
         union_body = variant_schemas.map { |v| "  #{v}" }.join(",\n")
 
-        if type_shape[:discriminator]
-          discriminator_key = transform_key(type_shape[:discriminator])
+        if type.discriminator
+          discriminator_key = transform_key(type.discriminator)
           "export const #{schema_name}Schema = z.discriminatedUnion('#{discriminator_key}', [\n#{union_body}\n]);"
         else
           "export const #{schema_name}Schema = z.union([\n#{union_body}\n]);"
@@ -103,10 +100,10 @@ module Apiwork
         "export const #{schema_name}Schema = z.object({\n#{nested_properties.join(",\n")}\n});"
       end
 
-      def build_action_response_body_schema(resource_name, action_name, response_body_definition, parent_path: nil)
+      def build_action_response_body_schema(resource_name, action_name, response_body, parent_path: nil)
         schema_name = action_schema_name(resource_name, action_name, 'ResponseBody', parent_path:)
 
-        zod_schema = map_type_definition(response_body_definition, action_name: nil)
+        zod_schema = map_type_definition(response_body, action_name: nil)
 
         "export const #{schema_name}Schema = #{zod_schema};"
       end
@@ -126,54 +123,53 @@ module Apiwork
         "#{base_name}#{suffix_pascal}"
       end
 
-      def map_field_definition(definition, action_name: nil)
-        return 'z.string()' unless definition.is_a?(Hash)
+      def map_field_definition(param, action_name: nil, force_optional: nil)
+        param = wrap_param(param)
 
-        if definition[:type].is_a?(Symbol) && type_or_enum_reference?(definition[:type])
-          schema_name = pascal_case(definition[:type])
+        if param.type.is_a?(Symbol) && type_or_enum_reference?(param.type)
+          schema_name = pascal_case(param.type)
           type = "#{schema_name}Schema"
-          return apply_modifiers(type, definition, action_name)
+          return apply_modifiers(type, param, action_name, force_optional:)
         end
 
-        type = map_type_definition(definition, action_name:)
-        type = resolve_enum_schema(definition) || type
+        type = map_type_definition(param, action_name:)
+        type = resolve_enum_schema(param) || type
 
-        apply_modifiers(type, definition, action_name)
+        apply_modifiers(type, param, action_name, force_optional:)
       end
 
-      def map_type_definition(definition, action_name: nil)
-        return 'z.never()' unless definition.is_a?(Hash)
+      def map_type_definition(param, action_name: nil)
+        param = wrap_param(param)
 
-        type = definition[:type]
-
-        case type
+        case param.type
         when :object
-          map_object_type(definition, action_name:)
+          map_object_type(param, action_name:)
         when :array
-          map_array_type(definition, action_name:)
+          map_array_type(param, action_name:)
         when :union
-          map_union_type(definition, action_name:)
+          map_union_type(param, action_name:)
         when :literal
-          map_literal_type(definition)
+          map_literal_type(param)
         when nil
           'z.never()'
         else
-          result = type_or_enum_reference?(type) ? schema_reference(type) : map_primitive(definition)
-          resolve_enum_schema(definition) || result
+          result = type_or_enum_reference?(param.type) ? schema_reference(param.type) : map_primitive(param)
+          resolve_enum_schema(param) || result
         end
       end
 
-      def map_object_type(definition, action_name: nil)
-        return 'z.object({})' unless definition[:shape]
+      def map_object_type(param, action_name: nil)
+        param = wrap_param(param)
+        return 'z.object({})' if param.shape.empty?
 
-        partial = definition[:partial]
+        partial = param.partial?
 
-        properties = definition[:shape].sort_by { |property_name, _| property_name.to_s }.map do |property_name, property_definition|
-          key = transform_key(property_name)
+        properties = param.shape.sort_by { |name, _| name.to_s }.map do |name, field_param|
+          key = transform_key(name)
           zod_type = if partial
-                       map_field_definition(property_definition.merge(optional: false), action_name: nil)
+                       map_field_definition(field_param, action_name: nil, force_optional: false)
                      else
-                       map_field_definition(property_definition, action_name:)
+                       map_field_definition(field_param, action_name:)
                      end
           "#{key}: #{zod_type}"
         end.join(', ')
@@ -182,11 +178,12 @@ module Apiwork
         partial ? "#{base_object}.partial()" : base_object
       end
 
-      def map_array_type(definition, action_name: nil)
-        items_type = definition[:of]
+      def map_array_type(param, action_name: nil)
+        param = wrap_param(param)
+        items_type = param.of
 
-        if items_type.nil? && definition[:shape]
-          items_schema = map_object_type({ shape: definition[:shape], type: :object }, action_name:)
+        if items_type.nil? && param.shape.any?
+          items_schema = map_object_type(param, action_name:)
           return "z.array(#{items_schema})"
         end
 
@@ -198,54 +195,61 @@ module Apiwork
           items_schema = map_type_definition(items_type, action_name:)
           "z.array(#{items_schema})"
         else
-          primitive = map_primitive({ type: items_type })
+          primitive = map_primitive_type(items_type)
           "z.array(#{primitive})"
         end
       end
 
-      def map_union_type(definition, action_name: nil)
-        if definition[:discriminator]
-          map_discriminated_union(definition, action_name:)
+      def map_union_type(param, action_name: nil)
+        param = wrap_param(param)
+
+        if param.discriminator
+          map_discriminated_union(param, action_name:)
         else
-          variants = definition[:variants].map { |variant| map_type_definition(variant, action_name: action_name) }
+          variants = param.variants.map { |variant| map_type_definition(variant, action_name:) }
           "z.union([#{variants.join(', ')}])"
         end
       end
 
-      def map_discriminated_union(definition, action_name: nil)
-        discriminator_field = transform_key(definition[:discriminator])
-        variants = definition[:variants]
+      def map_discriminated_union(param, action_name: nil)
+        discriminator_field = transform_key(param.discriminator)
 
-        variant_schemas = variants.map { |variant| map_type_definition(variant, action_name: action_name) }
+        variant_schemas = param.variants.map { |variant| map_type_definition(variant, action_name:) }
 
         "z.discriminatedUnion('#{discriminator_field}', [#{variant_schemas.join(', ')}])"
       end
 
-      def map_literal_type(definition)
-        case definition[:value]
+      def map_literal_type(param)
+        param = wrap_param(param)
+
+        case param.value
         when nil then 'z.null()'
-        when String then "z.literal('#{definition[:value]}')"
-        when Numeric, TrueClass, FalseClass then "z.literal(#{definition[:value]})"
-        else "z.literal('#{definition[:value]}')"
+        when String then "z.literal('#{param.value}')"
+        when Numeric, TrueClass, FalseClass then "z.literal(#{param.value})"
+        else "z.literal('#{param.value}')"
         end
       end
 
-      def map_primitive(definition)
-        type = definition[:type]
-        format = definition[:format]&.to_sym
+      def map_primitive(param)
+        param = wrap_param(param)
+        format = param.format&.to_sym
 
         base_type = if format
                       map_format_to_zod(format)
                     else
-                      TYPE_MAP[type.to_sym] || 'z.unknown()'
+                      TYPE_MAP[param.type.to_sym] || 'z.unknown()'
                     end
 
-        if numeric_type?(type)
-          base_type += ".min(#{definition[:min]})" if definition[:min]
-          base_type += ".max(#{definition[:max]})" if definition[:max]
+        if numeric_type?(param.type)
+          base_type += ".min(#{param.min})" if param.min
+          base_type += ".max(#{param.max})" if param.max
         end
 
         base_type
+      end
+
+      def map_primitive_type(type_symbol)
+        TYPE_MAP[type_symbol.to_sym] || 'z.unknown()'
       end
 
       def map_format_to_zod(format)
@@ -278,10 +282,11 @@ module Apiwork
         data.types.any? { |t| t.name == symbol } || data.enums.any? { |e| e.name == symbol }
       end
 
-      def resolve_enum_schema(definition)
-        return nil unless definition[:enum]
+      def resolve_enum_schema(param)
+        param = wrap_param(param)
+        return nil unless param.enum
 
-        enum_reference = definition[:enum]
+        enum_reference = param.enum
         if enum_reference.is_a?(Symbol) && data.enums.any? { |e| e.name == enum_reference }
           "#{pascal_case(enum_reference)}Schema"
         elsif enum_reference.is_a?(Array)
@@ -296,20 +301,29 @@ module Apiwork
         parent_path.to_s.split('/').reject { |s| s.start_with?(':') }
       end
 
-      def apply_modifiers(type, definition, action_name)
+      def apply_modifiers(type, param, action_name, force_optional: nil)
+        param = wrap_param(param)
         update = action_name.to_s == 'update'
 
-        type += '.nullable()' if definition[:nullable]
+        type += '.nullable()' if param.nullable?
 
-        discriminator = definition[:type] == :literal && !definition[:optional]
+        discriminator = param.literal? && !param.optional?
+
+        optional = force_optional.nil? ? param.optional? : force_optional
 
         if update && !discriminator
           type += '.optional()' unless type.include?('.optional()')
-        elsif definition[:optional]
+        elsif optional
           type += '.optional()'
         end
 
         type
+      end
+
+      def wrap_param(param_or_hash)
+        return param_or_hash if param_or_hash.is_a?(Data::Param)
+
+        Data::Param.new(param_or_hash)
       end
 
       def numeric_type?(type)

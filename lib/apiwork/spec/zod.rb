@@ -63,16 +63,18 @@ module Apiwork
       end
 
       def build_type_schemas
+        types_by_name = data.types.index_by(&:name)
         types_hash = data.types.to_h { |t| [t.name, t.to_h.except(:name)] }
-        sorted_types = TypeAnalysis.topological_sort_types(types_hash)
+        sorted_type_names = TypeAnalysis.topological_sort_types(types_hash).map(&:first)
 
-        schemas = sorted_types.map do |type_name, type_shape|
-          if type_shape[:type] == :union
-            zod_mapper.build_union_schema(type_name, type_shape)
+        schemas = sorted_type_names.map do |type_name|
+          type = types_by_name[type_name]
+          if type.union?
+            zod_mapper.build_union_schema(type)
           else
             action_name = type_name.to_s.end_with?('_update_payload') ? 'update' : nil
-            recursive = TypeAnalysis.circular_reference?(type_name, type_shape, filter: :custom_only)
-            zod_mapper.build_object_schema(type_name, type_shape, action_name:, recursive:)
+            recursive = TypeAnalysis.circular_reference?(type_name, types_hash[type_name], filter: :custom_only)
+            zod_mapper.build_object_schema(type, action_name:, recursive:)
           end
         end
 
@@ -86,15 +88,11 @@ module Apiwork
           resource.actions.each do |action|
             request = action.request
             if request && (request.query? || request.body?)
-              query_hash = request.query.transform_values(&:to_h)
-              body_hash = request.body.transform_values(&:to_h)
-              request_hash = { body: body_hash, query: query_hash }
-
               if request.query?
                 schemas << zod_mapper.build_action_request_query_schema(
                   resource.name,
                   action.name,
-                  query_hash,
+                  request.query,
                   parent_path:,
                 )
               end
@@ -102,11 +100,16 @@ module Apiwork
                 schemas << zod_mapper.build_action_request_body_schema(
                   resource.name,
                   action.name,
-                  body_hash,
+                  request.body,
                   parent_path:,
                 )
               end
-              schemas << zod_mapper.build_action_request_schema(resource.name, action.name, request_hash, parent_path:)
+              schemas << zod_mapper.build_action_request_schema(
+                resource.name,
+                action.name,
+                { body: request.body, query: request.query },
+                parent_path:,
+              )
             end
 
             response = action.response
@@ -114,8 +117,8 @@ module Apiwork
               schema_name = zod_mapper.action_schema_name(resource.name, action.name, 'Response', parent_path:)
               schemas << "export const #{schema_name} = z.never();"
             elsif response&.body?
-              schemas << zod_mapper.build_action_response_body_schema(resource.name, action.name, response.body.to_h, parent_path:)
-              schemas << zod_mapper.build_action_response_schema(resource.name, action.name, { body: response.body.to_h }, parent_path:)
+              schemas << zod_mapper.build_action_response_body_schema(resource.name, action.name, response.body, parent_path:)
+              schemas << zod_mapper.build_action_response_schema(resource.name, action.name, { body: response.body }, parent_path:)
             end
           end
         end
@@ -132,15 +135,15 @@ module Apiwork
           all_types << { code: "export type #{type_name} = #{type_literal};", name: type_name }
         end
 
-        types_hash = data.types.to_h { |t| [t.name, t.to_h.except(:name)] }
-        types_hash.each do |type_name, type_shape|
-          type_name_pascal = typescript_mapper.pascal_case(type_name)
-          code = if type_shape[:type] == :union
-                   typescript_mapper.build_union_type(type_name, type_shape)
+        data.types.each do |type|
+          type_name_pascal = typescript_mapper.pascal_case(type.name)
+          code = if type.union?
+                   typescript_mapper.build_union_type(type)
                  else
-                   action_name = type_name.to_s.end_with?('_update_payload') ? 'update' : nil
-                   recursive = TypeAnalysis.circular_reference?(type_name, type_shape, filter: :custom_only)
-                   typescript_mapper.build_interface(type_name, type_shape, action_name:, recursive:)
+                   action_name = type.name.to_s.end_with?('_update_payload') ? 'update' : nil
+                   types_hash = data.types.to_h { |t| [t.name, t.to_h.except(:name)] }
+                   recursive = TypeAnalysis.circular_reference?(type.name, types_hash[type.name], filter: :custom_only)
+                   typescript_mapper.build_interface(type, action_name:, recursive:)
                  end
           all_types << { code:, name: type_name_pascal }
         end
@@ -149,24 +152,25 @@ module Apiwork
           resource.actions.each do |action|
             request = action.request
             if request && (request.query? || request.body?)
-              query_hash = request.query.transform_values(&:to_h)
-              body_hash = request.body.transform_values(&:to_h)
-              request_hash = { body: body_hash, query: query_hash }
-
               if request.query?
                 type_name = typescript_mapper.action_type_name(resource.name, action.name, 'RequestQuery', parent_path:)
-                code = typescript_mapper.build_action_request_query_type(resource.name, action.name, query_hash, parent_path:)
+                code = typescript_mapper.build_action_request_query_type(resource.name, action.name, request.query, parent_path:)
                 all_types << { code:, name: type_name }
               end
 
               if request.body?
                 type_name = typescript_mapper.action_type_name(resource.name, action.name, 'RequestBody', parent_path:)
-                code = typescript_mapper.build_action_request_body_type(resource.name, action.name, body_hash, parent_path:)
+                code = typescript_mapper.build_action_request_body_type(resource.name, action.name, request.body, parent_path:)
                 all_types << { code:, name: type_name }
               end
 
               type_name = typescript_mapper.action_type_name(resource.name, action.name, 'Request', parent_path:)
-              code = typescript_mapper.build_action_request_type(resource.name, action.name, request_hash, parent_path:)
+              code = typescript_mapper.build_action_request_type(
+                resource.name,
+                action.name,
+                { body: request.body, query: request.query },
+                parent_path:,
+              )
               all_types << { code:, name: type_name }
             end
 
@@ -177,11 +181,11 @@ module Apiwork
               all_types << { code: "export type #{type_name} = never;", name: type_name }
             elsif response&.body?
               type_name = typescript_mapper.action_type_name(resource.name, action.name, 'ResponseBody', parent_path:)
-              code = typescript_mapper.build_action_response_body_type(resource.name, action.name, response.body.to_h, parent_path:)
+              code = typescript_mapper.build_action_response_body_type(resource.name, action.name, response.body, parent_path:)
               all_types << { code:, name: type_name }
 
               type_name = typescript_mapper.action_type_name(resource.name, action.name, 'Response', parent_path:)
-              code = typescript_mapper.build_action_response_type(resource.name, action.name, { body: response.body.to_h }, parent_path:)
+              code = typescript_mapper.build_action_response_type(resource.name, action.name, { body: response.body }, parent_path:)
               all_types << { code:, name: type_name }
             end
           end
