@@ -214,7 +214,7 @@ module Apiwork
       end
 
       def map_primitive(param)
-        format = param.format&.to_sym
+        format = param[:format]&.to_sym
 
         base_type = if format
                       map_format_to_zod(format)
@@ -223,8 +223,8 @@ module Apiwork
                     end
 
         if numeric_type?(param.type)
-          base_type += ".min(#{param.min})" if param.min
-          base_type += ".max(#{param.max})" if param.max
+          base_type += ".min(#{param[:min]})" if param[:min]
+          base_type += ".max(#{param[:max]})" if param[:max]
         end
 
         base_type
@@ -265,13 +265,12 @@ module Apiwork
       end
 
       def resolve_enum_schema(param)
-        return nil unless param.enum
+        return nil unless param.enum_ref? || param.inline_enum?
 
-        enum_reference = param.enum
-        if enum_reference.is_a?(Symbol) && data.enums.key?(enum_reference)
-          "#{pascal_case(enum_reference)}Schema"
-        elsif enum_reference.is_a?(Array)
-          enum_literal = enum_reference.map { |v| "'#{v}'" }.join(', ')
+        if param.enum_ref? && data.enums.key?(param.enum)
+          "#{pascal_case(param.enum)}Schema"
+        elsif param.inline_enum?
+          enum_literal = param.enum.map { |v| "'#{v}'" }.join(', ')
           "z.enum([#{enum_literal}])"
         end
       end

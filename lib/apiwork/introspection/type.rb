@@ -42,13 +42,13 @@ module Apiwork
       # @return [Hash{Symbol => Param}] nested fields for object types
       # @see Param
       def shape
-        @shape ||= (@dump[:shape] || {}).transform_values { |d| Param.new(d) }
+        @shape ||= (@dump[:shape] || {}).transform_values { |dump| Param.build(dump) }
       end
 
       # @api public
       # @return [Array<Param>] variants for union types
       def variants
-        @variants ||= (@dump[:variants] || []).map { |v| Param.new(v) }
+        @variants ||= (@dump[:variants] || []).map { |variant| Param.build(variant) }
       end
 
       # @api public

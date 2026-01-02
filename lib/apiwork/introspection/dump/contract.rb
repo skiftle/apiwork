@@ -125,9 +125,9 @@ module Apiwork
             enum_ref = data[:enum]
             enums << enum_ref.to_sym if enum_ref
 
-            data.each_value { |v| collect_references(v, types, enums) }
+            data.each_value { |value| collect_references(value, types, enums) }
           when Array
-            data.each { |v| collect_references(v, types, enums) }
+            data.each { |item| collect_references(item, types, enums) }
           end
         end
 

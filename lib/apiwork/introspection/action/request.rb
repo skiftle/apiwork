@@ -22,14 +22,14 @@ module Apiwork
         # @return [Hash{Symbol => Param}] query parameters as Param objects
         # @see Param
         def query
-          @query ||= build_params(@data[:query])
+          @query ||= (@data[:query] || {}).transform_values { |dump| Param.build(dump) }
         end
 
         # @api public
         # @return [Hash{Symbol => Param}] body parameters as Param objects
         # @see Param
         def body
-          @body ||= build_params(@data[:body])
+          @body ||= (@data[:body] || {}).transform_values { |dump| Param.build(dump) }
         end
 
         # @api public
@@ -51,14 +51,6 @@ module Apiwork
             body: body.transform_values(&:to_h),
             query: query.transform_values(&:to_h),
           }
-        end
-
-        private
-
-        def build_params(hash)
-          return {} unless hash
-
-          hash.transform_values { |d| Param.new(d) }
         end
       end
     end

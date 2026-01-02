@@ -24,7 +24,7 @@ module Apiwork
         # @return [Param, nil] response body definition
         # @see Param
         def body
-          @body ||= @data[:body] ? Param.new(@data[:body]) : nil
+          @body ||= @data[:body] ? Param.build(@data[:body]) : nil
         end
 
         # @api public

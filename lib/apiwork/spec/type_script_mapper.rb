@@ -134,18 +134,13 @@ module Apiwork
       def map_field(param, action_name: nil)
         base_type = if param.type.is_a?(Symbol) && type_or_enum_reference?(param.type)
                       type_reference(param.type)
+                    elsif param.enum_ref?
+                      pascal_case(param.enum)
+                    elsif param.inline_enum?
+                      param.enum.sort.map { |v| "'#{v}'" }.join(' | ')
                     else
                       map_type_definition(param, action_name:)
                     end
-
-        if param.enum
-          enum_reference = param.enum
-          if enum_reference.is_a?(Symbol) && data.enums.key?(enum_reference)
-            base_type = pascal_case(enum_reference)
-          elsif enum_reference.is_a?(Array)
-            base_type = enum_reference.sort.map { |v| "'#{v}'" }.join(' | ')
-          end
-        end
 
         if param.nullable?
           members = [base_type, 'null'].sort

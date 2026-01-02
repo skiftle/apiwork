@@ -66,7 +66,7 @@ module Apiwork
         # @return [Array<Info::Server>] server definitions
         # @see Info::Server
         def servers
-          @servers ||= @data[:servers].map { |s| Server.new(s) }
+          @servers ||= (@data[:servers] || []).map { |server| Server.new(server) }
         end
 
         # @api public

@@ -3,25 +3,57 @@
 module Apiwork
   module Introspection
     # @api public
-    # Wraps parameter/field definitions.
+    # Base class for parameter/field definitions.
     #
-    # Used for request params, response bodies, type shapes, and more.
-    # Provides type-safe accessors with built-in defaults.
+    # Use {.build} to create the appropriate subclass based on type.
     #
     # @example Basic usage
+    #   param = Param.build(dump)
     #   param.type         # => :string
     #   param.nullable?    # => false
     #   param.optional?    # => true
-    #   param.description  # => "User email address"
     #
-    # @example Array type
+    # @example Type-specific subclasses
+    #   param = Param.build(type: :array, of: { type: :string })
+    #   param.class        # => ArrayParam
     #   param.array?       # => true
-    #   param.of           # => Param for element type
-    #
-    # @example Object type
-    #   param.object?      # => true
-    #   param.shape[:name] # => Param for the name field
+    #   param.of           # => StringParam
     class Param
+      # @api public
+      # Factory method to create the appropriate Param subclass.
+      #
+      # @param dump [Hash] the param dump
+      # @return [Param] the appropriate subclass instance
+      def self.build(dump)
+        type = dump[:type]
+
+        # Check for enum (inline or reference)
+        if dump[:enum]
+          return dump[:enum].is_a?(Array) ? InlineEnumParam.new(dump) : EnumRefParam.new(dump)
+        end
+
+        case type
+        when :string then StringParam.new(dump)
+        when :integer then IntegerParam.new(dump)
+        when :float then FloatParam.new(dump)
+        when :decimal then DecimalParam.new(dump)
+        when :boolean then BooleanParam.new(dump)
+        when :datetime then DateTimeParam.new(dump)
+        when :date then DateParam.new(dump)
+        when :time then TimeParam.new(dump)
+        when :uuid then UuidParam.new(dump)
+        when :binary then BinaryParam.new(dump)
+        when :json then JsonParam.new(dump)
+        when :unknown then UnknownParam.new(dump)
+        when :array then ArrayParam.new(dump)
+        when :object then ObjectParam.new(dump)
+        when :union then UnionParam.new(dump)
+        when :literal then LiteralParam.new(dump)
+        when Symbol then TypeRefParam.new(dump)
+        else UnknownParam.new(dump)
+        end
+      end
+
       def initialize(dump)
         @dump = dump
       end
@@ -30,72 +62,6 @@ module Apiwork
       # @return [Symbol, nil] type (:string, :integer, :array, :object, :union, etc.)
       def type
         @dump[:type]
-      end
-
-      # @api public
-      # @return [Boolean] whether this is an array type
-      def array?
-        type == :array
-      end
-
-      # @api public
-      # @return [Boolean] whether this is an object type
-      def object?
-        type == :object
-      end
-
-      # @api public
-      # @return [Boolean] whether this is a union type
-      def union?
-        type == :union
-      end
-
-      # @api public
-      # @return [Boolean] whether this is a literal type
-      def literal?
-        type == :literal
-      end
-
-      # @api public
-      # @return [Param, nil] element type for arrays
-      def of
-        return @of if defined?(@of)
-
-        raw = @dump[:of]
-        @of = case raw
-              when Hash then Param.new(raw)
-              when Symbol then Param.new(type: raw)
-              end
-      end
-
-      # @api public
-      # @return [Hash{Symbol => Param}] nested fields for objects
-      def shape
-        @shape ||= (@dump[:shape] || {}).transform_values { |d| Param.new(d) }
-      end
-
-      # @api public
-      # @return [Array<Param>] variants for unions
-      def variants
-        @variants ||= (@dump[:variants] || []).map { |v| Param.new(v) }
-      end
-
-      # @api public
-      # @return [Symbol, nil] discriminator field for discriminated unions
-      def discriminator
-        @dump[:discriminator]
-      end
-
-      # @api public
-      # @return [Object, nil] literal value
-      def value
-        @dump[:value]
-      end
-
-      # @api public
-      # @return [Symbol, Array, nil] enum name reference or inline values
-      def enum
-        @dump[:enum]
       end
 
       # @api public
@@ -129,24 +95,6 @@ module Apiwork
       end
 
       # @api public
-      # @return [Symbol, nil] format hint (e.g., :uuid, :email)
-      def format
-        @dump[:format]
-      end
-
-      # @api public
-      # @return [Integer, nil] minimum value for numeric types
-      def min
-        @dump[:min]
-      end
-
-      # @api public
-      # @return [Integer, nil] maximum value for numeric types
-      def max
-        @dump[:max]
-      end
-
-      # @api public
       # @return [Object, nil] default value
       def default
         @dump[:default]
@@ -159,18 +107,128 @@ module Apiwork
       end
 
       # @api public
-      # @return [Boolean] whether this param is partial (for update payloads)
-      def partial?
-        @dump[:partial] == true
-      end
-
-      # @api public
       # Access raw data for edge cases not covered by accessors.
       #
       # @param key [Symbol] the data key to access
       # @return [Object, nil] the raw value
       def [](key)
         @dump[key]
+      end
+
+      # Predicate methods - return false by default, overridden in subclasses
+
+      # @api public
+      # @return [Boolean] whether this is a string type
+      def string?
+        false
+      end
+
+      # @api public
+      # @return [Boolean] whether this is an integer type
+      def integer?
+        false
+      end
+
+      # @api public
+      # @return [Boolean] whether this is a float type
+      def float?
+        false
+      end
+
+      # @api public
+      # @return [Boolean] whether this is a decimal type
+      def decimal?
+        false
+      end
+
+      # @api public
+      # @return [Boolean] whether this is a boolean type
+      def boolean?
+        false
+      end
+
+      # @api public
+      # @return [Boolean] whether this is a datetime type
+      def datetime?
+        false
+      end
+
+      # @api public
+      # @return [Boolean] whether this is a date type
+      def date?
+        false
+      end
+
+      # @api public
+      # @return [Boolean] whether this is a time type
+      def time?
+        false
+      end
+
+      # @api public
+      # @return [Boolean] whether this is a uuid type
+      def uuid?
+        false
+      end
+
+      # @api public
+      # @return [Boolean] whether this is a binary type
+      def binary?
+        false
+      end
+
+      # @api public
+      # @return [Boolean] whether this is a json type
+      def json?
+        false
+      end
+
+      # @api public
+      # @return [Boolean] whether this is an unknown type
+      def unknown?
+        false
+      end
+
+      # @api public
+      # @return [Boolean] whether this is an array type
+      def array?
+        false
+      end
+
+      # @api public
+      # @return [Boolean] whether this is an object type
+      def object?
+        false
+      end
+
+      # @api public
+      # @return [Boolean] whether this is a union type
+      def union?
+        false
+      end
+
+      # @api public
+      # @return [Boolean] whether this is a literal type
+      def literal?
+        false
+      end
+
+      # @api public
+      # @return [Boolean] whether this is a type reference
+      def type_ref?
+        false
+      end
+
+      # @api public
+      # @return [Boolean] whether this is an enum reference
+      def enum_ref?
+        false
+      end
+
+      # @api public
+      # @return [Boolean] whether this is an inline enum
+      def inline_enum?
+        false
       end
 
       # @api public
@@ -180,20 +238,10 @@ module Apiwork
           default: default,
           deprecated: deprecated?,
           description: description,
-          discriminator: discriminator,
-          enum: enum,
           example: example,
-          format: format,
-          max: max,
-          min: min,
           nullable: nullable?,
-          of: of&.to_h,
           optional: optional?,
-          partial: partial?,
-          shape: shape.transform_values(&:to_h),
           type: type,
-          value: value,
-          variants: variants.map(&:to_h),
         }
       end
     end
