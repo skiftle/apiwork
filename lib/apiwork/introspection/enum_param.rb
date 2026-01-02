@@ -3,7 +3,7 @@
 module Apiwork
   module Introspection
     # @api public
-    # Base class for enum parameter types.
+    # Base class for enum params.
     #
     # Enum params are scalar types with constrained values.
     # Subclasses: RefEnumParam (references named enum), InlineEnumParam (inline values).

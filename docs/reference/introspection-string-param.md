@@ -8,7 +8,7 @@ next: false
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/string_param.rb#L14)
 
-Param subclass for string types.
+String param.
 
 **Example**
 

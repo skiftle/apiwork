@@ -3,7 +3,7 @@
 module Apiwork
   module Introspection
     # @api public
-    # Param subclass for date types.
+    # Date param.
     #
     # @example
     #   param.type    # => :date

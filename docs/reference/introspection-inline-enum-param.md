@@ -8,7 +8,7 @@ next: false
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/inline_enum_param.rb#L14)
 
-Param subclass for inline enum values.
+Inline enum param.
 
 **Example**
 

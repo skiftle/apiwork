@@ -8,7 +8,7 @@ next: false
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/binary_param.rb#L11)
 
-Param subclass for binary types.
+Binary param.
 
 **Example**
 

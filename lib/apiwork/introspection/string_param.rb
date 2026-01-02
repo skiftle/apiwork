@@ -3,7 +3,7 @@
 module Apiwork
   module Introspection
     # @api public
-    # Param subclass for string types.
+    # String param.
     #
     # @example
     #   param.type    # => :string

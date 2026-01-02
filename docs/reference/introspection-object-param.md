@@ -8,7 +8,7 @@ next: false
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/object_param.rb#L13)
 
-Param subclass for object types.
+Object param.
 
 **Example**
 

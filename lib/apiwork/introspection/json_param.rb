@@ -3,11 +3,11 @@
 module Apiwork
   module Introspection
     # @api public
-    # Param subclass for json types.
+    # JSON param.
     #
     # @example
     #   param.type # => :json
-    class JsonParam < Param
+    class JSONParam < Param
     end
   end
 end

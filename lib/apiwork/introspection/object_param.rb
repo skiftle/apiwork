@@ -3,7 +3,7 @@
 module Apiwork
   module Introspection
     # @api public
-    # Param subclass for object types.
+    # Object param.
     #
     # @example
     #   param.type      # => :object

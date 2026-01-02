@@ -8,7 +8,7 @@ next: false
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/ref_type_param.rb#L12)
 
-Param subclass for custom type references.
+Type reference param.
 
 The type field contains the symbol name of the referenced type.
 

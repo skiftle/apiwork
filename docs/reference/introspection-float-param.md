@@ -8,7 +8,7 @@ next: false
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/float_param.rb#L13)
 
-Param subclass for float types.
+Float param.
 
 **Example**
 

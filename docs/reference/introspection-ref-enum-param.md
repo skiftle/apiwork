@@ -8,7 +8,7 @@ next: false
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/ref_enum_param.rb#L14)
 
-Param subclass for enum references.
+Enum reference param.
 
 **Example**
 

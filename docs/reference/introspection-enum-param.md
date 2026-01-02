@@ -8,7 +8,7 @@ next: false
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum_param.rb#L16)
 
-Base class for enum parameter types.
+Base class for enum params.
 
 Enum params are scalar types with constrained values.
 Subclasses: RefEnumParam (references named enum), InlineEnumParam (inline values).

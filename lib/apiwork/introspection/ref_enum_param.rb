@@ -3,7 +3,7 @@
 module Apiwork
   module Introspection
     # @api public
-    # Param subclass for enum references.
+    # Enum reference param.
     #
     # @example
     #   param.type    # => :string (base type)

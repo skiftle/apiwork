@@ -3,7 +3,7 @@
 module Apiwork
   module Introspection
     # @api public
-    # Param subclass for array types.
+    # Array param.
     #
     # @example
     #   param.type   # => :array

@@ -3,7 +3,7 @@
 module Apiwork
   module Introspection
     # @api public
-    # Param subclass for time types.
+    # Time param.
     #
     # @example
     #   param.type    # => :time

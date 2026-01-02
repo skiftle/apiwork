@@ -1,5 +1,5 @@
 ---
-order: 53
+order: 54
 prev: false
 next: false
 ---
@@ -8,7 +8,7 @@ next: false
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/unknown_param.rb#L12)
 
-Param subclass for unknown types.
+Unknown param.
 
 Used as fallback when the type cannot be determined.
 

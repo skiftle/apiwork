@@ -8,7 +8,7 @@ next: false
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/scalar_param.rb#L14)
 
-Base class for scalar (primitive) parameter types.
+Base class for scalar params.
 
 Scalars are simple value types: string, integer, float, decimal,
 boolean, datetime, date, time, uuid, binary.

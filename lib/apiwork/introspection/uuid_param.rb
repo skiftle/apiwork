@@ -3,12 +3,12 @@
 module Apiwork
   module Introspection
     # @api public
-    # Param subclass for uuid types.
+    # UUID param.
     #
     # @example
     #   param.type    # => :uuid
     #   param.scalar? # => true
-    class UuidParam < ScalarParam
+    class UUIDParam < ScalarParam
     end
   end
 end

@@ -1,5 +1,5 @@
 ---
-order: 52
+order: 53
 prev: false
 next: false
 ---
@@ -8,7 +8,7 @@ next: false
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/union_param.rb#L13)
 
-Param subclass for union types.
+Union param.
 
 **Example**
 

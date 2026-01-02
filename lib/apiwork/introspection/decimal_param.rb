@@ -3,7 +3,7 @@
 module Apiwork
   module Introspection
     # @api public
-    # Param subclass for decimal types.
+    # Decimal param.
     #
     # @example
     #   param.type    # => :decimal

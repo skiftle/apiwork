@@ -3,7 +3,7 @@
 module Apiwork
   module Introspection
     # @api public
-    # Param subclass for custom type references.
+    # Type reference param.
     #
     # The type field contains the symbol name of the referenced type.
     #

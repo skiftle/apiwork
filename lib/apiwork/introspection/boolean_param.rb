@@ -3,7 +3,7 @@
 module Apiwork
   module Introspection
     # @api public
-    # Param subclass for boolean types.
+    # Boolean param.
     #
     # @example
     #   param.type    # => :boolean

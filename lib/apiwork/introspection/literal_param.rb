@@ -3,7 +3,7 @@
 module Apiwork
   module Introspection
     # @api public
-    # Param subclass for literal types.
+    # Literal param.
     #
     # @example
     #   param.type     # => :literal

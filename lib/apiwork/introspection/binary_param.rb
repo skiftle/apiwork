@@ -3,7 +3,7 @@
 module Apiwork
   module Introspection
     # @api public
-    # Param subclass for binary types.
+    # Binary param.
     #
     # @example
     #   param.type    # => :binary

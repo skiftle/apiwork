@@ -3,7 +3,7 @@
 module Apiwork
   module Introspection
     # @api public
-    # Base class for scalar (primitive) parameter types.
+    # Base class for scalar params.
     #
     # Scalars are simple value types: string, integer, float, decimal,
     # boolean, datetime, date, time, uuid, binary.

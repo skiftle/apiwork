@@ -8,7 +8,7 @@ next: false
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/array_param.rb#L15)
 
-Param subclass for array types.
+Array param.
 
 **Example**
 

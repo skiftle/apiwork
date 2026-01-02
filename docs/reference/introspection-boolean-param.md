@@ -8,7 +8,7 @@ next: false
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/boolean_param.rb#L11)
 
-Param subclass for boolean types.
+Boolean param.
 
 **Example**
 

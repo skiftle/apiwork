@@ -1,14 +1,14 @@
 ---
-order: 54
+order: 52
 prev: false
 next: false
 ---
 
-# Introspection::UuidParam
+# Introspection::UUIDParam
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/uuid_param.rb#L11)
 
-Param subclass for uuid types.
+UUID param.
 
 **Example**
 

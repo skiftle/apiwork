@@ -8,7 +8,7 @@ next: false
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/date_param.rb#L11)
 
-Param subclass for date types.
+Date param.
 
 **Example**
 

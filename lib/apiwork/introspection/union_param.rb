@@ -3,7 +3,7 @@
 module Apiwork
   module Introspection
     # @api public
-    # Param subclass for union types.
+    # Union param.
     #
     # @example
     #   param.type          # => :union

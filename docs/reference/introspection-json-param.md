@@ -4,11 +4,11 @@ prev: false
 next: false
 ---
 
-# Introspection::JsonParam
+# Introspection::JSONParam
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/json_param.rb#L10)
 
-Param subclass for json types.
+JSON param.
 
 **Example**
 

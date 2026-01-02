@@ -3,7 +3,7 @@
 module Apiwork
   module Introspection
     # @api public
-    # Param subclass for unknown types.
+    # Unknown param.
     #
     # Used as fallback when the type cannot be determined.
     #

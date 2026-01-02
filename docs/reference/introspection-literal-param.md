@@ -8,7 +8,7 @@ next: false
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/literal_param.rb#L12)
 
-Param subclass for literal types.
+Literal param.
 
 **Example**
 

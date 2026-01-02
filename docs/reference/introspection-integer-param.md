@@ -8,7 +8,7 @@ next: false
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/integer_param.rb#L14)
 
-Param subclass for integer types.
+Integer param.
 
 **Example**
 

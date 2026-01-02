@@ -3,7 +3,7 @@
 module Apiwork
   module Introspection
     # @api public
-    # Param subclass for float types.
+    # Float param.
     #
     # @example
     #   param.type    # => :float

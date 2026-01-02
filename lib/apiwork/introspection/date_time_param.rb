@@ -3,7 +3,7 @@
 module Apiwork
   module Introspection
     # @api public
-    # Param subclass for datetime types.
+    # DateTime param.
     #
     # @example
     #   param.type    # => :datetime

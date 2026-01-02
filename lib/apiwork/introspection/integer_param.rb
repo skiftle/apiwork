@@ -3,7 +3,7 @@
 module Apiwork
   module Introspection
     # @api public
-    # Param subclass for integer types.
+    # Integer param.
     #
     # @example
     #   param.type    # => :integer
