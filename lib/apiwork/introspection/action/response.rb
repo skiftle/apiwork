@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module Apiwork
-  module Spec
-    class Data
+  module Introspection
+    class Action
       # @api public
       # Wraps action response definitions.
       #

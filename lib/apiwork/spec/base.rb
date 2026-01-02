@@ -199,11 +199,11 @@ module Apiwork
       # Generates the spec output.
       #
       # Override this method in subclasses to produce the spec format.
-      # Access API data via the {#data} wrapper which provides typed access
+      # Access API data via the {#data} method which provides typed access
       # to types, enums, resources, actions, and other introspection data.
       #
       # @return [Hash, String] Hash for hash specs, String for string specs
-      # @see Spec::Data
+      # @see Introspection::API
       def generate
         raise NotImplementedError, "#{self.class} must implement #generate"
       end
@@ -254,15 +254,14 @@ module Apiwork
       end
 
       # @api public
-      # Returns the data wrapper for introspection data.
+      # Returns the API introspection facade.
       #
       # This is the primary interface for accessing introspection data in spec generators.
-      # Use this instead of accessing raw hash data directly.
       #
-      # @return [Spec::Data]
-      # @see Spec::Data
+      # @return [Introspection::API]
+      # @see Introspection::API
       def data
-        @data ||= Data.new(@introspection)
+        @introspection
       end
 
       def key_format

@@ -289,12 +289,12 @@ module Apiwork
       if without_apiwork.start_with?('Contract::')
         normalized = without_apiwork.delete_prefix('Contract::')
         "contract-#{dasherize(normalized)}"
-      elsif without_apiwork.start_with?('Spec::Data::')
+      elsif without_apiwork.start_with?('Introspection::')
         dasherize(without_apiwork.gsub('::', '-'))
       elsif without_apiwork.start_with?('Data::')
         "spec-#{dasherize(without_apiwork.gsub('::', '-'))}"
-      elsif spec_data_class?(class_name)
-        "spec-data-#{dasherize(without_apiwork)}"
+      elsif introspection_class?(class_name)
+        "introspection-#{dasherize(without_apiwork)}"
       elsif contract_class?(class_name)
         "contract-#{dasherize(without_apiwork)}"
       else
@@ -314,14 +314,14 @@ module Apiwork
         .to_set
     end
 
-    def spec_data_class?(class_name)
-      @spec_data_classes ||= build_spec_data_classes
-      @spec_data_classes.include?(class_name)
+    def introspection_class?(class_name)
+      @introspection_classes ||= build_introspection_classes
+      @introspection_classes.include?(class_name)
     end
 
-    def build_spec_data_classes
+    def build_introspection_classes
       YARD::Registry.all(:class, :module)
-        .select { |obj| obj.path.start_with?('Apiwork::Spec::Data::') }
+        .select { |obj| obj.path.start_with?('Apiwork::Introspection::') }
         .map { |obj| obj.name.to_s }
         .to_set
     end

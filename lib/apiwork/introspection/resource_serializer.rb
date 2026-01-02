@@ -87,7 +87,7 @@ module Apiwork
         contract_class = @resource.resolve_contract_class
         return nil unless contract_class
 
-        contract_class if contract_class < Contract::Base
+        contract_class if contract_class < Apiwork::Contract::Base
       end
     end
   end

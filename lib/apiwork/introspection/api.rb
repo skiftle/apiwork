@@ -1,71 +1,66 @@
 # frozen_string_literal: true
 
 module Apiwork
-  module Spec
+  module Introspection
     # @api public
-    # Wraps introspection data for spec generators.
+    # Facade for introspected API data.
     #
-    # Entry point for accessing all API data in a spec generator.
-    # Access resources via {#resources}, types via {#types}, enums via {#enums}.
-    #
-    # @see Data::Resource
-    # @see Data::Type
-    # @see Data::Enum
-    # @see Data::Info
+    # Entry point for accessing all API data. Access resources via {#resources},
+    # types via {#types}, enums via {#enums}.
     #
     # @example
-    #   data = Spec::Data.new(introspection_data)
+    #   api = MyAPI.introspect(locale: :sv)
     #
-    #   data.info.title              # => "My API"
-    #   data.types.each { |t| ... }  # iterate custom types
-    #   data.enums.each { |e| ... }  # iterate enums
+    #   api.info.title              # => "My API"
+    #   api.types.each { |t| ... }  # iterate custom types
+    #   api.enums.each { |e| ... }  # iterate enums
     #
-    #   data.each_resource do |resource, parent_path|
+    #   api.each_resource do |resource, parent_path|
     #     resource.actions.each do |action|
     #       # ...
     #     end
     #   end
-    class Data
-      def initialize(introspection)
-        @introspection = introspection || {}
+    class API
+      def initialize(data)
+        @data = data || {}
       end
 
       # @api public
       # @return [String, nil] API mount path (e.g., "/api/v1")
       def path
-        @introspection[:path]
+        @data[:path]
       end
 
       # @api public
-      # @return [Data::Info] API metadata
-      # @see Data::Info
+      # @return [API::Info] API metadata
+      # @see API::Info
       def info
-        @info ||= Info.new(@introspection[:info])
+        @info ||= Info.new(@data[:info])
       end
 
       # @api public
-      # @return [Array<Data::Resource>] top-level resources
-      # @see Data::Resource
+      # @return [Array<API::Resource>] top-level resources
+      # @see API::Resource
       def resources
-        @resources ||= (@introspection[:resources] || {}).map do |name, data|
+        @resources ||= (@data[:resources] || {}).map do |name, data|
           Resource.new(name, data)
         end
       end
 
       # @api public
-      # @return [Array<Data::Type>] registered custom types
-      # @see Data::Type
+      # @return [Array<Type>] registered custom types
+      # @see Type
       def types
-        @types ||= (@introspection[:types] || {}).map do |name, data|
+        @types ||= (@data[:types] || {}).map do |name, data|
           Type.new(name, data)
         end
       end
 
       # @api public
-      # @return [Array<Data::Enum>] registered enums
-      # @see Data::Enum
+      # @return [Array<Enum>] registered enums
+      # @see Enum
       def enums
-        @enums ||= (@introspection[:enums] || {}).map do |name, data|
+        @enums ||= (@data[:enums] || {}).map do |name, data|
           Enum.new(name, data)
         end
       end
@@ -73,14 +68,14 @@ module Apiwork
       # @api public
       # @return [Array<Symbol>] API-level error codes that may be raised
       def raises
-        @introspection[:raises] || []
+        @data[:raises] || []
       end
 
       # @api public
-      # @return [Array<Data::ErrorCode>] error code definitions
-      # @see Data::ErrorCode
+      # @return [Array<ErrorCode>] error code definitions
+      # @see ErrorCode
       def error_codes
-        @error_codes ||= (@introspection[:error_codes] || {}).map do |code, data|
+        @error_codes ||= (@data[:error_codes] || {}).map do |code, data|
           ErrorCode.new(code, data)
         end
       end
@@ -88,9 +83,9 @@ module Apiwork
       # @api public
       # Iterates over all resources recursively (including nested).
       #
-      # @yieldparam resource [Data::Resource] the resource
+      # @yieldparam resource [API::Resource] the resource
       # @yieldparam parent_path [String, nil] parent resource path
-      # @see Data::Resource
+      # @see API::Resource
       def each_resource(&block)
         iterate_resources(resources, nil, &block)
       end

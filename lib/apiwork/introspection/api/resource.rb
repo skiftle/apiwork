@@ -1,14 +1,13 @@
 # frozen_string_literal: true
 
 module Apiwork
-  module Spec
-    class Data
+  module Introspection
+    class API
       # @api public
       # Wraps resource definitions.
       #
-      # @see Action
       # @example
-      #   data.resources.each do |resource|
+      #   api.resources.each do |resource|
       #     resource.name       # => :invoices
       #     resource.identifier # => "invoices"
       #     resource.path       # => "invoices"
@@ -55,7 +54,6 @@ module Apiwork
 
         # @api public
         # @return [Array<Resource>] nested resources
-        # @see Resource
         def resources
           @resources ||= (@data[:resources] || {}).map do |resource_name, resource_data|
             Resource.new(resource_name, resource_data)

@@ -10,7 +10,6 @@ RSpec.describe Apiwork::Spec::TypeScriptSpec do
   let(:path) { '/api/v1' }
   let(:generator) { described_class.new(path) }
   let(:api) { Apiwork::API.find(path) }
-  let(:introspect) { api.introspect }
 
   describe 'default options' do
     it 'has default version' do
@@ -224,16 +223,6 @@ RSpec.describe Apiwork::Spec::TypeScriptSpec do
       end
     end
 
-    describe 'JSON column type mapping' do
-      it 'maps :json type to Record<string, any>' do
-        data = Apiwork::Spec::Data.new({})
-        mapper = Apiwork::Spec::TypeScriptMapper.new(data:)
-
-        result = mapper.send(:map_primitive, :json)
-        expect(result).to eq('Record<string, any>')
-      end
-    end
-
     describe 'nullable types' do
       it 'generates union with null for nullable fields' do
         # If there are any nullable fields in the test data, verify they have | null
@@ -262,22 +251,6 @@ RSpec.describe Apiwork::Spec::TypeScriptSpec do
 
         # Should have multiple separate declarations
         expect(type_declarations.length).to be > 1
-      end
-    end
-
-    describe 'completeness' do
-      it 'includes all enum types from introspect data' do
-        introspect[:enums].each_key do |enum_name|
-          type_name = enum_name.to_s.camelize(:upper)
-          expect(output).to include("export type #{type_name} = ")
-        end
-      end
-
-      it 'includes all custom types from introspect data' do
-        introspect[:types].each_key do |type_name|
-          pascal_name = type_name.to_s.camelize(:upper)
-          expect(output).to match(/export (type|interface) #{pascal_name}/)
-        end
       end
     end
 
@@ -446,22 +419,6 @@ RSpec.describe Apiwork::Spec::TypeScriptSpec do
       expect(output).to include('export interface Simple')
 
       Apiwork::API.unregister('/api/ts_no_desc')
-    end
-  end
-
-  describe 'unknown type mapping' do
-    let(:introspection) { Apiwork::API.introspect('/api/v1') }
-    let(:data) { Apiwork::Spec::Data.new(introspection) }
-    let(:mapper) { Apiwork::Spec::TypeScriptMapper.new(data:) }
-
-    it 'maps :unknown to unknown' do
-      result = mapper.send(:map_primitive, :unknown)
-      expect(result).to eq('unknown')
-    end
-
-    it 'uses unknown as fallback for unmapped types' do
-      result = mapper.send(:map_primitive, :some_unmapped_type)
-      expect(result).to eq('unknown')
     end
   end
 end

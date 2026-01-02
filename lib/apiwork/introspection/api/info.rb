@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 module Apiwork
-  module Spec
-    class Data
+  module Introspection
+    class API
       # @api public
       # Wraps API metadata/info.
       #
       # @example
-      #   info = data.info
+      #   info = api.info
       #   info.title            # => "My API"
       #   info.version          # => "1.0.0"
       #   info.description      # => "API for managing resources"
@@ -49,22 +49,22 @@ module Apiwork
         end
 
         # @api public
-        # @return [Contact, nil] contact information
-        # @see Contact
+        # @return [Info::Contact, nil] contact information
+        # @see Info::Contact
         def contact
           @contact ||= @data[:contact] ? Contact.new(@data[:contact]) : nil
         end
 
         # @api public
-        # @return [License, nil] license information
-        # @see License
+        # @return [Info::License, nil] license information
+        # @see Info::License
         def license
           @license ||= @data[:license] ? License.new(@data[:license]) : nil
         end
 
         # @api public
-        # @return [Array<Server>] server definitions
-        # @see Server
+        # @return [Array<Info::Server>] server definitions
+        # @see Info::Server
         def servers
           @servers ||= (@data[:servers] || []).map { |s| Server.new(s) }
         end
