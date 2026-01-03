@@ -4,15 +4,25 @@ order: 3
 
 # Contract Introspection
 
-During development, you may need to understand exactly what a contract exposes. This is especially useful because the adapter may generate types dynamically based on your schema — filters, pagination, sorting, payloads — that don't exist as explicit code.
-
-Call `introspect` in the Rails console:
+Returns a single contract's structure as an [Introspection::Contract](../../reference/introspection-contract.md) object. Useful during development to understand what a contract exposes, including dynamically generated types.
 
 ```ruby
-InvoiceContract.introspect
+data = InvoiceContract.introspect
 ```
 
-This returns actions, request shapes, response types, and all types scoped to the contract.
+---
+
+## Accessing Data
+
+```ruby
+data.actions.each do |name, action|
+  puts "#{action.method.upcase} #{action.path}"
+end
+
+data.types.each do |name, type|
+  puts "#{name}: #{type.object? ? 'object' : 'union'}"
+end
+```
 
 ---
 
@@ -29,22 +39,24 @@ By default, referenced types are not included:
 
 ```ruby
 InvoiceContract.introspect
-# => { actions: {...}, types: { invoice_filter: {...} } }
+# types: { invoice_filter: {...} }
 ```
 
 Pass `expand: true` to resolve all referenced types:
 
 ```ruby
 InvoiceContract.introspect(expand: true)
-# => {
-#   actions: {...},
-#   types: {
-#     invoice_filter: {...},
-#     datetime_filter: {...},
-#     string_filter: {...},
-#     offset_pagination: {...}
-#   }
-# }
+# types: { invoice_filter: {...}, datetime_filter: {...}, ... }
+```
+
+---
+
+## Locale
+
+Pass `locale:` for translated descriptions:
+
+```ruby
+InvoiceContract.introspect(locale: :sv)
 ```
 
 ---
@@ -62,8 +74,8 @@ InvoiceContract.introspect(locale: :sv)      # separate cache entry
 Call `reset_contracts!` to clear the cache:
 
 ```ruby
-api = Apiwork::API.find('/api/v1')
-api.reset_contracts!
+api_class = Apiwork::API.find('/api/v1')
+api_class.reset_contracts!
 ```
 
 ::: tip

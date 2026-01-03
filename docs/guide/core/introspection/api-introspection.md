@@ -4,22 +4,82 @@ order: 2
 
 # API Introspection
 
-Returns the complete API structure:
+Returns the complete API structure as an [Introspection::API](../../reference/introspection-api.md) object.
 
 ```ruby
-Apiwork::API.introspect('/api/v1')
-Apiwork::API.introspect('/api/v1', locale: :sv)
+api = Apiwork::API.introspect('/api/v1')
 ```
 
 ---
 
-## What's Included
+## Accessors
 
-- All resources and nested resources
-- All actions with request and response definitions
-- All types and enums (global and resource-scoped)
-- Error codes that actions can raise
-- API metadata
+| Method | Returns |
+|--------|---------|
+| `path` | API mount path |
+| `info` | [Info](../../reference/introspection-api-info.md) object |
+| `resources` | Hash of [Resource](../../reference/introspection-api-resource.md) objects |
+| `types` | Hash of [Type](../../reference/introspection-type.md) objects |
+| `enums` | Hash of [Enum](../../reference/introspection-enum.md) objects |
+| `error_codes` | Hash of [ErrorCode](../../reference/introspection-error-code.md) objects |
+| `raises` | Array of API-level error code symbols |
+
+---
+
+## Traversing Resources
+
+```ruby
+api.resources[:invoices].actions.each do |name, action|
+  puts "#{action.method.upcase} #{action.path}"
+end
+```
+
+Use `each_resource` to include parent path context:
+
+```ruby
+api.each_resource do |resource, parent_path|
+  resource.actions.each do |name, action|
+    full_path = "#{parent_path}/#{resource.path}#{action.path}"
+    puts "#{action.method.upcase} #{full_path}"
+  end
+end
+```
+
+---
+
+## Accessing Actions
+
+```ruby
+action = api.resources[:invoices].actions[:create]
+
+action.method     # => :post
+action.path       # => "/"
+action.raises     # => [:unprocessable_entity]
+action.deprecated? # => false
+```
+
+---
+
+## Request and Response
+
+```ruby
+request = action.request
+request.query?  # => false
+request.body?   # => true
+
+request.body.each do |name, param|
+  puts "#{name}: #{param.type}"
+end
+```
+
+```ruby
+response = action.response
+response.no_content?  # => false
+
+body = response.body
+body.array?  # => true
+body.of      # => Param for element type
+```
 
 ---
 
@@ -28,7 +88,7 @@ Apiwork::API.introspect('/api/v1', locale: :sv)
 Pass `locale:` for translated descriptions:
 
 ```ruby
-Apiwork::API.introspect('/api/v1', locale: :sv)
+api = Apiwork::API.introspect('/api/v1', locale: :sv)
 ```
 
 Translations come from your I18n files. See [i18n](../../advanced/i18n.md) for configuration.
@@ -37,7 +97,7 @@ Translations come from your I18n files. See [i18n](../../advanced/i18n.md) for c
 
 ## Caching
 
-Results are cached per locale:
+Results are cached per path and locale:
 
 ```ruby
 Apiwork::API.introspect('/api/v1')              # cached
@@ -48,8 +108,8 @@ Apiwork::API.introspect('/api/v1', locale: :sv) # separate cache entry
 Call `reset_contracts!` to clear the cache:
 
 ```ruby
-api = Apiwork::API.find('/api/v1')
-api.reset_contracts!
+api_class = Apiwork::API.find('/api/v1')
+api_class.reset_contracts!
 ```
 
 ::: tip

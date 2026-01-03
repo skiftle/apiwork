@@ -4,102 +4,103 @@ order: 1
 
 # Introduction
 
-Introspection is a core part of Apiwork. It allows your API to describe itself: resources, actions, types, enums, and errors are exposed as structured data that reflects how the system actually behaves.
+Introspection allows an API to describe itself through a rich object model.
 
-Consumers don't need parallel definitions or separate interpretations. Generators, documentation, and integrations read the same information the framework uses internally. This removes guesswork and reduces drift between code, docs, and anything that depends on the API.
+Resources, actions, types, enums, and error codes are exposed as explicit objects that mirror the API’s structure and behavior.
 
-The practical outcome is consistency:
+This serves two purposes:
 
-- [Specs](../specs/introduction.md) are generated without re-implementing rules
-- Documentation stays aligned with the actual API surface
-- Type definitions evolve with the code instead of diverging
-- Internal tools can trust what they read
+- **Development** - inspect what your contracts expose, including dynamically generated types
+- **Generation** - [spec generators](../specs/introduction.md) and documentation read introspection data directly
 
-The output includes:
+The data is exposed through facade objects with predicates for type-checking and accessors for navigation.
 
-- Resources and actions
-- Request and response shapes
-- Types and enums
-- Registered error codes
-- API metadata (title, version, description)
+---
 
-```json
-{
-  "path": "/api/v1",
-  "resources": {
-    "invoices": {
-      "path": "invoices",
-      "actions": {
-        "index": {
-          "method": "get",
-          "path": "/",
-          "response": {
-            "body": {
-              "type": "invoice_index_success_response_body"
-            }
-          }
-        },
-        "show": {
-          "method": "get",
-          "path": "/:id"
-        },
-        "create": {
-          "method": "post",
-          "path": "/",
-          "request": {
-            "body": {
-              "invoice": {
-                "type": "invoice_create_payload"
-              }
-            }
-          },
-          "raises": ["unprocessable_entity"]
-        }
-      }
-    }
-  },
-  "types": {
-    "invoice": {
-      "type": "object",
-      "shape": {
-        "id": {
-          "type": "string"
-        },
-        "number": {
-          "type": "string"
-        },
-        "status": {
-          "type": "string",
-          "nullable": true
-        }
-      }
-    }
-  },
-  "enums": {
-    "sort_direction": {
-      "values": ["asc", "desc"]
-    }
-  },
-  "error_codes": {
-    "unprocessable_entity": {
-      "status": 422,
-      "description": "Unprocessable Entity"
-    }
-  }
-}
+## Facade Objects
+
+Introspection returns typed objects, not raw hashes:
+
+```ruby
+api = Apiwork::API.introspect('/api/v1')
+
+api.resources[:invoices].actions[:show].response.body
+# => Param::Array
 ```
+
+Predicates enable type-checking:
+
+```ruby
+status = api.types[:invoice].shape[:status]
+status.enum?     # => true
+status.enum      # => ["draft", "sent", "due", "paid"]
+status.optional? # => false
+```
+
+Accessors provide navigation:
+
+```ruby
+# Array element type
+array_param.of  # => Param for element type
+
+# Object fields
+object_param.shape  # => Hash{Symbol => Param}
+
+# Union variants
+union_param.variants  # => Array<Param>
+```
+
+---
+
+## Hierarchy
+
+```
+API
+├── info
+│   ├── title, version, description
+│   ├── contact
+│   ├── license
+│   └── servers
+├── resources
+│   ├── identifier, path
+│   ├── actions
+│   │   ├── method, path, raises
+│   │   ├── request
+│   │   │   ├── query
+│   │   │   └── body
+│   │   └── response
+│   │       └── body
+│   └── resources (nested)
+├── types
+│   ├── shape (object types)
+│   └── variants (union types)
+├── enums
+└── error_codes
+```
+
+---
+
+## During Development
+
+When building contracts, introspection helps you see exactly what gets exposed. The adapter generates types dynamically based on your schema - filters, pagination, sorting - that don't exist as explicit code.
+
+Call `.to_h` on any object for a hash representation:
+
+```ruby
+api.to_h
+# => { path: "/api/v1", resources: {...}, types: {...} }
+
+action.request.to_h
+# => { query: {...}, body: {...} }
+```
+
+This is useful for debugging or understanding what a contract exposes.
 
 ---
 
 ## Usage
 
-Two levels of introspection:
+- [API Introspection](./api-introspection.md) - entry point for full API
+- [Contract Introspection](./contract-introspection.md) - entry point for single contract
 
-- [API Introspection](./api-introspection.md) — returns the complete API
-- [Contract Introspection](./contract-introspection.md) — returns a single contract
-
----
-
-## See Also
-
-- [Format](./format.md) — output structure reference
+See the [reference documentation](../../reference/introspection-api.md) for complete method details.
