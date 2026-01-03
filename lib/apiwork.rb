@@ -42,6 +42,7 @@ loader.inflector.inflect(
   'api_registrar' => 'APIRegistrar',
   'api_serializer' => 'APISerializer',
   'api' => 'API',
+  'json' => 'JSON',
   'json_pointer' => 'JSONPointer',
   'open_api_spec' => 'OpenAPISpec',
   'type_script_mapper' => 'TypeScriptMapper',

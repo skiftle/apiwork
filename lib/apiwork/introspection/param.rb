@@ -36,7 +36,7 @@ module Apiwork
           when :time then Scalar::Time.new(dump)
           when :uuid then Scalar::UUID.new(dump)
           when :binary then Scalar::Binary.new(dump)
-          when :json then Json.new(dump)
+          when :json then JSON.new(dump)
           when :unknown then Unknown.new(dump)
           when :array then Array.new(dump)
           when :object then Object.new(dump)

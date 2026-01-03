@@ -8,7 +8,7 @@ module Apiwork
       #
       # @example
       #   param.type # => :json
-      class Json < Base
+      class JSON < Base
         # @api public
         # @return [Boolean] true for JSON params
         def json?
