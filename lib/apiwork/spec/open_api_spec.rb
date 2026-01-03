@@ -122,9 +122,7 @@ module Apiwork
           operation[:parameters] = path_params
         end
 
-        response = action.response
-        response_hash = response ? { body: response.body&.to_h, no_content: response.no_content? } : nil
-        operation[:responses] = build_responses(action_name, response_hash, action.raises)
+        operation[:responses] = build_responses(action_name, action.response, action.raises)
 
         operation.compact
       end
@@ -223,19 +221,20 @@ module Apiwork
         }
       end
 
-      def build_responses(action_name, response_data, action_raises = [])
+      def build_responses(action_name, response, action_raises = [])
         responses = {}
         combined_raises = (data.raises + action_raises).uniq
 
-        if response_data&.dig(:no_content)
+        if response&.no_content?
           responses[:'204'] = { description: 'No content' }
-        elsif response_data&.dig(:body)
-          response_params = response_data[:body]
+        elsif response&.body
+          body = response.body
+          body_hash = body.to_h
 
           # Detect unwrapped union and separate success/error variants
-          if response_params[:type] == :union && !response_params[:discriminator]
-            success_variant = response_params[:variants][0]
-            error_variant = response_params[:variants][1]
+          if body.union? && body_hash[:discriminator].nil?
+            success_variant = body_hash[:variants][0]
+            error_variant = body_hash[:variants][1]
 
             responses[:'200'] = {
               content: {
@@ -254,7 +253,7 @@ module Apiwork
             responses[:'200'] = {
               content: {
                 'application/json': {
-                  schema: build_params_object(response_params),
+                  schema: build_params_object(body_hash),
                 },
               },
               description: 'Successful response',
@@ -265,7 +264,7 @@ module Apiwork
               responses[error_code.status.to_s.to_sym] = build_error_response(error_code.description)
             end
           end
-        elsif response_data
+        elsif response
           # Empty response {} - 200 with optional meta
           responses[:'200'] = {
             content: {

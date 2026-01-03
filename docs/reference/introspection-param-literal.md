@@ -272,6 +272,18 @@ param.literal? # => true
 
 ---
 
+### #ref_type?
+
+`#ref_type?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L206)
+
+**Returns**
+
+[Boolean](introspection-boolean) — whether this is a type reference
+
+---
+
 ### #scalar?
 
 `#scalar?`

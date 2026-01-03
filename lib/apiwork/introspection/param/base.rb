@@ -202,6 +202,12 @@ module Apiwork
         end
 
         # @api public
+        # @return [Boolean] whether this is a type reference
+        def ref_type?
+          false
+        end
+
+        # @api public
         # @return [Hash] structured representation
         def to_h
           {

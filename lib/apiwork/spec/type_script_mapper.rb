@@ -132,7 +132,7 @@ module Apiwork
       end
 
       def map_field(param, action_name: nil)
-        base_type = if param.type.is_a?(Symbol) && type_or_enum_reference?(param.type)
+        base_type = if param.ref_type? && type_or_enum_reference?(param.type)
                       type_reference(param.type)
                     elsif param.scalar? && param.enum?
                       if param.ref?
@@ -153,26 +153,27 @@ module Apiwork
       end
 
       def map_type_definition(param, action_name: nil)
-        case param.type
-        when :object
+        if param.object?
           map_object_type(param, action_name:)
-        when :array
+        elsif param.array?
           map_array_type(param, action_name:)
-        when :union
+        elsif param.union?
           map_union_type(param, action_name:)
-        when :literal
+        elsif param.literal?
           map_literal_type(param)
-        when nil
+        elsif param.type.nil?
           'never'
+        elsif param.ref_type? && type_or_enum_reference?(param.type)
+          type_reference(param.type)
         else
-          type_or_enum_reference?(param.type) ? type_reference(param.type) : map_primitive(param.type)
+          map_primitive(param)
         end
       end
 
       def map_object_type(param, action_name: nil)
         return 'object' if param.shape.empty?
 
-        partial = param.partial?
+        partial = param.object? && param.partial?
 
         properties = param.shape.sort_by { |name, _| name.to_s }.map do |name, field_param|
           key = transform_key(name)
@@ -219,21 +220,14 @@ module Apiwork
         end
       end
 
-      def map_primitive(type)
-        case type.to_sym
-        when :string, :uuid, :date, :datetime, :time, :binary
-          'string'
-        when :integer, :float, :decimal
-          'number'
-        when :boolean
-          'boolean'
-        when :json
-          'Record<string, any>'
-        when :unknown
-          'unknown'
-        else
-          'unknown'
-        end
+      def map_primitive(param)
+        return 'unknown' if param.unknown?
+        return 'string' if param.string? || param.uuid? || param.date? || param.datetime? || param.time? || param.binary?
+        return 'number' if param.numeric?
+        return 'boolean' if param.boolean?
+        return 'Record<string, any>' if param.json?
+
+        'unknown'
       end
 
       def type_reference(symbol)

@@ -124,7 +124,7 @@ module Apiwork
       end
 
       def map_field(param, action_name: nil, force_optional: nil)
-        if param.type.is_a?(Symbol) && type_or_enum_reference?(param.type)
+        if param.ref_type? && type_or_enum_reference?(param.type)
           schema_name = pascal_case(param.type)
           type = "#{schema_name}Schema"
           return apply_modifiers(type, param, action_name, force_optional:)
@@ -137,20 +137,20 @@ module Apiwork
       end
 
       def map_type_definition(param, action_name: nil)
-        case param.type
-        when :object
+        if param.object?
           map_object_type(param, action_name:)
-        when :array
+        elsif param.array?
           map_array_type(param, action_name:)
-        when :union
+        elsif param.union?
           map_union_type(param, action_name:)
-        when :literal
+        elsif param.literal?
           map_literal_type(param)
-        when nil
+        elsif param.type.nil?
           'z.never()'
+        elsif param.ref_type? && type_or_enum_reference?(param.type)
+          resolve_enum_schema(param) || schema_reference(param.type)
         else
-          result = type_or_enum_reference?(param.type) ? schema_reference(param.type) : map_primitive(param)
-          resolve_enum_schema(param) || result
+          resolve_enum_schema(param) || map_primitive(param)
         end
       end
 

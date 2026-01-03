@@ -6,7 +6,7 @@ next: false
 
 # Introspection::Param::RefType
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/ref_type.rb#L13)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/ref_type.rb#L14)
 
 Type reference param.
 
@@ -15,7 +15,8 @@ The type field contains the symbol name of the referenced type.
 **Example**
 
 ```ruby
-param.type # => :address (the custom type name)
+param.type      # => :address (the custom type name)
+param.ref_type? # => true
 ```
 
 ## Instance Methods
@@ -272,6 +273,18 @@ param.type # => :address (the custom type name)
 
 ---
 
+### #ref_type?
+
+`#ref_type?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/ref_type.rb#L17)
+
+**Returns**
+
+[Boolean](introspection-boolean) — true for type reference params
+
+---
+
 ### #scalar?
 
 `#scalar?`
@@ -324,7 +337,7 @@ param.type # => :address (the custom type name)
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L206)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L212)
 
 **Returns**
 
