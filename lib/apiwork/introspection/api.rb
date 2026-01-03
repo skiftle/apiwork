@@ -100,7 +100,7 @@ module Apiwork
       def iterate_resources(resource_list, &block)
         resource_list.each_value do |resource|
           yield(resource)
-          iterate_resources(resource.resources, &block) if resource.nested?
+          iterate_resources(resource.resources, &block) if resource.resources.any?
         end
       end
     end

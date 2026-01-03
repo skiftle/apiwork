@@ -29,20 +29,29 @@ api = Apiwork::API.introspect('/api/v1')
 ## Resources
 
 ```ruby
-api.resources[:invoices].actions.each do |name, action|
-  puts "#{action.method.upcase} #{action.path}"
-  # GET /invoices
-  # POST /invoices
-  # GET /invoices/:id
-  # ...
-end
+resource = api.resources[:invoices]
+
+resource.identifier         # => "invoices"
+resource.path               # => "invoices"
+resource.parent_identifiers # => []
+resource.resources          # => {} or nested resources
+resource.actions            # => { index: Action, show: Action, ... }
+```
+
+For nested resources:
+
+```ruby
+comments = api.resources[:posts].resources[:comments]
+
+comments.identifier         # => "comments"
+comments.parent_identifiers # => ["posts"]
 ```
 
 Use `each_resource` to iterate all resources including nested:
 
 ```ruby
 api.each_resource do |resource|
-  resource.actions.each do |name, action|
+  resource.actions.each_value do |action|
     puts "#{action.method.upcase} #{action.path}"
   end
 end

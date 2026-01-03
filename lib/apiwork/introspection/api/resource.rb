@@ -9,7 +9,7 @@ module Apiwork
       # @example
       #   api.resources[:invoices].path              # => "invoices"
       #   api.resources[:invoices].parent_identifiers # => []
-      #   api.resources[:invoices].nested?           # => true if has nested resources
+      #   api.resources[:invoices].resources         # => {} or nested resources
       #
       #   api.each_resource do |resource|
       #     resource.identifier         # => "invoices"
@@ -54,12 +54,6 @@ module Apiwork
         # @return [Hash{Symbol => Resource}] nested resources
         def resources
           @resources ||= @data[:resources].transform_values { |dump| Resource.new(dump) }
-        end
-
-        # @api public
-        # @return [Boolean] whether this resource has nested resources
-        def nested?
-          resources.any?
         end
 
         # @api public

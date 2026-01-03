@@ -13,19 +13,17 @@ Wraps resource definitions.
 **Example**
 
 ```ruby
-api.resources[:invoices].path    # => "invoices"
-api.resources[:invoices].nested? # => true if has nested resources
+api.resources[:invoices].path              # => "invoices"
+api.resources[:invoices].parent_identifiers # => []
+api.resources[:invoices].resources         # => {} or nested resources
 
-api.each_resource do |resource, parent_path|
-  resource.identifier # => "invoices"
+api.each_resource do |resource|
+  resource.identifier         # => "invoices"
+  resource.parent_identifiers # => [] or ["posts"] for nested
 
   resource.actions.each_value do |action|
     action.request  # => Action::Request or nil
     action.response # => Action::Response or nil
-  end
-
-  resource.resources.each_value do |nested|
-    # nested resources...
   end
 end
 ```
@@ -74,15 +72,15 @@ Iterates over all actions.
 
 ---
 
-### #nested?
+### #parent_identifiers
 
-`#nested?`
+`#parent_identifiers`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L57)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L44)
 
 **Returns**
 
-[Boolean](introspection-boolean) — whether this resource has nested resources
+`Array<String>` — parent resource identifiers
 
 ---
 
