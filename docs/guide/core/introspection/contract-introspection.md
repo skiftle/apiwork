@@ -28,8 +28,8 @@ contract = InvoiceContract.introspect
 action = contract.actions[:create]
 
 action.method      # => :post
-action.path        # => "/"
-action.raises      # => [:unprocessable_entity]
+action.path        # => "/invoices"
+action.raises      # => [:bad_request, :not_found, :unprocessable_entity]
 action.deprecated? # => false
 ```
 

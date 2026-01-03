@@ -94,9 +94,8 @@ module Apiwork
         end
       end
 
-      def build_full_action_path(resource, action, parent_path)
-        resource_path = parent_path ? "#{parent_path}/#{resource.path}" : resource.path
-        "#{resource_path}#{action.path}"
+      def build_full_action_path(_resource, action, _parent_path)
+        action.path
       end
 
       def build_operation(resource_name, resource, action_name, action, parent_paths, full_path)

@@ -26,7 +26,7 @@ module Apiwork
           contract_class = resolve_contract_class
 
           {
-            actions: build_actions(contract_class),
+            actions: build_actions(contract_class, resource_path),
             identifier: @resource.name.to_s,
             path: resource_path,
             resources: build_nested_resources(resource_path),
@@ -35,11 +35,11 @@ module Apiwork
 
         private
 
-        def build_actions(contract_class)
+        def build_actions(contract_class, resource_path)
           actions = {}
 
           @resource.actions.each do |action_name, action|
-            path = action_path(action_name, action)
+            path = build_full_action_path(resource_path, action_name, action)
             actions[action_name] = { path:, method: action.method }
 
             action_definition = contract_class&.action_definition(action_name)
@@ -65,22 +65,28 @@ module Apiwork
           end
         end
 
-        def action_path(action_name, action)
+        def build_full_action_path(resource_path, action_name, action)
+          segment = action_path_segment(action_name, action)
+          full_path = "/#{resource_path}#{segment}"
+          full_path.delete_suffix('/')
+        end
+
+        def action_path_segment(action_name, action)
           if action.crud?
             case action_name
             when :index, :create
-              '/'
+              ''
             when :show, :update, :destroy
               '/:id'
             else
-              '/'
+              ''
             end
           elsif action.member?
             "/:id/#{@api_class.transform_path_segment(action_name)}"
           elsif action.collection?
             "/#{@api_class.transform_path_segment(action_name)}"
           else
-            '/'
+            ''
           end
         end
 

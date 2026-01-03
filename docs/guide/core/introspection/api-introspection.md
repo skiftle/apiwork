@@ -31,16 +31,19 @@ api = Apiwork::API.introspect('/api/v1')
 ```ruby
 api.resources[:invoices].actions.each do |name, action|
   puts "#{action.method.upcase} #{action.path}"
+  # GET /invoices
+  # POST /invoices
+  # GET /invoices/:id
+  # ...
 end
 ```
 
-Use `each_resource` to include parent path context:
+Use `each_resource` to iterate all resources including nested:
 
 ```ruby
 api.each_resource do |resource, parent_path|
   resource.actions.each do |name, action|
-    full_path = "#{parent_path}/#{resource.path}#{action.path}"
-    puts "#{action.method.upcase} #{full_path}"
+    puts "#{action.method.upcase} #{action.path}"
   end
 end
 ```
@@ -53,8 +56,8 @@ end
 action = api.resources[:invoices].actions[:create]
 
 action.method     # => :post
-action.path       # => "/"
-action.raises     # => [:unprocessable_entity]
+action.path       # => "/invoices"
+action.raises     # => [:bad_request, :not_found, :unprocessable_entity]
 action.deprecated? # => false
 ```
 
