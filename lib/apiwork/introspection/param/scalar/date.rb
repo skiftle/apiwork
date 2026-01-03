@@ -10,6 +10,7 @@ module Apiwork
         # @example
         #   param.type    # => :date
         #   param.scalar? # => true
+        #   param.date?   # => true
         class Date < Scalar
           # @api public
           # @return [Boolean] true for date params

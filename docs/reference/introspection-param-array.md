@@ -6,19 +6,20 @@ next: false
 
 # Introspection::Param::Array
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L16)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L17)
 
 Array param.
 
 **Example**
 
 ```ruby
-param.type   # => :array
-param.of     # => Param for element type
-param.shape  # => Hash for array-of-objects
-param.min    # => 1 (minimum array length)
-param.max    # => 10 (maximum array length)
-param.array? # => true
+param.type       # => :array
+param.of         # => Param for element type
+param.shape      # => Hash for array-of-objects
+param.min        # => 1 (minimum array length)
+param.max        # => 10 (maximum array length)
+param.array?     # => true
+param.boundable? # => true
 ```
 
 ## Instance Methods
@@ -27,7 +28,7 @@ param.array? # => true
 
 `#array?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L49)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L50)
 
 **Returns**
 
@@ -63,7 +64,7 @@ param.array? # => true
 
 `#boundable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L55)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L56)
 
 **Returns**
 
@@ -231,7 +232,7 @@ param.array? # => true
 
 `#max`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L43)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L44)
 
 **Returns**
 
@@ -243,7 +244,7 @@ param.array? # => true
 
 `#min`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L37)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L38)
 
 **Returns**
 
@@ -291,7 +292,7 @@ param.array? # => true
 
 `#of`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L19)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L20)
 
 **Returns**
 
@@ -327,7 +328,7 @@ param.array? # => true
 
 `#shape`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L31)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L32)
 
 **Returns**
 
@@ -375,7 +376,7 @@ param.array? # => true
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L61)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L62)
 
 **Returns**
 

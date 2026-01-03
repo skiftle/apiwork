@@ -9,10 +9,13 @@ module Apiwork
           # Decimal param.
           #
           # @example
-          #   param.type    # => :decimal
-          #   param.min     # => 0.0
-          #   param.max     # => 100.0
-          #   param.scalar? # => true
+          #   param.type       # => :decimal
+          #   param.min        # => 0.0
+          #   param.max        # => 100.0
+          #   param.scalar?    # => true
+          #   param.numeric?   # => true
+          #   param.boundable? # => true
+          #   param.decimal?   # => true
           class Decimal < Numeric
             # @api public
             # @return [Boolean] true for decimal params

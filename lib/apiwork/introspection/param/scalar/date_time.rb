@@ -8,8 +8,9 @@ module Apiwork
         # DateTime param.
         #
         # @example
-        #   param.type    # => :datetime
-        #   param.scalar? # => true
+        #   param.type      # => :datetime
+        #   param.scalar?   # => true
+        #   param.datetime? # => true
         class DateTime < Scalar
           # @api public
           # @return [Boolean] true for datetime params

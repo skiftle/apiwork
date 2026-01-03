@@ -10,6 +10,7 @@ module Apiwork
         # @example
         #   param.type    # => :uuid
         #   param.scalar? # => true
+        #   param.uuid?   # => true
         class UUID < Scalar
           # @api public
           # @return [Boolean] true for UUID params

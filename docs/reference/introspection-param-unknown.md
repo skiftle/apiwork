@@ -1,12 +1,12 @@
 ---
-order: 53
+order: 52
 prev: false
 next: false
 ---
 
 # Introspection::Param::Unknown
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/unknown.rb#L13)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/unknown.rb#L14)
 
 Unknown param.
 
@@ -15,7 +15,8 @@ Used as fallback when the type cannot be determined.
 **Example**
 
 ```ruby
-param.type # => :unknown
+param.type     # => :unknown
+param.unknown? # => true
 ```
 
 ## Instance Methods
@@ -364,7 +365,7 @@ Reference types: any Symbol (custom type reference)
 
 `#unknown?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/unknown.rb#L16)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/unknown.rb#L17)
 
 **Returns**
 

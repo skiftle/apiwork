@@ -6,7 +6,7 @@ next: false
 
 # Introspection::Param::Scalar::Date
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/date.rb#L13)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/date.rb#L14)
 
 Date param.
 
@@ -15,6 +15,7 @@ Date param.
 ```ruby
 param.type    # => :date
 param.scalar? # => true
+param.date?   # => true
 ```
 
 ## Instance Methods
@@ -71,7 +72,7 @@ param.scalar? # => true
 
 `#date?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/date.rb#L16)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/date.rb#L17)
 
 **Returns**
 

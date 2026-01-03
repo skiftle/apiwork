@@ -1,14 +1,24 @@
 ---
-order: 45
+order: 44
 prev: false
 next: false
 ---
 
 # Introspection::Param::Scalar::Numeric
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L9)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L16)
 
 Base class for numeric params (Integer, Float, Decimal).
+
+**Example**
+
+```ruby
+param.min        # => 0
+param.max        # => 100
+param.scalar?    # => true
+param.numeric?   # => true
+param.boundable? # => true
+```
 
 ## Instance Methods
 
@@ -52,7 +62,7 @@ Base class for numeric params (Integer, Float, Decimal).
 
 `#boundable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L30)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L37)
 
 **Returns**
 
@@ -232,7 +242,7 @@ Base class for numeric params (Integer, Float, Decimal).
 
 `#max`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L18)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L25)
 
 **Returns**
 
@@ -244,7 +254,7 @@ Base class for numeric params (Integer, Float, Decimal).
 
 `#min`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L12)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L19)
 
 **Returns**
 
@@ -268,7 +278,7 @@ Base class for numeric params (Integer, Float, Decimal).
 
 `#numeric?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L24)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L31)
 
 **Returns**
 

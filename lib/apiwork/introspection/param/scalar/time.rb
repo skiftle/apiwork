@@ -10,6 +10,7 @@ module Apiwork
         # @example
         #   param.type    # => :time
         #   param.scalar? # => true
+        #   param.time?   # => true
         class Time < Scalar
           # @api public
           # @return [Boolean] true for time params

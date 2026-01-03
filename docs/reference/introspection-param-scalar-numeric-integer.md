@@ -1,23 +1,27 @@
 ---
-order: 48
+order: 47
 prev: false
 next: false
 ---
 
 # Introspection::Param::Scalar::Numeric::Integer
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric/integer.rb#L17)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric/integer.rb#L21)
 
 Integer param.
 
 **Example**
 
 ```ruby
-param.type    # => :integer
-param.min     # => 0
-param.max     # => 100
-param.format  # => :int32, :int64
-param.scalar? # => true
+param.type        # => :integer
+param.min         # => 0
+param.max         # => 100
+param.format      # => :int32, :int64
+param.scalar?     # => true
+param.numeric?    # => true
+param.boundable?  # => true
+param.formattable? # => true
+param.integer?    # => true
 ```
 
 ## Instance Methods
@@ -62,7 +66,7 @@ param.scalar? # => true
 
 `#boundable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L30)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L37)
 
 **Returns**
 
@@ -194,7 +198,7 @@ param.scalar? # => true
 
 `#format`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric/integer.rb#L20)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric/integer.rb#L24)
 
 **Returns**
 
@@ -206,7 +210,7 @@ param.scalar? # => true
 
 `#formattable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric/integer.rb#L26)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric/integer.rb#L30)
 
 **Returns**
 
@@ -218,7 +222,7 @@ param.scalar? # => true
 
 `#integer?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric/integer.rb#L32)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric/integer.rb#L36)
 
 **Returns**
 
@@ -254,7 +258,7 @@ param.scalar? # => true
 
 `#max`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L18)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L25)
 
 **Returns**
 
@@ -266,7 +270,7 @@ param.scalar? # => true
 
 `#min`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L12)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L19)
 
 **Returns**
 
@@ -290,7 +294,7 @@ param.scalar? # => true
 
 `#numeric?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L24)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L31)
 
 **Returns**
 

@@ -10,6 +10,7 @@ module Apiwork
         # @example
         #   param.type    # => :binary
         #   param.scalar? # => true
+        #   param.binary? # => true
         class Binary < Scalar
           # @api public
           # @return [Boolean] true for binary params

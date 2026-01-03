@@ -6,6 +6,13 @@ module Apiwork
       class Scalar
         # @api public
         # Base class for numeric params (Integer, Float, Decimal).
+        #
+        # @example
+        #   param.min        # => 0
+        #   param.max        # => 100
+        #   param.scalar?    # => true
+        #   param.numeric?   # => true
+        #   param.boundable? # => true
         class Numeric < Scalar
           # @api public
           # @return [Numeric, nil] minimum value constraint

@@ -8,8 +8,9 @@ module Apiwork
         # Boolean param.
         #
         # @example
-        #   param.type    # => :boolean
-        #   param.scalar? # => true
+        #   param.type     # => :boolean
+        #   param.scalar?  # => true
+        #   param.boolean? # => true
         class Boolean < Scalar
           # @api public
           # @return [Boolean] true for boolean params

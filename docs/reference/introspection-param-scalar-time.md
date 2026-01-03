@@ -1,12 +1,12 @@
 ---
-order: 50
+order: 49
 prev: false
 next: false
 ---
 
 # Introspection::Param::Scalar::Time
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/time.rb#L13)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/time.rb#L14)
 
 Time param.
 
@@ -15,6 +15,7 @@ Time param.
 ```ruby
 param.type    # => :time
 param.scalar? # => true
+param.time?   # => true
 ```
 
 ## Instance Methods
@@ -323,7 +324,7 @@ param.scalar? # => true
 
 `#time?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/time.rb#L16)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/time.rb#L17)
 
 **Returns**
 

@@ -6,15 +6,16 @@ next: false
 
 # Introspection::Param::Scalar::DateTime
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/date_time.rb#L13)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/date_time.rb#L14)
 
 DateTime param.
 
 **Example**
 
 ```ruby
-param.type    # => :datetime
-param.scalar? # => true
+param.type      # => :datetime
+param.scalar?   # => true
+param.datetime? # => true
 ```
 
 ## Instance Methods
@@ -83,7 +84,7 @@ param.scalar? # => true
 
 `#datetime?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/date_time.rb#L16)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/date_time.rb#L17)
 
 **Returns**
 

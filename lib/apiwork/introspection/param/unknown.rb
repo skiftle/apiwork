@@ -9,7 +9,8 @@ module Apiwork
       # Used as fallback when the type cannot be determined.
       #
       # @example
-      #   param.type # => :unknown
+      #   param.type     # => :unknown
+      #   param.unknown? # => true
       class Unknown < Base
         # @api public
         # @return [Boolean] true for unknown params

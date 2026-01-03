@@ -7,12 +7,13 @@ module Apiwork
       # Array param.
       #
       # @example
-      #   param.type   # => :array
-      #   param.of     # => Param for element type
-      #   param.shape  # => Hash for array-of-objects
-      #   param.min    # => 1 (minimum array length)
-      #   param.max    # => 10 (maximum array length)
-      #   param.array? # => true
+      #   param.type       # => :array
+      #   param.of         # => Param for element type
+      #   param.shape      # => Hash for array-of-objects
+      #   param.min        # => 1 (minimum array length)
+      #   param.max        # => 10 (maximum array length)
+      #   param.array?     # => true
+      #   param.boundable? # => true
       class Array < Base
         # @api public
         # @return [Param::Base, nil] element type for arrays

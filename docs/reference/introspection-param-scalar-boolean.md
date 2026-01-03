@@ -6,15 +6,16 @@ next: false
 
 # Introspection::Param::Scalar::Boolean
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/boolean.rb#L13)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/boolean.rb#L14)
 
 Boolean param.
 
 **Example**
 
 ```ruby
-param.type    # => :boolean
-param.scalar? # => true
+param.type     # => :boolean
+param.scalar?  # => true
+param.boolean? # => true
 ```
 
 ## Instance Methods
@@ -47,7 +48,7 @@ param.scalar? # => true
 
 `#boolean?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/boolean.rb#L16)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/boolean.rb#L17)
 
 **Returns**
 

@@ -9,10 +9,13 @@ module Apiwork
           # Float param.
           #
           # @example
-          #   param.type    # => :float
-          #   param.min     # => 0.0
-          #   param.max     # => 100.0
-          #   param.scalar? # => true
+          #   param.type       # => :float
+          #   param.min        # => 0.0
+          #   param.max        # => 100.0
+          #   param.scalar?    # => true
+          #   param.numeric?   # => true
+          #   param.boundable? # => true
+          #   param.float?     # => true
           class Float < Numeric
             # @api public
             # @return [Boolean] true for float params

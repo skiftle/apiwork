@@ -6,7 +6,7 @@ next: false
 
 # Introspection::Param::Scalar::Binary
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/binary.rb#L13)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/binary.rb#L14)
 
 Binary param.
 
@@ -15,6 +15,7 @@ Binary param.
 ```ruby
 param.type    # => :binary
 param.scalar? # => true
+param.binary? # => true
 ```
 
 ## Instance Methods
@@ -35,7 +36,7 @@ param.scalar? # => true
 
 `#binary?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/binary.rb#L16)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/binary.rb#L17)
 
 **Returns**
 

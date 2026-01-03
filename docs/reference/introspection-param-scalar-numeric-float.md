@@ -1,22 +1,25 @@
 ---
-order: 47
+order: 46
 prev: false
 next: false
 ---
 
 # Introspection::Param::Scalar::Numeric::Float
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric/float.rb#L16)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric/float.rb#L19)
 
 Float param.
 
 **Example**
 
 ```ruby
-param.type    # => :float
-param.min     # => 0.0
-param.max     # => 100.0
-param.scalar? # => true
+param.type       # => :float
+param.min        # => 0.0
+param.max        # => 100.0
+param.scalar?    # => true
+param.numeric?   # => true
+param.boundable? # => true
+param.float?     # => true
 ```
 
 ## Instance Methods
@@ -61,7 +64,7 @@ param.scalar? # => true
 
 `#boundable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L30)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L37)
 
 **Returns**
 
@@ -181,7 +184,7 @@ param.scalar? # => true
 
 `#float?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric/float.rb#L19)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric/float.rb#L22)
 
 **Returns**
 
@@ -241,7 +244,7 @@ param.scalar? # => true
 
 `#max`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L18)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L25)
 
 **Returns**
 
@@ -253,7 +256,7 @@ param.scalar? # => true
 
 `#min`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L12)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L19)
 
 **Returns**
 
@@ -277,7 +280,7 @@ param.scalar? # => true
 
 `#numeric?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L24)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L31)
 
 **Returns**
 

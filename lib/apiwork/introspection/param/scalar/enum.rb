@@ -4,8 +4,6 @@ module Apiwork
   module Introspection
     module Param
       class Scalar
-        # @api public
-        # Base class for enum params.
         class Enum < Scalar
           # @api public
           # @return [Boolean] true for all enum types

@@ -6,14 +6,15 @@ next: false
 
 # Introspection::Param::JSON
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/json.rb#L11)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/json.rb#L12)
 
 JSON param.
 
 **Example**
 
 ```ruby
-param.type # => :json
+param.type  # => :json
+param.json? # => true
 ```
 
 ## Instance Methods
@@ -202,7 +203,7 @@ param.type # => :json
 
 `#json?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/json.rb#L14)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/json.rb#L15)
 
 **Returns**
 

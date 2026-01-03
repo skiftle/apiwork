@@ -1,23 +1,26 @@
 ---
-order: 49
+order: 48
 prev: false
 next: false
 ---
 
 # Introspection::Param::Scalar::String
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/string.rb#L16)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/string.rb#L19)
 
 String param.
 
 **Example**
 
 ```ruby
-param.type    # => :string
-param.format  # => :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
-param.min     # => 1 (minimum string length)
-param.max     # => 255 (maximum string length)
-param.scalar? # => true
+param.type        # => :string
+param.format      # => :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
+param.min         # => 1 (minimum string length)
+param.max         # => 255 (maximum string length)
+param.scalar?     # => true
+param.string?     # => true
+param.boundable?  # => true
+param.formattable? # => true
 ```
 
 ## Instance Methods
@@ -62,7 +65,7 @@ param.scalar? # => true
 
 `#boundable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/string.rb#L38)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/string.rb#L41)
 
 **Returns**
 
@@ -194,7 +197,7 @@ param.scalar? # => true
 
 `#format`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/string.rb#L20)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/string.rb#L23)
 
 **Returns**
 
@@ -207,7 +210,7 @@ Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
 
 `#formattable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/string.rb#L44)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/string.rb#L47)
 
 **Returns**
 
@@ -255,7 +258,7 @@ Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
 
 `#max`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/string.rb#L32)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/string.rb#L35)
 
 **Returns**
 
@@ -267,7 +270,7 @@ Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
 
 `#min`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/string.rb#L26)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/string.rb#L29)
 
 **Returns**
 
@@ -339,7 +342,7 @@ Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
 
 `#string?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/string.rb#L50)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/string.rb#L53)
 
 **Returns**
 

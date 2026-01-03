@@ -1,12 +1,12 @@
 ---
-order: 51
+order: 50
 prev: false
 next: false
 ---
 
 # Introspection::Param::Scalar::UUID
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/uuid.rb#L13)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/uuid.rb#L14)
 
 UUID param.
 
@@ -15,6 +15,7 @@ UUID param.
 ```ruby
 param.type    # => :uuid
 param.scalar? # => true
+param.uuid?   # => true
 ```
 
 ## Instance Methods
@@ -387,7 +388,7 @@ Reference types: any Symbol (custom type reference)
 
 `#uuid?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/uuid.rb#L16)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/uuid.rb#L17)
 
 **Returns**
 
