@@ -2,7 +2,7 @@
 
 module Apiwork
   module Adapter
-    class Standard < Base
+    class Standard
       class RequestTransformer
         NUMERIC_KEY_PATTERN = /^\d+$/
 

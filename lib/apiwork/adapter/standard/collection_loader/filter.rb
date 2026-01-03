@@ -2,7 +2,7 @@
 
 module Apiwork
   module Adapter
-    class Standard < Base
+    class Standard
       class CollectionLoader
         class Filter
           EQUALITY_OPERATORS = %i[eq].freeze

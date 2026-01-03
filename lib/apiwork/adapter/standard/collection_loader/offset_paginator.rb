@@ -2,7 +2,7 @@
 
 module Apiwork
   module Adapter
-    class Standard < Base
+    class Standard
       class CollectionLoader
         class OffsetPaginator
           def self.paginate(relation, schema_class, params)
