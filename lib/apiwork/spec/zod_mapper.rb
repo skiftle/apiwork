@@ -31,7 +31,7 @@ module Apiwork
 
         properties = type.shape.sort_by { |name, _| name.to_s }.map do |name, param|
           key = transform_key(name)
-          zod_type = map_field_definition(param, action_name:)
+          zod_type = map_field(param, action_name:)
           "  #{key}: #{zod_type}"
         end.join(",\n")
 
@@ -59,11 +59,11 @@ module Apiwork
       end
 
       def build_action_request_query_schema(resource_name, action_name, query_params, parent_path: nil)
-        schema_name = action_schema_name(resource_name, action_name, 'RequestQuery', parent_path:)
+        schema_name = action_type_name(resource_name, action_name, 'RequestQuery', parent_path:)
 
         properties = query_params.sort_by { |k, _| k.to_s }.map do |param_name, param_definition|
           key = transform_key(param_name)
-          zod_type = map_field_definition(param_definition, action_name: nil)
+          zod_type = map_field(param_definition, action_name: nil)
           "  #{key}: #{zod_type}"
         end.join(",\n")
 
@@ -71,11 +71,11 @@ module Apiwork
       end
 
       def build_action_request_body_schema(resource_name, action_name, body_params, parent_path: nil)
-        schema_name = action_schema_name(resource_name, action_name, 'RequestBody', parent_path:)
+        schema_name = action_type_name(resource_name, action_name, 'RequestBody', parent_path:)
 
         properties = body_params.sort_by { |k, _| k.to_s }.map do |param_name, param_definition|
           key = transform_key(param_name)
-          zod_type = map_field_definition(param_definition, action_name: nil)
+          zod_type = map_field(param_definition, action_name: nil)
           "  #{key}: #{zod_type}"
         end.join(",\n")
 
@@ -83,17 +83,17 @@ module Apiwork
       end
 
       def build_action_request_schema(resource_name, action_name, request_data, parent_path: nil)
-        schema_name = action_schema_name(resource_name, action_name, 'Request', parent_path:)
+        schema_name = action_type_name(resource_name, action_name, 'Request', parent_path:)
 
         nested_properties = []
 
         if request_data[:query]&.any?
-          query_schema_name = action_schema_name(resource_name, action_name, 'RequestQuery', parent_path:)
+          query_schema_name = action_type_name(resource_name, action_name, 'RequestQuery', parent_path:)
           nested_properties << "  query: #{query_schema_name}Schema"
         end
 
         if request_data[:body]&.any?
-          body_schema_name = action_schema_name(resource_name, action_name, 'RequestBody', parent_path:)
+          body_schema_name = action_type_name(resource_name, action_name, 'RequestBody', parent_path:)
           nested_properties << "  body: #{body_schema_name}Schema"
         end
 
@@ -101,7 +101,7 @@ module Apiwork
       end
 
       def build_action_response_body_schema(resource_name, action_name, response_body, parent_path: nil)
-        schema_name = action_schema_name(resource_name, action_name, 'ResponseBody', parent_path:)
+        schema_name = action_type_name(resource_name, action_name, 'ResponseBody', parent_path:)
 
         zod_schema = map_type_definition(response_body, action_name: nil)
 
@@ -109,13 +109,13 @@ module Apiwork
       end
 
       def build_action_response_schema(resource_name, action_name, response_data, parent_path: nil)
-        schema_name = action_schema_name(resource_name, action_name, 'Response', parent_path:)
-        body_schema_name = action_schema_name(resource_name, action_name, 'ResponseBody', parent_path:)
+        schema_name = action_type_name(resource_name, action_name, 'Response', parent_path:)
+        body_schema_name = action_type_name(resource_name, action_name, 'ResponseBody', parent_path:)
 
         "export const #{schema_name}Schema = z.object({\n  body: #{body_schema_name}Schema\n});"
       end
 
-      def action_schema_name(resource_name, action_name, suffix, parent_path: nil)
+      def action_type_name(resource_name, action_name, suffix, parent_path: nil)
         parent_names = extract_parent_resource_names(parent_path)
         base_parts = parent_names + [resource_name.to_s, action_name.to_s]
         base_name = pascal_case(base_parts.join('_'))
@@ -123,7 +123,7 @@ module Apiwork
         "#{base_name}#{suffix_pascal}"
       end
 
-      def map_field_definition(param, action_name: nil, force_optional: nil)
+      def map_field(param, action_name: nil, force_optional: nil)
         if param.type.is_a?(Symbol) && type_or_enum_reference?(param.type)
           schema_name = pascal_case(param.type)
           type = "#{schema_name}Schema"
@@ -157,14 +157,14 @@ module Apiwork
       def map_object_type(param, action_name: nil)
         return 'z.object({})' if param.shape.empty?
 
-        partial = param.partial?
+        partial = param.respond_to?(:partial?) && param.partial?
 
         properties = param.shape.sort_by { |name, _| name.to_s }.map do |name, field_param|
           key = transform_key(name)
           zod_type = if partial
-                       map_field_definition(field_param, action_name: nil, force_optional: false)
+                       map_field(field_param, action_name: nil, force_optional: false)
                      else
-                       map_field_definition(field_param, action_name:)
+                       map_field(field_param, action_name:)
                      end
           "#{key}: #{zod_type}"
         end.join(', ')
@@ -232,10 +232,6 @@ module Apiwork
         end
 
         base_type
-      end
-
-      def map_primitive_type(type_symbol)
-        TYPE_MAP[type_symbol.to_sym] || 'z.unknown()'
       end
 
       def map_format_to_zod(format)

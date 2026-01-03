@@ -114,7 +114,7 @@ module Apiwork
 
             response = action.response
             if response&.no_content?
-              schema_name = zod_mapper.action_schema_name(resource_name, action_name, 'Response', parent_path:)
+              schema_name = zod_mapper.action_type_name(resource_name, action_name, 'Response', parent_path:)
               schemas << "export const #{schema_name} = z.never();"
             elsif response&.body?
               schemas << zod_mapper.build_action_response_body_schema(resource_name, action_name, response.body, parent_path:)

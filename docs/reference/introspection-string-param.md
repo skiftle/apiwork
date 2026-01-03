@@ -26,7 +26,7 @@ param.scalar? # => true
 
 `#array?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L122)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L121)
 
 **Returns**
 
@@ -38,7 +38,7 @@ param.scalar? # => true
 
 `#default`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L98)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L97)
 
 **Returns**
 
@@ -50,7 +50,7 @@ param.scalar? # => true
 
 `#default?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L104)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L103)
 
 **Returns**
 
@@ -62,7 +62,7 @@ param.scalar? # => true
 
 `#deprecated?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L80)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L79)
 
 **Returns**
 
@@ -74,7 +74,7 @@ param.scalar? # => true
 
 `#description`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L86)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L85)
 
 **Returns**
 
@@ -98,7 +98,7 @@ param.scalar? # => true
 
 `#example`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L92)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L91)
 
 **Returns**
 
@@ -123,7 +123,7 @@ Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
 
 `#literal?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L140)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L139)
 
 **Returns**
 
@@ -159,7 +159,7 @@ Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
 
 `#nullable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L68)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L67)
 
 **Returns**
 
@@ -171,7 +171,7 @@ Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
 
 `#object?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L128)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L127)
 
 **Returns**
 
@@ -183,7 +183,7 @@ Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
 
 `#optional?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L74)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L73)
 
 **Returns**
 
@@ -207,7 +207,7 @@ Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
 
 `#tag`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L110)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L109)
 
 **Returns**
 
@@ -219,7 +219,7 @@ Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L146)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L145)
 
 **Returns**
 
@@ -231,7 +231,7 @@ Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
 
 `#type`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L62)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L61)
 
 **Returns**
 
@@ -247,7 +247,7 @@ Reference types: any Symbol (custom type reference)
 
 `#union?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L134)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L133)
 
 **Returns**
 
