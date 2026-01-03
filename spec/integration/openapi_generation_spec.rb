@@ -13,7 +13,7 @@ RSpec.describe 'OpenAPI Generation', type: :integration do
   let(:generator) { Apiwork::Spec::OpenAPI.new(path) }
   let(:spec) { generator.generate }
 
-  # NOTE: OpenAPI paths use OpenAPI-style format: 'posts/' and 'posts/{id}'
+  # NOTE: OpenAPI paths use OpenAPI-style format with leading slash: '/posts' and '/posts/{id}'
   # Schema names are lowercase: 'post', 'comment'
 
   describe 'OpenAPI structure' do
@@ -62,18 +62,18 @@ RSpec.describe 'OpenAPI Generation', type: :integration do
 
   describe 'Paths generation' do
     it 'generates paths for posts resource' do
-      expect(spec[:paths]).to have_key('posts/')
-      expect(spec[:paths]).to have_key('posts/{id}')
+      expect(spec[:paths]).to have_key('/posts')
+      expect(spec[:paths]).to have_key('/posts/{id}')
     end
 
     it 'generates CRUD operations for posts' do
       # Collection path
-      collection_path = spec[:paths]['posts/']
+      collection_path = spec[:paths]['/posts']
       expect(collection_path).to have_key('get')  # index
       expect(collection_path).to have_key('post') # create
 
       # Member path
-      member_path = spec[:paths]['posts/{id}']
+      member_path = spec[:paths]['/posts/{id}']
       expect(member_path).to have_key('get')    # show
       expect(member_path).to have_key('patch')  # update
       expect(member_path).to have_key('delete') # destroy
@@ -81,31 +81,31 @@ RSpec.describe 'OpenAPI Generation', type: :integration do
 
     it 'generates paths for nested resources' do
       # Comments nested under posts
-      expect(spec[:paths]).to have_key('posts/{post_id}/comments/')
-      expect(spec[:paths]).to have_key('posts/{post_id}/comments/{id}')
+      expect(spec[:paths]).to have_key('/{post_id}/comments')
+      expect(spec[:paths]).to have_key('/{post_id}/comments/{id}')
     end
 
     it 'generates paths for top-level resources' do
-      expect(spec[:paths]).to have_key('comments/')
-      expect(spec[:paths]).to have_key('comments/{id}')
+      expect(spec[:paths]).to have_key('/comments')
+      expect(spec[:paths]).to have_key('/comments/{id}')
     end
   end
 
   describe 'Operation metadata' do
     it 'generates operationId for each operation' do
-      posts_index = spec[:paths]['posts/']['get']
+      posts_index = spec[:paths]['/posts']['get']
       expect(posts_index[:operationId]).to be_present
     end
 
     it 'includes tags when explicitly set' do
-      posts_index = spec[:paths]['posts/']['get']
+      posts_index = spec[:paths]['/posts']['get']
       expect(posts_index[:tags]).to be_nil.or be_an(Array)
     end
   end
 
   describe 'Request parameters' do
     it 'includes path parameters for member actions' do
-      show_op = spec[:paths]['posts/{id}']['get']
+      show_op = spec[:paths]['/posts/{id}']['get']
       parameters = show_op[:parameters] || []
 
       expect(parameters).to be_an(Array)
@@ -119,7 +119,7 @@ RSpec.describe 'OpenAPI Generation', type: :integration do
     end
 
     it 'includes parent path parameters for nested resources' do
-      nested_index = spec[:paths]['posts/{post_id}/comments/']['get']
+      nested_index = spec[:paths]['/{post_id}/comments']['get']
       parameters = nested_index[:parameters] || []
 
       expect(parameters).to be_an(Array)
@@ -134,14 +134,14 @@ RSpec.describe 'OpenAPI Generation', type: :integration do
 
   describe 'Request body' do
     it 'generates request body for create action' do
-      create_op = spec[:paths]['posts/']['post']
+      create_op = spec[:paths]['/posts']['post']
 
       expect(create_op[:requestBody]).to be_present
       expect(create_op[:requestBody][:content]).to have_key(:'application/json')
     end
 
     it 'generates request body for update action' do
-      update_op = spec[:paths]['posts/{id}']['patch']
+      update_op = spec[:paths]['/posts/{id}']['patch']
 
       expect(update_op[:requestBody]).to be_present
       expect(update_op[:requestBody][:content]).to have_key(:'application/json')
@@ -150,14 +150,14 @@ RSpec.describe 'OpenAPI Generation', type: :integration do
 
   describe 'Response schemas' do
     it 'generates response definitions' do
-      show_op = spec[:paths]['posts/{id}']['get']
+      show_op = spec[:paths]['/posts/{id}']['get']
 
       expect(show_op[:responses]).to be_present
       expect(show_op[:responses]).to have_key(:'200')
     end
 
     it 'includes response content type' do
-      show_op = spec[:paths]['posts/{id}']['get']
+      show_op = spec[:paths]['/posts/{id}']['get']
       response_200 = show_op[:responses][:'200']
 
       expect(response_200[:content]).to have_key(:'application/json')
@@ -231,12 +231,12 @@ RSpec.describe 'OpenAPI Generation', type: :integration do
   describe 'Custom member and collection actions' do
     it 'generates paths for custom member actions' do
       # Archive is a custom member action on posts
-      expect(spec[:paths]).to have_key('posts/{id}/archive')
+      expect(spec[:paths]).to have_key('/posts/{id}/archive')
     end
 
     it 'generates paths for custom collection actions' do
       # Search is a custom collection action on posts
-      expect(spec[:paths]).to have_key('posts/search')
+      expect(spec[:paths]).to have_key('/posts/search')
     end
   end
 
