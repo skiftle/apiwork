@@ -2,7 +2,7 @@
 
 module Apiwork
   module Adapter
-    class StandardAdapter < Base
+    class Standard < Base
       class TypeSystemBuilder
         FILTER_DEFINITIONS = {
           boolean_filter: {

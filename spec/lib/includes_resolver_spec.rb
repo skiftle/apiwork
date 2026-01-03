@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Apiwork::Adapter::StandardAdapter::IncludesResolver do
+RSpec.describe Apiwork::Adapter::Standard::IncludesResolver do
   before do
     load File.expand_path('../dummy/config/apis/v1.rb', __dir__)
   end

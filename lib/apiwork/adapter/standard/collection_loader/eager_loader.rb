@@ -2,7 +2,7 @@
 
 module Apiwork
   module Adapter
-    class StandardAdapter < Base
+    class Standard < Base
       class CollectionLoader
         class EagerLoader
           attr_reader :schema_class

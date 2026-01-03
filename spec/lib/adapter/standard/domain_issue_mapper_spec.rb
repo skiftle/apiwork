@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Apiwork::Adapter::StandardAdapter::DomainIssueMapper do
+RSpec.describe Apiwork::Adapter::Standard::DomainIssueMapper do
   let(:mapper_class) { described_class }
 
   def create_test_record(validations = {})
