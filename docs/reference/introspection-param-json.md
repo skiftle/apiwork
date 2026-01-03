@@ -4,7 +4,7 @@ prev: false
 next: false
 ---
 
-# Introspection::Param::Json
+# Introspection::Param::JSON
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/json.rb#L11)
 
