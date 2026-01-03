@@ -47,6 +47,12 @@ module Apiwork
       def formattable?
         true
       end
+
+      # @api public
+      # @return [Boolean] true for integer params
+      def integer?
+        true
+      end
     end
   end
 end

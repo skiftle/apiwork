@@ -159,6 +159,78 @@ module Apiwork
       end
 
       # @api public
+      # @return [Boolean] whether this is a string type
+      def string?
+        false
+      end
+
+      # @api public
+      # @return [Boolean] whether this is an integer type
+      def integer?
+        false
+      end
+
+      # @api public
+      # @return [Boolean] whether this is a float type
+      def float?
+        false
+      end
+
+      # @api public
+      # @return [Boolean] whether this is a decimal type
+      def decimal?
+        false
+      end
+
+      # @api public
+      # @return [Boolean] whether this is a boolean type
+      def boolean?
+        false
+      end
+
+      # @api public
+      # @return [Boolean] whether this is a datetime type
+      def datetime?
+        false
+      end
+
+      # @api public
+      # @return [Boolean] whether this is a date type
+      def date?
+        false
+      end
+
+      # @api public
+      # @return [Boolean] whether this is a time type
+      def time?
+        false
+      end
+
+      # @api public
+      # @return [Boolean] whether this is a UUID type
+      def uuid?
+        false
+      end
+
+      # @api public
+      # @return [Boolean] whether this is a binary type
+      def binary?
+        false
+      end
+
+      # @api public
+      # @return [Boolean] whether this is a JSON type
+      def json?
+        false
+      end
+
+      # @api public
+      # @return [Boolean] whether this is an unknown type
+      def unknown?
+        false
+      end
+
+      # @api public
       # @return [Hash] structured representation
       def to_h
         {

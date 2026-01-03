@@ -34,6 +34,30 @@ param.scalar? # => true
 
 ---
 
+### #binary?
+
+`#binary?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L217)
+
+**Returns**
+
+`Boolean` — whether this is a binary type
+
+---
+
+### #boolean?
+
+`#boolean?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L187)
+
+**Returns**
+
+`Boolean` — whether this is a boolean type
+
+---
+
 ### #boundable?
 
 `#boundable?`
@@ -43,6 +67,42 @@ param.scalar? # => true
 **Returns**
 
 `Boolean` — true - integers support min/max constraints
+
+---
+
+### #date?
+
+`#date?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L199)
+
+**Returns**
+
+`Boolean` — whether this is a date type
+
+---
+
+### #datetime?
+
+`#datetime?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L193)
+
+**Returns**
+
+`Boolean` — whether this is a datetime type
+
+---
+
+### #decimal?
+
+`#decimal?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L181)
+
+**Returns**
+
+`Boolean` — whether this is a decimal type
 
 ---
 
@@ -118,6 +178,18 @@ param.scalar? # => true
 
 ---
 
+### #float?
+
+`#float?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L175)
+
+**Returns**
+
+`Boolean` — whether this is a float type
+
+---
+
 ### #format
 
 `#format`
@@ -139,6 +211,30 @@ param.scalar? # => true
 **Returns**
 
 `Boolean` — true - integers support format constraints (:int32, :int64)
+
+---
+
+### #integer?
+
+`#integer?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/integer_param.rb#L53)
+
+**Returns**
+
+`Boolean` — true for integer params
+
+---
+
+### #json?
+
+`#json?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L223)
+
+**Returns**
+
+`Boolean` — whether this is a JSON type
 
 ---
 
@@ -238,6 +334,18 @@ param.scalar? # => true
 
 ---
 
+### #string?
+
+`#string?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L163)
+
+**Returns**
+
+`Boolean` — whether this is a string type
+
+---
+
 ### #tag
 
 `#tag`
@@ -250,11 +358,23 @@ param.scalar? # => true
 
 ---
 
+### #time?
+
+`#time?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L205)
+
+**Returns**
+
+`Boolean` — whether this is a time type
+
+---
+
 ### #to_h
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L163)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L235)
 
 **Returns**
 
@@ -287,5 +407,29 @@ Reference types: any Symbol (custom type reference)
 **Returns**
 
 `Boolean` — whether this is a union type
+
+---
+
+### #unknown?
+
+`#unknown?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L229)
+
+**Returns**
+
+`Boolean` — whether this is an unknown type
+
+---
+
+### #uuid?
+
+`#uuid?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L211)
+
+**Returns**
+
+`Boolean` — whether this is a UUID type
 
 ---

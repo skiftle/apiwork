@@ -9,6 +9,11 @@ module Apiwork
     #   param.type    # => :boolean
     #   param.scalar? # => true
     class BooleanParam < ScalarParam
+      # @api public
+      # @return [Boolean] true for boolean params
+      def boolean?
+        true
+      end
     end
   end
 end

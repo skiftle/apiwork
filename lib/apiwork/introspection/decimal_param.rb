@@ -34,6 +34,12 @@ module Apiwork
       def boundable?
         true
       end
+
+      # @api public
+      # @return [Boolean] true for decimal params
+      def decimal?
+        true
+      end
     end
   end
 end

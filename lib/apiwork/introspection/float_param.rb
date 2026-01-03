@@ -34,6 +34,12 @@ module Apiwork
       def boundable?
         true
       end
+
+      # @api public
+      # @return [Boolean] true for float params
+      def float?
+        true
+      end
     end
   end
 end
