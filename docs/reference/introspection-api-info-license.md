@@ -28,7 +28,7 @@ license.url   # => "https://opensource.org/licenses/MIT"
 
 **Returns**
 
-`String`, `nil` — license name
+[String](introspection-string), `nil` — license name
 
 ---
 
@@ -52,6 +52,6 @@ license.url   # => "https://opensource.org/licenses/MIT"
 
 **Returns**
 
-`String`, `nil` — license URL
+[String](introspection-string), `nil` — license URL
 
 ---

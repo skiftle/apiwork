@@ -61,7 +61,7 @@ end
 
 **Returns**
 
-`Boolean` — true if any schema has filterable attributes
+[Boolean](introspection-boolean) — true if any schema has filterable attributes
 
 ---
 
@@ -73,7 +73,7 @@ end
 
 **Returns**
 
-`Boolean` — true if any resource has an index action
+[Boolean](introspection-boolean) — true if any resource has an index action
 
 ---
 
@@ -118,7 +118,7 @@ Returns all unique values for an adapter option across schemas.
 
 **Returns**
 
-`Boolean` — true if the API has any resources registered
+[Boolean](introspection-boolean) — true if the API has any resources registered
 
 ---
 
@@ -130,6 +130,6 @@ Returns all unique values for an adapter option across schemas.
 
 **Returns**
 
-`Boolean` — true if any schema has sortable attributes or associations
+[Boolean](introspection-boolean) — true if any schema has sortable attributes or associations
 
 ---

@@ -1,5 +1,5 @@
 ---
-order: 55
+order: 57
 prev: false
 next: false
 ---
@@ -36,7 +36,7 @@ Generates a spec for an API.
 
 **Returns**
 
-`String` — the generated spec
+[String](introspection-string) — the generated spec
 
 **See also**
 

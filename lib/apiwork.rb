@@ -42,12 +42,11 @@ loader.inflector.inflect(
   'api_registrar' => 'APIRegistrar',
   'api_serializer' => 'APISerializer',
   'api' => 'API',
-  'json_param' => 'JSONParam',
   'json_pointer' => 'JSONPointer',
   'open_api_spec' => 'OpenAPISpec',
   'type_script_mapper' => 'TypeScriptMapper',
   'type_script_spec' => 'TypeScriptSpec',
-  'uuid_param' => 'UUIDParam',
+  'uuid' => 'UUID',
 )
 
 loader.ignore("#{__dir__}/rubocop")

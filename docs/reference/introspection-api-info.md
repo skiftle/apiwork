@@ -47,7 +47,7 @@ info.license&.name    # => "MIT"
 
 **Returns**
 
-`String`, `nil` — API description
+[String](introspection-string), `nil` — API description
 
 ---
 
@@ -91,7 +91,7 @@ info.license&.name    # => "MIT"
 
 **Returns**
 
-`String`, `nil` — short summary
+[String](introspection-string), `nil` — short summary
 
 ---
 
@@ -103,7 +103,7 @@ info.license&.name    # => "MIT"
 
 **Returns**
 
-`String`, `nil` — terms of service URL
+[String](introspection-string), `nil` — terms of service URL
 
 ---
 
@@ -115,7 +115,7 @@ info.license&.name    # => "MIT"
 
 **Returns**
 
-`String`, `nil` — API title
+[String](introspection-string), `nil` — API title
 
 ---
 
@@ -139,6 +139,6 @@ info.license&.name    # => "MIT"
 
 **Returns**
 
-`String`, `nil` — API version
+[String](introspection-string), `nil` — API version
 
 ---

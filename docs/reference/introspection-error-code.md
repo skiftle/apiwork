@@ -1,5 +1,5 @@
 ---
-order: 37
+order: 31
 prev: false
 next: false
 ---
@@ -27,7 +27,7 @@ api.error_codes[:not_found].description # => "Resource not found"
 
 **Returns**
 
-`String`, `nil` — error description
+[String](introspection-string), `nil` — error description
 
 ---
 
@@ -39,7 +39,7 @@ api.error_codes[:not_found].description # => "Resource not found"
 
 **Returns**
 
-`Integer` — HTTP status code (e.g., 422, 404)
+[Integer](introspection-integer) — HTTP status code (e.g., 422, 404)
 
 ---
 

@@ -29,7 +29,7 @@ end
 
 **Returns**
 
-`String`, `nil` — server description
+[String](introspection-string), `nil` — server description
 
 ---
 
@@ -53,6 +53,6 @@ end
 
 **Returns**
 
-`String`, `nil` — server URL
+[String](introspection-string), `nil` — server URL
 
 ---

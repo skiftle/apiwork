@@ -70,7 +70,7 @@ Iterates over all actions.
 
 **Returns**
 
-`String` — resource identifier
+[String](introspection-string) — resource identifier
 
 ---
 
@@ -82,7 +82,7 @@ Iterates over all actions.
 
 **Returns**
 
-`Boolean` — whether this resource has nested resources
+[Boolean](introspection-boolean) — whether this resource has nested resources
 
 ---
 
@@ -94,7 +94,7 @@ Iterates over all actions.
 
 **Returns**
 
-`String` — URL path segment
+[String](introspection-string) — URL path segment
 
 ---
 

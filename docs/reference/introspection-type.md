@@ -1,5 +1,5 @@
 ---
-order: 49
+order: 54
 prev: false
 next: false
 ---
@@ -37,7 +37,7 @@ api.types[:payment_method].discriminator # => :type
 
 **Returns**
 
-`Boolean` — whether this type is deprecated
+[Boolean](introspection-boolean) — whether this type is deprecated
 
 ---
 
@@ -49,7 +49,7 @@ api.types[:payment_method].discriminator # => :type
 
 **Returns**
 
-`String`, `nil` — type description
+[String](introspection-string), `nil` — type description
 
 ---
 
@@ -73,7 +73,7 @@ api.types[:payment_method].discriminator # => :type
 
 **Returns**
 
-`Object`, `nil` — example value
+[Object](introspection-object), `nil` — example value
 
 ---
 
@@ -85,7 +85,7 @@ api.types[:payment_method].discriminator # => :type
 
 **Returns**
 
-`Boolean` — whether this is an object type
+[Boolean](introspection-boolean) — whether this is an object type
 
 ---
 
@@ -137,7 +137,7 @@ api.types[:payment_method].discriminator # => :type
 
 **Returns**
 
-`Boolean` — whether this is a union type
+[Boolean](introspection-boolean) — whether this is a union type
 
 ---
 

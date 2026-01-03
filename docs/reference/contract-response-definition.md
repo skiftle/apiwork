@@ -87,6 +87,6 @@ Returns true if this response is 204 No Content.
 
 **Returns**
 
-`Boolean`
+[Boolean](introspection-boolean)
 
 ---

@@ -33,7 +33,7 @@ end
 
 **Returns**
 
-`Boolean` — true if action operates on a collection
+[Boolean](introspection-boolean) — true if action operates on a collection
 
 ---
 
@@ -45,7 +45,7 @@ end
 
 **Returns**
 
-`Boolean` — true if this is a create action
+[Boolean](introspection-boolean) — true if this is a create action
 
 ---
 
@@ -57,7 +57,7 @@ end
 
 **Returns**
 
-`Boolean` — true if HTTP method is DELETE
+[Boolean](introspection-boolean) — true if HTTP method is DELETE
 
 ---
 
@@ -69,7 +69,7 @@ end
 
 **Returns**
 
-`Boolean` — true if this is a destroy action
+[Boolean](introspection-boolean) — true if this is a destroy action
 
 ---
 
@@ -81,7 +81,7 @@ end
 
 **Returns**
 
-`Boolean` — true if HTTP method is GET
+[Boolean](introspection-boolean) — true if HTTP method is GET
 
 ---
 
@@ -93,7 +93,7 @@ end
 
 **Returns**
 
-`Boolean` — true if this is an index action
+[Boolean](introspection-boolean) — true if this is an index action
 
 ---
 
@@ -105,7 +105,7 @@ end
 
 **Returns**
 
-`Boolean` — true if action operates on a single resource
+[Boolean](introspection-boolean) — true if action operates on a single resource
 
 ---
 
@@ -141,7 +141,7 @@ end
 
 **Returns**
 
-`Boolean` — true if HTTP method is PATCH
+[Boolean](introspection-boolean) — true if HTTP method is PATCH
 
 ---
 
@@ -153,7 +153,7 @@ end
 
 **Returns**
 
-`Boolean` — true if HTTP method is POST
+[Boolean](introspection-boolean) — true if HTTP method is POST
 
 ---
 
@@ -165,7 +165,7 @@ end
 
 **Returns**
 
-`Boolean` — true if HTTP method is PUT
+[Boolean](introspection-boolean) — true if HTTP method is PUT
 
 ---
 
@@ -177,7 +177,7 @@ end
 
 **Returns**
 
-`Boolean` — true if this is a show action
+[Boolean](introspection-boolean) — true if this is a show action
 
 ---
 
@@ -201,6 +201,6 @@ end
 
 **Returns**
 
-`Boolean` — true if this is an update action
+[Boolean](introspection-boolean) — true if this is an update action
 
 ---

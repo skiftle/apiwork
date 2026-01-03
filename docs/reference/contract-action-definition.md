@@ -33,7 +33,7 @@ Deprecated actions are flagged in generated specs.
 
 **Returns**
 
-`Boolean`, `nil` — whether deprecated
+[Boolean](introspection-boolean), `nil` — whether deprecated
 
 **Example**
 
@@ -64,7 +64,7 @@ Supports Markdown formatting.
 
 **Returns**
 
-`String`, `nil` — the description
+[String](introspection-string), `nil` — the description
 
 **Example**
 
@@ -92,7 +92,7 @@ Sets a custom operation ID.
 
 **Returns**
 
-`String`, `nil` — the operation ID
+[String](introspection-string), `nil` — the operation ID
 
 **Example**
 
@@ -237,7 +237,7 @@ Used in generated specs as the operation summary.
 
 **Returns**
 
-`String`, `nil` — the summary
+[String](introspection-string), `nil` — the summary
 
 **Example**
 
@@ -267,7 +267,7 @@ Tags help organize actions in generated documentation.
 
 **Returns**
 
-`Array`, `nil` — the tags
+[Array](introspection-array), `nil` — the tags
 
 **Example**
 

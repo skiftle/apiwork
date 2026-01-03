@@ -1,5 +1,5 @@
 ---
-order: 36
+order: 30
 prev: false
 next: false
 ---
@@ -28,7 +28,7 @@ api.enums[:status].deprecated?  # => false
 
 **Returns**
 
-`Boolean` — whether this enum is deprecated
+[Boolean](introspection-boolean) — whether this enum is deprecated
 
 ---
 
@@ -40,7 +40,7 @@ api.enums[:status].deprecated?  # => false
 
 **Returns**
 
-`String`, `nil` — enum description
+[String](introspection-string), `nil` — enum description
 
 ---
 
@@ -52,7 +52,7 @@ api.enums[:status].deprecated?  # => false
 
 **Returns**
 
-`String`, `nil` — example value
+[String](introspection-string), `nil` — example value
 
 ---
 

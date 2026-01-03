@@ -1,5 +1,5 @@
 ---
-order: 56
+order: 58
 prev: false
 next: false
 ---
@@ -64,7 +64,7 @@ their extension from the format (:json → .json, :yaml → .yaml).
 
 **Returns**
 
-`String`, `nil` — the file extension
+[String](introspection-string), `nil` — the file extension
 
 ---
 
@@ -177,7 +177,7 @@ to types, enums, resources, actions, and other introspection data.
 
 **Returns**
 
-`Hash`, `String` — Hash for hash specs, String for string specs
+`Hash`, [String](introspection-string) — Hash for hash specs, String for string specs
 
 **See also**
 

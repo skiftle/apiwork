@@ -1,5 +1,5 @@
 ---
-order: 54
+order: 56
 prev: false
 next: false
 ---
@@ -65,7 +65,7 @@ Returns whether this schema is abstract.
 
 **Returns**
 
-`Boolean` — true if abstract
+[Boolean](introspection-boolean) — true if abstract
 
 ---
 
@@ -215,7 +215,7 @@ what this resource represents.
 
 **Returns**
 
-`String`, `nil` — the description
+[String](introspection-string), `nil` — the description
 
 **Example**
 

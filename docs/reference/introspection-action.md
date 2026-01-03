@@ -35,7 +35,7 @@ end
 
 **Returns**
 
-`Boolean` — whether this action is deprecated
+[Boolean](introspection-boolean) — whether this action is deprecated
 
 ---
 
@@ -47,7 +47,7 @@ end
 
 **Returns**
 
-`String`, `nil` — full description
+[String](introspection-string), `nil` — full description
 
 ---
 
@@ -71,7 +71,7 @@ end
 
 **Returns**
 
-`String`, `nil` — OpenAPI operation ID
+[String](introspection-string), `nil` — OpenAPI operation ID
 
 ---
 
@@ -83,7 +83,7 @@ end
 
 **Returns**
 
-`String` — action path segment (e.g., "/:id", "/")
+[String](introspection-string) — action path segment (e.g., "/:id", "/")
 
 ---
 
@@ -123,7 +123,7 @@ end
 
 **Returns**
 
-`Boolean` — whether a request is defined
+[Boolean](introspection-boolean) — whether a request is defined
 
 ---
 
@@ -151,7 +151,7 @@ end
 
 **Returns**
 
-`Boolean` — whether a response is defined
+[Boolean](introspection-boolean) — whether a response is defined
 
 ---
 
@@ -163,7 +163,7 @@ end
 
 **Returns**
 
-`String`, `nil` — short summary
+[String](introspection-string), `nil` — short summary
 
 ---
 

@@ -101,7 +101,7 @@ Iterates over all resources recursively (including nested).
 
 **Returns**
 
-`String`, `nil` — API mount path (e.g., "/api/v1")
+[String](introspection-string), `nil` — API mount path (e.g., "/api/v1")
 
 ---
 
