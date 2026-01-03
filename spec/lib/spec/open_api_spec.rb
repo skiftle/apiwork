@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Apiwork::Spec::OpenAPISpec do
+RSpec.describe Apiwork::Spec::OpenAPI do
   before do
     load File.expand_path('../../dummy/config/apis/v1.rb', __dir__)
   end

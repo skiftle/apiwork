@@ -19,9 +19,9 @@ module Apiwork
 
       Apiwork::Adapter.register(Apiwork::Adapter::StandardAdapter)
 
-      Apiwork::Spec.register(Apiwork::Spec::OpenAPISpec)
+      Apiwork::Spec.register(Apiwork::Spec::OpenAPI)
       Apiwork::Spec.register(Apiwork::Spec::Zod)
-      Apiwork::Spec.register(Apiwork::Spec::TypeScriptSpec)
+      Apiwork::Spec.register(Apiwork::Spec::TypeScript)
 
       Dir[Rails.root.join('config/apis/**/*.rb')].sort.each(&method(:load))
     end

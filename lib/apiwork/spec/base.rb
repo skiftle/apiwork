@@ -9,7 +9,7 @@ module Apiwork
     # and override `#generate` to produce output.
     #
     # @example Hash spec (supports json/yaml)
-    #   class OpenAPISpec < Apiwork::Spec::Base
+    #   class OpenAPI < Apiwork::Spec::Base
     #     spec_name :openapi
     #     output :hash
     #

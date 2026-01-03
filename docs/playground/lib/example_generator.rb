@@ -93,7 +93,7 @@ class ExampleGenerator
   end
 
   def write_typescript(api_class, dir)
-    content = Apiwork::Spec::TypeScriptSpec.generate(api_class.path)
+    content = Apiwork::Spec::TypeScript.generate(api_class.path)
     File.write(dir.join('typescript.ts'), content)
   end
 
@@ -103,7 +103,7 @@ class ExampleGenerator
   end
 
   def write_openapi(api_class, dir)
-    content = Apiwork::Spec::OpenAPISpec.generate(api_class.path)
+    content = Apiwork::Spec::OpenAPI.generate(api_class.path)
     yaml = JSON.parse(content.to_json).to_yaml
     File.write(dir.join('openapi.yml'), yaml)
   end

@@ -44,9 +44,8 @@ loader.inflector.inflect(
   'api' => 'API',
   'json' => 'JSON',
   'json_pointer' => 'JSONPointer',
-  'open_api_spec' => 'OpenAPISpec',
+  'open_api' => 'OpenAPI',
   'type_script_mapper' => 'TypeScriptMapper',
-  'type_script_spec' => 'TypeScriptSpec',
   'uuid' => 'UUID',
 )
 

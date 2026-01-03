@@ -10,7 +10,7 @@ RSpec.describe 'OpenAPI Generation', type: :integration do
   end
 
   let(:path) { '/api/v1' }
-  let(:generator) { Apiwork::Spec::OpenAPISpec.new(path) }
+  let(:generator) { Apiwork::Spec::OpenAPI.new(path) }
   let(:spec) { generator.generate }
 
   # NOTE: OpenAPI paths use OpenAPI-style format: 'posts/' and 'posts/{id}'

@@ -2,7 +2,7 @@
 
 module Apiwork
   module Spec
-    class TypeScriptSpec < Base
+    class TypeScript < Base
       spec_name :typescript
       output :string
       file_extension '.ts'

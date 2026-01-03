@@ -2,7 +2,7 @@
 
 module Apiwork
   module Spec
-    class OpenAPISpec < Base
+    class OpenAPI < Base
       spec_name :openapi
       output :hash
 

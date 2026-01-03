@@ -1,5 +1,5 @@
 ---
-order: 58
+order: 57
 prev: false
 next: false
 ---
@@ -16,7 +16,7 @@ and override `#generate` to produce output.
 **Example: Hash spec (supports json/yaml)**
 
 ```ruby
-class OpenAPISpec < Apiwork::Spec::Base
+class OpenAPI < Apiwork::Spec::Base
   spec_name :openapi
   output :hash
 

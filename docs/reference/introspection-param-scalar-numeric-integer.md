@@ -1,5 +1,5 @@
 ---
-order: 48
+order: 47
 prev: false
 next: false
 ---
@@ -66,7 +66,7 @@ param.integer?     # => true
 
 `#boundable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L37)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L28)
 
 **Returns**
 
@@ -258,11 +258,11 @@ param.integer?     # => true
 
 `#max`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L25)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L16)
 
 **Returns**
 
-[Numeric](introspection-numeric), `nil` — maximum value constraint
+`Numeric`, `nil` — maximum value constraint
 
 ---
 
@@ -270,11 +270,11 @@ param.integer?     # => true
 
 `#min`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L19)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L10)
 
 **Returns**
 
-[Numeric](introspection-numeric), `nil` — minimum value constraint
+`Numeric`, `nil` — minimum value constraint
 
 ---
 
@@ -294,7 +294,7 @@ param.integer?     # => true
 
 `#numeric?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L31)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L22)
 
 **Returns**
 
