@@ -76,10 +76,9 @@ module Apiwork
       # Iterates over all resources recursively (including nested).
       #
       # @yieldparam resource [API::Resource] the resource
-      # @yieldparam parent_path [String, nil] parent resource path
       # @see API::Resource
       def each_resource(&block)
-        iterate_resources(resources, nil, &block)
+        iterate_resources(resources, &block)
       end
 
       # @api public
@@ -98,14 +97,10 @@ module Apiwork
 
       private
 
-      def iterate_resources(resource_list, parent_path, &block)
+      def iterate_resources(resource_list, &block)
         resource_list.each_value do |resource|
-          yield(resource, parent_path)
-
-          if resource.nested?
-            current_path = parent_path ? "#{parent_path}/#{resource.path}" : resource.path
-            iterate_resources(resource.resources, current_path, &block)
-          end
+          yield(resource)
+          iterate_resources(resource.resources, &block) if resource.nested?
         end
       end
     end

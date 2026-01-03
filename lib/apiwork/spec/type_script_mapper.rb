@@ -68,8 +68,8 @@ module Apiwork
         type_jsdoc ? "#{type_jsdoc}\n#{code}" : code
       end
 
-      def build_action_request_query_type(resource_name, action_name, query_params, parent_path: nil)
-        type_name = action_type_name(resource_name, action_name, 'RequestQuery', parent_path:)
+      def build_action_request_query_type(resource_name, action_name, query_params, parent_identifiers: [])
+        type_name = action_type_name(resource_name, action_name, 'RequestQuery', parent_identifiers:)
 
         properties = query_params.sort_by { |k, _| k.to_s }.map do |param_name, param|
           key = transform_key(param_name)
@@ -81,8 +81,8 @@ module Apiwork
         "export interface #{type_name} {\n#{properties}\n}"
       end
 
-      def build_action_request_body_type(resource_name, action_name, body_params, parent_path: nil)
-        type_name = action_type_name(resource_name, action_name, 'RequestBody', parent_path:)
+      def build_action_request_body_type(resource_name, action_name, body_params, parent_identifiers: [])
+        type_name = action_type_name(resource_name, action_name, 'RequestBody', parent_identifiers:)
 
         properties = body_params.sort_by { |k, _| k.to_s }.map do |param_name, param|
           key = transform_key(param_name)
@@ -94,39 +94,38 @@ module Apiwork
         "export interface #{type_name} {\n#{properties}\n}"
       end
 
-      def build_action_request_type(resource_name, action_name, request_data, parent_path: nil)
-        type_name = action_type_name(resource_name, action_name, 'Request', parent_path:)
+      def build_action_request_type(resource_name, action_name, request_data, parent_identifiers: [])
+        type_name = action_type_name(resource_name, action_name, 'Request', parent_identifiers:)
 
         nested_properties = []
 
         if request_data[:query]&.any?
-          query_type_name = action_type_name(resource_name, action_name, 'RequestQuery', parent_path:)
+          query_type_name = action_type_name(resource_name, action_name, 'RequestQuery', parent_identifiers:)
           nested_properties << "  query: #{query_type_name};"
         end
 
         if request_data[:body]&.any?
-          body_type_name = action_type_name(resource_name, action_name, 'RequestBody', parent_path:)
+          body_type_name = action_type_name(resource_name, action_name, 'RequestBody', parent_identifiers:)
           nested_properties << "  body: #{body_type_name};"
         end
 
         "export interface #{type_name} {\n#{nested_properties.join("\n")}\n}"
       end
 
-      def build_action_response_body_type(resource_name, action_name, response_body_definition, parent_path: nil)
-        type_name = action_type_name(resource_name, action_name, 'ResponseBody', parent_path:)
+      def build_action_response_body_type(resource_name, action_name, response_body_definition, parent_identifiers: [])
+        type_name = action_type_name(resource_name, action_name, 'ResponseBody', parent_identifiers:)
         ts_type = map_type_definition(response_body_definition, action_name:)
         "export type #{type_name} = #{ts_type};"
       end
 
-      def build_action_response_type(resource_name, action_name, response_data, parent_path: nil)
-        type_name = action_type_name(resource_name, action_name, 'Response', parent_path:)
-        body_type_name = action_type_name(resource_name, action_name, 'ResponseBody', parent_path:)
+      def build_action_response_type(resource_name, action_name, response_data, parent_identifiers: [])
+        type_name = action_type_name(resource_name, action_name, 'Response', parent_identifiers:)
+        body_type_name = action_type_name(resource_name, action_name, 'ResponseBody', parent_identifiers:)
         "export interface #{type_name} {\n  body: #{body_type_name};\n}"
       end
 
-      def action_type_name(resource_name, action_name, suffix, parent_path: nil)
-        parent_names = extract_parent_resource_names(parent_path)
-        base_parts = parent_names + [resource_name.to_s, action_name.to_s]
+      def action_type_name(resource_name, action_name, suffix, parent_identifiers: [])
+        base_parts = parent_identifiers + [resource_name.to_s, action_name.to_s]
         base_name = pascal_case(base_parts.join('_'))
         "#{base_name}#{suffix.camelize}"
       end
@@ -264,12 +263,6 @@ module Apiwork
 
       def type_or_enum_reference?(symbol)
         data.types.key?(symbol) || data.enums.key?(symbol)
-      end
-
-      def extract_parent_resource_names(parent_path)
-        return [] unless parent_path
-
-        parent_path.to_s.split('/').reject { |s| s.start_with?(':') }
       end
 
       def transform_key(key)

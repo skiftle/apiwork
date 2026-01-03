@@ -66,48 +66,37 @@ module Apiwork
       def build_paths
         paths = {}
 
-        data.each_resource do |resource, parent_path|
-          build_resource_paths(paths, resource, parent_path)
+        data.each_resource do |resource|
+          build_resource_paths(paths, resource)
         end
 
         paths
       end
 
-      def build_resource_paths(paths, resource, parent_path)
-        parent_paths = extract_parent_resource_paths(parent_path)
-        resource_name = resource.identifier.to_sym
-
+      def build_resource_paths(paths, resource)
         resource.actions.each do |action_name, action|
-          full_path = build_full_action_path(resource, action, parent_path)
-          openapi_formatted_path = openapi_path(full_path)
+          openapi_formatted_path = openapi_path(action.path)
           method = action.method.to_s.downcase
 
           paths[openapi_formatted_path] ||= {}
           paths[openapi_formatted_path][method] = build_operation(
-            resource_name,
             resource,
             action_name,
             action,
-            parent_paths,
-            full_path,
           )
         end
       end
 
-      def build_full_action_path(_resource, action, _parent_path)
-        action.path
-      end
-
-      def build_operation(resource_name, resource, action_name, action, parent_paths, full_path)
+      def build_operation(resource, action_name, action)
         operation = {
           deprecated: action.deprecated? || nil,
           description: action.description,
-          operationId: action.operation_id || operation_id(resource_name, resource.path, action_name, parent_paths),
+          operationId: action.operation_id || operation_id(resource, action_name),
           summary: action.summary,
           tags: build_tags(resource.to_h[:tags], action.tags),
         }
 
-        path_params = extract_path_parameters(full_path)
+        path_params = extract_path_parameters(action.path)
 
         request = action.request
         if request
@@ -131,14 +120,8 @@ module Apiwork
         tags.any? ? tags : nil
       end
 
-      def operation_id(_resource_name, resource_path, action_name, parent_paths = [])
-        parts = parent_paths.dup
-
-        clean_path = resource_path.to_s.split('/').last
-        parts << clean_path
-
-        parts << action_name.to_s
-
+      def operation_id(resource, action_name)
+        parts = resource.parent_identifiers + [resource.identifier, action_name.to_s]
         joined = parts.join('_')
 
         if key_format == :keep
@@ -146,23 +129,6 @@ module Apiwork
         else
           transform_key(joined, key_format)
         end
-      end
-
-      def extract_parent_resource_paths(parent_path)
-        return [] unless parent_path
-
-        parent_paths = []
-        segments = parent_path.to_s.split('/')
-
-        segments.each do |segment|
-          if (match = segment.match(/:(\w+)_id/))
-            parent_paths << match[1].pluralize
-          elsif segment.exclude?(':')
-            parent_paths << segment
-          end
-        end
-
-        parent_paths
       end
 
       def openapi_path(path)

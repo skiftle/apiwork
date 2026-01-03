@@ -41,7 +41,7 @@ end
 Use `each_resource` to iterate all resources including nested:
 
 ```ruby
-api.each_resource do |resource, parent_path|
+api.each_resource do |resource|
   resource.actions.each do |name, action|
     puts "#{action.method.upcase} #{action.path}"
   end

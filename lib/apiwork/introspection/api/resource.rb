@@ -7,19 +7,17 @@ module Apiwork
       # Wraps resource definitions.
       #
       # @example
-      #   api.resources[:invoices].path    # => "invoices"
-      #   api.resources[:invoices].nested? # => true if has nested resources
+      #   api.resources[:invoices].path              # => "invoices"
+      #   api.resources[:invoices].parent_identifiers # => []
+      #   api.resources[:invoices].nested?           # => true if has nested resources
       #
-      #   api.each_resource do |resource, parent_path|
-      #     resource.identifier # => "invoices"
+      #   api.each_resource do |resource|
+      #     resource.identifier         # => "invoices"
+      #     resource.parent_identifiers # => [] or ["posts"] for nested
       #
       #     resource.actions.each_value do |action|
       #       action.request  # => Action::Request or nil
       #       action.response # => Action::Response or nil
-      #     end
-      #
-      #     resource.resources.each_value do |nested|
-      #       # nested resources...
       #     end
       #   end
       class Resource
@@ -37,6 +35,12 @@ module Apiwork
         # @return [String] URL path segment
         def path
           @data[:path]
+        end
+
+        # @api public
+        # @return [Array<String>] parent resource identifiers
+        def parent_identifiers
+          @data[:parent_identifiers] || []
         end
 
         # @api public
@@ -73,6 +77,7 @@ module Apiwork
           {
             actions: actions.transform_values(&:to_h),
             identifier: identifier,
+            parent_identifiers: parent_identifiers,
             path: path,
             resources: resources.transform_values(&:to_h),
           }

@@ -4,11 +4,10 @@ module Apiwork
   module Introspection
     module Dump
       class Resource
-        def initialize(resource, api_class, parent_path: nil, parent_resource: nil)
+        def initialize(resource, api_class, parent_identifiers: [])
           @resource = resource
           @api_class = api_class
-          @parent_path = parent_path
-          @parent_resource = parent_resource
+          @parent_identifiers = parent_identifiers
         end
 
         def to_h
@@ -17,17 +16,13 @@ module Apiwork
           formatted_segment = @resource.path ||
                               @api_class.transform_path_segment(resource_segment)
 
-          resource_path = if @parent_path
-                            ":#{@parent_resource.name.to_s.singularize}_id/#{formatted_segment}"
-                          else
-                            formatted_segment
-                          end
-
+          resource_path = build_resource_path(formatted_segment)
           contract_class = resolve_contract_class
 
           {
             actions: build_actions(contract_class, resource_path),
             identifier: @resource.name.to_s,
+            parent_identifiers: @parent_identifiers,
             path: resource_path,
             resources: build_nested_resources(resource_path),
           }
@@ -52,15 +47,23 @@ module Apiwork
           actions
         end
 
+        def build_resource_path(formatted_segment)
+          return formatted_segment if @parent_identifiers.empty?
+
+          parent_param = ":#{@parent_identifiers.last.singularize}_id"
+          "#{parent_param}/#{formatted_segment}"
+        end
+
         def build_nested_resources(resource_path)
           return {} unless @resource.resources.any?
+
+          child_parent_identifiers = @parent_identifiers + [@resource.name.to_s]
 
           @resource.resources.transform_values do |nested_resource|
             Resource.new(
               nested_resource,
               @api_class,
-              parent_path: resource_path,
-              parent_resource: @resource,
+              parent_identifiers: child_parent_identifiers,
             ).to_h
           end
         end

@@ -58,8 +58,8 @@ module Apiwork
         end
       end
 
-      def build_action_request_query_schema(resource_name, action_name, query_params, parent_path: nil)
-        schema_name = action_type_name(resource_name, action_name, 'RequestQuery', parent_path:)
+      def build_action_request_query_schema(resource_name, action_name, query_params, parent_identifiers: [])
+        schema_name = action_type_name(resource_name, action_name, 'RequestQuery', parent_identifiers:)
 
         properties = query_params.sort_by { |k, _| k.to_s }.map do |param_name, param_definition|
           key = transform_key(param_name)
@@ -70,8 +70,8 @@ module Apiwork
         "export const #{schema_name}Schema = z.object({\n#{properties}\n});"
       end
 
-      def build_action_request_body_schema(resource_name, action_name, body_params, parent_path: nil)
-        schema_name = action_type_name(resource_name, action_name, 'RequestBody', parent_path:)
+      def build_action_request_body_schema(resource_name, action_name, body_params, parent_identifiers: [])
+        schema_name = action_type_name(resource_name, action_name, 'RequestBody', parent_identifiers:)
 
         properties = body_params.sort_by { |k, _| k.to_s }.map do |param_name, param_definition|
           key = transform_key(param_name)
@@ -82,42 +82,41 @@ module Apiwork
         "export const #{schema_name}Schema = z.object({\n#{properties}\n});"
       end
 
-      def build_action_request_schema(resource_name, action_name, request_data, parent_path: nil)
-        schema_name = action_type_name(resource_name, action_name, 'Request', parent_path:)
+      def build_action_request_schema(resource_name, action_name, request_data, parent_identifiers: [])
+        schema_name = action_type_name(resource_name, action_name, 'Request', parent_identifiers:)
 
         nested_properties = []
 
         if request_data[:query]&.any?
-          query_schema_name = action_type_name(resource_name, action_name, 'RequestQuery', parent_path:)
+          query_schema_name = action_type_name(resource_name, action_name, 'RequestQuery', parent_identifiers:)
           nested_properties << "  query: #{query_schema_name}Schema"
         end
 
         if request_data[:body]&.any?
-          body_schema_name = action_type_name(resource_name, action_name, 'RequestBody', parent_path:)
+          body_schema_name = action_type_name(resource_name, action_name, 'RequestBody', parent_identifiers:)
           nested_properties << "  body: #{body_schema_name}Schema"
         end
 
         "export const #{schema_name}Schema = z.object({\n#{nested_properties.join(",\n")}\n});"
       end
 
-      def build_action_response_body_schema(resource_name, action_name, response_body, parent_path: nil)
-        schema_name = action_type_name(resource_name, action_name, 'ResponseBody', parent_path:)
+      def build_action_response_body_schema(resource_name, action_name, response_body, parent_identifiers: [])
+        schema_name = action_type_name(resource_name, action_name, 'ResponseBody', parent_identifiers:)
 
         zod_schema = map_type_definition(response_body, action_name: nil)
 
         "export const #{schema_name}Schema = #{zod_schema};"
       end
 
-      def build_action_response_schema(resource_name, action_name, response_data, parent_path: nil)
-        schema_name = action_type_name(resource_name, action_name, 'Response', parent_path:)
-        body_schema_name = action_type_name(resource_name, action_name, 'ResponseBody', parent_path:)
+      def build_action_response_schema(resource_name, action_name, response_data, parent_identifiers: [])
+        schema_name = action_type_name(resource_name, action_name, 'Response', parent_identifiers:)
+        body_schema_name = action_type_name(resource_name, action_name, 'ResponseBody', parent_identifiers:)
 
         "export const #{schema_name}Schema = z.object({\n  body: #{body_schema_name}Schema\n});"
       end
 
-      def action_type_name(resource_name, action_name, suffix, parent_path: nil)
-        parent_names = extract_parent_resource_names(parent_path)
-        base_parts = parent_names + [resource_name.to_s, action_name.to_s]
+      def action_type_name(resource_name, action_name, suffix, parent_identifiers: [])
+        base_parts = parent_identifiers + [resource_name.to_s, action_name.to_s]
         base_name = pascal_case(base_parts.join('_'))
         suffix_pascal = suffix.split(/(?=[A-Z])/).map(&:capitalize).join
         "#{base_name}#{suffix_pascal}"
@@ -273,12 +272,6 @@ module Apiwork
           enum_literal = param.enum.map { |value| "'#{value}'" }.join(', ')
           "z.enum([#{enum_literal}])"
         end
-      end
-
-      def extract_parent_resource_names(parent_path)
-        return [] unless parent_path
-
-        parent_path.to_s.split('/').reject { |s| s.start_with?(':') }
       end
 
       def apply_modifiers(type, param, action_name, force_optional: nil)

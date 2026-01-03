@@ -36,40 +36,42 @@ module Apiwork
           types << { code:, name: type_name_pascal }
         end
 
-        data.each_resource do |resource, parent_path|
+        data.each_resource do |resource|
           resource_name = resource.identifier.to_sym
+          parent_identifiers = resource.parent_identifiers
+
           resource.actions.each do |action_name, action|
             request = action.request
             if request && (request.query? || request.body?)
               if request.query?
-                type_name = mapper.action_type_name(resource_name, action_name, 'RequestQuery', parent_path:)
-                code = mapper.build_action_request_query_type(resource_name, action_name, request.query, parent_path:)
+                type_name = mapper.action_type_name(resource_name, action_name, 'RequestQuery', parent_identifiers:)
+                code = mapper.build_action_request_query_type(resource_name, action_name, request.query, parent_identifiers:)
                 types << { code:, name: type_name }
               end
 
               if request.body?
-                type_name = mapper.action_type_name(resource_name, action_name, 'RequestBody', parent_path:)
-                code = mapper.build_action_request_body_type(resource_name, action_name, request.body, parent_path:)
+                type_name = mapper.action_type_name(resource_name, action_name, 'RequestBody', parent_identifiers:)
+                code = mapper.build_action_request_body_type(resource_name, action_name, request.body, parent_identifiers:)
                 types << { code:, name: type_name }
               end
 
-              type_name = mapper.action_type_name(resource_name, action_name, 'Request', parent_path:)
-              code = mapper.build_action_request_type(resource_name, action_name, { body: request.body, query: request.query }, parent_path:)
+              type_name = mapper.action_type_name(resource_name, action_name, 'Request', parent_identifiers:)
+              code = mapper.build_action_request_type(resource_name, action_name, { body: request.body, query: request.query }, parent_identifiers:)
               types << { code:, name: type_name }
             end
 
             response = action.response
 
             if response&.no_content?
-              type_name = mapper.action_type_name(resource_name, action_name, 'Response', parent_path:)
+              type_name = mapper.action_type_name(resource_name, action_name, 'Response', parent_identifiers:)
               types << { code: "export type #{type_name} = never;", name: type_name }
             elsif response&.body?
-              type_name = mapper.action_type_name(resource_name, action_name, 'ResponseBody', parent_path:)
-              code = mapper.build_action_response_body_type(resource_name, action_name, response.body, parent_path:)
+              type_name = mapper.action_type_name(resource_name, action_name, 'ResponseBody', parent_identifiers:)
+              code = mapper.build_action_response_body_type(resource_name, action_name, response.body, parent_identifiers:)
               types << { code:, name: type_name }
 
-              type_name = mapper.action_type_name(resource_name, action_name, 'Response', parent_path:)
-              code = mapper.build_action_response_type(resource_name, action_name, { body: response.body }, parent_path:)
+              type_name = mapper.action_type_name(resource_name, action_name, 'Response', parent_identifiers:)
+              code = mapper.build_action_response_type(resource_name, action_name, { body: response.body }, parent_identifiers:)
               types << { code:, name: type_name }
             end
           end
