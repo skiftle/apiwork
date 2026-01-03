@@ -112,12 +112,10 @@ module Apiwork
 
         request = action.request
         if request
-          query_hash = request.query.transform_values(&:to_h)
-          body_hash = request.body.transform_values(&:to_h)
-          query_params = request.query? ? build_query_parameters(query_hash) : []
+          query_params = request.query? ? build_query_parameters(request.query) : []
           all_params = path_params + query_params
           operation[:parameters] = all_params if all_params.any?
-          operation[:requestBody] = build_request_body(body_hash, action_name) if request.body?
+          operation[:requestBody] = build_request_body(request.body, action_name:) if request.body?
         elsif path_params.any?
           operation[:parameters] = path_params
         end
@@ -188,37 +186,49 @@ module Apiwork
       def build_query_parameters(query_params)
         return [] unless query_params&.any?
 
-        query_params.map do |param_name, param_definition|
+        query_params.map do |name, param|
           {
             in: 'query',
-            name: transform_key(param_name),
-            required: param_definition.is_a?(Hash) ? !param_definition[:optional] : true,
-            schema: build_parameter_schema(param_definition),
-          }.tap do |param|
-            param[:description] = param_definition[:description] if param_definition.is_a?(Hash) && param_definition[:description]
+            name: transform_key(name),
+            required: !param.optional?,
+            schema: build_parameter_schema(param),
+          }.tap do |result|
+            result[:description] = param.description if param.description
           end
         end
       end
 
-      def build_parameter_schema(param_definition)
-        return { type: 'string' } unless param_definition.is_a?(Hash)
+      def build_parameter_schema(param)
+        return { '$ref': "#/components/schemas/#{schema_name(param.type)}" } if param.ref_type? && type_exists?(param.type)
 
-        if param_definition[:type].is_a?(Symbol) && type_exists?(param_definition[:type])
-          return { '$ref': "#/components/schemas/#{schema_name(param_definition[:type])}" }
-        end
-
-        map_type_definition(param_definition, nil)
+        map_type_definition(param)
       end
 
-      def build_request_body(request_params, action_name)
+      def build_request_body(body_params, action_name:)
         {
           content: {
             'application/json': {
-              schema: build_params_object(request_params, action_name),
+              schema: build_body_schema(body_params, action_name:),
             },
           },
           required: true,
         }
+      end
+
+      def build_body_schema(body_params, action_name:)
+        update_action = action_name.to_s == 'update'
+        properties = {}
+        required_fields = []
+
+        body_params.each do |name, param|
+          transformed_key = transform_key(name)
+          properties[transformed_key] = map_field(param, action_name:)
+          required_fields << transformed_key if !param.optional? && !update_action
+        end
+
+        result = { properties:, type: 'object' }
+        result[:required] = required_fields if required_fields.any?
+        result
       end
 
       def build_responses(action_name, response, action_raises = [])
@@ -229,17 +239,15 @@ module Apiwork
           responses[:'204'] = { description: 'No content' }
         elsif response&.body
           body = response.body
-          body_hash = body.to_h
 
-          # Detect unwrapped union and separate success/error variants
-          if body.union? && body_hash[:discriminator].nil?
-            success_variant = body_hash[:variants][0]
-            error_variant = body_hash[:variants][1]
+          if body.union? && body.discriminator.nil?
+            success_variant = body.variants[0]
+            error_variant = body.variants[1]
 
             responses[:'200'] = {
               content: {
                 'application/json': {
-                  schema: map_type_definition(success_variant, action_name),
+                  schema: map_type_definition(success_variant, action_name:),
                 },
               },
               description: 'Successful response',
@@ -253,7 +261,7 @@ module Apiwork
             responses[:'200'] = {
               content: {
                 'application/json': {
-                  schema: build_params_object(body_hash),
+                  schema: map_type_definition(body, action_name:),
                 },
               },
               description: 'Successful response',
@@ -314,7 +322,7 @@ module Apiwork
           description:,
           content: {
             'application/json': {
-              schema: map_type_definition(error_variant, nil),
+              schema: map_type_definition(error_variant),
             },
           },
         }
@@ -325,132 +333,100 @@ module Apiwork
 
         data.types.each do |name, type|
           component_name = schema_name(name)
-          type_shape = type.to_h
 
           schemas[component_name] = if type.union?
-                                      map_union(type_shape)
+                                      map_union(type)
                                     else
-                                      map_object(type_shape)
+                                      map_object(type)
                                     end
         end
 
         schemas
       end
 
-      def build_params_object(params_hash, action_name = nil)
-        return map_type_definition(params_hash, action_name) unless params_hash.is_a?(Hash)
-
-        return map_type_definition(params_hash, action_name) if params_hash.key?(:type)
-
-        update_action = action_name.to_s == 'update'
-        create_action = !update_action
-        properties = {}
-        required_fields = []
-
-        params_hash.each do |param_name, param_definition|
-          transformed_key = transform_key(param_name)
-          properties[transformed_key] = map_field_definition(param_definition, action_name)
-          required_fields << transformed_key if param_definition.is_a?(Hash) && !param_definition[:optional] && create_action
+      def map_field(param, action_name: nil)
+        if param.ref_type? && type_exists?(param.type)
+          schema = { '$ref': "#/components/schemas/#{schema_name(param.type)}" }
+          return apply_nullable(schema, param.nullable?)
         end
 
-        result = { properties:, type: 'object' }
-        result[:required] = required_fields if required_fields.any?
-        result
-      end
-
-      def map_field_definition(definition, action_name = nil)
-        return { type: 'string' } unless definition.is_a?(Hash)
-
-        if definition[:type].is_a?(Symbol) && type_exists?(definition[:type])
-          schema = { '$ref': "#/components/schemas/#{schema_name(definition[:type])}" }
-          return apply_nullable(schema, definition[:nullable])
-        end
-
-        if definition[:type].is_a?(Symbol) && enum_exists?(definition[:type])
-          enum_obj = find_enum(definition[:type])
-          schema = { enum: enum_obj.values, type: 'string' }
-          return apply_nullable(schema, definition[:nullable])
-        end
-
-        schema = map_type_definition(definition, action_name)
-
-        schema[:description] = definition[:description] if definition[:description]
-        schema[:example] = definition[:example] if definition[:example]
-        schema[:deprecated] = definition[:deprecated] if definition[:deprecated]
-
-        schema[:format] = definition[:format].to_s if definition[:format]
-
-        schema[:enum] = resolve_enum(definition[:enum]) if definition[:enum]
-
-        apply_nullable(schema, definition[:nullable])
-      end
-
-      def map_type_definition(definition, action_name = nil)
-        type = definition[:type]
-
-        case type
-        when :object
-          map_object(definition, action_name)
-        when :array
-          map_array(definition, action_name)
-        when :union
-          map_union(definition, action_name)
-        when :literal
-          map_literal(definition)
-        else
-          if type_exists?(type)
-            { '$ref': "#/components/schemas/#{schema_name(type)}" }
-          elsif enum_exists?(type)
-            enum_obj = find_enum(type)
-            { enum: enum_obj.values, type: 'string' }
+        if param.scalar? && param.enum?
+          if param.ref? && enum_exists?(param.enum)
+            enum_obj = find_enum(param.enum)
+            schema = { enum: enum_obj.values, type: 'string' }
           else
-            map_primitive(definition)
+            schema = { enum: param.enum, type: 'string' }
           end
+          return apply_nullable(schema, param.nullable?)
+        end
+
+        schema = map_type_definition(param, action_name:)
+
+        schema[:description] = param.description if param.description
+        schema[:example] = param.example if param.example
+        schema[:deprecated] = true if param.deprecated?
+
+        schema[:format] = param.format.to_s if param.respond_to?(:format) && param.format
+
+        apply_nullable(schema, param.nullable?)
+      end
+
+      def map_type_definition(param, action_name: nil)
+        if param.object?
+          map_object(param, action_name:)
+        elsif param.array?
+          map_array(param, action_name:)
+        elsif param.union?
+          map_union(param, action_name:)
+        elsif param.literal?
+          map_literal(param)
+        elsif param.ref_type? && type_exists?(param.type)
+          { '$ref': "#/components/schemas/#{schema_name(param.type)}" }
+        elsif param.ref_type? && enum_exists?(param.type)
+          enum_obj = find_enum(param.type)
+          { enum: enum_obj.values, type: 'string' }
+        else
+          map_primitive(param)
         end
       end
 
-      def map_object(definition, action_name = nil)
+      def map_object(param, action_name: nil)
         result = {
           properties: {},
           type: 'object',
         }
 
-        result[:description] = definition[:description] if definition[:description]
-        result[:example] = definition[:example] if definition[:example]
+        result[:description] = param.description if param.description
+        result[:example] = param.example if param.example
 
-        shape_fields = definition[:shape] || {}
-
-        shape_fields.each do |property_name, property_definition|
-          transformed_key = transform_key(property_name)
-          result[:properties][transformed_key] = map_field_definition(property_definition, action_name)
+        param.shape.each do |name, field_param|
+          transformed_key = transform_key(name)
+          result[:properties][transformed_key] = map_field(field_param, action_name:)
         end
 
         create_action = action_name.to_s != 'update'
-        if shape_fields.any? && create_action
-          required_keys = shape_fields.select { |_name, prop_def| prop_def.is_a?(Hash) && !prop_def[:optional] }.keys
-          required_fields = required_keys.map { |k| transform_key(k) }
+        if param.shape.any? && create_action
+          required_fields = param.shape.reject { |_, p| p.optional? }.keys.map { |k| transform_key(k) }
           result[:required] = required_fields if required_fields.any?
         end
 
         result
       end
 
-      def map_array(definition, action_name = nil)
-        items_type = definition[:of]
+      def map_array(param, action_name: nil)
+        items_param = param.of
 
-        if items_type.nil? && definition[:shape]
-          items_schema = map_object({ shape: definition[:shape], type: :object }, action_name)
+        if items_param.nil? && param.shape.any?
+          items_schema = map_inline_object(param.shape, action_name:)
           return { items: items_schema, type: 'array' }
         end
 
-        return { items: { type: 'string' }, type: 'array' } unless items_type
+        return { items: { type: 'string' }, type: 'array' } unless items_param
 
-        items_schema = if items_type.is_a?(Symbol) && type_exists?(items_type)
-                         { '$ref': "#/components/schemas/#{schema_name(items_type)}" }
-                       elsif items_type.is_a?(Hash)
-                         map_type_definition(items_type, action_name)
+        items_schema = if items_param.ref_type? && type_exists?(items_param.type)
+                         { '$ref': "#/components/schemas/#{schema_name(items_param.type)}" }
                        else
-                         { type: openapi_type(items_type) }
+                         map_type_definition(items_param, action_name:)
                        end
 
         {
@@ -459,32 +435,43 @@ module Apiwork
         }
       end
 
-      def map_union(definition, action_name = nil)
-        if definition[:discriminator]
-          map_discriminated_union(definition, action_name)
+      def map_inline_object(shape, action_name: nil)
+        result = { properties: {}, type: 'object' }
+
+        shape.each do |name, field_param|
+          transformed_key = transform_key(name)
+          result[:properties][transformed_key] = map_field(field_param, action_name:)
+        end
+
+        required_fields = shape.reject { |_, p| p.optional? }.keys.map { |k| transform_key(k) }
+        result[:required] = required_fields if required_fields.any?
+
+        result
+      end
+
+      def map_union(param, action_name: nil)
+        if param.discriminator
+          map_discriminated_union(param, action_name:)
         else
           {
-            oneOf: definition[:variants].map { |variant| map_type_definition(variant, action_name) },
+            oneOf: param.variants.map { |variant| map_type_definition(variant, action_name:) },
           }
         end
       end
 
-      def map_discriminated_union(definition, action_name = nil)
-        discriminator_field = definition[:discriminator]
-        variants = definition[:variants]
+      def map_discriminated_union(param, action_name: nil)
+        discriminator_field = param.discriminator
+        variants = param.variants
 
-        one_of_schemas = variants.map { |variant| map_type_definition(variant, action_name) }
+        one_of_schemas = variants.map { |variant| map_type_definition(variant, action_name:) }
 
         mapping = {}
         variants.each do |variant|
-          tag = variant[:tag]
+          tag = variant.tag
           next unless tag
 
           transformed_tag = transform_key(tag.to_s)
-          if variant[:type].is_a?(Symbol) && type_exists?(variant[:type])
-            mapping[transformed_tag] =
-              "#/components/schemas/#{schema_name(variant[:type])}"
-          end
+          mapping[transformed_tag] = "#/components/schemas/#{schema_name(variant.type)}" if variant.ref_type? && type_exists?(variant.type)
         end
 
         result = { oneOf: one_of_schemas }
@@ -503,28 +490,28 @@ module Apiwork
         result
       end
 
-      def map_literal(definition)
+      def map_literal(param)
         {
-          const: definition[:value],
-          type: openapi_type_for_value(definition[:value]),
+          const: param.value,
+          type: openapi_type_for_value(param.value),
         }
       end
 
-      def map_primitive(definition)
-        return {} if definition[:type] == :unknown
+      def map_primitive(param)
+        return {} if param.unknown?
 
-        type_value = openapi_type(definition[:type])
+        type_value = openapi_type(param.type)
 
         return {} if type_value.nil?
 
         result = { type: type_value }
 
-        format_value = openapi_format(definition[:type])
+        format_value = openapi_format(param.type)
         result[:format] = format_value if format_value
 
-        if numeric_type?(definition[:type])
-          result[:minimum] = definition[:min] if definition[:min]
-          result[:maximum] = definition[:max] if definition[:max]
+        if param.boundable?
+          result[:minimum] = param.min if param.min
+          result[:maximum] = param.max if param.max
         end
 
         result
@@ -584,20 +571,8 @@ module Apiwork
         end
       end
 
-      def resolve_enum(enum_ref_or_array)
-        if enum_ref_or_array.is_a?(Symbol) && enum_exists?(enum_ref_or_array)
-          find_enum(enum_ref_or_array).values
-        else
-          enum_ref_or_array
-        end
-      end
-
       def schema_name(name)
         transform_key(name, key_format)
-      end
-
-      def numeric_type?(type)
-        [:integer, :float, :decimal].include?(type&.to_sym)
       end
 
       def type_exists?(symbol)

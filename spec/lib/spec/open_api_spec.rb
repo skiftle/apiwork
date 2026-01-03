@@ -51,12 +51,14 @@ RSpec.describe Apiwork::Spec::OpenAPI do
     let(:generator) { described_class.new(path) }
 
     it 'maps :unknown to empty schema {}' do
-      result = generator.send(:map_primitive, { type: :unknown })
+      param = Apiwork::Introspection::Param.build(type: :unknown)
+      result = generator.send(:map_primitive, param)
       expect(result).to eq({})
     end
 
     it 'uses empty schema {} as fallback for unmapped types' do
-      result = generator.send(:map_primitive, { type: :some_unmapped_type })
+      param = Apiwork::Introspection::Param.build(type: :some_unmapped_type)
+      result = generator.send(:map_primitive, param)
       expect(result).to eq({})
     end
 
