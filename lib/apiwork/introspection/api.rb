@@ -9,10 +9,10 @@ module Apiwork
     # types via {#types}, enums via {#enums}.
     #
     # @example
-    #   api = MyAPI.introspect(locale: :sv)
+    #   api = Apiwork::API.introspect('/api/v1', locale: :fr)
     #
-    #   api.info.title                      # => "My API"
-    #   api.types[:address].description     # => "Address type"
+    #   api.info.title                      # => "Mon API"
+    #   api.types[:address].description     # => "Type d'adresse"
     #   api.enums[:status].values           # => ["draft", "published"]
     #
     #   api.each_resource do |resource, parent_path|

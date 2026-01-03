@@ -70,9 +70,17 @@ module Apiwork
         end
 
         def raises
-          action_codes = @action_definition.instance_variable_get(:@raises) || []
-          auto_codes = auto_raises
-          (action_codes + auto_codes).uniq.sort_by(&:to_s)
+          action_error_codes = @action_definition.instance_variable_get(:@raises) || []
+          api_error_codes = api_level_raises
+          auto_error_codes = auto_raises
+          (api_error_codes + action_error_codes + auto_error_codes).uniq.sort_by(&:to_s)
+        end
+
+        def api_level_raises
+          api_class = @action_definition.contract_class.api_class
+          return [] unless api_class
+
+          api_class.structure.raises || []
         end
 
         def auto_raises

@@ -4,32 +4,57 @@ order: 3
 
 # Contract Introspection
 
-Returns a single contract's structure as an [Introspection::Contract](../../reference/introspection-contract.md) object. Useful during development to understand what a contract exposes, including dynamically generated types.
+Returns a single contract's structure as an [Introspection::Contract](../../../reference/introspection-contract.md) object. Useful during development to understand what a contract exposes, including dynamically generated types.
 
 ```ruby
-data = InvoiceContract.introspect
+contract = InvoiceContract.introspect
 ```
 
 ---
 
-## Accessing Data
+## Accessors
+
+| Method | Returns |
+|--------|---------|
+| `actions` | Hash of [Action](../../../reference/introspection-action.md) objects |
+| `types` | Hash of [Type](../../../reference/introspection-type.md) objects |
+| `enums` | Hash of [Enum](../../../reference/introspection-enum.md) objects |
+
+---
+
+## Actions
 
 ```ruby
-data.actions.each do |name, action|
-  puts "#{action.method.upcase} #{action.path}"
-end
+action = contract.actions[:create]
 
-data.types.each do |name, type|
-  puts "#{name}: #{type.object? ? 'object' : 'union'}"
-end
+action.method      # => :post
+action.path        # => "/"
+action.raises      # => [:unprocessable_entity]
+action.deprecated? # => false
 ```
 
 ---
 
-## What's Included
+## Request and Response
 
-- Actions defined on the contract
-- Types and enums **scoped** to the contract
+```ruby
+request = action.request
+request.query?  # => false
+request.body?   # => true
+
+request.body.each do |name, param|
+  puts "#{name}: #{param.type}"
+end
+```
+
+```ruby
+response = action.response
+response.no_content?  # => false
+
+body = response.body
+body.object?          # => true
+body.shape[:invoice]  # => Param for the invoice
+```
 
 ---
 
@@ -63,21 +88,4 @@ InvoiceContract.introspect(locale: :sv)
 
 ## Caching
 
-Results are cached per contract, locale, and expand:
-
-```ruby
-InvoiceContract.introspect                   # cached
-InvoiceContract.introspect(expand: true)     # separate cache entry
-InvoiceContract.introspect(locale: :sv)      # separate cache entry
-```
-
-Call `reset_contracts!` to clear the cache:
-
-```ruby
-api_class = Apiwork::API.find('/api/v1')
-api_class.reset_contracts!
-```
-
-::: tip
-In development, Rails reloading clears caches automatically.
-:::
+Results are cached per contract, locale, and expand. In development, Rails reloading clears caches automatically.

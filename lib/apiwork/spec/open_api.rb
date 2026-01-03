@@ -231,9 +231,8 @@ module Apiwork
         result
       end
 
-      def build_responses(action_name, response, action_raises = [])
+      def build_responses(action_name, response, raises = [])
         responses = {}
-        combined_raises = (data.raises + action_raises).uniq
 
         if response&.no_content?
           responses[:'204'] = { description: 'No content' }
@@ -253,7 +252,7 @@ module Apiwork
               description: 'Successful response',
             }
 
-            combined_raises.each do |code|
+            raises.each do |code|
               error_code = data.error_codes[code]
               responses[error_code.status.to_s.to_sym] = build_union_error_response(error_code.description, error_variant)
             end
@@ -267,7 +266,7 @@ module Apiwork
               description: 'Successful response',
             }
 
-            combined_raises.each do |code|
+            raises.each do |code|
               error_code = data.error_codes[code]
               responses[error_code.status.to_s.to_sym] = build_error_response(error_code.description)
             end

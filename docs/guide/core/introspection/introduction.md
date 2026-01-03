@@ -4,31 +4,32 @@ order: 1
 
 # Introduction
 
-Introspection allows an API to describe itself through a rich object model.
+Introspection describes an API through an object model.
 
-Resources, actions, types, enums, and error codes are exposed as explicit objects that mirror the API’s structure and behavior.
+Resources, actions, types, enums, and error codes are exposed as explicit objects that reflect the API’s structure and behavior.
 
 This serves two purposes:
 
-- **Development** - inspect what your contracts expose, including dynamically generated types
-- **Generation** - [spec generators](../specs/introduction.md) and documentation read introspection data directly
+- **Development** – inspect what is exposed, including dynamically generated types
+- **Generation** – [spec generators](../specs/introduction.md) and documentation read introspection directly
 
-The data is exposed through facade objects with predicates for type-checking and accessors for navigation.
+Introspection exposes an object facade. Each object represents a part of the API and provides type predicates and navigation accessors.
 
 ---
 
 ## Facade Objects
 
-Introspection returns typed objects, not raw hashes:
+Introspection returns typed objects:
 
 ```ruby
 api = Apiwork::API.introspect('/api/v1')
 
-api.resources[:invoices].actions[:show].response.body
-# => Param::Array
+action = api.resources[:invoices].actions[:show]
+body = action.response.body
+body.shape.keys  # => [:invoice, :meta]
 ```
 
-Predicates enable type-checking:
+Predicates for type-checking:
 
 ```ruby
 status = api.types[:invoice].shape[:status]
@@ -72,19 +73,18 @@ API
 │   │       └── body
 │   └── resources (nested)
 ├── types
-│   ├── shape (object types)
-│   └── variants (union types)
 ├── enums
-└── error_codes
+├── error_codes
+└── raises
 ```
 
 ---
 
 ## During Development
 
-When building contracts, introspection helps you see exactly what gets exposed. The adapter generates types dynamically based on your schema - filters, pagination, sorting - that don't exist as explicit code.
+When building contracts, introspection provides visibility into what is exposed. Adapters may derive types from schemas at runtime, and features such as filtering, pagination, and sorting may not exist as explicit code. Introspection makes these derived structures visible at the API and contract level.
 
-Call `.to_h` on any object for a hash representation:
+Call `.to_h` on any introspection object to get a hash representation:
 
 ```ruby
 api.to_h
@@ -94,8 +94,6 @@ action.request.to_h
 # => { query: {...}, body: {...} }
 ```
 
-This is useful for debugging or understanding what a contract exposes.
-
 ---
 
 ## Usage
@@ -103,4 +101,4 @@ This is useful for debugging or understanding what a contract exposes.
 - [API Introspection](./api-introspection.md) - entry point for full API
 - [Contract Introspection](./contract-introspection.md) - entry point for single contract
 
-See the [reference documentation](../../reference/introspection-api.md) for complete method details.
+See the [reference documentation](../../../reference/introspection-api.md) for complete method details.

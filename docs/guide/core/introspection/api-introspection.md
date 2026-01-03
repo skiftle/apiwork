@@ -4,7 +4,7 @@ order: 2
 
 # API Introspection
 
-Returns the complete API structure as an [Introspection::API](../../reference/introspection-api.md) object.
+Returns the complete API structure as an [Introspection::API](../../../reference/introspection-api.md) object.
 
 ```ruby
 api = Apiwork::API.introspect('/api/v1')
@@ -17,16 +17,16 @@ api = Apiwork::API.introspect('/api/v1')
 | Method | Returns |
 |--------|---------|
 | `path` | API mount path |
-| `info` | [Info](../../reference/introspection-api-info.md) object |
-| `resources` | Hash of [Resource](../../reference/introspection-api-resource.md) objects |
-| `types` | Hash of [Type](../../reference/introspection-type.md) objects |
-| `enums` | Hash of [Enum](../../reference/introspection-enum.md) objects |
-| `error_codes` | Hash of [ErrorCode](../../reference/introspection-error-code.md) objects |
+| `info` | [Info](../../../reference/introspection-api-info.md) object |
+| `resources` | Hash of [Resource](../../../reference/introspection-api-resource.md) objects |
+| `types` | Hash of [Type](../../../reference/introspection-type.md) objects |
+| `enums` | Hash of [Enum](../../../reference/introspection-enum.md) objects |
+| `error_codes` | Hash of [ErrorCode](../../../reference/introspection-error-code.md) objects |
 | `raises` | Array of API-level error code symbols |
 
 ---
 
-## Traversing Resources
+## Resources
 
 ```ruby
 api.resources[:invoices].actions.each do |name, action|
@@ -47,7 +47,7 @@ end
 
 ---
 
-## Accessing Actions
+## Actions
 
 ```ruby
 action = api.resources[:invoices].actions[:create]
@@ -77,8 +77,8 @@ response = action.response
 response.no_content?  # => false
 
 body = response.body
-body.array?  # => true
-body.of      # => Param for element type
+body.object?          # => true
+body.shape[:invoice]  # => Param for the invoice
 ```
 
 ---
@@ -97,21 +97,4 @@ Translations come from your I18n files. See [i18n](../../advanced/i18n.md) for c
 
 ## Caching
 
-Results are cached per path and locale:
-
-```ruby
-Apiwork::API.introspect('/api/v1')              # cached
-Apiwork::API.introspect('/api/v1')              # returns cached
-Apiwork::API.introspect('/api/v1', locale: :sv) # separate cache entry
-```
-
-Call `reset_contracts!` to clear the cache:
-
-```ruby
-api_class = Apiwork::API.find('/api/v1')
-api_class.reset_contracts!
-```
-
-::: tip
-In development, Rails reloading clears caches automatically.
-:::
+Results are cached per path and locale. In development, Rails reloading clears caches automatically.
