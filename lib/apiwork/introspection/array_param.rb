@@ -50,6 +50,12 @@ module Apiwork
       end
 
       # @api public
+      # @return [Boolean] true - arrays support min/max length constraints
+      def boundable?
+        true
+      end
+
+      # @api public
       # @return [Hash] structured representation
       def to_h
         result = super

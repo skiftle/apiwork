@@ -218,7 +218,7 @@ module Apiwork
       end
 
       def map_primitive(param)
-        format = param.format&.to_sym if param.respond_to?(:format)
+        format = param.format&.to_sym if param.formattable?
 
         base_type = if format
                       map_format_to_zod(format)
@@ -226,7 +226,7 @@ module Apiwork
                       TYPE_MAP[param.type.to_sym] || 'z.unknown()'
                     end
 
-        if param.respond_to?(:min)
+        if param.boundable?
           base_type += ".min(#{param.min})" if param.min
           base_type += ".max(#{param.max})" if param.max
         end

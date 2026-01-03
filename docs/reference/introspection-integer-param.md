@@ -34,6 +34,18 @@ param.scalar? # => true
 
 ---
 
+### #boundable?
+
+`#boundable?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/integer_param.rb#L41)
+
+**Returns**
+
+`Boolean` — true - integers support min/max constraints
+
+---
+
 ### #default
 
 `#default`
@@ -115,6 +127,18 @@ param.scalar? # => true
 **Returns**
 
 `Symbol`, `nil` — format constraint (:int32, :int64)
+
+---
+
+### #formattable?
+
+`#formattable?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/integer_param.rb#L47)
+
+**Returns**
+
+`Boolean` — true - integers support format constraints (:int32, :int64)
 
 ---
 
@@ -230,7 +254,7 @@ param.scalar? # => true
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L151)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L163)
 
 **Returns**
 

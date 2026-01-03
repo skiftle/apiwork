@@ -35,6 +35,18 @@ param.array? # => true
 
 ---
 
+### #boundable?
+
+`#boundable?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/array_param.rb#L54)
+
+**Returns**
+
+`Boolean` — true - arrays support min/max length constraints
+
+---
+
 ### #default
 
 `#default`
@@ -92,6 +104,18 @@ param.array? # => true
 **Returns**
 
 `Object`, `nil` — example value
+
+---
+
+### #formattable?
+
+`#formattable?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L157)
+
+**Returns**
+
+`Boolean` — whether this type supports format constraints
 
 ---
 
@@ -231,7 +255,7 @@ param.array? # => true
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/array_param.rb#L54)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/array_param.rb#L60)
 
 **Returns**
 

@@ -30,6 +30,18 @@ module Apiwork
       def max
         @dump[:max]
       end
+
+      # @api public
+      # @return [Boolean] true - strings support min/max length constraints
+      def boundable?
+        true
+      end
+
+      # @api public
+      # @return [Boolean] true - strings support format constraints
+      def formattable?
+        true
+      end
     end
   end
 end

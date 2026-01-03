@@ -28,6 +28,12 @@ module Apiwork
       def numeric?
         true
       end
+
+      # @api public
+      # @return [Boolean] true - floats support min/max constraints
+      def boundable?
+        true
+      end
     end
   end
 end

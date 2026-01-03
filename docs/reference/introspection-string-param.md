@@ -34,6 +34,18 @@ param.scalar? # => true
 
 ---
 
+### #boundable?
+
+`#boundable?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/string_param.rb#L36)
+
+**Returns**
+
+`Boolean` — true - strings support min/max length constraints
+
+---
+
 ### #default
 
 `#default`
@@ -116,6 +128,18 @@ param.scalar? # => true
 
 `Symbol`, `nil` — format constraint
 Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
+
+---
+
+### #formattable?
+
+`#formattable?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/string_param.rb#L42)
+
+**Returns**
+
+`Boolean` — true - strings support format constraints
 
 ---
 
@@ -231,7 +255,7 @@ Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L151)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L163)
 
 **Returns**
 

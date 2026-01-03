@@ -35,6 +35,18 @@ module Apiwork
       def numeric?
         true
       end
+
+      # @api public
+      # @return [Boolean] true - integers support min/max constraints
+      def boundable?
+        true
+      end
+
+      # @api public
+      # @return [Boolean] true - integers support format constraints (:int32, :int64)
+      def formattable?
+        true
+      end
     end
   end
 end

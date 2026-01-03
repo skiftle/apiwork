@@ -147,6 +147,18 @@ module Apiwork
       end
 
       # @api public
+      # @return [Boolean] whether this type supports min/max constraints
+      def boundable?
+        false
+      end
+
+      # @api public
+      # @return [Boolean] whether this type supports format constraints
+      def formattable?
+        false
+      end
+
+      # @api public
       # @return [Hash] structured representation
       def to_h
         {

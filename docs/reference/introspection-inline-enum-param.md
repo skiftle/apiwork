@@ -34,6 +34,18 @@ param.inline? # => true
 
 ---
 
+### #boundable?
+
+`#boundable?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L151)
+
+**Returns**
+
+`Boolean` — whether this type supports min/max constraints
+
+---
+
 ### #default
 
 `#default`
@@ -115,6 +127,18 @@ param.inline? # => true
 **Returns**
 
 `Object`, `nil` — example value
+
+---
+
+### #formattable?
+
+`#formattable?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L157)
+
+**Returns**
+
+`Boolean` — whether this type supports format constraints
 
 ---
 
