@@ -22,6 +22,12 @@ module Apiwork
       def max
         @dump[:max]
       end
+
+      # @api public
+      # @return [Boolean] true for float params
+      def numeric?
+        true
+      end
     end
   end
 end

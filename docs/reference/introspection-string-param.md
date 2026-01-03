@@ -167,6 +167,18 @@ Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
 
 ---
 
+### #numeric?
+
+`#numeric?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L145)
+
+**Returns**
+
+`Boolean` — whether this is a numeric type (integer, float, decimal)
+
+---
+
 ### #object?
 
 `#object?`
@@ -219,7 +231,7 @@ Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L145)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L151)
 
 **Returns**
 

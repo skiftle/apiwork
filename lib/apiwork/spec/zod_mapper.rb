@@ -299,10 +299,6 @@ module Apiwork
         type
       end
 
-      def numeric_type?(type)
-        [:integer, :float, :decimal].include?(type&.to_sym)
-      end
-
       def transform_key(key)
         key = key.to_s
 

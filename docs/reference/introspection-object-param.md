@@ -117,6 +117,18 @@ param.object?   # => true
 
 ---
 
+### #numeric?
+
+`#numeric?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L145)
+
+**Returns**
+
+`Boolean` — whether this is a numeric type (integer, float, decimal)
+
+---
+
 ### #object?
 
 `#object?`

@@ -116,6 +116,18 @@ param.type # => :address (the custom type name)
 
 ---
 
+### #numeric?
+
+`#numeric?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L145)
+
+**Returns**
+
+`Boolean` — whether this is a numeric type (integer, float, decimal)
+
+---
+
 ### #object?
 
 `#object?`
@@ -168,7 +180,7 @@ param.type # => :address (the custom type name)
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L145)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L151)
 
 **Returns**
 

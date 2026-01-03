@@ -153,6 +153,18 @@ param.scalar? # => true
 
 ---
 
+### #numeric?
+
+`#numeric?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/float_param.rb#L28)
+
+**Returns**
+
+`Boolean` — true for float params
+
+---
+
 ### #object?
 
 `#object?`
@@ -205,7 +217,7 @@ param.scalar? # => true
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L145)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L151)
 
 **Returns**
 

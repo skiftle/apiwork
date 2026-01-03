@@ -141,6 +141,12 @@ module Apiwork
       end
 
       # @api public
+      # @return [Boolean] whether this is a numeric type (integer, float, decimal)
+      def numeric?
+        false
+      end
+
+      # @api public
       # @return [Hash] structured representation
       def to_h
         {

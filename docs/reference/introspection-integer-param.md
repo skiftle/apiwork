@@ -166,6 +166,18 @@ param.scalar? # => true
 
 ---
 
+### #numeric?
+
+`#numeric?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/integer_param.rb#L35)
+
+**Returns**
+
+`Boolean` — true for integer params
+
+---
+
 ### #object?
 
 `#object?`
@@ -218,7 +230,7 @@ param.scalar? # => true
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L145)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param.rb#L151)
 
 **Returns**
 
