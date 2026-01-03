@@ -75,7 +75,7 @@ module Apiwork
           end
         end
 
-        types.sort_by { |t| t[:name] }.map { |t| t[:code] }.join("\n\n")
+        types.sort_by { |type| type[:name] }.map { |type| type[:code] }.join("\n\n")
       end
 
       private
