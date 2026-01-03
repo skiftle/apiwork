@@ -1,5 +1,5 @@
 ---
-order: 44
+order: 45
 prev: false
 next: false
 ---
@@ -13,8 +13,8 @@ Base class for numeric params (Integer, Float, Decimal).
 **Example**
 
 ```ruby
-param.min        # => 0
-param.max        # => 100
+param.min        # => 0 or nil
+param.max        # => 100 or nil
 param.scalar?    # => true
 param.numeric?   # => true
 param.boundable? # => true

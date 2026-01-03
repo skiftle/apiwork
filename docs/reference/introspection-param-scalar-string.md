@@ -1,5 +1,5 @@
 ---
-order: 48
+order: 49
 prev: false
 next: false
 ---
@@ -13,13 +13,13 @@ String param.
 **Example**
 
 ```ruby
-param.type        # => :string
-param.format      # => :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
-param.min         # => 1 (minimum string length)
-param.max         # => 255 (maximum string length)
-param.scalar?     # => true
-param.string?     # => true
-param.boundable?  # => true
+param.type         # => :string
+param.format       # => :email or nil
+param.min          # => 1 or nil
+param.max          # => 255 or nil
+param.scalar?      # => true
+param.string?      # => true
+param.boundable?   # => true
 param.formattable? # => true
 ```
 

@@ -8,10 +8,10 @@ module Apiwork
       #
       # @example
       #   param.type       # => :array
-      #   param.of         # => Param for element type
-      #   param.shape      # => Hash for array-of-objects
-      #   param.min        # => 1 (minimum array length)
-      #   param.max        # => 10 (maximum array length)
+      #   param.of         # => Param or nil
+      #   param.shape      # => {} or { field: Param, ... }
+      #   param.min        # => 1 or nil
+      #   param.max        # => 10 or nil
       #   param.array?     # => true
       #   param.boundable? # => true
       class Array < Base

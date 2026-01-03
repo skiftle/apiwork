@@ -9,15 +9,15 @@ module Apiwork
           # Integer param.
           #
           # @example
-          #   param.type        # => :integer
-          #   param.min         # => 0
-          #   param.max         # => 100
-          #   param.format      # => :int32, :int64
-          #   param.scalar?     # => true
-          #   param.numeric?    # => true
-          #   param.boundable?  # => true
+          #   param.type         # => :integer
+          #   param.min          # => 0 or nil
+          #   param.max          # => 100 or nil
+          #   param.format       # => :int32 or nil
+          #   param.scalar?      # => true
+          #   param.numeric?     # => true
+          #   param.boundable?   # => true
           #   param.formattable? # => true
-          #   param.integer?    # => true
+          #   param.integer?     # => true
           class Integer < Numeric
             # @api public
             # @return [Symbol, nil] format constraint (:int32, :int64)

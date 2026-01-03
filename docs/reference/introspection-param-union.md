@@ -1,5 +1,5 @@
 ---
-order: 51
+order: 52
 prev: false
 next: false
 ---
@@ -14,8 +14,8 @@ Union param.
 
 ```ruby
 param.type          # => :union
-param.variants      # => [Param, Param, ...]
-param.discriminator # => :type (for discriminated unions)
+param.variants      # => [Param, ...]
+param.discriminator # => :type or nil
 param.union?        # => true
 ```
 

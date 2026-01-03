@@ -4,6 +4,13 @@ module Apiwork
   module Introspection
     module Param
       class Scalar
+        # @api public
+        # Base class for enum params.
+        #
+        # @example
+        #   param.enum    # => [:draft, :published] or :status
+        #   param.scalar? # => true
+        #   param.enum?   # => true
         class Enum < Scalar
           # @api public
           # @return [Boolean] true for all enum types

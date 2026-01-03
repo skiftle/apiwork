@@ -1,5 +1,5 @@
 ---
-order: 46
+order: 47
 prev: false
 next: false
 ---
@@ -14,8 +14,8 @@ Float param.
 
 ```ruby
 param.type       # => :float
-param.min        # => 0.0
-param.max        # => 100.0
+param.min        # => 0.0 or nil
+param.max        # => 100.0 or nil
 param.scalar?    # => true
 param.numeric?   # => true
 param.boundable? # => true

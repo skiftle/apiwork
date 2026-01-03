@@ -8,8 +8,8 @@ module Apiwork
         # Base class for numeric params (Integer, Float, Decimal).
         #
         # @example
-        #   param.min        # => 0
-        #   param.max        # => 100
+        #   param.min        # => 0 or nil
+        #   param.max        # => 100 or nil
         #   param.scalar?    # => true
         #   param.numeric?   # => true
         #   param.boundable? # => true

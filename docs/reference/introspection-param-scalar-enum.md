@@ -1,27 +1,21 @@
 ---
-order: 48
+order: 42
 prev: false
 next: false
 ---
 
-# Introspection::Param::Scalar::Numeric::Integer
+# Introspection::Param::Scalar::Enum
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric/integer.rb#L21)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/enum.rb#L14)
 
-Integer param.
+Base class for enum params.
 
 **Example**
 
 ```ruby
-param.type         # => :integer
-param.min          # => 0 or nil
-param.max          # => 100 or nil
-param.format       # => :int32 or nil
-param.scalar?      # => true
-param.numeric?     # => true
-param.boundable?   # => true
-param.formattable? # => true
-param.integer?     # => true
+param.enum    # => [:draft, :published] or :status
+param.scalar? # => true
+param.enum?   # => true
 ```
 
 ## Instance Methods
@@ -66,11 +60,11 @@ param.integer?     # => true
 
 `#boundable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L37)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L122)
 
 **Returns**
 
-[Boolean](introspection-boolean) — true - numeric types support min/max constraints
+[Boolean](introspection-boolean) — whether this type supports min/max constraints
 
 ---
 
@@ -158,15 +152,27 @@ param.integer?     # => true
 
 ---
 
+### #enum
+
+`#enum`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/enum.rb#L35)
+
+**Returns**
+
+`Symbol`, [Array](introspection-array) — enum reference or inline values
+
+---
+
 ### #enum?
 
 `#enum?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar.rb#L15)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/enum.rb#L17)
 
 **Returns**
 
-[Boolean](introspection-boolean) — whether this scalar has enum constraints
+[Boolean](introspection-boolean) — true for all enum types
 
 ---
 
@@ -194,27 +200,27 @@ param.integer?     # => true
 
 ---
 
-### #format
-
-`#format`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric/integer.rb#L24)
-
-**Returns**
-
-`Symbol`, `nil` — format constraint (:int32, :int64)
-
----
-
 ### #formattable?
 
 `#formattable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric/integer.rb#L30)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L128)
 
 **Returns**
 
-[Boolean](introspection-boolean) — true - integers support format constraints (:int32, :int64)
+[Boolean](introspection-boolean) — whether this type supports format constraints
+
+---
+
+### #inline?
+
+`#inline?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/enum.rb#L29)
+
+**Returns**
+
+[Boolean](introspection-boolean) — whether this has inline enum values
 
 ---
 
@@ -222,11 +228,11 @@ param.integer?     # => true
 
 `#integer?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric/integer.rb#L36)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L140)
 
 **Returns**
 
-[Boolean](introspection-boolean) — true for integer params
+[Boolean](introspection-boolean) — whether this is an integer type
 
 ---
 
@@ -254,30 +260,6 @@ param.integer?     # => true
 
 ---
 
-### #max
-
-`#max`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L25)
-
-**Returns**
-
-[Numeric](introspection-numeric), `nil` — maximum value constraint
-
----
-
-### #min
-
-`#min`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L19)
-
-**Returns**
-
-[Numeric](introspection-numeric), `nil` — minimum value constraint
-
----
-
 ### #nullable?
 
 `#nullable?`
@@ -294,11 +276,11 @@ param.integer?     # => true
 
 `#numeric?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L31)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L116)
 
 **Returns**
 
-[Boolean](introspection-boolean) — true for numeric params
+[Boolean](introspection-boolean) — whether this is a numeric type (integer, float, decimal)
 
 ---
 
@@ -323,6 +305,18 @@ param.integer?     # => true
 **Returns**
 
 [Boolean](introspection-boolean) — whether this field is optional
+
+---
+
+### #ref?
+
+`#ref?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/enum.rb#L23)
+
+**Returns**
+
+[Boolean](introspection-boolean) — whether this is a reference to a named enum
 
 ---
 
@@ -378,7 +372,7 @@ param.integer?     # => true
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L206)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/enum.rb#L41)
 
 **Returns**
 
