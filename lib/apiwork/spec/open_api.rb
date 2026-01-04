@@ -11,13 +11,13 @@ module Apiwork
 
       def generate
         {
+          openapi: version,
+          info: build_info,
+          servers: build_servers,
+          paths: build_paths,
           components: {
             schemas: build_schemas,
           },
-          info: build_info,
-          openapi: version,
-          paths: build_paths,
-          servers: build_servers,
         }.compact
       end
 

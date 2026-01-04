@@ -1,4 +1,126 @@
 ---
+openapi: 3.1.0
+info:
+  title: "/clever_rabbit API"
+  version: 1.0.0
+paths:
+  "/orders":
+    get:
+      operationId: ordersIndex
+      parameters:
+      - in: query
+        name: filter
+        required: false
+        schema:
+          oneOf:
+          - "$ref": "#/components/schemas/orderFilter"
+          - items:
+              "$ref": "#/components/schemas/orderFilter"
+            type: array
+      - in: query
+        name: page
+        required: false
+        schema:
+          "$ref": "#/components/schemas/orderPage"
+      - in: query
+        name: sort
+        required: false
+        schema:
+          oneOf:
+          - "$ref": "#/components/schemas/orderSort"
+          - items:
+              "$ref": "#/components/schemas/orderSort"
+            type: array
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/orderIndexSuccessResponseBody"
+          description: Successful response
+    post:
+      operationId: ordersCreate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                order:
+                  "$ref": "#/components/schemas/orderCreatePayload"
+              type: object
+              required:
+              - order
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/orderCreateSuccessResponseBody"
+          description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
+  "/orders/{id}":
+    get:
+      operationId: ordersShow
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/orderShowSuccessResponseBody"
+          description: Successful response
+    patch:
+      operationId: ordersUpdate
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                order:
+                  "$ref": "#/components/schemas/orderUpdatePayload"
+              type: object
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/orderUpdateSuccessResponseBody"
+          description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
+    delete:
+      operationId: ordersDestroy
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No content
 components:
   schemas:
     errorResponseBody:
@@ -242,125 +364,3 @@ components:
         startsWith:
           type: string
       type: object
-info:
-  title: "/clever_rabbit API"
-  version: 1.0.0
-openapi: 3.1.0
-paths:
-  "/orders":
-    get:
-      operationId: ordersIndex
-      parameters:
-      - in: query
-        name: filter
-        required: false
-        schema:
-          oneOf:
-          - "$ref": "#/components/schemas/orderFilter"
-          - items:
-              "$ref": "#/components/schemas/orderFilter"
-            type: array
-      - in: query
-        name: page
-        required: false
-        schema:
-          "$ref": "#/components/schemas/orderPage"
-      - in: query
-        name: sort
-        required: false
-        schema:
-          oneOf:
-          - "$ref": "#/components/schemas/orderSort"
-          - items:
-              "$ref": "#/components/schemas/orderSort"
-            type: array
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/orderIndexSuccessResponseBody"
-          description: Successful response
-    post:
-      operationId: ordersCreate
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                order:
-                  "$ref": "#/components/schemas/orderCreatePayload"
-              type: object
-              required:
-              - order
-        required: true
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/orderCreateSuccessResponseBody"
-          description: Successful response
-        '422':
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/errorResponseBody"
-  "/orders/{id}":
-    get:
-      operationId: ordersShow
-      parameters:
-      - in: path
-        name: id
-        required: true
-        schema:
-          type: string
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/orderShowSuccessResponseBody"
-          description: Successful response
-    patch:
-      operationId: ordersUpdate
-      parameters:
-      - in: path
-        name: id
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                order:
-                  "$ref": "#/components/schemas/orderUpdatePayload"
-              type: object
-        required: true
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/orderUpdateSuccessResponseBody"
-          description: Successful response
-        '422':
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/errorResponseBody"
-    delete:
-      operationId: ordersDestroy
-      parameters:
-      - in: path
-        name: id
-        required: true
-        schema:
-          type: string
-      responses:
-        '204':
-          description: No content

@@ -1,4 +1,147 @@
 ---
+openapi: 3.1.0
+info:
+  description: API for managing projects with I18n-powered documentation
+  title: Project Management API
+  version: 1.0.0
+paths:
+  "/projects":
+    get:
+      description: Returns a paginated list of projects with optional filtering
+      operationId: listProjects
+      summary: List all projects
+      tags:
+      - Projects
+      parameters:
+      - in: query
+        name: filter
+        required: false
+        schema:
+          oneOf:
+          - "$ref": "#/components/schemas/projectFilter"
+          - items:
+              "$ref": "#/components/schemas/projectFilter"
+            type: array
+      - in: query
+        name: page
+        required: false
+        schema:
+          "$ref": "#/components/schemas/projectPage"
+      - in: query
+        name: sort
+        required: false
+        schema:
+          oneOf:
+          - "$ref": "#/components/schemas/projectSort"
+          - items:
+              "$ref": "#/components/schemas/projectSort"
+            type: array
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/projectIndexSuccessResponseBody"
+          description: Successful response
+    post:
+      description: Creates a project and returns the created resource
+      operationId: createProject
+      summary: Create a new project
+      tags:
+      - Projects
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                project:
+                  "$ref": "#/components/schemas/projectCreatePayload"
+              type: object
+              required:
+              - project
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/projectCreateSuccessResponseBody"
+          description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
+  "/projects/{id}":
+    get:
+      description: Returns a single project by ID with all attributes
+      operationId: getProject
+      summary: Get project details
+      tags:
+      - Projects
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/projectShowSuccessResponseBody"
+          description: Successful response
+    patch:
+      description: Updates an existing project with the provided attributes
+      operationId: updateProject
+      summary: Update a project
+      tags:
+      - Projects
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                project:
+                  "$ref": "#/components/schemas/projectUpdatePayload"
+              type: object
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/projectUpdateSuccessResponseBody"
+          description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
+    delete:
+      description: Permanently removes a project
+      operationId: deleteProject
+      summary: Delete a project
+      tags:
+      - Projects
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No content
 components:
   schemas:
     errorResponseBody:
@@ -365,146 +508,3 @@ components:
         startsWith:
           type: string
       type: object
-info:
-  description: API for managing projects with I18n-powered documentation
-  title: Project Management API
-  version: 1.0.0
-openapi: 3.1.0
-paths:
-  "/projects":
-    get:
-      description: Returns a paginated list of projects with optional filtering
-      operationId: listProjects
-      summary: List all projects
-      tags:
-      - Projects
-      parameters:
-      - in: query
-        name: filter
-        required: false
-        schema:
-          oneOf:
-          - "$ref": "#/components/schemas/projectFilter"
-          - items:
-              "$ref": "#/components/schemas/projectFilter"
-            type: array
-      - in: query
-        name: page
-        required: false
-        schema:
-          "$ref": "#/components/schemas/projectPage"
-      - in: query
-        name: sort
-        required: false
-        schema:
-          oneOf:
-          - "$ref": "#/components/schemas/projectSort"
-          - items:
-              "$ref": "#/components/schemas/projectSort"
-            type: array
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/projectIndexSuccessResponseBody"
-          description: Successful response
-    post:
-      description: Creates a project and returns the created resource
-      operationId: createProject
-      summary: Create a new project
-      tags:
-      - Projects
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                project:
-                  "$ref": "#/components/schemas/projectCreatePayload"
-              type: object
-              required:
-              - project
-        required: true
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/projectCreateSuccessResponseBody"
-          description: Successful response
-        '422':
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/errorResponseBody"
-  "/projects/{id}":
-    get:
-      description: Returns a single project by ID with all attributes
-      operationId: getProject
-      summary: Get project details
-      tags:
-      - Projects
-      parameters:
-      - in: path
-        name: id
-        required: true
-        schema:
-          type: string
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/projectShowSuccessResponseBody"
-          description: Successful response
-    patch:
-      description: Updates an existing project with the provided attributes
-      operationId: updateProject
-      summary: Update a project
-      tags:
-      - Projects
-      parameters:
-      - in: path
-        name: id
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                project:
-                  "$ref": "#/components/schemas/projectUpdatePayload"
-              type: object
-        required: true
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/projectUpdateSuccessResponseBody"
-          description: Successful response
-        '422':
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/errorResponseBody"
-    delete:
-      description: Permanently removes a project
-      operationId: deleteProject
-      summary: Delete a project
-      tags:
-      - Projects
-      parameters:
-      - in: path
-        name: id
-        required: true
-        schema:
-          type: string
-      responses:
-        '204':
-          description: No content

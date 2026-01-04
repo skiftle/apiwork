@@ -1,4 +1,126 @@
 ---
+openapi: 3.1.0
+info:
+  title: "/bold_falcon API"
+  version: 1.0.0
+paths:
+  "/articles":
+    get:
+      operationId: articlesIndex
+      parameters:
+      - in: query
+        name: filter
+        required: false
+        schema:
+          oneOf:
+          - "$ref": "#/components/schemas/articleFilter"
+          - items:
+              "$ref": "#/components/schemas/articleFilter"
+            type: array
+      - in: query
+        name: page
+        required: false
+        schema:
+          "$ref": "#/components/schemas/articlePage"
+      - in: query
+        name: sort
+        required: false
+        schema:
+          oneOf:
+          - "$ref": "#/components/schemas/articleSort"
+          - items:
+              "$ref": "#/components/schemas/articleSort"
+            type: array
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/articleIndexSuccessResponseBody"
+          description: Successful response
+    post:
+      operationId: articlesCreate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                article:
+                  "$ref": "#/components/schemas/articleCreatePayload"
+              type: object
+              required:
+              - article
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/articleCreateSuccessResponseBody"
+          description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
+  "/articles/{id}":
+    get:
+      operationId: articlesShow
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/articleShowSuccessResponseBody"
+          description: Successful response
+    patch:
+      operationId: articlesUpdate
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                article:
+                  "$ref": "#/components/schemas/articleUpdatePayload"
+              type: object
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/articleUpdateSuccessResponseBody"
+          description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
+    delete:
+      operationId: articlesDestroy
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No content
 components:
   schemas:
     article:
@@ -486,125 +608,3 @@ components:
         startsWith:
           type: string
       type: object
-info:
-  title: "/bold_falcon API"
-  version: 1.0.0
-openapi: 3.1.0
-paths:
-  "/articles":
-    get:
-      operationId: articlesIndex
-      parameters:
-      - in: query
-        name: filter
-        required: false
-        schema:
-          oneOf:
-          - "$ref": "#/components/schemas/articleFilter"
-          - items:
-              "$ref": "#/components/schemas/articleFilter"
-            type: array
-      - in: query
-        name: page
-        required: false
-        schema:
-          "$ref": "#/components/schemas/articlePage"
-      - in: query
-        name: sort
-        required: false
-        schema:
-          oneOf:
-          - "$ref": "#/components/schemas/articleSort"
-          - items:
-              "$ref": "#/components/schemas/articleSort"
-            type: array
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/articleIndexSuccessResponseBody"
-          description: Successful response
-    post:
-      operationId: articlesCreate
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                article:
-                  "$ref": "#/components/schemas/articleCreatePayload"
-              type: object
-              required:
-              - article
-        required: true
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/articleCreateSuccessResponseBody"
-          description: Successful response
-        '422':
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/errorResponseBody"
-  "/articles/{id}":
-    get:
-      operationId: articlesShow
-      parameters:
-      - in: path
-        name: id
-        required: true
-        schema:
-          type: string
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/articleShowSuccessResponseBody"
-          description: Successful response
-    patch:
-      operationId: articlesUpdate
-      parameters:
-      - in: path
-        name: id
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                article:
-                  "$ref": "#/components/schemas/articleUpdatePayload"
-              type: object
-        required: true
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/articleUpdateSuccessResponseBody"
-          description: Successful response
-        '422':
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/errorResponseBody"
-    delete:
-      operationId: articlesDestroy
-      parameters:
-      - in: path
-        name: id
-        required: true
-        schema:
-          type: string
-      responses:
-        '204':
-          description: No content
