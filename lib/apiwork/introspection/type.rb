@@ -29,7 +29,7 @@ module Apiwork
       # @api public
       # @return [Boolean] whether this is an object type
       def object?
-        type == :object || type.nil?
+        type == :object
       end
 
       # @api public

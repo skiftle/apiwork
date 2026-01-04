@@ -276,7 +276,7 @@ module Apiwork
         def resolve_variant_shape(variant_definition, variant_type)
           if variant_definition[:shape]
             dump_nested_shape(variant_definition[:shape])
-          elsif [:object, :array].include?(variant_type)
+          else
             {}
           end
         end

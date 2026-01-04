@@ -36,6 +36,14 @@ module Apiwork
             def integer?
               true
             end
+
+            # @api public
+            # @return [Hash] structured representation
+            def to_h
+              result = super
+              result[:format] = format
+              result
+            end
           end
         end
       end

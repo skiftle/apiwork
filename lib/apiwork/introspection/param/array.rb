@@ -61,6 +61,8 @@ module Apiwork
         # @return [Hash] structured representation
         def to_h
           result = super
+          result[:max] = max
+          result[:min] = min
           result[:of] = of&.to_h
           result[:shape] = shape.transform_values(&:to_h)
           result

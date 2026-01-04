@@ -53,6 +53,16 @@ module Apiwork
           def string?
             true
           end
+
+          # @api public
+          # @return [Hash] structured representation
+          def to_h
+            result = super
+            result[:format] = format
+            result[:max] = max
+            result[:min] = min
+            result
+          end
         end
       end
     end
