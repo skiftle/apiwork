@@ -15,7 +15,7 @@ module Apiwork
         # @api public
         # @return [Array<Param::Base>] variants for unions
         def variants
-          @variants ||= (@dump[:variants] || []).map { |dump| Param.build(dump) }
+          @variants ||= @dump[:variants].map { |dump| Param.build(dump) }
         end
 
         # @api public

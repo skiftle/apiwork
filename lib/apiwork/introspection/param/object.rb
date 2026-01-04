@@ -15,7 +15,7 @@ module Apiwork
         # @api public
         # @return [Hash{Symbol => Param::Base}] nested fields
         def shape
-          @shape ||= (@dump[:shape] || {}).transform_values { |dump| Param.build(dump) }
+          @shape ||= @dump[:shape].transform_values { |dump| Param.build(dump) }
         end
 
         # @api public

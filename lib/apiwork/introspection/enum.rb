@@ -17,7 +17,7 @@ module Apiwork
       # @api public
       # @return [Array<String>] allowed enum values
       def values
-        @dump[:values] || []
+        @dump[:values]
       end
 
       # @api public

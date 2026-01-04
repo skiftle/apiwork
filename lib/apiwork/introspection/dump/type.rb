@@ -28,11 +28,12 @@ module Apiwork
           expanded_shape = metadata[:expanded_payload] ||= expand_payload(metadata)
 
           base = if expanded_shape.is_a?(Hash) && expanded_shape[:type] == :union
-                   expanded_shape
-                 elsif expanded_shape.present?
-                   { shape: expanded_shape, type: :object }
+                   expanded_shape.merge(
+                     shape: expanded_shape[:shape] || {},
+                     variants: expanded_shape[:variants] || [],
+                   )
                  else
-                   { type: :object }
+                   { shape: expanded_shape || {}, type: :object, variants: [] }
                  end
 
           result = base.merge(

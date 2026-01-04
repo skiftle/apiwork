@@ -49,12 +49,16 @@ module Apiwork
         end
 
         def dump_request(request_definition)
-          return {} unless request_definition
+          return { body: {}, query: {} } unless request_definition
 
           {
-            body: request_definition.body_param_definition&.then { ParamDefinition.new(_1).to_h },
-            query: request_definition.query_param_definition&.then { ParamDefinition.new(_1).to_h },
+            body: dump_param_definition(request_definition.body_param_definition),
+            query: dump_param_definition(request_definition.query_param_definition),
           }
+        end
+
+        def dump_param_definition(param_definition)
+          param_definition ? ParamDefinition.new(param_definition).to_h : {}
         end
 
         def dump_response(response_definition)

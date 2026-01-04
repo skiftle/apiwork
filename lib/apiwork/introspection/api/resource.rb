@@ -38,7 +38,7 @@ module Apiwork
         # @api public
         # @return [Array<String>] parent resource identifiers
         def parent_identifiers
-          @data[:parent_identifiers] || []
+          @data[:parent_identifiers]
         end
 
         # @api public

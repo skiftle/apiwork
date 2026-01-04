@@ -89,7 +89,7 @@ module Apiwork
             as: options[:as],
             enum: resolve_enum(options),
             of: resolve_of(options),
-            shape: options[:shape]&.then { dump_nested_shape(_1) },
+            shape: dump_shape(options),
             type: type_value,
             value: options[:type] == :literal ? options[:value] : nil,
           }
@@ -221,13 +221,25 @@ module Apiwork
                             end
           end
 
-          result[:shape] = dump_nested_shape(variant_definition[:shape]) if variant_definition[:shape]
+          if variant_definition[:shape]
+            result[:shape] = dump_nested_shape(variant_definition[:shape])
+          elsif [:object, :array].include?(variant_type)
+            result[:shape] = {}
+          end
 
           result
         end
 
         def dump_nested_shape(shape_definition)
           ParamDefinition.new(shape_definition, visited: @visited).to_h
+        end
+
+        def dump_shape(options)
+          dumped = options[:shape] ? dump_nested_shape(options[:shape]) : nil
+
+          return dumped || {} if [:object, :array].include?(options[:type])
+
+          dumped
         end
 
         def apply_metadata_fields(result, options)
