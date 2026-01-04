@@ -15,38 +15,37 @@ module Apiwork
           {
             resources:,
             enums: @type_dump.enums,
-            error_codes: build_error_codes(collect_all_error_codes(resources)),
+            error_codes: build_error_codes(collect_all_error_code_keys(resources)),
             info: build_info,
             path: @api_class.path,
-            raises: @api_class.structure.raises,
             types: @type_dump.types,
           }
         end
 
         private
 
-        def collect_all_error_codes(resources)
-          codes = Set.new(@api_class.structure.raises)
+        def collect_all_error_code_keys(resources)
+          error_code_keys = Set.new(@api_class.structure.raises)
 
-          collect_action_error_codes(resources, codes)
+          collect_action_error_codes(resources, error_code_keys)
 
-          codes.to_a.sort_by(&:to_s)
+          error_code_keys.to_a.sort_by(&:to_s)
         end
 
-        def collect_action_error_codes(resources, codes)
-          resources.each_value do |resource_data|
-            resource_data[:actions]&.each_value do |action_data|
-              codes.merge(action_data[:raises] || [])
+        def collect_action_error_codes(resources, error_code_keys)
+          resources.each_value do |resource|
+            resource[:actions]&.each_value do |action|
+              error_code_keys.merge(action[:raises] || [])
             end
 
-            collect_action_error_codes(resource_data[:resources], codes) if resource_data[:resources]
+            collect_action_error_codes(resource[:resources], error_code_keys) if resource[:resources]
           end
         end
 
-        def build_error_codes(codes)
+        def build_error_codes(error_code_keys)
           locale_key = @api_class.structure.locale_key
 
-          codes.each_with_object({}) do |code, hash|
+          error_code_keys.each_with_object({}) do |code, hash|
             error_code = Apiwork::ErrorCode.fetch(code)
             hash[code] = {
               description: error_code.description(locale_key:),

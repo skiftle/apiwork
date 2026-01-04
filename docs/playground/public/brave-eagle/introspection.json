@@ -1,1 +1,1836 @@
-"#<Apiwork::Introspection::API:0x00000001078e0c30>"
+{
+  "enums": {
+    "layer": {
+      "deprecated": false,
+      "description": null,
+      "example": null,
+      "values": [
+        "http",
+        "contract",
+        "domain"
+      ]
+    },
+    "sort_direction": {
+      "deprecated": false,
+      "description": null,
+      "example": null,
+      "values": [
+        "asc",
+        "desc"
+      ]
+    },
+    "task_priority": {
+      "deprecated": false,
+      "description": null,
+      "example": null,
+      "values": [
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ]
+    },
+    "task_status": {
+      "deprecated": false,
+      "description": null,
+      "example": null,
+      "values": [
+        "pending",
+        "in_progress",
+        "completed",
+        "archived"
+      ]
+    }
+  },
+  "error_codes": {
+    "unprocessable_entity": {
+      "description": "Unprocessable Entity",
+      "status": 422
+    }
+  },
+  "info": {
+    "contact": {
+      "email": "support@example.com",
+      "name": "API Support",
+      "url": null
+    },
+    "description": "API for managing tasks and projects",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    },
+    "servers": [],
+    "summary": null,
+    "terms_of_service": null,
+    "title": "Task Management API",
+    "version": "1.0.0"
+  },
+  "path": "/brave_eagle",
+  "resources": {
+    "tasks": {
+      "actions": {
+        "index": {
+          "deprecated": null,
+          "description": "Returns a paginated list of tasks with optional filtering by status and priority",
+          "method": "get",
+          "operation_id": "listTasks",
+          "path": "/tasks",
+          "raises": [],
+          "request": {
+            "body": {},
+            "query": {
+              "filter": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": true,
+                "type": "union",
+                "discriminator": null,
+                "variants": [
+                  {
+                    "default": null,
+                    "deprecated": false,
+                    "description": null,
+                    "example": null,
+                    "nullable": false,
+                    "optional": false,
+                    "type": "task_filter"
+                  },
+                  {
+                    "default": null,
+                    "deprecated": false,
+                    "description": null,
+                    "example": null,
+                    "nullable": false,
+                    "optional": false,
+                    "type": "array",
+                    "max": null,
+                    "min": null,
+                    "of": {
+                      "default": null,
+                      "deprecated": null,
+                      "description": null,
+                      "example": null,
+                      "nullable": null,
+                      "optional": null,
+                      "type": "task_filter"
+                    },
+                    "shape": {}
+                  }
+                ]
+              },
+              "include": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": true,
+                "type": "task_include"
+              },
+              "page": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": true,
+                "type": "task_page"
+              },
+              "sort": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": true,
+                "type": "union",
+                "discriminator": null,
+                "variants": [
+                  {
+                    "default": null,
+                    "deprecated": false,
+                    "description": null,
+                    "example": null,
+                    "nullable": false,
+                    "optional": false,
+                    "type": "task_sort"
+                  },
+                  {
+                    "default": null,
+                    "deprecated": false,
+                    "description": null,
+                    "example": null,
+                    "nullable": false,
+                    "optional": false,
+                    "type": "array",
+                    "max": null,
+                    "min": null,
+                    "of": {
+                      "default": null,
+                      "deprecated": null,
+                      "description": null,
+                      "example": null,
+                      "nullable": null,
+                      "optional": null,
+                      "type": "task_sort"
+                    },
+                    "shape": {}
+                  }
+                ]
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "default": null,
+              "deprecated": null,
+              "description": null,
+              "example": null,
+              "nullable": null,
+              "optional": null,
+              "type": "union",
+              "discriminator": null,
+              "variants": [
+                {
+                  "default": null,
+                  "deprecated": null,
+                  "description": null,
+                  "example": null,
+                  "nullable": null,
+                  "optional": null,
+                  "type": "task_index_success_response_body"
+                },
+                {
+                  "default": null,
+                  "deprecated": null,
+                  "description": null,
+                  "example": null,
+                  "nullable": null,
+                  "optional": null,
+                  "type": "error_response_body"
+                }
+              ]
+            },
+            "no_content": false
+          },
+          "summary": "List all tasks",
+          "tags": [
+            "Tasks",
+            "Core"
+          ]
+        },
+        "show": {
+          "deprecated": null,
+          "description": "Returns a single task by ID",
+          "method": "get",
+          "operation_id": "getTask",
+          "path": "/tasks/:id",
+          "raises": [],
+          "request": {
+            "body": {},
+            "query": {
+              "include": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": true,
+                "type": "task_include"
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "default": null,
+              "deprecated": null,
+              "description": null,
+              "example": null,
+              "nullable": null,
+              "optional": null,
+              "type": "union",
+              "discriminator": null,
+              "variants": [
+                {
+                  "default": null,
+                  "deprecated": null,
+                  "description": null,
+                  "example": null,
+                  "nullable": null,
+                  "optional": null,
+                  "type": "task_show_success_response_body"
+                },
+                {
+                  "default": null,
+                  "deprecated": null,
+                  "description": null,
+                  "example": null,
+                  "nullable": null,
+                  "optional": null,
+                  "type": "error_response_body"
+                }
+              ]
+            },
+            "no_content": false
+          },
+          "summary": "Get task details",
+          "tags": [
+            "Tasks"
+          ]
+        },
+        "create": {
+          "deprecated": null,
+          "description": "Creates a task and returns the created resource",
+          "method": "post",
+          "operation_id": "createTask",
+          "path": "/tasks",
+          "raises": [
+            "unprocessable_entity"
+          ],
+          "request": {
+            "body": {
+              "task": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": false,
+                "type": "task_create_payload"
+              }
+            },
+            "query": {
+              "include": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": true,
+                "type": "task_include"
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "default": null,
+              "deprecated": null,
+              "description": null,
+              "example": null,
+              "nullable": null,
+              "optional": null,
+              "type": "union",
+              "discriminator": null,
+              "variants": [
+                {
+                  "default": null,
+                  "deprecated": null,
+                  "description": null,
+                  "example": null,
+                  "nullable": null,
+                  "optional": null,
+                  "type": "task_create_success_response_body"
+                },
+                {
+                  "default": null,
+                  "deprecated": null,
+                  "description": null,
+                  "example": null,
+                  "nullable": null,
+                  "optional": null,
+                  "type": "error_response_body"
+                }
+              ]
+            },
+            "no_content": false
+          },
+          "summary": "Create a new task",
+          "tags": [
+            "Tasks"
+          ]
+        },
+        "update": {
+          "deprecated": null,
+          "description": "Updates an existing task",
+          "method": "patch",
+          "operation_id": "updateTask",
+          "path": "/tasks/:id",
+          "raises": [
+            "unprocessable_entity"
+          ],
+          "request": {
+            "body": {
+              "task": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": false,
+                "type": "task_update_payload"
+              }
+            },
+            "query": {
+              "include": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": true,
+                "type": "task_include"
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "default": null,
+              "deprecated": null,
+              "description": null,
+              "example": null,
+              "nullable": null,
+              "optional": null,
+              "type": "union",
+              "discriminator": null,
+              "variants": [
+                {
+                  "default": null,
+                  "deprecated": null,
+                  "description": null,
+                  "example": null,
+                  "nullable": null,
+                  "optional": null,
+                  "type": "task_update_success_response_body"
+                },
+                {
+                  "default": null,
+                  "deprecated": null,
+                  "description": null,
+                  "example": null,
+                  "nullable": null,
+                  "optional": null,
+                  "type": "error_response_body"
+                }
+              ]
+            },
+            "no_content": false
+          },
+          "summary": "Update a task",
+          "tags": [
+            "Tasks"
+          ]
+        },
+        "destroy": {
+          "deprecated": null,
+          "description": "Permanently removes a task",
+          "method": "delete",
+          "operation_id": "deleteTask",
+          "path": "/tasks/:id",
+          "raises": [],
+          "request": {
+            "body": {},
+            "query": {
+              "include": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": true,
+                "type": "task_include"
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "default": null,
+              "deprecated": null,
+              "description": null,
+              "example": null,
+              "nullable": null,
+              "optional": null,
+              "type": null
+            },
+            "no_content": true
+          },
+          "summary": "Delete a task",
+          "tags": [
+            "Tasks"
+          ]
+        },
+        "archive": {
+          "deprecated": true,
+          "description": "Marks a task as archived. Archived tasks are hidden from default listings but can still be retrieved.",
+          "method": "patch",
+          "operation_id": "archiveTask",
+          "path": "/tasks/:id/archive",
+          "raises": [
+            "unprocessable_entity"
+          ],
+          "request": {
+            "body": {},
+            "query": {
+              "include": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": true,
+                "type": "task_include"
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "default": null,
+              "deprecated": null,
+              "description": null,
+              "example": null,
+              "nullable": null,
+              "optional": null,
+              "type": "union",
+              "discriminator": null,
+              "variants": [
+                {
+                  "default": null,
+                  "deprecated": null,
+                  "description": null,
+                  "example": null,
+                  "nullable": null,
+                  "optional": null,
+                  "type": "task_archive_success_response_body"
+                },
+                {
+                  "default": null,
+                  "deprecated": null,
+                  "description": null,
+                  "example": null,
+                  "nullable": null,
+                  "optional": null,
+                  "type": "error_response_body"
+                }
+              ]
+            },
+            "no_content": false
+          },
+          "summary": "Archive a task",
+          "tags": [
+            "Tasks",
+            "Lifecycle"
+          ]
+        }
+      },
+      "identifier": "tasks",
+      "parent_identifiers": [],
+      "path": "tasks",
+      "resources": {}
+    }
+  },
+  "types": {
+    "comment": {
+      "deprecated": false,
+      "description": "A comment on a task",
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "author_name": {
+          "default": null,
+          "deprecated": false,
+          "description": "Name of the person who wrote the comment",
+          "example": "John Doe",
+          "nullable": true,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "body": {
+          "default": null,
+          "deprecated": false,
+          "description": "Comment content",
+          "example": "This looks good, ready for review.",
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "created_at": {
+          "default": null,
+          "deprecated": false,
+          "description": "When the comment was created",
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "datetime"
+        },
+        "id": {
+          "default": null,
+          "deprecated": false,
+          "description": "Unique comment identifier",
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "comment_nested_create_payload": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "_type": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "literal",
+          "value": "create"
+        },
+        "author_name": {
+          "default": null,
+          "deprecated": false,
+          "description": "Name of the person who wrote the comment",
+          "example": "John Doe",
+          "nullable": true,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "body": {
+          "default": null,
+          "deprecated": false,
+          "description": "Comment content",
+          "example": "This looks good, ready for review.",
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "comment_nested_payload": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": "_type",
+      "example": null,
+      "shape": {},
+      "type": "union",
+      "variants": [
+        {
+          "default": null,
+          "deprecated": null,
+          "description": null,
+          "example": null,
+          "nullable": null,
+          "optional": null,
+          "type": "comment_nested_create_payload"
+        },
+        {
+          "default": null,
+          "deprecated": null,
+          "description": null,
+          "example": null,
+          "nullable": null,
+          "optional": null,
+          "type": "comment_nested_update_payload"
+        }
+      ]
+    },
+    "comment_nested_update_payload": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "_type": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "literal",
+          "value": "update"
+        },
+        "author_name": {
+          "default": null,
+          "deprecated": false,
+          "description": "Name of the person who wrote the comment",
+          "example": "John Doe",
+          "nullable": true,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "body": {
+          "default": null,
+          "deprecated": false,
+          "description": "Comment content",
+          "example": "This looks good, ready for review.",
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "error_response_body": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "issues": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "array",
+          "max": null,
+          "min": null,
+          "of": {
+            "default": null,
+            "deprecated": null,
+            "description": null,
+            "example": null,
+            "nullable": null,
+            "optional": null,
+            "type": "issue"
+          },
+          "shape": {}
+        },
+        "layer": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "layer"
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "issue": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "code": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "detail": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "meta": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "object",
+          "partial": false,
+          "shape": {}
+        },
+        "path": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "array",
+          "max": null,
+          "min": null,
+          "of": {
+            "default": null,
+            "deprecated": null,
+            "description": null,
+            "example": null,
+            "nullable": null,
+            "optional": null,
+            "type": "string",
+            "format": null,
+            "max": null,
+            "min": null
+          },
+          "shape": {}
+        },
+        "pointer": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "nullable_string_filter": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "contains": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "ends_with": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "eq": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "in": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "array",
+          "max": null,
+          "min": null,
+          "of": {
+            "default": null,
+            "deprecated": null,
+            "description": null,
+            "example": null,
+            "nullable": null,
+            "optional": null,
+            "type": "string",
+            "format": null,
+            "max": null,
+            "min": null
+          },
+          "shape": {}
+        },
+        "null": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "boolean"
+        },
+        "starts_with": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "offset_pagination": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "current": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "integer",
+          "max": null,
+          "min": null,
+          "format": null
+        },
+        "items": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "integer",
+          "max": null,
+          "min": null,
+          "format": null
+        },
+        "next": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": true,
+          "optional": true,
+          "type": "integer",
+          "max": null,
+          "min": null,
+          "format": null
+        },
+        "prev": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": true,
+          "optional": true,
+          "type": "integer",
+          "max": null,
+          "min": null,
+          "format": null
+        },
+        "total": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "integer",
+          "max": null,
+          "min": null,
+          "format": null
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "string_filter": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "contains": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "ends_with": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "eq": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "in": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "array",
+          "max": null,
+          "min": null,
+          "of": {
+            "default": null,
+            "deprecated": null,
+            "description": null,
+            "example": null,
+            "nullable": null,
+            "optional": null,
+            "type": "string",
+            "format": null,
+            "max": null,
+            "min": null
+          },
+          "shape": {}
+        },
+        "starts_with": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "task": {
+      "deprecated": false,
+      "description": "A task representing work to be completed",
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "archived": {
+          "default": null,
+          "deprecated": true,
+          "description": "Whether the task has been archived",
+          "example": null,
+          "nullable": true,
+          "optional": false,
+          "type": "boolean"
+        },
+        "assignee": {
+          "default": null,
+          "deprecated": false,
+          "description": "User responsible for completing this task",
+          "example": null,
+          "nullable": true,
+          "optional": true,
+          "type": "user"
+        },
+        "comments": {
+          "default": null,
+          "deprecated": false,
+          "description": "Discussion comments on this task",
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "array",
+          "max": null,
+          "min": null,
+          "of": {
+            "default": null,
+            "deprecated": null,
+            "description": null,
+            "example": null,
+            "nullable": null,
+            "optional": null,
+            "type": "comment"
+          },
+          "shape": {}
+        },
+        "created_at": {
+          "default": null,
+          "deprecated": false,
+          "description": "Timestamp when the task was created",
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "datetime"
+        },
+        "description": {
+          "default": null,
+          "deprecated": false,
+          "description": "Detailed description of what needs to be done",
+          "example": "Add OAuth2 login support for Google and GitHub providers",
+          "nullable": true,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "due_date": {
+          "default": null,
+          "deprecated": false,
+          "description": "Target date for task completion",
+          "example": "2024-02-01T00:00:00Z",
+          "nullable": true,
+          "optional": false,
+          "type": "datetime"
+        },
+        "id": {
+          "default": null,
+          "deprecated": false,
+          "description": "Unique task identifier",
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "priority": {
+          "default": null,
+          "deprecated": false,
+          "description": "Priority level for task ordering",
+          "example": "high",
+          "nullable": true,
+          "optional": false,
+          "type": "string",
+          "enum": "task_priority"
+        },
+        "status": {
+          "default": null,
+          "deprecated": false,
+          "description": "Current status of the task",
+          "example": "pending",
+          "nullable": true,
+          "optional": false,
+          "type": "string",
+          "enum": "task_status"
+        },
+        "title": {
+          "default": null,
+          "deprecated": false,
+          "description": "Short title describing the task",
+          "example": "Implement user authentication",
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "updated_at": {
+          "default": null,
+          "deprecated": false,
+          "description": "Timestamp of last modification",
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "datetime"
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "task_archive_success_response_body": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "meta": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "object",
+          "partial": false,
+          "shape": {}
+        },
+        "task": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "task"
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "task_create_payload": {
+      "deprecated": false,
+      "description": "A task representing work to be completed",
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "description": {
+          "default": null,
+          "deprecated": false,
+          "description": "Detailed description of what needs to be done",
+          "example": "Add OAuth2 login support for Google and GitHub providers",
+          "nullable": true,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "due_date": {
+          "default": null,
+          "deprecated": false,
+          "description": "Target date for task completion",
+          "example": "2024-02-01T00:00:00Z",
+          "nullable": true,
+          "optional": true,
+          "type": "datetime"
+        },
+        "priority": {
+          "default": null,
+          "deprecated": false,
+          "description": "Priority level for task ordering",
+          "example": "high",
+          "nullable": true,
+          "optional": true,
+          "type": "string",
+          "enum": "task_priority"
+        },
+        "status": {
+          "default": null,
+          "deprecated": false,
+          "description": "Current status of the task",
+          "example": "pending",
+          "nullable": true,
+          "optional": true,
+          "type": "string",
+          "enum": "task_status"
+        },
+        "title": {
+          "default": null,
+          "deprecated": false,
+          "description": "Short title describing the task",
+          "example": "Implement user authentication",
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "task_create_success_response_body": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "meta": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "object",
+          "partial": false,
+          "shape": {}
+        },
+        "task": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "task"
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "task_filter": {
+      "deprecated": false,
+      "description": "A task representing work to be completed",
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "_and": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "array",
+          "max": null,
+          "min": null,
+          "of": {
+            "default": null,
+            "deprecated": null,
+            "description": null,
+            "example": null,
+            "nullable": null,
+            "optional": null,
+            "type": "task_filter"
+          },
+          "shape": {}
+        },
+        "_not": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "task_filter"
+        },
+        "_or": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "array",
+          "max": null,
+          "min": null,
+          "of": {
+            "default": null,
+            "deprecated": null,
+            "description": null,
+            "example": null,
+            "nullable": null,
+            "optional": null,
+            "type": "task_filter"
+          },
+          "shape": {}
+        },
+        "priority": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "task_priority_filter"
+        },
+        "status": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "task_status_filter"
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "task_include": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "assignee": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "boolean"
+        },
+        "comments": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "boolean"
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "task_index_success_response_body": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "meta": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "object",
+          "partial": false,
+          "shape": {}
+        },
+        "pagination": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "offset_pagination"
+        },
+        "tasks": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "array",
+          "max": null,
+          "min": null,
+          "of": {
+            "default": null,
+            "deprecated": null,
+            "description": null,
+            "example": null,
+            "nullable": null,
+            "optional": null,
+            "type": "task"
+          },
+          "shape": {}
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "task_page": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "number": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "integer",
+          "max": null,
+          "min": 1,
+          "format": null
+        },
+        "size": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "integer",
+          "max": 100,
+          "min": 1,
+          "format": null
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "task_priority_filter": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {},
+      "type": "union",
+      "variants": [
+        {
+          "default": null,
+          "deprecated": null,
+          "description": null,
+          "example": null,
+          "nullable": null,
+          "optional": null,
+          "type": "task_priority"
+        },
+        {
+          "default": null,
+          "deprecated": null,
+          "description": null,
+          "example": null,
+          "nullable": null,
+          "optional": null,
+          "type": "object",
+          "partial": true,
+          "shape": {
+            "eq": {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": true,
+              "type": "task_priority"
+            },
+            "in": {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": true,
+              "type": "array",
+              "max": null,
+              "min": null,
+              "of": {
+                "default": null,
+                "deprecated": null,
+                "description": null,
+                "example": null,
+                "nullable": null,
+                "optional": null,
+                "type": "task_priority"
+              },
+              "shape": {}
+            }
+          }
+        }
+      ]
+    },
+    "task_show_success_response_body": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "meta": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "object",
+          "partial": false,
+          "shape": {}
+        },
+        "task": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "task"
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "task_sort": {
+      "deprecated": false,
+      "description": "A task representing work to be completed",
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "created_at": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "sort_direction"
+        },
+        "due_date": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "sort_direction"
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "task_status_filter": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {},
+      "type": "union",
+      "variants": [
+        {
+          "default": null,
+          "deprecated": null,
+          "description": null,
+          "example": null,
+          "nullable": null,
+          "optional": null,
+          "type": "task_status"
+        },
+        {
+          "default": null,
+          "deprecated": null,
+          "description": null,
+          "example": null,
+          "nullable": null,
+          "optional": null,
+          "type": "object",
+          "partial": true,
+          "shape": {
+            "eq": {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": true,
+              "type": "task_status"
+            },
+            "in": {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": true,
+              "type": "array",
+              "max": null,
+              "min": null,
+              "of": {
+                "default": null,
+                "deprecated": null,
+                "description": null,
+                "example": null,
+                "nullable": null,
+                "optional": null,
+                "type": "task_status"
+              },
+              "shape": {}
+            }
+          }
+        }
+      ]
+    },
+    "task_update_payload": {
+      "deprecated": false,
+      "description": "A task representing work to be completed",
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "description": {
+          "default": null,
+          "deprecated": false,
+          "description": "Detailed description of what needs to be done",
+          "example": "Add OAuth2 login support for Google and GitHub providers",
+          "nullable": true,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "due_date": {
+          "default": null,
+          "deprecated": false,
+          "description": "Target date for task completion",
+          "example": "2024-02-01T00:00:00Z",
+          "nullable": true,
+          "optional": true,
+          "type": "datetime"
+        },
+        "priority": {
+          "default": null,
+          "deprecated": false,
+          "description": "Priority level for task ordering",
+          "example": "high",
+          "nullable": true,
+          "optional": true,
+          "type": "string",
+          "enum": "task_priority"
+        },
+        "status": {
+          "default": null,
+          "deprecated": false,
+          "description": "Current status of the task",
+          "example": "pending",
+          "nullable": true,
+          "optional": true,
+          "type": "string",
+          "enum": "task_status"
+        },
+        "title": {
+          "default": null,
+          "deprecated": false,
+          "description": "Short title describing the task",
+          "example": "Implement user authentication",
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "task_update_success_response_body": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "meta": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "object",
+          "partial": false,
+          "shape": {}
+        },
+        "task": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "task"
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "user": {
+      "deprecated": false,
+      "description": "A user who can be assigned to tasks",
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "email": {
+          "default": null,
+          "deprecated": false,
+          "description": "User's email address",
+          "example": "jane@example.com",
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": "email",
+          "max": null,
+          "min": null
+        },
+        "id": {
+          "default": null,
+          "deprecated": false,
+          "description": "Unique user identifier",
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "name": {
+          "default": null,
+          "deprecated": false,
+          "description": "User's display name",
+          "example": "Jane Doe",
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        }
+      },
+      "type": "object",
+      "variants": []
+    }
+  }
+}

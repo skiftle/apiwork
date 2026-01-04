@@ -62,12 +62,6 @@ module Apiwork
       end
 
       # @api public
-      # @return [Array<Symbol>] API-level error codes that may be raised
-      def raises
-        @dump[:raises]
-      end
-
-      # @api public
       # @return [Hash{Symbol => ErrorCode}] error code definitions
       # @see ErrorCode
       def error_codes
@@ -82,7 +76,6 @@ module Apiwork
           error_codes: error_codes.transform_values(&:to_h),
           info: info&.to_h,
           path: path,
-          raises: raises,
           resources: resources.transform_values(&:to_h),
           types: types.transform_values(&:to_h),
         }

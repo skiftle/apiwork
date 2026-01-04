@@ -109,7 +109,7 @@ class ExampleGenerator
   end
 
   def write_introspection(api_class, dir)
-    content = api_class.introspect
+    content = api_class.introspect.to_h
     File.write(dir.join('introspection.json'), JSON.pretty_generate(content))
   end
 
