@@ -24,6 +24,8 @@ module Apiwork
       private
 
       def build_info
+        return { title: "#{api_path} API", version: '1.0.0' } unless data.info
+
         info = data.info
         {
           contact: build_contact(info.contact),
@@ -37,7 +39,7 @@ module Apiwork
       end
 
       def build_servers
-        return nil unless data.info.servers.any?
+        return nil unless data.info&.servers&.any?
 
         data.info.servers.map do |server|
           { description: server.description, url: server.url }.compact

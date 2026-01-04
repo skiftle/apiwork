@@ -23,7 +23,10 @@ module Apiwork
           raw = @dump[:of]
           @of = case raw
                 when Hash then Param.build(raw)
-                when Symbol then Param.build(type: raw)
+                when Symbol
+                  dump = { type: raw }
+                  dump[:shape] = {} if [:object, :array].include?(raw)
+                  Param.build(dump)
                 end
         end
 

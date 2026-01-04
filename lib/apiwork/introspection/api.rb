@@ -32,10 +32,12 @@ module Apiwork
       end
 
       # @api public
-      # @return [API::Info] API metadata
+      # @return [API::Info, nil] API metadata, or nil if not defined
       # @see API::Info
       def info
-        @info ||= Info.new(@dump[:info])
+        return @info if defined?(@info)
+
+        @info = @dump[:info] ? Info.new(@dump[:info]) : nil
       end
 
       # @api public
@@ -78,7 +80,7 @@ module Apiwork
         {
           enums: enums.transform_values(&:to_h),
           error_codes: error_codes.transform_values(&:to_h),
-          info: info.to_h,
+          info: info&.to_h,
           path: path,
           raises: raises,
           resources: resources.transform_values(&:to_h),

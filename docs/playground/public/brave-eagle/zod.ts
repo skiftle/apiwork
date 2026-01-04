@@ -258,6 +258,7 @@ export const TasksArchiveResponseSchema = z.object({
   body: TasksArchiveResponseBodySchema
 });
 
+/** A comment on a task */
 export interface Comment {
   /**
    * Name of the person who wrote the comment
@@ -347,6 +348,7 @@ export interface StringFilter {
   startsWith?: string;
 }
 
+/** A task representing work to be completed */
 export interface Task {
   /** Whether the task has been archived */
   archived: boolean | null;
@@ -392,6 +394,7 @@ export interface TaskArchiveSuccessResponseBody {
   task: Task;
 }
 
+/** A task representing work to be completed */
 export interface TaskCreatePayload {
   /**
    * Detailed description of what needs to be done
@@ -425,6 +428,7 @@ export interface TaskCreateSuccessResponseBody {
   task: Task;
 }
 
+/** A task representing work to be completed */
 export interface TaskFilter {
   _and?: TaskFilter[];
   _not?: TaskFilter;
@@ -458,6 +462,7 @@ export interface TaskShowSuccessResponseBody {
   task: Task;
 }
 
+/** A task representing work to be completed */
 export interface TaskSort {
   createdAt?: SortDirection;
   dueDate?: SortDirection;
@@ -467,6 +472,7 @@ export type TaskStatus = 'archived' | 'completed' | 'in_progress' | 'pending';
 
 export type TaskStatusFilter = TaskStatus | { eq?: TaskStatus; in?: TaskStatus[] };
 
+/** A task representing work to be completed */
 export interface TaskUpdatePayload {
   /**
    * Detailed description of what needs to be done
@@ -593,6 +599,7 @@ export interface TasksUpdateResponse {
 
 export type TasksUpdateResponseBody = ErrorResponseBody | TaskUpdateSuccessResponseBody;
 
+/** A user who can be assigned to tasks */
 export interface User {
   /**
    * User's email address

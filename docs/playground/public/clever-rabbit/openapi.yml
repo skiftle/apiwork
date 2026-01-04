@@ -1,366 +1,572 @@
----
-components:
-  schemas:
-    errorResponseBody:
-      properties:
-        issues:
-          items:
-            "$ref": "#/components/schemas/issue"
-          type: array
-        layer:
-          enum:
-          - http
-          - contract
-          - domain
-          type: string
-      type: object
-      required:
-      - issues
-      - layer
-    issue:
-      properties:
-        code:
-          type: string
-        detail:
-          type: string
-        meta:
-          properties: {}
-          type: object
-        path:
-          items:
-            type: string
-          type: array
-        pointer:
-          type: string
-      type: object
-      required:
-      - code
-      - detail
-      - meta
-      - path
-      - pointer
-    nullableStringFilter:
-      properties:
-        contains:
-          type: string
-        endsWith:
-          type: string
-        eq:
-          type: string
-        in:
-          items:
-            type: string
-          type: array
-        'null':
-          type: boolean
-        startsWith:
-          type: string
-      type: object
-    offsetPagination:
-      properties:
-        current:
-          type: integer
-        items:
-          type: integer
-        next:
-          type:
-          - integer
-          - 'null'
-        prev:
-          type:
-          - integer
-          - 'null'
-        total:
-          type: integer
-      type: object
-      required:
-      - current
-      - items
-      - total
-    order:
-      properties:
-        createdAt:
-          type: string
-          format: date-time
-        id:
-          type: string
-        lineItems:
-          items:
-            type: string
-          type: array
-        orderNumber:
-          type: string
-        shippingAddress:
-          properties: {}
-          type: object
-        status:
-          type:
-          - string
-          - 'null'
-        total:
-          type:
-          - number
-          - 'null'
-        updatedAt:
-          type: string
-          format: date-time
-      type: object
-      required:
-      - createdAt
-      - id
-      - lineItems
-      - orderNumber
-      - shippingAddress
-      - status
-      - total
-      - updatedAt
-    orderCreatePayload:
-      properties:
-        lineItems:
-          items:
-            type: string
-          type: array
-        orderNumber:
-          type: string
-        shippingAddress:
-          properties: {}
-          type: object
-      type: object
-      required:
-      - orderNumber
-    orderCreateSuccessResponseBody:
-      properties:
-        meta:
-          properties: {}
-          type: object
-        order:
-          "$ref": "#/components/schemas/order"
-      type: object
-      required:
-      - order
-    orderFilter:
-      properties:
-        _and:
-          items:
-            "$ref": "#/components/schemas/orderFilter"
-          type: array
-        _not:
-          "$ref": "#/components/schemas/orderFilter"
-        _or:
-          items:
-            "$ref": "#/components/schemas/orderFilter"
-          type: array
-        status:
-          oneOf:
-          - type: string
-          - "$ref": "#/components/schemas/nullableStringFilter"
-      type: object
-    orderIndexSuccessResponseBody:
-      properties:
-        meta:
-          properties: {}
-          type: object
-        orders:
-          items:
-            "$ref": "#/components/schemas/order"
-          type: array
-        pagination:
-          "$ref": "#/components/schemas/offsetPagination"
-      type: object
-      required:
-      - orders
-      - pagination
-    orderPage:
-      properties:
-        number:
-          type: integer
-          minimum: 1
-        size:
-          type: integer
-          minimum: 1
-          maximum: 100
-      type: object
-    orderShowSuccessResponseBody:
-      properties:
-        meta:
-          properties: {}
-          type: object
-        order:
-          "$ref": "#/components/schemas/order"
-      type: object
-      required:
-      - order
-    orderSort:
-      properties:
-        createdAt:
-          enum:
-          - asc
-          - desc
-          type: string
-        status:
-          enum:
-          - asc
-          - desc
-          type: string
-      type: object
-    orderUpdatePayload:
-      properties:
-        lineItems:
-          items:
-            type: string
-          type: array
-        orderNumber:
-          type: string
-        shippingAddress:
-          properties: {}
-          type: object
-      type: object
-      required:
-      - orderNumber
-    orderUpdateSuccessResponseBody:
-      properties:
-        meta:
-          properties: {}
-          type: object
-        order:
-          "$ref": "#/components/schemas/order"
-      type: object
-      required:
-      - order
-    stringFilter:
-      properties:
-        contains:
-          type: string
-        endsWith:
-          type: string
-        eq:
-          type: string
-        in:
-          items:
-            type: string
-          type: array
-        startsWith:
-          type: string
-      type: object
-info:
-  title: "/clever_rabbit API"
-  version: 1.0.0
-openapi: 3.1.0
-paths:
-  orders/:
-    get:
-      operationId: ordersIndex
-      parameters:
-      - in: query
-        name: filter
-        required: false
-        schema:
-          oneOf:
-          - "$ref": "#/components/schemas/orderFilter"
-          - items:
+--- |-
+  {
+    "components": {
+      "schemas": {
+        "errorResponseBody": {
+          "properties": {
+            "issues": {
+              "items": {
+                "$ref": "#/components/schemas/issue"
+              },
+              "type": "array"
+            },
+            "layer": {
+              "enum": [
+                "http",
+                "contract",
+                "domain"
+              ],
+              "type": "string"
+            }
+          },
+          "type": "object",
+          "required": [
+            "issues",
+            "layer"
+          ]
+        },
+        "issue": {
+          "properties": {
+            "code": {
+              "type": "string"
+            },
+            "detail": {
+              "type": "string"
+            },
+            "meta": {
+              "properties": {},
+              "type": "object"
+            },
+            "path": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "pointer": {
+              "type": "string"
+            }
+          },
+          "type": "object",
+          "required": [
+            "code",
+            "detail",
+            "meta",
+            "path",
+            "pointer"
+          ]
+        },
+        "nullableStringFilter": {
+          "properties": {
+            "contains": {
+              "type": "string"
+            },
+            "endsWith": {
+              "type": "string"
+            },
+            "eq": {
+              "type": "string"
+            },
+            "in": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "null": {
+              "type": "boolean"
+            },
+            "startsWith": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "offsetPagination": {
+          "properties": {
+            "current": {
+              "type": "integer"
+            },
+            "items": {
+              "type": "integer"
+            },
+            "next": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "prev": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "total": {
+              "type": "integer"
+            }
+          },
+          "type": "object",
+          "required": [
+            "current",
+            "items",
+            "total"
+          ]
+        },
+        "order": {
+          "properties": {
+            "createdAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "id": {
+              "type": "string"
+            },
+            "lineItems": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "orderNumber": {
+              "type": "string"
+            },
+            "shippingAddress": {
+              "properties": {},
+              "type": "object"
+            },
+            "status": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "total": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "updatedAt": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "type": "object",
+          "required": [
+            "createdAt",
+            "id",
+            "lineItems",
+            "orderNumber",
+            "shippingAddress",
+            "status",
+            "total",
+            "updatedAt"
+          ]
+        },
+        "orderCreatePayload": {
+          "properties": {
+            "lineItems": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "orderNumber": {
+              "type": "string"
+            },
+            "shippingAddress": {
+              "properties": {},
+              "type": "object"
+            }
+          },
+          "type": "object",
+          "required": [
+            "orderNumber"
+          ]
+        },
+        "orderCreateSuccessResponseBody": {
+          "properties": {
+            "meta": {
+              "properties": {},
+              "type": "object"
+            },
+            "order": {
+              "$ref": "#/components/schemas/order"
+            }
+          },
+          "type": "object",
+          "required": [
+            "order"
+          ]
+        },
+        "orderFilter": {
+          "properties": {
+            "_and": {
+              "items": {
+                "$ref": "#/components/schemas/orderFilter"
+              },
+              "type": "array"
+            },
+            "_not": {
               "$ref": "#/components/schemas/orderFilter"
-            type: array
-      - in: query
-        name: page
-        required: false
-        schema:
-          "$ref": "#/components/schemas/orderPage"
-      - in: query
-        name: sort
-        required: false
-        schema:
-          oneOf:
-          - "$ref": "#/components/schemas/orderSort"
-          - items:
-              "$ref": "#/components/schemas/orderSort"
-            type: array
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/orderIndexSuccessResponseBody"
-          description: Successful response
-    post:
-      operationId: ordersCreate
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                order:
-                  "$ref": "#/components/schemas/orderCreatePayload"
-              type: object
-              required:
-              - order
-        required: true
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/orderCreateSuccessResponseBody"
-          description: Successful response
-        '422':
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/errorResponseBody"
-  orders/{id}:
-    get:
-      operationId: ordersShow
-      parameters:
-      - in: path
-        name: id
-        required: true
-        schema:
-          type: string
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/orderShowSuccessResponseBody"
-          description: Successful response
-    patch:
-      operationId: ordersUpdate
-      parameters:
-      - in: path
-        name: id
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                order:
-                  "$ref": "#/components/schemas/orderUpdatePayload"
-              type: object
-        required: true
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/orderUpdateSuccessResponseBody"
-          description: Successful response
-        '422':
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/errorResponseBody"
-    delete:
-      operationId: ordersDestroy
-      parameters:
-      - in: path
-        name: id
-        required: true
-        schema:
-          type: string
-      responses:
-        '204':
-          description: No content
+            },
+            "_or": {
+              "items": {
+                "$ref": "#/components/schemas/orderFilter"
+              },
+              "type": "array"
+            },
+            "status": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "$ref": "#/components/schemas/nullableStringFilter"
+                }
+              ]
+            }
+          },
+          "type": "object"
+        },
+        "orderIndexSuccessResponseBody": {
+          "properties": {
+            "meta": {
+              "properties": {},
+              "type": "object"
+            },
+            "orders": {
+              "items": {
+                "$ref": "#/components/schemas/order"
+              },
+              "type": "array"
+            },
+            "pagination": {
+              "$ref": "#/components/schemas/offsetPagination"
+            }
+          },
+          "type": "object",
+          "required": [
+            "orders",
+            "pagination"
+          ]
+        },
+        "orderPage": {
+          "properties": {
+            "number": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "size": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
+          },
+          "type": "object"
+        },
+        "orderShowSuccessResponseBody": {
+          "properties": {
+            "meta": {
+              "properties": {},
+              "type": "object"
+            },
+            "order": {
+              "$ref": "#/components/schemas/order"
+            }
+          },
+          "type": "object",
+          "required": [
+            "order"
+          ]
+        },
+        "orderSort": {
+          "properties": {
+            "createdAt": {
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "type": "string"
+            },
+            "status": {
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "orderUpdatePayload": {
+          "properties": {
+            "lineItems": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "orderNumber": {
+              "type": "string"
+            },
+            "shippingAddress": {
+              "properties": {},
+              "type": "object"
+            }
+          },
+          "type": "object",
+          "required": [
+            "orderNumber"
+          ]
+        },
+        "orderUpdateSuccessResponseBody": {
+          "properties": {
+            "meta": {
+              "properties": {},
+              "type": "object"
+            },
+            "order": {
+              "$ref": "#/components/schemas/order"
+            }
+          },
+          "type": "object",
+          "required": [
+            "order"
+          ]
+        },
+        "stringFilter": {
+          "properties": {
+            "contains": {
+              "type": "string"
+            },
+            "endsWith": {
+              "type": "string"
+            },
+            "eq": {
+              "type": "string"
+            },
+            "in": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "startsWith": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      }
+    },
+    "info": {
+      "title": "/clever_rabbit API",
+      "version": "1.0.0"
+    },
+    "openapi": "3.1.0",
+    "paths": {
+      "/orders": {
+        "get": {
+          "operationId": "ordersIndex",
+          "parameters": [
+            {
+              "in": "query",
+              "name": "filter",
+              "required": false,
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/orderFilter"
+                  },
+                  {
+                    "items": {
+                      "$ref": "#/components/schemas/orderFilter"
+                    },
+                    "type": "array"
+                  }
+                ]
+              }
+            },
+            {
+              "in": "query",
+              "name": "page",
+              "required": false,
+              "schema": {
+                "$ref": "#/components/schemas/orderPage"
+              }
+            },
+            {
+              "in": "query",
+              "name": "sort",
+              "required": false,
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/orderSort"
+                  },
+                  {
+                    "items": {
+                      "$ref": "#/components/schemas/orderSort"
+                    },
+                    "type": "array"
+                  }
+                ]
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/orderIndexSuccessResponseBody"
+                  }
+                }
+              },
+              "description": "Successful response"
+            }
+          }
+        },
+        "post": {
+          "operationId": "ordersCreate",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "order": {
+                      "$ref": "#/components/schemas/orderCreatePayload"
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "order"
+                  ]
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/orderCreateSuccessResponseBody"
+                  }
+                }
+              },
+              "description": "Successful response"
+            },
+            "422": {
+              "description": "Unprocessable Entity",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/errorResponseBody"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/orders/{id}": {
+        "get": {
+          "operationId": "ordersShow",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/orderShowSuccessResponseBody"
+                  }
+                }
+              },
+              "description": "Successful response"
+            }
+          }
+        },
+        "patch": {
+          "operationId": "ordersUpdate",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "order": {
+                      "$ref": "#/components/schemas/orderUpdatePayload"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/orderUpdateSuccessResponseBody"
+                  }
+                }
+              },
+              "description": "Successful response"
+            },
+            "422": {
+              "description": "Unprocessable Entity",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/errorResponseBody"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "delete": {
+          "operationId": "ordersDestroy",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "No content"
+            }
+          }
+        }
+      }
+    }
+  }

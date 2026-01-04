@@ -63,7 +63,7 @@ module Apiwork
 
         def build_info
           info = @api_class.structure.info
-          return {} unless info
+          return nil unless info
 
           {
             contact: info[:contact],

@@ -28,7 +28,7 @@ export const CommentUpdatePayloadSchema = z.object({
 });
 
 export const ImageSchema = z.object({
-  comments: z.array(z.unknown()).optional(),
+  comments: z.array(z.object({})).optional(),
   createdAt: z.iso.datetime(),
   height: z.number().int().nullable(),
   id: z.string(),
@@ -82,7 +82,7 @@ export const OffsetPaginationSchema = z.object({
 
 export const PostSchema = z.object({
   body: z.string().nullable(),
-  comments: z.array(z.unknown()).optional(),
+  comments: z.array(z.object({})).optional(),
   createdAt: z.iso.datetime(),
   id: z.string(),
   title: z.string()
@@ -112,7 +112,7 @@ export const PostSortSchema = z.object({
 });
 
 export const VideoSchema = z.object({
-  comments: z.array(z.unknown()).optional(),
+  comments: z.array(z.object({})).optional(),
   createdAt: z.iso.datetime(),
   duration: z.number().int().nullable(),
   id: z.string(),
@@ -416,7 +416,7 @@ export interface ErrorResponseBody {
 }
 
 export interface Image {
-  comments?: unknown[];
+  comments?: object[];
   createdAt: string;
   height: null | number;
   id: string;
@@ -474,7 +474,7 @@ export interface OffsetPagination {
 
 export interface Post {
   body: null | string;
-  comments?: unknown[];
+  comments?: object[];
   createdAt: string;
   id: string;
   title: string;
@@ -508,7 +508,7 @@ export interface PostSort {
 export type SortDirection = 'asc' | 'desc';
 
 export interface Video {
-  comments?: unknown[];
+  comments?: object[];
   createdAt: string;
   duration: null | number;
   id: string;

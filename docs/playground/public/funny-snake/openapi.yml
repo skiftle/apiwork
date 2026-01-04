@@ -1,137 +1,230 @@
----
-components:
-  schemas:
-    errorResponseBody:
-      properties:
-        issues:
-          items:
-            "$ref": "#/components/schemas/issue"
-          type: array
-        layer:
-          enum:
-          - http
-          - contract
-          - domain
-          type: string
-      type: object
-      required:
-      - issues
-      - layer
-    invoice:
-      properties:
-        createdAt:
-          type: string
-          format: date-time
-        id:
-          type: string
-          format: uuid
-        issuedOn:
-          type: string
-          format: date
-        notes:
-          type: string
-        number:
-          type: string
-        status:
-          type: string
-        updatedAt:
-          type: string
-          format: date-time
-      type: object
-      required:
-      - createdAt
-      - id
-      - issuedOn
-      - notes
-      - number
-      - status
-      - updatedAt
-    invoicePayload:
-      properties:
-        issuedOn:
-          type: string
-          format: date
-        notes:
-          type: string
-        number:
-          type: string
-        status:
-          type: string
-      type: object
-      required:
-      - issuedOn
-      - notes
-      - number
-      - status
-    issue:
-      properties:
-        code:
-          type: string
-        detail:
-          type: string
-        meta:
-          properties: {}
-          type: object
-        path:
-          items:
-            type: string
-          type: array
-        pointer:
-          type: string
-      type: object
-      required:
-      - code
-      - detail
-      - meta
-      - path
-      - pointer
-info:
-  title: "/funny_snake API"
-  version: 1.0.0
-openapi: 3.1.0
-paths:
-  invoices/:
-    get:
-      operationId: invoicesIndex
-      responses:
-        '204':
-          description: No content
-    post:
-      operationId: invoicesCreate
-      responses:
-        '204':
-          description: No content
-  invoices/{id}:
-    get:
-      operationId: invoicesShow
-      parameters:
-      - in: path
-        name: id
-        required: true
-        schema:
-          type: string
-      responses:
-        '204':
-          description: No content
-    patch:
-      operationId: invoicesUpdate
-      parameters:
-      - in: path
-        name: id
-        required: true
-        schema:
-          type: string
-      responses:
-        '204':
-          description: No content
-    delete:
-      operationId: invoicesDestroy
-      parameters:
-      - in: path
-        name: id
-        required: true
-        schema:
-          type: string
-      responses:
-        '204':
-          description: No content
+--- |-
+  {
+    "components": {
+      "schemas": {
+        "errorResponseBody": {
+          "properties": {
+            "issues": {
+              "items": {
+                "$ref": "#/components/schemas/issue"
+              },
+              "type": "array"
+            },
+            "layer": {
+              "enum": [
+                "http",
+                "contract",
+                "domain"
+              ],
+              "type": "string"
+            }
+          },
+          "type": "object",
+          "required": [
+            "issues",
+            "layer"
+          ]
+        },
+        "invoice": {
+          "properties": {
+            "createdAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "issuedOn": {
+              "type": "string",
+              "format": "date"
+            },
+            "notes": {
+              "type": "string"
+            },
+            "number": {
+              "type": "string"
+            },
+            "status": {
+              "type": "string"
+            },
+            "updatedAt": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "type": "object",
+          "required": [
+            "createdAt",
+            "id",
+            "issuedOn",
+            "notes",
+            "number",
+            "status",
+            "updatedAt"
+          ]
+        },
+        "invoicePayload": {
+          "properties": {
+            "issuedOn": {
+              "type": "string",
+              "format": "date"
+            },
+            "notes": {
+              "type": "string"
+            },
+            "number": {
+              "type": "string"
+            },
+            "status": {
+              "type": "string"
+            }
+          },
+          "type": "object",
+          "required": [
+            "issuedOn",
+            "notes",
+            "number",
+            "status"
+          ]
+        },
+        "issue": {
+          "properties": {
+            "code": {
+              "type": "string"
+            },
+            "detail": {
+              "type": "string"
+            },
+            "meta": {
+              "properties": {},
+              "type": "object"
+            },
+            "path": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "pointer": {
+              "type": "string"
+            }
+          },
+          "type": "object",
+          "required": [
+            "code",
+            "detail",
+            "meta",
+            "path",
+            "pointer"
+          ]
+        }
+      }
+    },
+    "info": {
+      "title": "/funny_snake API",
+      "version": "1.0.0"
+    },
+    "openapi": "3.1.0",
+    "paths": {
+      "/invoices": {
+        "get": {
+          "operationId": "invoicesIndex",
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              },
+              "description": "Successful response"
+            }
+          }
+        },
+        "post": {
+          "operationId": "invoicesCreate",
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              },
+              "description": "Successful response"
+            }
+          }
+        }
+      },
+      "/invoices/{id}": {
+        "get": {
+          "operationId": "invoicesShow",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              },
+              "description": "Successful response"
+            }
+          }
+        },
+        "patch": {
+          "operationId": "invoicesUpdate",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              },
+              "description": "Successful response"
+            }
+          }
+        },
+        "delete": {
+          "operationId": "invoicesDestroy",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              },
+              "description": "Successful response"
+            }
+          }
+        }
+      }
+    }
+  }

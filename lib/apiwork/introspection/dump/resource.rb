@@ -39,7 +39,18 @@ module Apiwork
             actions[action_name] = { path:, method: action.method }
 
             action_definition = contract_class&.action_definition(action_name)
-            next unless action_definition
+            unless action_definition
+              actions[action_name].merge!(
+                description: nil,
+                operation_id: nil,
+                raises: [],
+                request: { body: {}, query: {} },
+                response: { body: {}, no_content: false },
+                summary: nil,
+                tags: [],
+              )
+              next
+            end
 
             actions[action_name].merge!(ActionDefinition.new(action_definition).to_h.except(:deprecated))
             actions[action_name][:deprecated] = true if action_definition.deprecated
