@@ -3,6 +3,8 @@
 module Apiwork
   module Spec
     class OpenAPI < Base
+      KEY_ORDER = %i[openapi info servers paths components].freeze
+
       spec_name :openapi
       output :hash
 
@@ -10,15 +12,13 @@ module Apiwork
       option :key_format, default: :keep, enum: %i[keep camel underscore kebab], type: :symbol
 
       def generate
-        { # rubocop:disable Apiwork/SortHash
-          openapi: version,
+        {
+          components: { schemas: build_schemas },
           info: build_info,
-          servers: build_servers,
+          openapi: version,
           paths: build_paths,
-          components: {
-            schemas: build_schemas,
-          },
-        }.compact
+          servers: build_servers,
+        }.slice(*KEY_ORDER).compact
       end
 
       private
