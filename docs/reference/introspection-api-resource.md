@@ -21,8 +21,8 @@ resource.parent_identifiers # => []
 resource.resources          # => {} or nested resources
 
 resource.actions.each_value do |action|
-  action.request  # => Action::Request or nil
-  action.response # => Action::Response or nil
+  action.request  # => Action::Request
+  action.response # => Action::Response
 end
 ```
 

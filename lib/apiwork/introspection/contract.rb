@@ -15,8 +15,8 @@ module Apiwork
     #   contract.enums[:status].values    # => ["draft", "published"]
     #
     #   contract.actions.each_value do |action|
-    #     action.request   # => Action::Request or nil
-    #     action.response  # => Action::Response or nil
+    #     action.request   # => Action::Request
+    #     action.response  # => Action::Response
     #   end
     class Contract
       def initialize(dump)

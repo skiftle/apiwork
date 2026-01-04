@@ -19,8 +19,8 @@ resource.actions[:create].request  # => Action::Request
 
 resource.actions.each_value do |action|
   action.method      # => :get, :post, :patch, :delete
-  action.request     # => Action::Request or nil
-  action.response    # => Action::Response or nil
+  action.request     # => Action::Request
+  action.response    # => Action::Response
   action.deprecated? # => false
 end
 ```

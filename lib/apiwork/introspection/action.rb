@@ -12,8 +12,8 @@ module Apiwork
     #
     #   resource.actions.each_value do |action|
     #     action.method      # => :get, :post, :patch, :delete
-    #     action.request     # => Action::Request or nil
-    #     action.response    # => Action::Response or nil
+    #     action.request     # => Action::Request
+    #     action.response    # => Action::Response
     #     action.deprecated? # => false
     #   end
     class Action
@@ -34,14 +34,14 @@ module Apiwork
       end
 
       # @api public
-      # @return [Action::Request, nil] request definition
+      # @return [Action::Request] request definition
       # @see Action::Request
       def request
         @request ||= @dump[:request] ? Request.new(@dump[:request]) : nil
       end
 
       # @api public
-      # @return [Action::Response, nil] response definition
+      # @return [Action::Response] response definition
       # @see Action::Response
       def response
         @response ||= @dump[:response] ? Response.new(@dump[:response]) : nil
