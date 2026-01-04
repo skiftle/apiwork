@@ -21,7 +21,7 @@ module Apiwork
         # @api public
         # @return [Boolean] whether this object is partial (for update payloads)
         def partial?
-          @dump[:partial] == true
+          @dump[:partial]
         end
 
         # @api public

@@ -83,49 +83,82 @@ module Apiwork
           return dump_union_param(options) if options[:type] == :union
           return dump_custom_type_param(options) if options[:custom_type]
 
-          type_value = resolve_type(options[:type])
-
-          result = {
+          {
             as: options[:as],
+            default: options[:default],
+            deprecated: options[:deprecated] == true,
+            description: resolve_attribute_description(options),
+            discriminator: nil,
             enum: resolve_enum(options),
+            example: options[:example],
+            format: options[:format],
+            max: options[:max],
+            min: options[:min],
+            nullable: options[:nullable] == true,
             of: resolve_of(options),
-            shape: dump_shape(options),
-            type: type_value,
+            optional: options[:optional] == true,
+            partial: options[:partial] == true,
+            shape: dump_shape(options) || {},
+            tag: nil,
+            type: resolve_type(options[:type]),
             value: options[:type] == :literal ? options[:value] : nil,
+            variants: [],
           }
-
-          apply_boolean_flags(result, options)
-          apply_metadata_fields(result, options)
-          result[:default] = options[:default] unless options[:default].nil?
-
-          result
         end
 
         def dump_union_param(options)
-          result = dump_union(options[:union])
-          apply_boolean_flags(result, options)
-          apply_metadata_fields(result, options)
-          result
+          union_data = dump_union(options[:union])
+
+          {
+            as: options[:as],
+            default: options[:default],
+            deprecated: options[:deprecated] == true,
+            description: resolve_attribute_description(options),
+            discriminator: union_data[:discriminator],
+            enum: nil,
+            example: options[:example],
+            format: options[:format],
+            max: nil,
+            min: nil,
+            nullable: options[:nullable] == true,
+            of: nil,
+            optional: options[:optional] == true,
+            partial: false,
+            shape: {},
+            tag: nil,
+            type: :union,
+            value: nil,
+            variants: union_data[:variants],
+          }
         end
 
         def dump_custom_type_param(options)
           custom_type_name = options[:custom_type]
           if @param_definition.contract_class.resolve_custom_type(custom_type_name)
-            custom_type_name = qualified_name(
-              custom_type_name,
-              @param_definition,
-            )
+            custom_type_name = qualified_name(custom_type_name, @param_definition)
           end
 
-          result = { as: options[:as], type: custom_type_name }
-          apply_boolean_flags(result, options)
-          apply_metadata_fields(result, options)
-          result
-        end
-
-        def apply_boolean_flags(result, options)
-          result[:nullable] = true if options[:nullable]
-          result[:optional] = true if options[:optional]
+          {
+            as: options[:as],
+            default: options[:default],
+            deprecated: options[:deprecated] == true,
+            description: resolve_attribute_description(options),
+            discriminator: nil,
+            enum: nil,
+            example: options[:example],
+            format: options[:format],
+            max: nil,
+            min: nil,
+            nullable: options[:nullable] == true,
+            of: nil,
+            optional: options[:optional] == true,
+            partial: false,
+            shape: {},
+            tag: nil,
+            type: custom_type_name,
+            value: nil,
+            variants: [],
+          }
         end
 
         def resolve_type(type_value)
@@ -175,59 +208,77 @@ module Apiwork
         end
 
         def dump_union(union_definition)
-          result = {
-            type: :union,
+          {
+            discriminator: union_definition.discriminator,
             variants: union_definition.variants.map { |variant| dump_variant(variant) },
           }
-          result[:discriminator] = union_definition.discriminator if union_definition.discriminator
-          result
         end
 
         def dump_variant(variant_definition)
           variant_type = variant_definition[:type]
 
-          custom_type_block = @param_definition.contract_class.resolve_custom_type(variant_type)
-          if custom_type_block
-            qualified_variant_type = qualified_name(variant_type, @param_definition)
-            result = { type: qualified_variant_type }
-            result[:tag] = variant_definition[:tag] if variant_definition[:tag]
-            return result
-          end
-
-          result = { type: variant_type }
-
-          result[:tag] = variant_definition[:tag] if variant_definition[:tag]
-
-          if variant_definition[:of]
-            result[:of] = if @param_definition.contract_class.resolve_custom_type(variant_definition[:of])
-                            qualified_name(variant_definition[:of], @param_definition)
+          resolved_type = if @param_definition.contract_class.resolve_custom_type(variant_type)
+                            qualified_name(variant_type, @param_definition)
                           else
-                            variant_definition[:of]
+                            variant_type
                           end
-          end
 
-          if variant_definition[:enum]
-            result[:enum] = if variant_definition[:enum].is_a?(Symbol)
-                              if @param_definition.contract_class.respond_to?(:schema_class) &&
-                                 @param_definition.contract_class.schema_class
-                                scope = scope_for_enum(@param_definition, variant_definition[:enum])
-                                api_class = @param_definition.contract_class.api_class
-                                api_class&.scoped_name(scope, variant_definition[:enum]) || variant_definition[:enum]
-                              else
-                                variant_definition[:enum]
-                              end
-                            else
-                              variant_definition[:enum]
-                            end
-          end
+          {
+            as: nil,
+            default: nil,
+            deprecated: false,
+            description: nil,
+            discriminator: nil,
+            enum: resolve_variant_enum(variant_definition),
+            example: nil,
+            format: nil,
+            max: nil,
+            min: nil,
+            nullable: false,
+            of: resolve_variant_of(variant_definition),
+            optional: false,
+            partial: false,
+            shape: resolve_variant_shape(variant_definition, variant_type),
+            tag: variant_definition[:tag],
+            type: resolved_type,
+            value: nil,
+            variants: [],
+          }
+        end
 
+        def resolve_variant_enum(variant_definition)
+          return nil unless variant_definition[:enum]
+
+          if variant_definition[:enum].is_a?(Symbol)
+            if @param_definition.contract_class.respond_to?(:schema_class) &&
+               @param_definition.contract_class.schema_class
+              scope = scope_for_enum(@param_definition, variant_definition[:enum])
+              api_class = @param_definition.contract_class.api_class
+              api_class&.scoped_name(scope, variant_definition[:enum]) || variant_definition[:enum]
+            else
+              variant_definition[:enum]
+            end
+          else
+            variant_definition[:enum]
+          end
+        end
+
+        def resolve_variant_of(variant_definition)
+          return nil unless variant_definition[:of]
+
+          if @param_definition.contract_class.resolve_custom_type(variant_definition[:of])
+            qualified_name(variant_definition[:of], @param_definition)
+          else
+            variant_definition[:of]
+          end
+        end
+
+        def resolve_variant_shape(variant_definition, variant_type)
           if variant_definition[:shape]
-            result[:shape] = dump_nested_shape(variant_definition[:shape])
+            dump_nested_shape(variant_definition[:shape])
           elsif [:object, :array].include?(variant_type)
-            result[:shape] = {}
+            {}
           end
-
-          result
         end
 
         def dump_nested_shape(shape_definition)
@@ -240,15 +291,6 @@ module Apiwork
           return dumped || {} if [:object, :array].include?(options[:type])
 
           dumped
-        end
-
-        def apply_metadata_fields(result, options)
-          result[:description] = resolve_attribute_description(options)
-          result[:example] = options[:example]
-          result[:format] = options[:format]
-          result[:max] = options[:max]
-          result[:min] = options[:min]
-          result[:deprecated] = true if options[:deprecated]
         end
 
         def resolve_attribute_description(options)

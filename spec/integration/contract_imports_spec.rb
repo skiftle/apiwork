@@ -230,8 +230,8 @@ RSpec.describe 'Contract Imports' do
 
       # The request body should reference the imported type
       expect(serialized[:request][:body][:shipping_address][:type]).to eq(:user_address)
-      # Required is now the default, so :optional key should not be present
-      expect(serialized[:request][:body][:shipping_address]).not_to have_key(:optional)
+      # Required is now the default, so optional should be false
+      expect(serialized[:request][:body][:shipping_address][:optional]).to be(false)
     end
   end
 

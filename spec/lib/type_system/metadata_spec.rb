@@ -53,7 +53,7 @@ RSpec.describe 'TypeSystem Metadata' do
       expect(types[:legacy_response]).to include(deprecated: true)
     end
 
-    it 'omits deprecated when false' do
+    it 'includes deprecated: false when not deprecated' do
       api = Apiwork::API.define '/api/test' do
         type :current_response, deprecated: false do
           param :field, type: :string
@@ -62,7 +62,7 @@ RSpec.describe 'TypeSystem Metadata' do
 
       types = Apiwork::Introspection::Dump::Type.new(api).types
 
-      expect(types[:current_response]).not_to have_key(:deprecated)
+      expect(types[:current_response][:deprecated]).to be(false)
     end
 
     it 'stores and serializes type with all metadata fields' do
@@ -87,7 +87,7 @@ RSpec.describe 'TypeSystem Metadata' do
       )
     end
 
-    it 'includes metadata fields with nil when not set' do
+    it 'includes all metadata fields with defaults when not set' do
       api = Apiwork::API.define '/api/test' do
         type :simple_type do
           param :field, type: :string
@@ -96,14 +96,14 @@ RSpec.describe 'TypeSystem Metadata' do
 
       types = Apiwork::Introspection::Dump::Type.new(api).types
 
-      # Metadata fields are present with nil values when not set
+      # All metadata fields are present with proper defaults
       expect(types[:simple_type][:description]).to be_nil
       expect(types[:simple_type][:example]).to be_nil
       expect(types[:simple_type][:format]).to be_nil
-      expect(types[:simple_type]).not_to have_key(:deprecated)
+      expect(types[:simple_type][:deprecated]).to be(false)
     end
 
-    it 'omits deprecated: false (only includes when true)' do
+    it 'includes deprecated: false when explicitly set to false' do
       api = Apiwork::API.define '/api/test' do
         type :normal_type, deprecated: false do
           param :field, type: :string
@@ -112,8 +112,8 @@ RSpec.describe 'TypeSystem Metadata' do
 
       types = Apiwork::Introspection::Dump::Type.new(api).types
 
-      # deprecated: false should be omitted (only include when true)
-      expect(types[:normal_type]).not_to have_key(:deprecated)
+      # deprecated is always present as a boolean
+      expect(types[:normal_type][:deprecated]).to be(false)
     end
 
     it 'preserves empty string description' do
@@ -162,15 +162,15 @@ RSpec.describe 'TypeSystem Metadata' do
       expect(enums[:old_status][:deprecated]).to be true
     end
 
-    it 'omits deprecated: false for enums' do
+    it 'includes deprecated: false for enums when not deprecated' do
       api = Apiwork::API.define '/api/test' do
         enum :current_status, deprecated: false, values: %w[active inactive]
       end
 
       enums = Apiwork::Introspection::Dump::Type.new(api).enums
 
-      # deprecated: false should be omitted (only include when true)
-      expect(enums[:current_status]).not_to have_key(:deprecated)
+      # deprecated is always present as a boolean
+      expect(enums[:current_status][:deprecated]).to be(false)
     end
 
     it 'stores and serializes enum with all metadata fields' do
@@ -201,7 +201,7 @@ RSpec.describe 'TypeSystem Metadata' do
       expect(enums[:simple_enum][:values]).to eq(%i[a b c])
     end
 
-    it 'includes metadata fields with nil when not set' do
+    it 'includes all metadata fields with defaults when not set' do
       api = Apiwork::API.define '/api/test' do
         enum :minimal_enum, values: %i[x y z]
       end
@@ -212,21 +212,21 @@ RSpec.describe 'TypeSystem Metadata' do
       expect(enums[:minimal_enum]).to have_key(:values)
       expect(enums[:minimal_enum][:values]).to eq(%i[x y z])
 
-      # Metadata fields are present with nil values when not set
+      # All metadata fields are present with proper defaults
       expect(enums[:minimal_enum][:description]).to be_nil
       expect(enums[:minimal_enum][:example]).to be_nil
-      expect(enums[:minimal_enum]).not_to have_key(:deprecated)
+      expect(enums[:minimal_enum][:deprecated]).to be(false)
     end
 
-    it 'omits deprecated: false even when explicitly set' do
+    it 'includes deprecated: false when explicitly set to false' do
       api = Apiwork::API.define '/api/test' do
         enum :normal_enum, deprecated: false, values: %i[a b]
       end
 
       enums = Apiwork::Introspection::Dump::Type.new(api).enums
 
-      # deprecated: false should be omitted (only include when true)
-      expect(enums[:normal_enum]).not_to have_key(:deprecated)
+      # deprecated is always present as a boolean
+      expect(enums[:normal_enum][:deprecated]).to be(false)
     end
 
     it 'preserves empty string description' do

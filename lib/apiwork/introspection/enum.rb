@@ -35,7 +35,7 @@ module Apiwork
       # @api public
       # @return [Boolean] whether this enum is deprecated
       def deprecated?
-        @dump[:deprecated] == true
+        @dump[:deprecated]
       end
 
       # @api public

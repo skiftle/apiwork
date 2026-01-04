@@ -9,7 +9,8 @@ module Apiwork
         end
 
         def to_h
-          result = {
+          {
+            deprecated: @action_definition.deprecated == true,
             description: @action_definition.description || i18n_lookup(:description),
             operation_id: @action_definition.operation_id,
             raises: raises,
@@ -18,10 +19,6 @@ module Apiwork
             summary: @action_definition.summary || i18n_lookup(:summary),
             tags: @action_definition.tags || [],
           }
-
-          result[:deprecated] = true if @action_definition.deprecated
-
-          result
         end
 
         private
@@ -50,15 +47,15 @@ module Apiwork
         end
 
         def dump_response(response_definition)
-          return {} unless response_definition
-          return { no_content: true } if response_definition.no_content?
+          return { body: {}, no_content: false } unless response_definition
+          return { body: {}, no_content: true } if response_definition.no_content?
 
           body_param_definition = response_definition.body_param_definition
-          return {} unless body_param_definition
+          return { body: {}, no_content: false } unless body_param_definition
 
           result_wrapper = response_definition.result_wrapper
           dumped = ParamDefinition.new(body_param_definition, result_wrapper:).to_h
-          { body: dumped }
+          { body: dumped, no_content: false }
         end
 
         def raises

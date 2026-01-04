@@ -36,19 +36,19 @@ module Apiwork
         # @api public
         # @return [Boolean] whether this field can be null
         def nullable?
-          @dump[:nullable] == true
+          @dump[:nullable]
         end
 
         # @api public
         # @return [Boolean] whether this field is optional
         def optional?
-          @dump[:optional] == true
+          @dump[:optional]
         end
 
         # @api public
         # @return [Boolean] whether this field is deprecated
         def deprecated?
-          @dump[:deprecated] == true
+          @dump[:deprecated]
         end
 
         # @api public

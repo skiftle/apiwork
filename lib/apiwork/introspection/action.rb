@@ -80,7 +80,7 @@ module Apiwork
       # @api public
       # @return [Boolean] whether this action is deprecated
       def deprecated?
-        @dump[:deprecated] == true
+        @dump[:deprecated]
       end
 
       # @api public

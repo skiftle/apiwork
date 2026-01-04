@@ -30,7 +30,7 @@ module Apiwork
         # @api public
         # @return [Boolean] whether this is a no-content response (204)
         def no_content?
-          @data[:no_content] == true
+          @data[:no_content]
         end
 
         # @api public

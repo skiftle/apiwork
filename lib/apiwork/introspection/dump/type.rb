@@ -27,36 +27,38 @@ module Apiwork
         def dump_type(qualified_name, metadata)
           expanded_shape = metadata[:expanded_payload] ||= expand_payload(metadata)
 
-          base = if expanded_shape.is_a?(Hash) && expanded_shape[:type] == :union
-                   expanded_shape.merge(
-                     shape: expanded_shape[:shape] || {},
-                     variants: expanded_shape[:variants] || [],
-                   )
-                 else
-                   { shape: expanded_shape || {}, type: :object, variants: [] }
-                 end
-
-          result = base.merge(
-            description: resolve_type_description(qualified_name, metadata),
-            example: metadata[:example] || metadata[:schema_class]&.example,
-            format: metadata[:format],
-          )
-
-          result[:deprecated] = true if metadata[:deprecated]
-
-          result
+          if expanded_shape.is_a?(Hash) && expanded_shape[:type] == :union
+            {
+              deprecated: metadata[:deprecated] == true,
+              description: resolve_type_description(qualified_name, metadata),
+              discriminator: expanded_shape[:discriminator],
+              example: metadata[:example] || metadata[:schema_class]&.example,
+              format: metadata[:format],
+              shape: expanded_shape[:shape] || {},
+              type: :union,
+              variants: expanded_shape[:variants] || [],
+            }
+          else
+            {
+              deprecated: metadata[:deprecated] == true,
+              description: resolve_type_description(qualified_name, metadata),
+              discriminator: nil,
+              example: metadata[:example] || metadata[:schema_class]&.example,
+              format: metadata[:format],
+              shape: expanded_shape || {},
+              type: :object,
+              variants: [],
+            }
+          end
         end
 
         def dump_enum(qualified_name, metadata)
-          result = {
+          {
+            deprecated: metadata[:deprecated] == true,
             description: resolve_enum_description(qualified_name, metadata),
             example: metadata[:example],
-            values: metadata[:values],
+            values: metadata[:values] || [],
           }
-
-          result[:deprecated] = true if metadata[:deprecated]
-
-          result
         end
 
         private
