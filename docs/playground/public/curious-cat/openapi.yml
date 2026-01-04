@@ -1,7 +1,7 @@
 ---
 openapi: 3.1.0
 info:
-  title: "/curious_cat API"
+  title: "/curious_cat"
   version: 1.0.0
 paths:
   "/profiles":

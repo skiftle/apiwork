@@ -1,7 +1,7 @@
 ---
 openapi: 3.1.0
 info:
-  title: "/bold_falcon API"
+  title: "/bold_falcon"
   version: 1.0.0
 paths:
   "/articles":

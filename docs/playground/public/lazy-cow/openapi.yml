@@ -1,7 +1,7 @@
 ---
 openapi: 3.1.0
 info:
-  title: "/lazy_cow API"
+  title: "/lazy_cow"
   version: 1.0.0
 paths:
   "/status/health":

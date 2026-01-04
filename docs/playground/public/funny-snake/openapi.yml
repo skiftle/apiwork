@@ -1,7 +1,7 @@
 ---
 openapi: 3.1.0
 info:
-  title: "/funny_snake API"
+  title: "/funny_snake"
   version: 1.0.0
 paths:
   "/invoices":

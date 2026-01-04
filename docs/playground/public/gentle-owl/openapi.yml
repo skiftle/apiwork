@@ -1,7 +1,7 @@
 ---
 openapi: 3.1.0
 info:
-  title: "/gentle_owl API"
+  title: "/gentle_owl"
   version: 1.0.0
 paths:
   "/comments":

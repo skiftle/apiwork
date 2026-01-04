@@ -1,7 +1,7 @@
 ---
 openapi: 3.1.0
 info:
-  title: "/mighty_wolf API"
+  title: "/mighty_wolf"
   version: 1.0.0
 paths:
   "/vehicles":
