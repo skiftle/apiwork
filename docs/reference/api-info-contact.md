@@ -4,13 +4,13 @@ prev: false
 next: false
 ---
 
-# API::InfoBuilder::ContactBuilder
+# API::Info::Contact
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info_builder/contact_builder.rb#L10)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/contact.rb#L10)
 
 Defines contact information for the API.
 
-Used within the `contact` block in [API::InfoBuilder](api-info-builder).
+Used within the `contact` block in [API::Info](api-info).
 
 ## Instance Methods
 
@@ -18,7 +18,7 @@ Used within the `contact` block in [API::InfoBuilder](api-info-builder).
 
 `#email(text)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info_builder/contact_builder.rb#L41)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/contact.rb#L41)
 
 Sets the contact email.
 
@@ -46,7 +46,7 @@ end
 
 `#name(text)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info_builder/contact_builder.rb#L27)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/contact.rb#L27)
 
 Sets the contact name.
 
@@ -74,7 +74,7 @@ end
 
 `#url(text)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info_builder/contact_builder.rb#L55)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/contact.rb#L55)
 
 Sets the contact URL.
 

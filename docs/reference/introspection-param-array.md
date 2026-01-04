@@ -28,7 +28,7 @@ param.boundable? # => true
 
 `#array?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L50)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L44)
 
 **Returns**
 
@@ -64,7 +64,7 @@ param.boundable? # => true
 
 `#boundable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L56)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L50)
 
 **Returns**
 
@@ -232,7 +232,7 @@ param.boundable? # => true
 
 `#max`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L44)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L38)
 
 **Returns**
 
@@ -244,7 +244,7 @@ param.boundable? # => true
 
 `#min`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L38)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L32)
 
 **Returns**
 
@@ -340,7 +340,7 @@ param.boundable? # => true
 
 `#shape`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L32)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L26)
 
 **Returns**
 
@@ -388,7 +388,7 @@ param.boundable? # => true
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L62)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L56)
 
 **Returns**
 

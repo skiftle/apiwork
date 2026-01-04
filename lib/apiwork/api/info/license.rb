@@ -2,12 +2,12 @@
 
 module Apiwork
   module API
-    class InfoBuilder
+    class Info
       # @api public
       # Defines license information for the API.
       #
-      # Used within the `license` block in {API::InfoBuilder}.
-      class LicenseBuilder
+      # Used within the `license` block in {API::Info}.
+      class License
         attr_reader :data
 
         def initialize

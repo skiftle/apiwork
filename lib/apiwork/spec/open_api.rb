@@ -10,7 +10,7 @@ module Apiwork
       option :key_format, default: :keep, enum: %i[keep camel underscore kebab], type: :symbol
 
       def generate
-        {
+        { # rubocop:disable Apiwork/SortHash
           openapi: version,
           info: build_info,
           servers: build_servers,

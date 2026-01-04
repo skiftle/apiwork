@@ -360,9 +360,9 @@ module Apiwork
         # @api public
         # Defines API metadata.
         #
-        # @yield block evaluated in {InfoBuilder} context
+        # @yield block evaluated in {Info} context
         # @return [void]
-        # @see API::InfoBuilder
+        # @see API::Info
         #
         # @example
         #   info do
@@ -370,7 +370,7 @@ module Apiwork
         #     version '1.0.0'
         #   end
         def info(&block)
-          builder = InfoBuilder.new
+          builder = Info.new
           builder.instance_eval(&block)
           @structure.info = builder.info
         end

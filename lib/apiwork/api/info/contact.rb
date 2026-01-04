@@ -2,12 +2,12 @@
 
 module Apiwork
   module API
-    class InfoBuilder
+    class Info
       # @api public
       # Defines contact information for the API.
       #
-      # Used within the `contact` block in {API::InfoBuilder}.
-      class ContactBuilder
+      # Used within the `contact` block in {API::Info}.
+      class Contact
         attr_reader :data
 
         def initialize

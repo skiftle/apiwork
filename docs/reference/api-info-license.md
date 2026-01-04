@@ -4,13 +4,13 @@ prev: false
 next: false
 ---
 
-# API::InfoBuilder::LicenseBuilder
+# API::Info::License
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info_builder/license_builder.rb#L10)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/license.rb#L10)
 
 Defines license information for the API.
 
-Used within the `license` block in [API::InfoBuilder](api-info-builder).
+Used within the `license` block in [API::Info](api-info).
 
 ## Instance Methods
 
@@ -18,7 +18,7 @@ Used within the `license` block in [API::InfoBuilder](api-info-builder).
 
 `#name(text)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info_builder/license_builder.rb#L27)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/license.rb#L27)
 
 Sets the license name.
 
@@ -46,7 +46,7 @@ end
 
 `#url(text)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info_builder/license_builder.rb#L41)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/license.rb#L41)
 
 Sets the license URL.
 

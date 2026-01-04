@@ -51,7 +51,7 @@ end
 
 `#error_codes`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L71)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L65)
 
 **Returns**
 
@@ -71,7 +71,7 @@ end
 
 **Returns**
 
-`API::Info` — API metadata
+[API::Info](api-info), `nil` — API metadata, or nil if not defined
 
 **See also**
 
@@ -88,18 +88,6 @@ end
 **Returns**
 
 [String](introspection-string), `nil` — API mount path (e.g., "/api/v1")
-
----
-
-### #raises
-
-`#raises`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L64)
-
-**Returns**
-
-`Array<Symbol>` — API-level error codes that may be raised
 
 ---
 
@@ -123,7 +111,7 @@ end
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L77)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L71)
 
 **Returns**
 

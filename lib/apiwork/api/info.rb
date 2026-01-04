@@ -7,7 +7,7 @@ module Apiwork
     #
     # Sets title, version, contact, license, and servers.
     # Used by spec generators via {Spec.generate}.
-    class InfoBuilder
+    class Info
       attr_reader :info
 
       def initialize
@@ -59,16 +59,16 @@ module Apiwork
       # @api public
       # Defines contact information.
       #
-      # @yield block evaluated in {ContactBuilder} context
+      # @yield block evaluated in {Contact} context
       # @return [void]
-      # @see API::InfoBuilder::ContactBuilder
+      # @see API::Info::Contact
       #
       # @example
       #   contact do
       #     name 'Support'
       #   end
       def contact(&block)
-        builder = ContactBuilder.new
+        builder = Contact.new
         builder.instance_eval(&block)
         @info[:contact] = builder.data
       end
@@ -76,16 +76,16 @@ module Apiwork
       # @api public
       # Defines license information.
       #
-      # @yield block evaluated in {LicenseBuilder} context
+      # @yield block evaluated in {License} context
       # @return [void]
-      # @see API::InfoBuilder::LicenseBuilder
+      # @see API::Info::License
       #
       # @example
       #   license do
       #     name 'MIT'
       #   end
       def license(&block)
-        builder = LicenseBuilder.new
+        builder = License.new
         builder.instance_eval(&block)
         @info[:license] = builder.data
       end

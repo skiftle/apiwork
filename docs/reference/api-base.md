@@ -158,7 +158,7 @@ Defines API metadata.
 
 **See also**
 
-- [API::InfoBuilder](api-info-builder)
+- [API::Info](api-info)
 
 **Example**
 
