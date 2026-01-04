@@ -7,7 +7,7 @@ module Apiwork
     #
     # @example
     #   resource.actions[:show].method     # => :get
-    #   resource.actions[:show].path       # => "/:id"
+    #   resource.actions[:show].path       # => "/posts/:id"
     #   resource.actions[:create].request  # => Action::Request
     #
     #   resource.actions.each_value do |action|
@@ -22,7 +22,7 @@ module Apiwork
       end
 
       # @api public
-      # @return [String] action path segment (e.g., "/:id", "/")
+      # @return [String] full action path (e.g., "/posts/:id", "/posts")
       def path
         @dump[:path]
       end
@@ -37,14 +37,14 @@ module Apiwork
       # @return [Action::Request] request definition
       # @see Action::Request
       def request
-        @request ||= @dump[:request] ? Request.new(@dump[:request]) : nil
+        @request ||= Request.new(@dump[:request])
       end
 
       # @api public
       # @return [Action::Response] response definition
       # @see Action::Response
       def response
-        @response ||= @dump[:response] ? Response.new(@dump[:response]) : nil
+        @response ||= Response.new(@dump[:response])
       end
 
       # @api public
@@ -84,18 +84,6 @@ module Apiwork
       end
 
       # @api public
-      # @return [Boolean] whether a request is defined
-      def request?
-        request.present?
-      end
-
-      # @api public
-      # @return [Boolean] whether a response is defined
-      def response?
-        response.present?
-      end
-
-      # @api public
       # @return [Hash] structured representation
       def to_h
         {
@@ -105,8 +93,8 @@ module Apiwork
           operation_id: operation_id,
           path: path,
           raises: raises,
-          request: request&.to_h,
-          response: response&.to_h,
+          request: request.to_h,
+          response: response.to_h,
           summary: summary,
           tags: tags,
         }

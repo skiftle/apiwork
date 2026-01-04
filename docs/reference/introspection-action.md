@@ -14,7 +14,7 @@ Wraps action definitions within a resource.
 
 ```ruby
 resource.actions[:show].method     # => :get
-resource.actions[:show].path       # => "/:id"
+resource.actions[:show].path       # => "/posts/:id"
 resource.actions[:create].request  # => Action::Request
 
 resource.actions.each_value do |action|
@@ -107,23 +107,11 @@ end
 
 **Returns**
 
-`Action::Request`, `nil` — request definition
+`Action::Request` — request definition
 
 **See also**
 
 - [Action::Request](action-request)
-
----
-
-### #request?
-
-`#request?`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L88)
-
-**Returns**
-
-[Boolean](introspection-boolean) — whether a request is defined
 
 ---
 
@@ -135,23 +123,11 @@ end
 
 **Returns**
 
-`Action::Response`, `nil` — response definition
+`Action::Response` — response definition
 
 **See also**
 
 - [Action::Response](action-response)
-
----
-
-### #response?
-
-`#response?`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L94)
-
-**Returns**
-
-[Boolean](introspection-boolean) — whether a response is defined
 
 ---
 
