@@ -14,8 +14,8 @@ module Apiwork
             description: @action_definition.description || i18n_lookup(:description),
             operation_id: @action_definition.operation_id,
             raises: raises,
-            request: dump_request(@action_definition.request_definition),
-            response: dump_response(@action_definition.response_definition),
+            request: build_request(@action_definition.request_definition),
+            response: build_response(@action_definition.response_definition),
             summary: @action_definition.summary || i18n_lookup(:summary),
             tags: @action_definition.tags || [],
           }
@@ -33,20 +33,20 @@ module Apiwork
           contract_class.api_class.structure.i18n_lookup(:contracts, contract_name, :actions, action_name, field)
         end
 
-        def dump_request(request_definition)
+        def build_request(request_definition)
           return { body: {}, query: {} } unless request_definition
 
           {
-            body: dump_param_definition(request_definition.body_param_definition),
-            query: dump_param_definition(request_definition.query_param_definition),
+            body: build_param_definition(request_definition.body_param_definition),
+            query: build_param_definition(request_definition.query_param_definition),
           }
         end
 
-        def dump_param_definition(param_definition)
+        def build_param_definition(param_definition)
           param_definition ? ParamDefinition.new(param_definition).to_h : {}
         end
 
-        def dump_response(response_definition)
+        def build_response(response_definition)
           return { body: {}, no_content: false } unless response_definition
           return { body: {}, no_content: true } if response_definition.no_content?
 

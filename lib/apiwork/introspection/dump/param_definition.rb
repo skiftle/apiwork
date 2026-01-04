@@ -14,12 +14,12 @@ module Apiwork
         def to_h
           return nil unless @param_definition
 
-          return dump_result_wrapped if @result_wrapper
+          return build_result_wrapped if @result_wrapper
 
           result = {}
 
           @param_definition.params.sort_by { |name, _| name.to_s }.each do |name, param_options|
-            result[name] = dump_param(name, param_options)
+            result[name] = build_param(name, param_options)
           end
 
           if @param_definition.wrapped?
@@ -31,7 +31,7 @@ module Apiwork
 
         private
 
-        def dump_result_wrapped
+        def build_result_wrapped
           success_type = @result_wrapper[:success_type]
           error_type = @result_wrapper[:error_type]
 
@@ -59,7 +59,7 @@ module Apiwork
         def build_success_params
           success_params = {}
           @param_definition.params.sort_by { |name, _| name.to_s }.each do |name, param_options|
-            dumped = dump_param(name, param_options)
+            dumped = build_param(name, param_options)
             dumped[:optional] = true if param_options[:optional]
             success_params[name] = dumped
           end
@@ -79,9 +79,9 @@ module Apiwork
           }
         end
 
-        def dump_param(name, options)
-          return dump_union_param(options) if options[:type] == :union
-          return dump_custom_type_param(options) if options[:custom_type]
+        def build_param(name, options)
+          return build_union_param(options) if options[:type] == :union
+          return build_custom_type_param(options) if options[:custom_type]
 
           {
             as: options[:as],
@@ -98,7 +98,7 @@ module Apiwork
             of: resolve_of(options),
             optional: options[:optional] == true,
             partial: options[:partial] == true,
-            shape: dump_shape(options) || {},
+            shape: build_shape(options) || {},
             tag: nil,
             type: resolve_type(options[:type]),
             value: options[:type] == :literal ? options[:value] : nil,
@@ -106,8 +106,8 @@ module Apiwork
           }
         end
 
-        def dump_union_param(options)
-          union_data = dump_union(options[:union])
+        def build_union_param(options)
+          union_data = build_union(options[:union])
 
           {
             as: options[:as],
@@ -132,7 +132,7 @@ module Apiwork
           }
         end
 
-        def dump_custom_type_param(options)
+        def build_custom_type_param(options)
           custom_type_name = options[:custom_type]
           if @param_definition.contract_class.resolve_custom_type(custom_type_name)
             custom_type_name = qualified_name(custom_type_name, @param_definition)
@@ -207,14 +207,14 @@ module Apiwork
           end
         end
 
-        def dump_union(union_definition)
+        def build_union(union_definition)
           {
             discriminator: union_definition.discriminator,
-            variants: union_definition.variants.map { |variant| dump_variant(variant) },
+            variants: union_definition.variants.map { |variant| build_variant(variant) },
           }
         end
 
-        def dump_variant(variant_definition)
+        def build_variant(variant_definition)
           variant_type = variant_definition[:type]
 
           resolved_type = if @param_definition.contract_class.resolve_custom_type(variant_type)
@@ -275,18 +275,18 @@ module Apiwork
 
         def resolve_variant_shape(variant_definition, variant_type)
           if variant_definition[:shape]
-            dump_nested_shape(variant_definition[:shape])
+            build_nested_shape(variant_definition[:shape])
           else
             {}
           end
         end
 
-        def dump_nested_shape(shape_definition)
+        def build_nested_shape(shape_definition)
           ParamDefinition.new(shape_definition, visited: @visited).to_h
         end
 
-        def dump_shape(options)
-          dumped = options[:shape] ? dump_nested_shape(options[:shape]) : nil
+        def build_shape(options)
+          dumped = options[:shape] ? build_nested_shape(options[:shape]) : nil
 
           return dumped || {} if [:object, :array].include?(options[:type])
 

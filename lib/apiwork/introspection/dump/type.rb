@@ -12,7 +12,7 @@ module Apiwork
           return {} unless @api_class
 
           @api_class.type_system.types.each_pair.sort_by { |name, _| name.to_s }.each_with_object({}) do |(qualified_name, metadata), result|
-            result[qualified_name] = dump_type(qualified_name, metadata)
+            result[qualified_name] = build_type(qualified_name, metadata)
           end
         end
 
@@ -20,11 +20,11 @@ module Apiwork
           return {} unless @api_class
 
           @api_class.type_system.enums.each_pair.sort_by { |name, _| name.to_s }.each_with_object({}) do |(qualified_name, metadata), result|
-            result[qualified_name] = dump_enum(qualified_name, metadata)
+            result[qualified_name] = build_enum(qualified_name, metadata)
           end
         end
 
-        def dump_type(qualified_name, metadata)
+        def build_type(qualified_name, metadata)
           expanded_shape = metadata[:expanded_payload] ||= expand_payload(metadata)
 
           if expanded_shape.is_a?(Hash) && expanded_shape[:type] == :union
@@ -52,7 +52,7 @@ module Apiwork
           end
         end
 
-        def dump_enum(qualified_name, metadata)
+        def build_enum(qualified_name, metadata)
           {
             deprecated: metadata[:deprecated] == true,
             description: resolve_enum_description(qualified_name, metadata),

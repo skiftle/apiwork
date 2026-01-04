@@ -46,10 +46,10 @@ module Apiwork
           end
 
           if @expand
-            types, enums = dump_referenced_types_and_enums(result[:actions])
+            types, enums = build_referenced_types_and_enums(result[:actions])
           else
-            types = dump_local_types
-            enums = dump_local_enums
+            types = build_local_types
+            enums = build_local_enums
           end
 
           result[:types] = types
@@ -60,16 +60,16 @@ module Apiwork
 
         private
 
-        def dump_local_types
+        def build_local_types
           @contract_class.api_class.type_system.types.each_pair
             .select { |_, metadata| metadata[:scope] == @contract_class }
             .sort_by { |name, _| name.to_s }
             .each_with_object({}) do |(name, metadata), result|
-              result[name] = @type_dump.dump_type(name, metadata)
+              result[name] = @type_dump.build_type(name, metadata)
           end
         end
 
-        def dump_local_enums
+        def build_local_enums
           @contract_class.api_class.type_system.enums.each_pair
             .select { |_, metadata| metadata[:scope] == @contract_class }
             .sort_by { |name, _| name.to_s }
@@ -78,7 +78,7 @@ module Apiwork
           end
         end
 
-        def dump_referenced_types_and_enums(actions_data)
+        def build_referenced_types_and_enums(actions_data)
           type_system = @contract_class.api_class.type_system
 
           referenced_types = Set.new
@@ -95,7 +95,7 @@ module Apiwork
               metadata = type_system.types[type_name]
               next unless metadata
 
-              dumped = @type_dump.dump_type(type_name, metadata)
+              dumped = @type_dump.build_type(type_name, metadata)
               dumped_types[type_name] = dumped
 
               collect_references(dumped, referenced_types, referenced_enums)

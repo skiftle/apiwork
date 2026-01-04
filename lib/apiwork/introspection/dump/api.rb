@@ -10,13 +10,13 @@ module Apiwork
         end
 
         def to_h
-          resources = dump_resources
+          resources = build_resources
 
           {
             resources:,
             enums: @type_dump.enums,
-            error_codes: dump_error_codes(collect_all_error_codes(resources)),
-            info: dump_info,
+            error_codes: build_error_codes(collect_all_error_codes(resources)),
+            info: build_info,
             path: @api_class.path,
             raises: @api_class.structure.raises,
             types: @type_dump.types,
@@ -43,7 +43,7 @@ module Apiwork
           end
         end
 
-        def dump_error_codes(codes)
+        def build_error_codes(codes)
           locale_key = @api_class.structure.locale_key
 
           codes.each_with_object({}) do |code, hash|
@@ -55,13 +55,13 @@ module Apiwork
           end
         end
 
-        def dump_resources
+        def build_resources
           @api_class.structure.resources.transform_values do |resource|
             Resource.new(resource, @api_class).to_h
           end
         end
 
-        def dump_info
+        def build_info
           info = @api_class.structure.info
           return {} unless info
 
