@@ -83,7 +83,7 @@ end
 
 **Returns**
 
-[String](introspection-string) — action path segment (e.g., "/:id", "/")
+[String](introspection-string) — full action path (e.g., "/posts/:id", "/posts")
 
 ---
 
@@ -159,7 +159,7 @@ end
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L100)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L88)
 
 **Returns**
 

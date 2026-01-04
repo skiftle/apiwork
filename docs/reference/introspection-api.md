@@ -16,10 +16,10 @@ types via [#types](#types), enums via [#enums](#enums).
 **Example**
 
 ```ruby
-api = MyAPI.introspect(locale: :sv)
+api = Apiwork::API.introspect('/api/v1', locale: :fr)
 
-api.info.title                      # => "My API"
-api.types[:address].description     # => "Address type"
+api.info.title                      # => "Mon API"
+api.types[:address].description     # => "Type d'adresse"
 api.enums[:status].values           # => ["draft", "published"]
 
 api.resources.each_value do |resource|
@@ -123,7 +123,7 @@ end
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L87)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L77)
 
 **Returns**
 

@@ -36,7 +36,7 @@ response.body?        # => false
 
 **Returns**
 
-[Param](introspection-param), `nil` — response body definition
+`Param`, `nil` — response body definition
 
 **See also**
 
