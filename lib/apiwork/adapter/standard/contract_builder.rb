@@ -216,12 +216,12 @@ module Apiwork
         end
 
         def build_response_for_action(action_definition, action)
-          result_wrapper = build_result_wrapper(action.name)
-
           case action.name
           when :index
+            result_wrapper = build_result_wrapper(action.name, response_type: :collection)
             build_collection_response(action_definition, result_wrapper)
           when :show, :create, :update
+            result_wrapper = build_result_wrapper(action.name, response_type: :single)
             build_single_response(action_definition, result_wrapper)
           when :destroy
             action_definition.response { no_content! }
@@ -229,16 +229,31 @@ module Apiwork
             if action.method == :delete
               action_definition.response { no_content! }
             elsif action.collection?
+              result_wrapper = build_result_wrapper(action.name, response_type: :collection)
               build_collection_response(action_definition, result_wrapper)
             elsif action.member?
+              result_wrapper = build_result_wrapper(action.name, response_type: :single)
               build_single_response(action_definition, result_wrapper)
             end
           end
         end
 
-        def build_result_wrapper(action_name)
-          success_type = registrar.scoped_name(:"#{action_name}_success_response_body")
-          { success_type:, error_type: :error_response_body }
+        def build_result_wrapper(action_name, response_type:)
+          success_type_name = :"#{action_name}_success_response_body"
+          full_name = registrar.scoped_name(success_type_name)
+
+          unless registrar.resolve_type(success_type_name)
+            builder = self
+            registrar.type(success_type_name) do
+              if response_type == :collection
+                builder.collection_response(self)
+              else
+                builder.single_response(self)
+              end
+            end
+          end
+
+          { error_type: :error_response_body, success_type: full_name }
         end
 
         def build_single_response(action_definition, result_wrapper)

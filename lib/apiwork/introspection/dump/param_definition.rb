@@ -35,13 +35,10 @@ module Apiwork
           success_type = @result_wrapper[:success_type]
           error_type = @result_wrapper[:error_type]
 
-          success_params = build_success_params
-
           success_variant = if success_type
-                              register_success_type(success_type, success_params)
                               { type: success_type }
                             else
-                              { shape: success_params, type: :object }
+                              { shape: build_success_params, type: :object }
                             end
 
           error_variant = if error_type
@@ -64,19 +61,6 @@ module Apiwork
             success_params[name] = dumped
           end
           success_params
-        end
-
-        def register_success_type(type_name, shape)
-          api_class = @param_definition.contract_class.api_class
-          return unless api_class
-
-          type_system = api_class.type_system
-          return if type_system.types.key?(type_name)
-
-          type_system.types[type_name] = {
-            expanded_payload: shape,
-            scope: nil,
-          }
         end
 
         def build_param(name, options)
