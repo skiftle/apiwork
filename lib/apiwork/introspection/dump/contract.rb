@@ -74,7 +74,7 @@ module Apiwork
             .select { |_, metadata| metadata[:scope] == @contract_class }
             .sort_by { |name, _| name.to_s }
             .each_with_object({}) do |(name, metadata), result|
-              result[name] = @type_dump.dump_enum(name, metadata)
+              result[name] = @type_dump.build_enum(name, metadata)
           end
         end
 
@@ -104,7 +104,7 @@ module Apiwork
 
           dumped_enums = referenced_enums.each_with_object({}) do |enum_name, result|
             metadata = type_system.enums[enum_name]
-            result[enum_name] = @type_dump.dump_enum(enum_name, metadata) if metadata
+            result[enum_name] = @type_dump.build_enum(enum_name, metadata) if metadata
           end
 
           sorted_types = dumped_types.sort_by { |name, _| name.to_s }.to_h
@@ -120,7 +120,7 @@ module Apiwork
             types << type_ref.to_sym if type_ref && !primitive_type?(type_ref)
 
             of_ref = data[:of]
-            types << of_ref.to_sym if of_ref && !primitive_type?(of_ref)
+            types << of_ref[:type].to_sym if of_ref && !primitive_type?(of_ref[:type])
 
             enum_ref = data[:enum]
             enums << enum_ref.to_sym if enum_ref

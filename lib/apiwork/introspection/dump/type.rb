@@ -25,7 +25,7 @@ module Apiwork
         end
 
         def build_type(qualified_name, metadata)
-          expanded_shape = metadata[:expanded_payload] ||= expand_payload(metadata)
+          expanded_shape = metadata[:expanded_payload] || expand_payload(metadata)
 
           if expanded_shape.is_a?(Hash) && expanded_shape[:type] == :union
             {
@@ -90,23 +90,24 @@ module Apiwork
           definition_blocks = metadata[:definitions] || metadata[:definition]
           payload = metadata[:payload] || expand(definition_blocks, contract_class: metadata[:scope])
 
-          expand_union_variants(payload, metadata[:scope]) if payload.is_a?(Hash) && payload[:type] == :union
+          payload = expand_union_variants(payload, metadata[:scope]) if payload.is_a?(Hash) && payload[:type] == :union
 
           payload
         end
 
         def expand_union_variants(payload, scope)
-          return unless payload[:variants]
+          return payload unless payload[:variants]
 
-          payload[:variants] = payload[:variants].map do |variant|
+          expanded_variants = payload[:variants].map do |variant|
             if variant[:shape_block]
               expanded_shape = expand(variant[:shape_block], contract_class: scope)
-              variant = variant.dup
-              variant.delete(:shape_block)
-              variant[:shape] = expanded_shape if expanded_shape.present?
+              variant.except(:shape_block).merge(shape: expanded_shape.presence || {})
+            else
+              variant
             end
-            variant
           end
+
+          payload.merge(variants: expanded_variants)
         end
 
         def expand(definitions, contract_class: nil)
