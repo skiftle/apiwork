@@ -200,11 +200,19 @@ module Apiwork
         def resolve_of(options)
           return nil unless options[:of]
 
-          if @param_definition.contract_class.resolve_custom_type(options[:of])
-            qualified_name(options[:of], @param_definition)
-          else
-            options[:of]
-          end
+          type_symbol = if @param_definition.contract_class.resolve_custom_type(options[:of])
+                          qualified_name(options[:of], @param_definition)
+                        else
+                          options[:of]
+                        end
+
+          build_of_hash(type_symbol)
+        end
+
+        def build_of_hash(type_symbol)
+          result = { type: type_symbol }
+          result[:shape] = {} if [:object, :array].include?(type_symbol)
+          result
         end
 
         def build_union(union_definition)
@@ -266,11 +274,13 @@ module Apiwork
         def resolve_variant_of(variant_definition)
           return nil unless variant_definition[:of]
 
-          if @param_definition.contract_class.resolve_custom_type(variant_definition[:of])
-            qualified_name(variant_definition[:of], @param_definition)
-          else
-            variant_definition[:of]
-          end
+          type_symbol = if @param_definition.contract_class.resolve_custom_type(variant_definition[:of])
+                          qualified_name(variant_definition[:of], @param_definition)
+                        else
+                          variant_definition[:of]
+                        end
+
+          build_of_hash(type_symbol)
         end
 
         def resolve_variant_shape(variant_definition, variant_type)

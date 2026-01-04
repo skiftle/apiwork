@@ -18,16 +18,7 @@ module Apiwork
         # @api public
         # @return [Param::Base, nil] element type for arrays
         def of
-          return @of if defined?(@of)
-
-          raw = @dump[:of]
-          @of = case raw
-                when Hash then Param.build(raw)
-                when Symbol
-                  dump = { type: raw }
-                  dump[:shape] = {} if [:object, :array].include?(raw)
-                  Param.build(dump)
-                end
+          @of ||= @dump[:of] ? Param.build(@dump[:of]) : nil
         end
 
         # @api public
