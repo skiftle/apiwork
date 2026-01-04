@@ -100,10 +100,10 @@ RSpec.describe 'Model Validation Errors', type: :request do
   describe 'Update validation errors' do
     let!(:existing_post) { Post.create!(title: 'Original Title') }
 
-    it 'does not update record when contract validation fails' do
+    it 'does not update record when model validation fails' do
       patch "/api/v1/posts/#{existing_post.id}", as: :json, params: { post: { title: '' } }
 
-      expect(response).to have_http_status(:bad_request)
+      expect(response).to have_http_status(:unprocessable_content)
       existing_post.reload
       expect(existing_post.title).to eq('Original Title')
     end
