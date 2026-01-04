@@ -38,7 +38,7 @@ module Apiwork
 
           result = base.merge(
             description: resolve_type_description(qualified_name, metadata),
-            example: resolve_type_example(metadata),
+            example: metadata[:example] || metadata[:schema_class]&.example,
             format: metadata[:format],
           )
 
@@ -73,12 +73,6 @@ module Apiwork
           return result if result
 
           I18n.t(:"apiwork.types.#{type_name}.description", default: nil)
-        end
-
-        def resolve_type_example(metadata)
-          return metadata[:example] if metadata[:example]
-
-          metadata[:schema_class]&.example
         end
 
         def resolve_enum_description(enum_name, metadata)

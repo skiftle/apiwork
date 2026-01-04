@@ -10,12 +10,12 @@ module Apiwork
 
         def to_h
           result = {
-            description: resolve_description,
+            description: @action_definition.description || i18n_lookup(:description),
             operation_id: @action_definition.operation_id,
             raises: raises,
             request: dump_request(@action_definition.request_definition),
             response: dump_response(@action_definition.response_definition),
-            summary: resolve_summary,
+            summary: @action_definition.summary || i18n_lookup(:summary),
             tags: @action_definition.tags || [],
           }
 
@@ -25,18 +25,6 @@ module Apiwork
         end
 
         private
-
-        def resolve_summary
-          return @action_definition.summary if @action_definition.summary
-
-          i18n_lookup(:summary)
-        end
-
-        def resolve_description
-          return @action_definition.description if @action_definition.description
-
-          i18n_lookup(:description)
-        end
 
         def i18n_lookup(field)
           contract_class = @action_definition.contract_class
