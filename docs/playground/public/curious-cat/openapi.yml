@@ -1,704 +1,472 @@
---- |-
-  {
-    "components": {
-      "schemas": {
-        "errorResponseBody": {
-          "properties": {
-            "issues": {
-              "items": {
-                "$ref": "#/components/schemas/issue"
-              },
-              "type": "array"
-            },
-            "layer": {
-              "enum": [
-                "http",
-                "contract",
-                "domain"
-              ],
-              "type": "string"
-            }
-          },
-          "type": "object",
-          "required": [
-            "issues",
-            "layer"
-          ]
-        },
-        "issue": {
-          "properties": {
-            "code": {
-              "type": "string"
-            },
-            "detail": {
-              "type": "string"
-            },
-            "meta": {
-              "properties": {},
-              "type": "object"
-            },
-            "path": {
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            "pointer": {
-              "type": "string"
-            }
-          },
-          "type": "object",
-          "required": [
-            "code",
-            "detail",
-            "meta",
-            "path",
-            "pointer"
-          ]
-        },
-        "offsetPagination": {
-          "properties": {
-            "current": {
-              "type": "integer"
-            },
-            "items": {
-              "type": "integer"
-            },
-            "next": {
-              "type": [
-                "integer",
-                "null"
-              ]
-            },
-            "prev": {
-              "type": [
-                "integer",
-                "null"
-              ]
-            },
-            "total": {
-              "type": "integer"
-            }
-          },
-          "type": "object",
-          "required": [
-            "current",
-            "items",
-            "total"
-          ]
-        },
-        "profile": {
-          "properties": {
-            "addresses": {
-              "items": {
-                "properties": {
-                  "city": {
-                    "type": "string"
-                  },
-                  "primary": {
-                    "type": "boolean"
-                  },
-                  "street": {
-                    "type": "string"
-                  },
-                  "zip": {
-                    "type": "string"
-                  }
-                },
-                "type": "object",
-                "required": [
-                  "city",
-                  "primary",
-                  "street",
-                  "zip"
-                ]
-              },
-              "type": "array"
-            },
-            "createdAt": {
-              "type": "string",
-              "format": "date-time"
-            },
-            "email": {
-              "type": "string",
-              "format": "email"
-            },
-            "id": {
-              "type": "string"
-            },
-            "metadata": {
-              "properties": {},
-              "type": "object"
-            },
-            "name": {
-              "type": "string"
-            },
-            "preferences": {
-              "properties": {
-                "notifications": {
-                  "properties": {
-                    "email": {
-                      "type": "boolean"
-                    },
-                    "push": {
-                      "type": "boolean"
-                    }
-                  },
-                  "type": "object",
-                  "required": [
-                    "email",
-                    "push"
-                  ]
-                },
-                "ui": {
-                  "properties": {
-                    "sidebarCollapsed": {
-                      "type": "boolean"
-                    },
-                    "theme": {
-                      "type": "string"
-                    }
-                  },
-                  "type": "object",
-                  "required": [
-                    "sidebarCollapsed",
-                    "theme"
-                  ]
-                }
-              },
-              "type": "object",
-              "required": [
-                "notifications",
-                "ui"
-              ]
-            },
-            "settings": {
-              "properties": {
-                "language": {
-                  "type": "string"
-                },
-                "notifications": {
-                  "type": "boolean"
-                },
-                "theme": {
-                  "type": "string"
-                }
-              },
-              "type": "object",
-              "required": [
-                "language",
-                "notifications",
-                "theme"
-              ]
-            },
-            "tags": {
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            "updatedAt": {
-              "type": "string",
-              "format": "date-time"
-            }
-          },
-          "type": "object",
-          "required": [
-            "addresses",
-            "createdAt",
-            "email",
-            "id",
-            "metadata",
-            "name",
-            "preferences",
-            "settings",
-            "tags",
-            "updatedAt"
-          ]
-        },
-        "profileCreatePayload": {
-          "properties": {
-            "addresses": {
-              "items": {
-                "properties": {
-                  "city": {
-                    "type": "string"
-                  },
-                  "primary": {
-                    "type": "boolean"
-                  },
-                  "street": {
-                    "type": "string"
-                  },
-                  "zip": {
-                    "type": "string"
-                  }
-                },
-                "type": "object",
-                "required": [
-                  "city",
-                  "primary",
-                  "street",
-                  "zip"
-                ]
-              },
-              "type": "array"
-            },
-            "email": {
-              "type": "string",
-              "format": "email"
-            },
-            "metadata": {
-              "properties": {},
-              "type": "object"
-            },
-            "name": {
-              "type": "string"
-            },
-            "preferences": {
-              "properties": {
-                "notifications": {
-                  "properties": {
-                    "email": {
-                      "type": "boolean"
-                    },
-                    "push": {
-                      "type": "boolean"
-                    }
-                  },
-                  "type": "object",
-                  "required": [
-                    "email",
-                    "push"
-                  ]
-                },
-                "ui": {
-                  "properties": {
-                    "sidebarCollapsed": {
-                      "type": "boolean"
-                    },
-                    "theme": {
-                      "type": "string"
-                    }
-                  },
-                  "type": "object",
-                  "required": [
-                    "sidebarCollapsed",
-                    "theme"
-                  ]
-                }
-              },
-              "type": "object",
-              "required": [
-                "notifications",
-                "ui"
-              ]
-            },
-            "settings": {
-              "properties": {
-                "language": {
-                  "type": "string"
-                },
-                "notifications": {
-                  "type": "boolean"
-                },
-                "theme": {
-                  "type": "string"
-                }
-              },
-              "type": "object",
-              "required": [
-                "language",
-                "notifications",
-                "theme"
-              ]
-            },
-            "tags": {
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            }
-          },
-          "type": "object",
-          "required": [
-            "addresses",
-            "email",
-            "metadata",
-            "name",
-            "preferences",
-            "settings",
-            "tags"
-          ]
-        },
-        "profileCreateSuccessResponseBody": {
-          "properties": {
-            "meta": {
-              "properties": {},
-              "type": "object"
-            },
-            "profile": {
-              "$ref": "#/components/schemas/profile"
-            }
-          },
-          "type": "object",
-          "required": [
-            "profile"
-          ]
-        },
-        "profileIndexSuccessResponseBody": {
-          "properties": {
-            "meta": {
-              "properties": {},
-              "type": "object"
-            },
-            "pagination": {
-              "$ref": "#/components/schemas/offsetPagination"
-            },
-            "profiles": {
-              "items": {
-                "$ref": "#/components/schemas/profile"
-              },
-              "type": "array"
-            }
-          },
-          "type": "object",
-          "required": [
-            "pagination",
-            "profiles"
-          ]
-        },
-        "profilePage": {
-          "properties": {
-            "number": {
-              "type": "integer",
-              "minimum": 1
-            },
-            "size": {
-              "type": "integer",
-              "minimum": 1,
-              "maximum": 100
-            }
-          },
-          "type": "object"
-        },
-        "profileShowSuccessResponseBody": {
-          "properties": {
-            "meta": {
-              "properties": {},
-              "type": "object"
-            },
-            "profile": {
-              "$ref": "#/components/schemas/profile"
-            }
-          },
-          "type": "object",
-          "required": [
-            "profile"
-          ]
-        },
-        "profileUpdatePayload": {
-          "properties": {
-            "addresses": {
-              "items": {
-                "properties": {
-                  "city": {
-                    "type": "string"
-                  },
-                  "primary": {
-                    "type": "boolean"
-                  },
-                  "street": {
-                    "type": "string"
-                  },
-                  "zip": {
-                    "type": "string"
-                  }
-                },
-                "type": "object",
-                "required": [
-                  "city",
-                  "primary",
-                  "street",
-                  "zip"
-                ]
-              },
-              "type": "array"
-            },
-            "email": {
-              "type": "string",
-              "format": "email"
-            },
-            "metadata": {
-              "properties": {},
-              "type": "object"
-            },
-            "name": {
-              "type": "string"
-            },
-            "preferences": {
-              "properties": {
-                "notifications": {
-                  "properties": {
-                    "email": {
-                      "type": "boolean"
-                    },
-                    "push": {
-                      "type": "boolean"
-                    }
-                  },
-                  "type": "object",
-                  "required": [
-                    "email",
-                    "push"
-                  ]
-                },
-                "ui": {
-                  "properties": {
-                    "sidebarCollapsed": {
-                      "type": "boolean"
-                    },
-                    "theme": {
-                      "type": "string"
-                    }
-                  },
-                  "type": "object",
-                  "required": [
-                    "sidebarCollapsed",
-                    "theme"
-                  ]
-                }
-              },
-              "type": "object",
-              "required": [
-                "notifications",
-                "ui"
-              ]
-            },
-            "settings": {
-              "properties": {
-                "language": {
-                  "type": "string"
-                },
-                "notifications": {
-                  "type": "boolean"
-                },
-                "theme": {
-                  "type": "string"
-                }
-              },
-              "type": "object",
-              "required": [
-                "language",
-                "notifications",
-                "theme"
-              ]
-            },
-            "tags": {
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            }
-          },
-          "type": "object",
-          "required": [
-            "addresses",
-            "email",
-            "metadata",
-            "name",
-            "preferences",
-            "settings",
-            "tags"
-          ]
-        },
-        "profileUpdateSuccessResponseBody": {
-          "properties": {
-            "meta": {
-              "properties": {},
-              "type": "object"
-            },
-            "profile": {
-              "$ref": "#/components/schemas/profile"
-            }
-          },
-          "type": "object",
-          "required": [
-            "profile"
-          ]
-        }
-      }
-    },
-    "info": {
-      "title": "/curious_cat API",
-      "version": "1.0.0"
-    },
-    "openapi": "3.1.0",
-    "paths": {
-      "/profiles": {
-        "get": {
-          "operationId": "profilesIndex",
-          "parameters": [
-            {
-              "in": "query",
-              "name": "page",
-              "required": false,
-              "schema": {
-                "$ref": "#/components/schemas/profilePage"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/profileIndexSuccessResponseBody"
-                  }
-                }
-              },
-              "description": "Successful response"
-            }
-          }
-        },
-        "post": {
-          "operationId": "profilesCreate",
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "profile": {
-                      "$ref": "#/components/schemas/profileCreatePayload"
-                    }
-                  },
-                  "type": "object",
-                  "required": [
-                    "profile"
-                  ]
-                }
-              }
-            },
-            "required": true
-          },
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/profileCreateSuccessResponseBody"
-                  }
-                }
-              },
-              "description": "Successful response"
-            },
-            "422": {
-              "description": "Unprocessable Entity",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/errorResponseBody"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/profiles/{id}": {
-        "get": {
-          "operationId": "profilesShow",
-          "parameters": [
-            {
-              "in": "path",
-              "name": "id",
-              "required": true,
-              "schema": {
-                "type": "string"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/profileShowSuccessResponseBody"
-                  }
-                }
-              },
-              "description": "Successful response"
-            }
-          }
-        },
-        "patch": {
-          "operationId": "profilesUpdate",
-          "parameters": [
-            {
-              "in": "path",
-              "name": "id",
-              "required": true,
-              "schema": {
-                "type": "string"
-              }
-            }
-          ],
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "profile": {
-                      "$ref": "#/components/schemas/profileUpdatePayload"
-                    }
-                  },
-                  "type": "object"
-                }
-              }
-            },
-            "required": true
-          },
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/profileUpdateSuccessResponseBody"
-                  }
-                }
-              },
-              "description": "Successful response"
-            },
-            "422": {
-              "description": "Unprocessable Entity",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/errorResponseBody"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "delete": {
-          "operationId": "profilesDestroy",
-          "parameters": [
-            {
-              "in": "path",
-              "name": "id",
-              "required": true,
-              "schema": {
-                "type": "string"
-              }
-            }
-          ],
-          "responses": {
-            "204": {
-              "description": "No content"
-            }
-          }
-        }
-      }
-    }
-  }
+---
+components:
+  schemas:
+    errorResponseBody:
+      properties:
+        issues:
+          items:
+            "$ref": "#/components/schemas/issue"
+          type: array
+        layer:
+          enum:
+          - http
+          - contract
+          - domain
+          type: string
+      type: object
+      required:
+      - issues
+      - layer
+    issue:
+      properties:
+        code:
+          type: string
+        detail:
+          type: string
+        meta:
+          properties: {}
+          type: object
+        path:
+          items:
+            type: string
+          type: array
+        pointer:
+          type: string
+      type: object
+      required:
+      - code
+      - detail
+      - meta
+      - path
+      - pointer
+    offsetPagination:
+      properties:
+        current:
+          type: integer
+        items:
+          type: integer
+        next:
+          type:
+          - integer
+          - 'null'
+        prev:
+          type:
+          - integer
+          - 'null'
+        total:
+          type: integer
+      type: object
+      required:
+      - current
+      - items
+      - total
+    profile:
+      properties:
+        addresses:
+          items:
+            properties:
+              city:
+                type: string
+              primary:
+                type: boolean
+              street:
+                type: string
+              zip:
+                type: string
+            type: object
+            required:
+            - city
+            - primary
+            - street
+            - zip
+          type: array
+        createdAt:
+          type: string
+          format: date-time
+        email:
+          type: string
+          format: email
+        id:
+          type: string
+        metadata:
+          properties: {}
+          type: object
+        name:
+          type: string
+        preferences:
+          properties:
+            notifications:
+              properties:
+                email:
+                  type: boolean
+                push:
+                  type: boolean
+              type: object
+              required:
+              - email
+              - push
+            ui:
+              properties:
+                sidebarCollapsed:
+                  type: boolean
+                theme:
+                  type: string
+              type: object
+              required:
+              - sidebarCollapsed
+              - theme
+          type: object
+          required:
+          - notifications
+          - ui
+        settings:
+          properties:
+            language:
+              type: string
+            notifications:
+              type: boolean
+            theme:
+              type: string
+          type: object
+          required:
+          - language
+          - notifications
+          - theme
+        tags:
+          items:
+            type: string
+          type: array
+        updatedAt:
+          type: string
+          format: date-time
+      type: object
+      required:
+      - addresses
+      - createdAt
+      - email
+      - id
+      - metadata
+      - name
+      - preferences
+      - settings
+      - tags
+      - updatedAt
+    profileCreatePayload:
+      properties:
+        addresses:
+          items:
+            properties:
+              city:
+                type: string
+              primary:
+                type: boolean
+              street:
+                type: string
+              zip:
+                type: string
+            type: object
+            required:
+            - city
+            - primary
+            - street
+            - zip
+          type: array
+        email:
+          type: string
+          format: email
+        metadata:
+          properties: {}
+          type: object
+        name:
+          type: string
+        preferences:
+          properties:
+            notifications:
+              properties:
+                email:
+                  type: boolean
+                push:
+                  type: boolean
+              type: object
+              required:
+              - email
+              - push
+            ui:
+              properties:
+                sidebarCollapsed:
+                  type: boolean
+                theme:
+                  type: string
+              type: object
+              required:
+              - sidebarCollapsed
+              - theme
+          type: object
+          required:
+          - notifications
+          - ui
+        settings:
+          properties:
+            language:
+              type: string
+            notifications:
+              type: boolean
+            theme:
+              type: string
+          type: object
+          required:
+          - language
+          - notifications
+          - theme
+        tags:
+          items:
+            type: string
+          type: array
+      type: object
+      required:
+      - addresses
+      - email
+      - metadata
+      - name
+      - preferences
+      - settings
+      - tags
+    profileCreateSuccessResponseBody:
+      properties:
+        meta:
+          properties: {}
+          type: object
+        profile:
+          "$ref": "#/components/schemas/profile"
+      type: object
+      required:
+      - profile
+    profileIndexSuccessResponseBody:
+      properties:
+        meta:
+          properties: {}
+          type: object
+        pagination:
+          "$ref": "#/components/schemas/offsetPagination"
+        profiles:
+          items:
+            "$ref": "#/components/schemas/profile"
+          type: array
+      type: object
+      required:
+      - pagination
+      - profiles
+    profilePage:
+      properties:
+        number:
+          type: integer
+          minimum: 1
+        size:
+          type: integer
+          minimum: 1
+          maximum: 100
+      type: object
+    profileShowSuccessResponseBody:
+      properties:
+        meta:
+          properties: {}
+          type: object
+        profile:
+          "$ref": "#/components/schemas/profile"
+      type: object
+      required:
+      - profile
+    profileUpdatePayload:
+      properties:
+        addresses:
+          items:
+            properties:
+              city:
+                type: string
+              primary:
+                type: boolean
+              street:
+                type: string
+              zip:
+                type: string
+            type: object
+            required:
+            - city
+            - primary
+            - street
+            - zip
+          type: array
+        email:
+          type: string
+          format: email
+        metadata:
+          properties: {}
+          type: object
+        name:
+          type: string
+        preferences:
+          properties:
+            notifications:
+              properties:
+                email:
+                  type: boolean
+                push:
+                  type: boolean
+              type: object
+              required:
+              - email
+              - push
+            ui:
+              properties:
+                sidebarCollapsed:
+                  type: boolean
+                theme:
+                  type: string
+              type: object
+              required:
+              - sidebarCollapsed
+              - theme
+          type: object
+          required:
+          - notifications
+          - ui
+        settings:
+          properties:
+            language:
+              type: string
+            notifications:
+              type: boolean
+            theme:
+              type: string
+          type: object
+          required:
+          - language
+          - notifications
+          - theme
+        tags:
+          items:
+            type: string
+          type: array
+      type: object
+      required:
+      - addresses
+      - email
+      - metadata
+      - name
+      - preferences
+      - settings
+      - tags
+    profileUpdateSuccessResponseBody:
+      properties:
+        meta:
+          properties: {}
+          type: object
+        profile:
+          "$ref": "#/components/schemas/profile"
+      type: object
+      required:
+      - profile
+info:
+  title: "/curious_cat API"
+  version: 1.0.0
+openapi: 3.1.0
+paths:
+  "/profiles":
+    get:
+      operationId: profilesIndex
+      parameters:
+      - in: query
+        name: page
+        required: false
+        schema:
+          "$ref": "#/components/schemas/profilePage"
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/profileIndexSuccessResponseBody"
+          description: Successful response
+    post:
+      operationId: profilesCreate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                profile:
+                  "$ref": "#/components/schemas/profileCreatePayload"
+              type: object
+              required:
+              - profile
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/profileCreateSuccessResponseBody"
+          description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
+  "/profiles/{id}":
+    get:
+      operationId: profilesShow
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/profileShowSuccessResponseBody"
+          description: Successful response
+    patch:
+      operationId: profilesUpdate
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                profile:
+                  "$ref": "#/components/schemas/profileUpdatePayload"
+              type: object
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/profileUpdateSuccessResponseBody"
+          description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
+    delete:
+      operationId: profilesDestroy
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No content

@@ -103,9 +103,8 @@ class ExampleGenerator
   end
 
   def write_openapi(api_class, dir)
-    content = Apiwork::Spec::OpenAPI.generate(api_class.path)
-    yaml = JSON.parse(content.to_json).to_yaml
-    File.write(dir.join('openapi.yml'), yaml)
+    content = Apiwork::Spec::OpenAPI.generate(api_class.path, format: :yaml)
+    File.write(dir.join('openapi.yml'), content)
   end
 
   def write_introspection(api_class, dir)

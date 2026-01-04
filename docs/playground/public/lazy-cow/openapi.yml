@@ -1,135 +1,89 @@
---- |-
-  {
-    "components": {
-      "schemas": {
-        "errorResponseBody": {
-          "properties": {
-            "issues": {
-              "items": {
-                "$ref": "#/components/schemas/issue"
-              },
-              "type": "array"
-            },
-            "layer": {
-              "enum": [
-                "http",
-                "contract",
-                "domain"
-              ],
-              "type": "string"
-            }
-          },
-          "type": "object",
-          "required": [
-            "issues",
-            "layer"
-          ]
-        },
-        "issue": {
-          "properties": {
-            "code": {
-              "type": "string"
-            },
-            "detail": {
-              "type": "string"
-            },
-            "meta": {
-              "properties": {},
-              "type": "object"
-            },
-            "path": {
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            "pointer": {
-              "type": "string"
-            }
-          },
-          "type": "object",
-          "required": [
-            "code",
-            "detail",
-            "meta",
-            "path",
-            "pointer"
-          ]
-        }
-      }
-    },
-    "info": {
-      "title": "/lazy_cow API",
-      "version": "1.0.0"
-    },
-    "openapi": "3.1.0",
-    "paths": {
-      "/status/health": {
-        "get": {
-          "operationId": "statusHealth",
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "properties": {
-                      "status": {
-                        "type": "string"
-                      },
-                      "timestamp": {
-                        "type": "string",
-                        "format": "date-time"
-                      },
-                      "version": {
-                        "type": "string"
-                      }
-                    },
-                    "type": "object",
-                    "required": [
-                      "status",
-                      "timestamp",
-                      "version"
-                    ]
-                  }
-                }
-              },
-              "description": "Successful response"
-            }
-          }
-        }
-      },
-      "/status/stats": {
-        "get": {
-          "operationId": "statusStats",
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "properties": {
-                      "postsCount": {
-                        "type": "integer"
-                      },
-                      "uptimeSeconds": {
-                        "type": "integer"
-                      },
-                      "usersCount": {
-                        "type": "integer"
-                      }
-                    },
-                    "type": "object",
-                    "required": [
-                      "postsCount",
-                      "uptimeSeconds",
-                      "usersCount"
-                    ]
-                  }
-                }
-              },
-              "description": "Successful response"
-            }
-          }
-        }
-      }
-    }
-  }
+---
+components:
+  schemas:
+    errorResponseBody:
+      properties:
+        issues:
+          items:
+            "$ref": "#/components/schemas/issue"
+          type: array
+        layer:
+          enum:
+          - http
+          - contract
+          - domain
+          type: string
+      type: object
+      required:
+      - issues
+      - layer
+    issue:
+      properties:
+        code:
+          type: string
+        detail:
+          type: string
+        meta:
+          properties: {}
+          type: object
+        path:
+          items:
+            type: string
+          type: array
+        pointer:
+          type: string
+      type: object
+      required:
+      - code
+      - detail
+      - meta
+      - path
+      - pointer
+info:
+  title: "/lazy_cow API"
+  version: 1.0.0
+openapi: 3.1.0
+paths:
+  "/status/health":
+    get:
+      operationId: statusHealth
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  status:
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+                  version:
+                    type: string
+                type: object
+                required:
+                - status
+                - timestamp
+                - version
+          description: Successful response
+  "/status/stats":
+    get:
+      operationId: statusStats
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  postsCount:
+                    type: integer
+                  uptimeSeconds:
+                    type: integer
+                  usersCount:
+                    type: integer
+                type: object
+                required:
+                - postsCount
+                - uptimeSeconds
+                - usersCount
+          description: Successful response

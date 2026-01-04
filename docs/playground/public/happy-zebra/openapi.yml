@@ -1,1389 +1,885 @@
---- |-
-  {
-    "components": {
-      "schemas": {
-        "comment": {
-          "properties": {
-            "author": {
-              "type": "string"
-            },
-            "body": {
-              "type": "string"
-            },
-            "id": {
-              "type": "string"
-            }
-          },
-          "type": "object",
-          "required": [
-            "author",
-            "body",
-            "id"
-          ]
-        },
-        "commentCreatePayload": {
-          "properties": {
-            "author": {
-              "type": "string"
-            },
-            "body": {
-              "type": "string"
-            }
-          },
-          "type": "object",
-          "required": [
-            "author",
-            "body"
-          ]
-        },
-        "commentCreateSuccessResponseBody": {
-          "properties": {
-            "comment": {
-              "$ref": "#/components/schemas/comment"
-            },
-            "meta": {
-              "properties": {},
-              "type": "object"
-            }
-          },
-          "type": "object",
-          "required": [
-            "comment"
-          ]
-        },
-        "commentIndexSuccessResponseBody": {
-          "properties": {
-            "comments": {
-              "items": {
-                "$ref": "#/components/schemas/comment"
-              },
-              "type": "array"
-            },
-            "meta": {
-              "properties": {},
-              "type": "object"
-            },
-            "pagination": {
-              "$ref": "#/components/schemas/offsetPagination"
-            }
-          },
-          "type": "object",
-          "required": [
-            "comments",
-            "pagination"
-          ]
-        },
-        "commentNestedCreatePayload": {
-          "properties": {
-            "_type": {
-              "const": "create",
-              "type": "string"
-            },
-            "author": {
-              "type": "string"
-            },
-            "body": {
-              "type": "string"
-            }
-          },
-          "type": "object",
-          "required": [
-            "_type",
-            "author",
-            "body"
-          ]
-        },
-        "commentNestedPayload": {
-          "oneOf": [
-            {
-              "$ref": "#/components/schemas/commentNestedCreatePayload"
-            },
-            {
-              "$ref": "#/components/schemas/commentNestedUpdatePayload"
-            }
-          ],
-          "discriminator": {
-            "mapping": {
-              "create": "#/components/schemas/commentNestedCreatePayload",
-              "update": "#/components/schemas/commentNestedUpdatePayload"
-            },
-            "propertyName": "_type"
-          }
-        },
-        "commentNestedUpdatePayload": {
-          "properties": {
-            "_type": {
-              "const": "update",
-              "type": "string"
-            },
-            "author": {
-              "type": "string"
-            },
-            "body": {
-              "type": "string"
-            }
-          },
-          "type": "object",
-          "required": [
-            "_type",
-            "author",
-            "body"
-          ]
-        },
-        "commentPage": {
-          "properties": {
-            "number": {
-              "type": "integer",
-              "minimum": 1
-            },
-            "size": {
-              "type": "integer",
-              "minimum": 1,
-              "maximum": 100
-            }
-          },
-          "type": "object"
-        },
-        "commentShowSuccessResponseBody": {
-          "properties": {
-            "comment": {
-              "$ref": "#/components/schemas/comment"
-            },
-            "meta": {
-              "properties": {},
-              "type": "object"
-            }
-          },
-          "type": "object",
-          "required": [
-            "comment"
-          ]
-        },
-        "commentUpdatePayload": {
-          "properties": {
-            "author": {
-              "type": "string"
-            },
-            "body": {
-              "type": "string"
-            }
-          },
-          "type": "object",
-          "required": [
-            "author",
-            "body"
-          ]
-        },
-        "commentUpdateSuccessResponseBody": {
-          "properties": {
-            "comment": {
-              "$ref": "#/components/schemas/comment"
-            },
-            "meta": {
-              "properties": {},
-              "type": "object"
-            }
-          },
-          "type": "object",
-          "required": [
-            "comment"
-          ]
-        },
-        "errorResponseBody": {
-          "properties": {
-            "issues": {
-              "items": {
-                "$ref": "#/components/schemas/issue"
-              },
-              "type": "array"
-            },
-            "layer": {
-              "enum": [
-                "http",
-                "contract",
-                "domain"
-              ],
-              "type": "string"
-            }
-          },
-          "type": "object",
-          "required": [
-            "issues",
-            "layer"
-          ]
-        },
-        "issue": {
-          "properties": {
-            "code": {
-              "type": "string"
-            },
-            "detail": {
-              "type": "string"
-            },
-            "meta": {
-              "properties": {},
-              "type": "object"
-            },
-            "path": {
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            "pointer": {
-              "type": "string"
-            }
-          },
-          "type": "object",
-          "required": [
-            "code",
-            "detail",
-            "meta",
-            "path",
-            "pointer"
-          ]
-        },
-        "offsetPagination": {
-          "properties": {
-            "current": {
-              "type": "integer"
-            },
-            "items": {
-              "type": "integer"
-            },
-            "next": {
-              "type": [
-                "integer",
-                "null"
-              ]
-            },
-            "prev": {
-              "type": [
-                "integer",
-                "null"
-              ]
-            },
-            "total": {
-              "type": "integer"
-            }
-          },
-          "type": "object",
-          "required": [
-            "current",
-            "items",
-            "total"
-          ]
-        },
-        "post": {
-          "properties": {
-            "comments": {
-              "items": {
-                "$ref": "#/components/schemas/comment"
-              },
-              "type": "array"
-            },
-            "id": {
-              "type": "string"
-            },
-            "title": {
-              "type": "string"
-            }
-          },
-          "type": "object",
-          "required": [
-            "comments",
-            "id",
-            "title"
-          ]
-        },
-        "postCreatePayload": {
-          "properties": {
-            "comments": {
-              "items": {
-                "$ref": "#/components/schemas/commentNestedPayload"
-              },
-              "type": "array"
-            },
-            "title": {
-              "type": "string"
-            }
-          },
-          "type": "object",
-          "required": [
-            "title"
-          ]
-        },
-        "postCreateSuccessResponseBody": {
-          "properties": {
-            "meta": {
-              "properties": {},
-              "type": "object"
-            },
-            "post": {
-              "$ref": "#/components/schemas/post"
-            }
-          },
-          "type": "object",
-          "required": [
-            "post"
-          ]
-        },
-        "postIndexSuccessResponseBody": {
-          "properties": {
-            "meta": {
-              "properties": {},
-              "type": "object"
-            },
-            "pagination": {
-              "$ref": "#/components/schemas/offsetPagination"
-            },
-            "posts": {
-              "items": {
-                "$ref": "#/components/schemas/post"
-              },
-              "type": "array"
-            }
-          },
-          "type": "object",
-          "required": [
-            "pagination",
-            "posts"
-          ]
-        },
-        "postNestedCreatePayload": {
-          "properties": {
-            "_type": {
-              "const": "create",
-              "type": "string"
-            },
-            "comments": {
-              "items": {
-                "$ref": "#/components/schemas/commentNestedPayload"
-              },
-              "type": "array"
-            },
-            "title": {
-              "type": "string"
-            }
-          },
-          "type": "object",
-          "required": [
-            "_type",
-            "title"
-          ]
-        },
-        "postNestedPayload": {
-          "oneOf": [
-            {
-              "$ref": "#/components/schemas/postNestedCreatePayload"
-            },
-            {
-              "$ref": "#/components/schemas/postNestedUpdatePayload"
-            }
-          ],
-          "discriminator": {
-            "mapping": {
-              "create": "#/components/schemas/postNestedCreatePayload",
-              "update": "#/components/schemas/postNestedUpdatePayload"
-            },
-            "propertyName": "_type"
-          }
-        },
-        "postNestedUpdatePayload": {
-          "properties": {
-            "_type": {
-              "const": "update",
-              "type": "string"
-            },
-            "comments": {
-              "items": {
-                "$ref": "#/components/schemas/commentNestedPayload"
-              },
-              "type": "array"
-            },
-            "title": {
-              "type": "string"
-            }
-          },
-          "type": "object",
-          "required": [
-            "_type",
-            "title"
-          ]
-        },
-        "postPage": {
-          "properties": {
-            "number": {
-              "type": "integer",
-              "minimum": 1
-            },
-            "size": {
-              "type": "integer",
-              "minimum": 1,
-              "maximum": 100
-            }
-          },
-          "type": "object"
-        },
-        "postShowSuccessResponseBody": {
-          "properties": {
-            "meta": {
-              "properties": {},
-              "type": "object"
-            },
-            "post": {
-              "$ref": "#/components/schemas/post"
-            }
-          },
-          "type": "object",
-          "required": [
-            "post"
-          ]
-        },
-        "postUpdatePayload": {
-          "properties": {
-            "comments": {
-              "items": {
-                "$ref": "#/components/schemas/commentNestedPayload"
-              },
-              "type": "array"
-            },
-            "title": {
-              "type": "string"
-            }
-          },
-          "type": "object",
-          "required": [
-            "title"
-          ]
-        },
-        "postUpdateSuccessResponseBody": {
-          "properties": {
-            "meta": {
-              "properties": {},
-              "type": "object"
-            },
-            "post": {
-              "$ref": "#/components/schemas/post"
-            }
-          },
-          "type": "object",
-          "required": [
-            "post"
-          ]
-        },
-        "profile": {
-          "properties": {
-            "bio": {
-              "type": [
-                "string",
-                "null"
-              ]
-            },
-            "createdAt": {
-              "type": "string",
-              "format": "date-time"
-            },
-            "id": {
-              "type": "string"
-            },
-            "updatedAt": {
-              "type": "string",
-              "format": "date-time"
-            },
-            "user": {
-              "properties": {},
-              "type": "object"
-            },
-            "website": {
-              "type": [
-                "string",
-                "null"
-              ]
-            }
-          },
-          "type": "object",
-          "required": [
-            "bio",
-            "createdAt",
-            "id",
-            "updatedAt",
-            "website"
-          ]
-        },
-        "profileNestedCreatePayload": {
-          "properties": {
-            "_type": {
-              "const": "create",
-              "type": "string"
-            },
-            "bio": {
-              "type": [
-                "string",
-                "null"
-              ]
-            },
-            "website": {
-              "type": [
-                "string",
-                "null"
-              ]
-            }
-          },
-          "type": "object",
-          "required": [
-            "_type"
-          ]
-        },
-        "profileNestedPayload": {
-          "oneOf": [
-            {
-              "$ref": "#/components/schemas/profileNestedCreatePayload"
-            },
-            {
-              "$ref": "#/components/schemas/profileNestedUpdatePayload"
-            }
-          ],
-          "discriminator": {
-            "mapping": {
-              "create": "#/components/schemas/profileNestedCreatePayload",
-              "update": "#/components/schemas/profileNestedUpdatePayload"
-            },
-            "propertyName": "_type"
-          }
-        },
-        "profileNestedUpdatePayload": {
-          "properties": {
-            "_type": {
-              "const": "update",
-              "type": "string"
-            },
-            "bio": {
-              "type": [
-                "string",
-                "null"
-              ]
-            },
-            "website": {
-              "type": [
-                "string",
-                "null"
-              ]
-            }
-          },
-          "type": "object",
-          "required": [
-            "_type"
-          ]
-        },
-        "profileSort": {
-          "properties": {
-            "createdAt": {
-              "enum": [
-                "asc",
-                "desc"
-              ],
-              "type": "string"
-            },
-            "updatedAt": {
-              "enum": [
-                "asc",
-                "desc"
-              ],
-              "type": "string"
-            }
-          },
-          "type": "object"
-        },
-        "stringFilter": {
-          "properties": {
-            "contains": {
-              "type": "string"
-            },
-            "endsWith": {
-              "type": "string"
-            },
-            "eq": {
-              "type": "string"
-            },
-            "in": {
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            "startsWith": {
-              "type": "string"
-            }
-          },
-          "type": "object"
-        },
-        "user": {
-          "properties": {
-            "createdAt": {
-              "type": "string",
-              "format": "date-time"
-            },
-            "email": {
-              "type": "string"
-            },
-            "id": {
-              "type": "string"
-            },
-            "posts": {
-              "items": {
-                "$ref": "#/components/schemas/post"
-              },
-              "type": "array"
-            },
-            "profile": {
-              "$ref": "#/components/schemas/profile"
-            },
-            "updatedAt": {
-              "type": "string",
-              "format": "date-time"
-            },
-            "username": {
-              "type": "string"
-            }
-          },
-          "type": "object",
-          "required": [
-            "createdAt",
-            "email",
-            "id",
-            "posts",
-            "profile",
-            "updatedAt",
-            "username"
-          ]
-        },
-        "userCreatePayload": {
-          "properties": {
-            "email": {
-              "type": "string"
-            },
-            "posts": {
-              "items": {
-                "$ref": "#/components/schemas/postNestedPayload"
-              },
-              "type": "array"
-            },
-            "profile": {
-              "$ref": "#/components/schemas/profileNestedPayload"
-            },
-            "username": {
-              "type": "string"
-            }
-          },
-          "type": "object",
-          "required": [
-            "email",
-            "username"
-          ]
-        },
-        "userCreateSuccessResponseBody": {
-          "properties": {
-            "meta": {
-              "properties": {},
-              "type": "object"
-            },
-            "user": {
-              "$ref": "#/components/schemas/user"
-            }
-          },
-          "type": "object",
-          "required": [
-            "user"
-          ]
-        },
-        "userFilter": {
-          "properties": {
-            "_and": {
-              "items": {
-                "$ref": "#/components/schemas/userFilter"
-              },
-              "type": "array"
-            },
-            "_not": {
+---
+components:
+  schemas:
+    comment:
+      properties:
+        author:
+          type: string
+        body:
+          type: string
+        id:
+          type: string
+      type: object
+      required:
+      - author
+      - body
+      - id
+    commentCreatePayload:
+      properties:
+        author:
+          type: string
+        body:
+          type: string
+      type: object
+      required:
+      - author
+      - body
+    commentCreateSuccessResponseBody:
+      properties:
+        comment:
+          "$ref": "#/components/schemas/comment"
+        meta:
+          properties: {}
+          type: object
+      type: object
+      required:
+      - comment
+    commentIndexSuccessResponseBody:
+      properties:
+        comments:
+          items:
+            "$ref": "#/components/schemas/comment"
+          type: array
+        meta:
+          properties: {}
+          type: object
+        pagination:
+          "$ref": "#/components/schemas/offsetPagination"
+      type: object
+      required:
+      - comments
+      - pagination
+    commentNestedCreatePayload:
+      properties:
+        _type:
+          const: create
+          type: string
+        author:
+          type: string
+        body:
+          type: string
+      type: object
+      required:
+      - _type
+      - author
+      - body
+    commentNestedPayload:
+      oneOf:
+      - "$ref": "#/components/schemas/commentNestedCreatePayload"
+      - "$ref": "#/components/schemas/commentNestedUpdatePayload"
+      discriminator:
+        mapping:
+          create: "#/components/schemas/commentNestedCreatePayload"
+          update: "#/components/schemas/commentNestedUpdatePayload"
+        propertyName: _type
+    commentNestedUpdatePayload:
+      properties:
+        _type:
+          const: update
+          type: string
+        author:
+          type: string
+        body:
+          type: string
+      type: object
+      required:
+      - _type
+      - author
+      - body
+    commentPage:
+      properties:
+        number:
+          type: integer
+          minimum: 1
+        size:
+          type: integer
+          minimum: 1
+          maximum: 100
+      type: object
+    commentShowSuccessResponseBody:
+      properties:
+        comment:
+          "$ref": "#/components/schemas/comment"
+        meta:
+          properties: {}
+          type: object
+      type: object
+      required:
+      - comment
+    commentUpdatePayload:
+      properties:
+        author:
+          type: string
+        body:
+          type: string
+      type: object
+      required:
+      - author
+      - body
+    commentUpdateSuccessResponseBody:
+      properties:
+        comment:
+          "$ref": "#/components/schemas/comment"
+        meta:
+          properties: {}
+          type: object
+      type: object
+      required:
+      - comment
+    errorResponseBody:
+      properties:
+        issues:
+          items:
+            "$ref": "#/components/schemas/issue"
+          type: array
+        layer:
+          enum:
+          - http
+          - contract
+          - domain
+          type: string
+      type: object
+      required:
+      - issues
+      - layer
+    issue:
+      properties:
+        code:
+          type: string
+        detail:
+          type: string
+        meta:
+          properties: {}
+          type: object
+        path:
+          items:
+            type: string
+          type: array
+        pointer:
+          type: string
+      type: object
+      required:
+      - code
+      - detail
+      - meta
+      - path
+      - pointer
+    offsetPagination:
+      properties:
+        current:
+          type: integer
+        items:
+          type: integer
+        next:
+          type:
+          - integer
+          - 'null'
+        prev:
+          type:
+          - integer
+          - 'null'
+        total:
+          type: integer
+      type: object
+      required:
+      - current
+      - items
+      - total
+    post:
+      properties:
+        comments:
+          items:
+            "$ref": "#/components/schemas/comment"
+          type: array
+        id:
+          type: string
+        title:
+          type: string
+      type: object
+      required:
+      - comments
+      - id
+      - title
+    postCreatePayload:
+      properties:
+        comments:
+          items:
+            "$ref": "#/components/schemas/commentNestedPayload"
+          type: array
+        title:
+          type: string
+      type: object
+      required:
+      - title
+    postCreateSuccessResponseBody:
+      properties:
+        meta:
+          properties: {}
+          type: object
+        post:
+          "$ref": "#/components/schemas/post"
+      type: object
+      required:
+      - post
+    postIndexSuccessResponseBody:
+      properties:
+        meta:
+          properties: {}
+          type: object
+        pagination:
+          "$ref": "#/components/schemas/offsetPagination"
+        posts:
+          items:
+            "$ref": "#/components/schemas/post"
+          type: array
+      type: object
+      required:
+      - pagination
+      - posts
+    postNestedCreatePayload:
+      properties:
+        _type:
+          const: create
+          type: string
+        comments:
+          items:
+            "$ref": "#/components/schemas/commentNestedPayload"
+          type: array
+        title:
+          type: string
+      type: object
+      required:
+      - _type
+      - title
+    postNestedPayload:
+      oneOf:
+      - "$ref": "#/components/schemas/postNestedCreatePayload"
+      - "$ref": "#/components/schemas/postNestedUpdatePayload"
+      discriminator:
+        mapping:
+          create: "#/components/schemas/postNestedCreatePayload"
+          update: "#/components/schemas/postNestedUpdatePayload"
+        propertyName: _type
+    postNestedUpdatePayload:
+      properties:
+        _type:
+          const: update
+          type: string
+        comments:
+          items:
+            "$ref": "#/components/schemas/commentNestedPayload"
+          type: array
+        title:
+          type: string
+      type: object
+      required:
+      - _type
+      - title
+    postPage:
+      properties:
+        number:
+          type: integer
+          minimum: 1
+        size:
+          type: integer
+          minimum: 1
+          maximum: 100
+      type: object
+    postShowSuccessResponseBody:
+      properties:
+        meta:
+          properties: {}
+          type: object
+        post:
+          "$ref": "#/components/schemas/post"
+      type: object
+      required:
+      - post
+    postUpdatePayload:
+      properties:
+        comments:
+          items:
+            "$ref": "#/components/schemas/commentNestedPayload"
+          type: array
+        title:
+          type: string
+      type: object
+      required:
+      - title
+    postUpdateSuccessResponseBody:
+      properties:
+        meta:
+          properties: {}
+          type: object
+        post:
+          "$ref": "#/components/schemas/post"
+      type: object
+      required:
+      - post
+    profile:
+      properties:
+        bio:
+          type:
+          - string
+          - 'null'
+        createdAt:
+          type: string
+          format: date-time
+        id:
+          type: string
+        updatedAt:
+          type: string
+          format: date-time
+        user:
+          properties: {}
+          type: object
+        website:
+          type:
+          - string
+          - 'null'
+      type: object
+      required:
+      - bio
+      - createdAt
+      - id
+      - updatedAt
+      - website
+    profileNestedCreatePayload:
+      properties:
+        _type:
+          const: create
+          type: string
+        bio:
+          type:
+          - string
+          - 'null'
+        website:
+          type:
+          - string
+          - 'null'
+      type: object
+      required:
+      - _type
+    profileNestedPayload:
+      oneOf:
+      - "$ref": "#/components/schemas/profileNestedCreatePayload"
+      - "$ref": "#/components/schemas/profileNestedUpdatePayload"
+      discriminator:
+        mapping:
+          create: "#/components/schemas/profileNestedCreatePayload"
+          update: "#/components/schemas/profileNestedUpdatePayload"
+        propertyName: _type
+    profileNestedUpdatePayload:
+      properties:
+        _type:
+          const: update
+          type: string
+        bio:
+          type:
+          - string
+          - 'null'
+        website:
+          type:
+          - string
+          - 'null'
+      type: object
+      required:
+      - _type
+    profileSort:
+      properties:
+        createdAt:
+          enum:
+          - asc
+          - desc
+          type: string
+        updatedAt:
+          enum:
+          - asc
+          - desc
+          type: string
+      type: object
+    stringFilter:
+      properties:
+        contains:
+          type: string
+        endsWith:
+          type: string
+        eq:
+          type: string
+        in:
+          items:
+            type: string
+          type: array
+        startsWith:
+          type: string
+      type: object
+    user:
+      properties:
+        createdAt:
+          type: string
+          format: date-time
+        email:
+          type: string
+        id:
+          type: string
+        posts:
+          items:
+            "$ref": "#/components/schemas/post"
+          type: array
+        profile:
+          "$ref": "#/components/schemas/profile"
+        updatedAt:
+          type: string
+          format: date-time
+        username:
+          type: string
+      type: object
+      required:
+      - createdAt
+      - email
+      - id
+      - posts
+      - profile
+      - updatedAt
+      - username
+    userCreatePayload:
+      properties:
+        email:
+          type: string
+        posts:
+          items:
+            "$ref": "#/components/schemas/postNestedPayload"
+          type: array
+        profile:
+          "$ref": "#/components/schemas/profileNestedPayload"
+        username:
+          type: string
+      type: object
+      required:
+      - email
+      - username
+    userCreateSuccessResponseBody:
+      properties:
+        meta:
+          properties: {}
+          type: object
+        user:
+          "$ref": "#/components/schemas/user"
+      type: object
+      required:
+      - user
+    userFilter:
+      properties:
+        _and:
+          items:
+            "$ref": "#/components/schemas/userFilter"
+          type: array
+        _not:
+          "$ref": "#/components/schemas/userFilter"
+        _or:
+          items:
+            "$ref": "#/components/schemas/userFilter"
+          type: array
+        email:
+          oneOf:
+          - type: string
+          - "$ref": "#/components/schemas/stringFilter"
+        username:
+          oneOf:
+          - type: string
+          - "$ref": "#/components/schemas/stringFilter"
+      type: object
+    userIndexSuccessResponseBody:
+      properties:
+        meta:
+          properties: {}
+          type: object
+        pagination:
+          "$ref": "#/components/schemas/offsetPagination"
+        users:
+          items:
+            "$ref": "#/components/schemas/user"
+          type: array
+      type: object
+      required:
+      - pagination
+      - users
+    userPage:
+      properties:
+        number:
+          type: integer
+          minimum: 1
+        size:
+          type: integer
+          minimum: 1
+          maximum: 100
+      type: object
+    userShowSuccessResponseBody:
+      properties:
+        meta:
+          properties: {}
+          type: object
+        user:
+          "$ref": "#/components/schemas/user"
+      type: object
+      required:
+      - user
+    userSort:
+      properties:
+        createdAt:
+          enum:
+          - asc
+          - desc
+          type: string
+        updatedAt:
+          enum:
+          - asc
+          - desc
+          type: string
+      type: object
+    userUpdatePayload:
+      properties:
+        email:
+          type: string
+        posts:
+          items:
+            "$ref": "#/components/schemas/postNestedPayload"
+          type: array
+        profile:
+          "$ref": "#/components/schemas/profileNestedPayload"
+        username:
+          type: string
+      type: object
+      required:
+      - email
+      - username
+    userUpdateSuccessResponseBody:
+      properties:
+        meta:
+          properties: {}
+          type: object
+        user:
+          "$ref": "#/components/schemas/user"
+      type: object
+      required:
+      - user
+info:
+  title: "/happy_zebra API"
+  version: 1.0.0
+openapi: 3.1.0
+paths:
+  "/users":
+    get:
+      operationId: usersIndex
+      parameters:
+      - in: query
+        name: filter
+        required: false
+        schema:
+          oneOf:
+          - "$ref": "#/components/schemas/userFilter"
+          - items:
               "$ref": "#/components/schemas/userFilter"
-            },
-            "_or": {
-              "items": {
-                "$ref": "#/components/schemas/userFilter"
-              },
-              "type": "array"
-            },
-            "email": {
-              "oneOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "$ref": "#/components/schemas/stringFilter"
-                }
-              ]
-            },
-            "username": {
-              "oneOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "$ref": "#/components/schemas/stringFilter"
-                }
-              ]
-            }
-          },
-          "type": "object"
-        },
-        "userIndexSuccessResponseBody": {
-          "properties": {
-            "meta": {
-              "properties": {},
-              "type": "object"
-            },
-            "pagination": {
-              "$ref": "#/components/schemas/offsetPagination"
-            },
-            "users": {
-              "items": {
-                "$ref": "#/components/schemas/user"
-              },
-              "type": "array"
-            }
-          },
-          "type": "object",
-          "required": [
-            "pagination",
-            "users"
-          ]
-        },
-        "userPage": {
-          "properties": {
-            "number": {
-              "type": "integer",
-              "minimum": 1
-            },
-            "size": {
-              "type": "integer",
-              "minimum": 1,
-              "maximum": 100
-            }
-          },
-          "type": "object"
-        },
-        "userShowSuccessResponseBody": {
-          "properties": {
-            "meta": {
-              "properties": {},
-              "type": "object"
-            },
-            "user": {
-              "$ref": "#/components/schemas/user"
-            }
-          },
-          "type": "object",
-          "required": [
-            "user"
-          ]
-        },
-        "userSort": {
-          "properties": {
-            "createdAt": {
-              "enum": [
-                "asc",
-                "desc"
-              ],
-              "type": "string"
-            },
-            "updatedAt": {
-              "enum": [
-                "asc",
-                "desc"
-              ],
-              "type": "string"
-            }
-          },
-          "type": "object"
-        },
-        "userUpdatePayload": {
-          "properties": {
-            "email": {
-              "type": "string"
-            },
-            "posts": {
-              "items": {
-                "$ref": "#/components/schemas/postNestedPayload"
-              },
-              "type": "array"
-            },
-            "profile": {
-              "$ref": "#/components/schemas/profileNestedPayload"
-            },
-            "username": {
-              "type": "string"
-            }
-          },
-          "type": "object",
-          "required": [
-            "email",
-            "username"
-          ]
-        },
-        "userUpdateSuccessResponseBody": {
-          "properties": {
-            "meta": {
-              "properties": {},
-              "type": "object"
-            },
-            "user": {
-              "$ref": "#/components/schemas/user"
-            }
-          },
-          "type": "object",
-          "required": [
-            "user"
-          ]
-        }
-      }
-    },
-    "info": {
-      "title": "/happy_zebra API",
-      "version": "1.0.0"
-    },
-    "openapi": "3.1.0",
-    "paths": {
-      "/users": {
-        "get": {
-          "operationId": "usersIndex",
-          "parameters": [
-            {
-              "in": "query",
-              "name": "filter",
-              "required": false,
-              "schema": {
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/userFilter"
-                  },
-                  {
-                    "items": {
-                      "$ref": "#/components/schemas/userFilter"
-                    },
-                    "type": "array"
-                  }
-                ]
-              }
-            },
-            {
-              "in": "query",
-              "name": "page",
-              "required": false,
-              "schema": {
-                "$ref": "#/components/schemas/userPage"
-              }
-            },
-            {
-              "in": "query",
-              "name": "sort",
-              "required": false,
-              "schema": {
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/userSort"
-                  },
-                  {
-                    "items": {
-                      "$ref": "#/components/schemas/userSort"
-                    },
-                    "type": "array"
-                  }
-                ]
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/userIndexSuccessResponseBody"
-                  }
-                }
-              },
-              "description": "Successful response"
-            }
-          }
-        },
-        "post": {
-          "operationId": "usersCreate",
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "user": {
-                      "$ref": "#/components/schemas/userCreatePayload"
-                    }
-                  },
-                  "type": "object",
-                  "required": [
-                    "user"
-                  ]
-                }
-              }
-            },
-            "required": true
-          },
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/userCreateSuccessResponseBody"
-                  }
-                }
-              },
-              "description": "Successful response"
-            },
-            "422": {
-              "description": "Unprocessable Entity",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/errorResponseBody"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/users/{id}": {
-        "get": {
-          "operationId": "usersShow",
-          "parameters": [
-            {
-              "in": "path",
-              "name": "id",
-              "required": true,
-              "schema": {
-                "type": "string"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/userShowSuccessResponseBody"
-                  }
-                }
-              },
-              "description": "Successful response"
-            }
-          }
-        },
-        "patch": {
-          "operationId": "usersUpdate",
-          "parameters": [
-            {
-              "in": "path",
-              "name": "id",
-              "required": true,
-              "schema": {
-                "type": "string"
-              }
-            }
-          ],
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "user": {
-                      "$ref": "#/components/schemas/userUpdatePayload"
-                    }
-                  },
-                  "type": "object"
-                }
-              }
-            },
-            "required": true
-          },
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/userUpdateSuccessResponseBody"
-                  }
-                }
-              },
-              "description": "Successful response"
-            },
-            "422": {
-              "description": "Unprocessable Entity",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/errorResponseBody"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "delete": {
-          "operationId": "usersDestroy",
-          "parameters": [
-            {
-              "in": "path",
-              "name": "id",
-              "required": true,
-              "schema": {
-                "type": "string"
-              }
-            }
-          ],
-          "responses": {
-            "204": {
-              "description": "No content"
-            }
-          }
-        }
-      },
-      "/posts": {
-        "get": {
-          "operationId": "postsIndex",
-          "parameters": [
-            {
-              "in": "query",
-              "name": "page",
-              "required": false,
-              "schema": {
-                "$ref": "#/components/schemas/postPage"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/postIndexSuccessResponseBody"
-                  }
-                }
-              },
-              "description": "Successful response"
-            }
-          }
-        },
-        "post": {
-          "operationId": "postsCreate",
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "post": {
-                      "$ref": "#/components/schemas/postCreatePayload"
-                    }
-                  },
-                  "type": "object",
-                  "required": [
-                    "post"
-                  ]
-                }
-              }
-            },
-            "required": true
-          },
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/postCreateSuccessResponseBody"
-                  }
-                }
-              },
-              "description": "Successful response"
-            },
-            "422": {
-              "description": "Unprocessable Entity",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/errorResponseBody"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/posts/{id}": {
-        "get": {
-          "operationId": "postsShow",
-          "parameters": [
-            {
-              "in": "path",
-              "name": "id",
-              "required": true,
-              "schema": {
-                "type": "string"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/postShowSuccessResponseBody"
-                  }
-                }
-              },
-              "description": "Successful response"
-            }
-          }
-        },
-        "patch": {
-          "operationId": "postsUpdate",
-          "parameters": [
-            {
-              "in": "path",
-              "name": "id",
-              "required": true,
-              "schema": {
-                "type": "string"
-              }
-            }
-          ],
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "post": {
-                      "$ref": "#/components/schemas/postUpdatePayload"
-                    }
-                  },
-                  "type": "object"
-                }
-              }
-            },
-            "required": true
-          },
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/postUpdateSuccessResponseBody"
-                  }
-                }
-              },
-              "description": "Successful response"
-            },
-            "422": {
-              "description": "Unprocessable Entity",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/errorResponseBody"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "delete": {
-          "operationId": "postsDestroy",
-          "parameters": [
-            {
-              "in": "path",
-              "name": "id",
-              "required": true,
-              "schema": {
-                "type": "string"
-              }
-            }
-          ],
-          "responses": {
-            "204": {
-              "description": "No content"
-            }
-          }
-        }
-      },
-      "/comments": {
-        "get": {
-          "operationId": "commentsIndex",
-          "parameters": [
-            {
-              "in": "query",
-              "name": "page",
-              "required": false,
-              "schema": {
-                "$ref": "#/components/schemas/commentPage"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/commentIndexSuccessResponseBody"
-                  }
-                }
-              },
-              "description": "Successful response"
-            }
-          }
-        },
-        "post": {
-          "operationId": "commentsCreate",
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "comment": {
-                      "$ref": "#/components/schemas/commentCreatePayload"
-                    }
-                  },
-                  "type": "object",
-                  "required": [
-                    "comment"
-                  ]
-                }
-              }
-            },
-            "required": true
-          },
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/commentCreateSuccessResponseBody"
-                  }
-                }
-              },
-              "description": "Successful response"
-            },
-            "422": {
-              "description": "Unprocessable Entity",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/errorResponseBody"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/comments/{id}": {
-        "get": {
-          "operationId": "commentsShow",
-          "parameters": [
-            {
-              "in": "path",
-              "name": "id",
-              "required": true,
-              "schema": {
-                "type": "string"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/commentShowSuccessResponseBody"
-                  }
-                }
-              },
-              "description": "Successful response"
-            }
-          }
-        },
-        "patch": {
-          "operationId": "commentsUpdate",
-          "parameters": [
-            {
-              "in": "path",
-              "name": "id",
-              "required": true,
-              "schema": {
-                "type": "string"
-              }
-            }
-          ],
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "comment": {
-                      "$ref": "#/components/schemas/commentUpdatePayload"
-                    }
-                  },
-                  "type": "object"
-                }
-              }
-            },
-            "required": true
-          },
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/commentUpdateSuccessResponseBody"
-                  }
-                }
-              },
-              "description": "Successful response"
-            },
-            "422": {
-              "description": "Unprocessable Entity",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/errorResponseBody"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "delete": {
-          "operationId": "commentsDestroy",
-          "parameters": [
-            {
-              "in": "path",
-              "name": "id",
-              "required": true,
-              "schema": {
-                "type": "string"
-              }
-            }
-          ],
-          "responses": {
-            "204": {
-              "description": "No content"
-            }
-          }
-        }
-      }
-    }
-  }
+            type: array
+      - in: query
+        name: page
+        required: false
+        schema:
+          "$ref": "#/components/schemas/userPage"
+      - in: query
+        name: sort
+        required: false
+        schema:
+          oneOf:
+          - "$ref": "#/components/schemas/userSort"
+          - items:
+              "$ref": "#/components/schemas/userSort"
+            type: array
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/userIndexSuccessResponseBody"
+          description: Successful response
+    post:
+      operationId: usersCreate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                user:
+                  "$ref": "#/components/schemas/userCreatePayload"
+              type: object
+              required:
+              - user
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/userCreateSuccessResponseBody"
+          description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
+  "/users/{id}":
+    get:
+      operationId: usersShow
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/userShowSuccessResponseBody"
+          description: Successful response
+    patch:
+      operationId: usersUpdate
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                user:
+                  "$ref": "#/components/schemas/userUpdatePayload"
+              type: object
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/userUpdateSuccessResponseBody"
+          description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
+    delete:
+      operationId: usersDestroy
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No content
+  "/posts":
+    get:
+      operationId: postsIndex
+      parameters:
+      - in: query
+        name: page
+        required: false
+        schema:
+          "$ref": "#/components/schemas/postPage"
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/postIndexSuccessResponseBody"
+          description: Successful response
+    post:
+      operationId: postsCreate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                post:
+                  "$ref": "#/components/schemas/postCreatePayload"
+              type: object
+              required:
+              - post
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/postCreateSuccessResponseBody"
+          description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
+  "/posts/{id}":
+    get:
+      operationId: postsShow
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/postShowSuccessResponseBody"
+          description: Successful response
+    patch:
+      operationId: postsUpdate
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                post:
+                  "$ref": "#/components/schemas/postUpdatePayload"
+              type: object
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/postUpdateSuccessResponseBody"
+          description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
+    delete:
+      operationId: postsDestroy
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No content
+  "/comments":
+    get:
+      operationId: commentsIndex
+      parameters:
+      - in: query
+        name: page
+        required: false
+        schema:
+          "$ref": "#/components/schemas/commentPage"
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/commentIndexSuccessResponseBody"
+          description: Successful response
+    post:
+      operationId: commentsCreate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                comment:
+                  "$ref": "#/components/schemas/commentCreatePayload"
+              type: object
+              required:
+              - comment
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/commentCreateSuccessResponseBody"
+          description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
+  "/comments/{id}":
+    get:
+      operationId: commentsShow
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/commentShowSuccessResponseBody"
+          description: Successful response
+    patch:
+      operationId: commentsUpdate
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                comment:
+                  "$ref": "#/components/schemas/commentUpdatePayload"
+              type: object
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/commentUpdateSuccessResponseBody"
+          description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
+    delete:
+      operationId: commentsDestroy
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No content
