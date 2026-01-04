@@ -78,6 +78,8 @@ paths:
                 profile:
                   "$ref": "#/components/schemas/profileUpdatePayload"
               type: object
+              required:
+              - profile
         required: true
       responses:
         '200':
@@ -452,14 +454,6 @@ components:
             type: string
           type: array
       type: object
-      required:
-      - addresses
-      - email
-      - metadata
-      - name
-      - preferences
-      - settings
-      - tags
     profileUpdateSuccessResponseBody:
       properties:
         meta:

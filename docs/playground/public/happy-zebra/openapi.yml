@@ -96,6 +96,8 @@ paths:
                 user:
                   "$ref": "#/components/schemas/userUpdatePayload"
               type: object
+              required:
+              - user
         required: true
       responses:
         '200':
@@ -195,6 +197,8 @@ paths:
                 post:
                   "$ref": "#/components/schemas/postUpdatePayload"
               type: object
+              required:
+              - post
         required: true
       responses:
         '200':
@@ -294,6 +298,8 @@ paths:
                 comment:
                   "$ref": "#/components/schemas/commentUpdatePayload"
               type: object
+              required:
+              - comment
         required: true
       responses:
         '200':
@@ -404,8 +410,6 @@ components:
       type: object
       required:
       - _type
-      - author
-      - body
     commentPage:
       properties:
         number:
@@ -433,9 +437,6 @@ components:
         body:
           type: string
       type: object
-      required:
-      - author
-      - body
     commentUpdateSuccessResponseBody:
       properties:
         comment:
@@ -594,7 +595,6 @@ components:
       type: object
       required:
       - _type
-      - title
     postPage:
       properties:
         number:
@@ -624,8 +624,6 @@ components:
         title:
           type: string
       type: object
-      required:
-      - title
     postUpdateSuccessResponseBody:
       properties:
         meta:
@@ -870,9 +868,6 @@ components:
         username:
           type: string
       type: object
-      required:
-      - email
-      - username
     userUpdateSuccessResponseBody:
       properties:
         meta:

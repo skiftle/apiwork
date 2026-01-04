@@ -108,6 +108,8 @@ paths:
                 comment:
                   "$ref": "#/components/schemas/commentUpdatePayload"
               type: object
+              required:
+              - comment
         required: true
       responses:
         '200':
@@ -250,8 +252,6 @@ components:
         body:
           type: string
       type: object
-      required:
-      - body
     commentUpdateSuccessResponseBody:
       properties:
         comment:
@@ -378,8 +378,6 @@ components:
       type: object
       required:
       - _type
-      - title
-      - url
     imageSort:
       properties:
         createdAt:
@@ -510,7 +508,6 @@ components:
       type: object
       required:
       - _type
-      - title
     postSort:
       properties:
         createdAt:
@@ -606,8 +603,6 @@ components:
       type: object
       required:
       - _type
-      - title
-      - url
     videoSort:
       properties:
         createdAt:

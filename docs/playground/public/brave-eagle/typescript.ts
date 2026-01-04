@@ -33,7 +33,7 @@ export interface CommentNestedCreatePayload {
 export type CommentNestedPayload = { _type: 'create' } & CommentNestedCreatePayload | { _type: 'update' } & CommentNestedUpdatePayload;
 
 export interface CommentNestedUpdatePayload {
-  _type?: 'update';
+  _type: 'update';
   /**
    * Name of the person who wrote the comment
    * @example "John Doe"

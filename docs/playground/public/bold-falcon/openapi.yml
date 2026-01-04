@@ -96,6 +96,8 @@ paths:
                 article:
                   "$ref": "#/components/schemas/articleUpdatePayload"
               type: object
+              required:
+              - article
         required: true
       responses:
         '200':
@@ -350,8 +352,6 @@ components:
         title:
           type: string
       type: object
-      required:
-      - title
     articleUpdateSuccessResponseBody:
       properties:
         article:

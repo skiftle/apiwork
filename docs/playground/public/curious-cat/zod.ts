@@ -47,12 +47,12 @@ export const ProfilePageSchema = z.object({
 });
 
 export const ProfileUpdatePayloadSchema = z.object({
-  addresses: z.array(z.object({ city: z.string().optional(), primary: z.boolean().optional(), street: z.string().optional(), zip: z.string().optional() })),
+  addresses: z.array(z.object({ city: z.string(), primary: z.boolean(), street: z.string(), zip: z.string() })).optional(),
   email: z.email().optional(),
   metadata: z.object({}).optional(),
   name: z.string().optional(),
-  preferences: z.object({ notifications: z.object({ email: z.boolean().optional(), push: z.boolean().optional() }), ui: z.object({ sidebarCollapsed: z.boolean().optional(), theme: z.string().optional() }) }),
-  settings: z.object({ language: z.string().optional(), notifications: z.boolean().optional(), theme: z.string().optional() }),
+  preferences: z.object({ notifications: z.object({ email: z.boolean(), push: z.boolean() }), ui: z.object({ sidebarCollapsed: z.boolean(), theme: z.string() }) }).optional(),
+  settings: z.object({ language: z.string(), notifications: z.boolean(), theme: z.string() }).optional(),
   tags: z.array(z.string()).optional()
 });
 

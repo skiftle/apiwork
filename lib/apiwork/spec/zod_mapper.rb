@@ -26,12 +26,12 @@ module Apiwork
         @key_format = key_format
       end
 
-      def build_object_schema(type_name, type, action_name: nil, recursive: false)
+      def build_object_schema(type_name, type, recursive: false)
         schema_name = pascal_case(type_name)
 
         properties = type.shape.sort_by { |name, _| name.to_s }.map do |name, param|
           key = transform_key(name)
-          zod_type = map_field(param, action_name:)
+          zod_type = map_field(param)
           "  #{key}: #{zod_type}"
         end.join(",\n")
 
@@ -47,7 +47,7 @@ module Apiwork
       def build_union_schema(type_name, type)
         schema_name = pascal_case(type_name)
 
-        variant_schemas = type.variants.map { |variant| map_type_definition(variant, action_name: nil) }
+        variant_schemas = type.variants.map { |variant| map_type_definition(variant) }
         union_body = variant_schemas.map { |v| "  #{v}" }.join(",\n")
 
         if type.discriminator
@@ -63,7 +63,7 @@ module Apiwork
 
         properties = query_params.sort_by { |k, _| k.to_s }.map do |param_name, param_definition|
           key = transform_key(param_name)
-          zod_type = map_field(param_definition, action_name: nil)
+          zod_type = map_field(param_definition)
           "  #{key}: #{zod_type}"
         end.join(",\n")
 
@@ -75,7 +75,7 @@ module Apiwork
 
         properties = body_params.sort_by { |k, _| k.to_s }.map do |param_name, param_definition|
           key = transform_key(param_name)
-          zod_type = map_field(param_definition, action_name: nil)
+          zod_type = map_field(param_definition)
           "  #{key}: #{zod_type}"
         end.join(",\n")
 
@@ -103,7 +103,7 @@ module Apiwork
       def build_action_response_body_schema(resource_name, action_name, response_body, parent_identifiers: [])
         schema_name = action_type_name(resource_name, action_name, 'ResponseBody', parent_identifiers:)
 
-        zod_schema = map_type_definition(response_body, action_name: nil)
+        zod_schema = map_type_definition(response_body)
 
         "export const #{schema_name}Schema = #{zod_schema};"
       end
@@ -122,26 +122,26 @@ module Apiwork
         "#{base_name}#{suffix_pascal}"
       end
 
-      def map_field(param, action_name: nil, force_optional: nil)
+      def map_field(param, force_optional: nil)
         if param.ref_type? && type_or_enum_reference?(param.type)
           schema_name = pascal_case(param.type)
           type = "#{schema_name}Schema"
-          return apply_modifiers(type, param, action_name, force_optional:)
+          return apply_modifiers(type, param, force_optional:)
         end
 
-        type = map_type_definition(param, action_name:)
+        type = map_type_definition(param)
         type = resolve_enum_schema(param) || type
 
-        apply_modifiers(type, param, action_name, force_optional:)
+        apply_modifiers(type, param, force_optional:)
       end
 
-      def map_type_definition(param, action_name: nil)
+      def map_type_definition(param)
         if param.object?
-          map_object_type(param, action_name:)
+          map_object_type(param)
         elsif param.array?
-          map_array_type(param, action_name:)
+          map_array_type(param)
         elsif param.union?
-          map_union_type(param, action_name:)
+          map_union_type(param)
         elsif param.literal?
           map_literal_type(param)
         elsif param.type.nil?
@@ -153,7 +153,7 @@ module Apiwork
         end
       end
 
-      def map_object_type(param, action_name: nil)
+      def map_object_type(param)
         return 'z.object({})' if param.shape.empty?
 
         partial = param.respond_to?(:partial?) && param.partial?
@@ -161,9 +161,9 @@ module Apiwork
         properties = param.shape.sort_by { |name, _| name.to_s }.map do |name, field_param|
           key = transform_key(name)
           zod_type = if partial
-                       map_field(field_param, action_name: nil, force_optional: false)
+                       map_field(field_param, force_optional: false)
                      else
-                       map_field(field_param, action_name:)
+                       map_field(field_param)
                      end
           "#{key}: #{zod_type}"
         end.join(', ')
@@ -172,14 +172,14 @@ module Apiwork
         partial ? "#{base_object}.partial()" : base_object
       end
 
-      def map_array_type(param, action_name: nil)
+      def map_array_type(param)
         items_type = param.of
 
         if items_type.nil? && param.shape.any?
-          items_schema = map_object_type(param, action_name:)
+          items_schema = map_object_type(param)
           base = "z.array(#{items_schema})"
         elsif items_type
-          items_schema = map_type_definition(items_type, action_name:)
+          items_schema = map_type_definition(items_type)
           base = "z.array(#{items_schema})"
         else
           base = 'z.array(z.string())'
@@ -190,19 +190,19 @@ module Apiwork
         base
       end
 
-      def map_union_type(param, action_name: nil)
+      def map_union_type(param)
         if param.discriminator
-          map_discriminated_union(param, action_name:)
+          map_discriminated_union(param)
         else
-          variants = param.variants.map { |variant| map_type_definition(variant, action_name:) }
+          variants = param.variants.map { |variant| map_type_definition(variant) }
           "z.union([#{variants.join(', ')}])"
         end
       end
 
-      def map_discriminated_union(param, action_name: nil)
+      def map_discriminated_union(param)
         discriminator_field = transform_key(param.discriminator)
 
-        variant_schemas = param.variants.map { |variant| map_type_definition(variant, action_name:) }
+        variant_schemas = param.variants.map { |variant| map_type_definition(variant) }
 
         "z.discriminatedUnion('#{discriminator_field}', [#{variant_schemas.join(', ')}])"
       end
@@ -274,21 +274,10 @@ module Apiwork
         end
       end
 
-      def apply_modifiers(type, param, action_name, force_optional: nil)
-        update = action_name.to_s == 'update'
-
+      def apply_modifiers(type, param, force_optional: nil)
         type += '.nullable()' if param.nullable?
-
-        discriminator = param.literal? && !param.optional?
-
         optional = force_optional.nil? ? param.optional? : force_optional
-
-        if update && !discriminator
-          type += '.optional()' unless type.include?('.optional()')
-        elsif optional
-          type += '.optional()'
-        end
-
+        type += '.optional()' if optional
         type
       end
 

@@ -29,9 +29,8 @@ module Apiwork
           code = if type.union?
                    mapper.build_union_type(type_name, type)
                  else
-                   action_name = type_name.to_s.end_with?('_update_payload') ? 'update' : nil
                    recursive = TypeAnalysis.circular_reference?(type_name, types_hash[type_name], filter: :custom_only)
-                   mapper.build_interface(type_name, type, action_name:, recursive:)
+                   mapper.build_interface(type_name, type, recursive:)
                  end
           types << { code:, name: type_name_pascal }
         end

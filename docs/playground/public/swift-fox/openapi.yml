@@ -78,6 +78,8 @@ paths:
                 contact:
                   "$ref": "#/components/schemas/contactUpdatePayload"
               type: object
+              required:
+              - contact
         required: true
       responses:
         '200':
@@ -199,8 +201,6 @@ components:
         phone:
           type: string
       type: object
-      required:
-      - name
     contactUpdateSuccessResponseBody:
       properties:
         contact:

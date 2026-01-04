@@ -342,26 +342,27 @@ Content-Type: application/json
 }
 ```
 
-**Response** `400`
+**Response** `200`
 
 ```json
 {
-  "layer": "contract",
-  "issues": [
-    {
-      "code": "field_missing",
-      "detail": "Required",
-      "meta": {
-        "field": "order_number",
-        "type": "string"
-      },
-      "path": [
-        "order",
-        "order_number"
-      ],
-      "pointer": "/order/order_number"
-    }
-  ]
+  "order": {
+    "id": "26e15ccf-de43-5826-a54e-fcd80f398f17",
+    "orderNumber": "ORD-001",
+    "status": "pending",
+    "total": null,
+    "createdAt": "2024-01-01T12:00:00.000Z",
+    "updatedAt": "2024-01-01T12:00:00.000Z",
+    "lineItems": [
+      {
+        "id": "c2942eb4-b212-59b3-b491-f61561ea8210",
+        "productName": "Widget to Remove",
+        "quantity": 1,
+        "unitPrice": "29.99"
+      }
+    ],
+    "shippingAddress": null
+  }
 }
 ```
 

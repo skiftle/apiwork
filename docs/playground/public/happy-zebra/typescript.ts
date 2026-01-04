@@ -29,7 +29,7 @@ export interface CommentNestedCreatePayload {
 export type CommentNestedPayload = { _type: 'create' } & CommentNestedCreatePayload | { _type: 'update' } & CommentNestedUpdatePayload;
 
 export interface CommentNestedUpdatePayload {
-  _type?: 'update';
+  _type: 'update';
   author?: string;
   body?: string;
 }
@@ -158,7 +158,7 @@ export interface PostNestedCreatePayload {
 export type PostNestedPayload = { _type: 'create' } & PostNestedCreatePayload | { _type: 'update' } & PostNestedUpdatePayload;
 
 export interface PostNestedUpdatePayload {
-  _type?: 'update';
+  _type: 'update';
   comments?: CommentNestedPayload[];
   title?: string;
 }
@@ -251,7 +251,7 @@ export interface ProfileNestedCreatePayload {
 export type ProfileNestedPayload = { _type: 'create' } & ProfileNestedCreatePayload | { _type: 'update' } & ProfileNestedUpdatePayload;
 
 export interface ProfileNestedUpdatePayload {
-  _type?: 'update';
+  _type: 'update';
   bio?: null | string;
   website?: null | string;
 }

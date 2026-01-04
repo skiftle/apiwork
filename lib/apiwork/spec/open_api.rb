@@ -105,7 +105,7 @@ module Apiwork
           query_params = request.query? ? build_query_parameters(request.query) : []
           all_params = path_params + query_params
           operation[:parameters] = all_params if all_params.any?
-          operation[:requestBody] = build_request_body(request.body, action_name:) if request.body?
+          operation[:requestBody] = build_request_body(request.body) if request.body?
         elsif path_params.any?
           operation[:parameters] = path_params
         end
@@ -171,26 +171,25 @@ module Apiwork
         map_type_definition(param)
       end
 
-      def build_request_body(body_params, action_name:)
+      def build_request_body(body_params)
         {
           content: {
             'application/json': {
-              schema: build_body_schema(body_params, action_name:),
+              schema: build_body_schema(body_params),
             },
           },
           required: true,
         }
       end
 
-      def build_body_schema(body_params, action_name:)
-        update_action = action_name.to_s == 'update'
+      def build_body_schema(body_params)
         properties = {}
         required_fields = []
 
         body_params.each do |name, param|
           transformed_key = transform_key(name)
-          properties[transformed_key] = map_field(param, action_name:)
-          required_fields << transformed_key if !param.optional? && !update_action
+          properties[transformed_key] = map_field(param)
+          required_fields << transformed_key unless param.optional?
         end
 
         result = { properties:, type: 'object' }
@@ -213,7 +212,7 @@ module Apiwork
             responses[:'200'] = {
               content: {
                 'application/json': {
-                  schema: map_type_definition(success_variant, action_name:),
+                  schema: map_type_definition(success_variant),
                 },
               },
               description: 'Successful response',
@@ -227,7 +226,7 @@ module Apiwork
             responses[:'200'] = {
               content: {
                 'application/json': {
-                  schema: map_type_definition(body, action_name:),
+                  schema: map_type_definition(body),
                 },
               },
               description: 'Successful response',
@@ -310,7 +309,7 @@ module Apiwork
         schemas
       end
 
-      def map_field(param, action_name: nil)
+      def map_field(param)
         if param.ref_type? && type_exists?(param.type)
           schema = { '$ref': "#/components/schemas/#{schema_name(param.type)}" }
           return apply_nullable(schema, param.nullable?)
@@ -326,7 +325,7 @@ module Apiwork
           return apply_nullable(schema, param.nullable?)
         end
 
-        schema = map_type_definition(param, action_name:)
+        schema = map_type_definition(param)
 
         schema[:description] = param.description if param.description
         schema[:example] = param.example if param.example
@@ -337,13 +336,13 @@ module Apiwork
         apply_nullable(schema, param.nullable?)
       end
 
-      def map_type_definition(param, action_name: nil)
+      def map_type_definition(param)
         if param.object?
-          map_object(param, action_name:)
+          map_object(param)
         elsif param.array?
-          map_array(param, action_name:)
+          map_array(param)
         elsif param.union?
-          map_union(param, action_name:)
+          map_union(param)
         elsif param.literal?
           map_literal(param)
         elsif param.ref_type? && type_exists?(param.type)
@@ -356,7 +355,7 @@ module Apiwork
         end
       end
 
-      def map_object(param, action_name: nil)
+      def map_object(param)
         result = {
           properties: {},
           type: 'object',
@@ -367,11 +366,10 @@ module Apiwork
 
         param.shape.each do |name, field_param|
           transformed_key = transform_key(name)
-          result[:properties][transformed_key] = map_field(field_param, action_name:)
+          result[:properties][transformed_key] = map_field(field_param)
         end
 
-        create_action = action_name.to_s != 'update'
-        if param.shape.any? && create_action
+        if param.shape.any?
           required_fields = param.shape.reject { |_, p| p.optional? }.keys.map { |k| transform_key(k) }
           result[:required] = required_fields if required_fields.any?
         end
@@ -379,11 +377,11 @@ module Apiwork
         result
       end
 
-      def map_array(param, action_name: nil)
+      def map_array(param)
         items_param = param.of
 
         if items_param.nil? && param.shape.any?
-          items_schema = map_inline_object(param.shape, action_name:)
+          items_schema = map_inline_object(param.shape)
           return { items: items_schema, type: 'array' }
         end
 
@@ -392,7 +390,7 @@ module Apiwork
         items_schema = if items_param.ref_type? && type_exists?(items_param.type)
                          { '$ref': "#/components/schemas/#{schema_name(items_param.type)}" }
                        else
-                         map_type_definition(items_param, action_name:)
+                         map_type_definition(items_param)
                        end
 
         {
@@ -401,12 +399,12 @@ module Apiwork
         }
       end
 
-      def map_inline_object(shape, action_name: nil)
+      def map_inline_object(shape)
         result = { properties: {}, type: 'object' }
 
         shape.each do |name, field_param|
           transformed_key = transform_key(name)
-          result[:properties][transformed_key] = map_field(field_param, action_name:)
+          result[:properties][transformed_key] = map_field(field_param)
         end
 
         required_fields = shape.reject { |_, p| p.optional? }.keys.map { |k| transform_key(k) }
@@ -415,21 +413,21 @@ module Apiwork
         result
       end
 
-      def map_union(param, action_name: nil)
+      def map_union(param)
         if param.discriminator
-          map_discriminated_union(param, action_name:)
+          map_discriminated_union(param)
         else
           {
-            oneOf: param.variants.map { |variant| map_type_definition(variant, action_name:) },
+            oneOf: param.variants.map { |variant| map_type_definition(variant) },
           }
         end
       end
 
-      def map_discriminated_union(param, action_name: nil)
+      def map_discriminated_union(param)
         discriminator_field = param.discriminator
         variants = param.variants
 
-        one_of_schemas = variants.map { |variant| map_type_definition(variant, action_name:) }
+        one_of_schemas = variants.map { |variant| map_type_definition(variant) }
 
         mapping = {}
         variants.each do |variant|

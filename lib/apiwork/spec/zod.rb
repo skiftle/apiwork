@@ -71,9 +71,8 @@ module Apiwork
           if type.union?
             zod_mapper.build_union_schema(type_name, type)
           else
-            action_name = type_name.to_s.end_with?('_update_payload') ? 'update' : nil
             recursive = TypeAnalysis.circular_reference?(type_name, types_hash[type_name], filter: :custom_only)
-            zod_mapper.build_object_schema(type_name, type, action_name:, recursive:)
+            zod_mapper.build_object_schema(type_name, type, recursive:)
           end
         end
 
@@ -143,9 +142,8 @@ module Apiwork
           code = if type.union?
                    typescript_mapper.build_union_type(name, type)
                  else
-                   action_name = name.to_s.end_with?('_update_payload') ? 'update' : nil
                    recursive = TypeAnalysis.circular_reference?(name, types_hash[name], filter: :custom_only)
-                   typescript_mapper.build_interface(name, type, action_name:, recursive:)
+                   typescript_mapper.build_interface(name, type, recursive:)
                  end
           all_types << { code:, name: type_name_pascal }
         end

@@ -22,7 +22,7 @@ export interface CarUpdatePayload {
   color?: null | string;
   doors?: null | number;
   model?: string;
-  type?: 'car';
+  type: 'car';
   year?: null | number;
 }
 
@@ -80,7 +80,7 @@ export interface MotorcycleUpdatePayload {
   color?: null | string;
   engineCc?: null | number;
   model?: string;
-  type?: 'motorcycle';
+  type: 'motorcycle';
   year?: null | number;
 }
 
@@ -137,7 +137,7 @@ export interface TruckUpdatePayload {
   color?: null | string;
   model?: string;
   payloadCapacity?: null | number;
-  type?: 'truck';
+  type: 'truck';
   year?: null | number;
 }
 

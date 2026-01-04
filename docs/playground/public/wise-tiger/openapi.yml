@@ -113,6 +113,8 @@ paths:
                 project:
                   "$ref": "#/components/schemas/projectUpdatePayload"
               type: object
+              required:
+              - project
         required: true
       responses:
         '200':
@@ -481,8 +483,6 @@ components:
           - 'null'
       type: object
       description: A project with tasks and deadlines
-      required:
-      - name
     projectUpdateSuccessResponseBody:
       properties:
         meta:

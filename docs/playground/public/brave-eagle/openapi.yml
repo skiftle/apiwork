@@ -142,6 +142,8 @@ paths:
                 task:
                   "$ref": "#/components/schemas/taskUpdatePayload"
               type: object
+              required:
+              - task
         required: true
       responses:
         '200':
@@ -284,7 +286,6 @@ components:
       type: object
       required:
       - _type
-      - body
     errorResponseBody:
       properties:
         issues:
@@ -677,8 +678,6 @@ components:
           example: Implement user authentication
       type: object
       description: A task representing work to be completed
-      required:
-      - title
     taskUpdateSuccessResponseBody:
       properties:
         meta:

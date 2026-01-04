@@ -76,18 +76,18 @@ module Apiwork
           param_definition.param :include, optional: true, type: include_type if include_type
         end
 
-        def writable_request(param_definition, context_symbol)
+        def writable_request(param_definition, action_name)
           root_key = schema_class.root_key.singular.to_sym
           builder = self
 
           if sti_base_schema?
-            payload_type_name = sti_request_union(context_symbol)
+            payload_type_name = sti_request_union(action_name)
           else
-            payload_type_name = :"#{context_symbol}_payload"
+            payload_type_name = :"#{action_name}_payload"
 
             unless registrar.resolve_type(payload_type_name)
               registrar.type(payload_type_name, schema_class: schema_class) do
-                builder.send(:writable_params, self, context_symbol, nested: false)
+                builder.send(:writable_params, self, action_name, nested: false)
               end
             end
           end
@@ -95,10 +95,10 @@ module Apiwork
           param_definition.param root_key, type: payload_type_name
         end
 
-        def writable_params(param_definition, context_symbol, nested: false, target_schema: nil)
+        def writable_params(param_definition, action_name, nested: false, target_schema: nil)
           target_schema_class = target_schema || schema_class
           target_schema_class.attribute_definitions.each do |name, attribute_definition|
-            next unless attribute_definition.writable_for?(context_symbol)
+            next unless attribute_definition.writable_for?(action_name)
 
             param_options = {
               deprecated: attribute_definition.deprecated,
@@ -106,7 +106,7 @@ module Apiwork
               example: attribute_definition.example,
               format: attribute_definition.format,
               nullable: attribute_definition.nullable?,
-              optional: attribute_definition.optional?,
+              optional: action_name == :update || attribute_definition.optional?,
               type: map_type(attribute_definition.type),
             }
 
@@ -124,7 +124,7 @@ module Apiwork
           end
 
           target_schema_class.association_definitions.each do |name, association_definition|
-            next unless association_definition.writable_for?(context_symbol)
+            next unless association_definition.writable_for?(action_name)
 
             association_resource = resolve_association_resource(association_definition)
             association_payload_type = nil
@@ -270,8 +270,8 @@ module Apiwork
           end
         end
 
-        def sti_request_union(context_symbol)
-          union_type_name = :"#{context_symbol}_payload"
+        def sti_request_union(action_name)
+          union_type_name = :"#{action_name}_payload"
           discriminator_name = schema_class.discriminator_name
           discriminator_column = schema_class.discriminator_column
           builder = self
@@ -279,7 +279,7 @@ module Apiwork
 
           build_sti_union(union_type_name: union_type_name) do |variant_schema, tag, _visited|
             variant_schema_name = variant_schema.name.demodulize.delete_suffix('Schema').underscore
-            variant_type_name = :"#{variant_schema_name}_#{context_symbol}_payload"
+            variant_type_name = :"#{variant_schema_name}_#{action_name}_payload"
 
             unless registrar.api_registrar.resolve_type(variant_type_name)
               registrar.api_registrar.type(variant_type_name) do
@@ -287,7 +287,7 @@ module Apiwork
                 as_column = discriminator_name != discriminator_column ? discriminator_column : nil
                 param discriminator_name, as: as_column, internal: { sti_mapping: }, type: :literal, value: tag.to_s
 
-                builder.send(:writable_params, self, context_symbol, nested: false, target_schema: variant_schema)
+                builder.send(:writable_params, self, action_name, nested: false, target_schema: variant_schema)
               end
             end
 

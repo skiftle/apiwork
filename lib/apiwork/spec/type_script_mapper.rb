@@ -11,15 +11,13 @@ module Apiwork
         @key_format = key_format
       end
 
-      def build_interface(type_name, type, action_name: nil, recursive: false)
+      def build_interface(type_name, type, recursive: false)
         type_name_pascal = pascal_case(type_name)
 
         properties = type.shape.sort_by { |name, _| name.to_s }.map do |name, param|
           key = transform_key(name)
-          update = action_name.to_s == 'update'
-
-          ts_type = map_field(param, action_name:)
-          optional_marker = update || param.optional? ? '?' : ''
+          ts_type = map_field(param)
+          optional_marker = param.optional? ? '?' : ''
 
           prop_jsdoc = jsdoc(description: param.description, example: param.example)
           if prop_jsdoc
@@ -44,7 +42,7 @@ module Apiwork
         type_name_pascal = pascal_case(type_name)
 
         variant_types = type.variants.map do |variant|
-          base_type = map_type_definition(variant, action_name: nil)
+          base_type = map_type_definition(variant)
 
           if type.discriminator && variant.tag
             discriminator_key = transform_key(type.discriminator)
@@ -73,7 +71,7 @@ module Apiwork
 
         properties = query_params.sort_by { |k, _| k.to_s }.map do |param_name, param|
           key = transform_key(param_name)
-          ts_type = map_field(param, action_name:)
+          ts_type = map_field(param)
           optional_marker = param.optional? ? '?' : ''
           "  #{key}#{optional_marker}: #{ts_type};"
         end.join("\n")
@@ -86,7 +84,7 @@ module Apiwork
 
         properties = body_params.sort_by { |k, _| k.to_s }.map do |param_name, param|
           key = transform_key(param_name)
-          ts_type = map_field(param, action_name:)
+          ts_type = map_field(param)
           optional_marker = param.optional? ? '?' : ''
           "  #{key}#{optional_marker}: #{ts_type};"
         end.join("\n")
@@ -114,7 +112,7 @@ module Apiwork
 
       def build_action_response_body_type(resource_name, action_name, response_body_definition, parent_identifiers: [])
         type_name = action_type_name(resource_name, action_name, 'ResponseBody', parent_identifiers:)
-        ts_type = map_type_definition(response_body_definition, action_name:)
+        ts_type = map_type_definition(response_body_definition)
         "export type #{type_name} = #{ts_type};"
       end
 
@@ -130,7 +128,7 @@ module Apiwork
         "#{base_name}#{suffix.camelize}"
       end
 
-      def map_field(param, action_name: nil)
+      def map_field(param)
         base_type = if param.ref_type? && type_or_enum_reference?(param.type)
                       type_reference(param.type)
                     elsif param.scalar? && param.enum?
@@ -140,7 +138,7 @@ module Apiwork
                         param.enum.sort.map { |value| "'#{value}'" }.join(' | ')
                       end
                     else
-                      map_type_definition(param, action_name:)
+                      map_type_definition(param)
                     end
 
         if param.nullable?
@@ -151,13 +149,13 @@ module Apiwork
         base_type
       end
 
-      def map_type_definition(param, action_name: nil)
+      def map_type_definition(param)
         if param.object?
-          map_object_type(param, action_name:)
+          map_object_type(param)
         elsif param.array?
-          map_array_type(param, action_name:)
+          map_array_type(param)
         elsif param.union?
-          map_union_type(param, action_name:)
+          map_union_type(param)
         elsif param.literal?
           map_literal_type(param)
         elsif param.type.nil?
@@ -169,14 +167,14 @@ module Apiwork
         end
       end
 
-      def map_object_type(param, action_name: nil)
+      def map_object_type(param)
         return 'object' if param.shape.empty?
 
         partial = param.object? && param.partial?
 
         properties = param.shape.sort_by { |name, _| name.to_s }.map do |name, field_param|
           key = transform_key(name)
-          ts_type = map_field(field_param, action_name:)
+          ts_type = map_field(field_param)
           optional_marker = partial || field_param.optional? ? '?' : ''
           "#{key}#{optional_marker}: #{ts_type}"
         end.join('; ')
@@ -184,17 +182,17 @@ module Apiwork
         "{ #{properties} }"
       end
 
-      def map_array_type(param, action_name: nil)
+      def map_array_type(param)
         items_type = param.of
 
         if items_type.nil? && param.shape.any?
-          element_type = map_object_type(param, action_name:)
+          element_type = map_object_type(param)
           return "#{element_type}[]"
         end
 
         return 'string[]' unless items_type
 
-        element_type = map_type_definition(items_type, action_name:)
+        element_type = map_type_definition(items_type)
 
         if element_type.include?(' | ') || element_type.include?(' & ')
           "(#{element_type})[]"
@@ -203,9 +201,9 @@ module Apiwork
         end
       end
 
-      def map_union_type(param, action_name: nil)
+      def map_union_type(param)
         variants = param.variants.map do |variant|
-          map_type_definition(variant, action_name:)
+          map_type_definition(variant)
         end
         variants.sort.join(' | ')
       end

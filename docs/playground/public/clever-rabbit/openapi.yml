@@ -96,6 +96,8 @@ paths:
                 order:
                   "$ref": "#/components/schemas/orderUpdatePayload"
               type: object
+              required:
+              - order
         required: true
       responses:
         '200':
@@ -337,8 +339,6 @@ components:
           properties: {}
           type: object
       type: object
-      required:
-      - orderNumber
     orderUpdateSuccessResponseBody:
       properties:
         meta:

@@ -96,6 +96,8 @@ paths:
                 vehicle:
                   "$ref": "#/components/schemas/vehicleUpdatePayload"
               type: object
+              required:
+              - vehicle
         required: true
       responses:
         '200':
@@ -204,8 +206,6 @@ components:
           - 'null'
       type: object
       required:
-      - brand
-      - model
       - type
     errorResponseBody:
       properties:
@@ -352,8 +352,6 @@ components:
           - 'null'
       type: object
       required:
-      - brand
-      - model
       - type
     nullableIntegerFilter:
       properties:
@@ -493,8 +491,6 @@ components:
           - 'null'
       type: object
       required:
-      - brand
-      - model
       - type
     vehicle:
       oneOf:

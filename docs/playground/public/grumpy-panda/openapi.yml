@@ -78,6 +78,8 @@ paths:
                 activity:
                   "$ref": "#/components/schemas/activityUpdatePayload"
               type: object
+              required:
+              - activity
         required: true
       responses:
         '200':
@@ -193,8 +195,6 @@ components:
           - 'null'
           format: date-time
       type: object
-      required:
-      - action
     activityUpdateSuccessResponseBody:
       properties:
         activity:

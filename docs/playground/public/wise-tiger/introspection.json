@@ -1257,7 +1257,7 @@
           "description": "Human-readable project name",
           "example": null,
           "nullable": false,
-          "optional": false,
+          "optional": true,
           "type": "string",
           "format": null,
           "max": null,
