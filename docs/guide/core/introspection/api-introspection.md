@@ -47,16 +47,6 @@ comments.identifier         # => "comments"
 comments.parent_identifiers # => ["posts"]
 ```
 
-Use `each_resource` to iterate all resources including nested:
-
-```ruby
-api.each_resource do |resource|
-  resource.actions.each_value do |action|
-    puts "#{action.method.upcase} #{action.path}"
-  end
-end
-```
-
 ---
 
 ## Actions

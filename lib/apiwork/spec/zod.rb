@@ -83,7 +83,7 @@ module Apiwork
       def build_action_schemas
         schemas = []
 
-        data.each_resource do |resource|
+        traverse_resources do |resource|
           resource_name = resource.identifier.to_sym
           parent_identifiers = resource.parent_identifiers
 
@@ -150,7 +150,7 @@ module Apiwork
           all_types << { code:, name: type_name_pascal }
         end
 
-        data.each_resource do |resource|
+        traverse_resources do |resource|
           resource_name = resource.identifier.to_sym
           parent_identifiers = resource.parent_identifiers
 
@@ -197,6 +197,13 @@ module Apiwork
         end
 
         all_types.sort_by { |t| t[:name] }.map { |t| t[:code] }.join("\n\n")
+      end
+
+      def traverse_resources(resources = data.resources, &block)
+        resources.each_value do |resource|
+          yield(resource)
+          traverse_resources(resource.resources, &block) if resource.resources.any?
+        end
       end
     end
   end

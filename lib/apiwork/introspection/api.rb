@@ -15,7 +15,7 @@ module Apiwork
     #   api.types[:address].description     # => "Type d'adresse"
     #   api.enums[:status].values           # => ["draft", "published"]
     #
-    #   api.each_resource do |resource, parent_path|
+    #   api.resources.each_value do |resource|
     #     resource.actions.each_value do |action|
     #       # ...
     #     end
@@ -73,15 +73,6 @@ module Apiwork
       end
 
       # @api public
-      # Iterates over all resources recursively (including nested).
-      #
-      # @yieldparam resource [API::Resource] the resource
-      # @see API::Resource
-      def each_resource(&block)
-        iterate_resources(resources, &block)
-      end
-
-      # @api public
       # @return [Hash] structured representation
       def to_h
         {
@@ -93,15 +84,6 @@ module Apiwork
           resources: resources.transform_values(&:to_h),
           types: types.transform_values(&:to_h),
         }
-      end
-
-      private
-
-      def iterate_resources(resource_list, &block)
-        resource_list.each_value do |resource|
-          yield(resource)
-          iterate_resources(resource.resources, &block) if resource.resources.any?
-        end
       end
     end
   end

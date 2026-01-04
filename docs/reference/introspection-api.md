@@ -22,7 +22,7 @@ api.info.title                      # => "My API"
 api.types[:address].description     # => "Address type"
 api.enums[:status].values           # => ["draft", "published"]
 
-api.each_resource do |resource, parent_path|
+api.resources.each_value do |resource|
   resource.actions.each_value do |action|
     # ...
   end
@@ -30,20 +30,6 @@ end
 ```
 
 ## Instance Methods
-
-### #each_resource
-
-`#each_resource(&block)`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L81)
-
-Iterates over all resources recursively (including nested).
-
-**See also**
-
-- [API::Resource](api-resource)
-
----
 
 ### #enums
 

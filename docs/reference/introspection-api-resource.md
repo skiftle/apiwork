@@ -13,18 +13,16 @@ Wraps resource definitions.
 **Example**
 
 ```ruby
-api.resources[:invoices].path              # => "invoices"
-api.resources[:invoices].parent_identifiers # => []
-api.resources[:invoices].resources         # => {} or nested resources
+resource = api.resources[:invoices]
 
-api.each_resource do |resource|
-  resource.identifier         # => "invoices"
-  resource.parent_identifiers # => [] or ["posts"] for nested
+resource.identifier         # => "invoices"
+resource.path               # => "invoices"
+resource.parent_identifiers # => []
+resource.resources          # => {} or nested resources
 
-  resource.actions.each_value do |action|
-    action.request  # => Action::Request or nil
-    action.response # => Action::Response or nil
-  end
+resource.actions.each_value do |action|
+  action.request  # => Action::Request or nil
+  action.response # => Action::Response or nil
 end
 ```
 

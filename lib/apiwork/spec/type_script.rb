@@ -36,7 +36,7 @@ module Apiwork
           types << { code:, name: type_name_pascal }
         end
 
-        data.each_resource do |resource|
+        traverse_resources do |resource|
           resource_name = resource.identifier.to_sym
           parent_identifiers = resource.parent_identifiers
 
@@ -84,6 +84,13 @@ module Apiwork
 
       def mapper
         @mapper ||= TypeScriptMapper.new(data:, key_format:)
+      end
+
+      def traverse_resources(resources = data.resources, &block)
+        resources.each_value do |resource|
+          yield(resource)
+          traverse_resources(resource.resources, &block) if resource.resources.any?
+        end
       end
     end
   end

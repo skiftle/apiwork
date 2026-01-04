@@ -26,8 +26,8 @@ class MySpec < Apiwork::Spec::Base
 
   def build_resources
     result = {}
-    each_resource do |name, data, parent|
-      result[name] = process_resource(data)
+    data.resources.each do |name, resource|
+      result[name] = process_resource(resource)
     end
     result
   end
@@ -57,12 +57,10 @@ The `data` object contains the full introspection output. For details on the for
 ### Iteration
 
 ```ruby
-each_resource do |resource_name, resource_data, parent_path|
-  # Called for each resource
-end
-
-each_action(resource_data) do |action_name, action_data|
-  # Called for each action in a resource
+data.resources.each_value do |resource|
+  resource.actions.each_value do |action|
+    # Called for each action in a resource
+  end
 end
 ```
 

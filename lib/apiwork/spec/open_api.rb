@@ -66,7 +66,7 @@ module Apiwork
       def build_paths
         paths = {}
 
-        data.each_resource do |resource|
+        traverse_resources do |resource|
           build_resource_paths(paths, resource)
         end
 
@@ -553,6 +553,13 @@ module Apiwork
 
       def find_enum(symbol)
         data.enums[symbol]
+      end
+
+      def traverse_resources(resources = data.resources, &block)
+        resources.each_value do |resource|
+          yield(resource)
+          traverse_resources(resource.resources, &block) if resource.resources.any?
+        end
       end
     end
   end
