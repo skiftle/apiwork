@@ -2,22 +2,6 @@
 
 module Apiwork
   module Introspection
-    # @api public
-    # Namespace for parameter/field definitions.
-    #
-    # Params are accessed via introspection - you never create them directly.
-    # Use `Param.build(dump)` to create a param from a dump hash.
-    #
-    # @example Accessing params via introspection
-    #   api = Apiwork::Introspection::API.new(MyApi)
-    #   action = api.resources[:invoices].actions[:show]
-    #   param = action.request.query[:page]
-    #   param.type         # => :integer
-    #   param.optional?    # => true
-    #
-    # @example Type-specific subclasses
-    #   param = action.response.body  # => Param::Array
-    #   param.of                      # => Param::Object (element type)
     module Param
       class << self
         def build(dump)
