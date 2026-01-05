@@ -87,7 +87,7 @@ module Apiwork
       #   @api public
       #   Finds the contract class for an associated schema.
       #   @param schema_class [Class] a {Schema::Base} subclass
-      #   @return [Class, nil] a {Contract::Base} subclass if found
+      #   @return [Contract::Base, nil]
 
       # @!method imports
       #   @api public

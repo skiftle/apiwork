@@ -106,7 +106,7 @@ Finds the contract class for an associated schema.
 
 **Returns**
 
-`Class`, `nil` — a [Contract::Base](contract-base) subclass if found
+[Contract::Base](contract-base), `nil`
 
 ---
 

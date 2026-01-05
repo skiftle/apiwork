@@ -136,7 +136,7 @@ module Apiwork
         # Call this method to enable auto-generation of request/response
         # types based on the schema's attributes.
         #
-        # @return [Class] a {Schema::Base} subclass
+        # @return [Schema::Base]
         # @raise [ArgumentError] if schema class not found
         # @see Schema::Base
         #

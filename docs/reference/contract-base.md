@@ -335,7 +335,7 @@ types based on the schema's attributes.
 
 **Returns**
 
-`Class` — a [Schema::Base](schema-base) subclass
+[Schema::Base](schema-base)
 
 **See also**
 

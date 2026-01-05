@@ -16,7 +16,7 @@ module Apiwork
       #
       # @param path [String] the mount path for this API (e.g. '/api/v1')
       # @yield block for API definition
-      # @return [Class] an {API::Base} subclass
+      # @return [API::Base]
       #
       # @example Basic API
       #   Apiwork::API.define '/api/v1' do

@@ -34,7 +34,7 @@ types, and configuration.
 
 **Returns**
 
-`Class` — an [API::Base](api-base) subclass
+[API::Base](api-base)
 
 **Example: Basic API**
 
