@@ -4,28 +4,6 @@ module Apiwork
   module Introspection
     module Dump
       class Contract
-        PRIMITIVE_TYPES = %i[
-          array
-          binary
-          boolean
-          date
-          datetime
-          decimal
-          enum
-          float
-          integer
-          json
-          literal
-          number
-          object
-          string
-          text
-          time
-          union
-          unknown
-          uuid
-        ].freeze
-
         def initialize(contract_class, expand: false)
           @contract_class = contract_class
           @expand = expand
@@ -116,23 +94,18 @@ module Apiwork
         def collect_references(data, types, enums)
           case data
           when Hash
-            type_ref = data[:type]
-            types << type_ref.to_sym if type_ref && !primitive_type?(type_ref)
+            types << data[:ref].to_sym if data[:type] == :ref && data[:ref]
 
-            of_ref = data[:of]
-            types << of_ref[:type].to_sym if of_ref && !primitive_type?(of_ref[:type])
+            of_data = data[:of]
+            types << of_data[:ref].to_sym if of_data.is_a?(Hash) && of_data[:type] == :ref && of_data[:ref]
 
-            enum_ref = data[:enum]
-            enums << enum_ref.to_sym if enum_ref
+            enum_data = data[:enum]
+            enums << enum_data[:ref].to_sym if enum_data.is_a?(Hash) && enum_data[:ref]
 
             data.each_value { |value| collect_references(value, types, enums) }
           when Array
             data.each { |item| collect_references(item, types, enums) }
           end
-        end
-
-        def primitive_type?(type)
-          PRIMITIVE_TYPES.include?(type.to_sym)
         end
 
         def available_actions

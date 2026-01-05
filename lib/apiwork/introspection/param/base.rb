@@ -28,7 +28,7 @@ module Apiwork
         #   Scalar types: :string, :integer, :float, :decimal, :boolean,
         #   :datetime, :date, :time, :uuid, :binary, :json, :unknown
         #   Container types: :array, :object, :union, :literal
-        #   Reference types: any Symbol (custom type reference)
+        #   Reference types: :ref
         def type
           @dump[:type]
         end

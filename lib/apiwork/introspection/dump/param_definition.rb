@@ -36,15 +36,15 @@ module Apiwork
           error_type = @result_wrapper[:error_type]
 
           success_variant = if success_type
-                              { type: success_type }
+                              { ref: success_type, type: :ref }
                             else
-                              { shape: build_success_params, type: :object }
+                              { ref: nil, shape: build_success_params, type: :object }
                             end
 
           error_variant = if error_type
-                            { type: error_type }
+                            { ref: error_type, type: :ref }
                           else
-                            { shape: {}, type: :object }
+                            { ref: nil, shape: {}, type: :object }
                           end
 
           {
@@ -67,6 +67,8 @@ module Apiwork
           return build_union_param(options) if options[:type] == :union
           return build_custom_type_param(options) if options[:custom_type]
 
+          type_ref = resolve_type_ref(options[:type])
+
           {
             as: options[:as],
             default: options[:default],
@@ -82,9 +84,10 @@ module Apiwork
             of: resolve_of(options),
             optional: options[:optional] == true,
             partial: options[:partial] == true,
+            ref: type_ref,
             shape: build_shape(options) || {},
             tag: nil,
-            type: resolve_type(options[:type]),
+            type: type_ref ? :ref : options[:type],
             value: options[:type] == :literal ? options[:value] : nil,
             variants: [],
           }
@@ -108,6 +111,7 @@ module Apiwork
             of: nil,
             optional: options[:optional] == true,
             partial: false,
+            ref: nil,
             shape: {},
             tag: nil,
             type: :union,
@@ -137,22 +141,20 @@ module Apiwork
             of: nil,
             optional: options[:optional] == true,
             partial: false,
+            ref: custom_type_name,
             shape: {},
             tag: nil,
-            type: custom_type_name,
+            type: :ref,
             value: nil,
             variants: [],
           }
         end
 
-        def resolve_type(type_value)
-          return type_value unless type_value
+        def resolve_type_ref(type_value)
+          return nil unless type_value
+          return nil unless registered_type?(type_value)
 
-          if registered_type?(type_value)
-            qualified_name(type_value, @param_definition)
-          else
-            type_value
-          end
+          qualified_name(type_value, @param_definition)
         end
 
         def registered_type?(type_value)
@@ -166,7 +168,10 @@ module Apiwork
           return false unless api_class
 
           scoped_name = api_class.scoped_name(contract_class, type_value)
-          api_class.type_system.types.key?(scoped_name) || api_class.type_system.types.key?(type_value)
+          return true if api_class.type_system.types.key?(scoped_name) || api_class.type_system.types.key?(type_value)
+          return true if api_class.type_system.enums.key?(scoped_name) || api_class.type_system.enums.key?(type_value)
+
+          false
         end
 
         def resolve_enum(options)
@@ -184,17 +189,16 @@ module Apiwork
         def resolve_of(options)
           return nil unless options[:of]
 
-          type_symbol = if @param_definition.contract_class.resolve_custom_type(options[:of])
-                          qualified_name(options[:of], @param_definition)
-                        else
-                          options[:of]
-                        end
-
-          build_of_hash(type_symbol)
+          if registered_type?(options[:of])
+            ref_name = qualified_name(options[:of], @param_definition)
+            { ref: ref_name, shape: {}, type: :ref }
+          else
+            build_of_hash(options[:of])
+          end
         end
 
         def build_of_hash(type_symbol)
-          result = { type: type_symbol }
+          result = { ref: nil, type: type_symbol }
           result[:shape] = {} if [:object, :array].include?(type_symbol)
           result
         end
@@ -208,12 +212,10 @@ module Apiwork
 
         def build_variant(variant_definition)
           variant_type = variant_definition[:type]
+          is_registered = registered_type?(variant_type)
 
-          resolved_type = if @param_definition.contract_class.resolve_custom_type(variant_type)
-                            qualified_name(variant_type, @param_definition)
-                          else
-                            variant_type
-                          end
+          type_ref = is_registered ? qualified_name(variant_type, @param_definition) : nil
+          resolved_type = is_registered ? :ref : variant_type
 
           {
             as: nil,
@@ -230,6 +232,7 @@ module Apiwork
             of: resolve_variant_of(variant_definition),
             optional: false,
             partial: false,
+            ref: type_ref,
             shape: resolve_variant_shape(variant_definition, variant_type),
             tag: variant_definition[:tag],
             type: resolved_type,
@@ -258,13 +261,12 @@ module Apiwork
         def resolve_variant_of(variant_definition)
           return nil unless variant_definition[:of]
 
-          type_symbol = if @param_definition.contract_class.resolve_custom_type(variant_definition[:of])
-                          qualified_name(variant_definition[:of], @param_definition)
-                        else
-                          variant_definition[:of]
-                        end
-
-          build_of_hash(type_symbol)
+          if registered_type?(variant_definition[:of])
+            ref_name = qualified_name(variant_definition[:of], @param_definition)
+            { ref: ref_name, shape: {}, type: :ref }
+          else
+            build_of_hash(variant_definition[:of])
+          end
         end
 
         def resolve_variant_shape(variant_definition, variant_type)

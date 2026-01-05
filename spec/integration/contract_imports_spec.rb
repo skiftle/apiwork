@@ -229,7 +229,8 @@ RSpec.describe 'Contract Imports' do
       serialized = Apiwork::Introspection::Dump::ActionDefinition.new(action_def).to_h
 
       # The request body should reference the imported type
-      expect(serialized[:request][:body][:shipping_address][:type]).to eq(:user_address)
+      expect(serialized[:request][:body][:shipping_address][:type]).to eq(:ref)
+      expect(serialized[:request][:body][:shipping_address][:ref]).to eq(:user_address)
       # Required is now the default, so optional should be false
       expect(serialized[:request][:body][:shipping_address][:optional]).to be(false)
     end

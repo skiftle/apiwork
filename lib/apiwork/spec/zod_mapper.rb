@@ -123,8 +123,8 @@ module Apiwork
       end
 
       def map_field(param, force_optional: nil)
-        if param.ref_type? && type_or_enum_reference?(param.type)
-          schema_name = pascal_case(param.type)
+        if param.ref_type? && type_or_enum_reference?(param.ref)
+          schema_name = pascal_case(param.ref)
           type = "#{schema_name}Schema"
           return apply_modifiers(type, param, force_optional:)
         end
@@ -146,8 +146,8 @@ module Apiwork
           map_literal_type(param)
         elsif param.type.nil?
           'z.never()'
-        elsif param.ref_type? && type_or_enum_reference?(param.type)
-          resolve_enum_schema(param) || schema_reference(param.type)
+        elsif param.ref_type? && type_or_enum_reference?(param.ref)
+          resolve_enum_schema(param) || schema_reference(param.ref)
         else
           resolve_enum_schema(param) || map_primitive(param)
         end

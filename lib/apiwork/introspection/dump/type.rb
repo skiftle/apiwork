@@ -99,15 +99,43 @@ module Apiwork
           return payload unless payload[:variants]
 
           expanded_variants = payload[:variants].map do |variant|
-            if variant[:shape_block]
-              expanded_shape = expand(variant[:shape_block], contract_class: scope)
-              variant.except(:shape_block).merge(shape: expanded_shape.presence || {})
-            else
-              variant
-            end
+            expanded = if variant[:shape_block]
+                         expanded_shape = expand(variant[:shape_block], contract_class: scope)
+                         variant.except(:shape_block).merge(shape: expanded_shape.presence || {})
+                       else
+                         variant
+                       end
+
+            transform_variant_refs(expanded)
           end
 
           payload.merge(variants: expanded_variants)
+        end
+
+        def transform_variant_refs(variant)
+          result = variant.dup
+
+          if variant[:type] && registered_type_or_enum?(variant[:type])
+            result[:ref] = variant[:type]
+            result[:type] = :ref
+          else
+            result[:ref] ||= nil
+          end
+
+          if variant[:of] && registered_type_or_enum?(variant[:of])
+            result[:of] = { ref: variant[:of], shape: {}, type: :ref }
+          elsif variant[:of]
+            result[:of] = { ref: nil, type: variant[:of] }
+          end
+
+          result
+        end
+
+        def registered_type_or_enum?(type_name)
+          return false unless type_name.is_a?(Symbol)
+          return false unless @api_class
+
+          @api_class.type_system.types.key?(type_name) || @api_class.type_system.enums.key?(type_name)
         end
 
         def expand(definitions, contract_class: nil)
