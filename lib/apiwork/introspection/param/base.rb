@@ -3,9 +3,6 @@
 module Apiwork
   module Introspection
     module Param
-      # @api public
-      # Base class for all param types in the introspection system.
-      # Provides common interface for querying param metadata.
       class Base
         def initialize(dump)
           @dump = dump
