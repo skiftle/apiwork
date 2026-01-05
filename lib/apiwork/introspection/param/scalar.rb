@@ -13,7 +13,19 @@ module Apiwork
         # @api public
         # @return [Boolean] whether this scalar has enum constraints
         def enum?
-          false
+          @dump[:enum].present?
+        end
+
+        # @api public
+        # @return [Array, Hash, nil] enum values (Array) or ref ({ref: :name})
+        def enum
+          @dump[:enum]
+        end
+
+        # @api public
+        # @return [Boolean] whether this is a reference to a named enum
+        def ref_enum?
+          @dump[:enum].is_a?(Hash)
         end
       end
     end

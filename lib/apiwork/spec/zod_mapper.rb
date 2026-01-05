@@ -264,9 +264,9 @@ module Apiwork
       def resolve_enum_schema(param)
         return nil unless param.scalar? && param.enum?
 
-        if param.ref? && data.enums.key?(param.enum)
-          "#{pascal_case(param.enum)}Schema"
-        elsif param.inline?
+        if param.ref_enum? && data.enums.key?(param.enum[:ref])
+          "#{pascal_case(param.enum[:ref])}Schema"
+        else
           enum_literal = param.enum.map { |value| "'#{value}'" }.join(', ')
           "z.enum([#{enum_literal}])"
         end

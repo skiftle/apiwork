@@ -5,10 +5,6 @@ module Apiwork
     module Param
       class << self
         def build(dump)
-          if dump[:enum]
-            return dump[:enum].is_a?(::Array) ? Scalar::Enum::Inline.new(dump) : Scalar::Enum::Ref.new(dump)
-          end
-
           case dump[:type]
           when :string then Scalar::String.new(dump)
           when :integer then Scalar::Numeric::Integer.new(dump)
