@@ -216,7 +216,6 @@ module Apiwork
         def adapter(name = nil, &block)
           if name.is_a?(Symbol)
             @adapter_name = name
-            @adapter_instance = nil
           end
 
           if block

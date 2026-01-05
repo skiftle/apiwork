@@ -20,7 +20,7 @@ Use as a declarative builder - do not rely on internal state.
 
 `#meta(optional: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/param_definition.rb#L192)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/param_definition.rb#L191)
 
 Shorthand for `param :meta, type: :object do ... end`.
 

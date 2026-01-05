@@ -222,12 +222,6 @@ module Apiwork
         (@current_options || {}).merge(options)
       end
 
-      def current_resource
-        return nil if @resource_stack.empty?
-
-        find_resource(@resource_stack.last)
-      end
-
       def create_resource(name, options:, singular:)
         merged = merged_options(options)
 

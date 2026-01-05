@@ -1,25 +1,21 @@
 ---
-order: 32
+order: 36
 prev: false
 next: false
 ---
 
-# Introspection::Param::Array
+# Introspection::Param::Ref
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L17)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/ref.rb#L13)
 
-Array param.
+Type reference param.
 
 **Example**
 
 ```ruby
-param.type       # => :array
-param.of         # => Param or nil
-param.shape      # => {} or { field: Param, ... }
-param.min        # => 1 or nil
-param.max        # => 10 or nil
-param.array?     # => true
-param.boundable? # => true
+param.type      # => :ref
+param.ref       # => :address (the referenced type name)
+param.ref? # => true
 ```
 
 ## Instance Methods
@@ -28,11 +24,11 @@ param.boundable? # => true
 
 `#array?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L44)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L75)
 
 **Returns**
 
-[Boolean](introspection-boolean) — always true for Array
+[Boolean](introspection-boolean) — whether this is an array type
 
 ---
 
@@ -64,11 +60,11 @@ param.boundable? # => true
 
 `#boundable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L50)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L105)
 
 **Returns**
 
-[Boolean](introspection-boolean) — true - arrays support min/max length constraints
+[Boolean](introspection-boolean) — whether this type supports min/max constraints
 
 ---
 
@@ -228,30 +224,6 @@ param.boundable? # => true
 
 ---
 
-### #max
-
-`#max`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L38)
-
-**Returns**
-
-[Integer](introspection-integer), `nil` — maximum array length
-
----
-
-### #min
-
-`#min`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L32)
-
-**Returns**
-
-[Integer](introspection-integer), `nil` — minimum array length
-
----
-
 ### #nullable?
 
 `#nullable?`
@@ -288,18 +260,6 @@ param.boundable? # => true
 
 ---
 
-### #of
-
-`#of`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L20)
-
-**Returns**
-
-`Param::Base`, `nil` — element type for arrays
-
----
-
 ### #optional?
 
 `#optional?`
@@ -312,15 +272,27 @@ param.boundable? # => true
 
 ---
 
+### #ref
+
+`#ref`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/ref.rb#L16)
+
+**Returns**
+
+`Symbol` — the referenced type name
+
+---
+
 ### #ref?
 
 `#ref?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L189)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/ref.rb#L22)
 
 **Returns**
 
-[Boolean](introspection-boolean) — whether this is a ref type
+[Boolean](introspection-boolean) — true for type reference params
 
 ---
 
@@ -333,18 +305,6 @@ param.boundable? # => true
 **Returns**
 
 [Boolean](introspection-boolean) — whether this is a scalar type
-
----
-
-### #shape
-
-`#shape`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L26)
-
-**Returns**
-
-`Hash{Symbol => Param::Base}` — nested fields for array-of-objects
 
 ---
 
@@ -388,7 +348,7 @@ param.boundable? # => true
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L56)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/ref.rb#L28)
 
 **Returns**
 

@@ -31,7 +31,7 @@ module Apiwork
     }.freeze
 
     class << self
-      delegate :all, :fetch, :registered?, to: Registry
+      delegate :fetch, :registered?, to: Registry
 
       # @api public
       # Registers a custom error code for use in API responses.

@@ -212,21 +212,6 @@ module Apiwork
 
         @response_definition
       end
-
-      def serialize_data(data, context: {}, include: nil)
-        return data if already_serialized?(data)
-
-        schema_class.serialize(data, context:, include:)
-      end
-
-      private
-
-      def already_serialized?(data)
-        return true if data.is_a?(Hash)
-        return false unless data.is_a?(Array)
-
-        data.any? && data.first.is_a?(Hash)
-      end
     end
   end
 end

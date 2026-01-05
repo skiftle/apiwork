@@ -1,5 +1,5 @@
 ---
-order: 46
+order: 42
 prev: false
 next: false
 ---
@@ -28,7 +28,7 @@ param.float?     # => true
 
 `#array?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L92)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L75)
 
 **Returns**
 
@@ -40,7 +40,7 @@ param.float?     # => true
 
 `#binary?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L188)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L171)
 
 **Returns**
 
@@ -52,7 +52,7 @@ param.float?     # => true
 
 `#boolean?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L158)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L141)
 
 **Returns**
 
@@ -76,7 +76,7 @@ param.float?     # => true
 
 `#date?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L170)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L153)
 
 **Returns**
 
@@ -88,7 +88,7 @@ param.float?     # => true
 
 `#datetime?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L164)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L147)
 
 **Returns**
 
@@ -100,7 +100,7 @@ param.float?     # => true
 
 `#decimal?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L152)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L135)
 
 **Returns**
 
@@ -112,7 +112,7 @@ param.float?     # => true
 
 `#default`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L68)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L51)
 
 **Returns**
 
@@ -124,7 +124,7 @@ param.float?     # => true
 
 `#default?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L74)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L57)
 
 **Returns**
 
@@ -136,7 +136,7 @@ param.float?     # => true
 
 `#deprecated?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L50)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L33)
 
 **Returns**
 
@@ -148,11 +148,23 @@ param.float?     # => true
 
 `#description`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L56)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L39)
 
 **Returns**
 
 [String](introspection-string), `nil` — field description
+
+---
+
+### #enum
+
+`#enum`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar.rb#L21)
+
+**Returns**
+
+[Array](introspection-array), `Symbol`, `nil` — inline values (Array) or ref name (Symbol)
 
 ---
 
@@ -168,11 +180,23 @@ param.float?     # => true
 
 ---
 
+### #enum_ref?
+
+`#enum_ref?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar.rb#L27)
+
+**Returns**
+
+[Boolean](introspection-boolean) — whether this is a reference to a named enum
+
+---
+
 ### #example
 
 `#example`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L62)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L45)
 
 **Returns**
 
@@ -196,7 +220,7 @@ param.float?     # => true
 
 `#formattable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L128)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L111)
 
 **Returns**
 
@@ -208,7 +232,7 @@ param.float?     # => true
 
 `#integer?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L140)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L123)
 
 **Returns**
 
@@ -220,7 +244,7 @@ param.float?     # => true
 
 `#json?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L194)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L177)
 
 **Returns**
 
@@ -232,7 +256,7 @@ param.float?     # => true
 
 `#literal?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L110)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L93)
 
 **Returns**
 
@@ -268,7 +292,7 @@ param.float?     # => true
 
 `#nullable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L38)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L21)
 
 **Returns**
 
@@ -292,7 +316,7 @@ param.float?     # => true
 
 `#object?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L98)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L81)
 
 **Returns**
 
@@ -304,7 +328,7 @@ param.float?     # => true
 
 `#optional?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L44)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L27)
 
 **Returns**
 
@@ -312,15 +336,15 @@ param.float?     # => true
 
 ---
 
-### #ref_type?
+### #ref?
 
-`#ref_type?`
+`#ref?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L206)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L189)
 
 **Returns**
 
-[Boolean](introspection-boolean) — whether this is a type reference
+[Boolean](introspection-boolean) — whether this is a ref type
 
 ---
 
@@ -340,7 +364,7 @@ param.float?     # => true
 
 `#string?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L134)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L117)
 
 **Returns**
 
@@ -352,7 +376,7 @@ param.float?     # => true
 
 `#tag`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L80)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L63)
 
 **Returns**
 
@@ -364,7 +388,7 @@ param.float?     # => true
 
 `#time?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L176)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L159)
 
 **Returns**
 
@@ -388,15 +412,13 @@ param.float?     # => true
 
 `#type`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L32)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L15)
 
 **Returns**
 
-`Symbol`, `nil` — the parameter type
-Scalar types: :string, :integer, :float, :decimal, :boolean,
-:datetime, :date, :time, :uuid, :binary, :json, :unknown
-Container types: :array, :object, :union, :literal
-Reference types: any Symbol (custom type reference)
+`Symbol` — the parameter type
+:string, :integer, :float, :decimal, :boolean, :datetime, :date, :time,
+:uuid, :binary, :json, :unknown, :array, :object, :union, :literal, :ref
 
 ---
 
@@ -404,7 +426,7 @@ Reference types: any Symbol (custom type reference)
 
 `#union?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L104)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L87)
 
 **Returns**
 
@@ -416,7 +438,7 @@ Reference types: any Symbol (custom type reference)
 
 `#unknown?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L200)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L183)
 
 **Returns**
 
@@ -428,7 +450,7 @@ Reference types: any Symbol (custom type reference)
 
 `#uuid?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L182)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L165)
 
 **Returns**
 

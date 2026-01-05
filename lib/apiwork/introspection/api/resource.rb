@@ -55,15 +55,6 @@ module Apiwork
         end
 
         # @api public
-        # Iterates over all actions.
-        #
-        # @yieldparam action [Action] each action
-        # @see Action
-        def each_action(&block)
-          actions.each_value(&block)
-        end
-
-        # @api public
         # @return [Hash] structured representation
         def to_h
           {

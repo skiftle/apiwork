@@ -44,20 +44,6 @@ end
 
 ---
 
-### #each_action
-
-`#each_action(&block)`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L62)
-
-Iterates over all actions.
-
-**See also**
-
-- [Action](introspection-action)
-
----
-
 ### #identifier
 
 `#identifier`
@@ -110,7 +96,7 @@ Iterates over all actions.
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L68)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L59)
 
 **Returns**
 

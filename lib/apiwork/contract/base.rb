@@ -180,16 +180,6 @@ module Apiwork
             .safe_constantize
         end
 
-        def register_sti_variants(*variant_schema_classes)
-          variant_schema_classes.each do |variant_class|
-            next if variant_class.is_a?(Class) && variant_class < Schema::Base
-
-            raise ArgumentError,
-                  "Expected Schema class, got #{variant_class.inspect}. " \
-                  'Use: register_sti_variants PersonSchema, CompanySchema'
-          end
-        end
-
         def schema_class
           _schema_class
         end
