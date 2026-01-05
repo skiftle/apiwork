@@ -316,8 +316,8 @@ module Apiwork
         end
 
         if param.scalar? && param.enum?
-          if param.enum_ref? && enum_exists?(param.enum[:ref])
-            enum_obj = find_enum(param.enum[:ref])
+          if param.enum_ref? && enum_exists?(param.enum)
+            enum_obj = find_enum(param.enum)
             schema = { enum: enum_obj.values, type: 'string' }
           else
             schema = { enum: param.enum, type: 'string' }

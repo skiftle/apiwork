@@ -17,7 +17,7 @@ module Apiwork
         end
 
         # @api public
-        # @return [Array, Hash, nil] enum values (Array) or ref ({ref: :name})
+        # @return [Array, Symbol, nil] inline values (Array) or ref name (Symbol)
         def enum
           @dump[:enum]
         end
@@ -25,7 +25,7 @@ module Apiwork
         # @api public
         # @return [Boolean] whether this is a reference to a named enum
         def enum_ref?
-          @dump[:enum].is_a?(Hash)
+          @dump[:enum].is_a?(Symbol)
         end
       end
     end

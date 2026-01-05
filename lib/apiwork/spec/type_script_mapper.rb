@@ -133,7 +133,7 @@ module Apiwork
                       type_reference(param.ref)
                     elsif param.scalar? && param.enum?
                       if param.enum_ref?
-                        pascal_case(param.enum[:ref])
+                        pascal_case(param.enum)
                       else
                         param.enum.sort.map { |value| "'#{value}'" }.join(' | ')
                       end

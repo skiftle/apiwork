@@ -177,11 +177,10 @@ module Apiwork
         def resolve_enum(options)
           return nil unless options[:enum]
 
-          if options[:enum].is_a?(Hash) && options[:enum][:ref]
-            scope = scope_for_enum(@param_definition, options[:enum][:ref])
+          if options[:enum].is_a?(Symbol)
+            scope = scope_for_enum(@param_definition, options[:enum])
             api_class = @param_definition.contract_class.api_class
-            ref_name = api_class.scoped_name(scope, options[:enum][:ref])
-            { ref: ref_name }
+            api_class.scoped_name(scope, options[:enum])
           else
             options[:enum]
           end
@@ -250,10 +249,9 @@ module Apiwork
                @param_definition.contract_class.schema_class
               scope = scope_for_enum(@param_definition, variant_definition[:enum])
               api_class = @param_definition.contract_class.api_class
-              ref_name = api_class.scoped_name(scope, variant_definition[:enum])
-              { ref: ref_name }
+              api_class.scoped_name(scope, variant_definition[:enum])
             else
-              { ref: variant_definition[:enum] }
+              variant_definition[:enum]
             end
           else
             variant_definition[:enum]
