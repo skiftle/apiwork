@@ -154,7 +154,7 @@ module Apiwork
       def map_object_type(param)
         return 'z.object({})' if param.shape.empty?
 
-        partial = param.respond_to?(:partial?) && param.partial?
+        partial = param.partial?
 
         properties = param.shape.sort_by { |name, _| name.to_s }.map do |name, field_param|
           key = transform_key(name)

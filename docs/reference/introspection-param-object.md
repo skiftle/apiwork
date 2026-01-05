@@ -36,7 +36,7 @@ param.partial?  # => true if all fields are optional
 
 `#array?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L99)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L91)
 
 **Returns**
 
@@ -48,7 +48,7 @@ param.partial?  # => true if all fields are optional
 
 `#binary?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L189)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L181)
 
 **Returns**
 
@@ -60,7 +60,7 @@ param.partial?  # => true if all fields are optional
 
 `#boolean?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L159)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L151)
 
 **Returns**
 
@@ -72,7 +72,7 @@ param.partial?  # => true if all fields are optional
 
 `#boundable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L129)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L121)
 
 **Returns**
 
@@ -84,7 +84,7 @@ param.partial?  # => true if all fields are optional
 
 `#date?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L171)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L163)
 
 **Returns**
 
@@ -96,7 +96,7 @@ param.partial?  # => true if all fields are optional
 
 `#datetime?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L165)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L157)
 
 **Returns**
 
@@ -108,7 +108,7 @@ param.partial?  # => true if all fields are optional
 
 `#decimal?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L153)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L145)
 
 **Returns**
 
@@ -120,7 +120,7 @@ param.partial?  # => true if all fields are optional
 
 `#default`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L75)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L67)
 
 **Returns**
 
@@ -132,7 +132,7 @@ param.partial?  # => true if all fields are optional
 
 `#default?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L81)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L73)
 
 **Returns**
 
@@ -144,7 +144,7 @@ param.partial?  # => true if all fields are optional
 
 `#deprecated?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L57)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L49)
 
 **Returns**
 
@@ -156,7 +156,7 @@ param.partial?  # => true if all fields are optional
 
 `#description`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L63)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L55)
 
 **Returns**
 
@@ -164,11 +164,35 @@ param.partial?  # => true if all fields are optional
 
 ---
 
+### #enum?
+
+`#enum?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L205)
+
+**Returns**
+
+[Boolean](introspection-boolean) — false — override in scalar types with enum constraints
+
+---
+
+### #enum_ref?
+
+`#enum_ref?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L211)
+
+**Returns**
+
+[Boolean](introspection-boolean) — false — override in scalar types
+
+---
+
 ### #example
 
 `#example`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L69)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L61)
 
 **Returns**
 
@@ -180,7 +204,7 @@ param.partial?  # => true if all fields are optional
 
 `#float?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L147)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L139)
 
 **Returns**
 
@@ -188,11 +212,23 @@ param.partial?  # => true if all fields are optional
 
 ---
 
+### #formattable?
+
+`#formattable?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L217)
+
+**Returns**
+
+[Boolean](introspection-boolean) — false — override in String, Integer
+
+---
+
 ### #integer?
 
 `#integer?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L141)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L133)
 
 **Returns**
 
@@ -204,7 +240,7 @@ param.partial?  # => true if all fields are optional
 
 `#json?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L195)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L187)
 
 **Returns**
 
@@ -216,7 +252,7 @@ param.partial?  # => true if all fields are optional
 
 `#literal?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L117)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L109)
 
 **Returns**
 
@@ -228,7 +264,7 @@ param.partial?  # => true if all fields are optional
 
 `#nullable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L45)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L37)
 
 **Returns**
 
@@ -240,7 +276,7 @@ param.partial?  # => true if all fields are optional
 
 `#numeric?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L123)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L115)
 
 **Returns**
 
@@ -264,7 +300,7 @@ param.partial?  # => true if all fields are optional
 
 `#optional?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L51)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L43)
 
 **Returns**
 
@@ -288,7 +324,7 @@ param.partial?  # => true if all fields are optional
 
 `#ref?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L207)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L199)
 
 **Returns**
 
@@ -300,7 +336,7 @@ param.partial?  # => true if all fields are optional
 
 `#scalar?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L93)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L85)
 
 **Returns**
 
@@ -324,7 +360,7 @@ param.partial?  # => true if all fields are optional
 
 `#string?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L135)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L127)
 
 **Returns**
 
@@ -336,7 +372,7 @@ param.partial?  # => true if all fields are optional
 
 `#tag`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L87)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L79)
 
 **Returns**
 
@@ -348,7 +384,7 @@ param.partial?  # => true if all fields are optional
 
 `#time?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L177)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L169)
 
 **Returns**
 
@@ -372,7 +408,7 @@ param.partial?  # => true if all fields are optional
 
 `#type`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L39)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L31)
 
 **Returns**
 
@@ -384,7 +420,7 @@ param.partial?  # => true if all fields are optional
 
 `#union?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L111)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L103)
 
 **Returns**
 
@@ -396,7 +432,7 @@ param.partial?  # => true if all fields are optional
 
 `#unknown?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L201)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L193)
 
 **Returns**
 
@@ -408,7 +444,7 @@ param.partial?  # => true if all fields are optional
 
 `#uuid?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L183)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L175)
 
 **Returns**
 

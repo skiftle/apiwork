@@ -331,7 +331,7 @@ module Apiwork
         schema[:example] = param.example if param.example
         schema[:deprecated] = true if param.deprecated?
 
-        schema[:format] = param.format.to_s if param.respond_to?(:format) && param.format
+        schema[:format] = param.format.to_s if param.formattable? && param.format
 
         apply_nullable(schema, param.nullable?)
       end

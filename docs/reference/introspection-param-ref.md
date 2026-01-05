@@ -32,7 +32,7 @@ param.ref     # => :address (the referenced type name)
 
 `#array?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L99)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L91)
 
 **Returns**
 
@@ -44,7 +44,7 @@ param.ref     # => :address (the referenced type name)
 
 `#binary?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L189)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L181)
 
 **Returns**
 
@@ -56,7 +56,7 @@ param.ref     # => :address (the referenced type name)
 
 `#boolean?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L159)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L151)
 
 **Returns**
 
@@ -68,7 +68,7 @@ param.ref     # => :address (the referenced type name)
 
 `#boundable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L129)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L121)
 
 **Returns**
 
@@ -80,7 +80,7 @@ param.ref     # => :address (the referenced type name)
 
 `#date?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L171)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L163)
 
 **Returns**
 
@@ -92,7 +92,7 @@ param.ref     # => :address (the referenced type name)
 
 `#datetime?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L165)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L157)
 
 **Returns**
 
@@ -104,7 +104,7 @@ param.ref     # => :address (the referenced type name)
 
 `#decimal?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L153)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L145)
 
 **Returns**
 
@@ -116,7 +116,7 @@ param.ref     # => :address (the referenced type name)
 
 `#default`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L75)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L67)
 
 **Returns**
 
@@ -128,7 +128,7 @@ param.ref     # => :address (the referenced type name)
 
 `#default?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L81)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L73)
 
 **Returns**
 
@@ -140,7 +140,7 @@ param.ref     # => :address (the referenced type name)
 
 `#deprecated?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L57)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L49)
 
 **Returns**
 
@@ -152,7 +152,7 @@ param.ref     # => :address (the referenced type name)
 
 `#description`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L63)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L55)
 
 **Returns**
 
@@ -160,11 +160,35 @@ param.ref     # => :address (the referenced type name)
 
 ---
 
+### #enum?
+
+`#enum?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L205)
+
+**Returns**
+
+[Boolean](introspection-boolean) — false — override in scalar types with enum constraints
+
+---
+
+### #enum_ref?
+
+`#enum_ref?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L211)
+
+**Returns**
+
+[Boolean](introspection-boolean) — false — override in scalar types
+
+---
+
 ### #example
 
 `#example`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L69)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L61)
 
 **Returns**
 
@@ -176,7 +200,7 @@ param.ref     # => :address (the referenced type name)
 
 `#float?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L147)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L139)
 
 **Returns**
 
@@ -184,11 +208,23 @@ param.ref     # => :address (the referenced type name)
 
 ---
 
+### #formattable?
+
+`#formattable?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L217)
+
+**Returns**
+
+[Boolean](introspection-boolean) — false — override in String, Integer
+
+---
+
 ### #integer?
 
 `#integer?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L141)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L133)
 
 **Returns**
 
@@ -200,7 +236,7 @@ param.ref     # => :address (the referenced type name)
 
 `#json?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L195)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L187)
 
 **Returns**
 
@@ -212,7 +248,7 @@ param.ref     # => :address (the referenced type name)
 
 `#literal?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L117)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L109)
 
 **Returns**
 
@@ -224,7 +260,7 @@ param.ref     # => :address (the referenced type name)
 
 `#nullable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L45)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L37)
 
 **Returns**
 
@@ -236,7 +272,7 @@ param.ref     # => :address (the referenced type name)
 
 `#numeric?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L123)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L115)
 
 **Returns**
 
@@ -248,7 +284,7 @@ param.ref     # => :address (the referenced type name)
 
 `#object?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L105)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L97)
 
 **Returns**
 
@@ -260,11 +296,23 @@ param.ref     # => :address (the referenced type name)
 
 `#optional?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L51)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L43)
 
 **Returns**
 
 [Boolean](introspection-boolean) — true if this field is optional
+
+---
+
+### #partial?
+
+`#partial?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L223)
+
+**Returns**
+
+[Boolean](introspection-boolean) — false — override in Object
 
 ---
 
@@ -296,7 +344,7 @@ param.ref     # => :address (the referenced type name)
 
 `#scalar?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L93)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L85)
 
 **Returns**
 
@@ -308,7 +356,7 @@ param.ref     # => :address (the referenced type name)
 
 `#string?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L135)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L127)
 
 **Returns**
 
@@ -320,7 +368,7 @@ param.ref     # => :address (the referenced type name)
 
 `#tag`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L87)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L79)
 
 **Returns**
 
@@ -332,7 +380,7 @@ param.ref     # => :address (the referenced type name)
 
 `#time?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L177)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L169)
 
 **Returns**
 
@@ -356,7 +404,7 @@ param.ref     # => :address (the referenced type name)
 
 `#type`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L39)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L31)
 
 **Returns**
 
@@ -368,7 +416,7 @@ param.ref     # => :address (the referenced type name)
 
 `#union?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L111)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L103)
 
 **Returns**
 
@@ -380,7 +428,7 @@ param.ref     # => :address (the referenced type name)
 
 `#unknown?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L201)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L193)
 
 **Returns**
 
@@ -392,7 +440,7 @@ param.ref     # => :address (the referenced type name)
 
 `#uuid?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L183)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L175)
 
 **Returns**
 

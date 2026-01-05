@@ -3,32 +3,6 @@
 module Apiwork
   module Introspection
     module Param
-      # @api public
-      # Base class for all introspection param types.
-      #
-      # Param types form a flat hierarchy where all concrete types (String, Integer,
-      # Array, etc.) inherit directly from Base. Use type predicates to identify
-      # param types and check capabilities.
-      #
-      # @example Type identification
-      #   param.type      # => :string, :integer, :array, etc.
-      #   param.string?   # => true if String param
-      #   param.scalar?   # => true if any scalar type
-      #   param.numeric?  # => true if Integer, Float, or Decimal
-      #
-      # @example Capability checking
-      #   param.boundable? # => true if param supports min/max
-      #
-      # @example Scalar-only features (use guard pattern)
-      #   # enum? and formattable? are only available on scalar types.
-      #   # Always check scalar? first:
-      #   if param.scalar? && param.enum?
-      #     param.enum # => ["draft", "published"]
-      #   end
-      #
-      #   if param.scalar? && param.formattable?
-      #     param.format # => :email or nil
-      #   end
       class Base
         def initialize(dump)
           @dump = dump
@@ -205,6 +179,30 @@ module Apiwork
         # @api public
         # @return [Boolean] false — override in Ref
         def ref?
+          false
+        end
+
+        # @api public
+        # @return [Boolean] false — override in scalar types with enum constraints
+        def enum?
+          false
+        end
+
+        # @api public
+        # @return [Boolean] false — override in scalar types
+        def enum_ref?
+          false
+        end
+
+        # @api public
+        # @return [Boolean] false — override in String, Integer
+        def formattable?
+          false
+        end
+
+        # @api public
+        # @return [Boolean] false — override in Object
+        def partial?
           false
         end
 

@@ -18,8 +18,8 @@ module Apiwork
       #   param.boundable?   # => true
       #   param.formattable? # => false
       #
-      # @example Enum (scalar-only, use guard)
-      #   if param.scalar? && param.enum?
+      # @example Enum
+      #   if param.enum?
       #     param.enum      # => [0.5, 1.0, 1.5]
       #     param.enum_ref? # => false
       #   end
@@ -44,11 +44,6 @@ module Apiwork
 
         # @api public
         # @return [Boolean] true if this param has enum constraints
-        # @see #scalar?
-        # @example
-        #   if param.scalar? && param.enum?
-        #     param.enum # => [0.5, 1.0, 1.5]
-        #   end
         def enum?
           @dump[:enum].present?
         end
@@ -62,7 +57,6 @@ module Apiwork
 
         # @api public
         # @return [Boolean] true if enum is a reference to a named enum
-        # @see #enum?
         def enum_ref?
           @dump[:enum].is_a?(Symbol)
         end
@@ -87,7 +81,6 @@ module Apiwork
 
         # @api public
         # @return [Boolean] false — floats do not support format constraints
-        # @see #scalar?
         def formattable?
           false
         end
