@@ -67,7 +67,7 @@ module Apiwork
           return build_union_param(options) if options[:type] == :union
           return build_custom_type_param(options) if options[:custom_type]
 
-          type_ref = resolve_type_ref(options[:type])
+          ref = resolve_type_ref(options[:type])
 
           {
             as: options[:as],
@@ -84,10 +84,10 @@ module Apiwork
             of: resolve_of(options),
             optional: options[:optional] == true,
             partial: options[:partial] == true,
-            ref: type_ref,
+            ref:,
             shape: build_shape(options) || {},
             tag: nil,
-            type: type_ref ? :ref : options[:type],
+            type: ref ? :ref : (options[:type] || :unknown),
             value: options[:type] == :literal ? options[:value] : nil,
             variants: [],
           }
@@ -214,8 +214,8 @@ module Apiwork
           variant_type = variant_definition[:type]
           is_registered = registered_type?(variant_type)
 
-          type_ref = is_registered ? qualified_name(variant_type, @param_definition) : nil
-          resolved_type = is_registered ? :ref : variant_type
+          ref = is_registered ? qualified_name(variant_type, @param_definition) : nil
+          resolved_type = is_registered ? :ref : (variant_type || :unknown)
 
           {
             as: nil,
@@ -232,7 +232,7 @@ module Apiwork
             of: resolve_variant_of(variant_definition),
             optional: false,
             partial: false,
-            ref: type_ref,
+            ref:,
             shape: resolve_variant_shape(variant_definition, variant_type),
             tag: variant_definition[:tag],
             type: resolved_type,

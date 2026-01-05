@@ -127,7 +127,6 @@ module Apiwork
           return
         end
 
-        type ||= :string
         raise ArgumentError, 'discriminator can only be used with type: :union' if discriminator && type != :union
 
         visited_types = visited_types || @visited_types || Set.new
@@ -413,7 +412,7 @@ module Apiwork
           { values:, ref: enum }
         else
           raise ArgumentError,
-                "Enum :#{enum} not found. Define it using `enum :#{enum}, %w[...]` in contract or definition scope."
+                "Enum :#{enum} not found. Define it using `enum :#{enum}, %w[...]` in definition scope."
         end
       end
     end
