@@ -68,7 +68,8 @@
                     "example": null,
                     "nullable": false,
                     "optional": false,
-                    "type": "article_filter"
+                    "type": "ref",
+                    "ref": "article_filter"
                   },
                   {
                     "default": null,
@@ -87,7 +88,8 @@
                       "example": null,
                       "nullable": null,
                       "optional": null,
-                      "type": "article_filter"
+                      "type": "ref",
+                      "ref": "article_filter"
                     },
                     "shape": {}
                   }
@@ -100,7 +102,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": true,
-                "type": "article_page"
+                "type": "ref",
+                "ref": "article_page"
               },
               "sort": {
                 "default": null,
@@ -119,7 +122,8 @@
                     "example": null,
                     "nullable": false,
                     "optional": false,
-                    "type": "article_sort"
+                    "type": "ref",
+                    "ref": "article_sort"
                   },
                   {
                     "default": null,
@@ -138,7 +142,8 @@
                       "example": null,
                       "nullable": null,
                       "optional": null,
-                      "type": "article_sort"
+                      "type": "ref",
+                      "ref": "article_sort"
                     },
                     "shape": {}
                   }
@@ -164,7 +169,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "article_index_success_response_body"
+                  "type": "ref",
+                  "ref": "article_index_success_response_body"
                 },
                 {
                   "default": null,
@@ -173,7 +179,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "error_response_body"
+                  "type": "ref",
+                  "ref": "error_response_body"
                 }
               ]
             },
@@ -211,7 +218,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "article_show_success_response_body"
+                  "type": "ref",
+                  "ref": "article_show_success_response_body"
                 },
                 {
                   "default": null,
@@ -220,7 +228,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "error_response_body"
+                  "type": "ref",
+                  "ref": "error_response_body"
                 }
               ]
             },
@@ -247,7 +256,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": false,
-                "type": "article_create_payload"
+                "type": "ref",
+                "ref": "article_create_payload"
               }
             },
             "query": {}
@@ -270,7 +280,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "article_create_success_response_body"
+                  "type": "ref",
+                  "ref": "article_create_success_response_body"
                 },
                 {
                   "default": null,
@@ -279,7 +290,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "error_response_body"
+                  "type": "ref",
+                  "ref": "error_response_body"
                 }
               ]
             },
@@ -306,7 +318,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": false,
-                "type": "article_update_payload"
+                "type": "ref",
+                "ref": "article_update_payload"
               }
             },
             "query": {}
@@ -329,7 +342,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "article_update_success_response_body"
+                  "type": "ref",
+                  "ref": "article_update_success_response_body"
                 },
                 {
                   "default": null,
@@ -338,7 +352,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "error_response_body"
+                  "type": "ref",
+                  "ref": "error_response_body"
                 }
               ]
             },
@@ -459,7 +474,10 @@
           "nullable": true,
           "optional": false,
           "type": "string",
-          "enum": "article_status"
+          "enum": "article_status",
+          "format": null,
+          "max": null,
+          "min": null
         },
         "title": {
           "default": null,
@@ -490,9 +508,9 @@
           "nullable": true,
           "optional": false,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": null,
-          "format": null
+          "min": null
         }
       },
       "type": "object",
@@ -533,7 +551,10 @@
           "nullable": true,
           "optional": true,
           "type": "string",
-          "enum": "article_status"
+          "enum": "article_status",
+          "format": null,
+          "max": null,
+          "min": null
         },
         "title": {
           "default": null,
@@ -564,7 +585,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "article"
+          "type": "ref",
+          "ref": "article"
         },
         "meta": {
           "default": null,
@@ -604,7 +626,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "article_filter"
+            "type": "ref",
+            "ref": "article_filter"
           },
           "shape": {}
         },
@@ -615,7 +638,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "article_filter"
+          "type": "ref",
+          "ref": "article_filter"
         },
         "_or": {
           "default": null,
@@ -634,7 +658,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "article_filter"
+            "type": "ref",
+            "ref": "article_filter"
           },
           "shape": {}
         },
@@ -664,7 +689,8 @@
               "example": null,
               "nullable": false,
               "optional": false,
-              "type": "nullable_date_filter"
+              "type": "ref",
+              "ref": "nullable_date_filter"
             }
           ]
         },
@@ -696,7 +722,8 @@
               "example": null,
               "nullable": false,
               "optional": false,
-              "type": "nullable_decimal_filter"
+              "type": "ref",
+              "ref": "nullable_decimal_filter"
             }
           ]
         },
@@ -707,7 +734,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "article_status_filter"
+          "type": "ref",
+          "ref": "article_status_filter"
         },
         "title": {
           "default": null,
@@ -738,7 +766,8 @@
               "example": null,
               "nullable": false,
               "optional": false,
-              "type": "string_filter"
+              "type": "ref",
+              "ref": "string_filter"
             }
           ]
         },
@@ -760,9 +789,9 @@
               "nullable": false,
               "optional": false,
               "type": "integer",
+              "format": null,
               "max": null,
-              "min": null,
-              "format": null
+              "min": null
             },
             {
               "default": null,
@@ -771,7 +800,8 @@
               "example": null,
               "nullable": false,
               "optional": false,
-              "type": "nullable_integer_filter"
+              "type": "ref",
+              "ref": "nullable_integer_filter"
             }
           ]
         }
@@ -802,7 +832,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "article"
+            "type": "ref",
+            "ref": "article"
           },
           "shape": {}
         },
@@ -824,7 +855,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "offset_pagination"
+          "type": "ref",
+          "ref": "offset_pagination"
         }
       },
       "type": "object",
@@ -844,9 +876,9 @@
           "nullable": false,
           "optional": true,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": 1,
-          "format": null
+          "min": 1
         },
         "size": {
           "default": null,
@@ -856,9 +888,9 @@
           "nullable": false,
           "optional": true,
           "type": "integer",
+          "format": null,
           "max": 100,
-          "min": 1,
-          "format": null
+          "min": 1
         }
       },
       "type": "object",
@@ -877,7 +909,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "article"
+          "type": "ref",
+          "ref": "article"
         },
         "meta": {
           "default": null,
@@ -907,7 +940,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "sort_direction"
+          "type": "ref",
+          "ref": "sort_direction"
         },
         "published_on": {
           "default": null,
@@ -916,7 +950,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "sort_direction"
+          "type": "ref",
+          "ref": "sort_direction"
         },
         "rating": {
           "default": null,
@@ -925,7 +960,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "sort_direction"
+          "type": "ref",
+          "ref": "sort_direction"
         },
         "status": {
           "default": null,
@@ -934,7 +970,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "sort_direction"
+          "type": "ref",
+          "ref": "sort_direction"
         },
         "view_count": {
           "default": null,
@@ -943,7 +980,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "sort_direction"
+          "type": "ref",
+          "ref": "sort_direction"
         }
       },
       "type": "object",
@@ -964,7 +1002,8 @@
           "example": null,
           "nullable": null,
           "optional": null,
-          "type": "article_status"
+          "type": "ref",
+          "ref": "article_status"
         },
         {
           "default": null,
@@ -983,7 +1022,8 @@
               "example": null,
               "nullable": false,
               "optional": true,
-              "type": "article_status"
+              "type": "ref",
+              "ref": "article_status"
             },
             "in": {
               "default": null,
@@ -1002,7 +1042,8 @@
                 "example": null,
                 "nullable": null,
                 "optional": null,
-                "type": "article_status"
+                "type": "ref",
+                "ref": "article_status"
               },
               "shape": {}
             }
@@ -1045,7 +1086,10 @@
           "nullable": true,
           "optional": true,
           "type": "string",
-          "enum": "article_status"
+          "enum": "article_status",
+          "format": null,
+          "max": null,
+          "min": null
         },
         "title": {
           "default": null,
@@ -1076,7 +1120,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "article"
+          "type": "ref",
+          "ref": "article"
         },
         "meta": {
           "default": null,
@@ -1106,7 +1151,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "date_filter_between"
+          "type": "ref",
+          "ref": "date_filter_between"
         },
         "eq": {
           "default": null,
@@ -1219,7 +1265,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "decimal_filter_between"
+          "type": "ref",
+          "ref": "decimal_filter_between"
         },
         "eq": {
           "default": null,
@@ -1358,7 +1405,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "issue"
+            "type": "ref",
+            "ref": "issue"
           },
           "shape": {}
         },
@@ -1369,7 +1417,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "layer"
+          "type": "ref",
+          "ref": "layer"
         }
       },
       "type": "object",
@@ -1388,7 +1437,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "integer_filter_between"
+          "type": "ref",
+          "ref": "integer_filter_between"
         },
         "eq": {
           "default": null,
@@ -1398,9 +1448,9 @@
           "nullable": false,
           "optional": true,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": null,
-          "format": null
+          "min": null
         },
         "gt": {
           "default": null,
@@ -1410,9 +1460,9 @@
           "nullable": false,
           "optional": true,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": null,
-          "format": null
+          "min": null
         },
         "gte": {
           "default": null,
@@ -1422,9 +1472,9 @@
           "nullable": false,
           "optional": true,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": null,
-          "format": null
+          "min": null
         },
         "in": {
           "default": null,
@@ -1444,9 +1494,9 @@
             "nullable": null,
             "optional": null,
             "type": "integer",
+            "format": null,
             "max": null,
-            "min": null,
-            "format": null
+            "min": null
           },
           "shape": {}
         },
@@ -1458,9 +1508,9 @@
           "nullable": false,
           "optional": true,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": null,
-          "format": null
+          "min": null
         },
         "lte": {
           "default": null,
@@ -1470,9 +1520,9 @@
           "nullable": false,
           "optional": true,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": null,
-          "format": null
+          "min": null
         }
       },
       "type": "object",
@@ -1492,9 +1542,9 @@
           "nullable": false,
           "optional": true,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": null,
-          "format": null
+          "min": null
         },
         "to": {
           "default": null,
@@ -1504,9 +1554,9 @@
           "nullable": false,
           "optional": true,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": null,
-          "format": null
+          "min": null
         }
       },
       "type": "object",
@@ -1606,7 +1656,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "date_filter_between"
+          "type": "ref",
+          "ref": "date_filter_between"
         },
         "eq": {
           "default": null,
@@ -1700,7 +1751,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "decimal_filter_between"
+          "type": "ref",
+          "ref": "decimal_filter_between"
         },
         "eq": {
           "default": null,
@@ -1806,7 +1858,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "integer_filter_between"
+          "type": "ref",
+          "ref": "integer_filter_between"
         },
         "eq": {
           "default": null,
@@ -1816,9 +1869,9 @@
           "nullable": false,
           "optional": true,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": null,
-          "format": null
+          "min": null
         },
         "gt": {
           "default": null,
@@ -1828,9 +1881,9 @@
           "nullable": false,
           "optional": true,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": null,
-          "format": null
+          "min": null
         },
         "gte": {
           "default": null,
@@ -1840,9 +1893,9 @@
           "nullable": false,
           "optional": true,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": null,
-          "format": null
+          "min": null
         },
         "in": {
           "default": null,
@@ -1862,9 +1915,9 @@
             "nullable": null,
             "optional": null,
             "type": "integer",
+            "format": null,
             "max": null,
-            "min": null,
-            "format": null
+            "min": null
           },
           "shape": {}
         },
@@ -1876,9 +1929,9 @@
           "nullable": false,
           "optional": true,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": null,
-          "format": null
+          "min": null
         },
         "lte": {
           "default": null,
@@ -1888,9 +1941,9 @@
           "nullable": false,
           "optional": true,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": null,
-          "format": null
+          "min": null
         },
         "null": {
           "default": null,
@@ -2010,9 +2063,9 @@
           "nullable": false,
           "optional": false,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": null,
-          "format": null
+          "min": null
         },
         "items": {
           "default": null,
@@ -2022,9 +2075,9 @@
           "nullable": false,
           "optional": false,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": null,
-          "format": null
+          "min": null
         },
         "next": {
           "default": null,
@@ -2034,9 +2087,9 @@
           "nullable": true,
           "optional": true,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": null,
-          "format": null
+          "min": null
         },
         "prev": {
           "default": null,
@@ -2046,9 +2099,9 @@
           "nullable": true,
           "optional": true,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": null,
-          "format": null
+          "min": null
         },
         "total": {
           "default": null,
@@ -2058,9 +2111,9 @@
           "nullable": false,
           "optional": false,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": null,
-          "format": null
+          "min": null
         }
       },
       "type": "object",

@@ -1,13 +1,9 @@
 {
   "request": {
     "method": "DELETE",
-    "path": "/eager_lion/invoices/baf90ee7-f2b9-5d5c-ad6a-8a4536fb1005"
+    "path": "/eager_lion/invoices/a2a97615-5156-5664-b7bd-f2be1b59344c"
   },
   "response": {
-    "body": {
-      "status": 500,
-      "error": "Internal Server Error"
-    },
-    "status": 500
+    "status": 204
   }
 }

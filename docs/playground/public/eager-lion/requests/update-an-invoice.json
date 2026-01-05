@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "PATCH",
-    "path": "/eager_lion/invoices/a8820bf3-8c01-50aa-9940-cad599d88a67",
+    "path": "/eager_lion/invoices/baf90ee7-f2b9-5d5c-ad6a-8a4536fb1005",
     "body": {
       "invoice": {
         "number": "INV-001",
@@ -12,9 +12,22 @@
   },
   "response": {
     "body": {
-      "status": 500,
-      "error": "Internal Server Error"
+      "invoice": {
+        "id": "baf90ee7-f2b9-5d5c-ad6a-8a4536fb1005",
+        "createdAt": "2024-01-01T12:00:00.000Z",
+        "updatedAt": "2024-01-01T12:00:00.000Z",
+        "number": "INV-001",
+        "issuedOn": null,
+        "notes": "Updated notes",
+        "status": null,
+        "customerId": "68015de3-44bf-5dc5-8e6b-9199fa3ac62e",
+        "lines": [],
+        "customer": {
+          "id": "68015de3-44bf-5dc5-8e6b-9199fa3ac62e",
+          "name": "Acme Corp"
+        }
+      }
     },
-    "status": 500
+    "status": 200
   }
 }

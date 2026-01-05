@@ -5,9 +5,22 @@
   },
   "response": {
     "body": {
-      "status": 500,
-      "error": "Internal Server Error"
+      "invoice": {
+        "id": "67bdd1df-79bb-5b50-9eaf-b17edac86b61",
+        "createdAt": "2024-01-01T12:00:00.000Z",
+        "updatedAt": "2024-01-01T12:00:00.000Z",
+        "number": "INV-001",
+        "issuedOn": null,
+        "notes": null,
+        "status": null,
+        "customerId": "481e8881-0547-5668-91bd-b1ff84936a03",
+        "lines": [],
+        "customer": {
+          "id": "481e8881-0547-5668-91bd-b1ff84936a03",
+          "name": "Acme Corp"
+        }
+      }
     },
-    "status": 500
+    "status": 200
   }
 }

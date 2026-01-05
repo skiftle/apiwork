@@ -2,17 +2,17 @@ import { z } from 'zod';
 
 export const LayerSchema = z.enum(['contract', 'domain', 'http']);
 
+export const ErrorResponseBodySchema = z.object({
+  issues: z.array(IssueSchema),
+  layer: LayerSchema
+});
+
 export const IssueSchema = z.object({
   code: z.string(),
   detail: z.string(),
   meta: z.object({}),
   path: z.array(z.string()),
   pointer: z.string()
-});
-
-export const ErrorResponseBodySchema = z.object({
-  issues: z.array(IssueSchema),
-  layer: LayerSchema
 });
 
 export const StatusHealthResponseBodySchema = z.object({ status: z.string(), timestamp: z.iso.datetime(), version: z.string() });

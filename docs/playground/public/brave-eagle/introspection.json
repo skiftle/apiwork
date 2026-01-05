@@ -96,7 +96,8 @@
                     "example": null,
                     "nullable": false,
                     "optional": false,
-                    "type": "task_filter"
+                    "type": "ref",
+                    "ref": "task_filter"
                   },
                   {
                     "default": null,
@@ -115,7 +116,8 @@
                       "example": null,
                       "nullable": null,
                       "optional": null,
-                      "type": "task_filter"
+                      "type": "ref",
+                      "ref": "task_filter"
                     },
                     "shape": {}
                   }
@@ -128,7 +130,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": true,
-                "type": "task_include"
+                "type": "ref",
+                "ref": "task_include"
               },
               "page": {
                 "default": null,
@@ -137,7 +140,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": true,
-                "type": "task_page"
+                "type": "ref",
+                "ref": "task_page"
               },
               "sort": {
                 "default": null,
@@ -156,7 +160,8 @@
                     "example": null,
                     "nullable": false,
                     "optional": false,
-                    "type": "task_sort"
+                    "type": "ref",
+                    "ref": "task_sort"
                   },
                   {
                     "default": null,
@@ -175,7 +180,8 @@
                       "example": null,
                       "nullable": null,
                       "optional": null,
-                      "type": "task_sort"
+                      "type": "ref",
+                      "ref": "task_sort"
                     },
                     "shape": {}
                   }
@@ -201,7 +207,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "task_index_success_response_body"
+                  "type": "ref",
+                  "ref": "task_index_success_response_body"
                 },
                 {
                   "default": null,
@@ -210,7 +217,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "error_response_body"
+                  "type": "ref",
+                  "ref": "error_response_body"
                 }
               ]
             },
@@ -239,7 +247,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": true,
-                "type": "task_include"
+                "type": "ref",
+                "ref": "task_include"
               }
             }
           },
@@ -261,7 +270,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "task_show_success_response_body"
+                  "type": "ref",
+                  "ref": "task_show_success_response_body"
                 },
                 {
                   "default": null,
@@ -270,7 +280,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "error_response_body"
+                  "type": "ref",
+                  "ref": "error_response_body"
                 }
               ]
             },
@@ -299,7 +310,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": false,
-                "type": "task_create_payload"
+                "type": "ref",
+                "ref": "task_create_payload"
               }
             },
             "query": {
@@ -310,7 +322,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": true,
-                "type": "task_include"
+                "type": "ref",
+                "ref": "task_include"
               }
             }
           },
@@ -332,7 +345,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "task_create_success_response_body"
+                  "type": "ref",
+                  "ref": "task_create_success_response_body"
                 },
                 {
                   "default": null,
@@ -341,7 +355,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "error_response_body"
+                  "type": "ref",
+                  "ref": "error_response_body"
                 }
               ]
             },
@@ -370,7 +385,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": false,
-                "type": "task_update_payload"
+                "type": "ref",
+                "ref": "task_update_payload"
               }
             },
             "query": {
@@ -381,7 +397,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": true,
-                "type": "task_include"
+                "type": "ref",
+                "ref": "task_include"
               }
             }
           },
@@ -403,7 +420,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "task_update_success_response_body"
+                  "type": "ref",
+                  "ref": "task_update_success_response_body"
                 },
                 {
                   "default": null,
@@ -412,7 +430,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "error_response_body"
+                  "type": "ref",
+                  "ref": "error_response_body"
                 }
               ]
             },
@@ -440,7 +459,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": true,
-                "type": "task_include"
+                "type": "ref",
+                "ref": "task_include"
               }
             }
           },
@@ -480,7 +500,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": true,
-                "type": "task_include"
+                "type": "ref",
+                "ref": "task_include"
               }
             }
           },
@@ -502,7 +523,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "task_archive_success_response_body"
+                  "type": "ref",
+                  "ref": "task_archive_success_response_body"
                 },
                 {
                   "default": null,
@@ -511,7 +533,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "error_response_body"
+                  "type": "ref",
+                  "ref": "error_response_body"
                 }
               ]
             },
@@ -645,7 +668,8 @@
           "example": null,
           "nullable": null,
           "optional": null,
-          "type": "comment_nested_create_payload"
+          "type": "ref",
+          "ref": "comment_nested_create_payload"
         },
         {
           "default": null,
@@ -654,7 +678,8 @@
           "example": null,
           "nullable": null,
           "optional": null,
-          "type": "comment_nested_update_payload"
+          "type": "ref",
+          "ref": "comment_nested_update_payload"
         }
       ]
     },
@@ -725,7 +750,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "issue"
+            "type": "ref",
+            "ref": "issue"
           },
           "shape": {}
         },
@@ -736,7 +762,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "layer"
+          "type": "ref",
+          "ref": "layer"
         }
       },
       "type": "object",
@@ -928,9 +955,9 @@
           "nullable": false,
           "optional": false,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": null,
-          "format": null
+          "min": null
         },
         "items": {
           "default": null,
@@ -940,9 +967,9 @@
           "nullable": false,
           "optional": false,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": null,
-          "format": null
+          "min": null
         },
         "next": {
           "default": null,
@@ -952,9 +979,9 @@
           "nullable": true,
           "optional": true,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": null,
-          "format": null
+          "min": null
         },
         "prev": {
           "default": null,
@@ -964,9 +991,9 @@
           "nullable": true,
           "optional": true,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": null,
-          "format": null
+          "min": null
         },
         "total": {
           "default": null,
@@ -976,9 +1003,9 @@
           "nullable": false,
           "optional": false,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": null,
-          "format": null
+          "min": null
         }
       },
       "type": "object",
@@ -1088,7 +1115,8 @@
           "example": null,
           "nullable": true,
           "optional": true,
-          "type": "user"
+          "type": "ref",
+          "ref": "user"
         },
         "comments": {
           "default": null,
@@ -1107,7 +1135,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "comment"
+            "type": "ref",
+            "ref": "comment"
           },
           "shape": {}
         },
@@ -1161,7 +1190,10 @@
           "nullable": true,
           "optional": false,
           "type": "string",
-          "enum": "task_priority"
+          "enum": "task_priority",
+          "format": null,
+          "max": null,
+          "min": null
         },
         "status": {
           "default": null,
@@ -1171,7 +1203,10 @@
           "nullable": true,
           "optional": false,
           "type": "string",
-          "enum": "task_status"
+          "enum": "task_status",
+          "format": null,
+          "max": null,
+          "min": null
         },
         "title": {
           "default": null,
@@ -1222,7 +1257,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "task"
+          "type": "ref",
+          "ref": "task"
         }
       },
       "type": "object",
@@ -1263,7 +1299,10 @@
           "nullable": true,
           "optional": true,
           "type": "string",
-          "enum": "task_priority"
+          "enum": "task_priority",
+          "format": null,
+          "max": null,
+          "min": null
         },
         "status": {
           "default": null,
@@ -1273,7 +1312,10 @@
           "nullable": true,
           "optional": true,
           "type": "string",
-          "enum": "task_status"
+          "enum": "task_status",
+          "format": null,
+          "max": null,
+          "min": null
         },
         "title": {
           "default": null,
@@ -1315,7 +1357,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "task"
+          "type": "ref",
+          "ref": "task"
         }
       },
       "type": "object",
@@ -1344,7 +1387,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "task_filter"
+            "type": "ref",
+            "ref": "task_filter"
           },
           "shape": {}
         },
@@ -1355,7 +1399,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "task_filter"
+          "type": "ref",
+          "ref": "task_filter"
         },
         "_or": {
           "default": null,
@@ -1374,7 +1419,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "task_filter"
+            "type": "ref",
+            "ref": "task_filter"
           },
           "shape": {}
         },
@@ -1385,7 +1431,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "task_priority_filter"
+          "type": "ref",
+          "ref": "task_priority_filter"
         },
         "status": {
           "default": null,
@@ -1394,7 +1441,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "task_status_filter"
+          "type": "ref",
+          "ref": "task_status_filter"
         }
       },
       "type": "object",
@@ -1452,7 +1500,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "offset_pagination"
+          "type": "ref",
+          "ref": "offset_pagination"
         },
         "tasks": {
           "default": null,
@@ -1471,7 +1520,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "task"
+            "type": "ref",
+            "ref": "task"
           },
           "shape": {}
         }
@@ -1493,9 +1543,9 @@
           "nullable": false,
           "optional": true,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": 1,
-          "format": null
+          "min": 1
         },
         "size": {
           "default": null,
@@ -1505,9 +1555,9 @@
           "nullable": false,
           "optional": true,
           "type": "integer",
+          "format": null,
           "max": 100,
-          "min": 1,
-          "format": null
+          "min": 1
         }
       },
       "type": "object",
@@ -1528,7 +1578,8 @@
           "example": null,
           "nullable": null,
           "optional": null,
-          "type": "task_priority"
+          "type": "ref",
+          "ref": "task_priority"
         },
         {
           "default": null,
@@ -1547,7 +1598,8 @@
               "example": null,
               "nullable": false,
               "optional": true,
-              "type": "task_priority"
+              "type": "ref",
+              "ref": "task_priority"
             },
             "in": {
               "default": null,
@@ -1566,7 +1618,8 @@
                 "example": null,
                 "nullable": null,
                 "optional": null,
-                "type": "task_priority"
+                "type": "ref",
+                "ref": "task_priority"
               },
               "shape": {}
             }
@@ -1598,7 +1651,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "task"
+          "type": "ref",
+          "ref": "task"
         }
       },
       "type": "object",
@@ -1617,7 +1671,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "sort_direction"
+          "type": "ref",
+          "ref": "sort_direction"
         },
         "due_date": {
           "default": null,
@@ -1626,7 +1681,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "sort_direction"
+          "type": "ref",
+          "ref": "sort_direction"
         }
       },
       "type": "object",
@@ -1647,7 +1703,8 @@
           "example": null,
           "nullable": null,
           "optional": null,
-          "type": "task_status"
+          "type": "ref",
+          "ref": "task_status"
         },
         {
           "default": null,
@@ -1666,7 +1723,8 @@
               "example": null,
               "nullable": false,
               "optional": true,
-              "type": "task_status"
+              "type": "ref",
+              "ref": "task_status"
             },
             "in": {
               "default": null,
@@ -1685,7 +1743,8 @@
                 "example": null,
                 "nullable": null,
                 "optional": null,
-                "type": "task_status"
+                "type": "ref",
+                "ref": "task_status"
               },
               "shape": {}
             }
@@ -1728,7 +1787,10 @@
           "nullable": true,
           "optional": true,
           "type": "string",
-          "enum": "task_priority"
+          "enum": "task_priority",
+          "format": null,
+          "max": null,
+          "min": null
         },
         "status": {
           "default": null,
@@ -1738,7 +1800,10 @@
           "nullable": true,
           "optional": true,
           "type": "string",
-          "enum": "task_status"
+          "enum": "task_status",
+          "format": null,
+          "max": null,
+          "min": null
         },
         "title": {
           "default": null,
@@ -1780,7 +1845,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "task"
+          "type": "ref",
+          "ref": "task"
         }
       },
       "type": "object",

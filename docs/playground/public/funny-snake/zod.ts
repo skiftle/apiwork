@@ -2,6 +2,11 @@ import { z } from 'zod';
 
 export const LayerSchema = z.enum(['contract', 'domain', 'http']);
 
+export const ErrorResponseBodySchema = z.object({
+  issues: z.array(IssueSchema),
+  layer: LayerSchema
+});
+
 export const InvoiceSchema = z.object({
   createdAt: z.iso.datetime(),
   id: z.uuid(),
@@ -27,40 +32,47 @@ export const IssueSchema = z.object({
   pointer: z.string()
 });
 
-export const ErrorResponseBodySchema = z.object({
-  issues: z.array(IssueSchema),
-  layer: LayerSchema
-});
-
-export const InvoicesIndexResponseBodySchema = z.never();
+export const InvoicesIndexResponseBodySchema = z.object({ invoices: z.array(InvoiceSchema) });
 
 export const InvoicesIndexResponseSchema = z.object({
   body: InvoicesIndexResponseBodySchema
 });
 
-export const InvoicesShowResponseBodySchema = z.never();
+export const InvoicesShowResponseBodySchema = z.object({ invoice: InvoiceSchema });
 
 export const InvoicesShowResponseSchema = z.object({
   body: InvoicesShowResponseBodySchema
 });
 
-export const InvoicesCreateResponseBodySchema = z.never();
+export const InvoicesCreateRequestBodySchema = z.object({
+  invoice: InvoicePayloadSchema
+});
+
+export const InvoicesCreateRequestSchema = z.object({
+  body: InvoicesCreateRequestBodySchema
+});
+
+export const InvoicesCreateResponseBodySchema = z.object({ invoice: InvoiceSchema });
 
 export const InvoicesCreateResponseSchema = z.object({
   body: InvoicesCreateResponseBodySchema
 });
 
-export const InvoicesUpdateResponseBodySchema = z.never();
+export const InvoicesUpdateRequestBodySchema = z.object({
+  invoice: InvoicePayloadSchema
+});
+
+export const InvoicesUpdateRequestSchema = z.object({
+  body: InvoicesUpdateRequestBodySchema
+});
+
+export const InvoicesUpdateResponseBodySchema = z.object({ invoice: InvoiceSchema });
 
 export const InvoicesUpdateResponseSchema = z.object({
   body: InvoicesUpdateResponseBodySchema
 });
 
-export const InvoicesDestroyResponseBodySchema = z.never();
-
-export const InvoicesDestroyResponseSchema = z.object({
-  body: InvoicesDestroyResponseBodySchema
-});
+export const InvoicesDestroyResponse = z.never();
 
 export interface ErrorResponseBody {
   issues: Issue[];
@@ -84,35 +96,47 @@ export interface InvoicePayload {
   status: string;
 }
 
+export interface InvoicesCreateRequest {
+  body: InvoicesCreateRequestBody;
+}
+
+export interface InvoicesCreateRequestBody {
+  invoice: InvoicePayload;
+}
+
 export interface InvoicesCreateResponse {
   body: InvoicesCreateResponseBody;
 }
 
-export type InvoicesCreateResponseBody = never;
+export type InvoicesCreateResponseBody = { invoice: Invoice };
 
-export interface InvoicesDestroyResponse {
-  body: InvoicesDestroyResponseBody;
-}
-
-export type InvoicesDestroyResponseBody = never;
+export type InvoicesDestroyResponse = never;
 
 export interface InvoicesIndexResponse {
   body: InvoicesIndexResponseBody;
 }
 
-export type InvoicesIndexResponseBody = never;
+export type InvoicesIndexResponseBody = { invoices: Invoice[] };
 
 export interface InvoicesShowResponse {
   body: InvoicesShowResponseBody;
 }
 
-export type InvoicesShowResponseBody = never;
+export type InvoicesShowResponseBody = { invoice: Invoice };
+
+export interface InvoicesUpdateRequest {
+  body: InvoicesUpdateRequestBody;
+}
+
+export interface InvoicesUpdateRequestBody {
+  invoice: InvoicePayload;
+}
 
 export interface InvoicesUpdateResponse {
   body: InvoicesUpdateResponseBody;
 }
 
-export type InvoicesUpdateResponseBody = never;
+export type InvoicesUpdateResponseBody = { invoice: Invoice };
 
 export interface Issue {
   code: string;

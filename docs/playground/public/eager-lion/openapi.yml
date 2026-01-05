@@ -7,20 +7,63 @@ paths:
   "/invoices":
     get:
       operationId: invoicesIndex
+      parameters:
+      - in: query
+        name: filter
+        required: false
+        schema:
+          oneOf:
+          - "$ref": "#/components/schemas/invoiceFilter"
+          - items:
+              "$ref": "#/components/schemas/invoiceFilter"
+            type: array
+      - in: query
+        name: page
+        required: false
+        schema:
+          "$ref": "#/components/schemas/invoicePage"
+      - in: query
+        name: sort
+        required: false
+        schema:
+          oneOf:
+          - "$ref": "#/components/schemas/invoiceSort"
+          - items:
+              "$ref": "#/components/schemas/invoiceSort"
+            type: array
       responses:
         '200':
           content:
             application/json:
-              schema: {}
+              schema:
+                "$ref": "#/components/schemas/invoiceIndexSuccessResponseBody"
           description: Successful response
     post:
       operationId: invoicesCreate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                invoice:
+                  "$ref": "#/components/schemas/invoiceCreatePayload"
+              type: object
+              required:
+              - invoice
+        required: true
       responses:
         '200':
           content:
             application/json:
-              schema: {}
+              schema:
+                "$ref": "#/components/schemas/invoiceCreateSuccessResponseBody"
           description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
   "/invoices/{id}":
     get:
       operationId: invoicesShow
@@ -34,7 +77,8 @@ paths:
         '200':
           content:
             application/json:
-              schema: {}
+              schema:
+                "$ref": "#/components/schemas/invoiceShowSuccessResponseBody"
           description: Successful response
     patch:
       operationId: invoicesUpdate
@@ -44,12 +88,30 @@ paths:
         required: true
         schema:
           type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                invoice:
+                  "$ref": "#/components/schemas/invoiceUpdatePayload"
+              type: object
+              required:
+              - invoice
+        required: true
       responses:
         '200':
           content:
             application/json:
-              schema: {}
+              schema:
+                "$ref": "#/components/schemas/invoiceUpdateSuccessResponseBody"
           description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
     delete:
       operationId: invoicesDestroy
       parameters:
@@ -59,11 +121,8 @@ paths:
         schema:
           type: string
       responses:
-        '200':
-          content:
-            application/json:
-              schema: {}
-          description: Successful response
+        '204':
+          description: No content
   "/invoices/{id}/archive":
     patch:
       operationId: invoicesArchive
@@ -77,8 +136,15 @@ paths:
         '200':
           content:
             application/json:
-              schema: {}
+              schema:
+                "$ref": "#/components/schemas/invoiceArchiveSuccessResponseBody"
           description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
 components:
   schemas:
     errorResponseBody:
@@ -97,6 +163,204 @@ components:
       required:
       - issues
       - layer
+    invoice:
+      properties:
+        createdAt:
+          type: string
+          format: date-time
+        customer:
+          properties: {}
+          type: object
+        customerId:
+          type: string
+        id:
+          type: string
+        issuedOn:
+          type:
+          - string
+          - 'null'
+          format: date
+        lines:
+          items:
+            type: string
+          type: array
+        notes:
+          type:
+          - string
+          - 'null'
+        number:
+          type: string
+        status:
+          type:
+          - string
+          - 'null'
+        updatedAt:
+          type: string
+          format: date-time
+      type: object
+      required:
+      - createdAt
+      - customer
+      - customerId
+      - id
+      - issuedOn
+      - lines
+      - notes
+      - number
+      - status
+      - updatedAt
+    invoiceArchiveSuccessResponseBody:
+      properties:
+        invoice:
+          "$ref": "#/components/schemas/invoice"
+        meta:
+          properties: {}
+          type: object
+      type: object
+      required:
+      - invoice
+    invoiceCreatePayload:
+      properties:
+        customerId:
+          type: string
+        issuedOn:
+          type:
+          - string
+          - 'null'
+          format: date
+        lines:
+          items:
+            type: string
+          type: array
+        notes:
+          type:
+          - string
+          - 'null'
+        number:
+          type: string
+      type: object
+      required:
+      - customerId
+      - number
+    invoiceCreateSuccessResponseBody:
+      properties:
+        invoice:
+          "$ref": "#/components/schemas/invoice"
+        meta:
+          properties: {}
+          type: object
+      type: object
+      required:
+      - invoice
+    invoiceFilter:
+      properties:
+        _and:
+          items:
+            "$ref": "#/components/schemas/invoiceFilter"
+          type: array
+        _not:
+          "$ref": "#/components/schemas/invoiceFilter"
+        _or:
+          items:
+            "$ref": "#/components/schemas/invoiceFilter"
+          type: array
+        number:
+          oneOf:
+          - type: string
+          - "$ref": "#/components/schemas/stringFilter"
+        status:
+          oneOf:
+          - type: string
+          - "$ref": "#/components/schemas/nullableStringFilter"
+      type: object
+    invoiceIndexSuccessResponseBody:
+      properties:
+        invoices:
+          items:
+            "$ref": "#/components/schemas/invoice"
+          type: array
+        meta:
+          properties: {}
+          type: object
+        pagination:
+          "$ref": "#/components/schemas/offsetPagination"
+      type: object
+      required:
+      - invoices
+      - pagination
+    invoicePage:
+      properties:
+        number:
+          type: integer
+          minimum: 1
+        size:
+          type: integer
+          minimum: 1
+          maximum: 100
+      type: object
+    invoiceShowSuccessResponseBody:
+      properties:
+        invoice:
+          "$ref": "#/components/schemas/invoice"
+        meta:
+          properties: {}
+          type: object
+      type: object
+      required:
+      - invoice
+    invoiceSort:
+      properties:
+        createdAt:
+          enum:
+          - asc
+          - desc
+          type: string
+        issuedOn:
+          enum:
+          - asc
+          - desc
+          type: string
+        status:
+          enum:
+          - asc
+          - desc
+          type: string
+        updatedAt:
+          enum:
+          - asc
+          - desc
+          type: string
+      type: object
+    invoiceUpdatePayload:
+      properties:
+        customerId:
+          type: string
+        issuedOn:
+          type:
+          - string
+          - 'null'
+          format: date
+        lines:
+          items:
+            type: string
+          type: array
+        notes:
+          type:
+          - string
+          - 'null'
+        number:
+          type: string
+      type: object
+    invoiceUpdateSuccessResponseBody:
+      properties:
+        invoice:
+          "$ref": "#/components/schemas/invoice"
+        meta:
+          properties: {}
+          type: object
+      type: object
+      required:
+      - invoice
     issue:
       properties:
         code:
@@ -119,3 +383,56 @@ components:
       - meta
       - path
       - pointer
+    nullableStringFilter:
+      properties:
+        contains:
+          type: string
+        endsWith:
+          type: string
+        eq:
+          type: string
+        in:
+          items:
+            type: string
+          type: array
+        'null':
+          type: boolean
+        startsWith:
+          type: string
+      type: object
+    offsetPagination:
+      properties:
+        current:
+          type: integer
+        items:
+          type: integer
+        next:
+          type:
+          - integer
+          - 'null'
+        prev:
+          type:
+          - integer
+          - 'null'
+        total:
+          type: integer
+      type: object
+      required:
+      - current
+      - items
+      - total
+    stringFilter:
+      properties:
+        contains:
+          type: string
+        endsWith:
+          type: string
+        eq:
+          type: string
+        in:
+          items:
+            type: string
+          type: array
+        startsWith:
+          type: string
+      type: object

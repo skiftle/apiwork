@@ -2,6 +2,11 @@ import { z } from 'zod';
 
 export const LayerSchema = z.enum(['contract', 'domain', 'http']);
 
+export const ErrorResponseBodySchema = z.object({
+  issues: z.array(IssueSchema),
+  layer: LayerSchema
+});
+
 export const IssueSchema = z.object({
   code: z.string(),
   detail: z.string(),
@@ -41,26 +46,6 @@ export const ProfileCreatePayloadSchema = z.object({
   tags: z.array(z.string())
 });
 
-export const ProfilePageSchema = z.object({
-  number: z.number().int().min(1).optional(),
-  size: z.number().int().min(1).max(100).optional()
-});
-
-export const ProfileUpdatePayloadSchema = z.object({
-  addresses: z.array(z.object({ city: z.string(), primary: z.boolean(), street: z.string(), zip: z.string() })).optional(),
-  email: z.email().optional(),
-  metadata: z.object({}).optional(),
-  name: z.string().optional(),
-  preferences: z.object({ notifications: z.object({ email: z.boolean(), push: z.boolean() }), ui: z.object({ sidebarCollapsed: z.boolean(), theme: z.string() }) }).optional(),
-  settings: z.object({ language: z.string(), notifications: z.boolean(), theme: z.string() }).optional(),
-  tags: z.array(z.string()).optional()
-});
-
-export const ErrorResponseBodySchema = z.object({
-  issues: z.array(IssueSchema),
-  layer: LayerSchema
-});
-
 export const ProfileCreateSuccessResponseBodySchema = z.object({
   meta: z.object({}).optional(),
   profile: ProfileSchema
@@ -72,9 +57,24 @@ export const ProfileIndexSuccessResponseBodySchema = z.object({
   profiles: z.array(ProfileSchema)
 });
 
+export const ProfilePageSchema = z.object({
+  number: z.number().int().min(1).optional(),
+  size: z.number().int().min(1).max(100).optional()
+});
+
 export const ProfileShowSuccessResponseBodySchema = z.object({
   meta: z.object({}).optional(),
   profile: ProfileSchema
+});
+
+export const ProfileUpdatePayloadSchema = z.object({
+  addresses: z.array(z.object({ city: z.string(), primary: z.boolean(), street: z.string(), zip: z.string() })).optional(),
+  email: z.email().optional(),
+  metadata: z.object({}).optional(),
+  name: z.string().optional(),
+  preferences: z.object({ notifications: z.object({ email: z.boolean(), push: z.boolean() }), ui: z.object({ sidebarCollapsed: z.boolean(), theme: z.string() }) }).optional(),
+  settings: z.object({ language: z.string(), notifications: z.boolean(), theme: z.string() }).optional(),
+  tags: z.array(z.string()).optional()
 });
 
 export const ProfileUpdateSuccessResponseBodySchema = z.object({

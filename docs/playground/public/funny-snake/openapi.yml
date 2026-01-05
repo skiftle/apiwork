@@ -11,15 +11,40 @@ paths:
         '200':
           content:
             application/json:
-              schema: {}
+              schema:
+                properties:
+                  invoices:
+                    items:
+                      "$ref": "#/components/schemas/invoice"
+                    type: array
+                type: object
+                required:
+                - invoices
           description: Successful response
     post:
       operationId: invoicesCreate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                invoice:
+                  "$ref": "#/components/schemas/invoicePayload"
+              type: object
+              required:
+              - invoice
+        required: true
       responses:
         '200':
           content:
             application/json:
-              schema: {}
+              schema:
+                properties:
+                  invoice:
+                    "$ref": "#/components/schemas/invoice"
+                type: object
+                required:
+                - invoice
           description: Successful response
   "/invoices/{id}":
     get:
@@ -34,7 +59,13 @@ paths:
         '200':
           content:
             application/json:
-              schema: {}
+              schema:
+                properties:
+                  invoice:
+                    "$ref": "#/components/schemas/invoice"
+                type: object
+                required:
+                - invoice
           description: Successful response
     patch:
       operationId: invoicesUpdate
@@ -44,11 +75,28 @@ paths:
         required: true
         schema:
           type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                invoice:
+                  "$ref": "#/components/schemas/invoicePayload"
+              type: object
+              required:
+              - invoice
+        required: true
       responses:
         '200':
           content:
             application/json:
-              schema: {}
+              schema:
+                properties:
+                  invoice:
+                    "$ref": "#/components/schemas/invoice"
+                type: object
+                required:
+                - invoice
           description: Successful response
     delete:
       operationId: invoicesDestroy
@@ -59,11 +107,8 @@ paths:
         schema:
           type: string
       responses:
-        '200':
-          content:
-            application/json:
-              schema: {}
-          description: Successful response
+        '204':
+          description: No content
 components:
   schemas:
     errorResponseBody:

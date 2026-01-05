@@ -1,13 +1,9 @@
 {
   "request": {
     "method": "DELETE",
-    "path": "/funny_snake/invoices/e50fcc57-8256-563f-9e20-403810b5d084"
+    "path": "/funny_snake/invoices/2341b2b7-750c-57d9-8ff8-c325cc922833"
   },
   "response": {
-    "body": {
-      "status": 500,
-      "error": "Internal Server Error"
-    },
-    "status": 500
+    "status": 204
   }
 }

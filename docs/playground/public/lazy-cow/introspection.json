@@ -109,9 +109,9 @@
                   "nullable": false,
                   "optional": false,
                   "type": "integer",
+                  "format": null,
                   "max": null,
-                  "min": null,
-                  "format": null
+                  "min": null
                 },
                 "uptime_seconds": {
                   "default": null,
@@ -121,9 +121,9 @@
                   "nullable": false,
                   "optional": false,
                   "type": "integer",
+                  "format": null,
                   "max": null,
-                  "min": null,
-                  "format": null
+                  "min": null
                 },
                 "users_count": {
                   "default": null,
@@ -133,9 +133,9 @@
                   "nullable": false,
                   "optional": false,
                   "type": "integer",
+                  "format": null,
                   "max": null,
-                  "min": null,
-                  "format": null
+                  "min": null
                 }
               }
             },
@@ -175,7 +175,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "issue"
+            "type": "ref",
+            "ref": "issue"
           },
           "shape": {}
         },
@@ -186,7 +187,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "layer"
+          "type": "ref",
+          "ref": "layer"
         }
       },
       "type": "object",

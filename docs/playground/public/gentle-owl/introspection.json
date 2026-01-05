@@ -48,7 +48,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": true,
-                "type": "comment_include"
+                "type": "ref",
+                "ref": "comment_include"
               },
               "page": {
                 "default": null,
@@ -57,7 +58,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": true,
-                "type": "comment_page"
+                "type": "ref",
+                "ref": "comment_page"
               },
               "sort": {
                 "default": null,
@@ -76,7 +78,8 @@
                     "example": null,
                     "nullable": false,
                     "optional": false,
-                    "type": "comment_sort"
+                    "type": "ref",
+                    "ref": "comment_sort"
                   },
                   {
                     "default": null,
@@ -95,7 +98,8 @@
                       "example": null,
                       "nullable": null,
                       "optional": null,
-                      "type": "comment_sort"
+                      "type": "ref",
+                      "ref": "comment_sort"
                     },
                     "shape": {}
                   }
@@ -121,7 +125,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "comment_index_success_response_body"
+                  "type": "ref",
+                  "ref": "comment_index_success_response_body"
                 },
                 {
                   "default": null,
@@ -130,7 +135,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "error_response_body"
+                  "type": "ref",
+                  "ref": "error_response_body"
                 }
               ]
             },
@@ -156,7 +162,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": true,
-                "type": "comment_include"
+                "type": "ref",
+                "ref": "comment_include"
               }
             }
           },
@@ -178,7 +185,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "comment_show_success_response_body"
+                  "type": "ref",
+                  "ref": "comment_show_success_response_body"
                 },
                 {
                   "default": null,
@@ -187,7 +195,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "error_response_body"
+                  "type": "ref",
+                  "ref": "error_response_body"
                 }
               ]
             },
@@ -214,7 +223,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": false,
-                "type": "comment_create_payload"
+                "type": "ref",
+                "ref": "comment_create_payload"
               }
             },
             "query": {
@@ -225,7 +235,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": true,
-                "type": "comment_include"
+                "type": "ref",
+                "ref": "comment_include"
               }
             }
           },
@@ -247,7 +258,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "comment_create_success_response_body"
+                  "type": "ref",
+                  "ref": "comment_create_success_response_body"
                 },
                 {
                   "default": null,
@@ -256,7 +268,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "error_response_body"
+                  "type": "ref",
+                  "ref": "error_response_body"
                 }
               ]
             },
@@ -283,7 +296,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": false,
-                "type": "comment_update_payload"
+                "type": "ref",
+                "ref": "comment_update_payload"
               }
             },
             "query": {
@@ -294,7 +308,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": true,
-                "type": "comment_include"
+                "type": "ref",
+                "ref": "comment_include"
               }
             }
           },
@@ -316,7 +331,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "comment_update_success_response_body"
+                  "type": "ref",
+                  "ref": "comment_update_success_response_body"
                 },
                 {
                   "default": null,
@@ -325,7 +341,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "error_response_body"
+                  "type": "ref",
+                  "ref": "error_response_body"
                 }
               ]
             },
@@ -351,7 +368,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": true,
-                "type": "comment_include"
+                "type": "ref",
+                "ref": "comment_include"
               }
             }
           },
@@ -415,7 +433,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "comment_commentable"
+          "type": "ref",
+          "ref": "comment_commentable"
         },
         "created_at": {
           "default": null,
@@ -457,7 +476,8 @@
           "example": null,
           "nullable": null,
           "optional": null,
-          "type": "post"
+          "type": "ref",
+          "ref": "post"
         },
         {
           "default": null,
@@ -466,7 +486,8 @@
           "example": null,
           "nullable": null,
           "optional": null,
-          "type": "video"
+          "type": "ref",
+          "ref": "video"
         },
         {
           "default": null,
@@ -475,7 +496,8 @@
           "example": null,
           "nullable": null,
           "optional": null,
-          "type": "image"
+          "type": "ref",
+          "ref": "image"
         }
       ]
     },
@@ -526,7 +548,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "comment"
+          "type": "ref",
+          "ref": "comment"
         },
         "meta": {
           "default": null,
@@ -585,7 +608,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "comment"
+            "type": "ref",
+            "ref": "comment"
           },
           "shape": {}
         },
@@ -607,7 +631,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "offset_pagination"
+          "type": "ref",
+          "ref": "offset_pagination"
         }
       },
       "type": "object",
@@ -627,9 +652,9 @@
           "nullable": false,
           "optional": true,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": 1,
-          "format": null
+          "min": 1
         },
         "size": {
           "default": null,
@@ -639,9 +664,9 @@
           "nullable": false,
           "optional": true,
           "type": "integer",
+          "format": null,
           "max": 100,
-          "min": 1,
-          "format": null
+          "min": 1
         }
       },
       "type": "object",
@@ -660,7 +685,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "comment"
+          "type": "ref",
+          "ref": "comment"
         },
         "meta": {
           "default": null,
@@ -690,7 +716,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "sort_direction"
+          "type": "ref",
+          "ref": "sort_direction"
         }
       },
       "type": "object",
@@ -743,7 +770,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "comment"
+          "type": "ref",
+          "ref": "comment"
         },
         "meta": {
           "default": null,
@@ -783,7 +811,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "issue"
+            "type": "ref",
+            "ref": "issue"
           },
           "shape": {}
         },
@@ -794,7 +823,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "layer"
+          "type": "ref",
+          "ref": "layer"
         }
       },
       "type": "object",
@@ -846,9 +876,9 @@
           "nullable": true,
           "optional": false,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": null,
-          "format": null
+          "min": null
         },
         "id": {
           "default": null,
@@ -894,9 +924,9 @@
           "nullable": true,
           "optional": false,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": null,
-          "format": null
+          "min": null
         }
       },
       "type": "object",
@@ -925,7 +955,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "image_filter"
+            "type": "ref",
+            "ref": "image_filter"
           },
           "shape": {}
         },
@@ -936,7 +967,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "image_filter"
+          "type": "ref",
+          "ref": "image_filter"
         },
         "_or": {
           "default": null,
@@ -955,7 +987,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "image_filter"
+            "type": "ref",
+            "ref": "image_filter"
           },
           "shape": {}
         },
@@ -1020,9 +1053,9 @@
           "nullable": true,
           "optional": true,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": null,
-          "format": null
+          "min": null
         },
         "title": {
           "default": null,
@@ -1056,9 +1089,9 @@
           "nullable": true,
           "optional": true,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": null,
-          "format": null
+          "min": null
         }
       },
       "type": "object",
@@ -1079,7 +1112,8 @@
           "example": null,
           "nullable": null,
           "optional": null,
-          "type": "image_nested_create_payload"
+          "type": "ref",
+          "ref": "image_nested_create_payload"
         },
         {
           "default": null,
@@ -1088,7 +1122,8 @@
           "example": null,
           "nullable": null,
           "optional": null,
-          "type": "image_nested_update_payload"
+          "type": "ref",
+          "ref": "image_nested_update_payload"
         }
       ]
     },
@@ -1116,9 +1151,9 @@
           "nullable": true,
           "optional": true,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": null,
-          "format": null
+          "min": null
         },
         "title": {
           "default": null,
@@ -1152,9 +1187,9 @@
           "nullable": true,
           "optional": true,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": null,
-          "format": null
+          "min": null
         }
       },
       "type": "object",
@@ -1173,7 +1208,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "sort_direction"
+          "type": "ref",
+          "ref": "sort_direction"
         }
       },
       "type": "object",
@@ -1274,9 +1310,9 @@
           "nullable": false,
           "optional": false,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": null,
-          "format": null
+          "min": null
         },
         "items": {
           "default": null,
@@ -1286,9 +1322,9 @@
           "nullable": false,
           "optional": false,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": null,
-          "format": null
+          "min": null
         },
         "next": {
           "default": null,
@@ -1298,9 +1334,9 @@
           "nullable": true,
           "optional": true,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": null,
-          "format": null
+          "min": null
         },
         "prev": {
           "default": null,
@@ -1310,9 +1346,9 @@
           "nullable": true,
           "optional": true,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": null,
-          "format": null
+          "min": null
         },
         "total": {
           "default": null,
@@ -1322,9 +1358,9 @@
           "nullable": false,
           "optional": false,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": null,
-          "format": null
+          "min": null
         }
       },
       "type": "object",
@@ -1431,7 +1467,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "post_filter"
+            "type": "ref",
+            "ref": "post_filter"
           },
           "shape": {}
         },
@@ -1442,7 +1479,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "post_filter"
+          "type": "ref",
+          "ref": "post_filter"
         },
         "_or": {
           "default": null,
@@ -1461,7 +1499,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "post_filter"
+            "type": "ref",
+            "ref": "post_filter"
           },
           "shape": {}
         },
@@ -1561,7 +1600,8 @@
           "example": null,
           "nullable": null,
           "optional": null,
-          "type": "post_nested_create_payload"
+          "type": "ref",
+          "ref": "post_nested_create_payload"
         },
         {
           "default": null,
@@ -1570,7 +1610,8 @@
           "example": null,
           "nullable": null,
           "optional": null,
-          "type": "post_nested_update_payload"
+          "type": "ref",
+          "ref": "post_nested_update_payload"
         }
       ]
     },
@@ -1631,7 +1672,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "sort_direction"
+          "type": "ref",
+          "ref": "sort_direction"
         }
       },
       "type": "object",
@@ -1683,9 +1725,9 @@
           "nullable": true,
           "optional": false,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": null,
-          "format": null
+          "min": null
         },
         "id": {
           "default": null,
@@ -1750,7 +1792,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "video_filter"
+            "type": "ref",
+            "ref": "video_filter"
           },
           "shape": {}
         },
@@ -1761,7 +1804,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "video_filter"
+          "type": "ref",
+          "ref": "video_filter"
         },
         "_or": {
           "default": null,
@@ -1780,7 +1824,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "video_filter"
+            "type": "ref",
+            "ref": "video_filter"
           },
           "shape": {}
         },
@@ -1845,9 +1890,9 @@
           "nullable": true,
           "optional": true,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": null,
-          "format": null
+          "min": null
         },
         "title": {
           "default": null,
@@ -1892,7 +1937,8 @@
           "example": null,
           "nullable": null,
           "optional": null,
-          "type": "video_nested_create_payload"
+          "type": "ref",
+          "ref": "video_nested_create_payload"
         },
         {
           "default": null,
@@ -1901,7 +1947,8 @@
           "example": null,
           "nullable": null,
           "optional": null,
-          "type": "video_nested_update_payload"
+          "type": "ref",
+          "ref": "video_nested_update_payload"
         }
       ]
     },
@@ -1929,9 +1976,9 @@
           "nullable": true,
           "optional": true,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": null,
-          "format": null
+          "min": null
         },
         "title": {
           "default": null,
@@ -1974,7 +2021,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "sort_direction"
+          "type": "ref",
+          "ref": "sort_direction"
         }
       },
       "type": "object",

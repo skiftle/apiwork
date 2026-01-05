@@ -58,7 +58,8 @@
                     "example": null,
                     "nullable": false,
                     "optional": false,
-                    "type": "order_filter"
+                    "type": "ref",
+                    "ref": "order_filter"
                   },
                   {
                     "default": null,
@@ -77,7 +78,8 @@
                       "example": null,
                       "nullable": null,
                       "optional": null,
-                      "type": "order_filter"
+                      "type": "ref",
+                      "ref": "order_filter"
                     },
                     "shape": {}
                   }
@@ -90,7 +92,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": true,
-                "type": "order_page"
+                "type": "ref",
+                "ref": "order_page"
               },
               "sort": {
                 "default": null,
@@ -109,7 +112,8 @@
                     "example": null,
                     "nullable": false,
                     "optional": false,
-                    "type": "order_sort"
+                    "type": "ref",
+                    "ref": "order_sort"
                   },
                   {
                     "default": null,
@@ -128,7 +132,8 @@
                       "example": null,
                       "nullable": null,
                       "optional": null,
-                      "type": "order_sort"
+                      "type": "ref",
+                      "ref": "order_sort"
                     },
                     "shape": {}
                   }
@@ -154,7 +159,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "order_index_success_response_body"
+                  "type": "ref",
+                  "ref": "order_index_success_response_body"
                 },
                 {
                   "default": null,
@@ -163,7 +169,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "error_response_body"
+                  "type": "ref",
+                  "ref": "error_response_body"
                 }
               ]
             },
@@ -201,7 +208,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "order_show_success_response_body"
+                  "type": "ref",
+                  "ref": "order_show_success_response_body"
                 },
                 {
                   "default": null,
@@ -210,7 +218,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "error_response_body"
+                  "type": "ref",
+                  "ref": "error_response_body"
                 }
               ]
             },
@@ -237,7 +246,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": false,
-                "type": "order_create_payload"
+                "type": "ref",
+                "ref": "order_create_payload"
               }
             },
             "query": {}
@@ -260,7 +270,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "order_create_success_response_body"
+                  "type": "ref",
+                  "ref": "order_create_success_response_body"
                 },
                 {
                   "default": null,
@@ -269,7 +280,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "error_response_body"
+                  "type": "ref",
+                  "ref": "error_response_body"
                 }
               ]
             },
@@ -296,7 +308,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": false,
-                "type": "order_update_payload"
+                "type": "ref",
+                "ref": "order_update_payload"
               }
             },
             "query": {}
@@ -319,7 +332,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "order_update_success_response_body"
+                  "type": "ref",
+                  "ref": "order_update_success_response_body"
                 },
                 {
                   "default": null,
@@ -328,7 +342,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "error_response_body"
+                  "type": "ref",
+                  "ref": "error_response_body"
                 }
               ]
             },
@@ -394,7 +409,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "issue"
+            "type": "ref",
+            "ref": "issue"
           },
           "shape": {}
         },
@@ -405,7 +421,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "layer"
+          "type": "ref",
+          "ref": "layer"
         }
       },
       "type": "object",
@@ -597,9 +614,9 @@
           "nullable": false,
           "optional": false,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": null,
-          "format": null
+          "min": null
         },
         "items": {
           "default": null,
@@ -609,9 +626,9 @@
           "nullable": false,
           "optional": false,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": null,
-          "format": null
+          "min": null
         },
         "next": {
           "default": null,
@@ -621,9 +638,9 @@
           "nullable": true,
           "optional": true,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": null,
-          "format": null
+          "min": null
         },
         "prev": {
           "default": null,
@@ -633,9 +650,9 @@
           "nullable": true,
           "optional": true,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": null,
-          "format": null
+          "min": null
         },
         "total": {
           "default": null,
@@ -645,9 +662,9 @@
           "nullable": false,
           "optional": false,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": null,
-          "format": null
+          "min": null
         }
       },
       "type": "object",
@@ -822,7 +839,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "order"
+          "type": "ref",
+          "ref": "order"
         }
       },
       "type": "object",
@@ -851,7 +869,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "order_filter"
+            "type": "ref",
+            "ref": "order_filter"
           },
           "shape": {}
         },
@@ -862,7 +881,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "order_filter"
+          "type": "ref",
+          "ref": "order_filter"
         },
         "_or": {
           "default": null,
@@ -881,7 +901,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "order_filter"
+            "type": "ref",
+            "ref": "order_filter"
           },
           "shape": {}
         },
@@ -914,7 +935,8 @@
               "example": null,
               "nullable": false,
               "optional": false,
-              "type": "nullable_string_filter"
+              "type": "ref",
+              "ref": "nullable_string_filter"
             }
           ]
         }
@@ -956,7 +978,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "order"
+            "type": "ref",
+            "ref": "order"
           },
           "shape": {}
         },
@@ -967,7 +990,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "offset_pagination"
+          "type": "ref",
+          "ref": "offset_pagination"
         }
       },
       "type": "object",
@@ -987,9 +1011,9 @@
           "nullable": false,
           "optional": true,
           "type": "integer",
+          "format": null,
           "max": null,
-          "min": 1,
-          "format": null
+          "min": 1
         },
         "size": {
           "default": null,
@@ -999,9 +1023,9 @@
           "nullable": false,
           "optional": true,
           "type": "integer",
+          "format": null,
           "max": 100,
-          "min": 1,
-          "format": null
+          "min": 1
         }
       },
       "type": "object",
@@ -1031,7 +1055,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "order"
+          "type": "ref",
+          "ref": "order"
         }
       },
       "type": "object",
@@ -1050,7 +1075,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "sort_direction"
+          "type": "ref",
+          "ref": "sort_direction"
         },
         "status": {
           "default": null,
@@ -1059,7 +1085,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "sort_direction"
+          "type": "ref",
+          "ref": "sort_direction"
         }
       },
       "type": "object",
@@ -1135,7 +1162,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "order"
+          "type": "ref",
+          "ref": "order"
         }
       },
       "type": "object",

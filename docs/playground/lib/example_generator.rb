@@ -19,19 +19,45 @@ class ExampleGenerator
 
     eager_load_schemas
 
-    FileUtils.rm_rf(EXAMPLES_DIR)
-    FileUtils.mkdir_p(EXAMPLES_DIR)
+    temp_dir = Rails.root.join('tmp/docs_generation')
+    temp_public = temp_dir.join('public')
+    temp_examples = temp_dir.join('examples')
+
+    FileUtils.rm_rf(temp_dir)
+    FileUtils.mkdir_p(temp_public)
+    FileUtils.mkdir_p(temp_examples)
 
     examples = []
 
     each_api do |api_class, namespace, metadata|
-      generate_for_api(api_class, namespace, metadata)
+      generate_for_api(api_class, namespace, metadata, temp_public, temp_examples)
       examples << metadata.merge(namespace:)
     end
 
-    generate_index(examples)
+    generate_index(examples, temp_examples)
+
+    swap_output(temp_public, temp_examples)
 
     Rails.logger.debug 'Done!'
+  ensure
+    FileUtils.rm_rf(temp_dir) if temp_dir
+  end
+
+  def swap_output(temp_public, temp_examples)
+    generated_dirs.each do |dir|
+      dest = PUBLIC_DIR.join(dir)
+      FileUtils.rm_rf(dest)
+      FileUtils.mv(temp_public.join(dir), dest) if File.exist?(temp_public.join(dir))
+    end
+
+    FileUtils.rm_rf(EXAMPLES_DIR)
+    FileUtils.mv(temp_examples, EXAMPLES_DIR)
+  end
+
+  def generated_dirs
+    Apiwork::API.all.map do |api_class|
+      api_class.path.delete_prefix('/').underscore.dasherize
+    end
   end
 
   private
@@ -71,18 +97,17 @@ class ExampleGenerator
     end
   end
 
-  def generate_for_api(api_class, namespace, metadata)
+  def generate_for_api(api_class, namespace, metadata, temp_public, temp_examples)
     locale_key = namespace.dasherize
-    output_dir = PUBLIC_DIR.join(locale_key)
+    output_dir = temp_public.join(locale_key)
 
-    FileUtils.rm_rf(output_dir)
     FileUtils.mkdir_p(output_dir)
 
     Rails.logger.debug "  Generating: #{locale_key}/"
 
     write_specs(api_class, output_dir)
     write_requests(namespace, output_dir, metadata[:scenarios]) if metadata[:scenarios]
-    write_markdown(namespace, locale_key, metadata)
+    write_markdown(namespace, locale_key, metadata, temp_examples, temp_public)
   end
 
   def write_specs(api_class, dir)
@@ -126,20 +151,20 @@ class ExampleGenerator
     end
   end
 
-  def write_markdown(namespace, locale_key, metadata)
-    content = build_markdown(namespace, locale_key, metadata)
+  def write_markdown(namespace, locale_key, metadata, temp_examples, temp_public)
+    content = build_markdown(namespace, locale_key, metadata, temp_public)
     slug = metadata[:title].parameterize
-    File.write(EXAMPLES_DIR.join("#{slug}.md"), content)
+    File.write(temp_examples.join("#{slug}.md"), content)
   end
 
-  def build_markdown(namespace, locale_key, metadata)
+  def build_markdown(namespace, locale_key, metadata, temp_public)
     parts = []
 
     parts << frontmatter(metadata)
     parts << "# #{metadata[:title]}"
     parts << metadata[:description]
     parts << sections_content(namespace, metadata)
-    parts << requests_section(locale_key, metadata[:scenarios])
+    parts << requests_section(locale_key, metadata[:scenarios], temp_public)
     parts << generated_output_section(locale_key)
 
     parts.compact.join("\n\n")
@@ -282,10 +307,10 @@ class ExampleGenerator
     content.join("\n\n")
   end
 
-  def requests_section(locale_key, scenarios)
+  def requests_section(locale_key, scenarios, temp_public)
     return unless scenarios
 
-    requests_dir = PUBLIC_DIR.join(locale_key, 'requests')
+    requests_dir = temp_public.join(locale_key, 'requests')
     return unless File.directory?(requests_dir)
 
     content = ['---', '', '## Request Examples']
@@ -392,7 +417,7 @@ class ExampleGenerator
     File.exist?(Rails.root.join(path))
   end
 
-  def generate_index(examples)
+  def generate_index(examples, temp_examples)
     sorted = examples.sort_by { |e| e[:order] }
 
     rows = sorted.map do |example|
@@ -423,6 +448,6 @@ class ExampleGenerator
       #{rows.join("\n")}
     MD
 
-    File.write(EXAMPLES_DIR.join('index.md'), content)
+    File.write(temp_examples.join('index.md'), content)
   end
 end

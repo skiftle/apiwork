@@ -21,38 +21,44 @@ module FunnySnake
 
     action :index do
       response do
-        body param :invoices, of: :invoice, type: :array do
+        body do
+          param :invoices, type: :array, of: :invoice
         end
       end
     end
 
     action :show do
       response do
-        body param :invoice, type: :invoice do
+        body do
+          param :invoice, type: :invoice
         end
       end
     end
 
     action :create do
       request do
-        body param :invoice, type: :payload do
+        body do
+          param :invoice, type: :payload
         end
       end
 
       response do
-        body param :invoice, type: :invoice do
+        body do
+          param :invoice, type: :invoice
         end
       end
     end
 
     action :update do
       request do
-        body param :invoice, type: :payload do
+        body do
+          param :invoice, type: :payload
         end
       end
 
       response do
-        body param :invoice, type: :invoice do
+        body do
+          param :invoice, type: :invoice
         end
       end
     end

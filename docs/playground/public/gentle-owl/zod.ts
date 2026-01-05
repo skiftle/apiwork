@@ -4,18 +4,48 @@ export const LayerSchema = z.enum(['contract', 'domain', 'http']);
 
 export const SortDirectionSchema = z.enum(['asc', 'desc']);
 
+export const CommentSchema = z.object({
+  authorName: z.string().nullable(),
+  body: z.string(),
+  commentable: CommentCommentableSchema.optional(),
+  createdAt: z.iso.datetime(),
+  id: z.string()
+});
+
+export const CommentCommentableSchema = z.discriminatedUnion('commentableType', [
+  PostSchema,
+  VideoSchema,
+  ImageSchema
+]);
+
 export const CommentCreatePayloadSchema = z.object({
   authorName: z.string().nullable().optional(),
   body: z.string()
+});
+
+export const CommentCreateSuccessResponseBodySchema = z.object({
+  comment: CommentSchema,
+  meta: z.object({}).optional()
 });
 
 export const CommentIncludeSchema = z.object({
   commentable: z.boolean().optional()
 });
 
+export const CommentIndexSuccessResponseBodySchema = z.object({
+  comments: z.array(CommentSchema),
+  meta: z.object({}).optional(),
+  pagination: OffsetPaginationSchema
+});
+
 export const CommentPageSchema = z.object({
   number: z.number().int().min(1).optional(),
   size: z.number().int().min(1).max(100).optional()
+});
+
+export const CommentShowSuccessResponseBodySchema = z.object({
+  comment: CommentSchema,
+  meta: z.object({}).optional()
 });
 
 export const CommentSortSchema = z.object({
@@ -25,6 +55,16 @@ export const CommentSortSchema = z.object({
 export const CommentUpdatePayloadSchema = z.object({
   authorName: z.string().nullable().optional(),
   body: z.string().optional()
+});
+
+export const CommentUpdateSuccessResponseBodySchema = z.object({
+  comment: CommentSchema,
+  meta: z.object({}).optional()
+});
+
+export const ErrorResponseBodySchema = z.object({
+  issues: z.array(IssueSchema),
+  layer: LayerSchema
 });
 
 export const ImageSchema = z.object({
@@ -37,12 +77,12 @@ export const ImageSchema = z.object({
   width: z.number().int().nullable()
 });
 
-export const ImageFilterSchema: z.ZodType<ImageFilter> = z.lazy(() => z.object({
+export const ImageFilterSchema = z.object({
   _and: z.array(ImageFilterSchema).optional(),
   _not: ImageFilterSchema.optional(),
   _or: z.array(ImageFilterSchema).optional(),
   title: z.union([z.string(), z.unknown()]).optional()
-}));
+});
 
 export const ImageNestedCreatePayloadSchema = z.object({
   _type: z.literal('create'),
@@ -51,6 +91,11 @@ export const ImageNestedCreatePayloadSchema = z.object({
   url: z.string(),
   width: z.number().int().nullable().optional()
 });
+
+export const ImageNestedPayloadSchema = z.discriminatedUnion('_type', [
+  ImageNestedCreatePayloadSchema,
+  ImageNestedUpdatePayloadSchema
+]);
 
 export const ImageNestedUpdatePayloadSchema = z.object({
   _type: z.literal('update'),
@@ -88,18 +133,23 @@ export const PostSchema = z.object({
   title: z.string()
 });
 
-export const PostFilterSchema: z.ZodType<PostFilter> = z.lazy(() => z.object({
+export const PostFilterSchema = z.object({
   _and: z.array(PostFilterSchema).optional(),
   _not: PostFilterSchema.optional(),
   _or: z.array(PostFilterSchema).optional(),
   title: z.union([z.string(), z.unknown()]).optional()
-}));
+});
 
 export const PostNestedCreatePayloadSchema = z.object({
   _type: z.literal('create'),
   body: z.string().nullable().optional(),
   title: z.string()
 });
+
+export const PostNestedPayloadSchema = z.discriminatedUnion('_type', [
+  PostNestedCreatePayloadSchema,
+  PostNestedUpdatePayloadSchema
+]);
 
 export const PostNestedUpdatePayloadSchema = z.object({
   _type: z.literal('update'),
@@ -120,12 +170,12 @@ export const VideoSchema = z.object({
   url: z.string()
 });
 
-export const VideoFilterSchema: z.ZodType<VideoFilter> = z.lazy(() => z.object({
+export const VideoFilterSchema = z.object({
   _and: z.array(VideoFilterSchema).optional(),
   _not: VideoFilterSchema.optional(),
   _or: z.array(VideoFilterSchema).optional(),
   title: z.union([z.string(), z.unknown()]).optional()
-}));
+});
 
 export const VideoNestedCreatePayloadSchema = z.object({
   _type: z.literal('create'),
@@ -133,6 +183,11 @@ export const VideoNestedCreatePayloadSchema = z.object({
   title: z.string(),
   url: z.string()
 });
+
+export const VideoNestedPayloadSchema = z.discriminatedUnion('_type', [
+  VideoNestedCreatePayloadSchema,
+  VideoNestedUpdatePayloadSchema
+]);
 
 export const VideoNestedUpdatePayloadSchema = z.object({
   _type: z.literal('update'),
@@ -143,61 +198,6 @@ export const VideoNestedUpdatePayloadSchema = z.object({
 
 export const VideoSortSchema = z.object({
   createdAt: SortDirectionSchema.optional()
-});
-
-export const ImageNestedPayloadSchema = z.discriminatedUnion('_type', [
-  ImageNestedCreatePayloadSchema,
-  ImageNestedUpdatePayloadSchema
-]);
-
-export const ErrorResponseBodySchema = z.object({
-  issues: z.array(IssueSchema),
-  layer: LayerSchema
-});
-
-export const PostNestedPayloadSchema = z.discriminatedUnion('_type', [
-  PostNestedCreatePayloadSchema,
-  PostNestedUpdatePayloadSchema
-]);
-
-export const CommentCommentableSchema = z.discriminatedUnion('commentableType', [
-  PostSchema,
-  VideoSchema,
-  ImageSchema
-]);
-
-export const VideoNestedPayloadSchema = z.discriminatedUnion('_type', [
-  VideoNestedCreatePayloadSchema,
-  VideoNestedUpdatePayloadSchema
-]);
-
-export const CommentSchema = z.object({
-  authorName: z.string().nullable(),
-  body: z.string(),
-  commentable: CommentCommentableSchema.optional(),
-  createdAt: z.iso.datetime(),
-  id: z.string()
-});
-
-export const CommentCreateSuccessResponseBodySchema = z.object({
-  comment: CommentSchema,
-  meta: z.object({}).optional()
-});
-
-export const CommentIndexSuccessResponseBodySchema = z.object({
-  comments: z.array(CommentSchema),
-  meta: z.object({}).optional(),
-  pagination: OffsetPaginationSchema
-});
-
-export const CommentShowSuccessResponseBodySchema = z.object({
-  comment: CommentSchema,
-  meta: z.object({}).optional()
-});
-
-export const CommentUpdateSuccessResponseBodySchema = z.object({
-  comment: CommentSchema,
-  meta: z.object({}).optional()
 });
 
 export const CommentsIndexRequestQuerySchema = z.object({

@@ -14,41 +14,7 @@ export const ActivityCreatePayloadSchema = z.object({
   occurredAt: z.iso.datetime().nullable().optional()
 });
 
-export const ActivityPageSchema = z.object({
-  after: z.string().optional(),
-  before: z.string().optional(),
-  size: z.number().int().min(1).max(100).optional()
-});
-
-export const ActivityUpdatePayloadSchema = z.object({
-  action: z.string().optional(),
-  occurredAt: z.iso.datetime().nullable().optional()
-});
-
-export const CursorPaginationSchema = z.object({
-  next: z.string().nullable().optional(),
-  prev: z.string().nullable().optional()
-});
-
-export const IssueSchema = z.object({
-  code: z.string(),
-  detail: z.string(),
-  meta: z.object({}),
-  path: z.array(z.string()),
-  pointer: z.string()
-});
-
 export const ActivityCreateSuccessResponseBodySchema = z.object({
-  activity: ActivitySchema,
-  meta: z.object({}).optional()
-});
-
-export const ActivityShowSuccessResponseBodySchema = z.object({
-  activity: ActivitySchema,
-  meta: z.object({}).optional()
-});
-
-export const ActivityUpdateSuccessResponseBodySchema = z.object({
   activity: ActivitySchema,
   meta: z.object({}).optional()
 });
@@ -59,9 +25,43 @@ export const ActivityIndexSuccessResponseBodySchema = z.object({
   pagination: CursorPaginationSchema
 });
 
+export const ActivityPageSchema = z.object({
+  after: z.string().optional(),
+  before: z.string().optional(),
+  size: z.number().int().min(1).max(100).optional()
+});
+
+export const ActivityShowSuccessResponseBodySchema = z.object({
+  activity: ActivitySchema,
+  meta: z.object({}).optional()
+});
+
+export const ActivityUpdatePayloadSchema = z.object({
+  action: z.string().optional(),
+  occurredAt: z.iso.datetime().nullable().optional()
+});
+
+export const ActivityUpdateSuccessResponseBodySchema = z.object({
+  activity: ActivitySchema,
+  meta: z.object({}).optional()
+});
+
+export const CursorPaginationSchema = z.object({
+  next: z.string().nullable().optional(),
+  prev: z.string().nullable().optional()
+});
+
 export const ErrorResponseBodySchema = z.object({
   issues: z.array(IssueSchema),
   layer: LayerSchema
+});
+
+export const IssueSchema = z.object({
+  code: z.string(),
+  detail: z.string(),
+  meta: z.object({}),
+  path: z.array(z.string()),
+  pointer: z.string()
 });
 
 export const ActivitiesIndexRequestQuerySchema = z.object({

@@ -21,10 +21,20 @@ export const CommentNestedCreatePayloadSchema = z.object({
   body: z.string()
 });
 
+export const CommentNestedPayloadSchema = z.discriminatedUnion('_type', [
+  CommentNestedCreatePayloadSchema,
+  CommentNestedUpdatePayloadSchema
+]);
+
 export const CommentNestedUpdatePayloadSchema = z.object({
   _type: z.literal('update'),
   authorName: z.string().nullable().optional(),
   body: z.string().optional()
+});
+
+export const ErrorResponseBodySchema = z.object({
+  issues: z.array(IssueSchema),
+  layer: LayerSchema
 });
 
 export const IssueSchema = z.object({
@@ -60,71 +70,6 @@ export const StringFilterSchema = z.object({
   startsWith: z.string().optional()
 });
 
-export const TaskCreatePayloadSchema = z.object({
-  description: z.string().nullable().optional(),
-  dueDate: z.iso.datetime().nullable().optional(),
-  priority: TaskPrioritySchema.nullable().optional(),
-  status: TaskStatusSchema.nullable().optional(),
-  title: z.string()
-});
-
-export const TaskIncludeSchema = z.object({
-  assignee: z.boolean().optional(),
-  comments: z.boolean().optional()
-});
-
-export const TaskPageSchema = z.object({
-  number: z.number().int().min(1).optional(),
-  size: z.number().int().min(1).max(100).optional()
-});
-
-export const TaskPriorityFilterSchema = z.union([
-  TaskPrioritySchema,
-  z.object({ eq: TaskPrioritySchema, in: z.array(TaskPrioritySchema) }).partial()
-]);
-
-export const TaskSortSchema = z.object({
-  createdAt: SortDirectionSchema.optional(),
-  dueDate: SortDirectionSchema.optional()
-});
-
-export const TaskStatusFilterSchema = z.union([
-  TaskStatusSchema,
-  z.object({ eq: TaskStatusSchema, in: z.array(TaskStatusSchema) }).partial()
-]);
-
-export const TaskUpdatePayloadSchema = z.object({
-  description: z.string().nullable().optional(),
-  dueDate: z.iso.datetime().nullable().optional(),
-  priority: TaskPrioritySchema.nullable().optional(),
-  status: TaskStatusSchema.nullable().optional(),
-  title: z.string().optional()
-});
-
-export const UserSchema = z.object({
-  email: z.email(),
-  id: z.string(),
-  name: z.string()
-});
-
-export const CommentNestedPayloadSchema = z.discriminatedUnion('_type', [
-  CommentNestedCreatePayloadSchema,
-  CommentNestedUpdatePayloadSchema
-]);
-
-export const ErrorResponseBodySchema = z.object({
-  issues: z.array(IssueSchema),
-  layer: LayerSchema
-});
-
-export const TaskFilterSchema: z.ZodType<TaskFilter> = z.lazy(() => z.object({
-  _and: z.array(TaskFilterSchema).optional(),
-  _not: TaskFilterSchema.optional(),
-  _or: z.array(TaskFilterSchema).optional(),
-  priority: TaskPriorityFilterSchema.optional(),
-  status: TaskStatusFilterSchema.optional()
-}));
-
 export const TaskSchema = z.object({
   archived: z.boolean().nullable(),
   assignee: UserSchema.nullable().optional(),
@@ -144,9 +89,30 @@ export const TaskArchiveSuccessResponseBodySchema = z.object({
   task: TaskSchema
 });
 
+export const TaskCreatePayloadSchema = z.object({
+  description: z.string().nullable().optional(),
+  dueDate: z.iso.datetime().nullable().optional(),
+  priority: TaskPrioritySchema.nullable().optional(),
+  status: TaskStatusSchema.nullable().optional(),
+  title: z.string()
+});
+
 export const TaskCreateSuccessResponseBodySchema = z.object({
   meta: z.object({}).optional(),
   task: TaskSchema
+});
+
+export const TaskFilterSchema = z.object({
+  _and: z.array(TaskFilterSchema).optional(),
+  _not: TaskFilterSchema.optional(),
+  _or: z.array(TaskFilterSchema).optional(),
+  priority: TaskPriorityFilterSchema.optional(),
+  status: TaskStatusFilterSchema.optional()
+});
+
+export const TaskIncludeSchema = z.object({
+  assignee: z.boolean().optional(),
+  comments: z.boolean().optional()
 });
 
 export const TaskIndexSuccessResponseBodySchema = z.object({
@@ -155,14 +121,48 @@ export const TaskIndexSuccessResponseBodySchema = z.object({
   tasks: z.array(TaskSchema)
 });
 
+export const TaskPageSchema = z.object({
+  number: z.number().int().min(1).optional(),
+  size: z.number().int().min(1).max(100).optional()
+});
+
+export const TaskPriorityFilterSchema = z.union([
+  TaskPrioritySchema,
+  z.object({ eq: TaskPrioritySchema, in: z.array(TaskPrioritySchema) }).partial()
+]);
+
 export const TaskShowSuccessResponseBodySchema = z.object({
   meta: z.object({}).optional(),
   task: TaskSchema
 });
 
+export const TaskSortSchema = z.object({
+  createdAt: SortDirectionSchema.optional(),
+  dueDate: SortDirectionSchema.optional()
+});
+
+export const TaskStatusFilterSchema = z.union([
+  TaskStatusSchema,
+  z.object({ eq: TaskStatusSchema, in: z.array(TaskStatusSchema) }).partial()
+]);
+
+export const TaskUpdatePayloadSchema = z.object({
+  description: z.string().nullable().optional(),
+  dueDate: z.iso.datetime().nullable().optional(),
+  priority: TaskPrioritySchema.nullable().optional(),
+  status: TaskStatusSchema.nullable().optional(),
+  title: z.string().optional()
+});
+
 export const TaskUpdateSuccessResponseBodySchema = z.object({
   meta: z.object({}).optional(),
   task: TaskSchema
+});
+
+export const UserSchema = z.object({
+  email: z.email(),
+  id: z.string(),
+  name: z.string()
 });
 
 export const TasksIndexRequestQuerySchema = z.object({

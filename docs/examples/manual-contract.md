@@ -60,12 +60,30 @@ Defining contracts manually without schemas
 GET /funny_snake/invoices
 ```
 
-**Response** `500`
+**Response** `200`
 
 ```json
 {
-  "status": 500,
-  "error": "Internal Server Error"
+  "invoices": [
+    {
+      "id": "657000e8-1cd9-5b78-9ca2-dd399ce78cb4",
+      "createdAt": "2024-01-01T12:00:00.000Z",
+      "issuedOn": null,
+      "notes": null,
+      "number": "INV-001",
+      "status": "draft",
+      "updatedAt": "2024-01-01T12:00:00.000Z"
+    },
+    {
+      "id": "a791666c-73b8-5dd1-b737-31ca691383ca",
+      "createdAt": "2024-01-01T12:00:00.000Z",
+      "issuedOn": null,
+      "notes": null,
+      "number": "INV-002",
+      "status": "sent",
+      "updatedAt": "2024-01-01T12:00:00.000Z"
+    }
+  ]
 }
 ```
 
@@ -80,12 +98,19 @@ GET /funny_snake/invoices
 GET /funny_snake/invoices/3feffae7-450f-582f-8951-90b31f1322f4
 ```
 
-**Response** `500`
+**Response** `200`
 
 ```json
 {
-  "status": 500,
-  "error": "Internal Server Error"
+  "invoice": {
+    "id": "3feffae7-450f-582f-8951-90b31f1322f4",
+    "createdAt": "2024-01-01T12:00:00.000Z",
+    "issuedOn": null,
+    "notes": null,
+    "number": "INV-001",
+    "status": "draft",
+    "updatedAt": "2024-01-01T12:00:00.000Z"
+  }
 }
 ```
 
@@ -110,12 +135,19 @@ Content-Type: application/json
 }
 ```
 
-**Response** `500`
+**Response** `201`
 
 ```json
 {
-  "status": 500,
-  "error": "Internal Server Error"
+  "invoice": {
+    "id": "cd3a4e6a-5247-5f84-876f-e4ff358e30f5",
+    "createdAt": "2024-01-01T12:00:00.000Z",
+    "issuedOn": "2024-01-15",
+    "notes": "First invoice",
+    "number": "INV-001",
+    "status": "draft",
+    "updatedAt": "2024-01-01T12:00:00.000Z"
+  }
 }
 ```
 
@@ -127,7 +159,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-PATCH /funny_snake/invoices/cd3a4e6a-5247-5f84-876f-e4ff358e30f5
+PATCH /funny_snake/invoices/e50fcc57-8256-563f-9e20-403810b5d084
 Content-Type: application/json
 
 {
@@ -140,12 +172,19 @@ Content-Type: application/json
 }
 ```
 
-**Response** `500`
+**Response** `200`
 
 ```json
 {
-  "status": 500,
-  "error": "Internal Server Error"
+  "invoice": {
+    "number": "INV-001",
+    "issuedOn": "2024-01-15",
+    "status": "sent",
+    "notes": "Updated invoice",
+    "id": "e50fcc57-8256-563f-9e20-403810b5d084",
+    "createdAt": "2024-01-01T12:00:00.000Z",
+    "updatedAt": "2024-01-01T12:00:00.000Z"
+  }
 }
 ```
 
@@ -157,17 +196,11 @@ Content-Type: application/json
 **Request**
 
 ```http
-DELETE /funny_snake/invoices/e50fcc57-8256-563f-9e20-403810b5d084
+DELETE /funny_snake/invoices/2341b2b7-750c-57d9-8ff8-c325cc922833
 ```
 
-**Response** `500`
+**Response** `204`
 
-```json
-{
-  "status": 500,
-  "error": "Internal Server Error"
-}
-```
 
 </details>
 

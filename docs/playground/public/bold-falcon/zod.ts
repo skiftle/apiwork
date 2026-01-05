@@ -26,9 +26,36 @@ export const ArticleCreatePayloadSchema = z.object({
   title: z.string()
 });
 
+export const ArticleCreateSuccessResponseBodySchema = z.object({
+  article: ArticleSchema,
+  meta: z.object({}).optional()
+});
+
+export const ArticleFilterSchema = z.object({
+  _and: z.array(ArticleFilterSchema).optional(),
+  _not: ArticleFilterSchema.optional(),
+  _or: z.array(ArticleFilterSchema).optional(),
+  publishedOn: z.union([z.iso.date(), NullableDateFilterSchema]).optional(),
+  rating: z.union([z.number(), NullableDecimalFilterSchema]).optional(),
+  status: ArticleStatusFilterSchema.optional(),
+  title: z.union([z.string(), StringFilterSchema]).optional(),
+  viewCount: z.union([z.number().int(), NullableIntegerFilterSchema]).optional()
+});
+
+export const ArticleIndexSuccessResponseBodySchema = z.object({
+  articles: z.array(ArticleSchema),
+  meta: z.object({}).optional(),
+  pagination: OffsetPaginationSchema
+});
+
 export const ArticlePageSchema = z.object({
   number: z.number().int().min(1).optional(),
   size: z.number().int().min(1).max(100).optional()
+});
+
+export const ArticleShowSuccessResponseBodySchema = z.object({
+  article: ArticleSchema,
+  meta: z.object({}).optional()
 });
 
 export const ArticleSortSchema = z.object({
@@ -51,14 +78,54 @@ export const ArticleUpdatePayloadSchema = z.object({
   title: z.string().optional()
 });
 
+export const ArticleUpdateSuccessResponseBodySchema = z.object({
+  article: ArticleSchema,
+  meta: z.object({}).optional()
+});
+
+export const DateFilterSchema = z.object({
+  between: DateFilterBetweenSchema.optional(),
+  eq: z.iso.date().optional(),
+  gt: z.iso.date().optional(),
+  gte: z.iso.date().optional(),
+  in: z.array(z.iso.date()).optional(),
+  lt: z.iso.date().optional(),
+  lte: z.iso.date().optional()
+});
+
 export const DateFilterBetweenSchema = z.object({
   from: z.iso.date().optional(),
   to: z.iso.date().optional()
 });
 
+export const DecimalFilterSchema = z.object({
+  between: DecimalFilterBetweenSchema.optional(),
+  eq: z.number().optional(),
+  gt: z.number().optional(),
+  gte: z.number().optional(),
+  in: z.array(z.number()).optional(),
+  lt: z.number().optional(),
+  lte: z.number().optional()
+});
+
 export const DecimalFilterBetweenSchema = z.object({
   from: z.number().optional(),
   to: z.number().optional()
+});
+
+export const ErrorResponseBodySchema = z.object({
+  issues: z.array(IssueSchema),
+  layer: LayerSchema
+});
+
+export const IntegerFilterSchema = z.object({
+  between: IntegerFilterBetweenSchema.optional(),
+  eq: z.number().int().optional(),
+  gt: z.number().int().optional(),
+  gte: z.number().int().optional(),
+  in: z.array(z.number().int()).optional(),
+  lt: z.number().int().optional(),
+  lte: z.number().int().optional()
 });
 
 export const IntegerFilterBetweenSchema = z.object({
@@ -72,6 +139,39 @@ export const IssueSchema = z.object({
   meta: z.object({}),
   path: z.array(z.string()),
   pointer: z.string()
+});
+
+export const NullableDateFilterSchema = z.object({
+  between: DateFilterBetweenSchema.optional(),
+  eq: z.iso.date().optional(),
+  gt: z.iso.date().optional(),
+  gte: z.iso.date().optional(),
+  in: z.array(z.iso.date()).optional(),
+  lt: z.iso.date().optional(),
+  lte: z.iso.date().optional(),
+  null: z.boolean().optional()
+});
+
+export const NullableDecimalFilterSchema = z.object({
+  between: DecimalFilterBetweenSchema.optional(),
+  eq: z.number().optional(),
+  gt: z.number().optional(),
+  gte: z.number().optional(),
+  in: z.array(z.number()).optional(),
+  lt: z.number().optional(),
+  lte: z.number().optional(),
+  null: z.boolean().optional()
+});
+
+export const NullableIntegerFilterSchema = z.object({
+  between: IntegerFilterBetweenSchema.optional(),
+  eq: z.number().int().optional(),
+  gt: z.number().int().optional(),
+  gte: z.number().int().optional(),
+  in: z.array(z.number().int()).optional(),
+  lt: z.number().int().optional(),
+  lte: z.number().int().optional(),
+  null: z.boolean().optional()
 });
 
 export const NullableStringFilterSchema = z.object({
@@ -98,106 +198,6 @@ export const StringFilterSchema = z.object({
   in: z.array(z.string()).optional(),
   startsWith: z.string().optional()
 });
-
-export const ArticleCreateSuccessResponseBodySchema = z.object({
-  article: ArticleSchema,
-  meta: z.object({}).optional()
-});
-
-export const ArticleShowSuccessResponseBodySchema = z.object({
-  article: ArticleSchema,
-  meta: z.object({}).optional()
-});
-
-export const ArticleUpdateSuccessResponseBodySchema = z.object({
-  article: ArticleSchema,
-  meta: z.object({}).optional()
-});
-
-export const DateFilterSchema = z.object({
-  between: DateFilterBetweenSchema.optional(),
-  eq: z.iso.date().optional(),
-  gt: z.iso.date().optional(),
-  gte: z.iso.date().optional(),
-  in: z.array(z.iso.date()).optional(),
-  lt: z.iso.date().optional(),
-  lte: z.iso.date().optional()
-});
-
-export const NullableDateFilterSchema = z.object({
-  between: DateFilterBetweenSchema.optional(),
-  eq: z.iso.date().optional(),
-  gt: z.iso.date().optional(),
-  gte: z.iso.date().optional(),
-  in: z.array(z.iso.date()).optional(),
-  lt: z.iso.date().optional(),
-  lte: z.iso.date().optional(),
-  null: z.boolean().optional()
-});
-
-export const DecimalFilterSchema = z.object({
-  between: DecimalFilterBetweenSchema.optional(),
-  eq: z.number().optional(),
-  gt: z.number().optional(),
-  gte: z.number().optional(),
-  in: z.array(z.number()).optional(),
-  lt: z.number().optional(),
-  lte: z.number().optional()
-});
-
-export const NullableDecimalFilterSchema = z.object({
-  between: DecimalFilterBetweenSchema.optional(),
-  eq: z.number().optional(),
-  gt: z.number().optional(),
-  gte: z.number().optional(),
-  in: z.array(z.number()).optional(),
-  lt: z.number().optional(),
-  lte: z.number().optional(),
-  null: z.boolean().optional()
-});
-
-export const IntegerFilterSchema = z.object({
-  between: IntegerFilterBetweenSchema.optional(),
-  eq: z.number().int().optional(),
-  gt: z.number().int().optional(),
-  gte: z.number().int().optional(),
-  in: z.array(z.number().int()).optional(),
-  lt: z.number().int().optional(),
-  lte: z.number().int().optional()
-});
-
-export const NullableIntegerFilterSchema = z.object({
-  between: IntegerFilterBetweenSchema.optional(),
-  eq: z.number().int().optional(),
-  gt: z.number().int().optional(),
-  gte: z.number().int().optional(),
-  in: z.array(z.number().int()).optional(),
-  lt: z.number().int().optional(),
-  lte: z.number().int().optional(),
-  null: z.boolean().optional()
-});
-
-export const ErrorResponseBodySchema = z.object({
-  issues: z.array(IssueSchema),
-  layer: LayerSchema
-});
-
-export const ArticleIndexSuccessResponseBodySchema = z.object({
-  articles: z.array(ArticleSchema),
-  meta: z.object({}).optional(),
-  pagination: OffsetPaginationSchema
-});
-
-export const ArticleFilterSchema: z.ZodType<ArticleFilter> = z.lazy(() => z.object({
-  _and: z.array(ArticleFilterSchema).optional(),
-  _not: ArticleFilterSchema.optional(),
-  _or: z.array(ArticleFilterSchema).optional(),
-  publishedOn: z.union([z.iso.date(), NullableDateFilterSchema]).optional(),
-  rating: z.union([z.number(), NullableDecimalFilterSchema]).optional(),
-  status: ArticleStatusFilterSchema.optional(),
-  title: z.union([z.string(), StringFilterSchema]).optional(),
-  viewCount: z.union([z.number().int(), NullableIntegerFilterSchema]).optional()
-}));
 
 export const ArticlesIndexRequestQuerySchema = z.object({
   filter: z.union([ArticleFilterSchema, z.array(ArticleFilterSchema)]).optional(),

@@ -9,9 +9,23 @@
         "contract",
         "domain"
       ]
+    },
+    "sort_direction": {
+      "deprecated": false,
+      "description": null,
+      "example": null,
+      "values": [
+        "asc",
+        "desc"
+      ]
     }
   },
-  "error_codes": {},
+  "error_codes": {
+    "unprocessable_entity": {
+      "description": "Unprocessable Entity",
+      "status": 422
+    }
+  },
   "info": null,
   "path": "/eager_lion",
   "resources": {
@@ -26,7 +40,106 @@
           "raises": [],
           "request": {
             "body": {},
-            "query": {}
+            "query": {
+              "filter": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": true,
+                "type": "union",
+                "discriminator": null,
+                "variants": [
+                  {
+                    "default": null,
+                    "deprecated": false,
+                    "description": null,
+                    "example": null,
+                    "nullable": false,
+                    "optional": false,
+                    "type": "ref",
+                    "ref": "invoice_filter"
+                  },
+                  {
+                    "default": null,
+                    "deprecated": false,
+                    "description": null,
+                    "example": null,
+                    "nullable": false,
+                    "optional": false,
+                    "type": "array",
+                    "max": null,
+                    "min": null,
+                    "of": {
+                      "default": null,
+                      "deprecated": null,
+                      "description": null,
+                      "example": null,
+                      "nullable": null,
+                      "optional": null,
+                      "type": "ref",
+                      "ref": "invoice_filter"
+                    },
+                    "shape": {}
+                  }
+                ]
+              },
+              "page": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": true,
+                "type": "ref",
+                "ref": "invoice_page"
+              },
+              "sort": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": true,
+                "type": "union",
+                "discriminator": null,
+                "variants": [
+                  {
+                    "default": null,
+                    "deprecated": false,
+                    "description": null,
+                    "example": null,
+                    "nullable": false,
+                    "optional": false,
+                    "type": "ref",
+                    "ref": "invoice_sort"
+                  },
+                  {
+                    "default": null,
+                    "deprecated": false,
+                    "description": null,
+                    "example": null,
+                    "nullable": false,
+                    "optional": false,
+                    "type": "array",
+                    "max": null,
+                    "min": null,
+                    "of": {
+                      "default": null,
+                      "deprecated": null,
+                      "description": null,
+                      "example": null,
+                      "nullable": null,
+                      "optional": null,
+                      "type": "ref",
+                      "ref": "invoice_sort"
+                    },
+                    "shape": {}
+                  }
+                ]
+              }
+            }
           },
           "response": {
             "body": {
@@ -36,7 +149,30 @@
               "example": null,
               "nullable": null,
               "optional": null,
-              "type": null
+              "type": "union",
+              "discriminator": null,
+              "variants": [
+                {
+                  "default": null,
+                  "deprecated": null,
+                  "description": null,
+                  "example": null,
+                  "nullable": null,
+                  "optional": null,
+                  "type": "ref",
+                  "ref": "invoice_index_success_response_body"
+                },
+                {
+                  "default": null,
+                  "deprecated": null,
+                  "description": null,
+                  "example": null,
+                  "nullable": null,
+                  "optional": null,
+                  "type": "ref",
+                  "ref": "error_response_body"
+                }
+              ]
             },
             "no_content": false
           },
@@ -62,7 +198,30 @@
               "example": null,
               "nullable": null,
               "optional": null,
-              "type": null
+              "type": "union",
+              "discriminator": null,
+              "variants": [
+                {
+                  "default": null,
+                  "deprecated": null,
+                  "description": null,
+                  "example": null,
+                  "nullable": null,
+                  "optional": null,
+                  "type": "ref",
+                  "ref": "invoice_show_success_response_body"
+                },
+                {
+                  "default": null,
+                  "deprecated": null,
+                  "description": null,
+                  "example": null,
+                  "nullable": null,
+                  "optional": null,
+                  "type": "ref",
+                  "ref": "error_response_body"
+                }
+              ]
             },
             "no_content": false
           },
@@ -75,9 +234,22 @@
           "method": "post",
           "operation_id": null,
           "path": "/invoices",
-          "raises": [],
+          "raises": [
+            "unprocessable_entity"
+          ],
           "request": {
-            "body": {},
+            "body": {
+              "invoice": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": false,
+                "type": "ref",
+                "ref": "invoice_create_payload"
+              }
+            },
             "query": {}
           },
           "response": {
@@ -88,7 +260,30 @@
               "example": null,
               "nullable": null,
               "optional": null,
-              "type": null
+              "type": "union",
+              "discriminator": null,
+              "variants": [
+                {
+                  "default": null,
+                  "deprecated": null,
+                  "description": null,
+                  "example": null,
+                  "nullable": null,
+                  "optional": null,
+                  "type": "ref",
+                  "ref": "invoice_create_success_response_body"
+                },
+                {
+                  "default": null,
+                  "deprecated": null,
+                  "description": null,
+                  "example": null,
+                  "nullable": null,
+                  "optional": null,
+                  "type": "ref",
+                  "ref": "error_response_body"
+                }
+              ]
             },
             "no_content": false
           },
@@ -101,9 +296,22 @@
           "method": "patch",
           "operation_id": null,
           "path": "/invoices/:id",
-          "raises": [],
+          "raises": [
+            "unprocessable_entity"
+          ],
           "request": {
-            "body": {},
+            "body": {
+              "invoice": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": false,
+                "type": "ref",
+                "ref": "invoice_update_payload"
+              }
+            },
             "query": {}
           },
           "response": {
@@ -114,7 +322,30 @@
               "example": null,
               "nullable": null,
               "optional": null,
-              "type": null
+              "type": "union",
+              "discriminator": null,
+              "variants": [
+                {
+                  "default": null,
+                  "deprecated": null,
+                  "description": null,
+                  "example": null,
+                  "nullable": null,
+                  "optional": null,
+                  "type": "ref",
+                  "ref": "invoice_update_success_response_body"
+                },
+                {
+                  "default": null,
+                  "deprecated": null,
+                  "description": null,
+                  "example": null,
+                  "nullable": null,
+                  "optional": null,
+                  "type": "ref",
+                  "ref": "error_response_body"
+                }
+              ]
             },
             "no_content": false
           },
@@ -142,7 +373,7 @@
               "optional": null,
               "type": null
             },
-            "no_content": false
+            "no_content": true
           },
           "summary": null,
           "tags": []
@@ -153,7 +384,9 @@
           "method": "patch",
           "operation_id": null,
           "path": "/invoices/:id/archive",
-          "raises": [],
+          "raises": [
+            "unprocessable_entity"
+          ],
           "request": {
             "body": {},
             "query": {}
@@ -166,7 +399,30 @@
               "example": null,
               "nullable": null,
               "optional": null,
-              "type": null
+              "type": "union",
+              "discriminator": null,
+              "variants": [
+                {
+                  "default": null,
+                  "deprecated": null,
+                  "description": null,
+                  "example": null,
+                  "nullable": null,
+                  "optional": null,
+                  "type": "ref",
+                  "ref": "invoice_archive_success_response_body"
+                },
+                {
+                  "default": null,
+                  "deprecated": null,
+                  "description": null,
+                  "example": null,
+                  "nullable": null,
+                  "optional": null,
+                  "type": "ref",
+                  "ref": "error_response_body"
+                }
+              ]
             },
             "no_content": false
           },
@@ -204,7 +460,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "issue"
+            "type": "ref",
+            "ref": "issue"
           },
           "shape": {}
         },
@@ -215,7 +472,658 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "layer"
+          "type": "ref",
+          "ref": "layer"
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "invoice": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "created_at": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "datetime"
+        },
+        "customer": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "object",
+          "partial": false,
+          "shape": {}
+        },
+        "customer_id": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "id": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "issued_on": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": true,
+          "optional": false,
+          "type": "date"
+        },
+        "lines": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "array",
+          "max": null,
+          "min": null,
+          "of": null,
+          "shape": {}
+        },
+        "notes": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": true,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "number": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "status": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": true,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "updated_at": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "datetime"
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "invoice_archive_success_response_body": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "invoice": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "ref",
+          "ref": "invoice"
+        },
+        "meta": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "object",
+          "partial": false,
+          "shape": {}
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "invoice_create_payload": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "customer_id": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "issued_on": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": true,
+          "optional": true,
+          "type": "date"
+        },
+        "lines": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "array",
+          "max": null,
+          "min": null,
+          "of": null,
+          "shape": {}
+        },
+        "notes": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": true,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "number": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "invoice_create_success_response_body": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "invoice": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "ref",
+          "ref": "invoice"
+        },
+        "meta": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "object",
+          "partial": false,
+          "shape": {}
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "invoice_filter": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "_and": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "array",
+          "max": null,
+          "min": null,
+          "of": {
+            "default": null,
+            "deprecated": null,
+            "description": null,
+            "example": null,
+            "nullable": null,
+            "optional": null,
+            "type": "ref",
+            "ref": "invoice_filter"
+          },
+          "shape": {}
+        },
+        "_not": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "ref",
+          "ref": "invoice_filter"
+        },
+        "_or": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "array",
+          "max": null,
+          "min": null,
+          "of": {
+            "default": null,
+            "deprecated": null,
+            "description": null,
+            "example": null,
+            "nullable": null,
+            "optional": null,
+            "type": "ref",
+            "ref": "invoice_filter"
+          },
+          "shape": {}
+        },
+        "number": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "union",
+          "discriminator": null,
+          "variants": [
+            {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "string",
+              "format": null,
+              "max": null,
+              "min": null
+            },
+            {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "ref",
+              "ref": "string_filter"
+            }
+          ]
+        },
+        "status": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "union",
+          "discriminator": null,
+          "variants": [
+            {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "string",
+              "format": null,
+              "max": null,
+              "min": null
+            },
+            {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "ref",
+              "ref": "nullable_string_filter"
+            }
+          ]
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "invoice_index_success_response_body": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "invoices": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "array",
+          "max": null,
+          "min": null,
+          "of": {
+            "default": null,
+            "deprecated": null,
+            "description": null,
+            "example": null,
+            "nullable": null,
+            "optional": null,
+            "type": "ref",
+            "ref": "invoice"
+          },
+          "shape": {}
+        },
+        "meta": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "object",
+          "partial": false,
+          "shape": {}
+        },
+        "pagination": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "ref",
+          "ref": "offset_pagination"
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "invoice_page": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "number": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "integer",
+          "format": null,
+          "max": null,
+          "min": 1
+        },
+        "size": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "integer",
+          "format": null,
+          "max": 100,
+          "min": 1
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "invoice_show_success_response_body": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "invoice": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "ref",
+          "ref": "invoice"
+        },
+        "meta": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "object",
+          "partial": false,
+          "shape": {}
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "invoice_sort": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "created_at": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "ref",
+          "ref": "sort_direction"
+        },
+        "issued_on": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "ref",
+          "ref": "sort_direction"
+        },
+        "status": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "ref",
+          "ref": "sort_direction"
+        },
+        "updated_at": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "ref",
+          "ref": "sort_direction"
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "invoice_update_payload": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "customer_id": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "issued_on": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": true,
+          "optional": true,
+          "type": "date"
+        },
+        "lines": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "array",
+          "max": null,
+          "min": null,
+          "of": null,
+          "shape": {}
+        },
+        "notes": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": true,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "number": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "invoice_update_success_response_body": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "invoice": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "ref",
+          "ref": "invoice"
+        },
+        "meta": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "object",
+          "partial": false,
+          "shape": {}
         }
       },
       "type": "object",
@@ -293,6 +1201,249 @@
           "example": null,
           "nullable": false,
           "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "nullable_string_filter": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "contains": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "ends_with": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "eq": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "in": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "array",
+          "max": null,
+          "min": null,
+          "of": {
+            "default": null,
+            "deprecated": null,
+            "description": null,
+            "example": null,
+            "nullable": null,
+            "optional": null,
+            "type": "string",
+            "format": null,
+            "max": null,
+            "min": null
+          },
+          "shape": {}
+        },
+        "null": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "boolean"
+        },
+        "starts_with": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "offset_pagination": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "current": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "integer",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "items": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "integer",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "next": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": true,
+          "optional": true,
+          "type": "integer",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "prev": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": true,
+          "optional": true,
+          "type": "integer",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "total": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "integer",
+          "format": null,
+          "max": null,
+          "min": null
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "string_filter": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "contains": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "ends_with": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "eq": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "in": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "array",
+          "max": null,
+          "min": null,
+          "of": {
+            "default": null,
+            "deprecated": null,
+            "description": null,
+            "example": null,
+            "nullable": null,
+            "optional": null,
+            "type": "string",
+            "format": null,
+            "max": null,
+            "min": null
+          },
+          "shape": {}
+        },
+        "starts_with": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
           "type": "string",
           "format": null,
           "max": null,

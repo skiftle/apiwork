@@ -17,9 +17,25 @@ export const ContactCreatePayloadSchema = z.object({
   phone: z.string().optional()
 });
 
+export const ContactCreateSuccessResponseBodySchema = z.object({
+  contact: ContactSchema,
+  meta: z.object({}).optional()
+});
+
+export const ContactIndexSuccessResponseBodySchema = z.object({
+  contacts: z.array(ContactSchema),
+  meta: z.object({}).optional(),
+  pagination: OffsetPaginationSchema
+});
+
 export const ContactPageSchema = z.object({
   number: z.number().int().min(1).optional(),
   size: z.number().int().min(1).max(100).optional()
+});
+
+export const ContactShowSuccessResponseBodySchema = z.object({
+  contact: ContactSchema,
+  meta: z.object({}).optional()
 });
 
 export const ContactUpdatePayloadSchema = z.object({
@@ -27,6 +43,16 @@ export const ContactUpdatePayloadSchema = z.object({
   name: z.string().optional(),
   notes: z.string().optional(),
   phone: z.string().optional()
+});
+
+export const ContactUpdateSuccessResponseBodySchema = z.object({
+  contact: ContactSchema,
+  meta: z.object({}).optional()
+});
+
+export const ErrorResponseBodySchema = z.object({
+  issues: z.array(IssueSchema),
+  layer: LayerSchema
 });
 
 export const IssueSchema = z.object({
@@ -43,32 +69,6 @@ export const OffsetPaginationSchema = z.object({
   next: z.number().int().nullable().optional(),
   prev: z.number().int().nullable().optional(),
   total: z.number().int()
-});
-
-export const ContactCreateSuccessResponseBodySchema = z.object({
-  contact: ContactSchema,
-  meta: z.object({}).optional()
-});
-
-export const ContactShowSuccessResponseBodySchema = z.object({
-  contact: ContactSchema,
-  meta: z.object({}).optional()
-});
-
-export const ContactUpdateSuccessResponseBodySchema = z.object({
-  contact: ContactSchema,
-  meta: z.object({}).optional()
-});
-
-export const ErrorResponseBodySchema = z.object({
-  issues: z.array(IssueSchema),
-  layer: LayerSchema
-});
-
-export const ContactIndexSuccessResponseBodySchema = z.object({
-  contacts: z.array(ContactSchema),
-  meta: z.object({}).optional(),
-  pagination: OffsetPaginationSchema
 });
 
 export const ContactsIndexRequestQuerySchema = z.object({
