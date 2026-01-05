@@ -26,7 +26,7 @@ export interface CommentNestedCreatePayload {
   body: string;
 }
 
-export type CommentNestedPayload = { _type: 'create' } & CommentNestedCreatePayload | { _type: 'update' } & CommentNestedUpdatePayload;
+export type CommentNestedPayload = CommentNestedCreatePayload | CommentNestedUpdatePayload;
 
 export interface CommentNestedUpdatePayload {
   _type: 'update';
@@ -155,7 +155,7 @@ export interface PostNestedCreatePayload {
   title: string;
 }
 
-export type PostNestedPayload = { _type: 'create' } & PostNestedCreatePayload | { _type: 'update' } & PostNestedUpdatePayload;
+export type PostNestedPayload = PostNestedCreatePayload | PostNestedUpdatePayload;
 
 export interface PostNestedUpdatePayload {
   _type: 'update';
@@ -248,7 +248,7 @@ export interface ProfileNestedCreatePayload {
   website?: null | string;
 }
 
-export type ProfileNestedPayload = { _type: 'create' } & ProfileNestedCreatePayload | { _type: 'update' } & ProfileNestedUpdatePayload;
+export type ProfileNestedPayload = ProfileNestedCreatePayload | ProfileNestedUpdatePayload;
 
 export interface ProfileNestedUpdatePayload {
   _type: 'update';

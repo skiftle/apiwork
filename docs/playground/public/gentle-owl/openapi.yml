@@ -165,9 +165,33 @@ components:
       - id
     commentCommentable:
       oneOf:
-      - "$ref": "#/components/schemas/post"
-      - "$ref": "#/components/schemas/video"
-      - "$ref": "#/components/schemas/image"
+      - allOf:
+        - "$ref": "#/components/schemas/post"
+        - type: object
+          properties:
+            commentableType:
+              const: post
+              type: string
+          required:
+          - commentableType
+      - allOf:
+        - "$ref": "#/components/schemas/video"
+        - type: object
+          properties:
+            commentableType:
+              const: video
+              type: string
+          required:
+          - commentableType
+      - allOf:
+        - "$ref": "#/components/schemas/image"
+        - type: object
+          properties:
+            commentableType:
+              const: image
+              type: string
+          required:
+          - commentableType
       discriminator:
         mapping:
           post: "#/components/schemas/post"

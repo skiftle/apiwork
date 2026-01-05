@@ -44,7 +44,7 @@ module Apiwork
         variant_types = type.variants.map do |variant|
           base_type = map_type_definition(variant)
 
-          if type.discriminator && variant.tag
+          if type.discriminator && variant.tag && !ref_contains_discriminator?(variant, type.discriminator)
             discriminator_key = transform_key(type.discriminator)
             "{ #{discriminator_key}: '#{variant.tag}' } & #{base_type}"
           else
@@ -259,6 +259,15 @@ module Apiwork
 
       def type_or_enum_reference?(symbol)
         data.types.key?(symbol) || data.enums.key?(symbol)
+      end
+
+      def ref_contains_discriminator?(variant, discriminator)
+        return false unless variant.ref?
+
+        referenced_type = data.types[variant.ref]
+        return false unless referenced_type
+
+        referenced_type.shape.key?(discriminator)
       end
 
       def transform_key(key)

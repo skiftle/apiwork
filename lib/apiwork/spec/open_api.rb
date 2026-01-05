@@ -427,7 +427,30 @@ module Apiwork
         discriminator_field = param.discriminator
         variants = param.variants
 
-        one_of_schemas = variants.map { |variant| map_type_definition(variant) }
+        one_of_schemas = variants.map do |variant|
+          base_schema = map_type_definition(variant)
+
+          if variant.tag && !ref_contains_discriminator?(variant, discriminator_field)
+            discriminator_key = transform_key(discriminator_field)
+            {
+              allOf: [
+                base_schema,
+                {
+                  properties: {
+                    discriminator_key => {
+                      const: variant.tag,
+                      type: 'string',
+                    },
+                  },
+                  required: [discriminator_key],
+                  type: 'object',
+                },
+              ],
+            }
+          else
+            base_schema
+          end
+        end
 
         mapping = {}
         variants.each do |variant|
@@ -549,6 +572,15 @@ module Apiwork
         return false unless symbol
 
         data.enums.key?(symbol)
+      end
+
+      def ref_contains_discriminator?(variant, discriminator)
+        return false unless variant.ref?
+
+        referenced_type = data.types[variant.ref]
+        return false unless referenced_type
+
+        referenced_type.shape.key?(discriminator)
       end
 
       def find_enum(symbol)

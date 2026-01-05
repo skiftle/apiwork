@@ -160,7 +160,7 @@ export interface ImageNestedCreatePayload {
   width?: null | number;
 }
 
-export type ImageNestedPayload = { _type: 'create' } & ImageNestedCreatePayload | { _type: 'update' } & ImageNestedUpdatePayload;
+export type ImageNestedPayload = ImageNestedCreatePayload | ImageNestedUpdatePayload;
 
 export interface ImageNestedUpdatePayload {
   _type: 'update';
@@ -213,7 +213,7 @@ export interface PostNestedCreatePayload {
   title: string;
 }
 
-export type PostNestedPayload = { _type: 'create' } & PostNestedCreatePayload | { _type: 'update' } & PostNestedUpdatePayload;
+export type PostNestedPayload = PostNestedCreatePayload | PostNestedUpdatePayload;
 
 export interface PostNestedUpdatePayload {
   _type: 'update';
@@ -250,7 +250,7 @@ export interface VideoNestedCreatePayload {
   url: string;
 }
 
-export type VideoNestedPayload = { _type: 'create' } & VideoNestedCreatePayload | { _type: 'update' } & VideoNestedUpdatePayload;
+export type VideoNestedPayload = VideoNestedCreatePayload | VideoNestedUpdatePayload;
 
 export interface VideoNestedUpdatePayload {
   _type: 'update';

@@ -47,7 +47,17 @@ module Apiwork
       def build_union_schema(type_name, type)
         schema_name = pascal_case(type_name)
 
-        variant_schemas = type.variants.map { |variant| map_type_definition(variant) }
+        variant_schemas = type.variants.map do |variant|
+          base_schema = map_type_definition(variant)
+
+          if type.discriminator && variant.tag && !ref_contains_discriminator?(variant, type.discriminator)
+            discriminator_key = transform_key(type.discriminator)
+            "#{base_schema}.extend({ #{discriminator_key}: z.literal('#{variant.tag}') })"
+          else
+            base_schema
+          end
+        end
+
         union_body = variant_schemas.map { |v| "  #{v}" }.join(",\n")
 
         if type.discriminator
@@ -259,6 +269,15 @@ module Apiwork
 
       def type_or_enum_reference?(symbol)
         data.types.key?(symbol) || data.enums.key?(symbol)
+      end
+
+      def ref_contains_discriminator?(variant, discriminator)
+        return false unless variant.ref?
+
+        referenced_type = data.types[variant.ref]
+        return false unless referenced_type
+
+        referenced_type.shape.key?(discriminator)
       end
 
       def resolve_enum_schema(param)

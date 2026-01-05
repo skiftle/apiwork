@@ -141,9 +141,9 @@ export interface TruckUpdatePayload {
   year?: null | number;
 }
 
-export type Vehicle = { type: 'car' } & Car | { type: 'motorcycle' } & Motorcycle | { type: 'truck' } & Truck;
+export type Vehicle = Car | Motorcycle | Truck;
 
-export type VehicleCreatePayload = { type: 'car' } & CarCreatePayload | { type: 'motorcycle' } & MotorcycleCreatePayload | { type: 'truck' } & TruckCreatePayload;
+export type VehicleCreatePayload = CarCreatePayload | MotorcycleCreatePayload | TruckCreatePayload;
 
 export interface VehicleCreateSuccessResponseBody {
   meta?: object;
@@ -179,7 +179,7 @@ export interface VehicleSort {
   year?: SortDirection;
 }
 
-export type VehicleUpdatePayload = { type: 'car' } & CarUpdatePayload | { type: 'motorcycle' } & MotorcycleUpdatePayload | { type: 'truck' } & TruckUpdatePayload;
+export type VehicleUpdatePayload = CarUpdatePayload | MotorcycleUpdatePayload | TruckUpdatePayload;
 
 export interface VehicleUpdateSuccessResponseBody {
   meta?: object;
