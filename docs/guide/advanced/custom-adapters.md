@@ -170,7 +170,7 @@ def register_contract(registrar, schema_class, actions)
   # Define action contracts
   actions.each do |action_name, action_metadata|
     # Get or create action definition, then work with it directly
-    action_definition = registrar.define_action(action_name)
+    action_definition = registrar.action(action_name)
 
     # Build request/response based on action type
     case action_name
@@ -208,15 +208,15 @@ The `registrar` provides:
 - `type(name, &block)` — Define a type
 - `enum(name, values:)` — Define an enum
 - `union(name, &block)` — Define a union type
-- `define_action(name, &block)` — Define an action (returns `ActionDefinition`)
+- `action(name, &block)` — Define an action (returns `ActionDefinition`)
 - `import(contract, as:)` — Import types from another contract
 
 ### ActionDefinition
 
-`define_action` returns an `ActionDefinition` for configuring request/response:
+`action` returns an `ActionDefinition` for configuring request/response:
 
 ```ruby
-registrar.define_action :index do
+registrar.action :index do
   request do
     query { param :page, type: :integer, optional: true }
   end
@@ -229,7 +229,7 @@ end
 Or capture and build incrementally:
 
 ```ruby
-action = registrar.define_action(:index)
+action = registrar.action(:index)
 action.request do
   query do
     param :page, type: :integer

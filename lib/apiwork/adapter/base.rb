@@ -61,7 +61,7 @@ module Apiwork
       # @example
       #   def register_contract(registrar, schema_class, actions)
       #     actions.each do |name, action|
-      #       definition = registrar.define_action(name)
+      #       definition = registrar.action(name)
       #
       #       if action.collection?
       #         definition.request do

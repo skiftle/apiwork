@@ -19,7 +19,7 @@ module Apiwork
     # @example Define action contracts
     #   def register_contract(registrar, schema_class, actions)
     #     actions.each do |name, action|
-    #       registrar.define_action(name) do
+    #       registrar.action(name) do
     #         # ...
     #       end
     #     end
@@ -50,13 +50,15 @@ module Apiwork
       #   @yield block defining variants
       #   @see Apiwork::Contract::Base.union
 
-      # @!method define_action(name, &block)
+      # @!method action(name, replace: false, &block)
       #   @api public
       #   Defines an action with query, body, and response.
+      #   Returns existing definition if already defined, or creates new.
       #   @param name [Symbol] the action name
+      #   @param replace [Boolean] replace existing definition (default: false)
       #   @yield block defining request/response
       #   @return [ActionDefinition] the action definition
-      #   @see Apiwork::Contract::Base.define_action
+      #   @see Apiwork::Contract::Base.action
 
       # @!method import(type_name, from:)
       #   @api public
@@ -82,7 +84,7 @@ module Apiwork
       #   Returns the hash of imported types.
       #   @return [Hash] imported types
 
-      delegate :define_action,
+      delegate :action,
                :enum,
                :enum?,
                :enum_values,

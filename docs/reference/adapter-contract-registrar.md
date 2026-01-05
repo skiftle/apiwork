@@ -29,7 +29,7 @@ end
 ```ruby
 def register_contract(registrar, schema_class, actions)
   actions.each do |name, action|
-    registrar.define_action(name) do
+    registrar.action(name) do
       # ...
     end
   end
@@ -38,11 +38,33 @@ end
 
 ## Instance Methods
 
+### #action
+
+`#action(name, replace: false, &block)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L53)
+
+Defines an action with query, body, and response.
+Returns existing definition if already defined, or creates new.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `name` | `Symbol` | the action name |
+| `replace` | `Boolean` | replace existing definition (default: false) |
+
+**Returns**
+
+[ActionDefinition](contract-action-definition) — the action definition
+
+---
+
 ### #api_registrar
 
 `#api_registrar`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L102)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L104)
 
 Returns a registrar for API-level types.
 Use this to define or resolve types at the API scope.
@@ -50,26 +72,6 @@ Use this to define or resolve types at the API scope.
 **Returns**
 
 [Adapter::APIRegistrar](adapter-api-registrar) — the API registrar
-
----
-
-### #define_action
-
-`#define_action(name, &block)`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L53)
-
-Defines an action with query, body, and response.
-
-**Parameters**
-
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `Symbol` | the action name |
-
-**Returns**
-
-[ActionDefinition](contract-action-definition) — the action definition
 
 ---
 
@@ -94,7 +96,7 @@ Defines an enum type scoped to this contract.
 
 `#find_contract_for_schema(schema_class)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L74)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L76)
 
 Finds the contract class for an associated schema.
 
@@ -114,7 +116,7 @@ Finds the contract class for an associated schema.
 
 `#import(type_name, from:)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L61)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L63)
 
 Imports a type from another contract or the API.
 
@@ -131,7 +133,7 @@ Imports a type from another contract or the API.
 
 `#imports`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L85)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L87)
 
 Returns the hash of imported types.
 
@@ -145,7 +147,7 @@ Returns the hash of imported types.
 
 `#scoped_name(name)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L68)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L70)
 
 Returns the fully qualified name for a type in this contract's scope.
 
