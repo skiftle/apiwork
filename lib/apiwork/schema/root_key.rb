@@ -10,6 +10,10 @@ module Apiwork
         @singular = singular
         @plural   = plural
       end
+
+      def to_s
+        singular
+      end
     end
   end
 end

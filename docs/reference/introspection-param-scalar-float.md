@@ -4,9 +4,9 @@ prev: false
 next: false
 ---
 
-# Introspection::Param::Scalar::Numeric::Float
+# Introspection::Param::Scalar::Float
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric/float.rb#L19)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/float.rb#L18)
 
 Float param.
 
@@ -64,11 +64,11 @@ param.float?     # => true
 
 `#boundable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L28)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/float.rb#L39)
 
 **Returns**
 
-[Boolean](introspection-boolean) — true - numeric types support min/max constraints
+[Boolean](introspection-boolean) — true - floats support min/max constraints
 
 ---
 
@@ -208,7 +208,7 @@ param.float?     # => true
 
 `#float?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric/float.rb#L22)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/float.rb#L45)
 
 **Returns**
 
@@ -268,7 +268,7 @@ param.float?     # => true
 
 `#max`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L16)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/float.rb#L27)
 
 **Returns**
 
@@ -280,7 +280,7 @@ param.float?     # => true
 
 `#min`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L10)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/float.rb#L21)
 
 **Returns**
 
@@ -304,7 +304,7 @@ param.float?     # => true
 
 `#numeric?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L22)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/float.rb#L33)
 
 **Returns**
 
@@ -400,7 +400,7 @@ param.float?     # => true
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L34)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/float.rb#L51)
 
 **Returns**
 

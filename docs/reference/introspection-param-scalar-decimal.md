@@ -4,9 +4,9 @@ prev: false
 next: false
 ---
 
-# Introspection::Param::Scalar::Numeric::Decimal
+# Introspection::Param::Scalar::Decimal
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric/decimal.rb#L19)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/decimal.rb#L18)
 
 Decimal param.
 
@@ -64,11 +64,11 @@ param.decimal?   # => true
 
 `#boundable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L28)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/decimal.rb#L39)
 
 **Returns**
 
-[Boolean](introspection-boolean) — true - numeric types support min/max constraints
+[Boolean](introspection-boolean) — true - decimals support min/max constraints
 
 ---
 
@@ -100,7 +100,7 @@ param.decimal?   # => true
 
 `#decimal?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric/decimal.rb#L22)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/decimal.rb#L45)
 
 **Returns**
 
@@ -268,7 +268,7 @@ param.decimal?   # => true
 
 `#max`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L16)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/decimal.rb#L27)
 
 **Returns**
 
@@ -280,7 +280,7 @@ param.decimal?   # => true
 
 `#min`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L10)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/decimal.rb#L21)
 
 **Returns**
 
@@ -304,7 +304,7 @@ param.decimal?   # => true
 
 `#numeric?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L22)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/decimal.rb#L33)
 
 **Returns**
 
@@ -400,7 +400,7 @@ param.decimal?   # => true
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/numeric.rb#L34)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/decimal.rb#L51)
 
 **Returns**
 

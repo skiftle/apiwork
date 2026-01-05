@@ -7,9 +7,9 @@ module Apiwork
         def build(dump)
           case dump[:type]
           when :string then Scalar::String.new(dump)
-          when :integer then Scalar::Numeric::Integer.new(dump)
-          when :float then Scalar::Numeric::Float.new(dump)
-          when :decimal then Scalar::Numeric::Decimal.new(dump)
+          when :integer then Scalar::Integer.new(dump)
+          when :float then Scalar::Float.new(dump)
+          when :decimal then Scalar::Decimal.new(dump)
           when :boolean then Scalar::Boolean.new(dump)
           when :datetime then Scalar::DateTime.new(dump)
           when :date then Scalar::Date.new(dump)
