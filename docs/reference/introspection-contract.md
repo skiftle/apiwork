@@ -41,7 +41,7 @@ end
 
 **See also**
 
-- [Action](introspection-action)
+- [Action](adapter-action)
 
 ---
 

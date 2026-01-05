@@ -44,11 +44,11 @@ end
 
 `#array?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L91)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L76)
 
 **Returns**
 
-[Boolean](introspection-boolean) — false — override in Array
+`Boolean` — false — override in Array
 
 ---
 
@@ -56,11 +56,11 @@ end
 
 `#binary?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L181)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L166)
 
 **Returns**
 
-[Boolean](introspection-boolean) — false — override in Binary
+`Boolean` — false — override in Binary
 
 ---
 
@@ -68,11 +68,11 @@ end
 
 `#boolean?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L151)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L136)
 
 **Returns**
 
-[Boolean](introspection-boolean) — false — override in Boolean
+`Boolean` — false — override in Boolean
 
 ---
 
@@ -84,7 +84,7 @@ end
 
 **Returns**
 
-[Boolean](introspection-boolean) — true if this param supports min/max constraints
+`Boolean` — true if this param supports min/max constraints
 
 ---
 
@@ -92,11 +92,11 @@ end
 
 `#date?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L163)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L148)
 
 **Returns**
 
-[Boolean](introspection-boolean) — false — override in Date
+`Boolean` — false — override in Date
 
 ---
 
@@ -104,11 +104,11 @@ end
 
 `#datetime?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L157)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L142)
 
 **Returns**
 
-[Boolean](introspection-boolean) — false — override in DateTime
+`Boolean` — false — override in DateTime
 
 ---
 
@@ -116,11 +116,11 @@ end
 
 `#decimal?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L145)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L130)
 
 **Returns**
 
-[Boolean](introspection-boolean) — false — override in Decimal
+`Boolean` — false — override in Decimal
 
 ---
 
@@ -128,11 +128,11 @@ end
 
 `#default`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L67)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L52)
 
 **Returns**
 
-[Object](introspection-object), `nil` — the default value
+`Object`, `nil` — the default value
 
 ---
 
@@ -140,11 +140,11 @@ end
 
 `#default?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L73)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L58)
 
 **Returns**
 
-[Boolean](introspection-boolean) — true if a default value is defined
+`Boolean` — true if a default value is defined
 
 ---
 
@@ -152,11 +152,11 @@ end
 
 `#deprecated?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L49)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L34)
 
 **Returns**
 
-[Boolean](introspection-boolean) — true if this field is deprecated
+`Boolean` — true if this field is deprecated
 
 ---
 
@@ -164,11 +164,11 @@ end
 
 `#description`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L55)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L40)
 
 **Returns**
 
-[String](introspection-string), `nil` — the field description
+`String`, `nil` — the field description
 
 ---
 
@@ -180,7 +180,7 @@ end
 
 **Returns**
 
-[Array](introspection-array), `Symbol`, `nil` — enum values (Array) or reference name (Symbol)
+`Array`, `Symbol`, `nil` — enum values (Array) or reference name (Symbol)
 
 **See also**
 
@@ -196,7 +196,7 @@ end
 
 **Returns**
 
-[Boolean](introspection-boolean) — true if this param has enum constraints
+`Boolean` — true if this param has enum constraints
 
 ---
 
@@ -208,7 +208,7 @@ end
 
 **Returns**
 
-[Boolean](introspection-boolean) — true if enum is a reference to a named enum
+`Boolean` — true if enum is a reference to a named enum
 
 ---
 
@@ -216,11 +216,11 @@ end
 
 `#example`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L61)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L46)
 
 **Returns**
 
-[Object](introspection-object), `nil` — the example value
+`Object`, `nil` — the example value
 
 ---
 
@@ -228,11 +228,11 @@ end
 
 `#float?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L139)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L124)
 
 **Returns**
 
-[Boolean](introspection-boolean) — false — override in Float
+`Boolean` — false — override in Float
 
 ---
 
@@ -256,7 +256,7 @@ end
 
 **Returns**
 
-[Boolean](introspection-boolean) — true if this param supports format constraints
+`Boolean` — true if this param supports format constraints
 
 ---
 
@@ -268,7 +268,7 @@ end
 
 **Returns**
 
-[Boolean](introspection-boolean) — true if this is an integer param
+`Boolean` — true if this is an integer param
 
 ---
 
@@ -276,11 +276,11 @@ end
 
 `#json?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L187)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L172)
 
 **Returns**
 
-[Boolean](introspection-boolean) — false — override in JSON
+`Boolean` — false — override in JSON
 
 ---
 
@@ -288,11 +288,11 @@ end
 
 `#literal?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L109)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L94)
 
 **Returns**
 
-[Boolean](introspection-boolean) — false — override in Literal
+`Boolean` — false — override in Literal
 
 ---
 
@@ -324,11 +324,11 @@ end
 
 `#nullable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L37)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L22)
 
 **Returns**
 
-[Boolean](introspection-boolean) — true if this field can be null
+`Boolean` — true if this field can be null
 
 ---
 
@@ -340,7 +340,7 @@ end
 
 **Returns**
 
-[Boolean](introspection-boolean) — true if this is a numeric param
+`Boolean` — true if this is a numeric param
 
 ---
 
@@ -348,11 +348,11 @@ end
 
 `#object?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L97)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L82)
 
 **Returns**
 
-[Boolean](introspection-boolean) — false — override in Object
+`Boolean` — false — override in Object
 
 ---
 
@@ -360,11 +360,11 @@ end
 
 `#optional?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L43)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L28)
 
 **Returns**
 
-[Boolean](introspection-boolean) — true if this field is optional
+`Boolean` — true if this field is optional
 
 ---
 
@@ -372,11 +372,11 @@ end
 
 `#partial?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L223)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L208)
 
 **Returns**
 
-[Boolean](introspection-boolean) — false — override in Object
+`Boolean` — false — override in Object
 
 ---
 
@@ -384,11 +384,11 @@ end
 
 `#ref?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L199)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L184)
 
 **Returns**
 
-[Boolean](introspection-boolean) — false — override in Ref
+`Boolean` — false — override in Ref
 
 ---
 
@@ -400,7 +400,7 @@ end
 
 **Returns**
 
-[Boolean](introspection-boolean) — true if this is a scalar type
+`Boolean` — true if this is a scalar type
 
 ---
 
@@ -408,11 +408,11 @@ end
 
 `#string?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L127)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L112)
 
 **Returns**
 
-[Boolean](introspection-boolean) — false — override in String
+`Boolean` — false — override in String
 
 ---
 
@@ -420,11 +420,11 @@ end
 
 `#tag`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L79)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L64)
 
 **Returns**
 
-[String](introspection-string), `nil` — the discriminator tag for union variants
+`String`, `nil` — the discriminator tag for union variants
 
 ---
 
@@ -432,11 +432,11 @@ end
 
 `#time?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L169)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L154)
 
 **Returns**
 
-[Boolean](introspection-boolean) — false — override in Time
+`Boolean` — false — override in Time
 
 ---
 
@@ -456,7 +456,7 @@ end
 
 `#type`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L31)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L16)
 
 **Returns**
 
@@ -468,11 +468,11 @@ end
 
 `#union?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L103)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L88)
 
 **Returns**
 
-[Boolean](introspection-boolean) — false — override in Union
+`Boolean` — false — override in Union
 
 ---
 
@@ -480,11 +480,11 @@ end
 
 `#unknown?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L193)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L178)
 
 **Returns**
 
-[Boolean](introspection-boolean) — false — override in Unknown
+`Boolean` — false — override in Unknown
 
 ---
 
@@ -492,10 +492,10 @@ end
 
 `#uuid?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L175)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L160)
 
 **Returns**
 
-[Boolean](introspection-boolean) — false — override in UUID
+`Boolean` — false — override in UUID
 
 ---

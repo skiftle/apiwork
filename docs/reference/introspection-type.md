@@ -37,7 +37,7 @@ api.types[:payment_method].discriminator # => :type
 
 **Returns**
 
-[Boolean](introspection-boolean) — whether this type is deprecated
+`Boolean` — whether this type is deprecated
 
 ---
 
@@ -49,7 +49,7 @@ api.types[:payment_method].discriminator # => :type
 
 **Returns**
 
-[String](introspection-string), `nil` — type description
+`String`, `nil` — type description
 
 ---
 
@@ -73,7 +73,7 @@ api.types[:payment_method].discriminator # => :type
 
 **Returns**
 
-[Object](introspection-object), `nil` — example value
+`Object`, `nil` — example value
 
 ---
 
@@ -85,7 +85,7 @@ api.types[:payment_method].discriminator # => :type
 
 **Returns**
 
-[Boolean](introspection-boolean) — whether this is an object type
+`Boolean` — whether this is an object type
 
 ---
 
@@ -101,7 +101,7 @@ api.types[:payment_method].discriminator # => :type
 
 **See also**
 
-- [Param](introspection-param)
+- [Param](introspection-param-base)
 
 ---
 
@@ -137,7 +137,7 @@ api.types[:payment_method].discriminator # => :type
 
 **Returns**
 
-[Boolean](introspection-boolean) — whether this is a union type
+`Boolean` — whether this is a union type
 
 ---
 

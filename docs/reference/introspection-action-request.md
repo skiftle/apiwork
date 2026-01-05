@@ -35,7 +35,7 @@ request.query[:page]        # => Param for page param
 
 **See also**
 
-- [Param](introspection-param)
+- [Param](introspection-param-base)
 
 ---
 
@@ -47,7 +47,7 @@ request.query[:page]        # => Param for page param
 
 **Returns**
 
-[Boolean](introspection-boolean) — whether body parameters are defined
+`Boolean` — whether body parameters are defined
 
 ---
 
@@ -63,7 +63,7 @@ request.query[:page]        # => Param for page param
 
 **See also**
 
-- [Param](introspection-param)
+- [Param](introspection-param-base)
 
 ---
 
@@ -75,7 +75,7 @@ request.query[:page]        # => Param for page param
 
 **Returns**
 
-[Boolean](introspection-boolean) — whether query parameters are defined
+`Boolean` — whether query parameters are defined
 
 ---
 

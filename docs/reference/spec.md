@@ -36,7 +36,7 @@ Generates a spec for an API.
 
 **Returns**
 
-[String](introspection-string) — the generated spec
+`String` — the generated spec
 
 **See also**
 

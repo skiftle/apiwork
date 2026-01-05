@@ -65,7 +65,7 @@ Returns whether this schema is abstract.
 
 **Returns**
 
-[Boolean](introspection-boolean) — true if abstract
+`Boolean` — true if abstract
 
 ---
 
@@ -215,7 +215,7 @@ what this resource represents.
 
 **Returns**
 
-[String](introspection-string), `nil` — the description
+`String`, `nil` — the description
 
 **Example**
 

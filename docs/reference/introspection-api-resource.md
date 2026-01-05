@@ -40,7 +40,7 @@ end
 
 **See also**
 
-- [Action](introspection-action)
+- [Action](adapter-action)
 
 ---
 
@@ -52,7 +52,7 @@ end
 
 **Returns**
 
-[String](introspection-string) — resource identifier
+`String` — resource identifier
 
 ---
 
@@ -76,7 +76,7 @@ end
 
 **Returns**
 
-[String](introspection-string) — URL path segment
+`String` — URL path segment
 
 ---
 

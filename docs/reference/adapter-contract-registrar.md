@@ -69,7 +69,7 @@ Defines an action with query, body, and response.
 
 **Returns**
 
-[ActionDefinition](introspection-action-definition) — the action definition
+[ActionDefinition](contract-action-definition) — the action definition
 
 **See also**
 
@@ -169,7 +169,7 @@ Resolves an enum registered in this contract.
 
 **Returns**
 
-[Array](introspection-array), `nil` — the enum values if registered
+`Array`, `nil` — the enum values if registered
 
 ---
 
@@ -189,7 +189,7 @@ Resolves a type registered in this contract.
 
 **Returns**
 
-[Object](introspection-object), `nil` — the type definition if registered
+`Object`, `nil` — the type definition if registered
 
 ---
 

@@ -52,7 +52,7 @@ metadata       # API metadata (info, etc.)
 path           # API mount path
 ```
 
-The `data` object contains the full introspection output. For details on the format, field types, and properties, see [Format](../core/introspection/format.md).
+The `data` object contains the full introspection output. For details on the format, field types, and properties, see [Introspection](../core/introspection/).
 
 ### Iteration
 

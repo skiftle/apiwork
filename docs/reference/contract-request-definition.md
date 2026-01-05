@@ -10,7 +10,7 @@ next: false
 
 Defines query params and body for a request.
 
-Returns [ParamDefinition](introspection-param-definition) via `query` and `body`.
+Returns [ParamDefinition](contract-param-definition) via `query` and `body`.
 Use as a declarative builder - do not rely on internal state.
 
 ## Instance Methods
@@ -28,7 +28,7 @@ Use `param` inside the block to define fields.
 
 **Returns**
 
-[ParamDefinition](introspection-param-definition) — the body param definition
+[ParamDefinition](contract-param-definition) — the body param definition
 
 **See also**
 
@@ -60,7 +60,7 @@ Use `param` inside the block to define parameters.
 
 **Returns**
 
-[ParamDefinition](introspection-param-definition) — the query param definition
+[ParamDefinition](contract-param-definition) — the query param definition
 
 **See also**
 

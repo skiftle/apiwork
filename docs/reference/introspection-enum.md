@@ -28,7 +28,7 @@ api.enums[:status].deprecated?  # => false
 
 **Returns**
 
-[Boolean](introspection-boolean) — whether this enum is deprecated
+`Boolean` — whether this enum is deprecated
 
 ---
 
@@ -40,7 +40,7 @@ api.enums[:status].deprecated?  # => false
 
 **Returns**
 
-[String](introspection-string), `nil` — enum description
+`String`, `nil` — enum description
 
 ---
 
@@ -52,7 +52,7 @@ api.enums[:status].deprecated?  # => false
 
 **Returns**
 
-[String](introspection-string), `nil` — example value
+`String`, `nil` — example value
 
 ---
 

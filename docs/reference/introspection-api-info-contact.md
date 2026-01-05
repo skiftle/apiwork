@@ -29,7 +29,7 @@ contact.url    # => "https://example.com/support"
 
 **Returns**
 
-[String](introspection-string), `nil` — contact email
+`String`, `nil` — contact email
 
 ---
 
@@ -41,7 +41,7 @@ contact.url    # => "https://example.com/support"
 
 **Returns**
 
-[String](introspection-string), `nil` — contact name
+`String`, `nil` — contact name
 
 ---
 
@@ -65,6 +65,6 @@ contact.url    # => "https://example.com/support"
 
 **Returns**
 
-[String](introspection-string), `nil` — contact URL
+`String`, `nil` — contact URL
 
 ---

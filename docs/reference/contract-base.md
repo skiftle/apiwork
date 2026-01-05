@@ -77,7 +77,7 @@ Returns whether this contract is abstract.
 
 **Returns**
 
-[Boolean](introspection-boolean) — true if abstract
+`Boolean` — true if abstract
 
 ---
 
@@ -102,7 +102,7 @@ response format, and documentation.
 
 **Returns**
 
-[ActionDefinition](introspection-action-definition) — the action definition
+[ActionDefinition](contract-action-definition) — the action definition
 
 **See also**
 
@@ -220,7 +220,7 @@ If not set, prefix is derived from schema's root_key or class name.
 
 **Returns**
 
-[String](introspection-string), `nil` — the scope prefix
+`String`, `nil` — the scope prefix
 
 **Example: Custom scope prefix**
 
@@ -489,7 +489,7 @@ Returns whether the contract has validation issues.
 
 **Returns**
 
-[Boolean](introspection-boolean) — true if any validation issues
+`Boolean` — true if any validation issues
 
 ---
 
@@ -527,6 +527,6 @@ Returns whether the contract passed validation.
 
 **Returns**
 
-[Boolean](introspection-boolean) — true if no validation issues
+`Boolean` — true if no validation issues
 
 ---

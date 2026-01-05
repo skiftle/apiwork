@@ -72,7 +72,7 @@ Resolves an enum registered at the API level.
 
 **Returns**
 
-[Array](introspection-array), `nil` — the enum values if registered
+`Array`, `nil` — the enum values if registered
 
 ---
 
@@ -92,7 +92,7 @@ Resolves a type registered at the API level.
 
 **Returns**
 
-[Object](introspection-object), `nil` — the type definition if registered
+`Object`, `nil` — the type definition if registered
 
 ---
 

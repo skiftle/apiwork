@@ -87,7 +87,7 @@ end
 
 **Returns**
 
-[String](introspection-string), `nil` — API mount path (e.g., "/api/v1")
+`String`, `nil` — API mount path (e.g., "/api/v1")
 
 ---
 
@@ -103,7 +103,7 @@ end
 
 **See also**
 
-- [API::Resource](api-resource)
+- [API::Resource](introspection-api-resource)
 
 ---
 

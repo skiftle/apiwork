@@ -10,7 +10,7 @@ next: false
 
 Defines body for a response.
 
-Returns [ParamDefinition](introspection-param-definition) via `body`.
+Returns [ParamDefinition](contract-param-definition) via `body`.
 Use as a declarative builder - do not rely on internal state.
 
 ## Instance Methods
@@ -28,7 +28,7 @@ When using schema!, body is auto-generated from schema attributes.
 
 **Returns**
 
-[ParamDefinition](introspection-param-definition) — the body param definition
+[ParamDefinition](contract-param-definition) — the body param definition
 
 **See also**
 
@@ -87,6 +87,6 @@ Returns true if this response is 204 No Content.
 
 **Returns**
 
-[Boolean](introspection-boolean)
+`Boolean`
 
 ---

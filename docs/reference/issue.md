@@ -47,7 +47,7 @@ coercion, or constraint checks. Access via `contract.issues`.
 
 **Returns**
 
-[String](introspection-string) — human-readable error message
+`String` — human-readable error message
 
 ---
 
@@ -83,7 +83,7 @@ coercion, or constraint checks. Access via `contract.issues`.
 
 **Returns**
 
-[String](introspection-string) — JSON Pointer to the invalid field (e.g., "/user/email")
+`String` — JSON Pointer to the invalid field (e.g., "/user/email")
 
 ---
 
@@ -107,6 +107,6 @@ coercion, or constraint checks. Access via `contract.issues`.
 
 **Returns**
 
-[String](introspection-string) — human-readable string representation
+`String` — human-readable string representation
 
 ---

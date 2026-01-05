@@ -40,7 +40,7 @@ response.body?        # => false
 
 **See also**
 
-- [Param](introspection-param)
+- [Param](introspection-param-base)
 
 ---
 
@@ -52,7 +52,7 @@ response.body?        # => false
 
 **Returns**
 
-[Boolean](introspection-boolean) — whether a body is defined
+`Boolean` — whether a body is defined
 
 ---
 
@@ -64,7 +64,7 @@ response.body?        # => false
 
 **Returns**
 
-[Boolean](introspection-boolean) — whether this is a no-content response (204)
+`Boolean` — whether this is a no-content response (204)
 
 ---
 

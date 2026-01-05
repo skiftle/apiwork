@@ -255,6 +255,8 @@ module Apiwork
     end
 
     def linkable_type?(type_name)
+      return false if RUBY_PRIMITIVES.include?(type_name)
+
       @linkable_types ||= build_linkable_types
       @linkable_types.include?(type_name)
     end
@@ -263,8 +265,43 @@ module Apiwork
       YARD::Registry.all(:class, :module)
         .select { |obj| obj.path.start_with?('Apiwork') }
         .select { |obj| public_api?(obj) }
-        .flat_map { |obj| [obj.name.to_s, obj.path.delete_prefix('Apiwork::')] }
+        .flat_map do |obj|
+          path = obj.path.delete_prefix('Apiwork::')
+          parts = path.split('::')
+          Array.new(parts.size) { |i| parts[i..].join('::') }
+        end
+        .reject { |name| RUBY_PRIMITIVES.include?(name) }
         .to_set
+    end
+
+    def type_path_lookup
+      @type_path_lookup ||= build_type_path_lookup
+    end
+
+    RUBY_PRIMITIVES = %w[
+      String Integer Float Boolean Symbol Hash Array Object
+      TrueClass FalseClass NilClass Numeric Proc
+    ].to_set.freeze
+
+    def build_type_path_lookup
+      lookup = {}
+      YARD::Registry.all(:class, :module)
+        .select { |obj| obj.path.start_with?('Apiwork') }
+        .select { |obj| public_api?(obj) }
+        .each do |obj|
+          full_path = obj.path.delete_prefix('Apiwork::')
+          parts = full_path.split('::')
+
+          parts.size.times do |i|
+            partial_path = parts[i..].join('::')
+            next if RUBY_PRIMITIVES.include?(partial_path)
+
+            lookup[partial_path] ||= full_path
+          end
+        end
+
+      lookup['Param'] = 'Introspection::Param::Base'
+      lookup
     end
 
     def yard_ref_to_path(ref)
@@ -284,7 +321,8 @@ module Apiwork
     end
 
     def class_to_filepath(class_name)
-      without_apiwork = class_name.delete_prefix('Apiwork::')
+      resolved = type_path_lookup[class_name] || class_name
+      without_apiwork = resolved.delete_prefix('Apiwork::')
 
       if without_apiwork.start_with?('Contract::')
         normalized = without_apiwork.delete_prefix('Contract::')
@@ -293,37 +331,9 @@ module Apiwork
         dasherize(without_apiwork.gsub('::', '-'))
       elsif without_apiwork.start_with?('Data::')
         "spec-#{dasherize(without_apiwork.gsub('::', '-'))}"
-      elsif introspection_class?(class_name)
-        "introspection-#{dasherize(without_apiwork)}"
-      elsif contract_class?(class_name)
-        "contract-#{dasherize(without_apiwork)}"
       else
         dasherize(without_apiwork.gsub('::', '-'))
       end
-    end
-
-    def contract_class?(class_name)
-      @contract_classes ||= build_contract_classes
-      @contract_classes.include?(class_name)
-    end
-
-    def build_contract_classes
-      YARD::Registry.all(:class, :module)
-        .select { |obj| obj.path.start_with?('Apiwork::Contract::') }
-        .map { |obj| obj.name.to_s }
-        .to_set
-    end
-
-    def introspection_class?(class_name)
-      @introspection_classes ||= build_introspection_classes
-      @introspection_classes.include?(class_name)
-    end
-
-    def build_introspection_classes
-      YARD::Registry.all(:class, :module)
-        .select { |obj| obj.path.start_with?('Apiwork::Introspection::') }
-        .map { |obj| obj.name.to_s }
-        .to_set
     end
 
     def render_module(mod, order)
