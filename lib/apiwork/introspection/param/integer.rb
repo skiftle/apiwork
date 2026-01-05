@@ -24,6 +24,11 @@ module Apiwork
       #     param.enum      # => [1, 2, 3]
       #     param.enum_ref? # => false
       #   end
+      #
+      # @example Format (scalar-only, use guard)
+      #   if param.scalar? && param.formattable?
+      #     param.format # => :int32 or nil
+      #   end
       class Integer < Base
         # @api public
         # @return [Numeric, nil] the minimum value constraint

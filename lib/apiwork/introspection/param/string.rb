@@ -23,6 +23,11 @@ module Apiwork
       #     param.enum      # => ["draft", "published"]
       #     param.enum_ref? # => false
       #   end
+      #
+      # @example Format (scalar-only, use guard)
+      #   if param.scalar? && param.formattable?
+      #     param.format # => :email or nil
+      #   end
       class String < Base
         # @api public
         # @return [Symbol, nil] the format constraint (:email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password)

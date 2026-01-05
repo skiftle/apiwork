@@ -6,7 +6,7 @@ next: false
 
 # Introspection::Param::String
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L26)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L31)
 
 String param representing text values.
 
@@ -34,6 +34,14 @@ param.formattable? # => true
 if param.scalar? && param.enum?
   param.enum      # => ["draft", "published"]
   param.enum_ref? # => false
+end
+```
+
+**Example: Format (scalar-only, use guard)**
+
+```ruby
+if param.scalar? && param.formattable?
+  param.format # => :email or nil
 end
 ```
 
@@ -79,7 +87,7 @@ end
 
 `#boundable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L78)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L83)
 
 **Returns**
 
@@ -175,7 +183,7 @@ end
 
 `#enum`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L65)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L70)
 
 **Returns**
 
@@ -191,7 +199,7 @@ end
 
 `#enum?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L58)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L63)
 
 **Returns**
 
@@ -215,7 +223,7 @@ end
 
 `#enum_ref?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L72)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L77)
 
 **Returns**
 
@@ -255,7 +263,7 @@ end
 
 `#format`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L29)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L34)
 
 **Returns**
 
@@ -267,7 +275,7 @@ end
 
 `#formattable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L85)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L90)
 
 **Returns**
 
@@ -319,7 +327,7 @@ end
 
 `#max`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L41)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L46)
 
 **Returns**
 
@@ -331,7 +339,7 @@ end
 
 `#min`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L35)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L40)
 
 **Returns**
 
@@ -403,7 +411,7 @@ end
 
 `#scalar?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L47)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L52)
 
 **Returns**
 
@@ -415,7 +423,7 @@ end
 
 `#string?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L91)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L96)
 
 **Returns**
 
@@ -451,7 +459,7 @@ end
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L97)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L102)
 
 **Returns**
 

@@ -6,7 +6,7 @@ next: false
 
 # Introspection::Param::Integer
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L27)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L32)
 
 Integer param representing whole number values.
 
@@ -35,6 +35,14 @@ param.formattable? # => true
 if param.scalar? && param.enum?
   param.enum      # => [1, 2, 3]
   param.enum_ref? # => false
+end
+```
+
+**Example: Format (scalar-only, use guard)**
+
+```ruby
+if param.scalar? && param.formattable?
+  param.format # => :int32 or nil
 end
 ```
 
@@ -80,7 +88,7 @@ end
 
 `#boundable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L85)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L90)
 
 **Returns**
 
@@ -176,7 +184,7 @@ end
 
 `#enum`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L66)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L71)
 
 **Returns**
 
@@ -192,7 +200,7 @@ end
 
 `#enum?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L59)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L64)
 
 **Returns**
 
@@ -216,7 +224,7 @@ end
 
 `#enum_ref?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L73)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L78)
 
 **Returns**
 
@@ -256,7 +264,7 @@ end
 
 `#format`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L42)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L47)
 
 **Returns**
 
@@ -268,7 +276,7 @@ end
 
 `#formattable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L92)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L97)
 
 **Returns**
 
@@ -284,7 +292,7 @@ end
 
 `#integer?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L98)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L103)
 
 **Returns**
 
@@ -320,7 +328,7 @@ end
 
 `#max`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L36)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L41)
 
 **Returns**
 
@@ -332,7 +340,7 @@ end
 
 `#min`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L30)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L35)
 
 **Returns**
 
@@ -356,7 +364,7 @@ end
 
 `#numeric?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L79)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L84)
 
 **Returns**
 
@@ -404,7 +412,7 @@ end
 
 `#scalar?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L48)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L53)
 
 **Returns**
 
@@ -452,7 +460,7 @@ end
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L104)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L109)
 
 **Returns**
 
