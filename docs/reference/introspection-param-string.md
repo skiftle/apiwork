@@ -1,25 +1,26 @@
 ---
-order: 41
+order: 44
 prev: false
 next: false
 ---
 
-# Introspection::Param::Scalar::Decimal
+# Introspection::Param::String
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/decimal.rb#L18)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L18)
 
-Decimal param.
+String param.
 
 **Example**
 
 ```ruby
-param.type       # => :decimal
-param.min        # => 0.0 or nil
-param.max        # => 100.0 or nil
-param.scalar?    # => true
-param.numeric?   # => true
-param.boundable? # => true
-param.decimal?   # => true
+param.type         # => :string
+param.format       # => :email or nil
+param.min          # => 1 or nil
+param.max          # => 255 or nil
+param.scalar?      # => true
+param.string?      # => true
+param.boundable?   # => true
+param.formattable? # => true
 ```
 
 ## Instance Methods
@@ -64,11 +65,11 @@ param.decimal?   # => true
 
 `#boundable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/decimal.rb#L39)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L64)
 
 **Returns**
 
-[Boolean](introspection-boolean) — true - decimals support min/max constraints
+[Boolean](introspection-boolean) — true - strings support min/max length constraints
 
 ---
 
@@ -100,11 +101,11 @@ param.decimal?   # => true
 
 `#decimal?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/decimal.rb#L45)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L135)
 
 **Returns**
 
-[Boolean](introspection-boolean) — true for decimal params
+[Boolean](introspection-boolean) — whether this is a decimal type
 
 ---
 
@@ -160,7 +161,7 @@ param.decimal?   # => true
 
 `#enum`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar.rb#L21)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L52)
 
 **Returns**
 
@@ -172,7 +173,7 @@ param.decimal?   # => true
 
 `#enum?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar.rb#L15)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L46)
 
 **Returns**
 
@@ -184,7 +185,7 @@ param.decimal?   # => true
 
 `#enum_ref?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar.rb#L27)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L58)
 
 **Returns**
 
@@ -216,15 +217,28 @@ param.decimal?   # => true
 
 ---
 
+### #format
+
+`#format`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L22)
+
+**Returns**
+
+`Symbol`, `nil` — format constraint
+Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
+
+---
+
 ### #formattable?
 
 `#formattable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L111)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L70)
 
 **Returns**
 
-[Boolean](introspection-boolean) — whether this type supports format constraints
+[Boolean](introspection-boolean) — true - strings support format constraints
 
 ---
 
@@ -268,11 +282,11 @@ param.decimal?   # => true
 
 `#max`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/decimal.rb#L27)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L34)
 
 **Returns**
 
-`Numeric`, `nil` — maximum value constraint
+[Integer](introspection-integer), `nil` — maximum string length
 
 ---
 
@@ -280,11 +294,11 @@ param.decimal?   # => true
 
 `#min`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/decimal.rb#L21)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L28)
 
 **Returns**
 
-`Numeric`, `nil` — minimum value constraint
+[Integer](introspection-integer), `nil` — minimum string length
 
 ---
 
@@ -304,11 +318,11 @@ param.decimal?   # => true
 
 `#numeric?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/decimal.rb#L33)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L99)
 
 **Returns**
 
-[Boolean](introspection-boolean) — true for numeric params
+[Boolean](introspection-boolean) — whether this is a numeric type (integer, float, decimal)
 
 ---
 
@@ -352,7 +366,7 @@ param.decimal?   # => true
 
 `#scalar?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar.rb#L9)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L40)
 
 **Returns**
 
@@ -364,11 +378,11 @@ param.decimal?   # => true
 
 `#string?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L117)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L76)
 
 **Returns**
 
-[Boolean](introspection-boolean) — whether this is a string type
+[Boolean](introspection-boolean) — true for string params
 
 ---
 
@@ -400,7 +414,7 @@ param.decimal?   # => true
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/decimal.rb#L51)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L82)
 
 **Returns**
 

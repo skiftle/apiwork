@@ -1,21 +1,25 @@
 ---
-order: 39
+order: 37
 prev: false
 next: false
 ---
 
-# Introspection::Param::Scalar::Date
+# Introspection::Param::Decimal
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/date.rb#L14)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/decimal.rb#L17)
 
-Date param.
+Decimal param.
 
 **Example**
 
 ```ruby
-param.type    # => :date
-param.scalar? # => true
-param.date?   # => true
+param.type       # => :decimal
+param.min        # => 0.0 or nil
+param.max        # => 100.0 or nil
+param.scalar?    # => true
+param.numeric?   # => true
+param.boundable? # => true
+param.decimal?   # => true
 ```
 
 ## Instance Methods
@@ -60,11 +64,11 @@ param.date?   # => true
 
 `#boundable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L105)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/decimal.rb#L62)
 
 **Returns**
 
-[Boolean](introspection-boolean) — whether this type supports min/max constraints
+[Boolean](introspection-boolean) — true - decimals support min/max constraints
 
 ---
 
@@ -72,11 +76,11 @@ param.date?   # => true
 
 `#date?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/date.rb#L17)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L153)
 
 **Returns**
 
-[Boolean](introspection-boolean) — true for date params
+[Boolean](introspection-boolean) — whether this is a date type
 
 ---
 
@@ -96,11 +100,11 @@ param.date?   # => true
 
 `#decimal?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L135)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/decimal.rb#L68)
 
 **Returns**
 
-[Boolean](introspection-boolean) — whether this is a decimal type
+[Boolean](introspection-boolean) — true for decimal params
 
 ---
 
@@ -156,7 +160,7 @@ param.date?   # => true
 
 `#enum`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar.rb#L21)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/decimal.rb#L44)
 
 **Returns**
 
@@ -168,7 +172,7 @@ param.date?   # => true
 
 `#enum?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar.rb#L15)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/decimal.rb#L38)
 
 **Returns**
 
@@ -180,7 +184,7 @@ param.date?   # => true
 
 `#enum_ref?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar.rb#L27)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/decimal.rb#L50)
 
 **Returns**
 
@@ -260,6 +264,30 @@ param.date?   # => true
 
 ---
 
+### #max
+
+`#max`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/decimal.rb#L26)
+
+**Returns**
+
+`Numeric`, `nil` — maximum value constraint
+
+---
+
+### #min
+
+`#min`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/decimal.rb#L20)
+
+**Returns**
+
+`Numeric`, `nil` — minimum value constraint
+
+---
+
 ### #nullable?
 
 `#nullable?`
@@ -276,11 +304,11 @@ param.date?   # => true
 
 `#numeric?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L99)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/decimal.rb#L56)
 
 **Returns**
 
-[Boolean](introspection-boolean) — whether this is a numeric type (integer, float, decimal)
+[Boolean](introspection-boolean) — true for numeric params
 
 ---
 
@@ -324,7 +352,7 @@ param.date?   # => true
 
 `#scalar?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar.rb#L9)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/decimal.rb#L32)
 
 **Returns**
 
@@ -372,7 +400,7 @@ param.date?   # => true
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L195)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/decimal.rb#L74)
 
 **Returns**
 

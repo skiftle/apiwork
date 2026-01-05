@@ -3,7 +3,14 @@
 module Apiwork
   module Introspection
     module Param
-      class Scalar < Base
+      # @api public
+      # Time param.
+      #
+      # @example
+      #   param.type    # => :time
+      #   param.scalar? # => true
+      #   param.time?   # => true
+      class Time < Base
         # @api public
         # @return [Boolean] true for all scalar types
         def scalar?
@@ -26,6 +33,18 @@ module Apiwork
         # @return [Boolean] whether this is a reference to a named enum
         def enum_ref?
           @dump[:enum].is_a?(Symbol)
+        end
+
+        # @api public
+        # @return [Boolean] true for time params
+        def time?
+          true
+        end
+
+        # @api public
+        # @return [Boolean] false - times do not support format constraints
+        def formattable?
+          false
         end
       end
     end

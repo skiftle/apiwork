@@ -1,25 +1,21 @@
 ---
-order: 42
+order: 34
 prev: false
 next: false
 ---
 
-# Introspection::Param::Scalar::Float
+# Introspection::Param::Boolean
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/float.rb#L18)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/boolean.rb#L13)
 
-Float param.
+Boolean param.
 
 **Example**
 
 ```ruby
-param.type       # => :float
-param.min        # => 0.0 or nil
-param.max        # => 100.0 or nil
-param.scalar?    # => true
-param.numeric?   # => true
-param.boundable? # => true
-param.float?     # => true
+param.type     # => :boolean
+param.scalar?  # => true
+param.boolean? # => true
 ```
 
 ## Instance Methods
@@ -52,11 +48,11 @@ param.float?     # => true
 
 `#boolean?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L141)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/boolean.rb#L40)
 
 **Returns**
 
-[Boolean](introspection-boolean) — whether this is a boolean type
+[Boolean](introspection-boolean) — true for boolean params
 
 ---
 
@@ -64,11 +60,11 @@ param.float?     # => true
 
 `#boundable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/float.rb#L39)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L105)
 
 **Returns**
 
-[Boolean](introspection-boolean) — true - floats support min/max constraints
+[Boolean](introspection-boolean) — whether this type supports min/max constraints
 
 ---
 
@@ -160,7 +156,7 @@ param.float?     # => true
 
 `#enum`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar.rb#L21)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/boolean.rb#L28)
 
 **Returns**
 
@@ -172,7 +168,7 @@ param.float?     # => true
 
 `#enum?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar.rb#L15)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/boolean.rb#L22)
 
 **Returns**
 
@@ -184,7 +180,7 @@ param.float?     # => true
 
 `#enum_ref?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar.rb#L27)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/boolean.rb#L34)
 
 **Returns**
 
@@ -208,11 +204,11 @@ param.float?     # => true
 
 `#float?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/float.rb#L45)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L129)
 
 **Returns**
 
-[Boolean](introspection-boolean) — true for float params
+[Boolean](introspection-boolean) — whether this is a float type
 
 ---
 
@@ -264,30 +260,6 @@ param.float?     # => true
 
 ---
 
-### #max
-
-`#max`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/float.rb#L27)
-
-**Returns**
-
-`Numeric`, `nil` — maximum value constraint
-
----
-
-### #min
-
-`#min`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/float.rb#L21)
-
-**Returns**
-
-`Numeric`, `nil` — minimum value constraint
-
----
-
 ### #nullable?
 
 `#nullable?`
@@ -304,11 +276,11 @@ param.float?     # => true
 
 `#numeric?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/float.rb#L33)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L99)
 
 **Returns**
 
-[Boolean](introspection-boolean) — true for numeric params
+[Boolean](introspection-boolean) — whether this is a numeric type (integer, float, decimal)
 
 ---
 
@@ -352,7 +324,7 @@ param.float?     # => true
 
 `#scalar?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar.rb#L9)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/boolean.rb#L16)
 
 **Returns**
 
@@ -400,7 +372,7 @@ param.float?     # => true
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/float.rb#L51)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L213)
 
 **Returns**
 

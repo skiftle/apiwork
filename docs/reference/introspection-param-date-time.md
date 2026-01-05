@@ -1,12 +1,12 @@
 ---
-order: 40
+order: 36
 prev: false
 next: false
 ---
 
-# Introspection::Param::Scalar::DateTime
+# Introspection::Param::DateTime
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/date_time.rb#L14)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/date_time.rb#L13)
 
 DateTime param.
 
@@ -84,7 +84,7 @@ param.datetime? # => true
 
 `#datetime?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/date_time.rb#L17)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/date_time.rb#L40)
 
 **Returns**
 
@@ -156,7 +156,7 @@ param.datetime? # => true
 
 `#enum`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar.rb#L21)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/date_time.rb#L28)
 
 **Returns**
 
@@ -168,7 +168,7 @@ param.datetime? # => true
 
 `#enum?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar.rb#L15)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/date_time.rb#L22)
 
 **Returns**
 
@@ -180,7 +180,7 @@ param.datetime? # => true
 
 `#enum_ref?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar.rb#L27)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/date_time.rb#L34)
 
 **Returns**
 
@@ -324,7 +324,7 @@ param.datetime? # => true
 
 `#scalar?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar.rb#L9)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/date_time.rb#L16)
 
 **Returns**
 
@@ -372,7 +372,7 @@ param.datetime? # => true
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L195)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L213)
 
 **Returns**
 

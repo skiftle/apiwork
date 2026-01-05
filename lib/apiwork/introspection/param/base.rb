@@ -107,12 +107,6 @@ module Apiwork
         end
 
         # @api public
-        # @return [Boolean] whether this type supports format constraints
-        def formattable?
-          false
-        end
-
-        # @api public
         # @return [Boolean] whether this is a string type
         def string?
           false

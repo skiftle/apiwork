@@ -1,5 +1,5 @@
 ---
-order: 33
+order: 40
 prev: false
 next: false
 ---
@@ -148,6 +148,42 @@ param.json? # => true
 **Returns**
 
 [String](introspection-string), `nil` — field description
+
+---
+
+### #enum
+
+`#enum`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L201)
+
+**Returns**
+
+[Array](introspection-array), `Symbol`, `nil` — inline values (Array) or ref name (Symbol)
+
+---
+
+### #enum?
+
+`#enum?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L195)
+
+**Returns**
+
+[Boolean](introspection-boolean) — whether this param has enum constraints
+
+---
+
+### #enum_ref?
+
+`#enum_ref?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L207)
+
+**Returns**
+
+[Boolean](introspection-boolean) — whether this is a reference to a named enum
 
 ---
 
@@ -335,7 +371,7 @@ param.json? # => true
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L195)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L213)
 
 **Returns**
 

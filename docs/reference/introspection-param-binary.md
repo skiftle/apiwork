@@ -1,21 +1,21 @@
 ---
-order: 45
+order: 33
 prev: false
 next: false
 ---
 
-# Introspection::Param::Scalar::Time
+# Introspection::Param::Binary
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/time.rb#L14)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/binary.rb#L13)
 
-Time param.
+Binary param.
 
 **Example**
 
 ```ruby
-param.type    # => :time
+param.type    # => :binary
 param.scalar? # => true
-param.time?   # => true
+param.binary? # => true
 ```
 
 ## Instance Methods
@@ -36,11 +36,11 @@ param.time?   # => true
 
 `#binary?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L171)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/binary.rb#L40)
 
 **Returns**
 
-[Boolean](introspection-boolean) — whether this is a binary type
+[Boolean](introspection-boolean) — true for binary params
 
 ---
 
@@ -156,7 +156,7 @@ param.time?   # => true
 
 `#enum`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar.rb#L21)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/binary.rb#L28)
 
 **Returns**
 
@@ -168,7 +168,7 @@ param.time?   # => true
 
 `#enum?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar.rb#L15)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/binary.rb#L22)
 
 **Returns**
 
@@ -180,7 +180,7 @@ param.time?   # => true
 
 `#enum_ref?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar.rb#L27)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/binary.rb#L34)
 
 **Returns**
 
@@ -324,7 +324,7 @@ param.time?   # => true
 
 `#scalar?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar.rb#L9)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/binary.rb#L16)
 
 **Returns**
 
@@ -360,11 +360,11 @@ param.time?   # => true
 
 `#time?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/time.rb#L17)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L159)
 
 **Returns**
 
-[Boolean](introspection-boolean) — true for time params
+[Boolean](introspection-boolean) — whether this is a time type
 
 ---
 
@@ -372,7 +372,7 @@ param.time?   # => true
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L195)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L213)
 
 **Returns**
 

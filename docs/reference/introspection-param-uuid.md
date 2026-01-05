@@ -1,26 +1,21 @@
 ---
-order: 44
+order: 46
 prev: false
 next: false
 ---
 
-# Introspection::Param::Scalar::String
+# Introspection::Param::UUID
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/string.rb#L19)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/uuid.rb#L13)
 
-String param.
+UUID param.
 
 **Example**
 
 ```ruby
-param.type         # => :string
-param.format       # => :email or nil
-param.min          # => 1 or nil
-param.max          # => 255 or nil
-param.scalar?      # => true
-param.string?      # => true
-param.boundable?   # => true
-param.formattable? # => true
+param.type    # => :uuid
+param.scalar? # => true
+param.uuid?   # => true
 ```
 
 ## Instance Methods
@@ -65,11 +60,11 @@ param.formattable? # => true
 
 `#boundable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/string.rb#L41)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L105)
 
 **Returns**
 
-[Boolean](introspection-boolean) — true - strings support min/max length constraints
+[Boolean](introspection-boolean) — whether this type supports min/max constraints
 
 ---
 
@@ -161,7 +156,7 @@ param.formattable? # => true
 
 `#enum`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar.rb#L21)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/uuid.rb#L28)
 
 **Returns**
 
@@ -173,7 +168,7 @@ param.formattable? # => true
 
 `#enum?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar.rb#L15)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/uuid.rb#L22)
 
 **Returns**
 
@@ -185,7 +180,7 @@ param.formattable? # => true
 
 `#enum_ref?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar.rb#L27)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/uuid.rb#L34)
 
 **Returns**
 
@@ -217,28 +212,15 @@ param.formattable? # => true
 
 ---
 
-### #format
-
-`#format`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/string.rb#L23)
-
-**Returns**
-
-`Symbol`, `nil` — format constraint
-Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
-
----
-
 ### #formattable?
 
 `#formattable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/string.rb#L47)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L111)
 
 **Returns**
 
-[Boolean](introspection-boolean) — true - strings support format constraints
+[Boolean](introspection-boolean) — whether this type supports format constraints
 
 ---
 
@@ -275,30 +257,6 @@ Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
 **Returns**
 
 [Boolean](introspection-boolean) — whether this is a literal type
-
----
-
-### #max
-
-`#max`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/string.rb#L35)
-
-**Returns**
-
-[Integer](introspection-integer), `nil` — maximum string length
-
----
-
-### #min
-
-`#min`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/string.rb#L29)
-
-**Returns**
-
-[Integer](introspection-integer), `nil` — minimum string length
 
 ---
 
@@ -366,7 +324,7 @@ Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
 
 `#scalar?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar.rb#L9)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/uuid.rb#L16)
 
 **Returns**
 
@@ -378,11 +336,11 @@ Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
 
 `#string?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/string.rb#L53)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L117)
 
 **Returns**
 
-[Boolean](introspection-boolean) — true for string params
+[Boolean](introspection-boolean) — whether this is a string type
 
 ---
 
@@ -414,7 +372,7 @@ Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/scalar/string.rb#L59)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L213)
 
 **Returns**
 
@@ -464,10 +422,10 @@ Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
 
 `#uuid?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L165)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/uuid.rb#L40)
 
 **Returns**
 
-[Boolean](introspection-boolean) — whether this is a UUID type
+[Boolean](introspection-boolean) — true for UUID params
 
 ---
