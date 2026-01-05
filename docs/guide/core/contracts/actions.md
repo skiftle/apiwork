@@ -7,6 +7,7 @@ order: 2
 Actions define the request and response structure for its endpoint.
 
 ```ruby
+# app/contracts/api/v1/post_contract.rb
 action :create do
   request do
     body do
@@ -20,6 +21,14 @@ action :create do
       param :title, type: :string
     end
   end
+end
+```
+
+```ruby
+# app/controllers/api/v1/posts_controller.rb
+def create
+  post = Post.create(contract.body) # { title: }
+  expose post # { id:, title: }
 end
 ```
 
@@ -147,6 +156,22 @@ end
 The adapter uses `no_content!` by default for destroy actions. Override with `replace: true` if you need to return data.
 :::
 
+## Raises
+
+Declare which errors an action can raise:
+
+```ruby
+action :show do
+  raises :not_found, :forbidden
+end
+
+action :create do
+  raises :unprocessable_entity
+end
+```
+
+These appear in generated [OpenAPI specs](../specs/openapi.md) as possible error responses. You can also declare raises at the [API level](../api-definitions/configuration.md#raises) for errors common to all endpoints.
+
 ## Declaration Merging
 
 Actions support declaration merging — the same concept as TypeScript interface merging. When you define an action that already exists, the definitions combine rather than replace.
@@ -160,11 +185,11 @@ This is the same merge behavior used for [type definitions](../type-system/type-
 ```typescript
 // TypeScript interface merging
 interface CreateRequest {
-  body: { title: string }
+  body: { title: string };
 }
 
 interface CreateRequest {
-  body: { priority: string }
+  body: { priority: string };
 }
 
 // Result: { title: string; priority: string }
@@ -194,12 +219,12 @@ end
 
 Merging happens at every level of the hierarchy:
 
-| Level | Merge behavior |
-|-------|----------------|
-| `action` | Same action name merges request/response |
-| `request` / `response` | Merge query/body definitions |
-| `query` / `body` | Merge params |
-| Nested `param` | Merge nested shapes recursively |
+| Level                  | Merge behavior                           |
+| ---------------------- | ---------------------------------------- |
+| `action`               | Same action name merges request/response |
+| `request` / `response` | Merge query/body definitions             |
+| `query` / `body`       | Merge params                             |
+| Nested `param`         | Merge nested shapes recursively          |
 
 Example of deep merge:
 
@@ -266,47 +291,19 @@ end
 ```
 
 `replace: true` can be used on:
+
 - `request replace: true` — replace entire request
 - `response replace: true` — replace entire response
 
 ::: tip When to use replace
+
 - **Destroy actions** that return metadata instead of the resource
 - **Custom endpoints** with completely different shapes
 - **Minimal requests** that only accept specific fields
-:::
+  :::
 
-## Raises
-
-Declare which errors an action can raise:
-
-```ruby
-action :show do
-  raises :not_found, :forbidden
-end
-
-action :create do
-  raises :unprocessable_entity
-end
-```
-
-These appear in generated [OpenAPI specs](../specs/openapi.md) as possible error responses. You can also declare raises at the [API level](../api-definitions/configuration.md#raises) for errors common to all endpoints.
-
-Like other action definitions, `raises` follows [declaration merging](#declaration-merging) — multiple calls combine error codes:
-
-```ruby
-action :show do
-  raises :not_found
-end
-
-action :show do
-  raises :forbidden  # Adds to existing, doesn't replace
-end
-
-# Result: raises [:not_found, :forbidden]
-```
-
-::: info No replace option
-Unlike request/response, `raises` has no `replace:` option. This is intentional — you cannot opt out of errors the adapter may throw (like `:unprocessable_entity`). You can only add to the documented error codes, ensuring the spec reflects reality.
+::: info raises always merges
+`raises` has no `replace:` option. You cannot opt out of errors the adapter may throw (like `:unprocessable_entity`), ensuring the spec reflects reality.
 :::
 
 ## Metadata
