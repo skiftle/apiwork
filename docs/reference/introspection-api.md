@@ -39,7 +39,7 @@ end
 
 **Returns**
 
-`Hash{Symbol => Enum}` — registered enums
+Hash{Symbol =&gt; [Enum](introspection-enum)} — registered enums
 
 **See also**
 
@@ -55,7 +55,7 @@ end
 
 **Returns**
 
-`Hash{Symbol => ErrorCode}` — error code definitions
+Hash{Symbol =&gt; [ErrorCode](introspection-error-code)} — error code definitions
 
 **See also**
 
@@ -99,7 +99,7 @@ end
 
 **Returns**
 
-`Hash{Symbol => API::Resource}` — top-level resources
+Hash{Symbol =&gt; [API::Resource](introspection-api-resource)} — top-level resources
 
 **See also**
 
@@ -127,7 +127,7 @@ end
 
 **Returns**
 
-`Hash{Symbol => Type}` — registered custom types
+Hash{Symbol =&gt; [Type](introspection-type)} — registered custom types
 
 **See also**
 

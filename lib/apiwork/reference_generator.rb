@@ -243,15 +243,38 @@ module Apiwork
     end
 
     def linkify_type(type_str)
-      parts = type_str.split(/,\s*/)
-      linked_parts = parts.map do |part|
-        if linkable_type?(part)
-          "[#{part}](#{class_to_filepath(part)})"
-        else
-          "`#{part}`"
+      parsed = yard_type_parser.parse(type_str)
+      names = extract_type_names(parsed)
+      linkable_names = names.select { |n| linkable_type?(n) }
+
+      if linkable_names.empty?
+        "`#{type_str}`"
+      else
+        result = escape_html(type_str)
+        linkable_names.each do |name|
+          result.gsub!(/\b#{Regexp.escape(name)}\b/, "[#{name}](#{class_to_filepath(name)})")
         end
+        result
       end
-      linked_parts.join(', ')
+    rescue StandardError
+      "`#{type_str}`"
+    end
+
+    def yard_type_parser
+      YARD::Tags::TypesExplainer::Parser
+    end
+
+    def extract_type_names(types)
+      types.flat_map do |type|
+        case type
+        when YARD::Tags::TypesExplainer::HashCollectionType
+          [type.name] + extract_type_names(type.key_types) + extract_type_names(type.value_types)
+        when YARD::Tags::TypesExplainer::CollectionType, YARD::Tags::TypesExplainer::FixedCollectionType
+          [type.name] + extract_type_names(type.types)
+        else
+          [type.name]
+        end
+      end.uniq
     end
 
     def linkable_type?(type_name)
@@ -300,7 +323,6 @@ module Apiwork
           end
         end
 
-      lookup['Param'] = 'Introspection::Param::Base'
       lookup
     end
 
@@ -318,6 +340,11 @@ module Apiwork
       else
         class_to_filepath(ref)
       end
+    end
+
+    def see_ref_linkable?(ref)
+      class_part = ref.split(/[#.]/, 2).first
+      linkable_type?(class_part)
     end
 
     def class_to_filepath(class_name)
@@ -416,12 +443,15 @@ module Apiwork
       end
 
       if method[:see].any?
-        parts << "**See also**\n"
-        method[:see].each do |ref|
-          link_path = yard_ref_to_path(ref)
-          parts << "- [#{ref}](#{link_path})"
+        linkable_sees = method[:see].select { |ref| see_ref_linkable?(ref) }
+        if linkable_sees.any?
+          parts << "**See also**\n"
+          linkable_sees.each do |ref|
+            link_path = yard_ref_to_path(ref)
+            parts << "- [#{ref}](#{link_path})"
+          end
+          parts << ''
         end
-        parts << ''
       end
 
       if method[:examples].any?

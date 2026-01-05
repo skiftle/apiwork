@@ -36,7 +36,7 @@ end
 
 **Returns**
 
-`Hash{Symbol => Action}` — actions defined on this resource
+Hash{Symbol =&gt; [Action](adapter-action)} — actions defined on this resource
 
 **See also**
 
@@ -88,7 +88,7 @@ end
 
 **Returns**
 
-`Hash{Symbol => Resource}` — nested resources
+Hash{Symbol =&gt; [Resource](introspection-api-resource)} — nested resources
 
 ---
 

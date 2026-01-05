@@ -38,10 +38,6 @@ response.body?        # => false
 
 `Param`, `nil` — response body definition
 
-**See also**
-
-- [Param](introspection-param-base)
-
 ---
 
 ### #body?

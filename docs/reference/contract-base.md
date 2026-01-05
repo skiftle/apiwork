@@ -501,7 +501,7 @@ Returns whether the contract has validation issues.
 
 **Returns**
 
-`Array<Issue>` — validation issues (empty if valid)
+Array&lt;[Issue](issue)&gt; — validation issues (empty if valid)
 
 ---
 

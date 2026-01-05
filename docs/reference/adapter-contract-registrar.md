@@ -71,10 +71,6 @@ Defines an action with query, body, and response.
 
 [ActionDefinition](contract-action-definition) — the action definition
 
-**See also**
-
-- [Apiwork::Contract::Base.define_action](contract-base#define-action)
-
 ---
 
 ### #enum
@@ -91,10 +87,6 @@ Defines an enum type scoped to this contract.
 |------|------|-------------|
 | `name` | `Symbol` | the enum name |
 | `values` | `Array<String>` | allowed values |
-
-**See also**
-
-- [Apiwork::Contract::Base.enum](contract-base#enum)
 
 ---
 
@@ -132,10 +124,6 @@ Imports a type from another contract or the API.
 |------|------|-------------|
 | `type_name` | `Symbol` | the type to import |
 | `from` | `Class` | a [Contract::Base](contract-base) subclass |
-
-**See also**
-
-- [Apiwork::Contract::Base.import](contract-base#import)
 
 ---
 
@@ -227,10 +215,6 @@ Defines a named type scoped to this contract.
 |------|------|-------------|
 | `name` | `Symbol` | the type name |
 
-**See also**
-
-- [Apiwork::Contract::Base.type](contract-base#type)
-
 ---
 
 ### #union
@@ -246,9 +230,5 @@ Defines a union type scoped to this contract.
 | Name | Type | Description |
 |------|------|-------------|
 | `name` | `Symbol` | the union name |
-
-**See also**
-
-- [Apiwork::Contract::Base.union](contract-base#union)
 
 ---

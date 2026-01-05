@@ -37,7 +37,7 @@ end
 
 **Returns**
 
-`Hash{Symbol => Action}` — actions defined on this contract
+Hash{Symbol =&gt; [Action](adapter-action)} — actions defined on this contract
 
 **See also**
 
@@ -53,7 +53,7 @@ end
 
 **Returns**
 
-`Hash{Symbol => Enum}` — enums defined or referenced by this contract
+Hash{Symbol =&gt; [Enum](introspection-enum)} — enums defined or referenced by this contract
 
 **See also**
 
@@ -81,7 +81,7 @@ end
 
 **Returns**
 
-`Hash{Symbol => Type}` — custom types defined or referenced by this contract
+Hash{Symbol =&gt; [Type](introspection-type)} — custom types defined or referenced by this contract
 
 **See also**
 

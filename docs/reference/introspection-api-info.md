@@ -75,7 +75,7 @@ info.license&.name    # => "MIT"
 
 **Returns**
 
-`Array<Info::Server>` — server definitions
+Array&lt;[Info::Server](introspection-api-info-server)&gt; — server definitions
 
 **See also**
 

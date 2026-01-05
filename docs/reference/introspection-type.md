@@ -1,5 +1,5 @@
 ---
-order: 50
+order: 49
 prev: false
 next: false
 ---
@@ -98,10 +98,6 @@ api.types[:payment_method].discriminator # => :type
 **Returns**
 
 `Hash{Symbol => Param}` — nested fields for object types
-
-**See also**
-
-- [Param](introspection-param-base)
 
 ---
 
