@@ -122,14 +122,12 @@ module Apiwork
         return nil unless is_missing
 
         if param_options[:enum].present?
-          enum_values = EnumValue.values(param_options[:enum])
-
           Issue.new(
             code: :value_invalid,
             detail: 'Invalid value',
             meta: {
               actual: value,
-              expected: enum_values,
+              expected: resolve_enum_values(param_options[:enum]),
               field: name,
             },
             path: field_path,
@@ -157,18 +155,27 @@ module Apiwork
       end
 
       def validate_enum_value(name, value, enum, field_path)
-        return nil if EnumValue.valid?(value, enum)
+        enum_values = resolve_enum_values(enum)
+        return nil unless enum_values
+        return nil if enum_values.include?(value.to_s) || enum_values.include?(value)
 
         Issue.new(
           code: :value_invalid,
           detail: 'Invalid value',
           meta: {
             actual: value,
-            expected: EnumValue.values(enum),
+            expected: enum_values,
             field: name,
           },
           path: field_path,
         )
+      end
+
+      def resolve_enum_values(enum)
+        return nil if enum.nil?
+        return enum if enum.is_a?(Array)
+
+        @param_definition.contract_class.resolve_enum(enum)
       end
 
       def validate_union_param(name, value, param_options, field_path, max_depth, current_depth)

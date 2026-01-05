@@ -100,7 +100,7 @@ module Apiwork
             types << of_data[:ref].to_sym if of_data.is_a?(Hash) && of_data[:type] == :ref && of_data[:ref]
 
             enum_data = data[:enum]
-            enums << enum_data[:ref].to_sym if enum_data.is_a?(Hash) && enum_data[:ref]
+            enums << enum_data if enum_data.is_a?(Symbol)
 
             data.each_value { |value| collect_references(value, types, enums) }
           when Array

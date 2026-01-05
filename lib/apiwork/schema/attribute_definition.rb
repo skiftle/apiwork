@@ -190,16 +190,14 @@ module Apiwork
       end
 
       def validate_enum(value)
-        enum_values = enum.is_a?(Hash) ? enum.values : enum
-
-        return if enum_values.map(&:to_s).include?(value.to_s)
+        return if enum.map(&:to_s).include?(value.to_s)
 
         issue = Issue.new(
           code: :value_invalid,
           detail: 'Invalid value',
           meta: {
             actual: value,
-            expected: enum_values,
+            expected: enum,
             field: name,
           },
           path: [name],
