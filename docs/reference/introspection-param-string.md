@@ -1,26 +1,40 @@
 ---
-order: 44
+order: 45
 prev: false
 next: false
 ---
 
 # Introspection::Param::String
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L18)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L26)
 
-String param.
+String param representing text values.
 
-**Example**
+**Example: Basic usage**
 
 ```ruby
 param.type         # => :string
-param.format       # => :email or nil
-param.min          # => 1 or nil
-param.max          # => 255 or nil
 param.scalar?      # => true
 param.string?      # => true
+```
+
+**Example: Constraints**
+
+```ruby
+param.min          # => 1 or nil
+param.max          # => 255 or nil
+param.format       # => :email or nil
 param.boundable?   # => true
 param.formattable? # => true
+```
+
+**Example: Enum (scalar-only, use guard)**
+
+```ruby
+if param.scalar? && param.enum?
+  param.enum      # => ["draft", "published"]
+  param.enum_ref? # => false
+end
 ```
 
 ## Instance Methods
@@ -29,11 +43,11 @@ param.formattable? # => true
 
 `#array?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L75)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L99)
 
 **Returns**
 
-[Boolean](introspection-boolean) — whether this is an array type
+[Boolean](introspection-boolean) — false — override in Array
 
 ---
 
@@ -41,11 +55,11 @@ param.formattable? # => true
 
 `#binary?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L171)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L189)
 
 **Returns**
 
-[Boolean](introspection-boolean) — whether this is a binary type
+[Boolean](introspection-boolean) — false — override in Binary
 
 ---
 
@@ -53,11 +67,11 @@ param.formattable? # => true
 
 `#boolean?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L141)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L159)
 
 **Returns**
 
-[Boolean](introspection-boolean) — whether this is a boolean type
+[Boolean](introspection-boolean) — false — override in Boolean
 
 ---
 
@@ -65,11 +79,11 @@ param.formattable? # => true
 
 `#boundable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L64)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L78)
 
 **Returns**
 
-[Boolean](introspection-boolean) — true - strings support min/max length constraints
+[Boolean](introspection-boolean) — true if this param supports min/max constraints
 
 ---
 
@@ -77,11 +91,11 @@ param.formattable? # => true
 
 `#date?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L153)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L171)
 
 **Returns**
 
-[Boolean](introspection-boolean) — whether this is a date type
+[Boolean](introspection-boolean) — false — override in Date
 
 ---
 
@@ -89,11 +103,11 @@ param.formattable? # => true
 
 `#datetime?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L147)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L165)
 
 **Returns**
 
-[Boolean](introspection-boolean) — whether this is a datetime type
+[Boolean](introspection-boolean) — false — override in DateTime
 
 ---
 
@@ -101,11 +115,11 @@ param.formattable? # => true
 
 `#decimal?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L135)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L153)
 
 **Returns**
 
-[Boolean](introspection-boolean) — whether this is a decimal type
+[Boolean](introspection-boolean) — false — override in Decimal
 
 ---
 
@@ -113,11 +127,11 @@ param.formattable? # => true
 
 `#default`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L51)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L75)
 
 **Returns**
 
-[Object](introspection-object), `nil` — default value
+[Object](introspection-object), `nil` — the default value
 
 ---
 
@@ -125,11 +139,11 @@ param.formattable? # => true
 
 `#default?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L57)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L81)
 
 **Returns**
 
-[Boolean](introspection-boolean) — whether a default value is defined
+[Boolean](introspection-boolean) — true if a default value is defined
 
 ---
 
@@ -137,11 +151,11 @@ param.formattable? # => true
 
 `#deprecated?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L33)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L57)
 
 **Returns**
 
-[Boolean](introspection-boolean) — whether this field is deprecated
+[Boolean](introspection-boolean) — true if this field is deprecated
 
 ---
 
@@ -149,11 +163,11 @@ param.formattable? # => true
 
 `#description`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L39)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L63)
 
 **Returns**
 
-[String](introspection-string), `nil` — field description
+[String](introspection-string), `nil` — the field description
 
 ---
 
@@ -161,11 +175,15 @@ param.formattable? # => true
 
 `#enum`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L52)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L65)
 
 **Returns**
 
-[Array](introspection-array), `Symbol`, `nil` — inline values (Array) or ref name (Symbol)
+[Array](introspection-array), `Symbol`, `nil` — enum values (Array) or reference name (Symbol)
+
+**See also**
+
+- [#enum?](#enum?)
 
 ---
 
@@ -173,11 +191,23 @@ param.formattable? # => true
 
 `#enum?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L46)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L58)
 
 **Returns**
 
-[Boolean](introspection-boolean) — whether this scalar has enum constraints
+[Boolean](introspection-boolean) — true if this param has enum constraints
+
+**See also**
+
+- [#scalar?](#scalar?)
+
+**Example**
+
+```ruby
+if param.scalar? && param.enum?
+  param.enum # => ["draft", "published"]
+end
+```
 
 ---
 
@@ -185,11 +215,15 @@ param.formattable? # => true
 
 `#enum_ref?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L58)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L72)
 
 **Returns**
 
-[Boolean](introspection-boolean) — whether this is a reference to a named enum
+[Boolean](introspection-boolean) — true if enum is a reference to a named enum
+
+**See also**
+
+- [#enum?](#enum?)
 
 ---
 
@@ -197,11 +231,11 @@ param.formattable? # => true
 
 `#example`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L45)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L69)
 
 **Returns**
 
-[Object](introspection-object), `nil` — example value
+[Object](introspection-object), `nil` — the example value
 
 ---
 
@@ -209,11 +243,11 @@ param.formattable? # => true
 
 `#float?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L129)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L147)
 
 **Returns**
 
-[Boolean](introspection-boolean) — whether this is a float type
+[Boolean](introspection-boolean) — false — override in Float
 
 ---
 
@@ -221,12 +255,11 @@ param.formattable? # => true
 
 `#format`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L22)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L29)
 
 **Returns**
 
-`Symbol`, `nil` — format constraint
-Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
+`Symbol`, `nil` — the format constraint (:email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password)
 
 ---
 
@@ -234,11 +267,15 @@ Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
 
 `#formattable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L70)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L85)
 
 **Returns**
 
-[Boolean](introspection-boolean) — true - strings support format constraints
+[Boolean](introspection-boolean) — true if this param supports format constraints
+
+**See also**
+
+- [#scalar?](#scalar?)
 
 ---
 
@@ -246,11 +283,11 @@ Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
 
 `#integer?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L123)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L141)
 
 **Returns**
 
-[Boolean](introspection-boolean) — whether this is an integer type
+[Boolean](introspection-boolean) — false — override in Integer
 
 ---
 
@@ -258,11 +295,11 @@ Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
 
 `#json?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L177)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L195)
 
 **Returns**
 
-[Boolean](introspection-boolean) — whether this is a JSON type
+[Boolean](introspection-boolean) — false — override in JSON
 
 ---
 
@@ -270,11 +307,11 @@ Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
 
 `#literal?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L93)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L117)
 
 **Returns**
 
-[Boolean](introspection-boolean) — whether this is a literal type
+[Boolean](introspection-boolean) — false — override in Literal
 
 ---
 
@@ -282,11 +319,11 @@ Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
 
 `#max`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L34)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L41)
 
 **Returns**
 
-[Integer](introspection-integer), `nil` — maximum string length
+[Integer](introspection-integer), `nil` — the maximum string length
 
 ---
 
@@ -294,11 +331,11 @@ Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
 
 `#min`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L28)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L35)
 
 **Returns**
 
-[Integer](introspection-integer), `nil` — minimum string length
+[Integer](introspection-integer), `nil` — the minimum string length
 
 ---
 
@@ -306,11 +343,11 @@ Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
 
 `#nullable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L21)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L45)
 
 **Returns**
 
-[Boolean](introspection-boolean) — whether this field can be null
+[Boolean](introspection-boolean) — true if this field can be null
 
 ---
 
@@ -318,11 +355,11 @@ Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
 
 `#numeric?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L99)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L123)
 
 **Returns**
 
-[Boolean](introspection-boolean) — whether this is a numeric type (integer, float, decimal)
+[Boolean](introspection-boolean) — false — override in Integer, Float, Decimal
 
 ---
 
@@ -330,11 +367,11 @@ Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
 
 `#object?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L81)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L105)
 
 **Returns**
 
-[Boolean](introspection-boolean) — whether this is an object type
+[Boolean](introspection-boolean) — false — override in Object
 
 ---
 
@@ -342,11 +379,11 @@ Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
 
 `#optional?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L27)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L51)
 
 **Returns**
 
-[Boolean](introspection-boolean) — whether this field is optional
+[Boolean](introspection-boolean) — true if this field is optional
 
 ---
 
@@ -354,11 +391,11 @@ Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
 
 `#ref?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L189)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L207)
 
 **Returns**
 
-[Boolean](introspection-boolean) — whether this is a ref type
+[Boolean](introspection-boolean) — false — override in Ref
 
 ---
 
@@ -366,11 +403,11 @@ Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
 
 `#scalar?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L40)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L47)
 
 **Returns**
 
-[Boolean](introspection-boolean) — true for all scalar types
+[Boolean](introspection-boolean) — true if this is a scalar type
 
 ---
 
@@ -378,11 +415,11 @@ Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
 
 `#string?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L76)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L91)
 
 **Returns**
 
-[Boolean](introspection-boolean) — true for string params
+[Boolean](introspection-boolean) — true if this is a string param
 
 ---
 
@@ -390,11 +427,11 @@ Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
 
 `#tag`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L63)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L87)
 
 **Returns**
 
-[String](introspection-string), `nil` — discriminator tag for union variants
+[String](introspection-string), `nil` — the discriminator tag for union variants
 
 ---
 
@@ -402,11 +439,11 @@ Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
 
 `#time?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L159)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L177)
 
 **Returns**
 
-[Boolean](introspection-boolean) — whether this is a time type
+[Boolean](introspection-boolean) — false — override in Time
 
 ---
 
@@ -414,7 +451,7 @@ Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L82)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L97)
 
 **Returns**
 
@@ -426,13 +463,11 @@ Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
 
 `#type`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L15)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L39)
 
 **Returns**
 
-`Symbol` — the parameter type
-:string, :integer, :float, :decimal, :boolean, :datetime, :date, :time,
-:uuid, :binary, :json, :unknown, :array, :object, :union, :literal, :ref
+`Symbol` — the param type (:string, :integer, :array, :object, etc.)
 
 ---
 
@@ -440,11 +475,11 @@ Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
 
 `#union?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L87)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L111)
 
 **Returns**
 
-[Boolean](introspection-boolean) — whether this is a union type
+[Boolean](introspection-boolean) — false — override in Union
 
 ---
 
@@ -452,11 +487,11 @@ Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
 
 `#unknown?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L183)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L201)
 
 **Returns**
 
-[Boolean](introspection-boolean) — whether this is an unknown type
+[Boolean](introspection-boolean) — false — override in Unknown
 
 ---
 
@@ -464,10 +499,10 @@ Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
 
 `#uuid?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L165)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L183)
 
 **Returns**
 
-[Boolean](introspection-boolean) — whether this is a UUID type
+[Boolean](introspection-boolean) — false — override in UUID
 
 ---

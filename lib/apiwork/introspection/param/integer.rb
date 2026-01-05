@@ -4,81 +4,97 @@ module Apiwork
   module Introspection
     module Param
       # @api public
-      # Integer param.
+      # Integer param representing whole number values.
       #
-      # @example
-      #   param.type         # => :integer
+      # @example Basic usage
+      #   param.type       # => :integer
+      #   param.scalar?    # => true
+      #   param.integer?   # => true
+      #   param.numeric?   # => true
+      #
+      # @example Constraints
       #   param.min          # => 0 or nil
       #   param.max          # => 100 or nil
       #   param.format       # => :int32 or nil
-      #   param.scalar?      # => true
-      #   param.numeric?     # => true
       #   param.boundable?   # => true
       #   param.formattable? # => true
-      #   param.integer?     # => true
+      #
+      # @example Enum (scalar-only, use guard)
+      #   if param.scalar? && param.enum?
+      #     param.enum      # => [1, 2, 3]
+      #     param.enum_ref? # => false
+      #   end
       class Integer < Base
         # @api public
-        # @return [Numeric, nil] minimum value constraint
+        # @return [Numeric, nil] the minimum value constraint
         def min
           @dump[:min]
         end
 
         # @api public
-        # @return [Numeric, nil] maximum value constraint
+        # @return [Numeric, nil] the maximum value constraint
         def max
           @dump[:max]
         end
 
         # @api public
-        # @return [Symbol, nil] format constraint (:int32, :int64)
+        # @return [Symbol, nil] the format constraint (:int32, :int64)
         def format
           @dump[:format]
         end
 
         # @api public
-        # @return [Boolean] true for all scalar types
+        # @return [Boolean] true if this is a scalar type
         def scalar?
           true
         end
 
         # @api public
-        # @return [Boolean] whether this scalar has enum constraints
+        # @return [Boolean] true if this param has enum constraints
+        # @see #scalar?
+        # @example
+        #   if param.scalar? && param.enum?
+        #     param.enum # => [1, 2, 3]
+        #   end
         def enum?
           @dump[:enum].present?
         end
 
         # @api public
-        # @return [Array, Symbol, nil] inline values (Array) or ref name (Symbol)
+        # @return [Array, Symbol, nil] enum values (Array) or reference name (Symbol)
+        # @see #enum?
         def enum
           @dump[:enum]
         end
 
         # @api public
-        # @return [Boolean] whether this is a reference to a named enum
+        # @return [Boolean] true if enum is a reference to a named enum
+        # @see #enum?
         def enum_ref?
           @dump[:enum].is_a?(Symbol)
         end
 
         # @api public
-        # @return [Boolean] true for numeric params
+        # @return [Boolean] true if this is a numeric param
         def numeric?
           true
         end
 
         # @api public
-        # @return [Boolean] true - integers support min/max constraints
+        # @return [Boolean] true if this param supports min/max constraints
         def boundable?
           true
         end
 
         # @api public
-        # @return [Boolean] true - integers support format constraints (:int32, :int64)
+        # @return [Boolean] true if this param supports format constraints
+        # @see #scalar?
         def formattable?
           true
         end
 
         # @api public
-        # @return [Boolean] true for integer params
+        # @return [Boolean] true if this is an integer param
         def integer?
           true
         end

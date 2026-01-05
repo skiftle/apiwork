@@ -4,21 +4,24 @@ module Apiwork
   module Introspection
     module Param
       # @api public
-      # Literal param.
+      # Literal param representing a constant value.
       #
-      # @example
+      # @example Basic usage
       #   param.type     # => :literal
-      #   param.value    # => "active" or 42 or true
       #   param.literal? # => true
+      #   param.scalar?  # => false
+      #
+      # @example Value
+      #   param.value    # => "active" or 42 or true
       class Literal < Base
         # @api public
-        # @return [Object, nil] literal value
+        # @return [String, Numeric, Boolean, nil] the literal value
         def value
           @dump[:value]
         end
 
         # @api public
-        # @return [Boolean] always true for Literal
+        # @return [Boolean] true if this is a literal param
         def literal?
           true
         end

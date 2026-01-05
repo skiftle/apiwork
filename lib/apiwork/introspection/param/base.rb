@@ -3,183 +3,207 @@
 module Apiwork
   module Introspection
     module Param
+      # @api public
+      # Base class for all introspection param types.
+      #
+      # Param types form a flat hierarchy where all concrete types (String, Integer,
+      # Array, etc.) inherit directly from Base. Use type predicates to identify
+      # param types and check capabilities.
+      #
+      # @example Type identification
+      #   param.type      # => :string, :integer, :array, etc.
+      #   param.string?   # => true if String param
+      #   param.scalar?   # => true if any scalar type
+      #   param.numeric?  # => true if Integer, Float, or Decimal
+      #
+      # @example Capability checking
+      #   param.boundable? # => true if param supports min/max
+      #
+      # @example Scalar-only features (use guard pattern)
+      #   # enum? and formattable? are only available on scalar types.
+      #   # Always check scalar? first:
+      #   if param.scalar? && param.enum?
+      #     param.enum # => ["draft", "published"]
+      #   end
+      #
+      #   if param.scalar? && param.formattable?
+      #     param.format # => :email or nil
+      #   end
       class Base
         def initialize(dump)
           @dump = dump
         end
 
         # @api public
-        # @return [Symbol] the parameter type
-        #   :string, :integer, :float, :decimal, :boolean, :datetime, :date, :time,
-        #   :uuid, :binary, :json, :unknown, :array, :object, :union, :literal, :ref
+        # @return [Symbol] the param type (:string, :integer, :array, :object, etc.)
         def type
           @dump[:type]
         end
 
         # @api public
-        # @return [Boolean] whether this field can be null
+        # @return [Boolean] true if this field can be null
         def nullable?
           @dump[:nullable]
         end
 
         # @api public
-        # @return [Boolean] whether this field is optional
+        # @return [Boolean] true if this field is optional
         def optional?
           @dump[:optional]
         end
 
         # @api public
-        # @return [Boolean] whether this field is deprecated
+        # @return [Boolean] true if this field is deprecated
         def deprecated?
           @dump[:deprecated]
         end
 
         # @api public
-        # @return [String, nil] field description
+        # @return [String, nil] the field description
         def description
           @dump[:description]
         end
 
         # @api public
-        # @return [Object, nil] example value
+        # @return [Object, nil] the example value
         def example
           @dump[:example]
         end
 
         # @api public
-        # @return [Object, nil] default value
+        # @return [Object, nil] the default value
         def default
           @dump[:default]
         end
 
         # @api public
-        # @return [Boolean] whether a default value is defined
+        # @return [Boolean] true if a default value is defined
         def default?
           @dump.key?(:default)
         end
 
         # @api public
-        # @return [String, nil] discriminator tag for union variants
+        # @return [String, nil] the discriminator tag for union variants
         def tag
           @dump[:tag]
         end
 
         # @api public
-        # @return [Boolean] whether this is a scalar type
+        # @return [Boolean] false — override in scalar subclasses
         def scalar?
           false
         end
 
         # @api public
-        # @return [Boolean] whether this is an array type
+        # @return [Boolean] false — override in Array
         def array?
           false
         end
 
         # @api public
-        # @return [Boolean] whether this is an object type
+        # @return [Boolean] false — override in Object
         def object?
           false
         end
 
         # @api public
-        # @return [Boolean] whether this is a union type
+        # @return [Boolean] false — override in Union
         def union?
           false
         end
 
         # @api public
-        # @return [Boolean] whether this is a literal type
+        # @return [Boolean] false — override in Literal
         def literal?
           false
         end
 
         # @api public
-        # @return [Boolean] whether this is a numeric type (integer, float, decimal)
+        # @return [Boolean] false — override in Integer, Float, Decimal
         def numeric?
           false
         end
 
         # @api public
-        # @return [Boolean] whether this type supports min/max constraints
+        # @return [Boolean] false — override in types that support min/max
         def boundable?
           false
         end
 
         # @api public
-        # @return [Boolean] whether this is a string type
+        # @return [Boolean] false — override in String
         def string?
           false
         end
 
         # @api public
-        # @return [Boolean] whether this is an integer type
+        # @return [Boolean] false — override in Integer
         def integer?
           false
         end
 
         # @api public
-        # @return [Boolean] whether this is a float type
+        # @return [Boolean] false — override in Float
         def float?
           false
         end
 
         # @api public
-        # @return [Boolean] whether this is a decimal type
+        # @return [Boolean] false — override in Decimal
         def decimal?
           false
         end
 
         # @api public
-        # @return [Boolean] whether this is a boolean type
+        # @return [Boolean] false — override in Boolean
         def boolean?
           false
         end
 
         # @api public
-        # @return [Boolean] whether this is a datetime type
+        # @return [Boolean] false — override in DateTime
         def datetime?
           false
         end
 
         # @api public
-        # @return [Boolean] whether this is a date type
+        # @return [Boolean] false — override in Date
         def date?
           false
         end
 
         # @api public
-        # @return [Boolean] whether this is a time type
+        # @return [Boolean] false — override in Time
         def time?
           false
         end
 
         # @api public
-        # @return [Boolean] whether this is a UUID type
+        # @return [Boolean] false — override in UUID
         def uuid?
           false
         end
 
         # @api public
-        # @return [Boolean] whether this is a binary type
+        # @return [Boolean] false — override in Binary
         def binary?
           false
         end
 
         # @api public
-        # @return [Boolean] whether this is a JSON type
+        # @return [Boolean] false — override in JSON
         def json?
           false
         end
 
         # @api public
-        # @return [Boolean] whether this is an unknown type
+        # @return [Boolean] false — override in Unknown
         def unknown?
           false
         end
 
         # @api public
-        # @return [Boolean] whether this is a ref type
+        # @return [Boolean] false — override in Ref
         def ref?
           false
         end

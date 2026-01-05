@@ -4,73 +4,90 @@ module Apiwork
   module Introspection
     module Param
       # @api public
-      # Decimal param.
+      # Decimal param representing precise decimal number values.
       #
-      # @example
+      # @example Basic usage
       #   param.type       # => :decimal
-      #   param.min        # => 0.0 or nil
-      #   param.max        # => 100.0 or nil
       #   param.scalar?    # => true
-      #   param.numeric?   # => true
-      #   param.boundable? # => true
       #   param.decimal?   # => true
+      #   param.numeric?   # => true
+      #
+      # @example Constraints
+      #   param.min          # => 0.0 or nil
+      #   param.max          # => 100.0 or nil
+      #   param.boundable?   # => true
+      #   param.formattable? # => false
+      #
+      # @example Enum (scalar-only, use guard)
+      #   if param.scalar? && param.enum?
+      #     param.enum      # => [9.99, 19.99, 29.99]
+      #     param.enum_ref? # => false
+      #   end
       class Decimal < Base
         # @api public
-        # @return [Numeric, nil] minimum value constraint
+        # @return [Numeric, nil] the minimum value constraint
         def min
           @dump[:min]
         end
 
         # @api public
-        # @return [Numeric, nil] maximum value constraint
+        # @return [Numeric, nil] the maximum value constraint
         def max
           @dump[:max]
         end
 
         # @api public
-        # @return [Boolean] true for all scalar types
+        # @return [Boolean] true if this is a scalar type
         def scalar?
           true
         end
 
         # @api public
-        # @return [Boolean] whether this scalar has enum constraints
+        # @return [Boolean] true if this param has enum constraints
+        # @see #scalar?
+        # @example
+        #   if param.scalar? && param.enum?
+        #     param.enum # => [9.99, 19.99, 29.99]
+        #   end
         def enum?
           @dump[:enum].present?
         end
 
         # @api public
-        # @return [Array, Symbol, nil] inline values (Array) or ref name (Symbol)
+        # @return [Array, Symbol, nil] enum values (Array) or reference name (Symbol)
+        # @see #enum?
         def enum
           @dump[:enum]
         end
 
         # @api public
-        # @return [Boolean] whether this is a reference to a named enum
+        # @return [Boolean] true if enum is a reference to a named enum
+        # @see #enum?
         def enum_ref?
           @dump[:enum].is_a?(Symbol)
         end
 
         # @api public
-        # @return [Boolean] true for numeric params
+        # @return [Boolean] true if this is a numeric param
         def numeric?
           true
         end
 
         # @api public
-        # @return [Boolean] true - decimals support min/max constraints
+        # @return [Boolean] true if this param supports min/max constraints
         def boundable?
           true
         end
 
         # @api public
-        # @return [Boolean] true for decimal params
+        # @return [Boolean] true if this is a decimal param
         def decimal?
           true
         end
 
         # @api public
-        # @return [Boolean] false - decimals do not support format constraints
+        # @return [Boolean] false — decimals do not support format constraints
+        # @see #scalar?
         def formattable?
           false
         end

@@ -4,14 +4,17 @@ module Apiwork
   module Introspection
     module Param
       # @api public
-      # JSON param.
+      # JSON param representing arbitrary JSON data.
       #
-      # @example
-      #   param.type  # => :json
-      #   param.json? # => true
+      # Use this for untyped or dynamic data structures.
+      #
+      # @example Basic usage
+      #   param.type    # => :json
+      #   param.json?   # => true
+      #   param.scalar? # => false
       class JSON < Base
         # @api public
-        # @return [Boolean] true for JSON params
+        # @return [Boolean] true if this is a JSON param
         def json?
           true
         end

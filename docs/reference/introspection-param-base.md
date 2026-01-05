@@ -1,35 +1,45 @@
 ---
-order: 37
+order: 33
 prev: false
 next: false
 ---
 
-# Introspection::Param::DateTime
+# Introspection::Param::Base
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/date_time.rb#L22)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L32)
 
-DateTime param representing date and time values with timezone.
+Base class for all introspection param types.
 
-**Example: Basic usage**
+Param types form a flat hierarchy where all concrete types (String, Integer,
+Array, etc.) inherit directly from Base. Use type predicates to identify
+param types and check capabilities.
+
+**Example: Type identification**
 
 ```ruby
-param.type         # => :datetime
-param.scalar?      # => true
-param.datetime?    # => true
+param.type      # => :string, :integer, :array, etc.
+param.string?   # => true if String param
+param.scalar?   # => true if any scalar type
+param.numeric?  # => true if Integer, Float, or Decimal
 ```
 
-**Example: Capabilities**
+**Example: Capability checking**
 
 ```ruby
-param.formattable? # => false
+param.boundable? # => true if param supports min/max
 ```
 
-**Example: Enum (scalar-only, use guard)**
+**Example: Scalar-only features (use guard pattern)**
 
 ```ruby
+# enum? and formattable? are only available on scalar types.
+# Always check scalar? first:
 if param.scalar? && param.enum?
-  param.enum      # => ["2024-01-01T00:00:00Z"]
-  param.enum_ref? # => false
+  param.enum # => ["draft", "published"]
+end
+
+if param.scalar? && param.formattable?
+  param.format # => :email or nil
 end
 ```
 
@@ -99,11 +109,11 @@ end
 
 `#datetime?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/date_time.rb#L56)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L165)
 
 **Returns**
 
-[Boolean](introspection-boolean) — true if this is a datetime param
+[Boolean](introspection-boolean) — false — override in DateTime
 
 ---
 
@@ -167,62 +177,6 @@ end
 
 ---
 
-### #enum
-
-`#enum`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/date_time.rb#L43)
-
-**Returns**
-
-[Array](introspection-array), `Symbol`, `nil` — enum values (Array) or reference name (Symbol)
-
-**See also**
-
-- [#enum?](#enum?)
-
----
-
-### #enum?
-
-`#enum?`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/date_time.rb#L36)
-
-**Returns**
-
-[Boolean](introspection-boolean) — true if this param has enum constraints
-
-**See also**
-
-- [#scalar?](#scalar?)
-
-**Example**
-
-```ruby
-if param.scalar? && param.enum?
-  param.enum # => ["2024-01-01T00:00:00Z"]
-end
-```
-
----
-
-### #enum_ref?
-
-`#enum_ref?`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/date_time.rb#L50)
-
-**Returns**
-
-[Boolean](introspection-boolean) — true if enum is a reference to a named enum
-
-**See also**
-
-- [#enum?](#enum?)
-
----
-
 ### #example
 
 `#example`
@@ -244,22 +198,6 @@ end
 **Returns**
 
 [Boolean](introspection-boolean) — false — override in Float
-
----
-
-### #formattable?
-
-`#formattable?`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/date_time.rb#L63)
-
-**Returns**
-
-[Boolean](introspection-boolean) — false — datetimes do not support format constraints
-
-**See also**
-
-- [#scalar?](#scalar?)
 
 ---
 
@@ -363,11 +301,11 @@ end
 
 `#scalar?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/date_time.rb#L25)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L93)
 
 **Returns**
 
-[Boolean](introspection-boolean) — true if this is a scalar type
+[Boolean](introspection-boolean) — false — override in scalar subclasses
 
 ---
 

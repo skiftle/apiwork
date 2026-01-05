@@ -4,28 +4,33 @@ module Apiwork
   module Introspection
     module Param
       # @api public
-      # Union param.
+      # Union param representing a value that can be one of several types.
       #
-      # @example
-      #   param.type          # => :union
-      #   param.variants      # => [Param, ...]
+      # @example Basic usage
+      #   param.type      # => :union
+      #   param.union?    # => true
+      #   param.scalar?   # => false
+      #
+      # @example Variants
+      #   param.variants  # => [Param, Param, ...]
+      #
+      # @example Discriminated unions
       #   param.discriminator # => :type or nil
-      #   param.union?        # => true
       class Union < Base
         # @api public
-        # @return [Array<Param::Base>] variants for unions
+        # @return [Array<Param::Base>] the possible variant types
         def variants
           @variants ||= @dump[:variants].map { |dump| Param.build(dump) }
         end
 
         # @api public
-        # @return [Symbol, nil] discriminator field for discriminated unions
+        # @return [Symbol, nil] the discriminator field name for discriminated unions
         def discriminator
           @dump[:discriminator]
         end
 
         # @api public
-        # @return [Boolean] always true for Union
+        # @return [Boolean] true if this is a union param
         def union?
           true
         end

@@ -4,49 +4,54 @@ module Apiwork
   module Introspection
     module Param
       # @api public
-      # Array param.
+      # Array param representing ordered collections.
       #
-      # @example
+      # @example Basic usage
       #   param.type       # => :array
-      #   param.of         # => Param or nil
+      #   param.array?     # => true
+      #   param.scalar?    # => false
+      #
+      # @example Element type
+      #   param.of         # => Param (element type) or nil
       #   param.shape      # => {} or { field: Param, ... }
+      #
+      # @example Constraints
       #   param.min        # => 1 or nil
       #   param.max        # => 10 or nil
-      #   param.array?     # => true
       #   param.boundable? # => true
       class Array < Base
         # @api public
-        # @return [Param::Base, nil] element type for arrays
+        # @return [Param::Base, nil] the element type for homogeneous arrays
         def of
           @of ||= @dump[:of] ? Param.build(@dump[:of]) : nil
         end
 
         # @api public
-        # @return [Hash{Symbol => Param::Base}] nested fields for array-of-objects
+        # @return [Hash{Symbol => Param::Base}] nested field definitions for array-of-objects
         def shape
           @shape ||= @dump[:shape].transform_values { |dump| Param.build(dump) }
         end
 
         # @api public
-        # @return [Integer, nil] minimum array length
+        # @return [Integer, nil] the minimum array length
         def min
           @dump[:min]
         end
 
         # @api public
-        # @return [Integer, nil] maximum array length
+        # @return [Integer, nil] the maximum array length
         def max
           @dump[:max]
         end
 
         # @api public
-        # @return [Boolean] always true for Array
+        # @return [Boolean] true if this is an array param
         def array?
           true
         end
 
         # @api public
-        # @return [Boolean] true - arrays support min/max length constraints
+        # @return [Boolean] true if this param supports min/max constraints
         def boundable?
           true
         end

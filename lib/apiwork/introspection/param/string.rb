@@ -4,75 +4,90 @@ module Apiwork
   module Introspection
     module Param
       # @api public
-      # String param.
+      # String param representing text values.
       #
-      # @example
+      # @example Basic usage
       #   param.type         # => :string
-      #   param.format       # => :email or nil
-      #   param.min          # => 1 or nil
-      #   param.max          # => 255 or nil
       #   param.scalar?      # => true
       #   param.string?      # => true
+      #
+      # @example Constraints
+      #   param.min          # => 1 or nil
+      #   param.max          # => 255 or nil
+      #   param.format       # => :email or nil
       #   param.boundable?   # => true
       #   param.formattable? # => true
+      #
+      # @example Enum (scalar-only, use guard)
+      #   if param.scalar? && param.enum?
+      #     param.enum      # => ["draft", "published"]
+      #     param.enum_ref? # => false
+      #   end
       class String < Base
         # @api public
-        # @return [Symbol, nil] format constraint
-        #   Supported formats: :email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password
+        # @return [Symbol, nil] the format constraint (:email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password)
         def format
           @dump[:format]
         end
 
         # @api public
-        # @return [Integer, nil] minimum string length
+        # @return [Integer, nil] the minimum string length
         def min
           @dump[:min]
         end
 
         # @api public
-        # @return [Integer, nil] maximum string length
+        # @return [Integer, nil] the maximum string length
         def max
           @dump[:max]
         end
 
         # @api public
-        # @return [Boolean] true for all scalar types
+        # @return [Boolean] true if this is a scalar type
         def scalar?
           true
         end
 
         # @api public
-        # @return [Boolean] whether this scalar has enum constraints
+        # @return [Boolean] true if this param has enum constraints
+        # @see #scalar?
+        # @example
+        #   if param.scalar? && param.enum?
+        #     param.enum # => ["draft", "published"]
+        #   end
         def enum?
           @dump[:enum].present?
         end
 
         # @api public
-        # @return [Array, Symbol, nil] inline values (Array) or ref name (Symbol)
+        # @return [Array, Symbol, nil] enum values (Array) or reference name (Symbol)
+        # @see #enum?
         def enum
           @dump[:enum]
         end
 
         # @api public
-        # @return [Boolean] whether this is a reference to a named enum
+        # @return [Boolean] true if enum is a reference to a named enum
+        # @see #enum?
         def enum_ref?
           @dump[:enum].is_a?(Symbol)
         end
 
         # @api public
-        # @return [Boolean] true - strings support min/max length constraints
+        # @return [Boolean] true if this param supports min/max constraints
         def boundable?
           true
         end
 
         # @api public
-        # @return [Boolean] true - strings support format constraints
+        # @return [Boolean] true if this param supports format constraints
+        # @see #scalar?
         def formattable?
           true
         end
 
         # @api public
-        # @return [Boolean] true for string params
+        # @return [Boolean] true if this is a string param
         def string?
           true
         end

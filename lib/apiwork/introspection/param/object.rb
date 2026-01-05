@@ -4,28 +4,33 @@ module Apiwork
   module Introspection
     module Param
       # @api public
-      # Object param.
+      # Object param representing structured data with named fields.
       #
-      # @example
+      # @example Basic usage
       #   param.type      # => :object
-      #   param.shape     # => { name: Param, email: Param }
-      #   param.partial?  # => true for update payloads
       #   param.object?   # => true
+      #   param.scalar?   # => false
+      #
+      # @example Fields
+      #   param.shape     # => { name: Param, email: Param }
+      #
+      # @example Partial objects (for updates)
+      #   param.partial?  # => true if all fields are optional
       class Object < Base
         # @api public
-        # @return [Hash{Symbol => Param::Base}] nested fields
+        # @return [Hash{Symbol => Param::Base}] nested field definitions
         def shape
           @shape ||= @dump[:shape].transform_values { |dump| Param.build(dump) }
         end
 
         # @api public
-        # @return [Boolean] whether this object is partial (for update payloads)
+        # @return [Boolean] true if this is a partial object (all fields optional)
         def partial?
           @dump[:partial]
         end
 
         # @api public
-        # @return [Boolean] always true for Object
+        # @return [Boolean] true if this is an object param
         def object?
           true
         end

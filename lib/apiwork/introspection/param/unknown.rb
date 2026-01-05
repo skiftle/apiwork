@@ -4,16 +4,17 @@ module Apiwork
   module Introspection
     module Param
       # @api public
-      # Unknown param.
+      # Unknown param representing an unrecognized type.
       #
-      # Used as fallback when the type cannot be determined.
+      # Used as a fallback when the type cannot be determined during introspection.
       #
-      # @example
+      # @example Basic usage
       #   param.type     # => :unknown
       #   param.unknown? # => true
+      #   param.scalar?  # => false
       class Unknown < Base
         # @api public
-        # @return [Boolean] true for unknown params
+        # @return [Boolean] true if this is an unknown param
         def unknown?
           true
         end
