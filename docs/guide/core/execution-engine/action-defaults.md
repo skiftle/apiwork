@@ -199,49 +199,17 @@ end
 
 ## Override Defaults
 
-### Merging
+Contract definitions merge with schema-generated types by default. See [Declaration Merging](../contracts/actions.md#declaration-merging) for details.
 
-By default, contract definitions merge with schema-generated types:
-
-```ruby
-class InvoiceContract < Apiwork::Contract::Base
-  schema!
-
-  action :create do
-    request do
-      body do
-        # Adds to writable attributes
-        param :invoice, type: :object do
-          param :custom_field, type: :string
-        end
-      end
-    end
-  end
-end
-```
-
-### Replacing
-
-Use `replace: true` to completely override the default:
+Use `replace: true` to completely override:
 
 ```ruby
 action :create do
   request replace: true do
     body do
-      # Only these fields, no schema attributes
       param :invoice, type: :object do
         param :title, type: :string
       end
-    end
-  end
-end
-
-action :show do
-  response replace: true do
-    body do
-      # Custom response shape
-      param :summary, type: :string
-      param :total, type: :decimal
     end
   end
 end

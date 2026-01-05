@@ -125,42 +125,6 @@ Response:
 }
 ```
 
-### replace
-
-When using `schema!`, the adapter auto-generates request and response definitions from your schema attributes. By default, your custom definitions are merged with these auto-generated ones.
-
-Use `replace: true` to reset the auto-generated definition and start fresh:
-
-```ruby
-class InvoiceContract < Apiwork::Contract::Base
-  schema!  # Auto-generates request/response from schema
-
-  action :destroy do
-    # Reset auto-generated response, define custom
-    response replace: true do
-      body do
-        param :deleted_id, type: :uuid
-      end
-    end
-  end
-
-  action :create do
-    # Reset auto-generated request body, define custom
-    request replace: true do
-      body do
-        param :title, type: :string
-      end
-    end
-  end
-end
-```
-
-Without `replace: true`, your params would be added to the schema-generated ones. With `replace: true`, only your explicitly defined params are used.
-
-::: tip Common use case
-Use `replace: true` on destroy actions to return metadata (like `deleted_at`) instead of the full resource. See [Action Defaults](../execution-engine/action-defaults.md) for how the adapter handles standard actions.
-:::
-
 ### no_content!
 
 For actions that return HTTP 204 No Content (no response body):
@@ -181,6 +145,134 @@ end
 
 ::: info Default for destroy
 The adapter uses `no_content!` by default for destroy actions. Override with `replace: true` if you need to return data.
+:::
+
+## Declaration Merging
+
+Actions support declaration merging — the same concept as TypeScript interface merging. When you define an action that already exists, the definitions combine rather than replace.
+
+::: info Same pattern for types
+This is the same merge behavior used for [type definitions](../type-system/type-merging.md). The concept applies consistently across Apiwork.
+:::
+
+### The Concept
+
+```typescript
+// TypeScript interface merging
+interface CreateRequest {
+  body: { title: string }
+}
+
+interface CreateRequest {
+  body: { priority: string }
+}
+
+// Result: { title: string; priority: string }
+```
+
+Apiwork works the same way:
+
+```ruby
+# Schema-generated (via adapter)
+action :create do
+  request do
+    body { param :title, :amount, :status }
+  end
+end
+
+# Your definition (in contract)
+action :create do
+  request do
+    body { param :priority, type: :string }
+  end
+end
+
+# Result: body has ALL params (title, amount, status, priority)
+```
+
+### Deep Merge
+
+Merging happens at every level of the hierarchy:
+
+| Level | Merge behavior |
+|-------|----------------|
+| `action` | Same action name → merge request/response |
+| `request` / `response` | Merge query/body definitions |
+| `query` / `body` | Merge params |
+| Nested `param` | Merge nested shapes recursively |
+
+Example of deep merge:
+
+```ruby
+# First definition
+action :create do
+  request do
+    body do
+      param :invoice, type: :object do
+        param :title, type: :string
+      end
+    end
+  end
+end
+
+# Second definition (merges)
+action :create do
+  request do
+    body do
+      param :invoice do
+        param :priority, type: :string  # Added to existing :invoice
+      end
+    end
+  end
+end
+
+# Result: :invoice has BOTH :title AND :priority
+```
+
+### With schema!
+
+When using `schema!`, the adapter auto-generates request and response definitions from your schema attributes. Your custom definitions merge with these:
+
+```ruby
+class InvoiceContract < Apiwork::Contract::Base
+  schema!  # Generates: body { param :title, :amount, :status, ... }
+
+  action :create do
+    request do
+      body do
+        param :invoice do
+          param :priority, type: :string  # Added to schema params
+        end
+      end
+    end
+  end
+end
+```
+
+### Opting Out with replace
+
+Use `replace: true` when you want **only** your params, not merged with auto-generated:
+
+```ruby
+action :create do
+  request replace: true do
+    body do
+      param :invoice, type: :object do
+        param :title, type: :string  # ONLY this, no schema params
+      end
+    end
+  end
+end
+```
+
+`replace: true` can be used on:
+- `request replace: true` — replace entire request
+- `response replace: true` — replace entire response
+
+::: tip When to use replace
+- **Destroy actions** that return metadata instead of the resource
+- **Custom endpoints** with completely different shapes
+- **Minimal requests** that only accept specific fields
 :::
 
 ## Raises
