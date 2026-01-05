@@ -144,8 +144,6 @@ module Apiwork
           map_union_type(param)
         elsif param.literal?
           map_literal_type(param)
-        elsif param.type.nil?
-          'z.never()'
         elsif param.ref_type? && type_or_enum_reference?(param.ref)
           resolve_enum_schema(param) || schema_reference(param.ref)
         else

@@ -158,8 +158,6 @@ module Apiwork
           map_union_type(param)
         elsif param.literal?
           map_literal_type(param)
-        elsif param.type.nil?
-          'never'
         elsif param.ref_type? && type_or_enum_reference?(param.ref)
           type_reference(param.ref)
         else

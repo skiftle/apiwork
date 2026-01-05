@@ -3,32 +3,15 @@
 module Apiwork
   module Introspection
     module Param
-      # @api public
-      # Base class for parameter/field definitions.
-      #
-      # Params are accessed via introspection - you never create them directly.
-      #
-      # @example Accessing params via introspection
-      #   api = Apiwork::Introspection::API.new(MyApi)
-      #   action = api.resources[:invoices].actions[:show]
-      #   param = action.request.query[:page]
-      #   param.type         # => :integer
-      #   param.optional?    # => true
-      #
-      # @example Type-specific subclasses
-      #   param = action.response.body  # => Param::Array
-      #   param.of                      # => Param::Object (element type)
       class Base
         def initialize(dump)
           @dump = dump
         end
 
         # @api public
-        # @return [Symbol, nil] the parameter type
-        #   Scalar types: :string, :integer, :float, :decimal, :boolean,
-        #   :datetime, :date, :time, :uuid, :binary, :json, :unknown
-        #   Container types: :array, :object, :union, :literal
-        #   Reference types: :ref
+        # @return [Symbol] the parameter type
+        #   :string, :integer, :float, :decimal, :boolean, :datetime, :date, :time,
+        #   :uuid, :binary, :json, :unknown, :array, :object, :union, :literal, :ref
         def type
           @dump[:type]
         end
