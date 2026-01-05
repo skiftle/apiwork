@@ -54,7 +54,7 @@ Apiwork::Spec.register(ProtobufSpec)
 Sets the file extension for string specs.
 
 Only valid for specs with `output :string`. Hash specs derive
-their extension from the format (:json → .json, :yaml → .yaml).
+their extension from the format (`:json` becomes `.json`, `:yaml` becomes `.yaml`).
 
 **Parameters**
 

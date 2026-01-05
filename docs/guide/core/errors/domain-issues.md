@@ -37,10 +37,10 @@ When domain rules fail, the adapter converts each violation to an Issue and rais
 
 Rails validations use internal error types like `blank`, `taken`, `too_short`. The adapter maps these to semantic codes that work better for API clients:
 
-- `blank`, `empty` → `required` — field must have a value
-- `taken` → `unique` — value already exists
-- `too_short`, `too_long` → `min`, `max` — length constraints
-- `greater_than` → `gt` — numeric constraints
+- `blank`, `empty` becomes `required` — field must have a value
+- `taken` becomes `unique` — value already exists
+- `too_short`, `too_long` becomes `min`, `max` — length constraints
+- `greater_than` becomes `gt` — numeric constraints
 
 This decouples your API from Rails internals — no implementation details leak to clients. Rails has multiple types for similar concepts — both `blank` and `empty` become `required`. Short codes are easier to switch on, and constraint values go in `meta`:
 
@@ -104,7 +104,7 @@ errors.add(:transfer, :insufficient_funds)
 
 Messages are for humans, codes are for machines. Rails messages can contain interpolations, model names, or phrases that don't fit an API context.
 
-You control the `detail` via [i18n](../../advanced/i18n.md#domain-issues). Default is the code titleized (`:insufficient_funds` → "Insufficient funds").
+You control the `detail` via [i18n](../../advanced/i18n.md#domain-issues). Default is the code titleized (`:insufficient_funds` becomes "Insufficient funds").
 
 ## Record-Level Errors
 

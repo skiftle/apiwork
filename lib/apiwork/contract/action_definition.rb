@@ -127,6 +127,12 @@ module Apiwork
       # Uses built-in error codes (:not_found, :forbidden, etc.) or custom codes
       # registered via ErrorCode.register. These appear in generated specs.
       #
+      # Multiple calls merge error codes (consistent with declaration merging):
+      #
+      #   raises :not_found
+      #   raises :forbidden
+      #   # Result: [:not_found, :forbidden]
+      #
       # @param error_code_keys [Array<Symbol>] error code keys
       # @raise [ConfigurationError] if error code is not registered
       # @see ErrorCode
@@ -149,7 +155,7 @@ module Apiwork
                 "Unknown error code :#{error_code_key}. Register it with: " \
                 "Apiwork::ErrorCode.register :#{error_code_key}, status: <status>"
         end
-        @raises = error_code_keys
+        @raises = (@raises || []) | error_code_keys
       end
 
       # @api public

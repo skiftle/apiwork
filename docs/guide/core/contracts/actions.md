@@ -196,7 +196,7 @@ Merging happens at every level of the hierarchy:
 
 | Level | Merge behavior |
 |-------|----------------|
-| `action` | Same action name → merge request/response |
+| `action` | Same action name merges request/response |
 | `request` / `response` | Merge query/body definitions |
 | `query` / `body` | Merge params |
 | Nested `param` | Merge nested shapes recursively |
@@ -290,6 +290,24 @@ end
 ```
 
 These appear in generated [OpenAPI specs](../specs/openapi.md) as possible error responses. You can also declare raises at the [API level](../api-definitions/configuration.md#raises) for errors common to all endpoints.
+
+Like other action definitions, `raises` follows [declaration merging](#declaration-merging) — multiple calls combine error codes:
+
+```ruby
+action :show do
+  raises :not_found
+end
+
+action :show do
+  raises :forbidden  # Adds to existing, doesn't replace
+end
+
+# Result: raises [:not_found, :forbidden]
+```
+
+::: info No replace option
+Unlike request/response, `raises` has no `replace:` option. This is intentional — you cannot opt out of errors the adapter may throw (like `:unprocessable_entity`). You can only add to the documented error codes, ensuring the spec reflects reality.
+:::
 
 ## Metadata
 
