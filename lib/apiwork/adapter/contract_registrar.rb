@@ -65,18 +65,6 @@ module Apiwork
       #   @param from [Class] a {Contract::Base} subclass
       #   @see Apiwork::Contract::Base.import
 
-      # @!method resolve_type(name)
-      #   @api public
-      #   Resolves a type registered in this contract.
-      #   @param name [Symbol] the type name
-      #   @return [Object, nil] the type definition if registered
-
-      # @!method resolve_enum(name)
-      #   @api public
-      #   Resolves an enum registered in this contract.
-      #   @param name [Symbol] the enum name
-      #   @return [Array, nil] the enum values if registered
-
       # @!method scoped_name(name)
       #   @api public
       #   Returns the fully qualified name for a type in this contract's scope.
@@ -96,13 +84,14 @@ module Apiwork
 
       delegate :define_action,
                :enum,
+               :enum?,
+               :enum_values,
                :find_contract_for_schema,
                :import,
                :imports,
-               :resolve_enum,
-               :resolve_type,
                :scoped_name,
                :type,
+               :type?,
                :union,
                to: :contract_class
 

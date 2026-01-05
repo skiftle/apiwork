@@ -85,7 +85,7 @@ module Apiwork
           else
             payload_type_name = :"#{action_name}_payload"
 
-            unless registrar.resolve_type(payload_type_name)
+            unless registrar.type?(payload_type_name)
               registrar.type(payload_type_name, schema_class: schema_class) do
                 builder.send(:writable_params, self, action_name, nested: false)
               end
@@ -242,7 +242,7 @@ module Apiwork
           success_type_name = :"#{action_name}_success_response_body"
           full_name = registrar.scoped_name(success_type_name)
 
-          unless registrar.resolve_type(success_type_name)
+          unless registrar.type?(success_type_name)
             builder = self
             registrar.type(success_type_name) do
               if response_type == :collection
@@ -296,7 +296,7 @@ module Apiwork
             variant_schema_name = variant_schema.name.demodulize.delete_suffix('Schema').underscore
             variant_type_name = :"#{variant_schema_name}_#{action_name}_payload"
 
-            unless registrar.api_registrar.resolve_type(variant_type_name)
+            unless registrar.api_registrar.type?(variant_type_name)
               registrar.api_registrar.type(variant_type_name) do
                 # Rename discriminator from API name to DB column if different
                 as_column = discriminator_name != discriminator_column ? discriminator_column : nil
@@ -317,7 +317,7 @@ module Apiwork
             root_key = schema_class.root_key.singular.to_sym
             resource_type_name = registrar.scoped_name(nil)
 
-            register_resource_type(root_key) unless registrar.resolve_type(resource_type_name)
+            register_resource_type(root_key) unless registrar.type?(resource_type_name)
 
             resource_type_name
           end
@@ -390,7 +390,7 @@ module Apiwork
 
           type_name = type_name(:filter, depth)
 
-          existing_type = registrar.resolve_type(type_name)
+          existing_type = registrar.type?(type_name)
           return type_name if existing_type
 
           builder = self
@@ -469,7 +469,7 @@ module Apiwork
 
           type_name = type_name(:sort, depth)
 
-          existing_type = registrar.resolve_type(type_name)
+          existing_type = registrar.type?(type_name)
           return type_name if existing_type
 
           builder = self
@@ -523,7 +523,7 @@ module Apiwork
 
           type_name = type_name(:page, 1)
 
-          existing_type = registrar.resolve_type(type_name)
+          existing_type = registrar.type?(type_name)
           return type_name if existing_type
 
           if strategy == :cursor
@@ -553,7 +553,7 @@ module Apiwork
 
           type_name = type_name(:include, depth)
 
-          existing_type = registrar.resolve_type(type_name)
+          existing_type = registrar.type?(type_name)
           return type_name if existing_type
           return type_name if depth >= MAX_RECURSION_DEPTH
 
@@ -580,7 +580,7 @@ module Apiwork
 
                 association_include_type = if import_alias
                                              imported_type = :"#{import_alias}_include"
-                                             registrar_local.resolve_type(imported_type) ? imported_type : nil
+                                             registrar_local.type?(imported_type) ? imported_type : nil
                                            else
                                              builder.send(
                                                :build_include_type_for_schema,
@@ -644,7 +644,7 @@ module Apiwork
           builder = self
           schema = schema_class
 
-          unless registrar.resolve_type(create_type_name)
+          unless registrar.type?(create_type_name)
             registrar.type(create_type_name) do
               param :_type, type: :literal, value: 'create'
               builder.send(:writable_params, self, :create, nested: true)
@@ -653,7 +653,7 @@ module Apiwork
           end
 
           update_type_name = :nested_update_payload
-          unless registrar.resolve_type(update_type_name)
+          unless registrar.type?(update_type_name)
             registrar.type(update_type_name) do
               param :_type, type: :literal, value: 'update'
               builder.send(:writable_params, self, :update, nested: true)
@@ -662,7 +662,7 @@ module Apiwork
           end
 
           nested_payload_type_name = :nested_payload
-          return if registrar.resolve_type(nested_payload_type_name)
+          return if registrar.type?(nested_payload_type_name)
 
           create_qualified_name = registrar.scoped_name(create_type_name)
           update_qualified_name = registrar.scoped_name(update_type_name)
@@ -683,7 +683,7 @@ module Apiwork
           root_key = schema_class.root_key.singular.to_sym
           resource_type_name = registrar.scoped_name(nil)
 
-          return if registrar.resolve_type(resource_type_name)
+          return if registrar.type?(resource_type_name)
 
           build_enums
 
@@ -769,7 +769,7 @@ module Apiwork
 
           union_type_name = association_definition.name
 
-          existing_type = registrar.resolve_type(union_type_name)
+          existing_type = registrar.type?(union_type_name)
           return union_type_name if existing_type
 
           builder = self
@@ -827,7 +827,7 @@ module Apiwork
           build_sti_union(union_type_name:, visited: visited) do |variant_schema, tag, _visit_set|
             variant_type_name = variant_schema.root_key.singular.to_sym
 
-            unless registrar.api_registrar.resolve_type(variant_type_name)
+            unless registrar.api_registrar.type?(variant_type_name)
               registrar.api_registrar.type(variant_type_name, schema_class: variant_schema) do
                 param discriminator_name, type: :literal, value: tag.to_s
 
@@ -887,7 +887,7 @@ module Apiwork
           scoped_name = registrar.scoped_name(enum_name)
           filter_name = :"#{scoped_name}_filter"
 
-          return if registrar.api_registrar.resolve_type(filter_name)
+          return if registrar.api_registrar.type?(filter_name)
 
           registrar.api_registrar.union(filter_name) do
             variant type: scoped_name

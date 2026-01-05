@@ -44,7 +44,11 @@ module Apiwork
         @types[key] = { payload:, scope: }
       end
 
-      def resolve_type(name, scope: nil)
+      def type?(name, scope: nil)
+        type_definitions(name, scope:).present?
+      end
+
+      def type_definitions(name, scope: nil)
         metadata = if scope
                      scoped_name_value = scoped_name(scope, name)
                      @types[scoped_name_value] if @types.key?(scoped_name_value)
@@ -108,7 +112,11 @@ module Apiwork
         end
       end
 
-      def resolve_enum(name, scope: nil)
+      def enum?(name, scope: nil)
+        enum_values(name, scope:).present?
+      end
+
+      def enum_values(name, scope: nil)
         if scope
           scoped_name_value = scoped_name(scope, name)
           return @enums[scoped_name_value]&.dig(:values) if @enums.key?(scoped_name_value)

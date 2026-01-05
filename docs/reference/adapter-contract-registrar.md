@@ -42,7 +42,7 @@ end
 
 `#api_registrar`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L113)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L102)
 
 Returns a registrar for API-level types.
 Use this to define or resolve types at the API scope.
@@ -94,7 +94,7 @@ Defines an enum type scoped to this contract.
 
 `#find_contract_for_schema(schema_class)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L86)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L74)
 
 Finds the contract class for an associated schema.
 
@@ -131,7 +131,7 @@ Imports a type from another contract or the API.
 
 `#imports`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L97)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L85)
 
 Returns the hash of imported types.
 
@@ -141,51 +141,11 @@ Returns the hash of imported types.
 
 ---
 
-### #resolve_enum
-
-`#resolve_enum(name)`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L74)
-
-Resolves an enum registered in this contract.
-
-**Parameters**
-
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `Symbol` | the enum name |
-
-**Returns**
-
-`Array`, `nil` — the enum values if registered
-
----
-
-### #resolve_type
-
-`#resolve_type(name)`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L68)
-
-Resolves a type registered in this contract.
-
-**Parameters**
-
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `Symbol` | the type name |
-
-**Returns**
-
-`Object`, `nil` — the type definition if registered
-
----
-
 ### #scoped_name
 
 `#scoped_name(name)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L80)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L68)
 
 Returns the fully qualified name for a type in this contract's scope.
 

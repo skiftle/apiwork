@@ -70,6 +70,7 @@ module Apiwork
           ref = resolve_type_ref(options[:type])
 
           {
+            ref:,
             as: options[:as],
             default: options[:default],
             deprecated: options[:deprecated] == true,
@@ -84,7 +85,6 @@ module Apiwork
             of: resolve_of(options),
             optional: options[:optional] == true,
             partial: options[:partial] == true,
-            ref:,
             shape: build_shape(options) || {},
             tag: nil,
             type: ref ? :ref : (options[:type] || :unknown),
@@ -162,7 +162,7 @@ module Apiwork
 
           contract_class = @param_definition.contract_class
           return true if contract_class.resolve_custom_type(type_value)
-          return true if contract_class.resolve_enum(type_value)
+          return true if contract_class.enum?(type_value)
 
           api_class = contract_class.api_class
           return false unless api_class
@@ -218,6 +218,7 @@ module Apiwork
           resolved_type = is_registered ? :ref : (variant_type || :unknown)
 
           {
+            ref:,
             as: nil,
             default: nil,
             deprecated: false,
@@ -232,7 +233,6 @@ module Apiwork
             of: resolve_variant_of(variant_definition),
             optional: false,
             partial: false,
-            ref:,
             shape: resolve_variant_shape(variant_definition, variant_type),
             tag: variant_definition[:tag],
             type: resolved_type,

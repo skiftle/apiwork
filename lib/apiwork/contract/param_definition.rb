@@ -406,7 +406,7 @@ module Apiwork
 
         raise ArgumentError, "enum must be a Symbol (reference) or Array (inline values), got #{enum.class}" unless enum.is_a?(Symbol)
 
-        unless @contract_class.resolve_enum(enum)
+        unless @contract_class.enum?(enum)
           raise ArgumentError,
                 "Enum :#{enum} not found. Define it using `enum :#{enum}, %w[...]` in definition scope."
         end

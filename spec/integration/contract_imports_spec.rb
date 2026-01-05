@@ -63,7 +63,7 @@ RSpec.describe 'Contract Imports' do
         end
       end
 
-      enum_values = importing_contract.resolve_enum(:user_status)
+      enum_values = importing_contract.enum_values(:user_status)
       expect(enum_values).to eq(%w[active inactive suspended])
     end
 

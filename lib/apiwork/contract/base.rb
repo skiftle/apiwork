@@ -431,7 +431,7 @@ module Apiwork
         def resolve_custom_type(type_name, visited: Set.new)
           raise ConfigurationError, "Circular import detected while resolving :#{type_name}" if visited.include?(self)
 
-          result = api_class.resolve_type(type_name, scope: self)
+          result = api_class.type_definitions(type_name, scope: self)
           return result if result
 
           resolve_imported_type(type_name, visited: visited.dup.add(self))
@@ -479,17 +479,21 @@ module Apiwork
           ResponseParser.new(self, action).parse(body)
         end
 
-        def resolve_type(name)
-          resolve_custom_type(name)
+        def type?(name)
+          resolve_custom_type(name).present?
         end
 
-        def resolve_enum(enum_name, visited: Set.new)
+        def enum?(name)
+          enum_values(name).present?
+        end
+
+        def enum_values(enum_name, visited: Set.new)
           return nil if visited.include?(self)
 
-          result = api_class.resolve_enum(enum_name, scope: self)
+          result = api_class.enum_values(enum_name, scope: self)
           return result if result
 
-          resolve_imported_enum(enum_name, visited: visited.dup.add(self))
+          resolve_imported_enum_values(enum_name, visited: visited.dup.add(self))
         end
 
         def scoped_name(name)
@@ -525,7 +529,7 @@ module Apiwork
           nil
         end
 
-        def resolve_imported_enum(enum_name, visited:)
+        def resolve_imported_enum_values(enum_name, visited:)
           enum_string = enum_name.to_s
 
           imports.each do |import_alias, imported_contract|
@@ -533,7 +537,7 @@ module Apiwork
             next unless enum_string.start_with?(prefix)
 
             unprefixed_name = enum_string.delete_prefix(prefix).to_sym
-            result = imported_contract.resolve_enum(unprefixed_name, visited:)
+            result = imported_contract.enum_values(unprefixed_name, visited:)
             return result if result
           end
 

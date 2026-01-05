@@ -175,7 +175,7 @@ module Apiwork
         return nil if enum.nil?
         return enum if enum.is_a?(Array)
 
-        @param_definition.contract_class.resolve_enum(enum)
+        @param_definition.contract_class.enum_values(enum)
       end
 
       def validate_union_param(name, value, param_options, field_path, max_depth, current_depth)

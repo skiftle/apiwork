@@ -214,9 +214,7 @@ module Apiwork
         #     end
         #   end
         def adapter(name = nil, &block)
-          if name.is_a?(Symbol)
-            @adapter_name = name
-          end
+          @adapter_name = name if name.is_a?(Symbol)
 
           if block
             adapter_class = Adapter.find(@adapter_name || :standard)
@@ -344,12 +342,20 @@ module Apiwork
           type_system.register_union(name, union_builder.serialize, scope:)
         end
 
-        def resolve_type(name, scope: nil)
-          type_system.resolve_type(name, scope:)
+        def type?(name, scope: nil)
+          type_system.type?(name, scope:)
         end
 
-        def resolve_enum(name, scope: nil)
-          type_system.resolve_enum(name, scope:)
+        def type_definitions(name, scope: nil)
+          type_system.type_definitions(name, scope:)
+        end
+
+        def enum?(name, scope: nil)
+          type_system.enum?(name, scope:)
+        end
+
+        def enum_values(name, scope: nil)
+          type_system.enum_values(name, scope:)
         end
 
         def scoped_name(scope, name)

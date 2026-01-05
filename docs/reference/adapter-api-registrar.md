@@ -52,13 +52,13 @@ Defines an enum type.
 
 ---
 
-### #resolve_enum
+### #enum?
 
-`#resolve_enum(name)`
+`#enum?(name)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/api_registrar.rb#L62)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/api_registrar.rb#L56)
 
-Resolves an enum registered at the API level.
+Checks if an enum is registered.
 
 **Parameters**
 
@@ -68,27 +68,27 @@ Resolves an enum registered at the API level.
 
 **Returns**
 
-`Array`, `nil` — the enum values if registered
+`Boolean` — true if enum exists
 
 ---
 
-### #resolve_type
+### #enum_values
 
-`#resolve_type(name)`
+`#enum_values(name)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/api_registrar.rb#L50)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/api_registrar.rb#L68)
 
-Resolves a type registered at the API level.
+Returns the values for a registered enum.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `name` | `Symbol` | the type name |
+| `name` | `Symbol` | the enum name |
 
 **Returns**
 
-`Object`, `nil` — the type definition if registered
+`Array<String>`, `nil` — enum values or nil
 
 ---
 
@@ -105,6 +105,26 @@ Defines a named type.
 | Name | Type | Description |
 |------|------|-------------|
 | `name` | `Symbol` | the type name |
+
+---
+
+### #type?
+
+`#type?(name)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/api_registrar.rb#L50)
+
+Checks if a type is registered.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `name` | `Symbol` | the type name |
+
+**Returns**
+
+`Boolean` — true if type exists
 
 ---
 
