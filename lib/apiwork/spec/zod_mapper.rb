@@ -123,7 +123,7 @@ module Apiwork
       end
 
       def map_field(param, force_optional: nil)
-        if param.ref_type? && type_or_enum_reference?(param.ref)
+        if param.ref? && type_or_enum_reference?(param.ref)
           schema_name = pascal_case(param.ref)
           type = "#{schema_name}Schema"
           return apply_modifiers(type, param, force_optional:)
@@ -144,7 +144,7 @@ module Apiwork
           map_union_type(param)
         elsif param.literal?
           map_literal_type(param)
-        elsif param.ref_type? && type_or_enum_reference?(param.ref)
+        elsif param.ref? && type_or_enum_reference?(param.ref)
           resolve_enum_schema(param) || schema_reference(param.ref)
         else
           resolve_enum_schema(param) || map_primitive(param)
@@ -264,7 +264,7 @@ module Apiwork
       def resolve_enum_schema(param)
         return nil unless param.scalar? && param.enum?
 
-        if param.ref_enum? && data.enums.key?(param.enum[:ref])
+        if param.enum_ref? && data.enums.key?(param.enum[:ref])
           "#{pascal_case(param.enum[:ref])}Schema"
         else
           enum_literal = param.enum.map { |value| "'#{value}'" }.join(', ')

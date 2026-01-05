@@ -129,10 +129,10 @@ module Apiwork
       end
 
       def map_field(param)
-        base_type = if param.ref_type? && type_or_enum_reference?(param.ref)
+        base_type = if param.ref? && type_or_enum_reference?(param.ref)
                       type_reference(param.ref)
                     elsif param.scalar? && param.enum?
-                      if param.ref_enum?
+                      if param.enum_ref?
                         pascal_case(param.enum[:ref])
                       else
                         param.enum.sort.map { |value| "'#{value}'" }.join(' | ')
@@ -158,7 +158,7 @@ module Apiwork
           map_union_type(param)
         elsif param.literal?
           map_literal_type(param)
-        elsif param.ref_type? && type_or_enum_reference?(param.ref)
+        elsif param.ref? && type_or_enum_reference?(param.ref)
           type_reference(param.ref)
         else
           map_primitive(param)

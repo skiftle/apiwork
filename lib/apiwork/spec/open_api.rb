@@ -166,7 +166,7 @@ module Apiwork
       end
 
       def build_parameter_schema(param)
-        return { '$ref': "#/components/schemas/#{schema_name(param.ref)}" } if param.ref_type? && type_exists?(param.ref)
+        return { '$ref': "#/components/schemas/#{schema_name(param.ref)}" } if param.ref? && type_exists?(param.ref)
 
         map_type_definition(param)
       end
@@ -310,13 +310,13 @@ module Apiwork
       end
 
       def map_field(param)
-        if param.ref_type? && type_exists?(param.ref)
+        if param.ref? && type_exists?(param.ref)
           schema = { '$ref': "#/components/schemas/#{schema_name(param.ref)}" }
           return apply_nullable(schema, param.nullable?)
         end
 
         if param.scalar? && param.enum?
-          if param.ref_enum? && enum_exists?(param.enum[:ref])
+          if param.enum_ref? && enum_exists?(param.enum[:ref])
             enum_obj = find_enum(param.enum[:ref])
             schema = { enum: enum_obj.values, type: 'string' }
           else
@@ -345,9 +345,9 @@ module Apiwork
           map_union(param)
         elsif param.literal?
           map_literal(param)
-        elsif param.ref_type? && type_exists?(param.ref)
+        elsif param.ref? && type_exists?(param.ref)
           { '$ref': "#/components/schemas/#{schema_name(param.ref)}" }
-        elsif param.ref_type? && enum_exists?(param.ref)
+        elsif param.ref? && enum_exists?(param.ref)
           enum_obj = find_enum(param.ref)
           { enum: enum_obj.values, type: 'string' }
         else
@@ -387,7 +387,7 @@ module Apiwork
 
         return { items: { type: 'string' }, type: 'array' } unless items_param
 
-        items_schema = if items_param.ref_type? && type_exists?(items_param.ref)
+        items_schema = if items_param.ref? && type_exists?(items_param.ref)
                          { '$ref': "#/components/schemas/#{schema_name(items_param.ref)}" }
                        else
                          map_type_definition(items_param)
@@ -435,7 +435,7 @@ module Apiwork
           next unless tag
 
           transformed_tag = transform_key(tag.to_s)
-          mapping[transformed_tag] = "#/components/schemas/#{schema_name(variant.ref)}" if variant.ref_type? && type_exists?(variant.ref)
+          mapping[transformed_tag] = "#/components/schemas/#{schema_name(variant.ref)}" if variant.ref? && type_exists?(variant.ref)
         end
 
         result = { oneOf: one_of_schemas }

@@ -9,7 +9,7 @@ module Apiwork
       # @example
       #   param.type      # => :ref
       #   param.ref       # => :address (the referenced type name)
-      #   param.ref_type? # => true
+      #   param.ref? # => true
       class Ref < Base
         # @api public
         # @return [Symbol] the referenced type name
@@ -19,7 +19,7 @@ module Apiwork
 
         # @api public
         # @return [Boolean] true for type reference params
-        def ref_type?
+        def ref?
           true
         end
 

@@ -185,8 +185,8 @@ module Apiwork
         end
 
         # @api public
-        # @return [Boolean] whether this is a type reference
-        def ref_type?
+        # @return [Boolean] whether this is a ref type
+        def ref?
           false
         end
 

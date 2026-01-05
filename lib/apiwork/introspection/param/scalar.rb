@@ -24,7 +24,7 @@ module Apiwork
 
         # @api public
         # @return [Boolean] whether this is a reference to a named enum
-        def ref_enum?
+        def enum_ref?
           @dump[:enum].is_a?(Hash)
         end
       end
