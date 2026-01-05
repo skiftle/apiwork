@@ -1,40 +1,34 @@
 ---
-order: 45
+order: 33
 prev: false
 next: false
 ---
 
-# Introspection::Param::String
+# Introspection::Param::Base
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L26)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L23)
 
-String param representing text values.
+Base class for all introspection param types.
 
-**Example: Basic usage**
+Params represent field definitions with type information, constraints,
+and metadata. Each param type (String, Integer, Array, Object, etc.)
+extends this base class with type-specific behavior.
+
+**Example: Checking param properties**
 
 ```ruby
-param.type         # => :string
-param.scalar?      # => true
-param.string?      # => true
+param.type        # => :string
+param.optional?   # => true
+param.nullable?   # => false
+param.description # => "The user's email address"
 ```
 
-**Example: Constraints**
+**Example: Type checking**
 
 ```ruby
-param.min          # => 1 or nil
-param.max          # => 255 or nil
-param.format       # => :email or nil
-param.boundable?   # => true
-param.formattable? # => true
-```
-
-**Example: Enum**
-
-```ruby
-if param.enum?
-  param.enum      # => ["draft", "published"]
-  param.enum_ref? # => false
-end
+param.string?  # => true
+param.integer? # => false
+param.scalar?  # => true
 ```
 
 ## Instance Methods
@@ -79,11 +73,11 @@ end
 
 `#boundable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L72)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L120)
 
 **Returns**
 
-`Boolean` — true if this param supports min/max constraints
+`Boolean` — false — override in types that support min/max
 
 ---
 
@@ -171,27 +165,15 @@ end
 
 ---
 
-### #enum
-
-`#enum`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L60)
-
-**Returns**
-
-`Array`, `Symbol`, `nil` — enum values (Array) or reference name (Symbol)
-
----
-
 ### #enum?
 
 `#enum?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L53)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L204)
 
 **Returns**
 
-`Boolean` — true if this param has enum constraints
+`Boolean` — false — override in scalar types with enum constraints
 
 ---
 
@@ -199,11 +181,11 @@ end
 
 `#enum_ref?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L66)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L210)
 
 **Returns**
 
-`Boolean` — true if enum is a reference to a named enum
+`Boolean` — false — override in scalar types
 
 ---
 
@@ -231,27 +213,15 @@ end
 
 ---
 
-### #format
-
-`#format`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L29)
-
-**Returns**
-
-`Symbol`, `nil` — the format constraint (:email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password)
-
----
-
 ### #formattable?
 
 `#formattable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L78)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L216)
 
 **Returns**
 
-`Boolean` — true if this param supports format constraints
+`Boolean` — false — override in String, Integer
 
 ---
 
@@ -288,30 +258,6 @@ end
 **Returns**
 
 `Boolean` — false — override in Literal
-
----
-
-### #max
-
-`#max`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L41)
-
-**Returns**
-
-`Integer`, `nil` — the maximum string length
-
----
-
-### #min
-
-`#min`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L35)
-
-**Returns**
-
-`Integer`, `nil` — the minimum string length
 
 ---
 
@@ -391,11 +337,11 @@ end
 
 `#scalar?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L47)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L84)
 
 **Returns**
 
-`Boolean` — true if this is a scalar type
+`Boolean` — false — override in scalar subclasses
 
 ---
 
@@ -403,11 +349,11 @@ end
 
 `#string?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L84)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L126)
 
 **Returns**
 
-`Boolean` — true if this is a string param
+`Boolean` — false — override in String
 
 ---
 
@@ -439,7 +385,7 @@ end
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L90)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L228)
 
 **Returns**
 
