@@ -59,7 +59,7 @@ Incoming requests go through a pipeline:
 5. **Decode** — Apply `Schema.deserialize()` which runs decode transformers
 
 ::: info Under the Hood
-The adapter delegates to `Schema.deserialize()` for the decode step. This means nested associations are automatically deserialized recursively — the same transformers you define on your schemas work both when calling `Schema.deserialize()` directly and when processing API requests.
+The adapter uses `Schema.deserialize()` for decoding. Nested associations are deserialized recursively using the same transformers.
 :::
 
 ```ruby

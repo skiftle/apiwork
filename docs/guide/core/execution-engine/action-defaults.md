@@ -4,7 +4,7 @@ order: 2
 
 # Action Defaults
 
-When using `schema!`, the adapter automatically generates typed requests and responses for the resource's actions. This page documents the default behavior for each action.
+When using `schema!`, the adapter generates typed requests and responses for each action.
 
 ## Overview
 
@@ -21,7 +21,7 @@ When using `schema!`, the adapter automatically generates typed requests and res
 
 ## Standard Actions
 
-### index
+### `index`
 
 Returns a paginated collection with filtering and sorting.
 
@@ -47,7 +47,7 @@ Returns a paginated collection with filtering and sorting.
 }
 ```
 
-### show
+### `show`
 
 Returns a single record by ID.
 
@@ -66,7 +66,7 @@ Returns a single record by ID.
 }
 ```
 
-### create
+### `create`
 
 Creates a new record. Returns 201 Created on success.
 
@@ -86,7 +86,7 @@ Creates a new record. Returns 201 Created on success.
 }
 ```
 
-### update
+### `update`
 
 Updates an existing record.
 
@@ -106,7 +106,7 @@ Updates an existing record.
 }
 ```
 
-### destroy
+### `destroy`
 
 Deletes a record. Returns 204 No Content with no body.
 

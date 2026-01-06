@@ -59,7 +59,7 @@ GET /posts?filter[status][eq]=published&filter[views][gt]=100
 | `in` | `IN (...)` | `filter[created_at][in][]=2024-01-01&filter[created_at][in][]=2024-06-15` |
 | `null` | `IS NULL` | `filter[published_at][null]=true` |
 
-Date values are parsed and expanded to full day ranges for datetime columns.
+Date values like `2024-01-15` are expanded to cover the full day (`00:00:00` to `23:59:59`) when filtering datetime columns.
 
 ### Boolean
 

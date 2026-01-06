@@ -91,7 +91,7 @@ If a client requests a page that doesn't exist, they get an empty array with pag
 
 For large datasets and real-time feeds, cursor pagination is more efficient. Offset slows down on later pages because the database has to skip more rows. Cursor uses indexed lookups — fast regardless of position.
 
-Instead of page numbers, clients navigate using opaque cursor tokens.
+Instead of page numbers, clients navigate using cursor tokens. These are encoded strings that clients pass back unchanged.
 
 ### Configuration
 

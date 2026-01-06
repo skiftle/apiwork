@@ -6,7 +6,7 @@ order: 1
 
 The **Execution Engine** is the runtime that interprets and executes your API schemas.
 
-It reads schema definitions, derives types, and handles requests end-to-end — from validation and querying to serialization and response formatting.
+It reads schema definitions, derives types, and handles requests — validation, querying, serialization.
 All execution is delegated through an **adapter**, which defines how queries are built and responses are rendered.
 
 This section documents the adapter that ships with Apiwork. Throughout, "the adapter" refers to this default implementation.
@@ -54,7 +54,7 @@ From this schema, the adapter generates the following types:
 In addition, Apiwork generates [action defaults](./action-defaults.md) for each action on the resource.
 The generated types vary depending on the action type.
 
-All defaults are derived directly from the schema and require no additional configuration.
+All defaults are derived from the schema.
 
 ---
 
