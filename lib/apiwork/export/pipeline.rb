@@ -28,12 +28,12 @@ module Apiwork
             export_names.each do |name|
               count += generate_file(
                 api_class:,
-                export_name: name,
                 format:,
                 key_format:,
                 locale:,
                 output:,
                 version:,
+                export_name: name,
               )
             end
           end
