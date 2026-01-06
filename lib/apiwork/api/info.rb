@@ -17,29 +17,29 @@ module Apiwork
       # @api public
       # Sets the API title.
       #
-      # @param text [String] the title
+      # @param title [String] the title
       # @return [void]
       #
       # @example
       #   info do
       #     title 'Invoice API'
       #   end
-      def title(text)
-        @info[:title] = text
+      def title(title)
+        @info[:title] = title
       end
 
       # @api public
       # Sets the API version.
       #
-      # @param text [String] the version (e.g. '1.0.0')
+      # @param version [String] the version (e.g. '1.0.0')
       # @return [void]
       #
       # @example
       #   info do
       #     version '1.0.0'
       #   end
-      def version(text)
-        @info[:version] = text
+      def version(version)
+        @info[:version] = version
       end
 
       # @api public
@@ -110,57 +110,56 @@ module Apiwork
       # @api public
       # Sets a short summary for the API.
       #
-      # @param text [String] the summary
+      # @param summary [String] the summary
       # @return [void]
       #
       # @example
       #   info do
       #     summary 'Invoice management API'
       #   end
-      def summary(text)
-        @info[:summary] = text
+      def summary(summary)
+        @info[:summary] = summary
       end
 
       # @api public
       # Sets a detailed description for the API.
       #
-      # @param text [String] the description (supports Markdown)
+      # @param description [String] the description (supports Markdown)
       # @return [void]
       #
       # @example
       #   info do
       #     description 'Full-featured API for managing invoices and payments.'
       #   end
-      def description(text)
-        @info[:description] = text
+      def description(description)
+        @info[:description] = description
       end
 
       # @api public
       # Sets tags for the API.
       #
-      # @param tags_list [Array<String>] list of tags
+      # @param tags [Array<String>] list of tags
       # @return [void]
       #
       # @example
       #   info do
       #     tags 'invoices', 'payments'
       #   end
-      def tags(*tags_list)
-        @info[:tags] = tags_list.flatten
+      def tags(*tags)
+        @info[:tags] = tags.flatten
       end
 
       # @api public
       # Marks the API as deprecated.
       #
-      # @param value [Boolean] whether the API is deprecated
       # @return [void]
       #
       # @example
       #   info do
-      #     deprecated true
+      #     deprecated
       #   end
-      def deprecated(value = true)
-        @info[:deprecated] = value
+      def deprecated
+        @info[:deprecated] = true
       end
     end
   end

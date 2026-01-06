@@ -6,6 +6,7 @@ info:
 paths:
   "/comments":
     get:
+      deprecated: true
       operationId: commentsIndex
       parameters:
       - in: query
@@ -35,6 +36,7 @@ paths:
                 "$ref": "#/components/schemas/commentIndexSuccessResponseBody"
           description: Successful response
     post:
+      deprecated: true
       operationId: commentsCreate
       parameters:
       - in: query
@@ -68,6 +70,7 @@ paths:
                 "$ref": "#/components/schemas/errorResponseBody"
   "/comments/{id}":
     get:
+      deprecated: true
       operationId: commentsShow
       parameters:
       - in: path
@@ -88,6 +91,7 @@ paths:
                 "$ref": "#/components/schemas/commentShowSuccessResponseBody"
           description: Successful response
     patch:
+      deprecated: true
       operationId: commentsUpdate
       parameters:
       - in: path
@@ -125,6 +129,7 @@ paths:
               schema:
                 "$ref": "#/components/schemas/errorResponseBody"
     delete:
+      deprecated: true
       operationId: commentsDestroy
       parameters:
       - in: path
@@ -167,31 +172,31 @@ components:
       oneOf:
       - allOf:
         - "$ref": "#/components/schemas/post"
-        - type: object
-          properties:
+        - properties:
             commentableType:
               const: post
               type: string
           required:
           - commentableType
+          type: object
       - allOf:
         - "$ref": "#/components/schemas/video"
-        - type: object
-          properties:
+        - properties:
             commentableType:
               const: video
               type: string
           required:
           - commentableType
+          type: object
       - allOf:
         - "$ref": "#/components/schemas/image"
-        - type: object
-          properties:
+        - properties:
             commentableType:
               const: image
               type: string
           required:
           - commentableType
+          type: object
       discriminator:
         mapping:
           post: "#/components/schemas/post"

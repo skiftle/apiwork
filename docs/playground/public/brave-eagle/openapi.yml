@@ -13,6 +13,7 @@ info:
 paths:
   "/tasks":
     get:
+      deprecated: true
       description: Returns a paginated list of tasks with optional filtering by status
         and priority
       operationId: listTasks
@@ -57,6 +58,7 @@ paths:
                 "$ref": "#/components/schemas/taskIndexSuccessResponseBody"
           description: Successful response
     post:
+      deprecated: true
       description: Creates a task and returns the created resource
       operationId: createTask
       summary: Create a new task
@@ -94,6 +96,7 @@ paths:
                 "$ref": "#/components/schemas/errorResponseBody"
   "/tasks/{id}":
     get:
+      deprecated: true
       description: Returns a single task by ID
       operationId: getTask
       summary: Get task details
@@ -118,6 +121,7 @@ paths:
                 "$ref": "#/components/schemas/taskShowSuccessResponseBody"
           description: Successful response
     patch:
+      deprecated: true
       description: Updates an existing task
       operationId: updateTask
       summary: Update a task
@@ -159,6 +163,7 @@ paths:
               schema:
                 "$ref": "#/components/schemas/errorResponseBody"
     delete:
+      deprecated: true
       description: Permanently removes a task
       operationId: deleteTask
       summary: Delete a task

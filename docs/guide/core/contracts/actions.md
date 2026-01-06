@@ -319,7 +319,7 @@ end
 
 action :create do
   summary "Create a post"
-  deprecated true
+  deprecated
   operation_id "createPost"
 
   raises :unprocessable_entity

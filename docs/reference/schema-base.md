@@ -171,20 +171,14 @@ belongs_to :category, filterable: true
 
 ### .deprecated
 
-`.deprecated(value = true)`
+`.deprecated`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L567)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L565)
 
 Marks this schema as deprecated.
 
 Deprecated schemas are included in generated documentation
 with a deprecation notice.
-
-**Parameters**
-
-| Name | Type | Description |
-|------|------|-------------|
-| `value` | `Boolean` | whether deprecated (default: true) |
 
 **Example**
 

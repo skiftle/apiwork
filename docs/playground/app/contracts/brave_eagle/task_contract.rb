@@ -44,7 +44,7 @@ module BraveEagle
       description 'Marks a task as archived. Archived tasks are hidden from default listings but can still be retrieved.'
       tags 'Tasks', 'Lifecycle'
       operation_id 'archiveTask'
-      deprecated true
+      deprecated
     end
   end
 end

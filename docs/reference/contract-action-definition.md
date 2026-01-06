@@ -17,29 +17,23 @@ Use as a declarative builder - do not rely on internal state.
 
 ### #deprecated
 
-`#deprecated(value = nil)`
+`#deprecated`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L104)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L103)
 
 Marks this action as deprecated.
 
 Deprecated actions are flagged in generated specs.
 
-**Parameters**
-
-| Name | Type | Description |
-|------|------|-------------|
-| `value` | `Boolean` | deprecation status (optional) |
-
 **Returns**
 
-`Boolean`, `nil` — whether deprecated
+`void`
 
 **Example**
 
 ```ruby
 action :legacy_create do
-  deprecated true
+  deprecated
 end
 ```
 
@@ -117,9 +111,11 @@ registered via ErrorCode.register. These appear in generated specs.
 
 Multiple calls merge error codes (consistent with declaration merging):
 
-  raises :not_found
-  raises :forbidden
-  # Result: [:not_found, :forbidden]
+```ruby
+raises :not_found
+raises :forbidden
+# Result: [:not_found, :forbidden]
+```
 
 **Parameters**
 

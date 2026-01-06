@@ -32,7 +32,7 @@
     "vehicles": {
       "actions": {
         "index": {
-          "deprecated": null,
+          "deprecated": true,
           "description": null,
           "method": "get",
           "operation_id": null,
@@ -180,7 +180,7 @@
           "tags": []
         },
         "show": {
-          "deprecated": null,
+          "deprecated": true,
           "description": null,
           "method": "get",
           "operation_id": null,
@@ -229,7 +229,7 @@
           "tags": []
         },
         "create": {
-          "deprecated": null,
+          "deprecated": true,
           "description": null,
           "method": "post",
           "operation_id": null,
@@ -291,7 +291,7 @@
           "tags": []
         },
         "update": {
-          "deprecated": null,
+          "deprecated": true,
           "description": null,
           "method": "patch",
           "operation_id": null,
@@ -353,7 +353,7 @@
           "tags": []
         },
         "destroy": {
-          "deprecated": null,
+          "deprecated": true,
           "description": null,
           "method": "delete",
           "operation_id": null,

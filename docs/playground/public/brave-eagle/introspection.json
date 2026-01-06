@@ -70,7 +70,7 @@
     "tasks": {
       "actions": {
         "index": {
-          "deprecated": null,
+          "deprecated": true,
           "description": "Returns a paginated list of tasks with optional filtering by status and priority",
           "method": "get",
           "operation_id": "listTasks",
@@ -231,7 +231,7 @@
           ]
         },
         "show": {
-          "deprecated": null,
+          "deprecated": true,
           "description": "Returns a single task by ID",
           "method": "get",
           "operation_id": "getTask",
@@ -293,7 +293,7 @@
           ]
         },
         "create": {
-          "deprecated": null,
+          "deprecated": true,
           "description": "Creates a task and returns the created resource",
           "method": "post",
           "operation_id": "createTask",
@@ -368,7 +368,7 @@
           ]
         },
         "update": {
-          "deprecated": null,
+          "deprecated": true,
           "description": "Updates an existing task",
           "method": "patch",
           "operation_id": "updateTask",
@@ -443,7 +443,7 @@
           ]
         },
         "destroy": {
-          "deprecated": null,
+          "deprecated": true,
           "description": "Permanently removes a task",
           "method": "delete",
           "operation_id": "deleteTask",

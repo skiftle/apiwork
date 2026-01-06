@@ -7,6 +7,7 @@ info:
 paths:
   "/projects":
     get:
+      deprecated: true
       description: Returns a paginated list of projects with optional filtering
       operationId: listProjects
       summary: List all projects
@@ -44,6 +45,7 @@ paths:
                 "$ref": "#/components/schemas/projectIndexSuccessResponseBody"
           description: Successful response
     post:
+      deprecated: true
       description: Creates a project and returns the created resource
       operationId: createProject
       summary: Create a new project
@@ -75,6 +77,7 @@ paths:
                 "$ref": "#/components/schemas/errorResponseBody"
   "/projects/{id}":
     get:
+      deprecated: true
       description: Returns a single project by ID with all attributes
       operationId: getProject
       summary: Get project details
@@ -94,6 +97,7 @@ paths:
                 "$ref": "#/components/schemas/projectShowSuccessResponseBody"
           description: Successful response
     patch:
+      deprecated: true
       description: Updates an existing project with the provided attributes
       operationId: updateProject
       summary: Update a project
@@ -130,6 +134,7 @@ paths:
               schema:
                 "$ref": "#/components/schemas/errorResponseBody"
     delete:
+      deprecated: true
       description: Permanently removes a project
       operationId: deleteProject
       summary: Delete a project

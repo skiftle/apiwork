@@ -17,29 +17,29 @@ module Apiwork
         # @api public
         # Sets the license name.
         #
-        # @param text [String] the license name (e.g. 'MIT', 'Apache 2.0')
+        # @param name [String] the license name (e.g. 'MIT', 'Apache 2.0')
         # @return [void]
         #
         # @example
         #   license do
         #     name 'MIT'
         #   end
-        def name(text)
-          @data[:name] = text
+        def name(name)
+          @data[:name] = name
         end
 
         # @api public
         # Sets the license URL.
         #
-        # @param text [String] the license URL
+        # @param url [String] the license URL
         # @return [void]
         #
         # @example
         #   license do
         #     url 'https://opensource.org/licenses/MIT'
         #   end
-        def url(text)
-          @data[:url] = text
+        def url(url)
+          @data[:url] = url
         end
       end
     end

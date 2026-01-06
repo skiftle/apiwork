@@ -94,16 +94,21 @@ module Apiwork
       #
       # Deprecated actions are flagged in generated specs.
       #
-      # @param value [Boolean] deprecation status (optional)
-      # @return [Boolean, nil] whether deprecated
+      # @return [void]
       #
       # @example
       #   action :legacy_create do
-      #     deprecated true
+      #     deprecated
       #   end
-      def deprecated(value = nil)
-        @deprecated = value unless value.nil?
-        @deprecated
+      def deprecated
+        @deprecated = true
+      end
+
+      # Returns whether this action is deprecated.
+      #
+      # @return [Boolean]
+      def deprecated?
+        @deprecated == true
       end
 
       # @api public

@@ -17,43 +17,43 @@ module Apiwork
         # @api public
         # Sets the contact name.
         #
-        # @param text [String] the contact name
+        # @param name [String] the contact name
         # @return [void]
         #
         # @example
         #   contact do
         #     name 'API Support'
         #   end
-        def name(text)
-          @data[:name] = text
+        def name(name)
+          @data[:name] = name
         end
 
         # @api public
         # Sets the contact email.
         #
-        # @param text [String] the contact email
+        # @param email [String] the contact email
         # @return [void]
         #
         # @example
         #   contact do
         #     email 'support@example.com'
         #   end
-        def email(text)
-          @data[:email] = text
+        def email(email)
+          @data[:email] = email
         end
 
         # @api public
         # Sets the contact URL.
         #
-        # @param text [String] the contact URL
+        # @param url [String] the contact URL
         # @return [void]
         #
         # @example
         #   contact do
         #     url 'https://example.com/support'
         #   end
-        def url(text)
-          @data[:url] = text
+        def url(url)
+          @data[:url] = url
         end
       end
     end

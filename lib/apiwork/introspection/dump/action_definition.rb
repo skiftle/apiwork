@@ -10,7 +10,7 @@ module Apiwork
 
         def to_h
           {
-            deprecated: @action_definition.deprecated == true,
+            deprecated: @action_definition.deprecated?,
             description: @action_definition.description || i18n_lookup(:description),
             operation_id: @action_definition.operation_id,
             raises: raises,

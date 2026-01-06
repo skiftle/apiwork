@@ -43,17 +43,11 @@ end
 
 ### #deprecated
 
-`#deprecated(value = true)`
+`#deprecated`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L162)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L161)
 
 Marks the API as deprecated.
-
-**Parameters**
-
-| Name | Type | Description |
-|------|------|-------------|
-| `value` | `Boolean` | whether the API is deprecated |
 
 **Returns**
 
@@ -63,7 +57,7 @@ Marks the API as deprecated.
 
 ```ruby
 info do
-  deprecated true
+  deprecated
 end
 ```
 

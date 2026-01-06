@@ -558,14 +558,12 @@ module Apiwork
         # Deprecated schemas are included in generated documentation
         # with a deprecation notice.
         #
-        # @param value [Boolean] whether deprecated (default: true)
-        #
         # @example
         #   class LegacyOrderSchema < Apiwork::Schema::Base
         #     deprecated
         #   end
-        def deprecated(value = true)
-          self._deprecated = value
+        def deprecated
+          self._deprecated = true
         end
 
         def deprecated?

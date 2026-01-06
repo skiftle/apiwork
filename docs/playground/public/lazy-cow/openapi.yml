@@ -6,6 +6,7 @@ info:
 paths:
   "/status/health":
     get:
+      deprecated: true
       operationId: statusHealth
       responses:
         '200':
@@ -28,6 +29,7 @@ paths:
           description: Successful response
   "/status/stats":
     get:
+      deprecated: true
       operationId: statusStats
       responses:
         '200':
