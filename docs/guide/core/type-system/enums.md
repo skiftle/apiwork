@@ -36,13 +36,15 @@ end
 
 ## Using Enums
 
-### In params
+### In Params
+
+Reference a defined enum by name:
 
 ```ruby
 param :status, type: :string, enum: :status
 ```
 
-### Inline validation
+### Inline Validation
 
 Without defining a separate enum:
 

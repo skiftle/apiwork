@@ -67,7 +67,7 @@ export const PostStatusSchema = z.enum(['draft', 'published']);
 
 ## Resolution Priority
 
-When a type is referenced, Apiwork looks:
+When a type is referenced, Apiwork looks in this order:
 
 1. Contract-scoped types (if inside a contract)
 2. API-level types
@@ -79,7 +79,7 @@ class PostContract < Apiwork::Contract::Base
   action :create do
     request do
       body do
-        param :status, type: :string, enum: :status  # Uses post_status
+        param :status, type: :string, enum: :status  # Resolves to contract-scoped post_status
         param :address, type: :address                # Uses global address
       end
     end

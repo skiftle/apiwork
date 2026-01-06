@@ -151,7 +151,7 @@ variant tag: 'text', type: :object do ... end  # For discriminated unions
 variant type: :my_type, partial: true        # Makes all fields optional
 ```
 
-### partial
+### `partial`
 
 The `partial: true` option makes all fields in the variant optional:
 

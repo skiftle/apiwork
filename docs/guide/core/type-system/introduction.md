@@ -6,8 +6,8 @@ order: 1
 
 The **Type System** defines the language used by Apiwork contracts.
 
-It describes data shapes, constraints, and semantics in a precise and declarative form.
-These definitions express what data is allowed to exist at the API boundary — independent of how or when that data is used.
+It describes data shapes, constraints, and semantics declaratively.
+These definitions express what data is allowed at the API boundary.
 
 Types are defined in Ruby, but are purely declarative. They define shape and constraints.
 
@@ -15,13 +15,13 @@ Types are defined in Ruby, but are purely declarative. They define shape and con
 
 ## What the Type System Defines
 
-The type system answers questions such as:
+The type system defines:
 
-- What fields exist?
-- Which values are allowed?
-- Which fields are required or optional?
-- How are values structured and nested?
-- What invariants must always hold?
+- What fields exist
+- Which values are allowed
+- Which fields are required or optional
+- How values are structured and nested
+- What invariants must hold
 
 It does **not** define runtime behavior, such as:
 
@@ -58,7 +58,7 @@ This definition expresses:
 
 ## Primitives
 
-Types are built from a small, well-defined set of primitive building blocks.
+Types are built from primitives:
 
 | Type        | Description              |
 | ----------- | ------------------------ |
@@ -72,8 +72,7 @@ Types are built from a small, well-defined set of primitive building blocks.
 | `:decimal`  | Precise decimal values   |
 | `:float`    | Floating point numbers   |
 
-Additional primitives include structural types such as:
-`:array` and `:object`, as well as `:json`, `:binary`, `:literal`, and `:unknown`.
+Structural types (`:array`, `:object`) and special types (`:json`, `:binary`, `:literal`, `:unknown`) are also available.
 
 ---
 
