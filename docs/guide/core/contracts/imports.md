@@ -143,3 +143,7 @@ end
 ::: info Detection timing
 The circular import check occurs at type resolution time, not at import declaration time. The error appears when you try to use a type that would cause infinite recursion.
 :::
+
+#### See also
+
+- [Contract::Base reference](../../../reference/contract-base.md) — `import` method and options
