@@ -4,11 +4,11 @@ order: 2
 
 # Inference
 
-Apiwork infers configuration from your database schema and ActiveRecord models. This helps reduce repetition and keeps the API aligned with the underlying data structures.
+Apiwork infers configuration from your database schema and ActiveRecord models. This reduces repetition and keeps the API aligned with the data.
 
-To use inference effectively, it's helpful to understand both when it applies and what is inherited. Apiwork pulls information that is already defined and safe to reuse: column types, enums, associations, nullability and similar structural details. More sensitive or application-specific behaviour is not inferred.
+Apiwork pulls structural details that are safe to reuse: column types, enums, associations, nullability. Application-specific behavior is not inferred.
 
-Everything that Apiwork derives automatically can be overridden when needed. In practice this means you get sensible defaults based on your models, while still being able to adjust or replace them in situations where the inferred behaviour isn't sufficient.
+Everything inferred can be overridden when needed.
 
 ## Overview
 

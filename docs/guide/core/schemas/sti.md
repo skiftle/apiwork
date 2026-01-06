@@ -84,7 +84,7 @@ When you call `variant`:
 3. **Registers with the parent schema**, adding itself to the parent's variant registry
 4. **Marks the parent as abstract** (equivalent to calling `abstract!`), since it should no longer be used directly
 
-This registration is what enables Apiwork to route serialization to the correct variant schema based on the actual object type at runtime.
+This enables Apiwork to route serialization to the correct variant schema at runtime.
 
 ## Defaults
 

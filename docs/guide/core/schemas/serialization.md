@@ -11,7 +11,7 @@ PostSchema.serialize(post)
 # => { id: 1, title: "Hello", body: "..." }
 ```
 
-This is the canonical format. The [Execution Engine](../execution-engine/introduction.md) uses it internally, and adapters may transform it further for HTTP responses (adding root keys, pagination, key formatting).
+This is the base format. The [Execution Engine](../execution-engine/introduction.md) uses it internally, and adapters transform it for HTTP responses (adding root keys, pagination, key formatting).
 
 You can use `serialize` directly for audit logs, webhooks, event streams, or anywhere you need a stable representation of your data.
 

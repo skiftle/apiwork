@@ -184,7 +184,7 @@ GET /api/v1/posts/1?include[comments]=true&include[author]=true
 GET /api/v1/posts/1?include[comments][author]=true
 ```
 
-**Depth limit**: Maximum 3 levels of nesting to prevent circular references.
+**Depth limit**: Maximum 3 levels of nesting. This prevents circular references and keeps queries efficient.
 
 ### N+1 Prevention
 

@@ -307,7 +307,7 @@ attribute :name, empty: true, writable: true
 
 **Why Use empty?**
 
-Your database stores `NULL` for missing values, but your frontend expects empty strings. `empty: true` bridges the gap.
+Your database stores `NULL` for missing values, but your frontend expects empty strings. `empty: true` handles the conversion.
 
 ---
 
@@ -479,7 +479,7 @@ export interface User {
 }
 ```
 
-### With Rails store
+### With Rails `store`
 
 For `store` on TEXT columns, set `type: :object` explicitly:
 

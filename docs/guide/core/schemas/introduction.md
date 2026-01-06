@@ -4,7 +4,7 @@ order: 1
 
 # Introduction
 
-A schema is the bridge between your model, your contract, and the behavior of the endpoint.
+A schema connects your model, contract, and endpoint behavior.
 
 It describes:
 
@@ -12,13 +12,13 @@ It describes:
 - How data is shaped when rendered
 - The metadata that powers filtering, sorting, pagination and nested operations
 
-If you've used Active Model Serializers, the DSL will feel familiar. But schemas in Apiwork go further: they don't just describe how to serialize a record — they describe how the API can query and interact with it.
+If you've used Active Model Serializers, the DSL will look familiar. But schemas also describe how the API can query and interact with records — not just how to serialize them.
 
 ## Why Schemas?
 
-Contracts alone can take you far. But you're still hand-describing structures that already exist in your models.
+Contracts require you to describe structures that already exist in your models.
 
-Schemas change that. They map ActiveRecord models directly into Apiwork's metadata — column types, enums, associations, constraints. Instead of repeating what Rails already knows, Apiwork builds on it.
+Schemas map ActiveRecord models into Apiwork's metadata — column types, enums, associations, constraints. Instead of repeating what Rails already knows, Apiwork builds on it.
 
 ## Basic Example
 
@@ -88,7 +88,7 @@ At runtime, the [Execution Engine](../execution-engine/introduction.md) interpre
 
 Schemas are purely declarative — they describe *what* exists, not *how* to process it. The [Execution Engine](../execution-engine/introduction.md) interprets your schema and handles everything: building contracts, validating requests, querying the database, and serializing responses.
 
-The same schema definitions that say "this field exists" also tell the Execution Engine:
+Schema definitions also tell the Execution Engine:
 
 - Which fields are safe to [filter](../execution-engine/filtering.md) on
 - Which attributes can be [sorted](../execution-engine/sorting.md) by
@@ -96,7 +96,7 @@ The same schema definitions that say "this field exists" also tell the Execution
 - Which associations can be [included](../execution-engine/includes.md)
 - How nested writes should be handled
 
-You describe your domain once — in a schema aligned with your model — and the Execution Engine uses those instructions for all API behavior.
+The Execution Engine uses schema definitions for all API behavior.
 
 ## Root Key
 
