@@ -4,7 +4,7 @@ order: 1
 
 # Introduction
 
-Apiwork is an API layer built around a clear boundary.
+Apiwork is an API layer for Rails applications, built around a clear boundary.
 
 You define a contract for what your API accepts and exposes. Everything else builds on that definition.
 
