@@ -125,7 +125,7 @@ No field name in path indicates a record-level error.
 
 ## Error Codes
 
-All 22 domain error codes:
+All 23 domain error codes:
 
 | Code        | Detail            | Meta                           |
 | ----------- | ----------------- | ------------------------------ |
