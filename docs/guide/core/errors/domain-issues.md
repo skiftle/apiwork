@@ -4,14 +4,14 @@ order: 4
 
 # Domain Issues
 
-Domain issues occur when a valid request violates a domain rule. The request was structurally correct — but the data itself breaks a business constraint.
+Domain issues occur when a structurally valid request violates a business rule.
 
 The client cannot avoid domain issues by changing the request shape — only by changing the data itself.
 
 ::: info
 Layer describes **what kind of rule was broken** — not where the code lives.
 
-A validation defined in a Rails model is still a *domain rule*. The model is just where the rule happens to be enforced. If the rule said "invoice numbers must be unique", that's domain logic — regardless of whether it's checked in a model, a service, or a database constraint.
+A validation in a Rails model is still a *domain rule*. "Invoice numbers must be unique" is domain logic — regardless of where it's enforced.
 :::
 
 The built-in adapter automatically maps Rails model validation errors to domain issues when you call `expose`. You can also create domain issues manually for custom business logic.
@@ -42,7 +42,7 @@ Rails validations use internal error types like `blank`, `taken`, `too_short`. T
 - `too_short`, `too_long` becomes `min`, `max` — length constraints
 - `greater_than` becomes `gt` — numeric constraints
 
-This decouples your API from Rails internals — no implementation details leak to clients. Rails has multiple types for similar concepts — both `blank` and `empty` become `required`. Short codes are easier to switch on, and constraint values go in `meta`:
+This decouples your API from Rails internals. Multiple Rails types map to one code (`blank` and `empty` both become `required`). Constraint values go in `meta`:
 
 ```json
 {
@@ -100,9 +100,7 @@ errors.add(:transfer, :insufficient_funds)
 }
 ```
 
-**Why not pass Rails messages?**
-
-Messages are for humans, codes are for machines. Rails messages can contain interpolations, model names, or phrases that don't fit an API context.
+**Why not pass Rails messages?** Messages are for humans, codes are for machines. Rails messages can contain interpolations or model names that don't fit an API context.
 
 You control the `detail` via [i18n](../../advanced/i18n.md#domain-issues). Default is the code titleized (`:insufficient_funds` becomes "Insufficient funds").
 

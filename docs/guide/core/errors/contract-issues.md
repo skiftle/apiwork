@@ -6,7 +6,7 @@ order: 3
 
 Contract errors occur when a request violates the declared API contract. The request shape, query parameters, or body doesn't match what the API specifies.
 
-These errors are **fully client-correctable** — if the client follows the API specification, the error will not occur.
+These errors are client-correctable — following the API specification avoids them.
 
 Contract validation happens before your controller code runs. The request never reaches your models.
 

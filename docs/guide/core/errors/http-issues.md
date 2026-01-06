@@ -4,7 +4,7 @@ order: 2
 
 # HTTP Errors
 
-HTTP errors are transport-level responses. They are status-driven and express outcomes through HTTP semantics — not input validation or business rules.
+HTTP errors are transport-level responses — status-driven, not tied to input validation or business rules.
 
 Use `expose_error` when you need to communicate an HTTP-level outcome like "not found", "forbidden", or "unauthorized".
 
@@ -97,7 +97,7 @@ Apiwork registers 20 common HTTP error codes:
 
 ## Custom Codes
 
-Register domain-specific error codes:
+Register custom error codes:
 
 ```ruby
 # config/initializers/error_codes.rb

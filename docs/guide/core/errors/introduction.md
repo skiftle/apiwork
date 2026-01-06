@@ -30,7 +30,7 @@ When something goes wrong, Apiwork returns an error response with two parts:
 | `layer`  | Which part of the system rejected the request |
 | `issues` | One or more problems found                    |
 
-The `layer` tells you *what kind* of validation failed. The `issues` array tells you *what specifically* went wrong. A single request can have multiple issues — like several missing fields — but they all belong to the same layer.
+The `layer` tells you *what kind* of validation failed. The `issues` array tells you *what specifically* went wrong. A single request can have multiple issues, but they all belong to the same layer.
 
 ## The Issue Object
 
@@ -48,7 +48,7 @@ Clients iterate through issues to display messages or highlight fields using the
 
 ## Error Layers
 
-Validation runs in order: `http`, then `contract`, then `domain`. If a layer rejects the request, subsequent layers don't run. All errors in a response are from the same layer.
+Errors are categorized into layers. A response contains errors from only one layer — if contract validation fails, domain validation never runs. If you return an HTTP error manually, that takes precedence.
 
 | Layer      | Meaning                             | HTTP Status |
 | ---------- | ----------------------------------- | ----------- |
@@ -60,7 +60,7 @@ Validation runs in order: `http`, then `contract`, then `domain`. If a layer rej
 Layer describes **which part of the system rejected the request** — not where the code lives.
 :::
 
-### http
+### `http`
 
 Transport-level responses like "not found" or "forbidden". Status-driven, not tied to specific fields.
 
@@ -83,7 +83,7 @@ Apiwork provides 20 built-in codes. You can also register your own.
 
 See [HTTP Issues](./http-issues.md) for all codes and how to create custom ones.
 
-### contract
+### `contract`
 
 Request shape, types, or constraints don't match the contract. Client can fix by following the API specification.
 
@@ -104,7 +104,7 @@ Request shape, types, or constraints don't match the contract. Client can fix by
 
 See [Contract Issues](./contract-issues.md) for all 28 codes.
 
-### domain
+### `domain`
 
 Request was valid but violated a domain rule. Client can only fix by changing the data itself.
 

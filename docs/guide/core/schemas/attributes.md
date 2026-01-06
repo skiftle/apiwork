@@ -107,7 +107,9 @@ end
 
 The `object` method returns the current model instance.
 
-**Important:** Computed attributes require an explicit `type`. There's no model column to infer from.
+::: warning Explicit Type Required
+Computed attributes require an explicit `type`. There's no model column to infer from.
+:::
 
 ---
 

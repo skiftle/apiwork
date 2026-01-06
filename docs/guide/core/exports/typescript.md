@@ -93,13 +93,13 @@ async function createPost(data: PostCreateRequest): Promise<Post> {
 
 ## Type Ordering
 
-Types are sorted in topological order so dependencies come first. Enums appear before types that use them, and custom types appear before schemas that reference them.
+Types are sorted in topological order so dependencies come first.
 
 Recursive types (types that reference themselves) work naturally in TypeScript interfaces.
 
 ## JSDoc Comments
 
-Descriptions from your Ruby code become JSDoc comments in TypeScript. This gives you hover documentation in VS Code and other editors.
+Descriptions from your Ruby code become JSDoc comments in TypeScript.
 
 ```ruby
 Apiwork::API.define '/api/v1' do
@@ -137,8 +137,6 @@ export interface Invoice {
 /** Invoice status */
 export type Status = 'draft' | 'paid' | 'sent';
 ```
-
-Hover over types in your editor to see the descriptions.
 
 This works for:
 

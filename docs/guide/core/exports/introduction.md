@@ -6,7 +6,7 @@ order: 1
 
 Exports describe your API in formats understood by external tools — OpenAPI for documentation, TypeScript for type-safe clients, Zod for runtime validation.
 
-In Apiwork, exports are not maintained separately. They are generated from [introspection](../introspection/introduction.md), the single source of truth for your API structure. This means exports always reflect the current state of your contracts and schemas, without manual synchronization.
+Exports are generated from [introspection](../introspection/introduction.md), the single source of truth for your API structure. They always reflect the current state of your contracts and schemas.
 
 ---
 
@@ -51,7 +51,7 @@ Once enabled, exports are served at `/.{format}`:
 | TypeScript | `GET /api/v1/.typescript` |
 | Zod        | `GET /api/v1/.zod`        |
 
-These endpoints generate exports on each request. Great for development where you want to see changes immediately, but not ideal for production traffic.
+These endpoints generate exports on each request — convenient for development, but not ideal for production traffic.
 
 ::: tip
 During development, you can fetch exports directly from your running server:

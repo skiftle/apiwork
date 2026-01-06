@@ -131,8 +131,6 @@ Inline types are embedded directly in operations. Named types use `$ref` referen
 }
 ```
 
-Named types define the logical building blocks of your API. They become first-class schemas in the OpenAPI export, making them discoverable, documentable, and reusable across operations.
-
 ## Raises
 
 Document possible error responses:
