@@ -1,5 +1,5 @@
 ---
-order: 53
+order: 20
 prev: false
 next: false
 ---
@@ -8,7 +8,7 @@ next: false
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export.rb#L9)
 
-Registry for exports.
+Registry for export generators.
 
 Built-in exports: :openapi, :typescript, :zod, :introspection.
 Use [.generate](#generate) to produce exports for an API.

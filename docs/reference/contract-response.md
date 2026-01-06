@@ -6,7 +6,7 @@ next: false
 
 # Contract::Response
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response.rb#L11)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response.rb#L10)
 
 Defines body for a response.
 
@@ -18,7 +18,7 @@ Returns [Param](contract-param) via `body`.
 
 `#body(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response.rb#L70)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response.rb#L69)
 
 Defines the response body for this response.
 
@@ -51,7 +51,7 @@ end
 
 `#no_content!`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response.rb#L48)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response.rb#L47)
 
 Declares this action returns 204 No Content.
 
@@ -80,7 +80,7 @@ end
 
 `#no_content?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response.rb#L29)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response.rb#L28)
 
 Returns true if this response is 204 No Content.
 

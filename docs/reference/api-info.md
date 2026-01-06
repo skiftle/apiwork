@@ -11,7 +11,7 @@ next: false
 Defines API metadata.
 
 Sets title, version, contact, license, and servers.
-Used by exports via [Export.generate](export#generate).
+Used by spec generators via [Spec.generate](spec#generate).
 
 ## Instance Methods
 
