@@ -103,8 +103,8 @@ Query parameters and form data arrive as strings. Apiwork coerces them to their 
 |------|-------|--------|
 | `:integer` | `"123"` | `123` |
 | `:float` | `"3.14"` | `3.14` |
-| `:boolean` | `"true"`, `"1"` | `true` |
-| `:boolean` | `"false"`, `"0"` | `false` |
+| `:boolean` | `"true"`, `"1"`, `"yes"` | `true` |
+| `:boolean` | `"false"`, `"0"`, `"no"` | `false` |
 | `:date` | `"2024-01-15"` | `Date` |
 | `:datetime` | `"2024-01-15T10:00:00Z"` | `Time` |
 | `:decimal` | `"99.99"` | `BigDecimal` |

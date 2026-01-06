@@ -68,7 +68,7 @@ Date values like `2024-01-15` are expanded to cover the full day (`00:00:00` to 
 | `eq` | `= value` | `filter[published][eq]=true` |
 | `null` | `IS NULL` | `filter[archived][null]=true` |
 
-Accepts: `true`, `false`, `1`, `0`, `'true'`, `'false'`
+Accepts: `true`, `false`, `1`, `0`, `'true'`, `'false'`, `'yes'`, `'no'`
 
 ### UUID
 

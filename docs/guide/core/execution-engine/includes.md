@@ -114,4 +114,4 @@ With `include[comments]=true`:
 
 ## N+1 Prevention
 
-The adapter uses ActiveRecord eager loading to prevent N+1 queries. Collections use `preload`, single records use `includes`.
+The adapter eager loads associations to prevent N+1 queries.
