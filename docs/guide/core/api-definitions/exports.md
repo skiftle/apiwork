@@ -4,7 +4,7 @@ order: 4
 
 # Export Endpoints
 
-Apiwork can expose your API exports directly from your Rails application. Enable export endpoints to let clients fetch OpenAPI documents, TypeScript types, and Zod schemas.
+Export endpoints serve OpenAPI documents, TypeScript types, and Zod schemas directly from your API.
 
 ## Enabling Exports
 
@@ -92,8 +92,8 @@ Query parameter override:
 GET /api/v1/.openapi?key_format=camel
 ```
 
-::: info Keeping Rails conventions while generating camelCase exports
-If you prefer Rails conventions at runtime (snake_case keys), you can keep the API's `key_format` at `:keep` or `:underscore` and override only for exports. This is useful when your frontend transforms keys to camelCase anyway.
+::: info Runtime snake_case, exports camelCase
+Keep `key_format` at `:keep` for runtime and override per export:
 
 ```ruby
 Apiwork::API.define '/api/v1' do

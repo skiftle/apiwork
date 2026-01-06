@@ -99,9 +99,7 @@ end
 }
 ```
 
-This is usually the desired behavior. However, if your JSON column stores data with intentional key formats (like external API responses or user-defined schemas), you may need to preserve the original keys.
-
-To prevent transformation of specific JSON columns, use `encode:` to preserve the original structure:
+This is usually desired. To preserve original keys in a JSON column, use `encode:`:
 
 ```ruby
 class UserSchema < Apiwork::Schema

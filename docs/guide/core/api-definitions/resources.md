@@ -4,7 +4,7 @@ order: 2
 
 # Resources
 
-Resources define the endpoints for your API. They follow Rails' resource routing conventions, but serve a broader purpose:
+Resources define your API endpoints. They follow Rails routing conventions:
 
 - Define which endpoints exist
 - Link each endpoint to its [contract](../contracts/introduction.md)
@@ -41,7 +41,7 @@ For resources where there's only one (like the current user's account):
 | update  | PATCH  | /account |
 | destroy | DELETE | /account |
 
-No `index` action, no `:id` in the path. The controller is still plural: `AccountsController`.
+No `index` action, no `:id` in the path. The controller is still plural (`AccountsController`) to match Rails conventions.
 
 ## Limiting Actions
 
@@ -116,7 +116,7 @@ Both `contract:` and `controller:` work the same way as Rails' routing options.
 
 ## Custom Actions
 
-Beyond the standard CRUD endpoints, you can extend a resource with custom behaviour using `member` and `collection` blocks.
+Add custom actions with `member` and `collection` blocks.
 
 ### Member Actions
 
@@ -187,7 +187,7 @@ end
 
 ## Concerns
 
-Concerns allow you to extract reusable routing patterns and apply them to multiple resources.
+Concerns extract reusable routing patterns.
 
 ### Defining a Concern
 

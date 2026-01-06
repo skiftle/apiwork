@@ -8,7 +8,7 @@ The API definition describes the shape of your API:
 
 - Which [resources](./resources.md) exist
 - Which actions they offer
-- How everything is organised
+- How everything is organized
 
 It's also where you configure API-specific settings:
 
