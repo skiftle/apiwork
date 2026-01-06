@@ -6,7 +6,6 @@ module Apiwork
     #
     # Part of the Adapter DSL. Returned by {Request#query},
     # {Request#body}, and {Response#body}.
-    # Use as a declarative builder - do not rely on internal state.
     #
     # @api public
     class Param

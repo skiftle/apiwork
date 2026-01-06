@@ -5,7 +5,6 @@ module Apiwork
     # Defines request/response structure for an action.
     #
     # Returns {Request} via `request` and {Response} via `response`.
-    # Use as a declarative builder - do not rely on internal state.
     #
     # @api public
     class Action

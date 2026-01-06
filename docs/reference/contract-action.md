@@ -11,7 +11,6 @@ next: false
 Defines request/response structure for an action.
 
 Returns [Request](contract-request) via `request` and [Response](contract-response) via `response`.
-Use as a declarative builder - do not rely on internal state.
 
 ## Instance Methods
 

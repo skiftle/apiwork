@@ -7,10 +7,10 @@ order: 1
 The **Execution Engine** is the runtime that interprets and executes your API schemas.
 
 It reads schema definitions, derives types, and handles requests end-to-end — from validation and querying to serialization and response formatting.
-All execution is delegated through an **adapter**, which defines how schemas are applied to your underlying models and data sources.
+All execution is delegated through an **adapter**, which defines how queries are built and responses are rendered.
 
-Apiwork ships with a built-in adapter for **ActiveRecord**, which is documented in this section.
-For other ORMs or custom execution logic, you can [build your own adapter](../../advanced/custom-adapters.md).
+The built-in adapter is documented in this section.
+For custom response formats or query logic, you can [build your own adapter](../../advanced/custom-adapters.md).
 
 ## Two Phases
 

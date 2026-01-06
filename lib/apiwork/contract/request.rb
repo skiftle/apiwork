@@ -5,7 +5,6 @@ module Apiwork
     # Defines query params and body for a request.
     #
     # Returns {Param} via `query` and `body`.
-    # Use as a declarative builder - do not rely on internal state.
     #
     # @api public
     class Request

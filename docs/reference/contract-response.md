@@ -11,7 +11,6 @@ next: false
 Defines body for a response.
 
 Returns [Param](contract-param) via `body`.
-Use as a declarative builder - do not rely on internal state.
 
 ## Instance Methods
 

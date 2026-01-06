@@ -5,7 +5,6 @@ module Apiwork
     # Defines body for a response.
     #
     # Returns {Param} via `body`.
-    # Use as a declarative builder - do not rely on internal state.
     #
     # @api public
     class Response

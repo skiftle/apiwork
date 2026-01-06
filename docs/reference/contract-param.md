@@ -12,7 +12,6 @@ Defines params for query, body, or response.
 
 Part of the Adapter DSL. Returned by [Request#query](contract-request#query),
 [Request#body](contract-request#body), and [Response#body](contract-response#body).
-Use as a declarative builder - do not rely on internal state.
 
 ## Instance Methods
 
