@@ -45,7 +45,7 @@ These sit alongside your existing `app/controllers/` and `app/models/`. Your con
 
 ## Generators
 
-Apiwork provides generators to scaffold the files you'll work with most.
+Apiwork provides generators for common files.
 
 ### apiwork:api
 

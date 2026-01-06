@@ -4,7 +4,7 @@ order: 4
 
 # Quick Start
 
-Now that you understand the [core concepts](./core-concepts.md), let's put them into practice. We'll build a complete Posts API with validation, filtering, sorting, pagination, and auto-generated exports.
+This guide builds a Posts API with validation, filtering, sorting, pagination, and exports.
 
 ## 1. The Model
 
@@ -105,7 +105,10 @@ That's it. `schema!` imports everything from `PostSchema`. The contract now know
 
 ## 6. Controller
 
-The controller looks like any Rails controller, with two differences: use `expose` to return data, and access validated params via `contract.query` (URL params) and `contract.body` (request body):
+The controller has two differences from standard Rails:
+
+- Use `expose` to return data
+- Use `contract.body` for validated params
 
 ```ruby
 # app/controllers/api/v1/posts_controller.rb
@@ -144,7 +147,7 @@ end
 ```
 
 ::: tip
-`contract.query` and `contract.body` replace Strong Parameters. They contain only the fields defined in your schema — unknown fields are filtered out before your controller runs.
+`contract.query` and `contract.body` contain only fields explicitly defined in your contract.
 :::
 
 ## 7. Try It

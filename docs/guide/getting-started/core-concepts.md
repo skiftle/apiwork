@@ -4,7 +4,7 @@ order: 3
 
 # Core Concepts
 
-Apiwork is built around three main pieces: **API definitions**, **contracts**, and **schemas**. Each has a specific job, and together they describe everything about your API.
+Apiwork has three main pieces: **API definitions**, **contracts**, and **schemas**.
 
 ## API Definition
 
@@ -70,7 +70,7 @@ This defines what goes in and what comes out. The contract validates incoming re
 
 Writing contracts by hand means defining every request type, response type, filter, and sort — for every action. That adds up.
 
-A schema bridges the gap. It sits between your ActiveRecord model and the contract, describing what to expose and how it behaves — what can be filtered, sorted, and written. Apiwork uses this to build the contract and handle requests.
+A schema sits between your model and contract. It describes what to expose and how: filtering, sorting, writing. Apiwork uses this to build the contract and handle requests.
 
 ```ruby
 class PostSchema < ApplicationSchema
@@ -82,9 +82,9 @@ class PostSchema < ApplicationSchema
 end
 ```
 
-Each flag controls one thing:
+Each option does one thing:
 
-| Flag               | What it does                                         |
+| Option             | What it does                                         |
 | ------------------ | ---------------------------------------------------- |
 | `writable: true`   | Field can be set in create/update requests           |
 | `filterable: true` | Field can be filtered via `?filter[field][op]=value` |
@@ -117,7 +117,7 @@ class PostContract < ApplicationContract
 end
 ```
 
-This single line generates typed definitions for all CRUD actions.
+`schema!` connects to `PostSchema` by naming convention. This single line generates typed definitions for all CRUD actions.
 
 ::: tip
 You can also write contracts entirely by hand without schemas. This is useful for non-CRUD endpoints or custom APIs. See [Contracts](../core/contracts/introduction.md).
@@ -167,10 +167,10 @@ See [Actions](../core/contracts/actions.md) for all action options.
 
 ## Controller
 
-Controllers look like regular Rails controllers with two key differences:
+Controllers have two differences from standard Rails:
 
-1. Use `expose` to return data
-2. Access validated params via `contract.query` and `contract.body`
+- Use `expose` to return data
+- Use `contract.body` for validated params
 
 ```ruby
 def create
@@ -183,7 +183,7 @@ end
 - `contract.body` — request body (create/update payloads)
 
 ::: tip
-`contract.query` and `contract.body` replace Strong Parameters. They contain only the fields defined in your schema — unknown fields are filtered out before your controller runs.
+`contract.query` and `contract.body` contain only fields explicitly defined in your contract.
 :::
 
 ## How They Connect
@@ -223,10 +223,10 @@ Here's how everything fits together:
 4. Controller processes the request
 5. Schema serializes the response
 
-**The key insight:** Schema is the single source of truth. It knows your data shape, and both contracts (for validation) and serialization (for responses) derive from it.
+Schema is the single source of truth. Contracts and serialization both derive from it.
 
 ## Next Steps
 
-Now that you understand the concepts, let's build something:
+Next:
 
 - [Quick Start](./quick-start.md) — build a complete API with validation, filtering, and exports
