@@ -131,7 +131,7 @@ param :post, type: :object do
 end
 ```
 
-Requests exceeding the depth limit receive a `max_depth_exceeded` error.
+Requests exceeding the depth limit receive a `depth_exceeded` error.
 
 ## Alias
 
