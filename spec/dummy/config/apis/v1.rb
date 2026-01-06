@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 Apiwork::API.define '/api/v1' do
-  spec :openapi
-  spec :zod
-  spec :typescript
+  export :openapi
+  export :zod
+  export :typescript
 
   # Global errors that all endpoints can raise
   raises :bad_request, :internal_server_error

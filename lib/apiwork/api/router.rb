@@ -13,15 +13,15 @@ module Apiwork
           api_classes.each do |api_class|
             next if api_class.path.blank? || api_class.structure.blank?
 
-            if api_class.specs?
+            if api_class.exports?
               scope path: api_class.path do
-                api_class.specs.each do |spec_name|
-                  get api_class.spec_path(spec_name),
+                api_class.exports.each do |export_name|
+                  get api_class.export_path(export_name),
                       defaults: {
-                        spec_name:,
+                        export_name:,
                         api_path: api_class.path,
                       },
-                      to: 'apiwork/specs#show'
+                      to: 'apiwork/exports#show'
                 end
               end
             end

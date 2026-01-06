@@ -194,7 +194,7 @@ class OrderContract < Apiwork::Contract::Base
 end
 ```
 
-This becomes `OrderLineItem` in TypeScript, `order_line_item` in specs.
+This becomes `OrderLineItem` in TypeScript, `order_line_item` in exports.
 
 ## Named vs Inline
 
@@ -234,7 +234,7 @@ class OrderContract < Apiwork::Contract::Base
 end
 ```
 
-Both work the same at runtime. The difference is in the specs:
+Both work the same at runtime. The difference is in the exports:
 
 - Inline types embed the definition directly
 - Named types create `$ref` references to `components/schemas`

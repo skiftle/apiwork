@@ -10,14 +10,14 @@ Generates OpenAPI 3.1 specifications.
 
 ```ruby
 Apiwork::API.define '/api/v1' do
-  spec :openapi
+  export :openapi
 end
 ```
 
 ## Options
 
 ```ruby
-spec :openapi do
+export :openapi do
   path '/openapi.json'      # Custom endpoint path
   key_format :camel         # Transform keys to camelCase
 end
@@ -51,7 +51,7 @@ Apiwork::API.define '/api/v1' do
     server url: 'https://staging.example.com', description: 'Staging'
   end
 
-  spec :openapi
+  export :openapi
 end
 ```
 
@@ -107,7 +107,7 @@ All fields are optional. If `title` is not provided, it defaults to the API path
 
 ## Schemas
 
-Named types defined in the [Type System](../type-system/custom-types.md) appear in `components/schemas`. This makes the generated spec cleaner and more reusable.
+Named types defined in the [Type System](../type-system/custom-types.md) appear in `components/schemas`. This makes the generated export cleaner and more reusable.
 
 Inline types are embedded directly in operations. Named types use `$ref` references:
 
@@ -131,7 +131,7 @@ Inline types are embedded directly in operations. Named types use `$ref` referen
 }
 ```
 
-Named types define the logical building blocks of your API. They become first-class schemas in the OpenAPI spec, making them discoverable, documentable, and reusable across operations.
+Named types define the logical building blocks of your API. They become first-class schemas in the OpenAPI export, making them discoverable, documentable, and reusable across operations.
 
 ## Raises
 
@@ -143,7 +143,7 @@ action :show do
 end
 ```
 
-Appears in the OpenAPI spec as possible responses.
+Appears in the OpenAPI export as possible responses.
 
 [Contracts: Actions](../contracts/actions.md#metadata) shows how to add `summary`, `description`, `tags`, and `operation_id` to your actions.
 

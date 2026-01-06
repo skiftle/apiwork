@@ -52,7 +52,7 @@ const sectionIcon = computed(() => {
   if (text.includes("adapter")) return "plug";
   if (text.includes("controller")) return "terminal";
   if (text.includes("introspection")) return "eye";
-  if (text.includes("spec")) return "beaker";
+  if (text.includes("export")) return "beaker";
   if (text.includes("config")) return "cog";
   if (text.includes("error")) return "warning";
   return "folder";

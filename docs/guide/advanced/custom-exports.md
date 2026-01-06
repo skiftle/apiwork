@@ -2,20 +2,20 @@
 order: 3
 ---
 
-# Custom Specs
+# Custom Exports
 
-Create your own spec generators.
+Create your own exports.
 
-## Creating a Custom Spec
+## Creating a Custom Export
 
 ```ruby
-class MySpec < Apiwork::Spec::Base
-  spec_name :my_spec
+class MyExport < Apiwork::Export::Base
+  export_name :my_export
   content_type 'application/json'
   file_extension '.json'
 
   def generate
-    # Build and return your spec
+    # Build and return your export
     {
       resources: build_resources,
       types: build_types
@@ -40,7 +40,7 @@ end
 
 ## Base Class Helpers
 
-The `Apiwork::Spec::Base` class provides:
+The `Apiwork::Export::Base` class provides:
 
 ### Data Access
 
@@ -73,22 +73,22 @@ option :my_option, type: :string, default: 'value'
 my_option  # Returns the configured value
 ```
 
-## Registering Your Spec
+## Registering Your Export
 
-Register your spec so Apiwork can find it:
+Register your export so Apiwork can find it:
 
 ```ruby
 # config/initializers/apiwork.rb
-Apiwork::Spec.register(MySpec)
+Apiwork::Export.register(MyExport)
 ```
 
-## Using Your Spec
+## Using Your Export
 
 Once registered, enable it in your [API definition](/guide/core/api-definitions/introduction):
 
 ```ruby
 Apiwork::API.define '/api/v1' do
-  spec :my_spec
+  export :my_export
 end
 ```
 
@@ -96,37 +96,37 @@ With options:
 
 ```ruby
 Apiwork::API.define '/api/v1' do
-  spec :my_spec do
+  export :my_export do
     key_format :camel
   end
 end
 ```
 
-Served at `GET /api/v1/.spec/my_spec`.
+Served at `GET /api/v1/.my_export`.
 
 With query parameters (any defined option works):
 
 ```
-GET /api/v1/.spec/my_spec?key_format=camel
-GET /api/v1/.spec/my_spec?locale=sv
-GET /api/v1/.spec/my_spec?include_deprecated=true
+GET /api/v1/.my_export?key_format=camel
+GET /api/v1/.my_export?locale=sv
+GET /api/v1/.my_export?include_deprecated=true
 ```
 
 Generate to file (use uppercase ENV vars):
 
 ```bash
-rake apiwork:spec:write SPEC_NAME=my_spec OUTPUT=public/specs
-rake apiwork:spec:write SPEC_NAME=my_spec KEY_FORMAT=camel OUTPUT=public/specs
-rake apiwork:spec:write SPEC_NAME=my_spec INCLUDE_DEPRECATED=true OUTPUT=public/specs
+rake apiwork:export:write EXPORT_NAME=my_export OUTPUT=public/exports
+rake apiwork:export:write EXPORT_NAME=my_export KEY_FORMAT=camel OUTPUT=public/exports
+rake apiwork:export:write EXPORT_NAME=my_export INCLUDE_DEPRECATED=true OUTPUT=public/exports
 ```
 
 ## Defining Options
 
-Make your spec configurable with `option`:
+Make your export configurable with `option`:
 
 ```ruby
-class MySpec < Apiwork::Spec::Base
-  spec_name :my_spec
+class MyExport < Apiwork::Export::Base
+  export_name :my_export
 
   option :include_deprecated, type: :boolean, default: false
   option :max_depth, type: :integer, default: 3

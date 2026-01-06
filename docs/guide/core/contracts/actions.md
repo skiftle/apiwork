@@ -170,7 +170,7 @@ action :create do
 end
 ```
 
-These appear in generated [OpenAPI specs](../specs/openapi.md) as possible error responses. You can also declare raises at the [API level](../api-definitions/configuration.md#raises) for errors common to all endpoints.
+These appear in generated [OpenAPI exports](../exports/openapi.md) as possible error responses. You can also declare raises at the [API level](../api-definitions/configuration.md#raises) for errors common to all endpoints.
 
 ## Declaration Merging
 
@@ -303,7 +303,7 @@ end
   :::
 
 ::: info raises always merges
-`raises` has no `replace:` option. You cannot opt out of errors the adapter may throw (like `:unprocessable_entity`), ensuring the spec reflects reality.
+`raises` has no `replace:` option. You cannot opt out of errors the adapter may throw (like `:unprocessable_entity`), ensuring the export reflects reality.
 :::
 
 ## Metadata

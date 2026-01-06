@@ -23,7 +23,7 @@ Use as a declarative builder - do not rely on internal state.
 
 Marks this action as deprecated.
 
-Deprecated actions are flagged in generated specs.
+Deprecated actions are flagged in generated exports.
 
 **Returns**
 
@@ -47,7 +47,7 @@ end
 
 Sets a detailed description for this action.
 
-Used in generated specs as the operation description.
+Used in generated exports as the operation description.
 Supports Markdown formatting.
 
 **Parameters**
@@ -107,7 +107,7 @@ end
 Declares error codes this action may return.
 
 Uses built-in error codes (:not_found, :forbidden, etc.) or custom codes
-registered via ErrorCode.register. These appear in generated specs.
+registered via ErrorCode.register. These appear in generated exports.
 
 Multiple calls merge error codes (consistent with declaration merging).
 
@@ -231,7 +231,7 @@ end
 
 Sets a short summary for this action.
 
-Used in generated specs as the operation summary.
+Used in generated exports as the operation summary.
 
 **Parameters**
 

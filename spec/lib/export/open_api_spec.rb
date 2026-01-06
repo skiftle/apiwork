@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Apiwork::Spec::OpenAPI do
+RSpec.describe Apiwork::Export::OpenAPI do
   before do
     load File.expand_path('../../dummy/config/apis/v1.rb', __dir__)
   end
@@ -39,11 +39,11 @@ RSpec.describe Apiwork::Spec::OpenAPI do
 
   describe 'generator registration' do
     it 'is registered in the registry' do
-      expect(Apiwork::Spec.registered?(:openapi)).to be true
+      expect(Apiwork::Export.registered?(:openapi)).to be true
     end
 
     it 'can be retrieved from the registry' do
-      expect(Apiwork::Spec.find(:openapi)).to eq(described_class)
+      expect(Apiwork::Export.find(:openapi)).to eq(described_class)
     end
   end
 

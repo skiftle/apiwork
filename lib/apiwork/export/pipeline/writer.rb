@@ -4,17 +4,17 @@ require 'fileutils'
 require 'tempfile'
 
 module Apiwork
-  module Spec
+  module Export
     class Pipeline
       class Writer
         class << self
-          def write(api_path: nil, content:, extension:, output:, spec_name: nil)
+          def write(api_path: nil, content:, export_name: nil, extension:, output:)
             if file_path?(output)
               write_file(content, output)
             else
-              raise ArgumentError, 'api_path and spec_name required when output is a directory' if api_path.blank? || spec_name.blank?
+              raise ArgumentError, 'api_path and export_name required when output is a directory' if api_path.blank? || export_name.blank?
 
-              file_path = build_file_path(output, api_path, spec_name, extension)
+              file_path = build_file_path(output, api_path, export_name, extension)
               write_file(content, file_path)
             end
           end
@@ -39,9 +39,9 @@ module Apiwork
 
           private
 
-          def build_file_path(output, api_path, spec_name, extension)
+          def build_file_path(output, api_path, export_name, extension)
             path_parts = api_path.split('/').reject(&:empty?)
-            File.join(output, *path_parts, "#{spec_name}#{extension}")
+            File.join(output, *path_parts, "#{export_name}#{extension}")
           end
 
           def write_file(content, file_path)

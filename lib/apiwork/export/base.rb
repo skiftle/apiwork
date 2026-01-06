@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
 module Apiwork
-  module Spec
+  module Export
     # @api public
-    # Base class for spec generators.
+    # Base class for exports.
     #
-    # Subclass this to create custom spec formats. Declare output type
+    # Subclass this to create custom export formats. Declare output type
     # and override `#generate` to produce output.
     #
-    # @example Hash spec (supports json/yaml)
-    #   class OpenAPI < Apiwork::Spec::Base
-    #     spec_name :openapi
+    # @example Hash export (supports json/yaml)
+    #   class OpenAPI < Apiwork::Export::Base
+    #     export_name :openapi
     #     output :hash
     #
     #     def generate
@@ -18,9 +18,9 @@ module Apiwork
     #     end
     #   end
     #
-    # @example String spec (fixed format)
-    #   class ProtobufSpec < Apiwork::Spec::Base
-    #     spec_name :protobuf
+    # @example String export (fixed format)
+    #   class ProtobufExport < Apiwork::Export::Base
+    #     export_name :protobuf
     #     output :string
     #     file_extension '.proto'
     #
@@ -29,24 +29,24 @@ module Apiwork
     #     end
     #   end
     #
-    #   # Register the spec
-    #   Apiwork::Spec.register(ProtobufSpec)
+    #   # Register the export
+    #   Apiwork::Export.register(ProtobufExport)
     class Base
       include Configurable
 
       class << self
         # @api public
-        # Sets or returns the spec name identifier.
+        # Sets or returns the export name identifier.
         #
-        # @param name [Symbol, nil] the spec name to set
-        # @return [Symbol, nil] the spec name, or nil if not set
-        def spec_name(name = nil)
-          @spec_name = name.to_sym if name
-          @spec_name
+        # @param name [Symbol, nil] the export name to set
+        # @return [Symbol, nil] the export name, or nil if not set
+        def export_name(name = nil)
+          @export_name = name.to_sym if name
+          @export_name
         end
 
         # @api public
-        # Declares the output type for this spec.
+        # Declares the output type for this export.
         #
         # @param type [Symbol] :hash for Hash output (json/yaml), :string for String output
         def output(type = nil)
@@ -60,24 +60,24 @@ module Apiwork
         attr_reader :output_type
 
         def generate(api_path, format: nil, key_format: nil, locale: nil, version: nil)
-          spec = new(api_path, key_format:, locale:, version:)
+          export = new(api_path, key_format:, locale:, version:)
 
-          raise ArgumentError, "#{spec_name} spec does not support format options" if spec.string_output? && format
+          raise ArgumentError, "#{export_name} export does not support format options" if export.string_output? && format
 
           resolved_format = format || :json
 
-          if spec.hash_output? && !spec.supports_format?(resolved_format)
-            raise ArgumentError, "#{spec_name} spec does not support #{resolved_format} format"
+          if export.hash_output? && !export.supports_format?(resolved_format)
+            raise ArgumentError, "#{export_name} export does not support #{resolved_format} format"
           end
 
-          content = spec.generate
-          spec.serialize(content, format: resolved_format)
+          content = export.generate
+          export.serialize(content, format: resolved_format)
         end
 
         # @api public
-        # Sets the file extension for string specs.
+        # Sets the file extension for string exports.
         #
-        # Only valid for specs with `output :string`. Hash specs derive
+        # Only valid for exports with `output :string`. Hash exports derive
         # their extension from the format (:json → .json, :yaml → .yaml).
         #
         # @param file_extension [String, nil] the file extension (e.g., '.ts')
@@ -85,7 +85,7 @@ module Apiwork
         def file_extension(file_extension = nil)
           return @file_extension unless file_extension
 
-          raise ConfigurationError, 'file_extension not allowed for output :hash specs' if output_type == :hash
+          raise ConfigurationError, 'file_extension not allowed for output :hash exports' if output_type == :hash
 
           @file_extension = file_extension
         end
@@ -196,13 +196,13 @@ module Apiwork
       end
 
       # @api public
-      # Generates the spec output.
+      # Generates the export output.
       #
-      # Override this method in subclasses to produce the spec format.
+      # Override this method in subclasses to produce the export format.
       # Access API data via the {#data} method which provides typed access
       # to types, enums, resources, actions, and other introspection data.
       #
-      # @return [Hash, String] Hash for hash specs, String for string specs
+      # @return [Hash, String] Hash for hash exports, String for string exports
       # @see Introspection::API
       def generate
         raise NotImplementedError, "#{self.class} must implement #generate"
@@ -256,7 +256,7 @@ module Apiwork
       # @api public
       # Returns the API introspection facade.
       #
-      # This is the primary interface for accessing introspection data in spec generators.
+      # This is the primary interface for accessing introspection data in export generators.
       #
       # @return [Introspection::API]
       # @see Introspection::API

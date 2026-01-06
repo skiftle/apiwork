@@ -56,7 +56,7 @@ Sets or returns the adapter name identifier.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/configurable.rb#L31)
 
-Defines a configuration option for the spec or adapter.
+Defines a configuration option for the export or adapter.
 
 Options can be passed to `.generate` or set via environment variables.
 

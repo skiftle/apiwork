@@ -29,7 +29,7 @@ From this single definition, Apiwork generates:
 
 - **TypeScript interfaces** for your frontend
 - **Zod schemas** for runtime validation
-- **OpenAPI specs** for documentation
+- **OpenAPI exports** for documentation
 
 ## What's Next
 

@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module Apiwork
-  module Spec
+  module Export
     class Zod < Base
-      spec_name :zod
+      export_name :zod
       output :string
       file_extension '.ts'
 

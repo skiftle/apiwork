@@ -11,7 +11,7 @@ Resources, actions, types, enums, and error codes are exposed as explicit object
 This serves two purposes:
 
 - **Development** – inspect what is exposed, including dynamically generated types
-- **Generation** – [spec generators](../specs/introduction.md) and documentation read introspection directly
+- **Generation** – [exports](../exports/introduction.md) and documentation read introspection directly
 
 Introspection exposes an object facade. Each object represents a part of the API and provides type predicates and navigation accessors.
 

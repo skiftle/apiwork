@@ -13,7 +13,7 @@ The API definition describes the shape of your API:
 It's also where you configure API-specific settings:
 
 - Key format (camelCase, snake_case)
-- Which [specs](./specs.md) to generate
+- Which [exports](./exports.md) to generate
 - Adapter options
 - Global types and enums
 

@@ -1,23 +1,23 @@
 # frozen_string_literal: true
 
 module Apiwork
-  module Spec
+  module Export
     class Pipeline
       class << self
-        def generate(spec_name, api_path, format: nil, key_format: nil, locale: nil, version: nil)
-          Spec.generate(spec_name, api_path, format:, key_format:, locale:, version:)
+        def generate(export_name, api_path, format: nil, key_format: nil, locale: nil, version: nil)
+          Export.generate(export_name, api_path, format:, key_format:, locale:, version:)
         end
 
-        def write(api_path: nil, format: nil, key_format: nil, locale: nil, output:, spec_name: nil, version: nil)
+        def write(api_path: nil, export_name: nil, format: nil, key_format: nil, locale: nil, output:, version: nil)
           raise ArgumentError, 'output path required' unless output
 
-          if Writer.file_path?(output) && (api_path.nil? || spec_name.nil?)
+          if Writer.file_path?(output) && (api_path.nil? || export_name.nil?)
             raise ArgumentError,
-                  'api_path and spec_name required when output is a file'
+                  'api_path and export_name required when output is a file'
           end
 
           api_classes = api_path ? [find_api_class(api_path)] : API.all
-          spec_names = spec_name ? [spec_name] : Registry.all
+          export_names = export_name ? [export_name] : Registry.all
 
           start_time = Time.zone.now
           count = 0
@@ -25,15 +25,15 @@ module Apiwork
           Rails.logger.debug 'Generating artifacts...'
 
           api_classes.each do |api_class|
-            spec_names.each do |name|
+            export_names.each do |name|
               count += generate_file(
                 api_class:,
+                export_name: name,
                 format:,
                 key_format:,
                 locale:,
                 output:,
                 version:,
-                spec_name: name,
               )
             end
           end
@@ -61,28 +61,28 @@ module Apiwork
                 "API not found: #{api_path}. Available APIs: #{available.join(', ')}"
         end
 
-        def generate_file(api_class:, format:, key_format:, locale:, output:, spec_name:, version:)
+        def generate_file(api_class:, export_name:, format:, key_format:, locale:, output:, version:)
           api_path = api_class.path
 
-          unless api_class.specs&.include?(spec_name)
-            Rails.logger.debug "  ⊘ Skipping #{api_path} → #{spec_name} (not configured)"
+          unless api_class.exports&.include?(export_name)
+            Rails.logger.debug "  ⊘ Skipping #{api_path} → #{export_name} (not configured)"
             return 0
           end
 
           options = { format:, key_format:, locale:, version: }.compact
           options_label = options.any? ? " (#{options.map { |k, v| "#{k}: #{v}" }.join(', ')})" : ''
-          Rails.logger.debug "  ✓ #{api_path} → #{spec_name}#{options_label}"
+          Rails.logger.debug "  ✓ #{api_path} → #{export_name}#{options_label}"
 
-          content = generate(spec_name, api_path, format:, key_format:, locale:, version:)
-          spec = Registry.find(spec_name).new(api_path, key_format:, locale:, version:)
-          extension = spec.file_extension_for(format:)
+          content = generate(export_name, api_path, format:, key_format:, locale:, version:)
+          export = Registry.find(export_name).new(api_path, key_format:, locale:, version:)
+          extension = export.file_extension_for(format:)
 
           file_path = Writer.write(
             api_path:,
             content:,
+            export_name:,
             extension:,
             output:,
-            spec_name:,
           )
 
           Rails.logger.debug "    → #{file_path}"

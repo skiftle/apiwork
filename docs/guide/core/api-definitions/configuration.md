@@ -8,7 +8,7 @@ API-level configuration applies to all resources within the API.
 
 ## Info Block
 
-Metadata for documentation and spec generation:
+Metadata for documentation and export generation:
 
 ```ruby
 Apiwork::API.define '/api/v1' do
@@ -60,7 +60,7 @@ Apiwork::API.define '/api/v1' do
 end
 ```
 
-These appear in generated OpenAPI specs as possible responses for all endpoints.
+These appear in generated OpenAPI exports as possible responses for all endpoints.
 
 ## Key Format
 
@@ -232,29 +232,29 @@ end
 
 [Execution Engine](../execution-engine/introduction.md) covers pagination strategies, filtering operators, and sorting options.
 
-## Spec Endpoints
+## Export Endpoints
 
-Enable generated spec endpoints:
+Enable generated export endpoints:
 
 ```ruby
 Apiwork::API.define '/api/v1' do
-  spec :openapi
-  spec :zod
-  spec :typescript
+  export :openapi
+  export :zod
+  export :typescript
 end
 ```
 
-Generates endpoints at `/.spec/openapi`, `/.spec/zod`, `/.spec/typescript`.
+Generates endpoints at `/.openapi`, `/.zod`, `/.typescript`.
 
 Custom paths:
 
 ```ruby
-spec :openapi do
+export :openapi do
   path '/openapi.json'
 end
 ```
 
-[Spec Generation](../specs/introduction.md) covers format options, custom paths, and per-spec configuration.
+[Export Generation](../exports/introduction.md) covers format options, custom paths, and per-export configuration.
 
 ## Global Types and Enums
 

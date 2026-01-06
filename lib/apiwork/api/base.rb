@@ -6,7 +6,7 @@ module Apiwork
     # Base class for API definitions.
     #
     # Created via {API.define}. Configure resources, types, enums,
-    # adapters, and specs. Each API is mounted at a unique path.
+    # adapters, and exports. Each API is mounted at a unique path.
     #
     # @example Define an API
     #   Apiwork::API.define '/api/v1' do
@@ -20,16 +20,16 @@ module Apiwork
       class << self
         attr_reader :adapter_config,
                     :built_contracts,
+                    :export_configs,
+                    :exports,
                     :path,
-                    :spec_configs,
-                    :specs,
                     :structure,
                     :type_system
 
         def mount(path)
           @path = path
-          @specs = Set.new
-          @spec_configs = {}
+          @exports = Set.new
+          @export_configs = {}
           @adapter_config = {}
           @structure = Structure.new(path)
           @type_system = TypeSystem.new
@@ -109,53 +109,53 @@ module Apiwork
         end
 
         # @api public
-        # Enables a spec generator for this API.
+        # Enables an export for this API.
         #
-        # Specs generate client code and documentation from your contracts.
-        # Available specs: :openapi, :typescript, :zod, :introspection.
+        # Exports generate client code and documentation from your contracts.
+        # Available exports: :openapi, :typescript, :zod, :introspection.
         #
-        # @param name [Symbol] spec name to enable
+        # @param name [Symbol] export name to enable
         # @yield optional configuration block
-        # @see Spec::Base
+        # @see Export::Base
         #
-        # @example Enable OpenAPI spec
+        # @example Enable OpenAPI export
         #   Apiwork::API.define '/api/v1' do
-        #     spec :openapi
+        #     export :openapi
         #   end
         #
         # @example With custom path
-        #   spec :typescript do
+        #   export :typescript do
         #     path '/types.ts'
         #   end
-        def spec(name, &block)
-          unless Spec.registered?(name)
-            available = Spec.all.join(', ')
+        def export(name, &block)
+          unless Export.registered?(name)
+            available = Export.all.join(', ')
             raise ConfigurationError,
-                  "Unknown spec: :#{name}. " \
+                  "Unknown export: :#{name}. " \
                   "Available: #{available}"
           end
 
-          @specs.add(name)
-          @spec_configs[name] ||= {}
-          @spec_configs[name][:path] ||= "/.spec/#{name}"
+          @exports.add(name)
+          @export_configs[name] ||= {}
+          @export_configs[name][:path] ||= "/.#{name}"
 
           return unless block
 
-          spec_class = Spec.find(name)
-          builder = Configuration::Builder.new(spec_class, @spec_configs[name])
+          export_class = Export.find(name)
+          builder = Configuration::Builder.new(export_class, @export_configs[name])
           builder.instance_eval(&block)
         end
 
-        def spec_path(name)
-          @spec_configs.dig(name, :path) || "/.spec/#{name}"
+        def export_path(name)
+          @export_configs.dig(name, :path) || "/.#{name}"
         end
 
-        def spec_config(name)
-          @spec_configs[name] || {}
+        def export_config(name)
+          @export_configs[name] || {}
         end
 
-        def specs?
-          @specs.any?
+        def exports?
+          @exports.any?
         end
 
         # @api public

@@ -10,14 +10,14 @@ Generates TypeScript type definitions.
 
 ```ruby
 Apiwork::API.define '/api/v1' do
-  spec :typescript
+  export :typescript
 end
 ```
 
 ## Options
 
 ```ruby
-spec :typescript do
+export :typescript do
   path '/types.ts'          # Custom endpoint path
   key_format :camel         # Transform keys to camelCase
 end
@@ -75,7 +75,7 @@ export interface PostIndexResponse {
 Download and use in your frontend:
 
 ```bash
-curl http://localhost:3000/api/v1/.spec/typescript > src/api/types.ts
+curl http://localhost:3000/api/v1/.typescript > src/api/types.ts
 ```
 
 ```typescript

@@ -122,4 +122,4 @@ Contracts and schemas follow the same namespace structure as your controllers. I
 With Apiwork installed, you're ready to learn how it works.
 
 - [Core Concepts](./core-concepts.md) — understand API definitions, schemas, and contracts
-- [Quick Start](./quick-start.md) — build a complete API with validation, filtering, and specs
+- [Quick Start](./quick-start.md) — build a complete API with validation, filtering, and exports

@@ -41,7 +41,7 @@ Primitive types are the building blocks. Every param uses one of these.
 
 ## Semantic Precision
 
-Some types produce identical runtime output but carry distinct meaning. This metadata is preserved in specs that support it.
+Some types produce identical runtime output but carry distinct meaning. This metadata is preserved in exports that support it.
 
 | Type | Runtime | Purpose | OpenAPI |
 |------|---------|---------|---------|

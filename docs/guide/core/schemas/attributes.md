@@ -334,7 +334,7 @@ Transform values during serialization (`encode`) and deserialization (`decode`).
 | `decode` | Request (input) | API to Database |
 
 ::: info Serialization-only
-These transformations must preserve the attribute's type. They operate at the serialization layer and are not passed to adapters — invisible to generated TypeScript, Zod, and OpenAPI specs.
+These transformations must preserve the attribute's type. They operate at the serialization layer and are not passed to adapters — invisible to generated TypeScript, Zod, and OpenAPI exports.
 :::
 
 ```ruby
@@ -414,7 +414,7 @@ Your database stores `NULL` for missing values, but your frontend expects empty 
 
 ## Metadata
 
-Documentation options for API specs and client generation.
+Documentation options for API exports and client generation.
 
 ### description
 
@@ -426,7 +426,7 @@ attribute :status, description: "Current publication status of the post"
 
 ### example
 
-Example value shown in generated specs:
+Example value shown in generated exports:
 
 ```ruby
 attribute :email, example: "user@example.com"

@@ -10,14 +10,14 @@ Generates Zod validation schemas for runtime validation.
 
 ```ruby
 Apiwork::API.define '/api/v1' do
-  spec :zod
+  export :zod
 end
 ```
 
 ## Options
 
 ```ruby
-spec :zod do
+export :zod do
   path '/schemas.ts'        # Custom endpoint path
   key_format :camel         # Transform keys to camelCase
 end

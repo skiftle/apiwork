@@ -10,7 +10,7 @@ Each example includes:
 - API definition, models, schemas, contracts, and controllers
 - Generated TypeScript types
 - Generated Zod validators
-- Generated OpenAPI spec
+- Generated OpenAPI export
 - Introspection output
 
 ## Available Examples

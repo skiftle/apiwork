@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Apiwork::Spec::TypeScript do
+RSpec.describe Apiwork::Export::TypeScript do
   before do
     load File.expand_path('../../dummy/config/apis/v1.rb', __dir__)
   end
@@ -273,15 +273,15 @@ RSpec.describe Apiwork::Spec::TypeScript do
 
   describe 'generator registration' do
     it 'is registered in the registry' do
-      expect(Apiwork::Spec.registered?(:typescript)).to be true
+      expect(Apiwork::Export.registered?(:typescript)).to be true
     end
 
     it 'can be retrieved from the registry' do
-      expect(Apiwork::Spec.find(:typescript)).to eq(described_class)
+      expect(Apiwork::Export.find(:typescript)).to eq(described_class)
     end
 
-    it 'can be used via Apiwork::Spec.generate' do
-      output = Apiwork::Spec.generate(:typescript, path)
+    it 'can be used via Apiwork::Export.generate' do
+      output = Apiwork::Export.generate(:typescript, path)
       expect(output).to be_a(String)
       expect(output).to include('export type')
     end
@@ -309,7 +309,7 @@ RSpec.describe Apiwork::Spec::TypeScript do
 
         enum :status, deprecated: true, description: 'Status enum', values: %w[active inactive]
       end
-      @metadata_output = Apiwork::Spec.generate(:typescript, '/api/ts_metadata_test')
+      @metadata_output = Apiwork::Export.generate(:typescript, '/api/ts_metadata_test')
     end
 
     attr_reader :metadata_output
@@ -346,7 +346,7 @@ RSpec.describe Apiwork::Spec::TypeScript do
         end
       end
 
-      output = Apiwork::Spec.generate(:typescript, '/api/ts_full_metadata')
+      output = Apiwork::Export.generate(:typescript, '/api/ts_full_metadata')
 
       expect(output).to include('export interface FullMeta')
       expect(output).to include('x: number')
@@ -359,7 +359,7 @@ RSpec.describe Apiwork::Spec::TypeScript do
         enum :color, deprecated: false, description: 'desc', example: 'red', values: %w[red green blue]
       end
 
-      output = Apiwork::Spec.generate(:typescript, '/api/ts_enum_meta')
+      output = Apiwork::Export.generate(:typescript, '/api/ts_enum_meta')
 
       expect(output).to include("export type Color = 'blue' | 'green' | 'red'")
 
@@ -379,7 +379,7 @@ RSpec.describe Apiwork::Spec::TypeScript do
         end
       end
 
-      output = Apiwork::Spec.generate(:typescript, '/api/ts_prop_desc')
+      output = Apiwork::Export.generate(:typescript, '/api/ts_prop_desc')
 
       expect(output).to include('/** Total amount in cents */')
       expect(output).to include('currency: string;')
@@ -396,7 +396,7 @@ RSpec.describe Apiwork::Spec::TypeScript do
         end
       end
 
-      output = Apiwork::Spec.generate(:typescript, '/api/ts_example')
+      output = Apiwork::Export.generate(:typescript, '/api/ts_example')
 
       expect(output).to include('@example {"amount":99}')
       expect(output).to include('@example 99')
@@ -413,7 +413,7 @@ RSpec.describe Apiwork::Spec::TypeScript do
         end
       end
 
-      output = Apiwork::Spec.generate(:typescript, '/api/ts_no_desc')
+      output = Apiwork::Export.generate(:typescript, '/api/ts_no_desc')
 
       expect(output).not_to include('/**')
       expect(output).to include('export interface Simple')

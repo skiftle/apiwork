@@ -10,54 +10,54 @@ namespace :apiwork do
     end
   end
 
-  namespace :spec do
-    desc 'Write specs to files'
+  namespace :export do
+    desc 'Write exports to files'
     task write: :environment do
       # Load API definitions
       Dir[Rails.root.join('config/apis/**/*.rb')].sort.each { |f| load f }
 
       api_path = ENV['API_PATH']
+      export_name = ENV['EXPORT_NAME']&.to_sym
       format = ENV['FORMAT']&.to_sym
       output = ENV['OUTPUT']
-      spec_name = ENV['SPEC_NAME']&.to_sym
 
       unless output
         puts 'Error: OUTPUT required'
         puts ''
-        puts 'Usage: rake apiwork:spec:write OUTPUT=path [API_PATH=/api/v1] [SPEC_NAME=openapi] [OPTIONS...]'
+        puts 'Usage: rake apiwork:export:write OUTPUT=path [API_PATH=/api/v1] [EXPORT_NAME=openapi] [OPTIONS...]'
         puts ''
         puts 'Examples:'
-        puts '  rake apiwork:spec:write OUTPUT=public/specs'
-        puts '  rake apiwork:spec:write API_PATH=/api/v1 OUTPUT=public/specs'
-        puts '  rake apiwork:spec:write API_PATH=/api/v1 SPEC_NAME=openapi OUTPUT=public/openapi.json'
-        puts '  rake apiwork:spec:write SPEC_NAME=openapi FORMAT=yaml OUTPUT=public/openapi.yaml'
-        puts '  rake apiwork:spec:write SPEC_NAME=zod KEY_FORMAT=camel OUTPUT=public/specs'
-        puts '  rake apiwork:spec:write OUTPUT=public/specs LOCALE=sv'
+        puts '  rake apiwork:export:write OUTPUT=public/exports'
+        puts '  rake apiwork:export:write API_PATH=/api/v1 OUTPUT=public/exports'
+        puts '  rake apiwork:export:write API_PATH=/api/v1 EXPORT_NAME=openapi OUTPUT=public/openapi.json'
+        puts '  rake apiwork:export:write EXPORT_NAME=openapi FORMAT=yaml OUTPUT=public/openapi.yaml'
+        puts '  rake apiwork:export:write EXPORT_NAME=zod KEY_FORMAT=camel OUTPUT=public/exports'
+        puts '  rake apiwork:export:write OUTPUT=public/exports LOCALE=sv'
         puts ''
-        puts 'Available specs:'
-        puts "  #{Apiwork::Spec.all.join(', ')}"
+        puts 'Available exports:'
+        puts "  #{Apiwork::Export.all.join(', ')}"
         puts ''
         puts 'Built-in options (uppercase ENV vars):'
-        puts '  FORMAT: json, yaml (only for data specs like openapi)'
+        puts '  FORMAT: json, yaml (only for data exports like openapi)'
         puts '  KEY_FORMAT: keep, camel, underscore'
         puts "  LOCALE: #{I18n.available_locales.join(', ')}"
         puts ''
-        puts 'Custom spec options are also supported via ENV vars.'
+        puts 'Custom export options are also supported via ENV vars.'
         exit 1
       end
 
-      custom_options = if spec_name
-                         Apiwork::Spec.find(spec_name).extract_options_from_env
+      custom_options = if export_name
+                         Apiwork::Export.find(export_name).extract_options_from_env
                        else
                          {}
                        end
 
       begin
-        Apiwork::Spec::Pipeline.write(
+        Apiwork::Export::Pipeline.write(
           api_path:,
+          export_name:,
           format:,
           output:,
-          spec_name:,
           **custom_options,
         )
       rescue ArgumentError => e
@@ -73,23 +73,23 @@ namespace :apiwork do
       end
     end
 
-    desc 'Clean generated spec files'
+    desc 'Clean generated export files'
     task clean: :environment do
       output = ENV['OUTPUT']
 
       unless output
         puts 'Error: OUTPUT required'
         puts ''
-        puts 'Usage: rake apiwork:spec:clean OUTPUT=path'
+        puts 'Usage: rake apiwork:export:clean OUTPUT=path'
         puts ''
         puts 'Examples:'
-        puts '  rake apiwork:spec:clean OUTPUT=public/specs'
-        puts '  rake apiwork:spec:clean OUTPUT=public/openapi.json'
+        puts '  rake apiwork:export:clean OUTPUT=public/exports'
+        puts '  rake apiwork:export:clean OUTPUT=public/openapi.json'
         exit 1
       end
 
       begin
-        Apiwork::Spec::Pipeline.clean(output:)
+        Apiwork::Export::Pipeline.clean(output:)
       rescue ArgumentError => e
         puts "Error: #{e.message}"
         exit 1

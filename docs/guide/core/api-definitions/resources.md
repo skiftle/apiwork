@@ -8,7 +8,7 @@ Resources define the endpoints for your API. They follow Rails' resource routing
 
 - Define which endpoints exist
 - Link each endpoint to its [contract](../contracts/introduction.md)
-- Form part of the API's metadata for [spec generation](./specs.md)
+- Form part of the API's metadata for [export generation](./exports.md)
 
 ## Plural Resources
 

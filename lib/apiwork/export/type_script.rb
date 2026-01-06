@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module Apiwork
-  module Spec
+  module Export
     class TypeScript < Base
-      spec_name :typescript
+      export_name :typescript
       output :string
       file_extension '.ts'
 

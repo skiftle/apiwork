@@ -11,7 +11,7 @@ next: false
 Base class for API definitions.
 
 Created via [API.define](introspection-api#define). Configure resources, types, enums,
-adapters, and specs. Each API is mounted at a unique path.
+adapters, and exports. Each API is mounted at a unique path.
 
 **Example: Define an API**
 
@@ -244,7 +244,7 @@ end
 
 Declares error codes that any action in this API may raise.
 
-These are included in generated specs (OpenAPI, etc.) as possible
+These are included in generated exports (OpenAPI, etc.) as possible
 error responses. Use `raises` in action definitions for action-specific errors.
 
 **Parameters**
@@ -354,39 +354,39 @@ end
 
 ---
 
-### .spec
+### .export
 
-`.spec(name, &block)`
+`.export(name, &block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L130)
 
-Enables a spec generator for this API.
+Enables an export for this API.
 
-Specs generate client code and documentation from your contracts.
-Available specs: :openapi, :typescript, :zod, :introspection.
+Exports generate client code and documentation from your contracts.
+Available exports: :openapi, :typescript, :zod, :introspection.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `name` | `Symbol` | spec name to enable |
+| `name` | `Symbol` | export name to enable |
 
 **See also**
 
-- [Spec::Base](spec-base)
+- [Export::Base](export-base)
 
-**Example: Enable OpenAPI spec**
+**Example: Enable OpenAPI export**
 
 ```ruby
 Apiwork::API.define '/api/v1' do
-  spec :openapi
+  export :openapi
 end
 ```
 
 **Example: With custom path**
 
 ```ruby
-spec :typescript do
+export :typescript do
   path '/types.ts'
 end
 ```

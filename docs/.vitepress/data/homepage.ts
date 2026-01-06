@@ -199,7 +199,7 @@ end`,
     title: "Zero",
     titleAccent: "drift",
     description:
-      "TypeScript types, Zod schemas, and OpenAPI specs — all generated from your contracts. When your API changes, your frontend types update automatically. They can never go stale.",
+      "TypeScript types, Zod schemas, and OpenAPI exports — all generated from your contracts. When your API changes, your frontend types update automatically. They can never go stale.",
     alt: true,
     wide: true,
     blobVariant: 1,

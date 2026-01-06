@@ -4,20 +4,20 @@ prev: false
 next: false
 ---
 
-# Spec::Base
+# Export::Base
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L34)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L34)
 
-Base class for spec generators.
+Base class for exports.
 
-Subclass this to create custom spec formats. Declare output type
+Subclass this to create custom export formats. Declare output type
 and override `#generate` to produce output.
 
-**Example: Hash spec (supports json/yaml)**
+**Example: Hash export (supports json/yaml)**
 
 ```ruby
-class OpenAPI < Apiwork::Spec::Base
-  spec_name :openapi
+class OpenAPI < Apiwork::Export::Base
+  export_name :openapi
   output :hash
 
   def generate
@@ -26,11 +26,11 @@ class OpenAPI < Apiwork::Spec::Base
 end
 ```
 
-**Example: String spec (fixed format)**
+**Example: String export (fixed format)**
 
 ```ruby
-class ProtobufSpec < Apiwork::Spec::Base
-  spec_name :protobuf
+class ProtobufExport < Apiwork::Export::Base
+  export_name :protobuf
   output :string
   file_extension '.proto'
 
@@ -39,8 +39,8 @@ class ProtobufSpec < Apiwork::Spec::Base
   end
 end
 
-# Register the spec
-Apiwork::Spec.register(ProtobufSpec)
+# Register the export
+Apiwork::Export.register(ProtobufExport)
 ```
 
 ## Class Methods
@@ -49,11 +49,11 @@ Apiwork::Spec.register(ProtobufSpec)
 
 `.file_extension(file_extension = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L85)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L85)
 
-Sets the file extension for string specs.
+Sets the file extension for string exports.
 
-Only valid for specs with `output :string`. Hash specs derive
+Only valid for exports with `output :string`. Hash exports derive
 their extension from the format (:json → .json, :yaml → .yaml).
 
 **Parameters**
@@ -74,7 +74,7 @@ their extension from the format (:json → .json, :yaml → .yaml).
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/configurable.rb#L31)
 
-Defines a configuration option for the spec or adapter.
+Defines a configuration option for the export or adapter.
 
 Options can be passed to `.generate` or set via environment variables.
 
@@ -109,9 +109,9 @@ option :format, type: :symbol, enum: [:json, :yaml]
 
 `.output(type = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L52)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L52)
 
-Declares the output type for this spec.
+Declares the output type for this export.
 
 **Parameters**
 
@@ -121,23 +121,23 @@ Declares the output type for this spec.
 
 ---
 
-### .spec_name
+### .export_name
 
-`.spec_name(name = nil)`
+`.export_name(name = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L43)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L43)
 
-Sets or returns the spec name identifier.
+Sets or returns the export name identifier.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `name` | `Symbol, nil` | the spec name to set |
+| `name` | `Symbol, nil` | the export name to set |
 
 **Returns**
 
-`Symbol`, `nil` — the spec name, or nil if not set
+`Symbol`, `nil` — the export name, or nil if not set
 
 ---
 
@@ -147,11 +147,11 @@ Sets or returns the spec name identifier.
 
 `#data`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L263)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L263)
 
 Returns the API introspection facade.
 
-This is the primary interface for accessing introspection data in spec generators.
+This is the primary interface for accessing introspection data in exports.
 
 **Returns**
 
@@ -167,17 +167,17 @@ This is the primary interface for accessing introspection data in spec generator
 
 `#generate`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L207)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L207)
 
-Generates the spec output.
+Generates the export output.
 
-Override this method in subclasses to produce the spec format.
+Override this method in subclasses to produce the export format.
 Access API data via the [#data](#data) method which provides typed access
 to types, enums, resources, actions, and other introspection data.
 
 **Returns**
 
-`Hash`, `String` — Hash for hash specs, String for string specs
+`Hash`, `String` — Hash for hash exports, String for string exports
 
 **See also**
 

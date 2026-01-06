@@ -162,7 +162,7 @@ param :shipping_address, type: :address
 
 ## Type Generation
 
-Your params automatically generate types for spec output. Here's an example:
+Your params automatically generate types for export output. Here's an example:
 
 ```ruby
 param :title, type: :string, min: 1, max: 255

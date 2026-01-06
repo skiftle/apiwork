@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 module Apiwork
-  module Spec
+  module Export
     class OpenAPI < Base
       KEY_ORDER = %i[openapi info servers paths components].freeze
 
-      spec_name :openapi
+      export_name :openapi
       output :hash
 
       option :version, default: '3.1.0', enum: %w[3.1.0], type: :string

@@ -118,17 +118,17 @@ class ExampleGenerator
   end
 
   def write_typescript(api_class, dir)
-    content = Apiwork::Spec::TypeScript.generate(api_class.path)
+    content = Apiwork::Export::TypeScript.generate(api_class.path)
     File.write(dir.join('typescript.ts'), content)
   end
 
   def write_zod(api_class, dir)
-    content = Apiwork::Spec::Zod.generate(api_class.path)
+    content = Apiwork::Export::Zod.generate(api_class.path)
     File.write(dir.join('zod.ts'), content)
   end
 
   def write_openapi(api_class, dir)
-    content = Apiwork::Spec::OpenAPI.generate(api_class.path, format: :yaml)
+    content = Apiwork::Export::OpenAPI.generate(api_class.path, format: :yaml)
     File.write(dir.join('openapi.yml'), content)
   end
 
@@ -438,7 +438,7 @@ class ExampleGenerator
       - API definition, models, schemas, contracts, and controllers
       - Generated TypeScript types
       - Generated Zod validators
-      - Generated OpenAPI spec
+      - Generated OpenAPI export
       - Introspection output
 
       ## Available Examples

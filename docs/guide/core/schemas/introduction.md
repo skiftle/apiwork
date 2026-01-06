@@ -159,7 +159,7 @@ end
 
 ## Schema Metadata
 
-Add documentation to your schema for spec generation:
+Add documentation to your schema for export generation:
 
 ```ruby
 class InvoiceSchema < Apiwork::Schema::Base
@@ -172,7 +172,7 @@ end
 | Method        | Description                                            |
 | ------------- | ------------------------------------------------------ |
 | `description` | Human-readable description for OpenAPI/TypeScript docs |
-| `example`     | Example value shown in generated specs                 |
+| `example`     | Example value shown in generated exports               |
 | `deprecated`  | Mark the schema type as deprecated                     |
 
 These appear in the generated `invoice` type definition.

@@ -4,7 +4,7 @@ order: 4
 
 # Quick Start
 
-Now that you understand the [core concepts](./core-concepts.md), let's put them into practice. We'll build a complete Posts API with validation, filtering, sorting, pagination, and auto-generated specs.
+Now that you understand the [core concepts](./core-concepts.md), let's put them into practice. We'll build a complete Posts API with validation, filtering, sorting, pagination, and auto-generated exports.
 
 ## 1. The Model
 
@@ -29,15 +29,15 @@ Create an API definition that exposes posts as a resource:
 ```ruby
 # config/apis/api_v1.rb
 Apiwork::API.define '/api/v1' do
-  spec :openapi
-  spec :typescript
-  spec :zod
+  export :openapi
+  export :typescript
+  export :zod
 
   resources :posts
 end
 ```
 
-The `spec` declarations tell Apiwork to generate documentation at `/.spec/openapi`, `/.spec/typescript`, and `/.spec/zod`.
+The `export` declarations tell Apiwork to generate documentation at `/.openapi`, `/.typescript`, and `/.zod`.
 
 ## 3. Routes
 
@@ -182,12 +182,12 @@ curl "http://localhost:3000/api/v1/posts?sort[created_at]=desc"
 curl "http://localhost:3000/api/v1/posts?page[number]=1&page[size]=10"
 ```
 
-### Get the specs
+### Get the exports
 
 ```bash
-curl http://localhost:3000/api/v1/.spec/openapi
-curl http://localhost:3000/api/v1/.spec/typescript
-curl http://localhost:3000/api/v1/.spec/zod
+curl http://localhost:3000/api/v1/.openapi
+curl http://localhost:3000/api/v1/.typescript
+curl http://localhost:3000/api/v1/.zod
 ```
 
 ## What You Got
@@ -199,7 +199,7 @@ With minimal code, you now have:
 3. **Filtering** — `filterable: true` fields can be filtered via `?filter[field][op]=value`
 4. **Sorting** — `sortable: true` fields can be sorted via `?sort[field]=asc|desc`
 5. **Pagination** — Built-in offset-based pagination via `?page[number]=1&page[size]=10`
-6. **Documentation** — OpenAPI, TypeScript, and Zod specs generated from the same source
+6. **Documentation** — OpenAPI, TypeScript, and Zod exports generated from the same source
 
 ## There's More
 

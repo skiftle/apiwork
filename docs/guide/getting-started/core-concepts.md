@@ -20,19 +20,19 @@ end
 
 This creates RESTful routes for posts and nested comments. Under the hood, Apiwork uses the Rails router — `resources` works exactly as you'd expect.
 
-You can also declare which specs to generate:
+You can also declare which exports to generate:
 
 ```ruby
 Apiwork::API.define '/api/v1' do
-  spec :openapi
-  spec :typescript
-  spec :zod
+  export :openapi
+  export :typescript
+  export :zod
 
   resources :posts
 end
 ```
 
-These become available at `/.spec/openapi`, `/.spec/typescript`, and `/.spec/zod`.
+These become available at `/.openapi`, `/.typescript`, and `/.zod`.
 
 ::: info
 The path in `define '/api/v1'` combines with where you mount Apiwork in `routes.rb`. If you mount at `/` and define at `/api/v1`, your routes become `/api/v1/posts`.
@@ -64,7 +64,7 @@ class PostContract < ApplicationContract
 end
 ```
 
-This defines what goes in and what comes out. The contract validates incoming requests and documents response shapes for generated specs.
+This defines what goes in and what comes out. The contract validates incoming requests and documents response shapes for generated exports.
 
 ## Schema
 
@@ -191,7 +191,7 @@ Here's how everything fits together:
 ```text
 ┌─────────────────────────────────────────────────────────────┐
 │  config/apis/api_v1.rb                                      │
-│  API Definition — declares resources and specs              │
+│  API Definition — declares resources and exports            │
 └─────────────────────────────┬───────────────────────────────┘
                               │
                               ▼
@@ -227,4 +227,4 @@ Here's how everything fits together:
 
 Now that you understand the concepts, let's build something:
 
-- [Quick Start](./quick-start.md) — build a complete API with validation, filtering, and specs
+- [Quick Start](./quick-start.md) — build a complete API with validation, filtering, and exports

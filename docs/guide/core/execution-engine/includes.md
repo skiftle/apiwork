@@ -69,7 +69,7 @@ belongs_to :author, include: :always
 The author appears in every response.
 
 ::: info Type guarantees
-Associations with `include: :always` cannot be excluded. This is by design — it guarantees the type in generated specs.
+Associations with `include: :always` cannot be excluded. This is by design — it guarantees the type in generated exports.
 :::
 
 ---

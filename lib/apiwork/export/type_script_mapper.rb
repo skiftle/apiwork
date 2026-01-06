@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Apiwork
-  module Spec
+  module Export
     class TypeScriptMapper
       attr_reader :data,
                   :key_format
