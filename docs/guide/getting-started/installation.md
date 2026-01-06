@@ -4,6 +4,8 @@ order: 2
 
 # Installation
 
+This guide covers installing Apiwork in a Rails application. After setup, you'll have the directory structure for contracts and schemas, plus generators for creating new resources.
+
 ## Requirements
 
 - Ruby 3.2 or higher

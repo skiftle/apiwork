@@ -8,7 +8,7 @@ Apiwork has three main pieces: **API definitions**, **contracts**, and **schemas
 
 ## API Definition
 
-The API definition lives in `config/apis/` and declares what resources your API exposes:
+The API definition lives in `config/apis/` and declares what resources your API exposes. See [API Definitions](../core/api-definitions/introduction.md) for the full guide.
 
 ```ruby
 Apiwork::API.define '/api/v1' do
@@ -40,7 +40,7 @@ The path in `define '/api/v1'` combines with where you mount Apiwork in `routes.
 
 ## Contract
 
-Contracts validate requests and define response shapes. They live in `app/contracts/`:
+Contracts validate requests and define response shapes. They live in `app/contracts/`.
 
 ```ruby
 class PostContract < ApplicationContract
@@ -167,7 +167,7 @@ See [Actions](../core/contracts/actions.md) for all action options.
 
 ## Controller
 
-Controllers have two differences from standard Rails:
+Controllers include `Apiwork::Controller` and have two differences from standard Rails:
 
 - Use `expose` to return data
 - Use `contract.body` for validated params

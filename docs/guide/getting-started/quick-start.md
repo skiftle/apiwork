@@ -105,7 +105,7 @@ That's it. `schema!` imports everything from `PostSchema`. The contract now know
 
 ## 6. Controller
 
-The controller has two differences from standard Rails:
+The controller includes `Apiwork::Controller` and has two differences from standard Rails:
 
 - Use `expose` to return data
 - Use `contract.body` for validated params
