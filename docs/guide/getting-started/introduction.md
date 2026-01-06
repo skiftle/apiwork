@@ -12,7 +12,7 @@ Apiwork sits at the edge of your application. Incoming requests are validated ag
 
 The result is an API that is explicit, predictable, and easy to reason about.
 
-## Behavior follows structure
+## Behavior Follows Structure
 
 Once the structure is in place, common API behavior follows naturally. Filtering, sorting, pagination, sideloading, N+1 prevention, and nested writes all derive from the same underlying model.
 
@@ -20,13 +20,13 @@ This behavior is not implemented as independent features. It emerges from how co
 
 That same structure is also used to generate API specifications and documentation, keeping behavior and documentation aligned over time.
 
-## Rails-native by design
+## Rails-Native by Design
 
 Apiwork is designed to feel natural in a Rails application.
 
 You still write controllers, and request flow follows familiar Rails conventions. Apiwork builds on what is already there and adds structure only where it serves a clear purpose.
 
-## Built on introspection
+## Built on Introspection
 
 Apiwork is built around the idea that the entire API is introspectable.
 
