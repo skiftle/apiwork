@@ -176,3 +176,7 @@ end
 | `deprecated`  | Mark the schema type as deprecated                     |
 
 These appear in the generated `invoice` type definition.
+
+#### See also
+
+- [Schema::Base reference](../../../reference/schema-base.md) — all schema methods and options

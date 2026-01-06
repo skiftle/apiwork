@@ -361,3 +361,7 @@ The following are **not** automatically detected and must be specified manually:
 | `deprecated`  | Deprecation is a lifecycle decision                   |
 
 These options affect API behavior, security, or documentation in ways that require explicit intent rather than automatic derivation from the database schema.
+
+#### See also
+
+- [Schema::Base reference](../../../reference/schema-base.md) — all schema methods and options

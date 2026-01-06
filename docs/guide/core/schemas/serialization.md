@@ -105,3 +105,7 @@ Both `has_one` and `has_many` associations are deserialized using their schema's
 ## Encode & Decode Transformers
 
 Define transformers on attributes to customize serialization and deserialization. See [Encode & Decode](attributes.md#encode-decode) and [Empty & Nullable](attributes.md#empty-nullable) for details.
+
+#### See also
+
+- [Schema::Base reference](../../../reference/schema-base.md) — `serialize` and `deserialize` methods

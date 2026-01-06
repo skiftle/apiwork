@@ -500,6 +500,10 @@ class UserSchema < Apiwork::Schema::Base
 end
 ```
 
+#### See also
+
+- [Schema::Base reference](../../../reference/schema-base.md) — all attribute options
+
 ---
 
 ## Examples

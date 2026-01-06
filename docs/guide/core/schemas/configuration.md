@@ -98,3 +98,7 @@ In this example:
 - `GET /posts` uses offset pagination with 25 items (from API)
 - `GET /activities` uses cursor pagination with 50 items (from Schema)
 - Both respect the API-level `max_size: 100` since ActivitySchema didn't override it
+
+#### See also
+
+- [Schema::Base reference](../../../reference/schema-base.md) — `root` and `adapter` methods

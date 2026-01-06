@@ -507,6 +507,10 @@ Polymorphic associations have limitations:
 
 If you need filtering or sorting on polymorphic associations, expose the associated models as their own [resources](/guide/core/api-definitions/resources).
 
+#### See also
+
+- [Schema::Base reference](../../../reference/schema-base.md) — all association options
+
 ---
 
 ## Examples

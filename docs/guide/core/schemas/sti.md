@@ -159,6 +159,10 @@ export const ClientSchema = z.discriminatedUnion("kind", [
 ]);
 ```
 
+#### See also
+
+- [Schema::Base reference](../../../reference/schema-base.md) — `discriminator` and `variant` methods
+
 ## Examples
 
 See [Single Table Inheritance (STI)](/examples/single-table-inheritance-sti.md) for a complete working example with generated TypeScript, Zod, and OpenAPI output.
