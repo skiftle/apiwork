@@ -8,7 +8,7 @@ Apiwork has three main pieces: **API definitions**, **contracts**, and **schemas
 
 ## API Definition
 
-The API definition lives in `config/apis/` and declares what resources your API exposes. See [API Definitions](../core/api-definitions/introduction.md) for the full guide.
+The API definition lives in `config/apis/` and declares what resources your API exposes.
 
 ```ruby
 Apiwork::API.define '/api/v1' do
@@ -37,6 +37,8 @@ These become available at `/.openapi`, `/.typescript`, and `/.zod`.
 ::: info
 The path in `define '/api/v1'` combines with where you mount Apiwork in `routes.rb`. If you mount at `/` and define at `/api/v1`, your routes become `/api/v1/posts`.
 :::
+
+See [API Definitions](../core/api-definitions/introduction.md) for the full guide.
 
 ## Contract
 
