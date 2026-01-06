@@ -225,8 +225,8 @@ RSpec.describe 'Contract Imports' do
         end
       end
 
-      action_def = order_contract.action_definition(:create)
-      serialized = Apiwork::Introspection::Dump::ActionDefinition.new(action_def).to_h
+      action = order_contract.action_for(:create)
+      serialized = Apiwork::Introspection::Dump::Action.new(action).to_h
 
       # The request body should reference the imported type
       expect(serialized[:request][:body][:shipping_address][:type]).to eq(:ref)

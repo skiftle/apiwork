@@ -7,7 +7,7 @@ RSpec.describe 'Contract Definition' do
     let(:contract_class) { create_test_contract }
 
     it 'creates meta param if not exists' do
-      definition = Apiwork::Contract::ParamDefinition.new(
+      definition = Apiwork::Contract::Param.new(
         contract_class,
         action_name: :test,
         wrapped: true,
@@ -20,13 +20,13 @@ RSpec.describe 'Contract Definition' do
       expect(definition.params[:meta]).to be_present
       expect(definition.params[:meta][:type]).to eq(:object)
       expect(definition.params[:meta][:optional]).to be(false)
-      expect(definition.params[:meta][:shape]).to be_a(Apiwork::Contract::ParamDefinition)
+      expect(definition.params[:meta][:shape]).to be_a(Apiwork::Contract::Param)
       expect(definition.params[:meta][:shape].params[:custom]).to be_present
       expect(definition.params[:meta][:shape].params[:custom][:type]).to eq(:string)
     end
 
     it 'extends existing meta from adapter' do
-      definition = Apiwork::Contract::ParamDefinition.new(
+      definition = Apiwork::Contract::Param.new(
         contract_class,
         action_name: :test,
         wrapped: true,
@@ -63,9 +63,9 @@ RSpec.describe 'Contract Definition' do
         end
       end
 
-      action_def = contract_class_with_meta.action_definition(:test)
-      response_def = action_def.response_definition
-      body_def = response_def.body_param_definition
+      action = contract_class_with_meta.action_for(:test)
+      response = action.response
+      body_def = response.body_param
 
       expect(body_def.params[:meta]).to be_present
       meta_shape = body_def.params[:meta][:shape]
@@ -74,7 +74,7 @@ RSpec.describe 'Contract Definition' do
     end
 
     it 'does nothing without a block' do
-      definition = Apiwork::Contract::ParamDefinition.new(
+      definition = Apiwork::Contract::Param.new(
         contract_class,
         action_name: :test,
         wrapped: true,

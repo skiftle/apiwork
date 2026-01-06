@@ -49,7 +49,7 @@ module Apiwork
     class Base
       include Abstractable
 
-      class_attribute :action_definitions, instance_accessor: false
+      class_attribute :actions, instance_accessor: false
       class_attribute :imports, instance_accessor: false
       class_attribute :_identifier
       class_attribute :_schema_class
@@ -95,7 +95,7 @@ module Apiwork
       class << self
         def inherited(subclass)
           super
-          subclass.action_definitions = {}
+          subclass.actions = {}
           subclass.imports = {}
         end
 
@@ -189,7 +189,7 @@ module Apiwork
         end
 
         def reset_build_state!
-          self.action_definitions = {}
+          self.actions = {}
           self.imports = {}
         end
 
@@ -378,8 +378,8 @@ module Apiwork
         # @param action_name [Symbol] the controller action name (:index, :show, :create, :update, :destroy, or custom)
         # @param replace [Boolean] replace existing action definition (default: false)
         # @yield block for defining request/response contract
-        # @return [ActionDefinition] the action definition
-        # @see Contract::ActionDefinition
+        # @return [Action] the action definition
+        # @see Contract::Action
         #
         # @example Basic CRUD action
         #   class InvoiceContract < Apiwork::Contract::Base
@@ -422,14 +422,14 @@ module Apiwork
         def action(action_name, replace: false, &block)
           action_name = action_name.to_sym
 
-          action_definition = if replace
-                                ActionDefinition.new(action_name:, contract_class: self, replace: true)
-                              else
-                                action_definitions[action_name] ||= ActionDefinition.new(action_name:, contract_class: self)
-                              end
+          action = if replace
+                     Action.new(contract_class: self, name: action_name, replace: true)
+                   else
+                     actions[action_name] ||= Action.new(contract_class: self, name: action_name)
+                   end
 
-          action_definition.instance_eval(&block) if block_given?
-          action_definitions[action_name] = action_definition
+          action.instance_eval(&block) if block_given?
+          actions[action_name] = action
         end
 
         def resolve_custom_type(type_name, visited: Set.new)
@@ -441,11 +441,11 @@ module Apiwork
           resolve_imported_type(type_name, visited: visited.dup.add(self))
         end
 
-        def action_definition(action_name)
+        def action_for(action_name)
           api_class&.ensure_contract_built!(self)
 
           action_name = action_name.to_sym
-          action_definitions[action_name]
+          actions[action_name]
         end
 
         # @api public

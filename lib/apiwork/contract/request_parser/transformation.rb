@@ -84,12 +84,12 @@ module Apiwork
             custom_type_blocks = contract_class.resolve_custom_type(type_name)
 
             if custom_type_blocks
-              temp_param_definition = ParamDefinition.new(
+              temp_param = Param.new(
                 contract_class,
                 action_name: parent_definition.action_name,
               )
-              custom_type_blocks.each { |block| temp_param_definition.instance_eval(&block) }
-              apply_sti_discriminator_transform(value, temp_param_definition)
+              custom_type_blocks.each { |block| temp_param.instance_eval(&block) }
+              apply_sti_discriminator_transform(value, temp_param)
             else
               # Check if this is a union type registered at API level
               apply_sti_transform_to_registered_union(value, type_name, parent_definition)
@@ -131,8 +131,8 @@ module Apiwork
             return nil unless param_definition[:type_contract_class]
 
             action_name = definition.action_name || :create
-            nested_request_definition = param_definition[:type_contract_class].action_definition(action_name)&.request_definition
-            nested_definition = nested_request_definition&.body_param_definition
+            nested_request = param_definition[:type_contract_class].action_for(action_name)&.request
+            nested_definition = nested_request&.body_param
 
             return nil unless nested_definition
 
@@ -151,14 +151,14 @@ module Apiwork
             custom_type_block = contract_class.resolve_custom_type(type_name)
             return nil unless custom_type_block
 
-            temp_param_definition = ParamDefinition.new(
+            temp_param = Param.new(
               contract_class,
               action_name: definition.action_name,
             )
 
-            custom_type_block.each { |block| temp_param_definition.instance_eval(&block) }
+            custom_type_block.each { |block| temp_param.instance_eval(&block) }
 
-            temp_param_definition
+            temp_param
           end
         end
       end

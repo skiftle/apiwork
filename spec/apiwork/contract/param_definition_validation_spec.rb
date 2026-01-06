@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Apiwork::Contract::ParamDefinition, '#validate datetime and date types' do
+RSpec.describe Apiwork::Contract::Param, '#validate datetime and date types' do
   let(:contract_class) { create_test_contract }
   let(:definition) { described_class.new(contract_class) }
 

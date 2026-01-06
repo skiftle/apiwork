@@ -4,14 +4,14 @@ prev: false
 next: false
 ---
 
-# Contract::ParamDefinition
+# Contract::Param
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/param_definition.rb#L12)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/param.rb#L12)
 
 Defines params for query, body, or response.
 
-Part of the Adapter DSL. Returned by [RequestDefinition#query](contract-request-definition#query),
-[RequestDefinition#body](contract-request-definition#body), and [ResponseDefinition#body](contract-response-definition#body).
+Part of the Adapter DSL. Returned by [Request#query](contract-request#query),
+[Request#body](contract-request#body), and [Response#body](contract-response#body).
 Use as a declarative builder - do not rely on internal state.
 
 ## Instance Methods
@@ -20,7 +20,7 @@ Use as a declarative builder - do not rely on internal state.
 
 `#meta(optional: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/param_definition.rb#L191)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/param.rb#L191)
 
 Shorthand for `param :meta, type: :object do ... end`.
 
@@ -62,7 +62,7 @@ end
 
 `#param(name, as: nil, default: nil, deprecated: nil, description: nil, discriminator: nil, enum: nil, example: nil, format: nil, max: nil, min: nil, nullable: nil, of: nil, optional: nil, required: nil, type: nil, value: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/param_definition.rb#L72)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/param.rb#L72)
 
 Defines a parameter/field in a request or response body.
 
@@ -90,7 +90,7 @@ Defines a parameter/field in a request or response body.
 
 **See also**
 
-- [Contract::ParamDefinition](contract-param-definition)
+- [Contract::Param](contract-param)
 
 **Example: Basic types**
 

@@ -143,13 +143,13 @@ module Apiwork
 
           temp_contract = contract_class || create_temp_contract
 
-          temp_param_definition = Apiwork::Contract::ParamDefinition.new(temp_contract)
+          temp_param = Apiwork::Contract::Param.new(temp_contract)
 
           Array(definitions).each do |definition_block|
-            temp_param_definition.instance_eval(&definition_block)
+            temp_param.instance_eval(&definition_block)
           end
 
-          ParamDefinition.new(temp_param_definition).to_h
+          Param.new(temp_param).to_h
         end
 
         def create_temp_contract

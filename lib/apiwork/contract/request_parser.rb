@@ -41,16 +41,16 @@ module Apiwork
         [transformed, []]
       end
 
-      def action_definition
-        @action_definition ||= contract_class.action_definition(action_name)
+      def action
+        @action ||= contract_class.action_for(action_name)
       end
 
       def definition_for(part_type)
         case part_type
         when :query
-          action_definition&.request_definition&.query_param_definition
+          action&.request&.query_param
         when :body
-          action_definition&.request_definition&.body_param_definition
+          action&.request&.body_param
         end
       end
 

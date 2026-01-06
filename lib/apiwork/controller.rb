@@ -116,9 +116,9 @@ module Apiwork
     #     expose invoice, status: :created
     #   end
     def expose(data, meta: {}, status: nil)
-      action_definition = contract_class.action_definitions[action_name.to_sym]
+      contract_action = contract_class.actions[action_name.to_sym]
 
-      if action_definition&.response_definition&.no_content?
+      if contract_action&.response&.no_content?
         head :no_content
         return
       end

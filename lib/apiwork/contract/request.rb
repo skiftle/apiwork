@@ -4,21 +4,21 @@ module Apiwork
   module Contract
     # Defines query params and body for a request.
     #
-    # Returns {ParamDefinition} via `query` and `body`.
+    # Returns {Param} via `query` and `body`.
     # Use as a declarative builder - do not rely on internal state.
     #
     # @api public
-    class RequestDefinition
+    class Request
       attr_reader :action_name,
-                  :body_param_definition,
+                  :body_param,
                   :contract_class,
-                  :query_param_definition
+                  :query_param
 
       def initialize(contract_class, action_name)
         @contract_class = contract_class
         @action_name = action_name
-        @query_param_definition = nil
-        @body_param_definition = nil
+        @query_param = nil
+        @body_param = nil
       end
 
       # @api public
@@ -28,8 +28,8 @@ module Apiwork
       # Use `param` inside the block to define parameters.
       #
       # @yield block defining query params
-      # @return [ParamDefinition] the query param definition
-      # @see Contract::ParamDefinition
+      # @return [Param] the query param
+      # @see Contract::Param
       #
       # @example
       #   request do
@@ -40,14 +40,14 @@ module Apiwork
       #     end
       #   end
       def query(&block)
-        @query_param_definition ||= ParamDefinition.new(
+        @query_param ||= Param.new(
           @contract_class,
           action_name: @action_name,
         )
 
-        @query_param_definition.instance_eval(&block) if block
+        @query_param.instance_eval(&block) if block
 
-        @query_param_definition
+        @query_param
       end
 
       # @api public
@@ -57,8 +57,8 @@ module Apiwork
       # Use `param` inside the block to define fields.
       #
       # @yield block defining body params
-      # @return [ParamDefinition] the body param definition
-      # @see Contract::ParamDefinition
+      # @return [Param] the body param
+      # @see Contract::Param
       #
       # @example
       #   request do
@@ -68,14 +68,14 @@ module Apiwork
       #     end
       #   end
       def body(&block)
-        @body_param_definition ||= ParamDefinition.new(
+        @body_param ||= Param.new(
           @contract_class,
           action_name: @action_name,
         )
 
-        @body_param_definition.instance_eval(&block) if block
+        @body_param.instance_eval(&block) if block
 
-        @body_param_definition
+        @body_param
       end
     end
   end

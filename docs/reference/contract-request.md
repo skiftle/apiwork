@@ -4,13 +4,13 @@ prev: false
 next: false
 ---
 
-# Contract::RequestDefinition
+# Contract::Request
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request_definition.rb#L11)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request.rb#L11)
 
 Defines query params and body for a request.
 
-Returns [ParamDefinition](contract-param-definition) via `query` and `body`.
+Returns [Param](contract-param) via `query` and `body`.
 Use as a declarative builder - do not rely on internal state.
 
 ## Instance Methods
@@ -19,7 +19,7 @@ Use as a declarative builder - do not rely on internal state.
 
 `#body(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request_definition.rb#L70)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request.rb#L70)
 
 Defines the request body for this request.
 
@@ -28,11 +28,11 @@ Use `param` inside the block to define fields.
 
 **Returns**
 
-[ParamDefinition](contract-param-definition) — the body param definition
+[Param](contract-param) — the body param
 
 **See also**
 
-- [Contract::ParamDefinition](contract-param-definition)
+- [Contract::Param](contract-param)
 
 **Example**
 
@@ -51,7 +51,7 @@ end
 
 `#query(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request_definition.rb#L42)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request.rb#L42)
 
 Defines query parameters for this request.
 
@@ -60,11 +60,11 @@ Use `param` inside the block to define parameters.
 
 **Returns**
 
-[ParamDefinition](contract-param-definition) — the query param definition
+[Param](contract-param) — the query param
 
 **See also**
 
-- [Contract::ParamDefinition](contract-param-definition)
+- [Contract::Param](contract-param)
 
 **Example**
 

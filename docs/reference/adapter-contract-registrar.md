@@ -55,7 +55,7 @@ Defines an action. Multiple calls to the same action merge definitions.
 
 **Returns**
 
-[ActionDefinition](contract-action-definition) — the action definition
+[Action](adapter-action) — the action definition
 
 ---
 

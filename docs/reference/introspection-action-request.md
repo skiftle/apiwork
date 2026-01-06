@@ -31,7 +31,11 @@ request.query[:page]        # => Param for page param
 
 **Returns**
 
-`Hash{Symbol => Param}` — body parameters as Param objects
+Hash{Symbol =&gt; [Param](contract-param)} — body parameters as Param objects
+
+**See also**
+
+- [Param](contract-param)
 
 ---
 
@@ -55,7 +59,11 @@ request.query[:page]        # => Param for page param
 
 **Returns**
 
-`Hash{Symbol => Param}` — query parameters as Param objects
+Hash{Symbol =&gt; [Param](contract-param)} — query parameters as Param objects
+
+**See also**
+
+- [Param](contract-param)
 
 ---
 

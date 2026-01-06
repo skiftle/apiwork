@@ -17,7 +17,7 @@ RSpec.describe 'Literal and Discriminated Union Features' do
       end
     end
 
-    let(:definition) { contract_class.action_definition(:test).request_definition.body_param_definition }
+    let(:definition) { contract_class.action_for(:test).request.body_param }
 
     it 'accepts the exact literal value' do
       result = definition.validate({ name: 'Test', status: 'archived' })
@@ -33,7 +33,7 @@ RSpec.describe 'Literal and Discriminated Union Features' do
     end
 
     it 'serializes with value in AST' do
-      serialized = Apiwork::Introspection::Dump::ParamDefinition.new(definition).to_h
+      serialized = Apiwork::Introspection::Dump::Param.new(definition).to_h
       expect(serialized[:status][:type]).to eq(:literal)
       expect(serialized[:status][:value]).to eq('archived')
     end
@@ -77,7 +77,7 @@ RSpec.describe 'Literal and Discriminated Union Features' do
       end
     end
 
-    let(:definition) { contract_class.action_definition(:test).request_definition.body_param_definition }
+    let(:definition) { contract_class.action_for(:test).request.body_param }
 
     it 'validates string variant with correct discriminator' do
       result = definition.validate({ filter: { kind: 'string', value: 'test' } })
@@ -119,7 +119,7 @@ RSpec.describe 'Literal and Discriminated Union Features' do
     end
 
     it 'serializes with discriminator in AST' do
-      serialized = Apiwork::Introspection::Dump::ParamDefinition.new(definition).to_h
+      serialized = Apiwork::Introspection::Dump::Param.new(definition).to_h
       expect(serialized[:filter][:type]).to eq(:union)
       expect(serialized[:filter][:discriminator]).to eq(:kind)
       expect(serialized[:filter][:variants]).to be_an(Array)

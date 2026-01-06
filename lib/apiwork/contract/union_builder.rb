@@ -34,9 +34,9 @@ module Apiwork
         variant_definition[:partial] = true if partial
 
         if block_given?
-          shape_param_definition = ParamDefinition.new(@contract_class)
-          shape_param_definition.instance_eval(&block)
-          variant_definition[:shape] = shape_param_definition
+          shape_param = Param.new(@contract_class)
+          shape_param.instance_eval(&block)
+          variant_definition[:shape] = shape_param
         end
 
         @variants << variant_definition
@@ -45,7 +45,7 @@ module Apiwork
       def serialize
         serialized_variants = @variants.map do |variant|
           serialized = variant.dup
-          serialized[:shape] = serialized[:shape].as_json if serialized[:shape].is_a?(ParamDefinition)
+          serialized[:shape] = serialized[:shape].as_json if serialized[:shape].is_a?(Param)
           serialized
         end
 

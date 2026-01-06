@@ -13,7 +13,7 @@ module Apiwork
           when :boolean then Boolean.new(dump)
           when :datetime then DateTime.new(dump)
           when :date then Date.new(dump)
-          when :time then Time.zone.local(dump)
+          when :time then Time.new(dump) # rubocop:disable Rails/TimeZone
           when :uuid then UUID.new(dump)
           when :binary then Binary.new(dump)
           when :json then JSON.new(dump)

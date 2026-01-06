@@ -15,7 +15,7 @@ RSpec.describe 'Schema-based Type Reuse via Imports' do
     post_contract = Api::V1::PostContract
 
     # Trigger type generation by accessing the index action
-    post_contract.action_definition(:index)
+    post_contract.action_for(:index)
 
     # Check that PostContract has imported a contract for comments
     expect(post_contract.imports).to have_key(:comment)
@@ -27,7 +27,7 @@ RSpec.describe 'Schema-based Type Reuse via Imports' do
 
   it 'reuses types through imports instead of duplicating' do
     # Trigger type generation by accessing the index action
-    Api::V1::PostContract.action_definition(:index)
+    Api::V1::PostContract.action_for(:index)
 
     # PostContract should have imported CommentContract
     # This enables reuse of filter, sort, and include types instead of duplicating them

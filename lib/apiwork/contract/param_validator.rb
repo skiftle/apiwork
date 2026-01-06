@@ -328,13 +328,13 @@ module Apiwork
                 next
               end
 
-              custom_param_definition = ParamDefinition.new(
+              custom_param = Param.new(
                 contract_class_for_custom_type,
                 action_name: @param_definition.action_name,
               )
-              custom_type_block.each { |block| custom_param_definition.instance_eval(&block) }
+              custom_type_block.each { |block| custom_param.instance_eval(&block) }
 
-              validator = ParamValidator.new(custom_param_definition)
+              validator = ParamValidator.new(custom_param)
               shape_result = validator.validate(
                 item,
                 max_depth:,
@@ -536,11 +536,11 @@ module Apiwork
 
         custom_type_block = @param_definition.contract_class.resolve_custom_type(variant_type)
         if custom_type_block
-          custom_param_definition = ParamDefinition.new(
+          custom_param = Param.new(
             @param_definition.contract_class,
             action_name: @param_definition.action_name,
           )
-          custom_type_block.each { |block| custom_param_definition.instance_eval(&block) }
+          custom_type_block.each { |block| custom_param.instance_eval(&block) }
 
           unless value.is_a?(Hash)
             type_error = Issue.new(
@@ -556,7 +556,7 @@ module Apiwork
             return [type_error, nil]
           end
 
-          validator = ParamValidator.new(custom_param_definition)
+          validator = ParamValidator.new(custom_param)
           result = validator.validate(
             value,
             max_depth:,

@@ -4,13 +4,13 @@ prev: false
 next: false
 ---
 
-# Contract::ResponseDefinition
+# Contract::Response
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response_definition.rb#L11)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response.rb#L11)
 
 Defines body for a response.
 
-Returns [ParamDefinition](contract-param-definition) via `body`.
+Returns [Param](contract-param) via `body`.
 Use as a declarative builder - do not rely on internal state.
 
 ## Instance Methods
@@ -19,7 +19,7 @@ Use as a declarative builder - do not rely on internal state.
 
 `#body(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response_definition.rb#L70)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response.rb#L70)
 
 Defines the response body for this response.
 
@@ -28,11 +28,11 @@ When using schema!, body is auto-generated from schema attributes.
 
 **Returns**
 
-[ParamDefinition](contract-param-definition) — the body param definition
+[Param](contract-param) — the body param
 
 **See also**
 
-- [Contract::ParamDefinition](contract-param-definition)
+- [Contract::Param](contract-param)
 
 **Example**
 
@@ -52,7 +52,7 @@ end
 
 `#no_content!`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response_definition.rb#L48)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response.rb#L48)
 
 Declares this action returns 204 No Content.
 
@@ -81,7 +81,7 @@ end
 
 `#no_content?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response_definition.rb#L29)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response.rb#L29)
 
 Returns true if this response is 204 No Content.
 

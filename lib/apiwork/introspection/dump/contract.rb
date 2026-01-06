@@ -15,12 +15,12 @@ module Apiwork
 
           result = { actions: {} }
 
-          actions = available_actions
-          actions = @contract_class.action_definitions.keys if actions.empty?
+          action_names = available_actions
+          action_names = @contract_class.actions.keys if action_names.empty?
 
-          actions.each do |action_name|
-            action_definition = @contract_class.action_definition(action_name)
-            result[:actions][action_name] = ActionDefinition.new(action_definition).to_h if action_definition
+          action_names.each do |action_name|
+            contract_action = @contract_class.action_for(action_name)
+            result[:actions][action_name] = Action.new(contract_action).to_h if contract_action
           end
 
           if @expand

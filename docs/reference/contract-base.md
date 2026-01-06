@@ -102,11 +102,11 @@ response format, and documentation.
 
 **Returns**
 
-[ActionDefinition](contract-action-definition) — the action definition
+[Action](adapter-action) — the action definition
 
 **See also**
 
-- [Contract::ActionDefinition](contract-action-definition)
+- [Contract::Action](contract-action)
 
 **Example: Basic CRUD action**
 

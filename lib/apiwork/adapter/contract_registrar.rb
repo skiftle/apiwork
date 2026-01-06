@@ -56,7 +56,7 @@ module Apiwork
       #   @param name [Symbol] the action name
       #   @param replace [Boolean] replace existing definition (default: false)
       #   @yield block defining request/response
-      #   @return [ActionDefinition] the action definition
+      #   @return [Action] the action definition
       #   @see Apiwork::Contract::Base.action
 
       # @!method import(type_name, from:)

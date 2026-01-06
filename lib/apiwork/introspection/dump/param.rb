@@ -3,26 +3,26 @@
 module Apiwork
   module Introspection
     module Dump
-      class ParamDefinition
-        def initialize(param_definition, result_wrapper: nil, visited: Set.new)
-          @param_definition = param_definition
+      class Param
+        def initialize(contract_param, result_wrapper: nil, visited: Set.new)
+          @contract_param = contract_param
           @result_wrapper = result_wrapper
           @visited = visited
           @import_prefix_cache = {}
         end
 
         def to_h
-          return nil unless @param_definition
+          return nil unless @contract_param
 
           return build_result_wrapped if @result_wrapper
 
           result = {}
 
-          @param_definition.params.sort_by { |name, _| name.to_s }.each do |name, param_options|
+          @contract_param.params.sort_by { |name, _| name.to_s }.each do |name, param_options|
             result[name] = build_param(name, param_options)
           end
 
-          if @param_definition.wrapped?
+          if @contract_param.wrapped?
             { shape: result, type: :object }
           else
             result
@@ -55,7 +55,7 @@ module Apiwork
 
         def build_success_params
           success_params = {}
-          @param_definition.params.sort_by { |name, _| name.to_s }.each do |name, param_options|
+          @contract_param.params.sort_by { |name, _| name.to_s }.each do |name, param_options|
             dumped = build_param(name, param_options)
             dumped[:optional] = true if param_options[:optional]
             success_params[name] = dumped
@@ -122,9 +122,7 @@ module Apiwork
 
         def build_custom_type_param(options)
           custom_type_name = options[:custom_type]
-          if @param_definition.contract_class.resolve_custom_type(custom_type_name)
-            custom_type_name = qualified_name(custom_type_name, @param_definition)
-          end
+          custom_type_name = qualified_name(custom_type_name, @contract_param) if @contract_param.contract_class.resolve_custom_type(custom_type_name)
 
           {
             as: options[:as],
@@ -154,13 +152,13 @@ module Apiwork
           return nil unless type_value
           return nil unless registered_type?(type_value)
 
-          qualified_name(type_value, @param_definition)
+          qualified_name(type_value, @contract_param)
         end
 
         def registered_type?(type_value)
           return false unless type_value.is_a?(Symbol)
 
-          contract_class = @param_definition.contract_class
+          contract_class = @contract_param.contract_class
           return true if contract_class.resolve_custom_type(type_value)
           return true if contract_class.enum?(type_value)
 
@@ -178,8 +176,8 @@ module Apiwork
           return nil unless options[:enum]
 
           if options[:enum].is_a?(Symbol)
-            scope = scope_for_enum(@param_definition, options[:enum])
-            api_class = @param_definition.contract_class.api_class
+            scope = scope_for_enum(@contract_param, options[:enum])
+            api_class = @contract_param.contract_class.api_class
             api_class.scoped_name(scope, options[:enum])
           else
             options[:enum]
@@ -190,7 +188,7 @@ module Apiwork
           return nil unless options[:of]
 
           if registered_type?(options[:of])
-            ref_name = qualified_name(options[:of], @param_definition)
+            ref_name = qualified_name(options[:of], @contract_param)
             { ref: ref_name, shape: {}, type: :ref }
           else
             build_of_hash(options[:of])
@@ -214,7 +212,7 @@ module Apiwork
           variant_type = variant_definition[:type]
           is_registered = registered_type?(variant_type)
 
-          ref = is_registered ? qualified_name(variant_type, @param_definition) : nil
+          ref = is_registered ? qualified_name(variant_type, @contract_param) : nil
           resolved_type = is_registered ? :ref : (variant_type || :unknown)
 
           {
@@ -245,10 +243,10 @@ module Apiwork
           return nil unless variant_definition[:enum]
 
           if variant_definition[:enum].is_a?(Symbol)
-            if @param_definition.contract_class.respond_to?(:schema_class) &&
-               @param_definition.contract_class.schema_class
-              scope = scope_for_enum(@param_definition, variant_definition[:enum])
-              api_class = @param_definition.contract_class.api_class
+            if @contract_param.contract_class.respond_to?(:schema_class) &&
+               @contract_param.contract_class.schema_class
+              scope = scope_for_enum(@contract_param, variant_definition[:enum])
+              api_class = @contract_param.contract_class.api_class
               api_class.scoped_name(scope, variant_definition[:enum])
             else
               variant_definition[:enum]
@@ -262,7 +260,7 @@ module Apiwork
           return nil unless variant_definition[:of]
 
           if registered_type?(variant_definition[:of])
-            ref_name = qualified_name(variant_definition[:of], @param_definition)
+            ref_name = qualified_name(variant_definition[:of], @contract_param)
             { ref: ref_name, shape: {}, type: :ref }
           else
             build_of_hash(variant_definition[:of])
@@ -278,7 +276,7 @@ module Apiwork
         end
 
         def build_nested_shape(shape_definition)
-          ParamDefinition.new(shape_definition, visited: @visited).to_h
+          Param.new(shape_definition, visited: @visited).to_h
         end
 
         def build_shape(options)
@@ -312,14 +310,14 @@ module Apiwork
         end
 
         def resolve_schema_class
-          contract_class = @param_definition.contract_class
+          contract_class = @contract_param.contract_class
           return contract_class.schema_class if contract_class.respond_to?(:schema_class) && contract_class.schema_class
 
           nil
         end
 
         def i18n_attribute_description(attribute_definition)
-          api_class = @param_definition.contract_class.api_class
+          api_class = @contract_param.contract_class.api_class
           return nil unless api_class
 
           schema_name = attribute_definition.schema_class_name
@@ -329,7 +327,7 @@ module Apiwork
         end
 
         def i18n_association_description(association_definition)
-          api_class = @param_definition.contract_class.api_class
+          api_class = @contract_param.contract_class.api_class
           return nil unless api_class
 
           schema_name = association_definition.schema_class_name

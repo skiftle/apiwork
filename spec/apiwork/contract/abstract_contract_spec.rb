@@ -76,9 +76,9 @@ RSpec.describe 'Abstract Contract' do
     end
 
     it 'PostContract can define actions normally' do
-      action_definition = TestNamespace::PostContract.action_definition(:create)
-      expect(action_definition).not_to be_nil
-      expect(action_definition.action_name).to eq(:create)
+      action = TestNamespace::PostContract.action_for(:create)
+      expect(action).not_to be_nil
+      expect(action.name).to eq(:create)
     end
   end
 end

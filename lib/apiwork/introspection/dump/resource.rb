@@ -34,12 +34,12 @@ module Apiwork
         def build_actions(contract_class, resource_path)
           actions = {}
 
-          @resource.actions.each do |action_name, action|
-            path = build_full_action_path(resource_path, action_name, action)
-            actions[action_name] = { path:, method: action.method }
+          @resource.actions.each do |action_name, adapter_action|
+            path = build_full_action_path(resource_path, action_name, adapter_action)
+            actions[action_name] = { path:, method: adapter_action.method }
 
-            action_definition = contract_class&.action_definition(action_name)
-            unless action_definition
+            contract_action = contract_class&.action_for(action_name)
+            unless contract_action
               actions[action_name].merge!(
                 description: nil,
                 operation_id: nil,
@@ -52,7 +52,7 @@ module Apiwork
               next
             end
 
-            actions[action_name].merge!(ActionDefinition.new(action_definition).to_h)
+            actions[action_name].merge!(Action.new(contract_action).to_h)
           end
 
           actions
@@ -81,14 +81,14 @@ module Apiwork
           end
         end
 
-        def build_full_action_path(resource_path, action_name, action)
-          segment = action_path_segment(action_name, action)
+        def build_full_action_path(resource_path, action_name, adapter_action)
+          segment = action_path_segment(action_name, adapter_action)
           full_path = "/#{resource_path}#{segment}"
           full_path.delete_suffix('/')
         end
 
-        def action_path_segment(action_name, action)
-          if action.crud?
+        def action_path_segment(action_name, adapter_action)
+          if adapter_action.crud?
             case action_name
             when :index, :create
               ''
@@ -97,9 +97,9 @@ module Apiwork
             else
               ''
             end
-          elsif action.member?
+          elsif adapter_action.member?
             "/:id/#{@api_class.transform_path_segment(action_name)}"
-          elsif action.collection?
+          elsif adapter_action.collection?
             "/#{@api_class.transform_path_segment(action_name)}"
           else
             ''

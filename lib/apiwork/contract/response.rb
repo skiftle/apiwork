@@ -4,13 +4,13 @@ module Apiwork
   module Contract
     # Defines body for a response.
     #
-    # Returns {ParamDefinition} via `body`.
+    # Returns {Param} via `body`.
     # Use as a declarative builder - do not rely on internal state.
     #
     # @api public
-    class ResponseDefinition
+    class Response
       attr_reader :action_name,
-                  :body_param_definition,
+                  :body_param,
                   :contract_class
 
       attr_accessor :result_wrapper
@@ -18,7 +18,7 @@ module Apiwork
       def initialize(contract_class, action_name)
         @contract_class = contract_class
         @action_name = action_name
-        @body_param_definition = nil
+        @body_param = nil
         @result_wrapper = nil
         @no_content = false
       end
@@ -56,8 +56,8 @@ module Apiwork
       # When using schema!, body is auto-generated from schema attributes.
       #
       # @yield block defining body params
-      # @return [ParamDefinition] the body param definition
-      # @see Contract::ParamDefinition
+      # @return [Param] the body param
+      # @see Contract::Param
       #
       # @example
       #   response do
@@ -68,15 +68,15 @@ module Apiwork
       #     end
       #   end
       def body(&block)
-        @body_param_definition ||= ParamDefinition.new(
+        @body_param ||= Param.new(
           @contract_class,
           action_name: @action_name,
           wrapped: true,
         )
 
-        @body_param_definition.instance_eval(&block) if block
+        @body_param.instance_eval(&block) if block
 
-        @body_param_definition
+        @body_param
       end
     end
   end

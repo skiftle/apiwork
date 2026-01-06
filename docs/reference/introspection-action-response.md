@@ -36,7 +36,11 @@ response.body?        # => false
 
 **Returns**
 
-`Param`, `nil` — response body definition
+[Param](contract-param), `nil` — response body definition
+
+**See also**
+
+- [Param](contract-param)
 
 ---
 

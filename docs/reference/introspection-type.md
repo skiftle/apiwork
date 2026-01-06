@@ -97,7 +97,11 @@ api.types[:payment_method].discriminator # => :type
 
 **Returns**
 
-`Hash{Symbol => Param}` — nested fields for object types
+Hash{Symbol =&gt; [Param](contract-param)} — nested fields for object types
+
+**See also**
+
+- [Param](contract-param)
 
 ---
 
@@ -145,6 +149,6 @@ api.types[:payment_method].discriminator # => :type
 
 **Returns**
 
-`Array<Param>` — variants for union types
+Array&lt;[Param](contract-param)&gt; — variants for union types
 
 ---

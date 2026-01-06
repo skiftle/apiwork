@@ -177,63 +177,63 @@ module Apiwork
 
         def build_actions
           actions.each_value do |action|
-            build_action_definition(action)
+            build_action(action)
           end
         end
 
-        def build_action_definition(action)
-          action_definition = registrar.action(action.name)
+        def build_action(action)
+          contract_action = registrar.action(action.name)
 
-          build_request_for_action(action_definition, action) unless action_definition.resets_request?
-          build_response_for_action(action_definition, action) unless action_definition.resets_response?
+          build_request_for_action(action, contract_action) unless contract_action.resets_request?
+          build_response_for_action(action, contract_action) unless contract_action.resets_response?
         end
 
-        def build_request_for_action(action_definition, action)
+        def build_request_for_action(action, contract_action)
           builder = self
 
           case action.name
           when :index
-            action_definition.request do
+            contract_action.request do
               query { builder.send(:query_params, self) }
             end
           when :show
-            build_member_query_params(action_definition)
+            build_member_query_params(contract_action)
           when :create
-            action_definition.request do
+            contract_action.request do
               body { builder.send(:writable_request, self, :create) }
             end
-            build_member_query_params(action_definition)
+            build_member_query_params(contract_action)
           when :update
-            action_definition.request do
+            contract_action.request do
               body { builder.send(:writable_request, self, :update) }
             end
-            build_member_query_params(action_definition)
+            build_member_query_params(contract_action)
           when :destroy
-            build_member_query_params(action_definition)
+            build_member_query_params(contract_action)
           else
-            build_member_query_params(action_definition) if action.member?
+            build_member_query_params(contract_action) if action.member?
           end
         end
 
-        def build_response_for_action(action_definition, action)
+        def build_response_for_action(action, contract_action)
           case action.name
           when :index
             result_wrapper = build_result_wrapper(action.name, response_type: :collection)
-            build_collection_response(action_definition, result_wrapper)
+            build_collection_response(contract_action, result_wrapper)
           when :show, :create, :update
             result_wrapper = build_result_wrapper(action.name, response_type: :single)
-            build_single_response(action_definition, result_wrapper)
+            build_single_response(contract_action, result_wrapper)
           when :destroy
-            action_definition.response { no_content! }
+            contract_action.response { no_content! }
           else
             if action.method == :delete
-              action_definition.response { no_content! }
+              contract_action.response { no_content! }
             elsif action.collection?
               result_wrapper = build_result_wrapper(action.name, response_type: :collection)
-              build_collection_response(action_definition, result_wrapper)
+              build_collection_response(contract_action, result_wrapper)
             elsif action.member?
               result_wrapper = build_result_wrapper(action.name, response_type: :single)
-              build_single_response(action_definition, result_wrapper)
+              build_single_response(contract_action, result_wrapper)
             end
           end
         end
@@ -256,26 +256,26 @@ module Apiwork
           { error_type: :error_response_body, success_type: full_name }
         end
 
-        def build_single_response(action_definition, result_wrapper)
+        def build_single_response(contract_action, result_wrapper)
           builder = self
-          action_definition.response do
+          contract_action.response do
             self.result_wrapper = result_wrapper
             body { builder.single_response(self) }
           end
         end
 
-        def build_collection_response(action_definition, result_wrapper)
+        def build_collection_response(contract_action, result_wrapper)
           builder = self
-          action_definition.response do
+          contract_action.response do
             self.result_wrapper = result_wrapper
             body { builder.collection_response(self) }
           end
         end
 
-        def build_member_query_params(action_definition)
+        def build_member_query_params(contract_action)
           builder = self
 
-          action_definition.request do
+          contract_action.request do
             query do
               if builder.send(:schema_class).association_definitions.any?
                 include_type = builder.send(:build_include_type)

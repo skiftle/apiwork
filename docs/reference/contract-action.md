@@ -4,13 +4,13 @@ prev: false
 next: false
 ---
 
-# Contract::ActionDefinition
+# Contract::Action
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L11)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L11)
 
 Defines request/response structure for an action.
 
-Returns [RequestDefinition](contract-request-definition) via `request` and [ResponseDefinition](contract-response-definition) via `response`.
+Returns [Request](contract-request) via `request` and [Response](contract-response) via `response`.
 Use as a declarative builder - do not rely on internal state.
 
 ## Instance Methods
@@ -19,7 +19,7 @@ Use as a declarative builder - do not rely on internal state.
 
 `#deprecated`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L103)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L101)
 
 Marks this action as deprecated.
 
@@ -43,7 +43,7 @@ end
 
 `#description(description = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L70)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L68)
 
 Sets a detailed description for this action.
 
@@ -74,7 +74,7 @@ end
 
 `#operation_id(operation_id = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L124)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L122)
 
 Sets a custom operation ID.
 
@@ -102,7 +102,7 @@ end
 
 `#raises(*error_code_keys)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L150)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L148)
 
 Declares error codes this action may return.
 
@@ -143,7 +143,7 @@ end
 
 `#request(replace: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L184)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L182)
 
 Defines the request structure for this action.
 
@@ -157,11 +157,11 @@ Use the block to define query parameters and request body.
 
 **Returns**
 
-[RequestDefinition](contract-request-definition) — the request definition
+[Request](contract-request) — the request definition
 
 **See also**
 
-- [Contract::RequestDefinition](contract-request-definition)
+- [Contract::Request](contract-request)
 
 **Example**
 
@@ -180,7 +180,7 @@ end
 
 `#response(replace: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L218)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L216)
 
 Defines the response structure for this action.
 
@@ -194,11 +194,11 @@ Use the block to define response body or declare no_content.
 
 **Returns**
 
-[ResponseDefinition](contract-response-definition) — the response definition
+[Response](contract-response) — the response definition
 
 **See also**
 
-- [Contract::ResponseDefinition](contract-response-definition)
+- [Contract::Response](contract-response)
 
 **Example**
 
@@ -227,7 +227,7 @@ end
 
 `#summary(summary = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L52)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L50)
 
 Sets a short summary for this action.
 
@@ -257,7 +257,7 @@ end
 
 `#tags(*tags)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L87)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L85)
 
 Sets tags for grouping this action.
 

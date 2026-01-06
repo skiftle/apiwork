@@ -4,23 +4,21 @@ module Apiwork
   module Contract
     # Defines request/response structure for an action.
     #
-    # Returns {RequestDefinition} via `request` and {ResponseDefinition} via `response`.
+    # Returns {Request} via `request` and {Response} via `response`.
     # Use as a declarative builder - do not rely on internal state.
     #
     # @api public
-    class ActionDefinition
-      attr_reader :action_name,
-                  :contract_class,
-                  :request_definition,
-                  :response_definition
+    class Action
+      attr_reader :contract_class,
+                  :name
 
-      def initialize(action_name:, contract_class:, replace: false)
-        @action_name = action_name
+      def initialize(contract_class:, name:, replace: false)
+        @name = name
         @contract_class = contract_class
         @reset_request = replace
         @reset_response = replace
-        @request_definition = nil
-        @response_definition = nil
+        @request = nil
+        @response = nil
         @raises = []
         @summary = nil
         @description = nil
@@ -171,8 +169,8 @@ module Apiwork
       #
       # @param replace [Boolean] replace inherited definition (default: false)
       # @yield block for defining query and body
-      # @return [RequestDefinition] the request definition
-      # @see Contract::RequestDefinition
+      # @return [Request] the request definition
+      # @see Contract::Request
       #
       # @example
       #   action :create do
@@ -184,11 +182,11 @@ module Apiwork
       def request(replace: false, &block)
         @reset_request = replace if replace
 
-        @request_definition ||= RequestDefinition.new(contract_class, action_name)
+        @request ||= Request.new(contract_class, name)
 
-        @request_definition.instance_eval(&block) if block
+        @request.instance_eval(&block) if block
 
-        @request_definition
+        @request
       end
 
       # @api public
@@ -198,8 +196,8 @@ module Apiwork
       #
       # @param replace [Boolean] replace inherited definition (default: false)
       # @yield block for defining body or no_content
-      # @return [ResponseDefinition] the response definition
-      # @see Contract::ResponseDefinition
+      # @return [Response] the response definition
+      # @see Contract::Response
       #
       # @example
       #   action :show do
@@ -218,11 +216,11 @@ module Apiwork
       def response(replace: false, &block)
         @reset_response = replace if replace
 
-        @response_definition ||= ResponseDefinition.new(contract_class, action_name)
+        @response ||= Response.new(contract_class, name)
 
-        @response_definition.instance_eval(&block) if block
+        @response.instance_eval(&block) if block
 
-        @response_definition
+        @response
       end
     end
   end
