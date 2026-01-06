@@ -100,3 +100,7 @@ Translations come from your I18n files. See [i18n](../../advanced/i18n.md) for c
 ## Caching
 
 Results are cached per path and locale. In development, Rails reloading clears caches automatically.
+
+#### See also
+
+- [Introspection::API reference](../../../reference/introspection-api.md) — all introspection methods

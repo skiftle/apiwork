@@ -86,3 +86,7 @@ Structural types (`:array`, `:object`) and special types (`:json`, `:binary`, `:
 | [Custom Types](./custom-types.md) | Reusable named types                                |
 | [Scoping](./scoping.md)           | API-level vs contract-scoped types                  |
 | [Type Merging](./type-merging.md) | Extending and composing types                       |
+
+#### See also
+
+- [Contract::Base reference](../../../reference/contract-base.md) — `type`, `enum`, and `union` methods

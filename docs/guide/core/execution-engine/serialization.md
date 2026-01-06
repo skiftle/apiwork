@@ -89,3 +89,7 @@ class MyAdapter < Apiwork::Adapter::Base
   end
 end
 ```
+
+#### See also
+
+- [Adapter::Base reference](../../../reference/adapter-base.md) — creating custom adapters

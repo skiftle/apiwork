@@ -145,3 +145,7 @@ This works for:
 - Enums
 
 No JSDoc is generated when `description` is missing. Changes to Ruby descriptions appear in the next TypeScript generation.
+
+#### See also
+
+- [Export reference](../../../reference/export.md) — programmatic generation API

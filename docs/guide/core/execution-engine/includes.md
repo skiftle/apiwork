@@ -115,3 +115,4 @@ With `include[comments]=true`:
 ## N+1 Prevention
 
 The adapter eager loads associations to prevent N+1 queries.
+

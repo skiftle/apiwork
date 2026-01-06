@@ -118,3 +118,7 @@ en:
 ```
 
 Type merging takes precedence over i18n.
+
+#### See also
+
+- [Contract::Base reference](../../../reference/contract-base.md) — type definition methods

@@ -97,3 +97,7 @@ Status:
   description: Publication status
   example: published
 ```
+
+#### See also
+
+- [Contract::Base reference](../../../reference/contract-base.md) — `enum` method

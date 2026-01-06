@@ -101,3 +101,7 @@ export const CategorySchema: z.ZodType<Category> = z.lazy(() =>
 ```
 
 Apiwork generates explicit TypeScript interfaces because `z.infer` returns `unknown` for `z.lazy()` schemas.
+
+#### See also
+
+- [Export reference](../../../reference/export.md) — programmatic generation API

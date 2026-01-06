@@ -253,3 +253,7 @@ Both work the same at runtime. The difference is in the exports:
 - It's unique to one endpoint
 - You don't need to reference it elsewhere
 - It's a simple, one-off shape
+
+#### See also
+
+- [Contract::Base reference](../../../reference/contract-base.md) — `type` method

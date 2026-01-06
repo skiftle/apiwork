@@ -146,3 +146,8 @@ export interface Address { ... }
 export interface OrderLineItem { ... }
 export type PostStatus = 'draft' | 'published';
 ```
+
+#### See also
+
+- [API::Base reference](../../../reference/api-base.md) — API-level `type` and `enum`
+- [Contract::Base reference](../../../reference/contract-base.md) — contract-scoped types

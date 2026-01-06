@@ -198,3 +198,8 @@ end
   ]
 }
 ```
+
+#### See also
+
+- [Issue reference](../../../reference/issue.md) — issue object structure
+- [ErrorCode reference](../../../reference/error-code.md) — registering custom error codes

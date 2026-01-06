@@ -542,3 +542,7 @@ Output validation:
 ::: tip
 If you see output validation warnings, update your contract enum values or fix the data being returned by your controller.
 :::
+
+#### See also
+
+- [Issue reference](../../../reference/issue.md) — issue object structure

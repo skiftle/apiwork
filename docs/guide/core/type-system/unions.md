@@ -251,3 +251,7 @@ export const FilterSchema = z.discriminatedUnion('kind', [
   z.object({ kind: z.literal('range'), gte: z.number().int(), lte: z.number().int().optional() })
 ]);
 ```
+
+#### See also
+
+- [Contract::Base reference](../../../reference/contract-base.md) — `union` method

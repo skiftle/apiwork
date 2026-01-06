@@ -148,3 +148,7 @@ Appears in the OpenAPI export as possible responses.
 ## Version
 
 Generates specifications following **OpenAPI 3.1.0**.
+
+#### See also
+
+- [Export reference](../../../reference/export.md) — programmatic generation API
