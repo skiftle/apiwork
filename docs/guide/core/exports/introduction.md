@@ -12,11 +12,13 @@ Exports are generated from [introspection](../introspection/introduction.md), th
 
 ## Available Formats
 
-Apiwork creates exports in the following formats:
+Apiwork includes three built-in exports:
 
 - **OpenAPI** — OpenAPI 3.1 specification
 - **TypeScript** — type definitions for frontend consumers
 - **Zod** — runtime validation schemas
+
+You can also [create custom exports](../../advanced/custom-exports.md).
 
 ## Enabling Exports
 
@@ -184,3 +186,8 @@ Options:
 - `:underscore` — All keys use snake_case
 
 If not specified, inherits from the [API definition](/guide/core/api-definitions/introduction).
+
+#### See also
+
+- [Custom Exports](../../advanced/custom-exports.md) — creating your own export formats
+- [Export reference](../../../reference/export.md) — programmatic generation API

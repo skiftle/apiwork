@@ -4,7 +4,7 @@ order: 4
 
 # Export Endpoints
 
-Export endpoints serve OpenAPI documents, TypeScript types, and Zod schemas directly from your API.
+Export endpoints serve OpenAPI specs, TypeScript types, and Zod schemas from your API. These are the built-in exports, but `export` works with any registered export generator.
 
 ## Enabling Exports
 
@@ -20,13 +20,15 @@ end
 
 ## Generated Endpoints
 
-Each export declaration creates an endpoint:
+Each export declaration creates an endpoint at `/.{export_name}`:
 
 | Declaration        | Endpoint                       |
 | ------------------ | ------------------------------ |
 | `export :openapi`    | `GET /api/v1/.openapi`    |
 | `export :typescript` | `GET /api/v1/.typescript` |
 | `export :zod`        | `GET /api/v1/.zod`        |
+
+A custom export registered as `:protobuf` becomes `GET /api/v1/.protobuf`.
 
 ## Custom Paths
 
@@ -108,7 +110,7 @@ end
 
 ## Export Formats
 
-For detailed information about each export format:
+Each format has its own guide:
 
 - [OpenAPI](../exports/openapi.md)
 - [TypeScript](../exports/typescript.md)
@@ -116,7 +118,7 @@ For detailed information about each export format:
 
 ## Programmatic Generation
 
-Generate exports directly from Ruby code:
+Generate exports from Ruby:
 
 ```ruby
 Apiwork::Export.generate(:openapi, '/api/v1')
@@ -132,6 +134,10 @@ Apiwork::Export.generate(:typescript, '/api/v1', key_format: :camel)
 - Static file generation for CDN hosting
 - Build processes that bundle exports with frontend code
 :::
+
+## Custom Exports
+
+You can create your own export generators. See [Custom Exports](../../advanced/custom-exports.md) for the full guide.
 
 #### See also
 
