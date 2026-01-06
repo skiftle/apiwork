@@ -1,5 +1,5 @@
 ---
-order: 54
+order: 21
 prev: false
 next: false
 ---
@@ -45,6 +45,26 @@ Apiwork::Export.register(ProtobufExport)
 
 ## Class Methods
 
+### .export_name
+
+`.export_name(name = nil)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L43)
+
+Sets or returns the export name identifier.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `name` | `Symbol, nil` | the export name to set |
+
+**Returns**
+
+`Symbol`, `nil` — the export name, or nil if not set
+
+---
+
 ### .file_extension
 
 `.file_extension(file_extension = nil)`
@@ -74,7 +94,7 @@ their extension from the format (:json → .json, :yaml → .yaml).
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/configurable.rb#L31)
 
-Defines a configuration option for the export or adapter.
+Defines a configuration option for the spec or adapter.
 
 Options can be passed to `.generate` or set via environment variables.
 
@@ -121,26 +141,6 @@ Declares the output type for this export.
 
 ---
 
-### .export_name
-
-`.export_name(name = nil)`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L43)
-
-Sets or returns the export name identifier.
-
-**Parameters**
-
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `Symbol, nil` | the export name to set |
-
-**Returns**
-
-`Symbol`, `nil` — the export name, or nil if not set
-
----
-
 ## Instance Methods
 
 ### #data
@@ -151,7 +151,7 @@ Sets or returns the export name identifier.
 
 Returns the API introspection facade.
 
-This is the primary interface for accessing introspection data in exports.
+This is the primary interface for accessing introspection data in export generators.
 
 **Returns**
 

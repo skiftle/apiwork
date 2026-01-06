@@ -6,7 +6,7 @@ next: false
 
 # Contract::Action
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L11)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L10)
 
 Defines request/response structure for an action.
 
@@ -18,11 +18,11 @@ Returns [Request](contract-request) via `request` and [Response](contract-respon
 
 `#deprecated`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L101)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L100)
 
 Marks this action as deprecated.
 
-Deprecated actions are flagged in generated exports.
+Deprecated actions are flagged in generated specs.
 
 **Returns**
 
@@ -42,11 +42,11 @@ end
 
 `#description(description = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L68)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L67)
 
 Sets a detailed description for this action.
 
-Used in generated exports as the operation description.
+Used in generated specs as the operation description.
 Supports Markdown formatting.
 
 **Parameters**
@@ -73,7 +73,7 @@ end
 
 `#operation_id(operation_id = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L122)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L121)
 
 Sets a custom operation ID.
 
@@ -101,12 +101,12 @@ end
 
 `#raises(*error_code_keys)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L148)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L147)
 
 Declares error codes this action may return.
 
 Uses built-in error codes (:not_found, :forbidden, etc.) or custom codes
-registered via ErrorCode.register. These appear in generated exports.
+registered via ErrorCode.register. These appear in generated specs.
 
 Multiple calls merge error codes (consistent with declaration merging).
 
@@ -142,7 +142,7 @@ end
 
 `#request(replace: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L182)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L181)
 
 Defines the request structure for this action.
 
@@ -179,7 +179,7 @@ end
 
 `#response(replace: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L216)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L215)
 
 Defines the response structure for this action.
 
@@ -226,11 +226,11 @@ end
 
 `#summary(summary = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L50)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L49)
 
 Sets a short summary for this action.
 
-Used in generated exports as the operation summary.
+Used in generated specs as the operation summary.
 
 **Parameters**
 
@@ -256,7 +256,7 @@ end
 
 `#tags(*tags)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L85)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L84)
 
 Sets tags for grouping this action.
 

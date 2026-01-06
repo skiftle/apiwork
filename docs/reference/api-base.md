@@ -144,6 +144,45 @@ param :status, enum: :status
 
 ---
 
+### .export
+
+`.export(name, &block)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L130)
+
+Enables an export for this API.
+
+Exports generate client code and documentation from your contracts.
+Available exports: :openapi, :typescript, :zod, :introspection.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `name` | `Symbol` | export name to enable |
+
+**See also**
+
+- [Export::Base](export-base)
+
+**Example: Enable OpenAPI export**
+
+```ruby
+Apiwork::API.define '/api/v1' do
+  export :openapi
+end
+```
+
+**Example: With custom path**
+
+```ruby
+export :typescript do
+  path '/types.ts'
+end
+```
+
+---
+
 ### .info
 
 `.info(&block)`
@@ -244,7 +283,7 @@ end
 
 Declares error codes that any action in this API may raise.
 
-These are included in generated exports (OpenAPI, etc.) as possible
+These are included in generated specs (OpenAPI, etc.) as possible
 error responses. Use `raises` in action definitions for action-specific errors.
 
 **Parameters**
@@ -349,45 +388,6 @@ end
 resources :invoices, only: [:index, :show] do
   member { post :archive }
   resources :line_items
-end
-```
-
----
-
-### .export
-
-`.export(name, &block)`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L130)
-
-Enables an export for this API.
-
-Exports generate client code and documentation from your contracts.
-Available exports: :openapi, :typescript, :zod, :introspection.
-
-**Parameters**
-
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `Symbol` | export name to enable |
-
-**See also**
-
-- [Export::Base](export-base)
-
-**Example: Enable OpenAPI export**
-
-```ruby
-Apiwork::API.define '/api/v1' do
-  export :openapi
-end
-```
-
-**Example: With custom path**
-
-```ruby
-export :typescript do
-  path '/types.ts'
 end
 ```
 
