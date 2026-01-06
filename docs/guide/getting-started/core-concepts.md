@@ -20,7 +20,7 @@ end
 
 This creates RESTful routes for posts and nested comments. Under the hood, Apiwork uses the Rails router — `resources` works exactly as you'd expect.
 
-You can also declare which exports to generate:
+You can also declare which [exports](../core/exports/introduction.md) to generate:
 
 ```ruby
 Apiwork::API.define '/api/v1' do
@@ -135,7 +135,7 @@ From this, Apiwork generates:
 - Filter types (filterable fields only)
 - Sort types (sortable fields only)
 
-See [Action Defaults](../core/execution-engine/action-defaults.md) for what gets generated.
+See [Action Defaults](../core/execution-engine/action-defaults.md) for what gets generated, and [Schemas](../core/schemas/introduction.md) for the full guide.
 
 ### Customizing Generated Actions
 
@@ -162,6 +162,8 @@ class PostContract < ApplicationContract
   end
 end
 ```
+
+See [Actions](../core/contracts/actions.md) for all action options.
 
 ## Controller
 

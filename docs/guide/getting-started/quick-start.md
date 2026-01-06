@@ -196,10 +196,10 @@ With minimal code, you now have:
 
 1. **Validation** — Requests are validated against your schema before reaching the controller
 2. **Serialization** — Responses are automatically formatted using the schema
-3. **Filtering** — `filterable: true` fields can be filtered via `?filter[field][op]=value`
-4. **Sorting** — `sortable: true` fields can be sorted via `?sort[field]=asc|desc`
-5. **Pagination** — Built-in offset-based pagination via `?page[number]=1&page[size]=10`
-6. **Documentation** — OpenAPI, TypeScript, and Zod exports generated from the same source
+3. **[Filtering](../core/execution-engine/filtering.md)** — `filterable: true` fields can be filtered via `?filter[field][op]=value`
+4. **[Sorting](../core/execution-engine/sorting.md)** — `sortable: true` fields can be sorted via `?sort[field]=asc|desc`
+5. **[Pagination](../core/execution-engine/pagination.md)** — Built-in offset-based pagination via `?page[number]=1&page[size]=10`
+6. **[Exports](../core/exports/introduction.md)** — OpenAPI, TypeScript, and Zod exports generated from the same source
 
 ## There's More
 

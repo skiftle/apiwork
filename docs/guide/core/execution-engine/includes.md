@@ -6,6 +6,8 @@ order: 6
 
 Control which associations appear in API responses with the `include` query parameter.
 
+For association configuration options like `writable`, `filterable`, and polymorphic support, see [Associations](../schemas/associations.md).
+
 ## Query Format
 
 ```http

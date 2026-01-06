@@ -190,6 +190,8 @@ GET /api/v1/posts/1?include[comments][author]=true
 
 Apiwork automatically preloads included associations using `ActiveRecord::Associations::Preloader`.
 
+For more on include query behavior, see [Includes](../execution-engine/includes.md).
+
 ---
 
 ## Writable Associations

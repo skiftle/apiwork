@@ -195,91 +195,15 @@ Writable attributes are sent in the request body under the resource key:
 The `filterable` option enables query filtering on an attribute.
 
 ::: warning Database Column Required
-Only attributes backed by a database column can be filterable. Virtual attributes (methods) cannot be filtered.
+Only attributes backed by a database column can be filterable.
 :::
-
-### Basic Usage
 
 ```ruby
 attribute :title, filterable: true
 attribute :status, filterable: true
-attribute :created_at, filterable: true
 ```
 
-### Query Format
-
-Filters use nested hash syntax:
-
-```http
-GET /api/v1/posts?filter[title][eq]=Hello
-GET /api/v1/posts?filter[status][in][]=draft&filter[status][in][]=published
-GET /api/v1/posts?filter[created_at][gte]=2024-01-01
-```
-
-### Operators by Type
-
-**String:**
-
-| Operator | Description | Example |
-|----------|-------------|---------|
-| `eq` | Equals | `filter[title][eq]=Hello` |
-| `in` | In array | `filter[title][in][]=A&filter[title][in][]=B` |
-| `contains` | Contains substring | `filter[title][contains]=ruby` |
-| `starts_with` | Starts with | `filter[title][starts_with]=How` |
-| `ends_with` | Ends with | `filter[title][ends_with]=?` |
-
-**Integer / Float / Decimal:**
-
-| Operator | Description | Example |
-|----------|-------------|---------|
-| `eq` | Equals | `filter[price][eq]=100` |
-| `gt` | Greater than | `filter[price][gt]=50` |
-| `gte` | Greater or equal | `filter[price][gte]=50` |
-| `lt` | Less than | `filter[price][lt]=100` |
-| `lte` | Less or equal | `filter[price][lte]=100` |
-| `between` | Range (inclusive) | `filter[price][between][from]=10&filter[price][between][to]=50` |
-| `in` | In array | `filter[price][in][]=10&filter[price][in][]=20` |
-
-**Datetime / Date:**
-
-| Operator | Description | Example |
-|----------|-------------|---------|
-| `eq` | Equals | `filter[created_at][eq]=2024-01-15` |
-| `gt` | After | `filter[created_at][gt]=2024-01-01` |
-| `gte` | On or after | `filter[created_at][gte]=2024-01-01` |
-| `lt` | Before | `filter[created_at][lt]=2024-12-31` |
-| `lte` | On or before | `filter[created_at][lte]=2024-12-31` |
-| `between` | Range | `filter[created_at][between][from]=2024-01-01&filter[created_at][between][to]=2024-12-31` |
-
-**Boolean:**
-
-| Operator | Description | Example |
-|----------|-------------|---------|
-| `eq` | Equals | `filter[published][eq]=true` |
-
-**Nullable Fields:**
-
-Nullable attributes get an additional `null` operator:
-
-```http
-GET /api/v1/posts?filter[deleted_at][null]=true   # WHERE deleted_at IS NULL
-GET /api/v1/posts?filter[deleted_at][null]=false  # WHERE deleted_at IS NOT NULL
-```
-
-### Logical Operators
-
-Combine filters with `_and`, `_or`, and `_not`:
-
-```text
-# Posts that are published AND created after 2024
-GET /api/v1/posts?filter[_and][0][published][eq]=true&filter[_and][1][created_at][gt]=2024-01-01
-
-# Posts that are draft OR archived
-GET /api/v1/posts?filter[_or][0][status][eq]=draft&filter[_or][1][status][eq]=archived
-
-# Posts that are NOT published
-GET /api/v1/posts?filter[_not][published][eq]=true
-```
+For query syntax, operators, and logical combinators, see [Filtering](../execution-engine/filtering.md).
 
 ---
 
@@ -288,39 +212,14 @@ GET /api/v1/posts?filter[_not][published][eq]=true
 The `sortable` option enables ordering results by an attribute.
 
 ::: warning Database Column Required
-Only attributes backed by a database column can be sortable. Virtual attributes (methods) cannot be sorted.
+Only attributes backed by a database column can be sortable.
 :::
 
-### Basic Usage
-
 ```ruby
-attribute :title, sortable: true
 attribute :created_at, sortable: true
 ```
 
-### Query Format
-
-```http
-GET /api/v1/posts?sort[created_at]=desc
-GET /api/v1/posts?sort[title]=asc
-```
-
-### Sort Direction
-
-| Value | Description |
-|-------|-------------|
-| `asc` | Ascending (A-Z, 0-9, oldest first) |
-| `desc` | Descending (Z-A, 9-0, newest first) |
-
-### Multiple Sort Fields
-
-Sort by multiple fields in order of precedence:
-
-```http
-GET /api/v1/posts?sort[published]=desc&sort[created_at]=desc
-```
-
-This sorts by `published` first, then by `created_at` within each group.
+For query syntax and multi-field sorting, see [Sorting](../execution-engine/sorting.md).
 
 ---
 
