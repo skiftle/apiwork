@@ -18,7 +18,7 @@
     "status": {
       "actions": {
         "health": {
-          "deprecated": true,
+          "deprecated": false,
           "description": null,
           "method": "get",
           "operation_id": null,
@@ -80,7 +80,7 @@
           "tags": []
         },
         "stats": {
-          "deprecated": true,
+          "deprecated": false,
           "description": null,
           "method": "get",
           "operation_id": null,

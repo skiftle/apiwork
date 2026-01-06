@@ -63,7 +63,7 @@
     "projects": {
       "actions": {
         "index": {
-          "deprecated": true,
+          "deprecated": false,
           "description": "Returns a paginated list of projects with optional filtering",
           "method": "get",
           "operation_id": "listProjects",
@@ -213,7 +213,7 @@
           ]
         },
         "show": {
-          "deprecated": true,
+          "deprecated": false,
           "description": "Returns a single project by ID with all attributes",
           "method": "get",
           "operation_id": "getProject",
@@ -264,7 +264,7 @@
           ]
         },
         "create": {
-          "deprecated": true,
+          "deprecated": false,
           "description": "Creates a project and returns the created resource",
           "method": "post",
           "operation_id": "createProject",
@@ -328,7 +328,7 @@
           ]
         },
         "update": {
-          "deprecated": true,
+          "deprecated": false,
           "description": "Updates an existing project with the provided attributes",
           "method": "patch",
           "operation_id": "updateProject",
@@ -392,7 +392,7 @@
           ]
         },
         "destroy": {
-          "deprecated": true,
+          "deprecated": false,
           "description": "Permanently removes a project",
           "method": "delete",
           "operation_id": "deleteProject",

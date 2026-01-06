@@ -16,7 +16,7 @@ Used within the `license` block in [API::Info](api-info).
 
 ### #name
 
-`#name(text)`
+`#name(name)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/license.rb#L27)
 
@@ -26,7 +26,7 @@ Sets the license name.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `text` | `String` | the license name (e.g. 'MIT', 'Apache 2.0') |
+| `name` | `String` | the license name (e.g. 'MIT', 'Apache 2.0') |
 
 **Returns**
 
@@ -44,7 +44,7 @@ end
 
 ### #url
 
-`#url(text)`
+`#url(url)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/license.rb#L41)
 
@@ -54,7 +54,7 @@ Sets the license URL.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `text` | `String` | the license URL |
+| `url` | `String` | the license URL |
 
 **Returns**
 

@@ -6,7 +6,6 @@ info:
 paths:
   "/invoices":
     get:
-      deprecated: true
       operationId: invoicesIndex
       responses:
         '200':
@@ -23,7 +22,6 @@ paths:
                 - invoices
           description: Successful response
     post:
-      deprecated: true
       operationId: invoicesCreate
       requestBody:
         content:
@@ -50,7 +48,6 @@ paths:
           description: Successful response
   "/invoices/{id}":
     get:
-      deprecated: true
       operationId: invoicesShow
       parameters:
       - in: path
@@ -71,7 +68,6 @@ paths:
                 - invoice
           description: Successful response
     patch:
-      deprecated: true
       operationId: invoicesUpdate
       parameters:
       - in: path
@@ -103,7 +99,6 @@ paths:
                 - invoice
           description: Successful response
     delete:
-      deprecated: true
       operationId: invoicesDestroy
       parameters:
       - in: path

@@ -225,7 +225,7 @@ end
 
 `.deserialize(hash_or_array)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L648)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L646)
 
 Deserializes a hash using this schema's decode transformers.
 
@@ -298,7 +298,7 @@ end
 
 `.example(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L587)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L585)
 
 Sets or gets an example value for this schema.
 
@@ -414,7 +414,7 @@ has_one :imageable, polymorphic: [:product, :user]
 Sets or gets the model class for this schema.
 
 By default, the model is auto-detected from the schema name
-(e.g., InvoiceSchema becomes Invoice). Use this to override.
+(e.g., InvoiceSchema → Invoice). Use this to override.
 
 **Parameters**
 
@@ -475,7 +475,7 @@ end
 
 `.serialize(object_or_collection, context: {}, include: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L625)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L623)
 
 Serializes a record or collection using this schema.
 

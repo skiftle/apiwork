@@ -6,7 +6,6 @@ info:
 paths:
   "/orders":
     get:
-      deprecated: true
       operationId: ordersIndex
       parameters:
       - in: query
@@ -40,7 +39,6 @@ paths:
                 "$ref": "#/components/schemas/orderIndexSuccessResponseBody"
           description: Successful response
     post:
-      deprecated: true
       operationId: ordersCreate
       requestBody:
         content:
@@ -68,7 +66,6 @@ paths:
                 "$ref": "#/components/schemas/errorResponseBody"
   "/orders/{id}":
     get:
-      deprecated: true
       operationId: ordersShow
       parameters:
       - in: path
@@ -84,7 +81,6 @@ paths:
                 "$ref": "#/components/schemas/orderShowSuccessResponseBody"
           description: Successful response
     patch:
-      deprecated: true
       operationId: ordersUpdate
       parameters:
       - in: path
@@ -117,7 +113,6 @@ paths:
               schema:
                 "$ref": "#/components/schemas/errorResponseBody"
     delete:
-      deprecated: true
       operationId: ordersDestroy
       parameters:
       - in: path

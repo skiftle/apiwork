@@ -74,7 +74,7 @@ end
 
 `#operation_id(operation_id = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L119)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L124)
 
 Sets a custom operation ID.
 
@@ -102,20 +102,14 @@ end
 
 `#raises(*error_code_keys)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L144)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L150)
 
 Declares error codes this action may return.
 
 Uses built-in error codes (:not_found, :forbidden, etc.) or custom codes
 registered via ErrorCode.register. These appear in generated specs.
 
-Multiple calls merge error codes (consistent with declaration merging):
-
-```ruby
-raises :not_found
-raises :forbidden
-# Result: [:not_found, :forbidden]
-```
+Multiple calls merge error codes (consistent with declaration merging).
 
 **Parameters**
 
@@ -126,6 +120,14 @@ raises :forbidden
 **See also**
 
 - [ErrorCode](introspection-error-code)
+
+**Example: Merging error codes**
+
+```ruby
+raises :not_found
+raises :forbidden
+# Result: [:not_found, :forbidden]
+```
 
 **Example**
 
@@ -141,7 +143,7 @@ end
 
 `#request(replace: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L178)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L184)
 
 Defines the request structure for this action.
 
@@ -178,7 +180,7 @@ end
 
 `#response(replace: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L212)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L218)
 
 Defines the response structure for this action.
 

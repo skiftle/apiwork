@@ -6,7 +6,6 @@ info:
 paths:
   "/users":
     get:
-      deprecated: true
       operationId: usersIndex
       parameters:
       - in: query
@@ -40,7 +39,6 @@ paths:
                 "$ref": "#/components/schemas/userIndexSuccessResponseBody"
           description: Successful response
     post:
-      deprecated: true
       operationId: usersCreate
       requestBody:
         content:
@@ -68,7 +66,6 @@ paths:
                 "$ref": "#/components/schemas/errorResponseBody"
   "/users/{id}":
     get:
-      deprecated: true
       operationId: usersShow
       parameters:
       - in: path
@@ -84,7 +81,6 @@ paths:
                 "$ref": "#/components/schemas/userShowSuccessResponseBody"
           description: Successful response
     patch:
-      deprecated: true
       operationId: usersUpdate
       parameters:
       - in: path
@@ -117,7 +113,6 @@ paths:
               schema:
                 "$ref": "#/components/schemas/errorResponseBody"
     delete:
-      deprecated: true
       operationId: usersDestroy
       parameters:
       - in: path
@@ -130,7 +125,6 @@ paths:
           description: No content
   "/posts":
     get:
-      deprecated: true
       operationId: postsIndex
       parameters:
       - in: query
@@ -146,7 +140,6 @@ paths:
                 "$ref": "#/components/schemas/postIndexSuccessResponseBody"
           description: Successful response
     post:
-      deprecated: true
       operationId: postsCreate
       requestBody:
         content:
@@ -174,7 +167,6 @@ paths:
                 "$ref": "#/components/schemas/errorResponseBody"
   "/posts/{id}":
     get:
-      deprecated: true
       operationId: postsShow
       parameters:
       - in: path
@@ -190,7 +182,6 @@ paths:
                 "$ref": "#/components/schemas/postShowSuccessResponseBody"
           description: Successful response
     patch:
-      deprecated: true
       operationId: postsUpdate
       parameters:
       - in: path
@@ -223,7 +214,6 @@ paths:
               schema:
                 "$ref": "#/components/schemas/errorResponseBody"
     delete:
-      deprecated: true
       operationId: postsDestroy
       parameters:
       - in: path
@@ -236,7 +226,6 @@ paths:
           description: No content
   "/comments":
     get:
-      deprecated: true
       operationId: commentsIndex
       parameters:
       - in: query
@@ -252,7 +241,6 @@ paths:
                 "$ref": "#/components/schemas/commentIndexSuccessResponseBody"
           description: Successful response
     post:
-      deprecated: true
       operationId: commentsCreate
       requestBody:
         content:
@@ -280,7 +268,6 @@ paths:
                 "$ref": "#/components/schemas/errorResponseBody"
   "/comments/{id}":
     get:
-      deprecated: true
       operationId: commentsShow
       parameters:
       - in: path
@@ -296,7 +283,6 @@ paths:
                 "$ref": "#/components/schemas/commentShowSuccessResponseBody"
           description: Successful response
     patch:
-      deprecated: true
       operationId: commentsUpdate
       parameters:
       - in: path
@@ -329,7 +315,6 @@ paths:
               schema:
                 "$ref": "#/components/schemas/errorResponseBody"
     delete:
-      deprecated: true
       operationId: commentsDestroy
       parameters:
       - in: path

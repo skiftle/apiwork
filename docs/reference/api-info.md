@@ -65,7 +65,7 @@ end
 
 ### #description
 
-`#description(text)`
+`#description(description)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L134)
 
@@ -75,7 +75,7 @@ Sets a detailed description for the API.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `text` | `String` | the description (supports Markdown) |
+| `description` | `String` | the description (supports Markdown) |
 
 **Returns**
 
@@ -149,7 +149,7 @@ end
 
 ### #summary
 
-`#summary(text)`
+`#summary(summary)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L120)
 
@@ -159,7 +159,7 @@ Sets a short summary for the API.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `text` | `String` | the summary |
+| `summary` | `String` | the summary |
 
 **Returns**
 
@@ -177,7 +177,7 @@ end
 
 ### #tags
 
-`#tags(*tags_list)`
+`#tags(*tags)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L148)
 
@@ -187,7 +187,7 @@ Sets tags for the API.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `tags_list` | `Array<String>` | list of tags |
+| `tags` | `Array<String>` | list of tags |
 
 **Returns**
 
@@ -233,7 +233,7 @@ end
 
 ### #title
 
-`#title(text)`
+`#title(title)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L27)
 
@@ -243,7 +243,7 @@ Sets the API title.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `text` | `String` | the title |
+| `title` | `String` | the title |
 
 **Returns**
 
@@ -261,7 +261,7 @@ end
 
 ### #version
 
-`#version(text)`
+`#version(version)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L41)
 
@@ -271,7 +271,7 @@ Sets the API version.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `text` | `String` | the version (e.g. '1.0.0') |
+| `version` | `String` | the version (e.g. '1.0.0') |
 
 **Returns**
 

@@ -16,7 +16,7 @@ Used within the `contact` block in [API::Info](api-info).
 
 ### #email
 
-`#email(text)`
+`#email(email)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/contact.rb#L41)
 
@@ -26,7 +26,7 @@ Sets the contact email.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `text` | `String` | the contact email |
+| `email` | `String` | the contact email |
 
 **Returns**
 
@@ -44,7 +44,7 @@ end
 
 ### #name
 
-`#name(text)`
+`#name(name)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/contact.rb#L27)
 
@@ -54,7 +54,7 @@ Sets the contact name.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `text` | `String` | the contact name |
+| `name` | `String` | the contact name |
 
 **Returns**
 
@@ -72,7 +72,7 @@ end
 
 ### #url
 
-`#url(text)`
+`#url(url)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/contact.rb#L55)
 
@@ -82,7 +82,7 @@ Sets the contact URL.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `text` | `String` | the contact URL |
+| `url` | `String` | the contact URL |
 
 **Returns**
 

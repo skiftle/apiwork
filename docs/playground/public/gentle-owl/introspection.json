@@ -32,7 +32,7 @@
     "comments": {
       "actions": {
         "index": {
-          "deprecated": true,
+          "deprecated": false,
           "description": null,
           "method": "get",
           "operation_id": null,
@@ -146,7 +146,7 @@
           "tags": []
         },
         "show": {
-          "deprecated": true,
+          "deprecated": false,
           "description": null,
           "method": "get",
           "operation_id": null,
@@ -206,7 +206,7 @@
           "tags": []
         },
         "create": {
-          "deprecated": true,
+          "deprecated": false,
           "description": null,
           "method": "post",
           "operation_id": null,
@@ -279,7 +279,7 @@
           "tags": []
         },
         "update": {
-          "deprecated": true,
+          "deprecated": false,
           "description": null,
           "method": "patch",
           "operation_id": null,
@@ -352,7 +352,7 @@
           "tags": []
         },
         "destroy": {
-          "deprecated": true,
+          "deprecated": false,
           "description": null,
           "method": "delete",
           "operation_id": null,

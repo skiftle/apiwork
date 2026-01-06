@@ -52,8 +52,7 @@ module Apiwork
               next
             end
 
-            actions[action_name].merge!(ActionDefinition.new(action_definition).to_h.except(:deprecated))
-            actions[action_name][:deprecated] = true if action_definition.deprecated
+            actions[action_name].merge!(ActionDefinition.new(action_definition).to_h)
           end
 
           actions
