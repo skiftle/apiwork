@@ -29,7 +29,6 @@ info do
   description 'Full description'
   summary 'Short summary'
   deprecated
-  internal true
   terms_of_service 'https://example.com/tos'
 
   contact do

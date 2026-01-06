@@ -41,7 +41,7 @@ For resources where there's only one (like the current user's account):
 | update  | PATCH  | /account |
 | destroy | DELETE | /account |
 
-No `index` action, no `:id` in the path. The controller is still plural (`AccountsController`) to match Rails conventions.
+No `index` action, no `:id` in the path. The controller is still plural (`AccountsController`) — this is standard Rails `resource` behavior.
 
 ## Limiting Actions
 

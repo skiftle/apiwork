@@ -147,7 +147,7 @@ end
 ```
 
 ::: tip
-`contract.query` and `contract.body` contain only fields explicitly defined in your contract.
+Requests with undefined fields are rejected. `contract.query` and `contract.body` contain only validated fields.
 :::
 
 ## 7. Try It

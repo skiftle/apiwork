@@ -18,7 +18,7 @@ Apiwork::API.define '/api/v1' do
 end
 ```
 
-This creates RESTful routes for posts and nested comments. Under the hood, Apiwork uses the Rails router — `resources` works exactly as you'd expect.
+This creates RESTful routes for posts and nested comments. Apiwork uses the Rails router — `resources` maps directly to Rails' `resources`.
 
 You can also declare which [exports](../core/exports/introduction.md) to generate:
 
@@ -183,7 +183,7 @@ end
 - `contract.body` — request body (create/update payloads)
 
 ::: tip
-`contract.query` and `contract.body` contain only fields explicitly defined in your contract.
+Requests with undefined fields are rejected. `contract.query` and `contract.body` contain only validated fields.
 :::
 
 ## How They Connect
