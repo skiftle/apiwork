@@ -245,3 +245,7 @@ resources :articles, concerns: [:commentable]
 ```
 
 Both posts and articles now have nested comment routes with approve, reject, and pending actions.
+
+#### See also
+
+- [API::Base reference](../../../reference/api-base.md) — `resources`, `resource`, `concern`, and routing options

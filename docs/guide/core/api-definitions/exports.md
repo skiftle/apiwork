@@ -132,3 +132,7 @@ Apiwork::Export.generate(:typescript, '/api/v1', key_format: :camel)
 - Static file generation for CDN hosting
 - Build processes that bundle exports with frontend code
 :::
+
+#### See also
+
+- [Export reference](../../../reference/export.md) — programmatic export generation API

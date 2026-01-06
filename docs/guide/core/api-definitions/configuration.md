@@ -270,3 +270,7 @@ end
 ```
 
 [Type System](../type-system/introduction.md) covers type definitions, enums, unions, and scoping rules.
+
+#### See also
+
+- [API::Base reference](../../../reference/api-base.md) — all configuration methods and options

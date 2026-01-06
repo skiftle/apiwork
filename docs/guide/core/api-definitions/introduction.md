@@ -80,3 +80,7 @@ end
 ```
 
 Each API has its own namespace with controllers, contracts, and schemas.
+
+#### See also
+
+- [API::Base reference](../../../reference/api-base.md) — all API definition methods and options
