@@ -4,7 +4,7 @@ order: 1
 
 # Introduction
 
-Introspection describes an API through an object model.
+Introspection exposes API structure as Ruby objects — resources, actions, types, and params that you can query programmatically.
 
 Resources, actions, types, enums, and error codes are exposed as explicit objects that reflect the API’s structure and behavior.
 
@@ -13,7 +13,7 @@ This serves two purposes:
 - **Development** – inspect what is exposed, including dynamically generated types
 - **Generation** – [exports](../exports/introduction.md) and documentation read introspection directly
 
-Introspection exposes an object facade. Each object represents a part of the API and provides type predicates and navigation accessors.
+Each introspection object provides type predicates and navigation accessors.
 
 ---
 
@@ -82,7 +82,7 @@ API
 
 ## During Development
 
-When building contracts, introspection provides visibility into what is exposed. Adapters may derive types from schemas at runtime, and features such as filtering, pagination, and sorting may not exist as explicit code. Introspection makes these derived structures visible at the API and contract level.
+Adapters derive types from schemas at runtime. Introspection makes these generated structures visible.
 
 Call `.to_h` on any introspection object to get a hash representation:
 

@@ -4,7 +4,7 @@ order: 3
 
 # Contract Introspection
 
-Returns a single contract's structure as an [Introspection::Contract](../../../reference/introspection-contract.md) object. Useful during development to understand what a contract exposes, including dynamically generated types.
+Returns a single contract's structure as an [Introspection::Contract](../../../reference/introspection-contract.md) object.
 
 ```ruby
 contract = InvoiceContract.introspect
@@ -60,14 +60,12 @@ body.shape[:invoice]  # => Param for the invoice
 
 ## Expand Mode
 
-By default, referenced types are not included:
+By default, only types defined in the contract are included. Pass `expand: true` to include referenced types (useful for debugging or export generation):
 
 ```ruby
 InvoiceContract.introspect
 # types: { invoice_filter: {...} }
 ```
-
-Pass `expand: true` to resolve all referenced types:
 
 ```ruby
 InvoiceContract.introspect(expand: true)
