@@ -7,7 +7,7 @@ order: 4
 Contracts can import types from other contracts.
 
 ::: tip When to use imports
-Imports are useful when contracts share types that don't belong at the API level. For example, an `OrderContract` might import address types from `UserContract` without duplicating the definition.
+Use imports when contracts share types that don't belong at the API level.
 :::
 
 ## Importing Types
@@ -26,7 +26,7 @@ class OrderContract < Apiwork::Contract::Base
 end
 ```
 
-The `import` makes all types defined in `UserContract` available under the `:user` prefix.
+The `import` makes all types from `UserContract` available. The `as: :user` prefix is added to type names.
 
 ## How It Works
 
@@ -41,15 +41,7 @@ class UserContract < Apiwork::Contract::Base
 end
 ```
 
-The type is scoped to that contract as `:user_address`.
-
-When another contract imports it:
-
-```ruby
-import UserContract, as: :user
-```
-
-The type becomes available as `:user_address` in the importing contract.
+When another contract imports with `as: :user`, the type becomes available as `:user_address` (prefix + original name).
 
 ## Multiple Imports
 

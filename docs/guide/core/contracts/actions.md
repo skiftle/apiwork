@@ -4,7 +4,7 @@ order: 2
 
 # Actions
 
-Actions define the request and response structure for its endpoint.
+Actions define the request and response structure for each endpoint.
 
 ```ruby
 # app/contracts/api/v1/post_contract.rb
@@ -85,7 +85,7 @@ end
 
 ### meta
 
-For response data that doesn't belong to the resource itself:
+Shorthand for `param :meta, type: :object do ... end`. Use for response data that doesn't belong to the resource itself:
 
 ```ruby
 action :index do
@@ -99,8 +99,6 @@ action :index do
   end
 end
 ```
-
-This is shorthand for `param :meta, type: :object do ... end`.
 
 For optional meta, pass `optional: true`:
 
@@ -136,7 +134,7 @@ Response:
 
 ### no_content!
 
-For actions that return HTTP 204 No Content (no response body):
+For actions that return HTTP 204 No Content:
 
 ```ruby
 action :destroy do
@@ -174,7 +172,7 @@ These appear in generated [OpenAPI exports](../exports/openapi.md) as possible e
 
 ## Declaration Merging
 
-Actions support declaration merging — the same concept as TypeScript interface merging. When you define an action that already exists, the definitions combine rather than replace.
+Actions support declaration merging. When you define an action that already exists, the definitions combine rather than replace.
 
 ::: info Same pattern for types
 This is the same merge behavior used for [type definitions](../type-system/type-merging.md). The concept applies consistently across Apiwork.
@@ -303,7 +301,7 @@ end
   :::
 
 ::: info raises always merges
-`raises` has no `replace:` option. You cannot opt out of errors the adapter may throw (like `:unprocessable_entity`), ensuring the export reflects reality.
+`raises` has no `replace:` option. You cannot opt out of errors the adapter may throw (like `:unprocessable_entity`).
 :::
 
 ## Metadata
@@ -334,13 +332,13 @@ end
 
 ### Metadata Fields
 
-| Field          | Description                                    |
-| -------------- | ---------------------------------------------- |
-| `summary`      | One-line description. Shows in endpoint lists. |
-| `description`  | Longer description. Supports markdown.         |
-| `tags`         | Action-specific tags for grouping.             |
-| `deprecated`   | Marks the action as deprecated.                |
-| `operation_id` | Explicit operation ID for OpenAPI.             |
+| Field          | Description                                   |
+| -------------- | --------------------------------------------- |
+| `summary`      | One-line description, shows in endpoint lists |
+| `description`  | Longer description, supports markdown         |
+| `tags`         | Action-specific tags for grouping             |
+| `deprecated`   | Marks the action as deprecated                |
+| `operation_id` | Explicit operation ID for OpenAPI             |
 
 ### Translations
 

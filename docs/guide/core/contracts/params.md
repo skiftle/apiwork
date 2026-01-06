@@ -4,11 +4,11 @@ order: 3
 
 # Params
 
-Params define what data your API accepts. When a request comes in, Apiwork validates it against your param definitions and coerces types where possible.
+Params define what data your API accepts. When a request comes in, Apiwork validates it against your param definitions and coerces types.
 
 ## Basic Types
 
-Apiwork supports all the common primitives:
+Apiwork supports common primitives:
 
 ```ruby
 param :title, type: :string
@@ -162,7 +162,7 @@ param :shipping_address, type: :address
 
 ## Type Generation
 
-Your params automatically generate types for export output. Here's an example:
+Your params automatically generate types for export output:
 
 ```ruby
 param :title, type: :string, min: 1, max: 255

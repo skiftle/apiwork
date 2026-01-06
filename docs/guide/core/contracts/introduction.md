@@ -23,7 +23,7 @@ class PostContract < Apiwork::Contract::Base
 end
 ```
 
-This says: the `create` action expects a request body with `title` and `body`, both strings.
+The `create` action expects a request body with `title` and `body`, both strings.
 
 ## Naming Convention
 
@@ -62,11 +62,11 @@ Now responses are serialized through the schema. See [Schemas](../schemas/introd
 **Response checking:**
 
 - After your controller runs, Apiwork checks the response against the contract
-- Mismatches are logged in development — you'll see them, fix them early
+- Mismatches are logged to Rails logger in development
 - No errors returned to clients, no checks in production
 
 ::: info Strict in, lenient out
-Request validation is strict: invalid data returns 400 Bad Request. Response checking is lenient: mismatches are logged but never break your API. This keeps incoming data clean while giving you visibility into response drift.
+Request validation is strict: invalid data returns 400 Bad Request. Response checking is lenient: mismatches are logged but never break your API.
 :::
 
 ## Manual Usage
