@@ -17,7 +17,7 @@ def show
 end
 ```
 
-The built-in adapter:
+The adapter:
 
 1. Loads the record with eager-loaded associations (based on `?include`)
 2. Serializes attributes using `encode` transformers

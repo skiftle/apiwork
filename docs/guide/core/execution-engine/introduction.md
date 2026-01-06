@@ -9,8 +9,9 @@ The **Execution Engine** is the runtime that interprets and executes your API sc
 It reads schema definitions, derives types, and handles requests end-to-end — from validation and querying to serialization and response formatting.
 All execution is delegated through an **adapter**, which defines how queries are built and responses are rendered.
 
-The built-in adapter is documented in this section.
-For custom response formats or query logic, you can [build your own adapter](../../advanced/custom-adapters.md).
+This section documents the adapter that ships with Apiwork. Throughout, "the adapter" refers to this default implementation.
+
+For custom response formats or query logic, see [Custom Adapters](../../advanced/custom-adapters.md).
 
 ## Two Phases
 

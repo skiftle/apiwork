@@ -3,6 +3,6 @@ order: 2
 ---
 # Reference
 
-API reference documentation (coming soon).
+Complete API reference for Apiwork's public classes.
 
-This section will contain auto-generated documentation from YARD comments.
+Each page documents a single class — its methods, parameters, and return types. Generated from source code comments using YARD.
