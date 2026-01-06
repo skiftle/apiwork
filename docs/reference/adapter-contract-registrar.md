@@ -44,8 +44,7 @@ end
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L53)
 
-Defines an action with query, body, and response.
-Returns existing definition if already defined, or creates new.
+Defines an action. Multiple calls to the same action merge definitions.
 
 **Parameters**
 
@@ -64,7 +63,7 @@ Returns existing definition if already defined, or creates new.
 
 `#api_registrar`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L104)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L103)
 
 Returns a registrar for API-level types.
 Use this to define or resolve types at the API scope.
@@ -96,7 +95,7 @@ Defines an enum type scoped to this contract.
 
 `#find_contract_for_schema(schema_class)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L76)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L75)
 
 Finds the contract class for an associated schema.
 
@@ -116,7 +115,7 @@ Finds the contract class for an associated schema.
 
 `#import(type_name, from:)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L63)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L62)
 
 Imports a type from another contract or the API.
 
@@ -133,7 +132,7 @@ Imports a type from another contract or the API.
 
 `#imports`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L87)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L86)
 
 Returns the hash of imported types.
 
@@ -147,7 +146,7 @@ Returns the hash of imported types.
 
 `#scoped_name(name)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L70)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L69)
 
 Returns the fully qualified name for a type in this contract's scope.
 

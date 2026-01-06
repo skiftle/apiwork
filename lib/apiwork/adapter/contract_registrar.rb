@@ -52,8 +52,7 @@ module Apiwork
 
       # @!method action(name, replace: false, &block)
       #   @api public
-      #   Defines an action with query, body, and response.
-      #   Returns existing definition if already defined, or creates new.
+      #   Defines an action. Multiple calls to the same action merge definitions.
       #   @param name [Symbol] the action name
       #   @param replace [Boolean] replace existing definition (default: false)
       #   @yield block defining request/response
