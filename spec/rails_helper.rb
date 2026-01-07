@@ -24,29 +24,8 @@ RSpec.configure do |config|
   # Filter Rails gems from backtraces
   config.filter_rails_from_backtrace!
 
-  config.before do |example|
-    unless [:request, :integration].include?(example.metadata[:type])
-      Apiwork::API.reset!
-      Apiwork::ErrorCode.reset!
-    end
-  end
-
-  # Ensure APIs are loaded for request/integration specs
-  # These spec types don't reset between tests, so they rely on APIs being loaded once
-  # If another spec called API.reset! before them, we need to reload
-  config.before(:each, type: :request) do
-    if Apiwork::API.all.empty? && Rails.root.join('config/apis').exist?
-      Dir[Rails.root.join('config/apis/**/*.rb')].sort.each do |file|
-        load file
-      end
-    end
-  end
-
-  config.before(:each, type: :integration) do
-    if Apiwork::API.all.empty? && Rails.root.join('config/apis').exist?
-      Dir[Rails.root.join('config/apis/**/*.rb')].sort.each do |file|
-        load file
-      end
-    end
+  # Prepare Apiwork before each test to ensure clean state
+  config.before do
+    Apiwork.prepare!(eager_load: true)
   end
 end

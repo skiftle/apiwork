@@ -3,12 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe 'OpenAPI Generation', type: :integration do
-  before(:all) do
-    Apiwork::API.reset!
-    Apiwork::ErrorCode.reset!
-    load Rails.root.join('config/apis/v1.rb')
-  end
-
   let(:path) { '/api/v1' }
   let(:generator) { Apiwork::Export::OpenAPI.new(path) }
   let(:spec) { generator.generate }

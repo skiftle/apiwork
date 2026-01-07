@@ -5,14 +5,10 @@ require 'rails_helper'
 RSpec.describe 'Contract Override Option', type: :request do
   describe 'explicit contract: option overrides inference' do
     context 'when using existing v1 API with contract override' do
-      before(:all) do
+      before do
         Apiwork::API.define '/api/override_test' do
           resources :articles, contract: 'post'
         end
-      end
-
-      after(:all) do
-        Apiwork::API::Registry.unregister('/api/override_test')
       end
 
       it 'uses definition to resolve explicit contract class' do
@@ -39,14 +35,10 @@ RSpec.describe 'Contract Override Option', type: :request do
 
   describe 'auto-inferred contract without explicit option' do
     context 'when no contract: option is specified' do
-      before(:all) do
+      before do
         Apiwork::API.define '/api/inference_test' do
           resources :posts
         end
-      end
-
-      after(:all) do
-        Apiwork::API::Registry.unregister('/api/inference_test')
       end
 
       it 'infers contract class from resource name' do

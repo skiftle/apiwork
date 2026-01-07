@@ -165,10 +165,6 @@ RSpec.describe 'Polymorphic associations', type: :integration do
   end
 
   describe 'Polymorphic type discrimination with real data' do
-    before(:all) do
-      Apiwork::API.reset!
-    end
-
     # Create test tags
     let!(:ruby_tag) { Tag.create!(name: 'Ruby', slug: 'ruby') }
     let!(:rails_tag) { Tag.create!(name: 'Rails', slug: 'rails') }

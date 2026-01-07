@@ -3,12 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe 'TypeScript Generation', type: :integration do
-  before(:all) do
-    Apiwork::API.reset!
-    Apiwork::ErrorCode.reset!
-    load Rails.root.join('config/apis/v1.rb')
-  end
-
   let(:path) { '/api/v1' }
   let(:generator) { Apiwork::Export::TypeScript.new(path) }
   let(:output) { generator.generate }

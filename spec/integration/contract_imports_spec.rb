@@ -4,8 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'Contract Imports' do
   after do
-    # Clear all types/enums (including global ones)
-    Apiwork::API.reset!
+    Apiwork.prepare!(eager_load: true)
   end
 
   describe 'basic import functionality' do

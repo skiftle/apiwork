@@ -6,10 +6,6 @@ RSpec.describe 'Schema-based Type Reuse via Imports' do
   # This spec verifies that types are properly imported and reused across contracts
   # instead of being duplicated
 
-  after do
-    Apiwork::API.reset!
-  end
-
   it 'imports association contracts automatically' do
     # PostContract should automatically import a contract for CommentSchema
     post_contract = Api::V1::PostContract

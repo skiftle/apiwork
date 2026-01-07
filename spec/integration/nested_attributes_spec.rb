@@ -3,12 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :request do
-  # Clear API registry before this test suite to ensure clean state
-  # This is needed because other tests may register types that interfere
-  before(:all) do
-    Apiwork::API.reset!
-  end
-
   describe 'Creating with nested has_many' do
     it 'creates a post with nested comments' do
       post_params = {

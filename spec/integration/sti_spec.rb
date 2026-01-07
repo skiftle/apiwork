@@ -3,14 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe 'STI (Single Table Inheritance) API', type: :request do
-  before(:all) do
-    # Ensure STI variant schemas are loaded before contracts are built
-    # This registers PersonClientSchema and CompanyClientSchema as variants of ClientSchema
-
-    # Reset and rebuild contracts with STI variants now registered
-    Apiwork::API.reset!
-  end
-
   before do
     # Clean up any leftover clients from previous runs
     Client.destroy_all

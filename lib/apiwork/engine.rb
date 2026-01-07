@@ -14,16 +14,7 @@ module Apiwork
     end
 
     config.to_prepare do
-      Apiwork::API.reset!
-      Apiwork::ErrorCode.reset!
-
-      Apiwork::Adapter.register(Apiwork::Adapter::Standard)
-
-      Apiwork::Export.register(Apiwork::Export::OpenAPI)
-      Apiwork::Export.register(Apiwork::Export::Zod)
-      Apiwork::Export.register(Apiwork::Export::TypeScript)
-
-      Dir[Rails.root.join('config/apis/**/*.rb')].sort.each(&method(:load))
+      Apiwork.prepare!
     end
   end
 end
