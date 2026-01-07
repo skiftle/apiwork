@@ -1,239 +1,95 @@
-# Apiwork Documentation Guide
+# DOCS.md
 
-This file defines **how Claude Code must write, edit, and review documentation for Apiwork**.
-
-It is not a style suggestion.
-It is a set of rules.
+Rules for writing documentation. Documentation is part of the API.
 
 ---
 
-## Core Principle
+## Golden Rule
 
-**Documentation is part of the API.**
+**Verify against code.** Never invent behavior.
 
-If documentation is wrong, the API is wrong.
+Before writing:
+1. Read the implementation
+2. Run the code if uncertain
+3. Check tests for expected behavior
 
----
-
-## The Golden Rule
-
-**Verify everything against the code.**
-
-Documentation that is incorrect is worse than no documentation.
-
-Before writing or changing anything:
-
-- Read the implementation
-- Run the code if uncertain
-- Check tests for expected behavior
-- Never guess or assume
-
-When describing behavior:
-
-- Quote actual method names and options
-- Use real examples from the codebase
-- If you are not 100% sure, look it up
-
-::: danger
-Never invent behavior.
-If something cannot be verified in code, do not document it.
-:::
+If you cannot verify it, do not document it.
 
 ---
 
-## Roles and Phases
+## Phases
 
-Claude must treat documentation work as **separate phases**.
-Never mix these.
+Work in **one phase at a time**. Never mix.
 
-### Phase 1 — Style & Tone
-
-- Improve clarity and consistency
-- Do not change meaning
-- Do not add or remove features
-
-### Phase 2 — Verification
-
-- Compare documentation against code
-- Identify incorrect, incomplete, or conditional claims
-- Do not rewrite text unless required for correctness
-
-### Phase 3 — Navigation & Linking
-
-- Improve internal links and reference links
-- Add introductions and "See also" sections where useful
-- Do not re-explain content
-
-Claude must only perform **one phase at a time**.
+| Phase | Do | Do Not |
+|-------|-----|--------|
+| **1. Style & Tone** | Improve clarity, consistency | Change meaning, add/remove features |
+| **2. Verification** | Compare docs to code, fix errors | Rewrite unless required for correctness |
+| **3. Navigation** | Add links, intros, "See also" | Re-explain content |
 
 ---
 
 ## Tone
 
-**Direct.** Say what something does. Do not hedge.
-
-```markdown
-# Bad
-
-Schemas can potentially be used to describe your data structures.
-
-# Good
-
-Schemas describe your data structures.
-```
-
-**Technical.** Assume the reader knows Ruby and Rails.
-
-```markdown
-# Bad
-
-First, you'll want to create a new Ruby class that inherits from the base class.
-
-# Good
-
-class InvoiceSchema < Apiwork::Schema::Base
-```
-
-**Pedagogical.** Teach through concrete examples. Show code first, explain briefly after.
+**Direct.** State facts. No hedging.
+**Technical.** Assume Ruby/Rails knowledge.
+**Pedagogical.** Show code first, explain briefly after.
 
 ---
 
-## Language Rules
+## Avoid
 
-### Active Voice
-
-```markdown
-# Bad
-
-The request is validated by the contract.
-
-# Good
-
-The contract validates the request.
-```
-
-### Present Tense
-
-```markdown
-# Bad
-
-When you call schema!, the adapter will generate types.
-
-# Good
-
-When you call schema!, the adapter generates types.
-```
-
-### Second Person
-
-Address the reader as "you".
-Avoid "we" unless collaboration is explicit.
-
----
-
-## What to Avoid
-
-### AI-Generated Patterns
-
-| Pattern                          | Alternative       |
-| -------------------------------- | ----------------- |
-| "Let's explore how..."           | (just explain it) |
-| "It's important to note that..." | (state the fact)  |
-| "This allows you to..."          | "You can..."      |
-| "In this section, we will..."    | (just do it)      |
-| "As mentioned earlier..."        | (link to it)      |
-
-### Marketing Language
-
-| Bad                     | Good         |
-| ----------------------- | ------------ |
-| "powerful feature"      | "feature"    |
+| Pattern | Fix |
+|---------|-----|
+| "Let's explore how..." | Just explain it |
+| "It's important to note that..." | State the fact |
+| "This allows you to..." | "You can..." |
+| "In this section, we will..." | Just do it |
+| "As mentioned earlier..." | Link to it |
+| "powerful feature" | "feature" |
 | "seamlessly integrates" | "integrates" |
-| "best-in-class"         | (delete)     |
-
-### Filler Words
-
-| Bad                | Good        |
-| ------------------ | ----------- |
-| "simply add"       | "add"       |
-| "just call"        | "call"      |
-| "easily configure" | "configure" |
-| "In order to"      | "To"        |
-
-### Arrows
-
-Never use arrow characters.
-
-| Bad                | Good                   |
-| ------------------ | ---------------------- |
-| `"123"` → `123`    | `"123"` becomes `123`  |
-| Request → Response | Request, then response |
+| "simply", "just", "easily" | Delete |
+| "In order to" | "To" |
+| Arrow characters (`→`) | "becomes", "then" |
+| Passive voice | Active voice |
+| Future tense ("will") | Present tense |
+| "We" | "You" or direct statement |
 
 ---
 
 ## Structure
 
-### Headings
-
 - `#` page title (one per page)
 - `##` major sections
-- `###` subsections
-- Avoid deeper levels
+- `###` subsections (avoid deeper)
+- 1–3 sentences per paragraph
 
-### Paragraphs
-
-1–3 sentences. One idea per paragraph.
-
-### Page Introductions
-
-Every page must start with:
-
-- What the page covers
-- What the reader will learn
-- How it fits into the rest of the docs
-
-Never sell. Never list features.
+**Page intro:** What it covers, what reader learns, how it fits. No selling.
 
 ---
 
 ## Code Examples
 
-- Show code immediately after introducing a concept
-- Use real, runnable examples
-- Minimal but complete
-
-### Block Formatting
-
-Never inline nested structures:
+Show immediately after concept. Real, runnable, minimal.
 
 ```ruby
-# Bad
+# ❌ Bad
 request { body { param :name } }
+body { param :id; param :title }
 
-# Good
+# ✅ Good
 request do
   body do
     param :name
   end
 end
-```
 
-Each statement on its own line:
-
-```ruby
-# Bad
-body { param :id; param :title }
-
-# Good
 body do
   param :id
   param :title
 end
-```
 
-Exception: Simple single-item blocks can stay inline:
-
-```ruby
+# Exception: simple single-item
 response { no_content! }
 ```
 
@@ -241,107 +97,44 @@ response { no_content! }
 
 ## Formatting
 
-### Bullet Lists
-
-Prefer lists over prose:
-
+**Lists over prose:**
 ```markdown
-# Bad
-
-The adapter validates the request, queries the database, serializes the response, and handles errors.
-
-# Good
-
 The adapter:
-
 - Validates the request
 - Queries the database
 - Serializes the response
-- Handles errors
 ```
 
-### Tables
+**Tables** for reference information.
 
-Use tables for reference information.
-
-### Callouts
-
-Use VitePress callout boxes sparingly. Never include headings — the box type provides context. Text must stand on its own.
-
+**Callouts** — sparingly, no headings inside:
 ```markdown
 ::: info
-The adapter delegates to `Schema.deserialize()` for the decode step.
-:::
-
-::: tip
-Use `filterable: true` on attributes you want to query.
-:::
-
-::: warning
-This will delete all records. Use with caution.
-:::
-
-::: danger
-Never expose this endpoint publicly.
+Text stands on its own. No heading needed.
 :::
 ```
 
-```markdown
-# ❌ Bad — heading inside box
-
-::: info
-
-## How it works
-
-The adapter delegates to Schema.deserialize().
-:::
-
-# ✅ Good — text stands alone
-
-::: info
-The adapter delegates to `Schema.deserialize()` for the decode step.
-:::
-```
+Types: `info`, `tip`, `warning`, `danger`
 
 ---
 
-## Linking & Navigation
+## Linking
 
-### Inline Linking
-
-Link the first mention of:
-
-- Core concepts
-- Options
-- APIs
-- Behavior explained elsewhere
+Link first mention of concepts, options, APIs, related behavior.
 
 ```markdown
-# Bad
-
-Schemas define attributes. See the Attributes page for more information.
-
-# Good
-
 Schemas define [attributes](./attributes.md) that map to model columns.
 ```
 
-### Guide vs Reference
-
-- Guides explain _how_ and _why_
-- Reference explains _what_
-
-### See Also Sections
-
-Use at the end of pages when helpful. Max 3–5 links.
+- Guides: *how* and *why*
+- Reference: *what*
+- See Also: end of page, max 3–5 links
 
 ---
 
 ## Example Linking System
 
-Documentation examples link to real implementations in `docs/playground/` using VitePress inline embeds.
-
-### Format
+Examples link to `docs/playground/` via VitePress embeds.
 
 ```markdown
 <!-- example: eager-lion -->
@@ -377,70 +170,57 @@ Documentation examples link to real implementations in `docs/playground/` using 
 </details>
 ```
 
-### Namespace Naming Conventions
+### Namespace conventions
 
-| Context          | Format            | Example                              |
-| ---------------- | ----------------- | ------------------------------------ |
-| Example comment  | dash-case         | `<!-- example: eager-lion -->`       |
-| Ruby namespace   | PascalCase        | `EagerLion::Invoice`                 |
-| App folder       | snake_case        | `app/models/eager_lion/`             |
-| API mount path   | dash-case         | `/eager-lion`                        |
-| Generated output | dash-case         | `docs/playground/public/eager-lion/` |
-| Table name       | snake_case prefix | `eager_lion_invoices`                |
+| Context | Format | Example |
+|---------|--------|---------|
+| Comment | dash-case | `<!-- example: eager-lion -->` |
+| Ruby | PascalCase | `EagerLion::Invoice` |
+| Folder | snake_case | `app/models/eager_lion/` |
+| Mount path | dash-case | `/eager-lion` |
+| Output | dash-case | `public/eager-lion/` |
+| Table | snake_case | `eager_lion_invoices` |
 
-### Creating New Examples
+### New example
 
-When you discover a NEW example tag (e.g., `<!-- example: lazy-cow -->`):
+1. Create `config/apis/lazy_cow.rb`
+2. Contracts only: `app/contracts/lazy_cow/`
+3. With schemas: also `app/schemas/`, `app/models/`, `db/migrate/`
+4. Run `rake docs:generate`
+5. Add `<details>` blocks
 
-1. **Always create:** `config/apis/lazy_cow.rb`
-2. **Contracts only (no `schema!`):** `app/contracts/lazy_cow/`
-3. **With schemas (`schema!`):** Also create `app/schemas/`, `app/models/`, `db/migrate/`
-4. Run `rake docs:generate` to generate output files
-5. Add `<details>` blocks for each format
+### Sync rule
 
-### Synchronization Rules
+Code → `docs/playground/` → `rake docs:generate` → `public/` → VitePress embeds.
 
-Code → `docs/playground/` → `rake docs:generate` → `docs/playground/public/` → VitePress embeds.
-
-Change one, change all. Same commit. No exceptions.
+**Same commit. No exceptions.**
 
 ---
 
-## Introspection & Mental Model
+## Mental Model
 
-Apiwork documentation must reflect its architecture:
-
-- The database is the primary source of truth
-- Rails and Active Record define much of the domain
+- Database = source of truth
+- Rails/ActiveRecord = domain
 - Apiwork introspects this structure
-- Contracts, schemas, and API definitions build on it
-- Specs, types, and validation are derived, never duplicated
+- Contracts, schemas, APIs build on it
+- Specs, types, validation = derived, never duplicated
 
 ---
 
-## Verification Checklist
+## Checklist
 
-Before committing documentation:
-
-- [ ] Verified against actual code
+- [ ] Verified against code
 - [ ] No invented behavior
 - [ ] Runnable examples
-- [ ] No marketing language
-- [ ] No AI-style phrasing
-- [ ] Active voice
-- [ ] Present tense
-- [ ] Short paragraphs (1–3 sentences)
+- [ ] No marketing/filler/AI patterns
+- [ ] Active voice, present tense
+- [ ] 1–3 sentence paragraphs
 - [ ] Correct links
 - [ ] Multi-line block formatting
+- [ ] No headings in callouts
 
 ---
 
 ## Final Rule
 
-If something is unclear:
-
-- Do not guess
-- Do not invent
-- Ask, or leave it undocumented
-
-**Documentation is a contract.**
+Unclear? **Do not guess. Do not invent. Ask, or leave undocumented.**
