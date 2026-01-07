@@ -327,13 +327,13 @@ module Apiwork
     end
 
     def yard_ref_to_path(ref)
-      # Handle method refs: "ActionDefinition#request" → "contract-action-definition.md#requestreplace-false-block"
+      # Handle method refs: "ActionDefinition#request" becomes "contract-action-definition.md#requestreplace-false-block"
       if ref.include?('#')
         class_part, method_part = ref.split('#', 2)
         file_path = class_to_filepath(class_part)
         "#{file_path}##{method_part.dasherize}"
       elsif ref.include?('.')
-        # Class method: "Adapter.register" → "adapter.md#register"
+        # Class method: "Adapter.register" becomes "adapter.md#register"
         class_part, method_part = ref.split('.', 2)
         file_path = class_to_filepath(class_part)
         "#{file_path}##{method_part.dasherize}"

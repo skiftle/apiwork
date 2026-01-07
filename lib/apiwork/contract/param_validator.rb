@@ -137,14 +137,10 @@ module Apiwork
         end
       end
 
-      def null_value_forbidden?(param_options)
-        param_options[:nullable] == false
-      end
-
       def validate_nullable(name, value, param_options, data, field_path)
         return nil unless data.key?(name)
         return nil unless value.nil?
-        return nil unless null_value_forbidden?(param_options)
+        return nil if param_options[:nullable] == true
 
         Issue.new(
           code: :value_null,

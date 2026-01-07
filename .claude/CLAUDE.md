@@ -74,7 +74,7 @@ docs/
 | `include Module`                | Composition: `@x = Module.new(...)` |
 | Inline nested classes           | Separate files                      |
 | `helpers/`, `utils/`, `misc/`   | Concept-based classes               |
-| Optional positional `arg = nil` | Keyword `arg: nil`                  |
+| Optional positional `arg = nil` | Keyword `arg: nil` (exception: DSL setters) |
 | `require 'app/...'`             | Just use the class (Zeitwerk)       |
 | Comments explaining code        | Well-named methods                  |
 | Type suffixes `_str`, `_sym`    | Describe purpose                    |

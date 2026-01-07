@@ -105,10 +105,10 @@ RSpec.describe Apiwork::Contract::Param, '#validate datetime and date types' do
       end
     end
 
-    context 'when datetime field is optional' do
+    context 'when datetime field is optional and nullable' do
       before do
         definition.instance_variable_set(:@params, {})
-        definition.param :archived_at, optional: true, type: :datetime
+        definition.param :archived_at, nullable: true, optional: true, type: :datetime
       end
 
       it 'allows nil value' do
@@ -200,10 +200,10 @@ RSpec.describe Apiwork::Contract::Param, '#validate datetime and date types' do
       end
     end
 
-    context 'when date field is optional' do
+    context 'when date field is optional and nullable' do
       before do
         definition.instance_variable_set(:@params, {})
-        definition.param :birth_date, optional: true, type: :date
+        definition.param :birth_date, nullable: true, optional: true, type: :date
       end
 
       it 'allows nil value' do
@@ -304,9 +304,9 @@ RSpec.describe Apiwork::Contract::Param, '#validate datetime and date types' do
     end
   end
 
-  describe 'optional enum validation' do
+  describe 'optional and nullable enum validation' do
     before do
-      definition.param :status, enum: %w[active inactive], optional: true, type: :string
+      definition.param :status, enum: %w[active inactive], nullable: true, optional: true, type: :string
     end
 
     it 'allows missing field' do
@@ -442,14 +442,14 @@ RSpec.describe Apiwork::Contract::Param, '#validate datetime and date types' do
       end
     end
 
-    context 'when nullable is not specified (defaults to allowing nil)' do
+    context 'when nullable: true is specified' do
       let(:definition) do
         described_class.new(contract_class).tap do |d|
-          d.param :address, optional: true, type: :object
+          d.param :address, nullable: true, optional: true, type: :object
         end
       end
 
-      it 'accepts nil value when nullable not specified' do
+      it 'accepts nil value when nullable: true' do
         result = definition.validate({ address: nil })
 
         expect(result[:issues]).to be_empty

@@ -65,13 +65,13 @@ module Apiwork
           api_path = api_class.path
 
           unless api_class.exports&.include?(export_name)
-            Rails.logger.debug "  ⊘ Skipping #{api_path} → #{export_name} (not configured)"
+            Rails.logger.debug "  ⊘ Skipping #{api_path} to #{export_name} (not configured)"
             return 0
           end
 
           options = { format:, key_format:, locale:, version: }.compact
           options_label = options.any? ? " (#{options.map { |k, v| "#{k}: #{v}" }.join(', ')})" : ''
-          Rails.logger.debug "  ✓ #{api_path} → #{export_name}#{options_label}"
+          Rails.logger.debug "  ✓ #{api_path} to #{export_name}#{options_label}"
 
           content = generate(export_name, api_path, format:, key_format:, locale:, version:)
           export = Registry.find(export_name).new(api_path, key_format:, locale:, version:)
@@ -85,7 +85,7 @@ module Apiwork
             output:,
           )
 
-          Rails.logger.debug "    → #{file_path}"
+          Rails.logger.debug "    to #{file_path}"
           1
         end
       end
