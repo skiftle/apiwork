@@ -117,4 +117,40 @@ RSpec.describe 'Filter and Sort Validation Errors', type: :request do
       expect(json['issues']).to be_an(Array)
     end
   end
+
+  describe 'Combined filter and sort errors' do
+    it 'returns multiple issues for combined invalid filter and sort' do
+      get '/api/v1/posts',
+          params: {
+            filter: { unknown_filter: 'value' },
+            sort: { unknown_sort: 'asc' },
+          }
+
+      expect(response).to have_http_status(:bad_request)
+      json = JSON.parse(response.body)
+
+      expect(json['issues']).to be_an(Array)
+      expect(json['issues'].length).to be >= 2
+    end
+
+    it 'returns error for invalid filter even with valid sort' do
+      get '/api/v1/posts',
+          params: {
+            filter: { nonexistent: 'value' },
+            sort: { title: 'asc' },
+          }
+
+      expect(response).to have_http_status(:bad_request)
+    end
+
+    it 'returns error for invalid sort even with valid filter' do
+      get '/api/v1/posts',
+          params: {
+            filter: { title: { eq: 'Test' } },
+            sort: { nonexistent: 'asc' },
+          }
+
+      expect(response).to have_http_status(:bad_request)
+    end
+  end
 end

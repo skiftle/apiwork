@@ -37,6 +37,22 @@ RSpec.describe 'Error Response' do
         json = JSON.parse(response.body)
         expect(json['issues'].first['detail']).to eq('Not Found')
       end
+
+      it 'attaches path for error codes with attach_path: true' do
+        get '/api/v1/posts/999999'
+
+        json = JSON.parse(response.body)
+        expect(json['issues'].first['path']).to eq(%w[posts 999999])
+        expect(json['issues'].first['pointer']).to eq('/posts/999999')
+      end
+    end
+
+    context 'with custom error code' do
+      it 'returns correct HTTP status for custom errors' do
+        post '/api/v1/posts', as: :json, params: { post: { title: nil } }
+
+        expect(response).to have_http_status(:bad_request)
+      end
     end
   end
 

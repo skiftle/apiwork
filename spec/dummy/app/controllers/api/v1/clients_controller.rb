@@ -14,13 +14,26 @@ module Api
       end
 
       def create
-        client = Client.create(contract.body[:client])
+        params = sti_params(contract.body[:client])
+        client = Client.create(params)
         expose client
       end
 
       def update
-        client.update(contract.body[:client])
+        params = sti_params(contract.body[:client])
+        client.update(params)
         expose client
+      end
+
+      def sti_params(params)
+        # Transform STI discriminator: kind -> type
+        # The contract transforms the value (person -> PersonClient)
+        # but key rename isn't applied for union variants yet
+        if params[:kind]
+          params.merge(type: params.delete(:kind))
+        else
+          params
+        end
       end
 
       def destroy
