@@ -2,19 +2,19 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Schema.deserialize' do
-  let(:schema_class) do
-    Class.new(Apiwork::Schema::Base) do
-      abstract!
-
-      attribute :title, type: :string
-      attribute :email, decode: ->(v) { v&.downcase&.strip }, type: :string
-      attribute :notes, empty: true, type: :string
-      attribute :count, type: :integer
-    end
-  end
-
+RSpec.describe Apiwork::Schema::Base do
   describe '.deserialize' do
+    let(:schema_class) do
+      Class.new(described_class) do
+        abstract!
+
+        attribute :title, type: :string
+        attribute :email, decode: ->(v) { v&.downcase&.strip }, type: :string
+        attribute :notes, empty: true, type: :string
+        attribute :count, type: :integer
+      end
+    end
+
     it 'returns nil for nil input' do
       expect(schema_class.deserialize(nil)).to be_nil
     end
@@ -78,6 +78,16 @@ RSpec.describe 'Schema.deserialize' do
   end
 
   describe '.deserialize_single' do
+    let(:schema_class) do
+      Class.new(described_class) do
+        abstract!
+
+        attribute :title, type: :string
+        attribute :email, decode: ->(v) { v&.downcase&.strip }, type: :string
+        attribute :notes, empty: true, type: :string
+      end
+    end
+
     it 'applies all decode transformers' do
       result = schema_class.deserialize_single(
         {
@@ -102,7 +112,7 @@ RSpec.describe 'Schema.deserialize' do
 
   describe 'nested associations' do
     let(:line_schema) do
-      Class.new(Apiwork::Schema::Base) do
+      Class.new(described_class) do
         abstract!
         attribute :description, type: :string
         attribute :amount, decode: ->(v) { BigDecimal(v.to_s) }
@@ -110,7 +120,7 @@ RSpec.describe 'Schema.deserialize' do
     end
 
     let(:customer_schema) do
-      Class.new(Apiwork::Schema::Base) do
+      Class.new(described_class) do
         abstract!
         attribute :name, type: :string
         attribute :email, decode: ->(v) { v&.downcase&.strip }
@@ -120,7 +130,7 @@ RSpec.describe 'Schema.deserialize' do
     let(:invoice_schema) do
       line = line_schema
       customer = customer_schema
-      Class.new(Apiwork::Schema::Base) do
+      Class.new(described_class) do
         abstract!
         attribute :number, type: :string
         attribute :email, decode: ->(v) { v&.downcase&.strip }
@@ -179,7 +189,7 @@ RSpec.describe 'Schema.deserialize' do
     end
 
     it 'skips associations without schema_class' do
-      schema_without_explicit = Class.new(Apiwork::Schema::Base) do
+      schema_without_explicit = Class.new(described_class) do
         abstract!
         attribute :title, type: :string
       end
@@ -189,9 +199,7 @@ RSpec.describe 'Schema.deserialize' do
       expect(result[:title]).to eq('Test')
     end
   end
-end
 
-RSpec.describe 'Inline type definitions in schema attributes' do
   describe Apiwork::Schema::AttributeDefinition do
     let(:schema_class) do
       Class.new(Apiwork::Schema::Base) do
@@ -256,9 +264,9 @@ RSpec.describe 'Inline type definitions in schema attributes' do
     end
   end
 
-  describe 'Schema::Base.attribute' do
+  describe '.attribute' do
     it 'passes block to AttributeDefinition' do
-      schema_class = Class.new(Apiwork::Schema::Base) do
+      schema_class = Class.new(described_class) do
         abstract!
 
         attribute :settings do
@@ -273,7 +281,7 @@ RSpec.describe 'Inline type definitions in schema attributes' do
     end
 
     it 'passes of option for arrays' do
-      schema_class = Class.new(Apiwork::Schema::Base) do
+      schema_class = Class.new(described_class) do
         abstract!
 
         attribute :tags, of: :string, type: :array
