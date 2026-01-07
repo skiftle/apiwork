@@ -1,3 +1,77 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Development Commands
+
+```bash
+# Run all tests
+bundle exec rspec
+
+# Run a single test file
+bundle exec rspec spec/integration/filtering_spec.rb
+
+# Run a specific test by line number
+bundle exec rspec spec/integration/filtering_spec.rb:42
+
+# Lint and auto-fix
+bundle exec rubocop -A
+
+# Run tests and lint (CI default)
+bundle exec rake
+
+# Generate reference docs from YARD comments
+bundle exec rake apiwork:docs:reference
+
+# Generate documentation examples (from docs/playground)
+cd docs/playground && RAILS_ENV=test rake docs:generate
+
+# Export API specs
+bundle exec rake apiwork:export:write OUTPUT=public/exports
+```
+
+## Architecture
+
+Apiwork is a contract-driven API framework for Rails. Core components:
+
+- **API** (`lib/apiwork/api/`) - Defines resources, mount points, and configuration. `API::Base` is the DSL entry point. APIs register themselves globally via `API::Registry`.
+
+- **Contract** (`lib/apiwork/contract/`) - Defines request/response shapes with typed parameters. `Contract::Base` provides the DSL. Contracts declare actions (`index`, `show`, `create`, etc.) with request body params and response schemas.
+
+- **Schema** (`lib/apiwork/schema/`) - Connects contracts to ActiveRecord models. `Schema::Base` defines attributes and associations that map to database columns. Schemas infer types from the database and drive serialization.
+
+- **Adapter** (`lib/apiwork/adapter/`) - Runtime execution layer. Translates contracts into database queries. `Adapter::Standard` handles filtering, sorting, pagination, and includes based on what contracts allow.
+
+- **Export** (`lib/apiwork/export/`) - Generates output from API definitions. Built-in exports: OpenAPI (`open_api.rb`), TypeScript (`type_script.rb`), Zod (`zod.rb`). Each mapper transforms introspection data to the target format.
+
+- **Introspection** (`lib/apiwork/introspection/`) - Internal representation of API structure. Param types, schemas, and contracts are serialized to a format that exports consume.
+
+- **Controller** (`lib/apiwork/controller.rb`) - Rails integration. Handles request parsing, validation, execution via adapter, and response serialization.
+
+### Request Flow
+
+1. Router (`API::Router`) matches request to contract action
+2. Controller parses request using `Contract::RequestParser`
+3. Adapter executes the action (query, filter, paginate)
+4. Controller serializes response using schema definitions
+5. Contract validates response structure
+
+### Test Structure
+
+- `spec/lib/` - Unit tests for individual classes
+- `spec/integration/` - Full-stack tests using `spec/dummy/` Rails app
+- `spec/dummy/` - Minimal Rails app with test APIs, models, schemas, and contracts
+
+### Documentation Structure
+
+- `docs/` - VitePress documentation site
+- `docs/playground/` - Rails app for documentation examples
+- `docs/playground/public/` - Generated output (introspection.json, typescript.ts, zod.ts, openapi.yml)
+
+Run `rake docs:generate` from `docs/playground/` after any change affecting output formats.
+
+---
+
 # Ruby & Rails Style Guide
 
 Follow these rules in this project.
@@ -30,189 +104,64 @@ end
 
 ## Composition
 
-- Prefer class instances over modules. Modules create hidden coupling.
-- Exception: `ActiveSupport::Concern` for DSLs.
+- Prefer class instances over modules (modules create hidden coupling)
+- Exception: `ActiveSupport::Concern` for DSLs
+- One class per file — no inline nested classes
+- Extract for concepts, not lines — three similar lines beats a premature abstraction
+- Never create: `helpers/`, `utils/`, `misc/`
+
+**Extract private methods only when:**
+
+1. Reused in 2+ places
+2. Complex enough (5+ lines) that a name helps
 
 ```ruby
-# ❌ Bad
+# ❌ Bad — module inclusion, inline class
 class Api::Base
   include Recorder
+  class Result; end
 end
 
-# ✅ Good
+# ✅ Good — composition, separate files
 class Api::Base
   def initialize
-    @recorder = Recorder.new(@metadata, @namespaces)
+    @recorder = Recorder.new(@metadata)
   end
 end
-```
-
-### One Class, One File
-
-Every class lives in its own file. No inline classes.
-
-```ruby
-# ❌ Bad
-class Builder
-  class Result
-    attr_reader :value
-  end
-end
-
-# ✅ Good
-# lib/builder.rb
-class Builder; end
-
-# lib/builder/result.rb
-class Builder::Result; end
-```
-
-### Extract for Concepts, Not Lines
-
-Only extract when there's a conceptual win. Three similar lines is better than a premature abstraction.
-
-Never create: `helpers/`, `utils/`, `misc/`
-
-```ruby
-# ❌ Bad
-def format_date(d) = d.strftime("%Y-%m-%d")
-
-# ✅ Good
-class CaseTransformer
-  def self.camelize(s) ... end
-  def self.snake(s) ... end
-end
-```
-
-### When to Extract Private Methods
-
-A private method is justified by:
-1. **Reuse** — used in 2+ places
-2. **Complexity** — logic is complex enough that a name helps understanding (5+ lines of non-trivial code)
-
-What does NOT justify a method:
-- "It's cleaner" — no, it's more indirection
-- "Methods should be short" — cargo cult
-- "Can be reused later" — YAGNI
-
-```ruby
-# ❌ Bad — extracted for "cleanliness"
-def process
-  validate_input
-  transform_data
-  save_result
-end
-
-def validate_input
-  return if @input.blank?  # one line
-end
-
-# ✅ Good — inline single-use simple logic
-def process
-  return if @input.blank?
-  # transform and save...
-end
+# lib/api/result.rb
+class Api::Result; end
 ```
 
 ---
 
-## Philosophy
+## Principles
 
-- Readability over cleverness
-- Classic Ruby elegance — no unnecessary meta-programming
-- Rails-ness matters — declarative, expressive, conventional
-- Never break what already works — refactor inside, not outside
-- Clean up as you go — remove dead code
-- Breaking changes are fine — this is pre-release
-- Use stable identifiers for registry keys (not class references that become stale on reload)
-
----
-
-## No Comments
-
-Code should speak for itself. Extract logic to well-named methods.
-
-```ruby
-# ❌ Bad
-if user.subscription_tier == 'premium' && user.api_calls_this_month < 10_000
-
-# ✅ Good
-if user.can_make_api_call?
-```
-
-Allowed: magic comments, RuboCop directives, temporary TODOs.
-
----
-
-## Core Principles
-
-- Small, focused objects with one responsibility
+- Readability over cleverness — no unnecessary meta-programming
 - Explicit over implicit — no magic or monkey patching
-- Guard clauses over deep nesting
-- One guard per line — separate returns are easier to scan
+- Small, focused objects with one responsibility
+- Rails-ness matters — declarative, expressive, conventional
+- Clean up as you go — remove dead code, breaking changes are fine (pre-release)
+- No comments — code speaks for itself (allowed: magic comments, RuboCop directives, TODOs)
+- Guard clauses over deep nesting, one guard per line
 - Positive conditions — avoid `unless` with compound logic, `!`, `== false`
 - Full names — `attribute` not `attr` (exception: `param`, `attr_reader`)
 - Don't repeat namespace context: `CaseTransformer.hash`, not `transform_keys`
 - Use `ActiveSupport::Concern` over `self.included(base)` + `base.extend(ClassMethods)`
-
-### Guard Logic Belongs in Methods
-
-```ruby
-# ❌ Bad
-validate_association_exists! if @model_class
-
-def validate_association_exists!
-  return unless @model_class
-  # ...
-end
-
-# ✅ Good
-validate_association_exists!
-
-def validate_association_exists!
-  return unless @model_class
-  # ...
-end
-```
-
-Exception: External context conditions can stay at call site:
-```ruby
-send_notification if user.opted_in?
-```
-
-### One Guard Per Line
-
-Separate guard clauses are easier to scan than combined conditions:
+- Use stable identifiers for registry keys (not class references that become stale on reload)
 
 ```ruby
 # ❌ Bad — combined guards
-def validate!
-  return if abstract? || @model_class.nil? || @schema_class
-  # ...
-end
+return if abstract? || @model_class.nil? || @schema_class
 
 # ✅ Good — one per line
-def validate!
-  return if abstract?
-  return if @model_class.nil?
-  return if @schema_class
-  # ...
-end
+return if abstract?
+return if @model_class.nil?
+return if @schema_class
 ```
 
-Each condition gets its own line. Faster to read, easier to modify.
-
-**Exception:** When conditions logically belong together, extract to a predicate method:
+**Exception:** Logically connected conditions can stay together or extract to predicate:
 
 ```ruby
-# ✅ OK — logically connected, extracted to predicate
-return unless range_defined?
-
-def range_defined?
-  @min && @max
-end
-
-# ✅ Also OK — tightly coupled check
 return unless @record.respond_to?(:errors) && @record.errors.any?
 ```
 
@@ -251,87 +200,38 @@ def initialize(resource_class_name:)
 
 ## Naming
 
-### Names describe what something IS
-
-```ruby
-# ✅ Good
-key_transform = serialize_key_transform
-invoice_total = invoice.total
-
-# ❌ Bad
-total = invoice.total  # Context lost
-```
-
-### Natural word order (adjective → noun)
-
-| ❌ Wrong | ✅ Right |
-|----------|----------|
-| `invoices_paginated` | `paginated_invoices` |
-| `user_serialized` | `serialized_user` |
-
-### No type suffixes in variable names
-
-Don't add `_str`, `_string`, `_sym`, `_symbol`, `_int` etc. Describe *what* the value is, not its type.
-
-```ruby
-# ❌ Bad — type suffix
-values_str = enum_values.map { |v| "'#{v}'" }.join(' | ')
-key_string = key.to_s
-
-# ✅ Good — describes purpose
-type_literal = enum_values.map { |v| "'#{v}'" }.join(' | ')
-key = key.to_s
-```
-
-For single-use conversions, inline it:
-```ruby
-# ❌ Bad
-format_sym = @format.to_sym
-allowed_formats.include?(format_sym)
-
-# ✅ Good
-allowed_formats.include?(@format.to_sym)
-```
-
-### Class reference naming
-
-Variables holding a class (not an instance) must use the `_class` suffix.
+- Names describe what something IS: `invoice_total` not `total`
+- Natural word order (adjective-noun): `paginated_invoices` not `invoices_paginated`
+- No type suffixes (`_str`, `_sym`): describe purpose, not type
+- Class references use `_class` suffix: `api_class` not `api` (instances use short names)
+- Positive predicates: `list.exclude?(key)` not `!list.include?(key)`
+- Nouns for getters, verbs for actions: `Registry.types(api)`, `TypeStore.serialize(api)`
 
 ```ruby
 # ❌ Bad
-def initialize(api)
-  @api = api
+def initialize(api)  # Is this a class or instance?
+  @total = invoice.total  # What total?
 end
 
 # ✅ Good
 def initialize(api_class)
-  @api_class = api_class
+  @invoice_total = invoice.total
 end
 ```
 
-This applies to parameters, instance variables, and local variables.
-Instances use short names: `schema`, `api`, `contract`.
+**Cross-module naming:** When classes share names across modules (e.g., `Introspection::Contract` and `Contract::Action`):
 
-### Positive predicates
-
-```ruby
-# ✅ Good
-list.include?(key)
-list.exclude?(key)
-
-# ❌ Bad
-!list.include?(key)
-```
-
-### Method names: nouns for getters, verbs for actions
+- Inside module: local class is `contract`, external is `contract_action` (module-prefixed)
+- Outside both modules: prefix both with module name
 
 ```ruby
-# ✅ Good
-Registry.types(api)
-TypeStore.serialize(api)
+# Inside Introspection module
+contract = Introspection::Contract.new
+contract_action = Contract::Action.new
 
-# ❌ Bad
-TypeStore.serialize_all_types_for_api(api)
+# Outside both modules
+introspection_contract = Introspection::Contract.new
+contract_action = Contract::Action.new
 ```
 
 ---
@@ -349,57 +249,26 @@ collection
   end
 
 # ✅ Good
-processed = collection.map { process(_1) }
-validated = processed.select { valid?(_1) }
+processed = collection.map { |item| process(item) }
+validated = processed.select { |item| valid?(item) }
 ```
 
 ---
 
 ## Method Arguments
 
-### Positional
-Required and unambiguous: `User.find(id)`, `Money.new(amount, currency)`
-
-### Keyword
-Optional or when meaning isn't obvious:
-```ruby
-resize(width: 800, height: 600)
-generate(:openapi, '/api/v1', locale: :sv)
-```
-
-Never use optional positional args (`arg = nil`) — use keyword args instead.
-
-### Options hash
-Only when truly dynamic: `define_resource(:invoice, **options)`
-
-### Order
-positional → keyword → splat
-
-### Multi-line signatures
-
-When a method has 4+ keyword arguments, use multi-line formatting:
-- Positional arguments on first line
-- Each keyword argument on its own line, aligned
-- Defaults in signature, not separate
+- **Positional:** Required and unambiguous — `User.find(id)`
+- **Keyword:** Optional or unclear meaning — `resize(width: 800, height: 600)`
+- **Never** optional positional (`arg = nil`) — use keywords instead
+- **Order:** positional → keyword → splat
+- **4+ keywords:** Multi-line, one per line, defaults in signature
 
 ```ruby
-# ✅ Good
 def initialize(name, type, schema_class,
                schema: nil,
-               polymorphic: nil,
                include: :optional,
-               filterable: false,
-               sortable: false)
+               filterable: false)
   @name = name
-  @schema = schema
-end
-
-# ❌ Bad - all on one line
-def initialize(name, type, schema_class, schema: nil, polymorphic: nil, include: :optional)
-
-# ❌ Bad - defaults via hash merge
-def initialize(name, type, schema_class, **options)
-  options = { include: :optional, filterable: false }.merge(options)
 end
 ```
 
@@ -407,15 +276,23 @@ end
 
 ## Ruby/Rails Idioms
 
+**Use:**
+
 - `map(&:to_s)`, `select(&:present?)`, `compact_blank`
 - `index_by`, `each_with_object({})`, `group_by`
 - `delegate`, `attr_reader` + memoization (`@x ||= ...`)
-- `tap`, `then` for fluent flow
+- `tap` for side effects in chains
 - `present?`, `blank?`, `presence`
 - Freeze constants: `FOO = {...}.freeze`
 - Hash shorthands OK: `{ title, value }`
-- No keyword argument shorthand — always explicit: `scope: scope`, not `scope:`
+- Explicit keyword args: `scope: scope`, not `scope:`
 - Predicate methods: `amount.positive?`, `collection.any?`, `value.zero?`
+
+**Avoid:**
+
+- `then` — use intermediate variables instead
+- Numbered parameters (`_1`, `_2`) — use named block arguments
+- `module_function` — use class methods or a class instead
 
 ---
 
@@ -435,263 +312,72 @@ Use `require` for: gems, stdlib, files outside autoload paths.
 
 ---
 
+## YARD
+
+Only document public API methods. A method is public if it has `@api public`.
+
+**YARD comments are documentation.** Follow `DOCS.md` strictly:
+
+- Same tone — direct, technical, pedagogical
+- No filler words, no AI patterns, no marketing
+- Add `@example` when it helps understanding
+- Use `@see` to reference related methods or classes
+
+```ruby
+# Finds a record by ID.
+#
+# @api public
+# @param id [Integer] the record ID
+# @return [Record, nil]
+# @see #find_all
+#
+# @example
+#   contract.find(123)
+#   # => #<Record id: 123>
+def find(id)
+  # ...
+end
+```
+
+Methods without `@api public` are internal — no YARD comments needed.
+
+---
+
 ## Documentation
 
-Keep docs in sync with code. Docs live in `docs/`.
+Keep docs in sync with code. See `.claude/DOCS.md` for detailed guidelines.
 
-Before writing documentation:
-- Verify against actual code and tests
-- Never invent formats or structures
-- Run specs or read spec tests to see real output
-- Copy exact output — documentation must match reality
+Key rules:
 
-### Example Linking System
-
-Documentation examples are linked to real implementations in `docs/playground/` using HTML comments and VitePress inline embeds.
-
-**Format:**
-```markdown
-<!-- example: eager-lion -->
-
-<<< @/playground/app/contracts/eager_lion/invoice_contract.rb
-
-<details>
-<summary>Introspection</summary>
-
-<<< @/playground/public/eager-lion/introspection.json
-
-</details>
-
-<details>
-<summary>TypeScript</summary>
-
-<<< @/playground/public/eager-lion/typescript.ts
-
-</details>
-
-<details>
-<summary>Zod</summary>
-
-<<< @/playground/public/eager-lion/zod.ts
-
-</details>
-
-<details>
-<summary>OpenAPI</summary>
-
-<<< @/playground/public/eager-lion/openapi.yml
-
-</details>
-```
-
-**Single Source of Truth:**
-- Source code is embedded from `docs/playground/` using `<<< @/playground/...`
-- Generated output is embedded from `docs/examples/` using `<<< @/playground/public/...`
-- **Never duplicate code** in markdown - always embed from source files
-- VitePress automatically applies syntax highlighting based on file extension
-
-**How it works:**
-1. The `<!-- example: NAME -->` comment goes BEFORE the code block
-2. Each format gets its own `<details>` block with VitePress inline embed `<<<`
-3. The comment stays permanently — it marks the connection for future updates
-
-**When you discover a NEW example tag (e.g., `<!-- example: lazy-cow -->`):**
-
-1. **Always create:**
-   - `config/apis/lazy_cow.rb` — API definition
-
-2. **If the example uses contracts (no `schema!`):**
-   - `app/contracts/lazy_cow/` — Contract definitions only
-
-3. **If the example uses schemas (`schema!`):**
-   - `app/contracts/lazy_cow/` — Contract with `schema!`
-   - `app/schemas/lazy_cow/` — Schema definitions
-   - `app/models/lazy_cow/` — ActiveRecord models
-   - `db/migrate/` — Migration for tables
-
-4. Run `rake docs:generate` to generate output files
-5. Add individual `<details>` blocks for each format after the code block
-
-### Namespace Naming Conventions
-
-| Context | Format | Example |
-|---------|--------|---------|
-| Example comment | dash-case | `<!-- example: eager-lion -->` |
-| Ruby namespace | PascalCase | `EagerLion::Invoice` |
-| App folder | snake_case | `app/models/eager_lion/` |
-| API mount path | dash-case | `/eager-lion` |
-| Generated output | dash-case | `docs/playground/public/eager-lion/` |
-| Table name | snake_case prefix | `eager_lion_invoices` |
-
-### Directory Structure
-
-```
-docs/
-├── .vitepress/                       # VitePress config (hidden)
-├── playground/                       # Rails app for examples
-│   ├── app/
-│   │   ├── models/eager_lion/
-│   │   ├── schemas/eager_lion/
-│   │   └── contracts/eager_lion/
-│   ├── config/apis/eager_lion.rb
-│   ├── db/migrate/
-│   └── public/
-│       └── eager-lion/               # Generated output (dasherized)
-│           ├── introspection.json
-│           ├── typescript.ts
-│           ├── zod.ts
-│           └── openapi.yml
-├── guide/
-├── reference/
-├── blog/
-├── index.md
-└── package.json
-```
-
-### Generating Examples
-
-Run `rake docs:generate` from `docs/playground/` to regenerate all example files:
-
-```bash
-cd docs/playground && RAILS_ENV=test rake docs:generate
-```
-
-This regenerates all files in `docs/playground/public/` and `docs/guide/examples/`. Run this after every change that affects output formats.
-
-### Synchronization Rules
-
-**ALWAYS keep these in sync. This is non-negotiable.**
-
-**When writing or changing documentation:**
-1. Create/update corresponding code in `docs/playground/`
-2. Run `rake docs:generate` to produce REAL output
-3. Verify files in `docs/examples/<namespace>/`
-4. Add individual `<details>` blocks for each format using `<<< @/playground/public/<name>/file`
-5. NEVER invent, abbreviate, or guess output
-
-**When changing code that affects output formats:**
-1. Check if it affects Introspection, TypeScript, Zod, or OpenAPI
-2. Run `rake docs:generate` to regenerate ALL examples
-3. Include updated `docs/examples/` files in the SAME commit
-
-**The fundamental rule:**
-Code → docs/playground → `rake docs:generate` → docs/examples/ → VitePress inline embeds.
-They are ONE system. Change one, change all. Same commit. No exceptions.
-
-### Reference Documentation
-
-Run `Apiwork::ReferenceGenerator.run` after any change to:
-- Public method signatures
-- YARD documentation (`@api public`, `@param`, `@return`, `@example`)
-- Class/module structure
-
-This regenerates `docs/reference/*.md` from source code YARD comments.
-
-Style:
-- Pedagogical — teach, don't just describe
-- Simple English — no jargon or marketing fluff
-- Direct — show code, explain briefly
-- Examples over explanations
-- Minimal code examples — only what's needed
-
-Type system examples must show all four formats in this order, each in its own `<details>` using VitePress inline embed:
-
-1. Introspection
-2. TypeScript
-3. Zod
-4. OpenAPI
-
-```markdown
-<details>
-<summary>Introspection</summary>
-
-<<< @/playground/public/example-name/introspection.json
-
-</details>
-
-<details>
-<summary>TypeScript</summary>
-
-<<< @/playground/public/example-name/typescript.ts
-
-</details>
-
-<details>
-<summary>Zod</summary>
-
-<<< @/playground/public/example-name/zod.ts
-
-</details>
-
-<details>
-<summary>OpenAPI</summary>
-
-<<< @/playground/public/example-name/openapi.yml
-
-</details>
-```
-
-### YARD Examples
-
-YARD `@example` blocks must use multi-line `do...end` syntax. Never use inline `{ }` for nested DSL blocks.
-
-```ruby
-# ❌ Bad — inline blocks
-#   @example
-#     request { body { param :name } }
-
-# ✅ Good — multi-line with do...end
-#   @example
-#     request do
-#       body do
-#         param :name
-#       end
-#     end
-```
-
-Each `param` must be on its own line. Never use semicolons to combine statements.
-
-```ruby
-# ❌ Bad — semicolons
-#   body { param :id; param :title }
-
-# ✅ Good — one per line
-#   body do
-#     param :id
-#     param :title
-#   end
-```
-
-Exception: Very simple single-method blocks can stay inline:
-
-```ruby
-# ✅ OK — simple single call
-#   response { no_content! }
-```
-
----
-
-## Code Style
-
-Run `bundle exec rubocop -A` on every file you modify. This uses aggressive auto-correction.
-
----
-
-## Testing
-
-- Run tests after every code change
-- New functionality requires new tests
-- Integration tests with dummy app are priority — test real user flows
-- Unit tests when it makes sense
-- Update tests when code changes
+- Verify against actual code — never invent behavior
+- Run `rake docs:generate` from `docs/playground/` after changes affecting output formats
+- Code and docs change together in the same commit
 
 ---
 
 ## Quick Reference
 
-| ❌ Bad | ✅ Good |
-|--------|---------|
-| `if !user.active?` | `unless user.active?` |
-| `if order.total > 0` | `if order.total.positive?` |
-| `if !items.empty?` | `if items.any?` |
-| `if user.admin? == false` | `unless user.admin?` |
+| Category   | ❌ Bad                                                       | ✅ Good                         |
+| ---------- | ------------------------------------------------------------ | ------------------------------- |
+| Conditions | `if !user.active?`                                           | `unless user.active?`           |
+|            | `if order.total > 0`                                         | `if order.total.positive?`      |
+|            | `if !items.empty?`                                           | `if items.any?`                 |
+|            | `if user.admin? == false`                                    | `unless user.admin?`            |
+|            | `return if a \|\| b \|\| c`                                  | `return if a` (one per line)    |
+| Guards     | `do_thing if @x` + `return unless @x` in method              | Put guard inside method only    |
+| Naming     | `total = invoice.total`                                      | `invoice_total = invoice.total` |
+|            | `invoices_paginated`                                         | `paginated_invoices`            |
+|            | `key_string = key.to_s`                                      | `key = key.to_s`                |
+|            | `def initialize(api)` (class ref)                            | `def initialize(api_class)`     |
+|            | `!list.include?(key)`                                        | `list.exclude?(key)`            |
+| Classes    | `class_name: 'ProfileResource'`                              | `class_name: ProfileResource`   |
+|            | `include Recorder`                                           | `@recorder = Recorder.new(...)` |
+|            | Inline nested classes                                        | One class per file              |
+| Methods    | `arg = nil` (optional positional)                            | `arg: nil` (keyword)            |
+|            | `options = defaults.merge(opts)`                             | Defaults in signature           |
+|            | Multi-line block chains                                      | Break into variables            |
+| Code       | `require 'app/models/user'`                                  | Just use `User` (Zeitwerk)      |
+|            | Comments explaining code                                     | Well-named methods              |
+|            | `helpers/`, `utils/` folders                                 | Concept-based classes           |
+| Style      | Run `bundle exec rubocop -A` on every file you modify        |
+| Testing    | Run tests after every change, integration tests are priority |
