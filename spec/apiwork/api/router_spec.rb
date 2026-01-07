@@ -3,10 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe 'Apiwork Rack Application' do
-  before do
-    load File.expand_path('../dummy/config/apis/v1.rb', __dir__)
-  end
-
   describe '.call' do
     it 'responds to call with rack-compatible interface' do
       expect(Apiwork).to respond_to(:call)

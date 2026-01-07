@@ -3,10 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe Apiwork::Adapter::Standard::IncludesResolver do
-  before do
-    load File.expand_path('../dummy/config/apis/v1.rb', __dir__)
-  end
-
   let(:post_schema) { Api::V1::PostSchema }
   let(:resolver) { described_class.new(post_schema) }
 

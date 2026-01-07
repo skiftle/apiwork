@@ -3,10 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe Apiwork::Export::TypeScript do
-  before do
-    load File.expand_path('../../dummy/config/apis/v1.rb', __dir__)
-  end
-
   let(:path) { '/api/v1' }
   let(:generator) { described_class.new(path) }
   let(:api) { Apiwork::API.find(path) }
