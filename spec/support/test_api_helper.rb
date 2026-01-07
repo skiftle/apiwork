@@ -4,18 +4,17 @@ module TestApiHelper
   TEST_API_PATH = '/api/test'
 
   def self.api_class
-    @api_class ||= create_test_api
+    # Check if API exists (might have been cleared by prepare!)
+    existing = Apiwork::API.find(TEST_API_PATH)
+    return existing if existing
+
+    create_test_api
   end
 
   def self.create_test_api
     Apiwork::API.define TEST_API_PATH do
       resources :tests
     end
-  end
-
-  def self.reset!
-    @api_class = nil
-    Apiwork::API::Registry.unregister(TEST_API_PATH)
   end
 
   def create_test_contract(&block)
@@ -28,8 +27,4 @@ end
 
 RSpec.configure do |config|
   config.include TestApiHelper
-
-  config.before(:suite) do
-    TestApiHelper.api_class
-  end
 end

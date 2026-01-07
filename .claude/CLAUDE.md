@@ -40,6 +40,17 @@ docs/
 
 ---
 
+## Philosophy
+
+- Readability over cleverness
+- One way to do it — consolidate similar classes with parameters
+- Classic Ruby elegance — no meta-programming without reason
+- Rails-ness matters — declarative, expressive, conventional
+- Clean up as you go — remove dead code
+- Breaking changes are fine — this is pre-release
+
+---
+
 ## Rules
 
 ### Do
@@ -58,6 +69,7 @@ docs/
 | Keyword args for optional        | `def foo(bar: nil)`                           |
 | Defaults in signature            | Not `options = defaults.merge(opts)`          |
 | Explicit keyword args            | `scope: scope` not `scope:`                   |
+| Don't repeat context in options  | `class_name:` not `resource_class_name:`      |
 | Named block arguments            | `{ \|item\| process(item) }`                  |
 | Intermediate variables           | Instead of `.then` or block chains            |
 | `@api public` for public methods | YARD only for public API                      |
@@ -76,7 +88,7 @@ docs/
 | `helpers/`, `utils/`, `misc/`   | Concept-based classes               |
 | Optional positional `arg = nil` | Keyword `arg: nil` (exception: DSL setters) |
 | `require 'app/...'`             | Just use the class (Zeitwerk)       |
-| Comments explaining code        | Well-named methods                  |
+| Comments (except magic/directives/TODO) | Well-named methods          |
 | Type suffixes `_str`, `_sym`    | Describe purpose                    |
 | `!list.include?(x)`             | `list.exclude?(x)`                  |
 | `if !x`                         | `unless x`                          |
@@ -84,6 +96,28 @@ docs/
 | `unless` with compound logic    | Positive conditions                 |
 | Multi-line block chains         | Break into variables                |
 | Arrow characters                | "becomes", "then"                   |
+
+### No Comments
+
+Extract logic to well-named predicates instead of commenting.
+
+```ruby
+# ❌ Bad
+if user.subscription_tier == 'premium' && user.api_calls_this_month < 10_000
+
+# ✅ Good
+if user.can_make_api_call?
+```
+
+Allowed: YARD for `@api public` methods, magic comments, RuboCop directives, temporary TODOs.
+
+### When to Extract Private Methods
+
+A private method is justified by:
+1. **Reuse** — used in 2+ places
+2. **Complexity** — 5+ lines of non-trivial logic
+
+Not justified by: "It's cleaner", "Methods should be short", "Can be reused later"
 
 ### Conditions
 
@@ -99,6 +133,28 @@ return if @model_class.nil?
 return if @schema_class
 unless user.active?
 if order.total.positive?
+```
+
+### Guard Logic
+
+Guards belong inside the method, not at the call site:
+
+```ruby
+# ❌ Bad
+validate_association! if @model_class
+
+# ✅ Good
+validate_association!
+
+def validate_association!
+  return unless @model_class
+  # ...
+end
+```
+
+Exception: external context conditions stay at call site:
+```ruby
+send_notification if user.opted_in?
 ```
 
 ### Cross-module naming
@@ -156,9 +212,14 @@ No `@api public` = internal = no YARD comments.
 
 ---
 
-## After every change
+## Testing
 
 1. `bundle exec rubocop -A`
 2. `bundle exec rspec`
 
-Integration tests are priority. Documentation: see `.claude/DOCS.md`.
+- Run tests after every code change
+- New functionality requires new tests
+- Integration tests are priority
+- Update tests when code changes
+
+Documentation: see `.claude/DOCS.md`.

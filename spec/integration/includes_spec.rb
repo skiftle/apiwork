@@ -72,17 +72,8 @@ RSpec.describe 'Includes API', type: :request do
     end
 
     after do
-      # Restore
+      # Restore schema instance variable (persists across prepare!)
       Api::V1::CommentSchema.association_definitions[:post].instance_variable_set(:@include, :optional)
-
-      # Reset contracts and rebuild
-      Api::V1::PostContract.reset_build_state!
-      Api::V1::CommentContract.reset_build_state!
-
-      api = Apiwork::API.find('/api/v1')
-      api&.type_system&.clear!
-      api&.reset_contracts!
-      api&.ensure_all_contracts_built!
     end
 
     it 'supports nested includes' do
@@ -127,18 +118,9 @@ RSpec.describe 'Includes API', type: :request do
       end
 
       after do
-        # Restore to include: :optional
+        # Restore schema instance variables (persist across prepare!)
         Api::V1::PostSchema.association_definitions[:comments].instance_variable_set(:@include, :optional)
         Api::V1::CommentSchema.association_definitions[:post].instance_variable_set(:@include, :optional)
-
-        # Reset contracts and rebuild
-        Api::V1::PostContract.reset_build_state!
-        Api::V1::CommentContract.reset_build_state!
-
-        api = Apiwork::API.find('/api/v1')
-        api&.type_system&.clear!
-        api&.reset_contracts!
-        api&.ensure_all_contracts_built!
       end
 
       it 'allows nested includes under include: :always association' do

@@ -4,7 +4,6 @@ require 'rails_helper'
 
 RSpec.describe Apiwork::ErrorCode::Registry do
   before { described_class.clear! }
-  after { Apiwork::ErrorCode.reset! }
 
   describe '.register' do
     it 'stores definition with correct attributes' do

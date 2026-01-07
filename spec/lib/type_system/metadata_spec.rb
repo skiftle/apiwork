@@ -261,10 +261,6 @@ RSpec.describe 'TypeSystem Metadata' do
 
       expect(types_v1[:shared_name][:description]).to eq('API v1 version')
       expect(types_v2[:shared_name][:description]).to eq('API v2 version')
-
-      # Clean up
-      Apiwork::API::Registry.unregister('/api/v1')
-      Apiwork::API::Registry.unregister('/api/v2')
     end
 
     it 'keeps enum metadata isolated between different APIs' do
@@ -284,10 +280,6 @@ RSpec.describe 'TypeSystem Metadata' do
 
       expect(enums_v2[:status][:description]).to eq('V2 status')
       expect(enums_v2[:status][:values]).to eq(%w[pending approved])
-
-      # Clean up
-      Apiwork::API::Registry.unregister('/api/v1')
-      Apiwork::API::Registry.unregister('/api/v2')
     end
 
     it 'preserves metadata on contract-scoped types' do
@@ -319,9 +311,6 @@ RSpec.describe 'TypeSystem Metadata' do
       expect(types[:test_scoped_scoped_type]).to include(
         description: 'Contract-scoped type with metadata',
       )
-
-      # Clean up
-      Apiwork::API::Registry.unregister('/api/test')
     end
 
     it 'preserves metadata on contract-scoped enums' do
@@ -351,9 +340,6 @@ RSpec.describe 'TypeSystem Metadata' do
       expect(enums[:test_scoped_scoped_enum]).to include(
         description: 'Contract-scoped enum with metadata',
       )
-
-      # Clean up
-      Apiwork::API::Registry.unregister('/api/test')
     end
   end
 

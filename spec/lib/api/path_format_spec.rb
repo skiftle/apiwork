@@ -4,8 +4,6 @@ require 'rails_helper'
 
 RSpec.describe 'API path_format' do
   describe 'path_format setting' do
-    after { Apiwork::API::Registry.clear! }
-
     it 'defaults to :keep' do
       api_class = Class.new(Apiwork::API::Base) do
         mount '/test'
@@ -52,8 +50,6 @@ RSpec.describe 'API path_format' do
   end
 
   describe 'transform_path_segment' do
-    after { Apiwork::API::Registry.clear! }
-
     let(:api_class) do
       Class.new(Apiwork::API::Base) do
         mount '/test'

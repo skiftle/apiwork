@@ -3,13 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe 'API Concerns', type: :integration do
-  after do
-    Apiwork::API::Registry.unregister('/api/concerns_test')
-    Apiwork::API::Registry.unregister('/api/concerns_test2')
-    Apiwork::API::Registry.unregister('/api/concerns_test3')
-    Apiwork::API::Registry.unregister('/api/concerns_error')
-  end
-
   it 'applies member actions from concern' do
     api = Apiwork::API.define '/api/concerns_test' do
       concern :auditable do

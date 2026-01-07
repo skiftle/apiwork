@@ -3,10 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe 'Contract Imports' do
-  after do
-    Apiwork.prepare!(eager_load: true)
-  end
-
   describe 'basic import functionality' do
     let(:user_contract) do
       create_test_contract do

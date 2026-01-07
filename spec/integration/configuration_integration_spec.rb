@@ -6,11 +6,6 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
   # Test adapter configuration features using ONLY public APIs and runtime behavior
   # The public API is: adapter blocks in API and Schema with resolve_option
 
-  # Force reload of API configuration before tests
-  before(:all) do
-    load Rails.root.join('config/apis/v1.rb')
-  end
-
   describe 'API-level adapter configuration' do
     let(:config_test_api) do
       Apiwork::API.define '/api/config_test' do
@@ -29,10 +24,6 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
 
     before do
       config_test_api # Trigger let to create API
-    end
-
-    after do
-      Apiwork::API::Registry.unregister('/api/config_test')
     end
 
     it 'applies API configuration via schema resolve_option' do
@@ -89,10 +80,6 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
       schema_with_config  # Trigger let to create Schema
     end
 
-    after do
-      Apiwork::API::Registry.unregister('/api/schema_override')
-    end
-
     it 'schema adapter configuration overrides API adapter configuration' do
       # Schema overrides should win
       expect(schema_with_config.resolve_option(:pagination, :default_size)).to eq(50)
@@ -121,30 +108,23 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
       end
     end
 
-    before(:all) do
-      module Api
-        module Resolution
-          class PostSchema < Apiwork::Schema::Base
-            adapter do
-              pagination do
-                default_size 50
-              end
-            end
+    let(:resolution_post_schema) do
+      Class.new(Apiwork::Schema::Base) do
+        def self.name
+          'Api::Resolution::PostSchema'
+        end
+
+        adapter do
+          pagination do
+            default_size 50
           end
         end
       end
     end
 
-    after(:all) do
-      Api::Resolution.send(:remove_const, :PostSchema) if defined?(Api::Resolution::PostSchema)
-    end
-
     before do
+      stub_const('Api::Resolution::PostSchema', resolution_post_schema)
       resolution_api # Trigger let to create API
-    end
-
-    after do
-      Apiwork::API::Registry.unregister('/api/resolution')
     end
 
     it 'schema overrides API, API overrides adapter defaults' do
@@ -215,10 +195,6 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
 
     before do
       dual_purpose_api
-    end
-
-    after do
-      Apiwork::API::Registry.unregister('/api/dual_purpose')
     end
 
     it 'returns adapter instance when called without block' do
