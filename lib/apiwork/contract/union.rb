@@ -33,6 +33,9 @@ module Apiwork
       # @api public
       # Defines a variant in a union type.
       #
+      # Each variant represents one possible shape the union value can take.
+      # Use `tag` with discriminated unions to identify which variant applies.
+      #
       # @param type [Symbol] the variant type (:string, :integer, :object, etc.)
       # @param of [Symbol] element type for :array variants
       # @param enum [Array, Symbol] allowed values for this variant
@@ -40,16 +43,34 @@ module Apiwork
       # @param partial [Boolean] allow partial object (omit required fields)
       # @yield nested params for :object variants
       #
-      # @example Simple variants
-      #   variant type: :string
-      #   variant type: :integer
+      # @example Simple union (string or integer)
+      #   param :value, type: :union do
+      #     variant type: :string
+      #     variant type: :integer
+      #   end
       #
-      # @example Discriminated union
-      #   variant type: :object, tag: 'card' do
-      #     param :card_number, type: :string
+      # @example Discriminated union with object variants
+      #   param :payment, type: :union, discriminator: :type do
+      #     variant type: :object, tag: 'card' do
+      #       param :card_number, type: :string
+      #       param :expiry, type: :string
+      #     end
+      #     variant type: :object, tag: 'bank' do
+      #       param :account_number, type: :string
+      #       param :routing_number, type: :string
+      #     end
+      #   end
+      #
+      # @example Array variant
+      #   param :data, type: :union do
+      #     variant type: :object do
+      #       param :name, type: :string
+      #     end
+      #     variant type: :array, of: :string
       #   end
       #
       # @see Contract::Param#param
+      # @see Introspection::Param::Union
       def variant(
         type:,
         of: nil,

@@ -19,7 +19,7 @@ Part of the Adapter DSL. Returned by [Request#query](contract-request#query),
 
 `#meta(optional: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/param.rb#L189)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/param.rb#L197)
 
 Shorthand for `param :meta, type: :object do ... end`.
 
@@ -61,7 +61,7 @@ end
 
 `#param(name, as: nil, default: nil, deprecated: nil, description: nil, discriminator: nil, enum: nil, example: nil, format: nil, max: nil, min: nil, nullable: nil, of: nil, optional: nil, required: nil, type: nil, value: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/param.rb#L69)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/param.rb#L77)
 
 Defines a parameter/field in a request or response body.
 
@@ -89,7 +89,7 @@ Defines a parameter/field in a request or response body.
 
 **See also**
 
-- [Contract::Param](contract-param)
+- [Contract::Union#variant](contract-union#variant)
 
 **Example: Basic types**
 
@@ -121,6 +121,16 @@ end
 param :items, type: :array, of: :line_item do
   param :product_id, type: :integer
   param :quantity, type: :integer, min: 1
+end
+```
+
+**Example: Union type**
+
+```ruby
+param :payment, type: :union, discriminator: :type do
+  variant type: :object, tag: 'card' do
+    param :card_number, type: :string
+  end
 end
 ```
 

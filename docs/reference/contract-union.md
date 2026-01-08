@@ -32,9 +32,12 @@ end
 
 `#variant(type:, of: nil, enum: nil, tag: nil, partial: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/union.rb#L53)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/union.rb#L74)
 
 Defines a variant in a union type.
+
+Each variant represents one possible shape the union value can take.
+Use `tag` with discriminated unions to identify which variant applies.
 
 **Parameters**
 
@@ -49,19 +52,40 @@ Defines a variant in a union type.
 **See also**
 
 - [Contract::Param#param](contract-param#param)
+- [Introspection::Param::Union](introspection-param-union)
 
-**Example: Simple variants**
+**Example: Simple union (string or integer)**
 
 ```ruby
-variant type: :string
-variant type: :integer
+param :value, type: :union do
+  variant type: :string
+  variant type: :integer
+end
 ```
 
-**Example: Discriminated union**
+**Example: Discriminated union with object variants**
 
 ```ruby
-variant type: :object, tag: 'card' do
-  param :card_number, type: :string
+param :payment, type: :union, discriminator: :type do
+  variant type: :object, tag: 'card' do
+    param :card_number, type: :string
+    param :expiry, type: :string
+  end
+  variant type: :object, tag: 'bank' do
+    param :account_number, type: :string
+    param :routing_number, type: :string
+  end
+end
+```
+
+**Example: Array variant**
+
+```ruby
+param :data, type: :union do
+  variant type: :object do
+    param :name, type: :string
+  end
+  variant type: :array, of: :string
 end
 ```
 

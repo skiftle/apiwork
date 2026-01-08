@@ -65,7 +65,15 @@ module Apiwork
       #     param :product_id, type: :integer
       #     param :quantity, type: :integer, min: 1
       #   end
-      # @see Contract::Param
+      #
+      # @example Union type
+      #   param :payment, type: :union, discriminator: :type do
+      #     variant type: :object, tag: 'card' do
+      #       param :card_number, type: :string
+      #     end
+      #   end
+      #
+      # @see Contract::Union#variant
       def param(
         name,
         as: nil,
