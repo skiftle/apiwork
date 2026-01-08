@@ -79,10 +79,6 @@ module Apiwork
         @writable[:on].include?(action)
       end
 
-      def writable_on
-        @writable[:on]
-      end
-
       def collection?
         @type == :has_many
       end

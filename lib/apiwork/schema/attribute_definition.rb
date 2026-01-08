@@ -94,11 +94,6 @@ module Apiwork
         validate_empty!
       end
 
-      def validate!
-        validate_attribute_exists!
-        validate_column_required_options!
-      end
-
       def filterable?
         @filterable
       end
@@ -123,10 +118,6 @@ module Apiwork
 
       def writable_for?(action)
         @writable[:on].include?(action)
-      end
-
-      def writable_on
-        @writable[:on]
       end
 
       def encode(value)

@@ -25,14 +25,6 @@ module Apiwork
         @singular = singular
         @plural   = plural
       end
-
-      # @api public
-      # Returns the singular root key.
-      #
-      # @return [String]
-      def to_s
-        singular
-      end
     end
   end
 end
