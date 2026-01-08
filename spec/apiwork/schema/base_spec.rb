@@ -77,7 +77,7 @@ RSpec.describe Apiwork::Schema::Base do
     end
   end
 
-  describe '.deserialize_single' do
+  describe '.deserialize_hash' do
     let(:schema_class) do
       Class.new(described_class) do
         abstract!
@@ -89,7 +89,7 @@ RSpec.describe Apiwork::Schema::Base do
     end
 
     it 'applies all decode transformers' do
-      result = schema_class.deserialize_single(
+      result = schema_class.deserialize_hash(
         {
           email: '  UPPER@TEST.COM  ',
           notes: '',
@@ -104,7 +104,7 @@ RSpec.describe Apiwork::Schema::Base do
 
     it 'does not modify original hash' do
       original = { email: '  UPPER@TEST.COM  ' }
-      schema_class.deserialize_single(original)
+      schema_class.deserialize_hash(original)
 
       expect(original[:email]).to eq('  UPPER@TEST.COM  ')
     end

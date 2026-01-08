@@ -503,7 +503,7 @@ module Apiwork
         # Converts ActiveRecord objects to JSON-ready hashes based on
         # attribute and association definitions.
         #
-        # @param object_or_collection [Object, Array] record(s) to serialize
+        # @param record_or_collection [ActiveRecord::Base, Array<ActiveRecord::Base>] record(s) to serialize
         # @param context [Hash] context data available during serialization
         # @param include [Symbol, Array, Hash] associations to include
         # @return [Hash, Array<Hash>] serialized data
@@ -516,10 +516,12 @@ module Apiwork
         #
         # @example Serialize a collection
         #   InvoiceSchema.serialize(Invoice.all)
-        def serialize(object_or_collection, context: {}, include: nil)
-          return serialize_single(object_or_collection, context:, include:) unless object_or_collection.is_a?(Enumerable)
-
-          object_or_collection.map { |obj| serialize_single(obj, context:, include: include) }
+        def serialize(record_or_collection, context: {}, include: nil)
+          if record_or_collection.is_a?(Enumerable)
+            record_or_collection.map { |record| serialize_record(record, context:, include:) }
+          else
+            serialize_record(record_or_collection, context:, include:)
+          end
         end
 
         # @api public
@@ -538,12 +540,10 @@ module Apiwork
         # @example Deserialize a collection
         #   InvoiceSchema.deserialize(params[:invoices])
         def deserialize(hash_or_array)
-          return nil if hash_or_array.nil?
-
           if hash_or_array.is_a?(Array)
-            hash_or_array.map { |item| deserialize_single(item) }
+            hash_or_array.map { |hash| deserialize_hash(hash) }
           else
-            deserialize_single(hash_or_array)
+            deserialize_hash(hash_or_array)
           end
         end
 
@@ -583,17 +583,17 @@ module Apiwork
         end
 
         def resolve_option(name, subkey = nil)
-          opt = api_class.adapter.class.options[name]
-          return nil unless opt
+          option = api_class.adapter.class.options[name]
+          return nil unless option
 
-          if opt.nested? && subkey
+          if option.nested? && subkey
             value = _adapter_config.dig(name, subkey)
             value = api_class.adapter_config.dig(name, subkey) if value.nil?
-            value.nil? ? opt.children[subkey]&.default : value
+            value.nil? ? option.children[subkey]&.default : value
           else
             value = _adapter_config[name]
             value = api_class.adapter_config[name] if value.nil?
-            value.nil? ? opt.resolved_default : value
+            value.nil? ? option.resolved_default : value
           end
         end
 
@@ -628,7 +628,7 @@ module Apiwork
           @type || model_class.model_name.element
         end
 
-        def deserialize_single(hash)
+        def deserialize_hash(hash)
           return hash unless hash.is_a?(Hash)
 
           result = hash.dup
@@ -658,18 +658,18 @@ module Apiwork
           result
         end
 
-        def serialize_single(obj, context: {}, include: nil)
+        def serialize_record(record, context: {}, include: nil)
           if sti_base?
-            variant_schema_class = resolve_sti_variant(obj)
-            return variant_schema_class.new(obj, context:, include:).as_json if variant_schema_class
+            variant_schema_class = resolve_sti_variant(record)
+            return variant_schema_class.new(record, context:, include:).as_json if variant_schema_class
           end
 
-          new(obj, context:, include:).as_json
+          new(record, context:, include:).as_json
         end
 
-        def resolve_sti_variant(obj)
-          sti_type = obj.public_send(discriminator_column)
-          variant = variants.values.find { |v| v[:sti_type] == sti_type }
+        def resolve_sti_variant(record)
+          sti_type = record.public_send(discriminator_column)
+          variant = variants.values.find { |variant| variant[:sti_type] == sti_type }
           return nil unless variant
 
           variant[:schema]
@@ -717,35 +717,35 @@ module Apiwork
       end
 
       def as_json
-        serialized_attributes = {}
+        fields = {}
 
-        add_discriminator_field(serialized_attributes) if self.class.sti_variant?
+        add_discriminator_field(fields) if self.class.sti_variant?
 
         self.class.attribute_definitions.each do |attribute, definition|
           value = respond_to?(attribute) ? public_send(attribute) : object.public_send(attribute)
           value = definition.encode(value)
-          serialized_attributes[attribute] = value
+          fields[attribute] = value
         end
 
         self.class.association_definitions.each do |association, definition|
           next unless should_include_association?(association, definition)
 
-          serialized_attributes[association] = serialize_association(association, definition)
+          fields[association] = serialize_association(association, definition)
         end
 
-        serialized_attributes
+        fields
       end
 
       private
 
-      def add_discriminator_field(serialized_attributes)
+      def add_discriminator_field(fields)
         parent_schema = self.class.superclass
         discriminator_name = parent_schema.discriminator_name
         return unless discriminator_name
 
         variant_tag = self.class.variant_tag
 
-        serialized_attributes[discriminator_name] = variant_tag.to_s
+        fields[discriminator_name] = variant_tag.to_s
       end
 
       def serialize_association(name, definition)
