@@ -84,8 +84,6 @@ module Apiwork
       end
 
       class << self
-        attr_writer :type
-
         # @api public
         # Sets or gets the model class for this schema.
         #
@@ -119,11 +117,6 @@ module Apiwork
           end
         end
 
-        def model_class
-          ensure_auto_detection_complete
-          @model_class
-        end
-
         # @api public
         # Declares the JSON root key for this schema.
         #
@@ -138,15 +131,6 @@ module Apiwork
         #   end
         def root(singular, plural = singular.to_s.pluralize)
           self._root = { plural: plural.to_s, singular: singular.to_s }
-        end
-
-        def api_class
-          return nil unless name
-
-          namespace = name.deconstantize
-          return nil if namespace.blank?
-
-          API.find("/#{namespace.underscore.tr('::', '/')}")
         end
 
         # @api public
@@ -171,25 +155,8 @@ module Apiwork
           return unless block
 
           self._adapter_config = _adapter_config.dup
-          api_adapter_class = api_class&.adapter&.class || Adapter::Standard
-          builder = Configuration::Builder.new(api_adapter_class, _adapter_config)
+          builder = Configuration::Builder.new(api_class.adapter.class, _adapter_config)
           builder.instance_eval(&block)
-        end
-
-        def resolve_option(name, subkey = nil)
-          adapter_class = api_class&.adapter&.class || Adapter::Standard
-          opt = adapter_class.options[name]
-          return nil unless opt
-
-          if opt.nested? && subkey
-            value = _adapter_config.dig(name, subkey)
-            value = api_class&.adapter_config&.dig(name, subkey) if value.nil?
-            value.nil? ? opt.children[subkey]&.default : value
-          else
-            value = _adapter_config[name]
-            value = api_class&.adapter_config&.[](name) if value.nil?
-            value.nil? ? opt.resolved_default : value
-          end
         end
 
         # @api public
@@ -503,29 +470,6 @@ module Apiwork
           self
         end
 
-        def register_variant(schema:, sti_type:, tag:)
-          self.variants = variants.merge(tag => { schema:, sti_type: })
-          self._abstract = true
-        end
-
-        def sti_base?
-          return false if sti_variant?
-
-          discriminator_column.present? && variants.any?
-        end
-
-        def sti_variant?
-          variant_tag.present?
-        end
-
-        def needs_discriminator_transform?
-          variants.any? { |tag, data| tag.to_s != data[:sti_type] }
-        end
-
-        def discriminator_sti_mapping
-          variants.transform_values { |data| data[:sti_type] }
-        end
-
         # @api public
         # Sets or gets a description for this schema.
         #
@@ -559,10 +503,6 @@ module Apiwork
           self._deprecated = true
         end
 
-        def deprecated?
-          _deprecated
-        end
-
         # @api public
         # Sets or gets an example value for this schema.
         #
@@ -579,19 +519,6 @@ module Apiwork
           return _example if value.nil?
 
           self._example = value
-        end
-
-        def type
-          @type || model_class&.model_name&.element
-        end
-
-        def root_key
-          if _root
-            RootKey.new(_root[:singular], _root[:plural])
-          else
-            type_name = type || model_class&.model_name&.element
-            RootKey.new(type_name)
-          end
         end
 
         # @api public
@@ -643,6 +570,77 @@ module Apiwork
             hash_or_array.map { |h| deserialize_single(h) }
           else
             deserialize_single(hash_or_array)
+          end
+        end
+
+        attr_writer :type
+
+        def model_class
+          ensure_auto_detection_complete
+          @model_class
+        end
+
+        def api_class
+          return nil unless name
+
+          namespace = name.deconstantize
+          return nil if namespace.blank?
+
+          API.find("/#{namespace.underscore.tr('::', '/')}")
+        end
+
+        def resolve_option(name, subkey = nil)
+          opt = api_class.adapter.class.options[name]
+          return nil unless opt
+
+          if opt.nested? && subkey
+            value = _adapter_config.dig(name, subkey)
+            value = api_class.adapter_config.dig(name, subkey) if value.nil?
+            value.nil? ? opt.children[subkey]&.default : value
+          else
+            value = _adapter_config[name]
+            value = api_class.adapter_config[name] if value.nil?
+            value.nil? ? opt.resolved_default : value
+          end
+        end
+
+        def register_variant(schema:, sti_type:, tag:)
+          self.variants = variants.merge(tag => { schema:, sti_type: })
+          self._abstract = true
+        end
+
+        def sti_base?
+          return false if sti_variant?
+
+          discriminator_column.present? && variants.any?
+        end
+
+        def sti_variant?
+          variant_tag.present?
+        end
+
+        def needs_discriminator_transform?
+          variants.any? { |tag, data| tag.to_s != data[:sti_type] }
+        end
+
+        def discriminator_sti_mapping
+          variants.transform_values { |data| data[:sti_type] }
+        end
+
+        def deprecated?
+          _deprecated
+        end
+
+        def type
+          @type || model_class&.model_name&.element
+        end
+
+        def root_key
+          if _root
+            RootKey.new(_root[:singular], _root[:plural])
+          else
+            type_name = type || model_class&.model_name&.element
+            RootKey.new(type_name)
           end
         end
 

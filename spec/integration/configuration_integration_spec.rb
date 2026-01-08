@@ -108,8 +108,10 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
       end
     end
 
-    let(:resolution_post_schema) do
-      Class.new(Apiwork::Schema::Base) do
+    before do
+      resolution_api
+
+      schema = Class.new(Apiwork::Schema::Base) do
         def self.name
           'Api::Resolution::PostSchema'
         end
@@ -120,11 +122,7 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
           end
         end
       end
-    end
-
-    before do
-      stub_const('Api::Resolution::PostSchema', resolution_post_schema)
-      resolution_api # Trigger let to create API
+      stub_const('Api::Resolution::PostSchema', schema)
     end
 
     it 'schema overrides API, API overrides adapter defaults' do

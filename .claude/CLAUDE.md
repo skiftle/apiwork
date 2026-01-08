@@ -582,15 +582,38 @@ if user.can_make_api_call?
 
 ## Defensive Code
 
-Never use optional chaining (`&.`) or defensive initialization on values guaranteed to exist.
+**Absolute rule:** Never use optional chaining (`&.`) or fallbacks (`|| default`) on values that should exist.
 
-| Forbidden (unless truly optional)  | Do instead                       |
-| ---------------------------------- | -------------------------------- |
-| `object&.method`                   | Construct required state eagerly |
-| `@items ||= {}`                    | Initialize in constructor        |
-| `value || default`                 | Validate invariants once         |
+| Forbidden | Problem | Fix |
+|-----------|---------|-----|
+| `api_class&.adapter&.class` | Hides broken state | Ensure api_class is set |
+| `value || default` | Silent fallback masks bugs | Fail if value missing |
+| `@items ||= {}` | Lazy init hides missing setup | Initialize in constructor |
+| `object&.method` on required object | Pretends nil is valid | Fix construction |
 
-Fix construction, not symptoms.
+**The code below is a bug, not defensive programming:**
+
+```ruby
+# BAD — silent fallback hides broken state
+adapter_class = api_class&.adapter&.class || Adapter::Standard
+
+# GOOD — fail fast if invariant violated
+def adapter_class
+  api_class.adapter.class
+end
+
+# Or guard at entry point, not throughout
+def resolve_option(name)
+  return nil unless api_class  # Guard once at entry
+
+  adapter_class = api_class.adapter.class  # Then trust it
+  # ...
+end
+```
+
+**Principle:** If something "can be nil" ask: *should* it be nil? Often the answer is "no, we have a bug elsewhere." Fix that bug instead of adding `&.` everywhere.
+
+Trust your invariants. Fix construction, not symptoms.
 
 ---
 
