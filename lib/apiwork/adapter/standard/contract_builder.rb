@@ -612,7 +612,7 @@ module Apiwork
 
           new_visited = visited.dup.add(schema_class)
 
-          schema_class.association_definitions.any? do |_name, association_definition|
+          schema_class.association_definitions.values.any? do |association_definition|
             if association_definition.polymorphic?
               !association_definition.always_included?
             else
@@ -637,8 +637,8 @@ module Apiwork
         end
 
         def build_nested_payload_union
-          return unless schema_class.attribute_definitions.any? { |_, ad| ad.writable? } ||
-                        schema_class.association_definitions.any? { |_, ad| ad.writable? }
+          return unless schema_class.attribute_definitions.values.any?(&:writable?) ||
+                        schema_class.association_definitions.values.any?(&:writable?)
 
           create_type_name = :nested_create_payload
           builder = self
@@ -648,7 +648,9 @@ module Apiwork
             registrar.type(create_type_name) do
               param :_type, type: :literal, value: 'create'
               builder.send(:writable_params, self, :create, nested: true)
-              param :_destroy, optional: true, type: :boolean if schema.association_definitions.any? { |_, ad| ad.writable? && ad.allow_destroy }
+              param :_destroy, optional: true, type: :boolean if schema.association_definitions.values.any? do |association|
+                association.writable? && association.allow_destroy
+              end
             end
           end
 
@@ -657,7 +659,9 @@ module Apiwork
             registrar.type(update_type_name) do
               param :_type, type: :literal, value: 'update'
               builder.send(:writable_params, self, :update, nested: true)
-              param :_destroy, optional: true, type: :boolean if schema.association_definitions.any? { |_, ad| ad.writable? && ad.allow_destroy }
+              param :_destroy, optional: true, type: :boolean if schema.association_definitions.values.any? do |association|
+                association.writable? && association.allow_destroy
+              end
             end
           end
 
@@ -804,8 +808,8 @@ module Apiwork
           end
 
           registrar.union(union_type_name, discriminator: discriminator_name) do
-            variant_types.each do |v|
-              variant tag: v[:tag], type: v[:type]
+            variant_types.each do |variant_type|
+              variant tag: variant_type[:tag], type: variant_type[:type]
             end
           end
 
@@ -970,31 +974,29 @@ module Apiwork
         end
 
         def has_filterable_content?(visited)
-          has_filterable_attributes = schema_class.attribute_definitions.any? do |_, ad|
-            ad.filterable? && ad.type != :unknown
+          has_filterable_attributes = schema_class.attribute_definitions.values.any? do |attribute|
+            attribute.filterable? && attribute.type != :unknown
           end
 
           return true if has_filterable_attributes
 
-          schema_class.association_definitions.any? do |_, ad|
-            next false unless ad.filterable?
+          schema_class.association_definitions.values.any? do |association|
+            next false unless association.filterable?
 
-            association_resource = resolve_association_resource(ad)
+            association_resource = resolve_association_resource(association)
             association_resource&.schema_class && visited.exclude?(association_resource.schema_class)
           end
         end
 
         def has_sortable_content?(visited)
-          has_sortable_attributes = schema_class.attribute_definitions.any? do |_, ad|
-            ad.sortable?
-          end
+          has_sortable_attributes = schema_class.attribute_definitions.values.any?(&:sortable?)
 
           return true if has_sortable_attributes
 
-          schema_class.association_definitions.any? do |_, ad|
-            next false unless ad.sortable?
+          schema_class.association_definitions.values.any? do |association|
+            next false unless association.sortable?
 
-            association_resource = resolve_association_resource(ad)
+            association_resource = resolve_association_resource(association)
             association_resource&.schema_class && visited.exclude?(association_resource.schema_class)
           end
         end

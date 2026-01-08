@@ -30,7 +30,7 @@ module Apiwork
 
         def normalize_indexed_value(value)
           return value unless value.is_a?(Hash) || value.is_a?(Array)
-          return value.map { |v| normalize_indexed_value(v) } if value.is_a?(Array)
+          return value.map { |element| normalize_indexed_value(element) } if value.is_a?(Array)
 
           return convert_indexed_hash_to_array(value) if indexed_hash?(value)
 
@@ -38,13 +38,13 @@ module Apiwork
         end
 
         def convert_indexed_hash_to_array(hash)
-          hash.keys.sort_by { |k| k.to_s.to_i }.map { |key| normalize_indexed_value(hash[key]) }
+          hash.keys.sort_by { |key| key.to_s.to_i }.map { |key| normalize_indexed_value(hash[key]) }
         end
 
         def indexed_hash?(hash)
           return false if hash.empty?
 
-          hash.keys.all? { |k| NUMERIC_KEY_PATTERN.match?(k.to_s) }
+          hash.keys.all? { |key| NUMERIC_KEY_PATTERN.match?(key.to_s) }
         end
       end
     end

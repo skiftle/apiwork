@@ -71,13 +71,17 @@ module Apiwork
           def apply_array_filter(params)
             return @relation if params.empty?
 
-            individual_conditions = params.map do |filter_hash|
+            individual_conditions = params.filter_map do |filter_hash|
               conditions, _joins = build_where_conditions(filter_hash, schema_class.model_class)
               conditions.compact.reduce(:and) if conditions.any?
-            end.compact
+            end
 
             or_condition = individual_conditions.reduce(:or) if individual_conditions.any?
-            all_joins = params.map { |p| build_where_conditions(p, schema_class.model_class)[1] }.reduce({}) { |acc, j| acc.deep_merge(j) }
+
+            joins_per_filter = params.map do |filter_params|
+              build_where_conditions(filter_params, schema_class.model_class)[1]
+            end
+            all_joins = joins_per_filter.reduce({}) { |accumulated, joins| accumulated.deep_merge(joins) }
 
             with_joins_and_distinct(@relation, all_joins) do |scope|
               or_condition ? scope.where(or_condition) : scope
@@ -199,8 +203,9 @@ module Apiwork
 
           def collect_filterable_error(key, target_klass)
             available = schema_class.attribute_definitions
-              .select { |_, definition| definition.filterable? }
-              .keys
+              .values
+              .select(&:filterable?)
+              .map(&:name)
 
             @issues << Issue.new(
               code: :field_not_filterable,
@@ -435,7 +440,7 @@ module Apiwork
           def build_numeric_where_clause(key, value, target_klass)
             column = target_klass.arel_table[key]
 
-            normalizer = ->(val) { [String, Numeric, NilClass].any? { |t| val.is_a?(t) } ? { eq: val } : val }
+            normalizer = ->(val) { [String, Numeric, NilClass].any? { |type| val.is_a?(type) } ? { eq: val } : val }
 
             builder = Builder.new(
               column:,
@@ -479,7 +484,7 @@ module Apiwork
                   column.between(number..number)
                 end
               when :in
-                numbers = Array(compare).filter_map { |v| parse_numeric(v, key) }
+                numbers = Array(compare).filter_map { |value| parse_numeric(value, key) }
                 next if numbers.empty?
 
                 column.in(numbers)

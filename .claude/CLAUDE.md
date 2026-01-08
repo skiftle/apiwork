@@ -526,6 +526,7 @@ end
 | Rails idioms: `delegate`, `index_by`, `tap`, `presence` | `inject`, `reduce` — use `each_with_object` |
 | Transform: `map`, Filter: `select`/`reject`, Accumulate: `each_with_object` | Long method chains across multiple lines |
 | Inline simple method calls used 1-2 times               | Variables for trivial expressions        |
+|                                                         | Chaining on `end` (`end.map`, `end.reduce`) |
 |                                                         | Unnecessarily clever Ruby                |
 
 ### Intermediate Variables

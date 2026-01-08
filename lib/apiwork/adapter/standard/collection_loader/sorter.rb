@@ -48,8 +48,9 @@ module Apiwork
                 attribute_definition = schema_class.attribute_definitions[key]
                 unless attribute_definition&.sortable?
                   available = schema_class.attribute_definitions
-                    .select { |_, definition| definition.sortable? }
-                    .keys
+                    .values
+                    .select(&:sortable?)
+                    .map(&:name)
 
                   @issues << Issue.new(
                     code: :field_not_sortable,
