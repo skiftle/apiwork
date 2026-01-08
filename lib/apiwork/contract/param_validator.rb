@@ -9,11 +9,7 @@ module Apiwork
         @param_definition = param_definition
       end
 
-      def validate(data, options = {})
-        max_depth = options.fetch(:max_depth, 10)
-        current_depth = options.fetch(:current_depth, 0)
-        path = options.fetch(:path, [])
-
+      def validate(data, current_depth: 0, max_depth: 10, path: [])
         issues = []
         params = {}
         data = data.deep_symbolize_keys if data.is_a?(Hash)
@@ -328,7 +324,7 @@ module Apiwork
                 contract_class_for_custom_type,
                 action_name: @param_definition.action_name,
               )
-              custom_type_block.each { |block| custom_param.instance_eval(&block) }
+              custom_type_block.each { |definition_block| custom_param.instance_eval(&definition_block) }
 
               validator = ParamValidator.new(custom_param)
               shape_result = validator.validate(
@@ -435,7 +431,7 @@ module Apiwork
 
         return [most_specific_error, nil] if most_specific_error
 
-        expected_types = variants.map { |v| v[:type] }
+        expected_types = variants.map { |variant| variant[:type] }
         error = Issue.new(
           path:,
           code: :type_invalid,
@@ -481,12 +477,12 @@ module Apiwork
         discriminator_value = value[discriminator]
 
         normalized_discriminator = normalize_discriminator_value(discriminator_value)
-        matching_variant = variants.find do |v|
-          normalize_discriminator_value(v[:tag]) == normalized_discriminator
+        matching_variant = variants.find do |variant|
+          normalize_discriminator_value(variant[:tag]) == normalized_discriminator
         end
 
         unless matching_variant
-          valid_tags = variants.filter_map { |v| v[:tag] }
+          valid_tags = variants.filter_map { |variant| variant[:tag] }
           error = Issue.new(
             code: :value_invalid,
             detail: 'Invalid value',

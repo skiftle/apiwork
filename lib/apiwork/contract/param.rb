@@ -13,7 +13,7 @@ module Apiwork
                   :contract_class,
                   :params
 
-      attr_writer :visited_types
+      attr_accessor :visited_types
 
       def initialize(contract_class, action_name: nil, wrapped: false)
         @contract_class = contract_class
@@ -198,8 +198,8 @@ module Apiwork
         end
       end
 
-      def validate(data, options = {})
-        ParamValidator.new(self).validate(data, options)
+      def validate(data, current_depth: 0, max_depth: 10, path: [])
+        ParamValidator.new(self).validate(data, current_depth:, max_depth:, path:)
       end
 
       def wrapped?

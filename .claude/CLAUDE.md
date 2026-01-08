@@ -114,6 +114,7 @@ If the answer is "yes, but…" — rewrite.
 | ---------------------------------------------------------------------- | -------------------------------------------------------- |
 | Use descriptive, context-bearing names outside their context           | Abbreviations: `cfg`, `opts`, `ctx`                      |
 | Use unabbreviated words: `schema_class` not `cls`                      | Generic words: `data`, `item`, `thing`, `foo`            |
+| `options` is acceptable for hash of optional parameters                |                                                          |
 | Follow adjective-noun order: `paginated_invoices`                      | Type suffixes: `_str`, `_sym`                            |
 | Names should eliminate the need for comments                           | Repeat context: `class_name:` not `resource_class_name:` |
 | Public API: simple names (`Contract` not `ContractDefinition`)         |                                                          |
