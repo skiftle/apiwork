@@ -171,7 +171,7 @@ module Apiwork
         rescue NameError
           raise ArgumentError,
                 "Expected to find #{schema_name} in app/schemas/. " \
-                'Contract and Schema must follow convention: XContract ↔ XSchema'
+                'Contract and Schema must follow convention: XContract and XSchema'
         end
 
         def find_contract_for_schema(schema_class)

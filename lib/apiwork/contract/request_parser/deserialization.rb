@@ -44,7 +44,7 @@ module Apiwork
             return nil unless param_name
 
             contract_class = definition.contract_class
-            return nil unless contract_class.respond_to?(:schema_class) && contract_class.schema_class
+            return nil unless contract_class.schema_class
 
             contract_class.schema_class.attribute_definitions[param_name]
           end

@@ -16,7 +16,7 @@ module Apiwork
 
         issues = []
         params = {}
-        data = data.deep_symbolize_keys if data.respond_to?(:deep_symbolize_keys)
+        data = data.deep_symbolize_keys if data.is_a?(Hash)
 
         return max_depth_error(current_depth, max_depth, path) if current_depth > max_depth
 
@@ -113,13 +113,13 @@ module Apiwork
       def validate_required(name, value, param_options, field_path)
         return nil if param_options[:optional]
 
-        is_missing = if param_options[:type] == :boolean
-                       value.nil?
-                     else
-                       value.blank?
-                     end
+        missing = if param_options[:type] == :boolean
+                    value.nil?
+                  else
+                    value.blank?
+                  end
 
-        return nil unless is_missing
+        return nil unless missing
 
         if param_options[:enum].present?
           Issue.new(
@@ -366,8 +366,7 @@ module Apiwork
         return nil unless type_definition
 
         type_definition.validate(value, field_path:, max_depth:, current_depth: current_depth + 1)
-      rescue NameError, ArgumentError => e
-        Rails.logger.debug("Custom type resolution failed for :#{type_name}: #{e.message}") if defined?(Rails)
+      rescue NameError, ArgumentError
         nil
       end
 
@@ -501,7 +500,7 @@ module Apiwork
           return [error, nil]
         end
 
-        value_without_discriminator = value.reject { |k, _v| k == discriminator }
+        value_without_discriminator = value.except(discriminator)
 
         error, validated_value = validate_variant(
           name,
@@ -720,7 +719,9 @@ module Apiwork
       end
 
       def numeric_type?(type)
-        NUMERIC_TYPES.include?(type&.to_sym)
+        return false unless type
+
+        NUMERIC_TYPES.include?(type.to_sym)
       end
     end
   end

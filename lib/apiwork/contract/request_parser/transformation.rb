@@ -42,14 +42,12 @@ module Apiwork
 
           def apply_sti_discriminator_transform(params, definition)
             definition.params.each do |name, param_options|
-              # Handle direct sti_mapping on param
               if param_options[:sti_mapping] && params.key?(name)
                 mapping = param_options[:sti_mapping]
                 tag = params[name]
                 params[name] = mapping[tag.to_sym] if mapping.key?(tag.to_sym)
               end
 
-              # Recurse into nested structures (shapes, custom types, unions)
               value = params[name]
               next unless value.is_a?(Hash)
 
@@ -91,7 +89,6 @@ module Apiwork
               custom_type_blocks.each { |block| temp_param.instance_eval(&block) }
               apply_sti_discriminator_transform(value, temp_param)
             else
-              # Check if this is a union type registered at API level
               apply_sti_transform_to_registered_union(value, type_name, parent_definition)
             end
           end
@@ -115,7 +112,6 @@ module Apiwork
             variant = payload[:variants]&.find { |v| v[:tag].to_s == tag.to_s }
             return unless variant
 
-            # Apply transform to the variant type
             apply_sti_transform_to_custom_type(value, variant[:type], parent_definition)
           end
 

@@ -101,9 +101,6 @@ module Apiwork
         @deprecated = true
       end
 
-      # Returns whether this action is deprecated.
-      #
-      # @return [Boolean]
       def deprecated?
         @deprecated == true
       end
@@ -158,7 +155,7 @@ module Apiwork
                 "Unknown error code :#{error_code_key}. Register it with: " \
                 "Apiwork::ErrorCode.register :#{error_code_key}, status: <status>"
         end
-        @raises = (@raises || []) | error_code_keys
+        @raises |= error_code_keys
       end
 
       # @api public

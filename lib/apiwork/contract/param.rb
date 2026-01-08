@@ -130,7 +130,8 @@ module Apiwork
 
         raise ArgumentError, 'discriminator can only be used with type: :union' if discriminator && type != :union
 
-        visited_types = visited_types || @visited_types || Set.new
+        visited_types ||= @visited_types
+        visited_types ||= Set.new
 
         resolved_enum = resolve_enum_value(enum)
 
