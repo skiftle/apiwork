@@ -92,7 +92,6 @@ module Apiwork
         validate_min_max_range!
         validate_format!
         validate_empty!
-        apply_empty_transformers! if @empty
       end
 
       def validate!
@@ -133,11 +132,13 @@ module Apiwork
       def encode(value)
         validate_enum(value) if enum && value.present?
 
-        apply_transformers(value, @encode)
+        result = @empty && value.nil? ? '' : value
+        @encode ? @encode.call(result) : result
       end
 
       def decode(value)
-        apply_transformers(value, @decode)
+        result = @decode ? @decode.call(value) : value
+        @empty ? result.presence : result
       end
 
       def schema_class_name
@@ -204,30 +205,6 @@ module Apiwork
           path: [name],
         )
         raise ContractError, [issue]
-      end
-
-      def apply_empty_transformers!
-        @encode = Array(@encode).unshift(:nil_to_empty).uniq
-        @decode = Array(@decode).push(:blank_to_nil).uniq
-      end
-
-      def apply_transformers(value, transformers)
-        return value if transformers.nil?
-
-        Array(transformers).reduce(value) do |current_value, transformer|
-          if transformer.respond_to?(:call)
-            transformer.call(current_value)
-          else
-            case transformer
-            when :nil_to_empty
-              current_value.nil? ? '' : current_value
-            when :blank_to_nil
-              current_value.presence
-            else
-              current_value
-            end
-          end
-        end
       end
 
       def detect_enum_values(name)

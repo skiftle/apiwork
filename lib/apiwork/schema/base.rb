@@ -57,33 +57,9 @@ module Apiwork
                   :include,
                   :object
 
-      def initialize(object, context: {}, include: nil)
-        @object = object
-        @context = context
-        @include = include
-      end
-
-      def as_json
-        serialized_attributes = {}
-
-        add_discriminator_field(serialized_attributes) if self.class.sti_variant?
-
-        self.class.attribute_definitions.each do |attribute, definition|
-          value = respond_to?(attribute) ? public_send(attribute) : object.public_send(attribute)
-          value = definition.encode(value)
-          serialized_attributes[attribute] = value
-        end
-
-        self.class.association_definitions.each do |association, definition|
-          next unless should_include_association?(association, definition)
-
-          serialized_attributes[association] = serialize_association(association, definition)
-        end
-
-        serialized_attributes
-      end
-
       class << self
+        attr_writer :type
+
         # @api public
         # Sets or gets the model class for this schema.
         #
@@ -541,11 +517,9 @@ module Apiwork
         # @example Serialize a collection
         #   InvoiceSchema.serialize(Invoice.all)
         def serialize(object_or_collection, context: {}, include: nil)
-          if object_or_collection.respond_to?(:each)
-            object_or_collection.map { |obj| serialize_single(obj, context:, include: include) }
-          else
-            serialize_single(object_or_collection, context:, include:)
-          end
+          return serialize_single(object_or_collection, context:, include:) unless object_or_collection.is_a?(Enumerable)
+
+          object_or_collection.map { |obj| serialize_single(obj, context:, include: include) }
         end
 
         # @api public
@@ -567,7 +541,7 @@ module Apiwork
           return nil if hash_or_array.nil?
 
           if hash_or_array.is_a?(Array)
-            hash_or_array.map { |h| deserialize_single(h) }
+            hash_or_array.map { |item| deserialize_single(item) }
           else
             deserialize_single(hash_or_array)
           end
@@ -593,8 +567,6 @@ module Apiwork
             RootKey.new(type || model_class.model_name.element)
           end
         end
-
-        attr_writer :type
 
         def model_class
           ensure_auto_detection_complete
@@ -641,11 +613,11 @@ module Apiwork
         end
 
         def needs_discriminator_transform?
-          variants.any? { |tag, data| tag.to_s != data[:sti_type] }
+          variants.any? { |tag, variant| tag.to_s != variant[:sti_type] }
         end
 
         def discriminator_sti_mapping
-          variants.transform_values { |data| data[:sti_type] }
+          variants.transform_values { |variant| variant[:sti_type] }
         end
 
         def deprecated?
@@ -697,8 +669,10 @@ module Apiwork
 
         def resolve_sti_variant(obj)
           sti_type = obj.public_send(discriminator_column)
-          variant = variants.find { |_tag, data| data[:sti_type] == sti_type }
-          variant&.last&.[](:schema)
+          variant = variants.values.find { |v| v[:sti_type] == sti_type }
+          return nil unless variant
+
+          variant[:schema]
         end
 
         private
@@ -734,6 +708,32 @@ module Apiwork
             )
           end
         end
+      end
+
+      def initialize(object, context: {}, include: nil)
+        @object = object
+        @context = context
+        @include = include
+      end
+
+      def as_json
+        serialized_attributes = {}
+
+        add_discriminator_field(serialized_attributes) if self.class.sti_variant?
+
+        self.class.attribute_definitions.each do |attribute, definition|
+          value = respond_to?(attribute) ? public_send(attribute) : object.public_send(attribute)
+          value = definition.encode(value)
+          serialized_attributes[attribute] = value
+        end
+
+        self.class.association_definitions.each do |association, definition|
+          next unless should_include_association?(association, definition)
+
+          serialized_attributes[association] = serialize_association(association, definition)
+        end
+
+        serialized_attributes
       end
 
       private
