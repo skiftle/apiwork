@@ -40,8 +40,8 @@ module Apiwork
 
         def build_local_types
           @contract_class.api_class.type_system.types.each_pair
-            .select { |_, metadata| metadata[:scope] == @contract_class }
-            .sort_by { |name, _| name.to_s }
+            .select { |_name, metadata| metadata[:scope] == @contract_class }
+            .sort_by { |name, _metadata| name.to_s }
             .each_with_object({}) do |(name, metadata), result|
               result[name] = @type_dump.build_type(name, metadata)
           end
@@ -49,8 +49,8 @@ module Apiwork
 
         def build_local_enums
           @contract_class.api_class.type_system.enums.each_pair
-            .select { |_, metadata| metadata[:scope] == @contract_class }
-            .sort_by { |name, _| name.to_s }
+            .select { |_name, metadata| metadata[:scope] == @contract_class }
+            .sort_by { |name, _metadata| name.to_s }
             .each_with_object({}) do |(name, metadata), result|
               result[name] = @type_dump.build_enum(name, metadata)
           end
@@ -85,8 +85,8 @@ module Apiwork
             result[enum_name] = @type_dump.build_enum(enum_name, metadata) if metadata
           end
 
-          sorted_types = dumped_types.sort_by { |name, _| name.to_s }.to_h
-          sorted_enums = dumped_enums.sort_by { |name, _| name.to_s }.to_h
+          sorted_types = dumped_types.sort_by { |name, _type| name.to_s }.to_h
+          sorted_enums = dumped_enums.sort_by { |name, _enum| name.to_s }.to_h
 
           [sorted_types, sorted_enums]
         end

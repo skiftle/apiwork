@@ -18,7 +18,7 @@ module Apiwork
 
           result = {}
 
-          @contract_param.params.sort_by { |name, _| name.to_s }.each do |name, param_options|
+          @contract_param.params.sort_by { |name, _options| name.to_s }.each do |name, param_options|
             result[name] = build_param(name, param_options)
           end
 
@@ -55,7 +55,7 @@ module Apiwork
 
         def build_success_params
           success_params = {}
-          @contract_param.params.sort_by { |name, _| name.to_s }.each do |name, param_options|
+          @contract_param.params.sort_by { |name, _options| name.to_s }.each do |name, param_options|
             dumped = build_param(name, param_options)
             dumped[:optional] = true if param_options[:optional]
             success_params[name] = dumped

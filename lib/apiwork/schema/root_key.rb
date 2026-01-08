@@ -21,11 +21,6 @@ module Apiwork
       # @return [String] root key for single records
       attr_reader :singular
 
-      # @api public
-      # Creates a new root key.
-      #
-      # @param singular [String] root key for single records
-      # @param plural [String] root key for collections (default: singular.pluralize)
       def initialize(singular, plural = singular.pluralize)
         @singular = singular
         @plural   = plural

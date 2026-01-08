@@ -11,7 +11,7 @@ module Apiwork
         def types
           return {} unless @api_class
 
-          @api_class.type_system.types.each_pair.sort_by { |name, _| name.to_s }.each_with_object({}) do |(qualified_name, metadata), result|
+          @api_class.type_system.types.each_pair.sort_by { |name, _metadata| name.to_s }.each_with_object({}) do |(qualified_name, metadata), result|
             result[qualified_name] = build_type(qualified_name, metadata)
           end
         end
@@ -19,7 +19,7 @@ module Apiwork
         def enums
           return {} unless @api_class
 
-          @api_class.type_system.enums.each_pair.sort_by { |name, _| name.to_s }.each_with_object({}) do |(qualified_name, metadata), result|
+          @api_class.type_system.enums.each_pair.sort_by { |name, _metadata| name.to_s }.each_with_object({}) do |(qualified_name, metadata), result|
             result[qualified_name] = build_enum(qualified_name, metadata)
           end
         end
