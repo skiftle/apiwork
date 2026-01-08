@@ -2,6 +2,9 @@
 
 Rules for working with code in this repository.
 
+This document is the **single source of truth** for style, structure, tests, and documentation.
+There is exactly **one** CLAUDE.md. No secondary files.
+
 ---
 
 ## Commands
@@ -44,6 +47,15 @@ docs/
 
 ---
 
+## Core Principle
+
+**Consistency beats local optimization. Always.**
+
+If there are two reasonable ways to do something, one is forbidden.
+If something looks cleaner in isolation but introduces variation, it is not allowed.
+
+---
+
 ## Philosophy
 
 | Do                                                               | Don't                                              |
@@ -56,10 +68,10 @@ docs/
 | Be Rails-native — declarative, expressive, conventional          |                                                    |
 | Clean up as you go — remove dead code                            |                                                    |
 | Small, focused objects with one responsibility                   |                                                    |
-| Explicit over implicit — no magic or monkey patching             |                                                    |
+| Explicit over implicit — no magic, monkey patching, or defensive guesswork |                                           |
 | Use stable identifiers for registry keys (not class references)  |                                                    |
 
-**Breaking changes are fine — this is pre-release.**
+**Breaking changes are acceptable. Inconsistency is not.**
 
 ### Consolidation Example
 
@@ -88,9 +100,9 @@ Before code is considered done:
 1. Can I understand this in 6 months?
 2. Is there exactly one way to use this?
 3. Is this Rails-idiomatic?
-4. Could this have been simpler?
+4. Could this be simpler without introducing variation?
 
-If the answer is "yes, but…" — simplify.
+If the answer is "yes, but…" — rewrite.
 
 ---
 
@@ -175,6 +187,24 @@ end
 
 ---
 
+## Class Layout
+
+Mandatory order for classes and modules:
+
+1. Constants
+2. `attr_reader` / `attr_accessor`
+3. `class << self`
+4. `initialize`
+5. Public instance methods
+6. `private`
+7. Private instance methods
+
+Within public instance methods: `@api public` methods appear first.
+
+No deviations. No reordering.
+
+---
+
 ## Methods
 
 | Do                                                         | Don't                                                 |
@@ -184,6 +214,12 @@ end
 | Extract private method when 5+ lines of non-trivial logic  | Test private methods                                  |
 | Put guards inside the method, not at call site             | Extract "because methods should be short"             |
 | Three similar lines is better than a premature abstraction |                                                       |
+
+### Canonical Entry Points
+
+Service-like objects expose only: `.call` or `#call`
+
+Forbidden: `.run`, `.execute`, `.perform`, `.process`
 
 ### Guard Logic
 
@@ -261,12 +297,25 @@ end
 | ------------------------------------------------------- | ---------------------------------------- |
 | Intermediate variables instead of chains                | `then`                                   |
 | Clear block parameters: `{ \|item\| process(item) }`    | `_1`, `_2` (numbered params)             |
-| Rails idioms: `delegate`, `index_by`, `tap`, `presence` | Long method chains across multiple lines |
+| Rails idioms: `delegate`, `index_by`, `tap`, `presence` | `inject`, `reduce` — use `each_with_object` |
+| Transform: `map`, Filter: `select`/`reject`, Accumulate: `each_with_object` | Long method chains across multiple lines |
 |                                                         | Unnecessarily clever Ruby                |
 
 ### Idioms
 
-**Use:** `map(&:to_s)`, `select(&:present?)`, `compact_blank`, `index_by`, `each_with_object({})`, `group_by`, `delegate`, `@x ||= ...`, `tap`, `present?`, `blank?`, `presence`, `FOO = {...}.freeze`, `amount.positive?`, `collection.any?`, `value.zero?`, `{ title, value }` (hash shorthand)
+**Use:** `map(&:to_s)`, `select(&:present?)`, `compact_blank`, `index_by`, `each_with_object({})`, `group_by`, `delegate`, `tap`, `present?`, `blank?`, `presence`, `FOO = {...}.freeze`, `amount.positive?`, `collection.any?`, `value.zero?`, `{ title, value }` (hash shorthand)
+
+**Memoization** (`@x ||= ...`) is allowed for lazy computation only:
+
+```ruby
+# OK — lazy computation
+def schema
+  @schema ||= build_schema
+end
+
+# Forbidden — defensive initialization (see Defensive Code)
+(@items ||= {})[key] = value
+```
 
 ---
 
@@ -308,6 +357,20 @@ if user.can_make_api_call?
 
 ---
 
+## Defensive Code
+
+Never use optional chaining (`&.`) or defensive initialization on values guaranteed to exist.
+
+| Forbidden (unless truly optional)  | Do instead                       |
+| ---------------------------------- | -------------------------------- |
+| `object&.method`                   | Construct required state eagerly |
+| `@items ||= {}`                    | Initialize in constructor        |
+| `value || default`                 | Validate invariants once         |
+
+Fix construction, not symptoms.
+
+---
+
 ## YARD
 
 Only for `@api public` methods.
@@ -328,6 +391,80 @@ end
 ```
 
 No `@api public` = internal = no YARD comments.
+
+### Declarations
+
+`@api public` declarations: one per line with YARD. Otherwise: group.
+
+```ruby
+# === @api public — one per line ===
+
+# @api public
+# @return [Hash] the context
+attr_reader :context
+
+# @api public
+# @return [Symbol] the type name
+delegate :type, to: :api_class
+
+# === Internal — group, one per line ===
+attr_reader :cache,
+            :options,
+            :registry
+
+delegate :internal_lookup,
+         :internal_state,
+         to: :api_class
+
+private
+
+# === Private — group, one per line ===
+attr_reader :buffer,
+            :state
+```
+
+### class_methods blocks
+
+YARD can't see inside `class_methods do`. Use `@!method` with `@!scope class`:
+
+```ruby
+# @!method option(name, type:, default: nil, enum: nil, &block)
+#   @!scope class
+#   @api public
+#   Defines a configuration option.
+#   @param name [Symbol] the option name
+#   @param type [Symbol] the option type
+#   @return [void]
+
+class_methods do
+  def option(name, type:, default: nil, enum: nil, &block)
+    # ...
+  end
+end
+```
+
+### Mixin methods
+
+Document mixin methods only when the mixin lacks docs or when adapting for the class's context:
+
+```ruby
+# @api public
+# Base class for contracts.
+#
+# @!scope class
+# @!method abstract!
+#   @api public
+#   Marks this contract as abstract.
+#   @return [void]
+#
+# @!method abstract?
+#   @api public
+#   Returns whether this contract is abstract.
+#   @return [Boolean]
+class Base
+  include Abstractable
+end
+```
 
 ---
 
@@ -713,3 +850,9 @@ Tests are documentation with consequences.
 ## Documentation
 
 Unclear? **Do not guess. Do not invent. Ask, or leave undocumented.**
+
+## Final Law
+
+**Sameness beats cleverness.**
+
+Any variation — even if "better" — is a bug.
