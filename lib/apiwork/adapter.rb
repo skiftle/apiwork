@@ -4,26 +4,23 @@ module Apiwork
   # @api public
   module Adapter
     class << self
+      # @!method register(klass)
+      #   @api public
+      #   Registers an adapter.
+      #   @param klass [Class] an {Adapter::Base} subclass with adapter_name set
+      #   @see Adapter::Base
+      #   @example
+      #     Apiwork::Adapter.register(JSONAPIAdapter)
       delegate :all,
                :find,
+               :register,
                :registered?,
                to: Registry
 
-      # @api public
-      # Registers an adapter.
-      #
-      # @param klass [Class] an {Adapter::Base} subclass with adapter_name set
-      # @see Adapter::Base
-      #
-      # @example
-      #   Apiwork::Adapter.register(JSONAPIAdapter)
-      delegate :register, to: Registry
+      def register_defaults!
+        register(Standard)
+      end
 
-      # @api public
-      # Clears all registered adapters. Intended for test cleanup.
-      #
-      # @example
-      #   Apiwork::Adapter.reset!
       def reset!
         Registry.clear!
       end

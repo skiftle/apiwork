@@ -697,6 +697,25 @@ attr_reader :buffer,
             :state
 ```
 
+### delegate with @api public
+
+Use `@!method` before the delegate block to document `@api public` methods:
+
+```ruby
+# @!method register(klass)
+#   @api public
+#   Registers an adapter.
+#   @param klass [Class] an {Adapter::Base} subclass
+#   @see Adapter::Base
+delegate :all,
+         :find,
+         :register,
+         :registered?,
+         to: Registry
+```
+
+Internal and public methods are combined in the same delegate — `@!method` documents only the public ones.
+
 ### class_methods blocks
 
 YARD can't see inside `class_methods do`. Use `@!method` with `@!scope class`:

@@ -39,12 +39,13 @@ module Apiwork
     # @return [void]
     def prepare!(eager_load: false)
       API.reset!
+      Adapter.reset!
       ErrorCode.reset!
+      Export.reset!
 
-      Adapter.register(Adapter::Standard)
-      Export.register(Export::OpenAPI)
-      Export.register(Export::Zod)
-      Export.register(Export::TypeScript)
+      Adapter.register_defaults!
+      ErrorCode.register_defaults!
+      Export.register_defaults!
 
       load_api_definitions!
       eager_load_schemas! if eager_load
@@ -53,17 +54,13 @@ module Apiwork
     private
 
     def routes
-      return draw_routes if reload_routes?
+      return draw_routes if Rails.env.development?
 
       @routes ||= draw_routes
     end
 
     def draw_routes
       API::Router.new.draw
-    end
-
-    def reload_routes?
-      Rails.env.development?
     end
 
     def eager_load_schemas!

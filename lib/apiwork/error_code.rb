@@ -27,45 +27,40 @@ module Apiwork
     }.freeze
 
     class << self
+      # @!method register(key, attach_path: false, status:)
+      #   @api public
+      #   Registers a custom error code for use in API responses.
+      #
+      #   Error codes are used with `raises` declarations and `expose_error`
+      #   in controllers. Built-in codes (400-504) are pre-registered.
+      #
+      #   @param key [Symbol] unique identifier for the error code
+      #   @param status [Integer] HTTP status code (must be 400-599)
+      #   @param attach_path [Boolean] include request path in error response (default: false)
+      #   @return [ErrorCode::Definition] the registered error code
+      #   @raise [ArgumentError] if status is outside 400-599 range
+      #   @see Issue
+      #
+      #   @example Register custom error code
+      #     Apiwork::ErrorCode.register :resource_locked, status: 423
+      #
+      #   @example With path attachment
+      #     Apiwork::ErrorCode.register :not_found, status: 404, attach_path: true
       delegate :fetch,
+               :register,
                :registered?,
                to: Registry
-
-      # @api public
-      # Registers a custom error code for use in API responses.
-      #
-      # Error codes are used with `raises` declarations and `expose_error`
-      # in controllers. Built-in codes (400-504) are pre-registered.
-      #
-      # @param key [Symbol] unique identifier for the error code
-      # @param status [Integer] HTTP status code (must be 400-599)
-      # @param attach_path [Boolean] include request path in error response (default: false)
-      # @return [ErrorCode::Definition] the registered error code
-      # @raise [ArgumentError] if status is outside 400-599 range
-      # @see Issue
-      #
-      # @example Register custom error code
-      #   Apiwork::ErrorCode.register :resource_locked, status: 423
-      #
-      # @example With path attachment
-      #   Apiwork::ErrorCode.register :not_found, status: 404, attach_path: true
-      def register(key, attach_path: false, status:)
-        Registry.register(key, attach_path:, status:)
-      end
 
       def key_for_status(status)
         DEFAULTS.find { |_key, config| config[:status] == status }&.first
       end
 
-      def reset!
-        Registry.clear!
-        register_defaults!
-      end
-
-      private
-
       def register_defaults!
         DEFAULTS.each { |key, options| register(key, **options) }
+      end
+
+      def reset!
+        Registry.clear!
       end
     end
   end
