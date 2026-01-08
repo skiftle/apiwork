@@ -2,10 +2,6 @@
 
 module Apiwork
   # @api public
-  # Registry for error codes used in API responses.
-  #
-  # Common HTTP error codes (400-504) are pre-registered.
-  # Use {.register} to add custom error codes.
   module ErrorCode
     DEFAULTS = {
       bad_gateway: { status: 502 },

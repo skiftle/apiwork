@@ -2,12 +2,13 @@
 
 module Apiwork
   # @api public
-  # Registry for response adapters.
-  #
-  # Adapters control serialization, pagination, filtering, and response formatting.
-  # The built-in :standard adapter is used by default.
   module Adapter
     class << self
+      delegate :all,
+               :find,
+               :registered?,
+               to: Registry
+
       # @api public
       # Registers an adapter.
       #
@@ -16,21 +17,7 @@ module Apiwork
       #
       # @example
       #   Apiwork::Adapter.register(JSONAPIAdapter)
-      def register(klass)
-        Registry.register(klass)
-      end
-
-      def find(adapter_name)
-        Registry.find(adapter_name)
-      end
-
-      def registered?(adapter_name)
-        Registry.registered?(adapter_name)
-      end
-
-      def all
-        Registry.all
-      end
+      delegate :register, to: Registry
 
       # @api public
       # Clears all registered adapters. Intended for test cleanup.

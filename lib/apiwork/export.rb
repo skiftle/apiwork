@@ -2,9 +2,23 @@
 
 module Apiwork
   # @api public
-  # Entry point for exports.
   module Export
     class << self
+      delegate :all,
+               :find,
+               :registered?,
+               to: Registry
+
+      # @api public
+      # Registers an export.
+      #
+      # @param klass [Class] an {Export::Base} subclass with export_name set
+      # @see Export::Base
+      #
+      # @example
+      #   Apiwork::Export.register(JSONSchemaExport)
+      delegate :register, to: Registry
+
       # @api public
       # Generates an export for an API.
       #
@@ -24,30 +38,6 @@ module Apiwork
       #   Apiwork::Export.generate(:typescript, '/api/v1', locale: :sv, key_format: :camel)
       def generate(export_name, api_path, format: nil, key_format: nil, locale: nil, version: nil)
         find(export_name)&.generate(api_path, format:, key_format:, locale:, version:)
-      end
-
-      # @api public
-      # Registers an export.
-      #
-      # @param klass [Class] an {Export::Base} subclass with export_name set
-      # @see Export::Base
-      #
-      # @example
-      #   Apiwork::Export.register(JSONSchemaExport)
-      def register(klass)
-        Registry.register(klass)
-      end
-
-      def find(export_name)
-        Registry.find(export_name)
-      end
-
-      def all
-        Registry.all
-      end
-
-      def registered?(export_name)
-        Registry.registered?(export_name)
       end
 
       def reset!

@@ -2,11 +2,13 @@
 
 module Apiwork
   # @api public
-  # Entry point for defining APIs.
-  #
-  # Use {.define} to create an API with resources, types, and configuration.
   module API
     class << self
+      delegate :all,
+               :find,
+               :unregister,
+               to: Registry
+
       # @api public
       # Defines a new API at the given path.
       #
@@ -37,18 +39,6 @@ module Apiwork
           klass.mount(path)
           klass.class_eval(&block)
         end
-      end
-
-      def find(path)
-        Registry.find(path)
-      end
-
-      def all
-        Registry.all
-      end
-
-      def unregister(path)
-        Registry.unregister(path)
       end
 
       # @api public
