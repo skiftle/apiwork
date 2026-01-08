@@ -954,8 +954,7 @@ module Apiwork
           registrar.import(association_contract, as: alias_name) unless registrar.imports.key?(alias_name)
 
           if association_contract.schema?
-            api_class = association_contract.api_class
-            api_class&.ensure_contract_built!(association_contract)
+            association_contract.api_class.ensure_contract_built!(association_contract)
 
             association_registrar = ContractRegistrar.new(association_contract)
             sub_builder = self.class.for_schema(association_registrar, association_schema)

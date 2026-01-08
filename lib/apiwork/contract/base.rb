@@ -442,7 +442,7 @@ module Apiwork
         end
 
         def action_for(action_name)
-          api_class&.ensure_contract_built!(self)
+          api_class.ensure_contract_built!(self)
 
           action_name = action_name.to_sym
           actions[action_name]
