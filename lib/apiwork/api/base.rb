@@ -26,22 +26,6 @@ module Apiwork
                     :structure,
                     :type_system
 
-        def mount(path)
-          @path = path
-          @exports = Set.new
-          @export_configs = {}
-          @adapter_config = {}
-          @structure = Structure.new(path)
-          @type_system = TypeSystem.new
-          @built_contracts = Set.new
-          @key_format = :keep
-          @path_format = :keep
-          @introspect_cache = {}
-          @introspect_contract_cache = {}
-
-          Registry.register(self)
-        end
-
         # @api public
         # Sets the key format for request/response transformation.
         #
@@ -89,25 +73,6 @@ module Apiwork
           @path_format = format
         end
 
-        def transform_path_segment(segment)
-          case @path_format
-          when :kebab
-            segment.to_s.dasherize
-          when :camel
-            segment.to_s.camelize(:lower)
-          else
-            segment.to_s
-          end
-        end
-
-        def transform_request(hash)
-          transform_request_keys(hash)
-        end
-
-        def transform_response(hash)
-          transform_response_keys(hash)
-        end
-
         # @api public
         # Enables an export for this API.
         #
@@ -144,48 +109,6 @@ module Apiwork
           export_class = Export.find(name)
           builder = Configuration::Builder.new(export_class, @export_configs[name])
           builder.instance_eval(&block)
-        end
-
-        def export_path(name)
-          @export_configs.dig(name, :path) || "/.#{name}"
-        end
-
-        def export_config(name)
-          @export_configs[name] || {}
-        end
-
-        def exports?
-          @exports.any?
-        end
-
-        # @api public
-        # Declares error codes that any action in this API may raise.
-        #
-        # These are included in generated specs (OpenAPI, etc.) as possible
-        # error responses. Use `raises` in action definitions for action-specific errors.
-        #
-        # @param error_code_keys [Array<Symbol>] registered error code keys
-        # @raise [ConfigurationError] if error code is not registered
-        #
-        # @example Common API-wide errors
-        #   Apiwork::API.define '/api/v1' do
-        #     raises :unauthorized, :forbidden, :not_found
-        #   end
-        def raises(*error_code_keys)
-          error_code_keys = error_code_keys.flatten.uniq
-          error_code_keys.each do |error_code_key|
-            unless error_code_key.is_a?(Symbol)
-              hint = error_code_key.is_a?(Integer) ? " Use :#{ErrorCode.key_for_status(error_code_key)} instead." : ''
-              raise ConfigurationError, "raises must be symbols, got #{error_code_key.class}: #{error_code_key}.#{hint}"
-            end
-
-            next if ErrorCode.registered?(error_code_key)
-
-            raise ConfigurationError,
-                  "Unknown error code :#{error_code_key}. Register it with: " \
-                  "Apiwork::ErrorCode.register :#{error_code_key}, status: <status>"
-          end
-          @structure.raises = error_code_keys
         end
 
         # @api public
@@ -342,24 +265,34 @@ module Apiwork
           type_system.register_union(name, union_builder.serialize, scope:)
         end
 
-        def type?(name, scope: nil)
-          type_system.type?(name, scope:)
-        end
+        # @api public
+        # Declares error codes that any action in this API may raise.
+        #
+        # These are included in generated specs (OpenAPI, etc.) as possible
+        # error responses. Use `raises` in action definitions for action-specific errors.
+        #
+        # @param error_code_keys [Array<Symbol>] registered error code keys
+        # @raise [ConfigurationError] if error code is not registered
+        #
+        # @example Common API-wide errors
+        #   Apiwork::API.define '/api/v1' do
+        #     raises :unauthorized, :forbidden, :not_found
+        #   end
+        def raises(*error_code_keys)
+          error_code_keys = error_code_keys.flatten.uniq
+          error_code_keys.each do |error_code_key|
+            unless error_code_key.is_a?(Symbol)
+              hint = error_code_key.is_a?(Integer) ? " Use :#{ErrorCode.key_for_status(error_code_key)} instead." : ''
+              raise ConfigurationError, "raises must be symbols, got #{error_code_key.class}: #{error_code_key}.#{hint}"
+            end
 
-        def type_definitions(name, scope: nil)
-          type_system.type_definitions(name, scope:)
-        end
+            next if ErrorCode.registered?(error_code_key)
 
-        def enum?(name, scope: nil)
-          type_system.enum?(name, scope:)
-        end
-
-        def enum_values(name, scope: nil)
-          type_system.enum_values(name, scope:)
-        end
-
-        def scoped_name(scope, name)
-          type_system.scoped_name(scope, name)
+            raise ConfigurationError,
+                  "Unknown error code :#{error_code_key}. Register it with: " \
+                  "Apiwork::ErrorCode.register :#{error_code_key}, status: <status>"
+          end
+          @structure.raises = error_code_keys
         end
 
         # @api public
@@ -532,6 +465,75 @@ module Apiwork
         #   end
         def with_options(options = {}, &block)
           @structure.with_options(options, &block)
+        end
+
+        # --- Internal methods below ---
+
+        def mount(path)
+          @path = path
+          @exports = Set.new
+          @export_configs = {}
+          @adapter_config = {}
+          @structure = Structure.new(path)
+          @type_system = TypeSystem.new
+          @built_contracts = Set.new
+          @key_format = :keep
+          @path_format = :keep
+          @introspect_cache = {}
+          @introspect_contract_cache = {}
+
+          Registry.register(self)
+        end
+
+        def transform_path_segment(segment)
+          case @path_format
+          when :kebab
+            segment.to_s.dasherize
+          when :camel
+            segment.to_s.camelize(:lower)
+          else
+            segment.to_s
+          end
+        end
+
+        def transform_request(hash)
+          transform_request_keys(hash)
+        end
+
+        def transform_response(hash)
+          transform_response_keys(hash)
+        end
+
+        def export_path(name)
+          @export_configs.dig(name, :path) || "/.#{name}"
+        end
+
+        def export_config(name)
+          @export_configs[name] || {}
+        end
+
+        def exports?
+          @exports.any?
+        end
+
+        def type?(name, scope: nil)
+          type_system.type?(name, scope:)
+        end
+
+        def type_definitions(name, scope: nil)
+          type_system.type_definitions(name, scope:)
+        end
+
+        def enum?(name, scope: nil)
+          type_system.enum?(name, scope:)
+        end
+
+        def enum_values(name, scope: nil)
+          type_system.enum_values(name, scope:)
+        end
+
+        def scoped_name(scope, name)
+          type_system.scoped_name(scope, name)
         end
 
         def introspect(locale: nil)
