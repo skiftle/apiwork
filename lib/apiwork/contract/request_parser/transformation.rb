@@ -66,8 +66,8 @@ module Apiwork
             return unless discriminator && value.key?(discriminator)
 
             tag = value[discriminator]
-            variant = union_definition.variants.find do |v|
-              v[:tag].to_s == tag.to_s
+            variant = union_definition.variants.find do |variant|
+              variant[:tag].to_s == tag.to_s
             end
             return unless variant
 

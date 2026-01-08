@@ -31,7 +31,9 @@ module Apiwork
     }.freeze
 
     class << self
-      delegate :fetch, :registered?, to: Registry
+      delegate :fetch,
+               :registered?,
+               to: Registry
 
       # @api public
       # Registers a custom error code for use in API responses.
@@ -56,7 +58,7 @@ module Apiwork
       end
 
       def key_for_status(status)
-        DEFAULTS.find { |_, config| config[:status] == status }&.first
+        DEFAULTS.find { |_key, config| config[:status] == status }&.first
       end
 
       def reset!

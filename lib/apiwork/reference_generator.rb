@@ -41,8 +41,6 @@ module Apiwork
       api_tag = obj.docstring.tags(:api).find { |t| t.text == 'public' }
 
       if obj.type == :method
-        # For methods, check if @api tag is inherited from parent class/module
-        # by comparing object_id with parent's tag
         return false unless api_tag
 
         parent = obj.namespace
@@ -52,11 +50,9 @@ module Apiwork
         return api_tag.object_id != parent_api_tag&.object_id
       end
 
-      # For classes/modules with own docstring and @api tag
       has_own_docstring = !obj.docstring.to_s.strip.empty?
       return true if has_own_docstring && api_tag
 
-      # Fallback: check file for @api public in class/module comment
       return false unless obj.file
 
       lines = File.readlines(obj.file)
@@ -96,9 +92,6 @@ module Apiwork
     def extract_methods(obj, scope)
       methods = obj.meths(scope:, visibility: :public)
 
-      # Include methods from included modules (concerns)
-      # Concerns are included at instance scope but may define class methods
-      # via @!scope class, so we check instance mixins for both scopes
       obj.mixins(:instance).each do |mixin|
         mixin_obj = YARD::Registry.at(mixin.path)
         next unless mixin_obj
@@ -117,8 +110,8 @@ module Apiwork
     def documented?(method)
       return true unless method.docstring.to_s.strip.empty?
 
-      useful_tags = method.docstring.tags.reject do |t|
-        t.tag_name == 'api' || t.text.to_s.strip.empty?
+      useful_tags = method.docstring.tags.reject do |tag|
+        tag.tag_name == 'api' || tag.text.to_s.strip.empty?
       end
       useful_tags.any?
     end
@@ -139,7 +132,7 @@ module Apiwork
     end
 
     def build_signature(method)
-      params = method.parameters.reject { |name, _| name.to_s.start_with?('internal') }
+      params = method.parameters.reject { |name, _default| name.to_s.start_with?('internal') }
       params = params.map do |name, default|
         if name.to_s.end_with?(':')
           default ? "#{name} #{default}" : name.to_s
@@ -315,8 +308,8 @@ module Apiwork
           full_path = obj.path.delete_prefix('Apiwork::')
           parts = full_path.split('::')
 
-          parts.size.times do |i|
-            partial_path = parts[i..].join('::')
+          parts.size.times do |index|
+            partial_path = parts[index..].join('::')
             next if RUBY_PRIMITIVES.include?(partial_path)
 
             lookup[partial_path] ||= full_path
@@ -327,13 +320,11 @@ module Apiwork
     end
 
     def yard_ref_to_path(ref)
-      # Handle method refs: "ActionDefinition#request" becomes "contract-action-definition.md#requestreplace-false-block"
       if ref.include?('#')
         class_part, method_part = ref.split('#', 2)
         file_path = class_to_filepath(class_part)
         "#{file_path}##{method_part.dasherize}"
       elsif ref.include?('.')
-        # Class method: "Adapter.register" becomes "adapter.md#register"
         class_part, method_part = ref.split('.', 2)
         file_path = class_to_filepath(class_part)
         "#{file_path}##{method_part.dasherize}"
