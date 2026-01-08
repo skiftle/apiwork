@@ -154,7 +154,7 @@ module Apiwork
 
         def create_temp_contract
           contract = Class.new(Apiwork::Contract::Base)
-          contract.instance_variable_set(:@api_class, @api_class)
+          contract.api_class = @api_class
           contract
         end
       end

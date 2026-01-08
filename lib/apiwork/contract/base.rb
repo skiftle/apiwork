@@ -93,6 +93,8 @@ module Apiwork
       end
 
       class << self
+        attr_writer :api_class
+
         def inherited(subclass)
           super
           subclass.actions = {}

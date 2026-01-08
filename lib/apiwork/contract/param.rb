@@ -9,6 +9,12 @@ module Apiwork
     #
     # @api public
     class Param
+      attr_reader :action_name,
+                  :contract_class,
+                  :params
+
+      attr_writer :visited_types
+
       def initialize(contract_class, action_name: nil, wrapped: false)
         @contract_class = contract_class
         @action_name = action_name
@@ -19,10 +25,6 @@ module Apiwork
       def wrapped?
         @wrapped
       end
-
-      attr_reader :action_name,
-                  :contract_class,
-                  :params
 
       # @api public
       # Defines a parameter/field in a request or response body.
@@ -271,7 +273,7 @@ module Apiwork
             optional:,
             default:,
             as:,
-            **options.except(:value), # Remove :value from options to avoid duplication
+            **options.except(:value),
           },
         )
       end
@@ -291,7 +293,7 @@ module Apiwork
             as:,
             union: union_builder,
             discriminator:,
-            enum: resolved_enum, # Store resolved enum (values or reference)
+            enum: resolved_enum,
             **options,
           },
         )
@@ -353,8 +355,7 @@ module Apiwork
         visited_with_current = visited_types.dup.add(expansion_key)
 
         shape_param_definition = Param.new(@contract_class, action_name: @action_name)
-
-        shape_param_definition.instance_variable_set(:@visited_types, visited_with_current)
+        shape_param_definition.visited_types = visited_with_current
 
         custom_type_block.each do |definition_block|
           shape_param_definition.instance_eval(&definition_block)
@@ -365,13 +366,13 @@ module Apiwork
         @params[name] = apply_param_defaults(
           {
             name:,
-            type: :object, # Custom types are objects internally
+            type: :object,
             optional:,
             default:,
-            enum: resolved_enum, # Store resolved enum (values or reference)
+            enum: resolved_enum,
             of:,
             as:,
-            custom_type: type, # Track original custom type name
+            custom_type: type,
             shape: shape_param_definition,
             **options,
           },
@@ -385,7 +386,7 @@ module Apiwork
             type:,
             optional:,
             default:,
-            enum: resolved_enum, # Store resolved enum (values or reference)
+            enum: resolved_enum,
             of:,
             as:,
             **options,

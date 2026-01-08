@@ -358,7 +358,7 @@ attr_writer :api_class
 Mandatory order for classes and modules:
 
 1. Constants
-2. `attr_reader` / `attr_accessor` (public with YARD first, then semi-public)
+2. All `attr_*` declarations together (`attr_reader`, `attr_writer`, `attr_accessor`)
 3. `class << self`
 4. `initialize`
 5. Public instance methods
@@ -366,6 +366,8 @@ Mandatory order for classes and modules:
 7. Private instance methods
 
 **Within every section:** `@api public` methods appear first, then semi-public.
+
+**All `attr_*` must be grouped together at the top.** Never scatter attr declarations throughout the file.
 
 This applies to:
 - `attr_reader` / `attr_accessor` declarations
