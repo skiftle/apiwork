@@ -26,14 +26,6 @@ module Apiwork
         @operation_id = nil
       end
 
-      def resets_request?
-        @reset_request
-      end
-
-      def resets_response?
-        @reset_response
-      end
-
       # @api public
       # Sets a short summary for this action.
       #
@@ -99,10 +91,6 @@ module Apiwork
       #   end
       def deprecated
         @deprecated = true
-      end
-
-      def deprecated?
-        @deprecated == true
       end
 
       # @api public
@@ -217,6 +205,18 @@ module Apiwork
         @response.instance_eval(&block) if block
 
         @response
+      end
+
+      def resets_request?
+        @reset_request
+      end
+
+      def resets_response?
+        @reset_response
+      end
+
+      def deprecated?
+        @deprecated == true
       end
     end
   end

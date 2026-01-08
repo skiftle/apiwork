@@ -70,36 +70,8 @@ module Apiwork
       # @return [Symbol] the current action name
       attr_reader :action_name
 
-      def initialize(action_name:, body:, coerce: false, query:)
-        result = RequestParser.new(self.class, action_name, coerce:).parse(query, body)
-        @query = result.query
-        @body = result.body
-        @issues = result.issues
-        @action_name = action_name.to_sym
-      end
-
-      # @api public
-      # Returns whether the contract passed validation.
-      # @return [Boolean] true if no validation issues
-      def valid?
-        issues.empty?
-      end
-
-      # @api public
-      # Returns whether the contract has validation issues.
-      # @return [Boolean] true if any validation issues
-      def invalid?
-        issues.any?
-      end
-
       class << self
         attr_writer :api_class
-
-        def inherited(subclass)
-          super
-          subclass.actions = {}
-          subclass.imports = {}
-        end
 
         # @api public
         # Sets the scope prefix for contract-scoped types.
@@ -172,40 +144,6 @@ module Apiwork
           raise ArgumentError,
                 "Expected to find #{schema_name} in app/schemas/. " \
                 'Contract and Schema must follow convention: XContract and XSchema'
-        end
-
-        def find_contract_for_schema(schema_class)
-          return nil unless schema_class&.name
-
-          schema_class.name
-            .sub(/Schema\z/, 'Contract')
-            .safe_constantize
-        end
-
-        def schema_class
-          _schema_class
-        end
-
-        def schema?
-          _schema_class.present?
-        end
-
-        def reset_build_state!
-          self.actions = {}
-          self.imports = {}
-        end
-
-        def scope_prefix
-          return _identifier if _identifier
-          return schema_class.root_key.singular if schema_class
-
-          return nil unless name
-
-          name
-            .demodulize
-            .delete_suffix('Contract')
-            .delete_suffix('Schema')
-            .underscore
         end
 
         # @api public
@@ -434,22 +372,6 @@ module Apiwork
           actions[action_name] = action
         end
 
-        def resolve_custom_type(type_name, visited: Set.new)
-          raise ConfigurationError, "Circular import detected while resolving :#{type_name}" if visited.include?(self)
-
-          result = api_class.type_definitions(type_name, scope: self)
-          return result if result
-
-          resolve_imported_type(type_name, visited: visited.dup.add(self))
-        end
-
-        def action_for(action_name)
-          api_class.ensure_contract_built!(self)
-
-          action_name = action_name.to_sym
-          actions[action_name]
-        end
-
         # @api public
         # Returns a hash representation of this contract's structure.
         #
@@ -469,6 +391,62 @@ module Apiwork
         #   # => { actions: {...}, types: { local: {...}, imported: {...}, global: {...} } }
         def introspect(expand: false, locale: nil)
           api_class.introspect_contract(self, expand:, locale:)
+        end
+
+        def inherited(subclass)
+          super
+          subclass.actions = {}
+          subclass.imports = {}
+        end
+
+        def find_contract_for_schema(schema_class)
+          return nil unless schema_class&.name
+
+          schema_class.name
+            .sub(/Schema\z/, 'Contract')
+            .safe_constantize
+        end
+
+        def schema_class
+          _schema_class
+        end
+
+        def schema?
+          _schema_class.present?
+        end
+
+        def reset_build_state!
+          self.actions = {}
+          self.imports = {}
+        end
+
+        def scope_prefix
+          return _identifier if _identifier
+          return schema_class.root_key.singular if schema_class
+
+          return nil unless name
+
+          name
+            .demodulize
+            .delete_suffix('Contract')
+            .delete_suffix('Schema')
+            .underscore
+        end
+
+        def resolve_custom_type(type_name, visited: Set.new)
+          raise ConfigurationError, "Circular import detected while resolving :#{type_name}" if visited.include?(self)
+
+          result = api_class.type_definitions(type_name, scope: self)
+          return result if result
+
+          resolve_imported_type(type_name, visited: visited.dup.add(self))
+        end
+
+        def action_for(action_name)
+          api_class.ensure_contract_built!(self)
+
+          action_name = action_name.to_sym
+          actions[action_name]
         end
 
         def api_class
@@ -537,6 +515,28 @@ module Apiwork
 
           nil
         end
+      end
+
+      def initialize(action_name:, body:, coerce: false, query:)
+        result = RequestParser.new(self.class, action_name, coerce:).parse(query, body)
+        @query = result.query
+        @body = result.body
+        @issues = result.issues
+        @action_name = action_name.to_sym
+      end
+
+      # @api public
+      # Returns whether the contract passed validation.
+      # @return [Boolean] true if no validation issues
+      def valid?
+        issues.empty?
+      end
+
+      # @api public
+      # Returns whether the contract has validation issues.
+      # @return [Boolean] true if any validation issues
+      def invalid?
+        issues.any?
       end
     end
   end

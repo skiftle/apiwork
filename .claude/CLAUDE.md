@@ -1128,6 +1128,10 @@ Tests are documentation with consequences.
 
 Unclear? **Do not guess. Do not invent. Ask, or leave undocumented.**
 
+## Code Review
+
+When reviewing code, follow `.claude/REVIEW.md` checklist **point by point**. Do not skip items. Check every rule for every file before moving on.
+
 ## Final Law
 
 **Sameness beats cleverness.**

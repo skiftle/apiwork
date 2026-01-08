@@ -1,67 +1,102 @@
 # REVIEW.md
 
-Checklista för kodgranskning. Använd detta dokument för att verifiera att koden följer projektets konventioner.
+Code review checklist. **Go through EVERY point in order.** Do not skip.
 
 ---
 
-## Namngivning
+## Checklist (run for each file)
 
-### Boolean-metoder och variabler
+### 1. Class Layout - correct order?
+- [ ] Constants first
+- [ ] `attr_*` declarations grouped (ALL together, not scattered)
+- [ ] `class << self` before `initialize`
+- [ ] `initialize` after `class << self`
+- [ ] Public instance methods after `initialize`
+- [ ] `private` last
 
-- **Metoder:** Använd `?` suffix, inte `is_` prefix
-- **Instansvariabler:** Substantiv utan prefix
+### 2. Within each section - @api public first?
+- [ ] In `attr_*`: @api public attr_reader before semi-public
+- [ ] In `class << self`: attr_* first, then @api public methods, then semi-public
+- [ ] In instance methods: @api public before semi-public
+
+### 3. Naming
+- [ ] No `is_` prefix (use `?` suffix)
+- [ ] `_class` suffix for class references
+- [ ] Parameter = instance variable (same name)
+- [ ] No abbreviations
+
+### 4. Defensive code
+- [ ] No `&.` on values that should exist
+- [ ] No `|| default` on values that should exist
+- [ ] No `respond_to?` checks
+- [ ] Defaults in signature, not in method body
+
+### 5. Other
+- [ ] No comments (except YARD on @api public)
+- [ ] No `|_, var|` - restructure instead
+- [ ] No arrow symbols (`→`, `↔`)
+- [ ] One guard per line
+
+---
+
+## Naming
+
+### Boolean methods and variables
+
+- **Methods:** Use `?` suffix, not `is_` prefix
+- **Instance variables:** Nouns without prefix
 
 ```ruby
-# ❌ Java-style
+# Bad - Java-style
 @is_active
 def is_valid?
 
-# ✅ Ruby-style
+# Good - Ruby-style
 @active
 def valid?
 ```
 
-### Klassreferenser
+### Class references
 
-- Variabler som håller klassreferenser ska ha `_class` suffix
+- Variables holding class references need `_class` suffix
 
 ```ruby
-# ❌
+# Bad
 @schema
 @contract
 
-# ✅
+# Good
 @schema_class
 @contract_class
 ```
 
-### Parameter-till-instansvariabel
+### Parameter to instance variable
 
-- Om en parameter tilldelas direkt till en instansvariabel, använd samma namn
+- If a parameter is assigned directly to an instance variable, use the same name
 
 ```ruby
-# ❌ Inkonsekvent
+# Bad - inconsistent
 def initialize(schema_class)
   @owner_schema_class = schema_class
 end
 
-# ✅ Konsekvent
+# Good - consistent
 def initialize(owner_schema_class)
   @owner_schema_class = owner_schema_class
 end
 ```
 
-### Inga förkortningar
+### No abbreviations
 
-- Skriv ut hela ord
+- Write out full words
 
 ```ruby
-# ❌
+# Bad
 assoc_def
 attr_def
 param_val
 
-# ✅
+# Good
 association_definition
 attribute_definition
 parameter_value
@@ -69,27 +104,27 @@ parameter_value
 
 ---
 
-## Blockparametrar
+## Block parameters
 
-### Undvik underscore för oanvända parametrar
+### Avoid underscore for unused parameters
 
-- Omstrukturera för att undvika behovet
+- Restructure to avoid the need
 
 ```ruby
-# ❌
+# Bad
 hash.any? { |_, value| value.active? }
 
-# ✅
+# Good
 hash.values.any?(&:active?)
 ```
 
-### Namnge alltid blockparametrar
+### Always name block parameters
 
 ```ruby
-# ❌
+# Bad
 items.map { |_1| _1.name }
 
-# ✅
+# Good
 items.map { |item| item.name }
 ```
 
@@ -97,52 +132,52 @@ items.map { |item| item.name }
 
 ## Intermediate Variables
 
-### Skapa bara när det ger klarhet
+### Create only when it adds clarity
 
-- Komplexa uttryck som behöver ett namn
-- Kedjor med 3+ metodanrop
+- Complex expressions that need a name
+- Chains with 3+ method calls
 
-### Skapa inte för
+### Don't create for
 
-- Enkla metodanrop som används 1-2 gånger
-- Uttryck som redan är tydliga från kontexten
+- Simple method calls used 1-2 times
+- Expressions already clear from context
 
 ```ruby
-# ❌ Onödig variabel
+# Bad - unnecessary variable
 schema_class = definition.schema_class
 serialize(schema_class)
 
-# ✅ Direkt användning
+# Good - direct usage
 serialize(definition.schema_class)
 
-# ✅ Motiverad variabel (komplext uttryck)
+# Good - justified variable (complex expression)
 filtered_active_users = users.select(&:active?).reject(&:banned?).sort_by(&:name)
 ```
 
 ---
 
-## Dokumentation
+## Documentation
 
-### Synlighetsnivåer
+### Visibility levels
 
-| Nivå | YARD | Kommentarer |
-|------|------|-------------|
-| `@api public` | Ja | Ja |
-| Semi-public | Nej | Nej |
-| Private | Nej | Nej |
+| Level | YARD | Comments |
+|-------|------|----------|
+| `@api public` | Yes | Yes |
+| Semi-public | No | No |
+| Private | No | No |
 
-### Semi-public metoder
+### Semi-public methods
 
-- Metoder som behövs internt mellan klasser men inte är del av publikt API
-- Använd `attr_writer` eller `attr_accessor` istället för `attr_reader` + manuell setter
-- **Ingen dokumentation överhuvudtaget**
+- Methods needed internally between classes but not part of public API
+- Use `attr_writer` or `attr_accessor` instead of `attr_reader` + manual setter
+- **No documentation whatsoever**
 
 ```ruby
-# ❌ Semi-public med dokumentation
+# Bad - semi-public with documentation
 # Sets the visited types for cycle detection.
 attr_writer :visited_types
 
-# ✅ Semi-public utan dokumentation
+# Good - semi-public without documentation
 attr_writer :visited_types
 ```
 
@@ -150,11 +185,11 @@ attr_writer :visited_types
 
 ## Class Layout
 
-Ordning inom en klass:
+Order within a class:
 
 1. Constants (`ALLOWED_FORMATS = ...`)
-2. `class_attribute` / `attr_*` deklarationer
-3. `class << self` block (om det finns)
+2. `class_attribute` / `attr_*` declarations
+3. `class << self` block (if present)
 4. `initialize`
 5. Public instance methods
 6. `private`
@@ -190,37 +225,37 @@ end
 
 ## Defensive Code
 
-### Undvik
+### Avoid
 
 | Pattern | Problem |
 |---------|---------|
-| `value&.method` | Döljer nil där nil inte borde vara |
-| `value \|\| default` | Döljer oväntad nil |
-| `respond_to?(:method)` | Metoden borde alltid finnas |
-| `x == false` | Använd `unless x` |
+| `value&.method` | Hides nil where nil shouldn't be |
+| `value \|\| default` | Hides unexpected nil |
+| `respond_to?(:method)` | Method should always exist |
+| `x == false` | Use `unless x` |
 
-### Defaults i signaturen
+### Defaults in signature
 
 ```ruby
-# ❌ Defensive default
+# Bad - defensive default
 def initialize(active: nil)
   @active = active || false
 end
 
-# ✅ Default i signatur
+# Good - default in signature
 def initialize(active: false)
   @active = active
 end
 ```
 
-### Undantag: Detekteringslogik
+### Exception: Detection logic
 
-När `nil` betyder "inte angiven" och behöver skiljas från `false`:
+When `nil` means "not provided" and needs to be distinguished from `false`:
 
 ```ruby
 def initialize(optional: nil)
   optional = detect_optional if optional.nil?
-  optional = false if optional.nil?  # Fallback efter detektion
+  optional = false if optional.nil?  # Fallback after detection
   @optional = optional
 end
 ```
@@ -229,25 +264,25 @@ end
 
 ## Guards
 
-### En guard per rad
+### One guard per line
 
 ```ruby
-# ❌
+# Bad
 return if abstract? || @model_class.nil?
 
-# ✅
+# Good
 return if abstract?
 return if @model_class.nil?
 ```
 
-### Positiv logik
+### Positive logic
 
 ```ruby
-# ❌
+# Bad
 if !user.active?
 unless user.active? && user.verified?
 
-# ✅
+# Good
 unless user.active?
 if user.inactive? || user.unverified?
 ```

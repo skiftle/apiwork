@@ -22,10 +22,6 @@ module Apiwork
         @params = {}
       end
 
-      def wrapped?
-        @wrapped
-      end
-
       # @api public
       # Defines a parameter/field in a request or response body.
       #
@@ -204,6 +200,10 @@ module Apiwork
 
       def validate(data, options = {})
         ParamValidator.new(self).validate(data, options)
+      end
+
+      def wrapped?
+        @wrapped
       end
 
       private
