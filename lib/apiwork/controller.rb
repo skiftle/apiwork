@@ -30,6 +30,7 @@ module Apiwork
 
     included do
       wrap_parameters false
+
       before_action :validate_contract
 
       rescue_from ContractError, DomainError do |error|

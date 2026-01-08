@@ -41,20 +41,6 @@ module Apiwork
 
         @variants << variant_definition
       end
-
-      def serialize
-        serialized_variants = @variants.map do |variant|
-          serialized = variant.dup
-          serialized[:shape] = serialized[:shape].as_json if serialized[:shape].is_a?(Param)
-          serialized
-        end
-
-        {
-          discriminator: @discriminator,
-          type: :union,
-          variants: serialized_variants,
-        }.compact
-      end
     end
   end
 end

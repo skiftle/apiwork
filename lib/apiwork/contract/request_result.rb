@@ -8,17 +8,9 @@ module Apiwork
                   :query
 
       def initialize(body: {}, issues: [], query: {})
-        @issues = issues
         @body = body
+        @issues = issues
         @query = query
-      end
-
-      def data
-        @data ||= query.merge(body)
-      end
-
-      def [](key)
-        data[key]
       end
 
       def valid?
