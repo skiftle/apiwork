@@ -66,7 +66,7 @@ module Apiwork
       def as_json
         serialized_attributes = {}
 
-        add_discriminator_field(serialized_attributes) if self.class.respond_to?(:sti_variant?) && self.class.sti_variant?
+        add_discriminator_field(serialized_attributes) if self.class.sti_variant?
 
         self.class.attribute_definitions.each do |attribute, definition|
           value = respond_to?(attribute) ? public_send(attribute) : object.public_send(attribute)
@@ -465,7 +465,7 @@ module Apiwork
           self.variant_tag = tag.to_sym
           self._sti_type = model_class.sti_name
 
-          superclass.register_variant(schema: self, sti_type: _sti_type, tag: variant_tag) if superclass.respond_to?(:register_variant)
+          superclass.register_variant(schema: self, sti_type: _sti_type, tag: variant_tag)
 
           self
         end
@@ -687,9 +687,9 @@ module Apiwork
         end
 
         def serialize_single(obj, context: {}, include: nil)
-          if respond_to?(:sti_base?) && sti_base?
-            variant_schema = resolve_sti_variant(obj)
-            return variant_schema.new(obj, context:, include:).as_json if variant_schema
+          if sti_base?
+            variant_schema_class = resolve_sti_variant(obj)
+            return variant_schema_class.new(obj, context:, include:).as_json if variant_schema_class
           end
 
           new(obj, context:, include:).as_json
@@ -740,29 +740,27 @@ module Apiwork
 
       def add_discriminator_field(serialized_attributes)
         parent_schema = self.class.superclass
-        return unless parent_schema.respond_to?(:discriminator_name)
-
         discriminator_name = parent_schema.discriminator_name
+        return unless discriminator_name
+
         variant_tag = self.class.variant_tag
 
         serialized_attributes[discriminator_name] = variant_tag.to_s
       end
 
       def serialize_association(name, definition)
-        associated = object.public_send(name)
-        return nil if associated.nil?
+        target = object.public_send(name)
+        return nil if target.nil?
 
-        resource_class = definition.schema_class || resolve_association_schema(name)
-        return nil unless resource_class
-
-        resource_class = resource_class.constantize if resource_class.is_a?(String)
+        schema_class = definition.schema_class || resolve_association_schema(name)
+        return nil unless schema_class
 
         nested_includes = @include[name] || @include[name.to_s] || @include[name.to_sym] if @include.is_a?(Hash)
 
         if definition.collection?
-          associated.map { |item| serialize_sti_aware(item, resource_class, nested_includes) }
+          target.map { |record| serialize_sti_aware(record, schema_class, nested_includes) }
         else
-          serialize_sti_aware(associated, resource_class, nested_includes)
+          serialize_sti_aware(target, schema_class, nested_includes)
         end
       end
 
@@ -777,13 +775,13 @@ module Apiwork
         "#{namespace}::#{reflection.klass.name.demodulize}Schema".safe_constantize
       end
 
-      def serialize_sti_aware(item, resource_class, nested_includes)
-        if resource_class.respond_to?(:sti_base?) && resource_class.sti_base?
-          variant_schema = resource_class.resolve_sti_variant(item)
-          return variant_schema.new(item, context: context, include: nested_includes).as_json if variant_schema
+      def serialize_sti_aware(record, schema_class, nested_includes)
+        if schema_class.sti_base?
+          variant_schema_class = schema_class.resolve_sti_variant(record)
+          return variant_schema_class.new(record, context: context, include: nested_includes).as_json if variant_schema_class
         end
 
-        resource_class.new(item, context: context, include: nested_includes).as_json
+        schema_class.new(record, context: context, include: nested_includes).as_json
       end
 
       def should_include_association?(name, definition)
@@ -794,13 +792,10 @@ module Apiwork
       end
 
       def circular_reference?(definition)
-        assoc_schema = definition.schema_class
-        return false unless assoc_schema
+        return false unless definition.schema_class
 
-        assoc_schema.association_definitions.any? do |_, assoc_def|
-          next false unless assoc_def.always_included?
-
-          assoc_def.schema_class == self.class
+        definition.schema_class.association_definitions.values.any? do |association_definition|
+          association_definition.always_included? && association_definition.schema_class == self.class
         end
       end
 

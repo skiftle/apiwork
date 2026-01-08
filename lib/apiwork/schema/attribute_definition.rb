@@ -3,6 +3,14 @@
 module Apiwork
   module Schema
     class AttributeDefinition
+      ALLOWED_FORMATS = {
+        decimal: %i[float double],
+        float: %i[float double],
+        integer: %i[int32 int64],
+        number: %i[float double],
+        string: %i[email uuid uri url date date_time ipv4 ipv6 password hostname],
+      }.freeze
+
       attr_reader :deprecated,
                   :description,
                   :empty,
@@ -17,34 +25,26 @@ module Apiwork
                   :optional,
                   :type
 
-      ALLOWED_FORMATS = {
-        decimal: %i[float double],
-        float: %i[float double],
-        integer: %i[int32 int64],
-        number: %i[float double],
-        string: %i[email uuid uri url date date_time ipv4 ipv6 password hostname],
-      }.freeze
-
       def initialize(
         name,
         schema_class,
-        type: nil,
-        optional: nil,
-        nullable: nil,
-        enum: nil,
-        of: nil,
-        min: nil,
-        max: nil,
-        empty: nil,
-        format: nil,
-        filterable: nil,
-        sortable: nil,
-        writable: nil,
-        encode: nil,
         decode: nil,
-        description: nil,
-        example: nil,
         deprecated: false,
+        description: nil,
+        empty: false,
+        encode: nil,
+        enum: nil,
+        example: nil,
+        filterable: false,
+        format: nil,
+        max: nil,
+        min: nil,
+        nullable: nil,
+        of: nil,
+        optional: nil,
+        sortable: false,
+        type: nil,
+        writable: nil,
         &block
       )
         @name = name
@@ -54,7 +54,7 @@ module Apiwork
 
         type ||= :object if block
 
-        if schema_class.respond_to?(:model_class) && schema_class.model_class.present?
+        if schema_class.model_class.present?
           @model_class = schema_class.model_class
 
           begin
@@ -65,18 +65,21 @@ module Apiwork
             optional = detect_optional(name) if optional.nil?
             nullable = detect_nullable(name) if nullable.nil?
           rescue ActiveRecord::StatementInvalid, ActiveRecord::NoDatabaseError, ActiveRecord::ConnectionNotEstablished
-            nil
+            @is_db_column = false
           end
         end
 
-        @filterable = filterable || false
-        @sortable = sortable || false
+        optional = false if optional.nil?
+        nullable = false if nullable.nil?
+
+        @filterable = filterable
+        @sortable = sortable
         @writable = normalize_writable(writable)
         @encode = encode
         @decode = decode
-        @empty = empty || false
-        @nullable = nullable || false
-        @optional = optional || false
+        @empty = empty
+        @nullable = nullable
+        @optional = optional
         @type = type || :unknown
         @enum = enum
         @min = min
@@ -169,7 +172,9 @@ module Apiwork
       end
 
       def defined_on_model?
-        @model_class && (@is_db_column || @model_class.instance_methods.include?(@name.to_sym))
+        return false unless @model_class
+
+        @is_db_column || @model_class.instance_methods.include?(@name.to_sym)
       end
 
       def defined_on_schema?
@@ -226,7 +231,7 @@ module Apiwork
       end
 
       def detect_enum_values(name)
-        return nil unless @model_class&.defined_enums&.key?(name.to_s)
+        return nil unless @model_class.defined_enums.key?(name.to_s)
 
         @model_class.defined_enums[name.to_s].keys
       end
@@ -249,10 +254,11 @@ module Apiwork
         return false unless @is_db_column
 
         column = column_for(name)
+        return false unless column
 
-        return true if column&.default.present? && @model_class.defined_enums.exclude?(name.to_s)
+        return true if column.default.present? && @model_class.defined_enums.exclude?(name.to_s)
 
-        column&.null || false
+        column.null
       end
 
       def detect_nullable(name)
@@ -260,8 +266,9 @@ module Apiwork
         return false unless @is_db_column
 
         column = column_for(name)
+        return false unless column
 
-        column&.null || false
+        column.null
       end
 
       def column_for(name)
@@ -269,8 +276,8 @@ module Apiwork
       end
 
       def validate_min_max_range!
-        return if @min.nil? || @max.nil?
-
+        return if @min.nil?
+        return if @max.nil?
         return unless @min > @max
 
         raise ConfigurationError,

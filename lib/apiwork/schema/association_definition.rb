@@ -97,14 +97,14 @@ module Apiwork
 
       def nullable?
         return @nullable unless @nullable.nil?
+        return false unless @type == :belongs_to
+        return false unless @model_class
 
-        if @type == :belongs_to && @model_class
-          foreign_key = detect_foreign_key
-          column = column_for(foreign_key)
-          return column.null if column
-        end
+        foreign_key = detect_foreign_key
+        column = column_for(foreign_key)
+        return false unless column
 
-        false
+        column.null
       end
 
       def schema_class_name
@@ -182,7 +182,9 @@ module Apiwork
 
       def detect_foreign_key
         reflection = @model_class.reflect_on_association(@name)
-        reflection&.foreign_key || "#{@name}_id"
+        return "#{@name}_id" unless reflection
+
+        reflection.foreign_key
       end
 
       def detect_polymorphic_discriminator!
@@ -190,8 +192,9 @@ module Apiwork
 
         reflection = @model_class.reflect_on_association(@name)
         return unless reflection
+        return unless reflection.foreign_type
 
-        @discriminator = reflection.foreign_type&.to_sym
+        @discriminator = reflection.foreign_type.to_sym
       end
 
       def validate_polymorphic!
@@ -261,7 +264,9 @@ module Apiwork
         end
 
         nested_options = @model_class.nested_attributes_options[@name]
-        @allow_destroy = nested_options[:allow_destroy] || false if nested_options
+        return unless nested_options
+
+        @allow_destroy = nested_options[:allow_destroy]
       end
 
       def validate_query_options!

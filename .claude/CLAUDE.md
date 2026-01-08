@@ -520,11 +520,36 @@ end
 
 | Do                                                      | Don't                                    |
 | ------------------------------------------------------- | ---------------------------------------- |
-| Intermediate variables instead of chains                | `then`                                   |
+| Intermediate variables for complex expressions          | `then`                                   |
 | Clear block parameters: `{ \|item\| process(item) }`    | `_1`, `_2` (numbered params)             |
 | Rails idioms: `delegate`, `index_by`, `tap`, `presence` | `inject`, `reduce` — use `each_with_object` |
 | Transform: `map`, Filter: `select`/`reject`, Accumulate: `each_with_object` | Long method chains across multiple lines |
+| Inline simple method calls used 1-2 times               | Variables for trivial expressions        |
 |                                                         | Unnecessarily clever Ruby                |
+
+### Intermediate Variables
+
+Use intermediate variables for:
+- Complex expressions that need a name for clarity
+- Breaking up long method chains (3+ calls)
+
+Don't create variables for:
+- Simple method calls used 1-2 times
+- Expressions that are already clear from context
+
+```ruby
+# Bad — unnecessary variable
+schema_class = definition.schema_class
+return false unless schema_class
+schema_class.validate!
+
+# Good — inline simple method call
+return false unless definition.schema_class
+definition.schema_class.validate!
+
+# Good — variable for complex expression
+filtered_attributes = schema.attributes.select(&:filterable?).index_by(&:name)
+```
 
 ### Idioms
 
