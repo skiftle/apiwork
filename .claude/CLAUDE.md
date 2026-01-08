@@ -572,11 +572,19 @@ The adapter:
 
 **Tables** for reference information.
 
-**Callouts** — sparingly, no headings inside:
+**Callouts** — sparingly, never with custom titles:
 
 ```markdown
 ::: info
-Text stands on its own. No heading needed.
+Text stands on its own.
+:::
+```
+
+Never:
+
+```markdown
+::: info Custom Title
+...
 :::
 ```
 
@@ -683,7 +691,7 @@ Code changes, then `docs/playground/`, then `rake docs:generate`, then `public/`
 - [ ] 1–3 sentence paragraphs
 - [ ] Correct links
 - [ ] Multi-line block formatting
-- [ ] No headings in callouts
+- [ ] No custom titles in callouts
 
 ---
 
