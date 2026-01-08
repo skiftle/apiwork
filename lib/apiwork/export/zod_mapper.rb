@@ -29,7 +29,7 @@ module Apiwork
       def build_object_schema(type_name, type, recursive: false)
         schema_name = pascal_case(type_name)
 
-        properties = type.shape.sort_by { |name, _| name.to_s }.map do |name, param|
+        properties = type.shape.sort_by { |name, _param| name.to_s }.map do |name, param|
           key = transform_key(name)
           zod_type = map_field(param)
           "  #{key}: #{zod_type}"
@@ -71,7 +71,7 @@ module Apiwork
       def build_action_request_query_schema(resource_name, action_name, query_params, parent_identifiers: [])
         schema_name = action_type_name(resource_name, action_name, 'RequestQuery', parent_identifiers:)
 
-        properties = query_params.sort_by { |k, _| k.to_s }.map do |param_name, param_definition|
+        properties = query_params.sort_by { |name, _param| name.to_s }.map do |param_name, param_definition|
           key = transform_key(param_name)
           zod_type = map_field(param_definition)
           "  #{key}: #{zod_type}"
@@ -83,7 +83,7 @@ module Apiwork
       def build_action_request_body_schema(resource_name, action_name, body_params, parent_identifiers: [])
         schema_name = action_type_name(resource_name, action_name, 'RequestBody', parent_identifiers:)
 
-        properties = body_params.sort_by { |k, _| k.to_s }.map do |param_name, param_definition|
+        properties = body_params.sort_by { |name, _param| name.to_s }.map do |param_name, param_definition|
           key = transform_key(param_name)
           zod_type = map_field(param_definition)
           "  #{key}: #{zod_type}"
@@ -166,7 +166,7 @@ module Apiwork
 
         partial = param.partial?
 
-        properties = param.shape.sort_by { |name, _| name.to_s }.map do |name, field_param|
+        properties = param.shape.sort_by { |name, _field| name.to_s }.map do |name, field_param|
           key = transform_key(name)
           zod_type = if partial
                        map_field(field_param, force_optional: false)

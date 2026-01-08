@@ -14,7 +14,7 @@ module Apiwork
       def build_interface(type_name, type, recursive: false)
         type_name_pascal = pascal_case(type_name)
 
-        properties = type.shape.sort_by { |name, _| name.to_s }.map do |name, param|
+        properties = type.shape.sort_by { |name, _param| name.to_s }.map do |name, param|
           key = transform_key(name)
           ts_type = map_field(param)
           optional_marker = param.optional? ? '?' : ''
@@ -69,7 +69,7 @@ module Apiwork
       def build_action_request_query_type(resource_name, action_name, query_params, parent_identifiers: [])
         type_name = action_type_name(resource_name, action_name, 'RequestQuery', parent_identifiers:)
 
-        properties = query_params.sort_by { |k, _| k.to_s }.map do |param_name, param|
+        properties = query_params.sort_by { |name, _param| name.to_s }.map do |param_name, param|
           key = transform_key(param_name)
           ts_type = map_field(param)
           optional_marker = param.optional? ? '?' : ''
@@ -82,7 +82,7 @@ module Apiwork
       def build_action_request_body_type(resource_name, action_name, body_params, parent_identifiers: [])
         type_name = action_type_name(resource_name, action_name, 'RequestBody', parent_identifiers:)
 
-        properties = body_params.sort_by { |k, _| k.to_s }.map do |param_name, param|
+        properties = body_params.sort_by { |name, _param| name.to_s }.map do |param_name, param|
           key = transform_key(param_name)
           ts_type = map_field(param)
           optional_marker = param.optional? ? '?' : ''
@@ -170,7 +170,7 @@ module Apiwork
 
         partial = param.object? && param.partial?
 
-        properties = param.shape.sort_by { |name, _| name.to_s }.map do |name, field_param|
+        properties = param.shape.sort_by { |name, _field| name.to_s }.map do |name, field_param|
           key = transform_key(name)
           ts_type = map_field(field_param)
           optional_marker = partial || field_param.optional? ? '?' : ''

@@ -292,8 +292,8 @@ module Apiwork
       parts = path_parts
       return API.find('/') if parts.empty?
 
-      (parts.length - 1).downto(1) do |i|
-        path = "/#{parts[0...i].join('/')}"
+      (parts.length - 1).downto(1) do |index|
+        path = "/#{parts[0...index].join('/')}"
         api_class = API.find(path)
         return api_class if api_class
       end

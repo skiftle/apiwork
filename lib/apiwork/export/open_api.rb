@@ -238,7 +238,6 @@ module Apiwork
             end
           end
         elsif response
-          # Empty response {} - 200 with optional meta
           responses[:'200'] = {
             content: {
               'application/json': {
@@ -253,7 +252,6 @@ module Apiwork
             description: 'Successful response',
           }
         else
-          # No response definition at all - default to 204
           responses[:'204'] = { description: 'No content' }
         end
 
@@ -370,7 +368,7 @@ module Apiwork
         end
 
         if param.shape.any?
-          required_fields = param.shape.reject { |_, p| p.optional? }.keys.map { |k| transform_key(k) }
+          required_fields = param.shape.reject { |_name, field| field.optional? }.keys.map { |key| transform_key(key) }
           result[:required] = required_fields if required_fields.any?
         end
 
@@ -407,7 +405,7 @@ module Apiwork
           result[:properties][transformed_key] = map_field(field_param)
         end
 
-        required_fields = shape.reject { |_, p| p.optional? }.keys.map { |k| transform_key(k) }
+        required_fields = shape.reject { |_name, field| field.optional? }.keys.map { |key| transform_key(key) }
         result[:required] = required_fields if required_fields.any?
 
         result
