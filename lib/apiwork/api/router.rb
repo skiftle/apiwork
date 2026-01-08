@@ -5,7 +5,7 @@ module Apiwork
     class Router
       def draw
         api_classes = Registry.all
-        router_instance = self
+        router = self
 
         set = ActionDispatch::Routing::RouteSet.new
 
@@ -28,7 +28,7 @@ module Apiwork
 
             controller_path = api_class.structure.namespaces.map(&:to_s).join('/').underscore
             scope module: controller_path, path: api_class.path do
-              router_instance.draw_resources_in_context(self, api_class.structure.resources, api_class)
+              router.draw_resources(self, api_class.structure.resources, api_class)
             end
 
             scope path: api_class.path do
@@ -42,7 +42,7 @@ module Apiwork
         set
       end
 
-      def draw_resources_in_context(context, resources_hash, api_class)
+      def draw_resources(context, resources_hash, api_class)
         resources_hash.each_value do |resource|
           resource_method = resource.singular ? :resource : :resources
           options = {
@@ -57,7 +57,7 @@ module Apiwork
           path_option = resource.path || api_class.transform_path_segment(resource.name)
           options[:path] = path_option unless path_option == resource.name.to_s
 
-          router_instance = self
+          router = self
 
           context.instance_eval do
             send(resource_method, resource.name, **options) do
@@ -87,7 +87,7 @@ module Apiwork
                 end
               end
 
-              router_instance.draw_resources_in_context(self, resource.resources, api_class)
+              router.draw_resources(self, resource.resources, api_class)
             end
           end
         end

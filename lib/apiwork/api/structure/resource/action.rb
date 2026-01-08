@@ -21,7 +21,7 @@ module Apiwork
 
           def initialize(name, method: nil, type: nil)
             @name = name.to_sym
-            @type = type || name == :index ? :collection : :member
+            @type = type || (name == :index ? :collection : :member)
             @method = method || METHODS[name] || :get
           end
 
