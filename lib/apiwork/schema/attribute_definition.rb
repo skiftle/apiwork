@@ -27,7 +27,7 @@ module Apiwork
 
       def initialize(
         name,
-        schema_class,
+        owner_schema_class,
         decode: nil,
         deprecated: false,
         description: nil,
@@ -48,24 +48,24 @@ module Apiwork
         &block
       )
         @name = name
-        @owner_schema_class = schema_class
+        @owner_schema_class = owner_schema_class
         @inline_shape = block
         @of = of
 
         type ||= :object if block
 
-        if schema_class.model_class.present?
-          @model_class = schema_class.model_class
+        if owner_schema_class.model_class.present?
+          @model_class = owner_schema_class.model_class
 
           begin
-            @is_db_column = @model_class.column_names.include?(name.to_s)
+            @db_column = @model_class.column_names.include?(name.to_s)
 
             enum ||= detect_enum_values(name)
-            type ||= detect_type(name) if @is_db_column
+            type ||= detect_type(name) if @db_column
             optional = detect_optional(name) if optional.nil?
             nullable = detect_nullable(name) if nullable.nil?
           rescue ActiveRecord::StatementInvalid, ActiveRecord::NoDatabaseError, ActiveRecord::ConnectionNotEstablished
-            @is_db_column = false
+            @db_column = false
           end
         end
 
@@ -174,7 +174,7 @@ module Apiwork
       def defined_on_model?
         return false unless @model_class
 
-        @is_db_column || @model_class.instance_methods.include?(@name.to_sym)
+        db_column? || @model_class.instance_methods.include?(@name.to_sym)
       end
 
       def defined_on_schema?
@@ -251,7 +251,7 @@ module Apiwork
 
       def detect_optional(name)
         return false unless @model_class
-        return false unless @is_db_column
+        return false unless db_column?
 
         column = column_for(name)
         return false unless column
@@ -263,7 +263,7 @@ module Apiwork
 
       def detect_nullable(name)
         return false unless @model_class
-        return false unless @is_db_column
+        return false unless db_column?
 
         column = column_for(name)
         return false unless column
@@ -273,6 +273,10 @@ module Apiwork
 
       def column_for(name)
         @model_class.columns_hash[name.to_s]
+      end
+
+      def db_column?
+        @db_column
       end
 
       def validate_min_max_range!
@@ -312,7 +316,7 @@ module Apiwork
       end
 
       def validate_column_required_options!
-        return if @is_db_column
+        return if db_column?
         return if @owner_schema_class.abstract?
 
         if filterable?

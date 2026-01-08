@@ -17,7 +17,7 @@ module Apiwork
       def initialize(
         name,
         type,
-        schema_class,
+        owner_schema_class,
         allow_destroy: false,
         class_name: nil,
         deprecated: false,
@@ -34,8 +34,8 @@ module Apiwork
       )
         @name = name
         @type = type
-        @owner_schema_class = schema_class
-        @model_class = schema_class.model_class
+        @owner_schema_class = owner_schema_class
+        @model_class = owner_schema_class.model_class
         @schema_class = schema || class_name
         validate_schema!
         @polymorphic = normalize_polymorphic(polymorphic)
