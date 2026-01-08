@@ -6,6 +6,7 @@ module Apiwork
       class Resource
         class Action
           CRUD = %i[index show create update destroy].freeze
+
           METHODS = {
             create: :post,
             destroy: :delete,
@@ -20,8 +21,8 @@ module Apiwork
 
           def initialize(name, method: nil, type: nil)
             @name = name.to_sym
-            @type = type || default_type
-            @method = method || default_method
+            @type = type || name == :index ? :collection : :member
+            @method = method || METHODS[name] || :get
           end
 
           def member?
@@ -34,16 +35,6 @@ module Apiwork
 
           def crud?
             CRUD.include?(name)
-          end
-
-          private
-
-          def default_type
-            name == :index ? :collection : :member
-          end
-
-          def default_method
-            METHODS[name] || :get
           end
         end
       end
