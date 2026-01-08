@@ -77,7 +77,7 @@ module Apiwork
         # Enables an export for this API.
         #
         # Exports generate client code and documentation from your contracts.
-        # Available exports: :openapi, :typescript, :zod, :introspection.
+        # Available exports: :openapi, :typescript, :zod.
         #
         # @param name [Symbol] export name to enable
         # @yield optional configuration block
@@ -452,15 +452,17 @@ module Apiwork
         # Applies options to all nested resource definitions.
         #
         # Useful for applying common configuration to a group of resources.
+        # Accepts the same options as {#resources}: only, except, defaults,
+        # constraints, controller, param, path.
         #
         # @param options [Hash] options to apply to nested resources
         # @yield block containing resource definitions
         #
-        # @example Namespace resources
+        # @example Read-only resources
         #   Apiwork::API.define '/api/v1' do
-        #     with_options namespace: :admin do
-        #       resources :users
-        #       resources :settings
+        #     with_options only: [:index, :show] do
+        #       resources :reports
+        #       resources :analytics
         #     end
         #   end
         def with_options(options = {}, &block)

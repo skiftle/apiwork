@@ -31,7 +31,7 @@ end
 
 `.adapter(name = nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L216)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L139)
 
 Configures the adapter for this API.
 
@@ -76,7 +76,7 @@ end
 
 `.concern(name, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L514)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L447)
 
 Defines a reusable concern for resources.
 
@@ -111,7 +111,7 @@ end
 
 `.enum(name, values: nil, scope: nil, description: nil, example: nil, deprecated: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L296)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L219)
 
 Defines a reusable enumeration type.
 
@@ -148,12 +148,12 @@ param :status, enum: :status
 
 `.export(name, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L130)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L95)
 
 Enables an export for this API.
 
 Exports generate client code and documentation from your contracts.
-Available exports: :openapi, :typescript, :zod, :introspection.
+Available exports: :openapi, :typescript, :zod.
 
 **Parameters**
 
@@ -187,7 +187,7 @@ end
 
 `.info(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L377)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L310)
 
 Defines API metadata.
 
@@ -214,7 +214,7 @@ end
 
 `.key_format(format = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L59)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L43)
 
 Sets the key format for request/response transformation.
 
@@ -246,7 +246,7 @@ end
 
 `.path_format(format = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L83)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L67)
 
 Sets the path format for URL path segments.
 
@@ -279,7 +279,7 @@ end
 
 `.raises(*error_code_keys)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L174)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L281)
 
 Declares error codes that any action in this API may raise.
 
@@ -306,7 +306,7 @@ end
 
 `.resource(name, concerns: nil, constraints: nil, contract: nil, controller: nil, defaults: nil, except: nil, only: nil, param: nil, path: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L465)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L398)
 
 Defines a singular resource (no index action, no :id in URL).
 
@@ -347,7 +347,7 @@ end
 
 `.resources(name, concerns: nil, constraints: nil, contract: nil, controller: nil, defaults: nil, except: nil, only: nil, param: nil, path: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L413)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L346)
 
 Defines a RESTful resource with standard CRUD actions.
 
@@ -397,7 +397,7 @@ end
 
 `.type(name, scope: nil, description: nil, example: nil, format: nil, deprecated: false, schema_class: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L255)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L178)
 
 Defines a reusable custom type (object shape).
 
@@ -443,7 +443,7 @@ param :shipping_address, type: :address
 
 `.union(name, discriminator: nil, scope: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L337)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L260)
 
 Defines a discriminated union type.
 
@@ -481,11 +481,13 @@ end
 
 `.with_options(options = {}, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L533)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L468)
 
 Applies options to all nested resource definitions.
 
 Useful for applying common configuration to a group of resources.
+Accepts the same options as [#resources](#resources): only, except, defaults,
+constraints, controller, param, path.
 
 **Parameters**
 
@@ -493,13 +495,13 @@ Useful for applying common configuration to a group of resources.
 |------|------|-------------|
 | `options` | `Hash` | options to apply to nested resources |
 
-**Example: Namespace resources**
+**Example: Read-only resources**
 
 ```ruby
 Apiwork::API.define '/api/v1' do
-  with_options namespace: :admin do
-    resources :users
-    resources :settings
+  with_options only: [:index, :show] do
+    resources :reports
+    resources :analytics
   end
 end
 ```
