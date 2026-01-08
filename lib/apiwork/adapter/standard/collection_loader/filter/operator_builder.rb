@@ -19,7 +19,7 @@ module Apiwork
             end
 
             def build(operator_hash)
-              operator_hash.map do |operator, compare_value|
+              operator_hash.filter_map do |operator, compare_value|
                 operator = operator.to_sym
 
                 unless valid_operators.include?(operator)
@@ -28,7 +28,7 @@ module Apiwork
                 end
 
                 yield(operator, compare_value)
-              end.compact.reduce(:and)
+              end.reduce(:and)
             end
 
             private

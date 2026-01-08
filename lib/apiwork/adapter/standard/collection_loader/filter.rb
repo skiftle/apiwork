@@ -58,7 +58,7 @@ module Apiwork
 
             if regular_attrs.present?
               conditions, joins = build_where_conditions(regular_attrs, schema_class.model_class)
-              scope = with_joins_and_distinct(scope, joins) { |s| s.where(conditions.reduce(:and)) } if conditions.any?
+              scope = with_joins_and_distinct(scope, joins) { |scoped| scoped.where(conditions.reduce(:and)) } if conditions.any?
             end
 
             scope = apply_not(scope, logical_ops[:_not]) if logical_ops.key?(:_not)
@@ -92,7 +92,7 @@ module Apiwork
             condition, joins = build_conditions_recursive(filter_params)
             return scope if condition.nil?
 
-            with_joins_and_distinct(scope, joins) { |s| s.where.not(condition) }
+            with_joins_and_distinct(scope, joins) { |scoped| scoped.where.not(condition) }
           end
 
           def apply_or(scope, conditions_array)
@@ -109,8 +109,8 @@ module Apiwork
 
             or_condition = or_conditions.compact.reduce(:or) if or_conditions.any?
 
-            with_joins_and_distinct(scope, all_joins) do |s|
-              or_condition ? s.where(or_condition) : s
+            with_joins_and_distinct(scope, all_joins) do |scoped|
+              or_condition ? scoped.where(or_condition) : scoped
             end
           end
 
