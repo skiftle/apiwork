@@ -5,6 +5,7 @@ module Apiwork
   module API
     class << self
       delegate :all,
+               :clear!,
                :find,
                :unregister,
                to: Registry
@@ -52,10 +53,6 @@ module Apiwork
       #   Apiwork::API.introspect('/api/v1')
       def introspect(path, locale: nil)
         find(path)&.introspect(locale:)
-      end
-
-      def reset!
-        Registry.clear!
       end
     end
   end

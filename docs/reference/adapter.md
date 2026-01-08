@@ -6,12 +6,7 @@ next: false
 
 # Adapter
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter.rb#L9)
-
-Registry for response adapters.
-
-Adapters control serialization, pagination, filtering, and response formatting.
-The built-in :standard adapter is used by default.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter.rb#L5)
 
 ## Class Methods
 
@@ -19,7 +14,7 @@ The built-in :standard adapter is used by default.
 
 `.register(klass)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter.rb#L19)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter.rb#L14)
 
 Registers an adapter.
 
@@ -37,22 +32,6 @@ Registers an adapter.
 
 ```ruby
 Apiwork::Adapter.register(JSONAPIAdapter)
-```
-
----
-
-### .reset!
-
-`.reset!`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter.rb#L40)
-
-Clears all registered adapters. Intended for test cleanup.
-
-**Example**
-
-```ruby
-Apiwork::Adapter.reset!
 ```
 
 ---

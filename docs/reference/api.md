@@ -6,11 +6,7 @@ next: false
 
 # API
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L8)
-
-Entry point for defining APIs.
-
-Use [.define](#define) to create an API with resources, types, and configuration.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L5)
 
 ## Class Methods
 
@@ -18,7 +14,7 @@ Use [.define](#define) to create an API with resources, types, and configuration
 
 `.define(path, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L33)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L36)
 
 Defines a new API at the given path.
 
@@ -61,7 +57,7 @@ end
 
 `.introspect(path, locale: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L63)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L54)
 
 Returns introspection data for an API.
 

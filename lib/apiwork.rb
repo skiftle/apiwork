@@ -18,30 +18,11 @@ module Apiwork
       routes.call(env)
     end
 
-    # @api public
-    # Prepares Apiwork for use by loading all components.
-    #
-    # Called by the Engine on startup and code reload. In tests, use
-    # `eager_load: true` to ensure STI schema variants are registered.
-    #
-    # @param eager_load [Boolean] when true, eager loads all schemas
-    #   to trigger STI variant registration. Default is false.
-    #
-    # @example Engine usage (default)
-    #   Apiwork.prepare!
-    #
-    # @example Test setup
-    #   before(:suite) { Apiwork.prepare!(eager_load: true) }
-    #
-    # @example Test cleanup (after creating custom fixtures)
-    #   after { Apiwork.prepare!(eager_load: true) }
-    #
-    # @return [void]
     def prepare!(eager_load: false)
-      API.reset!
-      Adapter.reset!
-      ErrorCode.reset!
-      Export.reset!
+      API.clear!
+      Adapter.clear!
+      ErrorCode.clear!
+      Export.clear!
 
       Adapter.register_defaults!
       ErrorCode.register_defaults!
@@ -64,9 +45,7 @@ module Apiwork
     end
 
     def eager_load_schemas!
-      Dir[Rails.root.join('app/schemas/**/*.rb')].sort.each do |file|
-        require_dependency file
-      end
+      Dir[Rails.root.join('app/schemas/**/*.rb')].sort.each(&method(:require_dependency))
     end
 
     def load_api_definitions!

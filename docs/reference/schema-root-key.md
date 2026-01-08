@@ -23,27 +23,6 @@ root_key.plural    # => "invoices"
 
 ## Instance Methods
 
-### #initialize
-
-`#initialize(singular, plural = singular.pluralize)`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/root_key.rb#L29)
-
-Creates a new root key.
-
-**Parameters**
-
-| Name | Type | Description |
-|------|------|-------------|
-| `singular` | `String` | root key for single records |
-| `plural` | `String` | root key for collections (default: singular.pluralize) |
-
-**Returns**
-
-[RootKey](schema-root-key) — a new instance of RootKey
-
----
-
 ### #plural
 
 `#plural`
@@ -65,19 +44,5 @@ Creates a new root key.
 **Returns**
 
 `String` — root key for single records
-
----
-
-### #to_s
-
-`#to_s`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/root_key.rb#L38)
-
-Returns the singular root key.
-
-**Returns**
-
-`String`
 
 ---

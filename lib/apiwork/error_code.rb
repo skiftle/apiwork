@@ -46,7 +46,8 @@ module Apiwork
       #
       #   @example With path attachment
       #     Apiwork::ErrorCode.register :not_found, status: 404, attach_path: true
-      delegate :fetch,
+      delegate :clear!,
+               :fetch,
                :register,
                :registered?,
                to: Registry
@@ -57,10 +58,6 @@ module Apiwork
 
       def register_defaults!
         DEFAULTS.each { |key, options| register(key, **options) }
-      end
-
-      def reset!
-        Registry.clear!
       end
     end
   end

@@ -6,12 +6,7 @@ next: false
 
 # Export
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export.rb#L9)
-
-Registry for export generators.
-
-Built-in exports: :openapi, :typescript, :zod, :introspection.
-Use [.generate](#generate) to produce exports for an API.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export.rb#L5)
 
 ## Class Methods
 
@@ -19,7 +14,7 @@ Use [.generate](#generate) to produce exports for an API.
 
 `.generate(export_name, api_path, format: nil, key_format: nil, locale: nil, version: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export.rb#L52)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export.rb#L38)
 
 Generates an export for an API.
 
@@ -47,7 +42,7 @@ Generates an export for an API.
 ```ruby
 Apiwork::Export.generate(:openapi, '/api/v1')
 Apiwork::Export.generate(:openapi, '/api/v1', format: :yaml)
-Apiwork::Export.generate(:typescript, '/api/v1', locale: :sv, key_format: :camel)
+Apiwork::Export.generate(:typescript, '/api/v1', locale: :es, key_format: :camel)
 ```
 
 ---
@@ -56,7 +51,7 @@ Apiwork::Export.generate(:typescript, '/api/v1', locale: :sv, key_format: :camel
 
 `.register(klass)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export.rb#L19)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export.rb#L14)
 
 Registers an export.
 
@@ -74,22 +69,6 @@ Registers an export.
 
 ```ruby
 Apiwork::Export.register(JSONSchemaExport)
-```
-
----
-
-### .reset!
-
-`.reset!`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export.rb#L61)
-
-Clears all registered exports. Intended for test cleanup.
-
-**Example**
-
-```ruby
-Apiwork::Export.reset!
 ```
 
 ---

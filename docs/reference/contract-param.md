@@ -19,7 +19,7 @@ Part of the Adapter DSL. Returned by [Request#query](contract-request#query),
 
 `#meta(optional: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/param.rb#L190)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/param.rb#L189)
 
 Shorthand for `param :meta, type: :object do ... end`.
 
@@ -61,7 +61,7 @@ end
 
 `#param(name, as: nil, default: nil, deprecated: nil, description: nil, discriminator: nil, enum: nil, example: nil, format: nil, max: nil, min: nil, nullable: nil, of: nil, optional: nil, required: nil, type: nil, value: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/param.rb#L71)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/param.rb#L69)
 
 Defines a parameter/field in a request or response body.
 

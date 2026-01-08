@@ -6,12 +6,7 @@ next: false
 
 # ErrorCode
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code.rb#L9)
-
-Registry for error codes used in API responses.
-
-Common HTTP error codes (400-504) are pre-registered.
-Use [.register](#register) to add custom error codes.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code.rb#L5)
 
 ## Class Methods
 
@@ -19,7 +14,7 @@ Use [.register](#register) to add custom error codes.
 
 `.register(key, attach_path: false, status:)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code.rb#L54)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code.rb#L49)
 
 Registers a custom error code for use in API responses.
 

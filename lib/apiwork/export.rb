@@ -12,6 +12,7 @@ module Apiwork
       #   @example
       #     Apiwork::Export.register(JSONSchemaExport)
       delegate :all,
+               :clear!,
                :find,
                :register,
                :registered?,
@@ -42,10 +43,6 @@ module Apiwork
         register(OpenAPI)
         register(TypeScript)
         register(Zod)
-      end
-
-      def reset!
-        Registry.clear!
       end
     end
   end
