@@ -84,14 +84,7 @@ module Apiwork
       end
 
       class << self
-        attr_accessor :_model_class
-
-        attr_writer :_auto_detection_complete,
-                    :type
-
-        def _auto_detection_complete
-          @_auto_detection_complete || false
-        end
+        attr_writer :type
 
         # @api public
         # Sets or gets the model class for this schema.
@@ -119,16 +112,16 @@ module Apiwork
                     "model must be a Class constant, got #{value.class}. " \
                                                        "Use: model Post (not 'Post' or :post)"
             end
-            self._model_class = value
+            @model_class = value
             value
           else
-            _model_class
+            @model_class
           end
         end
 
         def model_class
           ensure_auto_detection_complete
-          _model_class
+          @model_class
         end
 
         # @api public
@@ -701,11 +694,11 @@ module Apiwork
         private
 
         def ensure_auto_detection_complete
-          return if _auto_detection_complete
+          return if @auto_detection_complete
 
-          self._auto_detection_complete = true
+          @auto_detection_complete = true
 
-          return if _model_class.present?
+          return if @model_class.present?
           return if abstract?
 
           schema_name = name.demodulize
@@ -720,7 +713,7 @@ module Apiwork
                      end
 
           if detected.present?
-            self._model_class = detected
+            @model_class = detected
           else
             raise ConfigurationError.new(
               code: :model_not_found,
@@ -764,7 +757,6 @@ module Apiwork
       end
 
       def resolve_association_schema(association_name)
-        return nil unless self.class.respond_to?(:model_class)
         return nil unless self.class.model_class
 
         reflection = object.class.reflect_on_association(association_name)

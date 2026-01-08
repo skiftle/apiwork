@@ -187,19 +187,242 @@ end
 
 ---
 
+## Instance Variables vs Accessors
+
+**Rule:** `attr_*` is for public API. `@variable` directly is for private state.
+
+**Absolute rule:** Never access `@variable` from outside the class. No exceptions.
+
+```ruby
+# Forbidden — accessing @variable from outside
+schema.instance_variable_get(:@cache)
+object.send(:instance_variable_get, :@name)
+
+# If you need external access — expose it as a method
+```
+
+| Want | Use | Example |
+|------|-----|---------|
+| Public getter | `attr_reader` with YARD | `attr_reader :name` |
+| Public setter | `attr_writer` with YARD | `attr_writer :name` |
+| Public both | `attr_accessor` with YARD | `attr_accessor :name` |
+| Private state | `@variable` directly | `@cache = {}` |
+
+### Visibility Levels
+
+| Level | YARD | Who can use | Example |
+|-------|------|-------------|---------|
+| **Public** | `@api public` | Users of Apiwork | `Schema.find(path)` |
+| **Semi-public** | No YARD | Apiwork internals only | `schema.attribute_definitions` |
+| **Private** | `private` | Same class only | `def validate!` |
+
+Semi-public methods are public Ruby methods without `@api public`. They exist for internal Apiwork use but are not part of the user-facing API. No YARD documentation.
+
+**`protected` is forbidden.** Never use it. Choose `private` or semi-public instead.
+
+```ruby
+class Schema
+  # @api public
+  # @return [Hash]
+  attr_reader :name  # Public — for users
+
+  attr_reader :attribute_definitions  # Semi-public — for Apiwork internals
+
+  private
+
+  def validate!  # Private — same class only
+  end
+
+  # protected  # FORBIDDEN — never use
+end
+```
+
+```ruby
+class Invoice
+  # Public — use attr_reader with YARD
+  # @api public
+  # @return [String]
+  attr_reader :number
+
+  def initialize(number)
+    @number = number
+    @cache = {}  # Private — just use @variable
+  end
+
+  def total
+    @cache[:total] ||= calculate_total  # Private — @variable directly
+  end
+
+  private
+
+  def calculate_total
+    # ...
+  end
+end
+```
+
+**Never use `attr_*` for private state:**
+
+```ruby
+# Bad — attr_accessor for internal state
+class Parser
+  private
+
+  attr_accessor :buffer  # Don't do this
+end
+
+# Good — just use @variable
+class Parser
+  def parse(input)
+    @buffer = input.dup  # Private state, no accessor needed
+    process_buffer
+  end
+end
+```
+
+---
+
+## Underscore Prefix
+
+Never use underscore prefix as pseudo-private.
+
+**Exception:** `class_attribute` doesn't work well with `private`. Use underscore for internal class attributes only:
+
+```ruby
+class_attribute :_internal_config, default: {}  # OK — Rails limitation
+class_attribute :public_definitions, default: {} # OK — public
+```
+
+Everywhere else, use `@variable` directly:
+
+```ruby
+# Bad — underscore as pseudo-private
+class << self
+  attr_accessor :_model_class
+end
+
+# Good — @variable directly
+class << self
+  def model(value = nil)
+    value ? @model_class = value : @model_class
+  end
+end
+```
+
+---
+
+## Class-level State
+
+| Need | Use | Inherits to subclass |
+|------|-----|----------------------|
+| Subclasses should inherit/override | `class_attribute` | Yes |
+| Class-specific, not inherited | `@variable` in `class << self` | No |
+
+```ruby
+class Schema
+  # Subclasses inherit and can override
+  class_attribute :attribute_definitions, default: {}
+  class_attribute :_internal_cache, default: {}  # Internal — underscore
+
+  class << self
+    # Class-specific, not inherited
+    def model(value = nil)
+      value ? @model_class = value : @model_class
+    end
+  end
+end
+```
+
+---
+
+## instance_variable_get/set
+
+**Forbidden in lib/.** If you need external access, expose a method.
+
+```ruby
+# Forbidden
+object.instance_variable_get(:@cache)
+object.instance_variable_set(:@api_class, value)
+
+# Instead — add a method
+attr_reader :cache
+attr_writer :api_class
+```
+
+**In spec/:** Avoid, but allowed for test setup when no alternative exists. Prefer adding semi-public methods.
+
+---
+
 ## Class Layout
 
 Mandatory order for classes and modules:
 
 1. Constants
-2. `attr_reader` / `attr_accessor`
+2. `attr_reader` / `attr_accessor` (public with YARD first, then semi-public)
 3. `class << self`
 4. `initialize`
 5. Public instance methods
 6. `private`
 7. Private instance methods
 
-Within public instance methods: `@api public` methods appear first.
+**Within every section:** `@api public` methods appear first, then semi-public.
+
+This applies to:
+- `attr_reader` / `attr_accessor` declarations
+- Methods inside `class << self`
+- Instance methods
+
+```ruby
+class Schema
+  # === attr_reader: @api public first ===
+  # @api public
+  # @return [Symbol]
+  attr_reader :name
+
+  attr_reader :internal_cache  # Semi-public — after @api public
+
+  class << self
+    # === class << self: @api public first ===
+
+    # @api public
+    # @return [Class]
+    def model(value = nil)
+      # ...
+    end
+
+    # @api public
+    def attribute(name, **options)
+      # ...
+    end
+
+    # Semi-public — after all @api public methods
+    def model_class
+      # ...
+    end
+
+    def resolve_option(name)
+      # ...
+    end
+  end
+
+  # === Instance methods: @api public first ===
+
+  # @api public
+  def as_json
+    # ...
+  end
+
+  def internal_method  # Semi-public — after @api public
+    # ...
+  end
+
+  private
+
+  def validate!
+    # ...
+  end
+end
+```
 
 No deviations. No reordering.
 
@@ -586,7 +809,10 @@ Extract after 3+ repetitions.
 | ----------------------------- | ------------------------------------------- |
 | Prefer real objects           | Over-mock                                   |
 | Mock only external boundaries | Mock internal collaborators                 |
+| Use semi-public methods       | Use `instance_variable_get/set`             |
 |                               | Use mocks to avoid understanding the system |
+
+**Semi-public in tests:** Tests may use semi-public methods (e.g., `.attribute_definitions`, `.actions`). They are public Ruby methods, just not user-facing API.
 
 ---
 

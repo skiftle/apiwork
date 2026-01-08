@@ -65,7 +65,7 @@ module Apiwork
             optional = detect_optional(name) if optional.nil?
             nullable = detect_nullable(name) if nullable.nil?
           rescue ActiveRecord::StatementInvalid, ActiveRecord::NoDatabaseError, ActiveRecord::ConnectionNotEstablished
-            # Silently skip DB introspection if database is unavailable
+            nil
           end
         end
 
