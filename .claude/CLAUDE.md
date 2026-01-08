@@ -15,7 +15,7 @@ bundle exec rspec spec/integration/filtering_spec.rb # single file
 bundle exec rspec spec/integration/filtering_spec.rb:42  # single test
 bundle exec rubocop -A                               # lint + auto-fix
 bundle exec rake                                     # tests + lint (CI)
-bundle exec rake apiwork:docs:reference              # generate YARD docs
+cd docs/playground && bundle exec rake apiwork:docs:reference  # generate YARD reference
 cd docs/playground && RAILS_ENV=test rake docs:generate  # generate examples
 ```
 
@@ -1087,6 +1087,7 @@ Code changes, then `docs/playground/`, then `rake docs:generate`, then `public/`
 
 1. `bundle exec rubocop -A`
 2. `bundle exec rspec`
+3. If `@api public` was added or changed: `cd docs/playground && bundle exec rake apiwork:docs:reference`
 
 ## Code
 

@@ -74,7 +74,7 @@ Sets or returns the export name identifier.
 Sets the file extension for string exports.
 
 Only valid for exports with `output :string`. Hash exports derive
-their extension from the format (:json → .json, :yaml → .yaml).
+their extension from the format (:json becomes .json, :yaml becomes .yaml).
 
 **Parameters**
 

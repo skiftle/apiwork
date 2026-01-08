@@ -573,6 +573,27 @@ module Apiwork
           end
         end
 
+        # @api public
+        # Returns the root key for JSON responses.
+        #
+        # Uses the custom root if defined via {#root}, otherwise derives
+        # from the schema type or model name.
+        #
+        # @return [RootKey] the root key for this schema
+        # @see #root
+        # @see RootKey
+        #
+        # @example
+        #   InvoiceSchema.root_key.singular  # => "invoice"
+        #   InvoiceSchema.root_key.plural    # => "invoices"
+        def root_key
+          if _root
+            RootKey.new(_root[:singular], _root[:plural])
+          else
+            RootKey.new(type || model_class.model_name.element)
+          end
+        end
+
         attr_writer :type
 
         def model_class
@@ -632,16 +653,7 @@ module Apiwork
         end
 
         def type
-          @type || model_class&.model_name&.element
-        end
-
-        def root_key
-          if _root
-            RootKey.new(_root[:singular], _root[:plural])
-          else
-            type_name = type || model_class&.model_name&.element
-            RootKey.new(type_name)
-          end
+          @type || model_class.model_name.element
         end
 
         def deserialize_single(hash)
