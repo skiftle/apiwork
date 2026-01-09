@@ -11,14 +11,15 @@ module Apiwork
 
         def to_h
           resources = build_resources
+          type_data = @type_dump.to_h
 
           {
             resources:,
-            enums: @type_dump.enums,
+            enums: type_data[:enums],
             error_codes: build_error_codes(collect_all_error_code_keys(resources)),
             info: build_info,
             path: @api_class.path,
-            types: @type_dump.types,
+            types: type_data[:types],
           }
         end
 
@@ -47,10 +48,7 @@ module Apiwork
 
           error_code_keys.each_with_object({}) do |code, hash|
             error_code = Apiwork::ErrorCode.fetch(code)
-            hash[code] = {
-              description: error_code.description(locale_key:),
-              status: error_code.status,
-            }
+            hash[code] = error_code.to_h(locale_key:)
           end
         end
 

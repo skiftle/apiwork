@@ -8,6 +8,13 @@ module Apiwork
           @api_class = api_class
         end
 
+        def to_h
+          {
+            enums: enums,
+            types: types,
+          }
+        end
+
         def types
           return {} unless @api_class
 
