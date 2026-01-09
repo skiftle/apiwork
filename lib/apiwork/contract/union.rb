@@ -3,10 +3,10 @@
 module Apiwork
   module Contract
     # @api public
-    # Defines variants in a union type.
+    # Union shape builder with contract context.
     #
-    # Used inside union blocks in contracts and custom adapters.
-    # The {#variant} method defines each possible type the union can hold.
+    # Wraps {API::Union} and adds contract-specific functionality
+    # like enum validation.
     #
     # @example In a contract
     #   param :payment, type: :union, discriminator: :type do
@@ -18,23 +18,24 @@ module Apiwork
     #     end
     #   end
     #
-    # @see Contract::Param#param
+    # @see Contract::Object#param
     class Union
-      attr_reader :contract_class,
-                  :discriminator,
-                  :variants
+      # @api public
+      # @return [Class] the contract class
+      attr_reader :contract_class
+
+      delegate :discriminator, :variants, to: :@union
 
       def initialize(contract_class, discriminator: nil)
         @contract_class = contract_class
-        @discriminator = discriminator
-        @variants = []
+        @union = API::Union.new(
+          discriminator:,
+          object: -> { Object.new(contract_class) },
+        )
       end
 
       # @api public
-      # Defines a variant in a union type.
-      #
-      # Each variant represents one possible shape the union value can take.
-      # Use `tag` with discriminated unions to identify which variant applies.
+      # Defines a variant in this union.
       #
       # @param type [Symbol] the variant type (:string, :integer, :object, etc.)
       # @param of [Symbol] element type for :array variants
@@ -42,6 +43,7 @@ module Apiwork
       # @param tag [String] discriminator value (required when union has discriminator)
       # @param partial [Boolean] allow partial object (omit required fields)
       # @yield nested params for :object variants
+      # @return [void]
       #
       # @example Simple union (string or integer)
       #   param :value, type: :union do
@@ -61,43 +63,21 @@ module Apiwork
       #     end
       #   end
       #
-      # @example Array variant
-      #   param :data, type: :union do
-      #     variant type: :object do
-      #       param :name, type: :string
-      #     end
-      #     variant type: :array, of: :string
-      #   end
-      #
-      # @see Contract::Param#param
       # @see Introspection::Param::Union
-      def variant(
-        type:,
-        of: nil,
-        enum: nil,
-        tag: nil,
-        partial: nil,
-        &block
-      )
-        raise ArgumentError, 'tag can only be used when union has a discriminator' if tag.present? && @discriminator.blank?
+      def variant(enum: nil, of: nil, partial: nil, tag: nil, type:, &block)
+        resolved_enum = resolve_enum(enum)
+        @union.variant(of:, partial:, tag:, type:, enum: resolved_enum, &block)
+      end
 
-        raise ArgumentError, 'tag is required for all variants when union has a discriminator' if @discriminator.present? && tag.blank?
+      private
 
-        variant_definition = {
-          enum:,
-          of:,
-          tag:,
-          type:,
-        }.compact
-        variant_definition[:partial] = true if partial
+      def resolve_enum(enum)
+        return nil if enum.nil?
+        return enum if enum.is_a?(Array)
 
-        if block_given?
-          shape_param = Param.new(@contract_class)
-          shape_param.instance_eval(&block)
-          variant_definition[:shape] = shape_param
-        end
+        raise ArgumentError, "Enum :#{enum} not found." unless @contract_class.enum?(enum)
 
-        @variants << variant_definition
+        enum
       end
     end
   end

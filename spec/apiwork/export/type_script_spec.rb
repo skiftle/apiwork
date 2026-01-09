@@ -299,7 +299,7 @@ RSpec.describe Apiwork::Export::TypeScript do
   describe 'metadata support' do
     before(:all) do
       Apiwork::API.define '/api/ts_metadata_test' do
-        type :documented_type, description: 'Type with description' do
+        object :documented_type, description: 'Type with description' do
           param :value, type: :string
         end
 
@@ -337,7 +337,7 @@ RSpec.describe Apiwork::Export::TypeScript do
 
     it 'generates correct output for type with all metadata fields' do
       Apiwork::API.define '/api/ts_full_metadata' do
-        type :full_meta, deprecated: false, description: 'desc', example: { x: 1 }, format: 'fmt' do
+        object :full_meta, deprecated: false, description: 'desc', example: { x: 1 }, format: 'fmt' do
           param :x, type: :integer
         end
       end
@@ -369,7 +369,7 @@ RSpec.describe Apiwork::Export::TypeScript do
 
     it 'includes property descriptions as JSDoc' do
       Apiwork::API.define '/api/ts_prop_desc' do
-        type :invoice do
+        object :invoice do
           param :amount, description: 'Total amount in cents', type: :decimal
           param :currency, type: :string
         end
@@ -386,7 +386,7 @@ RSpec.describe Apiwork::Export::TypeScript do
 
     it 'includes @example in JSDoc with JSON format on separate lines' do
       Apiwork::API.define '/api/ts_example' do
-        type :price, description: 'Price object', example: { amount: 99 } do
+        object :price, description: 'Price object', example: { amount: 99 } do
           param :amount, example: 99, type: :integer
           param :currency, example: 'USD', type: :string
         end
@@ -404,7 +404,7 @@ RSpec.describe Apiwork::Export::TypeScript do
 
     it 'does not generate empty JSDoc when no description' do
       Apiwork::API.define '/api/ts_no_desc' do
-        type :simple do
+        object :simple do
           param :value, type: :string
         end
       end

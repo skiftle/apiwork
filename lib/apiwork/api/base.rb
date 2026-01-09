@@ -150,9 +150,9 @@ module Apiwork
         end
 
         # @api public
-        # Defines a reusable custom type (object shape).
+        # Defines a reusable object type (object shape).
         #
-        # Custom types can be referenced by name in `param` definitions.
+        # Object types can be referenced by name in `param` definitions.
         # Scoped types are namespaced to a contract class.
         #
         # @param name [Symbol] type name for referencing
@@ -166,8 +166,8 @@ module Apiwork
         # @see Contract::Base
         # @see Schema::Base
         #
-        # @example Global type
-        #   type :address do
+        # @example Global object type
+        #   object :address do
         #     param :street, type: :string
         #     param :city, type: :string
         #     param :zip, type: :string
@@ -175,7 +175,7 @@ module Apiwork
         #
         # @example Using in a contract
         #   param :shipping_address, type: :address
-        def type(
+        def object(
           name,
           scope: nil,
           description: nil,
@@ -193,6 +193,7 @@ module Apiwork
             format:,
             schema_class:,
             scope:,
+            kind: :object,
             &block
           )
         end
@@ -257,12 +258,25 @@ module Apiwork
         #       param :account_number, type: :string
         #     end
         #   end
-        def union(name, discriminator: nil, scope: nil, &block)
+        def union(
+          name,
+          discriminator: nil,
+          scope: nil,
+          description: nil,
+          deprecated: false,
+          &block
+        )
           raise ArgumentError, 'Union requires a block' unless block_given?
 
-          union_builder = TypeRegistry::UnionBuilder.new(discriminator:)
-          union_builder.instance_eval(&block)
-          type_registry.register_union(name, union_builder.serialize, scope:)
+          type_registry.register(
+            name,
+            deprecated:,
+            description:,
+            discriminator:,
+            scope:,
+            kind: :union,
+            &block
+          )
         end
 
         # @api public
@@ -521,8 +535,8 @@ module Apiwork
           type_registry.exists?(name, scope:)
         end
 
-        def type_definitions(name, scope: nil)
-          type_registry.definitions(name, scope:)
+        def type_definition(name, scope: nil)
+          type_registry.find(name, scope:)
         end
 
         def enum?(name, scope: nil)

@@ -79,14 +79,14 @@ module Apiwork
             contract_class = parent_definition&.contract_class
             return unless contract_class
 
-            custom_type_blocks = contract_class.resolve_custom_type(type_name)
+            type_definition = contract_class.resolve_custom_type(type_name)
 
-            if custom_type_blocks
+            if type_definition
               temp_param = Param.new(
                 contract_class,
                 action_name: parent_definition.action_name,
               )
-              custom_type_blocks.each { |block| temp_param.instance_eval(&block) }
+              temp_param.copy_type_definition_params(type_definition, temp_param)
               apply_sti_discriminator_transform(value, temp_param)
             else
               apply_sti_transform_to_registered_union(value, type_name, parent_definition)
@@ -116,7 +116,9 @@ module Apiwork
           end
 
           def transform_custom_type_array(value, param_definition, definition)
-            shape = resolve_custom_type_shape(param_definition[:of], definition, param_definition[:type_contract_class])
+            type_contract_class = param_definition.dig(:internal, :type_contract_class) ||
+                                  param_definition[:type_contract_class]
+            shape = resolve_custom_type_shape(param_definition[:of], definition, type_contract_class)
 
             return value.map { |item| item.is_a?(Hash) ? apply(item, shape) : item } if shape
 
@@ -124,10 +126,12 @@ module Apiwork
           end
 
           def transform_union_type_array(value, param_definition, definition)
-            return nil unless param_definition[:type_contract_class]
+            type_contract_class = param_definition.dig(:internal, :type_contract_class) ||
+                                  param_definition[:type_contract_class]
+            return nil unless type_contract_class
 
             action_name = definition.action_name || :create
-            nested_request = param_definition[:type_contract_class].action_for(action_name)&.request
+            nested_request = type_contract_class.action_for(action_name)&.request
             nested_definition = nested_request&.body_param
 
             return nil unless nested_definition
@@ -144,17 +148,30 @@ module Apiwork
             contract_class = type_contract_class || definition&.contract_class
             return nil unless contract_class
 
-            custom_type_block = contract_class.resolve_custom_type(type_name)
-            return nil unless custom_type_block
+            type_definition = contract_class.resolve_custom_type(type_name)
+            return nil unless type_definition
 
-            temp_param = Param.new(
-              contract_class,
-              action_name: definition.action_name,
-            )
+            if type_definition.object?
+              temp_param = Param.new(
+                contract_class,
+                action_name: definition.action_name,
+              )
+              temp_param.copy_type_definition_params(type_definition, temp_param)
+              temp_param
+            elsif type_definition.union?
+              first_variant = type_definition.variants.first
+              return nil unless first_variant
 
-            custom_type_block.each { |block| temp_param.instance_eval(&block) }
+              variant_type_definition = contract_class.resolve_custom_type(first_variant[:type])
+              return nil unless variant_type_definition&.object?
 
-            temp_param
+              temp_param = Param.new(
+                contract_class,
+                action_name: definition.action_name,
+              )
+              temp_param.copy_type_definition_params(variant_type_definition, temp_param)
+              temp_param
+            end
           end
         end
       end

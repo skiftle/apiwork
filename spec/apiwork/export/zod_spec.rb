@@ -204,7 +204,7 @@ RSpec.describe Apiwork::Export::Zod do
 
     it 'transforms keys to camelCase with :camel' do
       Apiwork::API.define '/api/zod_camel_test' do
-        type :test_type do
+        object :test_type do
           param :user_name, type: :string
         end
       end
@@ -263,7 +263,7 @@ RSpec.describe Apiwork::Export::Zod do
   describe 'self-referencing types' do
     before(:all) do
       Apiwork::API.define '/api/zod_circular_test' do
-        type :tree_node do
+        object :tree_node do
           param :value, type: :string
           param :children, of: :tree_node, optional: true, type: :array
         end
@@ -291,7 +291,7 @@ RSpec.describe Apiwork::Export::Zod do
   describe 'literal types' do
     before(:all) do
       Apiwork::API.define '/api/zod_literal_test' do
-        type :constants do
+        object :constants do
           param :string_lit, type: :literal, value: 'hello'
           param :number_lit, type: :literal, value: 42
           param :bool_lit, type: :literal, value: true
@@ -322,7 +322,7 @@ RSpec.describe Apiwork::Export::Zod do
   describe 'min/max constraints' do
     before(:all) do
       Apiwork::API.define '/api/zod_constraints_test' do
-        type :bounded do
+        object :bounded do
           param :limited_string, max: 100, min: 1, type: :string
           param :limited_number, max: 1000, min: 0, type: :integer
           param :limited_array, max: 10, of: :string, type: :array
@@ -357,7 +357,7 @@ RSpec.describe Apiwork::Export::Zod do
   describe 'format mapping' do
     before(:all) do
       Apiwork::API.define '/api/zod_format_test' do
-        type :formatted do
+        object :formatted do
           param :email_field, format: :email, type: :string
           param :url_field, format: :url, type: :string
           param :uuid_field, format: :uuid, type: :string

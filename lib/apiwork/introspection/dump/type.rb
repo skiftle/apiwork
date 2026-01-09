@@ -28,19 +28,16 @@ module Apiwork
         end
 
         def build_type(qualified_name, definition)
-          expanded_shape = definition.payload || expand_payload(definition)
-          expanded_shape = expand_union_variants(expanded_shape, definition.scope) if expanded_shape.is_a?(Hash) && expanded_shape[:type] == :union
-
-          if expanded_shape.is_a?(Hash) && expanded_shape[:type] == :union
+          if definition.union?
             {
               deprecated: definition.deprecated?,
               description: resolve_type_description(qualified_name, definition),
-              discriminator: expanded_shape[:discriminator],
+              discriminator: definition.discriminator,
               example: definition.example || definition.schema_class&.example,
               format: definition.format,
-              shape: expanded_shape[:shape] || {},
+              shape: {},
               type: :union,
-              variants: expanded_shape[:variants] || [],
+              variants: build_variants(definition),
             }
           else
             {
@@ -49,10 +46,151 @@ module Apiwork
               discriminator: nil,
               example: definition.example || definition.schema_class&.example,
               format: definition.format,
-              shape: expanded_shape || {},
+              shape: build_params(definition),
               type: :object,
               variants: [],
             }
+          end
+        end
+
+        def build_params(definition)
+          return {} unless definition.params
+
+          result = {}
+          definition.params.sort_by { |name, _| name.to_s }.each do |name, param_options|
+            result[name] = build_param(name, param_options, definition.scope)
+          end
+          result
+        end
+
+        def build_variants(definition)
+          return [] unless definition.variants
+
+          definition.variants.map do |variant|
+            build_variant(variant, definition.scope)
+          end
+        end
+
+        def build_param(name, options, scope)
+          ref = resolve_type_ref(options[:type], scope)
+
+          {
+            ref:,
+            as: options[:as],
+            default: options[:default],
+            deprecated: options[:deprecated] == true,
+            description: options[:description],
+            discriminator: nil,
+            enum: resolve_enum(options, scope),
+            example: options[:example],
+            format: options[:format],
+            max: options[:max],
+            min: options[:min],
+            nullable: options[:nullable] == true,
+            of: resolve_of(options, scope),
+            optional: options[:optional] == true,
+            partial: options[:partial] == true,
+            shape: build_nested_shape(options[:shape]),
+            tag: nil,
+            type: ref ? :ref : (options[:type] || :unknown),
+            value: options[:type] == :literal ? options[:value] : nil,
+            variants: build_nested_variants(options[:shape]),
+          }
+        end
+
+        def build_variant(variant, scope)
+          variant_type = variant[:type]
+          is_registered = registered_type?(variant_type)
+
+          ref = is_registered ? variant_type : nil
+          resolved_type = is_registered ? :ref : (variant_type || :unknown)
+
+          {
+            ref:,
+            as: nil,
+            default: nil,
+            deprecated: false,
+            description: nil,
+            discriminator: nil,
+            enum: resolve_variant_enum(variant, scope),
+            example: nil,
+            format: nil,
+            max: nil,
+            min: nil,
+            nullable: false,
+            of: resolve_variant_of(variant, scope),
+            optional: false,
+            partial: variant[:partial] == true,
+            shape: build_nested_shape(variant[:shape]),
+            tag: variant[:tag],
+            type: resolved_type,
+            value: nil,
+            variants: [],
+          }
+        end
+
+        def build_nested_shape(shape)
+          return {} unless shape
+          return {} unless shape.respond_to?(:params)
+
+          result = {}
+          shape.params.sort_by { |name, _| name.to_s }.each do |name, param_options|
+            result[name] = build_param(name, param_options, nil)
+          end
+          result
+        end
+
+        def build_nested_variants(shape)
+          return [] unless shape
+          return [] unless shape.respond_to?(:variants)
+
+          shape.variants.map { |v| build_variant(v, nil) }
+        end
+
+        def resolve_type_ref(type_value, scope)
+          return nil unless type_value
+          return nil unless registered_type?(type_value)
+
+          type_value
+        end
+
+        def resolve_enum(options, scope)
+          return nil unless options[:enum]
+
+          if options[:enum].is_a?(Symbol)
+            @api_class.scoped_enum_name(scope, options[:enum])
+          else
+            options[:enum]
+          end
+        end
+
+        def resolve_of(options, scope)
+          return nil unless options[:of]
+
+          if registered_type?(options[:of])
+            { ref: options[:of], shape: {}, type: :ref }
+          else
+            { ref: nil, type: options[:of] }
+          end
+        end
+
+        def resolve_variant_enum(variant, scope)
+          return nil unless variant[:enum]
+
+          if variant[:enum].is_a?(Symbol)
+            @api_class.scoped_enum_name(scope, variant[:enum])
+          else
+            variant[:enum]
+          end
+        end
+
+        def resolve_variant_of(variant, scope)
+          return nil unless variant[:of]
+
+          if registered_type?(variant[:of])
+            { ref: variant[:of], shape: {}, type: :ref }
+          else
+            { ref: nil, type: variant[:of] }
           end
         end
 
@@ -90,72 +228,11 @@ module Apiwork
           I18n.t(:"apiwork.enums.#{enum_name}.description", default: nil)
         end
 
-        def expand_payload(definition)
-          definition_blocks = definition.all_definitions
-          expand(definition_blocks, contract_class: definition.scope)
-        end
-
-        def expand_union_variants(payload, scope)
-          return payload unless payload[:variants]
-
-          expanded_variants = payload[:variants].map do |variant|
-            expanded = if variant[:shape_block]
-                         expanded_shape = expand(variant[:shape_block], contract_class: scope)
-                         variant.except(:shape_block).merge(shape: expanded_shape.presence || {})
-                       else
-                         variant.merge(shape: variant[:shape] || {})
-                       end
-
-            transform_variant_refs(expanded)
-          end
-
-          payload.merge(variants: expanded_variants)
-        end
-
-        def transform_variant_refs(variant)
-          result = variant.dup
-
-          if variant[:type] && registered_type_or_enum?(variant[:type])
-            result[:ref] = variant[:type]
-            result[:type] = :ref
-          else
-            result[:ref] ||= nil
-          end
-
-          if variant[:of] && registered_type_or_enum?(variant[:of])
-            result[:of] = { ref: variant[:of], shape: {}, type: :ref }
-          elsif variant[:of]
-            result[:of] = { ref: nil, type: variant[:of] }
-          end
-
-          result
-        end
-
-        def registered_type_or_enum?(type_name)
+        def registered_type?(type_name)
           return false unless type_name.is_a?(Symbol)
           return false unless @api_class
 
           @api_class.type_registry.key?(type_name) || @api_class.enum_registry.key?(type_name)
-        end
-
-        def expand(definitions, contract_class: nil)
-          return nil unless definitions
-
-          temp_contract = contract_class || create_temp_contract
-
-          temp_param = Apiwork::Contract::Param.new(temp_contract)
-
-          Array(definitions).each do |definition_block|
-            temp_param.instance_eval(&definition_block)
-          end
-
-          Param.new(temp_param).to_h
-        end
-
-        def create_temp_contract
-          contract = Class.new(Apiwork::Contract::Base)
-          contract.api_class = @api_class
-          contract
         end
       end
     end

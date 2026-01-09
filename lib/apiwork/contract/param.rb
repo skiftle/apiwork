@@ -214,7 +214,55 @@ module Apiwork
         @wrapped
       end
 
+      def copy_type_definition_params(type_definition, target_param)
+        return unless type_definition.object?
+
+        type_definition.params&.each do |param_name, param_data|
+          nested_shape = param_data[:shape]
+
+          if nested_shape.is_a?(API::Object)
+            copy_nested_object_param(target_param, param_name, param_data, nested_shape)
+          elsif nested_shape.is_a?(API::Union)
+            copy_nested_union_param(target_param, param_name, param_data, nested_shape)
+          else
+            target_param.param(param_name, **param_data.except(:name, :shape))
+          end
+        end
+      end
+
       private
+
+      def copy_nested_object_param(target_param, param_name, param_data, nested_shape)
+        target_param.param(
+          param_name,
+          **param_data.except(:name, :shape),
+        ) do
+          nested_shape.params.each do |nested_name, nested_data|
+            param(nested_name, **nested_data.except(:name, :shape))
+          end
+        end
+      end
+
+      def copy_nested_union_param(target_param, param_name, param_data, nested_shape)
+        target_param.param(
+          param_name,
+          **param_data.except(:name, :shape),
+        ) do
+          nested_shape.variants.each do |variant_data|
+            variant_shape = variant_data[:shape]
+
+            if variant_shape.is_a?(API::Object)
+              variant(**variant_data.except(:shape)) do
+                variant_shape.params.each do |vp_name, vp_data|
+                  param(vp_name, **vp_data.except(:name, :shape))
+                end
+              end
+            else
+              variant(**variant_data.except(:shape))
+            end
+          end
+        end
+      end
 
       def merge_existing_param(
         name,
@@ -309,27 +357,38 @@ module Apiwork
       end
 
       def define_regular_param(name, as:, default:, of:, optional:, options:, resolved_enum:, type:, visited_types:, &block)
-        custom_type_block = @contract_class.resolve_custom_type(type)
+        type_definition = @contract_class.resolve_custom_type(type)
 
-        if custom_type_block
+        if type_definition
           expansion_key = [@contract_class.object_id, type]
 
-          custom_type_block = nil if visited_types.include?(expansion_key)
+          type_definition = nil if visited_types.include?(expansion_key)
         end
 
-        if custom_type_block
+        if type_definition&.object?
           define_custom_type_param(
             name,
             as:,
-            custom_type_block:,
             default:,
             of:,
             optional:,
             options:,
             resolved_enum:,
             type:,
+            type_definition:,
             visited_types:,
             &block
+          )
+        elsif type_definition&.union?
+          define_custom_union_type_param(
+            name,
+            as:,
+            default:,
+            optional:,
+            options:,
+            resolved_enum:,
+            type:,
+            type_definition:,
           )
         else
           define_standard_param(
@@ -346,10 +405,52 @@ module Apiwork
         end
       end
 
+      def define_custom_union_type_param(
+        name,
+        type:,
+        type_definition:,
+        resolved_enum:,
+        optional:,
+        default:,
+        as:,
+        options:
+      )
+        union = Union.new(@contract_class, discriminator: type_definition.discriminator)
+
+        type_definition.variants.each do |variant_data|
+          variant_shape = variant_data[:shape]
+
+          if variant_shape.is_a?(API::Object)
+            union.variant(**variant_data.except(:shape)) do
+              variant_shape.params.each do |vp_name, vp_data|
+                param(vp_name, **vp_data.except(:name, :shape))
+              end
+            end
+          else
+            union.variant(**variant_data.except(:shape))
+          end
+        end
+
+        @params[name] = apply_param_defaults(
+          {
+            name:,
+            type: :union,
+            optional:,
+            default:,
+            as:,
+            union:,
+            discriminator: type_definition.discriminator,
+            custom_type: type,
+            enum: resolved_enum,
+            **options,
+          },
+        )
+      end
+
       def define_custom_type_param(
         name,
         type:,
-        custom_type_block:,
+        type_definition:,
         resolved_enum:,
         optional:,
         default:,
@@ -366,9 +467,7 @@ module Apiwork
         shape_param_definition = Param.new(@contract_class, action_name: @action_name)
         shape_param_definition.visited_types = visited_with_current
 
-        custom_type_block.each do |definition_block|
-          shape_param_definition.instance_eval(&definition_block)
-        end
+        copy_type_definition_params(type_definition, shape_param_definition)
 
         shape_param_definition.instance_eval(&block) if block_given?
 

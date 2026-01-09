@@ -147,24 +147,24 @@ module Apiwork
         end
 
         # @api public
-        # Defines a reusable type scoped to this contract.
+        # Defines a reusable object type scoped to this contract.
         #
-        # Types are named parameter structures that can be referenced in
-        # param definitions. In introspection output, types are namespaced
+        # Objects are named parameter structures that can be referenced in
+        # param definitions. In introspection output, objects are namespaced
         # with the contract's scope prefix (e.g., `:order_address`).
         #
-        # @param name [Symbol] type name
+        # @param name [Symbol] object name
         # @param description [String] documentation description
         # @param example [Object] example value for docs
         # @param format [String] format hint for docs
         # @param deprecated [Boolean] mark as deprecated
         # @param schema_class [Class] a {Schema::Base} subclass for type inference
-        # @yield block defining the type's params
+        # @yield block defining the object's params
         # @see API::Base
         #
-        # @example Reusable address type
+        # @example Reusable address object
         #   class OrderContract < Apiwork::Contract::Base
-        #     type :address do
+        #     object :address do
         #       param :street, type: :string
         #       param :city, type: :string
         #     end
@@ -173,12 +173,12 @@ module Apiwork
         #       request do
         #         body do
         #           param :shipping, type: :address
-        #           param :billing, type: :address  # Reuse same type
+        #           param :billing, type: :address  # Reuse same object
         #         end
         #       end
         #     end
         #   end
-        def type(
+        def object(
           name,
           description: nil,
           example: nil,
@@ -187,7 +187,7 @@ module Apiwork
           schema_class: nil,
           &block
         )
-          api_class.type(
+          api_class.object(
             name,
             deprecated:,
             description:,
@@ -436,7 +436,7 @@ module Apiwork
         def resolve_custom_type(type_name, visited: Set.new)
           raise ConfigurationError, "Circular import detected while resolving :#{type_name}" if visited.include?(self)
 
-          result = api_class.type_definitions(type_name, scope: self)
+          result = api_class.type_definition(type_name, scope: self)
           return result if result
 
           resolve_imported_type(type_name, visited: visited.dup.add(self))

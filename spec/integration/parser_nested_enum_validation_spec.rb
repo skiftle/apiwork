@@ -6,7 +6,7 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
   describe 'output validation with nested custom types' do
     it 'validates enum values in nested custom types' do
       contract_class = create_test_contract do
-        type :account do
+        object :account do
           param :id, required: true, type: :integer
           param :name, required: true, type: :string
           param :status, enum: %w[active inactive archived], required: true, type: :string
@@ -67,7 +67,7 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
 
     it 'validates type errors in nested custom types without coercion' do
       contract_class = create_test_contract do
-        type :account do
+        object :account do
           param :id, required: true, type: :integer
           param :name, required: true, type: :string
         end
@@ -96,12 +96,12 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
 
     it 'validates deeply nested custom types' do
       contract_class = create_test_contract do
-        type :address do
+        object :address do
           param :city, required: true, type: :string
           param :country_code, enum: %w[US UK SE], required: true, type: :string
         end
 
-        type :account do
+        object :account do
           param :id, required: true, type: :integer
           param :address, required: true, type: :address
         end

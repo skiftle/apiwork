@@ -49,7 +49,7 @@ Apiwork::API.define '/api/v1' do
 
   # API-level types - available to all contracts in this API
   # Error response type
-  type :error_detail do
+  object :error_detail do
     param :code, type: :string
     param :message, type: :string
     param :field, type: :string
@@ -60,7 +60,7 @@ Apiwork::API.define '/api/v1' do
   enum :post_status, values: %i[draft published archived]
 
   # Pagination type
-  type :pagination_params do
+  object :pagination_params do
     param :page, type: :integer
     param :per_page, type: :integer
   end

@@ -86,7 +86,7 @@ module Apiwork
             payload_type_name = :"#{action_name}_payload"
 
             unless registrar.type?(payload_type_name)
-              registrar.type(payload_type_name, schema_class: schema_class) do
+              registrar.object(payload_type_name, schema_class: schema_class) do
                 builder.send(:writable_params, self, action_name, nested: false)
               end
             end
@@ -244,7 +244,7 @@ module Apiwork
 
           unless registrar.type?(success_type_name)
             builder = self
-            registrar.type(success_type_name) do
+            registrar.object(success_type_name) do
               if response_type == :collection
                 builder.collection_response(self)
               else
@@ -297,10 +297,12 @@ module Apiwork
             variant_type_name = :"#{variant_schema_name}_#{action_name}_payload"
 
             unless registrar.api_registrar.type?(variant_type_name)
-              registrar.api_registrar.type(variant_type_name) do
+              registrar.api_registrar.object(variant_type_name) do
                 # Rename discriminator from API name to DB column if different
                 as_column = discriminator_name != discriminator_column ? discriminator_column : nil
-                param discriminator_name, as: as_column, internal: { sti_mapping: }, type: :literal, value: tag.to_s
+                # Discriminator is optional for update actions since it's inferred from the existing record
+                discriminator_optional = action_name == :update
+                param discriminator_name, as: as_column, internal: { sti_mapping: }, optional: discriminator_optional, type: :literal, value: tag.to_s
 
                 builder.send(:writable_params, self, action_name, nested: false, target_schema: variant_schema)
               end
@@ -333,7 +335,7 @@ module Apiwork
 
           schema_class_local = schema_class
           builder = self
-          registrar.type(type_name, schema_class: schema_class_local) do
+          registrar.object(type_name, schema_class: schema_class_local) do
             schema_class_local.attribute_definitions.each do |name, attribute_definition|
               enum_option = attribute_definition.enum ? { enum: name } : {}
               of_option = attribute_definition.of ? { of: attribute_definition.of } : {}
@@ -406,7 +408,7 @@ module Apiwork
           type_options = { schema_class: schema_class_local }
           type_options = {} unless depth.zero?
 
-          registrar.type(type_name, **type_options) do
+          registrar.object(type_name, **type_options) do
             param :_and, of: type_name, optional: true, type: :array
             param :_or, of: type_name, optional: true, type: :array
             param :_not, optional: true, type: type_name
@@ -478,7 +480,7 @@ module Apiwork
           type_options = { schema_class: schema_class_local }
           type_options = {} unless depth.zero?
 
-          registrar.type(type_name, **type_options) do
+          registrar.object(type_name, **type_options) do
             schema_class_local.attribute_definitions.each do |name, attribute_definition|
               next unless attribute_definition.sortable?
 
@@ -527,13 +529,13 @@ module Apiwork
           return type_name if existing_type
 
           if strategy == :cursor
-            registrar.api_registrar.type(type_name, scope: nil) do
+            registrar.api_registrar.object(type_name, scope: nil) do
               param :after, optional: true, type: :string
               param :before, optional: true, type: :string
               param :size, max: max_size, min: 1, optional: true, type: :integer
             end
           else
-            registrar.api_registrar.type(type_name, scope: nil) do
+            registrar.api_registrar.object(type_name, scope: nil) do
               param :number, min: 1, optional: true, type: :integer
               param :size, max: max_size, min: 1, optional: true, type: :integer
             end
@@ -563,7 +565,7 @@ module Apiwork
           schema_class_local = schema_class
           registrar_local = registrar
 
-          registrar.type(type_name) do
+          registrar.object(type_name) do
             schema_class_local.association_definitions.each do |name, association_definition|
               if association_definition.polymorphic?
                 param name, optional: true, type: :boolean unless association_definition.always_included?
@@ -642,26 +644,24 @@ module Apiwork
 
           create_type_name = :nested_create_payload
           builder = self
-          schema = schema_class
+          schema_class
 
           unless registrar.type?(create_type_name)
-            registrar.type(create_type_name) do
+            registrar.object(create_type_name) do
               param :_type, type: :literal, value: 'create'
+              param :id, optional: true, type: :integer
               builder.send(:writable_params, self, :create, nested: true)
-              param :_destroy, optional: true, type: :boolean if schema.association_definitions.values.any? do |association|
-                association.writable? && association.allow_destroy
-              end
+              param :_destroy, optional: true, type: :boolean
             end
           end
 
           update_type_name = :nested_update_payload
           unless registrar.type?(update_type_name)
-            registrar.type(update_type_name) do
+            registrar.object(update_type_name) do
               param :_type, type: :literal, value: 'update'
+              param :id, optional: true, type: :integer
               builder.send(:writable_params, self, :update, nested: true)
-              param :_destroy, optional: true, type: :boolean if schema.association_definitions.values.any? do |association|
-                association.writable? && association.allow_destroy
-              end
+              param :_destroy, optional: true, type: :boolean
             end
           end
 
@@ -694,7 +694,7 @@ module Apiwork
           builder = self
           schema_class_local = schema_class
 
-          registrar.type(root_key, schema_class: schema_class_local) do
+          registrar.object(root_key, schema_class: schema_class_local) do
             if schema_class_local.respond_to?(:sti_variant?) && schema_class_local.sti_variant?
               parent_schema = schema_class_local.superclass
               discriminator_name = parent_schema.discriminator_name
@@ -832,7 +832,7 @@ module Apiwork
             variant_type_name = variant_schema.root_key.singular.to_sym
 
             unless registrar.api_registrar.type?(variant_type_name)
-              registrar.api_registrar.type(variant_type_name, schema_class: variant_schema) do
+              registrar.api_registrar.object(variant_type_name, schema_class: variant_schema) do
                 param discriminator_name, type: :literal, value: tag.to_s
 
                 variant_schema.attribute_definitions.each do |name, attribute_definition|

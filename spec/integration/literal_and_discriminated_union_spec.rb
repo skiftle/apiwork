@@ -56,7 +56,7 @@ RSpec.describe 'Literal and Discriminated Union Features' do
   describe 'Discriminated union' do
     let(:contract_class) do
       create_test_contract do
-        type :string_filter do
+        object :string_filter do
           param :value, type: :string
         end
 

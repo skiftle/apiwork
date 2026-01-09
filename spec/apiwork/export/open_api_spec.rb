@@ -245,7 +245,7 @@ RSpec.describe Apiwork::Export::OpenAPI do
       Apiwork::API.define '/api/openapi_camel_test' do
         export :openapi
 
-        type :user_profile do
+        object :user_profile do
           param :first_name, type: :string
           param :last_name, type: :string
         end

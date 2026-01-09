@@ -6,7 +6,7 @@ RSpec.describe 'Custom Types', type: :integration do
   describe 'API-level types (Base.type)' do
     it 'defines a reusable custom type' do
       api = Apiwork::API.define '/test/types' do
-        type :address, description: 'A physical address' do
+        object :address, description: 'A physical address' do
           param :street, type: :string
           param :city, type: :string
           param :zip, type: :string
@@ -18,7 +18,7 @@ RSpec.describe 'Custom Types', type: :integration do
 
     it 'type is available in introspection' do
       api = Apiwork::API.define '/test/types/introspect' do
-        type :money, description: 'Monetary amount' do
+        object :money, description: 'Monetary amount' do
           param :amount, type: :decimal
           param :currency, type: :string
         end
@@ -30,7 +30,7 @@ RSpec.describe 'Custom Types', type: :integration do
 
     it 'supports nested types' do
       api = Apiwork::API.define '/test/types/nested' do
-        type :line_item do
+        object :line_item do
           param :product, type: :string
           param :quantity, type: :integer
           param :price, type: :object do
@@ -45,7 +45,7 @@ RSpec.describe 'Custom Types', type: :integration do
 
     it 'supports deprecated types' do
       api = Apiwork::API.define '/test/types/deprecated' do
-        type :old_format, deprecated: true, description: 'Use new_format instead' do
+        object :old_format, deprecated: true, description: 'Use new_format instead' do
           param :data, type: :string
         end
       end
@@ -56,7 +56,7 @@ RSpec.describe 'Custom Types', type: :integration do
 
     it 'supports type with example' do
       api = Apiwork::API.define '/test/types/example' do
-        type :coordinates, description: 'GPS coordinates', example: { lat: 59.33, lng: 18.07 } do
+        object :coordinates, description: 'GPS coordinates', example: { lat: 59.33, lng: 18.07 } do
           param :lat, type: :decimal
           param :lng, type: :decimal
         end
@@ -179,8 +179,8 @@ RSpec.describe 'Custom Types', type: :integration do
         end
       end
 
-      union_data = api.type_registry[:result].payload
-      expect(union_data[:discriminator]).to eq(:status)
+      definition = api.type_registry[:result]
+      expect(definition.discriminator).to eq(:status)
     end
   end
 
@@ -231,7 +231,7 @@ RSpec.describe 'Custom Types', type: :integration do
   describe 'Type checking methods' do
     it 'type? returns true for existing types' do
       api = Apiwork::API.define '/test/type_check' do
-        type :my_type do
+        object :my_type do
           param :data, type: :string
         end
       end

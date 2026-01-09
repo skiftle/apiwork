@@ -6,7 +6,7 @@ RSpec.describe 'TypeSystem Metadata' do
   describe 'Type metadata' do
     it 'stores and serializes type with description' do
       api = Apiwork::API.define '/api/test' do
-        type :user_status, description: 'Current status of user account' do
+        object :user_status, description: 'Current status of user account' do
           param :active, type: :boolean
         end
       end
@@ -18,7 +18,7 @@ RSpec.describe 'TypeSystem Metadata' do
 
     it 'stores and serializes type with example' do
       api = Apiwork::API.define '/api/test' do
-        type :address, example: { city: 'NYC', street: '123 Main St' } do
+        object :address, example: { city: 'NYC', street: '123 Main St' } do
           param :street, type: :string
           param :city, type: :string
         end
@@ -31,7 +31,7 @@ RSpec.describe 'TypeSystem Metadata' do
 
     it 'stores and serializes type with format' do
       api = Apiwork::API.define '/api/test' do
-        type :email_field, format: 'email' do
+        object :email_field, format: 'email' do
           param :value, type: :string
         end
       end
@@ -43,7 +43,7 @@ RSpec.describe 'TypeSystem Metadata' do
 
     it 'stores and serializes type with deprecated: true' do
       api = Apiwork::API.define '/api/test' do
-        type :legacy_response, deprecated: true do
+        object :legacy_response, deprecated: true do
           param :old_field, type: :string
         end
       end
@@ -55,7 +55,7 @@ RSpec.describe 'TypeSystem Metadata' do
 
     it 'includes deprecated: false when not deprecated' do
       api = Apiwork::API.define '/api/test' do
-        type :current_response, deprecated: false do
+        object :current_response, deprecated: false do
           param :field, type: :string
         end
       end
@@ -67,11 +67,11 @@ RSpec.describe 'TypeSystem Metadata' do
 
     it 'stores and serializes type with all metadata fields' do
       api = Apiwork::API.define '/api/test' do
-        type :payment_info,
-             deprecated: true,
-             description: 'Payment information structure',
-             example: { amount: 100, currency: 'USD' },
-             format: 'payment' do
+        object :payment_info,
+               deprecated: true,
+               description: 'Payment information structure',
+               example: { amount: 100, currency: 'USD' },
+               format: 'payment' do
           param :amount, type: :integer
           param :currency, type: :string
         end
@@ -89,7 +89,7 @@ RSpec.describe 'TypeSystem Metadata' do
 
     it 'includes all metadata fields with defaults when not set' do
       api = Apiwork::API.define '/api/test' do
-        type :simple_type do
+        object :simple_type do
           param :field, type: :string
         end
       end
@@ -105,7 +105,7 @@ RSpec.describe 'TypeSystem Metadata' do
 
     it 'includes deprecated: false when explicitly set to false' do
       api = Apiwork::API.define '/api/test' do
-        type :normal_type, deprecated: false do
+        object :normal_type, deprecated: false do
           param :field, type: :string
         end
       end
@@ -118,7 +118,7 @@ RSpec.describe 'TypeSystem Metadata' do
 
     it 'preserves empty string description' do
       api = Apiwork::API.define '/api/test' do
-        type :empty_desc_type, description: '' do
+        object :empty_desc_type, description: '' do
           param :field, type: :string
         end
       end
@@ -245,13 +245,13 @@ RSpec.describe 'TypeSystem Metadata' do
   describe 'Metadata isolation and scoping' do
     it 'keeps type metadata isolated between different APIs' do
       api1 = Apiwork::API.define '/api/v1' do
-        type :shared_name, description: 'API v1 version' do
+        object :shared_name, description: 'API v1 version' do
           param :field, type: :string
         end
       end
 
       api2 = Apiwork::API.define '/api/v2' do
-        type :shared_name, description: 'API v2 version' do
+        object :shared_name, description: 'API v2 version' do
           param :field, type: :integer
         end
       end
@@ -300,7 +300,7 @@ RSpec.describe 'TypeSystem Metadata' do
           end
         end
 
-        type :scoped_type, description: 'Contract-scoped type with metadata' do
+        object :scoped_type, description: 'Contract-scoped type with metadata' do
           param :field, type: :string
         end
       end
@@ -346,7 +346,7 @@ RSpec.describe 'TypeSystem Metadata' do
   describe 'Edge cases' do
     it 'handles example value that does not match type schema' do
       api = Apiwork::API.define '/api/test' do
-        type :user, example: 'not_a_hash' do
+        object :user, example: 'not_a_hash' do
           param :name, type: :string
         end
       end
@@ -370,7 +370,7 @@ RSpec.describe 'TypeSystem Metadata' do
 
     it 'handles format on non-string type gracefully' do
       api = Apiwork::API.define '/api/test' do
-        type :weird_format, format: 'email' do
+        object :weird_format, format: 'email' do
           param :count, type: :integer
         end
       end

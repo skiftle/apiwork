@@ -9,43 +9,32 @@ module Apiwork
 
       def register(
         name,
+        kind:,
         scope: nil,
         deprecated: false,
         description: nil,
+        discriminator: nil,
         example: nil,
         format: nil,
         schema_class: nil,
-        &definition
+        &block
       )
         key = scoped_name(scope, name)
 
-        if @store.key?(key)
-          merge(
-            key,
-            definition:,
-            deprecated:,
-            description:,
-            example:,
-            format:,
-            schema_class:,
-          )
-        else
-          @store[key] = TypeDefinition.new(
-            definition:,
-            deprecated:,
-            description:,
-            example:,
-            format:,
-            schema_class:,
-            scope:,
-            name: key,
-          )
-        end
-      end
+        validate_kind_consistency!(key, kind) if @store.key?(key)
 
-      def register_union(name, payload, scope: nil)
-        key = scoped_name(scope, name)
-        @store[key] = TypeDefinition.new(payload:, scope:, name: key)
+        @store[key] = TypeDefinition.new(
+          key,
+          block:,
+          deprecated:,
+          description:,
+          discriminator:,
+          example:,
+          format:,
+          kind:,
+          schema_class:,
+          scope:,
+        )
       end
 
       def [](name)
@@ -61,13 +50,12 @@ module Apiwork
       end
 
       def exists?(name, scope: nil)
-        definitions(name, scope:).present?
+        find(name, scope:).present?
       end
 
-      def definitions(name, scope: nil)
+      def find(name, scope: nil)
         definition = scope ? @store[scoped_name(scope, name)] : nil
-        definition ||= @store[name]
-        definition&.all_definitions
+        definition || @store[name]
       end
 
       def metadata(name)
@@ -75,9 +63,7 @@ module Apiwork
       end
 
       def schema_class(name, scope: nil)
-        definition = scope ? @store[scoped_name(scope, name)] : nil
-        definition ||= @store[name]
-        definition&.schema_class
+        find(name, scope:)&.schema_class
       end
 
       def scoped_name(scope, name)
@@ -98,24 +84,12 @@ module Apiwork
 
       private
 
-      def merge(
-        key,
-        definition:,
-        deprecated:,
-        description:,
-        example:,
-        format:,
-        schema_class:
-      )
+      def validate_kind_consistency!(key, new_kind)
         existing = @store[key]
-        @store[key] = existing.merge(
-          definition:,
-          deprecated:,
-          description:,
-          example:,
-          format:,
-          schema_class:,
-        )
+        return if existing.kind == new_kind
+
+        raise ConfigurationError,
+              "Cannot redefine :#{key} as #{new_kind}, already defined as #{existing.kind}"
       end
     end
   end

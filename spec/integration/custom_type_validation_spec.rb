@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe 'Contract custom type unknown field validation' do
   let(:contract_class) do
     create_test_contract do
-      type :my_custom_type do
+      object :my_custom_type do
         param :valid_field, optional: true, type: :boolean
         param :another_field, optional: true, type: :string
       end

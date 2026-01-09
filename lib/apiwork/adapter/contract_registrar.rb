@@ -8,9 +8,9 @@ module Apiwork
     # Passed to `register_contract` in your adapter. Use to define
     # types specific to a resource contract (request/response shapes).
     #
-    # @example Register request body type
+    # @example Register request body object
     #   def register_contract(registrar, schema_class, actions)
-    #     registrar.type :user_input do
+    #     registrar.object :user_input do
     #       param :name, type: :string
     #       param :email, type: :string
     #     end
@@ -29,12 +29,12 @@ module Apiwork
         @contract_class = contract_class
       end
 
-      # @!method type(name, &block)
+      # @!method object(name, &block)
       #   @api public
-      #   Defines a named type scoped to this contract.
-      #   @param name [Symbol] the type name
+      #   Defines a named object type scoped to this contract.
+      #   @param name [Symbol] the object name
       #   @yield block defining params
-      #   @see Apiwork::Contract::Base.type
+      #   @see Apiwork::Contract::Base.object
 
       # @!method enum(name, values:)
       #   @api public
@@ -96,9 +96,9 @@ module Apiwork
                :find_contract_for_schema,
                :import,
                :imports,
+               :object,
                :scoped_enum_name,
                :scoped_type_name,
-               :type,
                :type?,
                :union,
                to: :contract_class

@@ -8,9 +8,9 @@ module Apiwork
     # Passed to `register_api` in your adapter. Use to define
     # shared types like pagination, error responses, or enums.
     #
-    # @example Register pagination type
+    # @example Register pagination object
     #   def register_api(registrar, capabilities)
-    #     registrar.type :pagination do
+    #     registrar.object :pagination do
     #       param :page, type: :integer
     #       param :per_page, type: :integer
     #       param :total, type: :integer
@@ -26,12 +26,12 @@ module Apiwork
         @api_class = api_class
       end
 
-      # @!method type(name, &block)
+      # @!method object(name, &block)
       #   @api public
-      #   Defines a named type.
-      #   @param name [Symbol] the type name
+      #   Defines a named object type.
+      #   @param name [Symbol] the object name
       #   @yield block defining params
-      #   @see Apiwork::Api::Base.type
+      #   @see Apiwork::Api::Base.object
 
       # @!method enum(name, values:)
       #   @api public
@@ -68,7 +68,7 @@ module Apiwork
       delegate :enum,
                :enum?,
                :enum_values,
-               :type,
+               :object,
                :type?,
                :union,
                to: :api_class

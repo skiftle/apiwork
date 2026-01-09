@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe 'API TypeSystem Builder' do
   it 'allows defining types via descriptors block' do
     api = Apiwork::API.define '/api/test' do
-      type :error do
+      object :error do
         param :error, type: :string
         param :code, type: :integer
       end
@@ -44,7 +44,7 @@ RSpec.describe 'API TypeSystem Builder' do
 
   it 'registers descriptors as unprefixed (API-global)' do
     api = Apiwork::API.define '/api/test' do
-      type :global_type do
+      object :global_type do
         param :value, type: :string
       end
     end
@@ -58,7 +58,7 @@ RSpec.describe 'API TypeSystem Builder' do
 
   it 'allows multiple descriptors blocks' do
     api = Apiwork::API.define '/api/test' do
-      type :error do
+      object :error do
         param :message, type: :string
       end
 
@@ -75,7 +75,7 @@ RSpec.describe 'API TypeSystem Builder' do
   describe 'Metadata support' do
     it 'allows defining type with description' do
       api = Apiwork::API.define '/api/test' do
-        type :documented_type, description: 'A type with description' do
+        object :documented_type, description: 'A type with description' do
           param :field, type: :string
         end
       end
@@ -87,7 +87,7 @@ RSpec.describe 'API TypeSystem Builder' do
 
     it 'allows defining type with example' do
       api = Apiwork::API.define '/api/test' do
-        type :example_type, example: { field: 'value' } do
+        object :example_type, example: { field: 'value' } do
           param :field, type: :string
         end
       end
@@ -99,7 +99,7 @@ RSpec.describe 'API TypeSystem Builder' do
 
     it 'allows defining type with format' do
       api = Apiwork::API.define '/api/test' do
-        type :formatted_type, format: 'email' do
+        object :formatted_type, format: 'email' do
           param :email, type: :string
         end
       end
@@ -111,7 +111,7 @@ RSpec.describe 'API TypeSystem Builder' do
 
     it 'allows defining type with deprecated: true' do
       api = Apiwork::API.define '/api/test' do
-        type :legacy_type, deprecated: true do
+        object :legacy_type, deprecated: true do
           param :old_field, type: :string
         end
       end
@@ -123,7 +123,7 @@ RSpec.describe 'API TypeSystem Builder' do
 
     it 'allows defining type with all metadata fields' do
       api = Apiwork::API.define '/api/test' do
-        type :full_metadata_type, deprecated: true, description: 'Comprehensive metadata', example: { data: 'example' }, format: 'custom' do
+        object :full_metadata_type, deprecated: true, description: 'Comprehensive metadata', example: { data: 'example' }, format: 'custom' do
           param :data, type: :string
         end
       end
@@ -186,7 +186,7 @@ RSpec.describe 'API TypeSystem Builder' do
     it 'passes metadata through to Registry' do
       # This test verifies the integration between Builder and Registry
       api = Apiwork::API.define '/api/test' do
-        type :chained_type, description: 'Metadata flows through' do
+        object :chained_type, description: 'Metadata flows through' do
           param :value, type: :string
         end
 

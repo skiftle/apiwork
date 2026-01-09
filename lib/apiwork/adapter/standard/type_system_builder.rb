@@ -151,7 +151,7 @@ module Apiwork
         end
 
         def register_offset_pagination
-          registrar.type :offset_pagination do
+          registrar.object :offset_pagination do
             param :current, type: :integer
             param :next, nullable: true, optional: true, type: :integer
             param :prev, nullable: true, optional: true, type: :integer
@@ -161,7 +161,7 @@ module Apiwork
         end
 
         def register_cursor_pagination
-          registrar.type :cursor_pagination do
+          registrar.object :cursor_pagination do
             param :next, nullable: true, optional: true, type: :string
             param :prev, nullable: true, optional: true, type: :string
           end
@@ -170,7 +170,7 @@ module Apiwork
         def register_error_type
           registrar.enum :layer, values: %w[http contract domain]
 
-          registrar.type :issue do
+          registrar.object :issue do
             param :code, type: :string
             param :detail, type: :string
             param :path, of: :string, type: :array
@@ -178,7 +178,7 @@ module Apiwork
             param :meta, type: :object
           end
 
-          registrar.type :error_response_body do
+          registrar.object :error_response_body do
             param :layer, type: :layer
             param :issues, of: :issue, type: :array
           end
@@ -229,7 +229,7 @@ module Apiwork
           params = definition[:params].dup
           params << NULLABLE_EXTENSION if nullable
 
-          registrar.type(type_name) do
+          registrar.object(type_name) do
             params.each do |param_definition|
               if param_definition[:of]
                 param param_definition[:name], of: param_definition[:of], optional: true, type: param_definition[:type]

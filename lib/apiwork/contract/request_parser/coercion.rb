@@ -62,6 +62,20 @@ module Apiwork
               return coerced unless coerced.nil?
             end
 
+            discriminator = union_definition.discriminator
+
+            if discriminator && value.is_a?(Hash)
+              discriminator_value = value[discriminator]
+              matching_variant = union_definition.variants.find do |variant|
+                variant[:tag].to_s == discriminator_value.to_s
+              end
+
+              if matching_variant
+                custom_param_definition = resolve_custom_param_definition(matching_variant[:type], definition, type_cache)
+                return coerce_hash(value, custom_param_definition, type_cache:) if custom_param_definition
+              end
+            end
+
             union_definition.variants.each do |variant|
               variant_type = variant[:type]
               variant_of = variant[:of]
@@ -75,6 +89,8 @@ module Apiwork
                   return coerced_array
                 end
               end
+
+              next if discriminator
 
               custom_param_definition = resolve_custom_param_definition(variant_type, definition, type_cache)
               next unless custom_param_definition
@@ -93,11 +109,11 @@ module Apiwork
           def resolve_custom_param_definition(type_name, definition, type_cache)
             return type_cache[type_name] if type_cache.key?(type_name)
 
-            custom_type_block = definition.contract_class.resolve_custom_type(type_name)
-            return type_cache[type_name] = nil unless custom_type_block
+            type_definition = definition.contract_class.resolve_custom_type(type_name)
+            return type_cache[type_name] = nil unless type_definition
 
             custom_param = Param.new(definition.contract_class)
-            custom_type_block.each { |block| custom_param.instance_eval(&block) }
+            custom_param.copy_type_definition_params(type_definition, custom_param)
             type_cache[type_name] = custom_param
           end
         end

@@ -4,72 +4,126 @@ module Apiwork
   module API
     class TypeRegistry
       class TypeDefinition
-        attr_reader :definition,
-                    :definitions,
+        attr_reader :deprecated,
                     :description,
+                    :discriminator,
                     :example,
                     :format,
+                    :kind,
                     :name,
-                    :payload,
                     :schema_class,
                     :scope
 
         def initialize(
-          name:,
+          name,
+          kind:,
           scope: nil,
+          block: nil,
           deprecated: false,
-          definition: nil,
-          definitions: nil,
           description: nil,
+          discriminator: nil,
           example: nil,
           format: nil,
-          payload: nil,
           schema_class: nil
         )
           @name = name
+          @kind = kind
           @scope = scope
+          @block = block
           @deprecated = deprecated
-          @definition = definition
-          @definitions = definitions
           @description = description
+          @discriminator = discriminator
           @example = example
           @format = format
-          @payload = payload
           @schema_class = schema_class
+          @shape = nil
         end
 
         def deprecated?
           @deprecated == true
         end
 
-        def all_definitions
-          (@definitions || [@definition].compact).presence
+        def object?
+          @kind == :object
         end
 
-        def merge(
-          definition:,
-          deprecated:,
-          description:,
-          example:,
-          format:,
-          schema_class:
-        )
-          merged_definitions = @definitions&.dup || []
-          merged_definitions << @definition if @definition && @definitions.nil?
-          merged_definitions << definition if definition
+        def union?
+          @kind == :union
+        end
 
-          TypeDefinition.new(
-            definition: nil,
-            definitions: merged_definitions.compact.presence,
-            deprecated: deprecated || @deprecated,
-            description: description || @description,
-            example: example || @example,
-            format: format || @format,
-            name: @name,
-            payload: @payload,
-            schema_class: schema_class || @schema_class,
-            scope: @scope,
-          )
+        def shape
+          ensure_shape_built!
+          @shape
+        end
+
+        def params
+          shape.params if object?
+        end
+
+        def variants
+          shape.variants if union?
+        end
+
+        def validate(value, current_depth:, field_path:, max_depth:)
+          return nil unless object?
+
+          temp_param = Contract::Param.new(nil)
+
+          params.each do |param_name, param_data|
+            add_param_to_definition(temp_param, param_name, param_data)
+          end
+
+          temp_param.validate(value, current_depth:, max_depth:, path: field_path)
+        end
+
+        private
+
+        def add_param_to_definition(target_param, param_name, param_data)
+          nested_shape = param_data[:shape]
+
+          if nested_shape.is_a?(Object)
+            target_param.param(
+              param_name,
+              **param_data.except(:name, :shape),
+            ) do
+              nested_shape.params.each do |nested_name, nested_data|
+                param(nested_name, **nested_data.except(:name, :shape))
+              end
+            end
+          elsif nested_shape.is_a?(Union)
+            target_param.param(
+              param_name,
+              **param_data.except(:name, :shape),
+            ) do
+              nested_shape.variants.each do |variant_data|
+                variant_shape = variant_data[:shape]
+
+                if variant_shape.is_a?(Object)
+                  variant(**variant_data.except(:shape)) do
+                    variant_shape.params.each do |vp_name, vp_data|
+                      param(vp_name, **vp_data.except(:name, :shape))
+                    end
+                  end
+                else
+                  variant(**variant_data.except(:shape))
+                end
+              end
+            end
+          else
+            target_param.param(param_name, **param_data.except(:name, :shape))
+          end
+        end
+
+        def ensure_shape_built!
+          return if @shape
+
+          @shape = if object?
+                     Object.new
+                   else
+                     Union.new(discriminator: @discriminator)
+                   end
+
+          @shape.instance_eval(&@block) if @block
         end
       end
     end

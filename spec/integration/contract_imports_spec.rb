@@ -6,7 +6,7 @@ RSpec.describe 'Contract Imports' do
   describe 'basic import functionality' do
     let(:user_contract) do
       create_test_contract do
-        type :address do
+        object :address do
           param :street, required: true, type: :string
           param :city, required: true, type: :string
           param :country_code, required: true, type: :string
@@ -18,7 +18,7 @@ RSpec.describe 'Contract Imports' do
 
     let(:order_contract) do
       create_test_contract do
-        type :order_item do
+        object :order_item do
           param :product_id, required: true, type: :uuid
           param :quantity, required: true, type: :integer
         end
@@ -117,7 +117,7 @@ RSpec.describe 'Contract Imports' do
   describe 'with dynamically created contracts' do
     it 'allows importing from dynamically created contracts' do
       user_contract = create_test_contract do
-        type :address do
+        object :address do
           param :street, type: :string
         end
       end
@@ -152,7 +152,7 @@ RSpec.describe 'Contract Imports' do
       contract_a.class_eval do
         import b, as: :b
 
-        type :a_type do
+        object :a_type do
           param :value, type: :string
         end
       end
@@ -160,7 +160,7 @@ RSpec.describe 'Contract Imports' do
       contract_b.class_eval do
         import a, as: :a
 
-        type :b_type do
+        object :b_type do
           param :value, type: :integer
         end
       end
@@ -199,7 +199,7 @@ RSpec.describe 'Contract Imports' do
   describe 'serialization with imports' do
     let(:user_contract) do
       create_test_contract do
-        type :address do
+        object :address do
           param :street, required: true, type: :string
           param :city, required: true, type: :string
         end
@@ -234,7 +234,7 @@ RSpec.describe 'Contract Imports' do
   describe 'type resolution priority' do
     let(:base_contract) do
       create_test_contract do
-        type :metadata do
+        object :metadata do
           param :version, type: :integer
         end
       end
@@ -246,7 +246,7 @@ RSpec.describe 'Contract Imports' do
         import bc, as: :base
 
         # Define local type with same base name
-        type :metadata do
+        object :metadata do
           param :version, type: :string # Different type
         end
 
