@@ -19,7 +19,6 @@ module Apiwork
     class Base
       class << self
         attr_reader :adapter_config,
-                    :built_contracts,
                     :enum_registry,
                     :export_configs,
                     :exports,
@@ -585,6 +584,8 @@ module Apiwork
         end
 
         private
+
+        attr_reader :built_contracts
 
         def transform_request_keys(hash)
           case @key_format
