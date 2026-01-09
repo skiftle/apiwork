@@ -308,9 +308,9 @@ module Apiwork
         #     version '1.0.0'
         #   end
         def info(&block)
-          info_builder = Info.new
-          info_builder.instance_eval(&block)
-          @structure.info = info_builder
+          info = Info.new
+          info.instance_eval(&block)
+          @structure.info = info
         end
 
         # @api public
