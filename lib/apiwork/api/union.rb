@@ -2,6 +2,28 @@
 
 module Apiwork
   module API
+    # @api public
+    # Defines a union type with multiple variants.
+    #
+    # A union represents a value that can be one of several types.
+    # With a discriminator, variants are distinguished by a tag field.
+    # Without a discriminator, validation tries each variant in order.
+    #
+    # @example Simple union (no discriminator)
+    #   union :filter_value do
+    #     variant type: :string
+    #     variant type: :integer
+    #   end
+    #
+    # @example Discriminated union
+    #   union :payment, discriminator: :kind do
+    #     variant tag: 'card', type: :object do
+    #       param :last_four, type: :string
+    #     end
+    #     variant tag: 'bank', type: :object do
+    #       param :account, type: :string
+    #     end
+    #   end
     class Union
       attr_reader :discriminator,
                   :variants
@@ -12,6 +34,27 @@ module Apiwork
         @variants = []
       end
 
+      # @api public
+      # Defines a variant within this union.
+      #
+      # @param type [Symbol] variant type (primitive, :object, or reference)
+      # @param tag [String] discriminator value for this variant (required when union has discriminator)
+      # @param enum [Symbol, Array] enum constraint for the variant
+      # @param of [Symbol] element type when variant is an array
+      # @param partial [Boolean] make all fields optional in this variant
+      # @yield optional block for inline object definition
+      # @return [void]
+      #
+      # @example Primitive variant
+      #   variant type: :string
+      #
+      # @example Reference to named object
+      #   variant type: :card_details, tag: 'card'
+      #
+      # @example Inline object variant
+      #   variant tag: 'bank', type: :object do
+      #     param :account, type: :string
+      #   end
       def variant(enum: nil, of: nil, partial: nil, tag: nil, type:, &block)
         validate_tag!(tag)
 

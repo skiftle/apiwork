@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe 'Numeric min/max validation' do
   let(:contract_class) { create_test_contract }
   let(:definition) do
-    Apiwork::Contract::Param.new(contract_class)
+    Apiwork::Contract::Object.new(contract_class)
   end
 
   before do

@@ -13,6 +13,41 @@ Types are defined in Ruby, but are purely declarative. They define shape and con
 
 ---
 
+## Three Concepts
+
+The type system has three distinct concepts:
+
+| Concept | Purpose | DSL |
+|---------|---------|-----|
+| **object** | Structured data with named fields | `object :name do ... end` |
+| **union** | One of several shapes | `union :name do ... end` |
+| **enum** | Restricted set of values | `enum :name, values: [...]` |
+
+**Objects** define structure. **Unions** define alternatives. **Enums** constrain values.
+
+Technically, only objects and unions are types — they define shape. Enums are value constraints applied to a field, not standalone types. You reference an enum with `enum: :name`, not `type: :name`.
+
+```ruby
+object :invoice do
+  param :id, type: :uuid
+  param :status, type: :string, enum: :invoice_status
+  param :payment, type: :payment_method
+end
+
+union :payment_method, discriminator: :kind do
+  variant tag: 'card', type: :object do
+    param :last_four, type: :string
+  end
+  variant tag: 'bank', type: :object do
+    param :account, type: :string
+  end
+end
+
+enum :invoice_status, values: %w[draft sent paid]
+```
+
+---
+
 ## What the Type System Defines
 
 The type system defines:
@@ -35,10 +70,10 @@ Those concerns belong to the [Execution Engine](../execution-engine/introduction
 
 ## Shapes and Constraints
 
-A type defines both **shape** and **constraints**.
+An object defines both **shape** and **constraints**.
 
 ```ruby
-type :invoice do
+object :invoice do
   param :id, type: :uuid
   param :number, type: :string
   param :status, type: :string, enum: %w[draft sent paid]
@@ -78,15 +113,15 @@ Structural types (`:array`, `:object`) and special types (`:json`, `:binary`, `:
 
 ## Next Steps
 
-| Topic                             | Description                                         |
-| --------------------------------- | --------------------------------------------------- |
-| [Types](./types.md)               | Optionality, nullability, defaults, and constraints |
-| [Enums](./enums.md)               | Restrict values to a fixed set                      |
-| [Unions](./unions.md)             | Multiple shapes with a discriminator                |
-| [Custom Types](./custom-types.md) | Reusable named types                                |
-| [Scoping](./scoping.md)           | API-level vs contract-scoped types                  |
-| [Type Merging](./type-merging.md) | Extending and composing types                       |
+| Topic                   | Description                                         |
+| ----------------------- | --------------------------------------------------- |
+| [Types](./types.md)     | Optionality, nullability, defaults, and constraints |
+| [Objects](./objects.md) | Reusable named objects                              |
+| [Unions](./unions.md)   | Multiple shapes with a discriminator                |
+| [Enums](./enums.md)     | Restrict values to a fixed set                      |
+| [Scoping](./scoping.md) | API-level vs contract-scoped types                  |
+| [Merging](./merging.md) | Extending and composing types                       |
 
 #### See also
 
-- [Contract::Base reference](../../../reference/contract-base.md) — `type`, `enum`, and `union` methods
+- [Contract::Base reference](../../../reference/contract-base.md) — `object`, `union`, and `enum` methods

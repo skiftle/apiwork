@@ -30,18 +30,18 @@ The `import` makes all types from `UserContract` available. The `as: :user` pref
 
 ## How It Works
 
-When you define a type in a contract:
+When you define an object in a contract:
 
 ```ruby
 class UserContract < Apiwork::Contract::Base
-  type :address do
+  object :address do
     param :street, type: :string
     param :city, type: :string
   end
 end
 ```
 
-When another contract imports with `as: :user`, the type becomes available as `:user_address` (prefix + original name).
+When another contract imports with `as: :user`, the object becomes available as `:user_address` (prefix + original name).
 
 ## Multiple Imports
 
@@ -95,7 +95,7 @@ If a type name exists at multiple levels, the first match wins:
 
 ```ruby
 class UserContract < Apiwork::Contract::Base
-  type :address do
+  object :address do
     param :street, type: :string
     param :city, type: :string
     param :country_code, type: :string  # 3 fields
@@ -105,8 +105,8 @@ end
 class OrderContract < Apiwork::Contract::Base
   import UserContract, as: :user
 
-  # This local type shadows the imported one
-  type :user_address do
+  # This local object shadows the imported one
+  object :user_address do
     param :street, type: :string
     param :city, type: :string      # 2 fields (no country_code)
   end

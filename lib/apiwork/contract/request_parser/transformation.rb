@@ -82,7 +82,7 @@ module Apiwork
             type_definition = contract_class.resolve_custom_type(type_name)
 
             if type_definition
-              temp_param = Param.new(
+              temp_param = Object.new(
                 contract_class,
                 action_name: parent_definition.action_name,
               )
@@ -152,7 +152,7 @@ module Apiwork
             return nil unless type_definition
 
             if type_definition.object?
-              temp_param = Param.new(
+              temp_param = Object.new(
                 contract_class,
                 action_name: definition.action_name,
               )
@@ -165,7 +165,7 @@ module Apiwork
               variant_type_definition = contract_class.resolve_custom_type(first_variant[:type])
               return nil unless variant_type_definition&.object?
 
-              temp_param = Param.new(
+              temp_param = Object.new(
                 contract_class,
                 action_name: definition.action_name,
               )

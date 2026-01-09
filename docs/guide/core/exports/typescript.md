@@ -103,9 +103,9 @@ Descriptions from your Ruby code become JSDoc comments in TypeScript.
 
 ```ruby
 Apiwork::API.define '/api/v1' do
-  type :invoice,
-       description: 'Represents a customer invoice',
-       example: { id: 'inv_123', amount: 99.99 } do
+  object :invoice,
+         description: 'Represents a customer invoice',
+         example: { id: 'inv_123', amount: 99.99 } do
     param :id, type: :string, description: 'Unique identifier', example: 'inv_123'
     param :amount, type: :decimal, description: 'Total amount', example: 99.99
   end

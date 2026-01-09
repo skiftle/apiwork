@@ -143,13 +143,13 @@ param :lines_attributes, type: :string, as: :lines
 
 Clients send `lines`, but your code receives `lines_attributes`.
 
-## Custom Types
+## Named Objects
 
-You can reference types defined at the API level:
+You can reference objects defined at the API level:
 
 ```ruby
 # In API definition
-type :address do
+object :address do
   param :street, type: :string
   param :city, type: :string
 end
@@ -158,7 +158,7 @@ end
 param :shipping_address, type: :address
 ```
 
-[Type System](../type-system/introduction.md) covers custom types, enums, unions, and scoping.
+[Type System](../type-system/introduction.md) covers objects, unions, enums, and scoping.
 
 ## Type Generation
 
@@ -239,4 +239,4 @@ export const CreatePostRequestSchema = z.object({
 
 #### See also
 
-- [Contract::Param reference](../../../reference/contract-param.md) — all param options
+- [Contract::Object reference](../../../reference/contract-object.md) — all param options

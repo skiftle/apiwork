@@ -37,7 +37,24 @@ Primitive types are the building blocks. Every param uses one of these.
 | `:array` | Array of items |
 | `:union` | One of several types |
 
-[Unions](./unions.md) covers discriminated and simple unions. [Custom Types](./custom-types.md) shows how to define reusable object types.
+### Inline vs Named
+
+Structure types can be defined inline or as named definitions:
+
+```ruby
+# Inline object — defined in place
+param :address, type: :object do
+  param :street, type: :string
+end
+
+# Named object — defined once, referenced by name
+object :address do
+  param :street, type: :string
+end
+param :shipping, type: :address
+```
+
+[Objects](./objects.md) shows how to define reusable named objects. [Unions](./unions.md) covers discriminated and simple unions.
 
 ## Semantic Precision
 
@@ -202,4 +219,4 @@ Example:
 
 #### See also
 
-- [Contract::Param reference](../../../reference/contract-param.md) — all param options
+- [Contract::Object reference](../../../reference/contract-object.md) — all param options

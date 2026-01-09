@@ -2,11 +2,10 @@
 
 module Apiwork
   module Contract
+    # @api public
     # Defines query params and body for a request.
     #
-    # Returns {Param} via `query` and `body`.
-    #
-    # @api public
+    # Returns {Object} via `query` and `body`.
     class Request
       attr_reader :action_name,
                   :body_param,
@@ -27,8 +26,8 @@ module Apiwork
       # Use `param` inside the block to define parameters.
       #
       # @yield block defining query params
-      # @return [Param] the query param
-      # @see Contract::Param
+      # @return [Object] the query param
+      # @see Contract::Object
       #
       # @example
       #   request do
@@ -39,7 +38,7 @@ module Apiwork
       #     end
       #   end
       def query(&block)
-        @query_param ||= Param.new(
+        @query_param ||= Object.new(
           @contract_class,
           action_name: @action_name,
         )
@@ -56,8 +55,8 @@ module Apiwork
       # Use `param` inside the block to define fields.
       #
       # @yield block defining body params
-      # @return [Param] the body param
-      # @see Contract::Param
+      # @return [Object] the body param
+      # @see Contract::Object
       #
       # @example
       #   request do
@@ -67,7 +66,7 @@ module Apiwork
       #     end
       #   end
       def body(&block)
-        @body_param ||= Param.new(
+        @body_param ||= Object.new(
           @contract_class,
           action_name: @action_name,
         )

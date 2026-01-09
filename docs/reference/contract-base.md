@@ -1,5 +1,5 @@
 ---
-order: 15
+order: 17
 prev: false
 next: false
 ---
@@ -228,10 +228,10 @@ If not set, prefix is derived from schema's root_key or class name.
 class InvoiceContract < Apiwork::Contract::Base
   identifier :billing
 
-  type :address do
+  object :address do
     param :street, type: :string
   end
-  # In introspection: type is named :billing_address
+  # In introspection: object is named :billing_address
 end
 ```
 
@@ -263,7 +263,7 @@ makes it available as `:user_address`.
 **Example: Import types from another contract**
 
 ```ruby
-# UserContract has: type :address, enum :role
+# UserContract has: object :address, enum :role
 class OrderContract < Apiwork::Contract::Base
   import UserContract, as: :user
 
@@ -318,6 +318,55 @@ InvoiceContract.introspect(expand: true)
 
 ---
 
+### .object
+
+`.object(name, description: nil, example: nil, format: nil, deprecated: false, schema_class: nil, &block)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L181)
+
+Defines a reusable object type scoped to this contract.
+
+Objects are named parameter structures that can be referenced in
+param definitions. In introspection output, objects are namespaced
+with the contract's scope prefix (e.g., `:order_address`).
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `name` | `Symbol` | object name |
+| `description` | `String` | documentation description |
+| `example` | `Object` | example value for docs |
+| `format` | `String` | format hint for docs |
+| `deprecated` | `Boolean` | mark as deprecated |
+| `schema_class` | `Class` | a [Schema::Base](schema-base) subclass for type inference |
+
+**See also**
+
+- [API::Base](api-base)
+
+**Example: Reusable address object**
+
+```ruby
+class OrderContract < Apiwork::Contract::Base
+  object :address do
+    param :street, type: :string
+    param :city, type: :string
+  end
+
+  action :create do
+    request do
+      body do
+        param :shipping, type: :address
+        param :billing, type: :address  # Reuse same object
+      end
+    end
+  end
+end
+```
+
+---
+
 ### .schema!
 
 `.schema!`
@@ -356,55 +405,6 @@ class Api::V1::UserContract < Apiwork::Contract::Base
     response do
       body do
         param :id
-      end
-    end
-  end
-end
-```
-
----
-
-### .type
-
-`.type(name, description: nil, example: nil, format: nil, deprecated: false, schema_class: nil, &block)`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L181)
-
-Defines a reusable type scoped to this contract.
-
-Types are named parameter structures that can be referenced in
-param definitions. In introspection output, types are namespaced
-with the contract's scope prefix (e.g., `:order_address`).
-
-**Parameters**
-
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `Symbol` | type name |
-| `description` | `String` | documentation description |
-| `example` | `Object` | example value for docs |
-| `format` | `String` | format hint for docs |
-| `deprecated` | `Boolean` | mark as deprecated |
-| `schema_class` | `Class` | a [Schema::Base](schema-base) subclass for type inference |
-
-**See also**
-
-- [API::Base](api-base)
-
-**Example: Reusable address type**
-
-```ruby
-class OrderContract < Apiwork::Contract::Base
-  type :address do
-    param :street, type: :string
-    param :city, type: :string
-  end
-
-  action :create do
-    request do
-      body do
-        param :shipping, type: :address
-        param :billing, type: :address  # Reuse same type
       end
     end
   end
@@ -483,7 +483,7 @@ end
 
 `#invalid?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L538)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L542)
 
 Returns whether the contract has validation issues.
 
@@ -521,7 +521,7 @@ Array&lt;[Issue](issue)&gt; — validation issues (empty if valid)
 
 `#valid?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L531)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L535)
 
 Returns whether the contract passed validation.
 

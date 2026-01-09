@@ -1,18 +1,18 @@
 ---
-order: 6
+order: 5
 ---
 
 # Scoping
 
-Types can be global (API-level) or scoped to a contract.
+Objects, unions, and enums can be global (API-level) or scoped to a contract.
 
-## API-Level Types
+## API-Level Definitions
 
 Defined in the API define block:
 
 ```ruby
 Apiwork::API.define '/api/v1' do
-  type :address do
+  object :address do
     param :street, type: :string
     param :city, type: :string
   end
@@ -23,13 +23,13 @@ end
 
 Available to all contracts in the API.
 
-## Contract-Scoped Types
+## Contract-Scoped Definitions
 
 Defined inside a contract:
 
 ```ruby
 class OrderContract < Apiwork::Contract::Base
-  type :line_item do
+  object :line_item do
     param :product_id, type: :integer
     param :quantity, type: :integer
   end
@@ -42,9 +42,9 @@ Only available within that contract.
 
 ## Scoped Names
 
-Contract-scoped types get a prefix based on the contract:
+Contract-scoped definitions get a prefix based on the contract:
 
-| Contract        | Type         | Scoped Name        |
+| Contract        | Name         | Scoped Name        |
 | --------------- | ------------ | ------------------ |
 | `OrderContract` | `:line_item` | `:order_line_item` |
 | `PostContract`  | `:status`    | `:post_status`     |
@@ -52,11 +52,11 @@ Contract-scoped types get a prefix based on the contract:
 This prefix appears in the generated output:
 
 ```typescript
-// API-level type (no prefix)
+// API-level (no prefix)
 export interface Address { ... }
 export const AddressSchema = z.object({ ... });
 
-// Contract-scoped type (prefixed with contract name)
+// Contract-scoped (prefixed with contract name)
 export interface OrderLineItem { ... }
 export const OrderLineItemSchema = z.object({ ... });
 
@@ -67,10 +67,10 @@ export const PostStatusSchema = z.enum(['draft', 'published']);
 
 ## Resolution Priority
 
-When a type is referenced, Apiwork looks in this order:
+When an object or enum is referenced, Apiwork looks in this order:
 
-1. Contract-scoped types (if inside a contract)
-2. API-level types
+1. Contract-scoped definitions (if inside a contract)
+2. API-level definitions
 
 ```ruby
 class PostContract < Apiwork::Contract::Base
@@ -80,7 +80,7 @@ class PostContract < Apiwork::Contract::Base
     request do
       body do
         param :status, type: :string, enum: :status  # Resolves to contract-scoped post_status
-        param :address, type: :address                # Uses global address
+        param :address, type: :address               # Uses global address
       end
     end
   end
@@ -109,7 +109,7 @@ See [Imports](../contracts/imports.md) for sharing types between contracts.
 
 ## Generated Output
 
-API-level types keep their original name. Contract-scoped types get prefixed.
+API-level definitions keep their original name. Contract-scoped definitions get prefixed.
 
 ### Introspection
 
@@ -149,5 +149,5 @@ export type PostStatus = 'draft' | 'published';
 
 #### See also
 
-- [API::Base reference](../../../reference/api-base.md) — API-level `type` and `enum`
-- [Contract::Base reference](../../../reference/contract-base.md) — contract-scoped types
+- [API::Base reference](../../../reference/api-base.md) — API-level `object`, `union`, and `enum`
+- [Contract::Base reference](../../../reference/contract-base.md) — contract-scoped definitions

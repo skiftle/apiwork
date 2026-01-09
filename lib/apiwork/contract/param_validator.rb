@@ -353,7 +353,7 @@ module Apiwork
       end
 
       def validate_array_item_with_object_type(item, type_definition, item_path, contract_class, current_depth, max_depth)
-        custom_param = Param.new(contract_class, action_name: @param_definition.action_name)
+        custom_param = Object.new(contract_class, action_name: @param_definition.action_name)
         custom_param.copy_type_definition_params(type_definition, custom_param)
 
         validator = ParamValidator.new(custom_param)
@@ -544,7 +544,7 @@ module Apiwork
 
         type_definition = @param_definition.contract_class.resolve_custom_type(variant_type)
         if type_definition
-          custom_param = Param.new(
+          custom_param = Object.new(
             @param_definition.contract_class,
             action_name: @param_definition.action_name,
           )
@@ -674,7 +674,7 @@ module Apiwork
             variant_type_definition = contract_class.resolve_custom_type(variant_type)
 
             if variant_type_definition&.object?
-              custom_param = Param.new(contract_class, action_name: @param_definition.action_name)
+              custom_param = Object.new(contract_class, action_name: @param_definition.action_name)
               custom_param.copy_type_definition_params(variant_type_definition, custom_param)
 
               validator = ParamValidator.new(custom_param)
@@ -696,7 +696,7 @@ module Apiwork
 
           next unless variant_type_definition&.object?
 
-          custom_param = Param.new(contract_class, action_name: @param_definition.action_name)
+          custom_param = Object.new(contract_class, action_name: @param_definition.action_name)
           custom_param.copy_type_definition_params(variant_type_definition, custom_param)
           custom_param.params.delete(discriminator) if discriminator
 

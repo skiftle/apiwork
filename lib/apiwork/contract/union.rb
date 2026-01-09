@@ -20,8 +20,6 @@ module Apiwork
     #
     # @see Contract::Object#param
     class Union
-      # @api public
-      # @return [Class] the contract class
       attr_reader :contract_class
 
       delegate :discriminator, :variants, to: :@union
@@ -62,11 +60,8 @@ module Apiwork
       #       param :routing_number, type: :string
       #     end
       #   end
-      #
-      # @see Introspection::Param::Union
       def variant(enum: nil, of: nil, partial: nil, tag: nil, type:, &block)
-        resolved_enum = resolve_enum(enum)
-        @union.variant(of:, partial:, tag:, type:, enum: resolved_enum, &block)
+        @union.variant(of:, partial:, tag:, type:, enum: resolve_enum(enum), &block)
       end
 
       private

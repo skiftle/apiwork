@@ -1,15 +1,15 @@
 ---
-order: 5
+order: 3
 ---
 
-# Custom Types
+# Objects
 
-Custom types are named object structures that can be referenced by name.
+Objects are named structures that can be referenced by name.
 
-## Defining a Type
+## Defining an Object
 
 ```ruby
-type :address do
+object :address do
   param :street, type: :string
   param :city, type: :string
   param :postal_code, type: :string
@@ -106,37 +106,37 @@ Address:
 Add documentation:
 
 ```ruby
-type :address,
-     description: 'Physical address',
-     example: { street: '123 Main St', city: 'New York' } do
+object :address,
+       description: 'Physical address',
+       example: { street: '123 Main St', city: 'New York' } do
   param :street, type: :string
   param :city, type: :string
 end
 ```
 
-## Nested Types
+## Nested Objects
 
-Types can reference other types:
+Objects can reference other objects:
 
 ```ruby
-type :address do
+object :address do
   param :street, type: :string
   param :city, type: :string
 end
 
-type :person do
+object :person do
   param :name, type: :string
   param :home_address, type: :address
   param :work_address, type: :address
 end
 ```
 
-## Recursive Types
+## Recursive Objects
 
-Types can reference themselves. This is useful for tree structures or nested filters.
+Objects can reference themselves. This is useful for tree structures or nested filters.
 
 ```ruby
-type :category do
+object :category do
   param :name, type: :string
   param :children, type: :array, of: :category
 end
@@ -181,13 +181,13 @@ Category:
         $ref: '#/components/schemas/Category'
 ```
 
-## Contract-Scoped Types
+## Contract-Scoped Objects
 
-Types inside a contract get prefixed with the contract name:
+Objects inside a contract get prefixed with the contract name:
 
 ```ruby
 class OrderContract < Apiwork::Contract::Base
-  type :line_item do
+  object :line_item do
     param :product_id, type: :integer
     param :quantity, type: :integer
   end
@@ -198,7 +198,7 @@ This becomes `OrderLineItem` in TypeScript, `order_line_item` in exports.
 
 ## Named vs Inline
 
-You can define a type once and reference it, or define it inline where you use it.
+You can define an object once and reference it, or define it inline where you use it.
 
 **Inline** — defined directly in the action:
 
@@ -221,7 +221,7 @@ end
 
 ```ruby
 class OrderContract < Apiwork::Contract::Base
-  type :order do
+  object :order do
     param :id, type: :integer
     param :total, type: :decimal
   end
@@ -236,19 +236,19 @@ end
 
 Both work the same at runtime. The difference is in the exports:
 
-- Inline types embed the definition directly
-- Named types create `$ref` references to `components/schemas`
+- Inline objects embed the definition directly
+- Named objects create `$ref` references to `components/schemas`
 
-## When to Use Named Types
+## When to Use Named Objects
 
-**Use named types when:**
+**Use named objects when:**
 
 - The structure appears in multiple places
 - You want it in OpenAPI's `components/schemas`
 - You want a dedicated TypeScript interface
 - It represents a domain concept (Address, Money, etc.)
 
-**Use inline types when:**
+**Use inline objects when:**
 
 - It's unique to one endpoint
 - You don't need to reference it elsewhere
@@ -256,4 +256,4 @@ Both work the same at runtime. The difference is in the exports:
 
 #### See also
 
-- [Contract::Base reference](../../../reference/contract-base.md) — `type` method
+- [Contract::Base reference](../../../reference/contract-base.md) — `object` method

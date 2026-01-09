@@ -1,45 +1,45 @@
 ---
-order: 7
+order: 6
 ---
 
-# Type Merging
+# Merging
 
-Types are open for extension. Multiple declarations of the same type merge together.
+Objects are open for extension. Multiple declarations of the same object merge together.
 
 ## How It Works
 
 ```ruby
-type :address do
+object :address do
   param :street, type: :string
   param :city, type: :string
 end
 
-type :address, description: "A physical address"
+object :address, description: "A physical address"
 
-type :address do
+object :address do
   param :country_code, type: :string
 end
 ```
 
-The result is a single `:address` type with three params and a description.
+The result is a single `:address` object with three params and a description.
 
 ## Merge Behavior
 
-For metadata fields like `description`, `example`, `format`, and `deprecated` — the last declaration wins. If you declare the same type twice with different descriptions, the second one is used.
+For metadata fields like `description`, `example`, `format`, and `deprecated` — the last declaration wins. If you declare the same object twice with different descriptions, the second one is used.
 
 ```ruby
-type :user, description: "First"
-type :user, description: "Second"  # This wins
+object :user, description: "First"
+object :user, description: "Second"  # This wins
 ```
 
 For params, new params are added and existing params are extended:
 
 ```ruby
-type :user do
+object :user do
   param :name, type: :string
 end
 
-type :user do
+object :user do
   param :name, description: "Full name"  # Adds description to existing param
   param :email, type: :string            # Adds new param
 end
@@ -73,22 +73,22 @@ interface Address {
 
 ## Extending Generated Types
 
-When using [`schema!`](../schemas/introduction.md), types are generated that you don't control directly — filter types, sort types, pagination types. Type merging makes it possible to add metadata like descriptions to these types.
+When using [`schema!`](../schemas/introduction.md), types are generated that you don't control directly — filter types, sort types, pagination types. Merging makes it possible to add metadata like descriptions to these types.
 
 ```ruby
 class InvoiceContract < Apiwork::Contract::Base
   schema!
 
-  # Add description to the auto-generated filter type
-  type :filter, description: "Filter invoices by date, status, or customer"
+  # Add description to the auto-generated filter object
+  object :filter, description: "Filter invoices by date, status, or customer"
 
   # Add a custom param to the filter
-  type :filter do
+  object :filter do
     param :search, type: :string, description: "Full-text search"
   end
 
   # Add description to an existing param
-  type :filter do
+  object :filter do
     param :status, description: "Filter by one or more statuses"
   end
 end
@@ -117,7 +117,7 @@ en:
         description: "Filter invoices by date, status, or customer"
 ```
 
-Type merging takes precedence over i18n.
+Merging takes precedence over i18n.
 
 #### See also
 

@@ -1,5 +1,5 @@
 ---
-order: 18
+order: 21
 prev: false
 next: false
 ---
@@ -10,7 +10,7 @@ next: false
 
 Defines body for a response.
 
-Returns [Param](contract-param) via `body`.
+Returns [Object](contract-object) via `body`.
 
 ## Instance Methods
 
@@ -27,11 +27,11 @@ When using schema!, body is auto-generated from schema attributes.
 
 **Returns**
 
-[Param](contract-param) — the body param
+[Object](contract-object) — the body param
 
 **See also**
 
-- [Contract::Param](contract-param)
+- [Contract::Object](contract-object)
 
 **Example**
 

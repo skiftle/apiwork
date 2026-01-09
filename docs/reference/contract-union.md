@@ -1,5 +1,5 @@
 ---
-order: 19
+order: 22
 prev: false
 next: false
 ---
@@ -8,10 +8,10 @@ next: false
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/union.rb#L22)
 
-Defines variants in a union type.
+Union shape builder with contract context.
 
-Used inside union blocks in contracts and custom adapters.
-The [#variant](#variant) method defines each possible type the union can hold.
+Wraps [API::Union](api-union) and adds contract-specific functionality
+like enum validation.
 
 **Example: In a contract**
 
@@ -30,14 +30,11 @@ end
 
 ### #variant
 
-`#variant(type:, of: nil, enum: nil, tag: nil, partial: nil, &block)`
+`#variant(enum: nil, of: nil, partial: nil, tag: nil, type:, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/union.rb#L74)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/union.rb#L63)
 
-Defines a variant in a union type.
-
-Each variant represents one possible shape the union value can take.
-Use `tag` with discriminated unions to identify which variant applies.
+Defines a variant in this union.
 
 **Parameters**
 
@@ -49,10 +46,9 @@ Use `tag` with discriminated unions to identify which variant applies.
 | `tag` | `String` | discriminator value (required when union has discriminator) |
 | `partial` | `Boolean` | allow partial object (omit required fields) |
 
-**See also**
+**Returns**
 
-- [Contract::Param#param](contract-param#param)
-- [Introspection::Param::Union](introspection-param-union)
+`void`
 
 **Example: Simple union (string or integer)**
 
@@ -75,17 +71,6 @@ param :payment, type: :union, discriminator: :type do
     param :account_number, type: :string
     param :routing_number, type: :string
   end
-end
-```
-
-**Example: Array variant**
-
-```ruby
-param :data, type: :union do
-  variant type: :object do
-    param :name, type: :string
-  end
-  variant type: :array, of: :string
 end
 ```
 

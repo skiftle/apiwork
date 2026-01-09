@@ -2,7 +2,7 @@
 
 module FunnySnake
   class InvoiceContract < Apiwork::Contract::Base
-    type :invoice do
+    object :invoice do
       param :id, type: :uuid
       param :created_at, type: :datetime
       param :updated_at, type: :datetime
@@ -12,7 +12,7 @@ module FunnySnake
       param :notes, type: :string
     end
 
-    type :payload do
+    object :payload do
       param :number, type: :string
       param :issued_on, type: :date
       param :status, type: :string

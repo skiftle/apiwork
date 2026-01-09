@@ -1,17 +1,30 @@
 ---
-order: 16
+order: 18
 prev: false
 next: false
 ---
 
-# Contract::Param
+# Contract::Object
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/param.rb#L11)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L20)
 
-Defines params for query, body, or response.
+Defines an object shape for request/response bodies.
 
-Part of the Adapter DSL. Returned by [Request#query](contract-request#query),
-[Request#body](contract-request#body), and [Response#body](contract-response#body).
+Returned by [Request#query](contract-request#query), [Request#body](contract-request#body),
+and [Response#body](contract-response#body). Use `param` to define fields within the object.
+
+**Example: In a contract action**
+
+```ruby
+action :create do
+  request do
+    body do
+      param :title, type: :string
+      param :amount, type: :decimal
+    end
+  end
+end
+```
 
 ## Instance Methods
 
@@ -19,7 +32,7 @@ Part of the Adapter DSL. Returned by [Request#query](contract-request#query),
 
 `#meta(optional: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/param.rb#L197)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L206)
 
 Shorthand for `param :meta, type: :object do ... end`.
 
@@ -61,7 +74,7 @@ end
 
 `#param(name, as: nil, default: nil, deprecated: nil, description: nil, discriminator: nil, enum: nil, example: nil, format: nil, max: nil, min: nil, nullable: nil, of: nil, optional: nil, required: nil, type: nil, value: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/param.rb#L77)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L86)
 
 Defines a parameter/field in a request or response body.
 

@@ -26,7 +26,7 @@ Define enums inside a contract for local use:
 class PostContract < Apiwork::Contract::Base
   enum :status, values: %w[draft published archived]
 
-  type :post do
+  object :post do
     param :id, type: :uuid
     param :title, type: :string
     param :status, type: :status

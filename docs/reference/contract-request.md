@@ -1,16 +1,16 @@
 ---
-order: 17
+order: 20
 prev: false
 next: false
 ---
 
 # Contract::Request
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request.rb#L10)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request.rb#L9)
 
 Defines query params and body for a request.
 
-Returns [Param](contract-param) via `query` and `body`.
+Returns [Object](contract-object) via `query` and `body`.
 
 ## Instance Methods
 
@@ -18,7 +18,7 @@ Returns [Param](contract-param) via `query` and `body`.
 
 `#body(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request.rb#L69)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request.rb#L68)
 
 Defines the request body for this request.
 
@@ -27,11 +27,11 @@ Use `param` inside the block to define fields.
 
 **Returns**
 
-[Param](contract-param) — the body param
+[Object](contract-object) — the body param
 
 **See also**
 
-- [Contract::Param](contract-param)
+- [Contract::Object](contract-object)
 
 **Example**
 
@@ -50,7 +50,7 @@ end
 
 `#query(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request.rb#L41)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request.rb#L40)
 
 Defines query parameters for this request.
 
@@ -59,11 +59,11 @@ Use `param` inside the block to define parameters.
 
 **Returns**
 
-[Param](contract-param) — the query param
+[Object](contract-object) — the query param
 
 **See also**
 
-- [Contract::Param](contract-param)
+- [Contract::Object](contract-object)
 
 **Example**
 

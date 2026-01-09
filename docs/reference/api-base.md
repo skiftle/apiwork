@@ -76,7 +76,7 @@ end
 
 `.concern(name, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L447)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L461)
 
 Defines a reusable concern for resources.
 
@@ -111,7 +111,7 @@ end
 
 `.enum(name, values: nil, scope: nil, description: nil, example: nil, deprecated: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L219)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L220)
 
 Defines a reusable enumeration type.
 
@@ -187,7 +187,7 @@ end
 
 `.info(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L310)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L324)
 
 Defines API metadata.
 
@@ -242,6 +242,52 @@ end
 
 ---
 
+### .object
+
+`.object(name, scope: nil, description: nil, example: nil, format: nil, deprecated: false, schema_class: nil, &block)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L178)
+
+Defines a reusable object type (object shape).
+
+Object types can be referenced by name in `param` definitions.
+Scoped types are namespaced to a contract class.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `name` | `Symbol` | type name for referencing |
+| `scope` | `Class` | a [Contract::Base](contract-base) subclass for scoping (nil for global) |
+| `description` | `String` | documentation description |
+| `example` | `Object` | example value for docs |
+| `format` | `String` | format hint for docs |
+| `deprecated` | `Boolean` | mark as deprecated |
+| `schema_class` | `Class` | a [Schema::Base](schema-base) subclass for type inference |
+
+**See also**
+
+- [Contract::Base](contract-base)
+- [Schema::Base](schema-base)
+
+**Example: Global object type**
+
+```ruby
+object :address do
+  param :street, type: :string
+  param :city, type: :string
+  param :zip, type: :string
+end
+```
+
+**Example: Using in a contract**
+
+```ruby
+param :shipping_address, type: :address
+```
+
+---
+
 ### .path_format
 
 `.path_format(format = nil)`
@@ -279,7 +325,7 @@ end
 
 `.raises(*error_code_keys)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L281)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L295)
 
 Declares error codes that any action in this API may raise.
 
@@ -306,7 +352,7 @@ end
 
 `.resource(name, concerns: nil, constraints: nil, contract: nil, controller: nil, defaults: nil, except: nil, only: nil, param: nil, path: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L398)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L412)
 
 Defines a singular resource (no index action, no :id in URL).
 
@@ -347,7 +393,7 @@ end
 
 `.resources(name, concerns: nil, constraints: nil, contract: nil, controller: nil, defaults: nil, except: nil, only: nil, param: nil, path: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L346)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L360)
 
 Defines a RESTful resource with standard CRUD actions.
 
@@ -393,57 +439,11 @@ end
 
 ---
 
-### .type
-
-`.type(name, scope: nil, description: nil, example: nil, format: nil, deprecated: false, schema_class: nil, &block)`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L178)
-
-Defines a reusable custom type (object shape).
-
-Custom types can be referenced by name in `param` definitions.
-Scoped types are namespaced to a contract class.
-
-**Parameters**
-
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `Symbol` | type name for referencing |
-| `scope` | `Class` | a [Contract::Base](contract-base) subclass for scoping (nil for global) |
-| `description` | `String` | documentation description |
-| `example` | `Object` | example value for docs |
-| `format` | `String` | format hint for docs |
-| `deprecated` | `Boolean` | mark as deprecated |
-| `schema_class` | `Class` | a [Schema::Base](schema-base) subclass for type inference |
-
-**See also**
-
-- [Contract::Base](contract-base)
-- [Schema::Base](schema-base)
-
-**Example: Global type**
-
-```ruby
-type :address do
-  param :street, type: :string
-  param :city, type: :string
-  param :zip, type: :string
-end
-```
-
-**Example: Using in a contract**
-
-```ruby
-param :shipping_address, type: :address
-```
-
----
-
 ### .union
 
-`.union(name, discriminator: nil, scope: nil, &block)`
+`.union(name, discriminator: nil, scope: nil, description: nil, deprecated: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L260)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L261)
 
 Defines a discriminated union type.
 
@@ -481,7 +481,7 @@ end
 
 `.with_options(options = {}, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L468)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L482)
 
 Applies options to all nested resource definitions.
 

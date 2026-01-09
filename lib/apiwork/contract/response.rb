@@ -4,7 +4,7 @@ module Apiwork
   module Contract
     # Defines body for a response.
     #
-    # Returns {Param} via `body`.
+    # Returns {Object} via `body`.
     #
     # @api public
     class Response
@@ -55,8 +55,8 @@ module Apiwork
       # When using schema!, body is auto-generated from schema attributes.
       #
       # @yield block defining body params
-      # @return [Param] the body param
-      # @see Contract::Param
+      # @return [Object] the body param
+      # @see Contract::Object
       #
       # @example
       #   response do
@@ -67,7 +67,7 @@ module Apiwork
       #     end
       #   end
       def body(&block)
-        @body_param ||= Param.new(
+        @body_param ||= Object.new(
           @contract_class,
           action_name: @action_name,
           wrapped: true,

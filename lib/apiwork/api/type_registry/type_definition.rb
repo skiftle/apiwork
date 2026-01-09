@@ -67,7 +67,7 @@ module Apiwork
         def validate(value, current_depth:, field_path:, max_depth:)
           return nil unless object?
 
-          temp_param = Contract::Param.new(nil)
+          temp_param = Contract::Object.new(nil)
 
           params.each do |param_name, param_data|
             add_param_to_definition(temp_param, param_name, param_data)

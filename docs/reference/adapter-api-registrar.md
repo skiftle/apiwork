@@ -1,5 +1,5 @@
 ---
-order: 8
+order: 10
 prev: false
 next: false
 ---
@@ -13,11 +13,11 @@ Registers API-wide types during adapter initialization.
 Passed to `register_api` in your adapter. Use to define
 shared types like pagination, error responses, or enums.
 
-**Example: Register pagination type**
+**Example: Register pagination object**
 
 ```ruby
 def register_api(registrar, capabilities)
-  registrar.type :pagination do
+  registrar.object :pagination do
     param :page, type: :integer
     param :per_page, type: :integer
     param :total, type: :integer
@@ -92,19 +92,19 @@ Returns the values for a registered enum.
 
 ---
 
-### #type
+### #object
 
-`#type(name, &block)`
+`#object(name, &block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/api_registrar.rb#L29)
 
-Defines a named type.
+Defines a named object type.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `name` | `Symbol` | the type name |
+| `name` | `Symbol` | the object name |
 
 ---
 

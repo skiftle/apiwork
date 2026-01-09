@@ -112,7 +112,7 @@ module Apiwork
             type_definition = definition.contract_class.resolve_custom_type(type_name)
             return type_cache[type_name] = nil unless type_definition
 
-            custom_param = Param.new(definition.contract_class)
+            custom_param = Object.new(definition.contract_class)
             custom_param.copy_type_definition_params(type_definition, custom_param)
             type_cache[type_name] = custom_param
           end

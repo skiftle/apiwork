@@ -164,12 +164,12 @@ end
 
 Options:
 
-| Option | Example Input | URL Path |
-|--------|---------------|----------|
+| Option            | Example Input         | URL Path             |
+| ----------------- | --------------------- | -------------------- |
 | `:keep` (default) | `:recurring_invoices` | `recurring_invoices` |
-| `:kebab` | `:recurring_invoices` | `recurring-invoices` |
-| `:camel` | `:recurring_invoices` | `recurringInvoices` |
-| `:underscore` | `:recurring_invoices` | `recurring_invoices` |
+| `:kebab`          | `:recurring_invoices` | `recurring-invoices` |
+| `:camel`          | `:recurring_invoices` | `recurringInvoices`  |
+| `:underscore`     | `:recurring_invoices` | `recurring_invoices` |
 
 ::: info Path Segments Only
 `path_format` transforms resource and action names. It does not affect:
@@ -177,7 +177,7 @@ Options:
 - Route parameters (`:id`, `:post_id`)
 - Query parameters
 - Request/response payload keys (use [key_format](#key-format) for those)
-:::
+  :::
 
 ### Custom Member and Collection Actions
 
@@ -261,11 +261,11 @@ end
 
 ## Global Types and Enums
 
-Define types available to all contracts in this API:
+Define types and anums available to all contracts in this API:
 
 ```ruby
 Apiwork::API.define '/api/v1' do
-  type :address do
+  object :address do
     param :street, type: :string
     param :city, type: :string
     param :country, type: :string
@@ -275,7 +275,7 @@ Apiwork::API.define '/api/v1' do
 end
 ```
 
-[Type System](../type-system/introduction.md) covers type definitions, enums, unions, and scoping rules.
+[Type System](../type-system/introduction.md) covers types, enums, and scoping rules.
 
 #### See also
 

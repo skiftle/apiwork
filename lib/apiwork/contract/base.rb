@@ -89,10 +89,10 @@ module Apiwork
         #   class InvoiceContract < Apiwork::Contract::Base
         #     identifier :billing
         #
-        #     type :address do
+        #     object :address do
         #       param :street, type: :string
         #     end
-        #     # In introspection: type is named :billing_address
+        #     # In introspection: object is named :billing_address
         #   end
         def identifier(value = nil)
           return _identifier if value.nil?
@@ -273,7 +273,7 @@ module Apiwork
         # @see Contract::Base
         #
         # @example Import types from another contract
-        #   # UserContract has: type :address, enum :role
+        #   # UserContract has: object :address, enum :role
         #   class OrderContract < Apiwork::Contract::Base
         #     import UserContract, as: :user
         #

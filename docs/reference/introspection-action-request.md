@@ -1,5 +1,5 @@
 ---
-order: 31
+order: 34
 prev: false
 next: false
 ---
@@ -31,11 +31,11 @@ request.query[:page]        # => Param for page param
 
 **Returns**
 
-Hash{Symbol =&gt; [Param](contract-param)} — body parameters as Param objects
+Hash{Symbol =&gt; [Object](contract-object)} — body parameters as Param objects
 
 **See also**
 
-- [Param](contract-param)
+- [Object](contract-object)
 
 ---
 
@@ -59,11 +59,11 @@ Hash{Symbol =&gt; [Param](contract-param)} — body parameters as Param objects
 
 **Returns**
 
-Hash{Symbol =&gt; [Param](contract-param)} — query parameters as Param objects
+Hash{Symbol =&gt; [Object](contract-object)} — query parameters as Param objects
 
 **See also**
 
-- [Param](contract-param)
+- [Object](contract-object)
 
 ---
 
