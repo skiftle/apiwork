@@ -18,7 +18,7 @@ Used within the `license` block in [API::Info](api-info).
 
 `#name(name)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/license.rb#L27)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/license.rb#L33)
 
 Sets the license name.
 
@@ -46,7 +46,7 @@ end
 
 `#url(url)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/license.rb#L41)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/license.rb#L47)
 
 Sets the license URL.
 

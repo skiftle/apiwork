@@ -26,8 +26,14 @@ Apiwork::API.define '/api/v1' do
       url 'https://opensource.org/licenses/MIT'
     end
 
-    server url: 'https://api.example.com', description: 'Production'
-    server url: 'https://staging-api.example.com', description: 'Staging'
+    server do
+      url 'https://api.example.com'
+      description 'Production'
+    end
+    server do
+      url 'https://staging-api.example.com'
+      description 'Staging'
+    end
   end
 
   # API-level key format

@@ -17,10 +17,7 @@ module Apiwork
               scope path: api_class.path do
                 api_class.exports.each do |export_name|
                   get api_class.export_path(export_name),
-                      defaults: {
-                        export_name:,
-                        api_path: api_class.path,
-                      },
+                      defaults: { export_name:, api_path: api_class.path },
                       to: 'apiwork/exports#show'
                 end
               end
@@ -32,9 +29,7 @@ module Apiwork
             end
 
             scope path: api_class.path do
-              match '*unmatched',
-                    to: 'apiwork/errors#not_found',
-                    via: :all
+              match '*unmatched', to: 'apiwork/errors#not_found', via: :all
             end
           end
         end

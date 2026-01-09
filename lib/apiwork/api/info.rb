@@ -6,12 +6,34 @@ module Apiwork
     # Defines API metadata.
     #
     # Sets title, version, contact, license, and servers.
-    # Used by spec generators via {Spec.generate}.
+    # Used by export generators via {Export.generate}.
     class Info
-      attr_reader :info
-
       def initialize
-        @info = {}
+        @contact = nil
+        @deprecated = nil
+        @description = nil
+        @license = nil
+        @servers = nil
+        @summary = nil
+        @tags = nil
+        @terms_of_service = nil
+        @title = nil
+        @version = nil
+      end
+
+      def to_h
+        {
+          contact: @contact&.to_h,
+          deprecated: @deprecated,
+          description: @description,
+          license: @license&.to_h,
+          servers: @servers&.map(&:to_h),
+          summary: @summary,
+          tags: @tags,
+          terms_of_service: @terms_of_service,
+          title: @title,
+          version: @version,
+        }
       end
 
       # @api public
@@ -25,7 +47,7 @@ module Apiwork
       #     title 'Invoice API'
       #   end
       def title(title)
-        @info[:title] = title
+        @title = title
       end
 
       # @api public
@@ -39,7 +61,7 @@ module Apiwork
       #     version '1.0.0'
       #   end
       def version(version)
-        @info[:version] = version
+        @version = version
       end
 
       # @api public
@@ -53,7 +75,7 @@ module Apiwork
       #     terms_of_service 'https://example.com/terms'
       #   end
       def terms_of_service(url)
-        @info[:terms_of_service] = url
+        @terms_of_service = url
       end
 
       # @api public
@@ -68,9 +90,8 @@ module Apiwork
       #     name 'Support'
       #   end
       def contact(&block)
-        builder = Contact.new
-        builder.instance_eval(&block)
-        @info[:contact] = builder.data
+        @contact = Contact.new
+        @contact.instance_eval(&block)
       end
 
       # @api public
@@ -85,26 +106,35 @@ module Apiwork
       #     name 'MIT'
       #   end
       def license(&block)
-        builder = License.new
-        builder.instance_eval(&block)
-        @info[:license] = builder.data
+        @license = License.new
+        @license.instance_eval(&block)
       end
 
       # @api public
       # Adds a server to the API specification.
       #
-      # @param url [String] the server URL
-      # @param description [String, nil] optional server description
+      # Can be called multiple times to define multiple servers.
+      #
+      # @yield block evaluated in {Server} context
       # @return [void]
+      # @see API::Info::Server
       #
       # @example
       #   info do
-      #     server url: 'https://api.example.com', description: 'Production'
-      #     server url: 'https://staging-api.example.com', description: 'Staging'
+      #     server do
+      #       url 'https://api.example.com'
+      #       description 'Production'
+      #     end
+      #     server do
+      #       url 'https://staging-api.example.com'
+      #       description 'Staging'
+      #     end
       #   end
-      def server(description: nil, url:)
-        @info[:servers] ||= []
-        @info[:servers] << { description:, url: }.compact
+      def server(&block)
+        server = Server.new
+        server.instance_eval(&block)
+        @servers ||= []
+        @servers << server
       end
 
       # @api public
@@ -118,7 +148,7 @@ module Apiwork
       #     summary 'Invoice management API'
       #   end
       def summary(summary)
-        @info[:summary] = summary
+        @summary = summary
       end
 
       # @api public
@@ -132,7 +162,7 @@ module Apiwork
       #     description 'Full-featured API for managing invoices and payments.'
       #   end
       def description(description)
-        @info[:description] = description
+        @description = description
       end
 
       # @api public
@@ -146,7 +176,7 @@ module Apiwork
       #     tags 'invoices', 'payments'
       #   end
       def tags(*tags)
-        @info[:tags] = tags.flatten
+        @tags = tags.flatten
       end
 
       # @api public
@@ -159,7 +189,7 @@ module Apiwork
       #     deprecated
       #   end
       def deprecated
-        @info[:deprecated] = true
+        @deprecated = true
       end
     end
   end

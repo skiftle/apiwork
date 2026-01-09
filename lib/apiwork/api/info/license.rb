@@ -8,10 +8,16 @@ module Apiwork
       #
       # Used within the `license` block in {API::Info}.
       class License
-        attr_reader :data
-
         def initialize
-          @data = {}
+          @name = nil
+          @url = nil
+        end
+
+        def to_h
+          {
+            name: @name,
+            url: @url,
+          }
         end
 
         # @api public
@@ -25,7 +31,7 @@ module Apiwork
         #     name 'MIT'
         #   end
         def name(name)
-          @data[:name] = name
+          @name = name
         end
 
         # @api public
@@ -39,7 +45,7 @@ module Apiwork
         #     url 'https://opensource.org/licenses/MIT'
         #   end
         def url(url)
-          @data[:url] = url
+          @url = url
         end
       end
     end

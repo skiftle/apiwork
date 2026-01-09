@@ -308,9 +308,9 @@ module Apiwork
         #     version '1.0.0'
         #   end
         def info(&block)
-          builder = Info.new
-          builder.instance_eval(&block)
-          @structure.info = builder.info
+          info_builder = Info.new
+          info_builder.instance_eval(&block)
+          @structure.info = info_builder
         end
 
         # @api public
@@ -567,7 +567,7 @@ module Apiwork
           built_contracts.add(contract_class)
 
           contract_registrar = adapter.build_contract_registrar(contract_class)
-          adapter.register_contract(contract_registrar, schema_class, build_actions(resource.actions))
+          adapter.register_contract(contract_registrar, schema_class, build_adapter_actions(resource.actions))
         end
 
         def ensure_all_contracts_built!
@@ -613,10 +613,10 @@ module Apiwork
           built_contracts.add(contract_class)
 
           contract_registrar = adapter.build_contract_registrar(contract_class)
-          adapter.register_contract(contract_registrar, schema_class, build_actions(resource.actions))
+          adapter.register_contract(contract_registrar, schema_class, build_adapter_actions(resource.actions))
         end
 
-        def build_actions(actions)
+        def build_adapter_actions(actions)
           actions.transform_values { |action| Adapter::Action.new(action.name, action.method, action.type) }
         end
       end

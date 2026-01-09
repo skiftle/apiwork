@@ -11,7 +11,7 @@ next: false
 Defines API metadata.
 
 Sets title, version, contact, license, and servers.
-Used by spec generators via [Spec.generate](spec#generate).
+Used by export generators via [Export.generate](export#generate).
 
 ## Instance Methods
 
@@ -19,7 +19,7 @@ Used by spec generators via [Spec.generate](spec#generate).
 
 `#contact(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L70)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L92)
 
 Defines contact information.
 
@@ -45,7 +45,7 @@ end
 
 `#deprecated`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L161)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L191)
 
 Marks the API as deprecated.
 
@@ -67,7 +67,7 @@ end
 
 `#description(description)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L134)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L164)
 
 Sets a detailed description for the API.
 
@@ -95,7 +95,7 @@ end
 
 `#license(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L87)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L108)
 
 Defines license information.
 
@@ -119,29 +119,34 @@ end
 
 ### #server
 
-`#server(description: nil, url:)`
+`#server(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L105)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L133)
 
 Adds a server to the API specification.
 
-**Parameters**
-
-| Name | Type | Description |
-|------|------|-------------|
-| `url` | `String` | the server URL |
-| `description` | `String, nil` | optional server description |
+Can be called multiple times to define multiple servers.
 
 **Returns**
 
 `void`
 
+**See also**
+
+- [API::Info::Server](api-info-server)
+
 **Example**
 
 ```ruby
 info do
-  server url: 'https://api.example.com', description: 'Production'
-  server url: 'https://staging-api.example.com', description: 'Staging'
+  server do
+    url 'https://api.example.com'
+    description 'Production'
+  end
+  server do
+    url 'https://staging-api.example.com'
+    description 'Staging'
+  end
 end
 ```
 
@@ -151,7 +156,7 @@ end
 
 `#summary(summary)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L120)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L150)
 
 Sets a short summary for the API.
 
@@ -179,7 +184,7 @@ end
 
 `#tags(*tags)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L148)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L178)
 
 Sets tags for the API.
 
@@ -207,7 +212,7 @@ end
 
 `#terms_of_service(url)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L55)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L77)
 
 Sets the terms of service URL.
 
@@ -235,7 +240,7 @@ end
 
 `#title(title)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L27)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L49)
 
 Sets the API title.
 
@@ -263,7 +268,7 @@ end
 
 `#version(version)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L41)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L63)
 
 Sets the API version.
 

@@ -1,5 +1,5 @@
 ---
-order: 24
+order: 25
 prev: false
 next: false
 ---
@@ -75,11 +75,11 @@ info.license&.name    # => "MIT"
 
 **Returns**
 
-Array&lt;[Info::Server](introspection-api-info-server)&gt; — server definitions
+Array&lt;[Info::Server](api-info-server)&gt; — server definitions
 
 **See also**
 
-- [Info::Server](introspection-api-info-server)
+- [Info::Server](api-info-server)
 
 ---
 

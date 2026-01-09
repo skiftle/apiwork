@@ -8,10 +8,18 @@ module Apiwork
       #
       # Used within the `contact` block in {API::Info}.
       class Contact
-        attr_reader :data
-
         def initialize
-          @data = {}
+          @email = nil
+          @name = nil
+          @url = nil
+        end
+
+        def to_h
+          {
+            email: @email,
+            name: @name,
+            url: @url,
+          }
         end
 
         # @api public
@@ -25,7 +33,7 @@ module Apiwork
         #     name 'API Support'
         #   end
         def name(name)
-          @data[:name] = name
+          @name = name
         end
 
         # @api public
@@ -39,7 +47,7 @@ module Apiwork
         #     email 'support@example.com'
         #   end
         def email(email)
-          @data[:email] = email
+          @email = email
         end
 
         # @api public
@@ -53,7 +61,7 @@ module Apiwork
         #     url 'https://example.com/support'
         #   end
         def url(url)
-          @data[:url] = url
+          @url = url
         end
       end
     end

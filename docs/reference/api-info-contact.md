@@ -18,7 +18,7 @@ Used within the `contact` block in [API::Info](api-info).
 
 `#email(email)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/contact.rb#L41)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/contact.rb#L49)
 
 Sets the contact email.
 
@@ -46,7 +46,7 @@ end
 
 `#name(name)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/contact.rb#L27)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/contact.rb#L35)
 
 Sets the contact name.
 
@@ -74,7 +74,7 @@ end
 
 `#url(url)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/contact.rb#L55)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/contact.rb#L63)
 
 Sets the contact URL.
 

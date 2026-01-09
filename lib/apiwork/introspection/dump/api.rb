@@ -64,15 +64,18 @@ module Apiwork
           info = @api_class.structure.info
           return nil unless info
 
+          data = info.to_h
           {
-            contact: info[:contact],
-            description: info[:description],
-            license: info[:license],
-            servers: info[:servers] || [],
-            summary: info[:summary],
-            terms_of_service: info[:terms_of_service],
-            title: info[:title],
-            version: info[:version],
+            contact: data[:contact],
+            deprecated: data[:deprecated],
+            description: data[:description],
+            license: data[:license],
+            servers: data[:servers] || [],
+            summary: data[:summary],
+            tags: data[:tags],
+            terms_of_service: data[:terms_of_service],
+            title: data[:title],
+            version: data[:version],
           }
         end
       end
