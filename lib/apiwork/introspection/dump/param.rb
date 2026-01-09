@@ -165,9 +165,9 @@ module Apiwork
           api_class = contract_class.api_class
           return false unless api_class
 
-          scoped_name = api_class.scoped_name(contract_class, type_value)
-          return true if api_class.type_system.types.key?(scoped_name) || api_class.type_system.types.key?(type_value)
-          return true if api_class.type_system.enums.key?(scoped_name) || api_class.type_system.enums.key?(type_value)
+          scoped_name = api_class.scoped_type_name(contract_class, type_value)
+          return true if api_class.type_registry.key?(scoped_name) || api_class.type_registry.key?(type_value)
+          return true if api_class.enum_registry.key?(scoped_name) || api_class.enum_registry.key?(type_value)
 
           false
         end
@@ -178,7 +178,7 @@ module Apiwork
           if options[:enum].is_a?(Symbol)
             scope = scope_for_enum(@contract_param, options[:enum])
             api_class = @contract_param.contract_class.api_class
-            api_class.scoped_name(scope, options[:enum])
+            api_class.scoped_enum_name(scope, options[:enum])
           else
             options[:enum]
           end
@@ -247,7 +247,7 @@ module Apiwork
                @contract_param.contract_class.schema_class
               scope = scope_for_enum(@contract_param, variant_definition[:enum])
               api_class = @contract_param.contract_class.api_class
-              api_class.scoped_name(scope, variant_definition[:enum])
+              api_class.scoped_enum_name(scope, variant_definition[:enum])
             else
               variant_definition[:enum]
             end
@@ -347,7 +347,7 @@ module Apiwork
 
           scope = definition.contract_class
           api_class = definition.contract_class.api_class
-          api_class.scoped_name(scope, type_name)
+          api_class.scoped_type_name(scope, type_name)
         end
 
         def global_type?(type_name, definition)
@@ -356,10 +356,10 @@ module Apiwork
           api_class = definition.contract_class.api_class
           return false unless api_class
 
-          metadata = api_class.type_system.type_metadata(type_name)
-          return false unless metadata
+          type_definition = api_class.type_registry[type_name]
+          return false unless type_definition
 
-          metadata[:scope].nil?
+          type_definition.scope.nil?
         end
 
         def global_enum?(enum_name, definition)
@@ -368,10 +368,10 @@ module Apiwork
           api_class = definition.contract_class.api_class
           return false unless api_class
 
-          metadata = api_class.type_system.enum_metadata(enum_name)
-          return false unless metadata
+          enum_definition = api_class.enum_registry[enum_name]
+          return false unless enum_definition
 
-          metadata[:scope].nil?
+          enum_definition.scope.nil?
         end
 
         def imported_type?(type_name, definition)

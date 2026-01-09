@@ -13,7 +13,7 @@ RSpec.describe 'Custom Types', type: :integration do
         end
       end
 
-      expect(api.type_system.types.key?(:address)).to be(true)
+      expect(api.type_registry.key?(:address)).to be(true)
     end
 
     it 'type is available in introspection' do
@@ -40,7 +40,7 @@ RSpec.describe 'Custom Types', type: :integration do
         end
       end
 
-      expect(api.type_system.types.key?(:line_item)).to be(true)
+      expect(api.type_registry.key?(:line_item)).to be(true)
     end
 
     it 'supports deprecated types' do
@@ -50,8 +50,8 @@ RSpec.describe 'Custom Types', type: :integration do
         end
       end
 
-      expect(api.type_system.types.key?(:old_format)).to be(true)
-      expect(api.type_system.types[:old_format][:deprecated]).to be(true)
+      expect(api.type_registry.key?(:old_format)).to be(true)
+      expect(api.type_registry[:old_format].deprecated?).to be(true)
     end
 
     it 'supports type with example' do
@@ -62,8 +62,8 @@ RSpec.describe 'Custom Types', type: :integration do
         end
       end
 
-      expect(api.type_system.types.key?(:coordinates)).to be(true)
-      expect(api.type_system.types[:coordinates][:example]).to eq({ lat: 59.33, lng: 18.07 })
+      expect(api.type_registry.key?(:coordinates)).to be(true)
+      expect(api.type_registry[:coordinates].example).to eq({ lat: 59.33, lng: 18.07 })
     end
   end
 
@@ -73,7 +73,7 @@ RSpec.describe 'Custom Types', type: :integration do
         enum :status, values: %i[pending active completed]
       end
 
-      expect(api.type_system.enums.key?(:status)).to be(true)
+      expect(api.enum_registry.key?(:status)).to be(true)
     end
 
     it 'enum is available in introspection' do
@@ -93,8 +93,8 @@ RSpec.describe 'Custom Types', type: :integration do
              values: %i[credit_card bank_transfer paypal]
       end
 
-      expect(api.type_system.enums.key?(:payment_method)).to be(true)
-      expect(api.type_system.enums[:payment_method][:description]).to eq('Supported payment methods')
+      expect(api.enum_registry.key?(:payment_method)).to be(true)
+      expect(api.enum_registry[:payment_method].description).to eq('Supported payment methods')
     end
 
     it 'supports enum with example' do
@@ -104,8 +104,8 @@ RSpec.describe 'Custom Types', type: :integration do
              values: %i[monday tuesday wednesday thursday friday saturday sunday]
       end
 
-      expect(api.type_system.enums.key?(:day_of_week)).to be(true)
-      expect(api.type_system.enums[:day_of_week][:example]).to eq(:monday)
+      expect(api.enum_registry.key?(:day_of_week)).to be(true)
+      expect(api.enum_registry[:day_of_week].example).to eq(:monday)
     end
 
     it 'supports deprecated enums' do
@@ -115,8 +115,8 @@ RSpec.describe 'Custom Types', type: :integration do
              values: %i[on off]
       end
 
-      expect(api.type_system.enums.key?(:old_status)).to be(true)
-      expect(api.type_system.enums[:old_status][:deprecated]).to be(true)
+      expect(api.enum_registry.key?(:old_status)).to be(true)
+      expect(api.enum_registry[:old_status].deprecated?).to be(true)
     end
 
     it 'stores enum values correctly' do
@@ -124,7 +124,7 @@ RSpec.describe 'Custom Types', type: :integration do
         enum :size, values: %i[small medium large]
       end
 
-      expect(api.type_system.enum_values(:size)).to eq(%i[small medium large])
+      expect(api.enum_values(:size)).to eq(%i[small medium large])
     end
   end
 
@@ -144,7 +144,7 @@ RSpec.describe 'Custom Types', type: :integration do
         end
       end
 
-      expect(api.type_system.types.key?(:notification)).to be(true)
+      expect(api.type_registry.key?(:notification)).to be(true)
     end
 
     it 'union is available in introspection' do
@@ -179,7 +179,7 @@ RSpec.describe 'Custom Types', type: :integration do
         end
       end
 
-      union_data = api.type_system.types[:result][:payload]
+      union_data = api.type_registry[:result].payload
       expect(union_data[:discriminator]).to eq(:status)
     end
   end
@@ -189,16 +189,16 @@ RSpec.describe 'Custom Types', type: :integration do
       api = Apiwork::API.find('/api/v1')
 
       # The dummy API defines error_detail and pagination_params types
-      expect(api.type_system.types.key?(:error_detail)).to be(true)
-      expect(api.type_system.types.key?(:pagination_params)).to be(true)
+      expect(api.type_registry.key?(:error_detail)).to be(true)
+      expect(api.type_registry.key?(:pagination_params)).to be(true)
     end
 
     it 'has API-level enums defined' do
       api = Apiwork::API.find('/api/v1')
 
       # The dummy API defines sort_direction and post_status enums
-      expect(api.type_system.enums.key?(:sort_direction)).to be(true)
-      expect(api.type_system.enums.key?(:post_status)).to be(true)
+      expect(api.enum_registry.key?(:sort_direction)).to be(true)
+      expect(api.enum_registry.key?(:post_status)).to be(true)
     end
 
     it 'includes types in introspection' do
@@ -220,10 +220,10 @@ RSpec.describe 'Custom Types', type: :integration do
     it 'returns correct enum values' do
       api = Apiwork::API.find('/api/v1')
 
-      sort_values = api.type_system.enum_values(:sort_direction)
+      sort_values = api.enum_values(:sort_direction)
       expect(sort_values).to eq(%i[asc desc])
 
-      status_values = api.type_system.enum_values(:post_status)
+      status_values = api.enum_values(:post_status)
       expect(status_values).to eq(%i[draft published archived])
     end
   end

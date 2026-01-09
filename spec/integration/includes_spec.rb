@@ -66,7 +66,8 @@ RSpec.describe 'Includes API', type: :request do
       Api::V1::CommentContract.reset_build_state!
 
       api = Apiwork::API.find('/api/v1')
-      api&.type_system&.clear!
+      api&.type_registry&.clear!
+      api&.enum_registry&.clear!
       api&.reset_contracts!
       api&.ensure_all_contracts_built!
     end
@@ -112,7 +113,8 @@ RSpec.describe 'Includes API', type: :request do
         Api::V1::CommentContract.reset_build_state!
 
         api = Apiwork::API.find('/api/v1')
-        api&.type_system&.clear!
+        api&.type_registry&.clear!
+        api&.enum_registry&.clear!
         api&.reset_contracts!
         api&.ensure_all_contracts_built!
       end

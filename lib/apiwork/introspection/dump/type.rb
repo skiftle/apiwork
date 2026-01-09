@@ -16,38 +16,39 @@ module Apiwork
         end
 
         def types
-          @api_class.type_system.types.each_pair.sort_by { |name, _metadata| name.to_s }.each_with_object({}) do |(qualified_name, metadata), result|
-            result[qualified_name] = build_type(qualified_name, metadata)
+          @api_class.type_registry.each_pair.sort_by { |name, _definition| name.to_s }.each_with_object({}) do |(qualified_name, definition), result|
+            result[qualified_name] = build_type(qualified_name, definition)
           end
         end
 
         def enums
-          @api_class.type_system.enums.each_pair.sort_by { |name, _metadata| name.to_s }.each_with_object({}) do |(qualified_name, metadata), result|
-            result[qualified_name] = build_enum(qualified_name, metadata)
+          @api_class.enum_registry.each_pair.sort_by { |name, _definition| name.to_s }.each_with_object({}) do |(qualified_name, definition), result|
+            result[qualified_name] = build_enum(qualified_name, definition)
           end
         end
 
-        def build_type(qualified_name, metadata)
-          expanded_shape = metadata[:expanded_payload] || expand_payload(metadata)
+        def build_type(qualified_name, definition)
+          expanded_shape = definition.payload || expand_payload(definition)
+          expanded_shape = expand_union_variants(expanded_shape, definition.scope) if expanded_shape.is_a?(Hash) && expanded_shape[:type] == :union
 
           if expanded_shape.is_a?(Hash) && expanded_shape[:type] == :union
             {
-              deprecated: metadata[:deprecated] == true,
-              description: resolve_type_description(qualified_name, metadata),
+              deprecated: definition.deprecated?,
+              description: resolve_type_description(qualified_name, definition),
               discriminator: expanded_shape[:discriminator],
-              example: metadata[:example] || metadata[:schema_class]&.example,
-              format: metadata[:format],
+              example: definition.example || definition.schema_class&.example,
+              format: definition.format,
               shape: expanded_shape[:shape] || {},
               type: :union,
               variants: expanded_shape[:variants] || [],
             }
           else
             {
-              deprecated: metadata[:deprecated] == true,
-              description: resolve_type_description(qualified_name, metadata),
+              deprecated: definition.deprecated?,
+              description: resolve_type_description(qualified_name, definition),
               discriminator: nil,
-              example: metadata[:example] || metadata[:schema_class]&.example,
-              format: metadata[:format],
+              example: definition.example || definition.schema_class&.example,
+              format: definition.format,
               shape: expanded_shape || {},
               type: :object,
               variants: [],
@@ -55,22 +56,22 @@ module Apiwork
           end
         end
 
-        def build_enum(qualified_name, metadata)
+        def build_enum(qualified_name, definition)
           {
-            deprecated: metadata[:deprecated] == true,
-            description: resolve_enum_description(qualified_name, metadata),
-            example: metadata[:example],
-            values: metadata[:values] || [],
+            deprecated: definition.deprecated?,
+            description: resolve_enum_description(qualified_name, definition),
+            example: definition.example,
+            values: definition.values || [],
           }
         end
 
         private
 
-        def resolve_type_description(type_name, metadata)
-          return metadata[:description] if metadata[:description]
+        def resolve_type_description(type_name, definition)
+          return definition.description if definition.description
 
-          if metadata[:schema_class].respond_to?(:description)
-            schema_description = metadata[:schema_class].description
+          if definition.schema_class.respond_to?(:description)
+            schema_description = definition.schema_class.description
             return schema_description if schema_description
           end
 
@@ -80,8 +81,8 @@ module Apiwork
           I18n.t(:"apiwork.types.#{type_name}.description", default: nil)
         end
 
-        def resolve_enum_description(enum_name, metadata)
-          return metadata[:description] if metadata[:description]
+        def resolve_enum_description(enum_name, definition)
+          return definition.description if definition.description
 
           result = @api_class.structure.i18n_lookup(:enums, enum_name, :description)
           return result if result
@@ -89,13 +90,9 @@ module Apiwork
           I18n.t(:"apiwork.enums.#{enum_name}.description", default: nil)
         end
 
-        def expand_payload(metadata)
-          definition_blocks = metadata[:definitions] || metadata[:definition]
-          payload = metadata[:payload] || expand(definition_blocks, contract_class: metadata[:scope])
-
-          payload = expand_union_variants(payload, metadata[:scope]) if payload.is_a?(Hash) && payload[:type] == :union
-
-          payload
+        def expand_payload(definition)
+          definition_blocks = definition.all_definitions
+          expand(definition_blocks, contract_class: definition.scope)
         end
 
         def expand_union_variants(payload, scope)
@@ -106,7 +103,7 @@ module Apiwork
                          expanded_shape = expand(variant[:shape_block], contract_class: scope)
                          variant.except(:shape_block).merge(shape: expanded_shape.presence || {})
                        else
-                         variant
+                         variant.merge(shape: variant[:shape] || {})
                        end
 
             transform_variant_refs(expanded)
@@ -138,7 +135,7 @@ module Apiwork
           return false unless type_name.is_a?(Symbol)
           return false unless @api_class
 
-          @api_class.type_system.types.key?(type_name) || @api_class.type_system.enums.key?(type_name)
+          @api_class.type_registry.key?(type_name) || @api_class.enum_registry.key?(type_name)
         end
 
         def expand(definitions, contract_class: nil)

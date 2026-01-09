@@ -2,7 +2,7 @@
 
 module Apiwork
   module API
-    class TypeSystem
+    class TypeRegistry
       class UnionBuilder
         attr_reader :discriminator,
                     :variants

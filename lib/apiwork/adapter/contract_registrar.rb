@@ -66,10 +66,16 @@ module Apiwork
       #   @param from [Class] a {Contract::Base} subclass
       #   @see Apiwork::Contract::Base.import
 
-      # @!method scoped_name(name)
+      # @!method scoped_type_name(name)
       #   @api public
       #   Returns the fully qualified name for a type in this contract's scope.
       #   @param name [Symbol, nil] the local type name
+      #   @return [Symbol] the scoped name
+
+      # @!method scoped_enum_name(name)
+      #   @api public
+      #   Returns the fully qualified name for an enum in this contract's scope.
+      #   @param name [Symbol, nil] the local enum name
       #   @return [Symbol] the scoped name
 
       # @!method find_contract_for_schema(schema_class)
@@ -90,7 +96,8 @@ module Apiwork
                :find_contract_for_schema,
                :import,
                :imports,
-               :scoped_name,
+               :scoped_enum_name,
+               :scoped_type_name,
                :type,
                :type?,
                :union,

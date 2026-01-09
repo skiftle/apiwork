@@ -39,25 +39,26 @@ module Apiwork
         private
 
         def build_local_types
-          @contract_class.api_class.type_system.types.each_pair
-            .select { |_name, metadata| metadata[:scope] == @contract_class }
-            .sort_by { |name, _metadata| name.to_s }
-            .each_with_object({}) do |(name, metadata), result|
-              result[name] = @type_dump.build_type(name, metadata)
+          @contract_class.api_class.type_registry.each_pair
+            .select { |_name, definition| definition.scope == @contract_class }
+            .sort_by { |name, _definition| name.to_s }
+            .each_with_object({}) do |(name, definition), result|
+              result[name] = @type_dump.build_type(name, definition)
           end
         end
 
         def build_local_enums
-          @contract_class.api_class.type_system.enums.each_pair
-            .select { |_name, metadata| metadata[:scope] == @contract_class }
-            .sort_by { |name, _metadata| name.to_s }
-            .each_with_object({}) do |(name, metadata), result|
-              result[name] = @type_dump.build_enum(name, metadata)
+          @contract_class.api_class.enum_registry.each_pair
+            .select { |_name, definition| definition.scope == @contract_class }
+            .sort_by { |name, _definition| name.to_s }
+            .each_with_object({}) do |(name, definition), result|
+              result[name] = @type_dump.build_enum(name, definition)
           end
         end
 
         def build_referenced_types_and_enums(actions_data)
-          type_system = @contract_class.api_class.type_system
+          type_registry = @contract_class.api_class.type_registry
+          enum_registry = @contract_class.api_class.enum_registry
 
           referenced_types = Set.new
           referenced_enums = Set.new
@@ -70,10 +71,10 @@ module Apiwork
             pending_types.each do |type_name|
               processed_types << type_name
 
-              metadata = type_system.types[type_name]
-              next unless metadata
+              definition = type_registry[type_name]
+              next unless definition
 
-              dumped = @type_dump.build_type(type_name, metadata)
+              dumped = @type_dump.build_type(type_name, definition)
               dumped_types[type_name] = dumped
 
               collect_references(dumped, referenced_types, referenced_enums)
@@ -81,8 +82,8 @@ module Apiwork
           end
 
           dumped_enums = referenced_enums.each_with_object({}) do |enum_name, result|
-            metadata = type_system.enums[enum_name]
-            result[enum_name] = @type_dump.build_enum(enum_name, metadata) if metadata
+            definition = enum_registry[enum_name]
+            result[enum_name] = @type_dump.build_enum(enum_name, definition) if definition
           end
 
           sorted_types = dumped_types.sort_by { |name, _type| name.to_s }.to_h

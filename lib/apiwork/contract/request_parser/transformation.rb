@@ -98,11 +98,11 @@ module Apiwork
             api_class = contract_class.api_class
             return unless api_class
 
-            scoped_name = api_class.scoped_name(contract_class, type_name)
-            union_metadata = api_class.type_system.types[scoped_name] || api_class.type_system.types[type_name]
-            return unless union_metadata
+            scoped_name = api_class.scoped_type_name(contract_class, type_name)
+            union_definition = api_class.type_registry[scoped_name] || api_class.type_registry[type_name]
+            return unless union_definition
 
-            payload = union_metadata[:payload]
+            payload = union_definition.payload
             return unless payload && payload[:type] == :union
 
             discriminator = payload[:discriminator]

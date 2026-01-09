@@ -480,8 +480,12 @@ module Apiwork
           resolve_imported_enum_values(enum_name, visited: visited.dup.add(self))
         end
 
-        def scoped_name(name)
-          api_class.scoped_name(self, name)
+        def scoped_type_name(name)
+          api_class.scoped_type_name(self, name)
+        end
+
+        def scoped_enum_name(name)
+          api_class.scoped_enum_name(self, name)
         end
 
         private

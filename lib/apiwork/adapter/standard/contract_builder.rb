@@ -240,7 +240,7 @@ module Apiwork
 
         def build_result_wrapper(action_name, response_type:)
           success_type_name = :"#{action_name}_success_response_body"
-          full_name = registrar.scoped_name(success_type_name)
+          full_name = registrar.scoped_type_name(success_type_name)
 
           unless registrar.type?(success_type_name)
             builder = self
@@ -315,7 +315,7 @@ module Apiwork
             build_sti_response_union_type
           else
             root_key = schema_class.root_key.singular.to_sym
-            resource_type_name = registrar.scoped_name(nil)
+            resource_type_name = registrar.scoped_type_name(nil)
 
             register_resource_type(root_key) unless registrar.type?(resource_type_name)
 
@@ -668,8 +668,8 @@ module Apiwork
           nested_payload_type_name = :nested_payload
           return if registrar.type?(nested_payload_type_name)
 
-          create_qualified_name = registrar.scoped_name(create_type_name)
-          update_qualified_name = registrar.scoped_name(update_type_name)
+          create_qualified_name = registrar.scoped_type_name(create_type_name)
+          update_qualified_name = registrar.scoped_type_name(update_type_name)
 
           registrar.union(nested_payload_type_name, discriminator: :_type) do
             variant tag: 'create', type: create_qualified_name
@@ -685,7 +685,7 @@ module Apiwork
           return if sti_base_schema?
 
           root_key = schema_class.root_key.singular.to_sym
-          resource_type_name = registrar.scoped_name(nil)
+          resource_type_name = registrar.scoped_type_name(nil)
 
           return if registrar.type?(resource_type_name)
 
@@ -883,12 +883,12 @@ module Apiwork
         end
 
         def enum_filter_type(attribute_definition)
-          scoped_name = registrar.scoped_name(attribute_definition.name)
+          scoped_name = registrar.scoped_type_name(attribute_definition.name)
           :"#{scoped_name}_filter"
         end
 
         def register_enum_filter(enum_name)
-          scoped_name = registrar.scoped_name(enum_name)
+          scoped_name = registrar.scoped_enum_name(enum_name)
           filter_name = :"#{scoped_name}_filter"
 
           return if registrar.api_registrar.type?(filter_name)

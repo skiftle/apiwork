@@ -20,11 +20,12 @@ module Apiwork
       class << self
         attr_reader :adapter_config,
                     :built_contracts,
+                    :enum_registry,
                     :export_configs,
                     :exports,
                     :path,
                     :structure,
-                    :type_system
+                    :type_registry
 
         # @api public
         # Sets the key format for request/response transformation.
@@ -185,7 +186,7 @@ module Apiwork
           schema_class: nil,
           &block
         )
-          type_system.register_type(
+          type_registry.register(
             name,
             deprecated:,
             description:,
@@ -226,7 +227,7 @@ module Apiwork
         )
           raise ArgumentError, 'Values must be an array' if values && !values.is_a?(Array)
 
-          type_system.register_enum(
+          enum_registry.register(
             name,
             values,
             deprecated:,
@@ -260,9 +261,9 @@ module Apiwork
         def union(name, discriminator: nil, scope: nil, &block)
           raise ArgumentError, 'Union requires a block' unless block_given?
 
-          union_builder = TypeSystem::UnionBuilder.new(discriminator:)
+          union_builder = TypeRegistry::UnionBuilder.new(discriminator:)
           union_builder.instance_eval(&block)
-          type_system.register_union(name, union_builder.serialize, scope:)
+          type_registry.register_union(name, union_builder.serialize, scope:)
         end
 
         # @api public
@@ -469,15 +470,14 @@ module Apiwork
           @structure.with_options(options, &block)
         end
 
-        # --- Internal methods below ---
-
         def mount(path)
           @path = path
           @exports = Set.new
           @export_configs = {}
           @adapter_config = {}
           @structure = Structure.new(path)
-          @type_system = TypeSystem.new
+          @type_registry = TypeRegistry.new
+          @enum_registry = EnumRegistry.new
           @built_contracts = Set.new
           @key_format = :keep
           @path_format = :keep
@@ -519,23 +519,27 @@ module Apiwork
         end
 
         def type?(name, scope: nil)
-          type_system.type?(name, scope:)
+          type_registry.exists?(name, scope:)
         end
 
         def type_definitions(name, scope: nil)
-          type_system.type_definitions(name, scope:)
+          type_registry.definitions(name, scope:)
         end
 
         def enum?(name, scope: nil)
-          type_system.enum?(name, scope:)
+          enum_registry.exists?(name, scope:)
         end
 
         def enum_values(name, scope: nil)
-          type_system.enum_values(name, scope:)
+          enum_registry.values(name, scope:)
         end
 
-        def scoped_name(scope, name)
-          type_system.scoped_name(scope, name)
+        def scoped_type_name(scope, name)
+          type_registry.scoped_name(scope, name)
+        end
+
+        def scoped_enum_name(scope, name)
+          enum_registry.scoped_name(scope, name)
         end
 
         def introspect(locale: nil)
