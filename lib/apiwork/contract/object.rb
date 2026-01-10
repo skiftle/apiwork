@@ -60,7 +60,9 @@ module Apiwork
       # @param min [Integer] minimum value (numeric) or length (string/array)
       # @param nullable [Boolean] whether null is allowed
       # @param required [Boolean] alias for optional: false (for readability)
-      # @yield nested params for :object or :array of objects
+      # @return [void]
+      # @see Contract::Object
+      # @see Contract::Union
       #
       # @example Basic types
       #   param :title, type: :string
@@ -89,8 +91,6 @@ module Apiwork
       #       param :card_number, type: :string
       #     end
       #   end
-      #
-      # @see Contract::Union#variant
       def param(
         name,
         as: nil,

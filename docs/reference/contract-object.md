@@ -109,9 +109,14 @@ Defines a parameter/field in a request or response body.
 | `nullable` | `Boolean` | whether null is allowed |
 | `required` | `Boolean` | alias for optional: false (for readability) |
 
+**Returns**
+
+`void`
+
 **See also**
 
-- [Contract::Union#variant](contract-union#variant)
+- [Contract::Object](contract-object)
+- [Contract::Union](contract-union)
 
 **Example: Basic types**
 

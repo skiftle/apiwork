@@ -34,7 +34,7 @@ param :shipping, type: :address
 
 `#param(name, type: nil, optional: false, as: nil, default: nil, deprecated: nil, description: nil, discriminator: nil, enum: nil, example: nil, format: nil, max: nil, min: nil, nullable: nil, of: nil, required: nil, value: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L63)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L64)
 
 Defines a parameter within this object.
 
@@ -62,6 +62,11 @@ Defines a parameter within this object.
 **Returns**
 
 `void`
+
+**See also**
+
+- [API::Object](api-object)
+- [API::Union](api-union)
 
 **Example: Required string parameter**
 

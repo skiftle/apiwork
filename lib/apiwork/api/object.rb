@@ -44,8 +44,9 @@ module Apiwork
       # @param nullable [Boolean] whether the value can be null
       # @param of [Symbol] element type for arrays
       # @param value [Object] literal value constraint
-      # @yield optional block for inline object or union definition
       # @return [void]
+      # @see API::Object
+      # @see API::Union
       #
       # @example Required string parameter
       #   param :title, type: :string
