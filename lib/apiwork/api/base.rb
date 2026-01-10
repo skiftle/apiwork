@@ -13,7 +13,7 @@ module Apiwork
     #     key_format :camel
     #
     #     resources :invoices do
-    #       resources :line_items
+    #       resources :items
     #     end
     #   end
     class Base
@@ -164,15 +164,14 @@ module Apiwork
         # @param schema_class [Class] a {Schema::Base} subclass for type inference
         # @see API::Object
         #
-        # @example Global object type
-        #   object :address do
-        #     param :street, type: :string
-        #     param :city, type: :string
-        #     param :zip, type: :string
+        # @example Define a reusable type
+        #   object :item do
+        #     param :description, type: :string
+        #     param :amount, type: :decimal
         #   end
         #
-        # @example Using in a contract
-        #   param :shipping_address, type: :address
+        # @example Reference in contract
+        #   param :items, type: :array, of: :item
         def object(
           name,
           scope: nil,
@@ -211,9 +210,9 @@ module Apiwork
         # @see Contract::Base
         #
         # @example
-        #   enum :status, values: %w[draft published archived]
+        #   enum :status, values: %w[draft sent paid]
         #
-        #   # Later in contract:
+        # @example Reference in contract
         #   param :status, enum: :status
         def enum(
           name,
@@ -248,10 +247,10 @@ module Apiwork
         #
         # @example
         #   union :payment_method, discriminator: :type do
-        #     variant type: :card, tag: 'card' do
+        #     variant tag: 'card', type: :object do
         #       param :last_four, type: :string
         #     end
-        #     variant type: :bank, tag: 'bank' do
+        #     variant tag: 'bank', type: :object do
         #       param :account_number, type: :string
         #     end
         #   end
@@ -352,7 +351,7 @@ module Apiwork
         # @example With options and nested resources
         #   resources :invoices, only: [:index, :show] do
         #     member { post :archive }
-        #     resources :line_items
+        #     resources :items
         #   end
         def resources(
           name,

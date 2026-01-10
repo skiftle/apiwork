@@ -16,12 +16,12 @@ Use [#variant](#variant) to define possible types.
 **Example: Discriminated union**
 
 ```ruby
-union :payment, discriminator: :type do
+union :payment_method, discriminator: :type do
   variant tag: 'card', type: :object do
     param :last_four, type: :string
   end
   variant tag: 'bank', type: :object do
-    param :account, type: :string
+    param :account_number, type: :string
   end
 end
 ```
@@ -29,9 +29,9 @@ end
 **Example: Simple union**
 
 ```ruby
-union :filter_value do
-  variant type: :string
+union :amount do
   variant type: :integer
+  variant type: :decimal
 end
 ```
 
@@ -41,7 +41,7 @@ end
 
 `#variant(enum: nil, of: nil, partial: nil, shape: nil, tag: nil, type:, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/union.rb#L58)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/union.rb#L55)
 
 Defines a variant within this union.
 
@@ -66,20 +66,14 @@ Defines a variant within this union.
 **Example: Primitive variant**
 
 ```ruby
-variant type: :string
-```
-
-**Example: Reference to named object**
-
-```ruby
-variant type: :card_details, tag: 'card'
+variant type: :decimal
 ```
 
 **Example: Inline object variant**
 
 ```ruby
-variant tag: 'bank', type: :object do
-  param :account, type: :string
+variant tag: 'card', type: :object do
+  param :last_four, type: :string
 end
 ```
 

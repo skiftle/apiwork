@@ -9,19 +9,19 @@ module Apiwork
     # Use {#variant} to define possible types.
     #
     # @example Discriminated union
-    #   union :payment, discriminator: :type do
+    #   union :payment_method, discriminator: :type do
     #     variant tag: 'card', type: :object do
     #       param :last_four, type: :string
     #     end
     #     variant tag: 'bank', type: :object do
-    #       param :account, type: :string
+    #       param :account_number, type: :string
     #     end
     #   end
     #
     # @example Simple union
-    #   union :filter_value do
-    #     variant type: :string
+    #   union :amount do
     #     variant type: :integer
+    #     variant type: :decimal
     #   end
     #
     # @see Contract::Union Block context for inline unions
@@ -46,14 +46,11 @@ module Apiwork
       # @see API::Object
       #
       # @example Primitive variant
-      #   variant type: :string
-      #
-      # @example Reference to named object
-      #   variant type: :card_details, tag: 'card'
+      #   variant type: :decimal
       #
       # @example Inline object variant
-      #   variant tag: 'bank', type: :object do
-      #     param :account, type: :string
+      #   variant tag: 'card', type: :object do
+      #     param :last_four, type: :string
       #   end
       def variant(enum: nil, of: nil, partial: nil, shape: nil, tag: nil, type:, &block)
         validate_tag!(tag)

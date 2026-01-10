@@ -18,7 +18,7 @@ Returns [Object](object) via `body`.
 
 `#body(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response.rb#L67)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response.rb#L65)
 
 Defines the response body for this response.
 
@@ -35,12 +35,10 @@ When using schema!, body is auto-generated from schema attributes.
 **Example**
 
 ```ruby
-response do
-  body do
-    param :id, type: :integer
-    param :title, type: :string
-    param :created_at, type: :datetime
-  end
+body do
+  param :id, type: :integer
+  param :title, type: :string
+  param :amount, type: :decimal
 end
 ```
 

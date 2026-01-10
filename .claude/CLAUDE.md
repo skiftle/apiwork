@@ -812,7 +812,7 @@ Tests must use a **fixed vocabulary**.
 
 | Domain        | Terms                                                                                                       |
 | ------------- | ----------------------------------------------------------------------------------------------------------- |
-| Billing       | `invoice`, `line`, `lines`, `customer`, `payment`, `currency`                                               |
+| Billing       | `invoice`, `item`, `items`, `customer`, `payment`, `currency`                                               |
 | Content       | `post`, `comment`, `comments`, `author`                                                                     |
 | Framework     | `api`, `resource`, `action`, `schema`, `type`, `enum`, `adapter`, `capabilities`, `introspection`, `export` |
 | **Forbidden** | `foo`, `bar`, `baz`, `test`, `example`, `sample`                                                            |

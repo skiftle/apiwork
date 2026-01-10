@@ -16,9 +16,9 @@ Use [#variant](#variant) to define possible types.
 **Example: Discriminated union**
 
 ```ruby
-param :payment, type: :union, discriminator: :type do
+param :payment_method, type: :union, discriminator: :type do
   variant tag: 'card', type: :object do
-    param :card_number, type: :string
+    param :last_four, type: :string
   end
   variant tag: 'bank', type: :object do
     param :account_number, type: :string
@@ -32,7 +32,7 @@ end
 
 `#variant(enum: nil, of: nil, partial: nil, tag: nil, type:, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/union.rb#L61)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/union.rb#L51)
 
 Defines a variant in this union.
 
@@ -54,27 +54,17 @@ Defines a variant in this union.
 
 - [Contract::Object](contract-object)
 
-**Example: Simple union (string or integer)**
+**Example: Primitive variant**
 
 ```ruby
-param :value, type: :union do
-  variant type: :string
-  variant type: :integer
-end
+variant type: :decimal
 ```
 
-**Example: Discriminated union with object variants**
+**Example: Inline object variant**
 
 ```ruby
-param :payment, type: :union, discriminator: :type do
-  variant type: :object, tag: 'card' do
-    param :card_number, type: :string
-    param :expiry, type: :string
-  end
-  variant type: :object, tag: 'bank' do
-    param :account_number, type: :string
-    param :routing_number, type: :string
-  end
+variant tag: 'card', type: :object do
+  param :last_four, type: :string
 end
 ```
 

@@ -6,7 +6,7 @@ next: false
 
 # Contract::Object
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L28)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L23)
 
 Block context for defining request/response structure.
 
@@ -16,22 +16,17 @@ inside contract actions. Use [#param](#param) to define fields.
 **Example: Request body**
 
 ```ruby
-action :create do
-  request do
-    body do
-      param :title, type: :string
-      param :amount, type: :decimal
-    end
-  end
+body do
+  param :title, type: :string
+  param :amount, type: :decimal
 end
 ```
 
 **Example: Inline nested object**
 
 ```ruby
-param :address, type: :object do
-  param :street, type: :string
-  param :city, type: :string
+param :customer, type: :object do
+  param :name, type: :string
 end
 ```
 
@@ -41,7 +36,7 @@ end
 
 `#meta(optional: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L214)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L199)
 
 Shorthand for `param :meta, type: :object do ... end`.
 
@@ -83,7 +78,7 @@ end
 
 `#param(name, as: nil, default: nil, deprecated: nil, description: nil, discriminator: nil, enum: nil, example: nil, format: nil, max: nil, min: nil, nullable: nil, of: nil, optional: nil, required: nil, type: nil, value: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L94)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L79)
 
 Defines a parameter/field in a request or response body.
 
@@ -118,45 +113,29 @@ Defines a parameter/field in a request or response body.
 - [Contract::Object](contract-object)
 - [Contract::Union](contract-union)
 
-**Example: Basic types**
+**Example: Basic param**
 
 ```ruby
-param :title, type: :string
-param :count, type: :integer, min: 0
-param :active, type: :boolean, default: true
+param :amount, type: :decimal
 ```
 
-**Example: With enum**
+**Example: Inline object**
 
 ```ruby
-param :status, enum: %w[draft published archived]
-param :role, enum: :user_role  # reference to registered enum
-```
-
-**Example: Nested object**
-
-```ruby
-param :address, type: :object do
-  param :street, type: :string
-  param :city, type: :string
+param :customer, type: :object do
+  param :name, type: :string
 end
 ```
 
-**Example: Array of objects**
+**Example: Inline union**
 
 ```ruby
-param :items, type: :array, of: :line_item do
-  param :product_id, type: :integer
-  param :quantity, type: :integer, min: 1
-end
-```
-
-**Example: Union type**
-
-```ruby
-param :payment, type: :union, discriminator: :type do
-  variant type: :object, tag: 'card' do
-    param :card_number, type: :string
+param :payment_method, type: :union, discriminator: :type do
+  variant tag: 'card', type: :object do
+    param :last_four, type: :string
+  end
+  variant tag: 'bank', type: :object do
+    param :account_number, type: :string
   end
 end
 ```

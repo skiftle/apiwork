@@ -161,22 +161,14 @@ module Apiwork
         # @param schema_class [Class] a {Schema::Base} subclass for type inference
         # @see API::Object
         #
-        # @example Reusable address object
-        #   class OrderContract < Apiwork::Contract::Base
-        #     object :address do
-        #       param :street, type: :string
-        #       param :city, type: :string
-        #     end
-        #
-        #     action :create do
-        #       request do
-        #         body do
-        #           param :shipping, type: :address
-        #           param :billing, type: :address  # Reuse same object
-        #         end
-        #       end
-        #     end
+        # @example Define a reusable type
+        #   object :item do
+        #     param :description, type: :string
+        #     param :amount, type: :decimal
         #   end
+        #
+        # @example Reference in contract
+        #   param :items, type: :array, of: :item
         def object(
           name,
           description: nil,
@@ -211,18 +203,11 @@ module Apiwork
         # @param deprecated [Boolean] mark as deprecated
         # @see API::Base
         #
-        # @example Status enum
-        #   class InvoiceContract < Apiwork::Contract::Base
-        #     enum :status, values: %w[draft sent paid]
+        # @example
+        #   enum :status, values: %w[draft sent paid]
         #
-        #     action :update do
-        #       request do
-        #         body do
-        #           param :status, enum: :status
-        #         end
-        #       end
-        #     end
-        #   end
+        # @example Reference in contract
+        #   param :status, enum: :status
         def enum(
           name,
           values: nil,
@@ -244,15 +229,13 @@ module Apiwork
         # @param discriminator [Symbol] field that identifies the variant
         # @see API::Union
         #
-        # @example Payment method union
-        #   class PaymentContract < Apiwork::Contract::Base
-        #     union :method, discriminator: :type do
-        #       variant tag: 'card', type: :object do
-        #         param :last_four, type: :string
-        #       end
-        #       variant tag: 'bank', type: :object do
-        #         param :account_number, type: :string
-        #       end
+        # @example
+        #   union :payment_method, discriminator: :type do
+        #     variant tag: 'card', type: :object do
+        #       param :last_four, type: :string
+        #     end
+        #     variant tag: 'bank', type: :object do
+        #       param :account_number, type: :string
         #     end
         #   end
         def union(name, discriminator: nil, &block)

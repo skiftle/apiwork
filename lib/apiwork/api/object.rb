@@ -8,14 +8,14 @@ module Apiwork
     # Accessed via `object :name do` in API or contract definitions.
     # Use {#param} to define fields.
     #
-    # @example Define a reusable address type
-    #   object :address do
-    #     param :street, type: :string
-    #     param :city, type: :string
+    # @example Define a reusable type
+    #   object :item do
+    #     param :description, type: :string
+    #     param :amount, type: :decimal
     #   end
     #
     # @example Reference in contract
-    #   param :shipping, type: :address
+    #   param :items, type: :array, of: :item
     #
     # @see Contract::Object Block context for inline objects
     class Object
@@ -48,18 +48,22 @@ module Apiwork
       # @see API::Object
       # @see API::Union
       #
-      # @example Required string parameter
-      #   param :title, type: :string
-      #
-      # @example Optional with default
-      #   param :status, type: :string, optional: true, default: 'draft'
-      #
-      # @example Array of objects
-      #   param :items, type: :array, of: :line_item
+      # @example Basic param
+      #   param :amount, type: :decimal
       #
       # @example Inline object
-      #   param :metadata, type: :object do
-      #     param :source, type: :string
+      #   param :customer, type: :object do
+      #     param :name, type: :string
+      #   end
+      #
+      # @example Inline union
+      #   param :payment_method, type: :union, discriminator: :type do
+      #     variant tag: 'card', type: :object do
+      #       param :last_four, type: :string
+      #     end
+      #     variant tag: 'bank', type: :object do
+      #       param :account_number, type: :string
+      #     end
       #   end
       def param(
         name,

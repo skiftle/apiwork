@@ -18,7 +18,7 @@ Returns [Object](object) via `query` and `body`.
 
 `#body(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request.rb#L64)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request.rb#L59)
 
 Defines the request body for this request.
 
@@ -35,11 +35,9 @@ Body is parsed from the JSON request body.
 **Example**
 
 ```ruby
-request do
-  body do
-    param :title, type: :string
-    param :amount, type: :decimal, min: 0
-  end
+body do
+  param :title, type: :string
+  param :amount, type: :decimal
 end
 ```
 
@@ -49,7 +47,7 @@ end
 
 `#query(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request.rb#L38)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request.rb#L35)
 
 Defines query parameters for this request.
 
@@ -66,12 +64,9 @@ Query parameters are parsed from the URL query string.
 **Example**
 
 ```ruby
-request do
-  query do
-    param :page, type: :integer, optional: true, default: 1
-    param :per_page, type: :integer, optional: true, default: 25
-    param :filter, type: :string, optional: true
-  end
+query do
+  param :page, type: :integer, optional: true
+  param :status, enum: :status, optional: true
 end
 ```
 

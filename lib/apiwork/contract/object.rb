@@ -9,19 +9,14 @@ module Apiwork
     # inside contract actions. Use {#param} to define fields.
     #
     # @example Request body
-    #   action :create do
-    #     request do
-    #       body do
-    #         param :title, type: :string
-    #         param :amount, type: :decimal
-    #       end
-    #     end
+    #   body do
+    #     param :title, type: :string
+    #     param :amount, type: :decimal
     #   end
     #
     # @example Inline nested object
-    #   param :address, type: :object do
-    #     param :street, type: :string
-    #     param :city, type: :string
+    #   param :customer, type: :object do
+    #     param :name, type: :string
     #   end
     #
     # @see API::Object Block context for reusable types
@@ -64,31 +59,21 @@ module Apiwork
       # @see Contract::Object
       # @see Contract::Union
       #
-      # @example Basic types
-      #   param :title, type: :string
-      #   param :count, type: :integer, min: 0
-      #   param :active, type: :boolean, default: true
+      # @example Basic param
+      #   param :amount, type: :decimal
       #
-      # @example With enum
-      #   param :status, enum: %w[draft published archived]
-      #   param :role, enum: :user_role  # reference to registered enum
-      #
-      # @example Nested object
-      #   param :address, type: :object do
-      #     param :street, type: :string
-      #     param :city, type: :string
+      # @example Inline object
+      #   param :customer, type: :object do
+      #     param :name, type: :string
       #   end
       #
-      # @example Array of objects
-      #   param :items, type: :array, of: :line_item do
-      #     param :product_id, type: :integer
-      #     param :quantity, type: :integer, min: 1
-      #   end
-      #
-      # @example Union type
-      #   param :payment, type: :union, discriminator: :type do
-      #     variant type: :object, tag: 'card' do
-      #       param :card_number, type: :string
+      # @example Inline union
+      #   param :payment_method, type: :union, discriminator: :type do
+      #     variant tag: 'card', type: :object do
+      #       param :last_four, type: :string
+      #     end
+      #     variant tag: 'bank', type: :object do
+      #       param :account_number, type: :string
       #     end
       #   end
       def param(

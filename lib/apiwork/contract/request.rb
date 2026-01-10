@@ -28,12 +28,9 @@ module Apiwork
       # @see Contract::Object
       #
       # @example
-      #   request do
-      #     query do
-      #       param :page, type: :integer, optional: true, default: 1
-      #       param :per_page, type: :integer, optional: true, default: 25
-      #       param :filter, type: :string, optional: true
-      #     end
+      #   query do
+      #     param :page, type: :integer, optional: true
+      #     param :status, enum: :status, optional: true
       #   end
       def query(&block)
         @query_param ||= Object.new(
@@ -55,11 +52,9 @@ module Apiwork
       # @see Contract::Object
       #
       # @example
-      #   request do
-      #     body do
-      #       param :title, type: :string
-      #       param :amount, type: :decimal, min: 0
-      #     end
+      #   body do
+      #     param :title, type: :string
+      #     param :amount, type: :decimal
       #   end
       def body(&block)
         @body_param ||= Object.new(

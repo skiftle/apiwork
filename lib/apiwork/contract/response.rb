@@ -57,12 +57,10 @@ module Apiwork
       # @see Contract::Object
       #
       # @example
-      #   response do
-      #     body do
-      #       param :id, type: :integer
-      #       param :title, type: :string
-      #       param :created_at, type: :datetime
-      #     end
+      #   body do
+      #     param :id, type: :integer
+      #     param :title, type: :string
+      #     param :amount, type: :decimal
       #   end
       def body(&block)
         @body_param ||= Object.new(

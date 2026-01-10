@@ -10,10 +10,10 @@ Objects are named structures that can be referenced by name.
 
 ```ruby
 object :address do
-  param :street, type: :string
-  param :city, type: :string
-  param :postal_code, type: :string
-  param :country_code, type: :string
+  string :street
+  string :city
+  string :postal_code
+  string :country_code
 end
 ```
 
@@ -22,8 +22,8 @@ end
 Reference by name:
 
 ```ruby
-param :shipping_address, type: :address
-param :billing_address, type: :address
+ref :shipping_address, type: :address
+ref :billing_address, type: :address
 ```
 
 Arrays work too:
@@ -149,10 +149,12 @@ Apiwork detects self-references automatically. No special syntax is needed.
 In Zod, recursive types use `z.lazy()` to avoid infinite loops:
 
 ```typescript
-export const CategorySchema: z.ZodType<Category> = z.lazy(() => z.object({
-  name: z.string(),
-  children: z.array(CategorySchema),
-}));
+export const CategorySchema: z.ZodType<Category> = z.lazy(() =>
+  z.object({
+    name: z.string(),
+    children: z.array(CategorySchema),
+  })
+);
 ```
 
 TypeScript interfaces handle recursion naturally:
@@ -178,7 +180,7 @@ Category:
     children:
       type: array
       items:
-        $ref: '#/components/schemas/Category'
+        $ref: "#/components/schemas/Category"
 ```
 
 ## Contract-Scoped Objects

@@ -13,19 +13,19 @@ Block context for defining reusable object types.
 Accessed via `object :name do` in API or contract definitions.
 Use [#param](#param) to define fields.
 
-**Example: Define a reusable address type**
+**Example: Define a reusable type**
 
 ```ruby
-object :address do
-  param :street, type: :string
-  param :city, type: :string
+object :item do
+  param :description, type: :string
+  param :amount, type: :decimal
 end
 ```
 
 **Example: Reference in contract**
 
 ```ruby
-param :shipping, type: :address
+param :items, type: :array, of: :item
 ```
 
 ## Instance Methods
@@ -34,7 +34,7 @@ param :shipping, type: :address
 
 `#param(name, type: nil, optional: false, as: nil, default: nil, deprecated: nil, description: nil, discriminator: nil, enum: nil, example: nil, format: nil, max: nil, min: nil, nullable: nil, of: nil, required: nil, value: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L64)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L68)
 
 Defines a parameter within this object.
 
@@ -68,29 +68,30 @@ Defines a parameter within this object.
 - [API::Object](api-object)
 - [API::Union](api-union)
 
-**Example: Required string parameter**
+**Example: Basic param**
 
 ```ruby
-param :title, type: :string
-```
-
-**Example: Optional with default**
-
-```ruby
-param :status, type: :string, optional: true, default: 'draft'
-```
-
-**Example: Array of objects**
-
-```ruby
-param :items, type: :array, of: :line_item
+param :amount, type: :decimal
 ```
 
 **Example: Inline object**
 
 ```ruby
-param :metadata, type: :object do
-  param :source, type: :string
+param :customer, type: :object do
+  param :name, type: :string
+end
+```
+
+**Example: Inline union**
+
+```ruby
+param :payment_method, type: :union, discriminator: :type do
+  variant tag: 'card', type: :object do
+    param :last_four, type: :string
+  end
+  variant tag: 'bank', type: :object do
+    param :account_number, type: :string
+  end
 end
 ```
 
