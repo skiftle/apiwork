@@ -9,7 +9,7 @@ RSpec.describe 'Literal and Discriminated Union Features' do
         action :test do
           request do
             body do
-              param :status, type: :literal, value: 'archived'
+              literal :status, value: 'archived'
               string :name
             end
           end
@@ -63,7 +63,7 @@ RSpec.describe 'Literal and Discriminated Union Features' do
         action :test do
           request do
             body do
-              param :filter, discriminator: :kind, type: :union do
+              union :filter, discriminator: :kind do
                 variant tag: 'string' do
                   reference :string_filter
                 end
@@ -153,7 +153,7 @@ RSpec.describe 'Literal and Discriminated Union Features' do
           action :test do
             request do
               body do
-                param :filter, type: :union do
+                union :filter do
                   variant tag: 'string' do
                     string
                   end
@@ -171,7 +171,7 @@ RSpec.describe 'Literal and Discriminated Union Features' do
           action :test do
             request do
               body do
-                param :filter, discriminator: :kind, type: :union do
+                union :filter, discriminator: :kind do
                   variant do # Missing tag!
                     string
                   end

@@ -7,16 +7,16 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
     it 'validates enum values in nested custom types' do
       contract_class = create_test_contract do
         object :account do
-          param :id, required: true, type: :integer
-          param :name, required: true, type: :string
-          param :status, enum: %w[active inactive archived], required: true, type: :string
-          param :first_day_of_week, enum: %w[monday tuesday wednesday thursday friday saturday sunday], required: false, type: :string
+          integer :id
+          string :name
+          string :status, enum: %w[active inactive archived]
+          string :first_day_of_week, enum: %w[monday tuesday wednesday thursday friday saturday sunday], optional: true
         end
 
         action :show do
           response do
             body do
-              param :account, required: true, type: :account
+              reference :account
             end
           end
         end
@@ -68,14 +68,14 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
     it 'validates type errors in nested custom types without coercion' do
       contract_class = create_test_contract do
         object :account do
-          param :id, required: true, type: :integer
-          param :name, required: true, type: :string
+          integer :id
+          string :name
         end
 
         action :show do
           response do
             body do
-              param :account, required: true, type: :account
+              reference :account
             end
           end
         end
@@ -97,19 +97,19 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
     it 'validates deeply nested custom types' do
       contract_class = create_test_contract do
         object :address do
-          param :city, required: true, type: :string
-          param :country_code, enum: %w[US UK SE], required: true, type: :string
+          string :city
+          string :country_code, enum: %w[US UK SE]
         end
 
         object :account do
-          param :id, required: true, type: :integer
-          param :address, required: true, type: :address
+          integer :id
+          reference :address
         end
 
         action :show do
           response do
             body do
-              param :account, required: true, type: :account
+              reference :account
             end
           end
         end

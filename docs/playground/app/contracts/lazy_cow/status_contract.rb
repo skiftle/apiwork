@@ -5,9 +5,9 @@ module LazyCow
     action :health do
       response do
         body do
-          param :status, type: :string
-          param :timestamp, type: :datetime
-          param :version, type: :string
+          string :status
+          datetime :timestamp
+          string :version
         end
       end
     end
@@ -15,9 +15,9 @@ module LazyCow
     action :stats do
       response do
         body do
-          param :users_count, type: :integer
-          param :posts_count, type: :integer
-          param :uptime_seconds, type: :integer
+          integer :users_count
+          integer :posts_count
+          integer :uptime_seconds
         end
       end
     end

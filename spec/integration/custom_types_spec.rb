@@ -33,7 +33,7 @@ RSpec.describe 'Custom Types', type: :integration do
         object :line_item do
           string :product
           integer :quantity
-          param :price, type: :object do
+          object :price do
             decimal :amount
             string :currency
           end

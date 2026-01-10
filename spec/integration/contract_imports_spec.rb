@@ -7,9 +7,9 @@ RSpec.describe 'Contract Imports' do
     let(:user_contract) do
       create_test_contract do
         object :address do
-          param :street, required: true, type: :string
-          param :city, required: true, type: :string
-          param :country_code, required: true, type: :string
+          string :street
+          string :city
+          string :country_code
         end
 
         enum :status, values: %w[active inactive suspended]
@@ -19,8 +19,8 @@ RSpec.describe 'Contract Imports' do
     let(:order_contract) do
       create_test_contract do
         object :order_item do
-          param :product_id, required: true, type: :uuid
-          param :quantity, required: true, type: :integer
+          uuid :product_id
+          integer :quantity
         end
       end
     end
@@ -33,7 +33,7 @@ RSpec.describe 'Contract Imports' do
         action :create do
           request do
             body do
-              param :shipping_address, required: true, type: :user_address
+              reference :shipping_address, to: :user_address
             end
           end
         end
@@ -52,7 +52,7 @@ RSpec.describe 'Contract Imports' do
         action :create do
           request do
             body do
-              param :account_status, enum: :user_status, type: :string
+              string :account_status, enum: :user_status
             end
           end
         end
@@ -72,8 +72,10 @@ RSpec.describe 'Contract Imports' do
         action :create do
           request do
             body do
-              param :shipping_address, type: :user_address
-              param :items, of: :order_order_item, type: :array
+              reference :shipping_address, to: :user_address
+              array :items do
+                reference :order_order_item
+              end
             end
           end
         end
@@ -129,7 +131,7 @@ RSpec.describe 'Contract Imports' do
         action :create do
           request do
             body do
-              param :shipping_address, type: :user_address
+              reference :shipping_address, to: :user_address
             end
           end
         end
@@ -200,8 +202,8 @@ RSpec.describe 'Contract Imports' do
     let(:user_contract) do
       create_test_contract do
         object :address do
-          param :street, required: true, type: :string
-          param :city, required: true, type: :string
+          string :street
+          string :city
         end
       end
     end
@@ -214,7 +216,7 @@ RSpec.describe 'Contract Imports' do
         action :create do
           request do
             body do
-              param :shipping_address, type: :user_address
+              reference :shipping_address, to: :user_address
             end
           end
         end
@@ -253,8 +255,8 @@ RSpec.describe 'Contract Imports' do
         action :create do
           request do
             body do
-              param :local_meta, type: :metadata # Should use local
-              param :imported_meta, type: :base_metadata # Should use imported
+              reference :local_meta, to: :metadata
+              reference :imported_meta, to: :base_metadata
             end
           end
         end

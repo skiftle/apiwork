@@ -7,28 +7,32 @@ module CuriousCat
     attribute :email, format: :email, writable: true
 
     attribute :settings, writable: true do
-      param :theme, type: :string
-      param :notifications, type: :boolean
-      param :language, type: :string
+      string :theme
+      boolean :notifications
+      string :language
     end
 
-    attribute :tags, of: :string, type: :array, writable: true
+    attribute :tags, type: :array, writable: true do
+      string
+    end
 
     attribute :addresses, type: :array, writable: true do
-      param :street, type: :string
-      param :city, type: :string
-      param :zip, type: :string
-      param :primary, type: :boolean
+      object do
+        string :street
+        string :city
+        string :zip
+        boolean :primary
+      end
     end
 
     attribute :preferences, writable: true do
-      param :ui, type: :object do
-        param :theme, type: :string
-        param :sidebar_collapsed, type: :boolean
+      object :ui do
+        string :theme
+        boolean :sidebar_collapsed
       end
-      param :notifications, type: :object do
-        param :email, type: :boolean
-        param :push, type: :boolean
+      object :notifications do
+        boolean :email
+        boolean :push
       end
     end
 

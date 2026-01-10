@@ -225,13 +225,13 @@ RSpec.describe Apiwork::Export::Zod do
         union :payment_method, discriminator: :type do
           variant tag: 'card' do
             object do
-              param :type, type: :literal, value: 'card'
+              literal :type, value: 'card'
               string :last_four
             end
           end
           variant tag: 'bank' do
             object do
-              param :type, type: :literal, value: 'bank'
+              literal :type, value: 'bank'
               string :routing_number
             end
           end
@@ -273,7 +273,9 @@ RSpec.describe Apiwork::Export::Zod do
       Apiwork::API.define '/api/zod_circular_test' do
         object :tree_node do
           string :value
-          param :children, of: :tree_node, optional: true, type: :array
+          array :children, optional: true do
+            reference :tree_node
+          end
         end
       end
       @circular_output = Apiwork::Export.generate(:zod, '/api/zod_circular_test')
@@ -300,9 +302,9 @@ RSpec.describe Apiwork::Export::Zod do
     before(:all) do
       Apiwork::API.define '/api/zod_literal_test' do
         object :constants do
-          param :string_lit, type: :literal, value: 'hello'
-          param :number_lit, type: :literal, value: 42
-          param :bool_lit, type: :literal, value: true
+          literal :string_lit, value: 'hello'
+          literal :number_lit, value: 42
+          literal :bool_lit, value: true
         end
       end
       @literal_output = Apiwork::Export.generate(:zod, '/api/zod_literal_test')

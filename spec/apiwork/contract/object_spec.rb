@@ -108,7 +108,7 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
     context 'when datetime field is optional and nullable' do
       before do
         definition.instance_variable_set(:@params, {})
-        definition.param :archived_at, nullable: true, optional: true, type: :datetime
+        definition.datetime :archived_at, nullable: true, optional: true
       end
 
       it 'allows nil value' do
@@ -203,7 +203,7 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
     context 'when date field is optional and nullable' do
       before do
         definition.instance_variable_set(:@params, {})
-        definition.param :birth_date, nullable: true, optional: true, type: :date
+        definition.date :birth_date, nullable: true, optional: true
       end
 
       it 'allows nil value' do
@@ -223,7 +223,7 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
 
   describe 'required enum validation' do
     before do
-      definition.param :status, enum: %w[active inactive archived], type: :string
+      definition.string :status, enum: %w[active inactive archived]
     end
 
     context 'when required enum field is missing' do
@@ -306,7 +306,7 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
 
   describe 'optional and nullable enum validation' do
     before do
-      definition.param :status, enum: %w[active inactive], nullable: true, optional: true, type: :string
+      definition.string :status, enum: %w[active inactive], nullable: true, optional: true
     end
 
     it 'allows missing field' do
@@ -383,7 +383,7 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
   describe 'nullable validation for associations' do
     let(:definition) do
       described_class.new(contract_class).tap do |d|
-        d.param :address, nullable: false, optional: true, type: :object
+        d.object :address, nullable: false, optional: true
       end
     end
 
@@ -416,7 +416,7 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
     context 'when nullable: true' do
       let(:definition) do
         described_class.new(contract_class).tap do |d|
-          d.param :address, nullable: true, optional: true, type: :object
+          d.object :address, nullable: true, optional: true
         end
       end
 
@@ -445,7 +445,7 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
     context 'when nullable: true is specified' do
       let(:definition) do
         described_class.new(contract_class).tap do |d|
-          d.param :address, nullable: true, optional: true, type: :object
+          d.object :address, nullable: true, optional: true
         end
       end
 

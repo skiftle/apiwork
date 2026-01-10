@@ -33,8 +33,8 @@ RSpec.describe 'Contract Definition' do
       )
 
       # Simulate adapter defining meta with pagination
-      definition.param :meta, type: :object do
-        param :pagination, type: :pagination
+      definition.object :meta do
+        reference :pagination
       end
 
       # User extends with custom fields

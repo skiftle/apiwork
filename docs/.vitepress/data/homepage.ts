@@ -91,16 +91,18 @@ end`,
   action :index do
     request do
       query do
-        param :status, type: :string, enum: :status
+        string :status, enum: :status, optional: true
       end
     end
 
     response do
       body do
-        param :invoices, type: :array do
-          param :id, type: :uuid
-          param :number, type: :string
-          param :status, type: :string, enum: :status
+        array :invoices do
+          object do
+            uuid :id
+            string :number
+            string :status, enum: :status
+          end
         end
       end
     end
