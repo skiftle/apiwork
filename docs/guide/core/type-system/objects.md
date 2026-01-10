@@ -29,7 +29,9 @@ reference :billing_address, to: :address
 Arrays work too:
 
 ```ruby
-param :addresses, type: :array, of: :address
+array :addresses do
+  reference :address
+end
 ```
 
 ## Generated Output

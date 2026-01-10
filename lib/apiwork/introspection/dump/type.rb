@@ -166,11 +166,27 @@ module Apiwork
         def resolve_of(options, scope)
           return nil unless options[:of]
 
-          scoped_name = resolve_scoped_type_name(options[:of], scope)
-          if scoped_name
-            { ref: scoped_name, shape: {}, type: :ref }
+          of_value = options[:of]
+
+          if of_value.is_a?(Hash)
+            type_value = of_value[:type]
+            scoped_name = resolve_scoped_type_name(type_value, scope)
+            {
+              enum: of_value[:enum],
+              format: of_value[:format],
+              max: of_value[:max],
+              min: of_value[:min],
+              ref: scoped_name,
+              shape: {},
+              type: scoped_name ? :ref : type_value,
+            }
           else
-            { ref: nil, type: options[:of] }
+            scoped_name = resolve_scoped_type_name(of_value, scope)
+            if scoped_name
+              { ref: scoped_name, shape: {}, type: :ref }
+            else
+              { ref: nil, shape: {}, type: of_value }
+            end
           end
         end
 
@@ -187,11 +203,27 @@ module Apiwork
         def resolve_variant_of(variant, scope)
           return nil unless variant[:of]
 
-          scoped_name = resolve_scoped_type_name(variant[:of], scope)
-          if scoped_name
-            { ref: scoped_name, shape: {}, type: :ref }
+          of_value = variant[:of]
+
+          if of_value.is_a?(Hash)
+            type_value = of_value[:type]
+            scoped_name = resolve_scoped_type_name(type_value, scope)
+            {
+              enum: of_value[:enum],
+              format: of_value[:format],
+              max: of_value[:max],
+              min: of_value[:min],
+              ref: scoped_name,
+              shape: {},
+              type: scoped_name ? :ref : type_value,
+            }
           else
-            { ref: nil, type: variant[:of] }
+            scoped_name = resolve_scoped_type_name(of_value, scope)
+            if scoped_name
+              { ref: scoped_name, shape: {}, type: :ref }
+            else
+              { ref: nil, shape: {}, type: of_value }
+            end
           end
         end
 

@@ -187,15 +187,34 @@ module Apiwork
         def resolve_of(options)
           return nil unless options[:of]
 
-          if registered_type?(options[:of])
-            ref_name = qualified_name(options[:of], @contract_param)
+          of_value = options[:of]
+
+          if of_value.is_a?(Hash)
+            build_of_from_hash(of_value)
+          elsif registered_type?(of_value)
+            ref_name = qualified_name(of_value, @contract_param)
             { ref: ref_name, shape: {}, type: :ref }
           else
-            build_of_hash(options[:of])
+            build_of_from_symbol(of_value)
           end
         end
 
-        def build_of_hash(type_symbol)
+        def build_of_from_hash(of_hash)
+          type_value = of_hash[:type]
+          ref = registered_type?(type_value) ? qualified_name(type_value, @contract_param) : nil
+
+          {
+            ref:,
+            enum: of_hash[:enum],
+            format: of_hash[:format],
+            max: of_hash[:max],
+            min: of_hash[:min],
+            shape: {},
+            type: ref ? :ref : type_value,
+          }
+        end
+
+        def build_of_from_symbol(type_symbol)
           result = { ref: nil, type: type_symbol }
           result[:shape] = {} if [:object, :array].include?(type_symbol)
           result
@@ -263,7 +282,7 @@ module Apiwork
             ref_name = qualified_name(variant_definition[:of], @contract_param)
             { ref: ref_name, shape: {}, type: :ref }
           else
-            build_of_hash(variant_definition[:of])
+            build_of_from_symbol(variant_definition[:of])
           end
         end
 

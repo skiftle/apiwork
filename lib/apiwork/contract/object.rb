@@ -596,8 +596,13 @@ module Apiwork
           description:,
           nullable:,
           optional:,
-          discriminator: element.discriminator,
-          of: element.of_type,
+          of: {
+            enum: element.enum,
+            format: element.format,
+            max: element.max,
+            min: element.min,
+            type: element.of_type,
+          }.compact,
           shape: element.shape,
           type: :array,
         )
