@@ -25,7 +25,7 @@ paths:
           oneOf:
           - "$ref": "#/components/schemas/commentSort"
           - items:
-              "$ref": "#/components/schemas/commentSort"
+              type: string
             type: array
       responses:
         '200':
@@ -150,8 +150,7 @@ components:
           - 'null'
         body:
           type: string
-        commentable:
-          "$ref": "#/components/schemas/commentCommentable"
+        commentable: {}
         createdAt:
           type: string
           format: date-time
@@ -337,14 +336,11 @@ components:
     imageFilter:
       properties:
         _and:
-          items:
-            "$ref": "#/components/schemas/imageFilter"
+          items: {}
           type: array
-        _not:
-          "$ref": "#/components/schemas/imageFilter"
+        _not: {}
         _or:
-          items:
-            "$ref": "#/components/schemas/imageFilter"
+          items: {}
           type: array
         title:
           oneOf:
@@ -353,6 +349,8 @@ components:
       type: object
     imageNestedCreatePayload:
       properties:
+        _destroy:
+          type: boolean
         _type:
           const: create
           type: string
@@ -360,6 +358,8 @@ components:
           type:
           - integer
           - 'null'
+        id:
+          type: integer
         title:
           type: string
         url:
@@ -384,6 +384,8 @@ components:
         propertyName: _type
     imageNestedUpdatePayload:
       properties:
+        _destroy:
+          type: boolean
         _type:
           const: update
           type: string
@@ -391,6 +393,8 @@ components:
           type:
           - integer
           - 'null'
+        id:
+          type: integer
         title:
           type: string
         url:
@@ -480,14 +484,11 @@ components:
     postFilter:
       properties:
         _and:
-          items:
-            "$ref": "#/components/schemas/postFilter"
+          items: {}
           type: array
-        _not:
-          "$ref": "#/components/schemas/postFilter"
+        _not: {}
         _or:
-          items:
-            "$ref": "#/components/schemas/postFilter"
+          items: {}
           type: array
         title:
           oneOf:
@@ -496,6 +497,8 @@ components:
       type: object
     postNestedCreatePayload:
       properties:
+        _destroy:
+          type: boolean
         _type:
           const: create
           type: string
@@ -503,6 +506,8 @@ components:
           type:
           - string
           - 'null'
+        id:
+          type: integer
         title:
           type: string
       type: object
@@ -520,6 +525,8 @@ components:
         propertyName: _type
     postNestedUpdatePayload:
       properties:
+        _destroy:
+          type: boolean
         _type:
           const: update
           type: string
@@ -527,6 +534,8 @@ components:
           type:
           - string
           - 'null'
+        id:
+          type: integer
         title:
           type: string
       type: object
@@ -570,14 +579,11 @@ components:
     videoFilter:
       properties:
         _and:
-          items:
-            "$ref": "#/components/schemas/videoFilter"
+          items: {}
           type: array
-        _not:
-          "$ref": "#/components/schemas/videoFilter"
+        _not: {}
         _or:
-          items:
-            "$ref": "#/components/schemas/videoFilter"
+          items: {}
           type: array
         title:
           oneOf:
@@ -586,6 +592,8 @@ components:
       type: object
     videoNestedCreatePayload:
       properties:
+        _destroy:
+          type: boolean
         _type:
           const: create
           type: string
@@ -593,6 +601,8 @@ components:
           type:
           - integer
           - 'null'
+        id:
+          type: integer
         title:
           type: string
         url:
@@ -613,6 +623,8 @@ components:
         propertyName: _type
     videoNestedUpdatePayload:
       properties:
+        _destroy:
+          type: boolean
         _type:
           const: update
           type: string
@@ -620,6 +632,8 @@ components:
           type:
           - integer
           - 'null'
+        id:
+          type: integer
         title:
           type: string
         url:

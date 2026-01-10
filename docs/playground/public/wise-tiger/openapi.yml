@@ -20,7 +20,7 @@ paths:
           oneOf:
           - "$ref": "#/components/schemas/projectFilter"
           - items:
-              "$ref": "#/components/schemas/projectFilter"
+              type: string
             type: array
       - in: query
         name: page
@@ -34,7 +34,7 @@ paths:
           oneOf:
           - "$ref": "#/components/schemas/projectSort"
           - items:
-              "$ref": "#/components/schemas/projectSort"
+              type: string
             type: array
       responses:
         '200':
@@ -227,24 +227,19 @@ components:
         createdAt:
           type: string
           format: date-time
-          description: Timestamp when project was created
         deadline:
           type:
           - string
           - 'null'
           format: date
-          description: Target completion date
         description:
           type:
           - string
           - 'null'
-          description: Detailed project description
         id:
           type: string
-          description: Unique project identifier
         name:
           type: string
-          description: Human-readable project name
         priority:
           enum:
           - critical
@@ -266,7 +261,6 @@ components:
         updatedAt:
           type: string
           format: date-time
-          description: Timestamp of last modification
       type: object
       description: A project with tasks and deadlines
       required:
@@ -285,15 +279,12 @@ components:
           - string
           - 'null'
           format: date
-          description: Target completion date
         description:
           type:
           - string
           - 'null'
-          description: Detailed project description
         name:
           type: string
-          description: Human-readable project name
         priority:
           enum:
           - critical
@@ -329,14 +320,11 @@ components:
     projectFilter:
       properties:
         _and:
-          items:
-            "$ref": "#/components/schemas/projectFilter"
+          items: {}
           type: array
-        _not:
-          "$ref": "#/components/schemas/projectFilter"
+        _not: {}
         _or:
-          items:
-            "$ref": "#/components/schemas/projectFilter"
+          items: {}
           type: array
         priority:
           "$ref": "#/components/schemas/projectPriorityFilter"
@@ -412,13 +400,11 @@ components:
           - asc
           - desc
           type: string
-          description: Timestamp when project was created
         deadline:
           enum:
           - asc
           - desc
           type: string
-          description: Target completion date
       type: object
       description: A project with tasks and deadlines
     projectStatusFilter:
@@ -454,15 +440,12 @@ components:
           - string
           - 'null'
           format: date
-          description: Target completion date
         description:
           type:
           - string
           - 'null'
-          description: Detailed project description
         name:
           type: string
-          description: Human-readable project name
         priority:
           enum:
           - critical

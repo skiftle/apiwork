@@ -16,9 +16,11 @@ export const CommentSchema = z.object({
 });
 
 export const CommentNestedCreatePayloadSchema = z.object({
+  _destroy: z.boolean().optional(),
   _type: z.literal('create'),
   authorName: z.string().nullable().optional(),
-  body: z.string()
+  body: z.string(),
+  id: z.number().int().optional()
 });
 
 export const CommentNestedPayloadSchema = z.discriminatedUnion('_type', [
@@ -27,9 +29,11 @@ export const CommentNestedPayloadSchema = z.discriminatedUnion('_type', [
 ]);
 
 export const CommentNestedUpdatePayloadSchema = z.object({
+  _destroy: z.boolean().optional(),
   _type: z.literal('update'),
   authorName: z.string().nullable().optional(),
-  body: z.string().optional()
+  body: z.string().optional(),
+  id: z.number().int().optional()
 });
 
 export const ErrorResponseBodySchema = z.object({
@@ -103,9 +107,9 @@ export const TaskCreateSuccessResponseBodySchema = z.object({
 });
 
 export const TaskFilterSchema = z.object({
-  _and: z.array(TaskFilterSchema).optional(),
-  _not: TaskFilterSchema.optional(),
-  _or: z.array(TaskFilterSchema).optional(),
+  _and: z.array(z.unknown()).optional(),
+  _not: z.unknown().optional(),
+  _or: z.array(z.unknown()).optional(),
   priority: TaskPriorityFilterSchema.optional(),
   status: TaskStatusFilterSchema.optional()
 });
@@ -128,7 +132,7 @@ export const TaskPageSchema = z.object({
 
 export const TaskPriorityFilterSchema = z.union([
   TaskPrioritySchema,
-  z.object({ eq: TaskPrioritySchema, in: z.array(TaskPrioritySchema) }).partial()
+  z.object({ eq: TaskPrioritySchema.optional(), in: z.array(TaskPrioritySchema).optional() })
 ]);
 
 export const TaskShowSuccessResponseBodySchema = z.object({
@@ -143,7 +147,7 @@ export const TaskSortSchema = z.object({
 
 export const TaskStatusFilterSchema = z.union([
   TaskStatusSchema,
-  z.object({ eq: TaskStatusSchema, in: z.array(TaskStatusSchema) }).partial()
+  z.object({ eq: TaskStatusSchema.optional(), in: z.array(TaskStatusSchema).optional() })
 ]);
 
 export const TaskUpdatePayloadSchema = z.object({
@@ -166,10 +170,10 @@ export const UserSchema = z.object({
 });
 
 export const TasksIndexRequestQuerySchema = z.object({
-  filter: z.union([TaskFilterSchema, z.array(TaskFilterSchema)]).optional(),
+  filter: z.union([TaskFilterSchema, z.array(z.string())]).optional(),
   include: TaskIncludeSchema.optional(),
   page: TaskPageSchema.optional(),
-  sort: z.union([TaskSortSchema, z.array(TaskSortSchema)]).optional()
+  sort: z.union([TaskSortSchema, z.array(z.string())]).optional()
 });
 
 export const TasksIndexRequestSchema = z.object({
@@ -277,6 +281,7 @@ export interface Comment {
 }
 
 export interface CommentNestedCreatePayload {
+  _destroy?: boolean;
   _type: 'create';
   /**
    * Name of the person who wrote the comment
@@ -288,11 +293,13 @@ export interface CommentNestedCreatePayload {
    * @example "This looks good, ready for review."
    */
   body: string;
+  id?: number;
 }
 
 export type CommentNestedPayload = CommentNestedCreatePayload | CommentNestedUpdatePayload;
 
 export interface CommentNestedUpdatePayload {
+  _destroy?: boolean;
   _type: 'update';
   /**
    * Name of the person who wrote the comment
@@ -304,6 +311,7 @@ export interface CommentNestedUpdatePayload {
    * @example "This looks good, ready for review."
    */
   body?: string;
+  id?: number;
 }
 
 export interface ErrorResponseBody {
@@ -430,9 +438,9 @@ export interface TaskCreateSuccessResponseBody {
 
 /** A task representing work to be completed */
 export interface TaskFilter {
-  _and?: TaskFilter[];
-  _not?: TaskFilter;
-  _or?: TaskFilter[];
+  _and?: unknown[];
+  _not?: unknown;
+  _or?: unknown[];
   priority?: TaskPriorityFilter;
   status?: TaskStatusFilter;
 }
@@ -554,10 +562,10 @@ export interface TasksIndexRequest {
 }
 
 export interface TasksIndexRequestQuery {
-  filter?: TaskFilter | TaskFilter[];
+  filter?: TaskFilter | string[];
   include?: TaskInclude;
   page?: TaskPage;
-  sort?: TaskSort | TaskSort[];
+  sort?: TaskSort | string[];
 }
 
 export interface TasksIndexResponse {

@@ -1,12 +1,12 @@
 ---
-order: 8
+order: 9
 prev: false
 next: false
 ---
 
 # API::Union
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/union.rb#L28)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/union.rb#L33)
 
 Block context for defining reusable union types.
 
@@ -17,11 +17,15 @@ Use [#variant](#variant) to define possible types.
 
 ```ruby
 union :payment_method, discriminator: :type do
-  variant tag: 'card', type: :object do
-    param :last_four, type: :string
+  variant tag: 'card' do
+    object do
+      string :last_four
+    end
   end
-  variant tag: 'bank', type: :object do
-    param :account_number, type: :string
+  variant tag: 'bank' do
+    object do
+      string :account_number
+    end
   end
 end
 ```
@@ -30,8 +34,8 @@ end
 
 ```ruby
 union :amount do
-  variant type: :integer
-  variant type: :decimal
+  variant { integer }
+  variant { decimal }
 end
 ```
 
@@ -39,21 +43,22 @@ end
 
 ### #variant
 
-`#variant(enum: nil, of: nil, partial: nil, shape: nil, tag: nil, type:, &block)`
+`#variant(deprecated: nil, description: nil, partial: nil, tag: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/union.rb#L55)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/union.rb#L63)
 
 Defines a variant within this union.
+
+The block must define exactly one type using type methods.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `type` | `Symbol` | variant type (primitive, :object, or reference) |
-| `tag` | `String` | discriminator value for this variant (required when union has discriminator) |
-| `enum` | `Symbol, Array` | enum constraint for the variant |
-| `of` | `Symbol` | element type when variant is an array |
-| `partial` | `Boolean` | make all fields optional in this variant |
+| `tag` | `String` | discriminator value (required when union has discriminator) |
+| `deprecated` | `Boolean` | mark as deprecated |
+| `description` | `String` | documentation description |
+| `partial` | `Boolean` | mark variant shape as partial |
 
 **Returns**
 
@@ -61,19 +66,21 @@ Defines a variant within this union.
 
 **See also**
 
-- [API::Object](api-object)
+- [API::Element](api-element)
 
 **Example: Primitive variant**
 
 ```ruby
-variant type: :decimal
+variant { decimal }
 ```
 
-**Example: Inline object variant**
+**Example: Object variant**
 
 ```ruby
-variant tag: 'card', type: :object do
-  param :last_four, type: :string
+variant tag: 'card' do
+  object do
+    string :last_four
+  end
 end
 ```
 

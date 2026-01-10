@@ -28,7 +28,7 @@ paths:
           oneOf:
           - "$ref": "#/components/schemas/taskFilter"
           - items:
-              "$ref": "#/components/schemas/taskFilter"
+              type: string
             type: array
       - in: query
         name: include
@@ -47,7 +47,7 @@ paths:
           oneOf:
           - "$ref": "#/components/schemas/taskSort"
           - items:
-              "$ref": "#/components/schemas/taskSort"
+              type: string
             type: array
       responses:
         '200':
@@ -242,6 +242,8 @@ components:
       - id
     commentNestedCreatePayload:
       properties:
+        _destroy:
+          type: boolean
         _type:
           const: create
           type: string
@@ -255,6 +257,8 @@ components:
           type: string
           description: Comment content
           example: This looks good, ready for review.
+        id:
+          type: integer
       type: object
       required:
       - _type
@@ -270,6 +274,8 @@ components:
         propertyName: _type
     commentNestedUpdatePayload:
       properties:
+        _destroy:
+          type: boolean
         _type:
           const: update
           type: string
@@ -283,6 +289,8 @@ components:
           type: string
           description: Comment content
           example: This looks good, ready for review.
+        id:
+          type: integer
       type: object
       required:
       - _type
@@ -516,14 +524,11 @@ components:
     taskFilter:
       properties:
         _and:
-          items:
-            "$ref": "#/components/schemas/taskFilter"
+          items: {}
           type: array
-        _not:
-          "$ref": "#/components/schemas/taskFilter"
+        _not: {}
         _or:
-          items:
-            "$ref": "#/components/schemas/taskFilter"
+          items: {}
           type: array
         priority:
           "$ref": "#/components/schemas/taskPriorityFilter"

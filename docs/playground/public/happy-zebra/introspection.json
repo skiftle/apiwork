@@ -71,16 +71,7 @@
                     "type": "array",
                     "max": null,
                     "min": null,
-                    "of": {
-                      "default": null,
-                      "deprecated": null,
-                      "description": null,
-                      "example": null,
-                      "nullable": null,
-                      "optional": null,
-                      "type": "ref",
-                      "ref": "user_filter"
-                    },
+                    "of": null,
                     "shape": {}
                   }
                 ]
@@ -125,16 +116,7 @@
                     "type": "array",
                     "max": null,
                     "min": null,
-                    "of": {
-                      "default": null,
-                      "deprecated": null,
-                      "description": null,
-                      "example": null,
-                      "nullable": null,
-                      "optional": null,
-                      "type": "ref",
-                      "ref": "user_sort"
-                    },
+                    "of": null,
                     "shape": {}
                   }
                 ]
@@ -1090,6 +1072,15 @@
       "discriminator": null,
       "example": null,
       "shape": {
+        "_destroy": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "boolean"
+        },
         "_type": {
           "default": null,
           "deprecated": false,
@@ -1123,6 +1114,18 @@
           "format": null,
           "max": null,
           "min": null
+        },
+        "id": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "integer",
+          "format": null,
+          "max": null,
+          "min": null
         }
       },
       "type": "object",
@@ -1138,21 +1141,21 @@
       "variants": [
         {
           "default": null,
-          "deprecated": null,
+          "deprecated": false,
           "description": null,
           "example": null,
-          "nullable": null,
-          "optional": null,
+          "nullable": false,
+          "optional": false,
           "type": "ref",
           "ref": "comment_nested_create_payload"
         },
         {
           "default": null,
-          "deprecated": null,
+          "deprecated": false,
           "description": null,
           "example": null,
-          "nullable": null,
-          "optional": null,
+          "nullable": false,
+          "optional": false,
           "type": "ref",
           "ref": "comment_nested_update_payload"
         }
@@ -1164,6 +1167,15 @@
       "discriminator": null,
       "example": null,
       "shape": {
+        "_destroy": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "boolean"
+        },
         "_type": {
           "default": null,
           "deprecated": false,
@@ -1194,6 +1206,18 @@
           "nullable": false,
           "optional": true,
           "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "id": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "integer",
           "format": null,
           "max": null,
           "min": null
@@ -1715,6 +1739,15 @@
       "discriminator": null,
       "example": null,
       "shape": {
+        "_destroy": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "boolean"
+        },
         "_type": {
           "default": null,
           "deprecated": false,
@@ -1747,6 +1780,18 @@
           },
           "shape": {}
         },
+        "id": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "integer",
+          "format": null,
+          "max": null,
+          "min": null
+        },
         "title": {
           "default": null,
           "deprecated": false,
@@ -1773,21 +1818,21 @@
       "variants": [
         {
           "default": null,
-          "deprecated": null,
+          "deprecated": false,
           "description": null,
           "example": null,
-          "nullable": null,
-          "optional": null,
+          "nullable": false,
+          "optional": false,
           "type": "ref",
           "ref": "post_nested_create_payload"
         },
         {
           "default": null,
-          "deprecated": null,
+          "deprecated": false,
           "description": null,
           "example": null,
-          "nullable": null,
-          "optional": null,
+          "nullable": false,
+          "optional": false,
           "type": "ref",
           "ref": "post_nested_update_payload"
         }
@@ -1799,6 +1844,15 @@
       "discriminator": null,
       "example": null,
       "shape": {
+        "_destroy": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "boolean"
+        },
         "_type": {
           "default": null,
           "deprecated": false,
@@ -1830,6 +1884,18 @@
             "ref": "comment_nested_payload"
           },
           "shape": {}
+        },
+        "id": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "integer",
+          "format": null,
+          "max": null,
+          "min": null
         },
         "title": {
           "default": null,
@@ -2068,6 +2134,15 @@
       "discriminator": null,
       "example": null,
       "shape": {
+        "_destroy": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "boolean"
+        },
         "_type": {
           "default": null,
           "deprecated": false,
@@ -2086,6 +2161,18 @@
           "nullable": true,
           "optional": true,
           "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "id": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "integer",
           "format": null,
           "max": null,
           "min": null
@@ -2116,21 +2203,21 @@
       "variants": [
         {
           "default": null,
-          "deprecated": null,
+          "deprecated": false,
           "description": null,
           "example": null,
-          "nullable": null,
-          "optional": null,
+          "nullable": false,
+          "optional": false,
           "type": "ref",
           "ref": "profile_nested_create_payload"
         },
         {
           "default": null,
-          "deprecated": null,
+          "deprecated": false,
           "description": null,
           "example": null,
-          "nullable": null,
-          "optional": null,
+          "nullable": false,
+          "optional": false,
           "type": "ref",
           "ref": "profile_nested_update_payload"
         }
@@ -2142,6 +2229,15 @@
       "discriminator": null,
       "example": null,
       "shape": {
+        "_destroy": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "boolean"
+        },
         "_type": {
           "default": null,
           "deprecated": false,
@@ -2160,6 +2256,18 @@
           "nullable": true,
           "optional": true,
           "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "id": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "integer",
           "format": null,
           "max": null,
           "min": null
@@ -2508,8 +2616,7 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "user_filter"
+            "type": "filter"
           },
           "shape": {}
         },
@@ -2520,8 +2627,7 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "user_filter"
+          "type": "filter"
         },
         "_or": {
           "default": null,
@@ -2540,8 +2646,7 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "user_filter"
+            "type": "filter"
           },
           "shape": {}
         },

@@ -499,53 +499,7 @@
           "max": null,
           "min": null,
           "of": null,
-          "shape": {
-            "city": {
-              "default": null,
-              "deprecated": false,
-              "description": null,
-              "example": null,
-              "nullable": false,
-              "optional": false,
-              "type": "string",
-              "format": null,
-              "max": null,
-              "min": null
-            },
-            "primary": {
-              "default": null,
-              "deprecated": false,
-              "description": null,
-              "example": null,
-              "nullable": false,
-              "optional": false,
-              "type": "boolean"
-            },
-            "street": {
-              "default": null,
-              "deprecated": false,
-              "description": null,
-              "example": null,
-              "nullable": false,
-              "optional": false,
-              "type": "string",
-              "format": null,
-              "max": null,
-              "min": null
-            },
-            "zip": {
-              "default": null,
-              "deprecated": false,
-              "description": null,
-              "example": null,
-              "nullable": false,
-              "optional": false,
-              "type": "string",
-              "format": null,
-              "max": null,
-              "min": null
-            }
-          }
+          "shape": {}
         },
         "created_at": {
           "default": null,
@@ -777,53 +731,7 @@
           "max": null,
           "min": null,
           "of": null,
-          "shape": {
-            "city": {
-              "default": null,
-              "deprecated": false,
-              "description": null,
-              "example": null,
-              "nullable": false,
-              "optional": false,
-              "type": "string",
-              "format": null,
-              "max": null,
-              "min": null
-            },
-            "primary": {
-              "default": null,
-              "deprecated": false,
-              "description": null,
-              "example": null,
-              "nullable": false,
-              "optional": false,
-              "type": "boolean"
-            },
-            "street": {
-              "default": null,
-              "deprecated": false,
-              "description": null,
-              "example": null,
-              "nullable": false,
-              "optional": false,
-              "type": "string",
-              "format": null,
-              "max": null,
-              "min": null
-            },
-            "zip": {
-              "default": null,
-              "deprecated": false,
-              "description": null,
-              "example": null,
-              "nullable": false,
-              "optional": false,
-              "type": "string",
-              "format": null,
-              "max": null,
-              "min": null
-            }
-          }
+          "shape": {}
         },
         "email": {
           "default": null,
@@ -1174,53 +1082,7 @@
           "max": null,
           "min": null,
           "of": null,
-          "shape": {
-            "city": {
-              "default": null,
-              "deprecated": false,
-              "description": null,
-              "example": null,
-              "nullable": false,
-              "optional": false,
-              "type": "string",
-              "format": null,
-              "max": null,
-              "min": null
-            },
-            "primary": {
-              "default": null,
-              "deprecated": false,
-              "description": null,
-              "example": null,
-              "nullable": false,
-              "optional": false,
-              "type": "boolean"
-            },
-            "street": {
-              "default": null,
-              "deprecated": false,
-              "description": null,
-              "example": null,
-              "nullable": false,
-              "optional": false,
-              "type": "string",
-              "format": null,
-              "max": null,
-              "min": null
-            },
-            "zip": {
-              "default": null,
-              "deprecated": false,
-              "description": null,
-              "example": null,
-              "nullable": false,
-              "optional": false,
-              "type": "string",
-              "format": null,
-              "max": null,
-              "min": null
-            }
-          }
+          "shape": {}
         },
         "email": {
           "default": null,

@@ -7,7 +7,7 @@ export const SortDirectionSchema = z.enum(['asc', 'desc']);
 export const CommentSchema = z.object({
   authorName: z.string().nullable(),
   body: z.string(),
-  commentable: CommentCommentableSchema.optional(),
+  commentable: z.unknown().optional(),
   createdAt: z.iso.datetime(),
   id: z.string()
 });
@@ -78,15 +78,17 @@ export const ImageSchema = z.object({
 });
 
 export const ImageFilterSchema = z.object({
-  _and: z.array(ImageFilterSchema).optional(),
-  _not: ImageFilterSchema.optional(),
-  _or: z.array(ImageFilterSchema).optional(),
+  _and: z.array(z.unknown()).optional(),
+  _not: z.unknown().optional(),
+  _or: z.array(z.unknown()).optional(),
   title: z.union([z.string(), z.unknown()]).optional()
 });
 
 export const ImageNestedCreatePayloadSchema = z.object({
+  _destroy: z.boolean().optional(),
   _type: z.literal('create'),
   height: z.number().int().nullable().optional(),
+  id: z.number().int().optional(),
   title: z.string(),
   url: z.string(),
   width: z.number().int().nullable().optional()
@@ -98,8 +100,10 @@ export const ImageNestedPayloadSchema = z.discriminatedUnion('_type', [
 ]);
 
 export const ImageNestedUpdatePayloadSchema = z.object({
+  _destroy: z.boolean().optional(),
   _type: z.literal('update'),
   height: z.number().int().nullable().optional(),
+  id: z.number().int().optional(),
   title: z.string().optional(),
   url: z.string().optional(),
   width: z.number().int().nullable().optional()
@@ -134,15 +138,17 @@ export const PostSchema = z.object({
 });
 
 export const PostFilterSchema = z.object({
-  _and: z.array(PostFilterSchema).optional(),
-  _not: PostFilterSchema.optional(),
-  _or: z.array(PostFilterSchema).optional(),
+  _and: z.array(z.unknown()).optional(),
+  _not: z.unknown().optional(),
+  _or: z.array(z.unknown()).optional(),
   title: z.union([z.string(), z.unknown()]).optional()
 });
 
 export const PostNestedCreatePayloadSchema = z.object({
+  _destroy: z.boolean().optional(),
   _type: z.literal('create'),
   body: z.string().nullable().optional(),
+  id: z.number().int().optional(),
   title: z.string()
 });
 
@@ -152,8 +158,10 @@ export const PostNestedPayloadSchema = z.discriminatedUnion('_type', [
 ]);
 
 export const PostNestedUpdatePayloadSchema = z.object({
+  _destroy: z.boolean().optional(),
   _type: z.literal('update'),
   body: z.string().nullable().optional(),
+  id: z.number().int().optional(),
   title: z.string().optional()
 });
 
@@ -171,15 +179,17 @@ export const VideoSchema = z.object({
 });
 
 export const VideoFilterSchema = z.object({
-  _and: z.array(VideoFilterSchema).optional(),
-  _not: VideoFilterSchema.optional(),
-  _or: z.array(VideoFilterSchema).optional(),
+  _and: z.array(z.unknown()).optional(),
+  _not: z.unknown().optional(),
+  _or: z.array(z.unknown()).optional(),
   title: z.union([z.string(), z.unknown()]).optional()
 });
 
 export const VideoNestedCreatePayloadSchema = z.object({
+  _destroy: z.boolean().optional(),
   _type: z.literal('create'),
   duration: z.number().int().nullable().optional(),
+  id: z.number().int().optional(),
   title: z.string(),
   url: z.string()
 });
@@ -190,8 +200,10 @@ export const VideoNestedPayloadSchema = z.discriminatedUnion('_type', [
 ]);
 
 export const VideoNestedUpdatePayloadSchema = z.object({
+  _destroy: z.boolean().optional(),
   _type: z.literal('update'),
   duration: z.number().int().nullable().optional(),
+  id: z.number().int().optional(),
   title: z.string().optional(),
   url: z.string().optional()
 });
@@ -203,7 +215,7 @@ export const VideoSortSchema = z.object({
 export const CommentsIndexRequestQuerySchema = z.object({
   include: CommentIncludeSchema.optional(),
   page: CommentPageSchema.optional(),
-  sort: z.union([CommentSortSchema, z.array(CommentSortSchema)]).optional()
+  sort: z.union([CommentSortSchema, z.array(z.string())]).optional()
 });
 
 export const CommentsIndexRequestSchema = z.object({
@@ -281,7 +293,7 @@ export const CommentsDestroyResponse = z.never();
 export interface Comment {
   authorName: null | string;
   body: string;
-  commentable?: CommentCommentable;
+  commentable?: unknown;
   createdAt: string;
   id: string;
 }
@@ -368,7 +380,7 @@ export interface CommentsIndexRequest {
 export interface CommentsIndexRequestQuery {
   include?: CommentInclude;
   page?: CommentPage;
-  sort?: CommentSort | CommentSort[];
+  sort?: CommentSort | string[];
 }
 
 export interface CommentsIndexResponse {
@@ -426,15 +438,17 @@ export interface Image {
 }
 
 export interface ImageFilter {
-  _and?: ImageFilter[];
-  _not?: ImageFilter;
-  _or?: ImageFilter[];
+  _and?: unknown[];
+  _not?: unknown;
+  _or?: unknown[];
   title?: string | unknown;
 }
 
 export interface ImageNestedCreatePayload {
+  _destroy?: boolean;
   _type: 'create';
   height?: null | number;
+  id?: number;
   title: string;
   url: string;
   width?: null | number;
@@ -443,8 +457,10 @@ export interface ImageNestedCreatePayload {
 export type ImageNestedPayload = ImageNestedCreatePayload | ImageNestedUpdatePayload;
 
 export interface ImageNestedUpdatePayload {
+  _destroy?: boolean;
   _type: 'update';
   height?: null | number;
+  id?: number;
   title?: string;
   url?: string;
   width?: null | number;
@@ -481,23 +497,27 @@ export interface Post {
 }
 
 export interface PostFilter {
-  _and?: PostFilter[];
-  _not?: PostFilter;
-  _or?: PostFilter[];
+  _and?: unknown[];
+  _not?: unknown;
+  _or?: unknown[];
   title?: string | unknown;
 }
 
 export interface PostNestedCreatePayload {
+  _destroy?: boolean;
   _type: 'create';
   body?: null | string;
+  id?: number;
   title: string;
 }
 
 export type PostNestedPayload = PostNestedCreatePayload | PostNestedUpdatePayload;
 
 export interface PostNestedUpdatePayload {
+  _destroy?: boolean;
   _type: 'update';
   body?: null | string;
+  id?: number;
   title?: string;
 }
 
@@ -517,15 +537,17 @@ export interface Video {
 }
 
 export interface VideoFilter {
-  _and?: VideoFilter[];
-  _not?: VideoFilter;
-  _or?: VideoFilter[];
+  _and?: unknown[];
+  _not?: unknown;
+  _or?: unknown[];
   title?: string | unknown;
 }
 
 export interface VideoNestedCreatePayload {
+  _destroy?: boolean;
   _type: 'create';
   duration?: null | number;
+  id?: number;
   title: string;
   url: string;
 }
@@ -533,8 +555,10 @@ export interface VideoNestedCreatePayload {
 export type VideoNestedPayload = VideoNestedCreatePayload | VideoNestedUpdatePayload;
 
 export interface VideoNestedUpdatePayload {
+  _destroy?: boolean;
   _type: 'update';
   duration?: null | number;
+  id?: number;
   title?: string;
   url?: string;
 }

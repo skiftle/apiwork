@@ -170,21 +170,7 @@ components:
       properties:
         addresses:
           items:
-            properties:
-              city:
-                type: string
-              primary:
-                type: boolean
-              street:
-                type: string
-              zip:
-                type: string
-            type: object
-            required:
-            - city
-            - primary
-            - street
-            - zip
+            type: string
           type: array
         createdAt:
           type: string
@@ -261,21 +247,7 @@ components:
       properties:
         addresses:
           items:
-            properties:
-              city:
-                type: string
-              primary:
-                type: boolean
-              street:
-                type: string
-              zip:
-                type: string
-            type: object
-            required:
-            - city
-            - primary
-            - street
-            - zip
+            type: string
           type: array
         email:
           type: string
@@ -386,21 +358,7 @@ components:
       properties:
         addresses:
           items:
-            properties:
-              city:
-                type: string
-              primary:
-                type: boolean
-              street:
-                type: string
-              zip:
-                type: string
-            type: object
-            required:
-            - city
-            - primary
-            - street
-            - zip
+            type: string
           type: array
         email:
           type: string

@@ -71,16 +71,7 @@
                     "type": "array",
                     "max": null,
                     "min": null,
-                    "of": {
-                      "default": null,
-                      "deprecated": null,
-                      "description": null,
-                      "example": null,
-                      "nullable": null,
-                      "optional": null,
-                      "type": "ref",
-                      "ref": "vehicle_filter"
-                    },
+                    "of": null,
                     "shape": {}
                   }
                 ]
@@ -125,16 +116,7 @@
                     "type": "array",
                     "max": null,
                     "min": null,
-                    "of": {
-                      "default": null,
-                      "deprecated": null,
-                      "description": null,
-                      "example": null,
-                      "nullable": null,
-                      "optional": null,
-                      "type": "ref",
-                      "ref": "vehicle_sort"
-                    },
+                    "of": null,
                     "shape": {}
                   }
                 ]
@@ -246,8 +228,40 @@
                 "example": null,
                 "nullable": false,
                 "optional": false,
-                "type": "ref",
-                "ref": "vehicle_create_payload"
+                "type": "union",
+                "discriminator": "type",
+                "variants": [
+                  {
+                    "default": null,
+                    "deprecated": false,
+                    "description": null,
+                    "example": null,
+                    "nullable": false,
+                    "optional": false,
+                    "type": "ref",
+                    "ref": "car_create_payload"
+                  },
+                  {
+                    "default": null,
+                    "deprecated": false,
+                    "description": null,
+                    "example": null,
+                    "nullable": false,
+                    "optional": false,
+                    "type": "ref",
+                    "ref": "motorcycle_create_payload"
+                  },
+                  {
+                    "default": null,
+                    "deprecated": false,
+                    "description": null,
+                    "example": null,
+                    "nullable": false,
+                    "optional": false,
+                    "type": "ref",
+                    "ref": "truck_create_payload"
+                  }
+                ]
               }
             },
             "query": {}
@@ -308,8 +322,40 @@
                 "example": null,
                 "nullable": false,
                 "optional": false,
-                "type": "ref",
-                "ref": "vehicle_update_payload"
+                "type": "union",
+                "discriminator": "type",
+                "variants": [
+                  {
+                    "default": null,
+                    "deprecated": false,
+                    "description": null,
+                    "example": null,
+                    "nullable": false,
+                    "optional": false,
+                    "type": "ref",
+                    "ref": "car_update_payload"
+                  },
+                  {
+                    "default": null,
+                    "deprecated": false,
+                    "description": null,
+                    "example": null,
+                    "nullable": false,
+                    "optional": false,
+                    "type": "ref",
+                    "ref": "motorcycle_update_payload"
+                  },
+                  {
+                    "default": null,
+                    "deprecated": false,
+                    "description": null,
+                    "example": null,
+                    "nullable": false,
+                    "optional": false,
+                    "type": "ref",
+                    "ref": "truck_update_payload"
+                  }
+                ]
               }
             },
             "query": {}
@@ -618,7 +664,7 @@
           "description": null,
           "example": null,
           "nullable": false,
-          "optional": false,
+          "optional": true,
           "type": "literal",
           "value": "car"
         },
@@ -1131,7 +1177,7 @@
           "description": null,
           "example": null,
           "nullable": false,
-          "optional": false,
+          "optional": true,
           "type": "literal",
           "value": "motorcycle"
         },
@@ -1645,7 +1691,7 @@
           "description": null,
           "example": null,
           "nullable": false,
-          "optional": false,
+          "optional": true,
           "type": "literal",
           "value": "truck"
         },
@@ -1675,31 +1721,31 @@
       "variants": [
         {
           "default": null,
-          "deprecated": null,
+          "deprecated": false,
           "description": null,
           "example": null,
-          "nullable": null,
-          "optional": null,
+          "nullable": false,
+          "optional": false,
           "type": "ref",
           "ref": "car"
         },
         {
           "default": null,
-          "deprecated": null,
+          "deprecated": false,
           "description": null,
           "example": null,
-          "nullable": null,
-          "optional": null,
+          "nullable": false,
+          "optional": false,
           "type": "ref",
           "ref": "motorcycle"
         },
         {
           "default": null,
-          "deprecated": null,
+          "deprecated": false,
           "description": null,
           "example": null,
-          "nullable": null,
-          "optional": null,
+          "nullable": false,
+          "optional": false,
           "type": "ref",
           "ref": "truck"
         }
@@ -1715,31 +1761,31 @@
       "variants": [
         {
           "default": null,
-          "deprecated": null,
+          "deprecated": false,
           "description": null,
           "example": null,
-          "nullable": null,
-          "optional": null,
+          "nullable": false,
+          "optional": false,
           "type": "ref",
           "ref": "car_create_payload"
         },
         {
           "default": null,
-          "deprecated": null,
+          "deprecated": false,
           "description": null,
           "example": null,
-          "nullable": null,
-          "optional": null,
+          "nullable": false,
+          "optional": false,
           "type": "ref",
           "ref": "motorcycle_create_payload"
         },
         {
           "default": null,
-          "deprecated": null,
+          "deprecated": false,
           "description": null,
           "example": null,
-          "nullable": null,
-          "optional": null,
+          "nullable": false,
+          "optional": false,
           "type": "ref",
           "ref": "truck_create_payload"
         }
@@ -1799,8 +1845,7 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "vehicle_filter"
+            "type": "filter"
           },
           "shape": {}
         },
@@ -1811,8 +1856,7 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "vehicle_filter"
+          "type": "filter"
         },
         "_or": {
           "default": null,
@@ -1831,8 +1875,7 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "vehicle_filter"
+            "type": "filter"
           },
           "shape": {}
         },
@@ -2090,31 +2133,31 @@
       "variants": [
         {
           "default": null,
-          "deprecated": null,
+          "deprecated": false,
           "description": null,
           "example": null,
-          "nullable": null,
-          "optional": null,
+          "nullable": false,
+          "optional": false,
           "type": "ref",
           "ref": "car_update_payload"
         },
         {
           "default": null,
-          "deprecated": null,
+          "deprecated": false,
           "description": null,
           "example": null,
-          "nullable": null,
-          "optional": null,
+          "nullable": false,
+          "optional": false,
           "type": "ref",
           "ref": "motorcycle_update_payload"
         },
         {
           "default": null,
-          "deprecated": null,
+          "deprecated": false,
           "description": null,
           "example": null,
-          "nullable": null,
-          "optional": null,
+          "nullable": false,
+          "optional": false,
           "type": "ref",
           "ref": "truck_update_payload"
         }

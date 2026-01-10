@@ -15,7 +15,7 @@ paths:
           oneOf:
           - "$ref": "#/components/schemas/vehicleFilter"
           - items:
-              "$ref": "#/components/schemas/vehicleFilter"
+              type: string
             type: array
       - in: query
         name: page
@@ -29,7 +29,7 @@ paths:
           oneOf:
           - "$ref": "#/components/schemas/vehicleSort"
           - items:
-              "$ref": "#/components/schemas/vehicleSort"
+              type: string
             type: array
       responses:
         '200':
@@ -46,7 +46,16 @@ paths:
             schema:
               properties:
                 vehicle:
-                  "$ref": "#/components/schemas/vehicleCreatePayload"
+                  oneOf:
+                  - "$ref": "#/components/schemas/carCreatePayload"
+                  - "$ref": "#/components/schemas/motorcycleCreatePayload"
+                  - "$ref": "#/components/schemas/truckCreatePayload"
+                  discriminator:
+                    mapping:
+                      car: "#/components/schemas/carCreatePayload"
+                      motorcycle: "#/components/schemas/motorcycleCreatePayload"
+                      truck: "#/components/schemas/truckCreatePayload"
+                    propertyName: type
               type: object
               required:
               - vehicle
@@ -94,7 +103,16 @@ paths:
             schema:
               properties:
                 vehicle:
-                  "$ref": "#/components/schemas/vehicleUpdatePayload"
+                  oneOf:
+                  - "$ref": "#/components/schemas/carUpdatePayload"
+                  - "$ref": "#/components/schemas/motorcycleUpdatePayload"
+                  - "$ref": "#/components/schemas/truckUpdatePayload"
+                  discriminator:
+                    mapping:
+                      car: "#/components/schemas/carUpdatePayload"
+                      motorcycle: "#/components/schemas/motorcycleUpdatePayload"
+                      truck: "#/components/schemas/truckUpdatePayload"
+                    propertyName: type
               type: object
               required:
               - vehicle
@@ -205,8 +223,6 @@ components:
           - integer
           - 'null'
       type: object
-      required:
-      - type
     errorResponseBody:
       properties:
         issues:
@@ -351,8 +367,6 @@ components:
           - integer
           - 'null'
       type: object
-      required:
-      - type
     nullableIntegerFilter:
       properties:
         between:
@@ -490,8 +504,6 @@ components:
           - integer
           - 'null'
       type: object
-      required:
-      - type
     vehicle:
       oneOf:
       - "$ref": "#/components/schemas/car"
@@ -527,14 +539,11 @@ components:
     vehicleFilter:
       properties:
         _and:
-          items:
-            "$ref": "#/components/schemas/vehicleFilter"
+          items: {}
           type: array
-        _not:
-          "$ref": "#/components/schemas/vehicleFilter"
+        _not: {}
         _or:
-          items:
-            "$ref": "#/components/schemas/vehicleFilter"
+          items: {}
           type: array
         brand:
           oneOf:

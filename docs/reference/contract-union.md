@@ -1,28 +1,41 @@
 ---
-order: 21
+order: 23
 prev: false
 next: false
 ---
 
 # Contract::Union
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/union.rb#L22)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/union.rb#L33)
 
 Block context for defining inline union types.
 
-Accessed via `param :x, type: :union do` inside contract actions.
+Accessed via `union :name, discriminator: do` inside contract actions.
 Use [#variant](#variant) to define possible types.
 
 **Example: Discriminated union**
 
 ```ruby
-param :payment_method, type: :union, discriminator: :type do
-  variant tag: 'card', type: :object do
-    param :last_four, type: :string
+union :payment_method, discriminator: :type do
+  variant tag: 'card' do
+    object do
+      string :last_four
+    end
   end
-  variant tag: 'bank', type: :object do
-    param :account_number, type: :string
+  variant tag: 'bank' do
+    object do
+      string :account_number
+    end
   end
+end
+```
+
+**Example: Simple union**
+
+```ruby
+union :amount do
+  variant { integer }
+  variant { decimal }
 end
 ```
 
@@ -30,20 +43,21 @@ end
 
 ### #variant
 
-`#variant(enum: nil, of: nil, partial: nil, tag: nil, type:, &block)`
+`#variant(deprecated: nil, description: nil, partial: nil, tag: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/union.rb#L51)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/union.rb#L65)
 
-Defines a variant in this union.
+Defines a variant within this union.
+
+The block must define exactly one type using type methods.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `type` | `Symbol` | the variant type (:string, :integer, :object, etc.) |
-| `of` | `Symbol` | element type for :array variants |
-| `enum` | `Array, Symbol` | allowed values for this variant |
 | `tag` | `String` | discriminator value (required when union has discriminator) |
+| `deprecated` | `Boolean` | mark as deprecated |
+| `description` | `String` | documentation description |
 | `partial` | `Boolean` | allow partial object (omit required fields) |
 
 **Returns**
@@ -52,19 +66,21 @@ Defines a variant in this union.
 
 **See also**
 
-- [Contract::Object](contract-object)
+- [Contract::Element](contract-element)
 
 **Example: Primitive variant**
 
 ```ruby
-variant type: :decimal
+variant { decimal }
 ```
 
-**Example: Inline object variant**
+**Example: Object variant**
 
 ```ruby
-variant tag: 'card', type: :object do
-  param :last_four, type: :string
+variant tag: 'card' do
+  object do
+    string :last_four
+  end
 end
 ```
 

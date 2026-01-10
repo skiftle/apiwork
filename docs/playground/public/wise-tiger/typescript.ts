@@ -32,35 +32,22 @@ export interface OffsetPagination {
 
 /** A project with tasks and deadlines */
 export interface Project {
-  /** Timestamp when project was created */
   createdAt: string;
-  /** Target completion date */
   deadline: null | string;
-  /** Detailed project description */
   description: null | string;
-  /** Unique project identifier */
   id: string;
-  /** Human-readable project name */
   name: string;
-  /** Project priority for resource allocation */
   priority: ProjectPriority | null;
-  /** Current project lifecycle status */
   status: ProjectStatus | null;
-  /** Timestamp of last modification */
   updatedAt: string;
 }
 
 /** A project with tasks and deadlines */
 export interface ProjectCreatePayload {
-  /** Target completion date */
   deadline?: null | string;
-  /** Detailed project description */
   description?: null | string;
-  /** Human-readable project name */
   name: string;
-  /** Project priority for resource allocation */
   priority?: ProjectPriority | null;
-  /** Current project lifecycle status */
   status?: ProjectStatus | null;
 }
 
@@ -71,12 +58,10 @@ export interface ProjectCreateSuccessResponseBody {
 
 /** A project with tasks and deadlines */
 export interface ProjectFilter {
-  _and?: ProjectFilter[];
-  _not?: ProjectFilter;
-  _or?: ProjectFilter[];
-  /** Project priority for resource allocation */
+  _and?: unknown[];
+  _not?: unknown;
+  _or?: unknown[];
   priority?: ProjectPriorityFilter;
-  /** Current project lifecycle status */
   status?: ProjectStatusFilter;
 }
 
@@ -102,9 +87,7 @@ export interface ProjectShowSuccessResponseBody {
 
 /** A project with tasks and deadlines */
 export interface ProjectSort {
-  /** Timestamp when project was created */
   createdAt?: SortDirection;
-  /** Target completion date */
   deadline?: SortDirection;
 }
 
@@ -114,15 +97,10 @@ export type ProjectStatusFilter = ProjectStatus | { eq?: ProjectStatus; in?: Pro
 
 /** A project with tasks and deadlines */
 export interface ProjectUpdatePayload {
-  /** Target completion date */
   deadline?: null | string;
-  /** Detailed project description */
   description?: null | string;
-  /** Human-readable project name */
   name?: string;
-  /** Project priority for resource allocation */
   priority?: ProjectPriority | null;
-  /** Current project lifecycle status */
   status?: ProjectStatus | null;
 }
 
@@ -152,9 +130,9 @@ export interface ProjectsIndexRequest {
 }
 
 export interface ProjectsIndexRequestQuery {
-  filter?: ProjectFilter | ProjectFilter[];
+  filter?: ProjectFilter | string[];
   page?: ProjectPage;
-  sort?: ProjectSort | ProjectSort[];
+  sort?: ProjectSort | string[];
 }
 
 export interface ProjectsIndexResponse {

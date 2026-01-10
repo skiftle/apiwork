@@ -17,6 +17,7 @@ export interface Comment {
 }
 
 export interface CommentNestedCreatePayload {
+  _destroy?: boolean;
   _type: 'create';
   /**
    * Name of the person who wrote the comment
@@ -28,11 +29,13 @@ export interface CommentNestedCreatePayload {
    * @example "This looks good, ready for review."
    */
   body: string;
+  id?: number;
 }
 
 export type CommentNestedPayload = CommentNestedCreatePayload | CommentNestedUpdatePayload;
 
 export interface CommentNestedUpdatePayload {
+  _destroy?: boolean;
   _type: 'update';
   /**
    * Name of the person who wrote the comment
@@ -44,6 +47,7 @@ export interface CommentNestedUpdatePayload {
    * @example "This looks good, ready for review."
    */
   body?: string;
+  id?: number;
 }
 
 export interface ErrorResponseBody {
@@ -170,9 +174,9 @@ export interface TaskCreateSuccessResponseBody {
 
 /** A task representing work to be completed */
 export interface TaskFilter {
-  _and?: TaskFilter[];
-  _not?: TaskFilter;
-  _or?: TaskFilter[];
+  _and?: unknown[];
+  _not?: unknown;
+  _or?: unknown[];
   priority?: TaskPriorityFilter;
   status?: TaskStatusFilter;
 }
@@ -294,10 +298,10 @@ export interface TasksIndexRequest {
 }
 
 export interface TasksIndexRequestQuery {
-  filter?: TaskFilter | TaskFilter[];
+  filter?: TaskFilter | string[];
   include?: TaskInclude;
   page?: TaskPage;
-  sort?: TaskSort | TaskSort[];
+  sort?: TaskSort | string[];
 }
 
 export interface TasksIndexResponse {

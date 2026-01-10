@@ -20,7 +20,9 @@ module Apiwork
         # @api public
         # @return [Hash{Symbol => Param::Base}] nested field definitions
         def shape
-          @shape ||= @dump[:shape].transform_values { |dump| Param.build(dump) }
+          return @shape if defined?(@shape)
+
+          @shape = @dump[:shape]&.transform_values { |dump| Param.build(dump) } || {}
         end
 
         # @api public

@@ -109,16 +109,7 @@
                     "type": "array",
                     "max": null,
                     "min": null,
-                    "of": {
-                      "default": null,
-                      "deprecated": null,
-                      "description": null,
-                      "example": null,
-                      "nullable": null,
-                      "optional": null,
-                      "type": "ref",
-                      "ref": "task_filter"
-                    },
+                    "of": null,
                     "shape": {}
                   }
                 ]
@@ -173,16 +164,7 @@
                     "type": "array",
                     "max": null,
                     "min": null,
-                    "of": {
-                      "default": null,
-                      "deprecated": null,
-                      "description": null,
-                      "example": null,
-                      "nullable": null,
-                      "optional": null,
-                      "type": "ref",
-                      "ref": "task_sort"
-                    },
+                    "of": null,
                     "shape": {}
                   }
                 ]
@@ -615,6 +597,15 @@
       "discriminator": null,
       "example": null,
       "shape": {
+        "_destroy": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "boolean"
+        },
         "_type": {
           "default": null,
           "deprecated": false,
@@ -648,6 +639,18 @@
           "format": null,
           "max": null,
           "min": null
+        },
+        "id": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "integer",
+          "format": null,
+          "max": null,
+          "min": null
         }
       },
       "type": "object",
@@ -663,21 +666,21 @@
       "variants": [
         {
           "default": null,
-          "deprecated": null,
+          "deprecated": false,
           "description": null,
           "example": null,
-          "nullable": null,
-          "optional": null,
+          "nullable": false,
+          "optional": false,
           "type": "ref",
           "ref": "comment_nested_create_payload"
         },
         {
           "default": null,
-          "deprecated": null,
+          "deprecated": false,
           "description": null,
           "example": null,
-          "nullable": null,
-          "optional": null,
+          "nullable": false,
+          "optional": false,
           "type": "ref",
           "ref": "comment_nested_update_payload"
         }
@@ -689,6 +692,15 @@
       "discriminator": null,
       "example": null,
       "shape": {
+        "_destroy": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "boolean"
+        },
         "_type": {
           "default": null,
           "deprecated": false,
@@ -719,6 +731,18 @@
           "nullable": false,
           "optional": true,
           "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "id": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "integer",
           "format": null,
           "max": null,
           "min": null
@@ -1387,8 +1411,7 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "task_filter"
+            "type": "filter"
           },
           "shape": {}
         },
@@ -1399,8 +1422,7 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "task_filter"
+          "type": "filter"
         },
         "_or": {
           "default": null,
@@ -1419,8 +1441,7 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "task_filter"
+            "type": "filter"
           },
           "shape": {}
         },
@@ -1573,23 +1594,23 @@
       "variants": [
         {
           "default": null,
-          "deprecated": null,
+          "deprecated": false,
           "description": null,
           "example": null,
-          "nullable": null,
-          "optional": null,
+          "nullable": false,
+          "optional": false,
           "type": "ref",
           "ref": "task_priority"
         },
         {
           "default": null,
-          "deprecated": null,
+          "deprecated": false,
           "description": null,
           "example": null,
-          "nullable": null,
-          "optional": null,
+          "nullable": false,
+          "optional": false,
           "type": "object",
-          "partial": true,
+          "partial": false,
           "shape": {
             "eq": {
               "default": null,
@@ -1698,23 +1719,23 @@
       "variants": [
         {
           "default": null,
-          "deprecated": null,
+          "deprecated": false,
           "description": null,
           "example": null,
-          "nullable": null,
-          "optional": null,
+          "nullable": false,
+          "optional": false,
           "type": "ref",
           "ref": "task_status"
         },
         {
           "default": null,
-          "deprecated": null,
+          "deprecated": false,
           "description": null,
           "example": null,
-          "nullable": null,
-          "optional": null,
+          "nullable": false,
+          "optional": false,
           "type": "object",
-          "partial": true,
+          "partial": false,
           "shape": {
             "eq": {
               "default": null,

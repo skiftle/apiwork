@@ -24,9 +24,9 @@ export interface ArticleCreateSuccessResponseBody {
 }
 
 export interface ArticleFilter {
-  _and?: ArticleFilter[];
-  _not?: ArticleFilter;
-  _or?: ArticleFilter[];
+  _and?: unknown[];
+  _not?: unknown;
+  _or?: unknown[];
   publishedOn?: NullableDateFilter | string;
   rating?: NullableDecimalFilter | number;
   status?: ArticleStatusFilter;
@@ -95,9 +95,9 @@ export interface ArticlesIndexRequest {
 }
 
 export interface ArticlesIndexRequestQuery {
-  filter?: ArticleFilter | ArticleFilter[];
+  filter?: ArticleFilter | string[];
   page?: ArticlePage;
-  sort?: ArticleSort | ArticleSort[];
+  sort?: ArticleSort | string[];
 }
 
 export interface ArticlesIndexResponse {

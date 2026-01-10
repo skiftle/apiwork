@@ -22,7 +22,7 @@ export interface CarUpdatePayload {
   color?: null | string;
   doors?: null | number;
   model?: string;
-  type: 'car';
+  type?: 'car';
   year?: null | number;
 }
 
@@ -80,7 +80,7 @@ export interface MotorcycleUpdatePayload {
   color?: null | string;
   engineCc?: null | number;
   model?: string;
-  type: 'motorcycle';
+  type?: 'motorcycle';
   year?: null | number;
 }
 
@@ -137,7 +137,7 @@ export interface TruckUpdatePayload {
   color?: null | string;
   model?: string;
   payloadCapacity?: null | number;
-  type: 'truck';
+  type?: 'truck';
   year?: null | number;
 }
 
@@ -151,9 +151,9 @@ export interface VehicleCreateSuccessResponseBody {
 }
 
 export interface VehicleFilter {
-  _and?: VehicleFilter[];
-  _not?: VehicleFilter;
-  _or?: VehicleFilter[];
+  _and?: unknown[];
+  _not?: unknown;
+  _or?: unknown[];
   brand?: StringFilter | string;
   model?: StringFilter | string;
   year?: NullableIntegerFilter | number;
@@ -191,7 +191,7 @@ export interface VehiclesCreateRequest {
 }
 
 export interface VehiclesCreateRequestBody {
-  vehicle: VehicleCreatePayload;
+  vehicle: CarCreatePayload | MotorcycleCreatePayload | TruckCreatePayload;
 }
 
 export interface VehiclesCreateResponse {
@@ -207,9 +207,9 @@ export interface VehiclesIndexRequest {
 }
 
 export interface VehiclesIndexRequestQuery {
-  filter?: VehicleFilter | VehicleFilter[];
+  filter?: VehicleFilter | string[];
   page?: VehiclePage;
-  sort?: VehicleSort | VehicleSort[];
+  sort?: VehicleSort | string[];
 }
 
 export interface VehiclesIndexResponse {
@@ -229,7 +229,7 @@ export interface VehiclesUpdateRequest {
 }
 
 export interface VehiclesUpdateRequestBody {
-  vehicle: VehicleUpdatePayload;
+  vehicle: CarUpdatePayload | MotorcycleUpdatePayload | TruckUpdatePayload;
 }
 
 export interface VehiclesUpdateResponse {

@@ -71,16 +71,7 @@
                     "type": "array",
                     "max": null,
                     "min": null,
-                    "of": {
-                      "default": null,
-                      "deprecated": null,
-                      "description": null,
-                      "example": null,
-                      "nullable": null,
-                      "optional": null,
-                      "type": "ref",
-                      "ref": "invoice_filter"
-                    },
+                    "of": null,
                     "shape": {}
                   }
                 ]
@@ -125,16 +116,7 @@
                     "type": "array",
                     "max": null,
                     "min": null,
-                    "of": {
-                      "default": null,
-                      "deprecated": null,
-                      "description": null,
-                      "example": null,
-                      "nullable": null,
-                      "optional": null,
-                      "type": "ref",
-                      "ref": "invoice_sort"
-                    },
+                    "of": null,
                     "shape": {}
                   }
                 ]
@@ -753,8 +735,7 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "invoice_filter"
+            "type": "filter"
           },
           "shape": {}
         },
@@ -765,8 +746,7 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "invoice_filter"
+          "type": "filter"
         },
         "_or": {
           "default": null,
@@ -785,8 +765,7 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "invoice_filter"
+            "type": "filter"
           },
           "shape": {}
         },

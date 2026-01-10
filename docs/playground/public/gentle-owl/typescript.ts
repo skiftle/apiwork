@@ -1,7 +1,7 @@
 export interface Comment {
   authorName: null | string;
   body: string;
-  commentable?: CommentCommentable;
+  commentable?: unknown;
   createdAt: string;
   id: string;
 }
@@ -88,7 +88,7 @@ export interface CommentsIndexRequest {
 export interface CommentsIndexRequestQuery {
   include?: CommentInclude;
   page?: CommentPage;
-  sort?: CommentSort | CommentSort[];
+  sort?: CommentSort | string[];
 }
 
 export interface CommentsIndexResponse {
@@ -146,15 +146,17 @@ export interface Image {
 }
 
 export interface ImageFilter {
-  _and?: ImageFilter[];
-  _not?: ImageFilter;
-  _or?: ImageFilter[];
+  _and?: unknown[];
+  _not?: unknown;
+  _or?: unknown[];
   title?: string | unknown;
 }
 
 export interface ImageNestedCreatePayload {
+  _destroy?: boolean;
   _type: 'create';
   height?: null | number;
+  id?: number;
   title: string;
   url: string;
   width?: null | number;
@@ -163,8 +165,10 @@ export interface ImageNestedCreatePayload {
 export type ImageNestedPayload = ImageNestedCreatePayload | ImageNestedUpdatePayload;
 
 export interface ImageNestedUpdatePayload {
+  _destroy?: boolean;
   _type: 'update';
   height?: null | number;
+  id?: number;
   title?: string;
   url?: string;
   width?: null | number;
@@ -201,23 +205,27 @@ export interface Post {
 }
 
 export interface PostFilter {
-  _and?: PostFilter[];
-  _not?: PostFilter;
-  _or?: PostFilter[];
+  _and?: unknown[];
+  _not?: unknown;
+  _or?: unknown[];
   title?: string | unknown;
 }
 
 export interface PostNestedCreatePayload {
+  _destroy?: boolean;
   _type: 'create';
   body?: null | string;
+  id?: number;
   title: string;
 }
 
 export type PostNestedPayload = PostNestedCreatePayload | PostNestedUpdatePayload;
 
 export interface PostNestedUpdatePayload {
+  _destroy?: boolean;
   _type: 'update';
   body?: null | string;
+  id?: number;
   title?: string;
 }
 
@@ -237,15 +245,17 @@ export interface Video {
 }
 
 export interface VideoFilter {
-  _and?: VideoFilter[];
-  _not?: VideoFilter;
-  _or?: VideoFilter[];
+  _and?: unknown[];
+  _not?: unknown;
+  _or?: unknown[];
   title?: string | unknown;
 }
 
 export interface VideoNestedCreatePayload {
+  _destroy?: boolean;
   _type: 'create';
   duration?: null | number;
+  id?: number;
   title: string;
   url: string;
 }
@@ -253,8 +263,10 @@ export interface VideoNestedCreatePayload {
 export type VideoNestedPayload = VideoNestedCreatePayload | VideoNestedUpdatePayload;
 
 export interface VideoNestedUpdatePayload {
+  _destroy?: boolean;
   _type: 'update';
   duration?: null | number;
+  id?: number;
   title?: string;
   url?: string;
 }

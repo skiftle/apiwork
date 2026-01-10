@@ -27,9 +27,11 @@ export const CommentIndexSuccessResponseBodySchema = z.object({
 });
 
 export const CommentNestedCreatePayloadSchema = z.object({
+  _destroy: z.boolean().optional(),
   _type: z.literal('create'),
   author: z.string(),
-  body: z.string()
+  body: z.string(),
+  id: z.number().int().optional()
 });
 
 export const CommentNestedPayloadSchema = z.discriminatedUnion('_type', [
@@ -38,9 +40,11 @@ export const CommentNestedPayloadSchema = z.discriminatedUnion('_type', [
 ]);
 
 export const CommentNestedUpdatePayloadSchema = z.object({
+  _destroy: z.boolean().optional(),
   _type: z.literal('update'),
   author: z.string().optional(),
-  body: z.string().optional()
+  body: z.string().optional(),
+  id: z.number().int().optional()
 });
 
 export const CommentPageSchema = z.object({
@@ -107,8 +111,10 @@ export const PostIndexSuccessResponseBodySchema = z.object({
 });
 
 export const PostNestedCreatePayloadSchema = z.object({
+  _destroy: z.boolean().optional(),
   _type: z.literal('create'),
   comments: z.array(CommentNestedPayloadSchema).optional(),
+  id: z.number().int().optional(),
   title: z.string()
 });
 
@@ -118,8 +124,10 @@ export const PostNestedPayloadSchema = z.discriminatedUnion('_type', [
 ]);
 
 export const PostNestedUpdatePayloadSchema = z.object({
+  _destroy: z.boolean().optional(),
   _type: z.literal('update'),
   comments: z.array(CommentNestedPayloadSchema).optional(),
+  id: z.number().int().optional(),
   title: z.string().optional()
 });
 
@@ -153,8 +161,10 @@ export const ProfileSchema = z.object({
 });
 
 export const ProfileNestedCreatePayloadSchema = z.object({
+  _destroy: z.boolean().optional(),
   _type: z.literal('create'),
   bio: z.string().nullable().optional(),
+  id: z.number().int().optional(),
   website: z.string().nullable().optional()
 });
 
@@ -164,8 +174,10 @@ export const ProfileNestedPayloadSchema = z.discriminatedUnion('_type', [
 ]);
 
 export const ProfileNestedUpdatePayloadSchema = z.object({
+  _destroy: z.boolean().optional(),
   _type: z.literal('update'),
   bio: z.string().nullable().optional(),
+  id: z.number().int().optional(),
   website: z.string().nullable().optional()
 });
 
@@ -205,9 +217,9 @@ export const UserCreateSuccessResponseBodySchema = z.object({
 });
 
 export const UserFilterSchema = z.object({
-  _and: z.array(UserFilterSchema).optional(),
-  _not: UserFilterSchema.optional(),
-  _or: z.array(UserFilterSchema).optional(),
+  _and: z.array(z.unknown()).optional(),
+  _not: z.unknown().optional(),
+  _or: z.array(z.unknown()).optional(),
   email: z.union([z.string(), StringFilterSchema]).optional(),
   username: z.union([z.string(), StringFilterSchema]).optional()
 });
@@ -246,9 +258,9 @@ export const UserUpdateSuccessResponseBodySchema = z.object({
 });
 
 export const UsersIndexRequestQuerySchema = z.object({
-  filter: z.union([UserFilterSchema, z.array(UserFilterSchema)]).optional(),
+  filter: z.union([UserFilterSchema, z.array(z.string())]).optional(),
   page: UserPageSchema.optional(),
-  sort: z.union([UserSortSchema, z.array(UserSortSchema)]).optional()
+  sort: z.union([UserSortSchema, z.array(z.string())]).optional()
 });
 
 export const UsersIndexRequestSchema = z.object({
@@ -420,17 +432,21 @@ export interface CommentIndexSuccessResponseBody {
 }
 
 export interface CommentNestedCreatePayload {
+  _destroy?: boolean;
   _type: 'create';
   author: string;
   body: string;
+  id?: number;
 }
 
 export type CommentNestedPayload = CommentNestedCreatePayload | CommentNestedUpdatePayload;
 
 export interface CommentNestedUpdatePayload {
+  _destroy?: boolean;
   _type: 'update';
   author?: string;
   body?: string;
+  id?: number;
 }
 
 export interface CommentPage {
@@ -549,16 +565,20 @@ export interface PostIndexSuccessResponseBody {
 }
 
 export interface PostNestedCreatePayload {
+  _destroy?: boolean;
   _type: 'create';
   comments?: CommentNestedPayload[];
+  id?: number;
   title: string;
 }
 
 export type PostNestedPayload = PostNestedCreatePayload | PostNestedUpdatePayload;
 
 export interface PostNestedUpdatePayload {
+  _destroy?: boolean;
   _type: 'update';
   comments?: CommentNestedPayload[];
+  id?: number;
   title?: string;
 }
 
@@ -642,16 +662,20 @@ export interface Profile {
 }
 
 export interface ProfileNestedCreatePayload {
+  _destroy?: boolean;
   _type: 'create';
   bio?: null | string;
+  id?: number;
   website?: null | string;
 }
 
 export type ProfileNestedPayload = ProfileNestedCreatePayload | ProfileNestedUpdatePayload;
 
 export interface ProfileNestedUpdatePayload {
+  _destroy?: boolean;
   _type: 'update';
   bio?: null | string;
+  id?: number;
   website?: null | string;
 }
 
@@ -693,9 +717,9 @@ export interface UserCreateSuccessResponseBody {
 }
 
 export interface UserFilter {
-  _and?: UserFilter[];
-  _not?: UserFilter;
-  _or?: UserFilter[];
+  _and?: unknown[];
+  _not?: unknown;
+  _or?: unknown[];
   email?: StringFilter | string;
   username?: StringFilter | string;
 }
@@ -754,9 +778,9 @@ export interface UsersIndexRequest {
 }
 
 export interface UsersIndexRequestQuery {
-  filter?: UserFilter | UserFilter[];
+  filter?: UserFilter | string[];
   page?: UserPage;
-  sort?: UserSort | UserSort[];
+  sort?: UserSort | string[];
 }
 
 export interface UsersIndexResponse {

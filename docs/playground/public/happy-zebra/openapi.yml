@@ -15,7 +15,7 @@ paths:
           oneOf:
           - "$ref": "#/components/schemas/userFilter"
           - items:
-              "$ref": "#/components/schemas/userFilter"
+              type: string
             type: array
       - in: query
         name: page
@@ -29,7 +29,7 @@ paths:
           oneOf:
           - "$ref": "#/components/schemas/userSort"
           - items:
-              "$ref": "#/components/schemas/userSort"
+              type: string
             type: array
       responses:
         '200':
@@ -377,6 +377,8 @@ components:
       - pagination
     commentNestedCreatePayload:
       properties:
+        _destroy:
+          type: boolean
         _type:
           const: create
           type: string
@@ -384,6 +386,8 @@ components:
           type: string
         body:
           type: string
+        id:
+          type: integer
       type: object
       required:
       - _type
@@ -400,6 +404,8 @@ components:
         propertyName: _type
     commentNestedUpdatePayload:
       properties:
+        _destroy:
+          type: boolean
         _type:
           const: update
           type: string
@@ -407,6 +413,8 @@ components:
           type: string
         body:
           type: string
+        id:
+          type: integer
       type: object
       required:
       - _type
@@ -559,6 +567,8 @@ components:
       - posts
     postNestedCreatePayload:
       properties:
+        _destroy:
+          type: boolean
         _type:
           const: create
           type: string
@@ -566,6 +576,8 @@ components:
           items:
             "$ref": "#/components/schemas/commentNestedPayload"
           type: array
+        id:
+          type: integer
         title:
           type: string
       type: object
@@ -583,6 +595,8 @@ components:
         propertyName: _type
     postNestedUpdatePayload:
       properties:
+        _destroy:
+          type: boolean
         _type:
           const: update
           type: string
@@ -590,6 +604,8 @@ components:
           items:
             "$ref": "#/components/schemas/commentNestedPayload"
           type: array
+        id:
+          type: integer
         title:
           type: string
       type: object
@@ -664,6 +680,8 @@ components:
       - website
     profileNestedCreatePayload:
       properties:
+        _destroy:
+          type: boolean
         _type:
           const: create
           type: string
@@ -671,6 +689,8 @@ components:
           type:
           - string
           - 'null'
+        id:
+          type: integer
         website:
           type:
           - string
@@ -689,6 +709,8 @@ components:
         propertyName: _type
     profileNestedUpdatePayload:
       properties:
+        _destroy:
+          type: boolean
         _type:
           const: update
           type: string
@@ -696,6 +718,8 @@ components:
           type:
           - string
           - 'null'
+        id:
+          type: integer
         website:
           type:
           - string
@@ -789,14 +813,11 @@ components:
     userFilter:
       properties:
         _and:
-          items:
-            "$ref": "#/components/schemas/userFilter"
+          items: {}
           type: array
-        _not:
-          "$ref": "#/components/schemas/userFilter"
+        _not: {}
         _or:
-          items:
-            "$ref": "#/components/schemas/userFilter"
+          items: {}
           type: array
         email:
           oneOf:

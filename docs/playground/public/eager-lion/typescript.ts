@@ -35,9 +35,9 @@ export interface InvoiceCreateSuccessResponseBody {
 }
 
 export interface InvoiceFilter {
-  _and?: InvoiceFilter[];
-  _not?: InvoiceFilter;
-  _or?: InvoiceFilter[];
+  _and?: unknown[];
+  _not?: unknown;
+  _or?: unknown[];
   number?: StringFilter | string;
   status?: NullableStringFilter | string;
 }
@@ -105,9 +105,9 @@ export interface InvoicesIndexRequest {
 }
 
 export interface InvoicesIndexRequestQuery {
-  filter?: InvoiceFilter | InvoiceFilter[];
+  filter?: InvoiceFilter | string[];
   page?: InvoicePage;
-  sort?: InvoiceSort | InvoiceSort[];
+  sort?: InvoiceSort | string[];
 }
 
 export interface InvoicesIndexResponse {

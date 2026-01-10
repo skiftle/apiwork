@@ -1,5 +1,5 @@
 ---
-order: 49
+order: 51
 prev: false
 next: false
 ---
@@ -288,7 +288,7 @@ param.partial?  # => true if all fields are optional
 
 `#object?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/object.rb#L34)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/object.rb#L36)
 
 **Returns**
 
@@ -312,7 +312,7 @@ param.partial?  # => true if all fields are optional
 
 `#partial?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/object.rb#L28)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/object.rb#L30)
 
 **Returns**
 
@@ -396,7 +396,7 @@ Hash{Symbol =&gt; [Param::Base](introspection-param-base)} — nested field defi
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/object.rb#L40)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/object.rb#L42)
 
 **Returns**
 

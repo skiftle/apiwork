@@ -3,26 +3,28 @@
 module FunnySnake
   class InvoiceContract < Apiwork::Contract::Base
     object :invoice do
-      param :id, type: :uuid
-      param :created_at, type: :datetime
-      param :updated_at, type: :datetime
-      param :number, type: :string
-      param :issued_on, type: :date
-      param :status, type: :string
-      param :notes, type: :string
+      uuid :id
+      datetime :created_at
+      datetime :updated_at
+      string :number
+      date :issued_on
+      string :status
+      string :notes
     end
 
     object :payload do
-      param :number, type: :string
-      param :issued_on, type: :date
-      param :status, type: :string
-      param :notes, type: :string
+      string :number
+      date :issued_on
+      string :status
+      string :notes
     end
 
     action :index do
       response do
         body do
-          param :invoices, of: :invoice, type: :array
+          array :invoices do
+            reference :invoice
+          end
         end
       end
     end
@@ -30,7 +32,7 @@ module FunnySnake
     action :show do
       response do
         body do
-          param :invoice, type: :invoice
+          reference :invoice
         end
       end
     end
@@ -38,13 +40,13 @@ module FunnySnake
     action :create do
       request do
         body do
-          param :invoice, type: :payload
+          reference :invoice, to: :payload
         end
       end
 
       response do
         body do
-          param :invoice, type: :invoice
+          reference :invoice
         end
       end
     end
@@ -52,13 +54,13 @@ module FunnySnake
     action :update do
       request do
         body do
-          param :invoice, type: :payload
+          reference :invoice, to: :payload
         end
       end
 
       response do
         body do
-          param :invoice, type: :invoice
+          reference :invoice
         end
       end
     end

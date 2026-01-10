@@ -24,7 +24,7 @@ export const OffsetPaginationSchema = z.object({
 });
 
 export const ProfileSchema = z.object({
-  addresses: z.array(z.object({ city: z.string(), primary: z.boolean(), street: z.string(), zip: z.string() })),
+  addresses: z.array(z.string()),
   createdAt: z.iso.datetime(),
   email: z.email(),
   id: z.string(),
@@ -37,7 +37,7 @@ export const ProfileSchema = z.object({
 });
 
 export const ProfileCreatePayloadSchema = z.object({
-  addresses: z.array(z.object({ city: z.string(), primary: z.boolean(), street: z.string(), zip: z.string() })),
+  addresses: z.array(z.string()),
   email: z.email(),
   metadata: z.object({}),
   name: z.string(),
@@ -68,7 +68,7 @@ export const ProfileShowSuccessResponseBodySchema = z.object({
 });
 
 export const ProfileUpdatePayloadSchema = z.object({
-  addresses: z.array(z.object({ city: z.string(), primary: z.boolean(), street: z.string(), zip: z.string() })).optional(),
+  addresses: z.array(z.string()).optional(),
   email: z.email().optional(),
   metadata: z.object({}).optional(),
   name: z.string().optional(),
@@ -156,7 +156,7 @@ export interface OffsetPagination {
 }
 
 export interface Profile {
-  addresses: { city: string; primary: boolean; street: string; zip: string }[];
+  addresses: string[];
   createdAt: string;
   email: string;
   id: string;
@@ -169,7 +169,7 @@ export interface Profile {
 }
 
 export interface ProfileCreatePayload {
-  addresses: { city: string; primary: boolean; street: string; zip: string }[];
+  addresses: string[];
   email: string;
   metadata: object;
   name: string;
@@ -200,7 +200,7 @@ export interface ProfileShowSuccessResponseBody {
 }
 
 export interface ProfileUpdatePayload {
-  addresses?: { city: string; primary: boolean; street: string; zip: string }[];
+  addresses?: string[];
   email?: string;
   metadata?: object;
   name?: string;

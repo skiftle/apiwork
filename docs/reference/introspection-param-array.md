@@ -1,5 +1,5 @@
 ---
-order: 38
+order: 40
 prev: false
 next: false
 ---
@@ -39,7 +39,7 @@ param.boundable? # => true
 
 `#array?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L49)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L51)
 
 **Returns**
 
@@ -75,7 +75,7 @@ param.boundable? # => true
 
 `#boundable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L55)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L57)
 
 **Returns**
 
@@ -267,7 +267,7 @@ param.boundable? # => true
 
 `#max`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L43)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L45)
 
 **Returns**
 
@@ -279,7 +279,7 @@ param.boundable? # => true
 
 `#min`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L37)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L39)
 
 **Returns**
 
@@ -435,7 +435,7 @@ Hash{Symbol =&gt; [Param::Base](introspection-param-base)} — nested field defi
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L61)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L63)
 
 **Returns**
 

@@ -57,9 +57,9 @@ export const OrderCreateSuccessResponseBodySchema = z.object({
 });
 
 export const OrderFilterSchema = z.object({
-  _and: z.array(OrderFilterSchema).optional(),
-  _not: OrderFilterSchema.optional(),
-  _or: z.array(OrderFilterSchema).optional(),
+  _and: z.array(z.unknown()).optional(),
+  _not: z.unknown().optional(),
+  _or: z.array(z.unknown()).optional(),
   status: z.union([z.string(), NullableStringFilterSchema]).optional()
 });
 
@@ -104,9 +104,9 @@ export const StringFilterSchema = z.object({
 });
 
 export const OrdersIndexRequestQuerySchema = z.object({
-  filter: z.union([OrderFilterSchema, z.array(OrderFilterSchema)]).optional(),
+  filter: z.union([OrderFilterSchema, z.array(z.string())]).optional(),
   page: OrderPageSchema.optional(),
-  sort: z.union([OrderSortSchema, z.array(OrderSortSchema)]).optional()
+  sort: z.union([OrderSortSchema, z.array(z.string())]).optional()
 });
 
 export const OrdersIndexRequestSchema = z.object({
@@ -210,9 +210,9 @@ export interface OrderCreateSuccessResponseBody {
 }
 
 export interface OrderFilter {
-  _and?: OrderFilter[];
-  _not?: OrderFilter;
-  _or?: OrderFilter[];
+  _and?: unknown[];
+  _not?: unknown;
+  _or?: unknown[];
   status?: NullableStringFilter | string;
 }
 
@@ -269,9 +269,9 @@ export interface OrdersIndexRequest {
 }
 
 export interface OrdersIndexRequestQuery {
-  filter?: OrderFilter | OrderFilter[];
+  filter?: OrderFilter | string[];
   page?: OrderPage;
-  sort?: OrderSort | OrderSort[];
+  sort?: OrderSort | string[];
 }
 
 export interface OrdersIndexResponse {

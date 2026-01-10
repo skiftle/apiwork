@@ -22,7 +22,7 @@ export interface OffsetPagination {
 }
 
 export interface Profile {
-  addresses: { city: string; primary: boolean; street: string; zip: string }[];
+  addresses: string[];
   createdAt: string;
   email: string;
   id: string;
@@ -35,7 +35,7 @@ export interface Profile {
 }
 
 export interface ProfileCreatePayload {
-  addresses: { city: string; primary: boolean; street: string; zip: string }[];
+  addresses: string[];
   email: string;
   metadata: object;
   name: string;
@@ -66,7 +66,7 @@ export interface ProfileShowSuccessResponseBody {
 }
 
 export interface ProfileUpdatePayload {
-  addresses?: { city: string; primary: boolean; street: string; zip: string }[];
+  addresses?: string[];
   email?: string;
   metadata?: object;
   name?: string;

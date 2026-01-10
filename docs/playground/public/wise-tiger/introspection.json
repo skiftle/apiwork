@@ -102,16 +102,7 @@
                     "type": "array",
                     "max": null,
                     "min": null,
-                    "of": {
-                      "default": null,
-                      "deprecated": null,
-                      "description": null,
-                      "example": null,
-                      "nullable": null,
-                      "optional": null,
-                      "type": "ref",
-                      "ref": "project_filter"
-                    },
+                    "of": null,
                     "shape": {}
                   }
                 ]
@@ -156,16 +147,7 @@
                     "type": "array",
                     "max": null,
                     "min": null,
-                    "of": {
-                      "default": null,
-                      "deprecated": null,
-                      "description": null,
-                      "example": null,
-                      "nullable": null,
-                      "optional": null,
-                      "type": "ref",
-                      "ref": "project_sort"
-                    },
+                    "of": null,
                     "shape": {}
                   }
                 ]
@@ -720,7 +702,7 @@
         "created_at": {
           "default": null,
           "deprecated": false,
-          "description": "Timestamp when project was created",
+          "description": null,
           "example": null,
           "nullable": false,
           "optional": false,
@@ -729,7 +711,7 @@
         "deadline": {
           "default": null,
           "deprecated": false,
-          "description": "Target completion date",
+          "description": null,
           "example": null,
           "nullable": true,
           "optional": false,
@@ -738,7 +720,7 @@
         "description": {
           "default": null,
           "deprecated": false,
-          "description": "Detailed project description",
+          "description": null,
           "example": null,
           "nullable": true,
           "optional": false,
@@ -750,7 +732,7 @@
         "id": {
           "default": null,
           "deprecated": false,
-          "description": "Unique project identifier",
+          "description": null,
           "example": null,
           "nullable": false,
           "optional": false,
@@ -762,7 +744,7 @@
         "name": {
           "default": null,
           "deprecated": false,
-          "description": "Human-readable project name",
+          "description": null,
           "example": null,
           "nullable": false,
           "optional": false,
@@ -774,7 +756,7 @@
         "priority": {
           "default": null,
           "deprecated": false,
-          "description": "Project priority for resource allocation",
+          "description": null,
           "example": null,
           "nullable": true,
           "optional": false,
@@ -787,7 +769,7 @@
         "status": {
           "default": null,
           "deprecated": false,
-          "description": "Current project lifecycle status",
+          "description": null,
           "example": null,
           "nullable": true,
           "optional": false,
@@ -800,7 +782,7 @@
         "updated_at": {
           "default": null,
           "deprecated": false,
-          "description": "Timestamp of last modification",
+          "description": null,
           "example": null,
           "nullable": false,
           "optional": false,
@@ -819,7 +801,7 @@
         "deadline": {
           "default": null,
           "deprecated": false,
-          "description": "Target completion date",
+          "description": null,
           "example": null,
           "nullable": true,
           "optional": true,
@@ -828,7 +810,7 @@
         "description": {
           "default": null,
           "deprecated": false,
-          "description": "Detailed project description",
+          "description": null,
           "example": null,
           "nullable": true,
           "optional": true,
@@ -840,7 +822,7 @@
         "name": {
           "default": null,
           "deprecated": false,
-          "description": "Human-readable project name",
+          "description": null,
           "example": null,
           "nullable": false,
           "optional": false,
@@ -852,7 +834,7 @@
         "priority": {
           "default": null,
           "deprecated": false,
-          "description": "Project priority for resource allocation",
+          "description": null,
           "example": null,
           "nullable": true,
           "optional": true,
@@ -865,7 +847,7 @@
         "status": {
           "default": null,
           "deprecated": false,
-          "description": "Current project lifecycle status",
+          "description": null,
           "example": null,
           "nullable": true,
           "optional": true,
@@ -933,8 +915,7 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "project_filter"
+            "type": "filter"
           },
           "shape": {}
         },
@@ -945,8 +926,7 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "project_filter"
+          "type": "filter"
         },
         "_or": {
           "default": null,
@@ -965,15 +945,14 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "project_filter"
+            "type": "filter"
           },
           "shape": {}
         },
         "priority": {
           "default": null,
           "deprecated": false,
-          "description": "Project priority for resource allocation",
+          "description": null,
           "example": null,
           "nullable": false,
           "optional": true,
@@ -983,7 +962,7 @@
         "status": {
           "default": null,
           "deprecated": false,
-          "description": "Current project lifecycle status",
+          "description": null,
           "example": null,
           "nullable": false,
           "optional": true,
@@ -1091,23 +1070,23 @@
       "variants": [
         {
           "default": null,
-          "deprecated": null,
+          "deprecated": false,
           "description": null,
           "example": null,
-          "nullable": null,
-          "optional": null,
+          "nullable": false,
+          "optional": false,
           "type": "ref",
           "ref": "project_priority"
         },
         {
           "default": null,
-          "deprecated": null,
+          "deprecated": false,
           "description": null,
           "example": null,
-          "nullable": null,
-          "optional": null,
+          "nullable": false,
+          "optional": false,
           "type": "object",
-          "partial": true,
+          "partial": false,
           "shape": {
             "eq": {
               "default": null,
@@ -1185,7 +1164,7 @@
         "created_at": {
           "default": null,
           "deprecated": false,
-          "description": "Timestamp when project was created",
+          "description": null,
           "example": null,
           "nullable": false,
           "optional": true,
@@ -1195,7 +1174,7 @@
         "deadline": {
           "default": null,
           "deprecated": false,
-          "description": "Target completion date",
+          "description": null,
           "example": null,
           "nullable": false,
           "optional": true,
@@ -1216,23 +1195,23 @@
       "variants": [
         {
           "default": null,
-          "deprecated": null,
+          "deprecated": false,
           "description": null,
           "example": null,
-          "nullable": null,
-          "optional": null,
+          "nullable": false,
+          "optional": false,
           "type": "ref",
           "ref": "project_status"
         },
         {
           "default": null,
-          "deprecated": null,
+          "deprecated": false,
           "description": null,
           "example": null,
-          "nullable": null,
-          "optional": null,
+          "nullable": false,
+          "optional": false,
           "type": "object",
-          "partial": true,
+          "partial": false,
           "shape": {
             "eq": {
               "default": null,
@@ -1279,7 +1258,7 @@
         "deadline": {
           "default": null,
           "deprecated": false,
-          "description": "Target completion date",
+          "description": null,
           "example": null,
           "nullable": true,
           "optional": true,
@@ -1288,7 +1267,7 @@
         "description": {
           "default": null,
           "deprecated": false,
-          "description": "Detailed project description",
+          "description": null,
           "example": null,
           "nullable": true,
           "optional": true,
@@ -1300,7 +1279,7 @@
         "name": {
           "default": null,
           "deprecated": false,
-          "description": "Human-readable project name",
+          "description": null,
           "example": null,
           "nullable": false,
           "optional": true,
@@ -1312,7 +1291,7 @@
         "priority": {
           "default": null,
           "deprecated": false,
-          "description": "Project priority for resource allocation",
+          "description": null,
           "example": null,
           "nullable": true,
           "optional": true,
@@ -1325,7 +1304,7 @@
         "status": {
           "default": null,
           "deprecated": false,
-          "description": "Current project lifecycle status",
+          "description": null,
           "example": null,
           "nullable": true,
           "optional": true,

@@ -32,9 +32,9 @@ export const ArticleCreateSuccessResponseBodySchema = z.object({
 });
 
 export const ArticleFilterSchema = z.object({
-  _and: z.array(ArticleFilterSchema).optional(),
-  _not: ArticleFilterSchema.optional(),
-  _or: z.array(ArticleFilterSchema).optional(),
+  _and: z.array(z.unknown()).optional(),
+  _not: z.unknown().optional(),
+  _or: z.array(z.unknown()).optional(),
   publishedOn: z.union([z.iso.date(), NullableDateFilterSchema]).optional(),
   rating: z.union([z.number(), NullableDecimalFilterSchema]).optional(),
   status: ArticleStatusFilterSchema.optional(),
@@ -68,7 +68,7 @@ export const ArticleSortSchema = z.object({
 
 export const ArticleStatusFilterSchema = z.union([
   ArticleStatusSchema,
-  z.object({ eq: ArticleStatusSchema, in: z.array(ArticleStatusSchema) }).partial()
+  z.object({ eq: ArticleStatusSchema.optional(), in: z.array(ArticleStatusSchema).optional() })
 ]);
 
 export const ArticleUpdatePayloadSchema = z.object({
@@ -200,9 +200,9 @@ export const StringFilterSchema = z.object({
 });
 
 export const ArticlesIndexRequestQuerySchema = z.object({
-  filter: z.union([ArticleFilterSchema, z.array(ArticleFilterSchema)]).optional(),
+  filter: z.union([ArticleFilterSchema, z.array(z.string())]).optional(),
   page: ArticlePageSchema.optional(),
-  sort: z.union([ArticleSortSchema, z.array(ArticleSortSchema)]).optional()
+  sort: z.union([ArticleSortSchema, z.array(z.string())]).optional()
 });
 
 export const ArticlesIndexRequestSchema = z.object({
@@ -277,9 +277,9 @@ export interface ArticleCreateSuccessResponseBody {
 }
 
 export interface ArticleFilter {
-  _and?: ArticleFilter[];
-  _not?: ArticleFilter;
-  _or?: ArticleFilter[];
+  _and?: unknown[];
+  _not?: unknown;
+  _or?: unknown[];
   publishedOn?: NullableDateFilter | string;
   rating?: NullableDecimalFilter | number;
   status?: ArticleStatusFilter;
@@ -348,9 +348,9 @@ export interface ArticlesIndexRequest {
 }
 
 export interface ArticlesIndexRequestQuery {
-  filter?: ArticleFilter | ArticleFilter[];
+  filter?: ArticleFilter | string[];
   page?: ArticlePage;
-  sort?: ArticleSort | ArticleSort[];
+  sort?: ArticleSort | string[];
 }
 
 export interface ArticlesIndexResponse {
