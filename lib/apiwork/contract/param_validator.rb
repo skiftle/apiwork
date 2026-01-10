@@ -730,11 +730,19 @@ module Apiwork
 
         variants.all? do |variant|
           variant_type = variant[:type]
-          type_definition = contract_class.resolve_custom_type(variant_type)
-          next true unless type_definition&.object?
+          shape = variant[:shape]
 
-          discriminator_param = type_definition.shape.params[discriminator]
-          next true unless discriminator_param
+          if variant_type == :object && shape
+            discriminator_param = shape.params[discriminator]
+
+          else
+            type_definition = contract_class.resolve_custom_type(variant_type)
+            next false unless type_definition&.object?
+
+            discriminator_param = type_definition.shape.params[discriminator]
+
+          end
+          next false unless discriminator_param
 
           discriminator_param[:optional] == true
         end

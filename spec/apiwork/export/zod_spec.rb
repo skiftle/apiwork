@@ -223,22 +223,30 @@ RSpec.describe Apiwork::Export::Zod do
     before(:all) do
       Apiwork::API.define '/api/zod_union_test' do
         union :payment_method, discriminator: :type do
-          variant tag: 'card', type: :object do
-            param :type, type: :literal, value: 'card'
-            param :last_four, type: :string
+          variant tag: 'card' do
+            object do
+              param :type, type: :literal, value: 'card'
+              string :last_four
+            end
           end
-          variant tag: 'bank', type: :object do
-            param :type, type: :literal, value: 'bank'
-            param :routing_number, type: :string
+          variant tag: 'bank' do
+            object do
+              param :type, type: :literal, value: 'bank'
+              string :routing_number
+            end
           end
         end
 
         union :simple_union do
-          variant type: :object do
-            param :name, type: :string
+          variant do
+            object do
+              string :name
+            end
           end
-          variant type: :object do
-            param :id, type: :integer
+          variant do
+            object do
+              integer :id
+            end
           end
         end
       end

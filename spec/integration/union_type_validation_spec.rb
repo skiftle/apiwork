@@ -14,8 +14,8 @@ RSpec.describe 'Contract union type unknown field validation' do
         request do
           body do
             param :custom, optional: true, type: :union do
-              variant type: :boolean
-              variant type: :nested_type
+              variant { boolean }
+              variant { reference :nested_type }
             end
           end
         end

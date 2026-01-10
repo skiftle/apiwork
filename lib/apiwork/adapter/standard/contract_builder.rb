@@ -55,15 +55,15 @@ module Apiwork
 
           if filter_type
             param_definition.param :filter, optional: true, type: :union do
-              variant type: filter_type
-              variant of: filter_type, type: :array
+              variant { reference filter_type }
+              variant { array { reference filter_type } }
             end
           end
 
           if sort_type
             param_definition.param :sort, optional: true, type: :union do
-              variant type: sort_type
-              variant of: sort_type, type: :array
+              variant { reference sort_type }
+              variant { array { reference sort_type } }
             end
           end
 
@@ -422,9 +422,14 @@ module Apiwork
               if attribute_definition.enum
                 param name, optional: true, type: filter_type
               else
-                param name, optional: true, type: :union do
-                  variant type: builder.send(:map_type, attribute_definition.type)
-                  variant type: filter_type
+                mapped_type = builder.send(:map_type, attribute_definition.type)
+                if %i[object array union].include?(mapped_type)
+                  param name, optional: true, type: filter_type
+                else
+                  param name, optional: true, type: :union do
+                    variant { send(mapped_type) }
+                    variant { reference filter_type }
+                  end
                 end
               end
             end
@@ -598,8 +603,8 @@ module Apiwork
                   param name, optional: true, type: association_include_type
                 else
                   param name, optional: true, type: :union do
-                    variant type: :boolean
-                    variant type: association_include_type
+                    variant { boolean }
+                    variant { reference association_include_type }
                   end
                 end
               end
@@ -672,8 +677,12 @@ module Apiwork
           update_qualified_name = registrar.scoped_type_name(update_type_name)
 
           registrar.union(nested_payload_type_name, discriminator: :_type) do
-            variant tag: 'create', type: create_qualified_name
-            variant tag: 'update', type: update_qualified_name
+            variant tag: 'create' do
+              reference create_qualified_name
+            end
+            variant tag: 'update' do
+              reference update_qualified_name
+            end
           end
         end
 
@@ -788,7 +797,9 @@ module Apiwork
               import_alias = builder.send(:import_association_contract, schema_class, visited)
               next unless import_alias
 
-              variant tag: tag.to_s, type: import_alias
+              variant tag: tag.to_s do
+                reference import_alias
+              end
             end
           end
 
@@ -809,7 +820,9 @@ module Apiwork
 
           registrar.union(union_type_name, discriminator: discriminator_name) do
             variant_types.each do |variant_type|
-              variant tag: variant_type[:tag], type: variant_type[:type]
+              variant tag: variant_type[:tag] do
+                reference variant_type[:type]
+              end
             end
           end
 
@@ -894,10 +907,12 @@ module Apiwork
           return if registrar.api_registrar.type?(filter_name)
 
           registrar.api_registrar.union(filter_name) do
-            variant type: scoped_name
-            variant partial: true, type: :object do
-              param :eq, optional: true, type: scoped_name
-              param :in, of: scoped_name, optional: true, type: :array
+            variant { reference scoped_name }
+            variant do
+              object do
+                param :eq, optional: true, type: scoped_name
+                param :in, of: scoped_name, optional: true, type: :array
+              end
             end
           end
         end

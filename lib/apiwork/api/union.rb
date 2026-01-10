@@ -10,21 +10,26 @@ module Apiwork
     #
     # @example Discriminated union
     #   union :payment_method, discriminator: :type do
-    #     variant tag: 'card', type: :object do
-    #       param :last_four, type: :string
+    #     variant tag: 'card' do
+    #       object do
+    #         string :last_four
+    #       end
     #     end
-    #     variant tag: 'bank', type: :object do
-    #       param :account_number, type: :string
+    #     variant tag: 'bank' do
+    #       object do
+    #         string :account_number
+    #       end
     #     end
     #   end
     #
     # @example Simple union
     #   union :amount do
-    #     variant type: :integer
-    #     variant type: :decimal
+    #     variant { integer }
+    #     variant { decimal }
     #   end
     #
     # @see Contract::Union Block context for inline unions
+    # @see API::Element Block context for variant types
     class Union
       attr_reader :discriminator,
                   :variants
@@ -37,45 +42,62 @@ module Apiwork
       # @api public
       # Defines a variant within this union.
       #
-      # @param type [Symbol] variant type (primitive, :object, or reference)
-      # @param tag [String] discriminator value for this variant (required when union has discriminator)
-      # @param enum [Symbol, Array] enum constraint for the variant
-      # @param of [Symbol] element type when variant is an array
-      # @param partial [Boolean] make all fields optional in this variant
+      # The block must define exactly one type using type methods.
+      #
+      # @param tag [String] discriminator value (required when union has discriminator)
+      # @param deprecated [Boolean] mark as deprecated
+      # @param description [String] documentation description
+      # @param partial [Boolean] mark variant shape as partial
       # @return [void]
-      # @see API::Object
+      # @see API::Element
       #
       # @example Primitive variant
-      #   variant type: :decimal
+      #   variant { decimal }
       #
-      # @example Inline object variant
-      #   variant tag: 'card', type: :object do
-      #     param :last_four, type: :string
+      # @example Object variant
+      #   variant tag: 'card' do
+      #     object do
+      #       string :last_four
+      #     end
       #   end
-      def variant(enum: nil, of: nil, partial: nil, shape: nil, tag: nil, type:, &block)
+      def variant(deprecated: nil, description: nil, partial: nil, tag: nil, &block)
         validate_tag!(tag)
+        raise ArgumentError, 'variant requires a block' unless block
 
-        shape ||= if block && type == :object
-                    builder = Object.new
-                    builder.instance_eval(&block)
-                    builder
-                  end
+        element = Element.new
+        element.instance_eval(&block)
+        element.validate!
 
-        data = { enum:, of:, partial:, shape:, tag:, type: }.compact
+        data = {
+          deprecated:,
+          description:,
+          partial:,
+          tag:,
+          custom_type: element.custom_type,
+          enum: element.enum,
+          shape: element.shape,
+          type: element.type,
+        }.compact
 
-        if tag && (index = @variants.find_index { |variant| variant[:tag] == tag })
+        append_or_merge_variant(data, tag)
+      end
+
+      private
+
+      def append_or_merge_variant(data, tag)
+        if tag && (index = @variants.find_index { |v| v[:tag] == tag })
           existing = @variants[index]
-          merge_variant_shapes(existing, shape) if shape && existing[:shape]
-          data.delete(:shape) if shape && existing[:shape]
+          merge_variant_shapes(existing, data[:shape]) if data[:shape] && existing[:shape]
+          data.delete(:shape) if data[:shape] && existing[:shape]
           @variants[index] = existing.merge(data)
         else
           @variants << data
         end
       end
 
-      private
-
       def merge_variant_shapes(existing_variant, new_shape)
+        return unless new_shape.respond_to?(:params)
+
         new_shape.params.each do |name, param_data|
           existing_variant[:shape].params[name] =
             (existing_variant[:shape].params[name] || {}).merge(param_data)

@@ -132,14 +132,18 @@ RSpec.describe 'Custom Types', type: :integration do
     it 'defines a discriminated union type' do
       api = Apiwork::API.define '/test/unions' do
         union :notification, discriminator: :type do
-          variant tag: :email, type: :object do
-            param :address, type: :string
-            param :subject, type: :string
+          variant tag: :email do
+            object do
+              string :address
+              string :subject
+            end
           end
 
-          variant tag: :sms, type: :object do
-            param :phone_number, type: :string
-            param :message, type: :string
+          variant tag: :sms do
+            object do
+              string :phone_number
+              string :message
+            end
           end
         end
       end
@@ -150,14 +154,18 @@ RSpec.describe 'Custom Types', type: :integration do
     it 'union is available in introspection' do
       api = Apiwork::API.define '/test/unions/introspect' do
         union :payment, discriminator: :method do
-          variant tag: :card, type: :object do
-            param :card_number, type: :string
-            param :expiry, type: :string
+          variant tag: :card do
+            object do
+              string :card_number
+              string :expiry
+            end
           end
 
-          variant tag: :bank, type: :object do
-            param :account_number, type: :string
-            param :routing_number, type: :string
+          variant tag: :bank do
+            object do
+              string :account_number
+              string :routing_number
+            end
           end
         end
       end
@@ -169,12 +177,16 @@ RSpec.describe 'Custom Types', type: :integration do
     it 'stores union discriminator' do
       api = Apiwork::API.define '/test/unions/discriminator' do
         union :result, discriminator: :status do
-          variant tag: :success, type: :object do
-            param :data, type: :string
+          variant tag: :success do
+            object do
+              string :data
+            end
           end
 
-          variant tag: :error, type: :object do
-            param :message, type: :string
+          variant tag: :error do
+            object do
+              string :message
+            end
           end
         end
       end

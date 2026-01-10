@@ -5,20 +5,31 @@ module Apiwork
     # @api public
     # Block context for defining inline union types.
     #
-    # Accessed via `param :x, type: :union do` inside contract actions.
+    # Accessed via `union :name, discriminator: do` inside contract actions.
     # Use {#variant} to define possible types.
     #
     # @example Discriminated union
-    #   param :payment_method, type: :union, discriminator: :type do
-    #     variant tag: 'card', type: :object do
-    #       param :last_four, type: :string
+    #   union :payment_method, discriminator: :type do
+    #     variant tag: 'card' do
+    #       object do
+    #         string :last_four
+    #       end
     #     end
-    #     variant tag: 'bank', type: :object do
-    #       param :account_number, type: :string
+    #     variant tag: 'bank' do
+    #       object do
+    #         string :account_number
+    #       end
     #     end
     #   end
     #
+    # @example Simple union
+    #   union :amount do
+    #     variant { integer }
+    #     variant { decimal }
+    #   end
+    #
     # @see API::Union Block context for reusable unions
+    # @see Contract::Element Block context for variant types
     class Union
       attr_reader :contract_class,
                   :discriminator,
@@ -31,48 +42,64 @@ module Apiwork
       end
 
       # @api public
-      # Defines a variant in this union.
+      # Defines a variant within this union.
       #
-      # @param type [Symbol] the variant type (:string, :integer, :object, etc.)
-      # @param of [Symbol] element type for :array variants
-      # @param enum [Array, Symbol] allowed values for this variant
+      # The block must define exactly one type using type methods.
+      #
       # @param tag [String] discriminator value (required when union has discriminator)
+      # @param deprecated [Boolean] mark as deprecated
+      # @param description [String] documentation description
       # @param partial [Boolean] allow partial object (omit required fields)
       # @return [void]
-      # @see Contract::Object
+      # @see Contract::Element
       #
       # @example Primitive variant
-      #   variant type: :decimal
+      #   variant { decimal }
       #
-      # @example Inline object variant
-      #   variant tag: 'card', type: :object do
-      #     param :last_four, type: :string
+      # @example Object variant
+      #   variant tag: 'card' do
+      #     object do
+      #       string :last_four
+      #     end
       #   end
-      def variant(enum: nil, of: nil, partial: nil, tag: nil, type:, &block)
+      def variant(deprecated: nil, description: nil, partial: nil, tag: nil, &block)
         validate_tag!(tag)
+        raise ArgumentError, 'variant requires a block' unless block
 
-        shape = if block && type == :object
-                  builder = Object.new(@contract_class)
-                  builder.instance_eval(&block)
-                  builder
-                end
+        element = Element.new(@contract_class)
+        element.instance_eval(&block)
+        element.validate!
 
-        resolved_enum = resolve_enum(enum)
-        data = { of:, partial:, shape:, tag:, type:, enum: resolved_enum }.compact
+        data = {
+          deprecated:,
+          description:,
+          partial:,
+          tag:,
+          custom_type: element.custom_type,
+          enum: element.enum,
+          shape: element.shape,
+          type: element.type,
+        }.compact
 
+        append_or_merge_variant(data, tag)
+      end
+
+      private
+
+      def append_or_merge_variant(data, tag)
         if tag && (index = @variants.find_index { |v| v[:tag] == tag })
           existing = @variants[index]
-          merge_variant_shapes(existing, shape) if shape && existing[:shape]
-          data.delete(:shape) if shape && existing[:shape]
+          merge_variant_shapes(existing, data[:shape]) if data[:shape] && existing[:shape]
+          data.delete(:shape) if data[:shape] && existing[:shape]
           @variants[index] = existing.merge(data)
         else
           @variants << data
         end
       end
 
-      private
-
       def merge_variant_shapes(existing_variant, new_shape)
+        return unless new_shape.respond_to?(:params)
+
         new_shape.params.each do |name, param_data|
           existing_variant[:shape].params[name] =
             (existing_variant[:shape].params[name] || {}).merge(param_data)
@@ -85,15 +112,6 @@ module Apiwork
         return unless @discriminator.present? && tag.blank?
 
         raise ArgumentError, 'tag is required for all variants when union has a discriminator'
-      end
-
-      def resolve_enum(enum)
-        return nil if enum.nil?
-        return enum if enum.is_a?(Array)
-
-        raise ArgumentError, "Enum :#{enum} not found." unless @contract_class.enum?(enum)
-
-        enum
       end
     end
   end

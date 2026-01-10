@@ -22,8 +22,8 @@ end
 Reference by name:
 
 ```ruby
-ref :shipping_address, type: :address
-ref :billing_address, type: :address
+reference :address
+reference :billing_address, to: :address
 ```
 
 Arrays work too:

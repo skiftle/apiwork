@@ -101,7 +101,9 @@ RSpec.describe 'Type merging' do
             end
 
             union :thing, discriminator: :type do
-              variant tag: 'text', type: :string
+              variant tag: 'text' do
+                string
+              end
             end
           end
         end.to raise_error(Apiwork::ConfigurationError, /Cannot redefine :thing/)
@@ -112,14 +114,18 @@ RSpec.describe 'Type merging' do
       it 'merges variants from multiple declarations' do
         api_class = Apiwork::API.define '/api/test' do
           union :payment, discriminator: :type do
-            variant tag: 'card', type: :object do
-              param :last_four, type: :string
+            variant tag: 'card' do
+              object do
+                param :last_four, type: :string
+              end
             end
           end
 
           union :payment, discriminator: :type do
-            variant tag: 'bank', type: :object do
-              param :account, type: :string
+            variant tag: 'bank' do
+              object do
+                param :account, type: :string
+              end
             end
           end
         end
@@ -133,11 +139,15 @@ RSpec.describe 'Type merging' do
       it 'merges same tag variant instead of duplicating' do
         api_class = Apiwork::API.define '/api/test' do
           union :payment, discriminator: :type do
-            variant tag: 'card', type: :card_details
+            variant tag: 'card' do
+              reference :card_details
+            end
           end
 
           union :payment, discriminator: :type do
-            variant partial: true, tag: 'card', type: :card_details
+            variant partial: true, tag: 'card' do
+              reference :card_details
+            end
           end
         end
 
@@ -151,14 +161,18 @@ RSpec.describe 'Type merging' do
       it 'merges variant shape params instead of replacing' do
         api_class = Apiwork::API.define '/api/test' do
           union :payment, discriminator: :type do
-            variant tag: 'card', type: :object do
-              param :number, type: :string
+            variant tag: 'card' do
+              object do
+                param :number, type: :string
+              end
             end
           end
 
           union :payment, discriminator: :type do
-            variant tag: 'card', type: :object do
-              param :cvv, type: :string
+            variant tag: 'card' do
+              object do
+                param :cvv, type: :string
+              end
             end
           end
         end
@@ -172,14 +186,18 @@ RSpec.describe 'Type merging' do
       it 'merges variant shape param options' do
         api_class = Apiwork::API.define '/api/test' do
           union :payment, discriminator: :type do
-            variant tag: 'card', type: :object do
-              param :number, type: :string
+            variant tag: 'card' do
+              object do
+                param :number, type: :string
+              end
             end
           end
 
           union :payment, discriminator: :type do
-            variant tag: 'card', type: :object do
-              param :number, description: 'Card number'
+            variant tag: 'card' do
+              object do
+                param :number, description: 'Card number'
+              end
             end
           end
         end
@@ -264,11 +282,15 @@ RSpec.describe 'Type merging' do
           identifier :billing
 
           union :payment, discriminator: :type do
-            variant tag: 'card', type: :string
+            variant tag: 'card' do
+              string
+            end
           end
 
           union :payment, discriminator: :type do
-            variant tag: 'bank', type: :string
+            variant tag: 'bank' do
+              string
+            end
           end
         end
 

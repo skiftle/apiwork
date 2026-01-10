@@ -64,11 +64,15 @@ RSpec.describe 'Literal and Discriminated Union Features' do
           request do
             body do
               param :filter, discriminator: :kind, type: :union do
-                variant tag: 'string', type: :string_filter
+                variant tag: 'string' do
+                  reference :string_filter
+                end
 
-                variant tag: 'range', type: :object do
-                  param :gte, type: :integer
-                  param :lte, required: false, type: :integer
+                variant tag: 'range' do
+                  object do
+                    integer :gte
+                    integer :lte, optional: true
+                  end
                 end
               end
             end
@@ -150,7 +154,9 @@ RSpec.describe 'Literal and Discriminated Union Features' do
             request do
               body do
                 param :filter, type: :union do
-                  variant tag: 'string', type: :string
+                  variant tag: 'string' do
+                    string
+                  end
                 end
               end
             end
@@ -166,7 +172,9 @@ RSpec.describe 'Literal and Discriminated Union Features' do
             request do
               body do
                 param :filter, discriminator: :kind, type: :union do
-                  variant type: :string # Missing tag!
+                  variant do # Missing tag!
+                    string
+                  end
                 end
               end
             end
