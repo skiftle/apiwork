@@ -20,7 +20,7 @@ paths:
           oneOf:
           - "$ref": "#/components/schemas/projectFilter"
           - items:
-              type: string
+              "$ref": "#/components/schemas/projectFilter"
             type: array
       - in: query
         name: page
@@ -34,7 +34,7 @@ paths:
           oneOf:
           - "$ref": "#/components/schemas/projectSort"
           - items:
-              type: string
+              "$ref": "#/components/schemas/projectSort"
             type: array
       responses:
         '200':
@@ -320,11 +320,14 @@ components:
     projectFilter:
       properties:
         _and:
-          items: {}
+          items:
+            "$ref": "#/components/schemas/projectFilter"
           type: array
-        _not: {}
+        _not:
+          "$ref": "#/components/schemas/projectFilter"
         _or:
-          items: {}
+          items:
+            "$ref": "#/components/schemas/projectFilter"
           type: array
         priority:
           "$ref": "#/components/schemas/projectPriorityFilter"
@@ -383,6 +386,9 @@ components:
               type: string
             type: array
         type: object
+        required:
+        - eq
+        - in
     projectShowSuccessResponseBody:
       properties:
         meta:
@@ -433,6 +439,9 @@ components:
               type: string
             type: array
         type: object
+        required:
+        - eq
+        - in
     projectUpdatePayload:
       properties:
         deadline:

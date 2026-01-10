@@ -306,9 +306,9 @@ export interface UserCreateSuccessResponseBody {
 }
 
 export interface UserFilter {
-  _and?: unknown[];
-  _not?: unknown;
-  _or?: unknown[];
+  _and?: UserFilter[];
+  _not?: UserFilter;
+  _or?: UserFilter[];
   email?: StringFilter | string;
   username?: StringFilter | string;
 }
@@ -367,9 +367,9 @@ export interface UsersIndexRequest {
 }
 
 export interface UsersIndexRequestQuery {
-  filter?: UserFilter | string[];
+  filter?: UserFilter | UserFilter[];
   page?: UserPage;
-  sort?: UserSort | string[];
+  sort?: UserSort | UserSort[];
 }
 
 export interface UsersIndexResponse {

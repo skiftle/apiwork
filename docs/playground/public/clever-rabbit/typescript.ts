@@ -53,9 +53,9 @@ export interface OrderCreateSuccessResponseBody {
 }
 
 export interface OrderFilter {
-  _and?: unknown[];
-  _not?: unknown;
-  _or?: unknown[];
+  _and?: OrderFilter[];
+  _not?: OrderFilter;
+  _or?: OrderFilter[];
   status?: NullableStringFilter | string;
 }
 
@@ -112,9 +112,9 @@ export interface OrdersIndexRequest {
 }
 
 export interface OrdersIndexRequestQuery {
-  filter?: OrderFilter | string[];
+  filter?: OrderFilter | OrderFilter[];
   page?: OrderPage;
-  sort?: OrderSort | string[];
+  sort?: OrderSort | OrderSort[];
 }
 
 export interface OrdersIndexResponse {

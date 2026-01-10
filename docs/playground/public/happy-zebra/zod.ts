@@ -217,9 +217,9 @@ export const UserCreateSuccessResponseBodySchema = z.object({
 });
 
 export const UserFilterSchema = z.object({
-  _and: z.array(z.unknown()).optional(),
-  _not: z.unknown().optional(),
-  _or: z.array(z.unknown()).optional(),
+  _and: z.array(UserFilterSchema).optional(),
+  _not: UserFilterSchema.optional(),
+  _or: z.array(UserFilterSchema).optional(),
   email: z.union([z.string(), StringFilterSchema]).optional(),
   username: z.union([z.string(), StringFilterSchema]).optional()
 });
@@ -258,9 +258,9 @@ export const UserUpdateSuccessResponseBodySchema = z.object({
 });
 
 export const UsersIndexRequestQuerySchema = z.object({
-  filter: z.union([UserFilterSchema, z.array(z.string())]).optional(),
+  filter: z.union([UserFilterSchema, z.array(UserFilterSchema)]).optional(),
   page: UserPageSchema.optional(),
-  sort: z.union([UserSortSchema, z.array(z.string())]).optional()
+  sort: z.union([UserSortSchema, z.array(UserSortSchema)]).optional()
 });
 
 export const UsersIndexRequestSchema = z.object({
@@ -717,9 +717,9 @@ export interface UserCreateSuccessResponseBody {
 }
 
 export interface UserFilter {
-  _and?: unknown[];
-  _not?: unknown;
-  _or?: unknown[];
+  _and?: UserFilter[];
+  _not?: UserFilter;
+  _or?: UserFilter[];
   email?: StringFilter | string;
   username?: StringFilter | string;
 }
@@ -778,9 +778,9 @@ export interface UsersIndexRequest {
 }
 
 export interface UsersIndexRequestQuery {
-  filter?: UserFilter | string[];
+  filter?: UserFilter | UserFilter[];
   page?: UserPage;
-  sort?: UserSort | string[];
+  sort?: UserSort | UserSort[];
 }
 
 export interface UsersIndexResponse {

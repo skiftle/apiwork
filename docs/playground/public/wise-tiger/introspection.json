@@ -102,7 +102,16 @@
                     "type": "array",
                     "max": null,
                     "min": null,
-                    "of": null,
+                    "of": {
+                      "default": null,
+                      "deprecated": null,
+                      "description": null,
+                      "example": null,
+                      "nullable": null,
+                      "optional": null,
+                      "type": "ref",
+                      "ref": "project_filter"
+                    },
                     "shape": {}
                   }
                 ]
@@ -147,7 +156,16 @@
                     "type": "array",
                     "max": null,
                     "min": null,
-                    "of": null,
+                    "of": {
+                      "default": null,
+                      "deprecated": null,
+                      "description": null,
+                      "example": null,
+                      "nullable": null,
+                      "optional": null,
+                      "type": "ref",
+                      "ref": "project_sort"
+                    },
                     "shape": {}
                   }
                 ]
@@ -915,7 +933,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "filter"
+            "type": "ref",
+            "ref": "project_filter"
           },
           "shape": {}
         },
@@ -926,7 +945,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "filter"
+          "type": "ref",
+          "ref": "project_filter"
         },
         "_or": {
           "default": null,
@@ -945,7 +965,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "filter"
+            "type": "ref",
+            "ref": "project_filter"
           },
           "shape": {}
         },
@@ -1086,7 +1107,7 @@
           "nullable": false,
           "optional": false,
           "type": "object",
-          "partial": false,
+          "partial": true,
           "shape": {
             "eq": {
               "default": null,
@@ -1094,7 +1115,7 @@
               "description": null,
               "example": null,
               "nullable": false,
-              "optional": true,
+              "optional": false,
               "type": "ref",
               "ref": "project_priority"
             },
@@ -1104,7 +1125,7 @@
               "description": null,
               "example": null,
               "nullable": false,
-              "optional": true,
+              "optional": false,
               "type": "array",
               "max": null,
               "min": null,
@@ -1211,7 +1232,7 @@
           "nullable": false,
           "optional": false,
           "type": "object",
-          "partial": false,
+          "partial": true,
           "shape": {
             "eq": {
               "default": null,
@@ -1219,7 +1240,7 @@
               "description": null,
               "example": null,
               "nullable": false,
-              "optional": true,
+              "optional": false,
               "type": "ref",
               "ref": "project_status"
             },
@@ -1229,7 +1250,7 @@
               "description": null,
               "example": null,
               "nullable": false,
-              "optional": true,
+              "optional": false,
               "type": "array",
               "max": null,
               "min": null,

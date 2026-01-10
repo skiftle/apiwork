@@ -107,9 +107,9 @@ export const TaskCreateSuccessResponseBodySchema = z.object({
 });
 
 export const TaskFilterSchema = z.object({
-  _and: z.array(z.unknown()).optional(),
-  _not: z.unknown().optional(),
-  _or: z.array(z.unknown()).optional(),
+  _and: z.array(TaskFilterSchema).optional(),
+  _not: TaskFilterSchema.optional(),
+  _or: z.array(TaskFilterSchema).optional(),
   priority: TaskPriorityFilterSchema.optional(),
   status: TaskStatusFilterSchema.optional()
 });
@@ -132,7 +132,7 @@ export const TaskPageSchema = z.object({
 
 export const TaskPriorityFilterSchema = z.union([
   TaskPrioritySchema,
-  z.object({ eq: TaskPrioritySchema.optional(), in: z.array(TaskPrioritySchema).optional() })
+  z.object({ eq: TaskPrioritySchema, in: z.array(TaskPrioritySchema) }).partial()
 ]);
 
 export const TaskShowSuccessResponseBodySchema = z.object({
@@ -147,7 +147,7 @@ export const TaskSortSchema = z.object({
 
 export const TaskStatusFilterSchema = z.union([
   TaskStatusSchema,
-  z.object({ eq: TaskStatusSchema.optional(), in: z.array(TaskStatusSchema).optional() })
+  z.object({ eq: TaskStatusSchema, in: z.array(TaskStatusSchema) }).partial()
 ]);
 
 export const TaskUpdatePayloadSchema = z.object({
@@ -170,10 +170,10 @@ export const UserSchema = z.object({
 });
 
 export const TasksIndexRequestQuerySchema = z.object({
-  filter: z.union([TaskFilterSchema, z.array(z.string())]).optional(),
+  filter: z.union([TaskFilterSchema, z.array(TaskFilterSchema)]).optional(),
   include: TaskIncludeSchema.optional(),
   page: TaskPageSchema.optional(),
-  sort: z.union([TaskSortSchema, z.array(z.string())]).optional()
+  sort: z.union([TaskSortSchema, z.array(TaskSortSchema)]).optional()
 });
 
 export const TasksIndexRequestSchema = z.object({
@@ -438,9 +438,9 @@ export interface TaskCreateSuccessResponseBody {
 
 /** A task representing work to be completed */
 export interface TaskFilter {
-  _and?: unknown[];
-  _not?: unknown;
-  _or?: unknown[];
+  _and?: TaskFilter[];
+  _not?: TaskFilter;
+  _or?: TaskFilter[];
   priority?: TaskPriorityFilter;
   status?: TaskStatusFilter;
 }
@@ -562,10 +562,10 @@ export interface TasksIndexRequest {
 }
 
 export interface TasksIndexRequestQuery {
-  filter?: TaskFilter | string[];
+  filter?: TaskFilter | TaskFilter[];
   include?: TaskInclude;
   page?: TaskPage;
-  sort?: TaskSort | string[];
+  sort?: TaskSort | TaskSort[];
 }
 
 export interface TasksIndexResponse {

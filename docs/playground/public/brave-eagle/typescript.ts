@@ -174,9 +174,9 @@ export interface TaskCreateSuccessResponseBody {
 
 /** A task representing work to be completed */
 export interface TaskFilter {
-  _and?: unknown[];
-  _not?: unknown;
-  _or?: unknown[];
+  _and?: TaskFilter[];
+  _not?: TaskFilter;
+  _or?: TaskFilter[];
   priority?: TaskPriorityFilter;
   status?: TaskStatusFilter;
 }
@@ -298,10 +298,10 @@ export interface TasksIndexRequest {
 }
 
 export interface TasksIndexRequestQuery {
-  filter?: TaskFilter | string[];
+  filter?: TaskFilter | TaskFilter[];
   include?: TaskInclude;
   page?: TaskPage;
-  sort?: TaskSort | string[];
+  sort?: TaskSort | TaskSort[];
 }
 
 export interface TasksIndexResponse {

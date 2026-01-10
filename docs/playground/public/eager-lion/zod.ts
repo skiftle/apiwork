@@ -41,9 +41,9 @@ export const InvoiceCreateSuccessResponseBodySchema = z.object({
 });
 
 export const InvoiceFilterSchema = z.object({
-  _and: z.array(z.unknown()).optional(),
-  _not: z.unknown().optional(),
-  _or: z.array(z.unknown()).optional(),
+  _and: z.array(InvoiceFilterSchema).optional(),
+  _not: InvoiceFilterSchema.optional(),
+  _or: z.array(InvoiceFilterSchema).optional(),
   number: z.union([z.string(), StringFilterSchema]).optional(),
   status: z.union([z.string(), NullableStringFilterSchema]).optional()
 });
@@ -118,9 +118,9 @@ export const StringFilterSchema = z.object({
 });
 
 export const InvoicesIndexRequestQuerySchema = z.object({
-  filter: z.union([InvoiceFilterSchema, z.array(z.string())]).optional(),
+  filter: z.union([InvoiceFilterSchema, z.array(InvoiceFilterSchema)]).optional(),
   page: InvoicePageSchema.optional(),
-  sort: z.union([InvoiceSortSchema, z.array(z.string())]).optional()
+  sort: z.union([InvoiceSortSchema, z.array(InvoiceSortSchema)]).optional()
 });
 
 export const InvoicesIndexRequestSchema = z.object({
@@ -212,9 +212,9 @@ export interface InvoiceCreateSuccessResponseBody {
 }
 
 export interface InvoiceFilter {
-  _and?: unknown[];
-  _not?: unknown;
-  _or?: unknown[];
+  _and?: InvoiceFilter[];
+  _not?: InvoiceFilter;
+  _or?: InvoiceFilter[];
   number?: StringFilter | string;
   status?: NullableStringFilter | string;
 }
@@ -282,9 +282,9 @@ export interface InvoicesIndexRequest {
 }
 
 export interface InvoicesIndexRequestQuery {
-  filter?: InvoiceFilter | string[];
+  filter?: InvoiceFilter | InvoiceFilter[];
   page?: InvoicePage;
-  sort?: InvoiceSort | string[];
+  sort?: InvoiceSort | InvoiceSort[];
 }
 
 export interface InvoicesIndexResponse {

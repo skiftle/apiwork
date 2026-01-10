@@ -15,7 +15,7 @@ paths:
           oneOf:
           - "$ref": "#/components/schemas/articleFilter"
           - items:
-              type: string
+              "$ref": "#/components/schemas/articleFilter"
             type: array
       - in: query
         name: page
@@ -29,7 +29,7 @@ paths:
           oneOf:
           - "$ref": "#/components/schemas/articleSort"
           - items:
-              type: string
+              "$ref": "#/components/schemas/articleSort"
             type: array
       responses:
         '200':
@@ -215,11 +215,14 @@ components:
     articleFilter:
       properties:
         _and:
-          items: {}
+          items:
+            "$ref": "#/components/schemas/articleFilter"
           type: array
-        _not: {}
+        _not:
+          "$ref": "#/components/schemas/articleFilter"
         _or:
-          items: {}
+          items:
+            "$ref": "#/components/schemas/articleFilter"
           type: array
         publishedOn:
           oneOf:
@@ -327,6 +330,9 @@ components:
               type: string
             type: array
         type: object
+        required:
+        - eq
+        - in
     articleUpdatePayload:
       properties:
         body:

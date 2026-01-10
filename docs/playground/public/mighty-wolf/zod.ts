@@ -161,9 +161,9 @@ export const VehicleCreateSuccessResponseBodySchema = z.object({
 });
 
 export const VehicleFilterSchema = z.object({
-  _and: z.array(z.unknown()).optional(),
-  _not: z.unknown().optional(),
-  _or: z.array(z.unknown()).optional(),
+  _and: z.array(VehicleFilterSchema).optional(),
+  _not: VehicleFilterSchema.optional(),
+  _or: z.array(VehicleFilterSchema).optional(),
   brand: z.union([z.string(), StringFilterSchema]).optional(),
   model: z.union([z.string(), StringFilterSchema]).optional(),
   year: z.union([z.number().int(), NullableIntegerFilterSchema]).optional()
@@ -201,9 +201,9 @@ export const VehicleUpdateSuccessResponseBodySchema = z.object({
 });
 
 export const VehiclesIndexRequestQuerySchema = z.object({
-  filter: z.union([VehicleFilterSchema, z.array(z.string())]).optional(),
+  filter: z.union([VehicleFilterSchema, z.array(VehicleFilterSchema)]).optional(),
   page: VehiclePageSchema.optional(),
-  sort: z.union([VehicleSortSchema, z.array(z.string())]).optional()
+  sort: z.union([VehicleSortSchema, z.array(VehicleSortSchema)]).optional()
 });
 
 export const VehiclesIndexRequestSchema = z.object({
@@ -405,9 +405,9 @@ export interface VehicleCreateSuccessResponseBody {
 }
 
 export interface VehicleFilter {
-  _and?: unknown[];
-  _not?: unknown;
-  _or?: unknown[];
+  _and?: VehicleFilter[];
+  _not?: VehicleFilter;
+  _or?: VehicleFilter[];
   brand?: StringFilter | string;
   model?: StringFilter | string;
   year?: NullableIntegerFilter | number;
@@ -461,9 +461,9 @@ export interface VehiclesIndexRequest {
 }
 
 export interface VehiclesIndexRequestQuery {
-  filter?: VehicleFilter | string[];
+  filter?: VehicleFilter | VehicleFilter[];
   page?: VehiclePage;
-  sort?: VehicleSort | string[];
+  sort?: VehicleSort | VehicleSort[];
 }
 
 export interface VehiclesIndexResponse {

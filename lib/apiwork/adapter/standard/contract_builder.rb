@@ -908,10 +908,10 @@ module Apiwork
 
           registrar.api_registrar.union(filter_name) do
             variant { reference scoped_name }
-            variant do
+            variant partial: true do
               object do
-                param :eq, optional: true, type: scoped_name
-                param :in, of: scoped_name, optional: true, type: :array
+                param :eq, type: scoped_name
+                param :in, of: scoped_name, type: :array
               end
             end
           end

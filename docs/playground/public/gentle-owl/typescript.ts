@@ -1,7 +1,7 @@
 export interface Comment {
   authorName: null | string;
   body: string;
-  commentable?: unknown;
+  commentable?: CommentCommentable;
   createdAt: string;
   id: string;
 }
@@ -88,7 +88,7 @@ export interface CommentsIndexRequest {
 export interface CommentsIndexRequestQuery {
   include?: CommentInclude;
   page?: CommentPage;
-  sort?: CommentSort | string[];
+  sort?: CommentSort | CommentSort[];
 }
 
 export interface CommentsIndexResponse {
@@ -146,9 +146,9 @@ export interface Image {
 }
 
 export interface ImageFilter {
-  _and?: unknown[];
-  _not?: unknown;
-  _or?: unknown[];
+  _and?: ImageFilter[];
+  _not?: ImageFilter;
+  _or?: ImageFilter[];
   title?: string | unknown;
 }
 
@@ -205,9 +205,9 @@ export interface Post {
 }
 
 export interface PostFilter {
-  _and?: unknown[];
-  _not?: unknown;
-  _or?: unknown[];
+  _and?: PostFilter[];
+  _not?: PostFilter;
+  _or?: PostFilter[];
   title?: string | unknown;
 }
 
@@ -245,9 +245,9 @@ export interface Video {
 }
 
 export interface VideoFilter {
-  _and?: unknown[];
-  _not?: unknown;
-  _or?: unknown[];
+  _and?: VideoFilter[];
+  _not?: VideoFilter;
+  _or?: VideoFilter[];
   title?: string | unknown;
 }
 

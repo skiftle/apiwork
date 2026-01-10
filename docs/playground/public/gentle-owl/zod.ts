@@ -7,7 +7,7 @@ export const SortDirectionSchema = z.enum(['asc', 'desc']);
 export const CommentSchema = z.object({
   authorName: z.string().nullable(),
   body: z.string(),
-  commentable: z.unknown().optional(),
+  commentable: CommentCommentableSchema.optional(),
   createdAt: z.iso.datetime(),
   id: z.string()
 });
@@ -78,9 +78,9 @@ export const ImageSchema = z.object({
 });
 
 export const ImageFilterSchema = z.object({
-  _and: z.array(z.unknown()).optional(),
-  _not: z.unknown().optional(),
-  _or: z.array(z.unknown()).optional(),
+  _and: z.array(ImageFilterSchema).optional(),
+  _not: ImageFilterSchema.optional(),
+  _or: z.array(ImageFilterSchema).optional(),
   title: z.union([z.string(), z.unknown()]).optional()
 });
 
@@ -138,9 +138,9 @@ export const PostSchema = z.object({
 });
 
 export const PostFilterSchema = z.object({
-  _and: z.array(z.unknown()).optional(),
-  _not: z.unknown().optional(),
-  _or: z.array(z.unknown()).optional(),
+  _and: z.array(PostFilterSchema).optional(),
+  _not: PostFilterSchema.optional(),
+  _or: z.array(PostFilterSchema).optional(),
   title: z.union([z.string(), z.unknown()]).optional()
 });
 
@@ -179,9 +179,9 @@ export const VideoSchema = z.object({
 });
 
 export const VideoFilterSchema = z.object({
-  _and: z.array(z.unknown()).optional(),
-  _not: z.unknown().optional(),
-  _or: z.array(z.unknown()).optional(),
+  _and: z.array(VideoFilterSchema).optional(),
+  _not: VideoFilterSchema.optional(),
+  _or: z.array(VideoFilterSchema).optional(),
   title: z.union([z.string(), z.unknown()]).optional()
 });
 
@@ -215,7 +215,7 @@ export const VideoSortSchema = z.object({
 export const CommentsIndexRequestQuerySchema = z.object({
   include: CommentIncludeSchema.optional(),
   page: CommentPageSchema.optional(),
-  sort: z.union([CommentSortSchema, z.array(z.string())]).optional()
+  sort: z.union([CommentSortSchema, z.array(CommentSortSchema)]).optional()
 });
 
 export const CommentsIndexRequestSchema = z.object({
@@ -293,7 +293,7 @@ export const CommentsDestroyResponse = z.never();
 export interface Comment {
   authorName: null | string;
   body: string;
-  commentable?: unknown;
+  commentable?: CommentCommentable;
   createdAt: string;
   id: string;
 }
@@ -380,7 +380,7 @@ export interface CommentsIndexRequest {
 export interface CommentsIndexRequestQuery {
   include?: CommentInclude;
   page?: CommentPage;
-  sort?: CommentSort | string[];
+  sort?: CommentSort | CommentSort[];
 }
 
 export interface CommentsIndexResponse {
@@ -438,9 +438,9 @@ export interface Image {
 }
 
 export interface ImageFilter {
-  _and?: unknown[];
-  _not?: unknown;
-  _or?: unknown[];
+  _and?: ImageFilter[];
+  _not?: ImageFilter;
+  _or?: ImageFilter[];
   title?: string | unknown;
 }
 
@@ -497,9 +497,9 @@ export interface Post {
 }
 
 export interface PostFilter {
-  _and?: unknown[];
-  _not?: unknown;
-  _or?: unknown[];
+  _and?: PostFilter[];
+  _not?: PostFilter;
+  _or?: PostFilter[];
   title?: string | unknown;
 }
 
@@ -537,9 +537,9 @@ export interface Video {
 }
 
 export interface VideoFilter {
-  _and?: unknown[];
-  _not?: unknown;
-  _or?: unknown[];
+  _and?: VideoFilter[];
+  _not?: VideoFilter;
+  _or?: VideoFilter[];
   title?: string | unknown;
 }
 

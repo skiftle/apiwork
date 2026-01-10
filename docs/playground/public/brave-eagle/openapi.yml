@@ -28,7 +28,7 @@ paths:
           oneOf:
           - "$ref": "#/components/schemas/taskFilter"
           - items:
-              type: string
+              "$ref": "#/components/schemas/taskFilter"
             type: array
       - in: query
         name: include
@@ -47,7 +47,7 @@ paths:
           oneOf:
           - "$ref": "#/components/schemas/taskSort"
           - items:
-              type: string
+              "$ref": "#/components/schemas/taskSort"
             type: array
       responses:
         '200':
@@ -524,11 +524,14 @@ components:
     taskFilter:
       properties:
         _and:
-          items: {}
+          items:
+            "$ref": "#/components/schemas/taskFilter"
           type: array
-        _not: {}
+        _not:
+          "$ref": "#/components/schemas/taskFilter"
         _or:
-          items: {}
+          items:
+            "$ref": "#/components/schemas/taskFilter"
           type: array
         priority:
           "$ref": "#/components/schemas/taskPriorityFilter"
@@ -594,6 +597,9 @@ components:
               type: string
             type: array
         type: object
+        required:
+        - eq
+        - in
     taskShowSuccessResponseBody:
       properties:
         meta:
@@ -644,6 +650,9 @@ components:
               type: string
             type: array
         type: object
+        required:
+        - eq
+        - in
     taskUpdatePayload:
       properties:
         description:

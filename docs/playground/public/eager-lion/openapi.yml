@@ -15,7 +15,7 @@ paths:
           oneOf:
           - "$ref": "#/components/schemas/invoiceFilter"
           - items:
-              type: string
+              "$ref": "#/components/schemas/invoiceFilter"
             type: array
       - in: query
         name: page
@@ -29,7 +29,7 @@ paths:
           oneOf:
           - "$ref": "#/components/schemas/invoiceSort"
           - items:
-              type: string
+              "$ref": "#/components/schemas/invoiceSort"
             type: array
       responses:
         '200':
@@ -255,11 +255,14 @@ components:
     invoiceFilter:
       properties:
         _and:
-          items: {}
+          items:
+            "$ref": "#/components/schemas/invoiceFilter"
           type: array
-        _not: {}
+        _not:
+          "$ref": "#/components/schemas/invoiceFilter"
         _or:
-          items: {}
+          items:
+            "$ref": "#/components/schemas/invoiceFilter"
           type: array
         number:
           oneOf:

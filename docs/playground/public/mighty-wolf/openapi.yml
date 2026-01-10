@@ -15,7 +15,7 @@ paths:
           oneOf:
           - "$ref": "#/components/schemas/vehicleFilter"
           - items:
-              type: string
+              "$ref": "#/components/schemas/vehicleFilter"
             type: array
       - in: query
         name: page
@@ -29,7 +29,7 @@ paths:
           oneOf:
           - "$ref": "#/components/schemas/vehicleSort"
           - items:
-              type: string
+              "$ref": "#/components/schemas/vehicleSort"
             type: array
       responses:
         '200':
@@ -539,11 +539,14 @@ components:
     vehicleFilter:
       properties:
         _and:
-          items: {}
+          items:
+            "$ref": "#/components/schemas/vehicleFilter"
           type: array
-        _not: {}
+        _not:
+          "$ref": "#/components/schemas/vehicleFilter"
         _or:
-          items: {}
+          items:
+            "$ref": "#/components/schemas/vehicleFilter"
           type: array
         brand:
           oneOf:

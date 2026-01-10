@@ -77,8 +77,10 @@ module Apiwork
           tag:,
           custom_type: element.custom_type,
           enum: element.enum,
+          of: element.of,
           shape: element.shape,
           type: element.type,
+          value: element.value,
         }.compact
 
         append_or_merge_variant(data, tag)

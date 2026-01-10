@@ -209,11 +209,11 @@ module Apiwork
         end
 
         def build_variant(variant_definition)
-          variant_type = variant_definition[:type]
+          variant_type = variant_definition[:custom_type] || variant_definition[:type]
           is_registered = registered_type?(variant_type)
 
           ref = is_registered ? qualified_name(variant_type, @contract_param) : nil
-          resolved_type = is_registered ? :ref : (variant_type || :unknown)
+          resolved_type = is_registered ? :ref : (variant_definition[:type] || :unknown)
 
           {
             ref:,
@@ -230,11 +230,11 @@ module Apiwork
             nullable: false,
             of: resolve_variant_of(variant_definition),
             optional: false,
-            partial: false,
+            partial: variant_definition[:partial] == true,
             shape: resolve_variant_shape(variant_definition, variant_type),
             tag: variant_definition[:tag],
             type: resolved_type,
-            value: nil,
+            value: variant_definition[:value],
             variants: [],
           }
         end

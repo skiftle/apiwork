@@ -63,9 +63,9 @@ export const ProjectCreateSuccessResponseBodySchema = z.object({
 });
 
 export const ProjectFilterSchema = z.object({
-  _and: z.array(z.unknown()).optional(),
-  _not: z.unknown().optional(),
-  _or: z.array(z.unknown()).optional(),
+  _and: z.array(ProjectFilterSchema).optional(),
+  _not: ProjectFilterSchema.optional(),
+  _or: z.array(ProjectFilterSchema).optional(),
   priority: ProjectPriorityFilterSchema.optional(),
   status: ProjectStatusFilterSchema.optional()
 });
@@ -83,7 +83,7 @@ export const ProjectPageSchema = z.object({
 
 export const ProjectPriorityFilterSchema = z.union([
   ProjectPrioritySchema,
-  z.object({ eq: ProjectPrioritySchema.optional(), in: z.array(ProjectPrioritySchema).optional() })
+  z.object({ eq: ProjectPrioritySchema, in: z.array(ProjectPrioritySchema) }).partial()
 ]);
 
 export const ProjectShowSuccessResponseBodySchema = z.object({
@@ -98,7 +98,7 @@ export const ProjectSortSchema = z.object({
 
 export const ProjectStatusFilterSchema = z.union([
   ProjectStatusSchema,
-  z.object({ eq: ProjectStatusSchema.optional(), in: z.array(ProjectStatusSchema).optional() })
+  z.object({ eq: ProjectStatusSchema, in: z.array(ProjectStatusSchema) }).partial()
 ]);
 
 export const ProjectUpdatePayloadSchema = z.object({
@@ -123,9 +123,9 @@ export const StringFilterSchema = z.object({
 });
 
 export const ProjectsIndexRequestQuerySchema = z.object({
-  filter: z.union([ProjectFilterSchema, z.array(z.string())]).optional(),
+  filter: z.union([ProjectFilterSchema, z.array(ProjectFilterSchema)]).optional(),
   page: ProjectPageSchema.optional(),
-  sort: z.union([ProjectSortSchema, z.array(z.string())]).optional()
+  sort: z.union([ProjectSortSchema, z.array(ProjectSortSchema)]).optional()
 });
 
 export const ProjectsIndexRequestSchema = z.object({
@@ -234,9 +234,9 @@ export interface ProjectCreateSuccessResponseBody {
 
 /** A project with tasks and deadlines */
 export interface ProjectFilter {
-  _and?: unknown[];
-  _not?: unknown;
-  _or?: unknown[];
+  _and?: ProjectFilter[];
+  _not?: ProjectFilter;
+  _or?: ProjectFilter[];
   priority?: ProjectPriorityFilter;
   status?: ProjectStatusFilter;
 }
@@ -306,9 +306,9 @@ export interface ProjectsIndexRequest {
 }
 
 export interface ProjectsIndexRequestQuery {
-  filter?: ProjectFilter | string[];
+  filter?: ProjectFilter | ProjectFilter[];
   page?: ProjectPage;
-  sort?: ProjectSort | string[];
+  sort?: ProjectSort | ProjectSort[];
 }
 
 export interface ProjectsIndexResponse {

@@ -15,7 +15,7 @@ paths:
           oneOf:
           - "$ref": "#/components/schemas/orderFilter"
           - items:
-              type: string
+              "$ref": "#/components/schemas/orderFilter"
             type: array
       - in: query
         name: page
@@ -29,7 +29,7 @@ paths:
           oneOf:
           - "$ref": "#/components/schemas/orderSort"
           - items:
-              type: string
+              "$ref": "#/components/schemas/orderSort"
             type: array
       responses:
         '200':
@@ -265,11 +265,14 @@ components:
     orderFilter:
       properties:
         _and:
-          items: {}
+          items:
+            "$ref": "#/components/schemas/orderFilter"
           type: array
-        _not: {}
+        _not:
+          "$ref": "#/components/schemas/orderFilter"
         _or:
-          items: {}
+          items:
+            "$ref": "#/components/schemas/orderFilter"
           type: array
         status:
           oneOf:

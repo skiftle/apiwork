@@ -58,9 +58,9 @@ export interface ProjectCreateSuccessResponseBody {
 
 /** A project with tasks and deadlines */
 export interface ProjectFilter {
-  _and?: unknown[];
-  _not?: unknown;
-  _or?: unknown[];
+  _and?: ProjectFilter[];
+  _not?: ProjectFilter;
+  _or?: ProjectFilter[];
   priority?: ProjectPriorityFilter;
   status?: ProjectStatusFilter;
 }
@@ -130,9 +130,9 @@ export interface ProjectsIndexRequest {
 }
 
 export interface ProjectsIndexRequestQuery {
-  filter?: ProjectFilter | string[];
+  filter?: ProjectFilter | ProjectFilter[];
   page?: ProjectPage;
-  sort?: ProjectSort | string[];
+  sort?: ProjectSort | ProjectSort[];
 }
 
 export interface ProjectsIndexResponse {

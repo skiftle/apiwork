@@ -15,7 +15,7 @@ paths:
           oneOf:
           - "$ref": "#/components/schemas/userFilter"
           - items:
-              type: string
+              "$ref": "#/components/schemas/userFilter"
             type: array
       - in: query
         name: page
@@ -29,7 +29,7 @@ paths:
           oneOf:
           - "$ref": "#/components/schemas/userSort"
           - items:
-              type: string
+              "$ref": "#/components/schemas/userSort"
             type: array
       responses:
         '200':
@@ -813,11 +813,14 @@ components:
     userFilter:
       properties:
         _and:
-          items: {}
+          items:
+            "$ref": "#/components/schemas/userFilter"
           type: array
-        _not: {}
+        _not:
+          "$ref": "#/components/schemas/userFilter"
         _or:
-          items: {}
+          items:
+            "$ref": "#/components/schemas/userFilter"
           type: array
         email:
           oneOf:

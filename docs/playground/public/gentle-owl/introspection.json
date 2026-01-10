@@ -91,7 +91,16 @@
                     "type": "array",
                     "max": null,
                     "min": null,
-                    "of": null,
+                    "of": {
+                      "default": null,
+                      "deprecated": null,
+                      "description": null,
+                      "example": null,
+                      "nullable": null,
+                      "optional": null,
+                      "type": "ref",
+                      "ref": "comment_sort"
+                    },
                     "shape": {}
                   }
                 ]
@@ -424,7 +433,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "commentable"
+          "type": "ref",
+          "ref": "comment_commentable"
         },
         "created_at": {
           "default": null,
@@ -945,7 +955,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "filter"
+            "type": "ref",
+            "ref": "image_filter"
           },
           "shape": {}
         },
@@ -956,7 +967,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "filter"
+          "type": "ref",
+          "ref": "image_filter"
         },
         "_or": {
           "default": null,
@@ -975,7 +987,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "filter"
+            "type": "ref",
+            "ref": "image_filter"
           },
           "shape": {}
         },
@@ -1496,7 +1509,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "filter"
+            "type": "ref",
+            "ref": "post_filter"
           },
           "shape": {}
         },
@@ -1507,7 +1521,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "filter"
+          "type": "ref",
+          "ref": "post_filter"
         },
         "_or": {
           "default": null,
@@ -1526,7 +1541,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "filter"
+            "type": "ref",
+            "ref": "post_filter"
           },
           "shape": {}
         },
@@ -1860,7 +1876,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "filter"
+            "type": "ref",
+            "ref": "video_filter"
           },
           "shape": {}
         },
@@ -1871,7 +1888,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "filter"
+          "type": "ref",
+          "ref": "video_filter"
         },
         "_or": {
           "default": null,
@@ -1890,7 +1908,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "filter"
+            "type": "ref",
+            "ref": "video_filter"
           },
           "shape": {}
         },

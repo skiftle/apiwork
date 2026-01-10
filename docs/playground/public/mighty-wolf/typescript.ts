@@ -151,9 +151,9 @@ export interface VehicleCreateSuccessResponseBody {
 }
 
 export interface VehicleFilter {
-  _and?: unknown[];
-  _not?: unknown;
-  _or?: unknown[];
+  _and?: VehicleFilter[];
+  _not?: VehicleFilter;
+  _or?: VehicleFilter[];
   brand?: StringFilter | string;
   model?: StringFilter | string;
   year?: NullableIntegerFilter | number;
@@ -207,9 +207,9 @@ export interface VehiclesIndexRequest {
 }
 
 export interface VehiclesIndexRequestQuery {
-  filter?: VehicleFilter | string[];
+  filter?: VehicleFilter | VehicleFilter[];
   page?: VehiclePage;
-  sort?: VehicleSort | string[];
+  sort?: VehicleSort | VehicleSort[];
 }
 
 export interface VehiclesIndexResponse {

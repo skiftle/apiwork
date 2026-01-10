@@ -99,11 +99,11 @@ module Apiwork
         end
 
         def build_variant(variant, scope)
-          variant_type = variant[:type]
+          variant_type = variant[:custom_type] || variant[:type]
           is_registered = registered_type?(variant_type)
 
           ref = is_registered ? variant_type : nil
-          resolved_type = is_registered ? :ref : (variant_type || :unknown)
+          resolved_type = is_registered ? :ref : (variant[:type] || :unknown)
 
           {
             ref:,
@@ -124,7 +124,7 @@ module Apiwork
             shape: build_nested_shape(variant[:shape]),
             tag: variant[:tag],
             type: resolved_type,
-            value: nil,
+            value: variant[:value],
             variants: [],
           }
         end
@@ -149,9 +149,8 @@ module Apiwork
 
         def resolve_type_ref(type_value, scope)
           return nil unless type_value
-          return nil unless registered_type?(type_value)
 
-          type_value
+          resolve_scoped_type_name(type_value, scope)
         end
 
         def resolve_enum(options, scope)
@@ -167,8 +166,9 @@ module Apiwork
         def resolve_of(options, scope)
           return nil unless options[:of]
 
-          if registered_type?(options[:of])
-            { ref: options[:of], shape: {}, type: :ref }
+          scoped_name = resolve_scoped_type_name(options[:of], scope)
+          if scoped_name
+            { ref: scoped_name, shape: {}, type: :ref }
           else
             { ref: nil, type: options[:of] }
           end
@@ -187,8 +187,9 @@ module Apiwork
         def resolve_variant_of(variant, scope)
           return nil unless variant[:of]
 
-          if registered_type?(variant[:of])
-            { ref: variant[:of], shape: {}, type: :ref }
+          scoped_name = resolve_scoped_type_name(variant[:of], scope)
+          if scoped_name
+            { ref: scoped_name, shape: {}, type: :ref }
           else
             { ref: nil, type: variant[:of] }
           end
@@ -226,6 +227,20 @@ module Apiwork
           return result if result
 
           I18n.t(:"apiwork.enums.#{enum_name}.description", default: nil)
+        end
+
+        def resolve_scoped_type_name(type_name, scope)
+          return nil unless type_name.is_a?(Symbol)
+          return nil unless @api_class
+
+          return type_name if @api_class.type_registry.key?(type_name) || @api_class.enum_registry.key?(type_name)
+
+          return nil unless scope
+
+          scoped_name = @api_class.scoped_type_name(scope, type_name)
+          return scoped_name if @api_class.type_registry.key?(scoped_name) || @api_class.enum_registry.key?(scoped_name)
+
+          nil
         end
 
         def registered_type?(type_name)
