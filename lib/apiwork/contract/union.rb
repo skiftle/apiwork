@@ -26,10 +26,7 @@ module Apiwork
 
       def initialize(contract_class, discriminator: nil)
         @contract_class = contract_class
-        @union = API::Union.new(
-          discriminator:,
-          object: -> { Object.new(contract_class) },
-        )
+        @union = API::Union.new(discriminator:)
       end
 
       # @api public
@@ -61,7 +58,13 @@ module Apiwork
       #     end
       #   end
       def variant(enum: nil, of: nil, partial: nil, tag: nil, type:, &block)
-        @union.variant(of:, partial:, tag:, type:, enum: resolve_enum(enum), &block)
+        shape = if block && type == :object
+                  builder = Object.new(@contract_class)
+                  builder.instance_eval(&block)
+                  builder
+                end
+
+        @union.variant(of:, partial:, shape:, tag:, type:, enum: resolve_enum(enum))
       end
 
       private

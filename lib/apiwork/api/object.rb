@@ -23,12 +23,7 @@ module Apiwork
     class Object
       attr_reader :params
 
-      def initialize(
-        object: -> { Object.new },
-        union: ->(discriminator) { Union.new(discriminator:) }
-      )
-        @object = object
-        @union = union
+      def initialize
         @params = {}
       end
 
@@ -122,11 +117,11 @@ module Apiwork
 
         case type
         when :object
-          builder = @object.call
+          builder = Object.new
           builder.instance_eval(&block)
           builder
         when :union
-          builder = @union.call(discriminator)
+          builder = Union.new(discriminator:)
           builder.instance_eval(&block)
           builder
         end

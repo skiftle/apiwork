@@ -28,9 +28,8 @@ module Apiwork
       attr_reader :discriminator,
                   :variants
 
-      def initialize(discriminator: nil, object: -> { Object.new })
+      def initialize(discriminator: nil)
         @discriminator = discriminator
-        @object = object
         @variants = []
       end
 
@@ -55,14 +54,14 @@ module Apiwork
       #   variant tag: 'bank', type: :object do
       #     param :account, type: :string
       #   end
-      def variant(enum: nil, of: nil, partial: nil, tag: nil, type:, &block)
+      def variant(enum: nil, of: nil, partial: nil, shape: nil, tag: nil, type:, &block)
         validate_tag!(tag)
 
-        shape = if block && type == :object
-                  builder = @object.call
-                  builder.instance_eval(&block)
-                  builder
-                end
+        shape ||= if block && type == :object
+                    builder = Object.new
+                    builder.instance_eval(&block)
+                    builder
+                  end
 
         data = { enum:, of:, partial:, shape:, tag:, type: }.compact
 

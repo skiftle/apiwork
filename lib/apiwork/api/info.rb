@@ -21,21 +21,6 @@ module Apiwork
         @version = nil
       end
 
-      def to_h
-        {
-          contact: @contact&.to_h,
-          deprecated: @deprecated,
-          description: @description,
-          license: @license&.to_h,
-          servers: @servers&.map(&:to_h),
-          summary: @summary,
-          tags: @tags,
-          terms_of_service: @terms_of_service,
-          title: @title,
-          version: @version,
-        }
-      end
-
       # @api public
       # Sets the API title.
       #
@@ -190,6 +175,21 @@ module Apiwork
       #   end
       def deprecated
         @deprecated = true
+      end
+
+      def to_h
+        {
+          contact: @contact&.to_h,
+          deprecated: @deprecated,
+          description: @description,
+          license: @license&.to_h,
+          servers: @servers&.map(&:to_h),
+          summary: @summary,
+          tags: @tags,
+          terms_of_service: @terms_of_service,
+          title: @title,
+          version: @version,
+        }
       end
     end
   end
