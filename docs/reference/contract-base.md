@@ -189,7 +189,7 @@ enum :status, values: %w[draft sent paid]
 **Example: Reference in contract**
 
 ```ruby
-param :status, enum: :status
+string :status, enum: :status
 ```
 
 ---

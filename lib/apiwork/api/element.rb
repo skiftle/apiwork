@@ -71,19 +71,19 @@ module Apiwork
       # @return [void]
       #
       # @example Primitive type
-      #   of type: :string
+      #   string
       #
       # @example Reference to custom type
-      #   of type: :invoice
+      #   reference :invoice
       #
       # @example Object with block
-      #   of type: :object do
-      #     param :name, type: :string
+      #   object do
+      #     string :name
       #   end
       #
       # @example Array with block
-      #   of type: :array do
-      #     of type: :string
+      #   array do
+      #     string
       #   end
       def of(discriminator: nil, enum: nil, format: nil, max: nil, min: nil, type:, value: nil, &block)
         case type

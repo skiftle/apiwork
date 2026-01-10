@@ -209,7 +209,7 @@ module Apiwork
         #   enum :status, values: %w[draft sent paid]
         #
         # @example Reference in contract
-        #   param :status, enum: :status
+        #   string :status, enum: :status
         def enum(
           name,
           values: nil,

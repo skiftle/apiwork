@@ -255,28 +255,28 @@ are aliases to this method.
 **Example: Primitive type**
 
 ```ruby
-of type: :string
+string
 ```
 
 **Example: Reference to custom type**
 
 ```ruby
-of type: :invoice
+reference :invoice
 ```
 
 **Example: Object with block**
 
 ```ruby
-of type: :object do
-  param :name, type: :string
+object do
+  string :name
 end
 ```
 
 **Example: Array with block**
 
 ```ruby
-of type: :array do
-  of type: :string
+array do
+  string
 end
 ```
 
