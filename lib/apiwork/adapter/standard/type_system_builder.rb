@@ -236,7 +236,10 @@ module Apiwork
           registrar.object(type_name) do
             params.each do |param_definition|
               if param_definition[:of]
-                param param_definition[:name], of: param_definition[:of], optional: true, type: param_definition[:type]
+                element_type = param_definition[:of]
+                param param_definition[:name], optional: true, type: param_definition[:type] do
+                  of type: element_type
+                end
               else
                 param param_definition[:name], optional: true, type: param_definition[:type]
               end

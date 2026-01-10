@@ -1023,6 +1023,17 @@ module Apiwork
       end
 
       def define_standard_param(name, as:, default:, of:, optional:, options:, resolved_enum:, shape:, type:, &block)
+        resolved_of = of
+        resolved_shape = shape
+
+        if block_given? && type == :array
+          element = Element.new(@contract_class)
+          element.instance_eval(&block)
+          element.validate!
+          resolved_of = element.of_type
+          resolved_shape = element.shape
+        end
+
         @params[name] = apply_param_defaults(
           {
             name:,
@@ -1030,15 +1041,15 @@ module Apiwork
             optional:,
             default:,
             enum: resolved_enum,
-            of:,
+            of: resolved_of,
             as:,
             **options,
           },
         )
 
-        if shape
-          @params[name][:shape] = shape
-        elsif block_given?
+        if resolved_shape
+          @params[name][:shape] = resolved_shape
+        elsif block_given? && type != :array
           shape_param_definition = Object.new(@contract_class, action_name: @action_name)
           shape_param_definition.instance_eval(&block)
           @params[name][:shape] = shape_param_definition

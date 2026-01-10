@@ -30,10 +30,15 @@ module Apiwork
                   :format,
                   :max,
                   :min,
-                  :of,
                   :shape,
                   :type,
                   :value
+
+      # Returns the element type for arrays.
+      # @return [Symbol, nil]
+      def of_value
+        @of
+      end
 
       def initialize
         @custom_type = nil
@@ -50,6 +55,79 @@ module Apiwork
       end
 
       # @api public
+      # Defines an element type using explicit type parameter.
+      #
+      # This is the verbose form. Sugar methods like `string`, `integer`
+      # are aliases to this method.
+      #
+      # @param type [Symbol] the type (:string, :integer, :object, :array, etc. or custom type)
+      # @param discriminator [Symbol] discriminator field for unions
+      # @param enum [Array] allowed values
+      # @param format [String] format hint
+      # @param max [Numeric] maximum value/length
+      # @param min [Numeric] minimum value/length
+      # @param value [Object] literal value (for type: :literal)
+      # @yield block for complex types (:object, :array, :union)
+      # @return [void]
+      #
+      # @example Primitive type
+      #   of type: :string
+      #
+      # @example Reference to custom type
+      #   of type: :invoice
+      #
+      # @example Object with block
+      #   of type: :object do
+      #     param :name, type: :string
+      #   end
+      #
+      # @example Array with block
+      #   of type: :array do
+      #     of type: :string
+      #   end
+      def of(discriminator: nil, enum: nil, format: nil, max: nil, min: nil, type:, value: nil, &block)
+        case type
+        when :string, :integer, :decimal, :boolean, :float, :datetime, :date, :uuid, :time
+          set_type(type, enum:, format:, max:, min:)
+        when :literal
+          @type = :literal
+          @value = value
+          @defined = true
+        when :object
+          raise ArgumentError, 'object requires a block' unless block
+
+          builder = Object.new
+          builder.instance_eval(&block)
+          @type = :object
+          @shape = builder
+          @defined = true
+        when :array
+          raise ArgumentError, 'array requires a block' unless block
+
+          inner = Element.new
+          inner.instance_eval(&block)
+          inner.validate!
+          @type = :array
+          @of = inner.of_type
+          @shape = inner.shape
+          @defined = true
+        when :union
+          raise ArgumentError, 'union requires a block' unless block
+
+          builder = Union.new(discriminator:)
+          builder.instance_eval(&block)
+          @type = :union
+          @shape = builder
+          @discriminator = discriminator
+          @defined = true
+        else
+          @type = type
+          @custom_type = type
+          @defined = true
+        end
+      end
+
+      # @api public
       # Defines a string element.
       #
       # @param enum [Array] allowed values
@@ -58,7 +136,7 @@ module Apiwork
       # @param min [Integer] minimum length
       # @return [void]
       def string(enum: nil, format: nil, max: nil, min: nil)
-        set_type(:string, enum:, format:, max:, min:)
+        of(enum:, format:, max:, min:, type: :string)
       end
 
       # @api public
@@ -69,7 +147,7 @@ module Apiwork
       # @param min [Integer] minimum value
       # @return [void]
       def integer(enum: nil, max: nil, min: nil)
-        set_type(:integer, enum:, max:, min:)
+        of(enum:, max:, min:, type: :integer)
       end
 
       # @api public
@@ -79,7 +157,7 @@ module Apiwork
       # @param min [Numeric] minimum value
       # @return [void]
       def decimal(max: nil, min: nil)
-        set_type(:decimal, max:, min:)
+        of(max:, min:, type: :decimal)
       end
 
       # @api public
@@ -87,7 +165,7 @@ module Apiwork
       #
       # @return [void]
       def boolean
-        set_type(:boolean)
+        of(type: :boolean)
       end
 
       # @api public
@@ -97,7 +175,7 @@ module Apiwork
       # @param min [Numeric] minimum value
       # @return [void]
       def float(max: nil, min: nil)
-        set_type(:float, max:, min:)
+        of(max:, min:, type: :float)
       end
 
       # @api public
@@ -105,7 +183,7 @@ module Apiwork
       #
       # @return [void]
       def datetime
-        set_type(:datetime)
+        of(type: :datetime)
       end
 
       # @api public
@@ -113,7 +191,7 @@ module Apiwork
       #
       # @return [void]
       def date
-        set_type(:date)
+        of(type: :date)
       end
 
       # @api public
@@ -121,7 +199,7 @@ module Apiwork
       #
       # @return [void]
       def uuid
-        set_type(:uuid)
+        of(type: :uuid)
       end
 
       # @api public
@@ -134,9 +212,7 @@ module Apiwork
       #   literal value: 'card'
       #   literal value: 42
       def literal(value:)
-        @type = :literal
-        @value = value
-        @defined = true
+        of(value:, type: :literal)
       end
 
       # @api public
@@ -150,10 +226,7 @@ module Apiwork
       #   reference :item
       #   reference :shipping_address, to: :address
       def reference(type_name, to: nil)
-        resolved = to || type_name
-        @type = resolved
-        @custom_type = resolved
-        @defined = true
+        of(type: to || type_name)
       end
 
       # @api public
@@ -169,13 +242,7 @@ module Apiwork
       #     decimal :amount
       #   end
       def object(&block)
-        raise ArgumentError, 'object requires a block' unless block
-
-        builder = Object.new
-        builder.instance_eval(&block)
-        @type = :object
-        @shape = builder
-        @defined = true
+        of(type: :object, &block)
       end
 
       # @api public
@@ -192,16 +259,7 @@ module Apiwork
       # @example Array of references
       #   array { reference :item }
       def array(&block)
-        raise ArgumentError, 'array requires a block' unless block
-
-        inner = Element.new
-        inner.instance_eval(&block)
-        inner.validate!
-
-        @type = :array
-        @of = inner.of_type
-        @shape = inner.shape
-        @defined = true
+        of(type: :array, &block)
       end
 
       # @api public
@@ -218,14 +276,7 @@ module Apiwork
       #     variant { string }
       #   end
       def union(discriminator: nil, &block)
-        raise ArgumentError, 'union requires a block' unless block
-
-        builder = Union.new(discriminator:)
-        builder.instance_eval(&block)
-        @type = :union
-        @shape = builder
-        @discriminator = discriminator
-        @defined = true
+        of(discriminator:, type: :union, &block)
       end
 
       # Returns the type for `of:` parameter in arrays.

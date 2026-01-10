@@ -75,7 +75,7 @@ module Apiwork
           tag:,
           custom_type: element.custom_type,
           enum: element.enum,
-          of: element.of,
+          of: element.of_value,
           shape: element.shape,
           type: element.type,
           value: element.value,

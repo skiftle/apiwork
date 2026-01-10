@@ -98,7 +98,19 @@ module Apiwork
         value: nil,
         &block
       )
-        shape ||= build_shape(type, discriminator, &block)
+        resolved_of = of
+        resolved_shape = shape
+
+        if block && type == :array
+          element = Element.new
+          element.instance_eval(&block)
+          element.validate!
+          resolved_of = element.of_type
+          resolved_shape = element.shape
+          discriminator = element.discriminator
+        else
+          resolved_shape ||= build_shape(type, discriminator, &block)
+        end
 
         @params[name] = (@params[name] || {}).merge(
           {
@@ -115,12 +127,12 @@ module Apiwork
             min:,
             name:,
             nullable:,
-            of:,
             optional:,
             required:,
-            shape:,
             type:,
             value:,
+            of: resolved_of,
+            shape: resolved_shape,
           }.compact,
         )
       end

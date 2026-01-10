@@ -38,7 +38,9 @@ module Apiwork
           resource_type_name = resource_type_name_for_response
           pagination_type = build_pagination_type
 
-          param_definition.param root_key_plural, of: resource_type_name, type: :array
+          param_definition.param root_key_plural, type: :array do
+            of type: resource_type_name
+          end
           param_definition.param :pagination, type: pagination_type
           param_definition.param :meta, optional: true, type: :object
         end
@@ -373,7 +375,9 @@ module Apiwork
                 param name, type: association_type || :object, **base_options
               elsif association_definition.collection?
                 if association_type
-                  param name, of: association_type, type: :array, **base_options
+                  param name, type: :array, **base_options do
+                    of type: association_type
+                  end
                 else
                   param name, type: :array, **base_options
                 end
@@ -409,8 +413,12 @@ module Apiwork
           type_options = {} unless depth.zero?
 
           registrar.object(type_name, **type_options) do
-            param :_and, of: type_name, optional: true, type: :array
-            param :_or, of: type_name, optional: true, type: :array
+            param :_and, optional: true, type: :array do
+              of type: type_name
+            end
+            param :_or, optional: true, type: :array do
+              of type: type_name
+            end
             param :_not, optional: true, type: type_name
 
             schema_class_local.attribute_definitions.each do |name, attribute_definition|
@@ -911,7 +919,9 @@ module Apiwork
             variant partial: true do
               object do
                 param :eq, type: scoped_name
-                param :in, of: scoped_name, type: :array
+                param :in, type: :array do
+                  of type: scoped_name
+                end
               end
             end
           end
