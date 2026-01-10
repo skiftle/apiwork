@@ -32,7 +32,8 @@ module Apiwork
                   :min,
                   :of,
                   :shape,
-                  :type
+                  :type,
+                  :value
 
       def initialize
         @custom_type = nil
@@ -45,6 +46,7 @@ module Apiwork
         @of = nil
         @shape = nil
         @type = nil
+        @value = nil
       end
 
       # @api public
@@ -120,6 +122,21 @@ module Apiwork
       # @return [void]
       def uuid
         set_type(:uuid)
+      end
+
+      # @api public
+      # Defines a literal value element.
+      #
+      # @param value [Object] the exact value (required)
+      # @return [void]
+      #
+      # @example
+      #   literal value: 'card'
+      #   literal value: 42
+      def literal(value:)
+        @type = :literal
+        @value = value
+        @defined = true
       end
 
       # @api public

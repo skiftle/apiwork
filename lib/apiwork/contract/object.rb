@@ -454,6 +454,36 @@ module Apiwork
       end
 
       # @api public
+      # Defines a literal value field.
+      #
+      # @param name [Symbol] field name
+      # @param value [Object] the exact value (required)
+      # @param deprecated [Boolean] mark as deprecated
+      # @param description [String] documentation description
+      # @param optional [Boolean] whether field can be omitted
+      # @return [void]
+      #
+      # @example
+      #   literal :type, value: 'card'
+      #   literal :version, value: 1
+      def literal(
+        name,
+        value:,
+        deprecated: nil,
+        description: nil,
+        optional: false
+      )
+        param(
+          name,
+          deprecated:,
+          description:,
+          optional:,
+          value:,
+          type: :literal,
+        )
+      end
+
+      # @api public
       # Defines a reference to a named type.
       #
       # @param name [Symbol] field name
