@@ -53,7 +53,6 @@ module Apiwork
       #
       # When using schema!, body is auto-generated from schema attributes.
       #
-      # @yieldself [Contract::Object] block context for defining params
       # @return [Contract::Object]
       # @see Contract::Object
       #

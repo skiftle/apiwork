@@ -38,8 +38,8 @@ module Apiwork
       # @param enum [Array, Symbol] allowed values for this variant
       # @param tag [String] discriminator value (required when union has discriminator)
       # @param partial [Boolean] allow partial object (omit required fields)
-      # @yield nested params for :object variants
       # @return [void]
+      # @see Contract::Object
       #
       # @example Simple union (string or integer)
       #   param :value, type: :union do

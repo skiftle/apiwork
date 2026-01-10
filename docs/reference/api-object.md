@@ -6,30 +6,26 @@ next: false
 
 # API::Object
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L23)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L21)
 
-Defines an object shape with named parameters.
+Block context for defining reusable object types.
 
-Objects are the primary way to define structured data in Apiwork.
-Each object has a set of named parameters with types and constraints.
+Accessed via `object :name do` in API or contract definitions.
+Use [#param](#param) to define fields.
 
-**Example: Define an address object**
+**Example: Define a reusable address type**
 
 ```ruby
 object :address do
   param :street, type: :string
   param :city, type: :string
-  param :postal_code, type: :string
 end
 ```
 
-**Example: Inline object in a param**
+**Example: Reference in contract**
 
 ```ruby
-param :shipping, type: :object do
-  param :street, type: :string
-  param :city, type: :string
-end
+param :shipping, type: :address
 ```
 
 ## Instance Methods
@@ -38,7 +34,7 @@ end
 
 `#param(name, type: nil, optional: false, as: nil, default: nil, deprecated: nil, description: nil, discriminator: nil, enum: nil, example: nil, format: nil, max: nil, min: nil, nullable: nil, of: nil, required: nil, value: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L70)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L63)
 
 Defines a parameter within this object.
 

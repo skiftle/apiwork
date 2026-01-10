@@ -159,7 +159,6 @@ module Apiwork
         # @param format [String] format hint for docs
         # @param deprecated [Boolean] mark as deprecated
         # @param schema_class [Class] a {Schema::Base} subclass for type inference
-        # @yieldself [API::Object] block context for defining params
         # @see API::Object
         #
         # @example Reusable address object
@@ -243,7 +242,6 @@ module Apiwork
         #
         # @param name [Symbol] union name
         # @param discriminator [Symbol] field that identifies the variant
-        # @yieldself [API::Union] block context for defining variants
         # @see API::Union
         #
         # @example Payment method union

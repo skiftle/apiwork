@@ -6,27 +6,17 @@ next: false
 
 # API::Union
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/union.rb#L27)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/union.rb#L28)
 
-Defines a union type with multiple variants.
+Block context for defining reusable union types.
 
-A union represents a value that can be one of several types.
-With a discriminator, variants are distinguished by a tag field.
-Without a discriminator, validation tries each variant in order.
-
-**Example: Simple union (no discriminator)**
-
-```ruby
-union :filter_value do
-  variant type: :string
-  variant type: :integer
-end
-```
+Accessed via `union :name do` in API or contract definitions.
+Use [#variant](#variant) to define possible types.
 
 **Example: Discriminated union**
 
 ```ruby
-union :payment, discriminator: :kind do
+union :payment, discriminator: :type do
   variant tag: 'card', type: :object do
     param :last_four, type: :string
   end
@@ -36,11 +26,20 @@ union :payment, discriminator: :kind do
 end
 ```
 
+**Example: Simple union**
+
+```ruby
+union :filter_value do
+  variant type: :string
+  variant type: :integer
+end
+```
+
 ## Instance Methods
 
 ### #variant
 
-`#variant(enum: nil, of: nil, partial: nil, tag: nil, type:, &block)`
+`#variant(enum: nil, of: nil, partial: nil, shape: nil, tag: nil, type:, &block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/union.rb#L58)
 
@@ -59,6 +58,10 @@ Defines a variant within this union.
 **Returns**
 
 `void`
+
+**See also**
+
+- [API::Object](api-object)
 
 **Example: Primitive variant**
 

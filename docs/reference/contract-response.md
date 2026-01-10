@@ -1,5 +1,5 @@
 ---
-order: 21
+order: 20
 prev: false
 next: false
 ---
@@ -10,7 +10,7 @@ next: false
 
 Defines body for a response.
 
-Returns [Object](contract-object) via `body`.
+Returns [Object](object) via `body`.
 
 ## Instance Methods
 
@@ -18,16 +18,15 @@ Returns [Object](contract-object) via `body`.
 
 `#body(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response.rb#L69)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response.rb#L67)
 
 Defines the response body for this response.
 
-Use `param` inside the block to define fields.
 When using schema!, body is auto-generated from schema attributes.
 
 **Returns**
 
-[Object](contract-object) — the body param
+[Contract::Object](contract-object)
 
 **See also**
 

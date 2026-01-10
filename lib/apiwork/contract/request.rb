@@ -24,7 +24,6 @@ module Apiwork
       #
       # Query parameters are parsed from the URL query string.
       #
-      # @yieldself [Contract::Object] block context for defining params
       # @return [Contract::Object]
       # @see Contract::Object
       #
@@ -52,7 +51,6 @@ module Apiwork
       #
       # Body is parsed from the JSON request body.
       #
-      # @yieldself [Contract::Object] block context for defining params
       # @return [Contract::Object]
       # @see Contract::Object
       #

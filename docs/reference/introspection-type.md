@@ -1,5 +1,5 @@
 ---
-order: 57
+order: 56
 prev: false
 next: false
 ---
@@ -97,11 +97,7 @@ api.types[:payment_method].discriminator # => :type
 
 **Returns**
 
-Hash{Symbol =&gt; [Object](contract-object)} — nested fields for object types
-
-**See also**
-
-- [Object](contract-object)
+`Hash{Symbol => Param}` — nested fields for object types
 
 ---
 
@@ -149,6 +145,6 @@ Hash{Symbol =&gt; [Object](contract-object)} — nested fields for object types
 
 **Returns**
 
-Array&lt;[Object](contract-object)&gt; — variants for union types
+`Array<Param>` — variants for union types
 
 ---

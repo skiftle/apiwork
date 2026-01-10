@@ -1,5 +1,5 @@
 ---
-order: 22
+order: 21
 prev: false
 next: false
 ---
@@ -8,19 +8,19 @@ next: false
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/union.rb#L22)
 
-Union shape builder with contract context.
+Block context for defining inline union types.
 
-Wraps [API::Union](api-union) and adds contract-specific functionality
-like enum validation.
+Accessed via `param :x, type: :union do` inside contract actions.
+Use [#variant](#variant) to define possible types.
 
-**Example: In a contract**
+**Example: Discriminated union**
 
 ```ruby
 param :payment, type: :union, discriminator: :type do
-  variant type: :object, tag: 'card' do
+  variant tag: 'card', type: :object do
     param :card_number, type: :string
   end
-  variant type: :object, tag: 'bank' do
+  variant tag: 'bank', type: :object do
     param :account_number, type: :string
   end
 end
@@ -32,7 +32,7 @@ end
 
 `#variant(enum: nil, of: nil, partial: nil, tag: nil, type:, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/union.rb#L63)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/union.rb#L61)
 
 Defines a variant in this union.
 
@@ -49,6 +49,10 @@ Defines a variant in this union.
 **Returns**
 
 `void`
+
+**See also**
+
+- [Contract::Object](contract-object)
 
 **Example: Simple union (string or integer)**
 

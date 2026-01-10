@@ -6,14 +6,14 @@ next: false
 
 # Contract::Object
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L20)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L28)
 
-Defines an object shape for request/response bodies.
+Block context for defining request/response structure.
 
-Returned by [Request#query](contract-request#query), [Request#body](contract-request#body),
-and [Response#body](contract-response#body). Use `param` to define fields within the object.
+Accessed via `body do`, `query do`, or `param :x, type: :object do`
+inside contract actions. Use [#param](#param) to define fields.
 
-**Example: In a contract action**
+**Example: Request body**
 
 ```ruby
 action :create do
@@ -26,13 +26,22 @@ action :create do
 end
 ```
 
+**Example: Inline nested object**
+
+```ruby
+param :address, type: :object do
+  param :street, type: :string
+  param :city, type: :string
+end
+```
+
 ## Instance Methods
 
 ### #meta
 
 `#meta(optional: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L206)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L214)
 
 Shorthand for `param :meta, type: :object do ... end`.
 
@@ -74,7 +83,7 @@ end
 
 `#param(name, as: nil, default: nil, deprecated: nil, description: nil, discriminator: nil, enum: nil, example: nil, format: nil, max: nil, min: nil, nullable: nil, of: nil, optional: nil, required: nil, type: nil, value: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L86)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L94)
 
 Defines a parameter/field in a request or response body.
 

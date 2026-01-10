@@ -1,5 +1,5 @@
 ---
-order: 35
+order: 34
 prev: false
 next: false
 ---
@@ -36,11 +36,7 @@ response.body?        # => false
 
 **Returns**
 
-[Object](contract-object), `nil` — response body definition
-
-**See also**
-
-- [Object](contract-object)
+`Param`, `nil` — response body definition
 
 ---
 

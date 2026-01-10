@@ -42,8 +42,8 @@ module Apiwork
       # @param enum [Symbol, Array] enum constraint for the variant
       # @param of [Symbol] element type when variant is an array
       # @param partial [Boolean] make all fields optional in this variant
-      # @yield optional block for inline object definition
       # @return [void]
+      # @see API::Object
       #
       # @example Primitive variant
       #   variant type: :string
