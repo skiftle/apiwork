@@ -333,8 +333,8 @@ RSpec.describe Apiwork::Export::Zod do
     before(:all) do
       Apiwork::API.define '/api/zod_constraints_test' do
         object :bounded do
-          param :limited_string, max: 100, min: 1, type: :string
-          param :limited_number, max: 1000, min: 0, type: :integer
+          string :limited_string, max: 100, min: 1
+          integer :limited_number, max: 1000, min: 0
           param :limited_array, max: 10, of: :string, type: :array
         end
       end
@@ -368,9 +368,9 @@ RSpec.describe Apiwork::Export::Zod do
     before(:all) do
       Apiwork::API.define '/api/zod_format_test' do
         object :formatted do
-          param :email_field, format: :email, type: :string
-          param :url_field, format: :url, type: :string
-          param :uuid_field, format: :uuid, type: :string
+          string :email_field, format: :email
+          string :url_field, format: :url
+          string :uuid_field, format: :uuid
         end
       end
       @format_output = Apiwork::Export.generate(:zod, '/api/zod_format_test')

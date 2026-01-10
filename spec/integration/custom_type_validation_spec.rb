@@ -6,14 +6,14 @@ RSpec.describe 'Contract custom type unknown field validation' do
   let(:contract_class) do
     create_test_contract do
       object :my_custom_type do
-        param :valid_field, optional: true, type: :boolean
-        param :another_field, optional: true, type: :string
+        boolean :valid_field, optional: true
+        string :another_field, optional: true
       end
 
       action :index do
         request do
           body do
-            param :custom, optional: true, type: :my_custom_type
+            reference :custom, optional: true, to: :my_custom_type
           end
         end
       end

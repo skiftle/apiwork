@@ -8,7 +8,9 @@ RSpec.describe 'Security and edge case validation' do
   describe 'large array handling' do
     let(:definition) do
       Apiwork::Contract::Object.new(contract_class).tap do |d|
-        d.param :items, of: :integer, optional: true, type: :array
+        d.array :items, optional: true do
+          integer
+        end
       end
     end
 
@@ -47,7 +49,7 @@ RSpec.describe 'Security and edge case validation' do
   describe 'special character handling' do
     let(:definition) do
       Apiwork::Contract::Object.new(contract_class).tap do |d|
-        d.param :text, optional: true, type: :string
+        d.string :text, optional: true
       end
     end
 
@@ -68,7 +70,7 @@ RSpec.describe 'Security and edge case validation' do
 
     it 'handles string with max_length constraint' do
       constrained_def = Apiwork::Contract::Object.new(contract_class).tap do |d|
-        d.param :text, max: 100, optional: true, type: :string
+        d.string :text, max: 100, optional: true
       end
 
       result = constrained_def.validate({ text: 'a' * 101 })
@@ -81,8 +83,8 @@ RSpec.describe 'Security and edge case validation' do
   describe 'type confusion protection' do
     let(:definition) do
       Apiwork::Contract::Object.new(contract_class).tap do |d|
-        d.param :count, optional: true, type: :integer
-        d.param :active, optional: true, type: :boolean
+        d.integer :count, optional: true
+        d.boolean :active, optional: true
       end
     end
 
@@ -106,8 +108,8 @@ RSpec.describe 'Security and edge case validation' do
   describe 'boundary value validation' do
     let(:definition) do
       Apiwork::Contract::Object.new(contract_class).tap do |d|
-        d.param :huge_int, optional: true, type: :integer
-        d.param :precise_float, optional: true, type: :float
+        d.integer :huge_int, optional: true
+        d.float :precise_float, optional: true
       end
     end
 

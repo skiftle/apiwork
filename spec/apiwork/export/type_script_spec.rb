@@ -370,7 +370,7 @@ RSpec.describe Apiwork::Export::TypeScript do
     it 'includes property descriptions as JSDoc' do
       Apiwork::API.define '/api/ts_prop_desc' do
         object :invoice do
-          param :amount, description: 'Total amount in cents', type: :decimal
+          decimal :amount, description: 'Total amount in cents'
           string :currency
         end
       end
@@ -387,8 +387,8 @@ RSpec.describe Apiwork::Export::TypeScript do
     it 'includes @example in JSDoc with JSON format on separate lines' do
       Apiwork::API.define '/api/ts_example' do
         object :price, description: 'Price object', example: { amount: 99 } do
-          param :amount, example: 99, type: :integer
-          param :currency, example: 'USD', type: :string
+          integer :amount, example: 99
+          string :currency, example: 'USD'
         end
       end
 
