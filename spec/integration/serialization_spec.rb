@@ -14,7 +14,7 @@ RSpec.describe 'Contract Definition' do
       )
 
       definition.meta do
-        param :custom, type: :string
+        string :custom
       end
 
       expect(definition.params[:meta]).to be_present
@@ -39,8 +39,8 @@ RSpec.describe 'Contract Definition' do
 
       # User extends with custom fields
       definition.meta do
-        param :total, type: :integer
-        param :custom_field, type: :string
+        integer :total
+        string :custom_field
       end
 
       meta_shape = definition.params[:meta][:shape]
@@ -55,8 +55,8 @@ RSpec.describe 'Contract Definition' do
           response do
             body do
               meta do
-                param :total_count, type: :integer
-                param :processing_time, type: :integer
+                integer :total_count
+                integer :processing_time
               end
             end
           end

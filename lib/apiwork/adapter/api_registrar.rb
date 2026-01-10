@@ -11,9 +11,9 @@ module Apiwork
     # @example Register pagination object
     #   def register_api(registrar, capabilities)
     #     registrar.object :pagination do
-    #       param :page, type: :integer
-    #       param :per_page, type: :integer
-    #       param :total, type: :integer
+    #       integer :page
+    #       integer :per_page
+    #       integer :total
     #     end
     #   end
     #

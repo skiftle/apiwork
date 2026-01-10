@@ -10,7 +10,7 @@ RSpec.describe 'Literal and Discriminated Union Features' do
           request do
             body do
               param :status, type: :literal, value: 'archived'
-              param :name, type: :string
+              string :name
             end
           end
         end
@@ -57,7 +57,7 @@ RSpec.describe 'Literal and Discriminated Union Features' do
     let(:contract_class) do
       create_test_contract do
         object :string_filter do
-          param :value, type: :string
+          string :value
         end
 
         action :test do

@@ -152,18 +152,18 @@ module Apiwork
 
         def register_offset_pagination
           registrar.object :offset_pagination do
-            param :current, type: :integer
-            param :next, nullable: true, optional: true, type: :integer
-            param :prev, nullable: true, optional: true, type: :integer
-            param :total, type: :integer
-            param :items, type: :integer
+            integer :current
+            integer :next, nullable: true, optional: true
+            integer :prev, nullable: true, optional: true
+            integer :total
+            integer :items
           end
         end
 
         def register_cursor_pagination
           registrar.object :cursor_pagination do
-            param :next, nullable: true, optional: true, type: :string
-            param :prev, nullable: true, optional: true, type: :string
+            string :next, nullable: true, optional: true
+            string :prev, nullable: true, optional: true
           end
         end
 
@@ -171,16 +171,20 @@ module Apiwork
           registrar.enum :layer, values: %w[http contract domain]
 
           registrar.object :issue do
-            param :code, type: :string
-            param :detail, type: :string
-            param :path, of: :string, type: :array
-            param :pointer, type: :string
-            param :meta, type: :object
+            string :code
+            string :detail
+            array :path do
+              string
+            end
+            string :pointer
+            object :meta
           end
 
           registrar.object :error_response_body do
-            param :layer, type: :layer
-            param :issues, of: :issue, type: :array
+            reference :layer
+            array :issues do
+              reference :issue
+            end
           end
         end
 

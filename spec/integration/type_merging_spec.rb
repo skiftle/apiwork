@@ -8,11 +8,11 @@ RSpec.describe 'Type merging' do
       it 'merges params from multiple declarations' do
         api_class = Apiwork::API.define '/api/test' do
           object :address do
-            param :street, type: :string
+            string :street
           end
 
           object :address do
-            param :city, type: :string
+            string :city
           end
         end
 
@@ -24,7 +24,7 @@ RSpec.describe 'Type merging' do
       it 'uses last description (last wins)' do
         api_class = Apiwork::API.define '/api/test' do
           object :address, description: 'First' do
-            param :street, type: :string
+            string :street
           end
 
           object :address, description: 'Second'
@@ -38,11 +38,11 @@ RSpec.describe 'Type merging' do
       it 'keeps first description if second is nil' do
         api_class = Apiwork::API.define '/api/test' do
           object :address, description: 'First' do
-            param :street, type: :string
+            string :street
           end
 
           object :address do
-            param :city, type: :string
+            string :city
           end
         end
 
@@ -54,12 +54,12 @@ RSpec.describe 'Type merging' do
       it 'extends existing params with new options' do
         api_class = Apiwork::API.define '/api/test' do
           object :user do
-            param :name, type: :string
+            string :name
           end
 
           object :user do
             param :name, description: 'Full name'
-            param :email, type: :string
+            string :email
           end
         end
 
@@ -77,7 +77,7 @@ RSpec.describe 'Type merging' do
                  description: 'First desc',
                  example: { old: true },
                  format: 'old-format' do
-            param :street, type: :string
+            string :street
           end
 
           object :address,
@@ -97,7 +97,7 @@ RSpec.describe 'Type merging' do
         expect do
           Apiwork::API.define '/api/test' do
             object :thing do
-              param :field, type: :string
+              string :field
             end
 
             union :thing, discriminator: :type do
@@ -116,7 +116,7 @@ RSpec.describe 'Type merging' do
           union :payment, discriminator: :type do
             variant tag: 'card' do
               object do
-                param :last_four, type: :string
+                string :last_four
               end
             end
           end
@@ -124,7 +124,7 @@ RSpec.describe 'Type merging' do
           union :payment, discriminator: :type do
             variant tag: 'bank' do
               object do
-                param :account, type: :string
+                string :account
               end
             end
           end
@@ -163,7 +163,7 @@ RSpec.describe 'Type merging' do
           union :payment, discriminator: :type do
             variant tag: 'card' do
               object do
-                param :number, type: :string
+                string :number
               end
             end
           end
@@ -171,7 +171,7 @@ RSpec.describe 'Type merging' do
           union :payment, discriminator: :type do
             variant tag: 'card' do
               object do
-                param :cvv, type: :string
+                string :cvv
               end
             end
           end
@@ -188,7 +188,7 @@ RSpec.describe 'Type merging' do
           union :payment, discriminator: :type do
             variant tag: 'card' do
               object do
-                param :number, type: :string
+                string :number
               end
             end
           end
@@ -243,11 +243,11 @@ RSpec.describe 'Type merging' do
           identifier :invoice
 
           object :address do
-            param :street, type: :string
+            string :street
           end
 
           object :address do
-            param :city, type: :string
+            string :city
           end
         end
 
@@ -261,7 +261,7 @@ RSpec.describe 'Type merging' do
           identifier :customer
 
           object :profile do
-            param :name, type: :string
+            string :name
           end
 
           object :profile do

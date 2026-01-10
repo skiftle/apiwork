@@ -246,8 +246,8 @@ RSpec.describe Apiwork::Export::OpenAPI do
         export :openapi
 
         object :user_profile do
-          param :first_name, type: :string
-          param :last_name, type: :string
+          string :first_name
+          string :last_name
         end
 
         resources :users

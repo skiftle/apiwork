@@ -535,14 +535,14 @@ module Apiwork
 
           if strategy == :cursor
             registrar.api_registrar.object(type_name, scope: nil) do
-              param :after, optional: true, type: :string
-              param :before, optional: true, type: :string
-              param :size, max: max_size, min: 1, optional: true, type: :integer
+              string :after, optional: true
+              string :before, optional: true
+              integer :size, max: max_size, min: 1, optional: true
             end
           else
             registrar.api_registrar.object(type_name, scope: nil) do
-              param :number, min: 1, optional: true, type: :integer
-              param :size, max: max_size, min: 1, optional: true, type: :integer
+              integer :number, min: 1, optional: true
+              integer :size, max: max_size, min: 1, optional: true
             end
           end
 
@@ -653,20 +653,20 @@ module Apiwork
 
           unless registrar.type?(create_type_name)
             registrar.object(create_type_name) do
-              param :_type, type: :literal, value: 'create'
-              param :id, optional: true, type: :integer
+              literal :_type, value: 'create'
+              integer :id, optional: true
               builder.send(:writable_params, self, :create, nested: true)
-              param :_destroy, optional: true, type: :boolean
+              boolean :_destroy, optional: true
             end
           end
 
           update_type_name = :nested_update_payload
           unless registrar.type?(update_type_name)
             registrar.object(update_type_name) do
-              param :_type, type: :literal, value: 'update'
-              param :id, optional: true, type: :integer
+              literal :_type, value: 'update'
+              integer :id, optional: true
               builder.send(:writable_params, self, :update, nested: true)
-              param :_destroy, optional: true, type: :boolean
+              boolean :_destroy, optional: true
             end
           end
 

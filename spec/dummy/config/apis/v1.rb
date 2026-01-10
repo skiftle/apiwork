@@ -50,9 +50,9 @@ Apiwork::API.define '/api/v1' do
   # API-level types - available to all contracts in this API
   # Error response type
   object :error_detail do
-    param :code, type: :string
-    param :message, type: :string
-    param :field, type: :string
+    string :code
+    string :message
+    string :field
   end
 
   # Sorting enums
@@ -61,8 +61,8 @@ Apiwork::API.define '/api/v1' do
 
   # Pagination type
   object :pagination_params do
-    param :page, type: :integer
-    param :per_page, type: :integer
+    integer :page
+    integer :per_page
   end
 
   resources :posts do

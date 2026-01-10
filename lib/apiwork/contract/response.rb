@@ -58,9 +58,9 @@ module Apiwork
       #
       # @example
       #   body do
-      #     param :id, type: :integer
-      #     param :title, type: :string
-      #     param :amount, type: :decimal
+      #     integer :id
+      #     string :title
+      #     decimal :amount
       #   end
       def body(&block)
         @body_param ||= Object.new(

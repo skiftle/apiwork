@@ -7,9 +7,9 @@ RSpec.describe 'Custom Types', type: :integration do
     it 'defines a reusable custom type' do
       api = Apiwork::API.define '/test/types' do
         object :address, description: 'A physical address' do
-          param :street, type: :string
-          param :city, type: :string
-          param :zip, type: :string
+          string :street
+          string :city
+          string :zip
         end
       end
 
@@ -19,8 +19,8 @@ RSpec.describe 'Custom Types', type: :integration do
     it 'type is available in introspection' do
       api = Apiwork::API.define '/test/types/introspect' do
         object :money, description: 'Monetary amount' do
-          param :amount, type: :decimal
-          param :currency, type: :string
+          decimal :amount
+          string :currency
         end
       end
 
@@ -31,11 +31,11 @@ RSpec.describe 'Custom Types', type: :integration do
     it 'supports nested types' do
       api = Apiwork::API.define '/test/types/nested' do
         object :line_item do
-          param :product, type: :string
-          param :quantity, type: :integer
+          string :product
+          integer :quantity
           param :price, type: :object do
-            param :amount, type: :decimal
-            param :currency, type: :string
+            decimal :amount
+            string :currency
           end
         end
       end
@@ -46,7 +46,7 @@ RSpec.describe 'Custom Types', type: :integration do
     it 'supports deprecated types' do
       api = Apiwork::API.define '/test/types/deprecated' do
         object :old_format, deprecated: true, description: 'Use new_format instead' do
-          param :data, type: :string
+          string :data
         end
       end
 
@@ -57,8 +57,8 @@ RSpec.describe 'Custom Types', type: :integration do
     it 'supports type with example' do
       api = Apiwork::API.define '/test/types/example' do
         object :coordinates, description: 'GPS coordinates', example: { lat: 59.33, lng: 18.07 } do
-          param :lat, type: :decimal
-          param :lng, type: :decimal
+          decimal :lat
+          decimal :lng
         end
       end
 
@@ -244,7 +244,7 @@ RSpec.describe 'Custom Types', type: :integration do
     it 'type? returns true for existing types' do
       api = Apiwork::API.define '/test/type_check' do
         object :my_type do
-          param :data, type: :string
+          string :data
         end
       end
 

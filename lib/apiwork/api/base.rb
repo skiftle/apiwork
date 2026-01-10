@@ -166,12 +166,14 @@ module Apiwork
         #
         # @example Define a reusable type
         #   object :item do
-        #     param :description, type: :string
-        #     param :amount, type: :decimal
+        #     string :description
+        #     decimal :amount
         #   end
         #
         # @example Reference in contract
-        #   param :items, type: :array, of: :item
+        #   array :items do
+        #     reference :item
+        #   end
         def object(
           name,
           scope: nil,
@@ -213,7 +215,7 @@ module Apiwork
         #   enum :status, values: %w[draft sent paid]
         #
         # @example Reference in contract
-        #   param :status, enum: :status
+        #   string :status, enum: :status
         def enum(
           name,
           values: nil,
@@ -247,11 +249,15 @@ module Apiwork
         #
         # @example
         #   union :payment_method, discriminator: :type do
-        #     variant tag: 'card', type: :object do
-        #       param :last_four, type: :string
+        #     variant tag: 'card' do
+        #       object do
+        #         string :last_four
+        #       end
         #     end
-        #     variant tag: 'bank', type: :object do
-        #       param :account_number, type: :string
+        #     variant tag: 'bank' do
+        #       object do
+        #         string :account_number
+        #       end
         #     end
         #   end
         def union(

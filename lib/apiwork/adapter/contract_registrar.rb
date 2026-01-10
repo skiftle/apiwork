@@ -11,8 +11,8 @@ module Apiwork
     # @example Register request body object
     #   def register_contract(registrar, schema_class, actions)
     #     registrar.object :user_input do
-    #       param :name, type: :string
-    #       param :email, type: :string
+    #       string :name
+    #       string :email
     #     end
     #   end
     #

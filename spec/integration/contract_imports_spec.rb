@@ -118,7 +118,7 @@ RSpec.describe 'Contract Imports' do
     it 'allows importing from dynamically created contracts' do
       user_contract = create_test_contract do
         object :address do
-          param :street, type: :string
+          string :street
         end
       end
 
@@ -153,7 +153,7 @@ RSpec.describe 'Contract Imports' do
         import b, as: :b
 
         object :a_type do
-          param :value, type: :string
+          string :value
         end
       end
 
@@ -161,7 +161,7 @@ RSpec.describe 'Contract Imports' do
         import a, as: :a
 
         object :b_type do
-          param :value, type: :integer
+          integer :value
         end
       end
 
@@ -235,7 +235,7 @@ RSpec.describe 'Contract Imports' do
     let(:base_contract) do
       create_test_contract do
         object :metadata do
-          param :version, type: :integer
+          integer :version
         end
       end
     end
@@ -247,7 +247,7 @@ RSpec.describe 'Contract Imports' do
 
         # Define local type with same base name
         object :metadata do
-          param :version, type: :string # Different type
+          string :version # Different type
         end
 
         action :create do

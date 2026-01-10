@@ -7,7 +7,7 @@ RSpec.describe 'TypeSystem Metadata' do
     it 'stores and serializes type with description' do
       api = Apiwork::API.define '/api/test' do
         object :user_status, description: 'Current status of user account' do
-          param :active, type: :boolean
+          boolean :active
         end
       end
 
@@ -19,8 +19,8 @@ RSpec.describe 'TypeSystem Metadata' do
     it 'stores and serializes type with example' do
       api = Apiwork::API.define '/api/test' do
         object :address, example: { city: 'NYC', street: '123 Main St' } do
-          param :street, type: :string
-          param :city, type: :string
+          string :street
+          string :city
         end
       end
 
@@ -32,7 +32,7 @@ RSpec.describe 'TypeSystem Metadata' do
     it 'stores and serializes type with format' do
       api = Apiwork::API.define '/api/test' do
         object :email_field, format: 'email' do
-          param :value, type: :string
+          string :value
         end
       end
 
@@ -44,7 +44,7 @@ RSpec.describe 'TypeSystem Metadata' do
     it 'stores and serializes type with deprecated: true' do
       api = Apiwork::API.define '/api/test' do
         object :legacy_response, deprecated: true do
-          param :old_field, type: :string
+          string :old_field
         end
       end
 
@@ -56,7 +56,7 @@ RSpec.describe 'TypeSystem Metadata' do
     it 'includes deprecated: false when not deprecated' do
       api = Apiwork::API.define '/api/test' do
         object :current_response, deprecated: false do
-          param :field, type: :string
+          string :field
         end
       end
 
@@ -72,8 +72,8 @@ RSpec.describe 'TypeSystem Metadata' do
                description: 'Payment information structure',
                example: { amount: 100, currency: 'USD' },
                format: 'payment' do
-          param :amount, type: :integer
-          param :currency, type: :string
+          integer :amount
+          string :currency
         end
       end
 
@@ -90,7 +90,7 @@ RSpec.describe 'TypeSystem Metadata' do
     it 'includes all metadata fields with defaults when not set' do
       api = Apiwork::API.define '/api/test' do
         object :simple_type do
-          param :field, type: :string
+          string :field
         end
       end
 
@@ -106,7 +106,7 @@ RSpec.describe 'TypeSystem Metadata' do
     it 'includes deprecated: false when explicitly set to false' do
       api = Apiwork::API.define '/api/test' do
         object :normal_type, deprecated: false do
-          param :field, type: :string
+          string :field
         end
       end
 
@@ -119,7 +119,7 @@ RSpec.describe 'TypeSystem Metadata' do
     it 'preserves empty string description' do
       api = Apiwork::API.define '/api/test' do
         object :empty_desc_type, description: '' do
-          param :field, type: :string
+          string :field
         end
       end
 
@@ -246,13 +246,13 @@ RSpec.describe 'TypeSystem Metadata' do
     it 'keeps type metadata isolated between different APIs' do
       api1 = Apiwork::API.define '/api/v1' do
         object :shared_name, description: 'API v1 version' do
-          param :field, type: :string
+          string :field
         end
       end
 
       api2 = Apiwork::API.define '/api/v2' do
         object :shared_name, description: 'API v2 version' do
-          param :field, type: :integer
+          integer :field
         end
       end
 
@@ -301,7 +301,7 @@ RSpec.describe 'TypeSystem Metadata' do
         end
 
         object :scoped_type, description: 'Contract-scoped type with metadata' do
-          param :field, type: :string
+          string :field
         end
       end
 
@@ -347,7 +347,7 @@ RSpec.describe 'TypeSystem Metadata' do
     it 'handles example value that does not match type schema' do
       api = Apiwork::API.define '/api/test' do
         object :user, example: 'not_a_hash' do
-          param :name, type: :string
+          string :name
         end
       end
 
@@ -371,7 +371,7 @@ RSpec.describe 'TypeSystem Metadata' do
     it 'handles format on non-string type gracefully' do
       api = Apiwork::API.define '/api/test' do
         object :weird_format, format: 'email' do
-          param :count, type: :integer
+          integer :count
         end
       end
 

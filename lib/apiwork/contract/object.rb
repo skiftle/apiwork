@@ -5,18 +5,18 @@ module Apiwork
     # @api public
     # Block context for defining request/response structure.
     #
-    # Accessed via `body do`, `query do`, or `param :x, type: :object do`
-    # inside contract actions. Use {#param} to define fields.
+    # Accessed via `body do`, `query do`, or `object :x do`
+    # inside contract actions. Use type methods to define fields.
     #
     # @example Request body
     #   body do
-    #     param :title, type: :string
-    #     param :amount, type: :decimal
+    #     string :title
+    #     decimal :amount
     #   end
     #
     # @example Inline nested object
-    #   param :customer, type: :object do
-    #     param :name, type: :string
+    #   object :customer do
+    #     string :name
     #   end
     #
     # @see API::Object Block context for reusable types
@@ -60,20 +60,24 @@ module Apiwork
       # @see Contract::Union
       #
       # @example Basic param
-      #   param :amount, type: :decimal
+      #   decimal :amount
       #
       # @example Inline object
-      #   param :customer, type: :object do
-      #     param :name, type: :string
+      #   object :customer do
+      #     string :name
       #   end
       #
       # @example Inline union
-      #   param :payment_method, type: :union, discriminator: :type do
-      #     variant tag: 'card', type: :object do
-      #       param :last_four, type: :string
+      #   union :payment_method, discriminator: :type do
+      #     variant tag: 'card' do
+      #       object do
+      #         string :last_four
+      #       end
       #     end
-      #     variant tag: 'bank', type: :object do
-      #       param :account_number, type: :string
+      #     variant tag: 'bank' do
+      #       object do
+      #         string :account_number
+      #       end
       #     end
       #   end
       def param(
@@ -193,6 +197,7 @@ module Apiwork
       #   string :status, enum: %w[pending active]
       def string(
         name,
+        default: nil,
         deprecated: nil,
         description: nil,
         enum: nil,
@@ -205,6 +210,7 @@ module Apiwork
       )
         param(
           name,
+          default:,
           deprecated:,
           description:,
           enum:,
@@ -237,6 +243,7 @@ module Apiwork
       #   integer :age, min: 0, max: 150
       def integer(
         name,
+        default: nil,
         deprecated: nil,
         description: nil,
         enum: nil,
@@ -248,6 +255,7 @@ module Apiwork
       )
         param(
           name,
+          default:,
           deprecated:,
           description:,
           enum:,
@@ -278,6 +286,7 @@ module Apiwork
       #   decimal :price, min: 0
       def decimal(
         name,
+        default: nil,
         deprecated: nil,
         description: nil,
         example: nil,
@@ -288,6 +297,7 @@ module Apiwork
       )
         param(
           name,
+          default:,
           deprecated:,
           description:,
           example:,
@@ -314,6 +324,7 @@ module Apiwork
       #   boolean :active
       def boolean(
         name,
+        default: nil,
         deprecated: nil,
         description: nil,
         example: nil,
@@ -322,6 +333,7 @@ module Apiwork
       )
         param(
           name,
+          default:,
           deprecated:,
           description:,
           example:,
@@ -335,6 +347,7 @@ module Apiwork
       # Defines a float field.
       #
       # @param name [Symbol] field name
+      # @param default [Float] default value
       # @param deprecated [Boolean] mark as deprecated
       # @param description [String] documentation description
       # @param example [Float] example value for documentation
@@ -345,6 +358,7 @@ module Apiwork
       # @return [void]
       def float(
         name,
+        default: nil,
         deprecated: nil,
         description: nil,
         example: nil,
@@ -355,6 +369,7 @@ module Apiwork
       )
         param(
           name,
+          default:,
           deprecated:,
           description:,
           example:,
@@ -370,6 +385,7 @@ module Apiwork
       # Defines a datetime field.
       #
       # @param name [Symbol] field name
+      # @param default [String] default value
       # @param deprecated [Boolean] mark as deprecated
       # @param description [String] documentation description
       # @param example [String] example value for documentation
@@ -378,6 +394,7 @@ module Apiwork
       # @return [void]
       def datetime(
         name,
+        default: nil,
         deprecated: nil,
         description: nil,
         example: nil,
@@ -386,6 +403,7 @@ module Apiwork
       )
         param(
           name,
+          default:,
           deprecated:,
           description:,
           example:,
@@ -399,6 +417,7 @@ module Apiwork
       # Defines a date field.
       #
       # @param name [Symbol] field name
+      # @param default [String] default value
       # @param deprecated [Boolean] mark as deprecated
       # @param description [String] documentation description
       # @param example [String] example value for documentation
@@ -407,6 +426,7 @@ module Apiwork
       # @return [void]
       def date(
         name,
+        default: nil,
         deprecated: nil,
         description: nil,
         example: nil,
@@ -415,6 +435,7 @@ module Apiwork
       )
         param(
           name,
+          default:,
           deprecated:,
           description:,
           example:,
@@ -428,6 +449,7 @@ module Apiwork
       # Defines a UUID field.
       #
       # @param name [Symbol] field name
+      # @param default [String] default value
       # @param deprecated [Boolean] mark as deprecated
       # @param description [String] documentation description
       # @param example [String] example value for documentation
@@ -436,6 +458,7 @@ module Apiwork
       # @return [void]
       def uuid(
         name,
+        default: nil,
         deprecated: nil,
         description: nil,
         example: nil,
@@ -444,6 +467,7 @@ module Apiwork
       )
         param(
           name,
+          default:,
           deprecated:,
           description:,
           example:,
@@ -524,6 +548,7 @@ module Apiwork
       # The block must define exactly one element type.
       #
       # @param name [Symbol] field name
+      # @param default [Array] default value
       # @param deprecated [Boolean] mark as deprecated
       # @param description [String] documentation description
       # @param nullable [Boolean] whether null is allowed
@@ -551,6 +576,7 @@ module Apiwork
       #   end
       def array(
         name,
+        default: nil,
         deprecated: nil,
         description: nil,
         nullable: nil,
@@ -565,6 +591,7 @@ module Apiwork
 
         param(
           name,
+          default:,
           deprecated:,
           description:,
           nullable:,
@@ -666,7 +693,7 @@ module Apiwork
       #   response do
       #     body do
       #       meta do
-      #         param :generated_at, type: :datetime
+      #         datetime :generated_at
       #       end
       #     end
       #   end
@@ -675,7 +702,7 @@ module Apiwork
       #   response do
       #     body do
       #       meta optional: true do
-      #         param :api_version, type: :string
+      #         string :api_version
       #       end
       #     end
       #   end

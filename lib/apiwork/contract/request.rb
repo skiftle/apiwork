@@ -29,8 +29,8 @@ module Apiwork
       #
       # @example
       #   query do
-      #     param :page, type: :integer, optional: true
-      #     param :status, enum: :status, optional: true
+      #     integer :page, optional: true
+      #     string :status, enum: :status, optional: true
       #   end
       def query(&block)
         @query_param ||= Object.new(
@@ -53,8 +53,8 @@ module Apiwork
       #
       # @example
       #   body do
-      #     param :title, type: :string
-      #     param :amount, type: :decimal
+      #     string :title
+      #     decimal :amount
       #   end
       def body(&block)
         @body_param ||= Object.new(

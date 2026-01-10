@@ -56,20 +56,24 @@ module Apiwork
       # @see API::Union
       #
       # @example Basic param
-      #   param :amount, type: :decimal
+      #   decimal :amount
       #
       # @example Inline object
-      #   param :customer, type: :object do
-      #     param :name, type: :string
+      #   object :customer do
+      #     string :name
       #   end
       #
       # @example Inline union
-      #   param :payment_method, type: :union, discriminator: :type do
-      #     variant tag: 'card', type: :object do
-      #       param :last_four, type: :string
+      #   union :payment_method, discriminator: :type do
+      #     variant tag: 'card' do
+      #       object do
+      #         string :last_four
+      #       end
       #     end
-      #     variant tag: 'bank', type: :object do
-      #       param :account_number, type: :string
+      #     variant tag: 'bank' do
+      #       object do
+      #         string :account_number
+      #       end
       #     end
       #   end
       def param(

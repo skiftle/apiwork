@@ -8,7 +8,7 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
 
   describe 'datetime type validation' do
     before do
-      definition.param :archived_at, type: :datetime
+      definition.datetime :archived_at
     end
 
     context 'with valid datetime values' do
@@ -128,7 +128,7 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
 
   describe 'date type validation' do
     before do
-      definition.param :birth_date, type: :date
+      definition.date :birth_date
     end
 
     context 'with valid date values' do
@@ -341,7 +341,7 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
   describe 'required non-enum fields' do
     let(:definition) do
       described_class.new(contract_class).tap do |d|
-        d.param :name, type: :string
+        d.string :name
       end
     end
 

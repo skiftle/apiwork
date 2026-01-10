@@ -21,8 +21,8 @@ module Apiwork
     #     action :create do
     #       request do
     #         body do
-    #           param :title, type: :string
-    #           param :amount, type: :decimal, min: 0
+    #           string :title
+    #           decimal :amount, min: 0
     #         end
     #       end
     #     end
@@ -90,7 +90,7 @@ module Apiwork
         #     identifier :billing
         #
         #     object :address do
-        #       param :street, type: :string
+        #       string :street
         #     end
         #     # In introspection: object is named :billing_address
         #   end
@@ -163,12 +163,14 @@ module Apiwork
         #
         # @example Define a reusable type
         #   object :item do
-        #     param :description, type: :string
-        #     param :amount, type: :decimal
+        #     string :description
+        #     decimal :amount
         #   end
         #
         # @example Reference in contract
-        #   param :items, type: :array, of: :item
+        #   array :items do
+        #     reference :item
+        #   end
         def object(
           name,
           description: nil,
@@ -231,11 +233,15 @@ module Apiwork
         #
         # @example
         #   union :payment_method, discriminator: :type do
-        #     variant tag: 'card', type: :object do
-        #       param :last_four, type: :string
+        #     variant tag: 'card' do
+        #       object do
+        #         string :last_four
+        #       end
         #     end
-        #     variant tag: 'bank', type: :object do
-        #       param :account_number, type: :string
+        #     variant tag: 'bank' do
+        #       object do
+        #         string :account_number
+        #       end
         #     end
         #   end
         def union(name, discriminator: nil, &block)
@@ -261,8 +267,8 @@ module Apiwork
         #     action :create do
         #       request do
         #         body do
-        #           param :shipping, type: :user_address   # user_ prefix
-        #           param :role, enum: :user_role          # user_ prefix
+        #           reference :shipping, to: :user_address  # user_ prefix
+        #           string :role, enum: :user_role          # user_ prefix
         #         end
         #       end
         #     end
@@ -307,12 +313,12 @@ module Apiwork
         #     action :show do
         #       request do
         #         query do
-        #           param :include, type: :string, optional: true
+        #           string :include, optional: true
         #         end
         #       end
         #       response do
         #         body do
-        #           param :id
+        #           uuid :id
         #         end
         #       end
         #     end
@@ -325,15 +331,15 @@ module Apiwork
         #
         #     request do
         #       body do
-        #         param :customer_id, type: :integer
-        #         param :amount, type: :decimal
+        #         integer :customer_id
+        #         decimal :amount
         #       end
         #     end
         #
         #     response do
         #       body do
-        #         param :id
-        #         param :status
+        #         uuid :id
+        #         string :status
         #       end
         #     end
         #

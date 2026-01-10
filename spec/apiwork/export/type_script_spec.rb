@@ -300,7 +300,7 @@ RSpec.describe Apiwork::Export::TypeScript do
     before(:all) do
       Apiwork::API.define '/api/ts_metadata_test' do
         object :documented_type, description: 'Type with description' do
-          param :value, type: :string
+          string :value
         end
 
         enum :status, deprecated: true, description: 'Status enum', values: %w[active inactive]
@@ -338,7 +338,7 @@ RSpec.describe Apiwork::Export::TypeScript do
     it 'generates correct output for type with all metadata fields' do
       Apiwork::API.define '/api/ts_full_metadata' do
         object :full_meta, deprecated: false, description: 'desc', example: { x: 1 }, format: 'fmt' do
-          param :x, type: :integer
+          integer :x
         end
       end
 
@@ -371,7 +371,7 @@ RSpec.describe Apiwork::Export::TypeScript do
       Apiwork::API.define '/api/ts_prop_desc' do
         object :invoice do
           param :amount, description: 'Total amount in cents', type: :decimal
-          param :currency, type: :string
+          string :currency
         end
       end
 
@@ -405,7 +405,7 @@ RSpec.describe Apiwork::Export::TypeScript do
     it 'does not generate empty JSDoc when no description' do
       Apiwork::API.define '/api/ts_no_desc' do
         object :simple do
-          param :value, type: :string
+          string :value
         end
       end
 

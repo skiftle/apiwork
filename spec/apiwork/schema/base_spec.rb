@@ -209,7 +209,7 @@ RSpec.describe Apiwork::Schema::Base do
 
     describe 'with inline object shape' do
       it 'stores the block as inline_shape' do
-        block = proc { param :theme, type: :string }
+        block = proc { string :theme }
         definition = described_class.new(:settings, schema_class, &block)
 
         expect(definition.inline_shape).to eq(block)
@@ -217,7 +217,7 @@ RSpec.describe Apiwork::Schema::Base do
 
       it 'infers type as :object when block provided without explicit type' do
         definition = described_class.new(:settings, schema_class) do
-          param :theme, type: :string
+          string :theme
         end
 
         expect(definition.type).to eq(:object)
@@ -225,7 +225,7 @@ RSpec.describe Apiwork::Schema::Base do
 
       it 'uses explicit type when provided with block' do
         definition = described_class.new(:settings, schema_class, type: :array) do
-          param :name, type: :string
+          string :name
         end
 
         expect(definition.type).to eq(:array)
@@ -245,8 +245,8 @@ RSpec.describe Apiwork::Schema::Base do
     describe 'with array of objects' do
       it 'stores both type and inline_shape' do
         definition = described_class.new(:line_items, schema_class, type: :array) do
-          param :name, type: :string
-          param :price, type: :decimal
+          string :name
+          decimal :price
         end
 
         expect(definition.type).to eq(:array)
@@ -270,7 +270,7 @@ RSpec.describe Apiwork::Schema::Base do
         abstract!
 
         attribute :settings do
-          param :theme, type: :string
+          string :theme
         end
       end
 

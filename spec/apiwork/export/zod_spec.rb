@@ -205,7 +205,7 @@ RSpec.describe Apiwork::Export::Zod do
     it 'transforms keys to camelCase with :camel' do
       Apiwork::API.define '/api/zod_camel_test' do
         object :test_type do
-          param :user_name, type: :string
+          string :user_name
         end
       end
 
@@ -272,7 +272,7 @@ RSpec.describe Apiwork::Export::Zod do
     before(:all) do
       Apiwork::API.define '/api/zod_circular_test' do
         object :tree_node do
-          param :value, type: :string
+          string :value
           param :children, of: :tree_node, optional: true, type: :array
         end
       end

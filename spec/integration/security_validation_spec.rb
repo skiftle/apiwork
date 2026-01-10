@@ -31,7 +31,7 @@ RSpec.describe 'Security and edge case validation' do
   describe 'malformed input handling' do
     let(:definition) do
       Apiwork::Contract::Object.new(contract_class).tap do |d|
-        d.param :name, type: :string
+        d.string :name
       end
     end
 
@@ -129,9 +129,9 @@ RSpec.describe 'Security and edge case validation' do
   describe 'error accumulation' do
     it 'reports multiple validation errors' do
       multi_def = Apiwork::Contract::Object.new(contract_class).tap do |d|
-        d.param :field1, type: :integer
-        d.param :field2, type: :integer
-        d.param :field3, type: :integer
+        d.integer :field1
+        d.integer :field2
+        d.integer :field3
       end
 
       result = multi_def.validate(

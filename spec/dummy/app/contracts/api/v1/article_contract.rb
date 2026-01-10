@@ -13,8 +13,8 @@ module Api
       action :create do
         request replace: true do
           body do
-            param :article, type: :object do
-              param :title, type: :string
+            object :article do
+              string :title
             end
           end
         end
@@ -23,8 +23,8 @@ module Api
       action :update do
         request replace: true do
           body do
-            param :article, type: :object do
-              param :title, type: :string
+            object :article do
+              string :title
             end
           end
         end

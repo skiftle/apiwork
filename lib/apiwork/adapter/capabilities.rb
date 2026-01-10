@@ -12,8 +12,8 @@ module Apiwork
     #   def register_api(registrar, capabilities)
     #     if capabilities.sortable?
     #       registrar.type :sort_param do
-    #         param :field, type: :string
-    #         param :direction, type: :string
+    #         string :field
+    #         string :direction
     #       end
     #     end
     #   end
@@ -23,7 +23,7 @@ module Apiwork
     #     strategies = capabilities.options_for(:pagination, :strategy)
     #     if strategies.include?(:offset)
     #       registrar.type :offset_pagination do
-    #         param :page, type: :integer
+    #         integer :page
     #       end
     #     end
     #   end
