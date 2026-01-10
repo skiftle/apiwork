@@ -90,27 +90,29 @@ module Apiwork
       )
         shape = build_shape(type, discriminator, &block)
 
-        @params[name] = {
-          as:,
-          default:,
-          deprecated:,
-          description:,
-          discriminator:,
-          enum:,
-          example:,
-          format:,
-          internal:,
-          max:,
-          min:,
-          name:,
-          nullable:,
-          of:,
-          optional:,
-          required:,
-          shape:,
-          type:,
-          value:,
-        }.compact
+        @params[name] = (@params[name] || {}).merge(
+          {
+            as:,
+            default:,
+            deprecated:,
+            description:,
+            discriminator:,
+            enum:,
+            example:,
+            format:,
+            internal:,
+            max:,
+            min:,
+            name:,
+            nullable:,
+            of:,
+            optional:,
+            required:,
+            shape:,
+            type:,
+            value:,
+          }.compact,
+        )
       end
 
       private

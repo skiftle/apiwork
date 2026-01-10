@@ -21,20 +21,23 @@ module Apiwork
       )
         key = scoped_name(scope, name)
 
-        validate_kind_consistency!(key, kind) if @store.key?(key)
-
-        @store[key] = TypeDefinition.new(
-          key,
-          block:,
-          deprecated:,
-          description:,
-          discriminator:,
-          example:,
-          format:,
-          kind:,
-          schema_class:,
-          scope:,
-        )
+        if @store.key?(key)
+          validate_kind_consistency!(key, kind)
+          merge(key, block:, deprecated:, description:, example:, format:)
+        else
+          @store[key] = TypeDefinition.new(
+            key,
+            block:,
+            deprecated:,
+            description:,
+            discriminator:,
+            example:,
+            format:,
+            kind:,
+            schema_class:,
+            scope:,
+          )
+        end
       end
 
       def [](name)
@@ -56,10 +59,6 @@ module Apiwork
       def find(name, scope: nil)
         definition = scope ? @store[scoped_name(scope, name)] : nil
         definition || @store[name]
-      end
-
-      def metadata(name)
-        @store[name]
       end
 
       def schema_class(name, scope: nil)
@@ -90,6 +89,17 @@ module Apiwork
 
         raise ConfigurationError,
               "Cannot redefine :#{key} as #{new_kind}, already defined as #{existing.kind}"
+      end
+
+      def merge(key, block:, deprecated:, description:, example:, format:)
+        existing = @store[key]
+        @store[key] = existing.merge(
+          block:,
+          deprecated:,
+          description:,
+          example:,
+          format:,
+        )
       end
     end
   end

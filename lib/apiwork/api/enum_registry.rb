@@ -53,10 +53,6 @@ module Apiwork
         values(name, scope:).present?
       end
 
-      def metadata(name)
-        @store[name]
-      end
-
       def values(name, scope: nil)
         definition = scope ? @store[scoped_name(scope, name)] : nil
         definition ||= @store[name]

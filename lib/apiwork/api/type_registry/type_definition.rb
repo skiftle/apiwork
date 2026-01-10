@@ -76,7 +76,32 @@ module Apiwork
           temp_param.validate(value, current_depth:, max_depth:, path: field_path)
         end
 
+        def merge(block:, deprecated:, description:, example:, format:)
+          TypeDefinition.new(
+            @name,
+            block: merge_blocks(@block, block),
+            deprecated: deprecated || @deprecated,
+            description: description || @description,
+            discriminator: @discriminator,
+            example: example || @example,
+            format: format || @format,
+            kind: @kind,
+            schema_class: @schema_class,
+            scope: @scope,
+          )
+        end
+
         private
+
+        def merge_blocks(existing_block, new_block)
+          return existing_block unless new_block
+          return new_block unless existing_block
+
+          proc do
+            instance_eval(&existing_block)
+            instance_eval(&new_block)
+          end
+        end
 
         def add_param_to_definition(target_param, param_name, param_data)
           nested_shape = param_data[:shape]

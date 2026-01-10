@@ -64,14 +64,13 @@ module Apiwork
                   builder
                 end
 
-        @variants << {
-          enum:,
-          of:,
-          partial:,
-          shape:,
-          tag:,
-          type:,
-        }.compact
+        data = { enum:, of:, partial:, shape:, tag:, type: }.compact
+
+        if tag && (index = @variants.find_index { |variant| variant[:tag] == tag })
+          @variants[index] = @variants[index].merge(data)
+        else
+          @variants << data
+        end
       end
 
       private
