@@ -158,15 +158,17 @@ end
 action :bulk_create do
   request do
     body do
-      param :invoices, type: :array do
-        param :number, type: :string
+      array :invoices do
+        object do
+          string :number
+        end
       end
     end
   end
 
   response do
     body do
-      param :created_count, type: :integer
+      integer :created_count
     end
   end
 end
@@ -191,7 +193,7 @@ To return data instead, define a response body:
 action :soft_delete do
   response do
     body do
-      param :deleted_at, type: :datetime
+      datetime :deleted_at
     end
   end
 end
@@ -207,8 +209,8 @@ Use `replace: true` to completely override:
 action :create do
   request replace: true do
     body do
-      param :invoice, type: :object do
-        param :title, type: :string
+      object :invoice do
+        string :title
       end
     end
   end
@@ -225,7 +227,7 @@ To return data from destroy:
 action :destroy do
   response replace: true do
     body do
-      param :deleted_at, type: :datetime
+      datetime :deleted_at
     end
   end
 end
@@ -238,7 +240,7 @@ action :destroy do
   response replace: true do
     body do
       meta do
-        param :deleted_at, type: :datetime
+        datetime :deleted_at
       end
     end
   end

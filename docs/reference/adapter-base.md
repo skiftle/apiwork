@@ -140,7 +140,7 @@ def register_contract(registrar, schema_class, actions)
     if action.collection?
       definition.request do
         query do
-          param :page, type: :integer, optional: true
+          integer :page, optional: true
         end
       end
     end

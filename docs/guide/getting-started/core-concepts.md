@@ -49,17 +49,17 @@ class PostContract < ApplicationContract
   action :create do
     request do
       body do
-        param :title, type: :string
-        param :body, type: :string
+        string :title
+        string :body
       end
     end
 
     response do
       body do
-        param :id, type: :integer
-        param :title, type: :string
-        param :body, type: :string
-        param :created_at, type: :datetime
+        integer :id
+        string :title
+        string :body
+        datetime :created_at
       end
     end
   end
@@ -150,7 +150,7 @@ class PostContract < ApplicationContract
   action :index do
     request do
       query do
-        param :status, type: :string, optional: true
+        string :status, optional: true
       end
     end
   end
@@ -158,7 +158,7 @@ class PostContract < ApplicationContract
   action :destroy do
     response replace: true do
       body do
-        param :deleted_at, type: :datetime
+        datetime :deleted_at
       end
     end
   end

@@ -384,9 +384,9 @@ Define an object structure with `param`:
 ```ruby
 class UserSchema < Apiwork::Schema::Base
   attribute :settings do
-    param :theme, type: :string
-    param :notifications, type: :boolean
-    param :language, type: :string
+    string :theme
+    boolean :notifications
+    string :language
   end
 end
 ```
@@ -423,9 +423,9 @@ Combine `type: :array` with a block for typed arrays:
 
 ```ruby
 attribute :addresses, type: :array do
-  param :street, type: :string
-  param :city, type: :string
-  param :zip, type: :string
+  string :street
+  string :city
+  string :zip
 end
 ```
 
@@ -443,13 +443,13 @@ Blocks can nest to any depth:
 
 ```ruby
 attribute :preferences do
-  param :ui do
-    param :theme, type: :string
-    param :sidebar_collapsed, type: :boolean
+  object :ui do
+    string :theme
+    boolean :sidebar_collapsed
   end
-  param :notifications do
-    param :email, type: :boolean
-    param :push, type: :boolean
+  object :notifications do
+    boolean :email
+    boolean :push
   end
 end
 ```
@@ -494,8 +494,8 @@ end
 # Schema
 class UserSchema < Apiwork::Schema::Base
   attribute :settings, type: :object, writable: true do
-    param :theme, type: :string
-    param :language, type: :string
+    string :theme
+    string :language
   end
 end
 ```

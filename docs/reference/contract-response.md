@@ -36,9 +36,9 @@ When using schema!, body is auto-generated from schema attributes.
 
 ```ruby
 body do
-  param :id, type: :integer
-  param :title, type: :string
-  param :amount, type: :decimal
+  integer :id
+  string :title
+  decimal :amount
 end
 ```
 

@@ -13,8 +13,8 @@ Defined in the API define block:
 ```ruby
 Apiwork::API.define '/api/v1' do
   object :address do
-    param :street, type: :string
-    param :city, type: :string
+    string :street
+    string :city
   end
 
   enum :status, values: %w[active inactive]
@@ -30,8 +30,8 @@ Defined inside a contract:
 ```ruby
 class OrderContract < Apiwork::Contract::Base
   object :line_item do
-    param :product_id, type: :integer
-    param :quantity, type: :integer
+    integer :product_id
+    integer :quantity
   end
 
   enum :priority, values: %i[low medium high]
@@ -79,8 +79,8 @@ class PostContract < Apiwork::Contract::Base
   action :create do
     request do
       body do
-        param :status, type: :string, enum: :status  # Resolves to contract-scoped post_status
-        param :address, type: :address               # Uses global address
+        string :status, enum: :status         # Resolves to contract-scoped post_status
+        reference :address                    # Uses global address
       end
     end
   end
@@ -98,7 +98,7 @@ class OrderContract < Apiwork::Contract::Base
   action :create do
     request do
       body do
-        param :shipping_address, type: :user_address
+        reference :shipping_address, to: :user_address
       end
     end
   end

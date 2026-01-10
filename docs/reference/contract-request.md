@@ -36,8 +36,8 @@ Body is parsed from the JSON request body.
 
 ```ruby
 body do
-  param :title, type: :string
-  param :amount, type: :decimal
+  string :title
+  decimal :amount
 end
 ```
 
@@ -65,8 +65,8 @@ Query parameters are parsed from the URL query string.
 
 ```ruby
 query do
-  param :page, type: :integer, optional: true
-  param :status, enum: :status, optional: true
+  integer :page, optional: true
+  string :status, enum: :status, optional: true
 end
 ```
 

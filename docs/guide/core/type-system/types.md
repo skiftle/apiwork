@@ -43,15 +43,15 @@ Structure types can be defined inline or as named definitions:
 
 ```ruby
 # Inline object — defined in place
-param :address, type: :object do
-  param :street, type: :string
+object :address do
+  string :street
 end
 
 # Named object — defined once, referenced by name
 object :address do
-  param :street, type: :string
+  string :street
 end
-param :shipping, type: :address
+reference :shipping, to: :address
 ```
 
 [Objects](./objects.md) shows how to define reusable named objects. [Unions](./unions.md) covers discriminated and simple unions.
@@ -77,13 +77,13 @@ The semantic distinction exists even when the generated code is identical. OpenA
 ## Usage
 
 ```ruby
-param :title, type: :string
-param :count, type: :integer
-param :price, type: :decimal
-param :active, type: :boolean
-param :published_at, type: :datetime
-param :birth_date, type: :date
-param :id, type: :uuid
+string :title
+integer :count
+decimal :price
+boolean :active
+datetime :published_at
+date :birth_date
+uuid :id
 ```
 
 ## Date and Time Formats
@@ -101,7 +101,7 @@ Date and time types serialize to ISO 8601 strings:
 The `:literal` type constrains a value to an exact match. Used primarily in discriminated unions:
 
 ```ruby
-param :type, type: :literal, value: 'text'
+literal :type, value: 'text'
 ```
 
 ```typescript

@@ -18,9 +18,9 @@ shared types like pagination, error responses, or enums.
 ```ruby
 def register_api(registrar, capabilities)
   registrar.object :pagination do
-    param :page, type: :integer
-    param :per_page, type: :integer
-    param :total, type: :integer
+    integer :page
+    integer :per_page
+    integer :total
   end
 end
 ```

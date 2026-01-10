@@ -120,21 +120,21 @@ Called once when the API is loaded. Use this to register global types shared acr
 def register_api(registrar, schema_data)
   # Register pagination types
   registrar.type :my_pagination do
-    param :page, type: :integer
-    param :total, type: :integer
+    integer :page
+    integer :total
   end
 
   # Register error type
   registrar.type :error do
-    param :code, type: :string
-    param :message, type: :string
+    string :code
+    string :message
   end
 
   # Register filter types based on schema attributes
   if schema_data.filterable_types.include?(:string)
     registrar.type :string_filter do
-      param :eq, type: :string, optional: true
-      param :contains, type: :string, optional: true
+      string :eq, optional: true
+      string :contains, optional: true
     end
   end
 end
@@ -177,18 +177,20 @@ def register_contract(registrar, schema_class, actions)
     when :index
       action_definition.request do
         query do
-          param :page, type: :integer, optional: true
+          integer :page, optional: true
         end
       end
       action_definition.response do
         body do
-          param :items, type: :array
+          array :items do
+            reference :item
+          end
         end
       end
     when :show
       action_definition.response do
         body do
-          param :item, type: :object
+          object :item
         end
       end
     end
@@ -198,7 +200,7 @@ def register_contract(registrar, schema_class, actions)
   root_key = schema_class.root_key.singular.to_sym
   registrar.type(root_key, schema_class: schema_class) do
     schema_class.attribute_definitions.each do |name, attr|
-      param name, type: attr.type, nullable: attr.nullable?
+      send(attr.type, name, nullable: attr.nullable?)
     end
   end
 end
@@ -218,10 +220,14 @@ The `registrar` provides:
 ```ruby
 registrar.action :index do
   request do
-    query { param :page, type: :integer, optional: true }
+    query { integer :page, optional: true }
   end
   response do
-    body { param :items, type: :array }
+    body do
+      array :items do
+        reference :item
+      end
+    end
   end
 end
 ```
@@ -232,12 +238,14 @@ Or capture and build incrementally:
 action = registrar.action(:index)
 action.request do
   query do
-    param :page, type: :integer
+    integer :page
   end
 end
 action.response do
   body do
-    param :items, type: :array
+    array :items do
+      reference :item
+    end
   end
 end
 ```

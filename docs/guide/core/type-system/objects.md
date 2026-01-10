@@ -111,8 +111,8 @@ Add documentation:
 object :address,
        description: 'Physical address',
        example: { street: '123 Main St', city: 'New York' } do
-  param :street, type: :string
-  param :city, type: :string
+  string :street
+  string :city
 end
 ```
 
@@ -122,14 +122,14 @@ Objects can reference other objects:
 
 ```ruby
 object :address do
-  param :street, type: :string
-  param :city, type: :string
+  string :street
+  string :city
 end
 
 object :person do
-  param :name, type: :string
-  param :home_address, type: :address
-  param :work_address, type: :address
+  string :name
+  reference :home_address, to: :address
+  reference :work_address, to: :address
 end
 ```
 
@@ -139,8 +139,10 @@ Objects can reference themselves. This is useful for tree structures or nested f
 
 ```ruby
 object :category do
-  param :name, type: :string
-  param :children, type: :array, of: :category
+  string :name
+  array :children do
+    reference :category
+  end
 end
 ```
 
@@ -192,8 +194,8 @@ Objects inside a contract get prefixed with the contract name:
 ```ruby
 class OrderContract < Apiwork::Contract::Base
   object :line_item do
-    param :product_id, type: :integer
-    param :quantity, type: :integer
+    integer :product_id
+    integer :quantity
   end
 end
 ```
@@ -211,9 +213,9 @@ class OrderContract < Apiwork::Contract::Base
   action :show do
     response do
       body do
-        param :order, type: :object do
-          param :id, type: :integer
-          param :total, type: :decimal
+        object :order do
+          integer :id
+          decimal :total
         end
       end
     end
@@ -226,13 +228,13 @@ end
 ```ruby
 class OrderContract < Apiwork::Contract::Base
   object :order do
-    param :id, type: :integer
-    param :total, type: :decimal
+    integer :id
+    decimal :total
   end
 
   action :show do
     response do
-      body { param :order, type: :order }
+      body { reference :order }
     end
   end
 end

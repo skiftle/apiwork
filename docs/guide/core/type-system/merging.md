@@ -10,14 +10,14 @@ Objects are open for extension. Multiple declarations of the same object merge t
 
 ```ruby
 object :address do
-  param :street, type: :string
-  param :city, type: :string
+  string :street
+  string :city
 end
 
 object :address, description: "A physical address"
 
 object :address do
-  param :country_code, type: :string
+  string :country_code
 end
 ```
 
@@ -36,12 +36,12 @@ For params, new params are added and existing params are extended:
 
 ```ruby
 object :user do
-  param :name, type: :string
+  string :name
 end
 
 object :user do
-  param :name, description: "Full name"  # Adds description to existing param
-  param :email, type: :string            # Adds new param
+  string :name, description: "Full name"  # Adds description to existing param
+  string :email                           # Adds new param
 end
 ```
 
@@ -84,12 +84,12 @@ class InvoiceContract < Apiwork::Contract::Base
 
   # Add a custom param to the filter
   object :filter do
-    param :search, type: :string, description: "Full-text search"
+    string :search, description: "Full-text search"
   end
 
   # Add description to an existing param
   object :filter do
-    param :status, description: "Filter by one or more statuses"
+    string :status, description: "Filter by one or more statuses"
   end
 end
 ```

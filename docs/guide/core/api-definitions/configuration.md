@@ -266,9 +266,9 @@ Define types and anums available to all contracts in this API:
 ```ruby
 Apiwork::API.define '/api/v1' do
   object :address do
-    param :street, type: :string
-    param :city, type: :string
-    param :country, type: :string
+    string :street
+    string :city
+    string :country
   end
 
   enum :status, values: %w[pending active archived]

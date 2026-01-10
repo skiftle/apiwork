@@ -29,17 +29,21 @@ Technically, only objects and unions are types — they define shape. Enums are 
 
 ```ruby
 object :invoice do
-  param :id, type: :uuid
-  param :status, type: :string, enum: :invoice_status
-  param :payment, type: :payment_method
+  uuid :id
+  string :status, enum: :invoice_status
+  reference :payment, to: :payment_method
 end
 
 union :payment_method, discriminator: :kind do
-  variant tag: 'card', type: :object do
-    param :last_four, type: :string
+  variant tag: 'card' do
+    object do
+      string :last_four
+    end
   end
-  variant tag: 'bank', type: :object do
-    param :account, type: :string
+  variant tag: 'bank' do
+    object do
+      string :account
+    end
   end
 end
 
@@ -74,11 +78,13 @@ An object defines both **shape** and **constraints**.
 
 ```ruby
 object :invoice do
-  param :id, type: :uuid
-  param :number, type: :string
-  param :status, type: :string, enum: %w[draft sent paid]
-  param :total, type: :decimal
-  param :line_items, type: :array, of: :line_item
+  uuid :id
+  string :number
+  string :status, enum: %w[draft sent paid]
+  decimal :total
+  array :line_items do
+    reference :line_item
+  end
 end
 ```
 

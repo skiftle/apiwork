@@ -11,14 +11,14 @@ Params define what data your API accepts. When a request comes in, Apiwork valid
 Apiwork supports common primitives:
 
 ```ruby
-param :title, type: :string
-param :count, type: :integer
-param :price, type: :float
-param :active, type: :boolean
-param :birth_date, type: :date
-param :created_at, type: :datetime
-param :start_time, type: :time
-param :id, type: :uuid
+string :title
+integer :count
+float :price
+boolean :active
+date :birth_date
+datetime :created_at
+time :start_time
+uuid :id
 ```
 
 [Types](../type-system/types.md) has the full list with formatting options.
@@ -35,10 +35,10 @@ Three options control field presence:
 | Both             | OK            | OK              | Fully optional   |
 
 ```ruby
-param :title, type: :string                                     # required
-param :notes, type: :string, optional: true                     # can omit
-param :deleted_at, type: :datetime, nullable: true              # can be null
-param :metadata, type: :object, optional: true, nullable: true  # can omit or null
+string :title                                     # required
+string :notes, optional: true                     # can omit
+datetime :deleted_at, nullable: true              # can be null
+object :metadata, optional: true, nullable: true  # can omit or null
 ```
 
 ### Defaults
@@ -46,9 +46,9 @@ param :metadata, type: :object, optional: true, nullable: true  # can omit or nu
 When a field is omitted, use a default value:
 
 ```ruby
-param :status, type: :string, default: 'draft'
-param :count, type: :integer, default: 0
-param :tags, type: :array, default: []
+string :status, default: 'draft'
+integer :count, default: 0
+array :tags, default: []
 ```
 
 When validation fails, Apiwork returns a [contract error](../errors/contract-issues.md) with codes like `field_missing` or `value_null`.
@@ -58,7 +58,7 @@ When validation fails, Apiwork returns a [contract error](../errors/contract-iss
 Restrict a param to specific values:
 
 ```ruby
-param :status, type: :string, enum: %w[draft published archived]
+string :status, enum: %w[draft published archived]
 ```
 
 Or reference an enum you've defined at the API level:
@@ -68,7 +68,7 @@ Or reference an enum you've defined at the API level:
 enum :post_status, values: %w[draft published archived]
 
 # In contract
-param :status, type: :string, enum: :post_status
+string :status, enum: :post_status
 ```
 
 ::: tip Reusable enums
@@ -80,39 +80,46 @@ Define enums at the [API level](../api-definitions/configuration.md#global-types
 Set boundaries on numeric values:
 
 ```ruby
-param :age, type: :integer, min: 0, max: 150
-param :price, type: :float, min: 0.01
+integer :age, min: 0, max: 150
+float :price, min: 0.01
 ```
 
 Or string length:
 
 ```ruby
-param :title, type: :string, min: 1, max: 255
+string :title, min: 1, max: 255
 ```
 
 Or array size:
 
 ```ruby
-param :tags, type: :array, min: 1, max: 10
+array :tags, min: 1, max: 10
 ```
 
 See [contract errors](../errors/contract-issues.md) for the validation error codes (`string_too_short`, `array_too_large`, etc.).
 
 ## Arrays
 
-Arrays use `of:` to specify element type:
+Arrays use a block to specify element type:
 
 ```ruby
-param :tags, type: :array, of: :string
-param :ids, type: :array, of: :integer
+array :tags do
+  string
+end
+
+array :ids do
+  integer
+end
 ```
 
-For arrays of objects, use a block:
+For arrays of objects:
 
 ```ruby
-param :posts, type: :array do
-  param :title, type: :string
-  param :body, type: :string
+array :posts do
+  object do
+    string :title
+    string :body
+  end
 end
 ```
 
@@ -121,12 +128,12 @@ end
 Objects can nest up to 10 levels deep:
 
 ```ruby
-param :post, type: :object do
-  param :title, type: :string
-  param :body, type: :string
-  param :author, type: :object do
-    param :name, type: :string
-    param :email, type: :string
+object :post do
+  string :title
+  string :body
+  object :author do
+    string :name
+    string :email
   end
 end
 ```
@@ -138,7 +145,7 @@ Requests exceeding the depth limit receive a `depth_exceeded` error.
 When the API name differs from your internal name, use `as:`:
 
 ```ruby
-param :lines_attributes, type: :string, as: :lines
+object :lines_attributes, as: :lines
 ```
 
 Clients send `lines`, but your code receives `lines_attributes`.
@@ -150,12 +157,12 @@ You can reference objects defined at the API level:
 ```ruby
 # In API definition
 object :address do
-  param :street, type: :string
-  param :city, type: :string
+  string :street
+  string :city
 end
 
 # In contract
-param :shipping_address, type: :address
+reference :shipping_address, to: :address
 ```
 
 [Type System](../type-system/introduction.md) covers objects, unions, enums, and scoping.
@@ -165,12 +172,14 @@ param :shipping_address, type: :address
 Your params automatically generate types for export output:
 
 ```ruby
-param :title, type: :string, min: 1, max: 255
-param :count, type: :integer, min: 0, max: 100, optional: true
-param :tags, type: :array, of: :string, optional: true
-param :author, type: :object do
-  param :name, type: :string
-  param :email, type: :string, optional: true
+string :title, min: 1, max: 255
+integer :count, min: 0, max: 100, optional: true
+array :tags, optional: true do
+  string
+end
+object :author do
+  string :name
+  string :email, optional: true
 end
 ```
 

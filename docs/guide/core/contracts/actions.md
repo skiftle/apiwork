@@ -11,14 +11,14 @@ Actions define the request and response structure for each endpoint.
 action :create do
   request do
     body do
-      param :title, type: :string
+      string :title
     end
   end
 
   response do
     body do
-      param :id, type: :integer
-      param :title, type: :string
+      integer :id
+      string :title
     end
   end
 end
@@ -42,7 +42,7 @@ For GET parameters:
 action :search do
   request do
     query do
-      param :q, type: :string
+      string :q
     end
   end
 end
@@ -56,9 +56,9 @@ For POST/PATCH request body:
 action :create do
   request do
     body do
-      param :post, type: :object do
-        param :title, type: :string
-        param :body, type: :string
+      object :post do
+        string :title
+        string :body
       end
     end
   end
@@ -75,9 +75,9 @@ Define the response structure:
 action :show do
   response do
     body do
-      param :id, type: :integer
-      param :title, type: :string
-      param :created_at, type: :datetime
+      integer :id
+      string :title
+      datetime :created_at
     end
   end
 end
@@ -92,8 +92,8 @@ action :index do
   response do
     body do
       meta do
-        param :generated_at, type: :datetime
-        param :api_version, type: :string
+        datetime :generated_at
+        string :api_version
       end
     end
   end
@@ -104,7 +104,7 @@ For optional meta, pass `optional: true`:
 
 ```ruby
 meta optional: true do
-  param :request_id, type: :uuid
+  uuid :request_id
 end
 ```
 
@@ -199,14 +199,18 @@ Apiwork works the same way:
 # Schema-generated (via adapter)
 action :create do
   request do
-    body { param :title, :amount, :status }
+    body do
+      string :title
+      decimal :amount
+      string :status
+    end
   end
 end
 
 # Your definition (in contract)
 action :create do
   request do
-    body { param :priority, type: :string }
+    body { string :priority }
   end
 end
 
@@ -231,8 +235,8 @@ Example of deep merge:
 action :create do
   request do
     body do
-      param :invoice, type: :object do
-        param :title, type: :string
+      object :invoice do
+        string :title
       end
     end
   end
@@ -242,8 +246,8 @@ end
 action :create do
   request do
     body do
-      param :invoice do
-        param :priority, type: :string  # Added to existing :invoice
+      object :invoice do
+        string :priority  # Added to existing :invoice
       end
     end
   end
@@ -258,13 +262,13 @@ When using `schema!`, the adapter auto-generates request and response definition
 
 ```ruby
 class InvoiceContract < Apiwork::Contract::Base
-  schema!  # Generates: body { param :title, :amount, :status, ... }
+  schema!  # Generates: body { string :title; decimal :amount; ... }
 
   action :create do
     request do
       body do
-        param :invoice do
-          param :priority, type: :string  # Added to schema params
+        object :invoice do
+          string :priority  # Added to schema params
         end
       end
     end
@@ -280,8 +284,8 @@ Use `replace: true` when you want **only** your params, not merged with auto-gen
 action :create do
   request replace: true do
     body do
-      param :invoice, type: :object do
-        param :title, type: :string  # ONLY this, no schema params
+      object :invoice do
+        string :title  # ONLY this, no schema params
       end
     end
   end
@@ -324,7 +328,7 @@ action :create do
 
   request do
     body do
-      param :title, type: :string
+      string :title
     end
   end
 end

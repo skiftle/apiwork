@@ -76,7 +76,7 @@ end
 
 `.concern(name, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L457)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L463)
 
 Defines a reusable concern for resources.
 
@@ -111,7 +111,7 @@ end
 
 `.enum(name, values: nil, scope: nil, description: nil, example: nil, deprecated: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L217)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L219)
 
 Defines a reusable enumeration type.
 
@@ -142,7 +142,7 @@ enum :status, values: %w[draft sent paid]
 **Example: Reference in contract**
 
 ```ruby
-param :status, enum: :status
+string :status, enum: :status
 ```
 
 ---
@@ -190,7 +190,7 @@ end
 
 `.info(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L320)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L326)
 
 Defines API metadata.
 
@@ -249,7 +249,7 @@ end
 
 `.object(name, scope: nil, description: nil, example: nil, format: nil, deprecated: false, schema_class: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L175)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L177)
 
 Defines a reusable object type (object shape).
 
@@ -276,15 +276,17 @@ Scoped types are namespaced to a contract class.
 
 ```ruby
 object :item do
-  param :description, type: :string
-  param :amount, type: :decimal
+  string :description
+  decimal :amount
 end
 ```
 
 **Example: Reference in contract**
 
 ```ruby
-param :items, type: :array, of: :item
+array :items do
+  reference :item
+end
 ```
 
 ---
@@ -326,7 +328,7 @@ end
 
 `.raises(*error_code_keys)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L291)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L297)
 
 Declares error codes that any action in this API may raise.
 
@@ -353,7 +355,7 @@ end
 
 `.resource(name, concerns: nil, constraints: nil, contract: nil, controller: nil, defaults: nil, except: nil, only: nil, param: nil, path: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L408)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L414)
 
 Defines a singular resource (no index action, no :id in URL).
 
@@ -394,7 +396,7 @@ end
 
 `.resources(name, concerns: nil, constraints: nil, contract: nil, controller: nil, defaults: nil, except: nil, only: nil, param: nil, path: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L356)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L362)
 
 Defines a RESTful resource with standard CRUD actions.
 
@@ -444,7 +446,7 @@ end
 
 `.union(name, discriminator: nil, scope: nil, description: nil, deprecated: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L257)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L263)
 
 Defines a discriminated union type.
 
@@ -467,11 +469,15 @@ by a discriminator field.
 
 ```ruby
 union :payment_method, discriminator: :type do
-  variant tag: 'card', type: :object do
-    param :last_four, type: :string
+  variant tag: 'card' do
+    object do
+      string :last_four
+    end
   end
-  variant tag: 'bank', type: :object do
-    param :account_number, type: :string
+  variant tag: 'bank' do
+    object do
+      string :account_number
+    end
   end
 end
 ```
@@ -482,7 +488,7 @@ end
 
 `.with_options(options = {}, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L478)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L484)
 
 Applies options to all nested resource definitions.
 

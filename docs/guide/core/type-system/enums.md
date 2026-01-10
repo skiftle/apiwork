@@ -27,9 +27,9 @@ class PostContract < Apiwork::Contract::Base
   enum :status, values: %w[draft published archived]
 
   object :post do
-    param :id, type: :uuid
-    param :title, type: :string
-    param :status, type: :status
+    uuid :id
+    string :title
+    string :status, enum: :status
   end
 end
 ```
@@ -41,7 +41,7 @@ end
 Reference a defined enum by name:
 
 ```ruby
-param :status, type: :string, enum: :status
+string :status, enum: :status
 ```
 
 ### Inline Validation
@@ -49,7 +49,7 @@ param :status, type: :string, enum: :status
 Without defining a separate enum:
 
 ```ruby
-param :status, type: :string, enum: %w[draft published archived]
+string :status, enum: %w[draft published archived]
 ```
 
 ## Enum Metadata

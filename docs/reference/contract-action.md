@@ -167,8 +167,8 @@ Use the block to define query parameters and request body.
 ```ruby
 action :create do
   request do
-    query { param :dry_run, type: :boolean, optional: true }
-    body { param :title, type: :string }
+    query { boolean :dry_run, optional: true }
+    body { string :title }
   end
 end
 ```
@@ -205,8 +205,8 @@ Use the block to define response body or declare no_content.
 action :show do
   response do
     body do
-      param :id
-      param :title
+      uuid :id
+      string :title
     end
   end
 end

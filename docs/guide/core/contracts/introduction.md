@@ -15,8 +15,8 @@ class PostContract < Apiwork::Contract::Base
   action :create do
     request do
       body do
-        param :title, type: :string
-        param :body, type: :string
+        string :title
+        string :body
       end
     end
   end

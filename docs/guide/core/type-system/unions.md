@@ -10,8 +10,8 @@ Unions allow a value to be one of several types.
 
 ```ruby
 union :filter_value do
-  variant type: :string
-  variant type: :integer
+  variant { string }
+  variant { integer }
 end
 ```
 
@@ -44,9 +44,9 @@ export const FilterValueSchema = z.union([z.number().int(), z.string()]);
 Usage:
 
 ```ruby
-param :filter, type: :union do
-  variant type: :string
-  variant type: :integer
+union :filter do
+  variant { string }
+  variant { integer }
 end
 ```
 
@@ -55,14 +55,18 @@ end
 A discriminated union uses a field to determine the variant:
 
 ```ruby
-param :filter, type: :union, discriminator: :kind do
-  variant tag: 'string', type: :object do
-    param :value, type: :string
+union :filter, discriminator: :kind do
+  variant tag: 'string' do
+    object do
+      string :value
+    end
   end
 
-  variant tag: 'range', type: :object do
-    param :gte, type: :integer
-    param :lte, type: :integer, optional: true
+  variant tag: 'range' do
+    object do
+      integer :gte
+      integer :lte, optional: true
+    end
   end
 end
 ```
@@ -143,12 +147,16 @@ export const FilterSchema = z.discriminatedUnion('kind', [
 ## Variant Options
 
 ```ruby
-variant type: :string                        # Primitive type
-variant type: :my_custom_type                # Reference to custom type
-variant type: :array, of: :string            # Array type
-variant type: :object do ... end             # Inline object
-variant tag: 'text', type: :object do ... end  # For discriminated unions
-variant type: :my_type, partial: true        # Makes all fields optional
+variant { string }                           # Primitive type
+variant { reference :my_custom_type }        # Reference to custom type
+variant { array { string } }                 # Array type
+variant { object { string :name } }          # Inline object
+variant tag: 'text' do                       # For discriminated unions
+  object { string :content }
+end
+variant partial: true do                     # Makes all fields optional
+  reference :my_type
+end
 ```
 
 ### `partial`
@@ -157,8 +165,10 @@ The `partial: true` option makes all fields in the variant optional:
 
 ```ruby
 union :user_update do
-  variant type: :full_user
-  variant type: :full_user, partial: true, tag: 'patch'  # All fields optional
+  variant { reference :full_user }
+  variant tag: 'patch', partial: true do  # All fields optional
+    reference :full_user
+  end
 end
 ```
 
@@ -167,14 +177,18 @@ end
 ```ruby
 class PostContract < Apiwork::Contract::Base
   union :content_block do
-    variant type: :object do
-      param :type, type: :literal, value: 'text'
-      param :content, type: :string
+    variant do
+      object do
+        literal :type, value: 'text'
+        string :content
+      end
     end
 
-    variant type: :object do
-      param :type, type: :literal, value: 'image'
-      param :url, type: :string
+    variant do
+      object do
+        literal :type, value: 'image'
+        string :url
+      end
     end
   end
 end

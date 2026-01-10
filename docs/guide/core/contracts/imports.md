@@ -19,7 +19,7 @@ class OrderContract < Apiwork::Contract::Base
   action :create do
     request do
       body do
-        param :shipping_address, type: :user_address
+        reference :shipping_address, to: :user_address
       end
     end
   end
@@ -35,8 +35,8 @@ When you define an object in a contract:
 ```ruby
 class UserContract < Apiwork::Contract::Base
   object :address do
-    param :street, type: :string
-    param :city, type: :string
+    string :street
+    string :city
   end
 end
 ```
@@ -53,8 +53,10 @@ class OrderContract < Apiwork::Contract::Base
   action :create do
     request do
       body do
-        param :shipping_address, type: :user_address
-        param :items, type: :array, of: :product_line_item
+        reference :shipping_address, to: :user_address
+        array :items do
+          reference :product_line_item
+        end
       end
     end
   end
@@ -76,7 +78,7 @@ class OrderContract < Apiwork::Contract::Base
   action :create do
     request do
       body do
-        param :customer_status, type: :string, enum: :user_status
+        string :customer_status, enum: :user_status
       end
     end
   end
@@ -96,9 +98,9 @@ If a type name exists at multiple levels, the first match wins:
 ```ruby
 class UserContract < Apiwork::Contract::Base
   object :address do
-    param :street, type: :string
-    param :city, type: :string
-    param :country_code, type: :string  # 3 fields
+    string :street
+    string :city
+    string :country_code  # 3 fields
   end
 end
 
@@ -107,14 +109,14 @@ class OrderContract < Apiwork::Contract::Base
 
   # This local object shadows the imported one
   object :user_address do
-    param :street, type: :string
-    param :city, type: :string      # 2 fields (no country_code)
+    string :street
+    string :city  # 2 fields (no country_code)
   end
 
   action :show do
     response do
       body do
-        param :address, type: :user_address  # Uses local 2-field version
+        reference :address, to: :user_address  # Uses local 2-field version
       end
     end
   end

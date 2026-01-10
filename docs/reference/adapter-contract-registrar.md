@@ -18,8 +18,8 @@ types specific to a resource contract (request/response shapes).
 ```ruby
 def register_contract(registrar, schema_class, actions)
   registrar.object :user_input do
-    param :name, type: :string
-    param :email, type: :string
+    string :name
+    string :email
   end
 end
 ```

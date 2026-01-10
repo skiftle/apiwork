@@ -19,8 +19,8 @@ class PostContract < Apiwork::Contract::Base
   action :create do
     request do
       body do
-        param :title, type: :string
-        param :status, type: :string, enum: %w[draft published], optional: true
+        string :title
+        string :status, enum: %w[draft published], optional: true
       end
     end
   end
@@ -166,7 +166,7 @@ end
 #### string_too_short
 
 ```ruby
-param :title, type: :string, min: 5, max: 100
+string :title, min: 5, max: 100
 ```
 
 ```json
@@ -187,7 +187,9 @@ param :title, type: :string, min: 5, max: 100
 #### array_too_large
 
 ```ruby
-param :tags, type: :array, of: :string, min: 1, max: 10
+array :tags, min: 1, max: 10 do
+  string
+end
 ```
 
 ```json
@@ -396,9 +398,9 @@ Contract errors include the full path to the problematic field:
 action :create do
   request do
     body do
-      param :post, type: :object do
-        param :metadata, type: :object do
-          param :author_id, type: :uuid
+      object :post do
+        object :metadata do
+          uuid :author_id
         end
       end
     end
@@ -430,9 +432,11 @@ Array items include their index in the path:
 action :create do
   request do
     body do
-      param :items, type: :array do
-        param :sku, type: :string
-        param :quantity, type: :integer
+      array :items do
+        object do
+          string :sku
+          integer :quantity
+        end
       end
     end
   end
@@ -460,12 +464,16 @@ If the third item is missing `quantity`:
 For discriminated unions, errors point to the discriminator or the variant fields:
 
 ```ruby
-param :content, type: :union, discriminator: :type do
-  variant :text, tag: 'text' do
-    param :body, type: :string
+union :content, discriminator: :type do
+  variant tag: 'text' do
+    object do
+      string :body
+    end
   end
-  variant :image, tag: 'image' do
-    param :url, type: :string
+  variant tag: 'image' do
+    object do
+      string :url
+    end
   end
 end
 ```
@@ -518,7 +526,7 @@ class PostContract < Apiwork::Contract::Base
   action :show do
     response do
       body do
-        param :status, type: :string, enum: %w[draft published]
+        string :status, enum: %w[draft published]
       end
     end
   end

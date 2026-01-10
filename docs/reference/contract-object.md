@@ -10,23 +10,23 @@ next: false
 
 Block context for defining request/response structure.
 
-Accessed via `body do`, `query do`, or `param :x, type: :object do`
-inside contract actions. Use [#param](#param) to define fields.
+Accessed via `body do`, `query do`, or `object :x do`
+inside contract actions. Use type methods to define fields.
 
 **Example: Request body**
 
 ```ruby
 body do
-  param :title, type: :string
-  param :amount, type: :decimal
+  string :title
+  decimal :amount
 end
 ```
 
 **Example: Inline nested object**
 
 ```ruby
-param :customer, type: :object do
-  param :name, type: :string
+object :customer do
+  string :name
 end
 ```
 
@@ -34,9 +34,9 @@ end
 
 ### #array
 
-`#array(name, deprecated: nil, description: nil, nullable: nil, optional: false, &block)`
+`#array(name, default: nil, deprecated: nil, description: nil, nullable: nil, optional: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L552)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L577)
 
 Defines an array field.
 
@@ -47,6 +47,7 @@ The block must define exactly one element type.
 | Name | Type | Description |
 |------|------|-------------|
 | `name` | `Symbol` | field name |
+| `default` | `Array` | default value |
 | `deprecated` | `Boolean` | mark as deprecated |
 | `description` | `String` | documentation description |
 | `nullable` | `Boolean` | whether null is allowed |
@@ -91,9 +92,9 @@ end
 
 ### #boolean
 
-`#boolean(name, deprecated: nil, description: nil, example: nil, nullable: nil, optional: false)`
+`#boolean(name, default: nil, deprecated: nil, description: nil, example: nil, nullable: nil, optional: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L315)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L325)
 
 Defines a boolean field.
 
@@ -122,9 +123,9 @@ boolean :active
 
 ### #date
 
-`#date(name, deprecated: nil, description: nil, example: nil, nullable: nil, optional: false)`
+`#date(name, default: nil, deprecated: nil, description: nil, example: nil, nullable: nil, optional: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L408)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L427)
 
 Defines a date field.
 
@@ -133,6 +134,7 @@ Defines a date field.
 | Name | Type | Description |
 |------|------|-------------|
 | `name` | `Symbol` | field name |
+| `default` | `String` | default value |
 | `deprecated` | `Boolean` | mark as deprecated |
 | `description` | `String` | documentation description |
 | `example` | `String` | example value for documentation |
@@ -147,9 +149,9 @@ Defines a date field.
 
 ### #datetime
 
-`#datetime(name, deprecated: nil, description: nil, example: nil, nullable: nil, optional: false)`
+`#datetime(name, default: nil, deprecated: nil, description: nil, example: nil, nullable: nil, optional: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L379)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L395)
 
 Defines a datetime field.
 
@@ -158,6 +160,7 @@ Defines a datetime field.
 | Name | Type | Description |
 |------|------|-------------|
 | `name` | `Symbol` | field name |
+| `default` | `String` | default value |
 | `deprecated` | `Boolean` | mark as deprecated |
 | `description` | `String` | documentation description |
 | `example` | `String` | example value for documentation |
@@ -172,9 +175,9 @@ Defines a datetime field.
 
 ### #decimal
 
-`#decimal(name, deprecated: nil, description: nil, example: nil, max: nil, min: nil, nullable: nil, optional: false)`
+`#decimal(name, default: nil, deprecated: nil, description: nil, example: nil, max: nil, min: nil, nullable: nil, optional: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L279)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L287)
 
 Defines a decimal field.
 
@@ -206,9 +209,9 @@ decimal :price, min: 0
 
 ### #float
 
-`#float(name, deprecated: nil, description: nil, example: nil, max: nil, min: nil, nullable: nil, optional: false)`
+`#float(name, default: nil, deprecated: nil, description: nil, example: nil, max: nil, min: nil, nullable: nil, optional: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L346)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L359)
 
 Defines a float field.
 
@@ -217,6 +220,7 @@ Defines a float field.
 | Name | Type | Description |
 |------|------|-------------|
 | `name` | `Symbol` | field name |
+| `default` | `Float` | default value |
 | `deprecated` | `Boolean` | mark as deprecated |
 | `description` | `String` | documentation description |
 | `example` | `Float` | example value for documentation |
@@ -233,9 +237,9 @@ Defines a float field.
 
 ### #integer
 
-`#integer(name, deprecated: nil, description: nil, enum: nil, example: nil, max: nil, min: nil, nullable: nil, optional: false)`
+`#integer(name, default: nil, deprecated: nil, description: nil, enum: nil, example: nil, max: nil, min: nil, nullable: nil, optional: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L238)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L244)
 
 Defines an integer field.
 
@@ -270,7 +274,7 @@ integer :age, min: 0, max: 150
 
 `#literal(name, value:, deprecated: nil, description: nil, optional: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L469)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L493)
 
 Defines a literal value field.
 
@@ -301,7 +305,7 @@ literal :version, value: 1
 
 `#meta(optional: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L682)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L714)
 
 Shorthand for `param :meta, type: :object do ... end`.
 
@@ -319,7 +323,7 @@ Use for response data that doesn't belong to the resource itself.
 response do
   body do
     meta do
-      param :generated_at, type: :datetime
+      datetime :generated_at
     end
   end
 end
@@ -331,7 +335,7 @@ end
 response do
   body do
     meta optional: true do
-      param :api_version, type: :string
+      string :api_version
     end
   end
 end
@@ -343,7 +347,7 @@ end
 
 `#object(name, deprecated: nil, description: nil, nullable: nil, optional: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L596)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L628)
 
 Defines an inline object field.
 
@@ -380,7 +384,7 @@ end
 
 `#param(name, as: nil, default: nil, deprecated: nil, description: nil, discriminator: nil, enum: nil, example: nil, format: nil, max: nil, min: nil, nullable: nil, of: nil, optional: nil, required: nil, shape: nil, type: nil, value: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L79)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L83)
 
 Defines a parameter/field in a request or response body.
 
@@ -418,26 +422,30 @@ Defines a parameter/field in a request or response body.
 **Example: Basic param**
 
 ```ruby
-param :amount, type: :decimal
+decimal :amount
 ```
 
 **Example: Inline object**
 
 ```ruby
-param :customer, type: :object do
-  param :name, type: :string
+object :customer do
+  string :name
 end
 ```
 
 **Example: Inline union**
 
 ```ruby
-param :payment_method, type: :union, discriminator: :type do
-  variant tag: 'card', type: :object do
-    param :last_four, type: :string
+union :payment_method, discriminator: :type do
+  variant tag: 'card' do
+    object do
+      string :last_four
+    end
   end
-  variant tag: 'bank', type: :object do
-    param :account_number, type: :string
+  variant tag: 'bank' do
+    object do
+      string :account_number
+    end
   end
 end
 ```
@@ -448,7 +456,7 @@ end
 
 `#reference(name, to: nil, deprecated: nil, description: nil, nullable: nil, optional: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L502)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L526)
 
 Defines a reference to a named type.
 
@@ -483,9 +491,9 @@ reference :shipping_address, to: :address
 
 ### #string
 
-`#string(name, deprecated: nil, description: nil, enum: nil, example: nil, format: nil, max: nil, min: nil, nullable: nil, optional: false)`
+`#string(name, default: nil, deprecated: nil, description: nil, enum: nil, example: nil, format: nil, max: nil, min: nil, nullable: nil, optional: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L194)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L198)
 
 Defines a string field.
 
@@ -521,7 +529,7 @@ string :status, enum: %w[pending active]
 
 `#union(name, discriminator: nil, deprecated: nil, description: nil, nullable: nil, optional: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L636)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L668)
 
 Defines an inline union field.
 
@@ -560,9 +568,9 @@ end
 
 ### #uuid
 
-`#uuid(name, deprecated: nil, description: nil, example: nil, nullable: nil, optional: false)`
+`#uuid(name, default: nil, deprecated: nil, description: nil, example: nil, nullable: nil, optional: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L437)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L459)
 
 Defines a UUID field.
 
@@ -571,6 +579,7 @@ Defines a UUID field.
 | Name | Type | Description |
 |------|------|-------------|
 | `name` | `Symbol` | field name |
+| `default` | `String` | default value |
 | `deprecated` | `Boolean` | mark as deprecated |
 | `description` | `String` | documentation description |
 | `example` | `String` | example value for documentation |
