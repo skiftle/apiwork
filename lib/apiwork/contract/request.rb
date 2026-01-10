@@ -23,10 +23,9 @@ module Apiwork
       # Defines query parameters for this request.
       #
       # Query parameters are parsed from the URL query string.
-      # Use `param` inside the block to define parameters.
       #
-      # @yield block defining query params
-      # @return [Object] the query param
+      # @yieldself [Contract::Object] block context for defining params
+      # @return [Contract::Object]
       # @see Contract::Object
       #
       # @example
@@ -52,10 +51,9 @@ module Apiwork
       # Defines the request body for this request.
       #
       # Body is parsed from the JSON request body.
-      # Use `param` inside the block to define fields.
       #
-      # @yield block defining body params
-      # @return [Object] the body param
+      # @yieldself [Contract::Object] block context for defining params
+      # @return [Contract::Object]
       # @see Contract::Object
       #
       # @example

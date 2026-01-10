@@ -3,12 +3,12 @@
 module Apiwork
   module Contract
     # @api public
-    # Defines an object shape for request/response bodies.
+    # Block context for defining request/response structure.
     #
-    # Returned by {Request#query}, {Request#body}, and {Response#body}.
-    # Use `param` to define fields within the object.
+    # Accessed via `body do`, `query do`, or `param :x, type: :object do`
+    # inside contract actions. Use {#param} to define fields.
     #
-    # @example In a contract action
+    # @example Request body
     #   action :create do
     #     request do
     #       body do
@@ -17,6 +17,14 @@ module Apiwork
     #       end
     #     end
     #   end
+    #
+    # @example Inline nested object
+    #   param :address, type: :object do
+    #     param :street, type: :string
+    #     param :city, type: :string
+    #   end
+    #
+    # @see API::Object Block context for reusable types
     class Object
       attr_reader :action_name,
                   :contract_class,

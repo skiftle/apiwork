@@ -162,9 +162,8 @@ module Apiwork
         # @param format [String] format hint for docs
         # @param deprecated [Boolean] mark as deprecated
         # @param schema_class [Class] a {Schema::Base} subclass for type inference
-        # @yield block defining the type's params
-        # @see Contract::Base
-        # @see Schema::Base
+        # @yieldself [API::Object] block context for defining params
+        # @see API::Object
         #
         # @example Global object type
         #   object :address do
@@ -246,8 +245,8 @@ module Apiwork
         # @param name [Symbol] union name for referencing
         # @param scope [Class] a {Contract::Base} subclass for scoping (nil for global)
         # @param discriminator [Symbol] field name that identifies the variant
-        # @yield block defining variants using `variant`
-        # @see Contract::Base
+        # @yieldself [API::Union] block context for defining variants
+        # @see API::Union
         #
         # @example
         #   union :payment_method, discriminator: :type do

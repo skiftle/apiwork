@@ -3,23 +3,21 @@
 module Apiwork
   module API
     # @api public
-    # Defines an object shape with named parameters.
+    # Block context for defining reusable object types.
     #
-    # Objects are the primary way to define structured data in Apiwork.
-    # Each object has a set of named parameters with types and constraints.
+    # Accessed via `object :name do` in API or contract definitions.
+    # Use {#param} to define fields.
     #
-    # @example Define an address object
+    # @example Define a reusable address type
     #   object :address do
     #     param :street, type: :string
     #     param :city, type: :string
-    #     param :postal_code, type: :string
     #   end
     #
-    # @example Inline object in a param
-    #   param :shipping, type: :object do
-    #     param :street, type: :string
-    #     param :city, type: :string
-    #   end
+    # @example Reference in contract
+    #   param :shipping, type: :address
+    #
+    # @see Contract::Object Block context for inline objects
     class Object
       attr_reader :params
 

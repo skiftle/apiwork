@@ -3,20 +3,13 @@
 module Apiwork
   module API
     # @api public
-    # Defines a union type with multiple variants.
+    # Block context for defining reusable union types.
     #
-    # A union represents a value that can be one of several types.
-    # With a discriminator, variants are distinguished by a tag field.
-    # Without a discriminator, validation tries each variant in order.
-    #
-    # @example Simple union (no discriminator)
-    #   union :filter_value do
-    #     variant type: :string
-    #     variant type: :integer
-    #   end
+    # Accessed via `union :name do` in API or contract definitions.
+    # Use {#variant} to define possible types.
     #
     # @example Discriminated union
-    #   union :payment, discriminator: :kind do
+    #   union :payment, discriminator: :type do
     #     variant tag: 'card', type: :object do
     #       param :last_four, type: :string
     #     end
@@ -24,6 +17,14 @@ module Apiwork
     #       param :account, type: :string
     #     end
     #   end
+    #
+    # @example Simple union
+    #   union :filter_value do
+    #     variant type: :string
+    #     variant type: :integer
+    #   end
+    #
+    # @see Contract::Union Block context for inline unions
     class Union
       attr_reader :discriminator,
                   :variants

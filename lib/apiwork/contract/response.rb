@@ -51,11 +51,10 @@ module Apiwork
       # @api public
       # Defines the response body for this response.
       #
-      # Use `param` inside the block to define fields.
       # When using schema!, body is auto-generated from schema attributes.
       #
-      # @yield block defining body params
-      # @return [Object] the body param
+      # @yieldself [Contract::Object] block context for defining params
+      # @return [Contract::Object]
       # @see Contract::Object
       #
       # @example
