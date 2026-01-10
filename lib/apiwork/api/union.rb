@@ -67,13 +67,23 @@ module Apiwork
         data = { enum:, of:, partial:, shape:, tag:, type: }.compact
 
         if tag && (index = @variants.find_index { |variant| variant[:tag] == tag })
-          @variants[index] = @variants[index].merge(data)
+          existing = @variants[index]
+          merge_variant_shapes(existing, shape) if shape && existing[:shape]
+          data.delete(:shape) if shape && existing[:shape]
+          @variants[index] = existing.merge(data)
         else
           @variants << data
         end
       end
 
       private
+
+      def merge_variant_shapes(existing_variant, new_shape)
+        new_shape.params.each do |name, param_data|
+          existing_variant[:shape].params[name] =
+            (existing_variant[:shape].params[name] || {}).merge(param_data)
+        end
+      end
 
       def validate_tag!(tag)
         raise ArgumentError, 'tag can only be used when union has a discriminator' if tag.present? && @discriminator.nil?

@@ -147,6 +147,49 @@ RSpec.describe 'Type merging' do
         expect(definition.variants.first[:type]).to eq(:card_details)
         expect(definition.variants.first[:partial]).to be(true)
       end
+
+      it 'merges variant shape params instead of replacing' do
+        api_class = Apiwork::API.define '/api/test' do
+          union :payment, discriminator: :type do
+            variant tag: 'card', type: :object do
+              param :number, type: :string
+            end
+          end
+
+          union :payment, discriminator: :type do
+            variant tag: 'card', type: :object do
+              param :cvv, type: :string
+            end
+          end
+        end
+
+        definition = api_class.type_registry[:payment]
+        card_variant = definition.variants.find { |variant| variant[:tag] == 'card' }
+
+        expect(card_variant[:shape].params.keys).to contain_exactly(:number, :cvv)
+      end
+
+      it 'merges variant shape param options' do
+        api_class = Apiwork::API.define '/api/test' do
+          union :payment, discriminator: :type do
+            variant tag: 'card', type: :object do
+              param :number, type: :string
+            end
+          end
+
+          union :payment, discriminator: :type do
+            variant tag: 'card', type: :object do
+              param :number, description: 'Card number'
+            end
+          end
+        end
+
+        definition = api_class.type_registry[:payment]
+        card_variant = definition.variants.find { |variant| variant[:tag] == 'card' }
+
+        expect(card_variant[:shape].params[:number][:type]).to eq(:string)
+        expect(card_variant[:shape].params[:number][:description]).to eq('Card number')
+      end
     end
 
     describe 'enum merging' do
