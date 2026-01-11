@@ -175,21 +175,28 @@ end`,
       {
         language: "json",
         code: `{
-  "errors": [
+  "layer": "domain",
+  "issues": [
     {
-      "code": "field_missing",
-      "detail": "Field required",
-      "pointer": "/invoice/number"
+      "code": "required",
+      "detail": "Required",
+      "path": ["invoice", "number"],
+      "pointer": "/invoice/number",
+      "meta": {}
     },
     {
-      "code": "blank",
-      "detail": "can't be blank",
-      "pointer": "/invoice/lines/0/description"
+      "code": "required",
+      "detail": "Required",
+      "path": ["invoice", "lines", 0, "description"],
+      "pointer": "/invoice/lines/0/description",
+      "meta": {}
     },
     {
-      "code": "invalid_value",
-      "detail": "Must be one of: draft, sent, paid",
-      "pointer": "/invoice/lines/1/status"
+      "code": "in",
+      "detail": "Invalid value",
+      "path": ["invoice", "lines", 1, "status"],
+      "pointer": "/invoice/lines/1/status",
+      "meta": {}
     }
   ]
 }`,
@@ -201,7 +208,7 @@ end`,
     title: "Zero",
     titleAccent: "drift",
     description:
-      "TypeScript types, Zod schemas, and OpenAPI exports — all generated from your contracts. When your API changes, your frontend types update automatically. They can never go stale.",
+      "TypeScript types, Zod schemas, and OpenAPI specs — all generated from your contracts. When your API changes, your frontend types update automatically. They can never go stale.",
     alt: true,
     wide: true,
     blobVariant: 1,

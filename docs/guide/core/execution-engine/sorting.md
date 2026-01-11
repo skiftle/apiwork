@@ -118,11 +118,14 @@ Example error response:
 
 ```json
 {
-  "errors": [
+  "layer": "contract",
+  "issues": [
     {
       "code": "field_not_sortable",
-      "detail": "body is not sortable. Available: title, created_at, views",
-      "path": ["sort", "body"]
+      "detail": "Not sortable",
+      "path": ["sort", "body"],
+      "pointer": "/sort/body",
+      "meta": { "field": "body", "available": ["title", "created_at", "views"] }
     }
   ]
 }

@@ -84,11 +84,16 @@ Enum fields support `eq` and `in` operators. You can also pass the value directl
 
 ```json
 {
-  "errors": [{
-    "code": "invalid_enum_value",
-    "detail": "Invalid value 'unknown' for status. Valid: draft, published, archived",
-    "path": ["filter", "status", "eq"]
-  }]
+  "layer": "contract",
+  "issues": [
+    {
+      "code": "enum_invalid",
+      "detail": "Invalid enum value",
+      "path": ["filter", "status"],
+      "pointer": "/filter/status",
+      "meta": { "field": "status", "value": ["unknown"], "allowed": ["draft", "published", "archived"] }
+    }
+  ]
 }
 ```
 
@@ -206,11 +211,16 @@ The `null` operator is only allowed on nullable columns. Non-nullable columns re
 
 ```json
 {
-  "errors": [{
-    "code": "null_not_allowed",
-    "detail": "title does not allow null values",
-    "path": ["filter", "title", "null"]
-  }]
+  "layer": "contract",
+  "issues": [
+    {
+      "code": "operator_invalid",
+      "detail": "Invalid operator",
+      "path": ["filter", "title", "null"],
+      "pointer": "/filter/title/null",
+      "meta": { "field": "title", "operator": "null", "allowed": ["eq", "contains", "starts_with", "ends_with", "in"] }
+    }
+  ]
 }
 ```
 

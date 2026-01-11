@@ -190,15 +190,20 @@ This takes precedence over the API-level defaults for this schema only.
 
 | Code | Cause |
 |------|-------|
-| `invalid_cursor` | Cursor couldn't be decoded |
+| `cursor_invalid` | Cursor couldn't be decoded |
 
 ```json
 {
-  "errors": [{
-    "code": "invalid_cursor",
-    "detail": "Invalid pagination cursor",
-    "path": ["page", "after"]
-  }]
+  "layer": "contract",
+  "issues": [
+    {
+      "code": "cursor_invalid",
+      "detail": "Invalid cursor",
+      "path": ["page"],
+      "pointer": "/page",
+      "meta": { "cursor": "..." }
+    }
+  ]
 }
 ```
 
