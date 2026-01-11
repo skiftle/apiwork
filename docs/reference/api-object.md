@@ -37,7 +37,7 @@ end
 
 `#array(name, deprecated: nil, description: nil, nullable: nil, optional: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L516)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L604)
 
 Defines an array field.
 
@@ -87,6 +87,31 @@ array :lines do
   end
 end
 ```
+
+---
+
+### #binary
+
+`#binary(name, deprecated: nil, description: nil, example: nil, nullable: nil, optional: false)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L459)
+
+Defines a binary field.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `name` | `Symbol` | field name |
+| `deprecated` | `Boolean` | mark as deprecated |
+| `description` | `String` | documentation description |
+| `example` | `String` | example value for documentation |
+| `nullable` | `Boolean` | whether null is allowed |
+| `optional` | `Boolean` | whether field can be omitted |
+
+**Returns**
+
+`void`
 
 ---
 
@@ -267,11 +292,37 @@ integer :age, min: 0, max: 150
 
 ---
 
+### #json
+
+`#json(name, deprecated: nil, description: nil, example: nil, nullable: nil, optional: false)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L489)
+
+Defines a JSON field for arbitrary/unstructured JSON data.
+For structured data with known fields, use object with a block instead.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `name` | `Symbol` | field name |
+| `deprecated` | `Boolean` | mark as deprecated |
+| `description` | `String` | documentation description |
+| `example` | `Object` | example value for documentation |
+| `nullable` | `Boolean` | whether null is allowed |
+| `optional` | `Boolean` | whether field can be omitted |
+
+**Returns**
+
+`void`
+
+---
+
 ### #literal
 
 `#literal(name, value:, deprecated: nil, description: nil, optional: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L433)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L521)
 
 Defines a literal value field.
 
@@ -302,7 +353,7 @@ literal :version, value: 1
 
 `#object(name, deprecated: nil, description: nil, nullable: nil, optional: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L565)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L653)
 
 Defines an inline object field.
 
@@ -413,7 +464,7 @@ end
 
 `#reference(name, to: nil, deprecated: nil, description: nil, nullable: nil, optional: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L466)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L554)
 
 Defines a reference to a named type.
 
@@ -482,11 +533,36 @@ string :status, enum: %w[pending active]
 
 ---
 
+### #time
+
+`#time(name, deprecated: nil, description: nil, example: nil, nullable: nil, optional: false)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L430)
+
+Defines a time field.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `name` | `Symbol` | field name |
+| `deprecated` | `Boolean` | mark as deprecated |
+| `description` | `String` | documentation description |
+| `example` | `String` | example value for documentation |
+| `nullable` | `Boolean` | whether null is allowed |
+| `optional` | `Boolean` | whether field can be omitted |
+
+**Returns**
+
+`void`
+
+---
+
 ### #union
 
 `#union(name, discriminator: nil, deprecated: nil, description: nil, nullable: nil, optional: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L605)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L693)
 
 Defines an inline union field.
 

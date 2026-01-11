@@ -566,21 +566,43 @@ if (post.content.kind === 'image') {
 }
 ```
 
-### Without Shape Definition
+### Type Override
 
-Without an inline shape, JSON data defaults to `object`:
+When using a block, the type becomes whatever you define at the top level:
+
+| Block | Resulting type | TypeScript | Zod |
+|-------|----------------|------------|-----|
+| `object do ... end` | `:object` | `{ ... }` | `z.object({ ... })` |
+| `array do ... end` | `:array` | `Type[]` | `z.array(...)` |
+| `union do ... end` | `:union` | `A \| B \| C` | `z.discriminatedUnion(...)` |
+
+The inferred type is overridden by whatever you define in the block.
 
 ```ruby
-attribute :metadata
+# Type becomes :array (regardless of column type)
+attribute :tags do
+  array do
+    string
+  end
+end
+
+# Type becomes :object (regardless of column type)
+attribute :settings do
+  object do
+    string :theme
+  end
+end
 ```
 
-Generated TypeScript:
+### Without Shape Definition
 
-```typescript
-export interface User {
-  metadata: object;
-}
+Without a block, JSON columns keep their `:json` type, which exports as `Record<string, any>`. This is intentional — `:json` means "arbitrary JSON with unknown structure":
+
+```ruby
+attribute :metadata  # :json → Record<string, any>
 ```
+
+If you know the structure, use a block. If you don't, `:json` gives you the flexibility to accept any valid JSON.
 
 ### Field Types
 

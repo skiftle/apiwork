@@ -41,7 +41,7 @@ variant { string enum: :status }
 
 `#array(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L264)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L289)
 
 Defines an array element.
 
@@ -62,6 +62,20 @@ array { integer }
 ```ruby
 array { reference :item }
 ```
+
+---
+
+### #binary
+
+`#binary`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L220)
+
+Defines a binary element.
+
+**Returns**
+
+`void`
 
 ---
 
@@ -171,11 +185,26 @@ Defines an integer element.
 
 ---
 
+### #json
+
+`#json`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L229)
+
+Defines a JSON element for arbitrary/unstructured JSON data.
+For structured data with known fields, use object with a block instead.
+
+**Returns**
+
+`void`
+
+---
+
 ### #literal
 
 `#literal(value:)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L217)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L242)
 
 Defines a literal value element.
 
@@ -202,7 +231,7 @@ literal value: 42
 
 `#object(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L247)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L272)
 
 Defines an inline object element.
 
@@ -286,7 +315,7 @@ end
 
 `#reference(type_name, to: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L231)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L256)
 
 Defines a reference to a named type.
 
@@ -333,11 +362,25 @@ Defines a string element.
 
 ---
 
+### #time
+
+`#time`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L212)
+
+Defines a time element.
+
+**Returns**
+
+`void`
+
+---
+
 ### #union
 
 `#union(discriminator: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L281)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L306)
 
 Defines an inline union element.
 

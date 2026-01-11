@@ -29,6 +29,30 @@ Primitive types are the building blocks. Every param uses one of these.
 | `:literal` | Exact value | literal type | `z.literal()` |
 | `:unknown` | Any value | `unknown` | `z.unknown()` |
 
+### `json` vs `object`
+
+Both handle structured data, but serve different purposes:
+
+| Type | Use when | Output |
+|------|----------|--------|
+| `:object` | Structure is known and defined | Typed interface with specific fields |
+| `:json` | Structure is arbitrary or unknown | `Record<string, any>` |
+
+Use `object` when you know the fields:
+
+```ruby
+object :settings do
+  string :theme
+  boolean :notifications
+end
+```
+
+Use `json` when structure is dynamic or unknown:
+
+```ruby
+json :metadata  # Could be anything
+```
+
 ## Structure Types
 
 | Type | Purpose |

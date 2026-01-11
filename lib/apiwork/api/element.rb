@@ -203,6 +203,31 @@ module Apiwork
       end
 
       # @api public
+      # Defines a time element.
+      #
+      # @return [void]
+      def time
+        of(type: :time)
+      end
+
+      # @api public
+      # Defines a binary element.
+      #
+      # @return [void]
+      def binary
+        of(type: :binary)
+      end
+
+      # @api public
+      # Defines a JSON element for arbitrary/unstructured JSON data.
+      # For structured data with known fields, use object with a block instead.
+      #
+      # @return [void]
+      def json
+        of(type: :json)
+      end
+
+      # @api public
       # Defines a literal value element.
       #
       # @param value [Object] the exact value (required)

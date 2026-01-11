@@ -418,6 +418,94 @@ module Apiwork
       end
 
       # @api public
+      # Defines a time field.
+      #
+      # @param name [Symbol] field name
+      # @param deprecated [Boolean] mark as deprecated
+      # @param description [String] documentation description
+      # @param example [String] example value for documentation
+      # @param nullable [Boolean] whether null is allowed
+      # @param optional [Boolean] whether field can be omitted
+      # @return [void]
+      def time(
+        name,
+        deprecated: nil,
+        description: nil,
+        example: nil,
+        nullable: nil,
+        optional: false
+      )
+        param(
+          name,
+          deprecated:,
+          description:,
+          example:,
+          nullable:,
+          optional:,
+          type: :time,
+        )
+      end
+
+      # @api public
+      # Defines a binary field.
+      #
+      # @param name [Symbol] field name
+      # @param deprecated [Boolean] mark as deprecated
+      # @param description [String] documentation description
+      # @param example [String] example value for documentation
+      # @param nullable [Boolean] whether null is allowed
+      # @param optional [Boolean] whether field can be omitted
+      # @return [void]
+      def binary(
+        name,
+        deprecated: nil,
+        description: nil,
+        example: nil,
+        nullable: nil,
+        optional: false
+      )
+        param(
+          name,
+          deprecated:,
+          description:,
+          example:,
+          nullable:,
+          optional:,
+          type: :binary,
+        )
+      end
+
+      # @api public
+      # Defines a JSON field for arbitrary/unstructured JSON data.
+      # For structured data with known fields, use object with a block instead.
+      #
+      # @param name [Symbol] field name
+      # @param deprecated [Boolean] mark as deprecated
+      # @param description [String] documentation description
+      # @param example [Object] example value for documentation
+      # @param nullable [Boolean] whether null is allowed
+      # @param optional [Boolean] whether field can be omitted
+      # @return [void]
+      def json(
+        name,
+        deprecated: nil,
+        description: nil,
+        example: nil,
+        nullable: nil,
+        optional: false
+      )
+        param(
+          name,
+          deprecated:,
+          description:,
+          example:,
+          nullable:,
+          optional:,
+          type: :json,
+        )
+      end
+
+      # @api public
       # Defines a literal value field.
       #
       # @param name [Symbol] field name
