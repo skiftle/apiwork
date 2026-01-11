@@ -147,6 +147,12 @@ module Apiwork
                 association_payload_type = :"#{import_alias}_nested_payload"
 
                 association_contract = registrar.find_contract_for_schema(association_resource.schema_class)
+
+                if association_contract&.schema?
+                  association_registrar = ContractRegistrar.new(association_contract)
+                  sub_builder = self.class.for_schema(association_registrar, association_resource.schema_class)
+                  sub_builder.send(:build_nested_payload_union)
+                end
               end
             end
 
@@ -1007,7 +1013,6 @@ module Apiwork
             sub_builder.send(:build_filter_type, depth: 0, visited: Set.new)
             sub_builder.send(:build_sort_type, depth: 0, visited: Set.new)
             sub_builder.send(:build_include_type, depth: 0, visited: Set.new)
-            sub_builder.send(:build_nested_payload_union)
             sub_builder.send(:build_response_type, visited: Set.new)
           end
 
