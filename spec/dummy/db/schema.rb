@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_11_27_000001) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_11_000001) do
   create_table "accounts", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.integer "first_day_of_week", default: 1
@@ -68,6 +68,19 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_27_000001) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "profiles", force: :cascade do |t|
+    t.string "avatar_url"
+    t.decimal "balance", precision: 10, scale: 2
+    t.string "bio"
+    t.datetime "created_at", null: false
+    t.string "external_id"
+    t.time "preferred_contact_time"
+    t.string "timezone", default: "UTC"
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["user_id"], name: "index_profiles_on_user_id"
+  end
+
   create_table "replies", force: :cascade do |t|
     t.string "author", null: false
     t.integer "comment_id", null: false
@@ -113,6 +126,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_27_000001) do
   end
 
   add_foreign_key "comments", "posts"
+  add_foreign_key "profiles", "users"
   add_foreign_key "replies", "comments"
   add_foreign_key "services", "clients"
   add_foreign_key "taggings", "tags"

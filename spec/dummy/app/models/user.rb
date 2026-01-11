@@ -1,4 +1,5 @@
 # frozen_string_literal: true
 
-class User < ActiveRecord::Base
+class User < ApplicationRecord
+  has_one :profile, dependent: :destroy
 end

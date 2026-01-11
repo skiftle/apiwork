@@ -126,4 +126,7 @@ Apiwork::API.define '/api/v1' do
 
   # Activity resource for testing cursor-based pagination
   resources :activities
+
+  # Singular resource for testing profile without :id in URL
+  resource :profile
 end
