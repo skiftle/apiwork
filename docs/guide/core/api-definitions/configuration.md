@@ -171,14 +171,6 @@ Options:
 | `:camel`          | `:recurring_invoices` | `recurringInvoices`  |
 | `:underscore`     | `:recurring_invoices` | `recurring_invoices` |
 
-::: info Path Segments Only
-`path_format` transforms resource and action names. It does not affect:
-
-- Route parameters (`:id`, `:post_id`)
-- Query parameters
-- Request/response payload keys (use [key_format](#key-format) for those)
-  :::
-
 ### Custom Member and Collection Actions
 
 Custom actions are also transformed:
@@ -197,6 +189,15 @@ Apiwork::API.define '/api/v1' do
   end
 end
 ```
+
+::: info Path Segments Only
+`path_format` transforms resource and action names. It does not affect:
+
+- The mount path (`/api/v1` stays as written)
+- Route parameters (`:id`, `:post_id`)
+- Query parameters
+- Request/response payload keys (use [key_format](#key-format) for those)
+  :::
 
 ### Explicit Path Override
 
