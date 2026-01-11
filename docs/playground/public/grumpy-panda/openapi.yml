@@ -222,7 +222,12 @@ components:
           items:
             "$ref": "#/components/schemas/issue"
           type: array
-        layer: {}
+        layer:
+          enum:
+          - http
+          - contract
+          - domain
+          type: string
       type: object
       required:
       - issues

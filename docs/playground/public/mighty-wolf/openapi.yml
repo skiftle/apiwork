@@ -229,7 +229,12 @@ components:
           items:
             "$ref": "#/components/schemas/issue"
           type: array
-        layer: {}
+        layer:
+          enum:
+          - http
+          - contract
+          - domain
+          type: string
       type: object
       required:
       - issues
@@ -563,7 +568,11 @@ components:
       - vehicle
     vehicleSort:
       properties:
-        year: {}
+        year:
+          enum:
+          - asc
+          - desc
+          type: string
       type: object
     vehicleUpdateSuccessResponseBody:
       properties:

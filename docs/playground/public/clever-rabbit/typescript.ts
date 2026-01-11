@@ -11,6 +11,8 @@ export interface Issue {
   pointer: string;
 }
 
+export type Layer = 'contract' | 'domain' | 'http';
+
 export interface NullableStringFilter {
   contains?: string;
   endsWith?: string;
@@ -140,3 +142,5 @@ export interface OrdersUpdateResponse {
 }
 
 export type OrdersUpdateResponseBody = ErrorResponseBody | OrderUpdateSuccessResponseBody;
+
+export type SortDirection = 'asc' | 'desc';

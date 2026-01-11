@@ -178,6 +178,11 @@ module Apiwork
           next unless field.is_a?(Hash)
 
           enum_names << field[:enum] if field[:enum].is_a?(Symbol)
+          enum_names << field[:ref] if field[:ref].is_a?(Symbol) && @data.enums.key?(field[:ref])
+
+          of_ref = field[:of][:ref] if field[:of].is_a?(Hash)
+          enum_names << of_ref if of_ref.is_a?(Symbol) && @data.enums.key?(of_ref)
+
           collect_enums_from_type_definition(field, enum_names) if field[:shape]
         end
 

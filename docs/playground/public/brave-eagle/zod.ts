@@ -1,5 +1,9 @@
 import { z } from 'zod';
 
+export const LayerSchema = z.enum(['contract', 'domain', 'http']);
+
+export const SortDirectionSchema = z.enum(['asc', 'desc']);
+
 export const TaskPrioritySchema = z.enum(['critical', 'high', 'low', 'medium']);
 
 export const TaskStatusSchema = z.enum(['archived', 'completed', 'in_progress', 'pending']);
@@ -251,6 +255,8 @@ export interface Issue {
   pointer: string;
 }
 
+export type Layer = 'contract' | 'domain' | 'http';
+
 export interface OffsetPagination {
   current: number;
   items: number;
@@ -258,6 +264,8 @@ export interface OffsetPagination {
   prev?: null | number;
   total: number;
 }
+
+export type SortDirection = 'asc' | 'desc';
 
 /** A task representing work to be completed */
 export interface Task {

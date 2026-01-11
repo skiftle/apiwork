@@ -1,5 +1,9 @@
 import { z } from 'zod';
 
+export const LayerSchema = z.enum(['contract', 'domain', 'http']);
+
+export const SortDirectionSchema = z.enum(['asc', 'desc']);
+
 export const CarSchema = z.object({
   brand: z.string(),
   color: z.string().nullable(),
@@ -272,6 +276,8 @@ export interface Issue {
   pointer: string;
 }
 
+export type Layer = 'contract' | 'domain' | 'http';
+
 export interface Motorcycle {
   brand: string;
   color: null | string;
@@ -318,6 +324,8 @@ export interface OffsetPagination {
   prev?: null | number;
   total: number;
 }
+
+export type SortDirection = 'asc' | 'desc';
 
 export interface StringFilter {
   contains?: string;

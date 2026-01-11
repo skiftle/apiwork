@@ -29,6 +29,8 @@ export interface Issue {
   pointer: string;
 }
 
+export type Layer = 'contract' | 'domain' | 'http';
+
 export interface OffsetPagination {
   current: number;
   items: number;
@@ -36,6 +38,8 @@ export interface OffsetPagination {
   prev?: null | number;
   total: number;
 }
+
+export type SortDirection = 'asc' | 'desc';
 
 /** A task representing work to be completed */
 export interface Task {

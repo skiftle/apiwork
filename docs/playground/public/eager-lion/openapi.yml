@@ -153,7 +153,12 @@ components:
           items:
             "$ref": "#/components/schemas/issue"
           type: array
-        layer: {}
+        layer:
+          enum:
+          - http
+          - contract
+          - domain
+          type: string
       type: object
       required:
       - issues
@@ -305,10 +310,26 @@ components:
       - invoice
     invoiceSort:
       properties:
-        createdAt: {}
-        issuedOn: {}
-        status: {}
-        updatedAt: {}
+        createdAt:
+          enum:
+          - asc
+          - desc
+          type: string
+        issuedOn:
+          enum:
+          - asc
+          - desc
+          type: string
+        status:
+          enum:
+          - asc
+          - desc
+          type: string
+        updatedAt:
+          enum:
+          - asc
+          - desc
+          type: string
       type: object
     invoiceUpdatePayload:
       properties:

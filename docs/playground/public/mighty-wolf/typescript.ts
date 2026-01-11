@@ -44,6 +44,8 @@ export interface Issue {
   pointer: string;
 }
 
+export type Layer = 'contract' | 'domain' | 'http';
+
 export interface Motorcycle {
   brand: string;
   color: null | string;
@@ -90,6 +92,8 @@ export interface OffsetPagination {
   prev?: null | number;
   total: number;
 }
+
+export type SortDirection = 'asc' | 'desc';
 
 export interface StringFilter {
   contains?: string;

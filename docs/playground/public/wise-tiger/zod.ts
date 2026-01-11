@@ -1,8 +1,12 @@
 import { z } from 'zod';
 
+export const LayerSchema = z.enum(['contract', 'domain', 'http']);
+
 export const ProjectPrioritySchema = z.enum(['critical', 'high', 'low', 'medium']);
 
 export const ProjectStatusSchema = z.enum(['active', 'archived', 'completed', 'paused']);
+
+export const SortDirectionSchema = z.enum(['asc', 'desc']);
 
 export const ErrorResponseBodySchema = z.object({
   issues: z.array(IssueSchema),
@@ -166,6 +170,8 @@ export interface Issue {
   pointer: string;
 }
 
+export type Layer = 'contract' | 'domain' | 'http';
+
 export interface OffsetPagination {
   current: number;
   items: number;
@@ -304,3 +310,5 @@ export interface ProjectsUpdateResponse {
 }
 
 export type ProjectsUpdateResponseBody = ErrorResponseBody | ProjectUpdateSuccessResponseBody;
+
+export type SortDirection = 'asc' | 'desc';

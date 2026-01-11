@@ -11,6 +11,8 @@ export interface Issue {
   pointer: string;
 }
 
+export type Layer = 'contract' | 'domain' | 'http';
+
 export interface OffsetPagination {
   current: number;
   items: number;
@@ -149,3 +151,5 @@ export interface ProjectsUpdateResponse {
 }
 
 export type ProjectsUpdateResponseBody = ErrorResponseBody | ProjectUpdateSuccessResponseBody;
+
+export type SortDirection = 'asc' | 'desc';

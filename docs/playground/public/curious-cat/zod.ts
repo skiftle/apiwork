@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+export const LayerSchema = z.enum(['contract', 'domain', 'http']);
+
 export const ErrorResponseBodySchema = z.object({
   issues: z.array(IssueSchema),
   layer: LayerSchema
@@ -142,6 +144,8 @@ export interface Issue {
   path: string[];
   pointer: string;
 }
+
+export type Layer = 'contract' | 'domain' | 'http';
 
 export interface OffsetPagination {
   current: number;

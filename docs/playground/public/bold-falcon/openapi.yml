@@ -281,11 +281,31 @@ components:
       - article
     articleSort:
       properties:
-        createdAt: {}
-        publishedOn: {}
-        rating: {}
-        status: {}
-        viewCount: {}
+        createdAt:
+          enum:
+          - asc
+          - desc
+          type: string
+        publishedOn:
+          enum:
+          - asc
+          - desc
+          type: string
+        rating:
+          enum:
+          - asc
+          - desc
+          type: string
+        status:
+          enum:
+          - asc
+          - desc
+          type: string
+        viewCount:
+          enum:
+          - asc
+          - desc
+          type: string
       type: object
     articleStatusFilter:
       oneOf:
@@ -367,7 +387,12 @@ components:
           items:
             "$ref": "#/components/schemas/issue"
           type: array
-        layer: {}
+        layer:
+          enum:
+          - http
+          - contract
+          - domain
+          type: string
       type: object
       required:
       - issues

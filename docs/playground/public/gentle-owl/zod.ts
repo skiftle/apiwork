@@ -1,5 +1,9 @@
 import { z } from 'zod';
 
+export const LayerSchema = z.enum(['contract', 'domain', 'http']);
+
+export const SortDirectionSchema = z.enum(['asc', 'desc']);
+
 export const CommentSchema = z.object({
   authorName: z.string().nullable(),
   body: z.string(),
@@ -339,6 +343,8 @@ export interface Issue {
   pointer: string;
 }
 
+export type Layer = 'contract' | 'domain' | 'http';
+
 export interface OffsetPagination {
   current: number;
   items: number;
@@ -354,6 +360,8 @@ export interface Post {
   id: string;
   title: string;
 }
+
+export type SortDirection = 'asc' | 'desc';
 
 export interface Video {
   comments?: object[];

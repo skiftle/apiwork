@@ -2,6 +2,10 @@ import { z } from 'zod';
 
 export const ArticleStatusSchema = z.enum(['archived', 'draft', 'published']);
 
+export const LayerSchema = z.enum(['contract', 'domain', 'http']);
+
+export const SortDirectionSchema = z.enum(['asc', 'desc']);
+
 export const ArticleSchema = z.object({
   body: z.string().nullable(),
   category: z.object({}).nullable().optional(),
@@ -364,6 +368,8 @@ export interface Issue {
   pointer: string;
 }
 
+export type Layer = 'contract' | 'domain' | 'http';
+
 export interface NullableDateFilter {
   between?: DateFilterBetween;
   eq?: string;
@@ -404,6 +410,8 @@ export interface OffsetPagination {
   prev?: null | number;
   total: number;
 }
+
+export type SortDirection = 'asc' | 'desc';
 
 export interface StringFilter {
   contains?: string;
