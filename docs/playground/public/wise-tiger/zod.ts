@@ -43,19 +43,6 @@ export const ProjectCreatePayloadSchema = z.object({
   status: ProjectStatusSchema.nullable().optional()
 });
 
-export const ProjectCreateSuccessResponseBodySchema = z.object({
-  meta: z.object({}).optional(),
-  project: ProjectSchema
-});
-
-export const ProjectFilterSchema: z.ZodType<ProjectFilter> = z.lazy(() => z.object({
-  _and: z.array(ProjectFilterSchema).optional(),
-  _not: ProjectFilterSchema.optional(),
-  _or: z.array(ProjectFilterSchema).optional(),
-  priority: ProjectPriorityFilterSchema.optional(),
-  status: ProjectStatusFilterSchema.optional()
-}));
-
 export const ProjectPageSchema = z.object({
   number: z.number().int().min(1).optional(),
   size: z.number().int().min(1).max(100).optional()
@@ -65,11 +52,6 @@ export const ProjectPriorityFilterSchema = z.union([
   ProjectPrioritySchema,
   z.object({ eq: ProjectPrioritySchema, in: z.array(ProjectPrioritySchema) }).partial()
 ]);
-
-export const ProjectShowSuccessResponseBodySchema = z.object({
-  meta: z.object({}).optional(),
-  project: ProjectSchema
-});
 
 export const ProjectSortSchema = z.object({
   createdAt: SortDirectionSchema.optional(),
@@ -89,14 +71,14 @@ export const ProjectUpdatePayloadSchema = z.object({
   status: ProjectStatusSchema.nullable().optional()
 });
 
-export const ProjectUpdateSuccessResponseBodySchema = z.object({
-  meta: z.object({}).optional(),
-  project: ProjectSchema
-});
-
 export const ErrorResponseBodySchema = z.object({
   issues: z.array(IssueSchema),
   layer: LayerSchema
+});
+
+export const ProjectCreateSuccessResponseBodySchema = z.object({
+  meta: z.object({}).optional(),
+  project: ProjectSchema
 });
 
 export const ProjectIndexSuccessResponseBodySchema = z.object({
@@ -104,6 +86,24 @@ export const ProjectIndexSuccessResponseBodySchema = z.object({
   pagination: OffsetPaginationSchema,
   projects: z.array(ProjectSchema)
 });
+
+export const ProjectShowSuccessResponseBodySchema = z.object({
+  meta: z.object({}).optional(),
+  project: ProjectSchema
+});
+
+export const ProjectUpdateSuccessResponseBodySchema = z.object({
+  meta: z.object({}).optional(),
+  project: ProjectSchema
+});
+
+export const ProjectFilterSchema: z.ZodType<ProjectFilter> = z.lazy(() => z.object({
+  _and: z.array(ProjectFilterSchema).optional(),
+  _not: ProjectFilterSchema.optional(),
+  _or: z.array(ProjectFilterSchema).optional(),
+  priority: ProjectPriorityFilterSchema.optional(),
+  status: ProjectStatusFilterSchema.optional()
+}));
 
 export const ProjectsIndexRequestQuerySchema = z.object({
   filter: z.union([ProjectFilterSchema, z.array(ProjectFilterSchema)]).optional(),

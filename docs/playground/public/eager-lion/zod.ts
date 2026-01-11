@@ -17,11 +17,6 @@ export const InvoiceSchema = z.object({
   updatedAt: z.iso.datetime()
 });
 
-export const InvoiceArchiveSuccessResponseBodySchema = z.object({
-  invoice: InvoiceSchema,
-  meta: z.object({}).optional()
-});
-
 export const InvoiceCreatePayloadSchema = z.object({
   customerId: z.string(),
   issuedOn: z.iso.date().nullable().optional(),
@@ -30,27 +25,9 @@ export const InvoiceCreatePayloadSchema = z.object({
   number: z.string()
 });
 
-export const InvoiceCreateSuccessResponseBodySchema = z.object({
-  invoice: InvoiceSchema,
-  meta: z.object({}).optional()
-});
-
-export const InvoiceFilterSchema: z.ZodType<InvoiceFilter> = z.lazy(() => z.object({
-  _and: z.array(InvoiceFilterSchema).optional(),
-  _not: InvoiceFilterSchema.optional(),
-  _or: z.array(InvoiceFilterSchema).optional(),
-  number: z.union([z.string(), StringFilterSchema]).optional(),
-  status: z.union([z.string(), NullableStringFilterSchema]).optional()
-}));
-
 export const InvoicePageSchema = z.object({
   number: z.number().int().min(1).optional(),
   size: z.number().int().min(1).max(100).optional()
-});
-
-export const InvoiceShowSuccessResponseBodySchema = z.object({
-  invoice: InvoiceSchema,
-  meta: z.object({}).optional()
 });
 
 export const InvoiceSortSchema = z.object({
@@ -66,11 +43,6 @@ export const InvoiceUpdatePayloadSchema = z.object({
   lines: z.array(z.string()).optional(),
   notes: z.string().nullable().optional(),
   number: z.string().optional()
-});
-
-export const InvoiceUpdateSuccessResponseBodySchema = z.object({
-  invoice: InvoiceSchema,
-  meta: z.object({}).optional()
 });
 
 export const IssueSchema = z.object({
@@ -106,16 +78,44 @@ export const StringFilterSchema = z.object({
   startsWith: z.string().optional()
 });
 
-export const InvoiceIndexSuccessResponseBodySchema = z.object({
-  invoices: z.array(InvoiceSchema),
-  meta: z.object({}).optional(),
-  pagination: OffsetPaginationSchema
+export const InvoiceArchiveSuccessResponseBodySchema = z.object({
+  invoice: InvoiceSchema,
+  meta: z.object({}).optional()
+});
+
+export const InvoiceCreateSuccessResponseBodySchema = z.object({
+  invoice: InvoiceSchema,
+  meta: z.object({}).optional()
+});
+
+export const InvoiceShowSuccessResponseBodySchema = z.object({
+  invoice: InvoiceSchema,
+  meta: z.object({}).optional()
+});
+
+export const InvoiceUpdateSuccessResponseBodySchema = z.object({
+  invoice: InvoiceSchema,
+  meta: z.object({}).optional()
 });
 
 export const ErrorResponseBodySchema = z.object({
   issues: z.array(IssueSchema),
   layer: LayerSchema
 });
+
+export const InvoiceIndexSuccessResponseBodySchema = z.object({
+  invoices: z.array(InvoiceSchema),
+  meta: z.object({}).optional(),
+  pagination: OffsetPaginationSchema
+});
+
+export const InvoiceFilterSchema: z.ZodType<InvoiceFilter> = z.lazy(() => z.object({
+  _and: z.array(InvoiceFilterSchema).optional(),
+  _not: InvoiceFilterSchema.optional(),
+  _or: z.array(InvoiceFilterSchema).optional(),
+  number: z.union([z.string(), StringFilterSchema]).optional(),
+  status: z.union([z.string(), NullableStringFilterSchema]).optional()
+}));
 
 export const InvoicesIndexRequestQuerySchema = z.object({
   filter: z.union([InvoiceFilterSchema, z.array(InvoiceFilterSchema)]).optional(),

@@ -26,30 +26,9 @@ export const ArticleCreatePayloadSchema = z.object({
   title: z.string()
 });
 
-export const ArticleCreateSuccessResponseBodySchema = z.object({
-  article: ArticleSchema,
-  meta: z.object({}).optional()
-});
-
-export const ArticleFilterSchema: z.ZodType<ArticleFilter> = z.lazy(() => z.object({
-  _and: z.array(ArticleFilterSchema).optional(),
-  _not: ArticleFilterSchema.optional(),
-  _or: z.array(ArticleFilterSchema).optional(),
-  publishedOn: z.union([z.iso.date(), NullableDateFilterSchema]).optional(),
-  rating: z.union([z.number(), NullableDecimalFilterSchema]).optional(),
-  status: ArticleStatusFilterSchema.optional(),
-  title: z.union([z.string(), StringFilterSchema]).optional(),
-  viewCount: z.union([z.number().int(), NullableIntegerFilterSchema]).optional()
-}));
-
 export const ArticlePageSchema = z.object({
   number: z.number().int().min(1).optional(),
   size: z.number().int().min(1).max(100).optional()
-});
-
-export const ArticleShowSuccessResponseBodySchema = z.object({
-  article: ArticleSchema,
-  meta: z.object({}).optional()
 });
 
 export const ArticleSortSchema = z.object({
@@ -70,11 +49,6 @@ export const ArticleUpdatePayloadSchema = z.object({
   publishedOn: z.iso.date().nullable().optional(),
   status: ArticleStatusSchema.nullable().optional(),
   title: z.string().optional()
-});
-
-export const ArticleUpdateSuccessResponseBodySchema = z.object({
-  article: ArticleSchema,
-  meta: z.object({}).optional()
 });
 
 export const DateFilterBetweenSchema = z.object({
@@ -98,6 +72,37 @@ export const IssueSchema = z.object({
   meta: z.object({}),
   path: z.array(z.string()),
   pointer: z.string()
+});
+
+export const OffsetPaginationSchema = z.object({
+  current: z.number().int(),
+  items: z.number().int(),
+  next: z.number().int().nullable().optional(),
+  prev: z.number().int().nullable().optional(),
+  total: z.number().int()
+});
+
+export const StringFilterSchema = z.object({
+  contains: z.string().optional(),
+  endsWith: z.string().optional(),
+  eq: z.string().optional(),
+  in: z.array(z.string()).optional(),
+  startsWith: z.string().optional()
+});
+
+export const ArticleCreateSuccessResponseBodySchema = z.object({
+  article: ArticleSchema,
+  meta: z.object({}).optional()
+});
+
+export const ArticleShowSuccessResponseBodySchema = z.object({
+  article: ArticleSchema,
+  meta: z.object({}).optional()
+});
+
+export const ArticleUpdateSuccessResponseBodySchema = z.object({
+  article: ArticleSchema,
+  meta: z.object({}).optional()
 });
 
 export const NullableDateFilterSchema = z.object({
@@ -133,20 +138,9 @@ export const NullableIntegerFilterSchema = z.object({
   null: z.boolean().optional()
 });
 
-export const OffsetPaginationSchema = z.object({
-  current: z.number().int(),
-  items: z.number().int(),
-  next: z.number().int().nullable().optional(),
-  prev: z.number().int().nullable().optional(),
-  total: z.number().int()
-});
-
-export const StringFilterSchema = z.object({
-  contains: z.string().optional(),
-  endsWith: z.string().optional(),
-  eq: z.string().optional(),
-  in: z.array(z.string()).optional(),
-  startsWith: z.string().optional()
+export const ErrorResponseBodySchema = z.object({
+  issues: z.array(IssueSchema),
+  layer: LayerSchema
 });
 
 export const ArticleIndexSuccessResponseBodySchema = z.object({
@@ -155,10 +149,16 @@ export const ArticleIndexSuccessResponseBodySchema = z.object({
   pagination: OffsetPaginationSchema
 });
 
-export const ErrorResponseBodySchema = z.object({
-  issues: z.array(IssueSchema),
-  layer: LayerSchema
-});
+export const ArticleFilterSchema: z.ZodType<ArticleFilter> = z.lazy(() => z.object({
+  _and: z.array(ArticleFilterSchema).optional(),
+  _not: ArticleFilterSchema.optional(),
+  _or: z.array(ArticleFilterSchema).optional(),
+  publishedOn: z.union([z.iso.date(), NullableDateFilterSchema]).optional(),
+  rating: z.union([z.number(), NullableDecimalFilterSchema]).optional(),
+  status: ArticleStatusFilterSchema.optional(),
+  title: z.union([z.string(), StringFilterSchema]).optional(),
+  viewCount: z.union([z.number().int(), NullableIntegerFilterSchema]).optional()
+}));
 
 export const ArticlesIndexRequestQuerySchema = z.object({
   filter: z.union([ArticleFilterSchema, z.array(ArticleFilterSchema)]).optional(),

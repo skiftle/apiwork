@@ -41,19 +41,9 @@ export const ProfileCreatePayloadSchema = z.object({
   tags: z.array(z.string())
 });
 
-export const ProfileCreateSuccessResponseBodySchema = z.object({
-  meta: z.object({}).optional(),
-  profile: ProfileSchema
-});
-
 export const ProfilePageSchema = z.object({
   number: z.number().int().min(1).optional(),
   size: z.number().int().min(1).max(100).optional()
-});
-
-export const ProfileShowSuccessResponseBodySchema = z.object({
-  meta: z.object({}).optional(),
-  profile: ProfileSchema
 });
 
 export const ProfileUpdatePayloadSchema = z.object({
@@ -66,20 +56,30 @@ export const ProfileUpdatePayloadSchema = z.object({
   tags: z.array(z.string()).optional()
 });
 
-export const ProfileUpdateSuccessResponseBodySchema = z.object({
-  meta: z.object({}).optional(),
-  profile: ProfileSchema
-});
-
 export const ErrorResponseBodySchema = z.object({
   issues: z.array(IssueSchema),
   layer: LayerSchema
+});
+
+export const ProfileCreateSuccessResponseBodySchema = z.object({
+  meta: z.object({}).optional(),
+  profile: ProfileSchema
 });
 
 export const ProfileIndexSuccessResponseBodySchema = z.object({
   meta: z.object({}).optional(),
   pagination: OffsetPaginationSchema,
   profiles: z.array(ProfileSchema)
+});
+
+export const ProfileShowSuccessResponseBodySchema = z.object({
+  meta: z.object({}).optional(),
+  profile: ProfileSchema
+});
+
+export const ProfileUpdateSuccessResponseBodySchema = z.object({
+  meta: z.object({}).optional(),
+  profile: ProfileSchema
 });
 
 export const ProfilesIndexRequestQuerySchema = z.object({

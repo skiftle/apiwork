@@ -51,7 +51,7 @@ module Apiwork
             definition[:variants].each do |variant|
               next unless variant.is_a?(Hash)
 
-              add_type_if_matches(referenced_types, variant[:type], filter)
+              add_type_if_matches(referenced_types, variant, filter)
               add_type_if_matches(referenced_types, variant[:of], filter)
 
               referenced_types.concat(type_references(variant[:shape], filter:)) if variant[:shape].is_a?(Hash)
@@ -67,7 +67,7 @@ module Apiwork
           fields_to_check.each_value do |param|
             next unless param.is_a?(Hash)
 
-            add_type_if_matches(referenced_types, param[:type], filter)
+            add_type_if_matches(referenced_types, param, filter)
 
             add_type_if_matches(referenced_types, param[:of], filter)
 
@@ -75,7 +75,7 @@ module Apiwork
               param[:variants].each do |variant|
                 next unless variant.is_a?(Hash)
 
-                add_type_if_matches(referenced_types, variant[:type], filter)
+                add_type_if_matches(referenced_types, variant, filter)
                 add_type_if_matches(referenced_types, variant[:of], filter)
 
                 referenced_types.concat(type_references(variant[:shape], filter:)) if variant[:shape].is_a?(Hash)

@@ -73,17 +73,6 @@ export const MotorcycleUpdatePayloadSchema = z.object({
   year: z.number().int().nullable().optional()
 });
 
-export const NullableIntegerFilterSchema = z.object({
-  between: IntegerFilterBetweenSchema.optional(),
-  eq: z.number().int().optional(),
-  gt: z.number().int().optional(),
-  gte: z.number().int().optional(),
-  in: z.array(z.number().int()).optional(),
-  lt: z.number().int().optional(),
-  lte: z.number().int().optional(),
-  null: z.boolean().optional()
-});
-
 export const OffsetPaginationSchema = z.object({
   current: z.number().int(),
   items: z.number().int(),
@@ -128,16 +117,36 @@ export const TruckUpdatePayloadSchema = z.object({
   year: z.number().int().nullable().optional()
 });
 
+export const VehiclePageSchema = z.object({
+  number: z.number().int().min(1).optional(),
+  size: z.number().int().min(1).max(100).optional()
+});
+
+export const VehicleSortSchema = z.object({
+  year: SortDirectionSchema.optional()
+});
+
+export const NullableIntegerFilterSchema = z.object({
+  between: IntegerFilterBetweenSchema.optional(),
+  eq: z.number().int().optional(),
+  gt: z.number().int().optional(),
+  gte: z.number().int().optional(),
+  in: z.array(z.number().int()).optional(),
+  lt: z.number().int().optional(),
+  lte: z.number().int().optional(),
+  null: z.boolean().optional()
+});
+
+export const ErrorResponseBodySchema = z.object({
+  issues: z.array(IssueSchema),
+  layer: LayerSchema
+});
+
 export const VehicleSchema = z.discriminatedUnion('type', [
   CarSchema,
   MotorcycleSchema,
   TruckSchema
 ]);
-
-export const VehicleCreateSuccessResponseBodySchema = z.object({
-  meta: z.object({}).optional(),
-  vehicle: VehicleSchema
-});
 
 export const VehicleFilterSchema: z.ZodType<VehicleFilter> = z.lazy(() => z.object({
   _and: z.array(VehicleFilterSchema).optional(),
@@ -148,9 +157,15 @@ export const VehicleFilterSchema: z.ZodType<VehicleFilter> = z.lazy(() => z.obje
   year: z.union([z.number().int(), NullableIntegerFilterSchema]).optional()
 }));
 
-export const VehiclePageSchema = z.object({
-  number: z.number().int().min(1).optional(),
-  size: z.number().int().min(1).max(100).optional()
+export const VehicleCreateSuccessResponseBodySchema = z.object({
+  meta: z.object({}).optional(),
+  vehicle: VehicleSchema
+});
+
+export const VehicleIndexSuccessResponseBodySchema = z.object({
+  meta: z.object({}).optional(),
+  pagination: OffsetPaginationSchema,
+  vehicles: z.array(VehicleSchema)
 });
 
 export const VehicleShowSuccessResponseBodySchema = z.object({
@@ -158,24 +173,9 @@ export const VehicleShowSuccessResponseBodySchema = z.object({
   vehicle: VehicleSchema
 });
 
-export const VehicleSortSchema = z.object({
-  year: SortDirectionSchema.optional()
-});
-
 export const VehicleUpdateSuccessResponseBodySchema = z.object({
   meta: z.object({}).optional(),
   vehicle: VehicleSchema
-});
-
-export const ErrorResponseBodySchema = z.object({
-  issues: z.array(IssueSchema),
-  layer: LayerSchema
-});
-
-export const VehicleIndexSuccessResponseBodySchema = z.object({
-  meta: z.object({}).optional(),
-  pagination: OffsetPaginationSchema,
-  vehicles: z.array(VehicleSchema)
 });
 
 export const VehiclesIndexRequestQuerySchema = z.object({

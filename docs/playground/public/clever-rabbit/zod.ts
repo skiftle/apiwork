@@ -46,26 +46,9 @@ export const OrderCreatePayloadSchema = z.object({
   shippingAddress: z.object({}).optional()
 });
 
-export const OrderCreateSuccessResponseBodySchema = z.object({
-  meta: z.object({}).optional(),
-  order: OrderSchema
-});
-
-export const OrderFilterSchema: z.ZodType<OrderFilter> = z.lazy(() => z.object({
-  _and: z.array(OrderFilterSchema).optional(),
-  _not: OrderFilterSchema.optional(),
-  _or: z.array(OrderFilterSchema).optional(),
-  status: z.union([z.string(), NullableStringFilterSchema]).optional()
-}));
-
 export const OrderPageSchema = z.object({
   number: z.number().int().min(1).optional(),
   size: z.number().int().min(1).max(100).optional()
-});
-
-export const OrderShowSuccessResponseBodySchema = z.object({
-  meta: z.object({}).optional(),
-  order: OrderSchema
 });
 
 export const OrderSortSchema = z.object({
@@ -79,20 +62,37 @@ export const OrderUpdatePayloadSchema = z.object({
   shippingAddress: z.object({}).optional()
 });
 
-export const OrderUpdateSuccessResponseBodySchema = z.object({
-  meta: z.object({}).optional(),
-  order: OrderSchema
-});
-
 export const ErrorResponseBodySchema = z.object({
   issues: z.array(IssueSchema),
   layer: LayerSchema
+});
+
+export const OrderFilterSchema: z.ZodType<OrderFilter> = z.lazy(() => z.object({
+  _and: z.array(OrderFilterSchema).optional(),
+  _not: OrderFilterSchema.optional(),
+  _or: z.array(OrderFilterSchema).optional(),
+  status: z.union([z.string(), NullableStringFilterSchema]).optional()
+}));
+
+export const OrderCreateSuccessResponseBodySchema = z.object({
+  meta: z.object({}).optional(),
+  order: OrderSchema
 });
 
 export const OrderIndexSuccessResponseBodySchema = z.object({
   meta: z.object({}).optional(),
   orders: z.array(OrderSchema),
   pagination: OffsetPaginationSchema
+});
+
+export const OrderShowSuccessResponseBodySchema = z.object({
+  meta: z.object({}).optional(),
+  order: OrderSchema
+});
+
+export const OrderUpdateSuccessResponseBodySchema = z.object({
+  meta: z.object({}).optional(),
+  order: OrderSchema
 });
 
 export const OrdersIndexRequestQuerySchema = z.object({
