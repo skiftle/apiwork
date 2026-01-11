@@ -1,9 +1,5 @@
 import { z } from 'zod';
 
-export const LayerSchema = z.enum(['contract', 'domain', 'http']);
-
-export const SortDirectionSchema = z.enum(['asc', 'desc']);
-
 export const ErrorResponseBodySchema = z.object({
   issues: z.array(IssueSchema),
   layer: LayerSchema
@@ -321,8 +317,6 @@ export interface Issue {
   pointer: string;
 }
 
-export type Layer = 'contract' | 'domain' | 'http';
-
 export interface NullableStringFilter {
   contains?: string;
   endsWith?: string;
@@ -339,8 +333,6 @@ export interface OffsetPagination {
   prev?: null | number;
   total: number;
 }
-
-export type SortDirection = 'asc' | 'desc';
 
 export interface StringFilter {
   contains?: string;

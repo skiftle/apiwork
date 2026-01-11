@@ -1,9 +1,5 @@
 import { z } from 'zod';
 
-export const LayerSchema = z.enum(['contract', 'domain', 'http']);
-
-export const SortDirectionSchema = z.enum(['asc', 'desc']);
-
 export const ErrorResponseBodySchema = z.object({
   issues: z.array(IssueSchema),
   layer: LayerSchema
@@ -95,14 +91,6 @@ export const OrderUpdateSuccessResponseBodySchema = z.object({
   order: OrderSchema
 });
 
-export const StringFilterSchema = z.object({
-  contains: z.string().optional(),
-  endsWith: z.string().optional(),
-  eq: z.string().optional(),
-  in: z.array(z.string()).optional(),
-  startsWith: z.string().optional()
-});
-
 export const OrdersIndexRequestQuerySchema = z.object({
   filter: z.union([OrderFilterSchema, z.array(OrderFilterSchema)]).optional(),
   page: OrderPageSchema.optional(),
@@ -167,8 +155,6 @@ export interface Issue {
   path: string[];
   pointer: string;
 }
-
-export type Layer = 'contract' | 'domain' | 'http';
 
 export interface NullableStringFilter {
   contains?: string;
@@ -299,13 +285,3 @@ export interface OrdersUpdateResponse {
 }
 
 export type OrdersUpdateResponseBody = ErrorResponseBody | OrderUpdateSuccessResponseBody;
-
-export type SortDirection = 'asc' | 'desc';
-
-export interface StringFilter {
-  contains?: string;
-  endsWith?: string;
-  eq?: string;
-  in?: string[];
-  startsWith?: string;
-}

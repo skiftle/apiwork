@@ -111,22 +111,6 @@ paths:
           description: No content
 components:
   schemas:
-    errorResponseBody:
-      properties:
-        issues:
-          items:
-            "$ref": "#/components/schemas/issue"
-          type: array
-        layer:
-          enum:
-          - http
-          - contract
-          - domain
-          type: string
-      type: object
-      required:
-      - issues
-      - layer
     invoice:
       properties:
         createdAt:
@@ -173,25 +157,3 @@ components:
       - notes
       - number
       - status
-    issue:
-      properties:
-        code:
-          type: string
-        detail:
-          type: string
-        meta:
-          properties: {}
-          type: object
-        path:
-          items:
-            type: string
-          type: array
-        pointer:
-          type: string
-      type: object
-      required:
-      - code
-      - detail
-      - meta
-      - path
-      - pointer

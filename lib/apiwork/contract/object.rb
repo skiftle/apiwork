@@ -737,7 +737,9 @@ module Apiwork
         type_definition.params&.each do |param_name, param_data|
           nested_shape = param_data[:shape]
 
-          if nested_shape.is_a?(API::Object)
+          if param_data[:type] == :array && nested_shape.is_a?(Apiwork::API::Object)
+            target_param.param(param_name, **param_data.except(:name))
+          elsif nested_shape.is_a?(API::Object)
             copy_nested_object_param(target_param, param_name, param_data, nested_shape)
           elsif nested_shape.is_a?(API::Union)
             copy_nested_union_param(target_param, param_name, param_data, nested_shape)

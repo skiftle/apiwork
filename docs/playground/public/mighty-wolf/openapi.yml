@@ -229,35 +229,11 @@ components:
           items:
             "$ref": "#/components/schemas/issue"
           type: array
-        layer:
-          enum:
-          - http
-          - contract
-          - domain
-          type: string
+        layer: {}
       type: object
       required:
       - issues
       - layer
-    integerFilter:
-      properties:
-        between:
-          "$ref": "#/components/schemas/integerFilterBetween"
-        eq:
-          type: integer
-        gt:
-          type: integer
-        gte:
-          type: integer
-        in:
-          items:
-            type: integer
-          type: array
-        lt:
-          type: integer
-        lte:
-          type: integer
-      type: object
     integerFilterBetween:
       properties:
         from:
@@ -515,17 +491,6 @@ components:
           motorcycle: "#/components/schemas/motorcycle"
           truck: "#/components/schemas/truck"
         propertyName: type
-    vehicleCreatePayload:
-      oneOf:
-      - "$ref": "#/components/schemas/carCreatePayload"
-      - "$ref": "#/components/schemas/motorcycleCreatePayload"
-      - "$ref": "#/components/schemas/truckCreatePayload"
-      discriminator:
-        mapping:
-          car: "#/components/schemas/carCreatePayload"
-          motorcycle: "#/components/schemas/motorcycleCreatePayload"
-          truck: "#/components/schemas/truckCreatePayload"
-        propertyName: type
     vehicleCreateSuccessResponseBody:
       properties:
         meta:
@@ -598,23 +563,8 @@ components:
       - vehicle
     vehicleSort:
       properties:
-        year:
-          enum:
-          - asc
-          - desc
-          type: string
+        year: {}
       type: object
-    vehicleUpdatePayload:
-      oneOf:
-      - "$ref": "#/components/schemas/carUpdatePayload"
-      - "$ref": "#/components/schemas/motorcycleUpdatePayload"
-      - "$ref": "#/components/schemas/truckUpdatePayload"
-      discriminator:
-        mapping:
-          car: "#/components/schemas/carUpdatePayload"
-          motorcycle: "#/components/schemas/motorcycleUpdatePayload"
-          truck: "#/components/schemas/truckUpdatePayload"
-        propertyName: type
     vehicleUpdateSuccessResponseBody:
       properties:
         meta:

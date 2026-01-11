@@ -16,40 +16,6 @@ export interface Comment {
   id: string;
 }
 
-export interface CommentNestedCreatePayload {
-  _destroy?: boolean;
-  _type: 'create';
-  /**
-   * Name of the person who wrote the comment
-   * @example "John Doe"
-   */
-  authorName?: null | string;
-  /**
-   * Comment content
-   * @example "This looks good, ready for review."
-   */
-  body: string;
-  id?: number;
-}
-
-export type CommentNestedPayload = CommentNestedCreatePayload | CommentNestedUpdatePayload;
-
-export interface CommentNestedUpdatePayload {
-  _destroy?: boolean;
-  _type: 'update';
-  /**
-   * Name of the person who wrote the comment
-   * @example "John Doe"
-   */
-  authorName?: null | string;
-  /**
-   * Comment content
-   * @example "This looks good, ready for review."
-   */
-  body?: string;
-  id?: number;
-}
-
 export interface ErrorResponseBody {
   issues: Issue[];
   layer: Layer;
@@ -63,33 +29,12 @@ export interface Issue {
   pointer: string;
 }
 
-export type Layer = 'contract' | 'domain' | 'http';
-
-export interface NullableStringFilter {
-  contains?: string;
-  endsWith?: string;
-  eq?: string;
-  in?: string[];
-  null?: boolean;
-  startsWith?: string;
-}
-
 export interface OffsetPagination {
   current: number;
   items: number;
   next?: null | number;
   prev?: null | number;
   total: number;
-}
-
-export type SortDirection = 'asc' | 'desc';
-
-export interface StringFilter {
-  contains?: string;
-  endsWith?: string;
-  eq?: string;
-  in?: string[];
-  startsWith?: string;
 }
 
 /** A task representing work to be completed */

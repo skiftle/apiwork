@@ -1,9 +1,5 @@
 import { z } from 'zod';
 
-export const LayerSchema = z.enum(['contract', 'domain', 'http']);
-
-export const SortDirectionSchema = z.enum(['asc', 'desc']);
-
 export const CommentSchema = z.object({
   authorName: z.string().nullable(),
   body: z.string(),
@@ -77,42 +73,6 @@ export const ImageSchema = z.object({
   width: z.number().int().nullable()
 });
 
-export const ImageFilterSchema = z.object({
-  _and: z.array(ImageFilterSchema).optional(),
-  _not: ImageFilterSchema.optional(),
-  _or: z.array(ImageFilterSchema).optional(),
-  title: z.union([z.string(), z.unknown()]).optional()
-});
-
-export const ImageNestedCreatePayloadSchema = z.object({
-  _destroy: z.boolean().optional(),
-  _type: z.literal('create'),
-  height: z.number().int().nullable().optional(),
-  id: z.number().int().optional(),
-  title: z.string(),
-  url: z.string(),
-  width: z.number().int().nullable().optional()
-});
-
-export const ImageNestedPayloadSchema = z.discriminatedUnion('_type', [
-  ImageNestedCreatePayloadSchema,
-  ImageNestedUpdatePayloadSchema
-]);
-
-export const ImageNestedUpdatePayloadSchema = z.object({
-  _destroy: z.boolean().optional(),
-  _type: z.literal('update'),
-  height: z.number().int().nullable().optional(),
-  id: z.number().int().optional(),
-  title: z.string().optional(),
-  url: z.string().optional(),
-  width: z.number().int().nullable().optional()
-});
-
-export const ImageSortSchema = z.object({
-  createdAt: SortDirectionSchema.optional()
-});
-
 export const IssueSchema = z.object({
   code: z.string(),
   detail: z.string(),
@@ -137,38 +97,6 @@ export const PostSchema = z.object({
   title: z.string()
 });
 
-export const PostFilterSchema = z.object({
-  _and: z.array(PostFilterSchema).optional(),
-  _not: PostFilterSchema.optional(),
-  _or: z.array(PostFilterSchema).optional(),
-  title: z.union([z.string(), z.unknown()]).optional()
-});
-
-export const PostNestedCreatePayloadSchema = z.object({
-  _destroy: z.boolean().optional(),
-  _type: z.literal('create'),
-  body: z.string().nullable().optional(),
-  id: z.number().int().optional(),
-  title: z.string()
-});
-
-export const PostNestedPayloadSchema = z.discriminatedUnion('_type', [
-  PostNestedCreatePayloadSchema,
-  PostNestedUpdatePayloadSchema
-]);
-
-export const PostNestedUpdatePayloadSchema = z.object({
-  _destroy: z.boolean().optional(),
-  _type: z.literal('update'),
-  body: z.string().nullable().optional(),
-  id: z.number().int().optional(),
-  title: z.string().optional()
-});
-
-export const PostSortSchema = z.object({
-  createdAt: SortDirectionSchema.optional()
-});
-
 export const VideoSchema = z.object({
   comments: z.array(z.object({})).optional(),
   createdAt: z.iso.datetime(),
@@ -176,40 +104,6 @@ export const VideoSchema = z.object({
   id: z.string(),
   title: z.string(),
   url: z.string()
-});
-
-export const VideoFilterSchema = z.object({
-  _and: z.array(VideoFilterSchema).optional(),
-  _not: VideoFilterSchema.optional(),
-  _or: z.array(VideoFilterSchema).optional(),
-  title: z.union([z.string(), z.unknown()]).optional()
-});
-
-export const VideoNestedCreatePayloadSchema = z.object({
-  _destroy: z.boolean().optional(),
-  _type: z.literal('create'),
-  duration: z.number().int().nullable().optional(),
-  id: z.number().int().optional(),
-  title: z.string(),
-  url: z.string()
-});
-
-export const VideoNestedPayloadSchema = z.discriminatedUnion('_type', [
-  VideoNestedCreatePayloadSchema,
-  VideoNestedUpdatePayloadSchema
-]);
-
-export const VideoNestedUpdatePayloadSchema = z.object({
-  _destroy: z.boolean().optional(),
-  _type: z.literal('update'),
-  duration: z.number().int().nullable().optional(),
-  id: z.number().int().optional(),
-  title: z.string().optional(),
-  url: z.string().optional()
-});
-
-export const VideoSortSchema = z.object({
-  createdAt: SortDirectionSchema.optional()
 });
 
 export const CommentsIndexRequestQuerySchema = z.object({
@@ -437,39 +331,6 @@ export interface Image {
   width: null | number;
 }
 
-export interface ImageFilter {
-  _and?: ImageFilter[];
-  _not?: ImageFilter;
-  _or?: ImageFilter[];
-  title?: string | unknown;
-}
-
-export interface ImageNestedCreatePayload {
-  _destroy?: boolean;
-  _type: 'create';
-  height?: null | number;
-  id?: number;
-  title: string;
-  url: string;
-  width?: null | number;
-}
-
-export type ImageNestedPayload = ImageNestedCreatePayload | ImageNestedUpdatePayload;
-
-export interface ImageNestedUpdatePayload {
-  _destroy?: boolean;
-  _type: 'update';
-  height?: null | number;
-  id?: number;
-  title?: string;
-  url?: string;
-  width?: null | number;
-}
-
-export interface ImageSort {
-  createdAt?: SortDirection;
-}
-
 export interface Issue {
   code: string;
   detail: string;
@@ -477,8 +338,6 @@ export interface Issue {
   path: string[];
   pointer: string;
 }
-
-export type Layer = 'contract' | 'domain' | 'http';
 
 export interface OffsetPagination {
   current: number;
@@ -496,37 +355,6 @@ export interface Post {
   title: string;
 }
 
-export interface PostFilter {
-  _and?: PostFilter[];
-  _not?: PostFilter;
-  _or?: PostFilter[];
-  title?: string | unknown;
-}
-
-export interface PostNestedCreatePayload {
-  _destroy?: boolean;
-  _type: 'create';
-  body?: null | string;
-  id?: number;
-  title: string;
-}
-
-export type PostNestedPayload = PostNestedCreatePayload | PostNestedUpdatePayload;
-
-export interface PostNestedUpdatePayload {
-  _destroy?: boolean;
-  _type: 'update';
-  body?: null | string;
-  id?: number;
-  title?: string;
-}
-
-export interface PostSort {
-  createdAt?: SortDirection;
-}
-
-export type SortDirection = 'asc' | 'desc';
-
 export interface Video {
   comments?: object[];
   createdAt: string;
@@ -534,35 +362,4 @@ export interface Video {
   id: string;
   title: string;
   url: string;
-}
-
-export interface VideoFilter {
-  _and?: VideoFilter[];
-  _not?: VideoFilter;
-  _or?: VideoFilter[];
-  title?: string | unknown;
-}
-
-export interface VideoNestedCreatePayload {
-  _destroy?: boolean;
-  _type: 'create';
-  duration?: null | number;
-  id?: number;
-  title: string;
-  url: string;
-}
-
-export type VideoNestedPayload = VideoNestedCreatePayload | VideoNestedUpdatePayload;
-
-export interface VideoNestedUpdatePayload {
-  _destroy?: boolean;
-  _type: 'update';
-  duration?: null | number;
-  id?: number;
-  title?: string;
-  url?: string;
-}
-
-export interface VideoSort {
-  createdAt?: SortDirection;
 }

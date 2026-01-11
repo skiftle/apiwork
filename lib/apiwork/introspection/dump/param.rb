@@ -190,18 +190,20 @@ module Apiwork
           of_value = options[:of]
 
           if of_value.is_a?(Hash)
-            build_of_from_hash(of_value)
+            build_of_from_hash(of_value, shape: options[:shape])
           elsif registered_type?(of_value)
             ref_name = qualified_name(of_value, @contract_param)
             { ref: ref_name, shape: {}, type: :ref }
           else
-            build_of_from_symbol(of_value)
+            build_of_from_symbol(of_value, shape: options[:shape])
           end
         end
 
-        def build_of_from_hash(of_hash)
+        def build_of_from_hash(of_hash, shape: nil)
           type_value = of_hash[:type]
           ref = registered_type?(type_value) ? qualified_name(type_value, @contract_param) : nil
+
+          resolved_shape = shape ? build_nested_shape(shape) : {}
 
           {
             ref:,
@@ -209,14 +211,16 @@ module Apiwork
             format: of_hash[:format],
             max: of_hash[:max],
             min: of_hash[:min],
-            shape: {},
+            shape: resolved_shape,
             type: ref ? :ref : type_value,
           }
         end
 
-        def build_of_from_symbol(type_symbol)
+        def build_of_from_symbol(type_symbol, shape: nil)
           result = { ref: nil, type: type_symbol }
-          result[:shape] = {} if [:object, :array].include?(type_symbol)
+          if [:object, :array].include?(type_symbol)
+            result[:shape] = shape ? build_nested_shape(shape) : {}
+          end
           result
         end
 
@@ -295,7 +299,97 @@ module Apiwork
         end
 
         def build_nested_shape(shape_definition)
-          Param.new(shape_definition, visited: @visited).to_h
+          if shape_definition.is_a?(Apiwork::API::Object)
+            dump_api_object(shape_definition)
+          elsif shape_definition.is_a?(Apiwork::API::Union)
+            dump_api_union(shape_definition)
+          else
+            Param.new(shape_definition, visited: @visited).to_h
+          end
+        end
+
+        def dump_api_object(api_object)
+          result = {}
+          api_object.params.sort_by { |name, _| name.to_s }.each do |name, options|
+            result[name] = build_api_param(options)
+          end
+          result
+        end
+
+        def dump_api_union(api_union)
+          {
+            discriminator: api_union.discriminator,
+            variants: api_union.variants.map { |variant| build_api_variant(variant) },
+          }
+        end
+
+        def build_api_param(options)
+          {
+            as: options[:as],
+            default: options[:default],
+            deprecated: options[:deprecated] == true,
+            description: options[:description],
+            discriminator: options[:discriminator],
+            enum: options[:enum],
+            example: options[:example],
+            format: options[:format],
+            max: options[:max],
+            min: options[:min],
+            nullable: options[:nullable] == true,
+            of: build_api_of(options),
+            optional: options[:optional] == true,
+            partial: options[:partial] == true,
+            ref: nil,
+            shape: options[:shape] ? build_nested_shape(options[:shape]) : {},
+            tag: nil,
+            type: options[:type] || :unknown,
+            value: options[:type] == :literal ? options[:value] : nil,
+            variants: [],
+          }
+        end
+
+        def build_api_of(options)
+          return nil unless options[:of]
+
+          of_value = options[:of]
+          if of_value.is_a?(Hash)
+            {
+              enum: of_value[:enum],
+              format: of_value[:format],
+              max: of_value[:max],
+              min: of_value[:min],
+              ref: nil,
+              shape: options[:shape] ? build_nested_shape(options[:shape]) : {},
+              type: of_value[:type],
+            }
+          else
+            { ref: nil, shape: {}, type: of_value }
+          end
+        end
+
+        def build_api_variant(variant)
+          {
+            as: nil,
+            default: nil,
+            deprecated: false,
+            description: nil,
+            discriminator: nil,
+            enum: variant[:enum],
+            example: nil,
+            format: nil,
+            max: nil,
+            min: nil,
+            nullable: false,
+            of: nil,
+            optional: false,
+            partial: variant[:partial] == true,
+            ref: nil,
+            shape: variant[:shape] ? build_nested_shape(variant[:shape]) : {},
+            tag: variant[:tag],
+            type: variant[:type] || :object,
+            value: variant[:value],
+            variants: [],
+          }
         end
 
         def build_shape(options)

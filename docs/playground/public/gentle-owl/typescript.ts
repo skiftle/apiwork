@@ -145,39 +145,6 @@ export interface Image {
   width: null | number;
 }
 
-export interface ImageFilter {
-  _and?: ImageFilter[];
-  _not?: ImageFilter;
-  _or?: ImageFilter[];
-  title?: string | unknown;
-}
-
-export interface ImageNestedCreatePayload {
-  _destroy?: boolean;
-  _type: 'create';
-  height?: null | number;
-  id?: number;
-  title: string;
-  url: string;
-  width?: null | number;
-}
-
-export type ImageNestedPayload = ImageNestedCreatePayload | ImageNestedUpdatePayload;
-
-export interface ImageNestedUpdatePayload {
-  _destroy?: boolean;
-  _type: 'update';
-  height?: null | number;
-  id?: number;
-  title?: string;
-  url?: string;
-  width?: null | number;
-}
-
-export interface ImageSort {
-  createdAt?: SortDirection;
-}
-
 export interface Issue {
   code: string;
   detail: string;
@@ -185,8 +152,6 @@ export interface Issue {
   path: string[];
   pointer: string;
 }
-
-export type Layer = 'contract' | 'domain' | 'http';
 
 export interface OffsetPagination {
   current: number;
@@ -204,37 +169,6 @@ export interface Post {
   title: string;
 }
 
-export interface PostFilter {
-  _and?: PostFilter[];
-  _not?: PostFilter;
-  _or?: PostFilter[];
-  title?: string | unknown;
-}
-
-export interface PostNestedCreatePayload {
-  _destroy?: boolean;
-  _type: 'create';
-  body?: null | string;
-  id?: number;
-  title: string;
-}
-
-export type PostNestedPayload = PostNestedCreatePayload | PostNestedUpdatePayload;
-
-export interface PostNestedUpdatePayload {
-  _destroy?: boolean;
-  _type: 'update';
-  body?: null | string;
-  id?: number;
-  title?: string;
-}
-
-export interface PostSort {
-  createdAt?: SortDirection;
-}
-
-export type SortDirection = 'asc' | 'desc';
-
 export interface Video {
   comments?: object[];
   createdAt: string;
@@ -242,35 +176,4 @@ export interface Video {
   id: string;
   title: string;
   url: string;
-}
-
-export interface VideoFilter {
-  _and?: VideoFilter[];
-  _not?: VideoFilter;
-  _or?: VideoFilter[];
-  title?: string | unknown;
-}
-
-export interface VideoNestedCreatePayload {
-  _destroy?: boolean;
-  _type: 'create';
-  duration?: null | number;
-  id?: number;
-  title: string;
-  url: string;
-}
-
-export type VideoNestedPayload = VideoNestedCreatePayload | VideoNestedUpdatePayload;
-
-export interface VideoNestedUpdatePayload {
-  _destroy?: boolean;
-  _type: 'update';
-  duration?: null | number;
-  id?: number;
-  title?: string;
-  url?: string;
-}
-
-export interface VideoSort {
-  createdAt?: SortDirection;
 }

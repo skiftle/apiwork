@@ -87,7 +87,7 @@ module Apiwork
             max: options[:max],
             min: options[:min],
             nullable: options[:nullable] == true,
-            of: resolve_of(options, scope),
+            of: resolve_of(options, scope, shape: options[:shape]),
             optional: options[:optional] == true,
             partial: options[:partial] == true,
             shape: build_nested_shape(options[:shape]),
@@ -163,7 +163,7 @@ module Apiwork
           end
         end
 
-        def resolve_of(options, scope)
+        def resolve_of(options, scope, shape: nil)
           return nil unless options[:of]
 
           of_value = options[:of]
@@ -171,21 +171,23 @@ module Apiwork
           if of_value.is_a?(Hash)
             type_value = of_value[:type]
             scoped_name = resolve_scoped_type_name(type_value, scope)
+            resolved_shape = shape ? build_nested_shape(shape) : {}
             {
               enum: of_value[:enum],
               format: of_value[:format],
               max: of_value[:max],
               min: of_value[:min],
               ref: scoped_name,
-              shape: {},
+              shape: resolved_shape,
               type: scoped_name ? :ref : type_value,
             }
           else
             scoped_name = resolve_scoped_type_name(of_value, scope)
+            resolved_shape = shape ? build_nested_shape(shape) : {}
             if scoped_name
               { ref: scoped_name, shape: {}, type: :ref }
             else
-              { ref: nil, shape: {}, type: of_value }
+              { ref: nil, shape: resolved_shape, type: of_value }
             end
           end
         end

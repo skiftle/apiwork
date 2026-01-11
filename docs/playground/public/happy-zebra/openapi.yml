@@ -461,12 +461,7 @@ components:
           items:
             "$ref": "#/components/schemas/issue"
           type: array
-        layer:
-          enum:
-          - http
-          - contract
-          - domain
-          type: string
+        layer: {}
       type: object
       required:
       - issues
@@ -727,19 +722,6 @@ components:
       type: object
       required:
       - _type
-    profileSort:
-      properties:
-        createdAt:
-          enum:
-          - asc
-          - desc
-          type: string
-        updatedAt:
-          enum:
-          - asc
-          - desc
-          type: string
-      type: object
     stringFilter:
       properties:
         contains:
@@ -868,16 +850,8 @@ components:
       - user
     userSort:
       properties:
-        createdAt:
-          enum:
-          - asc
-          - desc
-          type: string
-        updatedAt:
-          enum:
-          - asc
-          - desc
-          type: string
+        createdAt: {}
+        updatedAt: {}
       type: object
     userUpdatePayload:
       properties:

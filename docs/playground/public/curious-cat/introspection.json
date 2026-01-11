@@ -498,8 +498,110 @@
           "type": "array",
           "max": null,
           "min": null,
-          "of": null,
-          "shape": {}
+          "of": {
+            "default": null,
+            "deprecated": null,
+            "description": null,
+            "example": null,
+            "nullable": null,
+            "optional": null,
+            "type": "object",
+            "partial": null,
+            "shape": {
+              "city": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": false,
+                "type": "string",
+                "format": null,
+                "max": null,
+                "min": null
+              },
+              "primary": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": false,
+                "type": "boolean"
+              },
+              "street": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": false,
+                "type": "string",
+                "format": null,
+                "max": null,
+                "min": null
+              },
+              "zip": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": false,
+                "type": "string",
+                "format": null,
+                "max": null,
+                "min": null
+              }
+            }
+          },
+          "shape": {
+            "city": {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "string",
+              "format": null,
+              "max": null,
+              "min": null
+            },
+            "primary": {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "boolean"
+            },
+            "street": {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "string",
+              "format": null,
+              "max": null,
+              "min": null
+            },
+            "zip": {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "string",
+              "format": null,
+              "max": null,
+              "min": null
+            }
+          }
         },
         "created_at": {
           "default": null,
@@ -730,8 +832,110 @@
           "type": "array",
           "max": null,
           "min": null,
-          "of": null,
-          "shape": {}
+          "of": {
+            "default": null,
+            "deprecated": null,
+            "description": null,
+            "example": null,
+            "nullable": null,
+            "optional": null,
+            "type": "object",
+            "partial": null,
+            "shape": {
+              "city": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": false,
+                "type": "string",
+                "format": null,
+                "max": null,
+                "min": null
+              },
+              "primary": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": false,
+                "type": "boolean"
+              },
+              "street": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": false,
+                "type": "string",
+                "format": null,
+                "max": null,
+                "min": null
+              },
+              "zip": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": false,
+                "type": "string",
+                "format": null,
+                "max": null,
+                "min": null
+              }
+            }
+          },
+          "shape": {
+            "city": {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "string",
+              "format": null,
+              "max": null,
+              "min": null
+            },
+            "primary": {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "boolean"
+            },
+            "street": {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "string",
+              "format": null,
+              "max": null,
+              "min": null
+            },
+            "zip": {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "string",
+              "format": null,
+              "max": null,
+              "min": null
+            }
+          }
         },
         "email": {
           "default": null,
@@ -1081,8 +1285,110 @@
           "type": "array",
           "max": null,
           "min": null,
-          "of": null,
-          "shape": {}
+          "of": {
+            "default": null,
+            "deprecated": null,
+            "description": null,
+            "example": null,
+            "nullable": null,
+            "optional": null,
+            "type": "object",
+            "partial": null,
+            "shape": {
+              "city": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": false,
+                "type": "string",
+                "format": null,
+                "max": null,
+                "min": null
+              },
+              "primary": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": false,
+                "type": "boolean"
+              },
+              "street": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": false,
+                "type": "string",
+                "format": null,
+                "max": null,
+                "min": null
+              },
+              "zip": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": false,
+                "type": "string",
+                "format": null,
+                "max": null,
+                "min": null
+              }
+            }
+          },
+          "shape": {
+            "city": {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "string",
+              "format": null,
+              "max": null,
+              "min": null
+            },
+            "primary": {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "boolean"
+            },
+            "street": {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "string",
+              "format": null,
+              "max": null,
+              "min": null
+            },
+            "zip": {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "string",
+              "format": null,
+              "max": null,
+              "min": null
+            }
+          }
         },
         "email": {
           "default": null,

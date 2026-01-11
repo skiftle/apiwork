@@ -1,7 +1,5 @@
 import { z } from 'zod';
 
-export const LayerSchema = z.enum(['contract', 'domain', 'http']);
-
 export const ContactSchema = z.object({
   email: z.string().nullable(),
   id: z.string(),
@@ -231,8 +229,6 @@ export interface Issue {
   path: string[];
   pointer: string;
 }
-
-export type Layer = 'contract' | 'domain' | 'http';
 
 export interface OffsetPagination {
   current: number;

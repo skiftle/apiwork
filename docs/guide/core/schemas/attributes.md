@@ -369,24 +369,26 @@ attribute :ip_address, format: :ipv4
 
 ## Inline Type Definitions
 
-Define the exact shape of structured data directly in your schema. This provides typed access in generated TypeScript instead of `Record<string, any>`.
+Define the exact shape of JSON data stored in your database. Use a block to specify the structure with `object`, `array`, or `union` at the top level.
 
 Works with:
-- JSON/JSONB columns (auto-detected)
-- `store` attributes (requires explicit type)
-- `serialize` attributes (requires explicit type)
-- Virtual attributes (requires explicit type)
+- JSON/JSONB columns
+- `store` attributes
+- `serialize` attributes
+- Virtual attributes with explicit type
 
 ### Object Shape
 
-Define an object structure with `param`:
+Define an object structure:
 
 ```ruby
 class UserSchema < Apiwork::Schema::Base
-  attribute :settings do
-    string :theme
-    boolean :notifications
-    string :language
+  attribute :settings, writable: true do
+    object do
+      string :theme
+      boolean :notifications
+      string :language
+    end
   end
 end
 ```
@@ -399,14 +401,16 @@ export interface User {
 }
 ```
 
-The same shape is used in `UserCreatePayload` and `UserUpdatePayload` when the attribute is writable.
-
 ### Array of Primitives
 
-Use `type: :array` with `of:` for simple arrays:
+Define arrays with a single element type:
 
 ```ruby
-attribute :tags, type: :array, of: :string
+attribute :tags, writable: true do
+  array do
+    string
+  end
+end
 ```
 
 Generated TypeScript:
@@ -419,13 +423,18 @@ export interface User {
 
 ### Array of Objects
 
-Combine `type: :array` with a block for typed arrays:
+Combine `array` with `object` for typed arrays:
 
 ```ruby
-attribute :addresses, type: :array do
-  string :street
-  string :city
-  string :zip
+attribute :addresses, writable: true do
+  array do
+    object do
+      string :street
+      string :city
+      string :zip
+      boolean :primary
+    end
+  end
 end
 ```
 
@@ -433,23 +442,25 @@ Generated TypeScript:
 
 ```typescript
 export interface User {
-  addresses: { city: string; street: string; zip: string }[];
+  addresses: { city: string; primary: boolean; street: string; zip: string }[];
 }
 ```
 
 ### Nested Objects
 
-Blocks can nest to any depth:
+Objects can nest to any depth using named fields:
 
 ```ruby
-attribute :preferences do
-  object :ui do
-    string :theme
-    boolean :sidebar_collapsed
-  end
-  object :notifications do
-    boolean :email
-    boolean :push
+attribute :preferences, writable: true do
+  object do
+    object :ui do
+      string :theme
+      boolean :sidebar_collapsed
+    end
+    object :notifications do
+      boolean :email
+      boolean :push
+    end
   end
 end
 ```
@@ -465,9 +476,42 @@ export interface User {
 }
 ```
 
+### Union Types
+
+Define polymorphic data with a discriminator field:
+
+```ruby
+attribute :payment_method, writable: true do
+  union discriminator: :type do
+    variant tag: 'card' do
+      object do
+        string :last_four
+        string :brand
+      end
+    end
+    variant tag: 'bank' do
+      object do
+        string :account_number
+        string :routing_number
+      end
+    end
+  end
+end
+```
+
+Generated TypeScript:
+
+```typescript
+export interface User {
+  paymentMethod:
+    | { type: 'bank'; accountNumber: string; routingNumber: string }
+    | { type: 'card'; brand: string; lastFour: string };
+}
+```
+
 ### Without Shape Definition
 
-Without an inline shape, unstructured data defaults to `Record<string, any>`:
+Without an inline shape, JSON data defaults to `object`:
 
 ```ruby
 attribute :metadata, type: :json
@@ -477,13 +521,38 @@ Generated TypeScript:
 
 ```typescript
 export interface User {
-  metadata: Record<string, any>;
+  metadata: object;
 }
+```
+
+### Available Field Types
+
+Inside `object` blocks, use these type methods:
+
+| Method | TypeScript | Description |
+|--------|------------|-------------|
+| `string :name` | `string` | Text values |
+| `integer :count` | `number` | Whole numbers |
+| `float :rate` | `number` | Decimal numbers |
+| `boolean :active` | `boolean` | True/false |
+| `datetime :timestamp` | `string` | ISO datetime |
+| `date :due_on` | `string` | ISO date |
+| `object :nested` | `{ ... }` | Nested object |
+| `array :items` | `T[]` | Typed array |
+
+Each field accepts options: `optional`, `nullable`, `description`, `example`, `enum`, `min`, `max`.
+
+```ruby
+object do
+  string :status, enum: %w[active inactive]
+  integer :count, min: 0, max: 100
+  string :notes, optional: true, nullable: true
+end
 ```
 
 ### With Rails `store`
 
-For `store` on TEXT columns, set `type: :object` explicitly:
+For `store` on TEXT columns:
 
 ```ruby
 # Model
@@ -493,16 +562,18 @@ end
 
 # Schema
 class UserSchema < Apiwork::Schema::Base
-  attribute :settings, type: :object, writable: true do
-    string :theme
-    string :language
+  attribute :settings, writable: true do
+    object do
+      string :theme
+      string :language
+    end
   end
 end
 ```
 
 #### See also
 
-- [Schema::Base reference](../../../reference/schema-base.md) — all attribute options
+- [Schema::Element](/reference/schema-element.md) — block context reference
 
 ---
 

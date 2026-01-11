@@ -126,29 +126,9 @@ export interface ArticlesUpdateResponse {
 
 export type ArticlesUpdateResponseBody = ArticleUpdateSuccessResponseBody | ErrorResponseBody;
 
-export interface DateFilter {
-  between?: DateFilterBetween;
-  eq?: string;
-  gt?: string;
-  gte?: string;
-  in?: string[];
-  lt?: string;
-  lte?: string;
-}
-
 export interface DateFilterBetween {
   from?: string;
   to?: string;
-}
-
-export interface DecimalFilter {
-  between?: DecimalFilterBetween;
-  eq?: number;
-  gt?: number;
-  gte?: number;
-  in?: number[];
-  lt?: number;
-  lte?: number;
 }
 
 export interface DecimalFilterBetween {
@@ -159,16 +139,6 @@ export interface DecimalFilterBetween {
 export interface ErrorResponseBody {
   issues: Issue[];
   layer: Layer;
-}
-
-export interface IntegerFilter {
-  between?: IntegerFilterBetween;
-  eq?: number;
-  gt?: number;
-  gte?: number;
-  in?: number[];
-  lt?: number;
-  lte?: number;
 }
 
 export interface IntegerFilterBetween {
@@ -183,8 +153,6 @@ export interface Issue {
   path: string[];
   pointer: string;
 }
-
-export type Layer = 'contract' | 'domain' | 'http';
 
 export interface NullableDateFilter {
   between?: DateFilterBetween;
@@ -219,15 +187,6 @@ export interface NullableIntegerFilter {
   null?: boolean;
 }
 
-export interface NullableStringFilter {
-  contains?: string;
-  endsWith?: string;
-  eq?: string;
-  in?: string[];
-  null?: boolean;
-  startsWith?: string;
-}
-
 export interface OffsetPagination {
   current: number;
   items: number;
@@ -235,8 +194,6 @@ export interface OffsetPagination {
   prev?: null | number;
   total: number;
 }
-
-export type SortDirection = 'asc' | 'desc';
 
 export interface StringFilter {
   contains?: string;

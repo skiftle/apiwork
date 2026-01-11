@@ -2,10 +2,6 @@ import { z } from 'zod';
 
 export const ArticleStatusSchema = z.enum(['archived', 'draft', 'published']);
 
-export const LayerSchema = z.enum(['contract', 'domain', 'http']);
-
-export const SortDirectionSchema = z.enum(['asc', 'desc']);
-
 export const ArticleSchema = z.object({
   body: z.string().nullable(),
   category: z.object({}).nullable().optional(),
@@ -83,29 +79,9 @@ export const ArticleUpdateSuccessResponseBodySchema = z.object({
   meta: z.object({}).optional()
 });
 
-export const DateFilterSchema = z.object({
-  between: DateFilterBetweenSchema.optional(),
-  eq: z.iso.date().optional(),
-  gt: z.iso.date().optional(),
-  gte: z.iso.date().optional(),
-  in: z.array(z.iso.date()).optional(),
-  lt: z.iso.date().optional(),
-  lte: z.iso.date().optional()
-});
-
 export const DateFilterBetweenSchema = z.object({
   from: z.iso.date().optional(),
   to: z.iso.date().optional()
-});
-
-export const DecimalFilterSchema = z.object({
-  between: DecimalFilterBetweenSchema.optional(),
-  eq: z.number().optional(),
-  gt: z.number().optional(),
-  gte: z.number().optional(),
-  in: z.array(z.number()).optional(),
-  lt: z.number().optional(),
-  lte: z.number().optional()
 });
 
 export const DecimalFilterBetweenSchema = z.object({
@@ -116,16 +92,6 @@ export const DecimalFilterBetweenSchema = z.object({
 export const ErrorResponseBodySchema = z.object({
   issues: z.array(IssueSchema),
   layer: LayerSchema
-});
-
-export const IntegerFilterSchema = z.object({
-  between: IntegerFilterBetweenSchema.optional(),
-  eq: z.number().int().optional(),
-  gt: z.number().int().optional(),
-  gte: z.number().int().optional(),
-  in: z.array(z.number().int()).optional(),
-  lt: z.number().int().optional(),
-  lte: z.number().int().optional()
 });
 
 export const IntegerFilterBetweenSchema = z.object({
@@ -172,15 +138,6 @@ export const NullableIntegerFilterSchema = z.object({
   lt: z.number().int().optional(),
   lte: z.number().int().optional(),
   null: z.boolean().optional()
-});
-
-export const NullableStringFilterSchema = z.object({
-  contains: z.string().optional(),
-  endsWith: z.string().optional(),
-  eq: z.string().optional(),
-  in: z.array(z.string()).optional(),
-  null: z.boolean().optional(),
-  startsWith: z.string().optional()
 });
 
 export const OffsetPaginationSchema = z.object({
@@ -379,29 +336,9 @@ export interface ArticlesUpdateResponse {
 
 export type ArticlesUpdateResponseBody = ArticleUpdateSuccessResponseBody | ErrorResponseBody;
 
-export interface DateFilter {
-  between?: DateFilterBetween;
-  eq?: string;
-  gt?: string;
-  gte?: string;
-  in?: string[];
-  lt?: string;
-  lte?: string;
-}
-
 export interface DateFilterBetween {
   from?: string;
   to?: string;
-}
-
-export interface DecimalFilter {
-  between?: DecimalFilterBetween;
-  eq?: number;
-  gt?: number;
-  gte?: number;
-  in?: number[];
-  lt?: number;
-  lte?: number;
 }
 
 export interface DecimalFilterBetween {
@@ -412,16 +349,6 @@ export interface DecimalFilterBetween {
 export interface ErrorResponseBody {
   issues: Issue[];
   layer: Layer;
-}
-
-export interface IntegerFilter {
-  between?: IntegerFilterBetween;
-  eq?: number;
-  gt?: number;
-  gte?: number;
-  in?: number[];
-  lt?: number;
-  lte?: number;
 }
 
 export interface IntegerFilterBetween {
@@ -436,8 +363,6 @@ export interface Issue {
   path: string[];
   pointer: string;
 }
-
-export type Layer = 'contract' | 'domain' | 'http';
 
 export interface NullableDateFilter {
   between?: DateFilterBetween;
@@ -472,15 +397,6 @@ export interface NullableIntegerFilter {
   null?: boolean;
 }
 
-export interface NullableStringFilter {
-  contains?: string;
-  endsWith?: string;
-  eq?: string;
-  in?: string[];
-  null?: boolean;
-  startsWith?: string;
-}
-
 export interface OffsetPagination {
   current: number;
   items: number;
@@ -488,8 +404,6 @@ export interface OffsetPagination {
   prev?: null | number;
   total: number;
 }
-
-export type SortDirection = 'asc' | 'desc';
 
 export interface StringFilter {
   contains?: string;

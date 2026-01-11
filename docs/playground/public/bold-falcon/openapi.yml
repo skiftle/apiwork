@@ -281,31 +281,11 @@ components:
       - article
     articleSort:
       properties:
-        createdAt:
-          enum:
-          - asc
-          - desc
-          type: string
-        publishedOn:
-          enum:
-          - asc
-          - desc
-          type: string
-        rating:
-          enum:
-          - asc
-          - desc
-          type: string
-        status:
-          enum:
-          - asc
-          - desc
-          type: string
-        viewCount:
-          enum:
-          - asc
-          - desc
-          type: string
+        createdAt: {}
+        publishedOn: {}
+        rating: {}
+        status: {}
+        viewCount: {}
       type: object
     articleStatusFilter:
       oneOf:
@@ -365,31 +345,6 @@ components:
       type: object
       required:
       - article
-    dateFilter:
-      properties:
-        between:
-          "$ref": "#/components/schemas/dateFilterBetween"
-        eq:
-          type: string
-          format: date
-        gt:
-          type: string
-          format: date
-        gte:
-          type: string
-          format: date
-        in:
-          items:
-            type: string
-            format: date
-          type: array
-        lt:
-          type: string
-          format: date
-        lte:
-          type: string
-          format: date
-      type: object
     dateFilterBetween:
       properties:
         from:
@@ -398,25 +353,6 @@ components:
         to:
           type: string
           format: date
-      type: object
-    decimalFilter:
-      properties:
-        between:
-          "$ref": "#/components/schemas/decimalFilterBetween"
-        eq:
-          type: number
-        gt:
-          type: number
-        gte:
-          type: number
-        in:
-          items:
-            type: number
-          type: array
-        lt:
-          type: number
-        lte:
-          type: number
       type: object
     decimalFilterBetween:
       properties:
@@ -431,35 +367,11 @@ components:
           items:
             "$ref": "#/components/schemas/issue"
           type: array
-        layer:
-          enum:
-          - http
-          - contract
-          - domain
-          type: string
+        layer: {}
       type: object
       required:
       - issues
       - layer
-    integerFilter:
-      properties:
-        between:
-          "$ref": "#/components/schemas/integerFilterBetween"
-        eq:
-          type: integer
-        gt:
-          type: integer
-        gte:
-          type: integer
-        in:
-          items:
-            type: integer
-          type: array
-        lt:
-          type: integer
-        lte:
-          type: integer
-      type: object
     integerFilterBetween:
       properties:
         from:
@@ -557,23 +469,6 @@ components:
           type: integer
         'null':
           type: boolean
-      type: object
-    nullableStringFilter:
-      properties:
-        contains:
-          type: string
-        endsWith:
-          type: string
-        eq:
-          type: string
-        in:
-          items:
-            type: string
-          type: array
-        'null':
-          type: boolean
-        startsWith:
-          type: string
       type: object
     offsetPagination:
       properties:

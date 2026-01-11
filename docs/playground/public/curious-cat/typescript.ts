@@ -11,8 +11,6 @@ export interface Issue {
   pointer: string;
 }
 
-export type Layer = 'contract' | 'domain' | 'http';
-
 export interface OffsetPagination {
   current: number;
   items: number;
@@ -22,7 +20,7 @@ export interface OffsetPagination {
 }
 
 export interface Profile {
-  addresses: string[];
+  addresses: { city: string; primary: boolean; street: string; zip: string }[];
   createdAt: string;
   email: string;
   id: string;
@@ -35,7 +33,7 @@ export interface Profile {
 }
 
 export interface ProfileCreatePayload {
-  addresses: string[];
+  addresses: { city: string; primary: boolean; street: string; zip: string }[];
   email: string;
   metadata: object;
   name: string;
@@ -66,7 +64,7 @@ export interface ProfileShowSuccessResponseBody {
 }
 
 export interface ProfileUpdatePayload {
-  addresses?: string[];
+  addresses?: { city: string; primary: boolean; street: string; zip: string }[];
   email?: string;
   metadata?: object;
   name?: string;

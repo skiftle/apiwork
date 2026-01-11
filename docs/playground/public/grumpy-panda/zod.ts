@@ -1,7 +1,5 @@
 import { z } from 'zod';
 
-export const LayerSchema = z.enum(['contract', 'domain', 'http']);
-
 export const ActivitySchema = z.object({
   action: z.string(),
   createdAt: z.iso.datetime(),
@@ -225,5 +223,3 @@ export interface Issue {
   path: string[];
   pointer: string;
 }
-
-export type Layer = 'contract' | 'domain' | 'http';

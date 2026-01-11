@@ -1,9 +1,5 @@
 import { z } from 'zod';
 
-export const LayerSchema = z.enum(['contract', 'domain', 'http']);
-
-export const SortDirectionSchema = z.enum(['asc', 'desc']);
-
 export const CommentSchema = z.object({
   author: z.string(),
   body: z.string(),
@@ -179,11 +175,6 @@ export const ProfileNestedUpdatePayloadSchema = z.object({
   bio: z.string().nullable().optional(),
   id: z.number().int().optional(),
   website: z.string().nullable().optional()
-});
-
-export const ProfileSortSchema = z.object({
-  createdAt: SortDirectionSchema.optional(),
-  updatedAt: SortDirectionSchema.optional()
 });
 
 export const StringFilterSchema = z.object({
@@ -532,8 +523,6 @@ export interface Issue {
   pointer: string;
 }
 
-export type Layer = 'contract' | 'domain' | 'http';
-
 export interface OffsetPagination {
   current: number;
   items: number;
@@ -678,13 +667,6 @@ export interface ProfileNestedUpdatePayload {
   id?: number;
   website?: null | string;
 }
-
-export interface ProfileSort {
-  createdAt?: SortDirection;
-  updatedAt?: SortDirection;
-}
-
-export type SortDirection = 'asc' | 'desc';
 
 export interface StringFilter {
   contains?: string;

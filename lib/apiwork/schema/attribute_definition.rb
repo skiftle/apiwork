@@ -17,7 +17,7 @@ module Apiwork
                   :enum,
                   :example,
                   :format,
-                  :inline_shape,
+                  :inline_element,
                   :max,
                   :min,
                   :name,
@@ -49,10 +49,16 @@ module Apiwork
       )
         @name = name
         @owner_schema_class = owner_schema_class
-        @inline_shape = block
         @of = of
 
-        type ||= :object if block
+        if block
+          element = Element.new
+          element.instance_eval(&block)
+          element.validate!
+          @inline_element = element
+          type = element.type
+          @of = element.of_type if element.type == :array
+        end
 
         if owner_schema_class.model_class.present?
           @model_class = owner_schema_class.model_class

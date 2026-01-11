@@ -1,9 +1,5 @@
 import { z } from 'zod';
 
-export const LayerSchema = z.enum(['contract', 'domain', 'http']);
-
-export const SortDirectionSchema = z.enum(['asc', 'desc']);
-
 export const CarSchema = z.object({
   brand: z.string(),
   color: z.string().nullable(),
@@ -35,16 +31,6 @@ export const CarUpdatePayloadSchema = z.object({
 export const ErrorResponseBodySchema = z.object({
   issues: z.array(IssueSchema),
   layer: LayerSchema
-});
-
-export const IntegerFilterSchema = z.object({
-  between: IntegerFilterBetweenSchema.optional(),
-  eq: z.number().int().optional(),
-  gt: z.number().int().optional(),
-  gte: z.number().int().optional(),
-  in: z.array(z.number().int()).optional(),
-  lt: z.number().int().optional(),
-  lte: z.number().int().optional()
 });
 
 export const IntegerFilterBetweenSchema = z.object({
@@ -149,12 +135,6 @@ export const VehicleSchema = z.discriminatedUnion('type', [
   TruckSchema
 ]);
 
-export const VehicleCreatePayloadSchema = z.discriminatedUnion('type', [
-  CarCreatePayloadSchema,
-  MotorcycleCreatePayloadSchema,
-  TruckCreatePayloadSchema
-]);
-
 export const VehicleCreateSuccessResponseBodySchema = z.object({
   meta: z.object({}).optional(),
   vehicle: VehicleSchema
@@ -188,12 +168,6 @@ export const VehicleShowSuccessResponseBodySchema = z.object({
 export const VehicleSortSchema = z.object({
   year: SortDirectionSchema.optional()
 });
-
-export const VehicleUpdatePayloadSchema = z.discriminatedUnion('type', [
-  CarUpdatePayloadSchema,
-  MotorcycleUpdatePayloadSchema,
-  TruckUpdatePayloadSchema
-]);
 
 export const VehicleUpdateSuccessResponseBodySchema = z.object({
   meta: z.object({}).optional(),
@@ -285,16 +259,6 @@ export interface ErrorResponseBody {
   layer: Layer;
 }
 
-export interface IntegerFilter {
-  between?: IntegerFilterBetween;
-  eq?: number;
-  gt?: number;
-  gte?: number;
-  in?: number[];
-  lt?: number;
-  lte?: number;
-}
-
 export interface IntegerFilterBetween {
   from?: number;
   to?: number;
@@ -307,8 +271,6 @@ export interface Issue {
   path: string[];
   pointer: string;
 }
-
-export type Layer = 'contract' | 'domain' | 'http';
 
 export interface Motorcycle {
   brand: string;
@@ -357,8 +319,6 @@ export interface OffsetPagination {
   total: number;
 }
 
-export type SortDirection = 'asc' | 'desc';
-
 export interface StringFilter {
   contains?: string;
   endsWith?: string;
@@ -397,8 +357,6 @@ export interface TruckUpdatePayload {
 
 export type Vehicle = Car | Motorcycle | Truck;
 
-export type VehicleCreatePayload = CarCreatePayload | MotorcycleCreatePayload | TruckCreatePayload;
-
 export interface VehicleCreateSuccessResponseBody {
   meta?: object;
   vehicle: Vehicle;
@@ -432,8 +390,6 @@ export interface VehicleShowSuccessResponseBody {
 export interface VehicleSort {
   year?: SortDirection;
 }
-
-export type VehicleUpdatePayload = CarUpdatePayload | MotorcycleUpdatePayload | TruckUpdatePayload;
 
 export interface VehicleUpdateSuccessResponseBody {
   meta?: object;

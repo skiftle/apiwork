@@ -152,12 +152,7 @@ components:
           items:
             "$ref": "#/components/schemas/issue"
           type: array
-        layer:
-          enum:
-          - http
-          - contract
-          - domain
-          type: string
+        layer: {}
       type: object
       required:
       - issues
@@ -184,23 +179,6 @@ components:
       - meta
       - path
       - pointer
-    nullableStringFilter:
-      properties:
-        contains:
-          type: string
-        endsWith:
-          type: string
-        eq:
-          type: string
-        in:
-          items:
-            type: string
-          type: array
-        'null':
-          type: boolean
-        startsWith:
-          type: string
-      type: object
     offsetPagination:
       properties:
         current:
@@ -401,16 +379,8 @@ components:
       - project
     projectSort:
       properties:
-        createdAt:
-          enum:
-          - asc
-          - desc
-          type: string
-        deadline:
-          enum:
-          - asc
-          - desc
-          type: string
+        createdAt: {}
+        deadline: {}
       type: object
       description: A project with tasks and deadlines
     projectStatusFilter:
@@ -485,18 +455,3 @@ components:
       type: object
       required:
       - project
-    stringFilter:
-      properties:
-        contains:
-          type: string
-        endsWith:
-          type: string
-        eq:
-          type: string
-        in:
-          items:
-            type: string
-          type: array
-        startsWith:
-          type: string
-      type: object

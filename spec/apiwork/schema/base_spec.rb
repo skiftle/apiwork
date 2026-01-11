@@ -208,57 +208,71 @@ RSpec.describe Apiwork::Schema::Base do
     end
 
     describe 'with inline object shape' do
-      it 'stores the block as inline_shape' do
-        block = proc { string :theme }
-        definition = described_class.new(:settings, schema_class, &block)
+      it 'stores the element as inline_element' do
+        definition = described_class.new(:settings, schema_class) do
+          object do
+            string :theme
+          end
+        end
 
-        expect(definition.inline_shape).to eq(block)
+        expect(definition.inline_element).to be_a(Apiwork::Schema::Element)
+        expect(definition.inline_element.type).to eq(:object)
       end
 
-      it 'infers type as :object when block provided without explicit type' do
+      it 'infers type as :object when object block provided' do
         definition = described_class.new(:settings, schema_class) do
-          string :theme
+          object do
+            string :theme
+          end
         end
 
         expect(definition.type).to eq(:object)
       end
 
-      it 'uses explicit type when provided with block' do
-        definition = described_class.new(:settings, schema_class, type: :array) do
-          string :name
+      it 'infers type as :array when array block provided' do
+        definition = described_class.new(:tags, schema_class) do
+          array do
+            string
+          end
         end
 
         expect(definition.type).to eq(:array)
+        expect(definition.of).to eq(:string)
       end
     end
 
-    describe 'with array of primitives' do
+    describe 'with array of primitives via of option' do
       it 'stores the of option' do
         definition = described_class.new(:tags, schema_class, of: :string, type: :array)
 
         expect(definition.of).to eq(:string)
         expect(definition.type).to eq(:array)
-        expect(definition.inline_shape).to be_nil
+        expect(definition.inline_element).to be_nil
       end
     end
 
     describe 'with array of objects' do
-      it 'stores both type and inline_shape' do
-        definition = described_class.new(:line_items, schema_class, type: :array) do
-          string :name
-          decimal :price
+      it 'stores type and inline_element' do
+        definition = described_class.new(:line_items, schema_class) do
+          array do
+            object do
+              string :name
+              decimal :price
+            end
+          end
         end
 
         expect(definition.type).to eq(:array)
-        expect(definition.inline_shape).to be_a(Proc)
+        expect(definition.inline_element).to be_a(Apiwork::Schema::Element)
+        expect(definition.inline_element.of_type).to eq(:object)
       end
     end
 
     describe 'without inline shape' do
-      it 'has nil inline_shape' do
+      it 'has nil inline_element' do
         definition = described_class.new(:metadata, schema_class, type: :json)
 
-        expect(definition.inline_shape).to be_nil
+        expect(definition.inline_element).to be_nil
         expect(definition.type).to eq(:json)
       end
     end
@@ -270,13 +284,15 @@ RSpec.describe Apiwork::Schema::Base do
         abstract!
 
         attribute :settings do
-          string :theme
+          object do
+            string :theme
+          end
         end
       end
 
       definition = schema_class.attribute_definitions[:settings]
 
-      expect(definition.inline_shape).to be_a(Proc)
+      expect(definition.inline_element).to be_a(Apiwork::Schema::Element)
       expect(definition.type).to eq(:object)
     end
 

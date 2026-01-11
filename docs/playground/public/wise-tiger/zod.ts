@@ -1,12 +1,8 @@
 import { z } from 'zod';
 
-export const LayerSchema = z.enum(['contract', 'domain', 'http']);
-
 export const ProjectPrioritySchema = z.enum(['critical', 'high', 'low', 'medium']);
 
 export const ProjectStatusSchema = z.enum(['active', 'archived', 'completed', 'paused']);
-
-export const SortDirectionSchema = z.enum(['asc', 'desc']);
 
 export const ErrorResponseBodySchema = z.object({
   issues: z.array(IssueSchema),
@@ -19,15 +15,6 @@ export const IssueSchema = z.object({
   meta: z.object({}),
   path: z.array(z.string()),
   pointer: z.string()
-});
-
-export const NullableStringFilterSchema = z.object({
-  contains: z.string().optional(),
-  endsWith: z.string().optional(),
-  eq: z.string().optional(),
-  in: z.array(z.string()).optional(),
-  null: z.boolean().optional(),
-  startsWith: z.string().optional()
 });
 
 export const OffsetPaginationSchema = z.object({
@@ -114,14 +101,6 @@ export const ProjectUpdateSuccessResponseBodySchema = z.object({
   project: ProjectSchema
 });
 
-export const StringFilterSchema = z.object({
-  contains: z.string().optional(),
-  endsWith: z.string().optional(),
-  eq: z.string().optional(),
-  in: z.array(z.string()).optional(),
-  startsWith: z.string().optional()
-});
-
 export const ProjectsIndexRequestQuerySchema = z.object({
   filter: z.union([ProjectFilterSchema, z.array(ProjectFilterSchema)]).optional(),
   page: ProjectPageSchema.optional(),
@@ -185,17 +164,6 @@ export interface Issue {
   meta: object;
   path: string[];
   pointer: string;
-}
-
-export type Layer = 'contract' | 'domain' | 'http';
-
-export interface NullableStringFilter {
-  contains?: string;
-  endsWith?: string;
-  eq?: string;
-  in?: string[];
-  null?: boolean;
-  startsWith?: string;
 }
 
 export interface OffsetPagination {
@@ -336,13 +304,3 @@ export interface ProjectsUpdateResponse {
 }
 
 export type ProjectsUpdateResponseBody = ErrorResponseBody | ProjectUpdateSuccessResponseBody;
-
-export type SortDirection = 'asc' | 'desc';
-
-export interface StringFilter {
-  contains?: string;
-  endsWith?: string;
-  eq?: string;
-  in?: string[];
-  startsWith?: string;
-}

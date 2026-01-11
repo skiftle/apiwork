@@ -1,9 +1,5 @@
 import { z } from 'zod';
 
-export const LayerSchema = z.enum(['contract', 'domain', 'http']);
-
-export const SortDirectionSchema = z.enum(['asc', 'desc']);
-
 export const TaskPrioritySchema = z.enum(['critical', 'high', 'low', 'medium']);
 
 export const TaskStatusSchema = z.enum(['archived', 'completed', 'in_progress', 'pending']);
@@ -13,27 +9,6 @@ export const CommentSchema = z.object({
   body: z.string(),
   createdAt: z.iso.datetime(),
   id: z.string()
-});
-
-export const CommentNestedCreatePayloadSchema = z.object({
-  _destroy: z.boolean().optional(),
-  _type: z.literal('create'),
-  authorName: z.string().nullable().optional(),
-  body: z.string(),
-  id: z.number().int().optional()
-});
-
-export const CommentNestedPayloadSchema = z.discriminatedUnion('_type', [
-  CommentNestedCreatePayloadSchema,
-  CommentNestedUpdatePayloadSchema
-]);
-
-export const CommentNestedUpdatePayloadSchema = z.object({
-  _destroy: z.boolean().optional(),
-  _type: z.literal('update'),
-  authorName: z.string().nullable().optional(),
-  body: z.string().optional(),
-  id: z.number().int().optional()
 });
 
 export const ErrorResponseBodySchema = z.object({
@@ -49,29 +24,12 @@ export const IssueSchema = z.object({
   pointer: z.string()
 });
 
-export const NullableStringFilterSchema = z.object({
-  contains: z.string().optional(),
-  endsWith: z.string().optional(),
-  eq: z.string().optional(),
-  in: z.array(z.string()).optional(),
-  null: z.boolean().optional(),
-  startsWith: z.string().optional()
-});
-
 export const OffsetPaginationSchema = z.object({
   current: z.number().int(),
   items: z.number().int(),
   next: z.number().int().nullable().optional(),
   prev: z.number().int().nullable().optional(),
   total: z.number().int()
-});
-
-export const StringFilterSchema = z.object({
-  contains: z.string().optional(),
-  endsWith: z.string().optional(),
-  eq: z.string().optional(),
-  in: z.array(z.string()).optional(),
-  startsWith: z.string().optional()
 });
 
 export const TaskSchema = z.object({
@@ -280,40 +238,6 @@ export interface Comment {
   id: string;
 }
 
-export interface CommentNestedCreatePayload {
-  _destroy?: boolean;
-  _type: 'create';
-  /**
-   * Name of the person who wrote the comment
-   * @example "John Doe"
-   */
-  authorName?: null | string;
-  /**
-   * Comment content
-   * @example "This looks good, ready for review."
-   */
-  body: string;
-  id?: number;
-}
-
-export type CommentNestedPayload = CommentNestedCreatePayload | CommentNestedUpdatePayload;
-
-export interface CommentNestedUpdatePayload {
-  _destroy?: boolean;
-  _type: 'update';
-  /**
-   * Name of the person who wrote the comment
-   * @example "John Doe"
-   */
-  authorName?: null | string;
-  /**
-   * Comment content
-   * @example "This looks good, ready for review."
-   */
-  body?: string;
-  id?: number;
-}
-
 export interface ErrorResponseBody {
   issues: Issue[];
   layer: Layer;
@@ -327,33 +251,12 @@ export interface Issue {
   pointer: string;
 }
 
-export type Layer = 'contract' | 'domain' | 'http';
-
-export interface NullableStringFilter {
-  contains?: string;
-  endsWith?: string;
-  eq?: string;
-  in?: string[];
-  null?: boolean;
-  startsWith?: string;
-}
-
 export interface OffsetPagination {
   current: number;
   items: number;
   next?: null | number;
   prev?: null | number;
   total: number;
-}
-
-export type SortDirection = 'asc' | 'desc';
-
-export interface StringFilter {
-  contains?: string;
-  endsWith?: string;
-  eq?: string;
-  in?: string[];
-  startsWith?: string;
 }
 
 /** A task representing work to be completed */

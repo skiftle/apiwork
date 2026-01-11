@@ -113,12 +113,7 @@ components:
           items:
             "$ref": "#/components/schemas/issue"
           type: array
-        layer:
-          enum:
-          - http
-          - contract
-          - domain
-          type: string
+        layer: {}
       type: object
       required:
       - issues
@@ -170,7 +165,21 @@ components:
       properties:
         addresses:
           items:
-            type: string
+            properties:
+              city:
+                type: string
+              primary:
+                type: boolean
+              street:
+                type: string
+              zip:
+                type: string
+            type: object
+            required:
+            - city
+            - primary
+            - street
+            - zip
           type: array
         createdAt:
           type: string
@@ -247,7 +256,21 @@ components:
       properties:
         addresses:
           items:
-            type: string
+            properties:
+              city:
+                type: string
+              primary:
+                type: boolean
+              street:
+                type: string
+              zip:
+                type: string
+            type: object
+            required:
+            - city
+            - primary
+            - street
+            - zip
           type: array
         email:
           type: string
@@ -358,7 +381,21 @@ components:
       properties:
         addresses:
           items:
-            type: string
+            properties:
+              city:
+                type: string
+              primary:
+                type: boolean
+              street:
+                type: string
+              zip:
+                type: string
+            type: object
+            required:
+            - city
+            - primary
+            - street
+            - zip
           type: array
         email:
           type: string

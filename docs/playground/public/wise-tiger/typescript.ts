@@ -11,17 +11,6 @@ export interface Issue {
   pointer: string;
 }
 
-export type Layer = 'contract' | 'domain' | 'http';
-
-export interface NullableStringFilter {
-  contains?: string;
-  endsWith?: string;
-  eq?: string;
-  in?: string[];
-  null?: boolean;
-  startsWith?: string;
-}
-
 export interface OffsetPagination {
   current: number;
   items: number;
@@ -160,13 +149,3 @@ export interface ProjectsUpdateResponse {
 }
 
 export type ProjectsUpdateResponseBody = ErrorResponseBody | ProjectUpdateSuccessResponseBody;
-
-export type SortDirection = 'asc' | 'desc';
-
-export interface StringFilter {
-  contains?: string;
-  endsWith?: string;
-  eq?: string;
-  in?: string[];
-  startsWith?: string;
-}

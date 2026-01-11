@@ -121,8 +121,6 @@ export interface Issue {
   pointer: string;
 }
 
-export type Layer = 'contract' | 'domain' | 'http';
-
 export interface OffsetPagination {
   current: number;
   items: number;
@@ -267,13 +265,6 @@ export interface ProfileNestedUpdatePayload {
   id?: number;
   website?: null | string;
 }
-
-export interface ProfileSort {
-  createdAt?: SortDirection;
-  updatedAt?: SortDirection;
-}
-
-export type SortDirection = 'asc' | 'desc';
 
 export interface StringFilter {
   contains?: string;

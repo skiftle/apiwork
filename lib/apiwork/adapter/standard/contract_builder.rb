@@ -118,11 +118,19 @@ module Apiwork
 
             param_options[:enum] = name if attribute_definition.enum
 
-            if attribute_definition.inline_shape
-              param_definition.param name, **param_options, &attribute_definition.inline_shape
-            else
-              param_definition.param name, **param_options
+            if attribute_definition.inline_element
+              element = attribute_definition.inline_element
+
+              if element.type == :array
+                param_options[:of] = { type: element.of_type }
+                param_options[:shape] = element.shape
+              else
+                param_options[:shape] = element.shape
+                param_options[:discriminator] = element.discriminator if element.discriminator
+              end
             end
+
+            param_definition.param name, **param_options
           end
 
           target_schema_class.association_definitions.each do |name, association_definition|
@@ -353,11 +361,19 @@ module Apiwork
                 **of_option,
               }
 
-              if attribute_definition.inline_shape
-                param name, **param_options, &attribute_definition.inline_shape
-              else
-                param name, **param_options
+              if attribute_definition.inline_element
+                element = attribute_definition.inline_element
+
+                if element.type == :array
+                  param_options[:of] = { type: element.of_type }
+                  param_options[:shape] = element.shape
+                else
+                  param_options[:shape] = element.shape
+                  param_options[:discriminator] = element.discriminator if element.discriminator
+                end
               end
+
+              param name, **param_options
             end
 
             schema_class_local.association_definitions.each do |name, association_definition|

@@ -31,16 +31,6 @@ export interface ErrorResponseBody {
   layer: Layer;
 }
 
-export interface IntegerFilter {
-  between?: IntegerFilterBetween;
-  eq?: number;
-  gt?: number;
-  gte?: number;
-  in?: number[];
-  lt?: number;
-  lte?: number;
-}
-
 export interface IntegerFilterBetween {
   from?: number;
   to?: number;
@@ -53,8 +43,6 @@ export interface Issue {
   path: string[];
   pointer: string;
 }
-
-export type Layer = 'contract' | 'domain' | 'http';
 
 export interface Motorcycle {
   brand: string;
@@ -103,8 +91,6 @@ export interface OffsetPagination {
   total: number;
 }
 
-export type SortDirection = 'asc' | 'desc';
-
 export interface StringFilter {
   contains?: string;
   endsWith?: string;
@@ -143,8 +129,6 @@ export interface TruckUpdatePayload {
 
 export type Vehicle = Car | Motorcycle | Truck;
 
-export type VehicleCreatePayload = CarCreatePayload | MotorcycleCreatePayload | TruckCreatePayload;
-
 export interface VehicleCreateSuccessResponseBody {
   meta?: object;
   vehicle: Vehicle;
@@ -178,8 +162,6 @@ export interface VehicleShowSuccessResponseBody {
 export interface VehicleSort {
   year?: SortDirection;
 }
-
-export type VehicleUpdatePayload = CarUpdatePayload | MotorcycleUpdatePayload | TruckUpdatePayload;
 
 export interface VehicleUpdateSuccessResponseBody {
   meta?: object;

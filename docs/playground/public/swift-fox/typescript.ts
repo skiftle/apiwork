@@ -109,8 +109,6 @@ export interface Issue {
   pointer: string;
 }
 
-export type Layer = 'contract' | 'domain' | 'http';
-
 export interface OffsetPagination {
   current: number;
   items: number;
