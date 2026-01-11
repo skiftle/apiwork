@@ -13,18 +13,18 @@ module Apiwork
       def generate
         types = []
 
-        data.enums.each do |name, enum|
+        surface.enums.each do |name, enum|
           types << {
             code: mapper.build_enum_type(name, enum),
             name: mapper.pascal_case(name),
           }
         end
 
-        types_hash = data.types.transform_values(&:to_h)
+        types_hash = surface.types.transform_values(&:to_h)
         sorted_type_names = TypeAnalysis.topological_sort_types(types_hash).map(&:first)
 
         sorted_type_names.each do |type_name|
-          type = data.types[type_name]
+          type = surface.types[type_name]
           type_name_pascal = mapper.pascal_case(type_name)
           code = if type.union?
                    mapper.build_union_type(type_name, type)
@@ -80,6 +80,10 @@ module Apiwork
       end
 
       private
+
+      def surface
+        @surface ||= SurfaceResolver.new(data)
+      end
 
       def mapper
         @mapper ||= TypeScriptMapper.new(data:, key_format:)

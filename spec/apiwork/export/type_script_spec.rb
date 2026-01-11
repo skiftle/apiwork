@@ -69,13 +69,12 @@ RSpec.describe Apiwork::Export::TypeScript do
     end
 
     describe 'enum types' do
-      it 'includes SortDirection enum type' do
-        expect(output).to include("export type SortDirection = 'asc' | 'desc'")
+      it 'includes AccountStatus enum type' do
+        expect(output).to include("export type AccountStatus = 'active' | 'archived' | 'inactive'")
       end
 
       it 'generates enum types with union of literals' do
-        # Check that enums are formatted as type = 'value1' | 'value2'
-        expect(output).to match(/export type \w+ = '[^']+' \| '[^']+';/)
+        expect(output).to match(/export type \w+ = ('[^']+' \| )+('[^']+')+;/)
       end
 
       it 'sorts enum types alphabetically' do
@@ -297,50 +296,122 @@ RSpec.describe Apiwork::Export::TypeScript do
   end
 
   describe 'metadata support' do
-    before(:all) do
-      Apiwork::API.define '/api/ts_metadata_test' do
+    def create_test_api_with_contract(api_path, &api_block)
+      api_class = Apiwork::API.define(api_path, &api_block)
+
+      contract_class = Class.new(Apiwork::Contract::Base)
+      contract_class.instance_variable_set(:@api_class, api_class)
+
+      [api_class, contract_class]
+    end
+
+    it 'generates type correctly even with metadata' do
+      api_class, contract_class = create_test_api_with_contract('/api/ts_metadata_test1') do
+        object :documented_type, description: 'Type with description' do
+          string :value
+        end
+
+        resources :invoices
+      end
+
+      contract_class.class_eval do
+        action :show do
+          response do
+            body do
+              reference :invoice, to: :documented_type
+            end
+          end
+        end
+      end
+
+      api_class.structure.resources[:invoices].instance_variable_set(:@contract_class, contract_class)
+
+      output = Apiwork::Export.generate(:typescript, '/api/ts_metadata_test1')
+
+      expect(output).to include('export interface DocumentedType')
+      expect(output).to match(/export interface DocumentedType \{[\s\S]*?\}/)
+
+      Apiwork::API.unregister('/api/ts_metadata_test1')
+    end
+
+    it 'generates enum correctly from hash format with values key' do
+      api_class, contract_class = create_test_api_with_contract('/api/ts_metadata_test2') do
+        enum :status, deprecated: true, description: 'Status enum', values: %w[active inactive]
+
+        resources :invoices
+      end
+
+      contract_class.class_eval do
+        action :show do
+          response do
+            body do
+              string :status, enum: :status
+            end
+          end
+        end
+      end
+
+      api_class.structure.resources[:invoices].instance_variable_set(:@contract_class, contract_class)
+
+      output = Apiwork::Export.generate(:typescript, '/api/ts_metadata_test2')
+
+      expect(output).to include("export type Status = 'active' | 'inactive'")
+
+      Apiwork::API.unregister('/api/ts_metadata_test2')
+    end
+
+    it 'includes metadata as JSDoc comments' do
+      api_class, contract_class = create_test_api_with_contract('/api/ts_metadata_test3') do
         object :documented_type, description: 'Type with description' do
           string :value
         end
 
         enum :status, deprecated: true, description: 'Status enum', values: %w[active inactive]
+
+        resources :invoices
       end
-      @metadata_output = Apiwork::Export.generate(:typescript, '/api/ts_metadata_test')
-    end
 
-    attr_reader :metadata_output
+      contract_class.class_eval do
+        action :show do
+          response do
+            body do
+              reference :invoice, to: :documented_type
+              string :status, enum: :status
+            end
+          end
+        end
+      end
 
-    after(:all) do
-      Apiwork::API.unregister('/api/ts_metadata_test')
-    end
+      api_class.structure.resources[:invoices].instance_variable_set(:@contract_class, contract_class)
 
-    it 'generates type correctly even with metadata' do
-      # Metadata doesn't break type generation
-      expect(metadata_output).to include('export interface DocumentedType')
-      expect(metadata_output).to match(/export interface DocumentedType \{[\s\S]*?\}/)
-    end
+      output = Apiwork::Export.generate(:typescript, '/api/ts_metadata_test3')
 
-    it 'generates enum correctly from hash format with values key' do
-      # Enum should be generated from enum_data[:values]
-      expect(metadata_output).to include("export type Status = 'active' | 'inactive'")
-    end
+      expect(output).to include('/** Type with description */')
+      expect(output).to include('/** Status enum */')
 
-    it 'includes metadata as JSDoc comments' do
-      expect(metadata_output).to include('/** Type with description */')
-      expect(metadata_output).to include('/** Status enum */')
-    end
-
-    it 'handles deprecated flag without errors' do
-      # deprecated metadata should not cause issues
-      expect(metadata_output).to include('export type Status')
+      Apiwork::API.unregister('/api/ts_metadata_test3')
     end
 
     it 'generates correct output for type with all metadata fields' do
-      Apiwork::API.define '/api/ts_full_metadata' do
+      api_class, contract_class = create_test_api_with_contract('/api/ts_full_metadata') do
         object :full_meta, deprecated: false, description: 'desc', example: { x: 1 }, format: 'fmt' do
           integer :x
         end
+
+        resources :invoices
       end
+
+      contract_class.class_eval do
+        action :show do
+          response do
+            body do
+              reference :data, to: :full_meta
+            end
+          end
+        end
+      end
+
+      api_class.structure.resources[:invoices].instance_variable_set(:@contract_class, contract_class)
 
       output = Apiwork::Export.generate(:typescript, '/api/ts_full_metadata')
 
@@ -351,9 +422,23 @@ RSpec.describe Apiwork::Export::TypeScript do
     end
 
     it 'generates correct output for enum with all metadata fields' do
-      Apiwork::API.define '/api/ts_enum_meta' do
+      api_class, contract_class = create_test_api_with_contract('/api/ts_enum_meta') do
         enum :color, deprecated: false, description: 'desc', example: 'red', values: %w[red green blue]
+
+        resources :invoices
       end
+
+      contract_class.class_eval do
+        action :show do
+          response do
+            body do
+              string :color, enum: :color
+            end
+          end
+        end
+      end
+
+      api_class.structure.resources[:invoices].instance_variable_set(:@contract_class, contract_class)
 
       output = Apiwork::Export.generate(:typescript, '/api/ts_enum_meta')
 
@@ -362,18 +447,27 @@ RSpec.describe Apiwork::Export::TypeScript do
       Apiwork::API.unregister('/api/ts_enum_meta')
     end
 
-    it 'maintains enum value sorting with metadata present' do
-      # Enum values should still be sorted alphabetically
-      expect(metadata_output).to include("'active' | 'inactive'")
-    end
-
     it 'includes property descriptions as JSDoc' do
-      Apiwork::API.define '/api/ts_prop_desc' do
+      api_class, contract_class = create_test_api_with_contract('/api/ts_prop_desc') do
         object :invoice do
           decimal :amount, description: 'Total amount in cents'
           string :currency
         end
+
+        resources :invoices
       end
+
+      contract_class.class_eval do
+        action :show do
+          response do
+            body do
+              reference :data, to: :invoice
+            end
+          end
+        end
+      end
+
+      api_class.structure.resources[:invoices].instance_variable_set(:@contract_class, contract_class)
 
       output = Apiwork::Export.generate(:typescript, '/api/ts_prop_desc')
 
@@ -385,12 +479,26 @@ RSpec.describe Apiwork::Export::TypeScript do
     end
 
     it 'includes @example in JSDoc with JSON format on separate lines' do
-      Apiwork::API.define '/api/ts_example' do
+      api_class, contract_class = create_test_api_with_contract('/api/ts_example') do
         object :price, description: 'Price object', example: { amount: 99 } do
           integer :amount, example: 99
           string :currency, example: 'USD'
         end
+
+        resources :invoices
       end
+
+      contract_class.class_eval do
+        action :show do
+          response do
+            body do
+              reference :data, to: :price
+            end
+          end
+        end
+      end
+
+      api_class.structure.resources[:invoices].instance_variable_set(:@contract_class, contract_class)
 
       output = Apiwork::Export.generate(:typescript, '/api/ts_example')
 
@@ -403,11 +511,25 @@ RSpec.describe Apiwork::Export::TypeScript do
     end
 
     it 'does not generate empty JSDoc when no description' do
-      Apiwork::API.define '/api/ts_no_desc' do
+      api_class, contract_class = create_test_api_with_contract('/api/ts_no_desc') do
         object :simple do
           string :value
         end
+
+        resources :invoices
       end
+
+      contract_class.class_eval do
+        action :show do
+          response do
+            body do
+              reference :data, to: :simple
+            end
+          end
+        end
+      end
+
+      api_class.structure.resources[:invoices].instance_variable_set(:@contract_class, contract_class)
 
       output = Apiwork::Export.generate(:typescript, '/api/ts_no_desc')
 

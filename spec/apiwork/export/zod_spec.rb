@@ -52,13 +52,12 @@ RSpec.describe Apiwork::Export::Zod do
         expect(output).to match(/export const \w+Schema = z\.enum\(\[/)
       end
 
-      it 'includes SortDirection enum' do
-        expect(output).to include("SortDirectionSchema = z.enum(['asc', 'desc'])")
+      it 'includes AccountStatus enum' do
+        expect(output).to include("AccountStatusSchema = z.enum(['active', 'archived', 'inactive'])")
       end
 
       it 'sorts enum values alphabetically' do
-        expect(output).to include("'asc', 'desc'")
-        expect(output).not_to include("'desc', 'asc'")
+        expect(output).to include("'active', 'archived', 'inactive'")
       end
     end
 
@@ -203,11 +202,26 @@ RSpec.describe Apiwork::Export::Zod do
     end
 
     it 'transforms keys to camelCase with :camel' do
-      Apiwork::API.define '/api/zod_camel_test' do
+      api_class = Apiwork::API.define '/api/zod_camel_test' do
         object :test_type do
           string :user_name
         end
+
+        resources :invoices, only: [:show]
       end
+
+      contract_class = Class.new(Apiwork::Contract::Base)
+      contract_class.instance_variable_set(:@api_class, api_class)
+      contract_class.class_eval do
+        action :show do
+          response do
+            body do
+              reference :invoice, to: :test_type
+            end
+          end
+        end
+      end
+      api_class.structure.resources[:invoices].instance_variable_set(:@contract_class, contract_class)
 
       gen = described_class.new('/api/zod_camel_test', key_format: :camel)
       output = gen.generate
@@ -221,7 +235,7 @@ RSpec.describe Apiwork::Export::Zod do
 
   describe 'union types' do
     before(:all) do
-      Apiwork::API.define '/api/zod_union_test' do
+      api_class = Apiwork::API.define '/api/zod_union_test' do
         union :payment_method, discriminator: :type do
           variant tag: 'card' do
             object do
@@ -249,7 +263,24 @@ RSpec.describe Apiwork::Export::Zod do
             end
           end
         end
+
+        resources :payments, only: [:show]
       end
+
+      contract_class = Class.new(Apiwork::Contract::Base)
+      contract_class.instance_variable_set(:@api_class, api_class)
+      contract_class.class_eval do
+        action :show do
+          response do
+            body do
+              reference :method, to: :payment_method
+              reference :simple, to: :simple_union
+            end
+          end
+        end
+      end
+      api_class.structure.resources[:payments].instance_variable_set(:@contract_class, contract_class)
+
       @union_output = Apiwork::Export.generate(:zod, '/api/zod_union_test')
     end
 
@@ -270,14 +301,30 @@ RSpec.describe Apiwork::Export::Zod do
 
   describe 'self-referencing types' do
     before(:all) do
-      Apiwork::API.define '/api/zod_circular_test' do
+      api_class = Apiwork::API.define '/api/zod_circular_test' do
         object :tree_node do
           string :value
           array :children, optional: true do
             reference :tree_node
           end
         end
+
+        resources :nodes, only: [:show]
       end
+
+      contract_class = Class.new(Apiwork::Contract::Base)
+      contract_class.instance_variable_set(:@api_class, api_class)
+      contract_class.class_eval do
+        action :show do
+          response do
+            body do
+              reference :node, to: :tree_node
+            end
+          end
+        end
+      end
+      api_class.structure.resources[:nodes].instance_variable_set(:@contract_class, contract_class)
+
       @circular_output = Apiwork::Export.generate(:zod, '/api/zod_circular_test')
     end
 
@@ -300,13 +347,29 @@ RSpec.describe Apiwork::Export::Zod do
 
   describe 'literal types' do
     before(:all) do
-      Apiwork::API.define '/api/zod_literal_test' do
+      api_class = Apiwork::API.define '/api/zod_literal_test' do
         object :constants do
           literal :string_lit, value: 'hello'
           literal :number_lit, value: 42
           literal :bool_lit, value: true
         end
+
+        resources :settings, only: [:show]
       end
+
+      contract_class = Class.new(Apiwork::Contract::Base)
+      contract_class.instance_variable_set(:@api_class, api_class)
+      contract_class.class_eval do
+        action :show do
+          response do
+            body do
+              reference :config, to: :constants
+            end
+          end
+        end
+      end
+      api_class.structure.resources[:settings].instance_variable_set(:@contract_class, contract_class)
+
       @literal_output = Apiwork::Export.generate(:zod, '/api/zod_literal_test')
     end
 
@@ -331,13 +394,29 @@ RSpec.describe Apiwork::Export::Zod do
 
   describe 'min/max constraints' do
     before(:all) do
-      Apiwork::API.define '/api/zod_constraints_test' do
+      api_class = Apiwork::API.define '/api/zod_constraints_test' do
         object :bounded do
           string :limited_string, max: 100, min: 1
           integer :limited_number, max: 1000, min: 0
           param :limited_array, max: 10, of: :string, type: :array
         end
+
+        resources :limits, only: [:show]
       end
+
+      contract_class = Class.new(Apiwork::Contract::Base)
+      contract_class.instance_variable_set(:@api_class, api_class)
+      contract_class.class_eval do
+        action :show do
+          response do
+            body do
+              reference :bounds, to: :bounded
+            end
+          end
+        end
+      end
+      api_class.structure.resources[:limits].instance_variable_set(:@contract_class, contract_class)
+
       @constraints_output = Apiwork::Export.generate(:zod, '/api/zod_constraints_test')
     end
 
@@ -366,13 +445,29 @@ RSpec.describe Apiwork::Export::Zod do
 
   describe 'format mapping' do
     before(:all) do
-      Apiwork::API.define '/api/zod_format_test' do
+      api_class = Apiwork::API.define '/api/zod_format_test' do
         object :formatted do
           string :email_field, format: :email
           string :url_field, format: :url
           string :uuid_field, format: :uuid
         end
+
+        resources :contacts, only: [:show]
       end
+
+      contract_class = Class.new(Apiwork::Contract::Base)
+      contract_class.instance_variable_set(:@api_class, api_class)
+      contract_class.class_eval do
+        action :show do
+          response do
+            body do
+              reference :contact, to: :formatted
+            end
+          end
+        end
+      end
+      api_class.structure.resources[:contacts].instance_variable_set(:@contract_class, contract_class)
+
       @format_output = Apiwork::Export.generate(:zod, '/api/zod_format_test')
     end
 

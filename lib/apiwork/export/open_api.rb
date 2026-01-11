@@ -291,10 +291,14 @@ module Apiwork
         }
       end
 
+      def surface
+        @surface ||= SurfaceResolver.new(data)
+      end
+
       def build_schemas
         schemas = {}
 
-        data.types.each do |name, type|
+        surface.types.each do |name, type|
           component_name = schema_name(name)
 
           schemas[component_name] = if type.union?
@@ -563,26 +567,26 @@ module Apiwork
       def type_exists?(symbol)
         return false unless symbol
 
-        data.types.key?(symbol)
+        surface.types.key?(symbol)
       end
 
       def enum_exists?(symbol)
         return false unless symbol
 
-        data.enums.key?(symbol)
+        surface.enums.key?(symbol)
       end
 
       def ref_contains_discriminator?(variant, discriminator)
         return false unless variant.ref?
 
-        referenced_type = data.types[variant.ref]
+        referenced_type = surface.types[variant.ref]
         return false unless referenced_type
 
         referenced_type.shape.key?(discriminator)
       end
 
       def find_enum(symbol)
-        data.enums[symbol]
+        surface.enums[symbol]
       end
 
       def traverse_resources(resources = data.resources, &block)

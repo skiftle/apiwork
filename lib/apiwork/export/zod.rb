@@ -52,10 +52,14 @@ module Apiwork
         @typescript_mapper ||= TypeScriptMapper.new(data:, key_format:)
       end
 
-      def build_enum_schemas
-        return '' if data.enums.empty?
+      def surface
+        @surface ||= SurfaceResolver.new(data)
+      end
 
-        data.enums.map do |name, enum|
+      def build_enum_schemas
+        return '' if surface.enums.empty?
+
+        surface.enums.map do |name, enum|
           schema_name = zod_mapper.pascal_case(name)
           enum_literal = enum.values.sort.map { |v| "'#{v}'" }.join(', ')
           "export const #{schema_name}Schema = z.enum([#{enum_literal}]);"
@@ -63,11 +67,11 @@ module Apiwork
       end
 
       def build_type_schemas
-        types_hash = data.types.transform_values(&:to_h)
+        types_hash = surface.types.transform_values(&:to_h)
         sorted_type_names = TypeAnalysis.topological_sort_types(types_hash).map(&:first)
 
         schemas = sorted_type_names.map do |type_name|
-          type = data.types[type_name]
+          type = surface.types[type_name]
           if type.union?
             zod_mapper.build_union_schema(type_name, type)
           else
@@ -130,14 +134,14 @@ module Apiwork
       def build_typescript_types
         all_types = []
 
-        data.enums.each do |name, enum|
+        surface.enums.each do |name, enum|
           type_name = typescript_mapper.pascal_case(name)
           type_literal = enum.values.sort.map { |v| "'#{v}'" }.join(' | ')
           all_types << { code: "export type #{type_name} = #{type_literal};", name: type_name }
         end
 
-        types_hash = data.types.transform_values(&:to_h)
-        data.types.each do |name, type|
+        types_hash = surface.types.transform_values(&:to_h)
+        surface.types.each do |name, type|
           type_name_pascal = typescript_mapper.pascal_case(name)
           code = if type.union?
                    typescript_mapper.build_union_type(name, type)
