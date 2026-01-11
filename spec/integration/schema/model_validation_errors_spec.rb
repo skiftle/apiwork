@@ -91,7 +91,7 @@ RSpec.describe 'Model Validation Errors', type: :request do
 
       # Contract validation catches missing required content field
       if json['issues'].present?
-        nested_issue = json['issues'].find { |i| i['pointer']&.include?('comments') }
+        nested_issue = json['issues'].find { |i| i['pointer'].include?('comments') }
         expect(nested_issue['code']).to be_present if nested_issue
       end
     end

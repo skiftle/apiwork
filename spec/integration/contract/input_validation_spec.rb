@@ -193,7 +193,7 @@ RSpec.describe 'Input Validation' do
       json = JSON.parse(response.body)
 
       # Should have pointer like /post/comments_attributes/0/content
-      nested_issue = json['issues'].find { |issue| issue['pointer']&.include?('comments_attributes') }
+      nested_issue = json['issues'].find { |issue| issue['pointer'].include?('comments_attributes') }
       expect(nested_issue).to be_present if json['issues'].any?
     end
   end

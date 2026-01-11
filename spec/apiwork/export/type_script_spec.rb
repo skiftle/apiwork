@@ -5,7 +5,6 @@ require 'rails_helper'
 RSpec.describe Apiwork::Export::TypeScript do
   let(:path) { '/api/v1' }
   let(:generator) { described_class.new(path) }
-  let(:api) { Apiwork::API.find(path) }
 
   describe 'default options' do
     it 'has default version' do
