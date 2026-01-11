@@ -197,22 +197,19 @@ RSpec.describe 'Custom Types', type: :integration do
   end
 
   describe 'Types in existing dummy API' do
-    it 'has API-level types defined' do
-      api_class = Apiwork::API.find('/api/v1')
+    let(:api_class) { Apiwork::API.find('/api/v1') }
 
+    it 'has API-level types defined' do
       expect(api_class.type_registry.key?(:error_detail)).to be(true)
       expect(api_class.type_registry.key?(:pagination_params)).to be(true)
     end
 
     it 'has API-level enums defined' do
-      api_class = Apiwork::API.find('/api/v1')
-
       expect(api_class.enum_registry.key?(:sort_direction)).to be(true)
       expect(api_class.enum_registry.key?(:post_status)).to be(true)
     end
 
     it 'includes types in introspection' do
-      api_class = Apiwork::API.find('/api/v1')
       introspection = api_class.introspect
 
       expect(introspection.types).to have_key(:error_detail)
@@ -220,7 +217,6 @@ RSpec.describe 'Custom Types', type: :integration do
     end
 
     it 'includes enums in introspection' do
-      api_class = Apiwork::API.find('/api/v1')
       introspection = api_class.introspect
 
       expect(introspection.enums).to have_key(:sort_direction)
@@ -228,8 +224,6 @@ RSpec.describe 'Custom Types', type: :integration do
     end
 
     it 'returns correct enum values' do
-      api_class = Apiwork::API.find('/api/v1')
-
       sort_values = api_class.enum_values(:sort_direction)
       expect(sort_values).to eq(%i[asc desc])
 

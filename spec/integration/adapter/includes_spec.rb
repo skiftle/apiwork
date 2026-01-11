@@ -57,18 +57,16 @@ RSpec.describe 'Includes API', type: :request do
   end
 
   describe 'nested includes' do
+    let(:api_class) { Apiwork::API.find('/api/v1') }
+
     before do
       Api::V1::CommentSchema.association_definitions[:post].instance_variable_set(:@include, :optional)
-
-      api_class = Apiwork::API.find('/api/v1')
       api_class.reset_contracts!
       api_class.ensure_all_contracts_built!
     end
 
     after do
       Api::V1::CommentSchema.association_definitions[:post].instance_variable_set(:@include, :optional)
-
-      api_class = Apiwork::API.find('/api/v1')
       api_class.reset_contracts!
     end
 
@@ -96,11 +94,11 @@ RSpec.describe 'Includes API', type: :request do
 
   describe 'contract validation for always included associations' do
     context 'when association has include: :always' do
+      let(:api_class) { Apiwork::API.find('/api/v1') }
+
       before do
         Api::V1::CommentSchema.association_definitions[:post].instance_variable_set(:@include, :optional)
         Api::V1::PostSchema.association_definitions[:comments].instance_variable_set(:@include, :always)
-
-        api_class = Apiwork::API.find('/api/v1')
         api_class.reset_contracts!
         api_class.ensure_all_contracts_built!
       end
@@ -108,8 +106,6 @@ RSpec.describe 'Includes API', type: :request do
       after do
         Api::V1::PostSchema.association_definitions[:comments].instance_variable_set(:@include, :optional)
         Api::V1::CommentSchema.association_definitions[:post].instance_variable_set(:@include, :optional)
-
-        api_class = Apiwork::API.find('/api/v1')
         api_class.reset_contracts!
       end
 

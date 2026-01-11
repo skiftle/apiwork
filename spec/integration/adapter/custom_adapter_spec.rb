@@ -111,10 +111,10 @@ RSpec.describe 'Custom Adapter', type: :integration do
   end
 
   describe 'Adapter capabilities' do
-    it 'provides capabilities object for conditional registration' do
-      api_class = Apiwork::API.find('/api/v1')
-      capabilities = api_class.adapter.build_capabilities(api_class.structure)
+    let(:api_class) { Apiwork::API.find('/api/v1') }
+    let(:capabilities) { api_class.adapter.build_capabilities(api_class.structure) }
 
+    it 'provides capabilities object for conditional registration' do
       expect(capabilities).to respond_to(:filter_types)
       expect(capabilities).to respond_to(:nullable_filter_types)
       expect(capabilities).to respond_to(:sortable?)
@@ -124,44 +124,30 @@ RSpec.describe 'Custom Adapter', type: :integration do
     end
 
     it 'filter_types returns array of types' do
-      api_class = Apiwork::API.find('/api/v1')
-      capabilities = api_class.adapter.build_capabilities(api_class.structure)
-
       expect(capabilities.filter_types).to be_an(Array)
     end
 
     it 'resources? returns true for API with resources' do
-      api_class = Apiwork::API.find('/api/v1')
-      capabilities = api_class.adapter.build_capabilities(api_class.structure)
-
       expect(capabilities.resources?).to be(true)
     end
 
     it 'filterable? responds with boolean' do
-      api_class = Apiwork::API.find('/api/v1')
-      capabilities = api_class.adapter.build_capabilities(api_class.structure)
-
       expect(capabilities.filterable?).to be(true).or be(false)
     end
 
     it 'sortable? responds with boolean' do
-      api_class = Apiwork::API.find('/api/v1')
-      capabilities = api_class.adapter.build_capabilities(api_class.structure)
-
       expect(capabilities.sortable?).to be(true).or be(false)
     end
   end
 
   describe 'Adapter configuration via API DSL' do
-    it 'API has adapter_config available' do
-      api_class = Apiwork::API.find('/api/v1')
+    let(:api_class) { Apiwork::API.find('/api/v1') }
 
+    it 'API has adapter_config available' do
       expect(api_class.adapter_config).to be_a(Hash)
     end
 
     it 'adapter instance is accessible via api.adapter' do
-      api_class = Apiwork::API.find('/api/v1')
-
       expect(api_class.adapter).to be_a(Apiwork::Adapter::Base)
     end
   end

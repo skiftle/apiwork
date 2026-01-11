@@ -153,45 +153,38 @@ RSpec.describe 'Error Codes', type: :integration do
   end
 
   describe 'API-level raises declaration' do
+    let(:api_class) { Apiwork::API.find('/api/v1') }
+
     it 'declares global error codes for all actions' do
-      # The dummy API already has: raises :bad_request, :internal_server_error
-      api_class = Apiwork::API.find('/api/v1')
       expect(api_class).to be_present
 
-      # Verify global raises are configured
       structure = api_class.structure
       expect(structure.raises).to include(:bad_request, :internal_server_error)
     end
   end
 
   describe 'ErrorCode in introspection' do
-    it 'includes raises in action introspection' do
-      # Use the existing PostContract which is linked to /api/v1
-      contract = Api::V1::PostContract
+    let(:api_class) { Apiwork::API.find('/api/v1') }
 
-      # Trigger action generation
+    it 'includes raises in action introspection' do
+      contract = Api::V1::PostContract
       contract.action_for(:show)
 
       introspection = contract.introspect
-      # Introspection returns an object with actions method
       expect(introspection.actions).to be_present
       expect(introspection.actions).to have_key(:show)
     end
 
     it 'includes global raises from API in introspection' do
-      api_class = Apiwork::API.find('/api/v1')
       introspection = api_class.introspect
 
-      # Check that error_codes method exists and returns data
       expect(introspection.error_codes).to be_present
 
-      # The API declares raises :bad_request, :internal_server_error
       error_code_keys = introspection.error_codes.keys
       expect(error_code_keys).to include(:bad_request, :internal_server_error)
     end
 
     it 'includes error code status in introspection' do
-      api_class = Apiwork::API.find('/api/v1')
       introspection = api_class.introspect
 
       bad_request = introspection.error_codes[:bad_request]
