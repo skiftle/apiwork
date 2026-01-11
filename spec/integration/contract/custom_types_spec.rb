@@ -198,6 +198,7 @@ RSpec.describe 'Custom Types', type: :integration do
 
   describe 'Types in existing dummy API' do
     let(:api_class) { Apiwork::API.find('/api/v1') }
+    let(:introspection) { api_class.introspect }
 
     it 'has API-level types defined' do
       expect(api_class.type_registry.key?(:error_detail)).to be(true)
@@ -210,15 +211,11 @@ RSpec.describe 'Custom Types', type: :integration do
     end
 
     it 'includes types in introspection' do
-      introspection = api_class.introspect
-
       expect(introspection.types).to have_key(:error_detail)
       expect(introspection.types).to have_key(:pagination_params)
     end
 
     it 'includes enums in introspection' do
-      introspection = api_class.introspect
-
       expect(introspection.enums).to have_key(:sort_direction)
       expect(introspection.enums).to have_key(:post_status)
     end

@@ -165,19 +165,18 @@ RSpec.describe 'Error Codes', type: :integration do
 
   describe 'ErrorCode in introspection' do
     let(:api_class) { Apiwork::API.find('/api/v1') }
+    let(:introspection) { api_class.introspect }
 
     it 'includes raises in action introspection' do
       contract = Api::V1::PostContract
       contract.action_for(:show)
 
-      introspection = contract.introspect
-      expect(introspection.actions).to be_present
-      expect(introspection.actions).to have_key(:show)
+      contract_introspection = contract.introspect
+      expect(contract_introspection.actions).to be_present
+      expect(contract_introspection.actions).to have_key(:show)
     end
 
     it 'includes global raises from API in introspection' do
-      introspection = api_class.introspect
-
       expect(introspection.error_codes).to be_present
 
       error_code_keys = introspection.error_codes.keys
@@ -185,8 +184,6 @@ RSpec.describe 'Error Codes', type: :integration do
     end
 
     it 'includes error code status in introspection' do
-      introspection = api_class.introspect
-
       bad_request = introspection.error_codes[:bad_request]
       expect(bad_request).to be_present
       expect(bad_request.to_h[:status]).to eq(400)
