@@ -369,13 +369,22 @@ attribute :ip_address, format: :ipv4
 
 ## Inline Type Definitions
 
-Define the exact shape of JSON data stored in your database. Use a block to specify the structure with `object`, `array`, or `union` at the top level.
+JSON/JSONB columns without shape definitions generate `object` in TypeScript. Define the structure to get full typing:
 
-Works with:
-- JSON/JSONB columns
-- `store` attributes
-- `serialize` attributes
-- Virtual attributes with explicit type
+```ruby
+# Without shape → object
+attribute :metadata
+
+# With shape → { theme: string; language: string }
+attribute :settings do
+  object do
+    string :theme
+    string :language
+  end
+end
+```
+
+Use a block with `object`, `array`, or `union` at the top level. Works with JSON/JSONB columns, `store` attributes, `serialize` attributes, and virtual attributes.
 
 ### Object Shape
 
@@ -397,7 +406,11 @@ Generated TypeScript:
 
 ```typescript
 export interface User {
-  settings: { language: string; notifications: boolean; theme: string };
+  settings: {
+    language: string;
+    notifications: boolean;
+    theme: string;
+  };
 }
 ```
 
@@ -442,7 +455,12 @@ Generated TypeScript:
 
 ```typescript
 export interface User {
-  addresses: { city: string; primary: boolean; street: string; zip: string }[];
+  addresses: {
+    city: string;
+    primary: boolean;
+    street: string;
+    zip: string;
+  }[];
 }
 ```
 
@@ -470,29 +488,44 @@ Generated TypeScript:
 ```typescript
 export interface User {
   preferences: {
-    notifications: { email: boolean; push: boolean };
-    ui: { sidebarCollapsed: boolean; theme: string };
+    notifications: {
+      email: boolean;
+      push: boolean;
+    };
+    ui: {
+      sidebarCollapsed: boolean;
+      theme: string;
+    };
   };
 }
 ```
 
 ### Union Types
 
-Define polymorphic data with a discriminator field:
+Define polymorphic data with a discriminator field. Useful for content blocks, payment methods, notification channels, or any field that can hold different shapes:
 
 ```ruby
-attribute :payment_method, writable: true do
-  union discriminator: :type do
-    variant tag: 'card' do
+attribute :content, writable: true do
+  union discriminator: :kind do
+    variant tag: 'text' do
       object do
-        string :last_four
-        string :brand
+        string :body
+        string :format, enum: %w[plain markdown html]
       end
     end
-    variant tag: 'bank' do
+    variant tag: 'image' do
       object do
-        string :account_number
-        string :routing_number
+        string :url, format: :uri
+        string :alt
+        integer :width
+        integer :height
+      end
+    end
+    variant tag: 'code' do
+      object do
+        string :source
+        string :language
+        boolean :line_numbers
       end
     end
   end
@@ -502,10 +535,34 @@ end
 Generated TypeScript:
 
 ```typescript
-export interface User {
-  paymentMethod:
-    | { type: 'bank'; accountNumber: string; routingNumber: string }
-    | { type: 'card'; brand: string; lastFour: string };
+export interface Post {
+  content:
+    | {
+        kind: 'code';
+        language: string;
+        lineNumbers: boolean;
+        source: string;
+      }
+    | {
+        kind: 'image';
+        alt: string;
+        height: number;
+        url: string;
+        width: number;
+      }
+    | {
+        kind: 'text';
+        body: string;
+        format: 'html' | 'markdown' | 'plain';
+      };
+}
+```
+
+The discriminator field (`kind`) is automatically included in each variant, enabling type narrowing in TypeScript:
+
+```typescript
+if (post.content.kind === 'image') {
+  console.log(post.content.width); // TypeScript knows this exists
 }
 ```
 
@@ -514,7 +571,7 @@ export interface User {
 Without an inline shape, JSON data defaults to `object`:
 
 ```ruby
-attribute :metadata, type: :json
+attribute :metadata
 ```
 
 Generated TypeScript:
@@ -525,20 +582,9 @@ export interface User {
 }
 ```
 
-### Available Field Types
+### Field Types
 
-Inside `object` blocks, use these type methods:
-
-| Method | TypeScript | Description |
-|--------|------------|-------------|
-| `string :name` | `string` | Text values |
-| `integer :count` | `number` | Whole numbers |
-| `float :rate` | `number` | Decimal numbers |
-| `boolean :active` | `boolean` | True/false |
-| `datetime :timestamp` | `string` | ISO datetime |
-| `date :due_on` | `string` | ISO date |
-| `object :nested` | `{ ... }` | Nested object |
-| `array :items` | `T[]` | Typed array |
+Inside `object` blocks, all [scalar and structure types](../type-system/types.md) are available: `string`, `integer`, `boolean`, `datetime`, `object`, `array`, etc.
 
 Each field accepts options: `optional`, `nullable`, `description`, `example`, `enum`, `min`, `max`.
 
@@ -580,3 +626,4 @@ end
 ## Examples
 
 - [Encode/Decode/Empty](/examples/encode-decode-empty.md) — Transform values during serialization and handle nil/empty conversion
+- [Inline Type Definitions](/examples/inline-types.md) — Define shapes for JSON columns with full TypeScript typing
