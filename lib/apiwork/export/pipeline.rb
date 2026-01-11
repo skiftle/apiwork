@@ -64,11 +64,6 @@ module Apiwork
         def generate_file(api_class:, export_name:, format:, key_format:, locale:, output:, version:)
           api_path = api_class.path
 
-          unless api_class.exports&.include?(export_name)
-            Rails.logger.debug "  ⊘ Skipping #{api_path} to #{export_name} (not configured)"
-            return 0
-          end
-
           options = { format:, key_format:, locale:, version: }.compact
           options_label = options.any? ? " (#{options.map { |k, v| "#{k}: #{v}" }.join(', ')})" : ''
           Rails.logger.debug "  ✓ #{api_path} to #{export_name}#{options_label}"

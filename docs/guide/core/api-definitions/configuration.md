@@ -236,29 +236,33 @@ end
 
 [Execution Engine](../execution-engine/introduction.md) covers pagination strategies, filtering operators, and sorting options.
 
-## Export Endpoints
+## Exports
 
-Enable generated export endpoints:
+Expose export endpoints:
 
 ```ruby
 Apiwork::API.define '/api/v1' do
   export :openapi
-  export :zod
   export :typescript
 end
 ```
 
-Generates endpoints at `/.openapi`, `/.zod`, `/.typescript`.
+Each declaration enables a runtime endpoint at `/.{format}`.
 
-Custom paths:
+Configure individual exports:
 
 ```ruby
 export :openapi do
   path '/openapi.json'
+  key_format :camel
 end
 ```
 
-[Export Generation](../exports/introduction.md) covers format options, custom paths, and per-export configuration.
+::: info Endpoints Only
+`export` declarations only affect endpoints. Rake tasks and programmatic generation work for all formats regardless of declarations.
+:::
+
+[Export Generation](../exports/introduction.md) covers all generation methods.
 
 ## Global Types and Enums
 
