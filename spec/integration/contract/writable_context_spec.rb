@@ -140,7 +140,7 @@ RSpec.describe 'Writable context filtering (on: [:create] / on: [:update])', typ
     it 'allows setting name during create' do
       author_params = {
         author: {
-          name: 'Test Author',
+          name: 'Jane Author',
         },
       }
 
@@ -149,7 +149,7 @@ RSpec.describe 'Writable context filtering (on: [:create] / on: [:update])', typ
       expect(response).to have_http_status(:created)
       json = JSON.parse(response.body)
 
-      expect(json['author']['name']).to eq('Test Author')
+      expect(json['author']['name']).to eq('Jane Author')
     end
 
     it 'allows updating name during update' do

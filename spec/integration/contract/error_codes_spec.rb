@@ -155,11 +155,11 @@ RSpec.describe 'Error Codes', type: :integration do
   describe 'API-level raises declaration' do
     it 'declares global error codes for all actions' do
       # The dummy API already has: raises :bad_request, :internal_server_error
-      api = Apiwork::API.find('/api/v1')
-      expect(api).to be_present
+      api_class = Apiwork::API.find('/api/v1')
+      expect(api_class).to be_present
 
       # Verify global raises are configured
-      structure = api.structure
+      structure = api_class.structure
       expect(structure.raises).to include(:bad_request, :internal_server_error)
     end
   end
@@ -179,8 +179,8 @@ RSpec.describe 'Error Codes', type: :integration do
     end
 
     it 'includes global raises from API in introspection' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       # Check that error_codes method exists and returns data
       expect(introspection.error_codes).to be_present
@@ -191,8 +191,8 @@ RSpec.describe 'Error Codes', type: :integration do
     end
 
     it 'includes error code status in introspection' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       bad_request = introspection.error_codes[:bad_request]
       expect(bad_request).to be_present

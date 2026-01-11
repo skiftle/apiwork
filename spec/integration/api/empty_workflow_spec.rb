@@ -17,7 +17,7 @@ RSpec.describe 'empty workflow', type: :request do
              as: :json,
              params: {
                user: {
-                 email: 'test@example.com',
+                 email: 'jane@customer.com',
                  name: '',
                },
              }
@@ -40,7 +40,7 @@ RSpec.describe 'empty workflow', type: :request do
              as: :json,
              params: {
                user: {
-                 email: 'test@example.com',
+                 email: 'jane@customer.com',
                  name: nil,
                },
              }
@@ -57,7 +57,7 @@ RSpec.describe 'empty workflow', type: :request do
              as: :json,
              params: {
                user: {
-                 email: 'test@example.com',
+                 email: 'jane@customer.com',
                  name: 'John Doe',
                },
              }
@@ -75,7 +75,7 @@ RSpec.describe 'empty workflow', type: :request do
   end
 
   describe 'PATCH /api/v1/users/:id' do
-    let!(:user) { User.create!(email: 'test@example.com', name: 'Original Name') }
+    let!(:user) { User.create!(email: 'jane@customer.com', name: 'Original Name') }
 
     context 'when updating name to empty string' do
       it 'converts empty string to nil in database' do
@@ -114,7 +114,7 @@ RSpec.describe 'empty workflow', type: :request do
 
   describe 'GET /api/v1/users/:id' do
     context 'when name is nil in database' do
-      let!(:user) { User.create!(email: 'test@example.com', name: nil) }
+      let!(:user) { User.create!(email: 'jane@customer.com', name: nil) }
 
       it 'serializes nil as empty string' do
         get "/api/v1/users/#{user.id}", as: :json
@@ -128,7 +128,7 @@ RSpec.describe 'empty workflow', type: :request do
     end
 
     context 'when name has value in database' do
-      let!(:user) { User.create!(email: 'test@example.com', name: 'John Doe') }
+      let!(:user) { User.create!(email: 'jane@customer.com', name: 'John Doe') }
 
       it 'returns the value unchanged' do
         get "/api/v1/users/#{user.id}", as: :json
@@ -148,7 +148,7 @@ RSpec.describe 'empty workflow', type: :request do
            as: :json,
            params: {
              user: {
-               email: 'test@example.com',
+               email: 'jane@customer.com',
                name: '',
              },
            }
@@ -185,7 +185,7 @@ RSpec.describe 'empty workflow', type: :request do
 
     it 'converts nil to empty string on output' do
       # Create user directly with nil (bypassing API)
-      user = User.create!(email: 'test@example.com', name: nil)
+      user = User.create!(email: 'jane@customer.com', name: nil)
 
       # GET returns empty string
       get "/api/v1/users/#{user.id}", as: :json

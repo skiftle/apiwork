@@ -121,14 +121,14 @@ RSpec.describe 'Routing DSL Override with only/except', type: :request do
   end
 
   describe 'Coexistence with unrestricted resources' do
-    let!(:test_post) { Post.create!(body: 'Body', published: true, title: 'Test Post') }
-    let!(:test_comment) { Comment.create!(author: 'Author', content: 'Test Comment', post: test_post) }
+    let!(:existing_post) { Post.create!(body: 'Body', published: true, title: 'Draft Post') }
+    let!(:existing_comment) { Comment.create!(author: 'Author', content: 'Draft Comment', post: existing_post) }
 
     it 'unrestricted posts allow all actions' do
       get '/api/v1/posts'
       expect(response).to have_http_status(:ok)
 
-      get "/api/v1/posts/#{test_post.id}"
+      get "/api/v1/posts/#{existing_post.id}"
       expect(response).to have_http_status(:ok)
 
       post '/api/v1/posts',
@@ -140,10 +140,10 @@ RSpec.describe 'Routing DSL Override with only/except', type: :request do
            } }
       expect(response).to have_http_status(:created)
 
-      patch "/api/v1/posts/#{test_post.id}", as: :json, params: { post: { title: 'Updated' } }
+      patch "/api/v1/posts/#{existing_post.id}", as: :json, params: { post: { title: 'Updated' } }
       expect(response).to have_http_status(:ok)
 
-      delete "/api/v1/posts/#{test_post.id}"
+      delete "/api/v1/posts/#{existing_post.id}"
       expect(response).to have_http_status(:ok)
     end
 
@@ -153,7 +153,7 @@ RSpec.describe 'Routing DSL Override with only/except', type: :request do
            params: { comment: {
              author: 'Author',
              content: 'New',
-             post_id: test_post.id,
+             post_id: existing_post.id,
            } }
       expect(response).to have_http_status(:created)
       created_id = JSON.parse(response.body)['comment']['id']

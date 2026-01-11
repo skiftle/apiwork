@@ -28,15 +28,15 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
 
   describe 'GET /api/v1/posts/:id' do
     it 'serializes single resource with all attributes' do
-      post = Post.create!(body: 'Test body', published: true, title: 'Test Post')
+      post = Post.create!(body: 'Draft body', published: true, title: 'Draft Post')
 
       get "/api/v1/posts/#{post.id}"
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
       expect(json['post']['id']).to eq(post.id)
-      expect(json['post']['title']).to eq('Test Post')
-      expect(json['post']['body']).to eq('Test body')
+      expect(json['post']['title']).to eq('Draft Post')
+      expect(json['post']['body']).to eq('Draft body')
       expect(json['post']['published']).to be(true)
     end
 

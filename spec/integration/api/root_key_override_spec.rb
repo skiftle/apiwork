@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe 'Root key override with root DSL', type: :request do
   describe 'Auto-pluralization with root :article' do
     it 'uses custom singular root key for single resources' do
-      post = Post.create!(body: 'Body', published: true, title: 'Test Article')
+      post = Post.create!(body: 'Body', published: true, title: 'Draft Article')
 
       get "/api/v1/articles/#{post.id}"
 
@@ -13,7 +13,7 @@ RSpec.describe 'Root key override with root DSL', type: :request do
       json = JSON.parse(response.body)
       expect(json).to have_key('article')
       expect(json).not_to have_key('post')
-      expect(json['article']['title']).to eq('Test Article')
+      expect(json['article']['title']).to eq('Draft Article')
     end
 
     it 'uses custom plural root key for collections' do

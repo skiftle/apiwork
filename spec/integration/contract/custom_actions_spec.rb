@@ -69,7 +69,7 @@ RSpec.describe 'Custom Actions API', type: :request do
         post = Post.create!(
           body: 'This is a long post body.',
           published: true,
-          title: 'Test Post',
+          title: 'Draft Post',
         )
 
         get "/api/v1/posts/#{post.id}/preview"
@@ -78,7 +78,7 @@ RSpec.describe 'Custom Actions API', type: :request do
         json = JSON.parse(response.body)
         expect(json['post']).to be_present
         expect(json['post']['id']).to eq(post.id)
-        expect(json['post']['title']).to eq('Test Post')
+        expect(json['post']['title']).to eq('Draft Post')
         expect(json['post']['body']).to eq('This is a long post body.')
         expect(json['post']['published']).to be(true)
       end
@@ -229,7 +229,7 @@ RSpec.describe 'Custom Actions API', type: :request do
 
   describe 'Interaction between standard and custom actions' do
     it 'works consistently with standard CRUD actions' do
-      post = Post.create!(body: 'Body', published: false, title: 'Test')
+      post = Post.create!(body: 'Body', published: false, title: 'Draft')
 
       # Standard show
       get "/api/v1/posts/#{post.id}"
@@ -276,7 +276,7 @@ RSpec.describe 'Custom Actions API', type: :request do
   end
 
   describe 'Custom action input validation' do
-    let!(:post_record) { Post.create!(body: 'Body', title: 'Test Post') }
+    let!(:post_record) { Post.create!(body: 'Body', title: 'Draft Post') }
 
     context 'archive action' do
       it 'validates boolean parameter types' do

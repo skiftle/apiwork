@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe 'Resource override and selective serialization', type: :request do
   describe 'GET /api/v1/articles' do
     it 'serializes with custom resource root key' do
-      Post.create!(body: 'Test body', published: true, title: 'Test Post')
+      Post.create!(body: 'Article body', published: true, title: 'Draft Post')
 
       get '/api/v1/articles'
 
@@ -16,7 +16,7 @@ RSpec.describe 'Resource override and selective serialization', type: :request d
     end
 
     it 'exposes only attributes defined in resource class' do
-      Post.create!(body: 'Test body', published: true, title: 'Test Post')
+      Post.create!(body: 'Article body', published: true, title: 'Draft Post')
 
       get '/api/v1/articles'
 
@@ -24,11 +24,11 @@ RSpec.describe 'Resource override and selective serialization', type: :request d
       article = json['articles'].first
       expect(article).to have_key('id')
       expect(article).to have_key('title')
-      expect(article['title']).to eq('Test Post')
+      expect(article['title']).to eq('Draft Post')
     end
 
     it 'hides attributes not specified in resource' do
-      Post.create!(body: 'Secret body', published: true, title: 'Test Post')
+      Post.create!(body: 'Secret body', published: true, title: 'Draft Post')
 
       get '/api/v1/articles'
 
@@ -41,7 +41,7 @@ RSpec.describe 'Resource override and selective serialization', type: :request d
 
   describe 'GET /api/v1/articles/:id' do
     it 'uses custom resource for single resource serialization' do
-      post = Post.create!(body: 'Test body', published: true, title: 'Test Post')
+      post = Post.create!(body: 'Article body', published: true, title: 'Draft Post')
 
       get "/api/v1/articles/#{post.id}"
 
@@ -49,7 +49,7 @@ RSpec.describe 'Resource override and selective serialization', type: :request d
       json = JSON.parse(response.body)
       expect(json).to have_key('article')
       expect(json['article']['id']).to eq(post.id)
-      expect(json['article']['title']).to eq('Test Post')
+      expect(json['article']['title']).to eq('Draft Post')
       expect(json['article']).not_to have_key('body')
       expect(json['article']).not_to have_key('published')
     end

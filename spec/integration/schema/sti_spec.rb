@@ -12,7 +12,7 @@ RSpec.describe 'STI (Single Table Inheritance) API', type: :request do
     let!(:person_client) do
       PersonClient.create!(
         birth_date: Date.new(1990, 5, 15),
-        email: 'alice@example.com',
+        email: 'alice@customer.com',
         name: 'Alice',
       )
     end
@@ -51,7 +51,7 @@ RSpec.describe 'STI (Single Table Inheritance) API', type: :request do
       person = json['clients'].find { |c| c['kind'] == 'person' }
 
       expect(person['name']).to eq('Alice')
-      expect(person['email']).to eq('alice@example.com')
+      expect(person['email']).to eq('alice@customer.com')
       expect(person['birth_date']).to eq('1990-05-15')
     end
 
@@ -71,7 +71,7 @@ RSpec.describe 'STI (Single Table Inheritance) API', type: :request do
     let!(:person_client) do
       PersonClient.create!(
         birth_date: Date.new(1985, 3, 20),
-        email: 'bob@example.com',
+        email: 'bob@customer.com',
         name: 'Bob',
       )
     end
@@ -116,7 +116,7 @@ RSpec.describe 'STI (Single Table Inheritance) API', type: :request do
            params: {
              client: {
                birth_date: '1995-08-10',
-               email: 'new@example.com',
+               email: 'new@customer.com',
                kind: 'person',
                name: 'New Person',
              },
@@ -160,7 +160,7 @@ RSpec.describe 'STI (Single Table Inheritance) API', type: :request do
     let!(:person_client) do
       PersonClient.create!(
         birth_date: Date.new(1990, 1, 1),
-        email: 'update@example.com',
+        email: 'update@customer.com',
         name: 'Update Me',
       )
     end
@@ -218,7 +218,7 @@ RSpec.describe 'STI (Single Table Inheritance) API', type: :request do
     let!(:person_client) do
       PersonClient.create!(
         birth_date: Date.new(1990, 1, 1),
-        email: 'delete@example.com',
+        email: 'delete@customer.com',
         name: 'Delete Me',
       )
     end

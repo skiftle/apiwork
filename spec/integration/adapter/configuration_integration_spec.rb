@@ -39,8 +39,8 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
     end
 
     it 'applies key_format at API level' do
-      api = Apiwork::API.find('/api/config_test')
-      expect(api.key_format).to eq(:camel)
+      api_class = Apiwork::API.find('/api/config_test')
+      expect(api_class.key_format).to eq(:camel)
     end
   end
 
@@ -87,8 +87,8 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
     end
 
     it 'key_format is at API level' do
-      api = Apiwork::API.find('/api/schema_override')
-      expect(api.key_format).to eq(:camel)
+      api_class = Apiwork::API.find('/api/schema_override')
+      expect(api_class.key_format).to eq(:camel)
     end
   end
 
@@ -139,8 +139,8 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
     end
 
     it 'key_format is at API level' do
-      api = Apiwork::API.find('/api/resolution')
-      expect(api.key_format).to eq(:camel)
+      api_class = Apiwork::API.find('/api/resolution')
+      expect(api_class.key_format).to eq(:camel)
     end
   end
 
@@ -196,18 +196,18 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
     end
 
     it 'returns adapter instance when called without block' do
-      api = Apiwork::API.find('/api/dual_purpose')
-      expect(api.adapter).to be_a(Apiwork::Adapter::Standard)
+      api_class = Apiwork::API.find('/api/dual_purpose')
+      expect(api_class.adapter).to be_a(Apiwork::Adapter::Standard)
     end
 
     it 'stores adapter config when called with block' do
-      api = Apiwork::API.find('/api/dual_purpose')
-      expect(api.adapter_config[:pagination][:default_size]).to eq(30)
+      api_class = Apiwork::API.find('/api/dual_purpose')
+      expect(api_class.adapter_config[:pagination][:default_size]).to eq(30)
     end
 
     it 'stores key_format at API level' do
-      api = Apiwork::API.find('/api/dual_purpose')
-      expect(api.key_format).to eq(:camel)
+      api_class = Apiwork::API.find('/api/dual_purpose')
+      expect(api_class.key_format).to eq(:camel)
     end
   end
 end

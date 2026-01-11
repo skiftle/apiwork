@@ -7,7 +7,7 @@ RSpec.describe 'Encode and Decode attribute options', type: :request do
     it 'transforms input value before storing in database' do
       user_params = {
         user: {
-          email: 'john.doe@example.com',
+          email: 'john.doe@customer.com',
           name: 'John Doe',
         },
       }
@@ -17,16 +17,16 @@ RSpec.describe 'Encode and Decode attribute options', type: :request do
       expect(response).to have_http_status(:created)
 
       created_user = User.last
-      # deserialize transforms 'john.doe@example.com' to 'JOHN.DOE@EXAMPLE.COM' before storing
-      expect(created_user.email).to eq('JOHN.DOE@EXAMPLE.COM')
+      # deserialize transforms 'john.doe@customer.com' to 'JOHN.DOE@CUSTOMER.COM' before storing
+      expect(created_user.email).to eq('JOHN.DOE@CUSTOMER.COM')
     end
 
     it 'applies decoding on update operations' do
-      user_record = User.create!(email: 'ORIGINAL@EXAMPLE.COM', name: 'Jane')
+      user_record = User.create!(email: 'ORIGINAL@CUSTOMER.COM', name: 'Jane')
 
       patch_params = {
         user: {
-          email: 'updated@example.com',
+          email: 'updated@customer.com',
         },
       }
 
@@ -35,8 +35,8 @@ RSpec.describe 'Encode and Decode attribute options', type: :request do
       expect(response).to have_http_status(:ok)
 
       user_record.reload
-      # deserialize transforms 'updated@example.com' to 'UPDATED@EXAMPLE.COM'
-      expect(user_record.email).to eq('UPDATED@EXAMPLE.COM')
+      # deserialize transforms 'updated@customer.com' to 'UPDATED@CUSTOMER.COM'
+      expect(user_record.email).to eq('UPDATED@CUSTOMER.COM')
     end
 
     it 'handles nil values in decoding' do
@@ -89,7 +89,7 @@ RSpec.describe 'Encode and Decode attribute options', type: :request do
       user_params = {
         user: {
           email: 'lowercase@input.com',
-          name: 'Test User',
+          name: 'Jane Doe',
         },
       }
 
@@ -111,28 +111,28 @@ RSpec.describe 'Encode and Decode attribute options', type: :request do
 
     it 'round-trips correctly through create and update' do
       # Create
-      user_params = { user: { email: 'original@test.com', name: 'User' } }
+      user_params = { user: { email: 'original@billing.com', name: 'User' } }
       post '/api/v1/users', as: :json, params: user_params
 
       user_id = JSON.parse(response.body)['user']['id']
 
       # Verify stored in uppercase
-      expect(User.find(user_id).email).to eq('ORIGINAL@TEST.COM')
+      expect(User.find(user_id).email).to eq('ORIGINAL@BILLING.COM')
 
       # Update
-      patch_params = { user: { email: 'updated@test.com' } }
+      patch_params = { user: { email: 'updated@billing.com' } }
       patch "/api/v1/users/#{user_id}", as: :json, params: patch_params
       expect(response).to have_http_status(:ok)
 
       # Verify updated in uppercase
-      expect(User.find(user_id).email).to eq('UPDATED@TEST.COM')
+      expect(User.find(user_id).email).to eq('UPDATED@BILLING.COM')
 
       # Read
       get "/api/v1/users/#{user_id}"
       json = JSON.parse(response.body)
 
       # Verify output in lowercase
-      expect(json['user']['email']).to eq('updated@test.com')
+      expect(json['user']['email']).to eq('updated@billing.com')
     end
   end
 end

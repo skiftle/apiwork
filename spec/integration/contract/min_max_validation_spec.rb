@@ -7,7 +7,7 @@ RSpec.describe 'Min and Max validation on params', type: :request do
     it 'rejects strings shorter than min length' do
       user_params = {
         user: {
-          email: 'test@example.com',
+          email: 'jane@customer.com',
           name: 'A',
         },
       }
@@ -26,7 +26,7 @@ RSpec.describe 'Min and Max validation on params', type: :request do
     it 'accepts strings equal to min length' do
       user_params = {
         user: {
-          email: 'test@example.com',
+          email: 'jane@customer.com',
           name: 'AB',
         },
       }
@@ -40,7 +40,7 @@ RSpec.describe 'Min and Max validation on params', type: :request do
     it 'accepts strings longer than min but within max' do
       user_params = {
         user: {
-          email: 'test@example.com',
+          email: 'jane@customer.com',
           name: 'John Doe',
         },
       }
@@ -57,7 +57,7 @@ RSpec.describe 'Min and Max validation on params', type: :request do
     it 'rejects strings longer than max length' do
       user_params = {
         user: {
-          email: 'test@example.com',
+          email: 'jane@customer.com',
           name: 'A' * 51,
         },
       }
@@ -75,7 +75,7 @@ RSpec.describe 'Min and Max validation on params', type: :request do
     it 'accepts strings equal to max length' do
       user_params = {
         user: {
-          email: 'test@example.com',
+          email: 'jane@customer.com',
           name: 'A' * 50,
         },
       }
@@ -89,7 +89,7 @@ RSpec.describe 'Min and Max validation on params', type: :request do
     it 'accepts strings shorter than max' do
       user_params = {
         user: {
-          email: 'test@example.com',
+          email: 'jane@customer.com',
           name: 'Short',
         },
       }
@@ -118,7 +118,7 @@ RSpec.describe 'Min and Max validation on params', type: :request do
   end
 
   describe 'min/max validation on update operations' do
-    let!(:user) { User.create!(email: 'original@test.com', name: 'Original Name') }
+    let!(:user) { User.create!(email: 'jane@billing.com', name: 'Original Name') }
 
     it 'validates min length on updates' do
       patch "/api/v1/users/#{user.id}", as: :json, params: { user: { name: 'X' } }
@@ -154,7 +154,7 @@ RSpec.describe 'Min and Max validation on params', type: :request do
 
   describe 'error messages' do
     it 'provides clear error message for min violation' do
-      post '/api/v1/users', as: :json, params: { user: { email: 'test@example.com', name: 'X' } }
+      post '/api/v1/users', as: :json, params: { user: { email: 'jane@customer.com', name: 'X' } }
 
       json = JSON.parse(response.body)
       issue = json['issues'].find { |i| i['path'].include?('name') }
@@ -164,7 +164,7 @@ RSpec.describe 'Min and Max validation on params', type: :request do
     end
 
     it 'provides clear error message for max violation' do
-      post '/api/v1/users', as: :json, params: { user: { email: 'test@example.com', name: 'X' * 51 } }
+      post '/api/v1/users', as: :json, params: { user: { email: 'jane@customer.com', name: 'X' * 51 } }
 
       json = JSON.parse(response.body)
       issue = json['issues'].find { |i| i['path'].include?('name') }

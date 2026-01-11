@@ -30,7 +30,7 @@ RSpec.describe 'Input Validation' do
 
     context 'with wrong data types that fail coercion' do
       it 'returns type_invalid for invalid boolean string' do
-        post '/api/v1/posts', as: :json, params: { post: { published: 'not-a-boolean', title: 'Test' } }
+        post '/api/v1/posts', as: :json, params: { post: { published: 'not-a-boolean', title: 'Draft' } }
 
         expect(response).to have_http_status(:bad_request)
         json = JSON.parse(response.body)
@@ -85,7 +85,7 @@ RSpec.describe 'Input Validation' do
              params: {
                post: {
                  published: 'true',
-                 title: 'Test',
+                 title: 'Draft',
                },
              }
 
@@ -159,7 +159,7 @@ RSpec.describe 'Input Validation' do
       expect(missing_error['issues'].first).to have_key('detail')
 
       # Test type_mismatch error
-      post '/api/v1/posts', as: :json, params: { post: { published: 'invalid', title: 'Test' } }
+      post '/api/v1/posts', as: :json, params: { post: { published: 'invalid', title: 'Draft' } }
       type_error = JSON.parse(response.body)
 
       expect(type_error).to have_key('issues')
@@ -186,7 +186,7 @@ RSpec.describe 'Input Validation' do
                comments_attributes: [
                  { content: nil },
                ],
-               title: 'Test',
+               title: 'Draft',
              },
            }
 

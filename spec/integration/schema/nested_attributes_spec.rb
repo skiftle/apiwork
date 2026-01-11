@@ -211,7 +211,7 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
             { author: 'Author', content: 'Comment via transformation' },
           ],
           published: true,
-          title: 'Test Transformation',
+          title: 'Transformation Check',
         },
       }
 
@@ -413,7 +413,7 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
               },
             ],
             published: true,
-            title: 'Test Deep Transformation',
+            title: 'Deep Transformation Check',
           },
         }
 

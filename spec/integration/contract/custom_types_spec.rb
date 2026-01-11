@@ -198,44 +198,42 @@ RSpec.describe 'Custom Types', type: :integration do
 
   describe 'Types in existing dummy API' do
     it 'has API-level types defined' do
-      api = Apiwork::API.find('/api/v1')
+      api_class = Apiwork::API.find('/api/v1')
 
-      # The dummy API defines error_detail and pagination_params types
-      expect(api.type_registry.key?(:error_detail)).to be(true)
-      expect(api.type_registry.key?(:pagination_params)).to be(true)
+      expect(api_class.type_registry.key?(:error_detail)).to be(true)
+      expect(api_class.type_registry.key?(:pagination_params)).to be(true)
     end
 
     it 'has API-level enums defined' do
-      api = Apiwork::API.find('/api/v1')
+      api_class = Apiwork::API.find('/api/v1')
 
-      # The dummy API defines sort_direction and post_status enums
-      expect(api.enum_registry.key?(:sort_direction)).to be(true)
-      expect(api.enum_registry.key?(:post_status)).to be(true)
+      expect(api_class.enum_registry.key?(:sort_direction)).to be(true)
+      expect(api_class.enum_registry.key?(:post_status)).to be(true)
     end
 
     it 'includes types in introspection' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       expect(introspection.types).to have_key(:error_detail)
       expect(introspection.types).to have_key(:pagination_params)
     end
 
     it 'includes enums in introspection' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       expect(introspection.enums).to have_key(:sort_direction)
       expect(introspection.enums).to have_key(:post_status)
     end
 
     it 'returns correct enum values' do
-      api = Apiwork::API.find('/api/v1')
+      api_class = Apiwork::API.find('/api/v1')
 
-      sort_values = api.enum_values(:sort_direction)
+      sort_values = api_class.enum_values(:sort_direction)
       expect(sort_values).to eq(%i[asc desc])
 
-      status_values = api.enum_values(:post_status)
+      status_values = api_class.enum_values(:post_status)
       expect(status_values).to eq(%i[draft published archived])
     end
   end

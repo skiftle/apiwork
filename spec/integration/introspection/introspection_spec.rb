@@ -5,30 +5,30 @@ require 'rails_helper'
 RSpec.describe 'Introspection', type: :integration do
   describe 'API.introspect' do
     it 'returns introspection data for an API' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       expect(introspection).to be_a(Apiwork::Introspection::API)
     end
 
     it 'includes API path' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       expect(introspection.path).to eq('/api/v1')
     end
 
     it 'includes API info' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       expect(introspection.info).to be_present
       expect(introspection.info.to_h[:title]).to eq('Test API')
     end
 
     it 'includes resources' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       expect(introspection.resources).to be_a(Hash)
       expect(introspection.resources).to have_key(:posts)
@@ -36,8 +36,8 @@ RSpec.describe 'Introspection', type: :integration do
     end
 
     it 'includes types' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       expect(introspection.types).to be_a(Hash)
       expect(introspection.types).to have_key(:error_detail)
@@ -45,8 +45,8 @@ RSpec.describe 'Introspection', type: :integration do
     end
 
     it 'includes enums' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       expect(introspection.enums).to be_a(Hash)
       expect(introspection.enums).to have_key(:sort_direction)
@@ -54,8 +54,8 @@ RSpec.describe 'Introspection', type: :integration do
     end
 
     it 'includes error_codes' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       expect(introspection.error_codes).to be_a(Hash)
       expect(introspection.error_codes).to have_key(:bad_request)
@@ -63,8 +63,8 @@ RSpec.describe 'Introspection', type: :integration do
     end
 
     it 'supports to_h for serialization' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       hash = introspection.to_h
       expect(hash).to be_a(Hash)
@@ -75,24 +75,24 @@ RSpec.describe 'Introspection', type: :integration do
 
   describe 'Introspection::API::Resource' do
     it 'includes resource identifier' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       posts_resource = introspection.resources[:posts]
       expect(posts_resource.identifier).to eq('posts')
     end
 
     it 'includes resource path' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       posts_resource = introspection.resources[:posts]
       expect(posts_resource.path).to eq('posts')
     end
 
     it 'includes actions' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       posts_resource = introspection.resources[:posts]
       expect(posts_resource.actions).to be_a(Hash)
@@ -102,8 +102,8 @@ RSpec.describe 'Introspection', type: :integration do
     end
 
     it 'includes nested resources' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       posts_resource = introspection.resources[:posts]
       expect(posts_resource.resources).to be_a(Hash)
@@ -111,8 +111,8 @@ RSpec.describe 'Introspection', type: :integration do
     end
 
     it 'supports to_h for serialization' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       posts_resource = introspection.resources[:posts]
       hash = posts_resource.to_h
@@ -126,16 +126,16 @@ RSpec.describe 'Introspection', type: :integration do
 
   describe 'Introspection::Action' do
     it 'includes action path' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       show_action = introspection.resources[:posts].actions[:show]
       expect(show_action.path).to be_a(String)
     end
 
     it 'includes HTTP method' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       show_action = introspection.resources[:posts].actions[:show]
       expect(show_action.method).to eq(:get)
@@ -145,40 +145,40 @@ RSpec.describe 'Introspection', type: :integration do
     end
 
     it 'includes request definition' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       create_action = introspection.resources[:posts].actions[:create]
       expect(create_action.request).to be_present
     end
 
     it 'includes response definition' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       show_action = introspection.resources[:posts].actions[:show]
       expect(show_action.response).to be_present
     end
 
     it 'includes raises error codes' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       show_action = introspection.resources[:posts].actions[:show]
       expect(show_action).to respond_to(:raises)
     end
 
     it 'includes summary' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       show_action = introspection.resources[:posts].actions[:show]
       expect(show_action).to respond_to(:summary)
     end
 
     it 'includes deprecated status' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       show_action = introspection.resources[:posts].actions[:show]
       expect(show_action).to respond_to(:deprecated?)
@@ -186,8 +186,8 @@ RSpec.describe 'Introspection', type: :integration do
     end
 
     it 'supports to_h for serialization' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       show_action = introspection.resources[:posts].actions[:show]
       hash = show_action.to_h
@@ -200,32 +200,32 @@ RSpec.describe 'Introspection', type: :integration do
 
   describe 'Introspection::Enum' do
     it 'includes enum values' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       sort_enum = introspection.enums[:sort_direction]
       expect(sort_enum.values).to eq(%w[asc desc])
     end
 
     it 'includes enum description' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       sort_enum = introspection.enums[:sort_direction]
       expect(sort_enum).to respond_to(:description)
     end
 
     it 'includes deprecated status' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       sort_enum = introspection.enums[:sort_direction]
       expect(sort_enum).to respond_to(:deprecated?)
     end
 
     it 'supports to_h for serialization' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       sort_enum = introspection.enums[:sort_direction]
       hash = sort_enum.to_h
@@ -237,40 +237,40 @@ RSpec.describe 'Introspection', type: :integration do
 
   describe 'Introspection::Type' do
     it 'includes type kind (object or union)' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       error_type = introspection.types[:error_detail]
       expect(error_type.type).to eq(:object)
     end
 
     it 'object? returns true for object types' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       error_type = introspection.types[:error_detail]
       expect(error_type.object?).to be(true)
     end
 
     it 'includes shape for object types' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       error_type = introspection.types[:error_detail]
       expect(error_type.shape).to be_a(Hash)
     end
 
     it 'includes description' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       error_type = introspection.types[:error_detail]
       expect(error_type).to respond_to(:description)
     end
 
     it 'supports to_h for serialization' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       error_type = introspection.types[:error_detail]
       hash = error_type.to_h
@@ -334,32 +334,32 @@ RSpec.describe 'Introspection', type: :integration do
 
   describe 'Introspection::Action::Request' do
     it 'includes query parameters' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       index_action = introspection.resources[:posts].actions[:index]
       expect(index_action.request).to respond_to(:query)
     end
 
     it 'includes body parameters' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       create_action = introspection.resources[:posts].actions[:create]
       expect(create_action.request).to respond_to(:body)
     end
 
     it 'query? returns true when query parameters exist' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       index_action = introspection.resources[:posts].actions[:index]
       expect(index_action.request).to respond_to(:query?)
     end
 
     it 'body? returns true when body parameters exist' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       create_action = introspection.resources[:posts].actions[:create]
       expect(create_action.request).to respond_to(:body?)
@@ -368,16 +368,16 @@ RSpec.describe 'Introspection', type: :integration do
 
   describe 'Introspection::Action::Response' do
     it 'includes body definition' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       show_action = introspection.resources[:posts].actions[:show]
       expect(show_action.response).to respond_to(:body)
     end
 
     it 'no_content? returns true for no-content responses' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       show_action = introspection.resources[:posts].actions[:show]
       expect(show_action.response).to respond_to(:no_content?)
@@ -386,8 +386,8 @@ RSpec.describe 'Introspection', type: :integration do
 
   describe 'Introspection::Param' do
     it 'includes param type' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       error_type = introspection.types[:error_detail]
       code_param = error_type.shape[:code]
@@ -396,8 +396,8 @@ RSpec.describe 'Introspection', type: :integration do
     end
 
     it 'includes nullable status' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       error_type = introspection.types[:error_detail]
       code_param = error_type.shape[:code]
@@ -406,8 +406,8 @@ RSpec.describe 'Introspection', type: :integration do
     end
 
     it 'includes optional status' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       error_type = introspection.types[:error_detail]
       code_param = error_type.shape[:code]
@@ -416,8 +416,8 @@ RSpec.describe 'Introspection', type: :integration do
     end
 
     it 'includes deprecated status' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       error_type = introspection.types[:error_detail]
       code_param = error_type.shape[:code]
@@ -426,8 +426,8 @@ RSpec.describe 'Introspection', type: :integration do
     end
 
     it 'includes description' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       error_type = introspection.types[:error_detail]
       code_param = error_type.shape[:code]
@@ -436,8 +436,8 @@ RSpec.describe 'Introspection', type: :integration do
     end
 
     it 'scalar? returns true for scalar types' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       error_type = introspection.types[:error_detail]
       code_param = error_type.shape[:code]

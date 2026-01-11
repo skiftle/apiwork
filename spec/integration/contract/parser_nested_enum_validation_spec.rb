@@ -27,7 +27,7 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
         account: {
           first_day_of_week: 'monday',
           id: 1,
-          name: 'Test Account',
+          name: 'Billing Account',
           status: 'active',
         },
       }
@@ -39,7 +39,7 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
         account: {
           first_day_of_week: 'monday',
           id: 1,
-          name: 'Test Account',
+          name: 'Billing Account',
           status: 'deleted',
         },
       }
@@ -54,7 +54,7 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
         account: {
           first_day_of_week: 'hahahahahaha',
           id: 1,
-          name: 'Test Account',
+          name: 'Billing Account',
           status: 'active',
         },
       }

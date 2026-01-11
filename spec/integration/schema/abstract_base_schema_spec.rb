@@ -35,12 +35,12 @@ RSpec.describe 'Abstract Base Schema with Auto-Detection' do
     end
 
     it 'can serialize User objects' do
-      user = User.create!(email: 'test@example.com', name: 'Test User')
+      user = User.create!(email: 'jane@customer.com', name: 'Jane Doe')
 
       result = Api::V1::UserSchema.serialize(user)
 
-      expect(result[:email]).to eq('test@example.com')
-      expect(result[:name]).to eq('Test User')
+      expect(result[:email]).to eq('jane@customer.com')
+      expect(result[:name]).to eq('Jane Doe')
     end
 
     it 'BaseSchema is abstract and does not trigger auto-detection' do

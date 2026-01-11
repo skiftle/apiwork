@@ -108,43 +108,43 @@ RSpec.describe 'Filter Operators' do
   end
 
   describe 'Case sensitivity in string filters' do
-    let!(:lowercase_post) { Post.create!(title: 'test lowercase') }
-    let!(:uppercase_post) { Post.create!(title: 'TEST UPPERCASE') }
-    let!(:mixed_post) { Post.create!(title: 'Test MixedCase') }
+    let!(:lowercase_post) { Post.create!(title: 'draft lowercase') }
+    let!(:uppercase_post) { Post.create!(title: 'DRAFT UPPERCASE') }
+    let!(:mixed_post) { Post.create!(title: 'Draft MixedCase') }
 
     describe 'contains operator' do
       it 'performs case-sensitive search' do
-        get '/api/v1/posts', params: { filter: { title: { contains: 'test' } } }
+        get '/api/v1/posts', params: { filter: { title: { contains: 'draft' } } }
 
         json = JSON.parse(response.body)
         titles = json['posts'].map { |p| p['title'] }
 
-        expect(titles).to eq(['test lowercase'])
+        expect(titles).to eq(['draft lowercase'])
       end
     end
 
     describe 'eq operator' do
       it 'performs exact match' do
-        get '/api/v1/posts', params: { filter: { title: { eq: 'test lowercase' } } }
+        get '/api/v1/posts', params: { filter: { title: { eq: 'draft lowercase' } } }
 
         json = JSON.parse(response.body)
 
         expect(json['posts'].length).to eq(1)
-        expect(json['posts'].first['title']).to eq('test lowercase')
+        expect(json['posts'].first['title']).to eq('draft lowercase')
       end
     end
   end
 
   describe 'Filter with special characters' do
-    let!(:special_post) { Post.create!(title: "Test's \"Special\" <Characters>") }
+    let!(:special_post) { Post.create!(title: "Jane's \"Special\" <Characters>") }
 
     it 'handles single quotes in filter value' do
-      get '/api/v1/posts', params: { filter: { title: { contains: "Test's" } } }
+      get '/api/v1/posts', params: { filter: { title: { contains: "Jane's" } } }
 
       json = JSON.parse(response.body)
       titles = json['posts'].map { |p| p['title'] }
 
-      expect(titles).to include("Test's \"Special\" <Characters>")
+      expect(titles).to include("Jane's \"Special\" <Characters>")
     end
 
     it 'handles double quotes in filter value' do
@@ -153,7 +153,7 @@ RSpec.describe 'Filter Operators' do
       json = JSON.parse(response.body)
       titles = json['posts'].map { |p| p['title'] }
 
-      expect(titles).to include("Test's \"Special\" <Characters>")
+      expect(titles).to include("Jane's \"Special\" <Characters>")
     end
   end
 
