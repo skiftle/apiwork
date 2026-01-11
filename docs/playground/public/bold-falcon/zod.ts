@@ -31,7 +31,7 @@ export const ArticleCreateSuccessResponseBodySchema = z.object({
   meta: z.object({}).optional()
 });
 
-export const ArticleFilterSchema = z.object({
+export const ArticleFilterSchema: z.ZodType<ArticleFilter> = z.lazy(() => z.object({
   _and: z.array(ArticleFilterSchema).optional(),
   _not: ArticleFilterSchema.optional(),
   _or: z.array(ArticleFilterSchema).optional(),
@@ -40,13 +40,7 @@ export const ArticleFilterSchema = z.object({
   status: ArticleStatusFilterSchema.optional(),
   title: z.union([z.string(), StringFilterSchema]).optional(),
   viewCount: z.union([z.number().int(), NullableIntegerFilterSchema]).optional()
-});
-
-export const ArticleIndexSuccessResponseBodySchema = z.object({
-  articles: z.array(ArticleSchema),
-  meta: z.object({}).optional(),
-  pagination: OffsetPaginationSchema
-});
+}));
 
 export const ArticlePageSchema = z.object({
   number: z.number().int().min(1).optional(),
@@ -91,11 +85,6 @@ export const DateFilterBetweenSchema = z.object({
 export const DecimalFilterBetweenSchema = z.object({
   from: z.number().optional(),
   to: z.number().optional()
-});
-
-export const ErrorResponseBodySchema = z.object({
-  issues: z.array(IssueSchema),
-  layer: LayerSchema
 });
 
 export const IntegerFilterBetweenSchema = z.object({
@@ -158,6 +147,17 @@ export const StringFilterSchema = z.object({
   eq: z.string().optional(),
   in: z.array(z.string()).optional(),
   startsWith: z.string().optional()
+});
+
+export const ArticleIndexSuccessResponseBodySchema = z.object({
+  articles: z.array(ArticleSchema),
+  meta: z.object({}).optional(),
+  pagination: OffsetPaginationSchema
+});
+
+export const ErrorResponseBodySchema = z.object({
+  issues: z.array(IssueSchema),
+  layer: LayerSchema
 });
 
 export const ArticlesIndexRequestQuerySchema = z.object({

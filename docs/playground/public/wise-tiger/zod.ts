@@ -8,11 +8,6 @@ export const ProjectStatusSchema = z.enum(['active', 'archived', 'completed', 'p
 
 export const SortDirectionSchema = z.enum(['asc', 'desc']);
 
-export const ErrorResponseBodySchema = z.object({
-  issues: z.array(IssueSchema),
-  layer: LayerSchema
-});
-
 export const IssueSchema = z.object({
   code: z.string(),
   detail: z.string(),
@@ -53,19 +48,13 @@ export const ProjectCreateSuccessResponseBodySchema = z.object({
   project: ProjectSchema
 });
 
-export const ProjectFilterSchema = z.object({
+export const ProjectFilterSchema: z.ZodType<ProjectFilter> = z.lazy(() => z.object({
   _and: z.array(ProjectFilterSchema).optional(),
   _not: ProjectFilterSchema.optional(),
   _or: z.array(ProjectFilterSchema).optional(),
   priority: ProjectPriorityFilterSchema.optional(),
   status: ProjectStatusFilterSchema.optional()
-});
-
-export const ProjectIndexSuccessResponseBodySchema = z.object({
-  meta: z.object({}).optional(),
-  pagination: OffsetPaginationSchema,
-  projects: z.array(ProjectSchema)
-});
+}));
 
 export const ProjectPageSchema = z.object({
   number: z.number().int().min(1).optional(),
@@ -103,6 +92,17 @@ export const ProjectUpdatePayloadSchema = z.object({
 export const ProjectUpdateSuccessResponseBodySchema = z.object({
   meta: z.object({}).optional(),
   project: ProjectSchema
+});
+
+export const ErrorResponseBodySchema = z.object({
+  issues: z.array(IssueSchema),
+  layer: LayerSchema
+});
+
+export const ProjectIndexSuccessResponseBodySchema = z.object({
+  meta: z.object({}).optional(),
+  pagination: OffsetPaginationSchema,
+  projects: z.array(ProjectSchema)
 });
 
 export const ProjectsIndexRequestQuerySchema = z.object({

@@ -335,13 +335,71 @@ RSpec.describe Apiwork::Export::Zod do
     end
 
     it 'generates schema that references itself' do
-      expect(circular_output).to include('TreeNodeSchema = z.object')
+      expect(circular_output).to include('TreeNodeSchema: z.ZodType<TreeNode> = z.lazy(() => z.object')
       expect(circular_output).to include('z.array(TreeNodeSchema)')
     end
 
     it 'generates corresponding TypeScript interface' do
       expect(circular_output).to include('export interface TreeNode')
       expect(circular_output).to include('children?: TreeNode[]')
+    end
+  end
+
+  describe 'recursive filter types with direct ref' do
+    before(:all) do
+      api_class = Apiwork::API.define '/api/zod_recursive_filter_test' do
+        object :node_filter do
+          reference :_not, optional: true, to: :node_filter
+          array :_and, optional: true do
+            reference :node_filter
+          end
+          string :name, optional: true
+        end
+
+        resources :nodes, only: [:index]
+      end
+
+      contract_class = Class.new(Apiwork::Contract::Base)
+      contract_class.instance_variable_set(:@api_class, api_class)
+      contract_class.class_eval do
+        action :index do
+          request do
+            query do
+              reference :filter, optional: true, to: :node_filter
+            end
+          end
+          response do
+            body do
+              array :nodes do
+                object do
+                  string :name
+                end
+              end
+            end
+          end
+        end
+      end
+      api_class.structure.resources[:nodes].instance_variable_set(:@contract_class, contract_class)
+
+      @recursive_filter_output = Apiwork::Export.generate(:zod, '/api/zod_recursive_filter_test')
+    end
+
+    attr_reader :recursive_filter_output
+
+    after(:all) do
+      Apiwork::API.unregister('/api/zod_recursive_filter_test')
+    end
+
+    it 'wraps recursive type in z.lazy' do
+      expect(recursive_filter_output).to include('NodeFilterSchema: z.ZodType<NodeFilter> = z.lazy(() =>')
+    end
+
+    it 'references itself in _not field' do
+      expect(recursive_filter_output).to include('_not: NodeFilterSchema')
+    end
+
+    it 'references itself in _and array' do
+      expect(recursive_filter_output).to include('z.array(NodeFilterSchema)')
     end
   end
 

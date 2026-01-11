@@ -4,11 +4,6 @@ export const LayerSchema = z.enum(['contract', 'domain', 'http']);
 
 export const SortDirectionSchema = z.enum(['asc', 'desc']);
 
-export const ErrorResponseBodySchema = z.object({
-  issues: z.array(IssueSchema),
-  layer: LayerSchema
-});
-
 export const IssueSchema = z.object({
   code: z.string(),
   detail: z.string(),
@@ -56,18 +51,12 @@ export const OrderCreateSuccessResponseBodySchema = z.object({
   order: OrderSchema
 });
 
-export const OrderFilterSchema = z.object({
+export const OrderFilterSchema: z.ZodType<OrderFilter> = z.lazy(() => z.object({
   _and: z.array(OrderFilterSchema).optional(),
   _not: OrderFilterSchema.optional(),
   _or: z.array(OrderFilterSchema).optional(),
   status: z.union([z.string(), NullableStringFilterSchema]).optional()
-});
-
-export const OrderIndexSuccessResponseBodySchema = z.object({
-  meta: z.object({}).optional(),
-  orders: z.array(OrderSchema),
-  pagination: OffsetPaginationSchema
-});
+}));
 
 export const OrderPageSchema = z.object({
   number: z.number().int().min(1).optional(),
@@ -93,6 +82,17 @@ export const OrderUpdatePayloadSchema = z.object({
 export const OrderUpdateSuccessResponseBodySchema = z.object({
   meta: z.object({}).optional(),
   order: OrderSchema
+});
+
+export const ErrorResponseBodySchema = z.object({
+  issues: z.array(IssueSchema),
+  layer: LayerSchema
+});
+
+export const OrderIndexSuccessResponseBodySchema = z.object({
+  meta: z.object({}).optional(),
+  orders: z.array(OrderSchema),
+  pagination: OffsetPaginationSchema
 });
 
 export const OrdersIndexRequestQuerySchema = z.object({

@@ -19,12 +19,6 @@ export const ActivityCreateSuccessResponseBodySchema = z.object({
   meta: z.object({}).optional()
 });
 
-export const ActivityIndexSuccessResponseBodySchema = z.object({
-  activities: z.array(ActivitySchema),
-  meta: z.object({}).optional(),
-  pagination: CursorPaginationSchema
-});
-
 export const ActivityPageSchema = z.object({
   after: z.string().optional(),
   before: z.string().optional(),
@@ -51,17 +45,23 @@ export const CursorPaginationSchema = z.object({
   prev: z.string().nullable().optional()
 });
 
-export const ErrorResponseBodySchema = z.object({
-  issues: z.array(IssueSchema),
-  layer: LayerSchema
-});
-
 export const IssueSchema = z.object({
   code: z.string(),
   detail: z.string(),
   meta: z.object({}),
   path: z.array(z.string()),
   pointer: z.string()
+});
+
+export const ActivityIndexSuccessResponseBodySchema = z.object({
+  activities: z.array(ActivitySchema),
+  meta: z.object({}).optional(),
+  pagination: CursorPaginationSchema
+});
+
+export const ErrorResponseBodySchema = z.object({
+  issues: z.array(IssueSchema),
+  layer: LayerSchema
 });
 
 export const ActivitiesIndexRequestQuerySchema = z.object({

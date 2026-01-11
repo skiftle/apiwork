@@ -32,11 +32,6 @@ export const CarUpdatePayloadSchema = z.object({
   year: z.number().int().nullable().optional()
 });
 
-export const ErrorResponseBodySchema = z.object({
-  issues: z.array(IssueSchema),
-  layer: LayerSchema
-});
-
 export const IntegerFilterBetweenSchema = z.object({
   from: z.number().int().optional(),
   to: z.number().int().optional()
@@ -144,20 +139,14 @@ export const VehicleCreateSuccessResponseBodySchema = z.object({
   vehicle: VehicleSchema
 });
 
-export const VehicleFilterSchema = z.object({
+export const VehicleFilterSchema: z.ZodType<VehicleFilter> = z.lazy(() => z.object({
   _and: z.array(VehicleFilterSchema).optional(),
   _not: VehicleFilterSchema.optional(),
   _or: z.array(VehicleFilterSchema).optional(),
   brand: z.union([z.string(), StringFilterSchema]).optional(),
   model: z.union([z.string(), StringFilterSchema]).optional(),
   year: z.union([z.number().int(), NullableIntegerFilterSchema]).optional()
-});
-
-export const VehicleIndexSuccessResponseBodySchema = z.object({
-  meta: z.object({}).optional(),
-  pagination: OffsetPaginationSchema,
-  vehicles: z.array(VehicleSchema)
-});
+}));
 
 export const VehiclePageSchema = z.object({
   number: z.number().int().min(1).optional(),
@@ -176,6 +165,17 @@ export const VehicleSortSchema = z.object({
 export const VehicleUpdateSuccessResponseBodySchema = z.object({
   meta: z.object({}).optional(),
   vehicle: VehicleSchema
+});
+
+export const ErrorResponseBodySchema = z.object({
+  issues: z.array(IssueSchema),
+  layer: LayerSchema
+});
+
+export const VehicleIndexSuccessResponseBodySchema = z.object({
+  meta: z.object({}).optional(),
+  pagination: OffsetPaginationSchema,
+  vehicles: z.array(VehicleSchema)
 });
 
 export const VehiclesIndexRequestQuerySchema = z.object({

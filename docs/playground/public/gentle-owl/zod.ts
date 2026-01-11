@@ -32,12 +32,6 @@ export const CommentIncludeSchema = z.object({
   commentable: z.boolean().optional()
 });
 
-export const CommentIndexSuccessResponseBodySchema = z.object({
-  comments: z.array(CommentSchema),
-  meta: z.object({}).optional(),
-  pagination: OffsetPaginationSchema
-});
-
 export const CommentPageSchema = z.object({
   number: z.number().int().min(1).optional(),
   size: z.number().int().min(1).max(100).optional()
@@ -60,11 +54,6 @@ export const CommentUpdatePayloadSchema = z.object({
 export const CommentUpdateSuccessResponseBodySchema = z.object({
   comment: CommentSchema,
   meta: z.object({}).optional()
-});
-
-export const ErrorResponseBodySchema = z.object({
-  issues: z.array(IssueSchema),
-  layer: LayerSchema
 });
 
 export const ImageSchema = z.object({
@@ -108,6 +97,17 @@ export const VideoSchema = z.object({
   id: z.string(),
   title: z.string(),
   url: z.string()
+});
+
+export const CommentIndexSuccessResponseBodySchema = z.object({
+  comments: z.array(CommentSchema),
+  meta: z.object({}).optional(),
+  pagination: OffsetPaginationSchema
+});
+
+export const ErrorResponseBodySchema = z.object({
+  issues: z.array(IssueSchema),
+  layer: LayerSchema
 });
 
 export const CommentsIndexRequestQuerySchema = z.object({

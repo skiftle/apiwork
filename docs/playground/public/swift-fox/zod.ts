@@ -22,12 +22,6 @@ export const ContactCreateSuccessResponseBodySchema = z.object({
   meta: z.object({}).optional()
 });
 
-export const ContactIndexSuccessResponseBodySchema = z.object({
-  contacts: z.array(ContactSchema),
-  meta: z.object({}).optional(),
-  pagination: OffsetPaginationSchema
-});
-
 export const ContactPageSchema = z.object({
   number: z.number().int().min(1).optional(),
   size: z.number().int().min(1).max(100).optional()
@@ -50,11 +44,6 @@ export const ContactUpdateSuccessResponseBodySchema = z.object({
   meta: z.object({}).optional()
 });
 
-export const ErrorResponseBodySchema = z.object({
-  issues: z.array(IssueSchema),
-  layer: LayerSchema
-});
-
 export const IssueSchema = z.object({
   code: z.string(),
   detail: z.string(),
@@ -69,6 +58,17 @@ export const OffsetPaginationSchema = z.object({
   next: z.number().int().nullable().optional(),
   prev: z.number().int().nullable().optional(),
   total: z.number().int()
+});
+
+export const ContactIndexSuccessResponseBodySchema = z.object({
+  contacts: z.array(ContactSchema),
+  meta: z.object({}).optional(),
+  pagination: OffsetPaginationSchema
+});
+
+export const ErrorResponseBodySchema = z.object({
+  issues: z.array(IssueSchema),
+  layer: LayerSchema
 });
 
 export const ContactsIndexRequestQuerySchema = z.object({

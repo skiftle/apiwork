@@ -2,11 +2,6 @@ import { z } from 'zod';
 
 export const LayerSchema = z.enum(['contract', 'domain', 'http']);
 
-export const ErrorResponseBodySchema = z.object({
-  issues: z.array(IssueSchema),
-  layer: LayerSchema
-});
-
 export const IssueSchema = z.object({
   code: z.string(),
   detail: z.string(),
@@ -51,12 +46,6 @@ export const ProfileCreateSuccessResponseBodySchema = z.object({
   profile: ProfileSchema
 });
 
-export const ProfileIndexSuccessResponseBodySchema = z.object({
-  meta: z.object({}).optional(),
-  pagination: OffsetPaginationSchema,
-  profiles: z.array(ProfileSchema)
-});
-
 export const ProfilePageSchema = z.object({
   number: z.number().int().min(1).optional(),
   size: z.number().int().min(1).max(100).optional()
@@ -80,6 +69,17 @@ export const ProfileUpdatePayloadSchema = z.object({
 export const ProfileUpdateSuccessResponseBodySchema = z.object({
   meta: z.object({}).optional(),
   profile: ProfileSchema
+});
+
+export const ErrorResponseBodySchema = z.object({
+  issues: z.array(IssueSchema),
+  layer: LayerSchema
+});
+
+export const ProfileIndexSuccessResponseBodySchema = z.object({
+  meta: z.object({}).optional(),
+  pagination: OffsetPaginationSchema,
+  profiles: z.array(ProfileSchema)
 });
 
 export const ProfilesIndexRequestQuerySchema = z.object({

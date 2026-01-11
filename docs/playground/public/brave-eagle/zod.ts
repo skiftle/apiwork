@@ -15,11 +15,6 @@ export const CommentSchema = z.object({
   id: z.string()
 });
 
-export const ErrorResponseBodySchema = z.object({
-  issues: z.array(IssueSchema),
-  layer: LayerSchema
-});
-
 export const IssueSchema = z.object({
   code: z.string(),
   detail: z.string(),
@@ -34,20 +29,6 @@ export const OffsetPaginationSchema = z.object({
   next: z.number().int().nullable().optional(),
   prev: z.number().int().nullable().optional(),
   total: z.number().int()
-});
-
-export const TaskSchema = z.object({
-  archived: z.boolean().nullable(),
-  assignee: UserSchema.nullable().optional(),
-  comments: z.array(CommentSchema).optional(),
-  createdAt: z.iso.datetime(),
-  description: z.string().nullable(),
-  dueDate: z.iso.datetime().nullable(),
-  id: z.string(),
-  priority: TaskPrioritySchema.nullable(),
-  status: TaskStatusSchema.nullable(),
-  title: z.string(),
-  updatedAt: z.iso.datetime()
 });
 
 export const TaskArchiveSuccessResponseBodySchema = z.object({
@@ -68,23 +49,17 @@ export const TaskCreateSuccessResponseBodySchema = z.object({
   task: TaskSchema
 });
 
-export const TaskFilterSchema = z.object({
+export const TaskFilterSchema: z.ZodType<TaskFilter> = z.lazy(() => z.object({
   _and: z.array(TaskFilterSchema).optional(),
   _not: TaskFilterSchema.optional(),
   _or: z.array(TaskFilterSchema).optional(),
   priority: TaskPriorityFilterSchema.optional(),
   status: TaskStatusFilterSchema.optional()
-});
+}));
 
 export const TaskIncludeSchema = z.object({
   assignee: z.boolean().optional(),
   comments: z.boolean().optional()
-});
-
-export const TaskIndexSuccessResponseBodySchema = z.object({
-  meta: z.object({}).optional(),
-  pagination: OffsetPaginationSchema,
-  tasks: z.array(TaskSchema)
 });
 
 export const TaskPageSchema = z.object({
@@ -129,6 +104,31 @@ export const UserSchema = z.object({
   email: z.email(),
   id: z.string(),
   name: z.string()
+});
+
+export const TaskSchema = z.object({
+  archived: z.boolean().nullable(),
+  assignee: UserSchema.nullable().optional(),
+  comments: z.array(CommentSchema).optional(),
+  createdAt: z.iso.datetime(),
+  description: z.string().nullable(),
+  dueDate: z.iso.datetime().nullable(),
+  id: z.string(),
+  priority: TaskPrioritySchema.nullable(),
+  status: TaskStatusSchema.nullable(),
+  title: z.string(),
+  updatedAt: z.iso.datetime()
+});
+
+export const ErrorResponseBodySchema = z.object({
+  issues: z.array(IssueSchema),
+  layer: LayerSchema
+});
+
+export const TaskIndexSuccessResponseBodySchema = z.object({
+  meta: z.object({}).optional(),
+  pagination: OffsetPaginationSchema,
+  tasks: z.array(TaskSchema)
 });
 
 export const TasksIndexRequestQuerySchema = z.object({
