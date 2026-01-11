@@ -5,8 +5,8 @@ require 'rails_helper'
 RSpec.describe 'path_format Configuration', type: :request do
   describe 'API with path_format :kebab' do
     it 'routes to kebab-case paths' do
-      user = User.create!(email: 'test@example.com', name: 'Test')
-      UserProfile.create!(user:, bio: 'Test', timezone: 'UTC')
+      user = User.create!(email: 'jane@customer.com', name: 'Jane Doe')
+      UserProfile.create!(user:, bio: 'Developer', timezone: 'UTC')
 
       get '/api/v2/user-profiles'
 
@@ -16,8 +16,8 @@ RSpec.describe 'path_format Configuration', type: :request do
     end
 
     it 'routes show action with kebab-case path' do
-      user = User.create!(email: 'test@example.com', name: 'Test')
-      profile = UserProfile.create!(user:, bio: 'Test', timezone: 'UTC')
+      user = User.create!(email: 'john@customer.com', name: 'John Smith')
+      profile = UserProfile.create!(user:, bio: 'Designer', timezone: 'UTC')
 
       get "/api/v2/user-profiles/#{profile.id}"
 
@@ -38,8 +38,8 @@ RSpec.describe 'path_format Configuration', type: :request do
     end
 
     it 'routes update action with kebab-case path' do
-      user = User.create!(email: 'test@example.com', name: 'Test')
-      profile = UserProfile.create!(user:, bio: 'Old', timezone: 'UTC')
+      user = User.create!(email: 'mary@customer.com', name: 'Mary Johnson')
+      profile = UserProfile.create!(user:, bio: 'Original', timezone: 'UTC')
 
       patch "/api/v2/user-profiles/#{profile.id}",
             as: :json,
@@ -51,8 +51,8 @@ RSpec.describe 'path_format Configuration', type: :request do
     end
 
     it 'routes destroy action with kebab-case path' do
-      user = User.create!(email: 'test@example.com', name: 'Test')
-      profile = UserProfile.create!(user:, bio: 'Delete', timezone: 'UTC')
+      user = User.create!(email: 'bob@customer.com', name: 'Bob Wilson')
+      profile = UserProfile.create!(user:, bio: 'To remove', timezone: 'UTC')
 
       delete "/api/v2/user-profiles/#{profile.id}"
 
@@ -62,8 +62,8 @@ RSpec.describe 'path_format Configuration', type: :request do
 
   describe 'API with path_format :kebab combined with key_format :camel' do
     it 'uses kebab-case in URL but camelCase in response keys' do
-      user = User.create!(email: 'test@example.com', name: 'Test')
-      UserProfile.create!(user:, bio: 'Test', timezone: 'UTC')
+      user = User.create!(email: 'alice@customer.com', name: 'Alice Brown')
+      UserProfile.create!(user:, bio: 'Engineer', timezone: 'UTC')
 
       get '/api/v2/user-profiles'
 
@@ -78,23 +78,23 @@ RSpec.describe 'path_format Configuration', type: :request do
            as: :json,
            params: {
              userProfile: {
-               avatarUrl: 'https://example.com/avatar.png',
-               bio: 'Test',
+               avatarUrl: 'https://cdn.billing.com/avatar.png',
+               bio: 'Developer',
                timezone: 'UTC',
              },
            }
 
       expect(response).to have_http_status(:created)
       json = JSON.parse(response.body)
-      expect(json['userProfile']['avatarUrl']).to eq('https://example.com/avatar.png')
+      expect(json['userProfile']['avatarUrl']).to eq('https://cdn.billing.com/avatar.png')
     end
   end
 
   describe 'path_format in introspection' do
     it 'reflects path_format setting in API introspection' do
-      api = Apiwork::API.find('/api/v2')
+      api_class = Apiwork::API.find('/api/v2')
 
-      expect(api.path_format).to eq(:kebab)
+      expect(api_class.path_format).to eq(:kebab)
     end
   end
 

@@ -9,8 +9,8 @@ RSpec.describe 'Schema Metadata', type: :integration do
     end
 
     it 'includes description in introspection' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+      api_class = Apiwork::API.find('/api/v1')
+      introspection = api_class.introspect
 
       profile_resource = introspection.resources[:profile]
       expect(profile_resource).to be_present
@@ -34,9 +34,9 @@ RSpec.describe 'Schema Metadata', type: :integration do
 
   describe 'Schema.example' do
     it 'stores example on schema class' do
-      example = Api::V1::ProfileSchema.example
-      expect(example).to be_a(Hash)
-      expect(example[:bio]).to eq('Software developer')
+      schema_example = Api::V1::ProfileSchema.example
+      expect(schema_example).to be_a(Hash)
+      expect(schema_example[:bio]).to eq('Software developer')
     end
 
     it 'includes example in OpenAPI export' do

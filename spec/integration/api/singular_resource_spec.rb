@@ -3,17 +3,17 @@
 require 'rails_helper'
 
 RSpec.describe 'Singular Resource API', type: :request do
-  let(:user) { User.create!(email: 'test@example.com', name: 'Test User') }
+  let(:user) { User.create!(email: 'jane@customer.com', name: 'Jane Doe') }
 
   describe 'Singular resource routing' do
     it 'routes to show without :id parameter' do
-      Profile.create!(user:, bio: 'Test bio', timezone: 'UTC')
+      Profile.create!(user:, bio: 'Developer bio', timezone: 'UTC')
 
       get '/api/v1/profile'
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['profile']['bio']).to eq('Test bio')
+      expect(json['profile']['bio']).to eq('Developer bio')
     end
 
     it 'routes to create without :id parameter' do
@@ -55,8 +55,8 @@ RSpec.describe 'Singular Resource API', type: :request do
     end
 
     it 'singular resource uses singular path' do
-      user = User.create!(email: 'test@example.com', name: 'Test User')
-      Profile.create!(user:, bio: 'Test bio', timezone: 'UTC')
+      user = User.create!(email: 'john@customer.com', name: 'John Smith')
+      Profile.create!(user:, bio: 'Developer bio', timezone: 'UTC')
 
       get '/api/v1/profile'
 
@@ -68,7 +68,7 @@ RSpec.describe 'Singular Resource API', type: :request do
     it 'serializes all attributes' do
       profile = Profile.create!(
         user:,
-        avatar_url: 'https://example.com/avatar.png',
+        avatar_url: 'https://cdn.billing.com/avatar.png',
         bio: 'Developer',
         timezone: 'Europe/Stockholm',
       )
@@ -78,7 +78,7 @@ RSpec.describe 'Singular Resource API', type: :request do
       json = JSON.parse(response.body)
       expect(json['profile']['id']).to eq(profile.id)
       expect(json['profile']['bio']).to eq('Developer')
-      expect(json['profile']['avatar_url']).to eq('https://example.com/avatar.png')
+      expect(json['profile']['avatar_url']).to eq('https://cdn.billing.com/avatar.png')
       expect(json['profile']['timezone']).to eq('Europe/Stockholm')
     end
 

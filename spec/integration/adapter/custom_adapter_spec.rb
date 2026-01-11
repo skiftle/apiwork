@@ -6,19 +6,19 @@ RSpec.describe 'Custom Adapter', type: :integration do
   describe 'Adapter::Base subclassing' do
     let(:custom_adapter_class) do
       Class.new(Apiwork::Adapter::Base) do
-        adapter_name :custom_test
+        adapter_name :billing
 
         def render_collection(collection, schema_class, state)
           {
             data: collection.map { |record| serialize_record(record, schema_class, state) },
-            meta: { adapter: 'custom_test', total: collection.size },
+            meta: { adapter: 'billing', total: collection.size },
           }
         end
 
         def render_record(record, schema_class, state)
           {
             data: serialize_record(record, schema_class, state),
-            meta: { adapter: 'custom_test' },
+            meta: { adapter: 'billing' },
           }
         end
 
@@ -31,7 +31,7 @@ RSpec.describe 'Custom Adapter', type: :integration do
                 source: { pointer: issue.pointer },
               }
             end,
-            meta: { layer:, adapter: 'custom_test' },
+            meta: { layer:, adapter: 'billing' },
           }
         end
 
@@ -44,7 +44,7 @@ RSpec.describe 'Custom Adapter', type: :integration do
     end
 
     it 'can define adapter_name' do
-      expect(custom_adapter_class.adapter_name).to eq(:custom_test)
+      expect(custom_adapter_class.adapter_name).to eq(:billing)
     end
 
     it 'can be instantiated' do
@@ -63,18 +63,18 @@ RSpec.describe 'Custom Adapter', type: :integration do
     end
 
     it 'can find registered adapters' do
-      standard = Apiwork::Adapter.find(:standard)
-      expect(standard).to be_a(Class)
-      expect(standard.ancestors).to include(Apiwork::Adapter::Base)
+      standard_adapter_class = Apiwork::Adapter.find(:standard)
+      expect(standard_adapter_class).to be_a(Class)
+      expect(standard_adapter_class.ancestors).to include(Apiwork::Adapter::Base)
     end
 
     it 'can register new adapters' do
-      test_adapter = Class.new(Apiwork::Adapter::Base) do
-        adapter_name :test_registration
+      invoice_adapter_class = Class.new(Apiwork::Adapter::Base) do
+        adapter_name :invoice_adapter
       end
 
-      Apiwork::Adapter.register(test_adapter)
-      expect(Apiwork::Adapter.registered?(:test_registration)).to be(true)
+      Apiwork::Adapter.register(invoice_adapter_class)
+      expect(Apiwork::Adapter.registered?(:invoice_adapter)).to be(true)
     end
   end
 
@@ -112,8 +112,8 @@ RSpec.describe 'Custom Adapter', type: :integration do
 
   describe 'Adapter capabilities' do
     it 'provides capabilities object for conditional registration' do
-      api = Apiwork::API.find('/api/v1')
-      capabilities = api.adapter.build_capabilities(api.structure)
+      api_class = Apiwork::API.find('/api/v1')
+      capabilities = api_class.adapter.build_capabilities(api_class.structure)
 
       expect(capabilities).to respond_to(:filter_types)
       expect(capabilities).to respond_to(:nullable_filter_types)
@@ -124,29 +124,29 @@ RSpec.describe 'Custom Adapter', type: :integration do
     end
 
     it 'filter_types returns array of types' do
-      api = Apiwork::API.find('/api/v1')
-      capabilities = api.adapter.build_capabilities(api.structure)
+      api_class = Apiwork::API.find('/api/v1')
+      capabilities = api_class.adapter.build_capabilities(api_class.structure)
 
       expect(capabilities.filter_types).to be_an(Array)
     end
 
     it 'resources? returns true for API with resources' do
-      api = Apiwork::API.find('/api/v1')
-      capabilities = api.adapter.build_capabilities(api.structure)
+      api_class = Apiwork::API.find('/api/v1')
+      capabilities = api_class.adapter.build_capabilities(api_class.structure)
 
       expect(capabilities.resources?).to be(true)
     end
 
     it 'filterable? responds with boolean' do
-      api = Apiwork::API.find('/api/v1')
-      capabilities = api.adapter.build_capabilities(api.structure)
+      api_class = Apiwork::API.find('/api/v1')
+      capabilities = api_class.adapter.build_capabilities(api_class.structure)
 
       expect(capabilities.filterable?).to be(true).or be(false)
     end
 
     it 'sortable? responds with boolean' do
-      api = Apiwork::API.find('/api/v1')
-      capabilities = api.adapter.build_capabilities(api.structure)
+      api_class = Apiwork::API.find('/api/v1')
+      capabilities = api_class.adapter.build_capabilities(api_class.structure)
 
       expect(capabilities.sortable?).to be(true).or be(false)
     end
@@ -154,15 +154,15 @@ RSpec.describe 'Custom Adapter', type: :integration do
 
   describe 'Adapter configuration via API DSL' do
     it 'API has adapter_config available' do
-      api = Apiwork::API.find('/api/v1')
+      api_class = Apiwork::API.find('/api/v1')
 
-      expect(api.adapter_config).to be_a(Hash)
+      expect(api_class.adapter_config).to be_a(Hash)
     end
 
     it 'adapter instance is accessible via api.adapter' do
-      api = Apiwork::API.find('/api/v1')
+      api_class = Apiwork::API.find('/api/v1')
 
-      expect(api.adapter).to be_a(Apiwork::Adapter::Base)
+      expect(api_class.adapter).to be_a(Apiwork::Adapter::Base)
     end
   end
 end

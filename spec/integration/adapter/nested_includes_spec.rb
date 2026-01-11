@@ -4,10 +4,10 @@ require 'rails_helper'
 
 RSpec.describe 'Nested Resources with Includes', type: :request do
   describe 'GET /api/v1/posts/:post_id/comments with includes' do
-    let!(:post_record) { Post.create!(body: 'Content', title: 'Test Post') }
-    let!(:comment1) { Comment.create!(author: 'Author 1', content: 'Comment 1', post: post_record) }
-    let!(:comment2) { Comment.create!(author: 'Author 2', content: 'Comment 2', post: post_record) }
-    let!(:reply1) { Reply.create!(author: 'Replier', comment: comment1, content: 'Reply to comment 1') }
+    let!(:post_record) { Post.create!(body: 'Ruby programming content', title: 'Ruby Tutorial') }
+    let!(:comment1) { Comment.create!(author: 'Jane Doe', content: 'Great introduction', post: post_record) }
+    let!(:comment2) { Comment.create!(author: 'John Smith', content: 'Very helpful', post: post_record) }
+    let!(:reply1) { Reply.create!(author: 'Mary Johnson', comment: comment1, content: 'Thanks for sharing') }
 
     it 'includes post association on nested comments' do
       get "/api/v1/posts/#{post_record.id}/comments", params: { include: { post: true } }
@@ -20,7 +20,7 @@ RSpec.describe 'Nested Resources with Includes', type: :request do
 
       json['comments'].each do |comment|
         expect(comment['post']).to be_present
-        expect(comment['post']['title']).to eq('Test Post')
+        expect(comment['post']['title']).to eq('Ruby Tutorial')
       end
     end
 
@@ -48,9 +48,9 @@ RSpec.describe 'Nested Resources with Includes', type: :request do
   end
 
   describe 'GET /api/v1/posts/:post_id/comments/:id with includes' do
-    let!(:post_record) { Post.create!(body: 'Content', title: 'Test Post') }
-    let!(:comment) { Comment.create!(author: 'Test Author', content: 'Test Comment', post: post_record) }
-    let!(:reply) { Reply.create!(comment:, author: 'Replier', content: 'Test Reply') }
+    let!(:post_record) { Post.create!(body: 'Rails framework guide', title: 'Rails Guide') }
+    let!(:comment) { Comment.create!(author: 'Jane Doe', content: 'Excellent explanation', post: post_record) }
+    let!(:reply) { Reply.create!(comment:, author: 'John Smith', content: 'Agreed') }
 
     it 'includes associations on nested show action' do
       get "/api/v1/posts/#{post_record.id}/comments/#{comment.id}", params: { include: { post: true } }
@@ -59,7 +59,7 @@ RSpec.describe 'Nested Resources with Includes', type: :request do
       json = JSON.parse(response.body)
 
       expect(json['comment']['post']).to be_present
-      expect(json['comment']['post']['title']).to eq('Test Post')
+      expect(json['comment']['post']['title']).to eq('Rails Guide')
     end
 
     it 'includes replies on nested show action' do
@@ -74,27 +74,27 @@ RSpec.describe 'Nested Resources with Includes', type: :request do
   end
 
   describe 'POST /api/v1/posts/:post_id/comments' do
-    let!(:post_record) { Post.create!(body: 'Content', title: 'Test Post') }
+    let!(:post_record) { Post.create!(body: 'Python basics content', title: 'Python Basics') }
 
     it 'creates a nested comment using post_id from URL' do
       post "/api/v1/posts/#{post_record.id}/comments",
            as: :json,
            params: {
-             comment: { author: 'New Author', content: 'New Comment', post_id: post_record.id },
+             comment: { author: 'Mary Johnson', content: 'Looking forward to more', post_id: post_record.id },
            }
 
       expect(response).to have_http_status(:created)
       json = JSON.parse(response.body)
 
-      expect(json['comment']['content']).to eq('New Comment')
-      expect(json['comment']['author']).to eq('New Author')
+      expect(json['comment']['content']).to eq('Looking forward to more')
+      expect(json['comment']['author']).to eq('Mary Johnson')
     end
   end
 
   describe 'Nested includes with deeply nested resources' do
-    let!(:post_record) { Post.create!(body: 'Content', title: 'Test Post') }
-    let!(:comment) { Comment.create!(author: 'Parent', content: 'Parent Comment', post: post_record) }
-    let!(:reply) { Reply.create!(comment:, author: 'Replier', content: 'Reply content') }
+    let!(:post_record) { Post.create!(body: 'JavaScript fundamentals', title: 'JavaScript Guide') }
+    let!(:comment) { Comment.create!(author: 'Jane Doe', content: 'Well written', post: post_record) }
+    let!(:reply) { Reply.create!(comment:, author: 'John Smith', content: 'I learned a lot') }
 
     it 'includes associations on deeply nested resources' do
       get "/api/v1/posts/#{post_record.id}/comments/#{comment.id}"
@@ -109,12 +109,12 @@ RSpec.describe 'Nested Resources with Includes', type: :request do
       json = JSON.parse(response.body)
 
       expect(json['comment']['replies']).to be_an(Array)
-      expect(json['comment']['replies'].first['content']).to eq('Reply content')
+      expect(json['comment']['replies'].first['content']).to eq('I learned a lot')
     end
   end
 
   describe 'Invalid includes on nested resources' do
-    let!(:post_record) { Post.create!(body: 'Content', title: 'Test Post') }
+    let!(:post_record) { Post.create!(body: 'API design patterns', title: 'API Design') }
 
     it 'rejects unknown include parameters' do
       get "/api/v1/posts/#{post_record.id}/comments", params: { include: { unknown_association: true } }
