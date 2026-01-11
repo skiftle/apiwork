@@ -58,23 +58,22 @@ RSpec.describe 'Includes API', type: :request do
 
   describe 'nested includes' do
     before do
-      # For nested includes test, we need post association on comments to be include: :optional
       Api::V1::CommentSchema.association_definitions[:post].instance_variable_set(:@include, :optional)
 
-      # Reset contracts and rebuild
-      Api::V1::PostContract.reset_build_state!
-      Api::V1::CommentContract.reset_build_state!
-
-      api = Apiwork::API.find('/api/v1')
-      api&.type_registry&.clear!
-      api&.enum_registry&.clear!
-      api&.reset_contracts!
-      api&.ensure_all_contracts_built!
+      api_class = Apiwork::API.find('/api/v1')
+      api_class.type_registry.clear!
+      api_class.enum_registry.clear!
+      api_class.reset_contracts!
+      api_class.ensure_all_contracts_built!
     end
 
     after do
-      # Restore schema instance variable (persists across prepare!)
       Api::V1::CommentSchema.association_definitions[:post].instance_variable_set(:@include, :optional)
+
+      api_class = Apiwork::API.find('/api/v1')
+      api_class.type_registry.clear!
+      api_class.enum_registry.clear!
+      api_class.reset_contracts!
     end
 
     it 'supports nested includes' do
@@ -102,27 +101,24 @@ RSpec.describe 'Includes API', type: :request do
   describe 'contract validation for always included associations' do
     context 'when association has include: :always' do
       before do
-        # Ensure CommentSchema.post is NOT always included (to avoid circular serialization)
         Api::V1::CommentSchema.association_definitions[:post].instance_variable_set(:@include, :optional)
-
-        # Temporarily set comments to include: :always
         Api::V1::PostSchema.association_definitions[:comments].instance_variable_set(:@include, :always)
 
-        # Reset contracts and rebuild
-        Api::V1::PostContract.reset_build_state!
-        Api::V1::CommentContract.reset_build_state!
-
-        api = Apiwork::API.find('/api/v1')
-        api&.type_registry&.clear!
-        api&.enum_registry&.clear!
-        api&.reset_contracts!
-        api&.ensure_all_contracts_built!
+        api_class = Apiwork::API.find('/api/v1')
+        api_class.type_registry.clear!
+        api_class.enum_registry.clear!
+        api_class.reset_contracts!
+        api_class.ensure_all_contracts_built!
       end
 
       after do
-        # Restore schema instance variables (persist across prepare!)
         Api::V1::PostSchema.association_definitions[:comments].instance_variable_set(:@include, :optional)
         Api::V1::CommentSchema.association_definitions[:post].instance_variable_set(:@include, :optional)
+
+        api_class = Apiwork::API.find('/api/v1')
+        api_class.type_registry.clear!
+        api_class.enum_registry.clear!
+        api_class.reset_contracts!
       end
 
       it 'allows nested includes under include: :always association' do
