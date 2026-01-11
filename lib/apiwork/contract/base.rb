@@ -350,9 +350,9 @@ module Apiwork
           action_name = action_name.to_sym
 
           action = if replace
-                     Action.new(contract_class: self, name: action_name, replace: true)
+                     Action.new(self, action_name, replace: true)
                    else
-                     actions[action_name] ||= Action.new(contract_class: self, name: action_name)
+                     actions[action_name] ||= Action.new(self, action_name)
                    end
 
           action.instance_eval(&block) if block_given?
@@ -508,7 +508,7 @@ module Apiwork
         end
       end
 
-      def initialize(action_name:, body:, coerce: false, query:)
+      def initialize(action_name, query, body, coerce: false)
         result = RequestParser.new(self.class, action_name, coerce:).parse(query, body)
         @query = result.query
         @body = result.body

@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Apiwork::ContractError do
-  let(:issue) { Apiwork::Issue.new(code: :required, detail: 'is required', path: [:name]) }
+  let(:issue) { Apiwork::Issue.new(:required, 'is required', path: [:name]) }
 
   it 'inherits from ConstraintError' do
     expect(described_class.superclass).to eq(Apiwork::ConstraintError)

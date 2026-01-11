@@ -11,7 +11,7 @@ module Apiwork
                         :issues,
                         :valid_operators
 
-            def initialize(column:, field_name:, issues: [], valid_operators:)
+            def initialize(column, field_name, issues: [], valid_operators:)
               @column = column
               @field_name = field_name
               @valid_operators = valid_operators
@@ -35,8 +35,8 @@ module Apiwork
 
             def add_invalid_operator_issue(operator)
               issues << Issue.new(
-                code: :operator_invalid,
-                detail: 'Invalid operator',
+                :operator_invalid,
+                'Invalid operator',
                 meta: {
                   operator:,
                   allowed: valid_operators,

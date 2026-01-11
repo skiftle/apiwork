@@ -80,10 +80,10 @@ module Apiwork
     #   end
     def contract
       @contract ||= contract_class.new(
-        action_name: action_name,
-        body: transformed_body_parameters,
+        action_name,
+        transformed_query_parameters,
+        transformed_body_parameters,
         coerce: true,
-        query: transformed_query_parameters,
       )
     end
 
@@ -184,9 +184,9 @@ module Apiwork
       locale_key = api_class.structure.locale_key
 
       issue = Issue.new(
+        error_code.key,
+        detail || error_code.description(locale_key:, options: i18n),
         meta:,
-        code: error_code.key,
-        detail: detail || error_code.description(locale_key:, options: i18n),
         path: path || (error_code.attach_path? ? request.path.delete_prefix(api_class.path).split('/').reject(&:blank?) : []),
       )
 

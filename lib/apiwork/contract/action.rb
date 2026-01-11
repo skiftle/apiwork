@@ -11,7 +11,7 @@ module Apiwork
       attr_reader :contract_class,
                   :name
 
-      def initialize(contract_class:, name:, replace: false)
+      def initialize(contract_class, name, replace: false)
         @name = name
         @contract_class = contract_class
         @reset_request = replace

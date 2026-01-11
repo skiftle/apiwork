@@ -24,8 +24,8 @@ module Apiwork
 
             unless params.is_a?(Hash)
               @issues << Issue.new(
-                code: :sort_params_invalid,
-                detail: 'Invalid sort params',
+                :sort_params_invalid,
+                'Invalid sort params',
                 meta: { type: params.class.name },
                 path: [:sort],
               )
@@ -53,8 +53,8 @@ module Apiwork
                     .map(&:name)
 
                   @issues << Issue.new(
-                    code: :field_not_sortable,
-                    detail: 'Not sortable',
+                    :field_not_sortable,
+                    'Not sortable',
                     meta: { available:, field: key },
                     path: [:sort, key],
                   )
@@ -69,8 +69,8 @@ module Apiwork
                           when :desc then column.desc
                           else
                             @issues << Issue.new(
-                              code: :sort_direction_invalid,
-                              detail: 'Invalid direction',
+                              :sort_direction_invalid,
+                              'Invalid direction',
                               meta: {
                                 direction:,
                                 allowed: %i[asc desc],
@@ -86,8 +86,8 @@ module Apiwork
 
                 if association.nil?
                   @issues << Issue.new(
-                    code: :association_invalid,
-                    detail: 'Invalid association',
+                    :association_invalid,
+                    'Invalid association',
                     meta: { field: key },
                     path: [:sort, key],
                   )
@@ -96,8 +96,8 @@ module Apiwork
 
                 unless schema_class.association_definitions[key]&.sortable?
                   @issues << Issue.new(
-                    code: :association_not_sortable,
-                    detail: 'Not sortable',
+                    :association_not_sortable,
+                    'Not sortable',
                     meta: { association: key },
                     path: [:sort, key],
                   )
@@ -108,8 +108,8 @@ module Apiwork
 
                 if association_resource.nil?
                   @issues << Issue.new(
-                    code: :association_schema_missing,
-                    detail: 'Association schema missing',
+                    :association_schema_missing,
+                    'Association schema missing',
                     meta: { association: key },
                     path: [:sort, key],
                   )
@@ -123,8 +123,8 @@ module Apiwork
                 joins << (nested_joins.any? ? { key => nested_joins } : key)
               else
                 @issues << Issue.new(
-                  code: :sort_value_invalid,
-                  detail: 'Invalid sort value',
+                  :sort_value_invalid,
+                  'Invalid sort value',
                   meta: { field: key, type: value.class.name },
                   path: [:sort, key],
                 )

@@ -21,7 +21,7 @@ module Apiwork
       attr_reader :data,
                   :key_format
 
-      def initialize(data:, key_format: :keep)
+      def initialize(data, key_format: :keep)
         @data = data
         @key_format = key_format
       end

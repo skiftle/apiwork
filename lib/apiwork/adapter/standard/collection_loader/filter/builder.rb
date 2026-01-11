@@ -11,7 +11,7 @@ module Apiwork
                         :field_name,
                         :issues
 
-            def initialize(allowed_types:, column:, field_name:, issues:)
+            def initialize(column, field_name, allowed_types:, issues:)
               @column = column
               @field_name = field_name
               @issues = issues
@@ -23,12 +23,7 @@ module Apiwork
 
               return nil unless validate_value_type(value)
 
-              builder = OperatorBuilder.new(
-                valid_operators:,
-                column: column,
-                field_name: field_name,
-                issues: issues,
-              )
+              builder = OperatorBuilder.new(column, field_name, issues:, valid_operators:)
 
               builder.build(value, &block)
             end
@@ -44,8 +39,8 @@ module Apiwork
               return true if allowed_types.any? { |type| value.is_a?(type) }
 
               issues << Issue.new(
-                code: :filter_value_invalid,
-                detail: 'Invalid filter value',
+                :filter_value_invalid,
+                'Invalid filter value',
                 meta: {
                   allowed: allowed_types.map(&:name),
                   field: field_name,

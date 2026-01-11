@@ -186,8 +186,8 @@ module Apiwork
         return if enum.map(&:to_s).include?(value.to_s)
 
         issue = Issue.new(
-          code: :value_invalid,
-          detail: 'Invalid value',
+          :value_invalid,
+          'Invalid value',
           meta: {
             actual: value,
             expected: enum,

@@ -5,8 +5,8 @@ require 'rails_helper'
 RSpec.describe Apiwork::ConstraintError do
   let(:issue) do
     Apiwork::Issue.new(
-      code: :required,
-      detail: 'is required',
+      :required,
+      'is required',
       path: [:name],
     )
   end
@@ -18,7 +18,7 @@ RSpec.describe Apiwork::ConstraintError do
     end
 
     it 'accepts an array of issues' do
-      issues = [issue, Apiwork::Issue.new(code: :type, detail: 'must be string', path: [:email])]
+      issues = [issue, Apiwork::Issue.new(:type, 'must be string', path: [:email])]
       error = described_class.new(issues)
       expect(error.issues).to eq(issues)
     end
@@ -27,8 +27,8 @@ RSpec.describe Apiwork::ConstraintError do
   describe '#message' do
     it 'joins issue details with semicolons' do
       issues = [
-        Apiwork::Issue.new(code: :required, detail: 'name is required', path: [:name]),
-        Apiwork::Issue.new(code: :type, detail: 'email must be string', path: [:email]),
+        Apiwork::Issue.new(:required, 'name is required', path: [:name]),
+        Apiwork::Issue.new(:type, 'email must be string', path: [:email]),
       ]
       error = described_class.new(issues)
       expect(error.message).to eq('name is required; email must be string')

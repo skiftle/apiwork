@@ -45,11 +45,11 @@ module Apiwork
       private
 
       def zod_mapper
-        @zod_mapper ||= ZodMapper.new(data:, key_format:)
+        @zod_mapper ||= ZodMapper.new(data, key_format:)
       end
 
       def typescript_mapper
-        @typescript_mapper ||= TypeScriptMapper.new(data:, key_format:)
+        @typescript_mapper ||= TypeScriptMapper.new(data, key_format:)
       end
 
       def surface

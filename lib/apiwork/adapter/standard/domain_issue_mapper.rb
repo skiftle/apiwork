@@ -130,9 +130,9 @@ module Apiwork
           path = attribute == :base ? @root_path : @root_path + [attribute]
 
           Issue.new(
-            code:,
+            code,
+            detail_for(code),
             path:,
-            detail: detail_for(code),
             meta: build_meta(code, error),
           )
         end

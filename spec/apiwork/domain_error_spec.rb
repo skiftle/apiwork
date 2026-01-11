@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Apiwork::DomainError do
-  let(:issue) { Apiwork::Issue.new(code: :invalid, detail: 'is invalid', path: [:amount]) }
+  let(:issue) { Apiwork::Issue.new(:invalid, 'is invalid', path: [:amount]) }
 
   it 'inherits from ConstraintError' do
     expect(described_class.superclass).to eq(Apiwork::ConstraintError)
