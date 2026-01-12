@@ -27,16 +27,16 @@ module Apiwork
 
             BigDecimal(value.to_s) if value.is_a?(Numeric) || value.is_a?(String)
           },
-          float: lambda { |value|
-            return value if value.is_a?(Float) || value.is_a?(Integer)
-            return nil if value.is_a?(String) && value.blank?
-
-            Float(value) if value.is_a?(String)
-          },
           integer: lambda { |value|
             return value if value.is_a?(Integer)
 
             Integer(value) if value.is_a?(String) && value.match?(/\A-?\d+\z/)
+          },
+          number: lambda { |value|
+            return value if value.is_a?(Float) || value.is_a?(Integer)
+            return nil if value.is_a?(String) && value.blank?
+
+            Float(value) if value.is_a?(String)
           },
           string: lambda { |value|
             return value if value.is_a?(String)

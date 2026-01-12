@@ -904,7 +904,7 @@ module Apiwork
                         :datetime_filter
                       when :integer
                         :integer_filter
-                      when :decimal, :float
+                      when :decimal, :number
                         :decimal_filter
                       when :uuid
                         :uuid_filter
@@ -1061,11 +1061,9 @@ module Apiwork
           when :date then :date
           when :time then :time
           when :uuid then :uuid
-          when :decimal, :float then :decimal
+          when :decimal, :number then :decimal
           when :object then :object
           when :array then :array
-          when :json, :jsonb then :object
-          when :unknown then :unknown
           else :unknown
           end
         end

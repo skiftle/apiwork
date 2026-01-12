@@ -8,7 +8,6 @@ RSpec.describe 'Format validation', type: :integration do
       expect(Apiwork::Schema::Attribute::ALLOWED_FORMATS).to eq(
         {
           decimal: %i[float double],
-          float: %i[float double],
           integer: %i[int32 int64],
           number: %i[float double],
           string: %i[email uuid uri url date date_time ipv4 ipv6 password
@@ -64,7 +63,7 @@ RSpec.describe 'Format validation', type: :integration do
       %i[float double].each do |format|
         expect do
           schema.class_eval do
-            attribute :test_field, format:, type: :float
+            attribute :test_field, format:, type: :number
           end
         end.not_to raise_error
       end

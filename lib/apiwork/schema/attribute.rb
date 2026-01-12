@@ -16,7 +16,6 @@ module Apiwork
     class Attribute
       ALLOWED_FORMATS = {
         decimal: %i[float double],
-        float: %i[float double],
         integer: %i[int32 int64],
         number: %i[float double],
         string: %i[email uuid uri url date date_time ipv4 ipv6 password hostname],
@@ -240,7 +239,8 @@ module Apiwork
       def normalize_db_type(type)
         case type
         when :text then :string
-        when :jsonb then :json
+        when :jsonb, :json then :unknown
+        when :float then :number
         else type
         end
       end

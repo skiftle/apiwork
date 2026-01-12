@@ -50,7 +50,7 @@ module Apiwork
 
       def of(discriminator: nil, enum: nil, format: nil, max: nil, min: nil, type:, value: nil, &block)
         case type
-        when :string, :integer, :decimal, :boolean, :float, :datetime, :date, :uuid, :time
+        when :string, :integer, :decimal, :boolean, :number, :datetime, :date, :uuid, :time
           set_type(type, enum:, format:, max:, min:)
         when :literal
           @type = :literal
@@ -132,13 +132,13 @@ module Apiwork
       end
 
       # @api public
-      # Defines a float element.
+      # Defines a number element.
       #
       # @param max [Numeric] maximum value
       # @param min [Numeric] minimum value
       # @return [void]
-      def float(max: nil, min: nil)
-        of(max:, min:, type: :float)
+      def number(max: nil, min: nil)
+        of(max:, min:, type: :number)
       end
 
       # @api public
@@ -179,15 +179,6 @@ module Apiwork
       # @return [void]
       def binary
         of(type: :binary)
-      end
-
-      # @api public
-      # Defines a JSON element for arbitrary/unstructured JSON data.
-      # For structured data with known fields, use object with a block instead.
-      #
-      # @return [void]
-      def json
-        of(type: :json)
       end
 
       # @api public

@@ -134,8 +134,8 @@ module Apiwork
         end
 
         # @api public
-        # @return [Boolean] false — override in Float
-        def float?
+        # @return [Boolean] false — override in Number
+        def number?
           false
         end
 
@@ -178,12 +178,6 @@ module Apiwork
         # @api public
         # @return [Boolean] false — override in Binary
         def binary?
-          false
-        end
-
-        # @api public
-        # @return [Boolean] false — override in JSON
-        def json?
           false
         end
 

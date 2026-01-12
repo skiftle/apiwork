@@ -12,7 +12,7 @@ Primitive types are the building blocks. Every param uses one of these.
 |------|------|------------|-----|
 | `:string` | `String` | `string` | `z.string()` |
 | `:integer` | `Integer` | `number` | `z.number().int()` |
-| `:float` | `Float` | `number` | `z.number()` |
+| `:number` | `Float` | `number` | `z.number()` |
 | `:decimal` | `BigDecimal` | `number` | `z.number()` |
 | `:boolean` | `true`, `false` | `boolean` | `z.boolean()` |
 | `:date` | `Date` | `string` | `z.iso.date()` |
@@ -24,19 +24,18 @@ Primitive types are the building blocks. Every param uses one of these.
 
 | Type | Purpose | TypeScript | Zod |
 |------|---------|------------|-----|
-| `:json` | Arbitrary JSON | `Record<string, any>` | `z.record(z.string(), z.any())` |
 | `:binary` | Base64 encoded | `string` | `z.string()` |
 | `:literal` | Exact value | literal type | `z.literal()` |
 | `:unknown` | Any value | `unknown` | `z.unknown()` |
 
-### `json` vs `object`
+### `unknown` vs `object`
 
 Both handle structured data, but serve different purposes:
 
 | Type | Use when | Output |
 |------|----------|--------|
 | `:object` | Structure is known and defined | Typed interface with specific fields |
-| `:json` | Structure is arbitrary or unknown | `Record<string, any>` |
+| `:unknown` | Structure is arbitrary or unknown | `unknown` |
 
 Use `object` when you know the fields:
 
@@ -47,11 +46,15 @@ object :settings do
 end
 ```
 
-Use `json` when structure is dynamic or unknown:
+Use `unknown` when structure is dynamic or unknown:
 
 ```ruby
-json :metadata  # Could be anything
+unknown :metadata  # Could be anything
 ```
+
+::: info Auto-detection
+JSON/JSONB columns auto-detect as `:unknown`. Use an `object` or `array` block to define their shape.
+:::
 
 ## Structure Types
 
@@ -86,14 +89,14 @@ Some types produce identical runtime output but carry distinct meaning. This met
 
 | Type | Runtime | Purpose | OpenAPI |
 |------|---------|---------|---------|
-| `:float` | `number` | IEEE 754 floating-point | `format: double` |
+| `:number` | `number` | IEEE 754 floating-point | `format: double` |
 | `:decimal` | `number` | Arbitrary precision | — |
 | `:binary` | `string` | Base64-encoded bytes | `format: byte` |
 
 **When to use which:**
 
 - `:decimal` for money, percentages, and values where precision matters
-- `:float` for scientific calculations, coordinates, and approximate values
+- `:number` for scientific calculations, coordinates, and approximate values
 - `:binary` for file uploads, images, and encoded payloads
 
 The semantic distinction exists even when the generated code is identical. OpenAPI consumers can use format hints for validation, documentation, and code generation. TypeScript and Zod treat these as equivalent at runtime.
@@ -143,7 +146,7 @@ Query parameters and form data arrive as strings. Apiwork coerces them to their 
 | Type | Input | Output |
 |------|-------|--------|
 | `:integer` | `"123"` | `123` |
-| `:float` | `"3.14"` | `3.14` |
+| `:number` | `"3.14"` | `3.14` |
 | `:boolean` | `"true"`, `"1"`, `"yes"` | `true` |
 | `:boolean` | `"false"`, `"0"`, `"no"` | `false` |
 | `:date` | `"2024-01-15"` | `Date` |

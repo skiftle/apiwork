@@ -111,9 +111,9 @@ Types are built from primitives:
 | `:time`     | Time only (ISO 8601)     |
 | `:uuid`     | UUID format              |
 | `:decimal`  | Precise decimal values   |
-| `:float`    | Floating point numbers   |
+| `:number`   | Floating point numbers   |
 
-Structural types (`:array`, `:object`) and special types (`:json`, `:binary`, `:literal`, `:unknown`) are also available.
+Structural types (`:array`, `:object`) and special types (`:binary`, `:literal`, `:unknown`) are also available.
 
 ---
 

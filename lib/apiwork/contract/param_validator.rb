@@ -3,7 +3,7 @@
 module Apiwork
   module Contract
     class ParamValidator
-      NUMERIC_TYPES = Set[:integer, :float, :decimal].freeze
+      NUMERIC_TYPES = Set[:integer, :number, :decimal].freeze
 
       def initialize(param_definition)
         @param_definition = param_definition
@@ -382,7 +382,7 @@ module Apiwork
                 when :uuid then value.is_a?(String) && value.match?(/\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/i)
                 when :object then value.is_a?(Hash)
                 when :array then value.is_a?(Array)
-                when :decimal, :float then value.is_a?(Numeric)
+                when :decimal, :number then value.is_a?(Numeric)
                 else true
                 end
 

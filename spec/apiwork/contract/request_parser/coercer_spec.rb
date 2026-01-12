@@ -195,27 +195,27 @@ RSpec.describe Apiwork::Contract::RequestParser::Coercer do
       end
     end
 
-    context 'float type' do
-      it 'converts float string to Float' do
-        result = described_class.perform('3.14', :float)
+    context 'number type' do
+      it 'converts number string to Float' do
+        result = described_class.perform('3.14', :number)
 
         expect(result).to eq(3.14)
       end
 
       it 'converts integer string to Float' do
-        result = described_class.perform('42', :float)
+        result = described_class.perform('42', :number)
 
         expect(result).to eq(42.0)
       end
 
       it 'preserves Float value' do
-        result = described_class.perform(3.14, :float)
+        result = described_class.perform(3.14, :number)
 
         expect(result).to eq(3.14)
       end
 
-      it 'returns nil for invalid float string' do
-        result = described_class.perform('abc', :float)
+      it 'returns nil for invalid number string' do
+        result = described_class.perform('abc', :number)
 
         expect(result).to be_nil
       end

@@ -290,7 +290,7 @@ module Apiwork
       end
 
       # @api public
-      # Defines a float field.
+      # Defines a number field.
       #
       # @param name [Symbol] field name
       # @param default [Float] default value
@@ -302,7 +302,7 @@ module Apiwork
       # @param nullable [Boolean] whether null is allowed
       # @param optional [Boolean] whether field can be omitted
       # @return [void]
-      def float(
+      def number(
         name,
         default: nil,
         deprecated: nil,
@@ -323,7 +323,7 @@ module Apiwork
           min:,
           nullable:,
           optional:,
-          type: :float,
+          type: :number,
         )
       end
 
@@ -484,39 +484,6 @@ module Apiwork
           nullable:,
           optional:,
           type: :binary,
-        )
-      end
-
-      # @api public
-      # Defines a JSON field for arbitrary/unstructured JSON data.
-      # For structured data with known fields, use object with a block instead.
-      #
-      # @param name [Symbol] field name
-      # @param default [Object] default value
-      # @param deprecated [Boolean] mark as deprecated
-      # @param description [String] documentation description
-      # @param example [Object] example value for documentation
-      # @param nullable [Boolean] whether null is allowed
-      # @param optional [Boolean] whether field can be omitted
-      # @return [void]
-      def json(
-        name,
-        default: nil,
-        deprecated: nil,
-        description: nil,
-        example: nil,
-        nullable: nil,
-        optional: false
-      )
-        param(
-          name,
-          default:,
-          deprecated:,
-          description:,
-          example:,
-          nullable:,
-          optional:,
-          type: :json,
         )
       end
 

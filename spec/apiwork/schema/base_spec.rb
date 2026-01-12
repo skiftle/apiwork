@@ -274,10 +274,10 @@ RSpec.describe Apiwork::Schema::Base do
 
     describe 'without inline shape' do
       it 'has nil inline_element' do
-        definition = described_class.new(:metadata, schema_class, type: :json)
+        definition = described_class.new(:metadata, schema_class, type: :unknown)
 
         expect(definition.inline_element).to be_nil
-        expect(definition.type).to eq(:json)
+        expect(definition.type).to eq(:unknown)
       end
     end
   end

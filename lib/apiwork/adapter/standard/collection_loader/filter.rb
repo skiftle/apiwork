@@ -236,7 +236,7 @@ module Apiwork
               build_string_where_clause(key, value, target_klass)
             when :date, :datetime
               build_date_where_clause(key, value, target_klass)
-            when :decimal, :integer, :float
+            when :decimal, :integer, :number
               build_numeric_where_clause(key, value, target_klass)
             when :boolean
               build_boolean_where_clause(key, value, target_klass)

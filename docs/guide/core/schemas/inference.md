@@ -65,10 +65,10 @@ Apiwork reads column types from your database:
 | `date`                    | `:date`       |
 | `time`                    | `:time`       |
 | `decimal`, `numeric`      | `:decimal`    |
-| `float`, `real`           | `:float`      |
+| `float`, `real`           | `:number`     |
 | `uuid`                    | `:uuid`       |
 | `binary`, `blob`, `bytea` | `:binary`     |
-| `json`, `jsonb`           | `:json`       |
+| `json`, `jsonb`           | `:unknown`    |
 
 ```ruby
 # Database: name VARCHAR(255), age INTEGER, active BOOLEAN
@@ -79,10 +79,15 @@ class UserSchema < Apiwork::Schema::Base
 end
 ```
 
-Override when needed:
+Override to define the shape:
 
 ```ruby
-attribute :metadata, type: :json  # Force specific type
+attribute :metadata do
+  object do
+    string :key
+    string :value
+  end
+end
 ```
 
 ### Nullable Detection

@@ -10,7 +10,7 @@ RSpec.describe 'Numeric min/max validation' do
 
   before do
     definition.integer :age, max: 150, min: 18, optional: true
-    definition.float :rating, max: 5.0, min: 0.0, optional: true
+    definition.number :rating, max: 5.0, min: 0.0, optional: true
     definition.decimal :price, max: 99_999.99, min: 0.01, optional: true
   end
 
@@ -36,7 +36,7 @@ RSpec.describe 'Numeric min/max validation' do
     end
   end
 
-  describe 'float validation' do
+  describe 'number validation' do
     it 'rejects value below min' do
       result = definition.validate({ rating: -0.1 })
       expect(result[:issues]).not_to be_empty

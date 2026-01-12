@@ -8,7 +8,7 @@ module Apiwork
           case dump[:type]
           when :string then String.new(dump)
           when :integer then Integer.new(dump)
-          when :float then Float.new(dump)
+          when :number then Number.new(dump)
           when :decimal then Decimal.new(dump)
           when :boolean then Boolean.new(dump)
           when :datetime then DateTime.new(dump)
@@ -16,7 +16,6 @@ module Apiwork
           when :time then Time.new(dump) # rubocop:disable Rails/TimeZone
           when :uuid then UUID.new(dump)
           when :binary then Binary.new(dump)
-          when :json then JSON.new(dump)
           when :unknown then Unknown.new(dump)
           when :array then Array.new(dump)
           when :object then Object.new(dump)

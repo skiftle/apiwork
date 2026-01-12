@@ -109,7 +109,7 @@ This is usually desired. To preserve original keys in a JSON column, use `encode
 ```ruby
 class UserSchema < Apiwork::Schema
   attribute :id
-  attribute :metadata, type: :json, encode: ->(v) { v.deep_stringify_keys }
+  attribute :metadata, encode: ->(v) { v.deep_stringify_keys }
 end
 ```
 

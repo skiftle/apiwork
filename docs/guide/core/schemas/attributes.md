@@ -368,18 +368,19 @@ attribute :ip_address, format: :ipv4
 
 ## Inline Type Definitions
 
-Three types support structured data:
+Two types support structured data with blocks:
 
 | Type | Use case | Auto-detected |
 |------|----------|---------------|
-| `:json` | JSON/JSONB database columns | Yes |
 | `:object` | Virtual attributes returning hashes | No |
 | `:array` | Virtual attributes returning arrays | No |
 
 Use a block to define the shape. Without a block, exports use `Record<string, unknown>` or `unknown[]`.
 
+JSON/JSONB columns are auto-detected as `:unknown`. Use a block to define their shape:
+
 ```ruby
-# JSON column — auto-detected, block defines shape
+# JSON column — auto-detected as :unknown, block defines shape
 attribute :settings do
   object do
     string :theme

@@ -220,7 +220,6 @@ module Apiwork
         return 'string' if param.string? || param.uuid? || param.date? || param.datetime? || param.time? || param.binary?
         return 'number' if param.numeric?
         return 'boolean' if param.boolean?
-        return 'Record<string, unknown>' if param.json?
 
         'unknown'
       end

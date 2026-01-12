@@ -208,7 +208,7 @@ module Apiwork
                       when :date then :date_filter
                       when :datetime then :datetime_filter
                       when :integer then :integer_filter
-                      when :decimal, :float then :decimal_filter
+                      when :decimal, :number then :decimal_filter
                       when :uuid then :uuid_filter
                       when :boolean then :boolean_filter
                       else :string_filter

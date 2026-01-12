@@ -154,7 +154,7 @@ module Apiwork
         #
         # @param name [Symbol] attribute name (must match model attribute)
         # @option options [Symbol] :type data type (:string, :integer, :boolean,
-        #   :datetime, :date, :uuid, :decimal, :float, :object, :array)
+        #   :datetime, :date, :uuid, :decimal, :number, :object, :array)
         # @option options [Array] :enum allowed values
         # @option options [Boolean] :optional field can be omitted in responses
         # @option options [Boolean] :nullable field can be null

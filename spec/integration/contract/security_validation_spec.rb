@@ -109,7 +109,7 @@ RSpec.describe 'Security and edge case validation' do
     let(:definition) do
       Apiwork::Contract::Object.new(contract_class).tap do |d|
         d.integer :huge_int, optional: true
-        d.float :precise_float, optional: true
+        d.number :precise_number, optional: true
       end
     end
 
@@ -120,11 +120,11 @@ RSpec.describe 'Security and edge case validation' do
       expect(result[:params][:huge_int]).to eq(9_999_999_999_999_999_999)
     end
 
-    it 'handles very small floats' do
-      result = definition.validate({ precise_float: 0.000000000001 })
+    it 'handles very small numbers' do
+      result = definition.validate({ precise_number: 0.000000000001 })
 
       expect(result[:issues]).to be_empty
-      expect(result[:params][:precise_float]).to be_within(0.000000000001).of(0.000000000001)
+      expect(result[:params][:precise_number]).to be_within(0.000000000001).of(0.000000000001)
     end
   end
 

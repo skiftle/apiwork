@@ -4,12 +4,12 @@ module Apiwork
   module Introspection
     module Param
       # @api public
-      # Float param representing floating-point number values.
+      # Number param representing floating-point number values.
       #
       # @example Basic usage
-      #   param.type       # => :float
+      #   param.type       # => :number
       #   param.scalar?    # => true
-      #   param.float?     # => true
+      #   param.number?    # => true
       #   param.numeric?   # => true
       #
       # @example Constraints
@@ -23,7 +23,7 @@ module Apiwork
       #     param.enum      # => [0.5, 1.0, 1.5]
       #     param.enum_ref? # => false
       #   end
-      class Float < Base
+      class Number < Base
         # @api public
         # @return [Numeric, nil] the minimum value constraint
         def min
@@ -74,13 +74,13 @@ module Apiwork
         end
 
         # @api public
-        # @return [Boolean] true if this is a float param
-        def float?
+        # @return [Boolean] true if this is a number param
+        def number?
           true
         end
 
         # @api public
-        # @return [Boolean] false — floats do not support format constraints
+        # @return [Boolean] false — numbers do not support format constraints
         def formattable?
           false
         end

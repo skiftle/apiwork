@@ -512,10 +512,9 @@ module Apiwork
         case type.to_sym
         when :string then 'string'
         when :integer then 'integer'
-        when :float, :decimal then 'number'
+        when :number, :decimal then 'number'
         when :boolean then 'boolean'
         when :date, :datetime, :time, :uuid, :binary then 'string'
-        when :json then 'object'
         when :unknown then nil
         end
       end
@@ -524,7 +523,7 @@ module Apiwork
         return nil unless type
 
         case type.to_sym # rubocop:disable Style/HashLikeCase
-        when :float then 'double'
+        when :number then 'double'
         when :date then 'date'
         when :datetime then 'date-time'
         when :time then 'time'
