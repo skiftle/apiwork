@@ -140,14 +140,12 @@ module Apiwork
           all_types << { code: "export type #{type_name} = #{type_literal};", name: type_name }
         end
 
-        types_hash = surface.types.transform_values(&:to_h)
         surface.types.each do |name, type|
           type_name_pascal = typescript_mapper.pascal_case(name)
           code = if type.union?
                    typescript_mapper.build_union_type(name, type)
                  else
-                   recursive = TypeAnalysis.circular_reference?(name, types_hash[name], filter: :custom_only)
-                   typescript_mapper.build_interface(name, type, recursive:)
+                   typescript_mapper.build_interface(name, type)
                  end
           all_types << { code:, name: type_name_pascal }
         end

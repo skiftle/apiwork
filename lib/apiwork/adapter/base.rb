@@ -117,9 +117,8 @@ module Apiwork
       # Override to customize key casing, unwrapping, etc.
       #
       # @param hash [Hash] the request parameters
-      # @param schema_class [Class] a {Schema::Base} subclass (optional)
       # @return [Hash] the transformed parameters
-      def transform_request(hash, schema_class)
+      def transform_request(hash)
         hash
       end
 

@@ -11,7 +11,7 @@ module Apiwork
         @key_format = key_format
       end
 
-      def build_interface(type_name, type, recursive: false)
+      def build_interface(type_name, type)
         type_name_pascal = pascal_case(type_name)
 
         properties = type.shape.sort_by { |name, _param| name.to_s }.map do |name, param|

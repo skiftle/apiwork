@@ -157,37 +157,6 @@ module Apiwork
         end
       end
 
-      def validate_attribute_exists!
-        return if @owner_schema_class.abstract?
-        return if defined_on_model?
-        return if defined_on_schema?
-
-        raise ConfigurationError.new(
-          code: :invalid_attribute,
-          detail: attribute_not_found_message,
-          path: [@name],
-        )
-      end
-
-      def defined_on_model?
-        return false unless @model_class
-
-        db_column? || @model_class.instance_methods.include?(@name.to_sym)
-      end
-
-      def defined_on_schema?
-        @owner_schema_class.instance_methods.include?(@name.to_sym)
-      end
-
-      def attribute_not_found_message
-        base = "Undefined attribute '#{@name}' in #{@owner_schema_class.name}: "
-        base + if @model_class
-                 'no DB column, no reader method on model, and no reader method on schema'
-               else
-                 'no reader method on schema'
-               end
-      end
-
       def validate_enum(value)
         return if enum.map(&:to_s).include?(value.to_s)
 
@@ -287,35 +256,6 @@ module Apiwork
 
         raise ConfigurationError,
               "Attribute #{@name}: empty option is only supported for type :string"
-      end
-
-      def validate_column_required_options!
-        return if db_column?
-        return if @owner_schema_class.abstract?
-
-        if filterable?
-          raise ConfigurationError.new(
-            code: :filterable_requires_column,
-            detail: "Attribute #{@name}: filterable requires a database column",
-            path: [@name],
-          )
-        end
-
-        if sortable?
-          raise ConfigurationError.new(
-            code: :sortable_requires_column,
-            detail: "Attribute #{@name}: sortable requires a database column",
-            path: [@name],
-          )
-        end
-
-        return unless writable?
-
-        raise ConfigurationError.new(
-          code: :writable_requires_column,
-          detail: "Attribute #{@name}: writable requires a database column",
-          path: [@name],
-        )
       end
     end
   end
