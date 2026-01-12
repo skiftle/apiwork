@@ -22,24 +22,27 @@ module Apiwork
                     :enum_registry,
                     :export_configs,
                     :exports,
-                    :path,
                     :structure,
                     :type_registry
 
         # @api public
-        # Sets the key format for request/response transformation.
+        # The API mount path.
         #
-        # Controls how JSON keys are transformed between client and server.
-        # Useful for JavaScript clients that prefer camelCase.
+        # @return [String]
         #
-        # @param format [Symbol] :keep (no transform), :camel (to/from camelCase), :underscore
-        # @return [Symbol] the current key format
+        # @example
+        #   api_class.path  # => "/api/v1"
+        attr_reader :path
+
+        # @api public
+        # The key format used for request/response transformation.
         #
-        # @example camelCase for JavaScript clients
-        #   Apiwork::API.define '/api/v1' do
-        #     key_format :camel
-        #     # { firstName: 'John' } ↔ { first_name: 'John' }
-        #   end
+        # @param format [Symbol] :keep, :camel, :underscore, or :kebab
+        # @return [Symbol]
+        #
+        # @example
+        #   key_format :camel
+        #   api_class.key_format  # => :camel
         def key_format(format = nil)
           return @key_format if format.nil?
 
@@ -50,20 +53,14 @@ module Apiwork
         end
 
         # @api public
-        # Sets the path format for URL path segments.
+        # The path format used for URL path segments.
         #
-        # Controls how resource names are transformed into URL paths.
-        # Does not affect payload keys or internal identifiers.
+        # @param format [Symbol] :keep, :kebab, :camel, or :underscore
+        # @return [Symbol]
         #
-        # @param format [Symbol] :keep (no transform), :kebab (kebab-case), :camel (camelCase)
-        # @return [Symbol] the current path format
-        #
-        # @example kebab-case paths for REST conventions
-        #   Apiwork::API.define '/api/v1' do
-        #     path_format :kebab
-        #     resources :recurring_invoices
-        #     # Routes: GET /api/v1/recurring-invoices
-        #   end
+        # @example
+        #   path_format :kebab
+        #   api_class.path_format  # => :kebab
         def path_format(format = nil)
           return @path_format if format.nil?
 
@@ -112,30 +109,34 @@ module Apiwork
         end
 
         # @api public
-        # Configures the adapter for this API.
+        # The adapter.
         #
-        # Adapters control serialization, pagination, filtering, and response
-        # formatting. Without arguments, uses the built-in :apiwork adapter.
+        # Defaults to `:standard` if no name is given.
         #
-        # @param name [Symbol] adapter name (:apiwork, or a registered custom adapter)
+        # @param name [Symbol] adapter name
         # @yield optional configuration block
+        # @return [Adapter::Base]
         # @see Adapter::Base
         #
-        # @example Use a custom adapter
-        #   Apiwork::API.define '/api/v1' do
-        #     adapter :my_adapter
-        #   end
-        #
-        # @example Configure pagination
-        #   Apiwork::API.define '/api/v1' do
-        #     adapter do
-        #       pagination do
-        #         strategy :offset
-        #         default_size 25
-        #         max_size 100
-        #       end
+        # @example Configure default adapter
+        #   adapter do
+        #     pagination do
+        #       default_size 25
         #     end
         #   end
+        #
+        # @example Custom adapter
+        #   adapter :custom
+        #
+        # @example Custom adapter with configuration
+        #   adapter :custom do
+        #     pagination do
+        #       default_size 25
+        #     end
+        #   end
+        #
+        # @example Getting
+        #   api_class.adapter  # => #<Apiwork::Adapter::Standard:...>
         def adapter(name = nil, &block)
           @adapter_name = name if name.is_a?(Symbol)
 
@@ -282,18 +283,17 @@ module Apiwork
         end
 
         # @api public
-        # Declares error codes that any action in this API may raise.
+        # API-wide error codes.
         #
-        # These are included in generated specs (OpenAPI, etc.) as possible
-        # error responses. Use `raises` in action definitions for action-specific errors.
+        # Included in generated specs (OpenAPI, etc.) as possible error responses.
         #
         # @param error_code_keys [Array<Symbol>] registered error code keys
+        # @return [Array<Symbol>]
         # @raise [ConfigurationError] if error code is not registered
         #
-        # @example Common API-wide errors
-        #   Apiwork::API.define '/api/v1' do
-        #     raises :unauthorized, :forbidden, :not_found
-        #   end
+        # @example
+        #   raises :unauthorized, :forbidden, :not_found
+        #   api_class.raises  # => [:unauthorized, :forbidden, :not_found]
         def raises(*error_code_keys)
           return @raises if error_code_keys.empty?
 
@@ -314,10 +314,10 @@ module Apiwork
         end
 
         # @api public
-        # Defines API metadata.
+        # API info.
         #
         # @yield block evaluated in {Info} context
-        # @return [void]
+        # @return [Info, nil]
         # @see API::Info
         #
         # @example
@@ -325,6 +325,7 @@ module Apiwork
         #     title 'My API'
         #     version '1.0.0'
         #   end
+        #   api_class.info.title  # => "My API"
         def info(&block)
           return @info unless block
 

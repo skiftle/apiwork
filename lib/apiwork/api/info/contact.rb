@@ -4,7 +4,7 @@ module Apiwork
   module API
     class Info
       # @api public
-      # Defines contact information for the API.
+      # Contact information block.
       #
       # Used within the `contact` block in {API::Info}.
       class Contact
@@ -15,15 +15,14 @@ module Apiwork
         end
 
         # @api public
-        # Sets or gets the contact name.
+        # The contact name.
         #
-        # @param name [String] the contact name
-        # @return [String, void]
+        # @param name [String]
+        # @return [String, nil]
         #
         # @example
-        #   contact do
-        #     name 'API Support'
-        #   end
+        #   name 'API Support'
+        #   contact.name  # => "API Support"
         def name(name = nil)
           return @name if name.nil?
 
@@ -31,15 +30,14 @@ module Apiwork
         end
 
         # @api public
-        # Sets or gets the contact email.
+        # The contact email.
         #
-        # @param email [String] the contact email
-        # @return [String, void]
+        # @param email [String]
+        # @return [String, nil]
         #
         # @example
-        #   contact do
-        #     email 'support@example.com'
-        #   end
+        #   email 'support@example.com'
+        #   contact.email  # => "support@example.com"
         def email(email = nil)
           return @email if email.nil?
 
@@ -47,15 +45,14 @@ module Apiwork
         end
 
         # @api public
-        # Sets or gets the contact URL.
+        # The contact URL.
         #
-        # @param url [String] the contact URL
-        # @return [String, void]
+        # @param url [String]
+        # @return [String, nil]
         #
         # @example
-        #   contact do
-        #     url 'https://example.com/support'
-        #   end
+        #   url 'https://example.com/support'
+        #   contact.url  # => "https://example.com/support"
         def url(url = nil)
           return @url if url.nil?
 

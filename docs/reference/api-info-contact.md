@@ -8,7 +8,7 @@ next: false
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/contact.rb#L10)
 
-Defines contact information for the API.
+Contact information block.
 
 Used within the `contact` block in [API::Info](api-info).
 
@@ -18,26 +18,25 @@ Used within the `contact` block in [API::Info](api-info).
 
 `#email(email = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/contact.rb#L43)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/contact.rb#L41)
 
-Sets or gets the contact email.
+The contact email.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `email` | `String` | the contact email |
+| `email` | `String` |  |
 
 **Returns**
 
-`String`, `void`
+`String`, `nil`
 
 **Example**
 
 ```ruby
-contact do
-  email 'support@example.com'
-end
+email 'support@example.com'
+contact.email  # => "support@example.com"
 ```
 
 ---
@@ -46,26 +45,25 @@ end
 
 `#name(name = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/contact.rb#L27)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/contact.rb#L26)
 
-Sets or gets the contact name.
+The contact name.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `name` | `String` | the contact name |
+| `name` | `String` |  |
 
 **Returns**
 
-`String`, `void`
+`String`, `nil`
 
 **Example**
 
 ```ruby
-contact do
-  name 'API Support'
-end
+name 'API Support'
+contact.name  # => "API Support"
 ```
 
 ---
@@ -74,26 +72,25 @@ end
 
 `#url(url = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/contact.rb#L59)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/contact.rb#L56)
 
-Sets or gets the contact URL.
+The contact URL.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `url` | `String` | the contact URL |
+| `url` | `String` |  |
 
 **Returns**
 
-`String`, `void`
+`String`, `nil`
 
 **Example**
 
 ```ruby
-contact do
-  url 'https://example.com/support'
-end
+url 'https://example.com/support'
+contact.url  # => "https://example.com/support"
 ```
 
 ---

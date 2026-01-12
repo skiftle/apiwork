@@ -8,7 +8,7 @@ next: false
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/server.rb#L10)
 
-Defines server information for the API.
+Server definition block.
 
 Used within the `server` block in [API::Info](api-info).
 
@@ -18,26 +18,25 @@ Used within the `server` block in [API::Info](api-info).
 
 `#description(description = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/server.rb#L42)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/server.rb#L40)
 
-Sets or gets the server description.
+The server description.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `description` | `String` | the server description |
+| `description` | `String` |  |
 
 **Returns**
 
-`String`, `void`
+`String`, `nil`
 
 **Example**
 
 ```ruby
-server do
-  description 'Production'
-end
+description 'Production'
+server.description  # => "Production"
 ```
 
 ---
@@ -46,26 +45,25 @@ end
 
 `#url(url = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/server.rb#L26)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/server.rb#L25)
 
-Sets or gets the server URL.
+The server URL.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `url` | `String` | the server URL |
+| `url` | `String` |  |
 
 **Returns**
 
-`String`, `void`
+`String`, `nil`
 
 **Example**
 
 ```ruby
-server do
-  url 'https://api.example.com'
-end
+url 'https://api.example.com'
+server.url  # => "https://api.example.com"
 ```
 
 ---

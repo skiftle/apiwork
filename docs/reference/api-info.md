@@ -6,12 +6,11 @@ next: false
 
 # API::Info
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L10)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L9)
 
-Defines API metadata.
+API info block.
 
-Sets title, version, contact, license, and servers.
-Used by export generators via [Export.generate](export#generate).
+Used within the `info` block in [API::Base](api-base).
 
 ## Instance Methods
 
@@ -19,13 +18,13 @@ Used by export generators via [Export.generate](export#generate).
 
 `#contact(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L83)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L80)
 
-Sets or gets contact information.
+Contact information.
 
 **Returns**
 
-[Contact](api-info-contact), `void`
+[Contact](api-info-contact), `nil`
 
 **See also**
 
@@ -37,6 +36,7 @@ Sets or gets contact information.
 contact do
   name 'Support'
 end
+info.contact.name  # => "Support"
 ```
 
 ---
@@ -45,7 +45,7 @@ end
 
 `#deprecated!`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L193)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L183)
 
 Marks the API as deprecated.
 
@@ -63,30 +63,49 @@ end
 
 ---
 
+### #deprecated?
+
+`#deprecated?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L194)
+
+Whether the API is deprecated.
+
+**Returns**
+
+`Boolean`
+
+**Example**
+
+```ruby
+info.deprecated?  # => true
+```
+
+---
+
 ### #description
 
 `#description(description = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L162)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L153)
 
-Sets or gets a detailed description for the API.
+A detailed description.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `description` | `String` | the description (supports Markdown) |
+| `description` | `String` | supports Markdown |
 
 **Returns**
 
-`String`, `void`
+`String`, `nil`
 
 **Example**
 
 ```ruby
-info do
-  description 'Full-featured API for managing invoices and payments.'
-end
+description 'Full-featured API for managing invoices and payments.'
+info.description  # => "Full-featured..."
 ```
 
 ---
@@ -95,13 +114,13 @@ end
 
 `#license(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L101)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L99)
 
-Sets or gets license information.
+License information.
 
 **Returns**
 
-[License](api-info-license), `void`
+[License](api-info-license), `nil`
 
 **See also**
 
@@ -113,6 +132,7 @@ Sets or gets license information.
 license do
   name 'MIT'
 end
+info.license.name  # => "MIT"
 ```
 
 ---
@@ -121,15 +141,15 @@ end
 
 `#server(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L128)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L121)
 
-Adds a server or gets all servers.
+Server definitions.
 
 Can be called multiple times to define multiple servers.
 
 **Returns**
 
-Array&lt;[Server](api-info-server)&gt;, `void`
+Array&lt;[Server](api-info-server)&gt;
 
 **See also**
 
@@ -138,16 +158,11 @@ Array&lt;[Server](api-info-server)&gt;, `void`
 **Example**
 
 ```ruby
-info do
-  server do
-    url 'https://api.example.com'
-    description 'Production'
-  end
-  server do
-    url 'https://staging-api.example.com'
-    description 'Staging'
-  end
+server do
+  url 'https://api.example.com'
+  description 'Production'
 end
+info.server  # => [#<Server ...>]
 ```
 
 ---
@@ -156,26 +171,25 @@ end
 
 `#summary(summary = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L146)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L138)
 
-Sets or gets a short summary for the API.
+A short summary.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `summary` | `String` | the summary |
+| `summary` | `String` |  |
 
 **Returns**
 
-`String`, `void`
+`String`, `nil`
 
 **Example**
 
 ```ruby
-info do
-  summary 'Invoice management API'
-end
+summary 'Invoice management API'
+info.summary  # => "Invoice management API"
 ```
 
 ---
@@ -184,26 +198,25 @@ end
 
 `#tags(*values)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L178)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L168)
 
-Sets or gets tags for the API.
+Tags for the API.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `values` | `Array<String>` | list of tags |
+| `values` | `Array<String>` |  |
 
 **Returns**
 
-`Array<String>`, `void`
+`Array<String>`
 
 **Example**
 
 ```ruby
-info do
-  tags 'invoices', 'payments'
-end
+tags 'invoices', 'payments'
+info.tags  # => ["invoices", "payments"]
 ```
 
 ---
@@ -212,26 +225,25 @@ end
 
 `#terms_of_service(url = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L66)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L62)
 
-Sets or gets the terms of service URL.
+The terms of service URL.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `url` | `String` | the terms of service URL |
+| `url` | `String` |  |
 
 **Returns**
 
-`String`, `void`
+`String`, `nil`
 
 **Example**
 
 ```ruby
-info do
-  terms_of_service 'https://example.com/terms'
-end
+terms_of_service 'https://example.com/terms'
+info.terms_of_service  # => "https://example.com/terms"
 ```
 
 ---
@@ -240,26 +252,25 @@ end
 
 `#title(title = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L34)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L32)
 
-Sets or gets the API title.
+The API title.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `title` | `String` | the title |
+| `title` | `String` |  |
 
 **Returns**
 
-`String`, `void`
+`String`, `nil`
 
 **Example**
 
 ```ruby
-info do
-  title 'Invoice API'
-end
+title 'Invoice API'
+info.title  # => "Invoice API"
 ```
 
 ---
@@ -268,26 +279,25 @@ end
 
 `#version(version = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L50)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L47)
 
-Sets or gets the API version.
+The API version.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `version` | `String` | the version (e.g. '1.0.0') |
+| `version` | `String` | e.g. '1.0.0' |
 
 **Returns**
 
-`String`, `void`
+`String`, `nil`
 
 **Example**
 
 ```ruby
-info do
-  version '1.0.0'
-end
+version '1.0.0'
+info.version  # => "1.0.0"
 ```
 
 ---

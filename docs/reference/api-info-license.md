@@ -8,7 +8,7 @@ next: false
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/license.rb#L10)
 
-Defines license information for the API.
+License information block.
 
 Used within the `license` block in [API::Info](api-info).
 
@@ -18,26 +18,25 @@ Used within the `license` block in [API::Info](api-info).
 
 `#name(name = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/license.rb#L26)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/license.rb#L25)
 
-Sets or gets the license name.
+The license name.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `name` | `String` | the license name (e.g. 'MIT', 'Apache 2.0') |
+| `name` | `String` | e.g. 'MIT', 'Apache 2.0' |
 
 **Returns**
 
-`String`, `void`
+`String`, `nil`
 
 **Example**
 
 ```ruby
-license do
-  name 'MIT'
-end
+name 'MIT'
+license.name  # => "MIT"
 ```
 
 ---
@@ -46,26 +45,25 @@ end
 
 `#url(url = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/license.rb#L42)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/license.rb#L40)
 
-Sets or gets the license URL.
+The license URL.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `url` | `String` | the license URL |
+| `url` | `String` |  |
 
 **Returns**
 
-`String`, `void`
+`String`, `nil`
 
 **Example**
 
 ```ruby
-license do
-  url 'https://opensource.org/licenses/MIT'
-end
+url 'https://opensource.org/licenses/MIT'
+license.url  # => "https://opensource.org/licenses/MIT"
 ```
 
 ---

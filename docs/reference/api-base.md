@@ -31,43 +31,56 @@ end
 
 `.adapter(name = nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L139)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L140)
 
-Configures the adapter for this API.
+The adapter.
 
-Adapters control serialization, pagination, filtering, and response
-formatting. Without arguments, uses the built-in :apiwork adapter.
+Defaults to `:standard` if no name is given.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `name` | `Symbol` | adapter name (:apiwork, or a registered custom adapter) |
+| `name` | `Symbol` | adapter name |
+
+**Returns**
+
+[Adapter::Base](adapter-base)
 
 **See also**
 
 - [Adapter::Base](adapter-base)
 
-**Example: Use a custom adapter**
+**Example: Configure default adapter**
 
 ```ruby
-Apiwork::API.define '/api/v1' do
-  adapter :my_adapter
+adapter do
+  pagination do
+    default_size 25
+  end
 end
 ```
 
-**Example: Configure pagination**
+**Example: Custom adapter**
 
 ```ruby
-Apiwork::API.define '/api/v1' do
-  adapter do
-    pagination do
-      strategy :offset
-      default_size 25
-      max_size 100
-    end
+adapter :custom
+```
+
+**Example: Custom adapter with configuration**
+
+```ruby
+adapter :custom do
+  pagination do
+    default_size 25
   end
 end
+```
+
+**Example: Getting**
+
+```ruby
+api_class.adapter  # => #<Apiwork::Adapter::Standard:...>
 ```
 
 ---
@@ -76,7 +89,7 @@ end
 
 `.concern(name, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L466)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L467)
 
 Defines a reusable concern for resources.
 
@@ -111,7 +124,7 @@ end
 
 `.enum(name, values: nil, scope: nil, description: nil, example: nil, deprecated: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L219)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L220)
 
 Defines a reusable enumeration type.
 
@@ -151,7 +164,7 @@ string :status, enum: :status
 
 `.export(name, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L95)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L92)
 
 Enables an export for this API.
 
@@ -190,13 +203,13 @@ end
 
 `.info(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L328)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L329)
 
-Defines API metadata.
+API info.
 
 **Returns**
 
-`void`
+[Info](api-info), `nil`
 
 **See also**
 
@@ -209,6 +222,7 @@ info do
   title 'My API'
   version '1.0.0'
 end
+api_class.info.title  # => "My API"
 ```
 
 ---
@@ -217,30 +231,25 @@ end
 
 `.key_format(format = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L43)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L46)
 
-Sets the key format for request/response transformation.
-
-Controls how JSON keys are transformed between client and server.
-Useful for JavaScript clients that prefer camelCase.
+The key format used for request/response transformation.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `format` | `Symbol` | :keep (no transform), :camel (to/from camelCase), :underscore |
+| `format` | `Symbol` | :keep, :camel, :underscore, or :kebab |
 
 **Returns**
 
-`Symbol` — the current key format
+`Symbol`
 
-**Example: camelCase for JavaScript clients**
+**Example**
 
 ```ruby
-Apiwork::API.define '/api/v1' do
-  key_format :camel
-  # { firstName: 'John' } ↔ { first_name: 'John' }
-end
+key_format :camel
+api_class.key_format  # => :camel
 ```
 
 ---
@@ -249,7 +258,7 @@ end
 
 `.object(name, scope: nil, description: nil, example: nil, format: nil, deprecated: false, schema_class: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L177)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L178)
 
 Defines a reusable object type (object shape).
 
@@ -291,35 +300,49 @@ end
 
 ---
 
+### .path
+
+`.path`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L35)
+
+The API mount path.
+
+**Returns**
+
+`String`
+
+**Example**
+
+```ruby
+api_class.path  # => "/api/v1"
+```
+
+---
+
 ### .path_format
 
 `.path_format(format = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L67)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L64)
 
-Sets the path format for URL path segments.
-
-Controls how resource names are transformed into URL paths.
-Does not affect payload keys or internal identifiers.
+The path format used for URL path segments.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `format` | `Symbol` | :keep (no transform), :kebab (kebab-case), :camel (camelCase) |
+| `format` | `Symbol` | :keep, :kebab, :camel, or :underscore |
 
 **Returns**
 
-`Symbol` — the current path format
+`Symbol`
 
-**Example: kebab-case paths for REST conventions**
+**Example**
 
 ```ruby
-Apiwork::API.define '/api/v1' do
-  path_format :kebab
-  resources :recurring_invoices
-  # Routes: GET /api/v1/recurring-invoices
-end
+path_format :kebab
+api_class.path_format  # => :kebab
 ```
 
 ---
@@ -330,10 +353,9 @@ end
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L297)
 
-Declares error codes that any action in this API may raise.
+API-wide error codes.
 
-These are included in generated specs (OpenAPI, etc.) as possible
-error responses. Use `raises` in action definitions for action-specific errors.
+Included in generated specs (OpenAPI, etc.) as possible error responses.
 
 **Parameters**
 
@@ -341,12 +363,15 @@ error responses. Use `raises` in action definitions for action-specific errors.
 |------|------|-------------|
 | `error_code_keys` | `Array<Symbol>` | registered error code keys |
 
-**Example: Common API-wide errors**
+**Returns**
+
+`Array<Symbol>`
+
+**Example**
 
 ```ruby
-Apiwork::API.define '/api/v1' do
-  raises :unauthorized, :forbidden, :not_found
-end
+raises :unauthorized, :forbidden, :not_found
+api_class.raises  # => [:unauthorized, :forbidden, :not_found]
 ```
 
 ---
@@ -355,7 +380,7 @@ end
 
 `.resource(name, concerns: nil, constraints: nil, contract: nil, controller: nil, defaults: nil, except: nil, only: nil, param: nil, path: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L417)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L418)
 
 Defines a singular resource (no index action, no :id in URL).
 
@@ -396,7 +421,7 @@ end
 
 `.resources(name, concerns: nil, constraints: nil, contract: nil, controller: nil, defaults: nil, except: nil, only: nil, param: nil, path: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L365)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L366)
 
 Defines a RESTful resource with standard CRUD actions.
 
@@ -446,7 +471,7 @@ end
 
 `.union(name, discriminator: nil, scope: nil, description: nil, deprecated: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L263)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L264)
 
 Defines a discriminated union type.
 
@@ -488,7 +513,7 @@ end
 
 `.with_options(options = {}, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L487)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L488)
 
 Applies options to all nested resource definitions.
 

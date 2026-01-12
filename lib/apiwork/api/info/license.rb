@@ -4,7 +4,7 @@ module Apiwork
   module API
     class Info
       # @api public
-      # Defines license information for the API.
+      # License information block.
       #
       # Used within the `license` block in {API::Info}.
       class License
@@ -14,15 +14,14 @@ module Apiwork
         end
 
         # @api public
-        # Sets or gets the license name.
+        # The license name.
         #
-        # @param name [String] the license name (e.g. 'MIT', 'Apache 2.0')
-        # @return [String, void]
+        # @param name [String] e.g. 'MIT', 'Apache 2.0'
+        # @return [String, nil]
         #
         # @example
-        #   license do
-        #     name 'MIT'
-        #   end
+        #   name 'MIT'
+        #   license.name  # => "MIT"
         def name(name = nil)
           return @name if name.nil?
 
@@ -30,15 +29,14 @@ module Apiwork
         end
 
         # @api public
-        # Sets or gets the license URL.
+        # The license URL.
         #
-        # @param url [String] the license URL
-        # @return [String, void]
+        # @param url [String]
+        # @return [String, nil]
         #
         # @example
-        #   license do
-        #     url 'https://opensource.org/licenses/MIT'
-        #   end
+        #   url 'https://opensource.org/licenses/MIT'
+        #   license.url  # => "https://opensource.org/licenses/MIT"
         def url(url = nil)
           return @url if url.nil?
 

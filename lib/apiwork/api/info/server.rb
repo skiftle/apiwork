@@ -4,7 +4,7 @@ module Apiwork
   module API
     class Info
       # @api public
-      # Defines server information for the API.
+      # Server definition block.
       #
       # Used within the `server` block in {API::Info}.
       class Server
@@ -14,15 +14,14 @@ module Apiwork
         end
 
         # @api public
-        # Sets or gets the server URL.
+        # The server URL.
         #
-        # @param url [String] the server URL
-        # @return [String, void]
+        # @param url [String]
+        # @return [String, nil]
         #
         # @example
-        #   server do
-        #     url 'https://api.example.com'
-        #   end
+        #   url 'https://api.example.com'
+        #   server.url  # => "https://api.example.com"
         def url(url = nil)
           return @url if url.nil?
 
@@ -30,15 +29,14 @@ module Apiwork
         end
 
         # @api public
-        # Sets or gets the server description.
+        # The server description.
         #
-        # @param description [String] the server description
-        # @return [String, void]
+        # @param description [String]
+        # @return [String, nil]
         #
         # @example
-        #   server do
-        #     description 'Production'
-        #   end
+        #   description 'Production'
+        #   server.description  # => "Production"
         def description(description = nil)
           return @description if description.nil?
 
