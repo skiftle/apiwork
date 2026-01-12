@@ -48,7 +48,6 @@ module Apiwork
       class_attribute :variants, default: {}
       class_attribute :_root, default: nil
       class_attribute :_adapter_config, default: {}
-      class_attribute :_sti_type, default: nil
       class_attribute :_description, default: nil
       class_attribute :_deprecated, default: false
       class_attribute :_example, default: nil
@@ -439,9 +438,8 @@ module Apiwork
           tag = as || model_class.sti_name
 
           self.variant_tag = tag.to_sym
-          self._sti_type = model_class.sti_name
 
-          superclass.register_variant(schema: self, sti_type: _sti_type, tag: variant_tag)
+          superclass.register_variant(self, variant_tag, model_class.sti_name)
 
           self
         end
@@ -597,8 +595,8 @@ module Apiwork
           end
         end
 
-        def register_variant(schema:, sti_type:, tag:)
-          self.variants = variants.merge(tag => { schema:, sti_type: })
+        def register_variant(schema_class, tag, type)
+          self.variants = variants.merge(tag => Variant.new(schema_class, type))
           self._abstract = true
         end
 
@@ -613,11 +611,11 @@ module Apiwork
         end
 
         def needs_discriminator_transform?
-          variants.any? { |tag, variant| tag.to_s != variant[:sti_type] }
+          variants.any? { |tag, variant| tag.to_s != variant.type }
         end
 
         def discriminator_sti_mapping
-          variants.transform_values { |variant| variant[:sti_type] }
+          variants.transform_values(&:type)
         end
 
         def deprecated?
@@ -668,11 +666,11 @@ module Apiwork
         end
 
         def resolve_sti_variant(record)
-          sti_type = record.public_send(discriminator_column)
-          variant = variants.values.find { |variant| variant[:sti_type] == sti_type }
+          discriminator_value = record.public_send(discriminator_column)
+          variant = variants.values.find { |variant| variant.type == discriminator_value }
           return nil unless variant
 
-          variant[:schema]
+          variant.schema_class
         end
 
         private

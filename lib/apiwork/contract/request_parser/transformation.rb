@@ -42,11 +42,7 @@ module Apiwork
 
           def apply_sti_discriminator_transform(params, definition)
             definition.params.each do |name, param_options|
-              if param_options[:sti_mapping] && params.key?(name)
-                mapping = param_options[:sti_mapping]
-                tag = params[name]
-                params[name] = mapping[tag.to_sym] if mapping.key?(tag.to_sym)
-              end
+              params[name] = param_options[:store] if param_options[:store] && params.key?(name)
 
               value = params[name]
               next unless value.is_a?(Hash)
@@ -116,36 +112,14 @@ module Apiwork
           end
 
           def transform_custom_type_array(value, param_definition, definition)
-            type_contract_class = param_definition.dig(:internal, :type_contract_class) ||
-                                  param_definition[:type_contract_class]
-            shape = resolve_custom_type_shape(param_definition[:of], definition, type_contract_class)
-
+            shape = resolve_custom_type_shape(param_definition[:of], definition)
             return value.map { |item| item.is_a?(Hash) ? apply(item, shape) : item } if shape
 
-            transform_union_type_array(value, param_definition, definition)
+            nil
           end
 
-          def transform_union_type_array(value, param_definition, definition)
-            type_contract_class = param_definition.dig(:internal, :type_contract_class) ||
-                                  param_definition[:type_contract_class]
-            return nil unless type_contract_class
-
-            action_name = definition.action_name || :create
-            nested_request = type_contract_class.action_for(action_name)&.request
-            nested_definition = nested_request&.body_param
-
-            return nil unless nested_definition
-
-            root_param = nested_definition.params.values.first
-            nested_shape = root_param[:shape] if root_param
-
-            return nil unless nested_shape
-
-            value.map { |item| item.is_a?(Hash) ? apply(item, nested_shape) : item }
-          end
-
-          def resolve_custom_type_shape(type_name, definition, type_contract_class = nil)
-            contract_class = type_contract_class || definition&.contract_class
+          def resolve_custom_type_shape(type_name, definition)
+            contract_class = definition&.contract_class
             return nil unless contract_class
 
             type_definition = contract_class.resolve_custom_type(type_name)

@@ -314,9 +314,7 @@ module Apiwork
       end
 
       def validate_array_item_with_type(item, index, param_options, item_path, current_depth, max_depth)
-        contract_class_for_custom_type = param_options.dig(:internal, :type_contract_class) ||
-                                         param_options[:type_contract_class] ||
-                                         @param_definition.contract_class
+        contract_class_for_custom_type = @param_definition.contract_class
         type_definition = contract_class_for_custom_type.resolve_custom_type(param_options[:of])
 
         if type_definition

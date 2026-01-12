@@ -51,29 +51,21 @@ module Apiwork
         optional: nil,
         required: nil,
         shape: nil,
+        store: nil,
         type: nil,
         value: nil,
-        internal: {},
         &block
       )
-        visited_types = internal[:visited_types]
-        decoder = internal[:decoder]
-        sti_mapping = internal[:sti_mapping]
-        type_contract_class = internal[:type_contract_class]
-
         options = {
-          decoder:,
           deprecated:,
           description:,
           example:,
           format:,
-          internal:,
           max:,
           min:,
           nullable:,
           required:,
-          sti_mapping:,
-          type_contract_class:,
+          store:,
         }.compact
         if type.nil? && (existing_param = @params[name])
           merge_existing_param(
@@ -102,7 +94,7 @@ module Apiwork
 
         case type
         when :literal
-          define_literal_param(name, as:, default:, options:, value:, optional: optional || false)
+          define_literal_param(name, as:, default:, deprecated:, description:, store:, value:, optional: optional || false)
         when :union
           define_union_param(
             name,
@@ -544,15 +536,19 @@ module Apiwork
       def literal(
         name,
         value:,
+        as: nil,
         deprecated: nil,
         description: nil,
-        optional: false
+        optional: false,
+        store: nil
       )
         param(
           name,
+          as:,
           deprecated:,
           description:,
           optional:,
+          store:,
           value:,
           type: :literal,
         )
@@ -898,20 +894,20 @@ module Apiwork
         }.merge(param_hash)
       end
 
-      def define_literal_param(name, as:, default:, optional:, options:, value:)
-        raise ArgumentError, 'Literal type requires a value parameter' if value.nil? && !options.key?(:value)
-
-        literal_value = value.nil? ? options[:value] : value
+      def define_literal_param(name, as:, default:, deprecated:, description:, optional:, store:, value:)
+        raise ArgumentError, 'Literal type requires a value parameter' if value.nil?
 
         @params[name] = apply_param_defaults(
           {
-            name:,
-            type: :literal,
-            value: literal_value,
-            optional:,
-            default:,
             as:,
-            **options.except(:value),
+            default:,
+            deprecated:,
+            description:,
+            name:,
+            optional:,
+            store:,
+            value:,
+            type: :literal,
           },
         )
       end

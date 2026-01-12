@@ -164,9 +164,6 @@ module Apiwork
               optional: true,
             }
 
-            internal = {}
-            internal[:type_contract_class] = association_contract if association_contract
-
             if association_payload_type
               if association_definition.collection?
                 param_options[:type] = :array
@@ -178,7 +175,7 @@ module Apiwork
               param_options[:type] = association_definition.collection? ? :array : :object
             end
 
-            param_definition.param name, **param_options, internal:
+            param_definition.param name, **param_options
           end
         end
 
@@ -305,7 +302,8 @@ module Apiwork
           discriminator_name = schema_class.discriminator_name
           discriminator_column = schema_class.discriminator_column
           builder = self
-          sti_mapping = schema_class.needs_discriminator_transform? ? schema_class.discriminator_sti_mapping : nil
+          needs_transform = schema_class.needs_discriminator_transform?
+          local_schema_class = schema_class
 
           build_sti_union(union_type_name: union_type_name) do |variant_schema, tag, _visited|
             variant_schema_name = variant_schema.name.demodulize.delete_suffix('Schema').underscore
@@ -313,11 +311,12 @@ module Apiwork
 
             unless registrar.api_registrar.type?(variant_type_name)
               registrar.api_registrar.object(variant_type_name) do
-                # Rename discriminator from API name to DB column if different
                 as_column = discriminator_name != discriminator_column ? discriminator_column : nil
-                # Discriminator is optional for update actions since it's inferred from the existing record
                 discriminator_optional = action_name == :update
-                param discriminator_name, as: as_column, internal: { sti_mapping: }, optional: discriminator_optional, type: :literal, value: tag.to_s
+                variant = local_schema_class.variants[tag.to_sym]
+                store_value = needs_transform && variant ? variant.type : nil
+
+                literal discriminator_name, as: as_column, optional: discriminator_optional, store: store_value, value: tag.to_s
 
                 builder.send(:writable_params, self, action_name, nested: false, target_schema: variant_schema)
               end
@@ -842,7 +841,7 @@ module Apiwork
           discriminator_name = schema_class.discriminator_name
 
           variant_types = variants.filter_map do |tag, variant_data|
-            variant_schema = variant_data[:schema]
+            variant_schema = variant_data.schema_class
             variant_type = yield(variant_schema, tag, visited)
             { tag: tag.to_s, type: variant_type } if variant_type
           end
