@@ -157,9 +157,7 @@ RSpec.describe 'Error Codes', type: :integration do
 
     it 'declares global error codes for all actions' do
       expect(api_class).to be_present
-
-      structure = api_class.structure
-      expect(structure.raises).to include(:bad_request, :internal_server_error)
+      expect(api_class.raises).to include(:bad_request, :internal_server_error)
     end
   end
 

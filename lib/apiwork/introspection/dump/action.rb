@@ -69,7 +69,7 @@ module Apiwork
           api_class = @contract_action.contract_class.api_class
           return [] unless api_class
 
-          api_class.structure.raises || []
+          api_class.raises
         end
 
         def auto_raises

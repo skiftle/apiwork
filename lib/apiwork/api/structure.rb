@@ -6,15 +6,10 @@ module Apiwork
       attr_reader :namespaces,
                   :path
 
-      attr_accessor :info,
-                    :raises
-
       def initialize(path)
         @path = path
         @namespaces = extract_namespaces(path)
         @resources = {}
-        @info = nil
-        @raises = []
 
         @resource_stack = []
         @current_options = nil

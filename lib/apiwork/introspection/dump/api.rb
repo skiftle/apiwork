@@ -26,7 +26,7 @@ module Apiwork
         private
 
         def collect_all_error_code_keys(resources)
-          error_code_keys = Set.new(@api_class.structure.raises)
+          error_code_keys = Set.new(@api_class.raises)
 
           collect_action_error_codes(resources, error_code_keys)
 
@@ -62,7 +62,7 @@ module Apiwork
         end
 
         def build_info
-          info = @api_class.structure.info
+          info = @api_class.info
           return nil unless info
 
           {

@@ -295,6 +295,8 @@ module Apiwork
         #     raises :unauthorized, :forbidden, :not_found
         #   end
         def raises(*error_code_keys)
+          return @raises if error_code_keys.empty?
+
           error_code_keys = error_code_keys.flatten.uniq
           error_code_keys.each do |error_code_key|
             unless error_code_key.is_a?(Symbol)
@@ -308,7 +310,7 @@ module Apiwork
                   "Unknown error code :#{error_code_key}. Register it with: " \
                   "Apiwork::ErrorCode.register :#{error_code_key}, status: <status>"
           end
-          @structure.raises = error_code_keys
+          @raises = error_code_keys
         end
 
         # @api public
@@ -324,9 +326,10 @@ module Apiwork
         #     version '1.0.0'
         #   end
         def info(&block)
-          info = Info.new
-          info.instance_eval(&block)
-          @structure.info = info
+          return @info unless block
+
+          @info = Info.new
+          @info.instance_eval(&block)
         end
 
         # @api public
@@ -487,6 +490,8 @@ module Apiwork
 
         def mount(path)
           @path = path
+          @info = nil
+          @raises = []
           @exports = Set.new
           @export_configs = {}
           @adapter_config = {}
