@@ -83,7 +83,7 @@ RSpec.describe 'Singular Resource API', type: :request do
     end
 
     it 'has belongs_to association configured' do
-      associations = Api::V1::ProfileSchema.association_definitions
+      associations = Api::V1::ProfileSchema.associations
       user_assoc = associations[:user]
 
       expect(user_assoc).to be_present

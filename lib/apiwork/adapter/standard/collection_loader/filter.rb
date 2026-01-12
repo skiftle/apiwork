@@ -177,7 +177,7 @@ module Apiwork
             filter.each_with_object([[], {}]) do |(key, value), (conditions, joins)|
               key = key.to_sym
 
-              if (attribute_definition = schema_class.attribute_definitions[key])&.filterable?
+              if (attribute_definition = schema_class.attributes[key])&.filterable?
                 next unless filterable_for_context?(attribute_definition)
 
                 condition_result = build_column_condition(key, value, target_klass)
@@ -202,7 +202,7 @@ module Apiwork
           end
 
           def collect_filterable_error(key, target_klass)
-            available = schema_class.attribute_definitions
+            available = schema_class.attributes
               .values
               .select(&:filterable?)
               .map(&:name)
@@ -283,7 +283,7 @@ module Apiwork
           end
 
           def find_filterable_association(key)
-            association = schema_class.association_definitions[key]
+            association = schema_class.associations[key]
             return unless association
             return unless association.filterable?
 

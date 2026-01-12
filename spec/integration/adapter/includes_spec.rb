@@ -60,13 +60,13 @@ RSpec.describe 'Includes API', type: :request do
     let(:api_class) { Apiwork::API.find('/api/v1') }
 
     before do
-      Api::V1::CommentSchema.association_definitions[:post].instance_variable_set(:@include, :optional)
+      Api::V1::CommentSchema.associations[:post].instance_variable_set(:@include, :optional)
       api_class.reset_contracts!
       api_class.ensure_all_contracts_built!
     end
 
     after do
-      Api::V1::CommentSchema.association_definitions[:post].instance_variable_set(:@include, :optional)
+      Api::V1::CommentSchema.associations[:post].instance_variable_set(:@include, :optional)
       api_class.reset_contracts!
     end
 
@@ -97,15 +97,15 @@ RSpec.describe 'Includes API', type: :request do
       let(:api_class) { Apiwork::API.find('/api/v1') }
 
       before do
-        Api::V1::CommentSchema.association_definitions[:post].instance_variable_set(:@include, :optional)
-        Api::V1::PostSchema.association_definitions[:comments].instance_variable_set(:@include, :always)
+        Api::V1::CommentSchema.associations[:post].instance_variable_set(:@include, :optional)
+        Api::V1::PostSchema.associations[:comments].instance_variable_set(:@include, :always)
         api_class.reset_contracts!
         api_class.ensure_all_contracts_built!
       end
 
       after do
-        Api::V1::PostSchema.association_definitions[:comments].instance_variable_set(:@include, :optional)
-        Api::V1::CommentSchema.association_definitions[:post].instance_variable_set(:@include, :optional)
+        Api::V1::PostSchema.associations[:comments].instance_variable_set(:@include, :optional)
+        Api::V1::CommentSchema.associations[:post].instance_variable_set(:@include, :optional)
         api_class.reset_contracts!
       end
 

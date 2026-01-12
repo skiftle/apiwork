@@ -17,7 +17,7 @@ module Apiwork
           end
 
           def load(params)
-            return @relation if schema_class.association_definitions.empty?
+            return @relation if schema_class.associations.empty?
 
             includes_hash = IncludesResolver.new(schema_class).build(params:, for_collection: true)
             return @relation if includes_hash.empty?

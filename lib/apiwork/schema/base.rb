@@ -40,14 +40,24 @@ module Apiwork
     class Base
       include Abstractable
 
-      class_attribute :attribute_definitions, default: {}
-      class_attribute :association_definitions, default: {}
+      # @!method self.attributes
+      #   @api public
+      #   @return [Hash{Symbol => Attribute}] defined attributes
+      class_attribute :attributes, default: {}, instance_accessor: false
+
+      # @!method self.associations
+      #   @api public
+      #   @return [Hash{Symbol => Association}] defined associations
+      class_attribute :associations, default: {}, instance_accessor: false
+
       class_attribute :discriminator_column, default: nil
       class_attribute :discriminator_name, default: nil
       class_attribute :variant_tag, default: nil
-      # @api public
-      # @return [Hash{Symbol => Variant}] registered variants
-      class_attribute :variants, default: {}
+
+      # @!method self.variants
+      #   @api public
+      #   @return [Hash{Symbol => Variant}] registered variants
+      class_attribute :variants, default: {}, instance_accessor: false
       class_attribute :_root, default: nil
       class_attribute :_adapter_config, default: {}
       class_attribute :_description, default: nil
@@ -192,8 +202,8 @@ module Apiwork
           writable: nil,
           &block
         )
-          self.attribute_definitions = attribute_definitions.merge(
-            name => AttributeDefinition.new(
+          self.attributes = attributes.merge(
+            name => Attribute.new(
               name,
               self,
               decode:,
@@ -264,8 +274,8 @@ module Apiwork
           sortable: false,
           writable: false
         )
-          self.association_definitions = association_definitions.merge(
-            name => AssociationDefinition.new(
+          self.associations = associations.merge(
+            name => Association.new(
               name,
               :has_one,
               self,
@@ -319,8 +329,8 @@ module Apiwork
           sortable: false,
           writable: false
         )
-          self.association_definitions = association_definitions.merge(
-            name => AssociationDefinition.new(
+          self.associations = associations.merge(
+            name => Association.new(
               name,
               :has_many,
               self,
@@ -370,8 +380,8 @@ module Apiwork
           sortable: false,
           writable: false
         )
-          self.association_definitions = association_definitions.merge(
-            name => AssociationDefinition.new(
+          self.associations = associations.merge(
+            name => Association.new(
               name,
               :belongs_to,
               self,
@@ -633,13 +643,13 @@ module Apiwork
 
           result = hash.dup
 
-          attribute_definitions.each do |name, definition|
+          attributes.each do |name, definition|
             next unless result.key?(name)
 
             result[name] = definition.decode(result[name])
           end
 
-          association_definitions.each do |name, definition|
+          associations.each do |name, definition|
             next unless result.key?(name)
 
             schema_class = definition.schema_class
@@ -721,13 +731,13 @@ module Apiwork
 
         add_discriminator_field(fields) if self.class.sti_variant?
 
-        self.class.attribute_definitions.each do |attribute, definition|
+        self.class.attributes.each do |attribute, definition|
           value = respond_to?(attribute) ? public_send(attribute) : object.public_send(attribute)
           value = definition.encode(value)
           fields[attribute] = value
         end
 
-        self.class.association_definitions.each do |association, definition|
+        self.class.associations.each do |association, definition|
           next unless should_include_association?(association, definition)
 
           fields[association] = serialize_association(association, definition)
@@ -794,7 +804,7 @@ module Apiwork
       def circular_reference?(definition)
         return false unless definition.schema_class
 
-        definition.schema_class.association_definitions.values.any? do |association_definition|
+        definition.schema_class.associations.values.any? do |association_definition|
           association_definition.always_included? && association_definition.schema_class == self.class
         end
       end

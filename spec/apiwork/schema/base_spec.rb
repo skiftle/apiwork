@@ -44,7 +44,7 @@ RSpec.describe Apiwork::Schema::Base do
       expect(result[:notes]).to eq('Some notes')
     end
 
-    it 'ignores keys not in attribute_definitions' do
+    it 'ignores keys not in attributes' do
       result = schema_class.deserialize({ title: 'Hello', unknown_key: 'ignored' })
 
       expect(result[:title]).to eq('Hello')
@@ -200,7 +200,7 @@ RSpec.describe Apiwork::Schema::Base do
     end
   end
 
-  describe Apiwork::Schema::AttributeDefinition do
+  describe Apiwork::Schema::Attribute do
     let(:schema_class) do
       Class.new(Apiwork::Schema::Base) do
         abstract!
@@ -279,7 +279,7 @@ RSpec.describe Apiwork::Schema::Base do
   end
 
   describe '.attribute' do
-    it 'passes block to AttributeDefinition' do
+    it 'passes block to Attribute' do
       schema_class = Class.new(described_class) do
         abstract!
 
@@ -290,7 +290,7 @@ RSpec.describe Apiwork::Schema::Base do
         end
       end
 
-      definition = schema_class.attribute_definitions[:settings]
+      definition = schema_class.attributes[:settings]
 
       expect(definition.inline_element).to be_a(Apiwork::Schema::Element)
       expect(definition.type).to eq(:object)
@@ -303,7 +303,7 @@ RSpec.describe Apiwork::Schema::Base do
         attribute :tags, of: :string, type: :array
       end
 
-      definition = schema_class.attribute_definitions[:tags]
+      definition = schema_class.attributes[:tags]
 
       expect(definition.type).to eq(:array)
       expect(definition.of).to eq(:string)

@@ -18,7 +18,7 @@ RSpec.describe 'Polymorphic associations', type: :integration do
         belongs_to :commentable, polymorphic: { post: post_schema, video: video_schema }
       end
 
-      association_def = schema.association_definitions[:commentable]
+      association_def = schema.associations[:commentable]
       expect(association_def.polymorphic?).to be true
       expect(association_def.polymorphic).to eq({ post: post_schema, video: video_schema })
     end
@@ -37,7 +37,7 @@ RSpec.describe 'Polymorphic associations', type: :integration do
         belongs_to :commentable, polymorphic: %i[post video]
       end
 
-      association_def = schema.association_definitions[:commentable]
+      association_def = schema.associations[:commentable]
       expect(association_def.polymorphic?).to be true
       expect(association_def.polymorphic).to eq({ post: nil, video: nil })
       expect(association_def.resolve_polymorphic_schema(:post)).to eq(Api::V1::PostSchema)
@@ -97,7 +97,7 @@ RSpec.describe 'Polymorphic associations', type: :integration do
         belongs_to :commentable, polymorphic: { post: post_schema, video: video_schema }
       end
 
-      association_def = schema.association_definitions[:commentable]
+      association_def = schema.associations[:commentable]
       expect(association_def.discriminator).to eq(:commentable_type)
     end
   end

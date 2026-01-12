@@ -84,7 +84,7 @@ module Apiwork
 
       def extract_filterable_type_variants(schemas)
         filterable_attributes = schemas
-          .flat_map { |schema| schema.attribute_definitions.values }
+          .flat_map { |schema| schema.attributes.values }
           .select(&:filterable?)
 
         filterable = filterable_attributes.map(&:type).to_set
@@ -95,8 +95,8 @@ module Apiwork
 
       def check_sortable(schemas)
         schemas.any? do |schema|
-          schema.attribute_definitions.values.any?(&:sortable?) ||
-            schema.association_definitions.values.any?(&:sortable?)
+          schema.attributes.values.any?(&:sortable?) ||
+            schema.associations.values.any?(&:sortable?)
         end
       end
     end

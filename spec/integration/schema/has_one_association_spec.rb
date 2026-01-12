@@ -18,7 +18,7 @@ RSpec.describe 'has_one Association', type: :request do
 
   describe 'has_one association in schema definition' do
     it 'schema has has_one association defined' do
-      associations = Api::V1::UserSchema.association_definitions
+      associations = Api::V1::UserSchema.associations
       profile_assoc = associations[:profile]
 
       expect(profile_assoc).to be_present
@@ -26,7 +26,7 @@ RSpec.describe 'has_one Association', type: :request do
     end
 
     it 'has_one association is singular' do
-      associations = Api::V1::UserSchema.association_definitions
+      associations = Api::V1::UserSchema.associations
       profile_assoc = associations[:profile]
 
       expect(profile_assoc.singular?).to be(true)

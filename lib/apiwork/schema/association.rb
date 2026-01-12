@@ -2,17 +2,49 @@
 
 module Apiwork
   module Schema
-    class AssociationDefinition
+    # @api public
+    # Represents an association defined on a schema.
+    #
+    # Associations map to model relationships and define serialization behavior.
+    # Used by adapters to build contracts and serialize records.
+    #
+    # @example
+    #   association = InvoiceSchema.associations[:customer]
+    #   association.name         # => :customer
+    #   association.type         # => :belongs_to
+    #   association.schema_class # => CustomerSchema
+    class Association
+      # @api public
+      # @return [Boolean] whether this association is deprecated
+      attr_reader :deprecated
+
+      # @api public
+      # @return [String, nil] documentation description
+      attr_reader :description
+
+      # @api public
+      # @return [Object, nil] example value for documentation
+      attr_reader :example
+
+      # @api public
+      # @return [Symbol] association name
+      attr_reader :name
+
+      # @api public
+      # @return [Hash, nil] polymorphic type mappings
+      attr_reader :polymorphic
+
+      # @api public
+      # @return [Schema::Base, nil] the associated schema class
+      attr_reader :schema_class
+
+      # @api public
+      # @return [Symbol] association type (:has_one, :has_many, :belongs_to)
+      attr_reader :type
+
       attr_reader :allow_destroy,
-                  :deprecated,
-                  :description,
                   :discriminator,
-                  :example,
-                  :model_class,
-                  :name,
-                  :polymorphic,
-                  :schema_class,
-                  :type
+                  :model_class
 
       def initialize(
         name,
@@ -59,38 +91,57 @@ module Apiwork
         validate_query_options!
       end
 
+      # @api public
+      # @return [Boolean] whether filtering is enabled
       def filterable?
         @filterable
       end
 
+      # @api public
+      # @return [Boolean] whether sorting is enabled
       def sortable?
         @sortable
       end
 
+      # @api public
+      # @return [Boolean] whether this association is always included
       def always_included?
         @include == :always
       end
 
+      # @api public
+      # @return [Boolean] whether this association is writable
       def writable?
         @writable[:on].any?
       end
 
+      # @api public
+      # @param action [Symbol] the action to check (:create or :update)
+      # @return [Boolean] whether this association is writable for the given action
       def writable_for?(action)
         @writable[:on].include?(action)
       end
 
+      # @api public
+      # @return [Boolean] whether this is a has_many association
       def collection?
         @type == :has_many
       end
 
+      # @api public
+      # @return [Boolean] whether this is a has_one or belongs_to association
       def singular?
         %i[has_one belongs_to].include?(@type)
       end
 
+      # @api public
+      # @return [Boolean] whether this is a polymorphic association
       def polymorphic?
         @polymorphic.present?
       end
 
+      # @api public
+      # @return [Boolean] whether this association can be null
       def nullable?
         return @nullable unless @nullable.nil?
         return false unless @type == :belongs_to

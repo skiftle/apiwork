@@ -46,7 +46,7 @@ module Apiwork
             contract_class = definition.contract_class
             return nil unless contract_class.schema_class
 
-            contract_class.schema_class.attribute_definitions[param_name]
+            contract_class.schema_class.attributes[param_name]
           end
 
           def resolve_schema_class(param_options, definition)

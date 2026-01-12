@@ -41,7 +41,7 @@ module Apiwork
                 next
               end
 
-              association_definition = schema_class.association_definitions[key]
+              association_definition = schema_class.associations[key]
 
               next unless association_definition
 
@@ -51,7 +51,7 @@ module Apiwork
 
               nested_schema_class = association_definition.schema_class
 
-              next unless nested_schema_class.respond_to?(:association_definitions)
+              next unless nested_schema_class.respond_to?(:associations)
 
               extractor = self.class.new(nested_schema_class)
               nested_includes = extractor.extract_from_filter(value, visited)
@@ -75,7 +75,7 @@ module Apiwork
 
               sort_item.each do |key, value|
                 key = key.to_sym
-                association_definition = schema_class.association_definitions[key]
+                association_definition = schema_class.associations[key]
 
                 next unless association_definition
 
@@ -85,7 +85,7 @@ module Apiwork
 
                 nested_schema_class = association_definition.schema_class
 
-                next unless nested_schema_class.respond_to?(:association_definitions)
+                next unless nested_schema_class.respond_to?(:associations)
 
                 extractor = self.class.new(nested_schema_class)
                 nested_includes = extractor.extract_from_sort(value, visited)

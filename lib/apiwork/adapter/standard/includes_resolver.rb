@@ -11,7 +11,7 @@ module Apiwork
         end
 
         def build(for_collection: true, params: {})
-          return {} if schema_class.association_definitions.empty?
+          return {} if schema_class.associations.empty?
 
           combined = {}
 
@@ -35,7 +35,7 @@ module Apiwork
           visited = visited.dup.add(schema_class.name)
           result = {}
 
-          schema_class.association_definitions.each do |name, definition|
+          schema_class.associations.each do |name, definition|
             next unless definition.always_included?
 
             association = schema_class.model_class.reflect_on_association(name)
@@ -71,7 +71,7 @@ module Apiwork
 
           include_params.each do |key, value|
             key = key.to_sym
-            association_definition = schema_class.association_definitions[key]
+            association_definition = schema_class.associations[key]
 
             if false?(value)
               next if association_definition&.always_included?

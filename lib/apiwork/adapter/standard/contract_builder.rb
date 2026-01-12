@@ -71,7 +71,7 @@ module Apiwork
 
           param_definition.reference :page, optional: true, to: build_page_type
 
-          return unless schema_class.association_definitions.any?
+          return unless schema_class.associations.any?
 
           include_type = build_include_type
           param_definition.reference :include, optional: true, to: include_type if include_type
@@ -98,7 +98,7 @@ module Apiwork
 
         def writable_params(param_definition, action_name, nested: false, target_schema: nil)
           target_schema_class = target_schema || schema_class
-          target_schema_class.attribute_definitions.each do |name, attribute_definition|
+          target_schema_class.attributes.each do |name, attribute_definition|
             next unless attribute_definition.writable_for?(action_name)
 
             param_options = {
@@ -132,7 +132,7 @@ module Apiwork
             param_definition.param name, **param_options
           end
 
-          target_schema_class.association_definitions.each do |name, association_definition|
+          target_schema_class.associations.each do |name, association_definition|
             next unless association_definition.writable_for?(action_name)
 
             association_resource = resolve_association_resource(association_definition)
@@ -180,7 +180,7 @@ module Apiwork
         end
 
         def build_enums
-          schema_class.attribute_definitions.each do |name, attribute_definition|
+          schema_class.attributes.each do |name, attribute_definition|
             next unless attribute_definition.enum&.any?
 
             registrar.enum(name, values: attribute_definition.enum)
@@ -289,7 +289,7 @@ module Apiwork
 
           contract_action.request do
             query do
-              if builder.send(:schema_class).association_definitions.any?
+              if builder.send(:schema_class).associations.any?
                 include_type = builder.send(:build_include_type)
                 reference :include, optional: true, to: include_type if include_type
               end
@@ -341,7 +341,7 @@ module Apiwork
 
         def register_resource_type(type_name)
           association_type_map = {}
-          schema_class.association_definitions.each do |name, association_definition|
+          schema_class.associations.each do |name, association_definition|
             association_type_map[name] = build_association_type(association_definition)
           end
 
@@ -350,7 +350,7 @@ module Apiwork
           schema_class_local = schema_class
           builder = self
           registrar.object(type_name, schema_class: schema_class_local) do
-            schema_class_local.attribute_definitions.each do |name, attribute_definition|
+            schema_class_local.attributes.each do |name, attribute_definition|
               enum_option = attribute_definition.enum ? { enum: name } : {}
               of_option = attribute_definition.of ? { of: attribute_definition.of } : {}
 
@@ -380,7 +380,7 @@ module Apiwork
               param name, **param_options
             end
 
-            schema_class_local.association_definitions.each do |name, association_definition|
+            schema_class_local.associations.each do |name, association_definition|
               association_type = association_type_map[name]
 
               base_options = {
@@ -422,7 +422,7 @@ module Apiwork
           builder = self
           schema_class_local = schema_class
 
-          schema_class_local.attribute_definitions.each do |name, attribute_definition|
+          schema_class_local.attributes.each do |name, attribute_definition|
             next unless attribute_definition.filterable?
             next unless attribute_definition.enum
 
@@ -441,7 +441,7 @@ module Apiwork
             end
             reference :_not, optional: true, to: type_name
 
-            schema_class_local.attribute_definitions.each do |name, attribute_definition|
+            schema_class_local.attributes.each do |name, attribute_definition|
               next unless attribute_definition.filterable?
               next if attribute_definition.type == :unknown
 
@@ -462,7 +462,7 @@ module Apiwork
               end
             end
 
-            schema_class_local.association_definitions.each do |name, association_definition|
+            schema_class_local.associations.each do |name, association_definition|
               next unless association_definition.filterable?
 
               association_resource = builder.send(:resolve_association_resource, association_definition)
@@ -514,13 +514,13 @@ module Apiwork
           type_options = {} unless depth.zero?
 
           registrar.object(type_name, **type_options) do
-            schema_class_local.attribute_definitions.each do |name, attribute_definition|
+            schema_class_local.attributes.each do |name, attribute_definition|
               next unless attribute_definition.sortable?
 
               reference name, optional: true, to: :sort_direction
             end
 
-            schema_class_local.association_definitions.each do |name, association_definition|
+            schema_class_local.associations.each do |name, association_definition|
               next unless association_definition.sortable?
 
               association_resource = builder.send(:resolve_association_resource, association_definition)
@@ -583,7 +583,7 @@ module Apiwork
         end
 
         def build_include_type(depth: 0, visited: Set.new)
-          return nil unless schema_class.association_definitions.any?
+          return nil unless schema_class.associations.any?
           return nil unless has_includable_params?(depth:, visited:)
 
           type_name = type_name(:include, depth)
@@ -599,7 +599,7 @@ module Apiwork
           registrar_local = registrar
 
           registrar.object(type_name) do
-            schema_class_local.association_definitions.each do |name, association_definition|
+            schema_class_local.associations.each do |name, association_definition|
               if association_definition.polymorphic?
                 boolean name, optional: true unless association_definition.always_included?
                 next
@@ -647,7 +647,7 @@ module Apiwork
 
           new_visited = visited.dup.add(schema_class)
 
-          schema_class.association_definitions.values.any? do |association_definition|
+          schema_class.associations.values.any? do |association_definition|
             if association_definition.polymorphic?
               !association_definition.always_included?
             else
@@ -672,8 +672,8 @@ module Apiwork
         end
 
         def build_nested_payload_union
-          return unless schema_class.attribute_definitions.values.any?(&:writable?) ||
-                        schema_class.association_definitions.values.any?(&:writable?)
+          return unless schema_class.attributes.values.any?(&:writable?) ||
+                        schema_class.associations.values.any?(&:writable?)
 
           create_type_name = :nested_create_payload
           builder = self
@@ -741,12 +741,12 @@ module Apiwork
             end
 
             association_type_map = {}
-            schema_class_local.association_definitions.each do |name, association_definition|
+            schema_class_local.associations.each do |name, association_definition|
               result = builder.send(:build_association_type, association_definition, visited:)
               association_type_map[name] = result
             end
 
-            schema_class_local.attribute_definitions.each do |name, attribute_definition|
+            schema_class_local.attributes.each do |name, attribute_definition|
               enum_option = attribute_definition.enum ? { enum: name } : {}
               param name,
                     deprecated: attribute_definition.deprecated,
@@ -758,7 +758,7 @@ module Apiwork
                     **enum_option
             end
 
-            schema_class_local.association_definitions.each do |name, association_definition|
+            schema_class_local.associations.each do |name, association_definition|
               association_type = association_type_map[name]
               is_optional = !association_definition.always_included?
 
@@ -876,7 +876,7 @@ module Apiwork
               registrar.api_registrar.object(variant_type_name, schema_class: variant_schema) do
                 literal discriminator_name, value: tag.to_s
 
-                variant_schema.attribute_definitions.each do |name, attribute_definition|
+                variant_schema.attributes.each do |name, attribute_definition|
                   enum_option = attribute_definition.enum ? { enum: name } : {}
                   param name,
                         deprecated: attribute_definition.deprecated,
@@ -1018,13 +1018,13 @@ module Apiwork
         end
 
         def has_filterable_content?(visited)
-          has_filterable_attributes = schema_class.attribute_definitions.values.any? do |attribute|
+          has_filterable_attributes = schema_class.attributes.values.any? do |attribute|
             attribute.filterable? && attribute.type != :unknown
           end
 
           return true if has_filterable_attributes
 
-          schema_class.association_definitions.values.any? do |association|
+          schema_class.associations.values.any? do |association|
             next false unless association.filterable?
 
             association_resource = resolve_association_resource(association)
@@ -1033,11 +1033,11 @@ module Apiwork
         end
 
         def has_sortable_content?(visited)
-          has_sortable_attributes = schema_class.attribute_definitions.values.any?(&:sortable?)
+          has_sortable_attributes = schema_class.attributes.values.any?(&:sortable?)
 
           return true if has_sortable_attributes
 
-          schema_class.association_definitions.values.any? do |association|
+          schema_class.associations.values.any? do |association|
             next false unless association.sortable?
 
             association_resource = resolve_association_resource(association)

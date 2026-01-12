@@ -2,7 +2,18 @@
 
 module Apiwork
   module Schema
-    class AttributeDefinition
+    # @api public
+    # Represents an attribute defined on a schema.
+    #
+    # Attributes map to model columns and define serialization behavior.
+    # Used by adapters to build contracts and serialize records.
+    #
+    # @example
+    #   attribute = InvoiceSchema.attributes[:title]
+    #   attribute.name       # => :title
+    #   attribute.type       # => :string
+    #   attribute.filterable? # => true
+    class Attribute
       ALLOWED_FORMATS = {
         decimal: %i[float double],
         float: %i[float double],
@@ -11,19 +22,49 @@ module Apiwork
         string: %i[email uuid uri url date date_time ipv4 ipv6 password hostname],
       }.freeze
 
-      attr_reader :deprecated,
-                  :description,
-                  :empty,
-                  :enum,
-                  :example,
-                  :format,
+      # @api public
+      # @return [Boolean] whether this attribute is deprecated
+      attr_reader :deprecated
+
+      # @api public
+      # @return [String, nil] documentation description
+      attr_reader :description
+
+      # @api public
+      # @return [Array, nil] allowed values
+      attr_reader :enum
+
+      # @api public
+      # @return [Object, nil] example value for documentation
+      attr_reader :example
+
+      # @api public
+      # @return [Symbol, nil] format hint
+      attr_reader :format
+
+      # @api public
+      # @return [Integer, nil] maximum value or length
+      attr_reader :max
+
+      # @api public
+      # @return [Integer, nil] minimum value or length
+      attr_reader :min
+
+      # @api public
+      # @return [Symbol] attribute name
+      attr_reader :name
+
+      # @api public
+      # @return [Symbol, nil] element type for arrays
+      attr_reader :of
+
+      # @api public
+      # @return [Symbol] data type
+      attr_reader :type
+
+      attr_reader :empty,
                   :inline_element,
-                  :max,
-                  :min,
-                  :name,
-                  :of,
-                  :optional,
-                  :type
+                  :optional
 
       def initialize(
         name,
@@ -100,28 +141,41 @@ module Apiwork
         validate_empty!
       end
 
+      # @api public
+      # @return [Boolean] whether filtering is enabled
       def filterable?
         @filterable
       end
 
+      # @api public
+      # @return [Boolean] whether sorting is enabled
       def sortable?
         @sortable
       end
 
+      # @api public
+      # @return [Boolean] whether this attribute can be omitted
       def optional?
         @optional
       end
 
+      # @api public
+      # @return [Boolean] whether this attribute can be null
       def nullable?
         return false if @empty
 
         @nullable
       end
 
+      # @api public
+      # @return [Boolean] whether this attribute is writable
       def writable?
         @writable[:on].any?
       end
 
+      # @api public
+      # @param action [Symbol] the action to check (:create or :update)
+      # @return [Boolean] whether this attribute is writable for the given action
       def writable_for?(action)
         @writable[:on].include?(action)
       end

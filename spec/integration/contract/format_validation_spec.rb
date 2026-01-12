@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe 'Format validation', type: :integration do
   describe 'ALLOWED_FORMATS constant' do
     it 'defines allowed formats for each type' do
-      expect(Apiwork::Schema::AttributeDefinition::ALLOWED_FORMATS).to eq(
+      expect(Apiwork::Schema::Attribute::ALLOWED_FORMATS).to eq(
         {
           decimal: %i[float double],
           float: %i[float double],

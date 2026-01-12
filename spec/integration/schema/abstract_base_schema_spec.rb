@@ -23,14 +23,14 @@ RSpec.describe 'Abstract Base Schema with Auto-Detection' do
 
     it 'auto-detects attribute types from DB' do
       # name attribute should have detected :string type from DB
-      name_definition = Api::V1::UserSchema.attribute_definitions[:name]
+      name_definition = Api::V1::UserSchema.attributes[:name]
       expect(name_definition.type).to eq(:string)
     end
 
     it 'empty validation works with auto-detected type' do
       # This should NOT raise an error because type was auto-detected as :string
       expect do
-        Api::V1::UserSchema.attribute_definitions[:name]
+        Api::V1::UserSchema.attributes[:name]
       end.not_to raise_error
     end
 

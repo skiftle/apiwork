@@ -45,9 +45,9 @@ module Apiwork
               key = key.to_sym
 
               if value.is_a?(String) || value.is_a?(Symbol)
-                attribute_definition = schema_class.attribute_definitions[key]
+                attribute_definition = schema_class.attributes[key]
                 unless attribute_definition&.sortable?
-                  available = schema_class.attribute_definitions
+                  available = schema_class.attributes
                     .values
                     .select(&:sortable?)
                     .map(&:name)
@@ -94,7 +94,7 @@ module Apiwork
                   next
                 end
 
-                unless schema_class.association_definitions[key]&.sortable?
+                unless schema_class.associations[key]&.sortable?
                   @issues << Issue.new(
                     :association_not_sortable,
                     'Not sortable',
@@ -104,7 +104,7 @@ module Apiwork
                   next
                 end
 
-                association_resource = schema_class.association_definitions[key]&.schema_class
+                association_resource = schema_class.associations[key]&.schema_class
 
                 if association_resource.nil?
                   @issues << Issue.new(

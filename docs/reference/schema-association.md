@@ -1,0 +1,223 @@
+---
+order: 61
+prev: false
+next: false
+---
+
+# Schema::Association
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/association.rb#L16)
+
+Represents an association defined on a schema.
+
+Associations map to model relationships and define serialization behavior.
+Used by adapters to build contracts and serialize records.
+
+**Example**
+
+```ruby
+association = InvoiceSchema.associations[:customer]
+association.name         # => :customer
+association.type         # => :belongs_to
+association.schema_class # => CustomerSchema
+```
+
+## Instance Methods
+
+### #always_included?
+
+`#always_included?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/association.rb#L108)
+
+**Returns**
+
+`Boolean` — whether this association is always included
+
+---
+
+### #collection?
+
+`#collection?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/association.rb#L127)
+
+**Returns**
+
+`Boolean` — whether this is a has_many association
+
+---
+
+### #deprecated
+
+`#deprecated`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/association.rb#L19)
+
+**Returns**
+
+`Boolean` — whether this association is deprecated
+
+---
+
+### #description
+
+`#description`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/association.rb#L23)
+
+**Returns**
+
+`String`, `nil` — documentation description
+
+---
+
+### #example
+
+`#example`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/association.rb#L27)
+
+**Returns**
+
+`Object`, `nil` — example value for documentation
+
+---
+
+### #filterable?
+
+`#filterable?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/association.rb#L96)
+
+**Returns**
+
+`Boolean` — whether filtering is enabled
+
+---
+
+### #name
+
+`#name`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/association.rb#L31)
+
+**Returns**
+
+`Symbol` — association name
+
+---
+
+### #nullable?
+
+`#nullable?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/association.rb#L145)
+
+**Returns**
+
+`Boolean` — whether this association can be null
+
+---
+
+### #polymorphic
+
+`#polymorphic`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/association.rb#L35)
+
+**Returns**
+
+`Hash`, `nil` — polymorphic type mappings
+
+---
+
+### #polymorphic?
+
+`#polymorphic?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/association.rb#L139)
+
+**Returns**
+
+`Boolean` — whether this is a polymorphic association
+
+---
+
+### #schema_class
+
+`#schema_class`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/association.rb#L39)
+
+**Returns**
+
+[Schema::Base](schema-base), `nil` — the associated schema class
+
+---
+
+### #singular?
+
+`#singular?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/association.rb#L133)
+
+**Returns**
+
+`Boolean` — whether this is a has_one or belongs_to association
+
+---
+
+### #sortable?
+
+`#sortable?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/association.rb#L102)
+
+**Returns**
+
+`Boolean` — whether sorting is enabled
+
+---
+
+### #type
+
+`#type`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/association.rb#L43)
+
+**Returns**
+
+`Symbol` — association type (:has_one, :has_many, :belongs_to)
+
+---
+
+### #writable?
+
+`#writable?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/association.rb#L114)
+
+**Returns**
+
+`Boolean` — whether this association is writable
+
+---
+
+### #writable_for?
+
+`#writable_for?(action)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/association.rb#L121)
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `action` | `Symbol` | the action to check (:create or :update) |
+
+**Returns**
+
+`Boolean` — whether this association is writable for the given action
+
+---

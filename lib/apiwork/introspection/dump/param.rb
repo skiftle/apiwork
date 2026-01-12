@@ -409,12 +409,12 @@ module Apiwork
           schema_class = resolve_schema_class
           return nil unless schema_class
 
-          if (attribute_definition = schema_class.attribute_definitions[param_name])
+          if (attribute_definition = schema_class.attributes[param_name])
             description = i18n_attribute_description(attribute_definition)
             return description if description
           end
 
-          if (association_definition = schema_class.association_definitions[param_name])
+          if (association_definition = schema_class.associations[param_name])
             description = i18n_association_description(association_definition)
             return description if description
           end
