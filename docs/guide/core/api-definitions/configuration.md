@@ -28,7 +28,7 @@ info do
   version '1.0.0'
   description 'Full description'
   summary 'Short summary'
-  deprecated
+  deprecated!
   terms_of_service 'https://example.com/tos'
 
   contact do

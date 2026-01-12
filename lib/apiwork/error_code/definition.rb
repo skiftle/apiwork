@@ -7,13 +7,6 @@ module Apiwork
         attach_path
       end
 
-      def to_h(locale_key: nil)
-        {
-          description: description(locale_key:),
-          status: status,
-        }
-      end
-
       def description(locale_key: nil, options: {})
         if locale_key
           api_key = :"apiwork.apis.#{locale_key}.error_codes.#{key}.description"

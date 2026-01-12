@@ -13,38 +13,35 @@ module Apiwork
           @url = nil
         end
 
-        def to_h
-          {
-            description: @description,
-            url: @url,
-          }
-        end
-
         # @api public
-        # Sets the server URL.
+        # Sets or gets the server URL.
         #
         # @param url [String] the server URL
-        # @return [void]
+        # @return [String, void]
         #
         # @example
         #   server do
         #     url 'https://api.example.com'
         #   end
-        def url(url)
+        def url(url = nil)
+          return @url if url.nil?
+
           @url = url
         end
 
         # @api public
-        # Sets the server description.
+        # Sets or gets the server description.
         #
         # @param description [String] the server description
-        # @return [void]
+        # @return [String, void]
         #
         # @example
         #   server do
         #     description 'Production'
         #   end
-        def description(description)
+        def description(description = nil)
+          return @description if description.nil?
+
           @description = description
         end
       end

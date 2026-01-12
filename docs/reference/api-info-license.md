@@ -16,11 +16,11 @@ Used within the `license` block in [API::Info](api-info).
 
 ### #name
 
-`#name(name)`
+`#name(name = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/license.rb#L33)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/license.rb#L26)
 
-Sets the license name.
+Sets or gets the license name.
 
 **Parameters**
 
@@ -30,7 +30,7 @@ Sets the license name.
 
 **Returns**
 
-`void`
+`String`, `void`
 
 **Example**
 
@@ -44,11 +44,11 @@ end
 
 ### #url
 
-`#url(url)`
+`#url(url = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/license.rb#L47)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/license.rb#L42)
 
-Sets the license URL.
+Sets or gets the license URL.
 
 **Parameters**
 
@@ -58,7 +58,7 @@ Sets the license URL.
 
 **Returns**
 
-`void`
+`String`, `void`
 
 **Example**
 

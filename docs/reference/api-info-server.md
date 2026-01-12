@@ -16,11 +16,11 @@ Used within the `server` block in [API::Info](api-info).
 
 ### #description
 
-`#description(description)`
+`#description(description = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/server.rb#L47)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/server.rb#L42)
 
-Sets the server description.
+Sets or gets the server description.
 
 **Parameters**
 
@@ -30,7 +30,7 @@ Sets the server description.
 
 **Returns**
 
-`void`
+`String`, `void`
 
 **Example**
 
@@ -44,11 +44,11 @@ end
 
 ### #url
 
-`#url(url)`
+`#url(url = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/server.rb#L33)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/server.rb#L26)
 
-Sets the server URL.
+Sets or gets the server URL.
 
 **Parameters**
 
@@ -58,7 +58,7 @@ Sets the server URL.
 
 **Returns**
 
-`void`
+`String`, `void`
 
 **Example**
 

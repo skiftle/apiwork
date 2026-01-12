@@ -10,64 +10,70 @@ module Apiwork
     class Info
       def initialize
         @contact = nil
-        @deprecated = nil
+        @deprecated = false
         @description = nil
         @license = nil
-        @servers = nil
+        @servers = []
         @summary = nil
-        @tags = nil
+        @tags = []
         @terms_of_service = nil
         @title = nil
         @version = nil
       end
 
       # @api public
-      # Sets the API title.
+      # Sets or gets the API title.
       #
       # @param title [String] the title
-      # @return [void]
+      # @return [String, void]
       #
       # @example
       #   info do
       #     title 'Invoice API'
       #   end
-      def title(title)
+      def title(title = nil)
+        return @title if title.nil?
+
         @title = title
       end
 
       # @api public
-      # Sets the API version.
+      # Sets or gets the API version.
       #
       # @param version [String] the version (e.g. '1.0.0')
-      # @return [void]
+      # @return [String, void]
       #
       # @example
       #   info do
       #     version '1.0.0'
       #   end
-      def version(version)
+      def version(version = nil)
+        return @version if version.nil?
+
         @version = version
       end
 
       # @api public
-      # Sets the terms of service URL.
+      # Sets or gets the terms of service URL.
       #
       # @param url [String] the terms of service URL
-      # @return [void]
+      # @return [String, void]
       #
       # @example
       #   info do
       #     terms_of_service 'https://example.com/terms'
       #   end
-      def terms_of_service(url)
+      def terms_of_service(url = nil)
+        return @terms_of_service if url.nil?
+
         @terms_of_service = url
       end
 
       # @api public
-      # Defines contact information.
+      # Sets or gets contact information.
       #
       # @yield block evaluated in {Contact} context
-      # @return [void]
+      # @return [Contact, void]
       # @see API::Info::Contact
       #
       # @example
@@ -75,15 +81,17 @@ module Apiwork
       #     name 'Support'
       #   end
       def contact(&block)
+        return @contact unless block
+
         @contact = Contact.new
         @contact.instance_eval(&block)
       end
 
       # @api public
-      # Defines license information.
+      # Sets or gets license information.
       #
       # @yield block evaluated in {License} context
-      # @return [void]
+      # @return [License, void]
       # @see API::Info::License
       #
       # @example
@@ -91,17 +99,19 @@ module Apiwork
       #     name 'MIT'
       #   end
       def license(&block)
+        return @license unless block
+
         @license = License.new
         @license.instance_eval(&block)
       end
 
       # @api public
-      # Adds a server to the API specification.
+      # Adds a server or gets all servers.
       #
       # Can be called multiple times to define multiple servers.
       #
       # @yield block evaluated in {Server} context
-      # @return [void]
+      # @return [Array<Server>, void]
       # @see API::Info::Server
       #
       # @example
@@ -116,52 +126,59 @@ module Apiwork
       #     end
       #   end
       def server(&block)
+        return @servers unless block
+
         server = Server.new
         server.instance_eval(&block)
-        @servers ||= []
         @servers << server
       end
 
       # @api public
-      # Sets a short summary for the API.
+      # Sets or gets a short summary for the API.
       #
       # @param summary [String] the summary
-      # @return [void]
+      # @return [String, void]
       #
       # @example
       #   info do
       #     summary 'Invoice management API'
       #   end
-      def summary(summary)
+      def summary(summary = nil)
+        return @summary if summary.nil?
+
         @summary = summary
       end
 
       # @api public
-      # Sets a detailed description for the API.
+      # Sets or gets a detailed description for the API.
       #
       # @param description [String] the description (supports Markdown)
-      # @return [void]
+      # @return [String, void]
       #
       # @example
       #   info do
       #     description 'Full-featured API for managing invoices and payments.'
       #   end
-      def description(description)
+      def description(description = nil)
+        return @description if description.nil?
+
         @description = description
       end
 
       # @api public
-      # Sets tags for the API.
+      # Sets or gets tags for the API.
       #
-      # @param tags [Array<String>] list of tags
-      # @return [void]
+      # @param values [Array<String>] list of tags
+      # @return [Array<String>, void]
       #
       # @example
       #   info do
       #     tags 'invoices', 'payments'
       #   end
-      def tags(*tags)
-        @tags = tags.flatten
+      def tags(*values)
+        return @tags if values.empty?
+
+        @tags = values.flatten
       end
 
       # @api public
@@ -171,25 +188,14 @@ module Apiwork
       #
       # @example
       #   info do
-      #     deprecated
+      #     deprecated!
       #   end
-      def deprecated
+      def deprecated!
         @deprecated = true
       end
 
-      def to_h
-        {
-          contact: @contact&.to_h,
-          deprecated: @deprecated,
-          description: @description,
-          license: @license&.to_h,
-          servers: @servers&.map(&:to_h),
-          summary: @summary,
-          tags: @tags,
-          terms_of_service: @terms_of_service,
-          title: @title,
-          version: @version,
-        }
+      def deprecated?
+        @deprecated
       end
     end
   end

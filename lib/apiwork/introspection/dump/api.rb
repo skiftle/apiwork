@@ -48,7 +48,10 @@ module Apiwork
 
           error_code_keys.each_with_object({}) do |code, hash|
             error_code = Apiwork::ErrorCode.fetch(code)
-            hash[code] = error_code.to_h(locale_key:)
+            hash[code] = {
+              description: error_code.description(locale_key:),
+              status: error_code.status,
+            }
           end
         end
 
@@ -62,19 +65,46 @@ module Apiwork
           info = @api_class.structure.info
           return nil unless info
 
-          data = info.to_h
           {
-            contact: data[:contact],
-            deprecated: data[:deprecated],
-            description: data[:description],
-            license: data[:license],
-            servers: data[:servers] || [],
-            summary: data[:summary],
-            tags: data[:tags],
-            terms_of_service: data[:terms_of_service],
-            title: data[:title],
-            version: data[:version],
+            contact: build_contact(info.contact),
+            deprecated: info.deprecated?,
+            description: info.description,
+            license: build_license(info.license),
+            servers: build_servers(info.server),
+            summary: info.summary,
+            tags: info.tags,
+            terms_of_service: info.terms_of_service,
+            title: info.title,
+            version: info.version,
           }
+        end
+
+        def build_contact(contact)
+          return nil unless contact
+
+          {
+            email: contact.email,
+            name: contact.name,
+            url: contact.url,
+          }
+        end
+
+        def build_license(license)
+          return nil unless license
+
+          {
+            name: license.name,
+            url: license.url,
+          }
+        end
+
+        def build_servers(servers)
+          servers.map do |server|
+            {
+              description: server.description,
+              url: server.url,
+            }
+          end
         end
       end
     end

@@ -13,38 +13,35 @@ module Apiwork
           @url = nil
         end
 
-        def to_h
-          {
-            name: @name,
-            url: @url,
-          }
-        end
-
         # @api public
-        # Sets the license name.
+        # Sets or gets the license name.
         #
         # @param name [String] the license name (e.g. 'MIT', 'Apache 2.0')
-        # @return [void]
+        # @return [String, void]
         #
         # @example
         #   license do
         #     name 'MIT'
         #   end
-        def name(name)
+        def name(name = nil)
+          return @name if name.nil?
+
           @name = name
         end
 
         # @api public
-        # Sets the license URL.
+        # Sets or gets the license URL.
         #
         # @param url [String] the license URL
-        # @return [void]
+        # @return [String, void]
         #
         # @example
         #   license do
         #     url 'https://opensource.org/licenses/MIT'
         #   end
-        def url(url)
+        def url(url = nil)
+          return @url if url.nil?
+
           @url = url
         end
       end

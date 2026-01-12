@@ -14,53 +14,51 @@ module Apiwork
           @url = nil
         end
 
-        def to_h
-          {
-            email: @email,
-            name: @name,
-            url: @url,
-          }
-        end
-
         # @api public
-        # Sets the contact name.
+        # Sets or gets the contact name.
         #
         # @param name [String] the contact name
-        # @return [void]
+        # @return [String, void]
         #
         # @example
         #   contact do
         #     name 'API Support'
         #   end
-        def name(name)
+        def name(name = nil)
+          return @name if name.nil?
+
           @name = name
         end
 
         # @api public
-        # Sets the contact email.
+        # Sets or gets the contact email.
         #
         # @param email [String] the contact email
-        # @return [void]
+        # @return [String, void]
         #
         # @example
         #   contact do
         #     email 'support@example.com'
         #   end
-        def email(email)
+        def email(email = nil)
+          return @email if email.nil?
+
           @email = email
         end
 
         # @api public
-        # Sets the contact URL.
+        # Sets or gets the contact URL.
         #
         # @param url [String] the contact URL
-        # @return [void]
+        # @return [String, void]
         #
         # @example
         #   contact do
         #     url 'https://example.com/support'
         #   end
-        def url(url)
+        def url(url = nil)
+          return @url if url.nil?
+
           @url = url
         end
       end

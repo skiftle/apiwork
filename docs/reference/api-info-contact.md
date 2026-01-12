@@ -16,11 +16,11 @@ Used within the `contact` block in [API::Info](api-info).
 
 ### #email
 
-`#email(email)`
+`#email(email = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/contact.rb#L49)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/contact.rb#L43)
 
-Sets the contact email.
+Sets or gets the contact email.
 
 **Parameters**
 
@@ -30,7 +30,7 @@ Sets the contact email.
 
 **Returns**
 
-`void`
+`String`, `void`
 
 **Example**
 
@@ -44,11 +44,11 @@ end
 
 ### #name
 
-`#name(name)`
+`#name(name = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/contact.rb#L35)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/contact.rb#L27)
 
-Sets the contact name.
+Sets or gets the contact name.
 
 **Parameters**
 
@@ -58,7 +58,7 @@ Sets the contact name.
 
 **Returns**
 
-`void`
+`String`, `void`
 
 **Example**
 
@@ -72,11 +72,11 @@ end
 
 ### #url
 
-`#url(url)`
+`#url(url = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/contact.rb#L63)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/contact.rb#L59)
 
-Sets the contact URL.
+Sets or gets the contact URL.
 
 **Parameters**
 
@@ -86,7 +86,7 @@ Sets the contact URL.
 
 **Returns**
 
-`void`
+`String`, `void`
 
 **Example**
 

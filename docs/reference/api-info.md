@@ -19,13 +19,13 @@ Used by export generators via [Export.generate](export#generate).
 
 `#contact(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L77)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L83)
 
-Defines contact information.
+Sets or gets contact information.
 
 **Returns**
 
-`void`
+[Contact](api-info-contact), `void`
 
 **See also**
 
@@ -41,11 +41,11 @@ end
 
 ---
 
-### #deprecated
+### #deprecated!
 
-`#deprecated`
+`#deprecated!`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L176)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L193)
 
 Marks the API as deprecated.
 
@@ -57,7 +57,7 @@ Marks the API as deprecated.
 
 ```ruby
 info do
-  deprecated
+  deprecated!
 end
 ```
 
@@ -65,11 +65,11 @@ end
 
 ### #description
 
-`#description(description)`
+`#description(description = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L149)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L162)
 
-Sets a detailed description for the API.
+Sets or gets a detailed description for the API.
 
 **Parameters**
 
@@ -79,7 +79,7 @@ Sets a detailed description for the API.
 
 **Returns**
 
-`void`
+`String`, `void`
 
 **Example**
 
@@ -95,13 +95,13 @@ end
 
 `#license(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L93)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L101)
 
-Defines license information.
+Sets or gets license information.
 
 **Returns**
 
-`void`
+[License](api-info-license), `void`
 
 **See also**
 
@@ -121,15 +121,15 @@ end
 
 `#server(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L118)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L128)
 
-Adds a server to the API specification.
+Adds a server or gets all servers.
 
 Can be called multiple times to define multiple servers.
 
 **Returns**
 
-`void`
+Array&lt;[Server](api-info-server)&gt;, `void`
 
 **See also**
 
@@ -154,11 +154,11 @@ end
 
 ### #summary
 
-`#summary(summary)`
+`#summary(summary = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L135)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L146)
 
-Sets a short summary for the API.
+Sets or gets a short summary for the API.
 
 **Parameters**
 
@@ -168,7 +168,7 @@ Sets a short summary for the API.
 
 **Returns**
 
-`void`
+`String`, `void`
 
 **Example**
 
@@ -182,21 +182,21 @@ end
 
 ### #tags
 
-`#tags(*tags)`
+`#tags(*values)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L163)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L178)
 
-Sets tags for the API.
+Sets or gets tags for the API.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `tags` | `Array<String>` | list of tags |
+| `values` | `Array<String>` | list of tags |
 
 **Returns**
 
-`void`
+`Array<String>`, `void`
 
 **Example**
 
@@ -210,11 +210,11 @@ end
 
 ### #terms_of_service
 
-`#terms_of_service(url)`
+`#terms_of_service(url = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L62)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L66)
 
-Sets the terms of service URL.
+Sets or gets the terms of service URL.
 
 **Parameters**
 
@@ -224,7 +224,7 @@ Sets the terms of service URL.
 
 **Returns**
 
-`void`
+`String`, `void`
 
 **Example**
 
@@ -238,11 +238,11 @@ end
 
 ### #title
 
-`#title(title)`
+`#title(title = nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L34)
 
-Sets the API title.
+Sets or gets the API title.
 
 **Parameters**
 
@@ -252,7 +252,7 @@ Sets the API title.
 
 **Returns**
 
-`void`
+`String`, `void`
 
 **Example**
 
@@ -266,11 +266,11 @@ end
 
 ### #version
 
-`#version(version)`
+`#version(version = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L48)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L50)
 
-Sets the API version.
+Sets or gets the API version.
 
 **Parameters**
 
@@ -280,7 +280,7 @@ Sets the API version.
 
 **Returns**
 
-`void`
+`String`, `void`
 
 **Example**
 
