@@ -142,7 +142,7 @@ end
 
 `#request(replace: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L166)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L170)
 
 Defines the request structure for this action.
 
@@ -167,8 +167,12 @@ Use the block to define query parameters and request body.
 ```ruby
 action :create do
   request do
-    query { boolean :dry_run, optional: true }
-    body { string :title }
+    query do
+      boolean :dry_run, optional: true
+    end
+    body do
+      string :title
+    end
   end
 end
 ```
@@ -179,7 +183,7 @@ end
 
 `#response(replace: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L200)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L206)
 
 Defines the response structure for this action.
 
@@ -216,7 +220,9 @@ end
 
 ```ruby
 action :destroy do
-  response { no_content! }
+  response do
+    no_content!
+  end
 end
 ```
 

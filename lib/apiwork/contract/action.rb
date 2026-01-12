@@ -159,8 +159,12 @@ module Apiwork
       # @example
       #   action :create do
       #     request do
-      #       query { boolean :dry_run, optional: true }
-      #       body { string :title }
+      #       query do
+      #         boolean :dry_run, optional: true
+      #       end
+      #       body do
+      #         string :title
+      #       end
       #     end
       #   end
       def request(replace: false, &block)
@@ -195,7 +199,9 @@ module Apiwork
       #
       # @example No content response
       #   action :destroy do
-      #     response { no_content! }
+      #     response do
+      #       no_content!
+      #     end
       #   end
       def response(replace: false, &block)
         @reset_response = replace if replace
