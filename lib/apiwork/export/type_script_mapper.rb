@@ -31,7 +31,7 @@ module Apiwork
         type_jsdoc = jsdoc(description: type.description, example: type.example)
 
         code = if properties.empty?
-                 "export type #{type_name_pascal} = object;"
+                 "export type #{type_name_pascal} = Record<string, unknown>;"
                else
                  "export interface #{type_name_pascal} {\n#{properties}\n}"
                end
@@ -166,7 +166,7 @@ module Apiwork
       end
 
       def map_object_type(param)
-        return 'object' if param.shape.empty?
+        return 'Record<string, unknown>' if param.shape.empty?
 
         partial = param.object? && param.partial?
 
@@ -188,7 +188,7 @@ module Apiwork
           return "#{element_type}[]"
         end
 
-        return 'string[]' unless items_type
+        return 'unknown[]' unless items_type
 
         element_type = map_type_definition(items_type)
 
@@ -220,7 +220,7 @@ module Apiwork
         return 'string' if param.string? || param.uuid? || param.date? || param.datetime? || param.time? || param.binary?
         return 'number' if param.numeric?
         return 'boolean' if param.boolean?
-        return 'Record<string, any>' if param.json?
+        return 'Record<string, unknown>' if param.json?
 
         'unknown'
       end

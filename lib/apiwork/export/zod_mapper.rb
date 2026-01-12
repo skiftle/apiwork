@@ -11,7 +11,7 @@ module Apiwork
         decimal: 'z.number()',
         float: 'z.number()',
         integer: 'z.number().int()',
-        json: 'z.record(z.string(), z.any())',
+        json: 'z.record(z.string(), z.unknown())',
         string: 'z.string()',
         time: 'z.iso.time()',
         unknown: 'z.unknown()',
@@ -162,7 +162,7 @@ module Apiwork
       end
 
       def map_object_type(param)
-        return 'z.object({})' if param.shape.empty?
+        return 'z.record(z.string(), z.unknown())' if param.shape.empty?
 
         partial = param.partial?
 
@@ -190,7 +190,7 @@ module Apiwork
           items_schema = map_type_definition(items_type)
           base = "z.array(#{items_schema})"
         else
-          base = 'z.array(z.string())'
+          base = 'z.array(z.unknown())'
         end
 
         base += ".min(#{param.min})" if param.respond_to?(:min) && param.min

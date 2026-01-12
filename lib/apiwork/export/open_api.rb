@@ -387,7 +387,7 @@ module Apiwork
           return { items: items_schema, type: 'array' }
         end
 
-        return { items: { type: 'string' }, type: 'array' } unless items_param
+        return { items: {}, type: 'array' } unless items_param
 
         items_schema = if items_param.ref? && type_exists?(items_param.ref)
                          { '$ref': "#/components/schemas/#{schema_name(items_param.ref)}" }

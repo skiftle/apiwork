@@ -56,17 +56,19 @@ end
 
 Apiwork reads column types from your database:
 
-| Database Type           | Detected Type |
-| ----------------------- | ------------- |
-| `varchar`, `text`       | `:string`     |
-| `integer`, `bigint`     | `:integer`    |
-| `boolean`               | `:boolean`    |
-| `datetime`, `timestamp` | `:datetime`   |
-| `date`                  | `:date`       |
-| `decimal`, `numeric`    | `:decimal`    |
-| `float`, `real`         | `:float`      |
-| `uuid`                  | `:uuid`       |
-| `json`, `jsonb`         | `:json`       |
+| Database Type             | Detected Type |
+| ------------------------- | ------------- |
+| `varchar`, `text`         | `:string`     |
+| `integer`, `bigint`       | `:integer`    |
+| `boolean`                 | `:boolean`    |
+| `datetime`, `timestamp`   | `:datetime`   |
+| `date`                    | `:date`       |
+| `time`                    | `:time`       |
+| `decimal`, `numeric`      | `:decimal`    |
+| `float`, `real`           | `:float`      |
+| `uuid`                    | `:uuid`       |
+| `binary`, `blob`, `bytea` | `:binary`     |
+| `json`, `jsonb`           | `:json`       |
 
 ```ruby
 # Database: name VARCHAR(255), age INTEGER, active BOOLEAN

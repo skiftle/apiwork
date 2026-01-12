@@ -241,13 +241,17 @@ RSpec.describe Apiwork::Schema::Base do
       end
     end
 
-    describe 'with array of primitives via of option' do
-      it 'stores the of option' do
-        definition = described_class.new(:tags, schema_class, of: :string, type: :array)
+    describe 'with array of primitives' do
+      it 'stores the element type via block' do
+        definition = described_class.new(:tags, schema_class) do
+          array do
+            string
+          end
+        end
 
         expect(definition.of).to eq(:string)
         expect(definition.type).to eq(:array)
-        expect(definition.inline_element).to be_nil
+        expect(definition.inline_element).to be_a(Apiwork::Schema::Element)
       end
     end
 
@@ -296,11 +300,15 @@ RSpec.describe Apiwork::Schema::Base do
       expect(definition.type).to eq(:object)
     end
 
-    it 'passes of option for arrays' do
+    it 'stores element type for arrays via block' do
       schema_class = Class.new(described_class) do
         abstract!
 
-        attribute :tags, of: :string, type: :array
+        attribute :tags do
+          array do
+            string
+          end
+        end
       end
 
       definition = schema_class.attributes[:tags]

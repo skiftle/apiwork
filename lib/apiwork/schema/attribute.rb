@@ -81,7 +81,6 @@ module Apiwork
         max: nil,
         min: nil,
         nullable: nil,
-        of: nil,
         optional: nil,
         sortable: false,
         type: nil,
@@ -90,7 +89,7 @@ module Apiwork
       )
         @name = name
         @owner_schema_class = owner_schema_class
-        @of = of
+        @of = nil
 
         if block
           element = Element.new

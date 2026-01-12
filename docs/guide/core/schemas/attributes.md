@@ -52,7 +52,6 @@ attribute :status  # Detects Rails enum values automatically
 | `nullable` | `bool` | auto | Allow null values |
 | `optional` | `bool` | auto | Optional in requests |
 | `type` | `symbol` | auto | Data type |
-| `of` | `symbol` | `nil` | Array element type (for `type: :array`) |
 | `format` | `symbol` | `nil` | Format hint (email, uuid, etc.) |
 | `min` / `max` | `integer` | `nil` | Value/length constraints |
 | `description` | `string` | `nil` | API documentation |
@@ -369,22 +368,61 @@ attribute :ip_address, format: :ipv4
 
 ## Inline Type Definitions
 
-JSON/JSONB columns without shape definitions generate `object` in TypeScript. Define the structure to get full typing:
+Three types support structured data:
+
+| Type | Use case | Auto-detected |
+|------|----------|---------------|
+| `:json` | JSON/JSONB database columns | Yes |
+| `:object` | Virtual attributes returning hashes | No |
+| `:array` | Virtual attributes returning arrays | No |
+
+Use a block to define the shape. Without a block, exports use `Record<string, unknown>` or `unknown[]`.
 
 ```ruby
-# Without shape → object
-attribute :metadata
-
-# With shape → { theme: string; language: string }
+# JSON column — auto-detected, block defines shape
 attribute :settings do
   object do
     string :theme
     string :language
   end
 end
+
+# Virtual object attribute
+attribute :stats do
+  object do
+    integer :views
+    integer :likes
+  end
+end
+
+def stats
+  {
+    views: object.view_count,
+    likes: object.likes.count,
+  }
+end
+
+# Virtual array attribute
+attribute :recent_activity do
+  array do
+    object do
+      string :action
+      datetime :timestamp
+    end
+  end
+end
+
+def recent_activity
+  object.activities.last(10).map do |activity|
+    {
+      action: activity.name,
+      timestamp: activity.created_at,
+    }
+  end
+end
 ```
 
-Use a block with `object`, `array`, or `union` at the top level. Works with JSON/JSONB columns, `store` attributes, `serialize` attributes, and virtual attributes.
+Primitives (`string`, `integer`, `boolean`, etc.) do not support blocks.
 
 ### Object Shape
 
@@ -594,16 +632,6 @@ attribute :settings do
 end
 ```
 
-### Without Shape Definition
-
-Without a block, JSON columns keep their `:json` type, which exports as `Record<string, any>`. This is intentional — `:json` means "arbitrary JSON with unknown structure":
-
-```ruby
-attribute :metadata  # :json → Record<string, any>
-```
-
-If you know the structure, use a block. If you don't, `:json` gives you the flexibility to accept any valid JSON.
-
 ### Field Types
 
 Inside `object` blocks, all [scalar and structure types](../type-system/types.md) are available: `string`, `integer`, `boolean`, `datetime`, `object`, `array`, etc.
@@ -648,4 +676,4 @@ end
 ## Examples
 
 - [Encode/Decode/Empty](/examples/encode-decode-empty.md) — Transform values during serialization and handle nil/empty conversion
-- [Inline Type Definitions](/examples/inline-types.md) — Define shapes for JSON columns with full TypeScript typing
+- [Inline Type Definitions](/examples/inline-type-definitions.md) — Define shapes for JSON columns with full TypeScript typing
