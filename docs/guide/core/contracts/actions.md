@@ -85,7 +85,7 @@ end
 
 ### meta
 
-Shorthand for `param :meta, type: :object do ... end`. Use for response data that doesn't belong to the resource itself:
+Shorthand for `object :meta do ... end`. Use for response data that doesn't belong to the resource itself:
 
 ```ruby
 action :index do

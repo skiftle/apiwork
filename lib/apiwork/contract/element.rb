@@ -55,37 +55,6 @@ module Apiwork
         @value = nil
       end
 
-      # @api public
-      # Defines an element type using explicit type parameter.
-      #
-      # This is the verbose form. Sugar methods like `string`, `integer`
-      # are aliases to this method.
-      #
-      # @param type [Symbol] the type (:string, :integer, :object, :array, etc. or custom type)
-      # @param discriminator [Symbol] discriminator field for unions
-      # @param enum [Array, Symbol] allowed values or enum reference
-      # @param format [String] format hint
-      # @param max [Numeric] maximum value/length
-      # @param min [Numeric] minimum value/length
-      # @param value [Object] literal value (for type: :literal)
-      # @yield block for complex types (:object, :array, :union)
-      # @return [void]
-      #
-      # @example Primitive type
-      #   string
-      #
-      # @example Reference to custom type
-      #   reference :invoice
-      #
-      # @example Object with block
-      #   object do
-      #     string :name
-      #   end
-      #
-      # @example Array with block
-      #   array do
-      #     string
-      #   end
       def of(discriminator: nil, enum: nil, format: nil, max: nil, min: nil, type:, value: nil, &block)
         resolved_enum = enum.is_a?(Symbol) ? resolve_enum(enum) : enum
 

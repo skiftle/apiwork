@@ -360,7 +360,7 @@ literal :version, value: 1
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L811)
 
-Shorthand for `param :meta, type: :object do ... end`.
+Shorthand for `object :meta do ... end`.
 
 Use for response data that doesn't belong to the resource itself.
 
@@ -428,78 +428,6 @@ Defines an inline object field.
 object :customer do
   string :name
   string :email
-end
-```
-
----
-
-### #param
-
-`#param(name, as: nil, default: nil, deprecated: nil, description: nil, discriminator: nil, enum: nil, example: nil, format: nil, max: nil, min: nil, nullable: nil, of: nil, optional: nil, required: nil, shape: nil, type: nil, value: nil, &block)`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L83)
-
-Defines a parameter/field in a request or response body.
-
-**Parameters**
-
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `Symbol` | field name |
-| `type` | `Symbol` | data type (:string, :integer, :boolean, :datetime, :date, :uuid, :object, :array, :decimal, :float, :literal, :union, or custom type) |
-| `optional` | `Boolean` | whether field can be omitted (default: false) |
-| `default` | `Object` | value when field is nil |
-| `enum` | `Array, Symbol` | allowed values, or reference to registered enum |
-| `of` | `Symbol` | element type for :array |
-| `as` | `Symbol` | serialize field under different name |
-| `discriminator` | `Symbol` | discriminator field for :union type |
-| `value` | `Object` | exact value for :literal type |
-| `deprecated` | `Boolean` | mark field as deprecated |
-| `description` | `String` | field description for docs |
-| `example` | `Object` | example value for docs |
-| `format` | `String` | format hint (e.g. 'email', 'uri') |
-| `max` | `Integer` | maximum value (numeric) or length (string/array) |
-| `min` | `Integer` | minimum value (numeric) or length (string/array) |
-| `nullable` | `Boolean` | whether null is allowed |
-| `required` | `Boolean` | alias for optional: false (for readability) |
-
-**Returns**
-
-`void`
-
-**See also**
-
-- [Contract::Object](contract-object)
-- [Contract::Union](contract-union)
-
-**Example: Basic param**
-
-```ruby
-decimal :amount
-```
-
-**Example: Inline object**
-
-```ruby
-object :customer do
-  string :name
-end
-```
-
-**Example: Inline union**
-
-```ruby
-union :payment_method, discriminator: :type do
-  variant tag: 'card' do
-    object do
-      string :last_four
-    end
-  end
-  variant tag: 'bank' do
-    object do
-      string :account_number
-    end
-  end
 end
 ```
 

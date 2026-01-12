@@ -34,52 +34,6 @@ module Apiwork
         @params = {}
       end
 
-      # @api public
-      # Defines a parameter/field in a request or response body.
-      #
-      # @param name [Symbol] field name
-      # @param type [Symbol] data type (:string, :integer, :boolean, :datetime, :date,
-      #   :uuid, :object, :array, :decimal, :float, :literal, :union, or custom type)
-      # @param optional [Boolean] whether field can be omitted (default: false)
-      # @param default [Object] value when field is nil
-      # @param enum [Array, Symbol] allowed values, or reference to registered enum
-      # @param of [Symbol] element type for :array
-      # @param as [Symbol] serialize field under different name
-      # @param discriminator [Symbol] discriminator field for :union type
-      # @param value [Object] exact value for :literal type
-      # @param deprecated [Boolean] mark field as deprecated
-      # @param description [String] field description for docs
-      # @param example [Object] example value for docs
-      # @param format [String] format hint (e.g. 'email', 'uri')
-      # @param max [Integer] maximum value (numeric) or length (string/array)
-      # @param min [Integer] minimum value (numeric) or length (string/array)
-      # @param nullable [Boolean] whether null is allowed
-      # @param required [Boolean] alias for optional: false (for readability)
-      # @return [void]
-      # @see Contract::Object
-      # @see Contract::Union
-      #
-      # @example Basic param
-      #   decimal :amount
-      #
-      # @example Inline object
-      #   object :customer do
-      #     string :name
-      #   end
-      #
-      # @example Inline union
-      #   union :payment_method, discriminator: :type do
-      #     variant tag: 'card' do
-      #       object do
-      #         string :last_four
-      #       end
-      #     end
-      #     variant tag: 'bank' do
-      #       object do
-      #         string :account_number
-      #       end
-      #     end
-      #   end
       def param(
         name,
         as: nil,
@@ -784,7 +738,7 @@ module Apiwork
       end
 
       # @api public
-      # Shorthand for `param :meta, type: :object do ... end`.
+      # Shorthand for `object :meta do ... end`.
       #
       # Use for response data that doesn't belong to the resource itself.
       #

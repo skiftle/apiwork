@@ -29,53 +29,6 @@ module Apiwork
         @params = {}
       end
 
-      # @api public
-      # Defines a parameter within this object.
-      #
-      # @param name [Symbol] parameter name
-      # @param type [Symbol] primitive type or reference to named object/union
-      # @param as [Symbol] internal name transformation
-      # @param default [Object] default value when omitted
-      # @param deprecated [Boolean] mark as deprecated
-      # @param description [String] documentation description
-      # @param discriminator [Symbol] discriminator field for inline unions
-      # @param enum [Symbol, Array] enum reference or inline values
-      # @param example [Object] example value for documentation
-      # @param format [String] format hint for documentation
-      # @param internal [Hash] internal metadata for adapters
-      # @param max [Numeric] maximum value constraint
-      # @param min [Numeric] minimum value constraint
-      # @param nullable [Boolean] whether the value can be null
-      # @param of [Symbol] element type for arrays
-      # @param optional [Boolean] whether the parameter can be omitted
-      # @param required [Boolean] alias for optional: false
-      # @param shape [Object] pre-built shape for arrays
-      # @param value [Object] literal value constraint
-      # @return [void]
-      # @see API::Object
-      # @see API::Union
-      #
-      # @example Basic param
-      #   decimal :amount
-      #
-      # @example Inline object
-      #   object :customer do
-      #     string :name
-      #   end
-      #
-      # @example Inline union
-      #   union :payment_method, discriminator: :type do
-      #     variant tag: 'card' do
-      #       object do
-      #         string :last_four
-      #       end
-      #     end
-      #     variant tag: 'bank' do
-      #       object do
-      #         string :account_number
-      #       end
-      #     end
-      #   end
       def param(
         name,
         type: nil,

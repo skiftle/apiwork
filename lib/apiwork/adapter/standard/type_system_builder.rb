@@ -233,15 +233,22 @@ module Apiwork
           params = definition[:params].dup
           params << NULLABLE_EXTENSION if nullable
 
+          primitives = %i[string integer decimal boolean datetime date uuid time binary float]
+
           registrar.object(type_name) do
             params.each do |param_definition|
-              if param_definition[:of]
-                element_type = param_definition[:of]
-                param param_definition[:name], optional: true, type: param_definition[:type] do
-                  of type: element_type
+              name = param_definition[:name]
+              type = param_definition[:type]
+              element_type = param_definition[:of]
+
+              if element_type
+                array name, optional: true do
+                  send(element_type)
                 end
+              elsif primitives.include?(type)
+                send(type, name, optional: true)
               else
-                param param_definition[:name], optional: true, type: param_definition[:type]
+                reference name, optional: true, to: type
               end
             end
           end

@@ -392,12 +392,12 @@ class Api::V1::UserContract < Apiwork::Contract::Base
   action :create do
     request do
       body do
-        param :name
+        string :name
       end
     end
     response do
       body do
-        param :id
+        integer :id
       end
     end
   end

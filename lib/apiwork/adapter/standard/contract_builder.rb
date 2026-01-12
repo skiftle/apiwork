@@ -29,8 +29,8 @@ module Apiwork
           root_key = schema_class.root_key.singular.to_sym
           resource_type_name = resource_type_name_for_response
 
-          param_definition.param root_key, type: resource_type_name
-          param_definition.param :meta, optional: true, type: :object
+          param_definition.reference root_key, to: resource_type_name
+          param_definition.object :meta, optional: true
         end
 
         def collection_response(param_definition)
@@ -38,11 +38,11 @@ module Apiwork
           resource_type_name = resource_type_name_for_response
           pagination_type = build_pagination_type
 
-          param_definition.param root_key_plural, type: :array do
-            of type: resource_type_name
+          param_definition.array root_key_plural do
+            reference resource_type_name
           end
-          param_definition.param :pagination, type: pagination_type
-          param_definition.param :meta, optional: true, type: :object
+          param_definition.reference :pagination, to: pagination_type
+          param_definition.object :meta, optional: true
         end
 
         private
@@ -56,26 +56,25 @@ module Apiwork
           sort_type = build_sort_type
 
           if filter_type
-            param_definition.param :filter, optional: true, type: :union do
+            param_definition.union :filter, optional: true do
               variant { reference filter_type }
               variant { array { reference filter_type } }
             end
           end
 
           if sort_type
-            param_definition.param :sort, optional: true, type: :union do
+            param_definition.union :sort, optional: true do
               variant { reference sort_type }
               variant { array { reference sort_type } }
             end
           end
 
-          page_type = build_page_type
-          param_definition.param :page, optional: true, type: page_type
+          param_definition.reference :page, optional: true, to: build_page_type
 
           return unless schema_class.association_definitions.any?
 
           include_type = build_include_type
-          param_definition.param :include, optional: true, type: include_type if include_type
+          param_definition.reference :include, optional: true, to: include_type if include_type
         end
 
         def writable_request(param_definition, action_name)
@@ -94,7 +93,7 @@ module Apiwork
             end
           end
 
-          param_definition.param root_key, type: payload_type_name
+          param_definition.reference root_key, to: payload_type_name
         end
 
         def writable_params(param_definition, action_name, nested: false, target_schema: nil)
@@ -295,7 +294,7 @@ module Apiwork
             query do
               if builder.send(:schema_class).association_definitions.any?
                 include_type = builder.send(:build_include_type)
-                param :include, optional: true, type: include_type if include_type
+                reference :include, optional: true, to: include_type if include_type
               end
             end
           end
@@ -435,13 +434,13 @@ module Apiwork
           type_options = {} unless depth.zero?
 
           registrar.object(type_name, **type_options) do
-            param :_and, optional: true, type: :array do
-              of type: type_name
+            array :_and, optional: true do
+              reference type_name
             end
-            param :_or, optional: true, type: :array do
-              of type: type_name
+            array :_or, optional: true do
+              reference type_name
             end
-            param :_not, optional: true, type: type_name
+            reference :_not, optional: true, to: type_name
 
             schema_class_local.attribute_definitions.each do |name, attribute_definition|
               next unless attribute_definition.filterable?
@@ -450,13 +449,13 @@ module Apiwork
               filter_type = builder.send(:filter_type_for, attribute_definition)
 
               if attribute_definition.enum
-                param name, optional: true, type: filter_type
+                reference name, optional: true, to: filter_type
               else
                 mapped_type = builder.send(:map_type, attribute_definition.type)
                 if %i[object array union].include?(mapped_type)
-                  param name, optional: true, type: filter_type
+                  reference name, optional: true, to: filter_type
                 else
-                  param name, optional: true, type: :union do
+                  union name, optional: true do
                     variant { send(mapped_type) }
                     variant { reference filter_type }
                   end
@@ -484,7 +483,7 @@ module Apiwork
                                           )
                                         end
 
-              param name, optional: true, type: association_filter_type if association_filter_type
+              reference name, optional: true, to: association_filter_type if association_filter_type
             end
           end
 
@@ -519,7 +518,7 @@ module Apiwork
             schema_class_local.attribute_definitions.each do |name, attribute_definition|
               next unless attribute_definition.sortable?
 
-              param name, optional: true, type: :sort_direction
+              reference name, optional: true, to: :sort_direction
             end
 
             schema_class_local.association_definitions.each do |name, association_definition|
@@ -542,7 +541,7 @@ module Apiwork
                                         )
                                       end
 
-              param name, optional: true, type: association_sort_type if association_sort_type
+              reference name, optional: true, to: association_sort_type if association_sort_type
             end
           end
 
@@ -603,7 +602,7 @@ module Apiwork
           registrar.object(type_name) do
             schema_class_local.association_definitions.each do |name, association_definition|
               if association_definition.polymorphic?
-                param name, optional: true, type: :boolean unless association_definition.always_included?
+                boolean name, optional: true unless association_definition.always_included?
                 next
               end
 
@@ -611,7 +610,7 @@ module Apiwork
               next unless association_resource&.schema_class
 
               if visited.include?(association_resource.schema_class)
-                param name, optional: true, type: :boolean unless association_definition.always_included?
+                boolean name, optional: true unless association_definition.always_included?
               else
                 import_alias = builder.send(:import_association_contract, association_resource.schema_class, visited)
 
@@ -628,11 +627,11 @@ module Apiwork
                                            end
 
                 if association_include_type.nil?
-                  param name, optional: true, type: :boolean unless association_definition.always_included?
+                  boolean name, optional: true unless association_definition.always_included?
                 elsif association_definition.always_included?
-                  param name, optional: true, type: association_include_type
+                  reference name, optional: true, to: association_include_type
                 else
-                  param name, optional: true, type: :union do
+                  union name, optional: true do
                     variant { boolean }
                     variant { reference association_include_type }
                   end
@@ -739,7 +738,7 @@ module Apiwork
               discriminator_name = parent_schema.discriminator_name
               variant_tag = schema_class_local.variant_tag.to_s
 
-              param discriminator_name, type: :literal, value: variant_tag
+              literal discriminator_name, value: variant_tag
             end
 
             association_type_map = {}
@@ -876,7 +875,7 @@ module Apiwork
 
             unless registrar.api_registrar.type?(variant_type_name)
               registrar.api_registrar.object(variant_type_name, schema_class: variant_schema) do
-                param discriminator_name, type: :literal, value: tag.to_s
+                literal discriminator_name, value: tag.to_s
 
                 variant_schema.attribute_definitions.each do |name, attribute_definition|
                   enum_option = attribute_definition.enum ? { enum: name } : {}
@@ -940,9 +939,9 @@ module Apiwork
             variant { reference scoped_name }
             variant partial: true do
               object do
-                param :eq, type: scoped_name
-                param :in, type: :array do
-                  of type: scoped_name
+                reference :eq, to: scoped_name
+                array :in do
+                  reference scoped_name
                 end
               end
             end
