@@ -98,6 +98,28 @@ module Apiwork
               { name: :to, type: :integer },
             ],
           },
+          number_filter: {
+            depends_on: :number_filter_between,
+            params: [
+              { name: :eq, type: :number },
+              { name: :gt, type: :number },
+              { name: :gte, type: :number },
+              { name: :lt, type: :number },
+              { name: :lte, type: :number },
+              {
+                name: :in,
+                of: :number,
+                type: :array,
+              },
+              { name: :between, type: :number_filter_between },
+            ],
+          },
+          number_filter_between: {
+            params: [
+              { name: :from, type: :number },
+              { name: :to, type: :number },
+            ],
+          },
           string_filter: {
             params: [
               { name: :eq, type: :string },
@@ -208,7 +230,8 @@ module Apiwork
                       when :date then :date_filter
                       when :datetime then :datetime_filter
                       when :integer then :integer_filter
-                      when :decimal, :number then :decimal_filter
+                      when :decimal then :decimal_filter
+                      when :number then :number_filter
                       when :uuid then :uuid_filter
                       when :boolean then :boolean_filter
                       else :string_filter

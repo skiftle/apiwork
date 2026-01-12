@@ -10,8 +10,7 @@ RSpec.describe 'Format validation', type: :integration do
           decimal: %i[float double],
           integer: %i[int32 int64],
           number: %i[float double],
-          string: %i[email uuid uri url date date_time ipv4 ipv6 password
-                     hostname],
+          string: %i[email uuid url date datetime ipv4 ipv6 password hostname],
         },
       )
     end
@@ -26,7 +25,7 @@ RSpec.describe 'Format validation', type: :integration do
         abstract!
       end
 
-      %i[email uuid uri url date date_time ipv4 ipv6 password hostname].each do |format|
+      %i[email uuid url date datetime ipv4 ipv6 password hostname].each do |format|
         expect do
           schema.class_eval do
             attribute :test_field, format:, type: :string
@@ -143,7 +142,7 @@ RSpec.describe 'Format validation', type: :integration do
         schema.class_eval do
           attribute :test_field, format: :invalid_format, type: :string
         end
-      end.to raise_error(Apiwork::ConfigurationError, /Allowed formats: email, uuid, uri, url, date, date_time, ipv4, ipv6, password, hostname/)
+      end.to raise_error(Apiwork::ConfigurationError, /Allowed formats: email, uuid, url, date, datetime, ipv4, ipv6, password, hostname/)
     end
   end
 end

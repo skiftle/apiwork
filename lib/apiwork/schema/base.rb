@@ -169,7 +169,7 @@ module Apiwork
         # @option options [Integer] :max maximum value (numeric) or length (string)
         # @option options [String] :description documentation description
         # @option options [Object] :example example value for docs
-        # @option options [Symbol] :format format hint (:email, :uri, :uuid, etc.)
+        # @option options [Symbol] :format format hint (:email, :url, :uuid, etc.)
         # @option options [Boolean] :deprecated mark as deprecated
         #
         # @example Basic attribute

@@ -904,8 +904,10 @@ module Apiwork
                         :datetime_filter
                       when :integer
                         :integer_filter
-                      when :decimal, :number
+                      when :decimal
                         :decimal_filter
+                      when :number
+                        :number_filter
                       when :uuid
                         :uuid_filter
                       when :boolean

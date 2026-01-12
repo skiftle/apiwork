@@ -347,7 +347,7 @@ Type-specific format hints for validation and client generation:
 
 ```ruby
 attribute :email, format: :email
-attribute :website, format: :uri
+attribute :website, format: :url
 attribute :uuid, format: :uuid
 attribute :ip_address, format: :ipv4
 ```
@@ -356,9 +356,9 @@ attribute :ip_address, format: :ipv4
 |--------|---------|-----|
 | `:email` | `format: email` | `z.email()` |
 | `:uuid` | `format: uuid` | `z.uuid()` |
-| `:uri` / `:url` | `format: uri` | `z.url()` |
+| `:url` | `format: uri` | `z.url()` |
 | `:date` | `format: date` | `z.iso.date()` |
-| `:date_time` | `format: date-time` | `z.iso.datetime()` |
+| `:datetime` | `format: date-time` | `z.iso.datetime()` |
 | `:ipv4` | `format: ipv4` | `z.ipv4()` |
 | `:ipv6` | `format: ipv6` | `z.ipv6()` |
 | `:password` | `format: password` | `z.string()` |

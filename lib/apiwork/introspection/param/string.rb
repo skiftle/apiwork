@@ -25,7 +25,7 @@ module Apiwork
       #   end
       class String < Base
         # @api public
-        # @return [Symbol, nil] the format constraint (:email, :uuid, :uri, :url, :ipv4, :ipv6, :hostname, :password)
+        # @return [Symbol, nil] the format constraint (:email, :uuid, :url, :datetime, :ipv4, :ipv6, :hostname, :password)
         def format
           @dump[:format]
         end

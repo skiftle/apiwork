@@ -244,11 +244,11 @@ module Apiwork
         case format
         when :email then 'z.email()'
         when :uuid then 'z.uuid()'
-        when :uri, :url then 'z.url()'
+        when :url then 'z.url()'
         when :ipv4 then 'z.ipv4()'
         when :ipv6 then 'z.ipv6()'
         when :date then 'z.iso.date()'
-        when :date_time then 'z.iso.datetime()'
+        when :datetime then 'z.iso.datetime()'
         when :password, :hostname then 'z.string()'
         when :int32, :int64 then 'z.number().int()'
         when :float, :double then 'z.number()'
