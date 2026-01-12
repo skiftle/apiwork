@@ -45,6 +45,8 @@ module Apiwork
       class_attribute :discriminator_column, default: nil
       class_attribute :discriminator_name, default: nil
       class_attribute :variant_tag, default: nil
+      # @api public
+      # @return [Hash{Symbol => Variant}] registered variants
       class_attribute :variants, default: {}
       class_attribute :_root, default: nil
       class_attribute :_adapter_config, default: {}

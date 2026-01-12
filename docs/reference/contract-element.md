@@ -41,7 +41,7 @@ variant { string enum: :status }
 
 `#array(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L289)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L258)
 
 Defines an array element.
 
@@ -69,7 +69,7 @@ array { reference :item }
 
 `#binary`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L220)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L189)
 
 Defines a binary element.
 
@@ -83,7 +83,7 @@ Defines a binary element.
 
 `#boolean`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L170)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L139)
 
 Defines a boolean element.
 
@@ -97,7 +97,7 @@ Defines a boolean element.
 
 `#date`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L196)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L165)
 
 Defines a date element.
 
@@ -111,7 +111,7 @@ Defines a date element.
 
 `#datetime`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L188)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L157)
 
 Defines a datetime element.
 
@@ -125,7 +125,7 @@ Defines a datetime element.
 
 `#decimal(max: nil, min: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L162)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L131)
 
 Defines a decimal element.
 
@@ -146,7 +146,7 @@ Defines a decimal element.
 
 `#float(max: nil, min: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L180)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L149)
 
 Defines a float element.
 
@@ -167,7 +167,7 @@ Defines a float element.
 
 `#integer(enum: nil, max: nil, min: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L152)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L121)
 
 Defines an integer element.
 
@@ -189,7 +189,7 @@ Defines an integer element.
 
 `#json`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L229)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L198)
 
 Defines a JSON element for arbitrary/unstructured JSON data.
 For structured data with known fields, use object with a block instead.
@@ -204,7 +204,7 @@ For structured data with known fields, use object with a block instead.
 
 `#literal(value:)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L242)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L211)
 
 Defines a literal value element.
 
@@ -231,7 +231,7 @@ literal value: 42
 
 `#object(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L272)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L241)
 
 Defines an inline object element.
 
@@ -258,7 +258,7 @@ end
 
 `#reference(type_name, to: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L256)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L225)
 
 Defines a reference to a named type.
 
@@ -286,7 +286,7 @@ reference :shipping_address, to: :address
 
 `#string(enum: nil, format: nil, max: nil, min: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L141)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L110)
 
 Defines a string element.
 
@@ -309,7 +309,7 @@ Defines a string element.
 
 `#time`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L212)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L181)
 
 Defines a time element.
 
@@ -323,7 +323,7 @@ Defines a time element.
 
 `#union(discriminator: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L306)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L275)
 
 Defines an inline union element.
 
@@ -356,7 +356,7 @@ end
 
 `#uuid`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L204)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L173)
 
 Defines a UUID element.
 

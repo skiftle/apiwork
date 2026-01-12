@@ -36,7 +36,7 @@ end
 
 `#array(name, default: nil, deprecated: nil, description: nil, nullable: nil, optional: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L674)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L624)
 
 Defines an array field.
 
@@ -94,7 +94,7 @@ end
 
 `#binary(name, default: nil, deprecated: nil, description: nil, example: nil, nullable: nil, optional: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L523)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L469)
 
 Defines a binary field.
 
@@ -120,7 +120,7 @@ Defines a binary field.
 
 `#boolean(name, default: nil, deprecated: nil, description: nil, example: nil, nullable: nil, optional: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L325)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L271)
 
 Defines a boolean field.
 
@@ -151,7 +151,7 @@ boolean :active
 
 `#date(name, default: nil, deprecated: nil, description: nil, example: nil, nullable: nil, optional: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L427)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L373)
 
 Defines a date field.
 
@@ -177,7 +177,7 @@ Defines a date field.
 
 `#datetime(name, default: nil, deprecated: nil, description: nil, example: nil, nullable: nil, optional: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L395)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L341)
 
 Defines a datetime field.
 
@@ -203,7 +203,7 @@ Defines a datetime field.
 
 `#decimal(name, default: nil, deprecated: nil, description: nil, example: nil, max: nil, min: nil, nullable: nil, optional: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L287)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L233)
 
 Defines a decimal field.
 
@@ -237,7 +237,7 @@ decimal :price, min: 0
 
 `#float(name, default: nil, deprecated: nil, description: nil, example: nil, max: nil, min: nil, nullable: nil, optional: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L359)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L305)
 
 Defines a float field.
 
@@ -265,7 +265,7 @@ Defines a float field.
 
 `#integer(name, default: nil, deprecated: nil, description: nil, enum: nil, example: nil, max: nil, min: nil, nullable: nil, optional: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L244)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L190)
 
 Defines an integer field.
 
@@ -300,7 +300,7 @@ integer :age, min: 0, max: 150
 
 `#json(name, default: nil, deprecated: nil, description: nil, example: nil, nullable: nil, optional: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L556)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L502)
 
 Defines a JSON field for arbitrary/unstructured JSON data.
 For structured data with known fields, use object with a block instead.
@@ -325,9 +325,9 @@ For structured data with known fields, use object with a block instead.
 
 ### #literal
 
-`#literal(name, value:, deprecated: nil, description: nil, optional: false)`
+`#literal(name, value:, as: nil, deprecated: nil, description: nil, optional: false, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L590)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L536)
 
 Defines a literal value field.
 
@@ -358,7 +358,7 @@ literal :version, value: 1
 
 `#meta(optional: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L811)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L761)
 
 Shorthand for `object :meta do ... end`.
 
@@ -400,7 +400,7 @@ end
 
 `#object(name, deprecated: nil, description: nil, nullable: nil, optional: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L725)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L675)
 
 Defines an inline object field.
 
@@ -437,7 +437,7 @@ end
 
 `#reference(name, to: nil, deprecated: nil, description: nil, nullable: nil, optional: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L623)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L573)
 
 Defines a reference to a named type.
 
@@ -474,7 +474,7 @@ reference :shipping_address, to: :address
 
 `#string(name, default: nil, deprecated: nil, description: nil, enum: nil, example: nil, format: nil, max: nil, min: nil, nullable: nil, optional: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L198)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L144)
 
 Defines a string field.
 
@@ -510,7 +510,7 @@ string :status, enum: %w[pending active]
 
 `#time(name, default: nil, deprecated: nil, description: nil, example: nil, nullable: nil, optional: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L491)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L437)
 
 Defines a time field.
 
@@ -536,7 +536,7 @@ Defines a time field.
 
 `#union(name, discriminator: nil, deprecated: nil, description: nil, nullable: nil, optional: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L765)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L715)
 
 Defines an inline union field.
 
@@ -577,7 +577,7 @@ end
 
 `#uuid(name, default: nil, deprecated: nil, description: nil, example: nil, nullable: nil, optional: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L459)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L405)
 
 Defines a UUID field.
 

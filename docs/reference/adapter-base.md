@@ -245,9 +245,9 @@ Renders a single record response.
 
 ### #transform_request
 
-`#transform_request(hash, schema_class)`
+`#transform_request(hash)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L122)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L121)
 
 Transforms incoming request parameters.
 Override to customize key casing, unwrapping, etc.
@@ -257,7 +257,6 @@ Override to customize key casing, unwrapping, etc.
 | Name | Type | Description |
 |------|------|-------------|
 | `hash` | `Hash` | the request parameters |
-| `schema_class` | `Class` | a [Schema::Base](schema-base) subclass (optional) |
 
 **Returns**
 
@@ -269,7 +268,7 @@ Override to customize key casing, unwrapping, etc.
 
 `#transform_response(hash, schema_class)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L133)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L132)
 
 Transforms outgoing response data.
 Override to customize key casing, wrapping, etc.
