@@ -411,7 +411,7 @@ has_one :imageable, polymorphic: [:product, :user]
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L82)
 
-Sets or gets the model class for this schema.
+The model class.
 
 By default, the model is auto-detected from the schema name
 (e.g., InvoiceSchema becomes Invoice). Use this to override.
@@ -424,7 +424,7 @@ By default, the model is auto-detected from the schema name
 
 **Returns**
 
-`Class`, `nil` — the model class
+`Class`, `nil`
 
 **Example: Explicit model**
 
@@ -477,14 +477,14 @@ end
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L563)
 
-Returns the root key for JSON responses.
+The root key for JSON responses.
 
 Uses the custom root if defined via [#root](#root), otherwise derives
 from the schema type or model name.
 
 **Returns**
 
-[RootKey](schema-root-key) — the root key for this schema
+[RootKey](schema-root-key)
 
 **See also**
 

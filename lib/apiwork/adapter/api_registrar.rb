@@ -61,7 +61,7 @@ module Apiwork
 
       # @!method enum_values(name)
       #   @api public
-      #   Returns the values for a registered enum.
+      #   The values for a registered enum.
       #   @param name [Symbol] the enum name
       #   @return [Array<String>, nil] enum values or nil
 

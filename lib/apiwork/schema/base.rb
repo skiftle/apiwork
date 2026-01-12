@@ -61,13 +61,13 @@ module Apiwork
         attr_writer :type
 
         # @api public
-        # Sets or gets the model class for this schema.
+        # The model class.
         #
         # By default, the model is auto-detected from the schema name
         # (e.g., InvoiceSchema becomes Invoice). Use this to override.
         #
         # @param value [Class] the ActiveRecord model class (optional)
-        # @return [Class, nil] the model class
+        # @return [Class, nil]
         # @raise [ArgumentError] if value is not a Class
         #
         # @example Explicit model
@@ -548,12 +548,12 @@ module Apiwork
         end
 
         # @api public
-        # Returns the root key for JSON responses.
+        # The root key for JSON responses.
         #
         # Uses the custom root if defined via {#root}, otherwise derives
         # from the schema type or model name.
         #
-        # @return [RootKey] the root key for this schema
+        # @return [RootKey]
         # @see #root
         # @see RootKey
         #

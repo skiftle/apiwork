@@ -51,7 +51,7 @@ Apiwork::Export.register(ProtobufExport)
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L43)
 
-Sets or returns the export name identifier.
+The export name.
 
 **Parameters**
 
@@ -61,7 +61,7 @@ Sets or returns the export name identifier.
 
 **Returns**
 
-`Symbol`, `nil` — the export name, or nil if not set
+`Symbol`, `nil`
 
 ---
 
@@ -71,7 +71,7 @@ Sets or returns the export name identifier.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L85)
 
-Sets the file extension for string exports.
+The file extension for string exports.
 
 Only valid for exports with `output :string`. Hash exports derive
 their extension from the format (:json becomes .json, :yaml becomes .yaml).
@@ -84,7 +84,7 @@ their extension from the format (:json becomes .json, :yaml becomes .yaml).
 
 **Returns**
 
-`String`, `nil` — the file extension
+`String`, `nil`
 
 ---
 
@@ -164,7 +164,7 @@ Declares the output type for this export.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L263)
 
-Returns the API introspection facade.
+The API introspection facade.
 
 This is the primary interface for accessing introspection data in export generators.
 

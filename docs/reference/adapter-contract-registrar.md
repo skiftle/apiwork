@@ -134,7 +134,7 @@ Imports a type from another contract or the API.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L92)
 
-Returns the hash of imported types.
+The hash of imported types.
 
 **Returns**
 
@@ -164,7 +164,7 @@ Defines a named object type scoped to this contract.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L75)
 
-Returns the fully qualified name for an enum in this contract's scope.
+The fully qualified name for an enum in this contract's scope.
 
 **Parameters**
 
@@ -184,7 +184,7 @@ Returns the fully qualified name for an enum in this contract's scope.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L69)
 
-Returns the fully qualified name for a type in this contract's scope.
+The fully qualified name for a type in this contract's scope.
 
 **Parameters**
 

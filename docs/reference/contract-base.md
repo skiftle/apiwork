@@ -200,7 +200,7 @@ string :status, enum: :status
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L97)
 
-Sets the scope prefix for contract-scoped types.
+The scope prefix for contract-scoped types.
 
 Types, enums, and unions defined in this contract are namespaced
 with this prefix in introspection output. For example, a type
@@ -216,7 +216,7 @@ If not set, prefix is derived from schema's root_key or class name.
 
 **Returns**
 
-`String`, `nil` — the scope prefix
+`String`, `nil`
 
 **Example: Custom scope prefix**
 

@@ -57,7 +57,7 @@ module Apiwork
     end
 
     # @api public
-    # Returns the parsed and validated request contract.
+    # The parsed and validated request contract.
     #
     # The contract contains parsed query parameters and request body,
     # with type coercion applied. Access parameters via {Contract::Base#query}
@@ -194,7 +194,7 @@ module Apiwork
     end
 
     # @api public
-    # Returns the serialization context passed to schemas.
+    # The serialization context passed to schemas.
     #
     # Override this method to provide context data to your schemas.
     # Common uses: current user, permissions, locale, feature flags.

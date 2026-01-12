@@ -68,13 +68,13 @@ module Apiwork
 
       # @!method scoped_type_name(name)
       #   @api public
-      #   Returns the fully qualified name for a type in this contract's scope.
+      #   The fully qualified name for a type in this contract's scope.
       #   @param name [Symbol, nil] the local type name
       #   @return [Symbol] the scoped name
 
       # @!method scoped_enum_name(name)
       #   @api public
-      #   Returns the fully qualified name for an enum in this contract's scope.
+      #   The fully qualified name for an enum in this contract's scope.
       #   @param name [Symbol, nil] the local enum name
       #   @return [Symbol] the scoped name
 
@@ -86,7 +86,7 @@ module Apiwork
 
       # @!method imports
       #   @api public
-      #   Returns the hash of imported types.
+      #   The hash of imported types.
       #   @return [Hash] imported types
 
       delegate :action,

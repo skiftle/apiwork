@@ -34,12 +34,6 @@ module Apiwork
                   :type,
                   :value
 
-      # Returns the element type for arrays.
-      # @return [Symbol, nil]
-      def of_value
-        @of
-      end
-
       def initialize
         @custom_type = nil
         @defined = false
@@ -304,9 +298,10 @@ module Apiwork
         of(discriminator:, type: :union, &block)
       end
 
-      # Returns the type for `of:` parameter in arrays.
-      #
-      # @return [Symbol] custom_type if reference, otherwise type
+      def of_value
+        @of
+      end
+
       def of_type
         custom_type || type
       end

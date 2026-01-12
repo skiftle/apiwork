@@ -36,10 +36,10 @@ module Apiwork
 
       class << self
         # @api public
-        # Sets or returns the export name identifier.
+        # The export name.
         #
         # @param name [Symbol, nil] the export name to set
-        # @return [Symbol, nil] the export name, or nil if not set
+        # @return [Symbol, nil]
         def export_name(name = nil)
           @export_name = name.to_sym if name
           @export_name
@@ -75,13 +75,13 @@ module Apiwork
         end
 
         # @api public
-        # Sets the file extension for string exports.
+        # The file extension for string exports.
         #
         # Only valid for exports with `output :string`. Hash exports derive
         # their extension from the format (:json becomes .json, :yaml becomes .yaml).
         #
         # @param file_extension [String, nil] the file extension (e.g., '.ts')
-        # @return [String, nil] the file extension
+        # @return [String, nil]
         def file_extension(file_extension = nil)
           return @file_extension unless file_extension
 
@@ -254,7 +254,7 @@ module Apiwork
       end
 
       # @api public
-      # Returns the API introspection facade.
+      # The API introspection facade.
       #
       # This is the primary interface for accessing introspection data in export generators.
       #

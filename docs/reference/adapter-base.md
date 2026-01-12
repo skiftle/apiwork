@@ -36,7 +36,7 @@ Apiwork::Adapter.register(JSONAPIAdapter)
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L31)
 
-Sets or returns the adapter name identifier.
+The adapter name.
 
 **Parameters**
 
@@ -46,7 +46,7 @@ Sets or returns the adapter name identifier.
 
 **Returns**
 
-`Symbol`, `nil` — the adapter name, or nil if not set
+`Symbol`, `nil`
 
 ---
 

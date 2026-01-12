@@ -74,7 +74,7 @@ module Apiwork
         attr_writer :api_class
 
         # @api public
-        # Sets the scope prefix for contract-scoped types.
+        # The scope prefix for contract-scoped types.
         #
         # Types, enums, and unions defined in this contract are namespaced
         # with this prefix in introspection output. For example, a type
@@ -83,7 +83,7 @@ module Apiwork
         # If not set, prefix is derived from schema's root_key or class name.
         #
         # @param value [Symbol, String] scope prefix (optional)
-        # @return [String, nil] the scope prefix
+        # @return [String, nil]
         #
         # @example Custom scope prefix
         #   class InvoiceContract < Apiwork::Contract::Base

@@ -74,7 +74,7 @@ skip_contract_validation!
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L208)
 
-Returns the serialization context passed to schemas.
+The serialization context passed to schemas.
 
 Override this method to provide context data to your schemas.
 Common uses: current user, permissions, locale, feature flags.
@@ -99,7 +99,7 @@ end
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L81)
 
-Returns the parsed and validated request contract.
+The parsed and validated request contract.
 
 The contract contains parsed query parameters and request body,
 with type coercion applied. Access parameters via [Contract::Base#query](contract-base#query)

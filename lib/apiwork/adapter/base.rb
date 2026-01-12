@@ -24,10 +24,10 @@ module Apiwork
 
       class << self
         # @api public
-        # Sets or returns the adapter name identifier.
+        # The adapter name.
         #
         # @param name [Symbol, nil] the adapter name to set
-        # @return [Symbol, nil] the adapter name, or nil if not set
+        # @return [Symbol, nil]
         def adapter_name(name = nil)
           @adapter_name = name.to_sym if name
           @adapter_name

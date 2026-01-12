@@ -78,7 +78,7 @@ Checks if an enum is registered.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/api_registrar.rb#L68)
 
-Returns the values for a registered enum.
+The values for a registered enum.
 
 **Parameters**
 
