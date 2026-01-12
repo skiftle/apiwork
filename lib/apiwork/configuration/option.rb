@@ -3,9 +3,19 @@
 module Apiwork
   class Configuration
     # @api public
-    # Configuration option definition.
+    # Block context for nested configuration options.
     #
-    # Used within {Configurable.option} blocks for nested options.
+    # Used inside `option :name, type: :hash do ... end` blocks
+    # in {Adapter::Base} and {Export::Base} subclasses.
+    #
+    # @example Nested pagination options
+    #   option :pagination, type: :hash do
+    #     option :strategy, type: :symbol, default: :offset
+    #     option :default_size, type: :integer, default: 20
+    #   end
+    #
+    # @see Adapter::Base
+    # @see Export::Base
     class Option
       include Validatable
 

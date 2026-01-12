@@ -6,11 +6,21 @@ next: false
 
 # Configuration::Option
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/configuration/option.rb#L9)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/configuration/option.rb#L19)
 
-Configuration option definition.
+Block context for nested configuration options.
 
-Used within [Configurable.option](configurable#option) blocks for nested options.
+Used inside `option :name, type: :hash do ... end` blocks
+in [Adapter::Base](adapter-base) and [Export::Base](export-base) subclasses.
+
+**Example: Nested pagination options**
+
+```ruby
+option :pagination, type: :hash do
+  option :strategy, type: :symbol, default: :offset
+  option :default_size, type: :integer, default: 20
+end
+```
 
 ## Instance Methods
 
@@ -18,7 +28,7 @@ Used within [Configurable.option](configurable#option) blocks for nested options
 
 `#option(name, default: nil, enum: nil, type:, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/configuration/option.rb#L36)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/configuration/option.rb#L46)
 
 Defines a nested option.
 
