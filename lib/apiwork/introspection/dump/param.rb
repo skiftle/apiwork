@@ -436,7 +436,7 @@ module Apiwork
           schema_name = attribute_definition.schema_class_name
           attribute_name = attribute_definition.name
 
-          api_class.structure.i18n_lookup(:schemas, schema_name, :attributes, attribute_name, :description)
+          api_class.translate(:schemas, schema_name, :attributes, attribute_name, :description)
         end
 
         def i18n_association_description(association_definition)
@@ -446,7 +446,7 @@ module Apiwork
           schema_name = association_definition.schema_class_name
           association_name = association_definition.name
 
-          api_class.structure.i18n_lookup(:schemas, schema_name, :associations, association_name, :description)
+          api_class.translate(:schemas, schema_name, :associations, association_name, :description)
         end
 
         def scope_for_enum(definition, _enum_name)

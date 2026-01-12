@@ -30,7 +30,7 @@ module Apiwork
           contract_name = contract_class.name.demodulize.delete_suffix('Contract').underscore
           action_name = @contract_action.name
 
-          contract_class.api_class.structure.i18n_lookup(:contracts, contract_name, :actions, action_name, field)
+          contract_class.api_class.translate(:contracts, contract_name, :actions, action_name, field)
         end
 
         def build_request(request)

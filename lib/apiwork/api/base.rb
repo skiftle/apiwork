@@ -508,6 +508,11 @@ module Apiwork
           Registry.register(self)
         end
 
+        def translate(*segments, default: nil)
+          key = :"apiwork.apis.#{structure.locale_key}.#{segments.join('.')}"
+          I18n.translate(key, default:)
+        end
+
         def transform_path_segment(segment)
           case @path_format
           when :kebab

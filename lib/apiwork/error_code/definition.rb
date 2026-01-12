@@ -10,12 +10,12 @@ module Apiwork
       def description(locale_key: nil, options: {})
         if locale_key
           api_key = :"apiwork.apis.#{locale_key}.error_codes.#{key}.description"
-          result = I18n.t(api_key, **options, default: nil)
+          result = I18n.translate(api_key, **options, default: nil)
           return result if result
         end
 
         global_key = :"apiwork.error_codes.#{key}.description"
-        result = I18n.t(global_key, **options, default: nil)
+        result = I18n.translate(global_key, **options, default: nil)
         return result if result
 
         key.to_s.titleize

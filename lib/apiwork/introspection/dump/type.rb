@@ -248,19 +248,19 @@ module Apiwork
             return schema_description if schema_description
           end
 
-          result = @api_class.structure.i18n_lookup(:types, type_name, :description)
+          result = @api_class.translate(:types, type_name, :description)
           return result if result
 
-          I18n.t(:"apiwork.types.#{type_name}.description", default: nil)
+          I18n.translate(:"apiwork.types.#{type_name}.description", default: nil)
         end
 
         def resolve_enum_description(enum_name, definition)
           return definition.description if definition.description
 
-          result = @api_class.structure.i18n_lookup(:enums, enum_name, :description)
+          result = @api_class.translate(:enums, enum_name, :description)
           return result if result
 
-          I18n.t(:"apiwork.enums.#{enum_name}.description", default: nil)
+          I18n.translate(:"apiwork.enums.#{enum_name}.description", default: nil)
         end
 
         def resolve_scoped_type_name(type_name, scope)

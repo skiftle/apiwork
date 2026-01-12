@@ -146,12 +146,12 @@ module Apiwork
         def detail_for(code)
           if @locale_key
             api_key = :"apiwork.apis.#{@locale_key}.adapters.standard.domain_issues.#{code}.detail"
-            result = I18n.t(api_key, default: nil)
+            result = I18n.translate(api_key, default: nil)
             return result if result
           end
 
           adapter_key = :"apiwork.adapters.standard.domain_issues.#{code}.detail"
-          result = I18n.t(adapter_key, default: nil)
+          result = I18n.translate(adapter_key, default: nil)
           return result if result
 
           DETAIL_MAP[code] || code.to_s.humanize

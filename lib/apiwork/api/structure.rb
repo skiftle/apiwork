@@ -22,11 +22,6 @@ module Apiwork
         @locale_key ||= path.delete_prefix('/')
       end
 
-      def i18n_lookup(*segments, default: nil)
-        key = :"apiwork.apis.#{locale_key}.#{segments.join('.')}"
-        I18n.t(key, default:)
-      end
-
       def has_resources?
         @resources.any?
       end
