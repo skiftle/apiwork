@@ -10,7 +10,7 @@ next: false
 
 Configuration option definition.
 
-Supports recursive nesting via [#hash](#hash).
+Used within [Configurable.option](configurable#option) blocks for nested options.
 
 ## Instance Methods
 

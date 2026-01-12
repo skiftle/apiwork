@@ -5,7 +5,7 @@ module Apiwork
     # @api public
     # Configuration option definition.
     #
-    # Supports recursive nesting via {#hash}.
+    # Used within {Configurable.option} blocks for nested options.
     class Option
       include Validatable
 

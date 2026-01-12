@@ -13,31 +13,28 @@ module Apiwork
     #   @api public
     #   Defines a configuration option.
     #
-    #   @param name [Symbol]
+    #   For nested options, use `type: :hash` with a block. Inside the block,
+    #   call `option` to define child options.
+    #
+    #   @param name [Symbol] option name
     #   @param type [Symbol] :symbol, :string, :integer, :boolean, or :hash
-    #   @param default [Object, nil]
-    #   @param enum [Array, nil]
+    #   @param default [Object, nil] default value
+    #   @param enum [Array, nil] allowed values
     #   @yield block evaluated in {Configuration::Option} context (for :hash type)
+    #   @return [void]
+    #   @see Configuration::Option
     #
     #   @example Symbol option
     #     option :locale, type: :symbol, default: :en
     #
-    #   @example Symbol option with enum
-    #     option :strategy, type: :symbol, default: :offset, enum: %i[offset cursor]
+    #   @example String option with enum
+    #     option :version, type: :string, default: '5', enum: %w[4 5]
     #
-    #   @example String option
-    #     option :version, type: :string, default: '1.0'
-    #
-    #   @example Integer option
-    #     option :max_size, type: :integer, default: 100
-    #
-    #   @example Boolean option
-    #     option :verbose, type: :boolean, default: false
-    #
-    #   @example Nested hash option
+    #   @example Nested options
     #     option :pagination, type: :hash do
-    #       option :strategy, type: :symbol, default: :offset
+    #       option :strategy, type: :symbol, default: :offset, enum: %i[offset cursor]
     #       option :default_size, type: :integer, default: 20
+    #       option :max_size, type: :integer, default: 100
     #     end
 
     class_methods do
