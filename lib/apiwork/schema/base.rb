@@ -131,8 +131,8 @@ module Apiwork
           return unless block
 
           self._adapter_config = _adapter_config.dup
-          builder = Configuration::Builder.new(api_class.adapter.class, _adapter_config)
-          builder.instance_eval(&block)
+          config = Configuration.new(api_class.adapter.class, _adapter_config)
+          config.instance_eval(&block)
         end
 
         # @api public

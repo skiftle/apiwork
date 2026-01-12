@@ -1,5 +1,5 @@
 ---
-order: 27
+order: 28
 prev: false
 next: false
 ---
@@ -92,35 +92,56 @@ their extension from the format (:json becomes .json, :yaml becomes .yaml).
 
 `.option(name, type:, default: nil, enum: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/configurable.rb#L31)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/configurable.rb#L43)
 
-Defines a configuration option for the spec or adapter.
-
-Options can be passed to `.generate` or set via environment variables.
+Defines a configuration option.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `name` | `Symbol` | the option name |
-| `type` | `Symbol` | the option type (:symbol, :string, :boolean, :integer) |
-| `default` | `Object, nil` | default value if not provided |
-| `enum` | `Array, nil` | allowed values |
+| `name` | `Symbol` |  |
+| `type` | `Symbol` | :symbol, :string, :integer, :boolean, or :hash |
+| `default` | `Object, nil` |  |
+| `enum` | `Array, nil` |  |
 
-**Returns**
-
-`void`
-
-**Example: Simple option**
+**Example: Symbol option**
 
 ```ruby
 option :locale, type: :symbol, default: :en
 ```
 
-**Example: Option with enum**
+**Example: Symbol option with enum**
 
 ```ruby
-option :format, type: :symbol, enum: [:json, :yaml]
+option :strategy, type: :symbol, default: :offset, enum: %i[offset cursor]
+```
+
+**Example: String option**
+
+```ruby
+option :version, type: :string, default: '1.0'
+```
+
+**Example: Integer option**
+
+```ruby
+option :max_size, type: :integer, default: 100
+```
+
+**Example: Boolean option**
+
+```ruby
+option :verbose, type: :boolean, default: false
+```
+
+**Example: Nested hash option**
+
+```ruby
+option :pagination, type: :hash do
+  option :strategy, type: :symbol, default: :offset
+  option :default_size, type: :integer, default: 20
+end
 ```
 
 ---

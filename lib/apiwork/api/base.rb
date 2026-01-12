@@ -104,8 +104,8 @@ module Apiwork
           return unless block
 
           export_class = Export.find(name)
-          builder = Configuration::Builder.new(export_class, @export_configs[name])
-          builder.instance_eval(&block)
+          config = Configuration.new(export_class, @export_configs[name])
+          config.instance_eval(&block)
         end
 
         # @api public
@@ -142,8 +142,8 @@ module Apiwork
 
           if block
             adapter_class = Adapter.find(@adapter_name || :standard)
-            builder = Configuration::Builder.new(adapter_class, @adapter_config)
-            builder.instance_eval(&block)
+            config = Configuration.new(adapter_class, @adapter_config)
+            config.instance_eval(&block)
             return
           end
 

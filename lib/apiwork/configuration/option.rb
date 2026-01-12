@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
 module Apiwork
-  module Configuration
+  class Configuration
+    # @api public
+    # Configuration option definition.
+    #
+    # Supports recursive nesting via {#hash}.
     class Option
       include Validatable
 
@@ -21,8 +25,16 @@ module Apiwork
         instance_eval(&block) if block && type == :hash
       end
 
-      def option(name, default:, enum: nil, type:)
-        @children[name] = NestedOption.new(name, type, default, enum:)
+      # @api public
+      # Defines a nested option.
+      #
+      # @param name [Symbol]
+      # @param type [Symbol] :symbol, :string, :integer, :boolean, or :hash
+      # @param default [Object, nil]
+      # @param enum [Array, nil]
+      # @yield block evaluated in {Option} context (for :hash type)
+      def option(name, default: nil, enum: nil, type:, &block)
+        @children[name] = Option.new(name, type, default:, enum:, &block)
       end
 
       def nested?

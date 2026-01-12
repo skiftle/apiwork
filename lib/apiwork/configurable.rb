@@ -11,22 +11,34 @@ module Apiwork
     # @!method option(name, type:, default: nil, enum: nil, &block)
     #   @!scope class
     #   @api public
-    #   Defines a configuration option for the spec or adapter.
+    #   Defines a configuration option.
     #
-    #   Options can be passed to `.generate` or set via environment variables.
+    #   @param name [Symbol]
+    #   @param type [Symbol] :symbol, :string, :integer, :boolean, or :hash
+    #   @param default [Object, nil]
+    #   @param enum [Array, nil]
+    #   @yield block evaluated in {Configuration::Option} context (for :hash type)
     #
-    #   @param name [Symbol] the option name
-    #   @param type [Symbol] the option type (:symbol, :string, :boolean, :integer)
-    #   @param default [Object, nil] default value if not provided
-    #   @param enum [Array, nil] allowed values
-    #   @yield block for nested options
-    #   @return [void]
-    #
-    #   @example Simple option
+    #   @example Symbol option
     #     option :locale, type: :symbol, default: :en
     #
-    #   @example Option with enum
-    #     option :format, type: :symbol, enum: [:json, :yaml]
+    #   @example Symbol option with enum
+    #     option :strategy, type: :symbol, default: :offset, enum: %i[offset cursor]
+    #
+    #   @example String option
+    #     option :version, type: :string, default: '1.0'
+    #
+    #   @example Integer option
+    #     option :max_size, type: :integer, default: 100
+    #
+    #   @example Boolean option
+    #     option :verbose, type: :boolean, default: false
+    #
+    #   @example Nested hash option
+    #     option :pagination, type: :hash do
+    #       option :strategy, type: :symbol, default: :offset
+    #       option :default_size, type: :integer, default: 20
+    #     end
 
     class_methods do
       def inherited(subclass)
@@ -39,7 +51,7 @@ module Apiwork
       end
 
       def default_options
-        options.transform_values(&:default).compact
+        options.transform_values(&:resolved_default).compact
       end
     end
   end
