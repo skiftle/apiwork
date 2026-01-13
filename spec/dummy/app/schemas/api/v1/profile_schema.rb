@@ -5,7 +5,7 @@ module Api
     class ProfileSchema < Apiwork::Schema::Base
       description 'User profile with personal settings'
       example({ bio: 'Software developer', timezone: 'Europe/Stockholm' })
-      deprecated
+      deprecated!
 
       attribute :id, filterable: true, sortable: true
       attribute :bio, writable: true, nullable: true

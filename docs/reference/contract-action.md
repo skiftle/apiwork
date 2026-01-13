@@ -14,9 +14,9 @@ Returns [Request](contract-request) via `request` and [Response](contract-respon
 
 ## Instance Methods
 
-### #deprecated
+### #deprecated!
 
-`#deprecated`
+`#deprecated!`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L92)
 
@@ -32,7 +32,7 @@ Deprecated actions are flagged in generated specs.
 
 ```ruby
 action :legacy_create do
-  deprecated
+  deprecated!
 end
 ```
 

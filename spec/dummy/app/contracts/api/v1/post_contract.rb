@@ -97,7 +97,7 @@ module Api
       # Also tests deprecated and custom operation_id
       action :destroy do
         summary "Delete a post"
-        deprecated
+        deprecated!
         operation_id "deletePost"
 
         response replace: true do

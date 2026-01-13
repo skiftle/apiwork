@@ -157,13 +157,13 @@ end
 
 **Test needed:** Verify example appears in OpenAPI schemas.
 
-#### 8. Schema.deprecated
+#### 8. Schema.deprecated!
 Only action-level deprecation tested. Schema-level not tested.
 
 ```ruby
 # Expected usage
 class LegacySchema < Apiwork::Schema::Base
-  deprecated
+  deprecated!
 end
 ```
 

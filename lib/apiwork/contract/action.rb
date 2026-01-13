@@ -87,9 +87,9 @@ module Apiwork
       #
       # @example
       #   action :legacy_create do
-      #     deprecated
+      #     deprecated!
       #   end
-      def deprecated
+      def deprecated!
         @deprecated = true
       end
 

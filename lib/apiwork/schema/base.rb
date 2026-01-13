@@ -481,9 +481,9 @@ module Apiwork
         #
         # @example
         #   class LegacyOrderSchema < Apiwork::Schema::Base
-        #     deprecated
+        #     deprecated!
         #   end
-        def deprecated
+        def deprecated!
           self._deprecated = true
         end
 

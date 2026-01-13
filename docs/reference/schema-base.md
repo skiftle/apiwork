@@ -193,9 +193,9 @@ belongs_to :category, filterable: true
 
 ---
 
-### .deprecated
+### .deprecated!
 
-`.deprecated`
+`.deprecated!`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L486)
 
@@ -208,7 +208,7 @@ with a deprecation notice.
 
 ```ruby
 class LegacyOrderSchema < Apiwork::Schema::Base
-  deprecated
+  deprecated!
 end
 ```
 

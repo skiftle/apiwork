@@ -158,7 +158,7 @@ RSpec.describe 'Action Metadata', type: :integration do
         end
 
         action :legacy_create do
-          deprecated
+          deprecated!
         end
       end
 
@@ -247,7 +247,7 @@ RSpec.describe 'Action Metadata', type: :integration do
         action :old_create do
           summary 'Create an invoice (deprecated)'
           description 'Use /v2/invoices instead.'
-          deprecated
+          deprecated!
           tags :billing, :deprecated
         end
       end
@@ -335,7 +335,7 @@ RSpec.describe 'Action Metadata', type: :integration do
         end
 
         action :show do
-          deprecated
+          deprecated!
         end
       end
 
