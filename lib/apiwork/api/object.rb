@@ -72,7 +72,7 @@ module Apiwork
       #   param :settings, :object, shape: attribute.element.shape
       def param(
         name,
-        type = nil,
+        type: nil,
         as: nil,
         default: nil,
         deprecated: nil,
@@ -85,7 +85,7 @@ module Apiwork
         min: nil,
         nullable: nil,
         of: nil,
-        optional: false,
+        optional: nil,
         required: nil,
         shape: nil,
         store: nil,
@@ -161,11 +161,10 @@ module Apiwork
         max: nil,
         min: nil,
         nullable: nil,
-        optional: false
+        optional: nil
       )
         param(
           name,
-          :string,
           as:,
           deprecated:,
           description:,
@@ -176,6 +175,7 @@ module Apiwork
           min:,
           nullable:,
           optional:,
+          type: :string,
         )
       end
 
@@ -207,11 +207,10 @@ module Apiwork
         max: nil,
         min: nil,
         nullable: nil,
-        optional: false
+        optional: nil
       )
         param(
           name,
-          :integer,
           as:,
           deprecated:,
           description:,
@@ -221,6 +220,7 @@ module Apiwork
           min:,
           nullable:,
           optional:,
+          type: :integer,
         )
       end
 
@@ -250,11 +250,10 @@ module Apiwork
         max: nil,
         min: nil,
         nullable: nil,
-        optional: false
+        optional: nil
       )
         param(
           name,
-          :decimal,
           as:,
           deprecated:,
           description:,
@@ -263,6 +262,7 @@ module Apiwork
           min:,
           nullable:,
           optional:,
+          type: :decimal,
         )
       end
 
@@ -287,17 +287,17 @@ module Apiwork
         description: nil,
         example: nil,
         nullable: nil,
-        optional: false
+        optional: nil
       )
         param(
           name,
-          :boolean,
           as:,
           deprecated:,
           description:,
           example:,
           nullable:,
           optional:,
+          type: :boolean,
         )
       end
 
@@ -323,11 +323,10 @@ module Apiwork
         max: nil,
         min: nil,
         nullable: nil,
-        optional: false
+        optional: nil
       )
         param(
           name,
-          :number,
           as:,
           deprecated:,
           description:,
@@ -336,6 +335,7 @@ module Apiwork
           min:,
           nullable:,
           optional:,
+          type: :number,
         )
       end
 
@@ -357,17 +357,17 @@ module Apiwork
         description: nil,
         example: nil,
         nullable: nil,
-        optional: false
+        optional: nil
       )
         param(
           name,
-          :datetime,
           as:,
           deprecated:,
           description:,
           example:,
           nullable:,
           optional:,
+          type: :datetime,
         )
       end
 
@@ -389,17 +389,17 @@ module Apiwork
         description: nil,
         example: nil,
         nullable: nil,
-        optional: false
+        optional: nil
       )
         param(
           name,
-          :date,
           as:,
           deprecated:,
           description:,
           example:,
           nullable:,
           optional:,
+          type: :date,
         )
       end
 
@@ -421,17 +421,17 @@ module Apiwork
         description: nil,
         example: nil,
         nullable: nil,
-        optional: false
+        optional: nil
       )
         param(
           name,
-          :uuid,
           as:,
           deprecated:,
           description:,
           example:,
           nullable:,
           optional:,
+          type: :uuid,
         )
       end
 
@@ -453,17 +453,17 @@ module Apiwork
         description: nil,
         example: nil,
         nullable: nil,
-        optional: false
+        optional: nil
       )
         param(
           name,
-          :time,
           as:,
           deprecated:,
           description:,
           example:,
           nullable:,
           optional:,
+          type: :time,
         )
       end
 
@@ -485,17 +485,17 @@ module Apiwork
         description: nil,
         example: nil,
         nullable: nil,
-        optional: false
+        optional: nil
       )
         param(
           name,
-          :binary,
           as:,
           deprecated:,
           description:,
           example:,
           nullable:,
           optional:,
+          type: :binary,
         )
       end
 
@@ -519,18 +519,18 @@ module Apiwork
         as: nil,
         deprecated: nil,
         description: nil,
-        optional: false,
+        optional: nil,
         store: nil
       )
         param(
           name,
-          :literal,
           as:,
           deprecated:,
           description:,
           optional:,
           store:,
           value:,
+          type: :literal,
         )
       end
 
@@ -558,17 +558,17 @@ module Apiwork
         deprecated: nil,
         description: nil,
         nullable: nil,
-        optional: false
+        optional: nil
       )
         resolved_type = to || name
         param(
           name,
-          resolved_type,
           as:,
           deprecated:,
           description:,
           nullable:,
           optional:,
+          type: resolved_type,
         )
       end
 
@@ -610,7 +610,7 @@ module Apiwork
         deprecated: nil,
         description: nil,
         nullable: nil,
-        optional: false,
+        optional: nil,
         &block
       )
         raise ArgumentError, 'array requires a block' unless block
@@ -621,7 +621,6 @@ module Apiwork
 
         param(
           name,
-          :array,
           as:,
           deprecated:,
           description:,
@@ -635,6 +634,7 @@ module Apiwork
             type: element.of_type,
           }.compact,
           shape: element.shape,
+          type: :array,
         )
       end
 
@@ -662,17 +662,17 @@ module Apiwork
         deprecated: nil,
         description: nil,
         nullable: nil,
-        optional: false,
+        optional: nil,
         &block
       )
         param(
           name,
-          :object,
           as:,
           deprecated:,
           description:,
           nullable:,
           optional:,
+          type: :object,
           &block
         )
       end
@@ -706,18 +706,18 @@ module Apiwork
         deprecated: nil,
         description: nil,
         nullable: nil,
-        optional: false,
+        optional: nil,
         &block
       )
         param(
           name,
-          :union,
           as:,
           deprecated:,
           description:,
           discriminator:,
           nullable:,
           optional:,
+          type: :union,
           &block
         )
       end

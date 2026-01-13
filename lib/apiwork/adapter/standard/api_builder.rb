@@ -269,7 +269,7 @@ module Apiwork
                   of(element_type)
                 end
               elsif primitives.include?(type)
-                param(name, type, optional: true)
+                param(name, type:, optional: true)
               else
                 reference name, optional: true, to: type
               end

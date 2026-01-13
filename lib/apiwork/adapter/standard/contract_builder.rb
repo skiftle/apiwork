@@ -121,7 +121,7 @@ module Apiwork
               end
             end
 
-            request.param name, param_options.delete(:type), **param_options
+            request.param name, **param_options
           end
 
           target_schema_class.associations.each do |name, association|
@@ -167,7 +167,7 @@ module Apiwork
               param_options[:type] = association.collection? ? :array : :object
             end
 
-            request.param name, param_options.delete(:type), **param_options
+            request.param name, **param_options
           end
         end
 
@@ -366,7 +366,7 @@ module Apiwork
                 end
               end
 
-              param name, param_options.delete(:type), **param_options
+              param name, **param_options
             end
 
             local_schema_class.associations.each do |name, association|
@@ -381,14 +381,14 @@ module Apiwork
               }
 
               if association.singular?
-                param name, association_type || :object, **base_options
+                param name, type: association_type || :object, **base_options
               elsif association.collection?
                 if association_type
-                  param name, :array, **base_options do
+                  param name, type: :array, **base_options do
                     of association_type
                   end
                 else
-                  param name, :array, **base_options
+                  param name, type: :array, **base_options
                 end
               end
             end
@@ -735,12 +735,12 @@ module Apiwork
             local_schema_class.attributes.each do |name, attribute|
               enum_option = attribute.enum ? { enum: name } : {}
               param name,
-                    builder.map_type(attribute.type),
                     deprecated: attribute.deprecated,
                     description: attribute.description,
                     example: attribute.example,
                     format: attribute.format,
                     nullable: attribute.nullable?,
+                    type: builder.map_type(attribute.type),
                     **enum_option
             end
 
@@ -751,24 +751,24 @@ module Apiwork
               if association_type
                 if association.singular?
                   param name,
-                        association_type,
                         nullable: association.nullable?,
-                        optional: is_optional
+                        optional: is_optional,
+                        type: association_type
                 elsif association.collection?
                   param name,
-                        :array,
                         nullable: association.nullable?,
                         of: association_type,
-                        optional: is_optional
+                        optional: is_optional,
+                        type: :array
                 end
               elsif association.singular?
-                param name, :object, nullable: association.nullable?, optional: is_optional
+                param name, nullable: association.nullable?, optional: is_optional, type: :object
               elsif association.collection?
                 param name,
-                      :array,
                       nullable: association.nullable?,
                       of: :object,
-                      optional: is_optional
+                      optional: is_optional,
+                      type: :array
               end
             end
           end
@@ -865,12 +865,12 @@ module Apiwork
                 variant_schema_class.attributes.each do |name, attribute|
                   enum_option = attribute.enum ? { enum: name } : {}
                   param name,
-                        builder.map_type(attribute.type),
                         deprecated: attribute.deprecated,
                         description: attribute.description,
                         example: attribute.example,
                         format: attribute.format,
                         nullable: attribute.nullable?,
+                        type: builder.map_type(attribute.type),
                         **enum_option
                 end
               end
