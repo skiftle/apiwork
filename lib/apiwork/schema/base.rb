@@ -50,14 +50,14 @@ module Apiwork
       #   @return [Hash{Symbol => Association}] defined associations
       class_attribute :associations, default: {}, instance_accessor: false
 
-      class_attribute :discriminator_column, default: nil
-      class_attribute :discriminator_name, default: nil
-      class_attribute :variant_tag, default: nil
-
       # @!method self.variants
       #   @api public
       #   @return [Hash{Symbol => Variant}] registered variants
       class_attribute :variants, default: {}, instance_accessor: false
+
+      class_attribute :discriminator_column, default: nil
+      class_attribute :discriminator_name, default: nil
+      class_attribute :variant_tag, default: nil
       class_attribute :_root, default: nil
       class_attribute :_adapter_config, default: {}
       class_attribute :_description, default: nil
@@ -641,20 +641,20 @@ module Apiwork
 
           result = hash.dup
 
-          attributes.each do |name, definition|
+          attributes.each do |name, attribute|
             next unless result.key?(name)
 
-            result[name] = definition.decode(result[name])
+            result[name] = attribute.decode(result[name])
           end
 
-          associations.each do |name, definition|
+          associations.each do |name, association|
             next unless result.key?(name)
 
-            schema_class = definition.schema_class
+            schema_class = association.schema_class
             next unless schema_class
 
             value = result[name]
-            result[name] = if definition.collection? && value.is_a?(Array)
+            result[name] = if association.collection? && value.is_a?(Array)
                              value.map { |item| schema_class.deserialize(item) }
                            elsif value.is_a?(Hash)
                              schema_class.deserialize(value)
@@ -729,16 +729,16 @@ module Apiwork
 
         add_discriminator_field(fields) if self.class.sti_variant?
 
-        self.class.attributes.each do |attribute, definition|
-          value = respond_to?(attribute) ? public_send(attribute) : object.public_send(attribute)
-          value = definition.encode(value)
-          fields[attribute] = value
+        self.class.attributes.each do |name, attribute|
+          value = respond_to?(name) ? public_send(name) : object.public_send(name)
+          value = attribute.encode(value)
+          fields[name] = value
         end
 
-        self.class.associations.each do |association, definition|
-          next unless should_include_association?(association, definition)
+        self.class.associations.each do |name, association|
+          next unless should_include_association?(name, association)
 
-          fields[association] = serialize_association(association, definition)
+          fields[name] = serialize_association(name, association)
         end
 
         fields
@@ -756,16 +756,16 @@ module Apiwork
         fields[discriminator_name] = variant_tag.to_s
       end
 
-      def serialize_association(name, definition)
+      def serialize_association(name, association)
         target = object.public_send(name)
         return nil if target.nil?
 
-        schema_class = definition.schema_class || resolve_association_schema(name)
+        schema_class = association.schema_class || resolve_association_schema(name)
         return nil unless schema_class
 
         nested_includes = @include[name] || @include[name.to_s] || @include[name.to_sym] if @include.is_a?(Hash)
 
-        if definition.collection?
+        if association.collection?
           target.map { |record| serialize_sti_aware(record, schema_class, nested_includes) }
         else
           serialize_sti_aware(target, schema_class, nested_includes)
@@ -792,18 +792,18 @@ module Apiwork
         schema_class.new(record, context: context, include: nested_includes).as_json
       end
 
-      def should_include_association?(name, definition)
-        return explicitly_included?(name) unless definition.include == :always
-        return true unless circular_reference?(definition)
+      def should_include_association?(name, association)
+        return explicitly_included?(name) unless association.include == :always
+        return true unless circular_reference?(association)
 
         false
       end
 
-      def circular_reference?(definition)
-        return false unless definition.schema_class
+      def circular_reference?(association)
+        return false unless association.schema_class
 
-        definition.schema_class.associations.values.any? do |association|
-          association.include == :always && association.schema_class == self.class
+        association.schema_class.associations.values.any? do |nested_association|
+          nested_association.include == :always && nested_association.schema_class == self.class
         end
       end
 
