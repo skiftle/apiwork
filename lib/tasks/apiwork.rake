@@ -5,7 +5,7 @@ namespace :apiwork do
     desc 'Generate API reference documentation from YARD comments'
     task reference: :environment do
       require 'apiwork/reference_generator'
-      Apiwork::ReferenceGenerator.run
+      Apiwork::ReferenceGenerator.generate
       puts 'Reference documentation generated in docs/reference/'
     end
   end
@@ -35,7 +35,7 @@ namespace :apiwork do
         puts '  rake apiwork:export:write OUTPUT=public/exports LOCALE=sv'
         puts ''
         puts 'Available exports:'
-        puts "  #{Apiwork::Export.all.join(', ')}"
+        puts "  #{Apiwork::Export.keys.join(', ')}"
         puts ''
         puts 'Built-in options (uppercase ENV vars):'
         puts '  FORMAT: json, yaml (only for data exports like openapi)'

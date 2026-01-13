@@ -443,9 +443,34 @@ No deviations. No reordering.
 
 ### Canonical Entry Points
 
-Service-like objects expose only: `.call` or `#call`
+Class and instance method names match the class's purpose:
 
-Forbidden: `.run`, `.execute`, `.perform`, `.process`
+| Class suffix | Method name |
+|--------------|-------------|
+| `*Generator` | `generate` |
+| `*Loader` | `load` |
+| `*Builder` | `build` |
+
+Pattern: `initialize` takes configuration, method takes input.
+Class method combines both: `new(config).method(input)`
+
+```ruby
+class RecordLoader
+  def initialize(schema_class)
+    @schema_class = schema_class
+  end
+
+  def load(params)
+    # ...
+  end
+
+  def self.load(schema_class, params)
+    new(schema_class).load(params)
+  end
+end
+```
+
+Forbidden: `.run`, `.execute`, `.perform`, `.process`, `.call`
 
 ### Guard Logic
 
