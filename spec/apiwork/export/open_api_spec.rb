@@ -40,7 +40,7 @@ RSpec.describe Apiwork::Export::OpenAPI do
     end
 
     it 'can be retrieved from the registry' do
-      expect(Apiwork::Export.find(:openapi)).to eq(described_class)
+      expect(Apiwork::Export.find!(:openapi)).to eq(described_class)
     end
   end
 

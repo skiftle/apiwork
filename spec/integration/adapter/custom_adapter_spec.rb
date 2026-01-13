@@ -63,7 +63,7 @@ RSpec.describe 'Custom Adapter', type: :integration do
     end
 
     it 'can find registered adapters' do
-      standard_adapter_class = Apiwork::Adapter.find(:standard)
+      standard_adapter_class = Apiwork::Adapter.find!(:standard)
       expect(standard_adapter_class).to be_a(Class)
       expect(standard_adapter_class.ancestors).to include(Apiwork::Adapter::Base)
     end

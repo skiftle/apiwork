@@ -171,7 +171,7 @@ RSpec.describe Apiwork::Export::Zod do
     end
 
     it 'can be retrieved from the registry' do
-      expect(Apiwork::Export.find(:zod)).to eq(described_class)
+      expect(Apiwork::Export.find!(:zod)).to eq(described_class)
     end
 
     it 'can be used via Apiwork::Export.generate' do
