@@ -61,8 +61,8 @@ module Apiwork
       # @return [Symbol] data type
       attr_reader :type
 
-      attr_reader :empty,
-                  :inline_element,
+      attr_reader :element,
+                  :empty,
                   :optional
 
       def initialize(
@@ -94,7 +94,7 @@ module Apiwork
           element = Element.new
           element.instance_eval(&block)
           element.validate!
-          @inline_element = element
+          @element = element
           type = element.type
           @of = element.of_type if element.type == :array
         end

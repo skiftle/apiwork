@@ -98,27 +98,27 @@ module Apiwork
 
         def writable_params(param_definition, action_name, nested: false, target_schema: nil)
           target_schema_class = target_schema || schema_class
-          target_schema_class.attributes.each do |name, attribute_definition|
-            next unless attribute_definition.writable_for?(action_name)
+          target_schema_class.attributes.each do |name, attribute|
+            next unless attribute.writable_for?(action_name)
 
             param_options = {
-              deprecated: attribute_definition.deprecated,
-              description: attribute_definition.description,
-              example: attribute_definition.example,
-              format: attribute_definition.format,
-              nullable: attribute_definition.nullable?,
-              optional: action_name == :update || attribute_definition.optional?,
-              type: map_type(attribute_definition.type),
+              deprecated: attribute.deprecated,
+              description: attribute.description,
+              example: attribute.example,
+              format: attribute.format,
+              nullable: attribute.nullable?,
+              optional: action_name == :update || attribute.optional?,
+              type: map_type(attribute.type),
             }
 
-            param_options[:min] = attribute_definition.min if attribute_definition.min
-            param_options[:max] = attribute_definition.max if attribute_definition.max
-            param_options[:of] = attribute_definition.of if attribute_definition.of
+            param_options[:min] = attribute.min if attribute.min
+            param_options[:max] = attribute.max if attribute.max
+            param_options[:of] = attribute.of if attribute.of
 
-            param_options[:enum] = name if attribute_definition.enum
+            param_options[:enum] = name if attribute.enum
 
-            if attribute_definition.inline_element
-              element = attribute_definition.inline_element
+            if attribute.element
+              element = attribute.element
 
               if element.type == :array
                 param_options[:of] = { type: element.of_type }
@@ -180,10 +180,10 @@ module Apiwork
         end
 
         def build_enums
-          schema_class.attributes.each do |name, attribute_definition|
-            next unless attribute_definition.enum&.any?
+          schema_class.attributes.each do |name, attribute|
+            next unless attribute.enum&.any?
 
-            registrar.enum(name, values: attribute_definition.enum)
+            registrar.enum(name, values: attribute.enum)
           end
         end
 
@@ -350,23 +350,23 @@ module Apiwork
           schema_class_local = schema_class
           builder = self
           registrar.object(type_name, schema_class: schema_class_local) do
-            schema_class_local.attributes.each do |name, attribute_definition|
-              enum_option = attribute_definition.enum ? { enum: name } : {}
-              of_option = attribute_definition.of ? { of: attribute_definition.of } : {}
+            schema_class_local.attributes.each do |name, attribute|
+              enum_option = attribute.enum ? { enum: name } : {}
+              of_option = attribute.of ? { of: attribute.of } : {}
 
               param_options = {
-                deprecated: attribute_definition.deprecated,
-                description: attribute_definition.description,
-                example: attribute_definition.example,
-                format: attribute_definition.format,
-                nullable: attribute_definition.nullable?,
-                type: builder.send(:map_type, attribute_definition.type),
+                deprecated: attribute.deprecated,
+                description: attribute.description,
+                example: attribute.example,
+                format: attribute.format,
+                nullable: attribute.nullable?,
+                type: builder.send(:map_type, attribute.type),
                 **enum_option,
                 **of_option,
               }
 
-              if attribute_definition.inline_element
-                element = attribute_definition.inline_element
+              if attribute.element
+                element = attribute.element
 
                 if element.type == :array
                   param_options[:of] = { type: element.of_type }
@@ -422,9 +422,9 @@ module Apiwork
           builder = self
           schema_class_local = schema_class
 
-          schema_class_local.attributes.each do |name, attribute_definition|
-            next unless attribute_definition.filterable?
-            next unless attribute_definition.enum
+          schema_class_local.attributes.each do |name, attribute|
+            next unless attribute.filterable?
+            next unless attribute.enum
 
             register_enum_filter(name)
           end
@@ -441,16 +441,16 @@ module Apiwork
             end
             reference :_not, optional: true, to: type_name
 
-            schema_class_local.attributes.each do |name, attribute_definition|
-              next unless attribute_definition.filterable?
-              next if attribute_definition.type == :unknown
+            schema_class_local.attributes.each do |name, attribute|
+              next unless attribute.filterable?
+              next if attribute.type == :unknown
 
-              filter_type = builder.send(:filter_type_for, attribute_definition)
+              filter_type = builder.send(:filter_type_for, attribute)
 
-              if attribute_definition.enum
+              if attribute.enum
                 reference name, optional: true, to: filter_type
               else
-                mapped_type = builder.send(:map_type, attribute_definition.type)
+                mapped_type = builder.send(:map_type, attribute.type)
                 if %i[object array union].include?(mapped_type)
                   reference name, optional: true, to: filter_type
                 else
@@ -514,8 +514,8 @@ module Apiwork
           type_options = {} unless depth.zero?
 
           registrar.object(type_name, **type_options) do
-            schema_class_local.attributes.each do |name, attribute_definition|
-              next unless attribute_definition.sortable?
+            schema_class_local.attributes.each do |name, attribute|
+              next unless attribute.sortable?
 
               reference name, optional: true, to: :sort_direction
             end
@@ -746,15 +746,15 @@ module Apiwork
               association_type_map[name] = result
             end
 
-            schema_class_local.attributes.each do |name, attribute_definition|
-              enum_option = attribute_definition.enum ? { enum: name } : {}
+            schema_class_local.attributes.each do |name, attribute|
+              enum_option = attribute.enum ? { enum: name } : {}
               param name,
-                    builder.send(:map_type, attribute_definition.type),
-                    deprecated: attribute_definition.deprecated,
-                    description: attribute_definition.description,
-                    example: attribute_definition.example,
-                    format: attribute_definition.format,
-                    nullable: attribute_definition.nullable?,
+                    builder.send(:map_type, attribute.type),
+                    deprecated: attribute.deprecated,
+                    description: attribute.description,
+                    example: attribute.example,
+                    format: attribute.format,
+                    nullable: attribute.nullable?,
                     **enum_option
             end
 
@@ -876,15 +876,15 @@ module Apiwork
               registrar.api_registrar.object(variant_type_name, schema_class: variant_schema) do
                 literal discriminator_name, value: tag.to_s
 
-                variant_schema.attributes.each do |name, attribute_definition|
-                  enum_option = attribute_definition.enum ? { enum: name } : {}
+                variant_schema.attributes.each do |name, attribute|
+                  enum_option = attribute.enum ? { enum: name } : {}
                   param name,
-                        builder.send(:map_type, attribute_definition.type),
-                        deprecated: attribute_definition.deprecated,
-                        description: attribute_definition.description,
-                        example: attribute_definition.example,
-                        format: attribute_definition.format,
-                        nullable: attribute_definition.nullable?,
+                        builder.send(:map_type, attribute.type),
+                        deprecated: attribute.deprecated,
+                        description: attribute.description,
+                        example: attribute.example,
+                        format: attribute.format,
+                        nullable: attribute.nullable?,
                         **enum_option
                 end
               end
@@ -919,14 +919,14 @@ module Apiwork
           nullable ? :"nullable_#{base_type}" : base_type
         end
 
-        def filter_type_for(attribute_definition)
-          return enum_filter_type(attribute_definition) if attribute_definition.enum
+        def filter_type_for(attribute)
+          return enum_filter_type(attribute) if attribute.enum
 
-          determine_filter_type(attribute_definition.type, nullable: attribute_definition.nullable?)
+          determine_filter_type(attribute.type, nullable: attribute.nullable?)
         end
 
-        def enum_filter_type(attribute_definition)
-          scoped_name = registrar.scoped_type_name(attribute_definition.name)
+        def enum_filter_type(attribute)
+          scoped_name = registrar.scoped_type_name(attribute.name)
           :"#{scoped_name}_filter"
         end
 

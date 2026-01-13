@@ -71,6 +71,10 @@ module Apiwork
       #
       # @example Extending existing param (type omitted)
       #   param :name, description: 'Updated description'
+      #
+      # @example Passing shape from schema element (adapter use)
+      #   attribute = schema_class.attributes[:settings]
+      #   param :settings, :object, shape: attribute.element.shape
       def param(
         name,
         type = nil,

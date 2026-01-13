@@ -208,15 +208,15 @@ RSpec.describe Apiwork::Schema::Base do
     end
 
     describe 'with inline object shape' do
-      it 'stores the element as inline_element' do
+      it 'stores the element as element' do
         definition = described_class.new(:settings, schema_class) do
           object do
             string :theme
           end
         end
 
-        expect(definition.inline_element).to be_a(Apiwork::Schema::Element)
-        expect(definition.inline_element.type).to eq(:object)
+        expect(definition.element).to be_a(Apiwork::Schema::Element)
+        expect(definition.element.type).to eq(:object)
       end
 
       it 'infers type as :object when object block provided' do
@@ -251,12 +251,12 @@ RSpec.describe Apiwork::Schema::Base do
 
         expect(definition.of).to eq(:string)
         expect(definition.type).to eq(:array)
-        expect(definition.inline_element).to be_a(Apiwork::Schema::Element)
+        expect(definition.element).to be_a(Apiwork::Schema::Element)
       end
     end
 
     describe 'with array of objects' do
-      it 'stores type and inline_element' do
+      it 'stores type and element' do
         definition = described_class.new(:line_items, schema_class) do
           array do
             object do
@@ -267,16 +267,16 @@ RSpec.describe Apiwork::Schema::Base do
         end
 
         expect(definition.type).to eq(:array)
-        expect(definition.inline_element).to be_a(Apiwork::Schema::Element)
-        expect(definition.inline_element.of_type).to eq(:object)
+        expect(definition.element).to be_a(Apiwork::Schema::Element)
+        expect(definition.element.of_type).to eq(:object)
       end
     end
 
     describe 'without inline shape' do
-      it 'has nil inline_element' do
+      it 'has nil element' do
         definition = described_class.new(:metadata, schema_class, type: :unknown)
 
-        expect(definition.inline_element).to be_nil
+        expect(definition.element).to be_nil
         expect(definition.type).to eq(:unknown)
       end
     end
@@ -296,7 +296,7 @@ RSpec.describe Apiwork::Schema::Base do
 
       definition = schema_class.attributes[:settings]
 
-      expect(definition.inline_element).to be_a(Apiwork::Schema::Element)
+      expect(definition.element).to be_a(Apiwork::Schema::Element)
       expect(definition.type).to eq(:object)
     end
 

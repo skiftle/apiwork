@@ -76,8 +76,9 @@ module Apiwork
       #   of :string
       #   of :string, enum: %w[a b c]
       #
-      # @example With pre-built shape
-      #   of :object, shape: prebuilt_shape
+      # @example Passing shape from schema element (adapter use)
+      #   attribute = schema_class.attributes[:settings]
+      #   of :object, shape: attribute.element.shape
       def of(type, discriminator: nil, enum: nil, format: nil, max: nil, min: nil, shape: nil, value: nil, &block)
         resolved_enum = enum.is_a?(Symbol) ? resolve_enum(enum) : enum
 
