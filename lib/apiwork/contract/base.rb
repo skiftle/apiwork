@@ -51,8 +51,8 @@ module Apiwork
 
       class_attribute :actions, instance_accessor: false
       class_attribute :imports, instance_accessor: false
-      class_attribute :_identifier
-      class_attribute :_schema_class
+      class_attribute :_identifier, instance_accessor: false
+      class_attribute :_schema_class, instance_accessor: false
 
       # @api public
       # @return [Hash] parsed and validated query parameters

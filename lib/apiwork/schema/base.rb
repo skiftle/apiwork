@@ -55,14 +55,14 @@ module Apiwork
       #   @return [Hash{Symbol => Variant}] registered variants
       class_attribute :variants, default: {}, instance_accessor: false
 
-      class_attribute :discriminator_column, default: nil
-      class_attribute :discriminator_name, default: nil
-      class_attribute :variant_tag, default: nil
-      class_attribute :_root, default: nil
-      class_attribute :_adapter_config, default: {}
-      class_attribute :_description, default: nil
-      class_attribute :_deprecated, default: false
-      class_attribute :_example, default: nil
+      class_attribute :discriminator_column, default: nil, instance_accessor: false
+      class_attribute :discriminator_name, default: nil, instance_accessor: false
+      class_attribute :variant_tag, default: nil, instance_accessor: false
+      class_attribute :_root, default: nil, instance_accessor: false
+      class_attribute :_adapter_config, default: {}, instance_accessor: false
+      class_attribute :_description, default: nil, instance_accessor: false
+      class_attribute :_deprecated, default: false, instance_accessor: false
+      class_attribute :_example, default: nil, instance_accessor: false
 
       attr_reader :context,
                   :include,
