@@ -17,46 +17,46 @@ module Apiwork
         # @api public
         # The contact name.
         #
-        # @param name [String]
+        # @param value [String]
         # @return [String, nil]
         #
         # @example
         #   name 'API Support'
         #   contact.name  # => "API Support"
-        def name(name = nil)
-          return @name if name.nil?
+        def name(value = nil)
+          return @name if value.nil?
 
-          @name = name
+          @name = value
         end
 
         # @api public
         # The contact email.
         #
-        # @param email [String]
+        # @param value [String]
         # @return [String, nil]
         #
         # @example
         #   email 'support@example.com'
         #   contact.email  # => "support@example.com"
-        def email(email = nil)
-          return @email if email.nil?
+        def email(value = nil)
+          return @email if value.nil?
 
-          @email = email
+          @email = value
         end
 
         # @api public
         # The contact URL.
         #
-        # @param url [String]
+        # @param value [String]
         # @return [String, nil]
         #
         # @example
         #   url 'https://example.com/support'
         #   contact.url  # => "https://example.com/support"
-        def url(url = nil)
-          return @url if url.nil?
+        def url(value = nil)
+          return @url if value.nil?
 
-          @url = url
+          @url = value
         end
       end
     end

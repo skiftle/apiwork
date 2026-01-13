@@ -16,31 +16,31 @@ module Apiwork
         # @api public
         # The server URL.
         #
-        # @param url [String]
+        # @param value [String]
         # @return [String, nil]
         #
         # @example
         #   url 'https://api.example.com'
         #   server.url  # => "https://api.example.com"
-        def url(url = nil)
-          return @url if url.nil?
+        def url(value = nil)
+          return @url if value.nil?
 
-          @url = url
+          @url = value
         end
 
         # @api public
         # The server description.
         #
-        # @param description [String]
+        # @param value [String]
         # @return [String, nil]
         #
         # @example
         #   description 'Production'
         #   server.description  # => "Production"
-        def description(description = nil)
-          return @description if description.nil?
+        def description(value = nil)
+          return @description if value.nil?
 
-          @description = description
+          @description = value
         end
       end
     end

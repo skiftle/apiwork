@@ -80,14 +80,14 @@ module Apiwork
         # Only valid for exports with `output :string`. Hash exports derive
         # their extension from the format (:json becomes .json, :yaml becomes .yaml).
         #
-        # @param file_extension [String, nil] the file extension (e.g., '.ts')
+        # @param value [String, nil] the file extension (e.g., '.ts')
         # @return [String, nil]
-        def file_extension(file_extension = nil)
-          return @file_extension unless file_extension
+        def file_extension(value = nil)
+          return @file_extension unless value
 
           raise ConfigurationError, 'file_extension not allowed for output :hash exports' if output_type == :hash
 
-          @file_extension = file_extension
+          @file_extension = value
         end
 
         CORE_OPTIONS_TYPES = {

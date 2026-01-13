@@ -16,31 +16,31 @@ module Apiwork
         # @api public
         # The license name.
         #
-        # @param name [String] e.g. 'MIT', 'Apache 2.0'
+        # @param value [String] e.g. 'MIT', 'Apache 2.0'
         # @return [String, nil]
         #
         # @example
         #   name 'MIT'
         #   license.name  # => "MIT"
-        def name(name = nil)
-          return @name if name.nil?
+        def name(value = nil)
+          return @name if value.nil?
 
-          @name = name
+          @name = value
         end
 
         # @api public
         # The license URL.
         #
-        # @param url [String]
+        # @param value [String]
         # @return [String, nil]
         #
         # @example
         #   url 'https://opensource.org/licenses/MIT'
         #   license.url  # => "https://opensource.org/licenses/MIT"
-        def url(url = nil)
-          return @url if url.nil?
+        def url(value = nil)
+          return @url if value.nil?
 
-          @url = url
+          @url = value
         end
       end
     end

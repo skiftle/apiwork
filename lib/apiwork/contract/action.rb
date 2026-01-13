@@ -31,15 +31,15 @@ module Apiwork
       #
       # Used in generated specs as the operation summary.
       #
-      # @param summary [String] summary text (optional)
+      # @param value [String] summary text (optional)
       # @return [String, nil] the summary
       #
       # @example
       #   action :create do
       #     summary 'Create a new invoice'
       #   end
-      def summary(summary = nil)
-        @summary = summary if summary
+      def summary(value = nil)
+        @summary = value if value
         @summary
       end
 
@@ -49,15 +49,15 @@ module Apiwork
       # Used in generated specs as the operation description.
       # Supports Markdown formatting.
       #
-      # @param description [String] description text (optional)
+      # @param value [String] description text (optional)
       # @return [String, nil] the description
       #
       # @example
       #   action :create do
       #     description 'Creates a new invoice and sends notification email.'
       #   end
-      def description(description = nil)
-        @description = description if description
+      def description(value = nil)
+        @description = value if value
         @description
       end
 
@@ -96,15 +96,15 @@ module Apiwork
       # @api public
       # Sets a custom operation ID.
       #
-      # @param operation_id [String] custom operation ID (optional)
+      # @param value [String] custom operation ID (optional)
       # @return [String, nil] the operation ID
       #
       # @example
       #   action :create do
       #     operation_id 'createNewInvoice'
       #   end
-      def operation_id(operation_id = nil)
-        @operation_id = operation_id if operation_id
+      def operation_id(value = nil)
+        @operation_id = value if value
         @operation_id
       end
 

@@ -23,31 +23,31 @@ module Apiwork
       # @api public
       # The API title.
       #
-      # @param title [String]
+      # @param value [String]
       # @return [String, nil]
       #
       # @example
       #   title 'Invoice API'
       #   info.title  # => "Invoice API"
-      def title(title = nil)
-        return @title if title.nil?
+      def title(value = nil)
+        return @title if value.nil?
 
-        @title = title
+        @title = value
       end
 
       # @api public
       # The API version.
       #
-      # @param version [String] e.g. '1.0.0'
+      # @param value [String] e.g. '1.0.0'
       # @return [String, nil]
       #
       # @example
       #   version '1.0.0'
       #   info.version  # => "1.0.0"
-      def version(version = nil)
-        return @version if version.nil?
+      def version(value = nil)
+        return @version if value.nil?
 
-        @version = version
+        @version = value
       end
 
       # @api public
@@ -129,31 +129,31 @@ module Apiwork
       # @api public
       # A short summary.
       #
-      # @param summary [String]
+      # @param value [String]
       # @return [String, nil]
       #
       # @example
       #   summary 'Invoice management API'
       #   info.summary  # => "Invoice management API"
-      def summary(summary = nil)
-        return @summary if summary.nil?
+      def summary(value = nil)
+        return @summary if value.nil?
 
-        @summary = summary
+        @summary = value
       end
 
       # @api public
       # A detailed description.
       #
-      # @param description [String] supports Markdown
+      # @param value [String] supports Markdown
       # @return [String, nil]
       #
       # @example
       #   description 'Full-featured API for managing invoices and payments.'
       #   info.description  # => "Full-featured..."
-      def description(description = nil)
-        return @description if description.nil?
+      def description(value = nil)
+        return @description if value.nil?
 
-        @description = description
+        @description = value
       end
 
       # @api public
