@@ -49,6 +49,27 @@ module Apiwork
             end
           end
 
+          def build_where_conditions(filter, target_klass = schema_class.model_class)
+            filter.each_with_object([[], {}]) do |(key, value), (conditions, joins)|
+              key = key.to_sym
+
+              if (attribute_definition = schema_class.attributes[key])&.filterable?
+                next unless filterable_for_context?(attribute_definition)
+
+                condition_result = build_column_condition(key, value, target_klass)
+                conditions << condition_result if condition_result
+
+              elsif (association = find_filterable_association(key))
+                association_conditions, association_joins = build_join_conditions(key, value, association)
+                conditions.concat(association_conditions)
+                joins.deep_merge!(association_joins)
+
+              else
+                collect_filterable_error(key, target_klass)
+              end
+            end
+          end
+
           private
 
           def apply_hash_filter(params)
@@ -173,27 +194,6 @@ module Apiwork
             [combined, all_joins]
           end
 
-          def build_where_conditions(filter, target_klass = schema_class.model_class)
-            filter.each_with_object([[], {}]) do |(key, value), (conditions, joins)|
-              key = key.to_sym
-
-              if (attribute_definition = schema_class.attributes[key])&.filterable?
-                next unless filterable_for_context?(attribute_definition)
-
-                condition_result = build_column_condition(key, value, target_klass)
-                conditions << condition_result if condition_result
-
-              elsif (association = find_filterable_association(key))
-                association_conditions, association_joins = build_join_conditions(key, value, association)
-                conditions.concat(association_conditions)
-                joins.deep_merge!(association_joins)
-
-              else
-                collect_filterable_error(key, target_klass)
-              end
-            end
-          end
-
           def filterable_for_context?(attribute_definition)
             filterable = attribute_definition.filterable?
             return true unless filterable.is_a?(Proc)
@@ -316,7 +316,7 @@ module Apiwork
             end
 
             nested_query = Filter.new(association_reflection.klass.all, association_resource, @issues)
-            nested_conditions, nested_joins = nested_query.send(:build_where_conditions, value, association_reflection.klass)
+            nested_conditions, nested_joins = nested_query.build_where_conditions(value, association_reflection.klass)
 
             [nested_conditions, { key => (nested_joins.any? ? nested_joins : {}) }]
           end

@@ -266,10 +266,10 @@ module Apiwork
 
               if element_type
                 array name, optional: true do
-                  send(element_type)
+                  of(element_type)
                 end
               elsif primitives.include?(type)
-                send(type, name, optional: true)
+                param(name, type, optional: true)
               else
                 reference name, optional: true, to: type
               end

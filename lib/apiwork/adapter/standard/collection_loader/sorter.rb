@@ -38,8 +38,6 @@ module Apiwork
             scope
           end
 
-          private
-
           def build_order_clauses(params, target_klass = schema_class.model_class)
             params.each_with_object([[], []]) do |(key, value), (orders, joins)|
               key = key.to_sym
@@ -117,7 +115,7 @@ module Apiwork
                 end
 
                 nested_query = Sorter.new(association.klass.all, association_resource, @issues)
-                nested_orders, nested_joins = nested_query.send(:build_order_clauses, value, association.klass)
+                nested_orders, nested_joins = nested_query.build_order_clauses(value, association.klass)
                 orders.concat(nested_orders)
 
                 joins << (nested_joins.any? ? { key => nested_joins } : key)

@@ -45,8 +45,6 @@ module Apiwork
           param_definition.object :meta, optional: true
         end
 
-        private
-
         attr_reader :actions,
                     :registrar,
                     :schema_class
@@ -88,7 +86,7 @@ module Apiwork
 
             unless registrar.type?(payload_type_name)
               registrar.object(payload_type_name, schema_class: schema_class) do
-                builder.send(:writable_params, self, action_name, nested: false)
+                builder.writable_params(self, action_name, nested: false)
               end
             end
           end
@@ -150,7 +148,7 @@ module Apiwork
                 if association_contract&.schema?
                   association_registrar = ContractRegistrar.new(association_contract)
                   sub_builder = self.class.for_schema(association_registrar, association_resource.schema_class)
-                  sub_builder.send(:build_nested_payload_union)
+                  sub_builder.build_nested_payload_union
                 end
               end
             end
@@ -206,18 +204,18 @@ module Apiwork
           case action.name
           when :index
             contract_action.request do
-              query { builder.send(:query_params, self) }
+              query { builder.query_params(self) }
             end
           when :show
             build_member_query_params(contract_action)
           when :create
             contract_action.request do
-              body { builder.send(:writable_request, self, :create) }
+              body { builder.writable_request(self, :create) }
             end
             build_member_query_params(contract_action)
           when :update
             contract_action.request do
-              body { builder.send(:writable_request, self, :update) }
+              body { builder.writable_request(self, :update) }
             end
             build_member_query_params(contract_action)
           when :destroy
@@ -289,8 +287,8 @@ module Apiwork
 
           contract_action.request do
             query do
-              if builder.send(:schema_class).associations.any?
-                include_type = builder.send(:build_include_type)
+              if builder.schema_class.associations.any?
+                include_type = builder.build_include_type
                 reference :include, optional: true, to: include_type if include_type
               end
             end
@@ -318,7 +316,7 @@ module Apiwork
 
                 literal discriminator_name, as: as_column, optional: discriminator_optional, store: store_value, value: tag.to_s
 
-                builder.send(:writable_params, self, action_name, nested: false, target_schema: variant_schema)
+                builder.writable_params(self, action_name, nested: false, target_schema: variant_schema)
               end
             end
 
@@ -360,7 +358,7 @@ module Apiwork
                 example: attribute.example,
                 format: attribute.format,
                 nullable: attribute.nullable?,
-                type: builder.send(:map_type, attribute.type),
+                type: builder.map_type(attribute.type),
                 **enum_option,
                 **of_option,
               }
@@ -445,17 +443,17 @@ module Apiwork
               next unless attribute.filterable?
               next if attribute.type == :unknown
 
-              filter_type = builder.send(:filter_type_for, attribute)
+              filter_type = builder.filter_type_for(attribute)
 
               if attribute.enum
                 reference name, optional: true, to: filter_type
               else
-                mapped_type = builder.send(:map_type, attribute.type)
+                mapped_type = builder.map_type(attribute.type)
                 if %i[object array union].include?(mapped_type)
                   reference name, optional: true, to: filter_type
                 else
                   union name, optional: true do
-                    variant { send(mapped_type) }
+                    variant { of(mapped_type) }
                     variant { reference filter_type }
                   end
                 end
@@ -465,17 +463,16 @@ module Apiwork
             local_schema_class.associations.each do |name, association_definition|
               next unless association_definition.filterable?
 
-              association_resource = builder.send(:resolve_association_resource, association_definition)
+              association_resource = builder.resolve_association_resource(association_definition)
               next unless association_resource&.schema_class
               next if visited.include?(association_resource.schema_class)
 
-              import_alias = builder.send(:import_association_contract, association_resource.schema_class, visited)
+              import_alias = builder.import_association_contract(association_resource.schema_class, visited)
 
               association_filter_type = if import_alias
                                           :"#{import_alias}_filter"
                                         else
-                                          builder.send(
-                                            :build_filter_type_for_schema,
+                                          builder.build_filter_type_for_schema(
                                             association_resource.schema_class,
                                             visited:,
                                             depth: depth + 1,
@@ -491,7 +488,7 @@ module Apiwork
 
         def build_filter_type_for_schema(association_schema, depth:, visited:)
           self.class.for_schema(registrar, association_schema)
-            .send(:build_filter_type, depth:, visited:)
+            .build_filter_type(depth:, visited:)
         end
 
         def build_sort_type(depth: 0, visited: Set.new)
@@ -523,17 +520,16 @@ module Apiwork
             local_schema_class.associations.each do |name, association_definition|
               next unless association_definition.sortable?
 
-              association_resource = builder.send(:resolve_association_resource, association_definition)
+              association_resource = builder.resolve_association_resource(association_definition)
               next unless association_resource&.schema_class
               next if visited.include?(association_resource.schema_class)
 
-              import_alias = builder.send(:import_association_contract, association_resource.schema_class, visited)
+              import_alias = builder.import_association_contract(association_resource.schema_class, visited)
 
               association_sort_type = if import_alias
                                         :"#{import_alias}_sort"
                                       else
-                                        builder.send(
-                                          :build_sort_type_for_schema,
+                                        builder.build_sort_type_for_schema(
                                           association_resource.schema_class,
                                           visited:,
                                           depth: depth + 1,
@@ -549,7 +545,7 @@ module Apiwork
 
         def build_sort_type_for_schema(association_schema, depth:, visited:)
           self.class.for_schema(registrar, association_schema)
-            .send(:build_sort_type, depth:, visited:)
+            .build_sort_type(depth:, visited:)
         end
 
         def build_page_type
@@ -605,20 +601,19 @@ module Apiwork
                 next
               end
 
-              association_resource = builder.send(:resolve_association_resource, association_definition)
+              association_resource = builder.resolve_association_resource(association_definition)
               next unless association_resource&.schema_class
 
               if visited.include?(association_resource.schema_class)
                 boolean name, optional: true unless association_definition.always_included?
               else
-                import_alias = builder.send(:import_association_contract, association_resource.schema_class, visited)
+                import_alias = builder.import_association_contract(association_resource.schema_class, visited)
 
                 association_include_type = if import_alias
                                              imported_type = :"#{import_alias}_include"
                                              registrar_local.type?(imported_type) ? imported_type : nil
                                            else
-                                             builder.send(
-                                               :build_include_type_for_schema,
+                                             builder.build_include_type_for_schema(
                                                association_resource.schema_class,
                                                visited:,
                                                depth: depth + 1,
@@ -658,7 +653,7 @@ module Apiwork
                 !association_definition.always_included?
               elsif association_definition.always_included?
                 nested_builder = self.class.for_schema(registrar, association_resource.schema_class)
-                nested_builder.send(:has_includable_params?, depth: depth + 1, visited: new_visited)
+                nested_builder.has_includable_params?(depth: depth + 1, visited: new_visited)
               else
                 true
               end
@@ -668,7 +663,7 @@ module Apiwork
 
         def build_include_type_for_schema(association_schema, depth:, visited:)
           self.class.for_schema(registrar, association_schema)
-            .send(:build_include_type, depth:, visited:)
+            .build_include_type(depth:, visited:)
         end
 
         def build_nested_payload_union
@@ -683,7 +678,7 @@ module Apiwork
             registrar.object(create_type_name) do
               literal :_type, value: 'create'
               integer :id, optional: true
-              builder.send(:writable_params, self, :create, nested: true)
+              builder.writable_params(self, :create, nested: true)
               boolean :_destroy, optional: true
             end
           end
@@ -693,7 +688,7 @@ module Apiwork
             registrar.object(update_type_name) do
               literal :_type, value: 'update'
               integer :id, optional: true
-              builder.send(:writable_params, self, :update, nested: true)
+              builder.writable_params(self, :update, nested: true)
               boolean :_destroy, optional: true
             end
           end
@@ -742,14 +737,14 @@ module Apiwork
 
             association_type_map = {}
             local_schema_class.associations.each do |name, association_definition|
-              result = builder.send(:build_association_type, association_definition, visited:)
+              result = builder.build_association_type(association_definition, visited:)
               association_type_map[name] = result
             end
 
             local_schema_class.attributes.each do |name, attribute|
               enum_option = attribute.enum ? { enum: name } : {}
               param name,
-                    builder.send(:map_type, attribute.type),
+                    builder.map_type(attribute.type),
                     deprecated: attribute.deprecated,
                     description: attribute.description,
                     example: attribute.example,
@@ -822,7 +817,7 @@ module Apiwork
               schema_class = association_def_local.resolve_polymorphic_schema(tag)
               next unless schema_class
 
-              import_alias = builder.send(:import_association_contract, schema_class, visited)
+              import_alias = builder.import_association_contract(schema_class, visited)
               next unless import_alias
 
               variant tag: tag.to_s do
@@ -879,7 +874,7 @@ module Apiwork
                 variant_schema.attributes.each do |name, attribute|
                   enum_option = attribute.enum ? { enum: name } : {}
                   param name,
-                        builder.send(:map_type, attribute.type),
+                        builder.map_type(attribute.type),
                         deprecated: attribute.deprecated,
                         description: attribute.description,
                         example: attribute.example,
@@ -1010,10 +1005,10 @@ module Apiwork
             association_registrar = ContractRegistrar.new(association_contract)
             sub_builder = self.class.for_schema(association_registrar, association_schema)
 
-            sub_builder.send(:build_filter_type, depth: 0, visited: Set.new)
-            sub_builder.send(:build_sort_type, depth: 0, visited: Set.new)
-            sub_builder.send(:build_include_type, depth: 0, visited: Set.new)
-            sub_builder.send(:build_response_type, visited: Set.new)
+            sub_builder.build_filter_type(depth: 0, visited: Set.new)
+            sub_builder.build_sort_type(depth: 0, visited: Set.new)
+            sub_builder.build_include_type(depth: 0, visited: Set.new)
+            sub_builder.build_response_type(visited: Set.new)
           end
 
           alias_name

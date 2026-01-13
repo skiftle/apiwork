@@ -27,8 +27,6 @@ module Apiwork
           combined
         end
 
-        private
-
         def always_included(visited = Set.new)
           return {} if visited.include?(schema_class.name)
 
@@ -45,7 +43,7 @@ module Apiwork
 
             if nested_schema_class.respond_to?(:new)
               builder = self.class.new(nested_schema_class)
-              result[name] = builder.send(:always_included, visited)
+              result[name] = builder.always_included(visited)
             else
               result[name] = {}
             end
@@ -53,6 +51,8 @@ module Apiwork
 
           result
         end
+
+        private
 
         def extract_from_filter(filter_hash)
           return {} if filter_hash.blank?
