@@ -34,20 +34,19 @@ module Apiwork
       # Returns a localized description for the error code.
       #
       # @param locale_key [String, nil] API-specific locale namespace
-      # @param options [Hash] options passed to I18n.translate
       # @return [String]
       #
       # @example
       #   error_code.description # => "Not Found"
-      def description(locale_key: nil, options: {})
+      def description(locale_key: nil)
         if locale_key
           api_key = :"apiwork.apis.#{locale_key}.error_codes.#{key}.description"
-          result = I18n.translate(api_key, **options, default: nil)
+          result = I18n.translate(api_key, default: nil)
           return result if result
         end
 
         global_key = :"apiwork.error_codes.#{key}.description"
-        result = I18n.translate(global_key, **options, default: nil)
+        result = I18n.translate(global_key, default: nil)
         return result if result
 
         key.to_s.titleize

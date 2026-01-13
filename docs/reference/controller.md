@@ -72,7 +72,7 @@ skip_contract_validation!
 
 `#context`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L208)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L203)
 
 The serialization context passed to schemas.
 
@@ -189,9 +189,9 @@ end
 
 ### #expose_error
 
-`#expose_error(code_key, detail: nil, path: nil, meta: {}, i18n: {})`
+`#expose_error(code_key, detail: nil, path: nil, meta: {})`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L176)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L172)
 
 Exposes an error response using a registered error code.
 
@@ -206,7 +206,6 @@ The detail message is looked up from I18n if not provided.
 | `detail` | `String` | custom error message (optional, uses I18n lookup) |
 | `path` | `Array<String,Symbol>` | JSON path to the error (optional) |
 | `meta` | `Hash` | additional metadata to include (optional) |
-| `i18n` | `Hash` | interpolation values for I18n lookup (optional) |
 
 **See also**
 
@@ -227,12 +226,6 @@ end
 
 ```ruby
 expose_error :forbidden, detail: 'You cannot access this invoice'
-```
-
-**Example: With I18n interpolation**
-
-```ruby
-expose_error :not_found, i18n: { resource: 'Invoice' }
 ```
 
 ---

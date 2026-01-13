@@ -40,9 +40,9 @@ Whether to include request path in error response.
 
 ### #description
 
-`#description(locale_key: nil, options: {})`
+`#description(locale_key: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code/definition.rb#L42)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code/definition.rb#L41)
 
 Returns a localized description for the error code.
 
@@ -51,7 +51,6 @@ Returns a localized description for the error code.
 | Name | Type | Description |
 |------|------|-------------|
 | `locale_key` | `String, nil` | API-specific locale namespace |
-| `options` | `Hash` | options passed to I18n.translate |
 
 **Returns**
 

@@ -157,7 +157,6 @@ module Apiwork
     # @param detail [String] custom error message (optional, uses I18n lookup)
     # @param path [Array<String,Symbol>] JSON path to the error (optional)
     # @param meta [Hash] additional metadata to include (optional)
-    # @param i18n [Hash] interpolation values for I18n lookup (optional)
     # @see ErrorCode
     # @see Issue
     #
@@ -170,22 +169,18 @@ module Apiwork
     #
     # @example With custom message
     #   expose_error :forbidden, detail: 'You cannot access this invoice'
-    #
-    # @example With I18n interpolation
-    #   expose_error :not_found, i18n: { resource: 'Invoice' }
     def expose_error(
       code_key,
       detail: nil,
       path: nil,
-      meta: {},
-      i18n: {}
+      meta: {}
     )
       error_code = ErrorCode.find!(code_key)
       locale_key = api_class.structure.locale_key
 
       issue = Issue.new(
         error_code.key,
-        detail || error_code.description(locale_key:, options: i18n),
+        detail || error_code.description(locale_key:),
         meta:,
         path: path || (error_code.attach_path? ? request.path.delete_prefix(api_class.path).split('/').reject(&:blank?) : []),
       )
