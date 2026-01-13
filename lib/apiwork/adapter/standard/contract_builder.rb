@@ -377,7 +377,7 @@ module Apiwork
                 description: association.description,
                 example: association.example,
                 nullable: association.nullable?,
-                optional: !association.always_included?,
+                optional: association.include != :always,
               }
 
               if association.singular?
@@ -588,7 +588,7 @@ module Apiwork
           registrar.object(type_name) do
             local_schema_class.associations.each do |name, association|
               if association.polymorphic?
-                boolean name, optional: true unless association.always_included?
+                boolean name, optional: true unless association.include == :always
                 next
               end
 
@@ -596,7 +596,7 @@ module Apiwork
               next unless association_resource&.schema_class
 
               if visited.include?(association_resource.schema_class)
-                boolean name, optional: true unless association.always_included?
+                boolean name, optional: true unless association.include == :always
               else
                 import_alias = builder.import_association_contract(association_resource.schema_class, visited)
 
@@ -612,8 +612,8 @@ module Apiwork
                                            end
 
                 if association_include_type.nil?
-                  boolean name, optional: true unless association.always_included?
-                elsif association.always_included?
+                  boolean name, optional: true unless association.include == :always
+                elsif association.include == :always
                   reference name, optional: true, to: association_include_type
                 else
                   union name, optional: true do
@@ -635,14 +635,14 @@ module Apiwork
 
           schema_class.associations.values.any? do |association|
             if association.polymorphic?
-              !association.always_included?
+              association.include != :always
             else
               association_resource = resolve_association_resource(association)
               next false unless association_resource&.schema_class
 
               if new_visited.include?(association_resource.schema_class)
-                !association.always_included?
-              elsif association.always_included?
+                association.include != :always
+              elsif association.include == :always
                 nested_builder = self.class.for_schema(registrar, association_resource.schema_class)
                 nested_builder.has_includable_params?(depth: depth + 1, visited: new_visited)
               else
@@ -746,7 +746,7 @@ module Apiwork
 
             local_schema_class.associations.each do |name, association|
               association_type = association_type_map[name]
-              is_optional = !association.always_included?
+              is_optional = association.include != :always
 
               if association_type
                 if association.singular?

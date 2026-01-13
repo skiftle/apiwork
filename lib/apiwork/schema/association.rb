@@ -27,6 +27,10 @@ module Apiwork
       attr_reader :example
 
       # @api public
+      # @return [Symbol] include mode (:always or :optional)
+      attr_reader :include
+
+      # @api public
       # @return [Symbol] association name
       attr_reader :name
 
@@ -101,12 +105,6 @@ module Apiwork
       # @return [Boolean] whether sorting is enabled
       def sortable?
         @sortable
-      end
-
-      # @api public
-      # @return [Boolean] whether this association is always included
-      def always_included?
-        @include == :always
       end
 
       # @api public

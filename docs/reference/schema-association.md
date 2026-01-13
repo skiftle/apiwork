@@ -24,18 +24,6 @@ association.schema_class # => CustomerSchema
 
 ## Instance Methods
 
-### #always_included?
-
-`#always_included?`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/association.rb#L108)
-
-**Returns**
-
-`Boolean` — whether this association is always included
-
----
-
 ### #collection?
 
 `#collection?`
@@ -93,6 +81,18 @@ association.schema_class # => CustomerSchema
 **Returns**
 
 `Boolean` — whether filtering is enabled
+
+---
+
+### #include
+
+`#include`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/association.rb#L31)
+
+**Returns**
+
+`Symbol` — include mode (:always or :optional)
 
 ---
 

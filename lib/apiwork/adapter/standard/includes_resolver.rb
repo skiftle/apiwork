@@ -34,7 +34,7 @@ module Apiwork
           result = {}
 
           schema_class.associations.each do |name, definition|
-            next unless definition.always_included?
+            next unless definition.include == :always
 
             association = schema_class.model_class.reflect_on_association(name)
 
@@ -74,7 +74,7 @@ module Apiwork
             association = schema_class.associations[key]
 
             if false?(value)
-              next if association&.always_included?
+              next if association&.include == :always
 
               combined.delete(key)
 
