@@ -110,7 +110,7 @@ module Apiwork
         end
 
         # @api public
-        # @return [Boolean] false — override in Integer, Float, Decimal
+        # @return [Boolean] false — override in Integer, Number, Decimal
         def numeric?
           false
         end

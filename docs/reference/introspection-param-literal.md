@@ -262,7 +262,7 @@ param.value    # => "active" or 42 or true
 
 **Returns**
 
-`Boolean` — false — override in Integer, Float, Decimal
+`Boolean` — false — override in Integer, Number, Decimal
 
 ---
 

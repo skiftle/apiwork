@@ -268,7 +268,7 @@ param.partial?  # => true if all fields are optional
 
 **Returns**
 
-`Boolean` — false — override in Integer, Float, Decimal
+`Boolean` — false — override in Integer, Number, Decimal
 
 ---
 

@@ -280,7 +280,7 @@ param.discriminator # => :type or nil
 
 **Returns**
 
-`Boolean` — false — override in Integer, Float, Decimal
+`Boolean` — false — override in Integer, Number, Decimal
 
 ---
 

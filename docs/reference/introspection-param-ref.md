@@ -264,7 +264,7 @@ param.ref     # => :address (the referenced type name)
 
 **Returns**
 
-`Boolean` — false — override in Integer, Float, Decimal
+`Boolean` — false — override in Integer, Number, Decimal
 
 ---
 

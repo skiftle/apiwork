@@ -273,8 +273,8 @@ RSpec.describe Apiwork::Export::TypeAnalysis do
       expect(described_class.primitive_type?(:uuid)).to be true
     end
 
-    it 'returns true for json' do
-      expect(described_class.primitive_type?(:json)).to be true
+    it 'returns true for unknown' do
+      expect(described_class.primitive_type?(:unknown)).to be true
     end
 
     it 'returns false for custom types' do
