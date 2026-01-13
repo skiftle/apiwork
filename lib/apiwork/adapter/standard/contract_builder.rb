@@ -26,22 +26,17 @@ module Apiwork
         end
 
         def single_response(response)
-          root_key = schema_class.root_key.singular.to_sym
-          resource_type_name = resource_type_name_for_response
-
-          response.reference root_key, to: resource_type_name
+          response.reference schema_class.root_key.singular.to_sym, to: resource_type_name_for_response
           response.object :meta, optional: true
         end
 
         def collection_response(response)
-          root_key_plural = schema_class.root_key.plural.to_sym
-          resource_type_name = resource_type_name_for_response
-          pagination_type = build_pagination_type
+          type_name = resource_type_name_for_response
 
-          response.array root_key_plural do
-            reference resource_type_name
+          response.array schema_class.root_key.plural.to_sym do
+            reference type_name
           end
-          response.reference :pagination, to: pagination_type
+          response.reference :pagination, to: build_pagination_type
           response.object :meta, optional: true
         end
 
@@ -76,7 +71,6 @@ module Apiwork
         end
 
         def writable_request(request, action_name)
-          root_key = schema_class.root_key.singular.to_sym
           builder = self
 
           if sti_base_schema?
@@ -91,7 +85,7 @@ module Apiwork
             end
           end
 
-          request.reference root_key, to: payload_type_name
+          request.reference schema_class.root_key.singular.to_sym, to: payload_type_name
         end
 
         def writable_params(request, action_name, nested: false, target_schema: nil)
@@ -127,7 +121,7 @@ module Apiwork
               end
             end
 
-            param_definition.param name, param_options.delete(:type), **param_options
+            request.param name, param_options.delete(:type), **param_options
           end
 
           target_schema_class.associations.each do |name, association|
@@ -136,17 +130,17 @@ module Apiwork
             association_resource = resolve_association_resource(association)
             association_payload_type = nil
 
-            association_contract = nil
+            association_contract_class = nil
             if association_resource&.schema_class
               import_alias = import_association_contract(association_resource.schema_class, Set.new)
 
               if import_alias
                 association_payload_type = :"#{import_alias}_nested_payload"
 
-                association_contract = registrar.find_contract_for_schema(association_resource.schema_class)
+                association_contract_class = registrar.find_contract_for_schema(association_resource.schema_class)
 
-                if association_contract&.schema?
-                  association_registrar = ContractRegistrar.new(association_contract)
+                if association_contract_class&.schema?
+                  association_registrar = ContractRegistrar.new(association_contract_class)
                   sub_builder = self.class.for_schema(association_registrar, association_resource.schema_class)
                   sub_builder.build_nested_payload_union
                 end
@@ -173,7 +167,7 @@ module Apiwork
               param_options[:type] = association.collection? ? :array : :object
             end
 
-            param_definition.param name, param_options.delete(:type), **param_options
+            request.param name, param_options.delete(:type), **param_options
           end
         end
 
@@ -328,12 +322,9 @@ module Apiwork
           if sti_base_schema?
             build_sti_response_union_type
           else
-            root_key = schema_class.root_key.singular.to_sym
-            resource_type_name = registrar.scoped_type_name(nil)
+            register_resource_type(schema_class.root_key.singular.to_sym) unless registrar.type?(registrar.scoped_type_name(nil))
 
-            register_resource_type(root_key) unless registrar.type?(resource_type_name)
-
-            resource_type_name
+            registrar.scoped_type_name(nil)
           end
         end
 
@@ -982,27 +973,27 @@ module Apiwork
         def import_association_contract(association_schema, visited)
           return nil if visited.include?(association_schema)
 
-          association_contract = registrar.find_contract_for_schema(association_schema)
+          association_contract_class = registrar.find_contract_for_schema(association_schema)
 
-          unless association_contract
+          unless association_contract_class
             contract_name = association_schema.name.sub(/Schema$/, 'Contract')
-            association_contract = begin
+            association_contract_class = begin
               contract_name.constantize
             rescue NameError
               nil
             end
           end
 
-          return nil unless association_contract
+          return nil unless association_contract_class
 
           alias_name = association_schema.root_key.singular.to_sym
 
-          registrar.import(association_contract, as: alias_name) unless registrar.imports.key?(alias_name)
+          registrar.import(association_contract_class, as: alias_name) unless registrar.imports.key?(alias_name)
 
-          if association_contract.schema?
-            association_contract.api_class.ensure_contract_built!(association_contract)
+          if association_contract_class.schema?
+            association_contract_class.api_class.ensure_contract_built!(association_contract_class)
 
-            association_registrar = ContractRegistrar.new(association_contract)
+            association_registrar = ContractRegistrar.new(association_contract_class)
             sub_builder = self.class.for_schema(association_registrar, association_schema)
 
             sub_builder.build_filter_type(depth: 0, visited: Set.new)
