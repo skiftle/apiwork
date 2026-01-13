@@ -92,7 +92,7 @@ RSpec.describe 'path_format Configuration', type: :request do
 
   describe 'path_format in introspection' do
     it 'reflects path_format setting in API introspection' do
-      api_class = Apiwork::API.find('/api/v2')
+      api_class = Apiwork::API.find!('/api/v2')
 
       expect(api_class.path_format).to eq(:kebab)
     end

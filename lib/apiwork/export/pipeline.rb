@@ -53,12 +53,7 @@ module Apiwork
         private
 
         def find_api_class(api_path)
-          api_class = API.find(api_path)
-          return api_class if api_class
-
-          available = API.all.filter_map(&:path)
-          raise ArgumentError,
-                "API not found: #{api_path}. Available APIs: #{available.join(', ')}"
+          API.find!(api_path)
         end
 
         def generate_file(api_class:, export_name:, format:, key_format:, locale:, output:, version:)
@@ -69,7 +64,7 @@ module Apiwork
           Rails.logger.debug "  ✓ #{api_path} to #{export_name}#{options_label}"
 
           content = generate(export_name, api_path, format:, key_format:, locale:, version:)
-          export = Registry.find(export_name).new(api_path, key_format:, locale:, version:)
+          export = Registry.find!(export_name).new(api_path, key_format:, locale:, version:)
           extension = export.file_extension_for(format:)
 
           file_path = Writer.write(

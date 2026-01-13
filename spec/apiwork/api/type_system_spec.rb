@@ -292,7 +292,7 @@ RSpec.describe 'TypeSystem Metadata' do
 
         class << self
           def api_class
-            Apiwork::API.find('/api/test')
+            Apiwork::API.find!('/api/test')
           end
 
           def resource_class
@@ -323,7 +323,7 @@ RSpec.describe 'TypeSystem Metadata' do
 
         class << self
           def api_class
-            Apiwork::API.find('/api/test')
+            Apiwork::API.find!('/api/test')
           end
 
           def resource_class

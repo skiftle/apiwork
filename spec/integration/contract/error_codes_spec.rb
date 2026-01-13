@@ -153,7 +153,7 @@ RSpec.describe 'Error Codes', type: :integration do
   end
 
   describe 'API-level raises declaration' do
-    let(:api_class) { Apiwork::API.find('/api/v1') }
+    let(:api_class) { Apiwork::API.find!('/api/v1') }
 
     it 'declares global error codes for all actions' do
       expect(api_class).to be_present
@@ -162,7 +162,7 @@ RSpec.describe 'Error Codes', type: :integration do
   end
 
   describe 'ErrorCode in introspection' do
-    let(:api_class) { Apiwork::API.find('/api/v1') }
+    let(:api_class) { Apiwork::API.find!('/api/v1') }
     let(:introspection) { api_class.introspect }
 
     it 'includes raises in action introspection' do

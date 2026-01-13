@@ -57,7 +57,7 @@ RSpec.describe 'Includes API', type: :request do
   end
 
   describe 'nested includes' do
-    let(:api_class) { Apiwork::API.find('/api/v1') }
+    let(:api_class) { Apiwork::API.find!('/api/v1') }
 
     before do
       Api::V1::CommentSchema.associations[:post].instance_variable_set(:@include, :optional)
@@ -94,7 +94,7 @@ RSpec.describe 'Includes API', type: :request do
 
   describe 'contract validation for always included associations' do
     context 'when association has include: :always' do
-      let(:api_class) { Apiwork::API.find('/api/v1') }
+      let(:api_class) { Apiwork::API.find!('/api/v1') }
 
       before do
         Api::V1::CommentSchema.associations[:post].instance_variable_set(:@include, :optional)

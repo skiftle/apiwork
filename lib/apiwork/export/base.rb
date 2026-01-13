@@ -176,8 +176,7 @@ module Apiwork
 
       def initialize(api_path, key_format: nil, locale: nil, version: nil)
         @api_path = api_path
-        @api_class = API.find(api_path)
-        raise "API not found at path: #{api_path}" unless @api_class
+        @api_class = API.find!(api_path)
 
         @options = self.class.default_options
         @options[:key_format] = key_format || @api_class.key_format

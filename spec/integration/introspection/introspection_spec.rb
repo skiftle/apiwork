@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Introspection', type: :integration do
-  let(:api_class) { Apiwork::API.find('/api/v1') }
+  let(:api_class) { Apiwork::API.find!('/api/v1') }
   let(:introspection) { api_class.introspect }
 
   describe 'API.introspect' do

@@ -12,7 +12,7 @@ RSpec.describe 'Contract Override Option', type: :request do
       end
 
       it 'uses definition to resolve explicit contract class' do
-        api_class = Apiwork::API.find('/api/override_test')
+        api_class = Apiwork::API.find!('/api/override_test')
         expect(api_class).to be_present
 
         resource = api_class.structure.resources[:articles]
@@ -42,7 +42,7 @@ RSpec.describe 'Contract Override Option', type: :request do
       end
 
       it 'infers contract class from resource name' do
-        api_class = Apiwork::API.find('/api/inference_test')
+        api_class = Apiwork::API.find!('/api/inference_test')
         expect(api_class).to be_present
 
         resource = api_class.structure.resources[:posts]

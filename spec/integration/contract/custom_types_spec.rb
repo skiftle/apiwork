@@ -197,7 +197,7 @@ RSpec.describe 'Custom Types', type: :integration do
   end
 
   describe 'Types in existing dummy API' do
-    let(:api_class) { Apiwork::API.find('/api/v1') }
+    let(:api_class) { Apiwork::API.find!('/api/v1') }
     let(:introspection) { api_class.introspect }
 
     it 'has API-level types defined' do

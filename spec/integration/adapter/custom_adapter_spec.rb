@@ -111,7 +111,7 @@ RSpec.describe 'Custom Adapter', type: :integration do
   end
 
   describe 'Adapter capabilities' do
-    let(:api_class) { Apiwork::API.find('/api/v1') }
+    let(:api_class) { Apiwork::API.find!('/api/v1') }
     let(:capabilities) { api_class.adapter.build_capabilities(api_class.structure) }
 
     it 'provides capabilities object for conditional registration' do
@@ -141,7 +141,7 @@ RSpec.describe 'Custom Adapter', type: :integration do
   end
 
   describe 'Adapter configuration via API DSL' do
-    let(:api_class) { Apiwork::API.find('/api/v1') }
+    let(:api_class) { Apiwork::API.find!('/api/v1') }
 
     it 'API has adapter_config available' do
       expect(api_class.adapter_config).to be_a(Hash)

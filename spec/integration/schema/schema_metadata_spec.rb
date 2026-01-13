@@ -9,7 +9,7 @@ RSpec.describe 'Schema Metadata', type: :integration do
     end
 
     it 'includes description in introspection' do
-      api_class = Apiwork::API.find('/api/v1')
+      api_class = Apiwork::API.find!('/api/v1')
       introspection = api_class.introspect
 
       profile_resource = introspection.resources[:profile]

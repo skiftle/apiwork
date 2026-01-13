@@ -35,7 +35,7 @@ RSpec.describe 'has_one Association', type: :request do
 
   describe 'has_one association in introspection' do
     it 'includes has_one in schema introspection' do
-      api_class = Apiwork::API.find('/api/v1')
+      api_class = Apiwork::API.find!('/api/v1')
       introspection = api_class.introspect
 
       user_resource = introspection.resources[:users]
