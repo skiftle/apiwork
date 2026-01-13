@@ -48,7 +48,30 @@ module Apiwork
         @value = nil
       end
 
-      def of(discriminator: nil, enum: nil, format: nil, max: nil, min: nil, type:, value: nil, &block)
+      # @api public
+      # Defines the element type.
+      #
+      # This is the verbose form. Prefer sugar methods (string, integer, etc.)
+      # for static definitions. Use `of` for dynamic element generation.
+      #
+      # @param type [Symbol] element type (:string, :integer, :object, :array, :union, or custom type reference)
+      # @param discriminator [Symbol, nil] discriminator field name (unions only)
+      # @param enum [Array, nil] allowed values (strings, integers only)
+      # @param format [Symbol, nil] format hint (strings only)
+      # @param max [Integer, nil] maximum value or length (strings, integers, decimals, numbers, arrays only)
+      # @param min [Integer, nil] minimum value or length (strings, integers, decimals, numbers, arrays only)
+      # @param shape [Object, nil] pre-built shape (objects, arrays, unions only)
+      # @param value [Object, nil] literal value (literals only)
+      # @yield block for defining nested structure (objects, arrays, unions only)
+      # @return [void]
+      #
+      # @example Basic usage
+      #   of :string
+      #   of :string, enum: %w[a b c]
+      #
+      # @example With pre-built shape
+      #   of :object, shape: prebuilt_shape
+      def of(type, discriminator: nil, enum: nil, format: nil, max: nil, min: nil, shape: nil, value: nil, &block)
         case type
         when :string, :integer, :decimal, :boolean, :number, :datetime, :date, :uuid, :time
           set_type(type, enum:, format:, max:, min:)
@@ -57,32 +80,51 @@ module Apiwork
           @value = value
           @defined = true
         when :object
-          raise ArgumentError, 'object requires a block' unless block
-
-          builder = Object.new
-          builder.instance_eval(&block)
-          @type = :object
-          @shape = builder
-          @defined = true
+          if shape
+            @type = :object
+            @shape = shape
+            @defined = true
+          elsif block
+            builder = Object.new
+            builder.instance_eval(&block)
+            @type = :object
+            @shape = builder
+            @defined = true
+          else
+            raise ArgumentError, 'object requires a block or shape'
+          end
         when :array
-          raise ArgumentError, 'array requires a block' unless block
-
-          inner = Element.new
-          inner.instance_eval(&block)
-          inner.validate!
-          @type = :array
-          @of = inner.of_type
-          @shape = inner.shape
-          @defined = true
+          if shape
+            @type = :array
+            @shape = shape
+            @defined = true
+          elsif block
+            inner = Element.new
+            inner.instance_eval(&block)
+            inner.validate!
+            @type = :array
+            @of = inner.of_type
+            @shape = inner.shape
+            @defined = true
+          else
+            raise ArgumentError, 'array requires a block or shape'
+          end
         when :union
-          raise ArgumentError, 'union requires a block' unless block
-
-          builder = Union.new(discriminator:)
-          builder.instance_eval(&block)
-          @type = :union
-          @shape = builder
-          @discriminator = discriminator
-          @defined = true
+          if shape
+            @type = :union
+            @shape = shape
+            @discriminator = discriminator
+            @defined = true
+          elsif block
+            builder = Union.new(discriminator:)
+            builder.instance_eval(&block)
+            @type = :union
+            @shape = builder
+            @discriminator = discriminator
+            @defined = true
+          else
+            raise ArgumentError, 'union requires a block or shape'
+          end
         else
           @type = type
           @custom_type = type
@@ -99,7 +141,7 @@ module Apiwork
       # @param min [Integer] minimum length
       # @return [void]
       def string(enum: nil, format: nil, max: nil, min: nil)
-        of(enum:, format:, max:, min:, type: :string)
+        of(:string, enum:, format:, max:, min:)
       end
 
       # @api public
@@ -110,7 +152,7 @@ module Apiwork
       # @param min [Integer] minimum value
       # @return [void]
       def integer(enum: nil, max: nil, min: nil)
-        of(enum:, max:, min:, type: :integer)
+        of(:integer, enum:, max:, min:)
       end
 
       # @api public
@@ -120,7 +162,7 @@ module Apiwork
       # @param min [Numeric] minimum value
       # @return [void]
       def decimal(max: nil, min: nil)
-        of(max:, min:, type: :decimal)
+        of(:decimal, max:, min:)
       end
 
       # @api public
@@ -128,7 +170,7 @@ module Apiwork
       #
       # @return [void]
       def boolean
-        of(type: :boolean)
+        of(:boolean)
       end
 
       # @api public
@@ -138,7 +180,7 @@ module Apiwork
       # @param min [Numeric] minimum value
       # @return [void]
       def number(max: nil, min: nil)
-        of(max:, min:, type: :number)
+        of(:number, max:, min:)
       end
 
       # @api public
@@ -146,7 +188,7 @@ module Apiwork
       #
       # @return [void]
       def datetime
-        of(type: :datetime)
+        of(:datetime)
       end
 
       # @api public
@@ -154,7 +196,7 @@ module Apiwork
       #
       # @return [void]
       def date
-        of(type: :date)
+        of(:date)
       end
 
       # @api public
@@ -162,7 +204,7 @@ module Apiwork
       #
       # @return [void]
       def uuid
-        of(type: :uuid)
+        of(:uuid)
       end
 
       # @api public
@@ -170,7 +212,7 @@ module Apiwork
       #
       # @return [void]
       def time
-        of(type: :time)
+        of(:time)
       end
 
       # @api public
@@ -178,7 +220,7 @@ module Apiwork
       #
       # @return [void]
       def binary
-        of(type: :binary)
+        of(:binary)
       end
 
       # @api public
@@ -191,7 +233,7 @@ module Apiwork
       #   literal value: 'card'
       #   literal value: 42
       def literal(value:)
-        of(value:, type: :literal)
+        of(:literal, value:)
       end
 
       # @api public
@@ -205,7 +247,7 @@ module Apiwork
       #   reference :item
       #   reference :shipping_address, to: :address
       def reference(type_name, to: nil)
-        of(type: to || type_name)
+        of(to || type_name)
       end
 
       # @api public
@@ -221,7 +263,7 @@ module Apiwork
       #     decimal :amount
       #   end
       def object(&block)
-        of(type: :object, &block)
+        of(:object, &block)
       end
 
       # @api public
@@ -238,7 +280,7 @@ module Apiwork
       # @example Array of references
       #   array { reference :item }
       def array(&block)
-        of(type: :array, &block)
+        of(:array, &block)
       end
 
       # @api public
@@ -255,7 +297,7 @@ module Apiwork
       #     variant { string }
       #   end
       def union(discriminator: nil, &block)
-        of(discriminator:, type: :union, &block)
+        of(:union, discriminator:, &block)
       end
 
       def of_value

@@ -29,9 +29,46 @@ module Apiwork
         @params = {}
       end
 
+      # @api public
+      # Defines a field with explicit type.
+      #
+      # This is the verbose form. Prefer sugar methods (string, integer, etc.)
+      # for static definitions. Use `param` for dynamic field generation.
+      #
+      # @param name [Symbol] field name
+      # @param type [Symbol, nil] field type (:string, :integer, :object, :array, :union, or custom type reference)
+      # @param as [Symbol, nil] target attribute name for mapping to model
+      # @param default [Object, nil] default value when field is omitted
+      # @param deprecated [Boolean, nil] mark field as deprecated
+      # @param description [String, nil] documentation description
+      # @param discriminator [Symbol, nil] discriminator field name (unions only)
+      # @param enum [Array, nil] allowed values (strings, integers only)
+      # @param example [Object, nil] example value for documentation
+      # @param format [Symbol, nil] format hint (strings only)
+      # @param max [Integer, nil] maximum value or length (strings, integers, decimals, numbers, arrays only)
+      # @param min [Integer, nil] minimum value or length (strings, integers, decimals, numbers, arrays only)
+      # @param nullable [Boolean, nil] whether null is allowed
+      # @param of [Symbol, Hash, nil] element type (arrays only)
+      # @param optional [Boolean] whether field can be omitted
+      # @param required [Boolean, nil] explicit required flag
+      # @param shape [Object, nil] pre-built shape (objects, arrays, unions only)
+      # @param store [Boolean, nil] whether to persist the value
+      # @param value [Object, nil] literal value (literals only)
+      # @yield block for defining nested structure (objects, arrays, unions only)
+      # @return [void]
+      #
+      # @example Basic usage
+      #   param :title, :string
+      #   param :count, :integer, min: 0
+      #
+      # @example With options
+      #   param :status, :string, enum: %w[pending active], description: 'Current status'
+      #
+      # @example Extending existing param (type omitted)
+      #   param :name, description: 'Updated description'
       def param(
         name,
-        type: nil,
+        type = nil,
         as: nil,
         default: nil,
         deprecated: nil,
@@ -124,6 +161,7 @@ module Apiwork
       )
         param(
           name,
+          :string,
           as:,
           deprecated:,
           description:,
@@ -134,7 +172,6 @@ module Apiwork
           min:,
           nullable:,
           optional:,
-          type: :string,
         )
       end
 
@@ -170,6 +207,7 @@ module Apiwork
       )
         param(
           name,
+          :integer,
           as:,
           deprecated:,
           description:,
@@ -179,7 +217,6 @@ module Apiwork
           min:,
           nullable:,
           optional:,
-          type: :integer,
         )
       end
 
@@ -213,6 +250,7 @@ module Apiwork
       )
         param(
           name,
+          :decimal,
           as:,
           deprecated:,
           description:,
@@ -221,7 +259,6 @@ module Apiwork
           min:,
           nullable:,
           optional:,
-          type: :decimal,
         )
       end
 
@@ -250,13 +287,13 @@ module Apiwork
       )
         param(
           name,
+          :boolean,
           as:,
           deprecated:,
           description:,
           example:,
           nullable:,
           optional:,
-          type: :boolean,
         )
       end
 
@@ -286,6 +323,7 @@ module Apiwork
       )
         param(
           name,
+          :number,
           as:,
           deprecated:,
           description:,
@@ -294,7 +332,6 @@ module Apiwork
           min:,
           nullable:,
           optional:,
-          type: :number,
         )
       end
 
@@ -320,13 +357,13 @@ module Apiwork
       )
         param(
           name,
+          :datetime,
           as:,
           deprecated:,
           description:,
           example:,
           nullable:,
           optional:,
-          type: :datetime,
         )
       end
 
@@ -352,13 +389,13 @@ module Apiwork
       )
         param(
           name,
+          :date,
           as:,
           deprecated:,
           description:,
           example:,
           nullable:,
           optional:,
-          type: :date,
         )
       end
 
@@ -384,13 +421,13 @@ module Apiwork
       )
         param(
           name,
+          :uuid,
           as:,
           deprecated:,
           description:,
           example:,
           nullable:,
           optional:,
-          type: :uuid,
         )
       end
 
@@ -416,13 +453,13 @@ module Apiwork
       )
         param(
           name,
+          :time,
           as:,
           deprecated:,
           description:,
           example:,
           nullable:,
           optional:,
-          type: :time,
         )
       end
 
@@ -448,13 +485,13 @@ module Apiwork
       )
         param(
           name,
+          :binary,
           as:,
           deprecated:,
           description:,
           example:,
           nullable:,
           optional:,
-          type: :binary,
         )
       end
 
@@ -483,13 +520,13 @@ module Apiwork
       )
         param(
           name,
+          :literal,
           as:,
           deprecated:,
           description:,
           optional:,
           store:,
           value:,
-          type: :literal,
         )
       end
 
@@ -522,12 +559,12 @@ module Apiwork
         resolved_type = to || name
         param(
           name,
+          resolved_type,
           as:,
           deprecated:,
           description:,
           nullable:,
           optional:,
-          type: resolved_type,
         )
       end
 
@@ -580,6 +617,7 @@ module Apiwork
 
         param(
           name,
+          :array,
           as:,
           deprecated:,
           description:,
@@ -593,7 +631,6 @@ module Apiwork
             type: element.of_type,
           }.compact,
           shape: element.shape,
-          type: :array,
         )
       end
 
@@ -626,12 +663,12 @@ module Apiwork
       )
         param(
           name,
+          :object,
           as:,
           deprecated:,
           description:,
           nullable:,
           optional:,
-          type: :object,
           &block
         )
       end
@@ -670,13 +707,13 @@ module Apiwork
       )
         param(
           name,
+          :union,
           as:,
           deprecated:,
           description:,
           discriminator:,
           nullable:,
           optional:,
-          type: :union,
           &block
         )
       end

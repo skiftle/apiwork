@@ -44,7 +44,7 @@ RSpec.describe 'Literal and Discriminated Union Features' do
           action :test do
             request do
               body do
-                param :status, type: :literal
+                param :status, :literal
               end
             end
           end
@@ -139,7 +139,7 @@ RSpec.describe 'Literal and Discriminated Union Features' do
           action :test do
             request do
               body do
-                param :status, discriminator: :kind, type: :string
+                param :status, :string, discriminator: :kind
               end
             end
           end

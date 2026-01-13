@@ -456,7 +456,7 @@ RSpec.describe Apiwork::Export::Zod do
         object :bounded do
           string :limited_string, max: 100, min: 1
           integer :limited_number, max: 1000, min: 0
-          param :limited_array, max: 10, of: :string, type: :array
+          param :limited_array, :array, max: 10, of: :string
         end
 
         resources :limits, only: [:show]

@@ -34,8 +34,46 @@ module Apiwork
         @params = {}
       end
 
+      # @api public
+      # Defines a field with explicit type.
+      #
+      # This is the verbose form. Prefer sugar methods (string, integer, etc.)
+      # for static definitions. Use `param` for dynamic field generation.
+      #
+      # @param name [Symbol] field name
+      # @param type [Symbol, nil] field type (:string, :integer, :object, :array, :union, or custom type reference)
+      # @param as [Symbol, nil] target attribute name for mapping to model
+      # @param default [Object, nil] default value when field is omitted
+      # @param deprecated [Boolean, nil] mark field as deprecated
+      # @param description [String, nil] documentation description
+      # @param discriminator [Symbol, nil] discriminator field name (unions only)
+      # @param enum [Array, Symbol, nil] allowed values or enum reference (strings, integers only)
+      # @param example [Object, nil] example value for documentation
+      # @param format [Symbol, nil] format hint (strings only)
+      # @param max [Integer, nil] maximum value or length (strings, integers, decimals, numbers, arrays only)
+      # @param min [Integer, nil] minimum value or length (strings, integers, decimals, numbers, arrays only)
+      # @param nullable [Boolean, nil] whether null is allowed
+      # @param of [Symbol, Hash, nil] element type (arrays only)
+      # @param optional [Boolean, nil] whether field can be omitted
+      # @param required [Boolean, nil] explicit required flag
+      # @param shape [Object, nil] pre-built shape (objects, arrays, unions only)
+      # @param store [Boolean, nil] whether to persist the value
+      # @param value [Object, nil] literal value (literals only)
+      # @yield block for defining nested structure (objects, arrays, unions only)
+      # @return [void]
+      #
+      # @example Basic usage
+      #   param :title, :string
+      #   param :count, :integer, min: 0
+      #
+      # @example With options
+      #   param :status, :string, enum: %w[pending active], description: 'Current status'
+      #
+      # @example Extending existing param (type omitted)
+      #   param :name, description: 'Updated description'
       def param(
         name,
+        type = nil,
         as: nil,
         default: nil,
         deprecated: nil,
@@ -52,7 +90,6 @@ module Apiwork
         required: nil,
         shape: nil,
         store: nil,
-        type: nil,
         value: nil,
         &block
       )
@@ -67,23 +104,6 @@ module Apiwork
           required:,
           store:,
         }.compact
-        if type.nil? && (existing_param = @params[name])
-          merge_existing_param(
-            name,
-            existing_param,
-            as:,
-            default:,
-            discriminator:,
-            enum:,
-            of:,
-            optional:,
-            options:,
-            type:,
-            value:,
-            &block
-          )
-          return
-        end
 
         raise ArgumentError, 'discriminator can only be used with type: :union' if discriminator && type != :union
 
@@ -156,6 +176,7 @@ module Apiwork
       )
         param(
           name,
+          :string,
           default:,
           deprecated:,
           description:,
@@ -166,7 +187,6 @@ module Apiwork
           min:,
           nullable:,
           optional:,
-          type: :string,
         )
       end
 
@@ -201,6 +221,7 @@ module Apiwork
       )
         param(
           name,
+          :integer,
           default:,
           deprecated:,
           description:,
@@ -210,7 +231,6 @@ module Apiwork
           min:,
           nullable:,
           optional:,
-          type: :integer,
         )
       end
 
@@ -243,6 +263,7 @@ module Apiwork
       )
         param(
           name,
+          :decimal,
           default:,
           deprecated:,
           description:,
@@ -251,7 +272,6 @@ module Apiwork
           min:,
           nullable:,
           optional:,
-          type: :decimal,
         )
       end
 
@@ -279,13 +299,13 @@ module Apiwork
       )
         param(
           name,
+          :boolean,
           default:,
           deprecated:,
           description:,
           example:,
           nullable:,
           optional:,
-          type: :boolean,
         )
       end
 
@@ -315,6 +335,7 @@ module Apiwork
       )
         param(
           name,
+          :number,
           default:,
           deprecated:,
           description:,
@@ -323,7 +344,6 @@ module Apiwork
           min:,
           nullable:,
           optional:,
-          type: :number,
         )
       end
 
@@ -349,13 +369,13 @@ module Apiwork
       )
         param(
           name,
+          :datetime,
           default:,
           deprecated:,
           description:,
           example:,
           nullable:,
           optional:,
-          type: :datetime,
         )
       end
 
@@ -381,13 +401,13 @@ module Apiwork
       )
         param(
           name,
+          :date,
           default:,
           deprecated:,
           description:,
           example:,
           nullable:,
           optional:,
-          type: :date,
         )
       end
 
@@ -413,13 +433,13 @@ module Apiwork
       )
         param(
           name,
+          :uuid,
           default:,
           deprecated:,
           description:,
           example:,
           nullable:,
           optional:,
-          type: :uuid,
         )
       end
 
@@ -445,13 +465,13 @@ module Apiwork
       )
         param(
           name,
+          :time,
           default:,
           deprecated:,
           description:,
           example:,
           nullable:,
           optional:,
-          type: :time,
         )
       end
 
@@ -477,13 +497,13 @@ module Apiwork
       )
         param(
           name,
+          :binary,
           default:,
           deprecated:,
           description:,
           example:,
           nullable:,
           optional:,
-          type: :binary,
         )
       end
 
@@ -511,13 +531,13 @@ module Apiwork
       )
         param(
           name,
+          :literal,
           as:,
           deprecated:,
           description:,
           optional:,
           store:,
           value:,
-          type: :literal,
         )
       end
 
@@ -548,11 +568,11 @@ module Apiwork
         resolved_type = to || name
         param(
           name,
+          resolved_type,
           deprecated:,
           description:,
           nullable:,
           optional:,
-          type: resolved_type,
         )
       end
 
@@ -605,6 +625,7 @@ module Apiwork
 
         param(
           name,
+          :array,
           default:,
           deprecated:,
           description:,
@@ -618,7 +639,6 @@ module Apiwork
             type: element.of_type,
           }.compact,
           shape: element.shape,
-          type: :array,
         )
       end
 
@@ -649,11 +669,11 @@ module Apiwork
       )
         param(
           name,
+          :object,
           deprecated:,
           description:,
           nullable:,
           optional:,
-          type: :object,
           &block
         )
       end
@@ -690,12 +710,12 @@ module Apiwork
       )
         param(
           name,
+          :union,
           deprecated:,
           description:,
           discriminator:,
           nullable:,
           optional:,
-          type: :union,
           &block
         )
       end
@@ -733,7 +753,7 @@ module Apiwork
         if existing_meta && existing_meta[:shape]
           existing_meta[:shape].instance_eval(&block)
         else
-          param :meta, optional:, type: :object, &block
+          param :meta, :object, optional:, &block
         end
       end
 
@@ -752,13 +772,13 @@ module Apiwork
           nested_shape = param_data[:shape]
 
           if param_data[:type] == :array && nested_shape.is_a?(Apiwork::API::Object)
-            target_param.param(param_name, **param_data.except(:name))
+            target_param.param(param_name, param_data[:type], **param_data.except(:name, :type))
           elsif nested_shape.is_a?(API::Object)
             copy_nested_object_param(target_param, param_name, param_data, nested_shape)
           elsif nested_shape.is_a?(API::Union)
             copy_nested_union_param(target_param, param_name, param_data, nested_shape)
           else
-            target_param.param(param_name, **param_data.except(:name, :shape))
+            target_param.param(param_name, param_data[:type], **param_data.except(:name, :type, :shape))
           end
         end
       end
@@ -768,10 +788,11 @@ module Apiwork
       def copy_nested_object_param(target_param, param_name, param_data, nested_shape)
         target_param.param(
           param_name,
-          **param_data.except(:name, :shape),
+          param_data[:type],
+          **param_data.except(:name, :type, :shape),
         ) do
           nested_shape.params.each do |nested_name, nested_data|
-            param(nested_name, **nested_data.except(:name, :shape))
+            param(nested_name, nested_data[:type], **nested_data.except(:name, :type, :shape))
           end
         end
       end
@@ -779,7 +800,8 @@ module Apiwork
       def copy_nested_union_param(target_param, param_name, param_data, nested_shape)
         target_param.param(
           param_name,
-          **param_data.except(:name, :shape),
+          param_data[:type],
+          **param_data.except(:name, :type, :shape),
         ) do
           nested_shape.variants.each do |variant_data|
             variant_shape = variant_data[:shape]
@@ -791,7 +813,7 @@ module Apiwork
               variant tag: variant_tag do
                 object do
                   variant_shape.params.each do |vp_name, vp_data|
-                    param(vp_name, **vp_data.except(:name, :shape))
+                    param(vp_name, vp_data[:type], **vp_data.except(:name, :type, :shape))
                   end
                 end
               end
@@ -805,47 +827,6 @@ module Apiwork
               end
             end
           end
-        end
-      end
-
-      def merge_existing_param(
-        name,
-        existing_param,
-        type:,
-        optional:,
-        default:,
-        enum:,
-        of:,
-        as:,
-        discriminator:,
-        value:,
-        options:,
-        &block
-      )
-        resolved_enum = enum ? resolve_enum_value(enum) : nil
-
-        merged_param = existing_param.merge(options.compact)
-        merged_param[:type] = type if type
-        merged_param[:optional] = optional unless optional.nil?
-        merged_param[:default] = default if default
-        merged_param[:enum] = resolved_enum if resolved_enum
-        merged_param[:of] = of if of
-        merged_param[:as] = as if as
-        merged_param[:discriminator] = discriminator if discriminator
-        merged_param[:value] = value if value
-
-        @params[name] = merged_param
-
-        return unless block
-
-        if existing_param[:union]
-          existing_param[:union].instance_eval(&block)
-        elsif existing_param[:shape]
-          existing_param[:shape].instance_eval(&block)
-        else
-          shape_param_definition = Object.new(@contract_class, action_name: @action_name)
-          shape_param_definition.instance_eval(&block)
-          @params[name][:shape] = shape_param_definition
         end
       end
 
@@ -972,7 +953,7 @@ module Apiwork
             union.variant tag: variant_tag do
               object do
                 variant_shape.params.each do |vp_name, vp_data|
-                  param(vp_name, **vp_data.except(:name, :shape))
+                  param(vp_name, vp_data[:type], **vp_data.except(:name, :shape, :type))
                 end
               end
             end

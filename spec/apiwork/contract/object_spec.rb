@@ -460,7 +460,7 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
     context 'with array type (has_many)' do
       let(:definition) do
         described_class.new(contract_class).tap do |d|
-          d.param :comments, nullable: false, optional: true, type: :array
+          d.param :comments, :array, nullable: false, optional: true
         end
       end
 
@@ -493,7 +493,7 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
     context 'with max constraint' do
       let(:definition) do
         described_class.new(contract_class).tap do |d|
-          d.param :tags, max: 3, of: :string, optional: true, type: :array
+          d.param :tags, :array, max: 3, of: :string, optional: true
         end
       end
 
@@ -533,7 +533,7 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
     context 'with min constraint' do
       let(:definition) do
         described_class.new(contract_class).tap do |d|
-          d.param :tags, min: 2, of: :string, optional: true, type: :array
+          d.param :tags, :array, min: 2, of: :string, optional: true
         end
       end
 
@@ -576,7 +576,7 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
     context 'with both min and max constraints' do
       let(:definition) do
         described_class.new(contract_class).tap do |d|
-          d.param :tags, max: 5, min: 1, of: :string, optional: true, type: :array
+          d.param :tags, :array, max: 5, min: 1, of: :string, optional: true
         end
       end
 
@@ -617,7 +617,7 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
     context 'without length constraints' do
       let(:definition) do
         described_class.new(contract_class).tap do |d|
-          d.param :tags, of: :string, optional: true, type: :array
+          d.param :tags, :array, of: :string, optional: true
         end
       end
 
@@ -639,7 +639,7 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
     context 'with nested object arrays' do
       let(:definition) do
         described_class.new(contract_class).tap do |d|
-          d.param :comments, max: 10, min: 1, of: :object, optional: true, type: :array
+          d.param :comments, :array, max: 10, min: 1, of: :object, optional: true
         end
       end
 
