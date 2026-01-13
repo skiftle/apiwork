@@ -11,7 +11,7 @@ module Apiwork
         store[normalize_key(key)]
       end
 
-      def fetch(key)
+      def find!(key)
         normalized_key = normalize_key(key)
         store.fetch(normalized_key) do
           raise KeyError.new(

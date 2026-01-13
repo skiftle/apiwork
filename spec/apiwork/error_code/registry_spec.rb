@@ -9,7 +9,7 @@ RSpec.describe Apiwork::ErrorCode::Registry do
     it 'stores definition with correct attributes' do
       described_class.register(:test_error, status: 400)
 
-      definition = described_class.fetch(:test_error)
+      definition = described_class.find!(:test_error)
       expect(definition.key).to eq(:test_error)
       expect(definition.status).to eq(400)
     end
@@ -23,7 +23,7 @@ RSpec.describe Apiwork::ErrorCode::Registry do
     it 'converts status to integer' do
       described_class.register(:test_error, status: '422')
 
-      definition = described_class.fetch(:test_error)
+      definition = described_class.find!(:test_error)
       expect(definition.status).to eq(422)
     end
 
@@ -48,25 +48,25 @@ RSpec.describe Apiwork::ErrorCode::Registry do
     end
   end
 
-  describe '.fetch' do
+  describe '.find!' do
     before { described_class.register(:existing, status: 404) }
 
     it 'returns definition for registered code' do
-      definition = described_class.fetch(:existing)
+      definition = described_class.find!(:existing)
 
       expect(definition).to be_a(Apiwork::ErrorCode::Definition)
       expect(definition.key).to eq(:existing)
     end
 
     it 'converts string key to symbol' do
-      definition = described_class.fetch('existing')
+      definition = described_class.find!('existing')
 
       expect(definition.key).to eq(:existing)
     end
 
     it 'raises KeyError for unknown code' do
       expect do
-        described_class.fetch(:unknown)
+        described_class.find!(:unknown)
       end.to raise_error(KeyError, /Registry :unknown not found/)
     end
 
@@ -74,7 +74,7 @@ RSpec.describe Apiwork::ErrorCode::Registry do
       described_class.register(:another, status: 500)
 
       expect do
-        described_class.fetch(:unknown)
+        described_class.find!(:unknown)
       end.to raise_error(KeyError, /Available: existing, another/)
     end
   end

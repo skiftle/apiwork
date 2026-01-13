@@ -45,7 +45,7 @@ RSpec.describe Apiwork::ConstraintError do
   describe '#error_code' do
     it 'returns the bad_request error code' do
       error = described_class.new(issue)
-      expect(error.error_code).to eq(Apiwork::ErrorCode.fetch(:bad_request))
+      expect(error.error_code).to eq(Apiwork::ErrorCode.find!(:bad_request))
     end
   end
 end

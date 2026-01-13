@@ -47,7 +47,8 @@ module Apiwork
       #   @example With path attachment
       #     Apiwork::ErrorCode.register :not_found, status: 404, attach_path: true
       delegate :clear!,
-               :fetch,
+               :find,
+               :find!,
                :register,
                :registered?,
                to: Registry

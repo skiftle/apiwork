@@ -26,7 +26,7 @@ RSpec.describe Apiwork::DomainError do
   describe '#error_code' do
     it 'returns the unprocessable_entity error code' do
       error = described_class.new(issue)
-      expect(error.error_code).to eq(Apiwork::ErrorCode.fetch(:unprocessable_entity))
+      expect(error.error_code).to eq(Apiwork::ErrorCode.find!(:unprocessable_entity))
     end
   end
 end

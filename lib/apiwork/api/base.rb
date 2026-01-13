@@ -103,7 +103,7 @@ module Apiwork
 
           return unless block
 
-          export_class = Export.find(name)
+          export_class = Export.find!(name)
           config = Configuration.new(export_class, @export_configs[name])
           config.instance_eval(&block)
         end
@@ -141,13 +141,13 @@ module Apiwork
           @adapter_name = name if name.is_a?(Symbol)
 
           if block
-            adapter_class = Adapter.find(@adapter_name || :standard)
+            adapter_class = Adapter.find!(@adapter_name || :standard)
             config = Configuration.new(adapter_class, @adapter_config)
             config.instance_eval(&block)
             return
           end
 
-          @adapter ||= Adapter.find(@adapter_name || :standard).new
+          @adapter ||= Adapter.find!(@adapter_name || :standard).new
         end
 
         # @api public

@@ -11,10 +11,6 @@ module Apiwork
           store[adapter_class.adapter_name] = adapter_class
         end
 
-        def find(name)
-          fetch(name)
-        end
-
         def all
           keys
         end

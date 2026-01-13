@@ -10,7 +10,7 @@ module Apiwork
     end
 
     def error_code
-      @error_code ||= ErrorCode.fetch(:bad_request)
+      @error_code ||= ErrorCode.find!(:bad_request)
     end
 
     def status

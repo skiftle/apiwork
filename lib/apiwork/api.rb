@@ -7,6 +7,7 @@ module Apiwork
       delegate :all,
                :clear!,
                :find,
+               :find!,
                :unregister,
                to: Registry
 

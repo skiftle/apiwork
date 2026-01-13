@@ -11,10 +11,6 @@ module Apiwork
           store[export_class.export_name] = export_class
         end
 
-        def find(name)
-          fetch(name)
-        end
-
         def all
           keys
         end

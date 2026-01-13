@@ -14,6 +14,7 @@ module Apiwork
       delegate :all,
                :clear!,
                :find,
+               :find!,
                :register,
                :registered?,
                to: Registry

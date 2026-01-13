@@ -13,7 +13,7 @@ RSpec.describe 'Error Codes', type: :integration do
     it 'registers error code with attach_path option' do
       Apiwork::ErrorCode.register :resource_locked, attach_path: true, status: 423
 
-      error_code = Apiwork::ErrorCode.fetch(:resource_locked)
+      error_code = Apiwork::ErrorCode.find!(:resource_locked)
       expect(error_code.status).to eq(423)
       expect(error_code.attach_path?).to be(true)
     end
@@ -21,7 +21,7 @@ RSpec.describe 'Error Codes', type: :integration do
     it 'returns registered error code via fetch' do
       Apiwork::ErrorCode.register :custom_error, status: 418
 
-      error_code = Apiwork::ErrorCode.fetch(:custom_error)
+      error_code = Apiwork::ErrorCode.find!(:custom_error)
       expect(error_code.key).to eq(:custom_error)
       expect(error_code.status).to eq(418)
     end
@@ -36,7 +36,7 @@ RSpec.describe 'Error Codes', type: :integration do
       Apiwork::ErrorCode.register :custom, status: 400
       Apiwork::ErrorCode.register :custom, status: 422
 
-      error_code = Apiwork::ErrorCode.fetch(:custom)
+      error_code = Apiwork::ErrorCode.find!(:custom)
       expect(error_code.status).to eq(422)
     end
 
@@ -50,11 +50,11 @@ RSpec.describe 'Error Codes', type: :integration do
     end
 
     it 'returns correct status for default codes' do
-      expect(Apiwork::ErrorCode.fetch(:not_found).status).to eq(404)
-      expect(Apiwork::ErrorCode.fetch(:bad_request).status).to eq(400)
-      expect(Apiwork::ErrorCode.fetch(:unauthorized).status).to eq(401)
-      expect(Apiwork::ErrorCode.fetch(:forbidden).status).to eq(403)
-      expect(Apiwork::ErrorCode.fetch(:conflict).status).to eq(409)
+      expect(Apiwork::ErrorCode.find!(:not_found).status).to eq(404)
+      expect(Apiwork::ErrorCode.find!(:bad_request).status).to eq(400)
+      expect(Apiwork::ErrorCode.find!(:unauthorized).status).to eq(401)
+      expect(Apiwork::ErrorCode.find!(:forbidden).status).to eq(403)
+      expect(Apiwork::ErrorCode.find!(:conflict).status).to eq(409)
     end
   end
 

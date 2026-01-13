@@ -5,7 +5,7 @@ module Apiwork
     def show
       api_class = API.find(params[:api_path])
       export_name = params[:export_name].to_sym
-      export_class = Export.find(export_name)
+      export_class = Export.find!(export_name)
 
       raw = { key_format: api_class.key_format }
         .merge(api_class.export_config(export_name))

@@ -47,7 +47,7 @@ namespace :apiwork do
       end
 
       custom_options = if export_name
-                         Apiwork::Export.find(export_name).extract_options_from_env
+                         Apiwork::Export.find!(export_name).extract_options_from_env
                        else
                          {}
                        end

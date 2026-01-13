@@ -180,7 +180,7 @@ module Apiwork
       meta: {},
       i18n: {}
     )
-      error_code = ErrorCode.fetch(code_key)
+      error_code = ErrorCode.find!(code_key)
       locale_key = api_class.structure.locale_key
 
       issue = Issue.new(

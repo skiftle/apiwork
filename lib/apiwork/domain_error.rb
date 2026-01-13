@@ -7,7 +7,7 @@ module Apiwork
     end
 
     def error_code
-      @error_code ||= ErrorCode.fetch(:unprocessable_entity)
+      @error_code ||= ErrorCode.find!(:unprocessable_entity)
     end
   end
 end
