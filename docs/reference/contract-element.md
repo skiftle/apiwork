@@ -260,7 +260,7 @@ for static definitions. Use `of` for dynamic element generation.
 | `format` | `Symbol, nil` | format hint (strings only) |
 | `max` | `Integer, nil` | maximum value or length (strings, integers, decimals, numbers, arrays only) |
 | `min` | `Integer, nil` | minimum value or length (strings, integers, decimals, numbers, arrays only) |
-| `shape` | `Object, nil` | pre-built shape (objects, arrays, unions only) |
+| `shape` | `Contract::Object, Contract::Union, nil` | pre-built shape (objects, arrays, unions only) |
 | `value` | `Object, nil` | literal value (literals only) |
 
 **Returns**

@@ -60,7 +60,7 @@ module Apiwork
       # @param format [Symbol, nil] format hint (strings only)
       # @param max [Integer, nil] maximum value or length (strings, integers, decimals, numbers, arrays only)
       # @param min [Integer, nil] minimum value or length (strings, integers, decimals, numbers, arrays only)
-      # @param shape [Object, nil] pre-built shape (objects, arrays, unions only)
+      # @param shape [API::Object, API::Union, nil] pre-built shape (objects, arrays, unions only)
       # @param value [Object, nil] literal value (literals only)
       # @yield block for defining nested structure (objects, arrays, unions only)
       # @return [void]

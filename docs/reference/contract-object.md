@@ -437,7 +437,7 @@ for static definitions. Use `param` for dynamic field generation.
 | `of` | `Symbol, Hash, nil` | element type (arrays only) |
 | `optional` | `Boolean, nil` | whether field can be omitted |
 | `required` | `Boolean, nil` | explicit required flag |
-| `shape` | `Object, nil` | pre-built shape (objects, arrays, unions only) |
+| `shape` | `Contract::Object, Contract::Union, nil` | pre-built shape (objects, arrays, unions only) |
 | `store` | `Boolean, nil` | whether to persist the value |
 | `value` | `Object, nil` | literal value (literals only) |
 

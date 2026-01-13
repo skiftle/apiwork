@@ -51,7 +51,7 @@ module Apiwork
       # @param of [Symbol, Hash, nil] element type (arrays only)
       # @param optional [Boolean] whether field can be omitted
       # @param required [Boolean, nil] explicit required flag
-      # @param shape [Object, nil] pre-built shape (objects, arrays, unions only)
+      # @param shape [API::Object, API::Union, nil] pre-built shape (objects, arrays, unions only)
       # @param store [Boolean, nil] whether to persist the value
       # @param value [Object, nil] literal value (literals only)
       # @yield block for defining nested structure (objects, arrays, unions only)
