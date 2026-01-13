@@ -256,7 +256,7 @@ module Apiwork
           params = definition[:params].dup
           params << NULLABLE_EXTENSION if nullable
 
-          primitives = %i[string integer decimal boolean datetime date uuid time binary float]
+          primitives = %i[string integer decimal boolean datetime date uuid time binary number]
 
           registrar.object(type_name) do
             params.each do |param_definition|

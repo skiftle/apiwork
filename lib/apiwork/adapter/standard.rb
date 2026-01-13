@@ -12,7 +12,7 @@ module Apiwork
       end
 
       def register_api(registrar, capabilities)
-        TypeSystemBuilder.build(registrar, capabilities)
+        APIBuilder.build(registrar, capabilities)
       end
 
       def register_contract(registrar, schema_class, actions)
@@ -33,10 +33,10 @@ module Apiwork
       def render_record(record, schema_class, state)
         RecordValidator.validate(record, schema_class)
         data = RecordLoader.load(record, schema_class, state.query)
-        serialized = schema_class.serialize(data, context: state.context, include: state.query[:include])
+        data = schema_class.serialize(data, context: state.context, include: state.query[:include])
 
         {
-          schema_class.root_key.singular => serialized,
+          schema_class.root_key.singular => data,
           meta: state.meta.presence,
         }.compact
       end
