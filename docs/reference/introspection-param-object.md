@@ -1,5 +1,5 @@
 ---
-order: 52
+order: 51
 prev: false
 next: false
 ---
@@ -168,7 +168,7 @@ param.partial?  # => true if all fields are optional
 
 `#enum?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L204)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L198)
 
 **Returns**
 
@@ -180,7 +180,7 @@ param.partial?  # => true if all fields are optional
 
 `#enum_ref?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L210)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L204)
 
 **Returns**
 
@@ -200,23 +200,11 @@ param.partial?  # => true if all fields are optional
 
 ---
 
-### #float?
-
-`#float?`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L138)
-
-**Returns**
-
-`Boolean` — false — override in Float
-
----
-
 ### #formattable?
 
 `#formattable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L216)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L210)
 
 **Returns**
 
@@ -233,18 +221,6 @@ param.partial?  # => true if all fields are optional
 **Returns**
 
 `Boolean` — false — override in Integer
-
----
-
-### #json?
-
-`#json?`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L186)
-
-**Returns**
-
-`Boolean` — false — override in JSON
 
 ---
 
@@ -269,6 +245,18 @@ param.partial?  # => true if all fields are optional
 **Returns**
 
 `Boolean` — true if this field can be null
+
+---
+
+### #number?
+
+`#number?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L138)
+
+**Returns**
+
+`Boolean` — false — override in Number
 
 ---
 
@@ -324,7 +312,7 @@ param.partial?  # => true if all fields are optional
 
 `#ref?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L198)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L192)
 
 **Returns**
 
@@ -432,7 +420,7 @@ Hash{Symbol =&gt; [Param::Base](introspection-param-base)} — nested field defi
 
 `#unknown?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L192)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L186)
 
 **Returns**
 

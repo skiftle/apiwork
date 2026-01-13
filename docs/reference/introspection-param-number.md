@@ -1,26 +1,30 @@
 ---
-order: 43
+order: 50
 prev: false
 next: false
 ---
 
-# Introspection::Param::Binary
+# Introspection::Param::Number
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/binary.rb#L22)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/number.rb#L26)
 
-Binary param representing base64-encoded binary data.
+Number param representing floating-point number values.
 
 **Example: Basic usage**
 
 ```ruby
-param.type         # => :binary
-param.scalar?      # => true
-param.binary?      # => true
+param.type       # => :number
+param.scalar?    # => true
+param.number?    # => true
+param.numeric?   # => true
 ```
 
-**Example: Capabilities**
+**Example: Constraints**
 
 ```ruby
+param.min          # => 0.0 or nil
+param.max          # => 100.0 or nil
+param.boundable?   # => true
 param.formattable? # => false
 ```
 
@@ -28,7 +32,7 @@ param.formattable? # => false
 
 ```ruby
 if param.enum?
-  param.enum      # => ["SGVsbG8=", "V29ybGQ="]
+  param.enum      # => [0.5, 1.0, 1.5]
   param.enum_ref? # => false
 end
 ```
@@ -51,11 +55,11 @@ end
 
 `#binary?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/binary.rb#L50)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L180)
 
 **Returns**
 
-`Boolean` — true if this is a binary param
+`Boolean` — false — override in Binary
 
 ---
 
@@ -75,11 +79,11 @@ end
 
 `#boundable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L120)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/number.rb#L72)
 
 **Returns**
 
-`Boolean` — false — override in types that support min/max
+`Boolean` — true if this param supports min/max constraints
 
 ---
 
@@ -171,7 +175,7 @@ end
 
 `#enum`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/binary.rb#L38)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/number.rb#L54)
 
 **Returns**
 
@@ -183,7 +187,7 @@ end
 
 `#enum?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/binary.rb#L31)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/number.rb#L47)
 
 **Returns**
 
@@ -195,7 +199,7 @@ end
 
 `#enum_ref?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/binary.rb#L44)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/number.rb#L60)
 
 **Returns**
 
@@ -219,11 +223,11 @@ end
 
 `#formattable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/binary.rb#L56)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/number.rb#L84)
 
 **Returns**
 
-`Boolean` — false — binaries do not support format constraints
+`Boolean` — false — numbers do not support format constraints
 
 ---
 
@@ -251,6 +255,30 @@ end
 
 ---
 
+### #max
+
+`#max`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/number.rb#L35)
+
+**Returns**
+
+`Numeric`, `nil` — the maximum value constraint
+
+---
+
+### #min
+
+`#min`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/number.rb#L29)
+
+**Returns**
+
+`Numeric`, `nil` — the minimum value constraint
+
+---
+
 ### #nullable?
 
 `#nullable?`
@@ -267,11 +295,11 @@ end
 
 `#number?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L138)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/number.rb#L78)
 
 **Returns**
 
-`Boolean` — false — override in Number
+`Boolean` — true if this is a number param
 
 ---
 
@@ -279,11 +307,11 @@ end
 
 `#numeric?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L114)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/number.rb#L66)
 
 **Returns**
 
-`Boolean` — false — override in Integer, Float, Decimal
+`Boolean` — true if this is a numeric param
 
 ---
 
@@ -339,7 +367,7 @@ end
 
 `#scalar?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/binary.rb#L25)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/number.rb#L41)
 
 **Returns**
 
@@ -387,7 +415,7 @@ end
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L222)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/number.rb#L90)
 
 **Returns**
 

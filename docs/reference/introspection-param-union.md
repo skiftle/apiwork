@@ -1,5 +1,5 @@
 ---
-order: 57
+order: 56
 prev: false
 next: false
 ---
@@ -180,7 +180,7 @@ param.discriminator # => :type or nil
 
 `#enum?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L204)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L198)
 
 **Returns**
 
@@ -192,7 +192,7 @@ param.discriminator # => :type or nil
 
 `#enum_ref?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L210)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L204)
 
 **Returns**
 
@@ -212,23 +212,11 @@ param.discriminator # => :type or nil
 
 ---
 
-### #float?
-
-`#float?`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L138)
-
-**Returns**
-
-`Boolean` — false — override in Float
-
----
-
 ### #formattable?
 
 `#formattable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L216)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L210)
 
 **Returns**
 
@@ -245,18 +233,6 @@ param.discriminator # => :type or nil
 **Returns**
 
 `Boolean` — false — override in Integer
-
----
-
-### #json?
-
-`#json?`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L186)
-
-**Returns**
-
-`Boolean` — false — override in JSON
 
 ---
 
@@ -281,6 +257,18 @@ param.discriminator # => :type or nil
 **Returns**
 
 `Boolean` — true if this field can be null
+
+---
+
+### #number?
+
+`#number?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L138)
+
+**Returns**
+
+`Boolean` — false — override in Number
 
 ---
 
@@ -324,7 +312,7 @@ param.discriminator # => :type or nil
 
 `#partial?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L222)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L216)
 
 **Returns**
 
@@ -336,7 +324,7 @@ param.discriminator # => :type or nil
 
 `#ref?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L198)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L192)
 
 **Returns**
 
@@ -432,7 +420,7 @@ param.discriminator # => :type or nil
 
 `#unknown?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L192)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L186)
 
 **Returns**
 

@@ -215,18 +215,6 @@ end
 
 ---
 
-### #float?
-
-`#float?`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L138)
-
-**Returns**
-
-`Boolean` — false — override in Float
-
----
-
 ### #formattable?
 
 `#formattable?`
@@ -251,18 +239,6 @@ end
 
 ---
 
-### #json?
-
-`#json?`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L186)
-
-**Returns**
-
-`Boolean` — false — override in JSON
-
----
-
 ### #literal?
 
 `#literal?`
@@ -284,6 +260,18 @@ end
 **Returns**
 
 `Boolean` — true if this field can be null
+
+---
+
+### #number?
+
+`#number?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L138)
+
+**Returns**
+
+`Boolean` — false — override in Number
 
 ---
 
@@ -327,7 +315,7 @@ end
 
 `#partial?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L222)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L216)
 
 **Returns**
 
@@ -339,7 +327,7 @@ end
 
 `#ref?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L198)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L192)
 
 **Returns**
 
@@ -399,7 +387,7 @@ end
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L228)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L222)
 
 **Returns**
 
@@ -435,7 +423,7 @@ end
 
 `#unknown?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L192)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L186)
 
 **Returns**
 

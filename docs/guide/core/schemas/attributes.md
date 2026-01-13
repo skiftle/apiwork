@@ -554,7 +554,7 @@ attribute :content, writable: true do
     end
     variant tag: 'image' do
       object do
-        string :url, format: :uri
+        string :url, format: :url
         string :alt
         integer :width
         integer :height

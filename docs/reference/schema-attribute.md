@@ -1,5 +1,5 @@
 ---
-order: 62
+order: 61
 prev: false
 next: false
 ---
@@ -28,7 +28,7 @@ attribute.filterable? # => true
 
 `#deprecated`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L27)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L26)
 
 **Returns**
 
@@ -40,7 +40,7 @@ attribute.filterable? # => true
 
 `#description`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L31)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L30)
 
 **Returns**
 
@@ -52,7 +52,7 @@ attribute.filterable? # => true
 
 `#enum`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L35)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L34)
 
 **Returns**
 
@@ -64,7 +64,7 @@ attribute.filterable? # => true
 
 `#example`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L39)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L38)
 
 **Returns**
 
@@ -76,7 +76,7 @@ attribute.filterable? # => true
 
 `#filterable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L146)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L144)
 
 **Returns**
 
@@ -88,7 +88,7 @@ attribute.filterable? # => true
 
 `#format`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L43)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L42)
 
 **Returns**
 
@@ -100,7 +100,7 @@ attribute.filterable? # => true
 
 `#max`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L47)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L46)
 
 **Returns**
 
@@ -112,7 +112,7 @@ attribute.filterable? # => true
 
 `#min`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L51)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L50)
 
 **Returns**
 
@@ -124,7 +124,7 @@ attribute.filterable? # => true
 
 `#name`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L55)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L54)
 
 **Returns**
 
@@ -136,7 +136,7 @@ attribute.filterable? # => true
 
 `#nullable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L164)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L162)
 
 **Returns**
 
@@ -148,7 +148,7 @@ attribute.filterable? # => true
 
 `#of`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L59)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L58)
 
 **Returns**
 
@@ -160,7 +160,7 @@ attribute.filterable? # => true
 
 `#optional?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L158)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L156)
 
 **Returns**
 
@@ -172,7 +172,7 @@ attribute.filterable? # => true
 
 `#sortable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L152)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L150)
 
 **Returns**
 
@@ -184,7 +184,7 @@ attribute.filterable? # => true
 
 `#type`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L63)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L62)
 
 **Returns**
 
@@ -196,7 +196,7 @@ attribute.filterable? # => true
 
 `#writable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L172)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L170)
 
 **Returns**
 
@@ -208,7 +208,7 @@ attribute.filterable? # => true
 
 `#writable_for?(action)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L179)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L177)
 
 **Parameters**
 
