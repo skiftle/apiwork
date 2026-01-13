@@ -22,7 +22,7 @@ module Apiwork
         end
       end
 
-      def registered?(key)
+      def exists?(key)
         store.key?(normalize_key(key))
       end
 

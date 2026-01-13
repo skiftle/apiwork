@@ -7,7 +7,7 @@ RSpec.describe 'Error Codes', type: :integration do
     it 'registers a custom error code' do
       Apiwork::ErrorCode.register :payment_failed, status: 402
 
-      expect(Apiwork::ErrorCode.registered?(:payment_failed)).to be(true)
+      expect(Apiwork::ErrorCode.exists?(:payment_failed)).to be(true)
     end
 
     it 'registers error code with attach_path option' do
@@ -41,12 +41,12 @@ RSpec.describe 'Error Codes', type: :integration do
     end
 
     it 'has default error codes pre-registered' do
-      expect(Apiwork::ErrorCode.registered?(:not_found)).to be(true)
-      expect(Apiwork::ErrorCode.registered?(:bad_request)).to be(true)
-      expect(Apiwork::ErrorCode.registered?(:unauthorized)).to be(true)
-      expect(Apiwork::ErrorCode.registered?(:forbidden)).to be(true)
-      expect(Apiwork::ErrorCode.registered?(:unprocessable_entity)).to be(true)
-      expect(Apiwork::ErrorCode.registered?(:internal_server_error)).to be(true)
+      expect(Apiwork::ErrorCode.exists?(:not_found)).to be(true)
+      expect(Apiwork::ErrorCode.exists?(:bad_request)).to be(true)
+      expect(Apiwork::ErrorCode.exists?(:unauthorized)).to be(true)
+      expect(Apiwork::ErrorCode.exists?(:forbidden)).to be(true)
+      expect(Apiwork::ErrorCode.exists?(:unprocessable_entity)).to be(true)
+      expect(Apiwork::ErrorCode.exists?(:internal_server_error)).to be(true)
     end
 
     it 'returns correct status for default codes' do

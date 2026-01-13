@@ -167,7 +167,7 @@ RSpec.describe Apiwork::Export::Zod do
 
   describe 'generator registration' do
     it 'is registered in the registry' do
-      expect(Apiwork::Export.registered?(:zod)).to be true
+      expect(Apiwork::Export.exists?(:zod)).to be true
     end
 
     it 'can be retrieved from the registry' do

@@ -36,7 +36,7 @@ RSpec.describe Apiwork::Export::OpenAPI do
 
   describe 'generator registration' do
     it 'is registered in the registry' do
-      expect(Apiwork::Export.registered?(:openapi)).to be true
+      expect(Apiwork::Export.exists?(:openapi)).to be true
     end
 
     it 'can be retrieved from the registry' do

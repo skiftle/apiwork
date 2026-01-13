@@ -90,7 +90,7 @@ module Apiwork
         #     path '/types.ts'
         #   end
         def export(name, &block)
-          unless Export.registered?(name)
+          unless Export.exists?(name)
             available = Export.keys.join(', ')
             raise ConfigurationError,
                   "Unknown export: :#{name}. " \
@@ -304,7 +304,7 @@ module Apiwork
               raise ConfigurationError, "raises must be symbols, got #{error_code_key.class}: #{error_code_key}.#{hint}"
             end
 
-            next if ErrorCode.registered?(error_code_key)
+            next if ErrorCode.exists?(error_code_key)
 
             raise ConfigurationError,
                   "Unknown error code :#{error_code_key}. Register it with: " \

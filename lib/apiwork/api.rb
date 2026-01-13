@@ -23,10 +23,10 @@ module Apiwork
       #   @example
       #     Apiwork::API.find!('/api/v1')
       delegate :clear!,
+               :exists?,
                :find,
                :find!,
                :keys,
-               :registered?,
                :unregister,
                :values,
                to: Registry

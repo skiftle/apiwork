@@ -59,7 +59,7 @@ RSpec.describe 'Custom Adapter', type: :integration do
 
   describe 'Adapter registration' do
     it 'registers adapters in the registry' do
-      expect(Apiwork::Adapter.registered?(:standard)).to be(true)
+      expect(Apiwork::Adapter.exists?(:standard)).to be(true)
     end
 
     it 'can find registered adapters' do
@@ -74,7 +74,7 @@ RSpec.describe 'Custom Adapter', type: :integration do
       end
 
       Apiwork::Adapter.register(invoice_adapter_class)
-      expect(Apiwork::Adapter.registered?(:invoice_adapter)).to be(true)
+      expect(Apiwork::Adapter.exists?(:invoice_adapter)).to be(true)
     end
   end
 

@@ -17,7 +17,7 @@ RSpec.describe Apiwork::ErrorCode::Registry do
     it 'converts string key to symbol' do
       described_class.register('string_key', status: 404)
 
-      expect(described_class.registered?(:string_key)).to be(true)
+      expect(described_class.exists?(:string_key)).to be(true)
     end
 
     it 'converts status to integer' do
@@ -79,19 +79,19 @@ RSpec.describe Apiwork::ErrorCode::Registry do
     end
   end
 
-  describe '.registered?' do
+  describe '.exists?' do
     before { described_class.register(:existing, status: 404) }
 
     it 'returns true for registered code' do
-      expect(described_class.registered?(:existing)).to be(true)
+      expect(described_class.exists?(:existing)).to be(true)
     end
 
     it 'returns false for unregistered code' do
-      expect(described_class.registered?(:unknown)).to be(false)
+      expect(described_class.exists?(:unknown)).to be(false)
     end
 
     it 'converts string key to symbol' do
-      expect(described_class.registered?('existing')).to be(true)
+      expect(described_class.exists?('existing')).to be(true)
     end
   end
 

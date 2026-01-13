@@ -267,7 +267,7 @@ RSpec.describe Apiwork::Export::TypeScript do
 
   describe 'generator registration' do
     it 'is registered in the registry' do
-      expect(Apiwork::Export.registered?(:typescript)).to be true
+      expect(Apiwork::Export.exists?(:typescript)).to be true
     end
 
     it 'can be retrieved from the registry' do

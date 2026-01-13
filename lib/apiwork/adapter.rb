@@ -31,11 +31,11 @@ module Apiwork
       #   @example
       #     Apiwork::Adapter.register(JSONAPIAdapter)
       delegate :clear!,
+               :exists?,
                :find,
                :find!,
                :keys,
                :register,
-               :registered?,
                :values,
                to: Registry
 
