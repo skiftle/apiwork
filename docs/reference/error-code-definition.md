@@ -42,15 +42,19 @@ Whether to include request path in error response.
 
 `#description(locale_key: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code/definition.rb#L41)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code/definition.rb#L47)
 
 Returns a localized description for the error code.
+
+Looks up `apiwork.apis.&lt;locale_key&gt;.error_codes.&lt;key&gt;.description`,
+falls back to `apiwork.error_codes.&lt;key&gt;.description`,
+then to titleized key.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `locale_key` | `String, nil` | API-specific locale namespace |
+| `locale_key` | `String, nil` | I18n namespace for API-specific translations |
 
 **Returns**
 
@@ -59,7 +63,9 @@ Returns a localized description for the error code.
 **Example**
 
 ```ruby
+error_code = Apiwork::ErrorCode.find!(:not_found)
 error_code.description # => "Not Found"
+error_code.description(locale_key: 'api/v1') # apiwork.apis.api/v1.error_codes.not_found.description
 ```
 
 ---

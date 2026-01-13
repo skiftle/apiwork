@@ -33,11 +33,17 @@ module Apiwork
       # @api public
       # Returns a localized description for the error code.
       #
-      # @param locale_key [String, nil] API-specific locale namespace
+      # Looks up `apiwork.apis.<locale_key>.error_codes.<key>.description`,
+      # falls back to `apiwork.error_codes.<key>.description`,
+      # then to titleized key.
+      #
+      # @param locale_key [String, nil] I18n namespace for API-specific translations
       # @return [String]
       #
       # @example
+      #   error_code = Apiwork::ErrorCode.find!(:not_found)
       #   error_code.description # => "Not Found"
+      #   error_code.description(locale_key: 'api/v1') # apiwork.apis.api/v1.error_codes.not_found.description
       def description(locale_key: nil)
         if locale_key
           api_key = :"apiwork.apis.#{locale_key}.error_codes.#{key}.description"
