@@ -252,7 +252,7 @@ module Apiwork
         column = column_for(name)
         return false unless column
 
-        return true if column.default.present? && @model_class.defined_enums.exclude?(name.to_s)
+        return true if column.default.present?
 
         column.null
       end

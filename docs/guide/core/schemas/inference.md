@@ -134,18 +134,18 @@ Override:
 attribute :bio, nullable: false  # Reject null even if DB allows it
 ```
 
-### Required Detection
+### Optional Detection
 
-An attribute is required when:
+An attribute is optional when:
 
-- Column is NOT NULL
-- Column has no default value
-- Column is not an enum (enums default to first value)
+- Column allows NULL, or
+- Column has a default value
 
 ```ruby
-# Database: title VARCHAR(255) NOT NULL, status INTEGER DEFAULT 0
+# Database: title VARCHAR(255) NOT NULL, body TEXT NULL, status INTEGER DEFAULT 0
 class PostSchema < Apiwork::Schema::Base
   attribute :title   # required (NOT NULL, no default)
+  attribute :body    # optional (allows NULL)
   attribute :status  # optional (has default)
 end
 ```
