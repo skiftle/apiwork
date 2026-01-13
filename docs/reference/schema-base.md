@@ -1,5 +1,5 @@
 ---
-order: 62
+order: 63
 prev: false
 next: false
 ---
@@ -603,7 +603,7 @@ end
 
 `.variants`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L60)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L56)
 
 **Returns**
 

@@ -14,7 +14,7 @@ next: false
 
 `.define(path, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L36)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L55)
 
 Defines a new API at the given path.
 
@@ -53,11 +53,63 @@ end
 
 ---
 
+### .find
+
+`.find(path)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L25)
+
+Finds an API by its mount path.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `path` | `String` | the API mount path |
+
+**Returns**
+
+[API::Base](api-base), `nil` — the API class or nil if not found
+
+**Example**
+
+```ruby
+Apiwork::API.find('/api/v1')
+```
+
+---
+
+### .find!
+
+`.find!(path)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L25)
+
+Finds an API by its mount path.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `path` | `String` | the API mount path |
+
+**Returns**
+
+[API::Base](api-base) — the API class
+
+**Example**
+
+```ruby
+Apiwork::API.find!('/api/v1')
+```
+
+---
+
 ### .introspect
 
 `.introspect(path, locale: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L54)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L73)
 
 Returns introspection data for an API.
 

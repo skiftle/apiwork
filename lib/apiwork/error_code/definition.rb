@@ -2,11 +2,43 @@
 
 module Apiwork
   module ErrorCode
+    # @api public
+    # Represents a registered error code.
+    #
+    # Error codes define HTTP status codes and behavior for API errors.
+    # Retrieved via {ErrorCode.find} or {ErrorCode.find!}.
+    #
+    # @!attribute [r] key
+    #   @api public
+    #   @return [Symbol] error code identifier
+    #
+    # @!attribute [r] status
+    #   @api public
+    #   @return [Integer] HTTP status code
+    #
+    # @example
+    #   error_code = Apiwork::ErrorCode.find!(:not_found)
+    #   error_code.key     # => :not_found
+    #   error_code.status  # => 404
+    #   error_code.attach_path? # => true
     Definition = Struct.new(:key, :status, :attach_path, keyword_init: true) do
+      # @api public
+      # Whether to include request path in error response.
+      #
+      # @return [Boolean]
       def attach_path?
         attach_path
       end
 
+      # @api public
+      # Returns a localized description for the error code.
+      #
+      # @param locale_key [String, nil] API-specific locale namespace
+      # @param options [Hash] options passed to I18n.translate
+      # @return [String]
+      #
+      # @example
+      #   error_code.description # => "Not Found"
       def description(locale_key: nil, options: {})
         if locale_key
           api_key = :"apiwork.apis.#{locale_key}.error_codes.#{key}.description"

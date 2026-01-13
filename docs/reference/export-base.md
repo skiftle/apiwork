@@ -1,5 +1,5 @@
 ---
-order: 28
+order: 29
 prev: false
 next: false
 ---
@@ -67,7 +67,7 @@ The export name.
 
 ### .file_extension
 
-`.file_extension(file_extension = nil)`
+`.file_extension(value = nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L85)
 
@@ -80,7 +80,7 @@ their extension from the format (:json becomes .json, :yaml becomes .yaml).
 
 | Name | Type | Description |
 |------|------|-------------|
-| `file_extension` | `String, nil` | the file extension (e.g., '.ts') |
+| `value` | `String, nil` | the file extension (e.g., '.ts') |
 
 **Returns**
 
@@ -162,7 +162,7 @@ Declares the output type for this export.
 
 `#data`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L263)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L262)
 
 The API introspection facade.
 
@@ -182,7 +182,7 @@ This is the primary interface for accessing introspection data in export generat
 
 `#generate`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L207)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L206)
 
 Generates the export output.
 

@@ -10,11 +10,63 @@ next: false
 
 ## Class Methods
 
+### .find
+
+`.find(key)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code.rb#L68)
+
+Finds an error code by key.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `key` | `Symbol` | the error code key |
+
+**Returns**
+
+[ErrorCode::Definition](error-code-definition), `nil` — the error code or nil if not found
+
+**Example**
+
+```ruby
+Apiwork::ErrorCode.find(:not_found)
+```
+
+---
+
+### .find!
+
+`.find!(key)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code.rb#L68)
+
+Finds an error code by key.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `key` | `Symbol` | the error code key |
+
+**Returns**
+
+[ErrorCode::Definition](error-code-definition) — the error code
+
+**Example**
+
+```ruby
+Apiwork::ErrorCode.find!(:not_found)
+```
+
+---
+
 ### .register
 
 `.register(key, attach_path: false, status:)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code.rb#L49)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code.rb#L68)
 
 Registers a custom error code for use in API responses.
 
@@ -31,7 +83,7 @@ in controllers. Built-in codes (400-504) are pre-registered.
 
 **Returns**
 
-`ErrorCode::Definition` — the registered error code
+[ErrorCode::Definition](error-code-definition) — the registered error code
 
 **See also**
 
@@ -48,5 +100,31 @@ Apiwork::ErrorCode.register :resource_locked, status: 423
 ```ruby
 Apiwork::ErrorCode.register :not_found, status: 404, attach_path: true
 ```
+
+---
+
+## Instance Methods
+
+### #key
+
+`#key`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code/definition.rb#L24)
+
+**Returns**
+
+`Symbol` — error code identifier
+
+---
+
+### #status
+
+`#status`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code/definition.rb#L24)
+
+**Returns**
+
+`Integer` — HTTP status code
 
 ---

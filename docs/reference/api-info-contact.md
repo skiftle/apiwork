@@ -16,7 +16,7 @@ Used within the `contact` block in [API::Info](api-info).
 
 ### #email
 
-`#email(email = nil)`
+`#email(value = nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/contact.rb#L41)
 
@@ -26,7 +26,7 @@ The contact email.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `email` | `String` |  |
+| `value` | `String` |  |
 
 **Returns**
 
@@ -43,7 +43,7 @@ contact.email  # => "support@example.com"
 
 ### #name
 
-`#name(name = nil)`
+`#name(value = nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/contact.rb#L26)
 
@@ -53,7 +53,7 @@ The contact name.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `name` | `String` |  |
+| `value` | `String` |  |
 
 **Returns**
 
@@ -70,7 +70,7 @@ contact.name  # => "API Support"
 
 ### #url
 
-`#url(url = nil)`
+`#url(value = nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/contact.rb#L56)
 
@@ -80,7 +80,7 @@ The contact URL.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `url` | `String` |  |
+| `value` | `String` |  |
 
 **Returns**
 

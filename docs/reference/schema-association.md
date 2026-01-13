@@ -1,5 +1,5 @@
 ---
-order: 60
+order: 61
 prev: false
 next: false
 ---
@@ -28,7 +28,7 @@ association.schema_class # => CustomerSchema
 
 `#collection?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/association.rb#L127)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/association.rb#L125)
 
 **Returns**
 
@@ -76,7 +76,7 @@ association.schema_class # => CustomerSchema
 
 `#filterable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/association.rb#L96)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/association.rb#L100)
 
 **Returns**
 
@@ -100,7 +100,7 @@ association.schema_class # => CustomerSchema
 
 `#name`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/association.rb#L31)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/association.rb#L35)
 
 **Returns**
 
@@ -112,7 +112,7 @@ association.schema_class # => CustomerSchema
 
 `#nullable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/association.rb#L145)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/association.rb#L143)
 
 **Returns**
 
@@ -124,7 +124,7 @@ association.schema_class # => CustomerSchema
 
 `#polymorphic`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/association.rb#L35)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/association.rb#L39)
 
 **Returns**
 
@@ -136,7 +136,7 @@ association.schema_class # => CustomerSchema
 
 `#polymorphic?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/association.rb#L139)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/association.rb#L137)
 
 **Returns**
 
@@ -148,7 +148,7 @@ association.schema_class # => CustomerSchema
 
 `#schema_class`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/association.rb#L39)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/association.rb#L43)
 
 **Returns**
 
@@ -160,7 +160,7 @@ association.schema_class # => CustomerSchema
 
 `#singular?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/association.rb#L133)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/association.rb#L131)
 
 **Returns**
 
@@ -172,7 +172,7 @@ association.schema_class # => CustomerSchema
 
 `#sortable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/association.rb#L102)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/association.rb#L106)
 
 **Returns**
 
@@ -184,7 +184,7 @@ association.schema_class # => CustomerSchema
 
 `#type`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/association.rb#L43)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/association.rb#L47)
 
 **Returns**
 
@@ -196,7 +196,7 @@ association.schema_class # => CustomerSchema
 
 `#writable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/association.rb#L114)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/association.rb#L112)
 
 **Returns**
 
@@ -208,7 +208,7 @@ association.schema_class # => CustomerSchema
 
 `#writable_for?(action)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/association.rb#L121)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/association.rb#L119)
 
 **Parameters**
 

@@ -40,7 +40,7 @@ end
 
 ### #description
 
-`#description(description = nil)`
+`#description(value = nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L59)
 
@@ -53,7 +53,7 @@ Supports Markdown formatting.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `description` | `String` | description text (optional) |
+| `value` | `String` | description text (optional) |
 
 **Returns**
 
@@ -71,7 +71,7 @@ end
 
 ### #operation_id
 
-`#operation_id(operation_id = nil)`
+`#operation_id(value = nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L106)
 
@@ -81,7 +81,7 @@ Sets a custom operation ID.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `operation_id` | `String` | custom operation ID (optional) |
+| `value` | `String` | custom operation ID (optional) |
 
 **Returns**
 
@@ -230,7 +230,7 @@ end
 
 ### #summary
 
-`#summary(summary = nil)`
+`#summary(value = nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L41)
 
@@ -242,7 +242,7 @@ Used in generated specs as the operation summary.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `summary` | `String` | summary text (optional) |
+| `value` | `String` | summary text (optional) |
 
 **Returns**
 

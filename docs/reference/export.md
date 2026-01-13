@@ -1,5 +1,5 @@
 ---
-order: 27
+order: 28
 prev: false
 next: false
 ---
@@ -10,11 +10,63 @@ next: false
 
 ## Class Methods
 
+### .find
+
+`.find(name)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export.rb#L33)
+
+Finds an export by name.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `name` | `Symbol` | the export name |
+
+**Returns**
+
+[Export::Base](export-base), `nil` — the export class or nil if not found
+
+**Example**
+
+```ruby
+Apiwork::Export.find(:openapi)
+```
+
+---
+
+### .find!
+
+`.find!(name)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export.rb#L33)
+
+Finds an export by name.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `name` | `Symbol` | the export name |
+
+**Returns**
+
+[Export::Base](export-base) — the export class
+
+**Example**
+
+```ruby
+Apiwork::Export.find!(:openapi)
+```
+
+---
+
 ### .generate
 
 `.generate(export_name, api_path, format: nil, key_format: nil, locale: nil, version: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export.rb#L38)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export.rb#L58)
 
 Generates an export for an API.
 
@@ -51,7 +103,7 @@ Apiwork::Export.generate(:typescript, '/api/v1', locale: :es, key_format: :camel
 
 `.register(klass)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export.rb#L14)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export.rb#L33)
 
 Registers an export.
 

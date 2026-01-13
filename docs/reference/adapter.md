@@ -10,11 +10,63 @@ next: false
 
 ## Class Methods
 
+### .find
+
+`.find(name)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter.rb#L33)
+
+Finds an adapter by name.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `name` | `Symbol` | the adapter name |
+
+**Returns**
+
+[Adapter::Base](adapter-base), `nil` — the adapter class or nil if not found
+
+**Example**
+
+```ruby
+Apiwork::Adapter.find(:standard)
+```
+
+---
+
+### .find!
+
+`.find!(name)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter.rb#L33)
+
+Finds an adapter by name.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `name` | `Symbol` | the adapter name |
+
+**Returns**
+
+[Adapter::Base](adapter-base) — the adapter class
+
+**Example**
+
+```ruby
+Apiwork::Adapter.find!(:standard)
+```
+
+---
+
 ### .register
 
 `.register(klass)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter.rb#L14)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter.rb#L33)
 
 Registers an adapter.
 

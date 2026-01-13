@@ -85,7 +85,7 @@ info.deprecated?  # => true
 
 ### #description
 
-`#description(description = nil)`
+`#description(value = nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L153)
 
@@ -95,7 +95,7 @@ A detailed description.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `description` | `String` | supports Markdown |
+| `value` | `String` | supports Markdown |
 
 **Returns**
 
@@ -169,7 +169,7 @@ info.server  # => [#<Server ...>]
 
 ### #summary
 
-`#summary(summary = nil)`
+`#summary(value = nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L138)
 
@@ -179,7 +179,7 @@ A short summary.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `summary` | `String` |  |
+| `value` | `String` |  |
 
 **Returns**
 
@@ -250,7 +250,7 @@ info.terms_of_service  # => "https://example.com/terms"
 
 ### #title
 
-`#title(title = nil)`
+`#title(value = nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L32)
 
@@ -260,7 +260,7 @@ The API title.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `title` | `String` |  |
+| `value` | `String` |  |
 
 **Returns**
 
@@ -277,7 +277,7 @@ info.title  # => "Invoice API"
 
 ### #version
 
-`#version(version = nil)`
+`#version(value = nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L47)
 
@@ -287,7 +287,7 @@ The API version.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `version` | `String` | e.g. '1.0.0' |
+| `value` | `String` | e.g. '1.0.0' |
 
 **Returns**
 

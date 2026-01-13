@@ -4,6 +4,24 @@ module Apiwork
   # @api public
   module API
     class << self
+      # @!method find(path)
+      #   @api public
+      #   Finds an API by its mount path.
+      #   @param path [String] the API mount path
+      #   @return [API::Base, nil] the API class or nil if not found
+      #   @see .find!
+      #   @example
+      #     Apiwork::API.find('/api/v1')
+      #
+      # @!method find!(path)
+      #   @api public
+      #   Finds an API by its mount path.
+      #   @param path [String] the API mount path
+      #   @return [API::Base] the API class
+      #   @raise [KeyError] if the API is not found
+      #   @see .find
+      #   @example
+      #     Apiwork::API.find!('/api/v1')
       delegate :all,
                :clear!,
                :find,
@@ -53,7 +71,7 @@ module Apiwork
       # @example
       #   Apiwork::API.introspect('/api/v1')
       def introspect(path, locale: nil)
-        find(path)&.introspect(locale:)
+        find!(path).introspect(locale:)
       end
     end
   end

@@ -27,6 +27,25 @@ module Apiwork
     }.freeze
 
     class << self
+      # @!method find(key)
+      #   @api public
+      #   Finds an error code by key.
+      #   @param key [Symbol] the error code key
+      #   @return [ErrorCode::Definition, nil] the error code or nil if not found
+      #   @see .find!
+      #   @example
+      #     Apiwork::ErrorCode.find(:not_found)
+      #
+      # @!method find!(key)
+      #   @api public
+      #   Finds an error code by key.
+      #   @param key [Symbol] the error code key
+      #   @return [ErrorCode::Definition] the error code
+      #   @raise [KeyError] if the error code is not found
+      #   @see .find
+      #   @example
+      #     Apiwork::ErrorCode.find!(:not_found)
+      #
       # @!method register(key, attach_path: false, status:)
       #   @api public
       #   Registers a custom error code for use in API responses.

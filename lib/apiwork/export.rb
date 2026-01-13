@@ -4,6 +4,25 @@ module Apiwork
   # @api public
   module Export
     class << self
+      # @!method find(name)
+      #   @api public
+      #   Finds an export by name.
+      #   @param name [Symbol] the export name
+      #   @return [Export::Base, nil] the export class or nil if not found
+      #   @see .find!
+      #   @example
+      #     Apiwork::Export.find(:openapi)
+      #
+      # @!method find!(name)
+      #   @api public
+      #   Finds an export by name.
+      #   @param name [Symbol] the export name
+      #   @return [Export::Base] the export class
+      #   @raise [KeyError] if the export is not found
+      #   @see .find
+      #   @example
+      #     Apiwork::Export.find!(:openapi)
+      #
       # @!method register(klass)
       #   @api public
       #   Registers an export.
@@ -37,7 +56,7 @@ module Apiwork
       #   Apiwork::Export.generate(:openapi, '/api/v1', format: :yaml)
       #   Apiwork::Export.generate(:typescript, '/api/v1', locale: :es, key_format: :camel)
       def generate(export_name, api_path, format: nil, key_format: nil, locale: nil, version: nil)
-        find(export_name)&.generate(api_path, format:, key_format:, locale:, version:)
+        find!(export_name).generate(api_path, format:, key_format:, locale:, version:)
       end
 
       def register_defaults!
