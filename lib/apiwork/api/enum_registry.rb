@@ -27,12 +27,12 @@ module Apiwork
           )
         else
           @store[key] = EnumDefinition.new(
+            key,
             deprecated:,
             description:,
             example:,
             scope:,
             values:,
-            name: key,
           )
         end
       end

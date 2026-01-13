@@ -123,7 +123,7 @@ module Apiwork
             'Invalid value',
             meta: {
               actual: value,
-              expected: resolve_enum_values(param_options[:enum]),
+              expected: resolve_enum(param_options[:enum]),
               field: name,
             },
             path: field_path,
@@ -147,7 +147,7 @@ module Apiwork
       end
 
       def validate_enum_value(name, value, enum, field_path)
-        enum_values = resolve_enum_values(enum)
+        enum_values = resolve_enum(enum)
         return nil unless enum_values
         return nil if enum_values.include?(value.to_s) || enum_values.include?(value)
 
@@ -163,7 +163,7 @@ module Apiwork
         )
       end
 
-      def resolve_enum_values(enum)
+      def resolve_enum(enum)
         return nil if enum.nil?
         return enum if enum.is_a?(Array)
 

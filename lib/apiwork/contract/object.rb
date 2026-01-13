@@ -90,7 +90,7 @@ module Apiwork
         min: nil,
         nullable: nil,
         of: nil,
-        optional: nil,
+        optional: false,
         required: nil,
         shape: nil,
         store: nil,
@@ -114,20 +114,20 @@ module Apiwork
         visited_types ||= @visited_types
         visited_types ||= Set.new
 
-        resolved_enum = resolve_enum_value(enum)
+        resolved_enum = resolve_enum(enum)
 
         case type
         when :literal
-          define_literal_param(name, as:, default:, deprecated:, description:, store:, value:, optional: optional || false)
+          define_literal_param(name, as:, default:, deprecated:, description:, optional:, store:, value:)
         when :union
           define_union_param(
             name,
             as:,
             default:,
             discriminator:,
+            optional:,
             options:,
             resolved_enum:,
-            optional: optional || false,
             &block
           )
         else
@@ -136,12 +136,12 @@ module Apiwork
             as:,
             default:,
             of:,
+            optional:,
             options:,
             resolved_enum:,
             shape:,
             type:,
             visited_types:,
-            optional: optional || false,
             &block
           )
         end
@@ -749,7 +749,7 @@ module Apiwork
       #       end
       #     end
       #   end
-      def meta(optional: nil, &block)
+      def meta(optional: false, &block)
         return unless block
 
         existing_meta = @params[:meta]
@@ -1062,7 +1062,7 @@ module Apiwork
         end
       end
 
-      def resolve_enum_value(enum)
+      def resolve_enum(enum)
         return nil if enum.nil?
         return enum if enum.is_a?(Array)
 

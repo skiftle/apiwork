@@ -11,7 +11,7 @@ module Apiwork
                     :values
 
         def initialize(
-          name:,
+          name,
           scope: nil,
           deprecated: false,
           description: nil,
@@ -37,10 +37,10 @@ module Apiwork
           values:
         )
           EnumDefinition.new(
+            @name,
             deprecated: deprecated || @deprecated,
             description: description || @description,
             example: example || @example,
-            name: @name,
             scope: @scope,
             values: values || @values,
           )

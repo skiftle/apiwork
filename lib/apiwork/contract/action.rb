@@ -39,8 +39,9 @@ module Apiwork
       #     summary 'Create a new invoice'
       #   end
       def summary(value = nil)
-        @summary = value if value
-        @summary
+        return @summary if value.nil?
+
+        @summary = value
       end
 
       # @api public
@@ -57,8 +58,9 @@ module Apiwork
       #     description 'Creates a new invoice and sends notification email.'
       #   end
       def description(value = nil)
-        @description = value if value
-        @description
+        return @description if value.nil?
+
+        @description = value
       end
 
       # @api public
@@ -104,8 +106,9 @@ module Apiwork
       #     operation_id 'createNewInvoice'
       #   end
       def operation_id(value = nil)
-        @operation_id = value if value
-        @operation_id
+        return @operation_id if value.nil?
+
+        @operation_id = value
       end
 
       # @api public
