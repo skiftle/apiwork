@@ -43,8 +43,8 @@ module Apiwork
               key = key.to_sym
 
               if value.is_a?(String) || value.is_a?(Symbol)
-                attribute_definition = schema_class.attributes[key]
-                unless attribute_definition&.sortable?
+                attribute = schema_class.attributes[key]
+                unless attribute&.sortable?
                   available = schema_class.attributes
                     .values
                     .select(&:sortable?)

@@ -25,57 +25,57 @@ module Apiwork
           build_actions
         end
 
-        def single_response(param_definition)
+        def single_response(response)
           root_key = schema_class.root_key.singular.to_sym
           resource_type_name = resource_type_name_for_response
 
-          param_definition.reference root_key, to: resource_type_name
-          param_definition.object :meta, optional: true
+          response.reference root_key, to: resource_type_name
+          response.object :meta, optional: true
         end
 
-        def collection_response(param_definition)
+        def collection_response(response)
           root_key_plural = schema_class.root_key.plural.to_sym
           resource_type_name = resource_type_name_for_response
           pagination_type = build_pagination_type
 
-          param_definition.array root_key_plural do
+          response.array root_key_plural do
             reference resource_type_name
           end
-          param_definition.reference :pagination, to: pagination_type
-          param_definition.object :meta, optional: true
+          response.reference :pagination, to: pagination_type
+          response.object :meta, optional: true
         end
 
         attr_reader :actions,
                     :registrar,
                     :schema_class
 
-        def query_params(param_definition)
+        def query_params(request)
           filter_type = build_filter_type
           sort_type = build_sort_type
 
           if filter_type
-            param_definition.union :filter, optional: true do
+            request.union :filter, optional: true do
               variant { reference filter_type }
               variant { array { reference filter_type } }
             end
           end
 
           if sort_type
-            param_definition.union :sort, optional: true do
+            request.union :sort, optional: true do
               variant { reference sort_type }
               variant { array { reference sort_type } }
             end
           end
 
-          param_definition.reference :page, optional: true, to: build_page_type
+          request.reference :page, optional: true, to: build_page_type
 
           return unless schema_class.associations.any?
 
           include_type = build_include_type
-          param_definition.reference :include, optional: true, to: include_type if include_type
+          request.reference :include, optional: true, to: include_type if include_type
         end
 
-        def writable_request(param_definition, action_name)
+        def writable_request(request, action_name)
           root_key = schema_class.root_key.singular.to_sym
           builder = self
 
@@ -91,10 +91,10 @@ module Apiwork
             end
           end
 
-          param_definition.reference root_key, to: payload_type_name
+          request.reference root_key, to: payload_type_name
         end
 
-        def writable_params(param_definition, action_name, nested: false, target_schema: nil)
+        def writable_params(request, action_name, nested: false, target_schema: nil)
           target_schema_class = target_schema || schema_class
           target_schema_class.attributes.each do |name, attribute|
             next unless attribute.writable_for?(action_name)
@@ -130,10 +130,10 @@ module Apiwork
             param_definition.param name, param_options.delete(:type), **param_options
           end
 
-          target_schema_class.associations.each do |name, association_definition|
-            next unless association_definition.writable_for?(action_name)
+          target_schema_class.associations.each do |name, association|
+            next unless association.writable_for?(action_name)
 
-            association_resource = resolve_association_resource(association_definition)
+            association_resource = resolve_association_resource(association)
             association_payload_type = nil
 
             association_contract = nil
@@ -155,22 +155,22 @@ module Apiwork
 
             param_options = {
               as: "#{name}_attributes".to_sym,
-              deprecated: association_definition.deprecated,
-              description: association_definition.description,
-              example: association_definition.example,
-              nullable: association_definition.nullable?,
+              deprecated: association.deprecated,
+              description: association.description,
+              example: association.example,
+              nullable: association.nullable?,
               optional: true,
             }
 
             if association_payload_type
-              if association_definition.collection?
+              if association.collection?
                 param_options[:type] = :array
                 param_options[:of] = association_payload_type
               else
                 param_options[:type] = association_payload_type
               end
             else
-              param_options[:type] = association_definition.collection? ? :array : :object
+              param_options[:type] = association.collection? ? :array : :object
             end
 
             param_definition.param name, param_options.delete(:type), **param_options
@@ -339,8 +339,8 @@ module Apiwork
 
         def register_resource_type(type_name)
           association_type_map = {}
-          schema_class.associations.each do |name, association_definition|
-            association_type_map[name] = build_association_type(association_definition)
+          schema_class.associations.each do |name, association|
+            association_type_map[name] = build_association_type(association)
           end
 
           build_enums
@@ -378,20 +378,20 @@ module Apiwork
               param name, param_options.delete(:type), **param_options
             end
 
-            local_schema_class.associations.each do |name, association_definition|
+            local_schema_class.associations.each do |name, association|
               association_type = association_type_map[name]
 
               base_options = {
-                deprecated: association_definition.deprecated,
-                description: association_definition.description,
-                example: association_definition.example,
-                nullable: association_definition.nullable?,
-                optional: !association_definition.always_included?,
+                deprecated: association.deprecated,
+                description: association.description,
+                example: association.example,
+                nullable: association.nullable?,
+                optional: !association.always_included?,
               }
 
-              if association_definition.singular?
+              if association.singular?
                 param name, association_type || :object, **base_options
-              elsif association_definition.collection?
+              elsif association.collection?
                 if association_type
                   param name, :array, **base_options do
                     of association_type
@@ -460,10 +460,10 @@ module Apiwork
               end
             end
 
-            local_schema_class.associations.each do |name, association_definition|
-              next unless association_definition.filterable?
+            local_schema_class.associations.each do |name, association|
+              next unless association.filterable?
 
-              association_resource = builder.resolve_association_resource(association_definition)
+              association_resource = builder.resolve_association_resource(association)
               next unless association_resource&.schema_class
               next if visited.include?(association_resource.schema_class)
 
@@ -517,10 +517,10 @@ module Apiwork
               reference name, optional: true, to: :sort_direction
             end
 
-            local_schema_class.associations.each do |name, association_definition|
-              next unless association_definition.sortable?
+            local_schema_class.associations.each do |name, association|
+              next unless association.sortable?
 
-              association_resource = builder.resolve_association_resource(association_definition)
+              association_resource = builder.resolve_association_resource(association)
               next unless association_resource&.schema_class
               next if visited.include?(association_resource.schema_class)
 
@@ -595,17 +595,17 @@ module Apiwork
           registrar_local = registrar
 
           registrar.object(type_name) do
-            local_schema_class.associations.each do |name, association_definition|
-              if association_definition.polymorphic?
-                boolean name, optional: true unless association_definition.always_included?
+            local_schema_class.associations.each do |name, association|
+              if association.polymorphic?
+                boolean name, optional: true unless association.always_included?
                 next
               end
 
-              association_resource = builder.resolve_association_resource(association_definition)
+              association_resource = builder.resolve_association_resource(association)
               next unless association_resource&.schema_class
 
               if visited.include?(association_resource.schema_class)
-                boolean name, optional: true unless association_definition.always_included?
+                boolean name, optional: true unless association.always_included?
               else
                 import_alias = builder.import_association_contract(association_resource.schema_class, visited)
 
@@ -621,8 +621,8 @@ module Apiwork
                                            end
 
                 if association_include_type.nil?
-                  boolean name, optional: true unless association_definition.always_included?
-                elsif association_definition.always_included?
+                  boolean name, optional: true unless association.always_included?
+                elsif association.always_included?
                   reference name, optional: true, to: association_include_type
                 else
                   union name, optional: true do
@@ -642,16 +642,16 @@ module Apiwork
 
           new_visited = visited.dup.add(schema_class)
 
-          schema_class.associations.values.any? do |association_definition|
-            if association_definition.polymorphic?
-              !association_definition.always_included?
+          schema_class.associations.values.any? do |association|
+            if association.polymorphic?
+              !association.always_included?
             else
-              association_resource = resolve_association_resource(association_definition)
+              association_resource = resolve_association_resource(association)
               next false unless association_resource&.schema_class
 
               if new_visited.include?(association_resource.schema_class)
-                !association_definition.always_included?
-              elsif association_definition.always_included?
+                !association.always_included?
+              elsif association.always_included?
                 nested_builder = self.class.for_schema(registrar, association_resource.schema_class)
                 nested_builder.has_includable_params?(depth: depth + 1, visited: new_visited)
               else
@@ -736,8 +736,8 @@ module Apiwork
             end
 
             association_type_map = {}
-            local_schema_class.associations.each do |name, association_definition|
-              result = builder.build_association_type(association_definition, visited:)
+            local_schema_class.associations.each do |name, association|
+              result = builder.build_association_type(association, visited:)
               association_type_map[name] = result
             end
 
@@ -753,29 +753,29 @@ module Apiwork
                     **enum_option
             end
 
-            local_schema_class.associations.each do |name, association_definition|
+            local_schema_class.associations.each do |name, association|
               association_type = association_type_map[name]
-              is_optional = !association_definition.always_included?
+              is_optional = !association.always_included?
 
               if association_type
-                if association_definition.singular?
+                if association.singular?
                   param name,
                         association_type,
-                        nullable: association_definition.nullable?,
+                        nullable: association.nullable?,
                         optional: is_optional
-                elsif association_definition.collection?
+                elsif association.collection?
                   param name,
                         :array,
-                        nullable: association_definition.nullable?,
+                        nullable: association.nullable?,
                         of: association_type,
                         optional: is_optional
                 end
-              elsif association_definition.singular?
-                param name, :object, nullable: association_definition.nullable?, optional: is_optional
-              elsif association_definition.collection?
+              elsif association.singular?
+                param name, :object, nullable: association.nullable?, optional: is_optional
+              elsif association.collection?
                 param name,
                       :array,
-                      nullable: association_definition.nullable?,
+                      nullable: association.nullable?,
                       of: :object,
                       optional: is_optional
               end
@@ -783,13 +783,13 @@ module Apiwork
           end
         end
 
-        def build_association_type(association_definition, visited: Set.new)
-          return build_polymorphic_association_type(association_definition, visited:) if association_definition.polymorphic?
+        def build_association_type(association, visited: Set.new)
+          return build_polymorphic_association_type(association, visited:) if association.polymorphic?
 
-          association_resource = resolve_association_resource(association_definition)
+          association_resource = resolve_association_resource(association)
           return nil unless association_resource
 
-          return build_sti_association_type(association_definition, association_resource.schema_class, visited:) if association_resource.sti?
+          return build_sti_association_type(association, association_resource.schema_class, visited:) if association_resource.sti?
 
           return nil if visited.include?(association_resource.schema_class)
 
@@ -799,22 +799,22 @@ module Apiwork
           nil
         end
 
-        def build_polymorphic_association_type(association_definition, visited: Set.new)
-          polymorphic = association_definition.polymorphic
+        def build_polymorphic_association_type(association, visited: Set.new)
+          polymorphic = association.polymorphic
           return nil unless polymorphic&.any?
 
-          union_type_name = association_definition.name
+          union_type_name = association.name
 
           existing_type = registrar.type?(union_type_name)
           return union_type_name if existing_type
 
           builder = self
-          discriminator = association_definition.discriminator
-          association_def_local = association_definition
+          discriminator = association.discriminator
+          association_local = association
 
           registrar.union(union_type_name, discriminator:) do
-            association_def_local.polymorphic.each_key do |tag|
-              schema_class = association_def_local.resolve_polymorphic_schema(tag)
+            association_local.polymorphic.each_key do |tag|
+              schema_class = association_local.resolve_polymorphic_schema(tag)
               next unless schema_class
 
               import_alias = builder.import_association_contract(schema_class, visited)
@@ -852,7 +852,7 @@ module Apiwork
           union_type_name
         end
 
-        def build_sti_association_type(association_definition, schema_class_arg, visited: Set.new)
+        def build_sti_association_type(association, schema_class_arg, visited: Set.new)
           import_alias = import_association_contract(schema_class_arg, visited)
           return nil unless import_alias
 
@@ -950,23 +950,23 @@ module Apiwork
           schema_class.respond_to?(:variants) && schema_class.variants&.any?
         end
 
-        def resolve_association_resource(association_definition)
-          return AssociationResource.polymorphic if association_definition.polymorphic?
+        def resolve_association_resource(association)
+          return AssociationResource.polymorphic if association.polymorphic?
 
-          resolved_schema = resolve_schema_from_definition(association_definition)
+          resolved_schema = resolve_schema_from_association(association)
           return nil unless resolved_schema
 
           sti = resolved_schema.respond_to?(:sti_base?) && resolved_schema.sti_base?
           AssociationResource.for(resolved_schema, sti:)
         end
 
-        def resolve_schema_from_definition(association_definition)
-          return association_definition.schema_class if association_definition.schema_class
+        def resolve_schema_from_association(association)
+          return association.schema_class if association.schema_class
 
-          model_class = association_definition.model_class
+          model_class = association.model_class
           return nil unless model_class
 
-          reflection = model_class.reflect_on_association(association_definition.name)
+          reflection = model_class.reflect_on_association(association.name)
           return nil unless reflection
 
           infer_association_schema(reflection)

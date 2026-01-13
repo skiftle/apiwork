@@ -53,8 +53,8 @@ module Apiwork
             filter.each_with_object([[], {}]) do |(key, value), (conditions, joins)|
               key = key.to_sym
 
-              if (attribute_definition = schema_class.attributes[key])&.filterable?
-                next unless filterable_for_context?(attribute_definition)
+              if (attribute = schema_class.attributes[key])&.filterable?
+                next unless filterable_for_context?(attribute)
 
                 condition_result = build_column_condition(key, value, target_klass)
                 conditions << condition_result if condition_result
@@ -194,8 +194,8 @@ module Apiwork
             [combined, all_joins]
           end
 
-          def filterable_for_context?(attribute_definition)
-            filterable = attribute_definition.filterable?
+          def filterable_for_context?(attribute)
+            filterable = attribute.filterable?
             return true unless filterable.is_a?(Proc)
 
             schema_class.new(nil, {}).instance_eval(&filterable)

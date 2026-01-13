@@ -71,10 +71,10 @@ module Apiwork
 
           include_params.each do |key, value|
             key = key.to_sym
-            association_definition = schema_class.associations[key]
+            association = schema_class.associations[key]
 
             if false?(value)
-              next if association_definition&.always_included?
+              next if association&.always_included?
 
               combined.delete(key)
 

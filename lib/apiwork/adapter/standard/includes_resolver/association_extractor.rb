@@ -41,15 +41,15 @@ module Apiwork
                 next
               end
 
-              association_definition = schema_class.associations[key]
+              association = schema_class.associations[key]
 
-              next unless association_definition
+              next unless association
 
               result[key] = {}
 
               next unless value.is_a?(Hash)
 
-              nested_schema_class = association_definition.schema_class
+              nested_schema_class = association.schema_class
 
               next unless nested_schema_class.respond_to?(:associations)
 
@@ -75,15 +75,15 @@ module Apiwork
 
               sort_item.each do |key, value|
                 key = key.to_sym
-                association_definition = schema_class.associations[key]
+                association = schema_class.associations[key]
 
-                next unless association_definition
+                next unless association
 
                 result[key] = {}
 
                 next unless value.is_a?(Hash)
 
-                nested_schema_class = association_definition.schema_class
+                nested_schema_class = association.schema_class
 
                 next unless nested_schema_class.respond_to?(:associations)
 
