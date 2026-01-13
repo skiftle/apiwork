@@ -89,7 +89,7 @@ module Apiwork
       private
 
       def append_or_merge_variant(data, tag)
-        if tag && (index = @variants.find_index { |v| v[:tag] == tag })
+        if tag && (index = @variants.find_index { |variant| variant[:tag] == tag })
           existing = @variants[index]
           merge_variant_shapes(existing, data[:shape]) if data[:shape] && existing[:shape]
           data.delete(:shape) if data[:shape] && existing[:shape]

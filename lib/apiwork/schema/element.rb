@@ -94,6 +94,70 @@ module Apiwork
       end
 
       # @api public
+      # Defines the element type.
+      #
+      # This is the verbose form. Prefer sugar methods (object, array, union)
+      # for static definitions.
+      #
+      # @param type [Symbol] element type (:object, :array, :union)
+      # @param discriminator [Symbol, nil] discriminator field name (unions only)
+      # @param shape [API::Object, API::Union, nil] pre-built shape
+      # @yield block for defining nested structure
+      # @return [void]
+      def of(type, discriminator: nil, shape: nil, &block)
+        case type
+        when :object
+          if shape
+            @type = :object
+            @shape = shape
+            @defined = true
+          elsif block
+            builder = API::Object.new
+            builder.instance_eval(&block)
+            @type = :object
+            @shape = builder
+            @defined = true
+          else
+            raise ArgumentError, 'object requires a block or shape'
+          end
+        when :array
+          if shape
+            @type = :array
+            @shape = shape
+            @defined = true
+          elsif block
+            inner = API::Element.new
+            inner.instance_eval(&block)
+            inner.validate!
+            @type = :array
+            @of = inner.of_type
+            @shape = inner.shape
+            @defined = true
+          else
+            raise ArgumentError, 'array requires a block or shape'
+          end
+        when :union
+          if shape
+            @type = :union
+            @shape = shape
+            @discriminator = discriminator
+            @defined = true
+          elsif block
+            builder = API::Union.new(discriminator:)
+            builder.instance_eval(&block)
+            @type = :union
+            @shape = builder
+            @discriminator = discriminator
+            @defined = true
+          else
+            raise ArgumentError, 'union requires a block or shape'
+          end
+        else
+          raise ArgumentError, "Schema::Element only supports :object, :array, :union - got #{type.inspect}"
+        end
+      end
+
+      # @api public
       # Defines an object structure.
       #
       # The block is evaluated in {API::Object} context, providing
@@ -111,13 +175,7 @@ module Apiwork
       #     boolean :active
       #   end
       def object(&block)
-        raise ArgumentError, 'object requires a block' unless block
-
-        builder = API::Object.new
-        builder.instance_eval(&block)
-        @type = :object
-        @shape = builder
-        @defined = true
+        of(:object, &block)
       end
 
       # @api public
@@ -144,15 +202,7 @@ module Apiwork
       #     end
       #   end
       def array(&block)
-        raise ArgumentError, 'array requires a block' unless block
-
-        inner = API::Element.new
-        inner.instance_eval(&block)
-        inner.validate!
-        @type = :array
-        @of = inner.of_type
-        @shape = inner.shape
-        @defined = true
+        of(:array, &block)
       end
 
       # @api public
@@ -181,14 +231,7 @@ module Apiwork
       #     end
       #   end
       def union(discriminator: nil, &block)
-        raise ArgumentError, 'union requires a block' unless block
-
-        builder = API::Union.new(discriminator:)
-        builder.instance_eval(&block)
-        @type = :union
-        @shape = builder
-        @discriminator = discriminator
-        @defined = true
+        of(:union, discriminator:, &block)
       end
 
       def of_type

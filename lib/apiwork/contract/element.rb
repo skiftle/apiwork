@@ -34,12 +34,6 @@ module Apiwork
                   :type,
                   :value
 
-      # The element type for arrays.
-      # @return [Symbol, nil]
-      def of_value
-        @of
-      end
-
       def initialize(contract_class)
         @contract_class = contract_class
         @custom_type = nil
@@ -315,6 +309,10 @@ module Apiwork
       # @return [Symbol] custom_type if reference, otherwise type
       def of_type
         custom_type || type
+      end
+
+      def of_value
+        @of
       end
 
       def validate!

@@ -18,7 +18,7 @@ RSpec.describe Apiwork::Schema::Element do
     it 'raises without block' do
       element = described_class.new
 
-      expect { element.object }.to raise_error(ArgumentError, 'object requires a block')
+      expect { element.object }.to raise_error(ArgumentError, 'object requires a block or shape')
     end
   end
 
@@ -50,7 +50,7 @@ RSpec.describe Apiwork::Schema::Element do
     it 'raises without block' do
       element = described_class.new
 
-      expect { element.array }.to raise_error(ArgumentError, 'array requires a block')
+      expect { element.array }.to raise_error(ArgumentError, 'array requires a block or shape')
     end
   end
 
@@ -73,7 +73,7 @@ RSpec.describe Apiwork::Schema::Element do
     it 'raises without block' do
       element = described_class.new
 
-      expect { element.union }.to raise_error(ArgumentError, 'union requires a block')
+      expect { element.union }.to raise_error(ArgumentError, 'union requires a block or shape')
     end
   end
 
