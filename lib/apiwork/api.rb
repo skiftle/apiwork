@@ -26,6 +26,8 @@ module Apiwork
                :clear!,
                :find,
                :find!,
+               :keys,
+               :registered?,
                :unregister,
                to: Registry
 

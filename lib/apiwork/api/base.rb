@@ -91,7 +91,7 @@ module Apiwork
         #   end
         def export(name, &block)
           unless Export.registered?(name)
-            available = Export.all.join(', ')
+            available = Export.keys.join(', ')
             raise ConfigurationError,
                   "Unknown export: :#{name}. " \
                   "Available: #{available}"

@@ -100,11 +100,13 @@ RSpec.describe Apiwork::ErrorCode::Registry do
       expect(described_class.all).to eq([])
     end
 
-    it 'returns all registered keys' do
+    it 'returns all registered definitions' do
       described_class.register(:first, status: 400)
       described_class.register(:second, status: 500)
 
-      expect(described_class.all).to contain_exactly(:first, :second)
+      definitions = described_class.all
+      expect(definitions.map(&:key)).to contain_exactly(:first, :second)
+      expect(definitions).to all(be_a(Apiwork::ErrorCode::Definition))
     end
   end
 

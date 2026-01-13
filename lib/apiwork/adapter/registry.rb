@@ -12,7 +12,7 @@ module Apiwork
         end
 
         def all
-          keys
+          values
         end
       end
     end
