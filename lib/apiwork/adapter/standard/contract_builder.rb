@@ -347,10 +347,10 @@ module Apiwork
 
           build_enums
 
-          schema_class_local = schema_class
+          local_schema_class = schema_class
           builder = self
-          registrar.object(type_name, schema_class: schema_class_local) do
-            schema_class_local.attributes.each do |name, attribute|
+          registrar.object(type_name, schema_class: local_schema_class) do
+            local_schema_class.attributes.each do |name, attribute|
               enum_option = attribute.enum ? { enum: name } : {}
               of_option = attribute.of ? { of: attribute.of } : {}
 
@@ -380,7 +380,7 @@ module Apiwork
               param name, param_options.delete(:type), **param_options
             end
 
-            schema_class_local.associations.each do |name, association_definition|
+            local_schema_class.associations.each do |name, association_definition|
               association_type = association_type_map[name]
 
               base_options = {
@@ -420,16 +420,16 @@ module Apiwork
           return type_name if existing_type
 
           builder = self
-          schema_class_local = schema_class
+          local_schema_class = schema_class
 
-          schema_class_local.attributes.each do |name, attribute|
+          local_schema_class.attributes.each do |name, attribute|
             next unless attribute.filterable?
             next unless attribute.enum
 
             register_enum_filter(name)
           end
 
-          type_options = { schema_class: schema_class_local }
+          type_options = { schema_class: local_schema_class }
           type_options = {} unless depth.zero?
 
           registrar.object(type_name, **type_options) do
@@ -441,7 +441,7 @@ module Apiwork
             end
             reference :_not, optional: true, to: type_name
 
-            schema_class_local.attributes.each do |name, attribute|
+            local_schema_class.attributes.each do |name, attribute|
               next unless attribute.filterable?
               next if attribute.type == :unknown
 
@@ -462,7 +462,7 @@ module Apiwork
               end
             end
 
-            schema_class_local.associations.each do |name, association_definition|
+            local_schema_class.associations.each do |name, association_definition|
               next unless association_definition.filterable?
 
               association_resource = builder.send(:resolve_association_resource, association_definition)
@@ -508,19 +508,19 @@ module Apiwork
           return type_name if existing_type
 
           builder = self
-          schema_class_local = schema_class
+          local_schema_class = schema_class
 
-          type_options = { schema_class: schema_class_local }
+          type_options = { schema_class: local_schema_class }
           type_options = {} unless depth.zero?
 
           registrar.object(type_name, **type_options) do
-            schema_class_local.attributes.each do |name, attribute|
+            local_schema_class.attributes.each do |name, attribute|
               next unless attribute.sortable?
 
               reference name, optional: true, to: :sort_direction
             end
 
-            schema_class_local.associations.each do |name, association_definition|
+            local_schema_class.associations.each do |name, association_definition|
               next unless association_definition.sortable?
 
               association_resource = builder.send(:resolve_association_resource, association_definition)
@@ -595,11 +595,11 @@ module Apiwork
           visited = visited.dup.add(schema_class)
 
           builder = self
-          schema_class_local = schema_class
+          local_schema_class = schema_class
           registrar_local = registrar
 
           registrar.object(type_name) do
-            schema_class_local.associations.each do |name, association_definition|
+            local_schema_class.associations.each do |name, association_definition|
               if association_definition.polymorphic?
                 boolean name, optional: true unless association_definition.always_included?
                 next
@@ -729,24 +729,24 @@ module Apiwork
           build_enums
 
           builder = self
-          schema_class_local = schema_class
+          local_schema_class = schema_class
 
-          registrar.object(root_key, schema_class: schema_class_local) do
-            if schema_class_local.respond_to?(:sti_variant?) && schema_class_local.sti_variant?
-              parent_schema = schema_class_local.superclass
+          registrar.object(root_key, schema_class: local_schema_class) do
+            if local_schema_class.respond_to?(:sti_variant?) && local_schema_class.sti_variant?
+              parent_schema = local_schema_class.superclass
               discriminator_name = parent_schema.discriminator_name
-              variant_tag = schema_class_local.variant_tag.to_s
+              variant_tag = local_schema_class.variant_tag.to_s
 
               literal discriminator_name, value: variant_tag
             end
 
             association_type_map = {}
-            schema_class_local.associations.each do |name, association_definition|
+            local_schema_class.associations.each do |name, association_definition|
               result = builder.send(:build_association_type, association_definition, visited:)
               association_type_map[name] = result
             end
 
-            schema_class_local.attributes.each do |name, attribute|
+            local_schema_class.attributes.each do |name, attribute|
               enum_option = attribute.enum ? { enum: name } : {}
               param name,
                     builder.send(:map_type, attribute.type),
@@ -758,7 +758,7 @@ module Apiwork
                     **enum_option
             end
 
-            schema_class_local.associations.each do |name, association_definition|
+            local_schema_class.associations.each do |name, association_definition|
               association_type = association_type_map[name]
               is_optional = !association_definition.always_included?
 
