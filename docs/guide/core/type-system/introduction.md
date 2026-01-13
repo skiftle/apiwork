@@ -6,10 +6,9 @@ order: 1
 
 The **Type System** defines the language used by Apiwork contracts.
 
-It describes data shapes, constraints, and semantics declaratively.
-These definitions express what data is allowed at the API boundary.
+It describes data shapes, constraints, and semantics declaratively. These definitions express what data is allowed at the API boundary — and how it is interpreted.
 
-Types are defined in Ruby, but are purely declarative. They define shape and constraints.
+Types are defined in Ruby, but are purely declarative. They describe both the wire format and the runtime semantics used for coercion and validation.
 
 ---
 
@@ -17,11 +16,11 @@ Types are defined in Ruby, but are purely declarative. They define shape and con
 
 The type system has three distinct concepts:
 
-| Concept | Purpose | DSL |
-|---------|---------|-----|
-| **object** | Structured data with named fields | `object :name do ... end` |
-| **union** | One of several shapes | `union :name do ... end` |
-| **enum** | Restricted set of values | `enum :name, values: [...]` |
+| Concept    | Purpose                           | DSL                         |
+| ---------- | --------------------------------- | --------------------------- |
+| **object** | Structured data with named fields | `object :name do ... end`   |
+| **union**  | One of several shapes             | `union :name do ... end`    |
+| **enum**   | Restricted set of values          | `enum :name, values: [...]` |
 
 **Objects** define structure. **Unions** define alternatives. **Enums** constrain values.
 
