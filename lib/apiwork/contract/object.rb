@@ -776,13 +776,13 @@ module Apiwork
           nested_shape = param_data[:shape]
 
           if param_data[:type] == :array && nested_shape.is_a?(Apiwork::API::Object)
-            target_param.param(param_name, type: param_data[:type], **param_data.except(:name, :type))
+            target_param.param(param_name, **param_data.except(:name))
           elsif nested_shape.is_a?(API::Object)
             copy_nested_object_param(target_param, param_name, param_data, nested_shape)
           elsif nested_shape.is_a?(API::Union)
             copy_nested_union_param(target_param, param_name, param_data, nested_shape)
           else
-            target_param.param(param_name, type: param_data[:type], **param_data.except(:name, :type, :shape))
+            target_param.param(param_name, **param_data.except(:name, :shape))
           end
         end
       end
@@ -796,7 +796,7 @@ module Apiwork
           **param_data.except(:name, :type, :shape),
         ) do
           nested_shape.params.each do |nested_name, nested_data|
-            param(nested_name, type: nested_data[:type], **nested_data.except(:name, :type, :shape))
+            param(nested_name, **nested_data.except(:name, :shape))
           end
         end
       end
@@ -816,8 +816,8 @@ module Apiwork
             if variant_shape.is_a?(API::Object)
               variant tag: variant_tag do
                 object do
-                  variant_shape.params.each do |vp_name, vp_data|
-                    param(vp_name, type: vp_data[:type], **vp_data.except(:name, :type, :shape))
+                  variant_shape.params.each do |name, param_options|
+                    param(name, **param_options.except(:name, :shape))
                   end
                 end
               end
@@ -944,8 +944,8 @@ module Apiwork
           if variant_shape.is_a?(API::Object)
             union.variant tag: variant_tag do
               object do
-                variant_shape.params.each do |vp_name, vp_data|
-                  param(vp_name, type: vp_data[:type], **vp_data.except(:name, :shape, :type))
+                variant_shape.params.each do |name, param_options|
+                  param(name, **param_options.except(:name, :shape))
                 end
               end
             end

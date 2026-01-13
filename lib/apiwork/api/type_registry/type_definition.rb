@@ -125,8 +125,8 @@ module Apiwork
 
                 if variant_shape.is_a?(Object)
                   variant(**variant_data.except(:shape)) do
-                    variant_shape.params.each do |vp_name, vp_data|
-                      param(vp_name, **vp_data.except(:name, :shape))
+                    variant_shape.params.each do |name, param_options|
+                      param(name, **param_options.except(:name, :shape))
                     end
                   end
                 else
