@@ -79,16 +79,42 @@ class UserSchema < Apiwork::Schema::Base
 end
 ```
 
-Override to define the shape:
+### JSON and JSONB Columns
+
+JSON/JSONB columns auto-detect as `:unknown`:
 
 ```ruby
-attribute :metadata do
+# Database: settings JSONB, tags JSONB
+class UserSchema < Apiwork::Schema::Base
+  attribute :settings  # type: :unknown (auto)
+  attribute :tags      # type: :unknown (auto)
+end
+```
+
+**Why `:unknown` instead of `:object` or `:array`?**
+
+A JSONB column only means "here lies JSON." It could be an object, array, string, number, or null.
+
+To get typed exports, define the shape explicitly:
+
+```ruby
+# Object shape
+attribute :settings do
   object do
-    string :key
-    string :value
+    string :theme
+    boolean :notifications
+  end
+end
+
+# Array shape
+attribute :tags do
+  array do
+    string
   end
 end
 ```
+
+See [Inline Type Definitions](./attributes.md#inline-type-definitions) for complete syntax.
 
 ### Nullable Detection
 
@@ -368,6 +394,10 @@ The following are **not** automatically detected and must be specified manually:
 | `deprecated`  | Deprecation is a lifecycle decision                   |
 
 These options affect API behavior, security, or documentation in ways that require explicit intent rather than automatic derivation from the database schema.
+
+::: info JSON Columns Require Explicit Shapes
+Unlike most attributes where Apiwork infers the type from the database, JSON/JSONB columns only tell us "this is JSON"—not what's inside. Define the shape with an `object` or `array` block to get typed exports. See [Inline Type Definitions](./attributes.md#inline-type-definitions).
+:::
 
 #### See also
 

@@ -24,13 +24,14 @@ The type system has three distinct concepts:
 
 **Objects** define structure. **Unions** define alternatives. **Enums** constrain values.
 
-Technically, only objects and unions are types — they define shape. Enums are value constraints applied to a field, not standalone types. You reference an enum with `enum: :name`, not `type: :name`.
+Technically, only objects and unions are types — they define shape. Enums are value constraints applied to a field, not standalone types.
 
 ```ruby
 object :invoice do
   uuid :id
-  string :status, enum: :invoice_status
-  reference :payment, to: :payment_method
+  datetime :created_at
+  reference :payment_method
+  string :status, enum: :status
 end
 
 union :payment_method, discriminator: :kind do
@@ -46,7 +47,7 @@ union :payment_method, discriminator: :kind do
   end
 end
 
-enum :invoice_status, values: %w[draft sent paid]
+enum :status, values: %w[draft sent paid]
 ```
 
 ---

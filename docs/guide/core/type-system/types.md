@@ -30,31 +30,128 @@ Primitive types are the building blocks. Every param uses one of these.
 
 ### `unknown` vs `object`
 
-Both handle structured data, but serve different purposes:
+| Type | Use when | TypeScript | Zod |
+|------|----------|------------|-----|
+| `:unknown` | Structure is arbitrary or unknown | `unknown` | `z.unknown()` |
+| `:object` | Structure is known and defined | `{ field: type }` | `z.object({...})` |
 
-| Type | Use when | Output |
-|------|----------|--------|
-| `:object` | Structure is known and defined | Typed interface with specific fields |
-| `:unknown` | Structure is arbitrary or unknown | `unknown` |
+**`:unknown` — No assumptions**
 
-Use `object` when you know the fields:
+JSONB columns auto-detect as `:unknown`. This is intentional:
 
 ```ruby
-object :settings do
-  string :theme
-  boolean :notifications
+# Database: metadata JSONB
+attribute :metadata  # type: :unknown
+```
+
+Generated TypeScript:
+```typescript
+metadata: unknown;
+```
+
+The client receives no type safety — they must validate at runtime.
+
+**`:object` — Explicit shape**
+
+Define the structure with a block:
+
+```ruby
+attribute :metadata do
+  object do
+    string :version
+    array :tags do
+      string
+    end
+  end
 end
 ```
 
-Use `unknown` when structure is dynamic or unknown:
-
-```ruby
-unknown :metadata  # Could be anything
+Generated TypeScript:
+```typescript
+metadata: {
+  version: string;
+  tags: string[];
+};
 ```
 
-::: info Auto-detection
-JSON/JSONB columns auto-detect as `:unknown`. Use an `object` or `array` block to define their shape.
-:::
+Now the client has full type safety.
+
+**When to use each:**
+
+| Scenario | Type | Reason |
+|----------|------|--------|
+| User-provided JSON (arbitrary) | `:unknown` | Structure varies |
+| Settings/preferences | `:object` block | Known structure |
+| Metadata with schema | `:object` block | Documented fields |
+| Legacy flexible data | `:unknown` | Can't guarantee structure |
+
+### `unknown` vs `array`
+
+The same principle applies to arrays. A JSONB column containing `["a", "b"]` is still `:unknown`:
+
+| Type | Use when | TypeScript | Zod |
+|------|----------|------------|-----|
+| `:unknown` | Array structure unknown | `unknown` | `z.unknown()` |
+| `:array` | Element type is known | `Type[]` | `z.array(...)` |
+
+**`:unknown` — No assumptions**
+
+```ruby
+# Database: tags JSONB (contains ["ruby", "rails"])
+attribute :tags  # type: :unknown
+```
+
+Generated TypeScript:
+```typescript
+tags: unknown;  // Not unknown[] — we don't even know it's an array
+```
+
+**`:array` — Explicit element type**
+
+```ruby
+attribute :tags do
+  array do
+    string
+  end
+end
+```
+
+Generated TypeScript:
+```typescript
+tags: string[];
+```
+
+**Array of objects:**
+
+```ruby
+attribute :line_items do
+  array do
+    object do
+      string :sku
+      integer :quantity
+      decimal :price
+    end
+  end
+end
+```
+
+Generated TypeScript:
+```typescript
+lineItems: {
+  sku: string;
+  quantity: number;
+  price: number;
+}[];
+```
+
+**When to use each:**
+
+| Scenario | Type | Reason |
+|----------|------|--------|
+| Tags, labels, simple lists | `array { string }` | Known element type |
+| Line items, addresses | `array { object {...} }` | Known structure |
+| User-provided arrays | `:unknown` | Can't guarantee structure |
+| Mixed-type arrays | `:unknown` | No single element type |
 
 ## Structure Types
 

@@ -368,6 +368,12 @@ attribute :ip_address, format: :ipv4
 
 ## Inline Type Definitions
 
+JSON/JSONB columns auto-detect as `:unknown` because Apiwork cannot know their structure from the database schema alone. Use blocks to define the shape explicitly.
+
+::: tip When to Define Shapes
+If your JSON column has a consistent structure (settings, preferences, configuration), define it. If the structure truly varies per record, leave it as `:unknown`.
+:::
+
 Two types support structured data with blocks:
 
 | Type | Use case | Auto-detected |
@@ -666,6 +672,183 @@ class UserSchema < Apiwork::Schema::Base
     end
   end
 end
+```
+
+### From Unknown to Typed
+
+Here's the complete transformation:
+
+**Step 1: Auto-detected as `:unknown`**
+
+```ruby
+# Migration
+add_column :users, :preferences, :jsonb
+
+# Schema — no block
+class UserSchema < Apiwork::Schema::Base
+  attribute :preferences  # type: :unknown
+end
+```
+
+Exports:
+```typescript
+// TypeScript
+preferences: unknown;
+
+// Zod
+preferences: z.unknown()
+```
+
+**Step 2: Define the shape**
+
+```ruby
+class UserSchema < Apiwork::Schema::Base
+  attribute :preferences do
+    object do
+      string :theme, enum: %w[light dark system]
+      boolean :email_notifications
+      object :display do
+        integer :font_size, min: 10, max: 24
+        boolean :compact_mode
+      end
+    end
+  end
+end
+```
+
+Exports:
+```typescript
+// TypeScript
+preferences: {
+  theme: 'light' | 'dark' | 'system';
+  emailNotifications: boolean;
+  display: {
+    fontSize: number;
+    compactMode: boolean;
+  };
+};
+
+// Zod
+preferences: z.object({
+  theme: z.enum(['light', 'dark', 'system']),
+  emailNotifications: z.boolean(),
+  display: z.object({
+    fontSize: z.number().int().min(10).max(24),
+    compactMode: z.boolean(),
+  }),
+})
+```
+
+### From Unknown to Typed: Arrays
+
+Same transformation for arrays:
+
+**Step 1: Auto-detected as `:unknown`**
+
+```ruby
+# Migration
+add_column :posts, :tags, :jsonb  # Contains ["ruby", "rails", "api"]
+
+# Schema — no block
+class PostSchema < Apiwork::Schema::Base
+  attribute :tags  # type: :unknown
+end
+```
+
+Exports:
+```typescript
+// TypeScript
+tags: unknown;  // Not string[] — we don't know it's an array
+
+// Zod
+tags: z.unknown()
+```
+
+**Step 2: Define the array shape**
+
+```ruby
+class PostSchema < Apiwork::Schema::Base
+  attribute :tags do
+    array do
+      string
+    end
+  end
+end
+```
+
+Exports:
+```typescript
+// TypeScript
+tags: string[];
+
+// Zod
+tags: z.array(z.string())
+```
+
+### Common Patterns
+
+**Object patterns:**
+
+```ruby
+# Settings/Preferences
+attribute :settings do
+  object do
+    string :locale
+    string :timezone
+    boolean :dark_mode
+  end
+end
+
+# Metadata with nested structure
+attribute :metadata do
+  object do
+    string :version
+    datetime :processed_at
+    object :source do
+      string :system
+      string :id
+    end
+  end
+end
+```
+
+**Array patterns:**
+
+```ruby
+# Simple string array (tags, labels)
+attribute :tags do
+  array do
+    string
+  end
+end
+
+# Array of objects (line items, addresses)
+attribute :line_items do
+  array do
+    object do
+      string :sku
+      integer :quantity
+      decimal :price
+    end
+  end
+end
+
+# Array of integers (IDs, counts)
+attribute :category_ids do
+  array do
+    integer
+  end
+end
+```
+
+**Keep as unknown:**
+
+```ruby
+# When structure genuinely varies per record
+attribute :raw_payload  # stays :unknown
+
+# When array could contain mixed types
+attribute :flexible_data  # stays :unknown
 ```
 
 #### See also
