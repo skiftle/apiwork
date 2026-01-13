@@ -88,8 +88,8 @@ module Apiwork
           request.reference schema_class.root_key.singular.to_sym, to: payload_type_name
         end
 
-        def writable_params(request, action_name, nested: false, target_schema: nil)
-          target_schema_class = target_schema || schema_class
+        def writable_params(request, action_name, nested: false, target_schema_class: nil)
+          target_schema_class ||= schema_class
           target_schema_class.attributes.each do |name, attribute|
             next unless attribute.writable_for?(action_name)
 
@@ -297,9 +297,9 @@ module Apiwork
           needs_transform = schema_class.needs_discriminator_transform?
           local_schema_class = schema_class
 
-          build_sti_union(union_type_name: union_type_name) do |variant_schema, tag, _visited|
-            variant_schema_name = variant_schema.name.demodulize.delete_suffix('Schema').underscore
-            variant_type_name = :"#{variant_schema_name}_#{action_name}_payload"
+          build_sti_union(union_type_name: union_type_name) do |variant_schema_class, tag, _visited|
+            variant_name = variant_schema_class.name.demodulize.delete_suffix('Schema').underscore
+            variant_type_name = :"#{variant_name}_#{action_name}_payload"
 
             unless registrar.api_registrar.type?(variant_type_name)
               registrar.api_registrar.object(variant_type_name) do
@@ -310,7 +310,7 @@ module Apiwork
 
                 literal discriminator_name, as: as_column, optional: discriminator_optional, store: store_value, value: tag.to_s
 
-                builder.writable_params(self, action_name, nested: false, target_schema: variant_schema)
+                builder.writable_params(self, action_name, nested: false, target_schema_class: variant_schema_class)
               end
             end
 
@@ -827,8 +827,8 @@ module Apiwork
           discriminator_name = schema_class.discriminator_name
 
           variant_types = variants.filter_map do |tag, variant_data|
-            variant_schema = variant_data.schema_class
-            variant_type = yield(variant_schema, tag, visited)
+            variant_schema_class = variant_data.schema_class
+            variant_type = yield(variant_schema_class, tag, visited)
             { tag: tag.to_s, type: variant_type } if variant_type
           end
 
@@ -855,14 +855,14 @@ module Apiwork
           discriminator_name = schema_class.discriminator_name
           builder = self
 
-          build_sti_union(union_type_name:, visited: visited) do |variant_schema, tag, _visit_set|
-            variant_type_name = variant_schema.root_key.singular.to_sym
+          build_sti_union(union_type_name:, visited: visited) do |variant_schema_class, tag, _visit_set|
+            variant_type_name = variant_schema_class.root_key.singular.to_sym
 
             unless registrar.api_registrar.type?(variant_type_name)
-              registrar.api_registrar.object(variant_type_name, schema_class: variant_schema) do
+              registrar.api_registrar.object(variant_type_name, schema_class: variant_schema_class) do
                 literal discriminator_name, value: tag.to_s
 
-                variant_schema.attributes.each do |name, attribute|
+                variant_schema_class.attributes.each do |name, attribute|
                   enum_option = attribute.enum ? { enum: name } : {}
                   param name,
                         builder.map_type(attribute.type),

@@ -3,7 +3,7 @@
 module Apiwork
   module Adapter
     class Standard
-      class TypeSystemBuilder
+      class APIBuilder
         FILTER_DEFINITIONS = {
           boolean_filter: {
             params: [
