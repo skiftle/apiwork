@@ -95,16 +95,25 @@ RSpec.describe Apiwork::ErrorCode::Registry do
     end
   end
 
-  describe '.all' do
+  describe '.keys' do
     it 'returns empty array when no codes registered' do
-      expect(described_class.all).to eq([])
+      expect(described_class.keys).to eq([])
     end
 
+    it 'returns all registered keys' do
+      described_class.register(:first, status: 400)
+      described_class.register(:second, status: 500)
+
+      expect(described_class.keys).to contain_exactly(:first, :second)
+    end
+  end
+
+  describe '.values' do
     it 'returns all registered definitions' do
       described_class.register(:first, status: 400)
       described_class.register(:second, status: 500)
 
-      definitions = described_class.all
+      definitions = described_class.values
       expect(definitions.map(&:key)).to contain_exactly(:first, :second)
       expect(definitions).to all(be_a(Apiwork::ErrorCode::Definition))
     end
@@ -113,11 +122,11 @@ RSpec.describe Apiwork::ErrorCode::Registry do
   describe '.clear!' do
     it 'removes all registered codes' do
       described_class.register(:test, status: 404)
-      expect(described_class.all).not_to be_empty
+      expect(described_class.values).not_to be_empty
 
       described_class.clear!
 
-      expect(described_class.all).to be_empty
+      expect(described_class.values).to be_empty
     end
   end
 end

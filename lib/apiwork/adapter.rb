@@ -30,13 +30,13 @@ module Apiwork
       #   @see Adapter::Base
       #   @example
       #     Apiwork::Adapter.register(JSONAPIAdapter)
-      delegate :all,
-               :clear!,
+      delegate :clear!,
                :find,
                :find!,
                :keys,
                :register,
                :registered?,
+               :values,
                to: Registry
 
       def register_defaults!

@@ -12,10 +12,6 @@ module Apiwork
 
           store[key] = Definition.new(attach_path:, key:, status:)
         end
-
-        def all
-          values
-        end
       end
     end
   end

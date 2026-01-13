@@ -30,13 +30,13 @@ module Apiwork
       #   @see Export::Base
       #   @example
       #     Apiwork::Export.register(JSONSchemaExport)
-      delegate :all,
-               :clear!,
+      delegate :clear!,
                :find,
                :find!,
                :keys,
                :register,
                :registered?,
+               :values,
                to: Registry
 
       # @api public

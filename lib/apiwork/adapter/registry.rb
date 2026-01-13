@@ -10,10 +10,6 @@ module Apiwork
 
           store[adapter_class.adapter_name] = adapter_class
         end
-
-        def all
-          values
-        end
       end
     end
   end

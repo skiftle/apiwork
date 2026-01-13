@@ -10,10 +10,6 @@ module Apiwork
 
           store[export_class.export_name] = export_class
         end
-
-        def all
-          values
-        end
       end
     end
   end

@@ -22,13 +22,13 @@ module Apiwork
       #   @see .find
       #   @example
       #     Apiwork::API.find!('/api/v1')
-      delegate :all,
-               :clear!,
+      delegate :clear!,
                :find,
                :find!,
                :keys,
                :registered?,
                :unregister,
+               :values,
                to: Registry
 
       # @api public

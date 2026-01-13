@@ -4,7 +4,7 @@ module Apiwork
   module API
     class Router
       def draw
-        api_classes = Registry.all
+        api_classes = Registry.values
         router = self
 
         set = ActionDispatch::Routing::RouteSet.new

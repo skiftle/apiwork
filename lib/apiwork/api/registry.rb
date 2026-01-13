@@ -16,10 +16,6 @@ module Apiwork
           super
         end
 
-        def all
-          values.uniq
-        end
-
         def unregister(path)
           delete(path) if path
         end

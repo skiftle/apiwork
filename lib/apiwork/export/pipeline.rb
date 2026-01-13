@@ -16,8 +16,8 @@ module Apiwork
                   'api_path and export_name required when output is a file'
           end
 
-          api_classes = api_path ? [find_api_class(api_path)] : API.all
-          export_names = export_name ? [export_name] : Registry.all
+          api_classes = api_path ? [find_api_class(api_path)] : API.values
+          export_names = export_name ? [export_name] : Registry.keys
 
           start_time = Time.zone.now
           count = 0
