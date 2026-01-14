@@ -1,5 +1,5 @@
 ---
-order: 20
+order: 19
 prev: false
 next: false
 ---
@@ -39,29 +39,21 @@ variant { string enum: :status }
 
 ### #array
 
-`#array(&block)`
+`#array(shape: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L292)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L136)
 
-Defines an array element.
+Defines an array.
 
-The block must define exactly one element type.
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `shape` | `Object, nil` | pre-built shape |
 
 **Returns**
 
 `void`
-
-**Example: Array of integers**
-
-```ruby
-array { integer }
-```
-
-**Example: Array of references**
-
-```ruby
-array { reference :item }
-```
 
 ---
 
@@ -69,9 +61,9 @@ array { reference :item }
 
 `#binary`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L232)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L116)
 
-Defines a binary element.
+Defines a binary.
 
 **Returns**
 
@@ -83,9 +75,9 @@ Defines a binary element.
 
 `#boolean`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L182)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L76)
 
-Defines a boolean element.
+Defines a boolean.
 
 **Returns**
 
@@ -97,9 +89,9 @@ Defines a boolean element.
 
 `#date`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L208)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L92)
 
-Defines a date element.
+Defines a date.
 
 **Returns**
 
@@ -111,9 +103,9 @@ Defines a date element.
 
 `#datetime`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L200)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L84)
 
-Defines a datetime element.
+Defines a datetime.
 
 **Returns**
 
@@ -125,16 +117,16 @@ Defines a datetime element.
 
 `#decimal(max: nil, min: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L174)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L58)
 
-Defines a decimal element.
+Defines a decimal.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `max` | `Numeric` | maximum value |
-| `min` | `Numeric` | minimum value |
+| `max` | `Numeric, nil` | maximum value |
+| `min` | `Numeric, nil` | minimum value |
 
 **Returns**
 
@@ -146,17 +138,17 @@ Defines a decimal element.
 
 `#integer(enum: nil, max: nil, min: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L164)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L48)
 
-Defines an integer element.
+Defines an integer.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `enum` | `Array, Symbol` | allowed values or enum reference |
-| `max` | `Integer` | maximum value |
-| `min` | `Integer` | minimum value |
+| `enum` | `Array, Symbol, nil` | allowed values |
+| `max` | `Integer, nil` | maximum value |
+| `min` | `Integer, nil` | minimum value |
 
 **Returns**
 
@@ -168,9 +160,9 @@ Defines an integer element.
 
 `#literal(value:)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L245)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L156)
 
-Defines a literal value element.
+Defines a literal value.
 
 **Parameters**
 
@@ -182,29 +174,22 @@ Defines a literal value element.
 
 `void`
 
-**Example**
-
-```ruby
-literal value: 'card'
-literal value: 42
-```
-
 ---
 
 ### #number
 
 `#number(max: nil, min: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L192)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L68)
 
-Defines a number element.
+Defines a number.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `max` | `Numeric` | maximum value |
-| `min` | `Numeric` | minimum value |
+| `max` | `Numeric, nil` | maximum value |
+| `min` | `Numeric, nil` | minimum value |
 
 **Returns**
 
@@ -214,28 +199,21 @@ Defines a number element.
 
 ### #object
 
-`#object(&block)`
+`#object(shape: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L275)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L126)
 
-Defines an inline object element.
+Defines an object.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `shape` | `Object, nil` | pre-built shape |
 
 **Returns**
 
 `void`
-
-**See also**
-
-- [Contract::Object](contract-object)
-
-**Example**
-
-```ruby
-object do
-  string :name
-  decimal :amount
-end
-```
 
 ---
 
@@ -243,7 +221,7 @@ end
 
 `#of(type, discriminator: nil, enum: nil, format: nil, max: nil, min: nil, shape: nil, value: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L82)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L48)
 
 Defines the element type.
 
@@ -258,28 +236,14 @@ for static definitions. Use `of` for dynamic element generation.
 | `discriminator` | `Symbol, nil` | discriminator field name (unions only) |
 | `enum` | `Array, Symbol, nil` | allowed values or enum reference (strings, integers only) |
 | `format` | `Symbol, nil` | format hint (strings only) |
-| `max` | `Integer, nil` | maximum value or length (strings, integers, decimals, numbers, arrays only) |
-| `min` | `Integer, nil` | minimum value or length (strings, integers, decimals, numbers, arrays only) |
-| `shape` | `Contract::Object, Contract::Union, nil` | pre-built shape (objects, arrays, unions only) |
+| `max` | `Integer, nil` | maximum value or length |
+| `min` | `Integer, nil` | minimum value or length |
+| `shape` | `Contract::Object, Contract::Union, nil` | pre-built shape |
 | `value` | `Object, nil` | literal value (literals only) |
 
 **Returns**
 
 `void`
-
-**Example: Basic usage**
-
-```ruby
-of :string
-of :string, enum: %w[a b c]
-```
-
-**Example: Passing shape from schema element (adapter use)**
-
-```ruby
-attribute = schema_class.attributes[:settings]
-of :object, shape: attribute.element.shape
-```
 
 ---
 
@@ -287,7 +251,7 @@ of :object, shape: attribute.element.shape
 
 `#reference(type_name, to: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L259)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L166)
 
 Defines a reference to a named type.
 
@@ -295,19 +259,12 @@ Defines a reference to a named type.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `type_name` | `Symbol` | type name (also used as default target) |
-| `to` | `Symbol` | explicit target type name |
+| `type_name` | `Symbol` | type name |
+| `to` | `Symbol, nil` | target type name (defaults to type_name) |
 
 **Returns**
 
 `void`
-
-**Example**
-
-```ruby
-reference :item
-reference :shipping_address, to: :address
-```
 
 ---
 
@@ -315,18 +272,18 @@ reference :shipping_address, to: :address
 
 `#string(enum: nil, format: nil, max: nil, min: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L153)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L37)
 
-Defines a string element.
+Defines a string.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `enum` | `Array, Symbol` | allowed values or enum reference |
-| `format` | `String` | format hint |
-| `max` | `Integer` | maximum length |
-| `min` | `Integer` | minimum length |
+| `enum` | `Array, Symbol, nil` | allowed values |
+| `format` | `Symbol, nil` | format hint |
+| `max` | `Integer, nil` | maximum length |
+| `min` | `Integer, nil` | minimum length |
 
 **Returns**
 
@@ -338,9 +295,9 @@ Defines a string element.
 
 `#time`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L224)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L108)
 
-Defines a time element.
+Defines a time.
 
 **Returns**
 
@@ -350,34 +307,22 @@ Defines a time element.
 
 ### #union
 
-`#union(discriminator: nil, &block)`
+`#union(discriminator: nil, shape: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L309)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L147)
 
-Defines an inline union element.
+Defines a union.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `discriminator` | `Symbol` | discriminator field for tagged unions |
+| `discriminator` | `Symbol, nil` | discriminator field name |
+| `shape` | `Union, nil` | pre-built shape |
 
 **Returns**
 
 `void`
-
-**See also**
-
-- [Contract::Union](contract-union)
-
-**Example**
-
-```ruby
-union do
-  variant { integer }
-  variant { string }
-end
-```
 
 ---
 
@@ -385,9 +330,9 @@ end
 
 `#uuid`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L216)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L100)
 
-Defines a UUID element.
+Defines a UUID.
 
 **Returns**
 

@@ -24,7 +24,7 @@ module Apiwork
     # @param nullable [Boolean, nil] whether null is allowed
     # @param optional [Boolean, nil] whether it can be omitted
     # @param required [Boolean, nil] explicit required flag
-    # @param store [Boolean, nil] whether to persist
+    # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def string(
       name,
@@ -76,7 +76,7 @@ module Apiwork
     # @param min [Integer, nil] minimum length
     # @param nullable [Boolean, nil] whether null is allowed
     # @param required [Boolean, nil] explicit required flag
-    # @param store [Boolean, nil] whether to persist
+    # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def string?(
       name,
@@ -127,7 +127,7 @@ module Apiwork
     # @param nullable [Boolean, nil] whether null is allowed
     # @param optional [Boolean, nil] whether it can be omitted
     # @param required [Boolean, nil] explicit required flag
-    # @param store [Boolean, nil] whether to persist
+    # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def integer(
       name,
@@ -176,7 +176,7 @@ module Apiwork
     # @param min [Integer, nil] minimum value
     # @param nullable [Boolean, nil] whether null is allowed
     # @param required [Boolean, nil] explicit required flag
-    # @param store [Boolean, nil] whether to persist
+    # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def integer?(
       name,
@@ -224,7 +224,7 @@ module Apiwork
     # @param nullable [Boolean, nil] whether null is allowed
     # @param optional [Boolean, nil] whether it can be omitted
     # @param required [Boolean, nil] explicit required flag
-    # @param store [Boolean, nil] whether to persist
+    # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def decimal(
       name,
@@ -270,7 +270,7 @@ module Apiwork
     # @param min [Numeric, nil] minimum value
     # @param nullable [Boolean, nil] whether null is allowed
     # @param required [Boolean, nil] explicit required flag
-    # @param store [Boolean, nil] whether to persist
+    # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def decimal?(
       name,
@@ -316,7 +316,7 @@ module Apiwork
     # @param nullable [Boolean, nil] whether null is allowed
     # @param optional [Boolean, nil] whether it can be omitted
     # @param required [Boolean, nil] explicit required flag
-    # @param store [Boolean, nil] whether to persist
+    # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def number(
       name,
@@ -362,7 +362,7 @@ module Apiwork
     # @param min [Numeric, nil] minimum value
     # @param nullable [Boolean, nil] whether null is allowed
     # @param required [Boolean, nil] explicit required flag
-    # @param store [Boolean, nil] whether to persist
+    # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def number?(
       name,
@@ -406,7 +406,7 @@ module Apiwork
     # @param nullable [Boolean, nil] whether null is allowed
     # @param optional [Boolean, nil] whether it can be omitted
     # @param required [Boolean, nil] explicit required flag
-    # @param store [Boolean, nil] whether to persist
+    # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def boolean(
       name,
@@ -446,7 +446,7 @@ module Apiwork
     # @param example [Boolean, nil] example value
     # @param nullable [Boolean, nil] whether null is allowed
     # @param required [Boolean, nil] explicit required flag
-    # @param store [Boolean, nil] whether to persist
+    # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def boolean?(
       name,
@@ -486,7 +486,7 @@ module Apiwork
     # @param nullable [Boolean, nil] whether null is allowed
     # @param optional [Boolean, nil] whether it can be omitted
     # @param required [Boolean, nil] explicit required flag
-    # @param store [Boolean, nil] whether to persist
+    # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def datetime(
       name,
@@ -526,7 +526,7 @@ module Apiwork
     # @param example [String, nil] example value
     # @param nullable [Boolean, nil] whether null is allowed
     # @param required [Boolean, nil] explicit required flag
-    # @param store [Boolean, nil] whether to persist
+    # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def datetime?(
       name,
@@ -566,7 +566,7 @@ module Apiwork
     # @param nullable [Boolean, nil] whether null is allowed
     # @param optional [Boolean, nil] whether it can be omitted
     # @param required [Boolean, nil] explicit required flag
-    # @param store [Boolean, nil] whether to persist
+    # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def date(
       name,
@@ -606,7 +606,7 @@ module Apiwork
     # @param example [String, nil] example value
     # @param nullable [Boolean, nil] whether null is allowed
     # @param required [Boolean, nil] explicit required flag
-    # @param store [Boolean, nil] whether to persist
+    # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def date?(
       name,
@@ -646,7 +646,7 @@ module Apiwork
     # @param nullable [Boolean, nil] whether null is allowed
     # @param optional [Boolean, nil] whether it can be omitted
     # @param required [Boolean, nil] explicit required flag
-    # @param store [Boolean, nil] whether to persist
+    # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def uuid(
       name,
@@ -686,7 +686,7 @@ module Apiwork
     # @param example [String, nil] example value
     # @param nullable [Boolean, nil] whether null is allowed
     # @param required [Boolean, nil] explicit required flag
-    # @param store [Boolean, nil] whether to persist
+    # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def uuid?(
       name,
@@ -726,7 +726,7 @@ module Apiwork
     # @param nullable [Boolean, nil] whether null is allowed
     # @param optional [Boolean, nil] whether it can be omitted
     # @param required [Boolean, nil] explicit required flag
-    # @param store [Boolean, nil] whether to persist
+    # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def time(
       name,
@@ -766,7 +766,7 @@ module Apiwork
     # @param example [String, nil] example value
     # @param nullable [Boolean, nil] whether null is allowed
     # @param required [Boolean, nil] explicit required flag
-    # @param store [Boolean, nil] whether to persist
+    # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def time?(
       name,
@@ -806,7 +806,7 @@ module Apiwork
     # @param nullable [Boolean, nil] whether null is allowed
     # @param optional [Boolean, nil] whether it can be omitted
     # @param required [Boolean, nil] explicit required flag
-    # @param store [Boolean, nil] whether to persist
+    # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def binary(
       name,
@@ -846,7 +846,7 @@ module Apiwork
     # @param example [String, nil] example value
     # @param nullable [Boolean, nil] whether null is allowed
     # @param required [Boolean, nil] explicit required flag
-    # @param store [Boolean, nil] whether to persist
+    # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def binary?(
       name,
@@ -885,7 +885,7 @@ module Apiwork
     # @param nullable [Boolean, nil] whether null is allowed
     # @param optional [Boolean, nil] whether it can be omitted
     # @param required [Boolean, nil] explicit required flag
-    # @param store [Boolean, nil] whether to persist
+    # @param store [Object, nil] value to persist (replaces received value)
     # @yield block defining nested structure
     # @return [void]
     def object(
@@ -925,7 +925,7 @@ module Apiwork
     # @param description [String, nil] documentation description
     # @param nullable [Boolean, nil] whether null is allowed
     # @param required [Boolean, nil] explicit required flag
-    # @param store [Boolean, nil] whether to persist
+    # @param store [Object, nil] value to persist (replaces received value)
     # @yield block defining nested structure
     # @return [void]
     def object?(
@@ -966,7 +966,7 @@ module Apiwork
     # @param of [Symbol, Hash, nil] element type
     # @param optional [Boolean, nil] whether it can be omitted
     # @param required [Boolean, nil] explicit required flag
-    # @param store [Boolean, nil] whether to persist
+    # @param store [Object, nil] value to persist (replaces received value)
     # @yield block defining element type
     # @return [void]
     def array(
@@ -1009,7 +1009,7 @@ module Apiwork
     # @param nullable [Boolean, nil] whether null is allowed
     # @param of [Symbol, Hash, nil] element type
     # @param required [Boolean, nil] explicit required flag
-    # @param store [Boolean, nil] whether to persist
+    # @param store [Object, nil] value to persist (replaces received value)
     # @yield block defining element type
     # @return [void]
     def array?(
@@ -1052,7 +1052,7 @@ module Apiwork
     # @param nullable [Boolean, nil] whether null is allowed
     # @param optional [Boolean, nil] whether it can be omitted
     # @param required [Boolean, nil] explicit required flag
-    # @param store [Boolean, nil] whether to persist
+    # @param store [Object, nil] value to persist (replaces received value)
     # @yield block defining union variants
     # @return [void]
     def union(
@@ -1095,7 +1095,7 @@ module Apiwork
     # @param discriminator [Symbol, nil] discriminator field name
     # @param nullable [Boolean, nil] whether null is allowed
     # @param required [Boolean, nil] explicit required flag
-    # @param store [Boolean, nil] whether to persist
+    # @param store [Object, nil] value to persist (replaces received value)
     # @yield block defining union variants
     # @return [void]
     def union?(
@@ -1136,7 +1136,7 @@ module Apiwork
     # @param deprecated [Boolean, nil] mark as deprecated
     # @param description [String, nil] documentation description
     # @param optional [Boolean, nil] whether it can be omitted
-    # @param store [Boolean, nil] whether to persist
+    # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def literal(
       name,
@@ -1173,7 +1173,7 @@ module Apiwork
     # @param nullable [Boolean, nil] whether null is allowed
     # @param optional [Boolean, nil] whether it can be omitted
     # @param required [Boolean, nil] explicit required flag
-    # @param store [Boolean, nil] whether to persist
+    # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def reference(
       name,
@@ -1212,7 +1212,7 @@ module Apiwork
     # @param description [String, nil] documentation description
     # @param nullable [Boolean, nil] whether null is allowed
     # @param required [Boolean, nil] explicit required flag
-    # @param store [Boolean, nil] whether to persist
+    # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def reference?(
       name,

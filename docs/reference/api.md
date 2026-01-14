@@ -14,7 +14,7 @@ next: false
 
 `.define(path, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L55)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L57)
 
 Defines a new API at the given path.
 
@@ -109,7 +109,7 @@ Apiwork::API.find!('/api/v1')
 
 `.introspect(path, locale: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L73)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L75)
 
 Returns introspection data for an API.
 

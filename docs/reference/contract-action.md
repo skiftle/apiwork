@@ -1,5 +1,5 @@
 ---
-order: 18
+order: 17
 prev: false
 next: false
 ---
@@ -18,7 +18,7 @@ Returns [Request](contract-request) via `request` and [Response](contract-respon
 
 `#deprecated!`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L92)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L94)
 
 Marks this action as deprecated.
 
@@ -42,7 +42,7 @@ end
 
 `#description(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L59)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L60)
 
 Sets a detailed description for this action.
 
@@ -73,7 +73,7 @@ end
 
 `#operation_id(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L106)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L108)
 
 Sets a custom operation ID.
 
@@ -101,7 +101,7 @@ end
 
 `#raises(*error_code_keys)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L132)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L135)
 
 Declares error codes this action may return.
 
@@ -142,7 +142,7 @@ end
 
 `#request(replace: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L170)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L173)
 
 Defines the request structure for this action.
 
@@ -183,7 +183,7 @@ end
 
 `#response(replace: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L206)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L209)
 
 Defines the response structure for this action.
 
@@ -262,7 +262,7 @@ end
 
 `#tags(*tags)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L76)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L78)
 
 Sets tags for grouping this action.
 

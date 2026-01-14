@@ -1,5 +1,5 @@
 ---
-order: 28
+order: 26
 prev: false
 next: false
 ---
@@ -66,7 +66,7 @@ Apiwork::Export.find!(:openapi)
 
 `.generate(export_name, api_path, format: nil, key_format: nil, locale: nil, version: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export.rb#L58)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export.rb#L59)
 
 Generates an export for an API.
 

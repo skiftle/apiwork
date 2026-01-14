@@ -1,5 +1,5 @@
 ---
-order: 64
+order: 62
 prev: false
 next: false
 ---
@@ -90,151 +90,297 @@ end
 
 ### #array
 
-`#array(&block)`
+`#array(shape: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/element.rb#L146)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L136)
 
-Defines an array structure.
-
-The block is evaluated in [API::Element](api-element) context, where
-exactly one element type must be defined.
-
-**Returns**
-
-`void`
-
-**See also**
-
-- [API::Element](api-element)
-
-**Example: Array of strings**
-
-```ruby
-array do
-  string
-end
-```
-
-**Example: Array of objects**
-
-```ruby
-array do
-  object do
-    string :id
-    string :name
-  end
-end
-```
-
----
-
-### #discriminator
-
-`#discriminator`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/element.rb#L78)
-
-**Returns**
-
-`Symbol`, `nil` — the discriminator field for unions
-
----
-
-### #object
-
-`#object(&block)`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/element.rb#L113)
-
-Defines an object structure.
-
-The block is evaluated in [API::Object](api-object) context, providing
-access to all field definition methods.
-
-**Returns**
-
-`void`
-
-**See also**
-
-- [API::Object](api-object)
-
-**Example**
-
-```ruby
-object do
-  string :name
-  integer :count
-  boolean :active
-end
-```
-
----
-
-### #shape
-
-`#shape`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/element.rb#L82)
-
-**Returns**
-
-[API::Object](api-object), [API::Union](api-union), `nil` — the shape builder
-
----
-
-### #type
-
-`#type`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/element.rb#L86)
-
-**Returns**
-
-`Symbol` — the element type (:object, :array, :union)
-
----
-
-### #union
-
-`#union(discriminator: nil, &block)`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/element.rb#L183)
-
-Defines a union structure for polymorphic data.
-
-The block is evaluated in [API::Union](api-union) context, where
-variants are defined using the `variant` method.
+Defines an array.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `discriminator` | `Symbol` | field name that identifies the variant |
+| `shape` | `Object, nil` | pre-built shape |
 
 **Returns**
 
 `void`
 
-**See also**
+---
 
-- [API::Union](api-union)
+### #binary
 
-**Example**
+`#binary`
 
-```ruby
-union discriminator: :type do
-  variant tag: 'email' do
-    object do
-      string :address
-    end
-  end
-  variant tag: 'sms' do
-    object do
-      string :phone_number
-    end
-  end
-end
-```
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L116)
+
+Defines a binary.
+
+**Returns**
+
+`void`
+
+---
+
+### #boolean
+
+`#boolean`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L76)
+
+Defines a boolean.
+
+**Returns**
+
+`void`
+
+---
+
+### #date
+
+`#date`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L92)
+
+Defines a date.
+
+**Returns**
+
+`void`
+
+---
+
+### #datetime
+
+`#datetime`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L84)
+
+Defines a datetime.
+
+**Returns**
+
+`void`
+
+---
+
+### #decimal
+
+`#decimal(max: nil, min: nil)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L58)
+
+Defines a decimal.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `max` | `Numeric, nil` | maximum value |
+| `min` | `Numeric, nil` | minimum value |
+
+**Returns**
+
+`void`
+
+---
+
+### #integer
+
+`#integer(enum: nil, max: nil, min: nil)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L48)
+
+Defines an integer.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `enum` | `Array, Symbol, nil` | allowed values |
+| `max` | `Integer, nil` | maximum value |
+| `min` | `Integer, nil` | minimum value |
+
+**Returns**
+
+`void`
+
+---
+
+### #literal
+
+`#literal(value:)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L156)
+
+Defines a literal value.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `value` | `Object` | the exact value (required) |
+
+**Returns**
+
+`void`
+
+---
+
+### #number
+
+`#number(max: nil, min: nil)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L68)
+
+Defines a number.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `max` | `Numeric, nil` | maximum value |
+| `min` | `Numeric, nil` | minimum value |
+
+**Returns**
+
+`void`
+
+---
+
+### #object
+
+`#object(shape: nil, &block)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L126)
+
+Defines an object.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `shape` | `Object, nil` | pre-built shape |
+
+**Returns**
+
+`void`
+
+---
+
+### #of
+
+`#of(type, discriminator: nil, shape: nil, **_options, &block)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/element.rb#L95)
+
+Defines the element type.
+
+Only complex types (:object, :array, :union) are allowed.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `type` | `Symbol` | element type (:object, :array, :union) |
+| `discriminator` | `Symbol, nil` | discriminator field name (unions only) |
+| `shape` | `API::Object, API::Union, nil` | pre-built shape |
+
+**Returns**
+
+`void`
+
+---
+
+### #reference
+
+`#reference(type_name, to: nil)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L166)
+
+Defines a reference to a named type.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `type_name` | `Symbol` | type name |
+| `to` | `Symbol, nil` | target type name (defaults to type_name) |
+
+**Returns**
+
+`void`
+
+---
+
+### #string
+
+`#string(enum: nil, format: nil, max: nil, min: nil)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L37)
+
+Defines a string.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `enum` | `Array, Symbol, nil` | allowed values |
+| `format` | `Symbol, nil` | format hint |
+| `max` | `Integer, nil` | maximum length |
+| `min` | `Integer, nil` | minimum length |
+
+**Returns**
+
+`void`
+
+---
+
+### #time
+
+`#time`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L108)
+
+Defines a time.
+
+**Returns**
+
+`void`
+
+---
+
+### #union
+
+`#union(discriminator: nil, shape: nil, &block)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L147)
+
+Defines a union.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `discriminator` | `Symbol, nil` | discriminator field name |
+| `shape` | `Union, nil` | pre-built shape |
+
+**Returns**
+
+`void`
+
+---
+
+### #uuid
+
+`#uuid`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L100)
+
+Defines a UUID.
+
+**Returns**
+
+`void`
 
 ---
