@@ -21,7 +21,7 @@ module Apiwork
             schema_class = resolve_schema_class(param_options, definition)
             return schema_class.deserialize(value) if schema_class
 
-            attribute_definition = lookup_attribute_definition(param_options, definition)
+            attribute_definition = resolve_attribute_definition(param_options, definition)
             transformed_value = if attribute_definition
                                   attribute_definition.decode(value)
                                 else
@@ -37,7 +37,7 @@ module Apiwork
 
           private
 
-          def lookup_attribute_definition(param_options, definition)
+          def resolve_attribute_definition(param_options, definition)
             return nil unless definition
 
             param_name = param_options[:name]

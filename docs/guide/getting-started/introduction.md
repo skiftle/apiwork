@@ -8,7 +8,7 @@ Apiwork is an API layer for Rails applications, built around a clear and explici
 
 You define your API using a declarative contract language. That definition describes what your API accepts, what it exposes, and how data is shaped at the boundary. Everything else builds on that structure.
 
-Apiwork sits at the edge of your application. Incoming requests are validated against the contract before they reach your code. Outgoing responses are shaped by the same contract on the way out. Data that matches flows through. Data that doesn’t is rejected at the boundary.
+Apiwork sits at the edge of your application. Incoming requests are validated against the contract before they reach your code. Invalid requests are rejected at the boundary. Outgoing responses are shaped according to the same contract.
 
 The result is an API that is explicit, predictable, and easy to reason about.
 

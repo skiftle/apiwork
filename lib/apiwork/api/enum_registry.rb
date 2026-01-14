@@ -50,13 +50,16 @@ module Apiwork
       end
 
       def exists?(name, scope: nil)
-        values(name, scope:).present?
+        find(name, scope:).present?
+      end
+
+      def find(name, scope: nil)
+        definition = scope ? @store[scoped_name(scope, name)] : nil
+        definition || @store[name]
       end
 
       def values(name, scope: nil)
-        definition = scope ? @store[scoped_name(scope, name)] : nil
-        definition ||= @store[name]
-        definition&.values
+        find(name, scope:)&.values
       end
 
       def scoped_name(scope, name)

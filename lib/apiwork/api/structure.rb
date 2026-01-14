@@ -82,7 +82,7 @@ module Apiwork
           param:,
           path:,
         }.compact
-        create_resource(name, options:, singular: false)
+        build_resource(name, options:, singular: false)
 
         @resource_stack.push(name)
 
@@ -115,7 +115,7 @@ module Apiwork
           param:,
           path:,
         }.compact
-        create_resource(name, options:, singular: true)
+        build_resource(name, options:, singular: true)
 
         @resource_stack.push(name)
 
@@ -212,7 +212,7 @@ module Apiwork
         (@current_options || {}).merge(options)
       end
 
-      def create_resource(name, options:, singular:)
+      def build_resource(name, options:, singular:)
         merged = merged_options(options)
 
         parent_name = @resource_stack.last

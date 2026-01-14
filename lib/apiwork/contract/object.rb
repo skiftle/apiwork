@@ -22,15 +22,15 @@ module Apiwork
     # @see API::Object Block context for reusable types
     class Object < Apiwork::Object
       attr_reader :action_name,
-                  :contract_class
+                  :contract_class,
+                  :visited_types
 
-      attr_accessor :visited_types
-
-      def initialize(contract_class, action_name: nil, wrapped: false)
+      def initialize(contract_class, action_name: nil, visited_types: nil, wrapped: false)
         super()
         @contract_class = contract_class
         @action_name = action_name
         @wrapped = wrapped
+        @visited_types = visited_types
       end
 
       # @api public
@@ -406,8 +406,7 @@ module Apiwork
 
         visited_with_current = visited_types.dup.add(expansion_key)
 
-        shape_param_definition = Object.new(@contract_class, action_name: @action_name)
-        shape_param_definition.visited_types = visited_with_current
+        shape_param_definition = Object.new(@contract_class, action_name: @action_name, visited_types: visited_with_current)
 
         copy_type_definition_params(type_definition, shape_param_definition)
 
