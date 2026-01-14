@@ -185,46 +185,46 @@ module Apiwork
       def copy_type_definition_params(type_definition, target_param)
         return unless type_definition.object?
 
-        type_definition.params&.each do |param_name, param_data|
-          nested_shape = param_data[:shape]
+        type_definition.params&.each do |param_name, param_options|
+          nested_shape = param_options[:shape]
 
-          if param_data[:type] == :array && nested_shape.is_a?(Apiwork::API::Object)
-            target_param.param(param_name, **param_data.except(:name))
+          if param_options[:type] == :array && nested_shape.is_a?(Apiwork::API::Object)
+            target_param.param(param_name, **param_options.except(:name))
           elsif nested_shape.is_a?(API::Object)
-            copy_nested_object_param(target_param, param_name, param_data, nested_shape)
+            copy_nested_object_param(target_param, param_name, param_options, nested_shape)
           elsif nested_shape.is_a?(API::Union)
-            copy_nested_union_param(target_param, param_name, param_data, nested_shape)
+            copy_nested_union_param(target_param, param_name, param_options, nested_shape)
           else
-            target_param.param(param_name, **param_data.except(:name, :shape))
+            target_param.param(param_name, **param_options.except(:name, :shape))
           end
         end
       end
 
       private
 
-      def copy_nested_object_param(target_param, param_name, param_data, nested_shape)
+      def copy_nested_object_param(target_param, param_name, param_options, nested_shape)
         target_param.param(
           param_name,
-          type: param_data[:type],
-          **param_data.except(:name, :type, :shape),
+          type: param_options[:type],
+          **param_options.except(:name, :type, :shape),
         ) do
-          nested_shape.params.each do |nested_name, nested_data|
-            param(nested_name, **nested_data.except(:name, :shape))
+          nested_shape.params.each do |nested_name, nested_param_options|
+            param(nested_name, **nested_param_options.except(:name, :shape))
           end
         end
       end
 
-      def copy_nested_union_param(target_param, param_name, param_data, nested_shape)
+      def copy_nested_union_param(target_param, param_name, param_options, nested_shape)
         target_param.param(
           param_name,
-          type: param_data[:type],
-          **param_data.except(:name, :type, :shape),
+          type: param_options[:type],
+          **param_options.except(:name, :type, :shape),
         ) do
-          nested_shape.variants.each do |variant_data|
-            variant_shape = variant_data[:shape]
-            variant_type = variant_data[:type]
-            variant_tag = variant_data[:tag]
-            variant_custom_type = variant_data[:custom_type]
+          nested_shape.variants.each do |variant|
+            variant_shape = variant[:shape]
+            variant_type = variant[:type]
+            variant_tag = variant[:tag]
+            variant_custom_type = variant[:custom_type]
 
             if variant_shape.is_a?(API::Object)
               variant tag: variant_tag do
@@ -348,11 +348,11 @@ module Apiwork
       )
         union = Union.new(@contract_class, discriminator: type_definition.discriminator)
 
-        type_definition.variants.each do |variant_data|
-          variant_shape = variant_data[:shape]
-          variant_type = variant_data[:type]
-          variant_tag = variant_data[:tag]
-          variant_custom_type = variant_data[:custom_type]
+        type_definition.variants.each do |variant|
+          variant_shape = variant[:shape]
+          variant_type = variant[:type]
+          variant_tag = variant[:tag]
+          variant_custom_type = variant[:custom_type]
 
           if variant_shape.is_a?(API::Object)
             union.variant tag: variant_tag do

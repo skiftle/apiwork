@@ -826,8 +826,8 @@ module Apiwork
 
           discriminator_name = schema_class.discriminator_name
 
-          variant_types = variants.filter_map do |tag, variant_data|
-            variant_schema_class = variant_data.schema_class
+          variant_types = variants.filter_map do |tag, variant|
+            variant_schema_class = variant.schema_class
             variant_type = yield(variant_schema_class, tag, visited)
             { tag: tag.to_s, type: variant_type } if variant_type
           end

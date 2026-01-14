@@ -69,8 +69,8 @@ module Apiwork
 
           temp_param = Contract::Object.new(nil)
 
-          params.each do |param_name, param_data|
-            add_param_to_definition(temp_param, param_name, param_data)
+          params.each do |param_name, param_options|
+            add_param_to_definition(temp_param, param_name, param_options)
           end
 
           temp_param.validate(value, current_depth:, max_depth:, path: field_path)
@@ -103,39 +103,39 @@ module Apiwork
           end
         end
 
-        def add_param_to_definition(target_param, param_name, param_data)
-          nested_shape = param_data[:shape]
+        def add_param_to_definition(target_param, param_name, param_options)
+          nested_shape = param_options[:shape]
 
           if nested_shape.is_a?(Object)
             target_param.param(
               param_name,
-              **param_data.except(:name, :shape),
+              **param_options.except(:name, :shape),
             ) do
-              nested_shape.params.each do |nested_name, nested_data|
-                param(nested_name, **nested_data.except(:name, :shape))
+              nested_shape.params.each do |nested_name, nested_param_options|
+                param(nested_name, **nested_param_options.except(:name, :shape))
               end
             end
           elsif nested_shape.is_a?(Union)
             target_param.param(
               param_name,
-              **param_data.except(:name, :shape),
+              **param_options.except(:name, :shape),
             ) do
-              nested_shape.variants.each do |variant_data|
-                variant_shape = variant_data[:shape]
+              nested_shape.variants.each do |variant|
+                variant_shape = variant[:shape]
 
                 if variant_shape.is_a?(Object)
-                  variant(**variant_data.except(:shape)) do
+                  variant(**variant.except(:shape)) do
                     variant_shape.params.each do |name, param_options|
                       param(name, **param_options.except(:name, :shape))
                     end
                   end
                 else
-                  variant(**variant_data.except(:shape))
+                  variant(**variant.except(:shape))
                 end
               end
             end
           else
-            target_param.param(param_name, **param_data.except(:name, :shape))
+            target_param.param(param_name, **param_options.except(:name, :shape))
           end
         end
 

@@ -449,24 +449,24 @@ module Apiwork
           api_class.translate(:schemas, schema_name, :associations, association_name, :description)
         end
 
-        def scope_for_enum(definition, _enum_name)
-          definition.contract_class
+        def scope_for_enum(contract_param, _enum_name)
+          contract_param.contract_class
         end
 
-        def qualified_name(type_name, definition)
-          return type_name if global_type?(type_name, definition)
-          return type_name if global_enum?(type_name, definition)
-          return type_name if imported_type?(type_name, definition)
+        def qualified_name(type_name, contract_param)
+          return type_name if global_type?(type_name, contract_param)
+          return type_name if global_enum?(type_name, contract_param)
+          return type_name if imported_type?(type_name, contract_param)
 
-          scope = definition.contract_class
-          api_class = definition.contract_class.api_class
+          scope = contract_param.contract_class
+          api_class = contract_param.contract_class.api_class
           api_class.scoped_type_name(scope, type_name)
         end
 
-        def global_type?(type_name, definition)
-          return false unless definition.contract_class.respond_to?(:api_class)
+        def global_type?(type_name, contract_param)
+          return false unless contract_param.contract_class.respond_to?(:api_class)
 
-          api_class = definition.contract_class.api_class
+          api_class = contract_param.contract_class.api_class
           return false unless api_class
 
           type_definition = api_class.type_registry[type_name]
@@ -475,10 +475,10 @@ module Apiwork
           type_definition.scope.nil?
         end
 
-        def global_enum?(enum_name, definition)
-          return false unless definition.contract_class.respond_to?(:api_class)
+        def global_enum?(enum_name, contract_param)
+          return false unless contract_param.contract_class.respond_to?(:api_class)
 
-          api_class = definition.contract_class.api_class
+          api_class = contract_param.contract_class.api_class
           return false unless api_class
 
           enum_definition = api_class.enum_registry[enum_name]
@@ -487,10 +487,10 @@ module Apiwork
           enum_definition.scope.nil?
         end
 
-        def imported_type?(type_name, definition)
-          return false unless definition.contract_class.respond_to?(:imports)
+        def imported_type?(type_name, contract_param)
+          return false unless contract_param.contract_class.respond_to?(:imports)
 
-          import_prefixes = import_prefix_cache(definition.contract_class)
+          import_prefixes = import_prefix_cache(contract_param.contract_class)
 
           return true if import_prefixes[:direct].include?(type_name)
 

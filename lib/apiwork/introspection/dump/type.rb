@@ -16,58 +16,62 @@ module Apiwork
         end
 
         def types
-          @api_class.type_registry.each_pair.sort_by { |name, _definition| name.to_s }.each_with_object({}) do |(qualified_name, definition), result|
-            result[qualified_name] = build_type(qualified_name, definition)
+          @api_class.type_registry.each_pair.sort_by do |name, _type_definition|
+            name.to_s
+          end.each_with_object({}) do |(qualified_name, type_definition), result|
+            result[qualified_name] = build_type(qualified_name, type_definition)
           end
         end
 
         def enums
-          @api_class.enum_registry.each_pair.sort_by { |name, _definition| name.to_s }.each_with_object({}) do |(qualified_name, definition), result|
-            result[qualified_name] = build_enum(qualified_name, definition)
+          @api_class.enum_registry.each_pair.sort_by do |name, _enum_definition|
+            name.to_s
+          end.each_with_object({}) do |(qualified_name, enum_definition), result|
+            result[qualified_name] = build_enum(qualified_name, enum_definition)
           end
         end
 
-        def build_type(qualified_name, definition)
-          if definition.union?
+        def build_type(qualified_name, type_definition)
+          if type_definition.union?
             {
-              deprecated: definition.deprecated?,
-              description: resolve_type_description(qualified_name, definition),
-              discriminator: definition.discriminator,
-              example: definition.example || definition.schema_class&.example,
-              format: definition.format,
+              deprecated: type_definition.deprecated?,
+              description: resolve_type_description(qualified_name, type_definition),
+              discriminator: type_definition.discriminator,
+              example: type_definition.example || type_definition.schema_class&.example,
+              format: type_definition.format,
               shape: {},
               type: :union,
-              variants: build_variants(definition),
+              variants: build_variants(type_definition),
             }
           else
             {
-              deprecated: definition.deprecated?,
-              description: resolve_type_description(qualified_name, definition),
+              deprecated: type_definition.deprecated?,
+              description: resolve_type_description(qualified_name, type_definition),
               discriminator: nil,
-              example: definition.example || definition.schema_class&.example,
-              format: definition.format,
-              shape: build_params(definition),
+              example: type_definition.example || type_definition.schema_class&.example,
+              format: type_definition.format,
+              shape: build_params(type_definition),
               type: :object,
               variants: [],
             }
           end
         end
 
-        def build_params(definition)
-          return {} unless definition.params
+        def build_params(type_definition)
+          return {} unless type_definition.params
 
           result = {}
-          definition.params.sort_by { |name, _| name.to_s }.each do |name, param_options|
-            result[name] = build_param(name, param_options, definition.scope)
+          type_definition.params.sort_by { |name, _| name.to_s }.each do |name, param_options|
+            result[name] = build_param(name, param_options, type_definition.scope)
           end
           result
         end
 
-        def build_variants(definition)
-          return [] unless definition.variants
+        def build_variants(type_definition)
+          return [] unless type_definition.variants
 
-          definition.variants.map do |variant|
-            build_variant(variant, definition.scope)
+          type_definition.variants.map do |variant|
+            build_variant(variant, type_definition.scope)
           end
         end
 
@@ -229,22 +233,22 @@ module Apiwork
           end
         end
 
-        def build_enum(qualified_name, definition)
+        def build_enum(qualified_name, enum_definition)
           {
-            deprecated: definition.deprecated?,
-            description: resolve_enum_description(qualified_name, definition),
-            example: definition.example,
-            values: definition.values || [],
+            deprecated: enum_definition.deprecated?,
+            description: resolve_enum_description(qualified_name, enum_definition),
+            example: enum_definition.example,
+            values: enum_definition.values || [],
           }
         end
 
         private
 
-        def resolve_type_description(type_name, definition)
-          return definition.description if definition.description
+        def resolve_type_description(type_name, type_definition)
+          return type_definition.description if type_definition.description
 
-          if definition.schema_class.respond_to?(:description)
-            schema_description = definition.schema_class.description
+          if type_definition.schema_class.respond_to?(:description)
+            schema_description = type_definition.schema_class.description
             return schema_description if schema_description
           end
 
@@ -254,8 +258,8 @@ module Apiwork
           I18n.translate(:"apiwork.types.#{type_name}.description", default: nil)
         end
 
-        def resolve_enum_description(enum_name, definition)
-          return definition.description if definition.description
+        def resolve_enum_description(enum_name, enum_definition)
+          return enum_definition.description if enum_definition.description
 
           result = @api_class.translate(:enums, enum_name, :description)
           return result if result
