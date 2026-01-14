@@ -133,8 +133,8 @@ def register_api(registrar, schema_data)
   # Register filter types based on schema attributes
   if schema_data.filterable_types.include?(:string)
     registrar.type :string_filter do
-      string :eq, optional: true
-      string :contains, optional: true
+      string? :eq
+      string? :contains
     end
   end
 end
@@ -177,7 +177,7 @@ def register_contract(registrar, schema_class, actions)
     when :index
       action_definition.request do
         query do
-          integer :page, optional: true
+          integer? :page
         end
       end
       action_definition.response do
@@ -220,7 +220,7 @@ The `registrar` provides:
 ```ruby
 registrar.action :index do
   request do
-    query { integer :page, optional: true }
+    query { integer? :page }
   end
   response do
     body do

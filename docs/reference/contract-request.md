@@ -65,8 +65,8 @@ Query parameters are parsed from the URL query string.
 
 ```ruby
 query do
-  integer :page, optional: true
-  string :status, enum: :status, optional: true
+  integer? :page
+  string? :status, enum: :status
 end
 ```
 

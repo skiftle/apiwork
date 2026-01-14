@@ -150,7 +150,7 @@ class PostContract < ApplicationContract
   action :index do
     request do
       query do
-        string :status, optional: true
+        string? :status
       end
     end
   end

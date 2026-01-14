@@ -4,27 +4,44 @@ order: 1
 
 # Introduction
 
-Apiwork is an API layer for Rails applications, built around a clear boundary.
+Apiwork is an API layer for Rails applications, built around a clear and explicit boundary.
 
-You define a contract for what your API accepts and exposes. Everything else builds on that definition.
+You define your API using a declarative contract language. That definition describes what your API accepts, what it exposes, and how data is shaped at the boundary. Everything else builds on that structure.
 
 Apiwork sits at the edge of your application. Incoming requests are validated against the contract before they reach your code. Outgoing responses are shaped by the same contract on the way out. Data that matches flows through. Data that doesn’t is rejected at the boundary.
 
 The result is an API that is explicit, predictable, and easy to reason about.
 
-## Behavior Follows Structure
+## A Contract-Driven API
 
-Once the structure is in place, common API behavior follows naturally. Filtering, sorting, pagination, sideloading, N+1 prevention, and nested writes all derive from the same underlying model.
+At the core of Apiwork is a contract language.
 
-This behavior is not implemented as independent features. It emerges from how contracts, API definitions, and schemas work together to describe what the API allows and exposes.
+The contract defines the API surface: what the API accepts, what it returns, and how data is structured. Incoming requests are validated against the contract. Outgoing responses are shaped by the same contract.
 
-That same structure is also used to generate API specifications and documentation, keeping behavior and documentation aligned over time.
+The contract is not documentation and it is not configuration. It is the definition of the API itself.
 
-## Rails-Native by Design
+## From Domain to API
 
-Apiwork is designed to feel natural in a Rails application.
+In a typical Rails application, much of the information that defines an API already exists. Column types, nullability, enums, and relations are described in the database schema and the Active Record models built on top of it.
 
-You still write controllers, and request flow follows familiar Rails conventions. Apiwork builds on what is already there and adds structure only where it serves a clear purpose.
+Apiwork builds on this foundation.
+
+Schemas connect your domain model to the API layer. They describe which attributes and relations are exposed, how records can be queried, and how writes are handled. From this structure, Apiwork can derive contracts automatically.
+
+Instead of manually describing every field and constraint, you describe what should be exposed and how it should behave. The database defines the shape. The schema defines the boundary.
+
+## Convention and Consistency
+
+In most APIs, the same patterns appear again and again. Resources are filtered in similar ways. Sorting follows the same conventions. Pagination works consistently across endpoints. Relations are included predictably. Nested writes follow the same rules.
+
+These are API concerns rather than domain concerns.
+
+Apiwork captures these conventions in its schema and adapter system. Schemas describe the API model. Adapters execute it.
+
+Apiwork includes a built-in adapter that implements a conventional API model with consistent filtering, predictable sorting, standard pagination, relation traversal, N+1-safe loading, and nested writes.
+This adapter provides a complete API runtime out of the box.
+
+Adapters are not fixed. You can replace them, extend them, or write your own. The contract language stays the same. The schema model stays the same. Only the execution strategy changes.
 
 ## Built on Introspection
 
@@ -32,13 +49,10 @@ Apiwork is built around the idea that the entire API is introspectable.
 
 Contracts, API definitions, and schemas are represented as structured data that can be inspected at runtime. This makes the API explicit not only in how it behaves, but in how it can be understood.
 
-Because the API is introspectable by design, other representations can be derived from the same source. API specifications, type definitions, and validation schemas are generated from the same structure that defines the API itself, without being maintained separately.
+Because the API is introspectable by design, other representations can be derived from the same structure. API specifications, client types, and validation schemas are generated from the same source that defines the API itself.
 
-Introspection in Apiwork does not stop at the API surface. Much of the information that defines an API already exists in the database schema and the Active Record models built on top of it.
-
-By building upward from this foundation, contracts and API definitions stay grounded in a single source of truth. That information flows through the API layer and out to clients without duplication or manual synchronization.
-
-This is a core advantage of contract-driven API design in Apiwork. The contract becomes a reliable, introspectable representation of the domain that other tools and consumers can build on.
+OpenAPI documentation, TypeScript definitions, and Zod schemas are not maintained separately. They are exports of the API model. When the API changes, its exports change with it.
+This keeps behavior, documentation, and clients aligned over time.
 
 ## Next Steps
 

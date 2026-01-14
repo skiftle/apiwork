@@ -65,7 +65,7 @@ union :filter, discriminator: :kind do
   variant tag: 'range' do
     object do
       integer :gte
-      integer :lte, optional: true
+      integer? :lte
     end
   end
 end

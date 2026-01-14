@@ -191,13 +191,13 @@ Your params automatically generate types for export output:
 
 ```ruby
 string :title, min: 1, max: 255
-integer :count, min: 0, max: 100, optional: true
-array :tags, optional: true do
+integer? :count, min: 0, max: 100
+array? :tags do
   string
 end
 object :author do
   string :name
-  string :email, optional: true
+  string? :email
 end
 ```
 

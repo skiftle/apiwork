@@ -168,7 +168,7 @@ Use the block to define query parameters and request body.
 action :create do
   request do
     query do
-      boolean :dry_run, optional: true
+      boolean? :dry_run
     end
     body do
       string :title

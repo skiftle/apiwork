@@ -20,7 +20,7 @@ class PostContract < Apiwork::Contract::Base
     request do
       body do
         string :title
-        string :status, enum: %w[draft published], optional: true
+        string? :status, enum: %w[draft published]
       end
     end
   end
