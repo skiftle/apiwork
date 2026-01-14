@@ -246,7 +246,6 @@ module Apiwork
         # @param name [Symbol] union name for referencing
         # @param scope [Class] a {Contract::Base} subclass for scoping (nil for global)
         # @param discriminator [Symbol] field name that identifies the variant
-        # @see API::Union
         #
         # @example
         #   union :payment_method, discriminator: :type do

@@ -113,7 +113,7 @@ All fields are optional. If `title` is not provided, it defaults to the API path
 
 ## Schemas
 
-Named types defined in the [Type System](../type-system/custom-types.md) appear in `components/schemas`. This makes the generated export cleaner and more reusable.
+Named types defined in the [Type System](../type-system/types.md) appear in `components/schemas`. This makes the generated export cleaner and more reusable.
 
 Inline types are embedded directly in operations. Named types use `$ref` references:
 

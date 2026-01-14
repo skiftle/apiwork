@@ -10,7 +10,7 @@ next: false
 
 Defines body for a response.
 
-Returns [Object](object) via `body`.
+Returns [Contract::Object](contract-object) via `body`.
 
 ## Instance Methods
 

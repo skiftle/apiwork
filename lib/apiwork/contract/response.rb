@@ -4,7 +4,7 @@ module Apiwork
   module Contract
     # Defines body for a response.
     #
-    # Returns {Object} via `body`.
+    # Returns {Contract::Object} via `body`.
     #
     # @api public
     class Response

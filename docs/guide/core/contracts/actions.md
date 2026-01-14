@@ -175,7 +175,7 @@ These appear in generated [OpenAPI exports](../exports/openapi.md) as possible e
 Actions support declaration merging. When you define an action that already exists, the definitions combine rather than replace.
 
 ::: info Same pattern for types
-This is the same merge behavior used for [type definitions](../type-system/type-merging.md). The concept applies consistently across Apiwork.
+This is the same merge behavior used for [type definitions](../type-system/merging.md). The concept applies consistently across Apiwork.
 :::
 
 ### The Concept

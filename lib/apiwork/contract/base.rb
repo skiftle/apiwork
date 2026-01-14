@@ -229,7 +229,6 @@ module Apiwork
         #
         # @param name [Symbol] union name
         # @param discriminator [Symbol] field that identifies the variant
-        # @see API::Union
         #
         # @example
         #   union :payment_method, discriminator: :type do
