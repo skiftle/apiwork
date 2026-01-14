@@ -48,9 +48,9 @@ module Apiwork
       def shape_for(part_type)
         case part_type
         when :query
-          action&.request&.query_param
+          action&.request&.query
         when :body
-          action&.request&.body_param
+          action&.request&.body
         end
       end
 

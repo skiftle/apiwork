@@ -17,7 +17,7 @@ RSpec.describe 'Literal and Discriminated Union Features' do
       end
     end
 
-    let(:definition) { contract_class.action_for(:test).request.body_param }
+    let(:definition) { contract_class.action_for(:test).request.body }
 
     it 'accepts the exact literal value' do
       result = definition.validate({ name: 'Test', status: 'archived' })
@@ -81,7 +81,7 @@ RSpec.describe 'Literal and Discriminated Union Features' do
       end
     end
 
-    let(:definition) { contract_class.action_for(:test).request.body_param }
+    let(:definition) { contract_class.action_for(:test).request.body }
 
     it 'validates string variant with correct discriminator' do
       result = definition.validate({ filter: { kind: 'string', value: 'test' } })

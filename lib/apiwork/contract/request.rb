@@ -8,15 +8,13 @@ module Apiwork
     # Returns {Object} via `query` and `body`.
     class Request
       attr_reader :action_name,
-                  :body_param,
-                  :contract_class,
-                  :query_param
+                  :contract_class
 
       def initialize(contract_class, action_name)
         @contract_class = contract_class
         @action_name = action_name
-        @query_param = nil
-        @body_param = nil
+        @query = nil
+        @body = nil
       end
 
       # @api public
@@ -33,14 +31,14 @@ module Apiwork
       #     string :status, enum: :status, optional: true
       #   end
       def query(&block)
-        @query_param ||= Object.new(
-          @contract_class,
-          action_name: @action_name,
-        )
-
-        @query_param.instance_eval(&block) if block
-
-        @query_param
+        if block
+          @query ||= Object.new(
+            @contract_class,
+            action_name: @action_name,
+          )
+          @query.instance_eval(&block)
+        end
+        @query
       end
 
       # @api public
@@ -57,14 +55,14 @@ module Apiwork
       #     decimal :amount
       #   end
       def body(&block)
-        @body_param ||= Object.new(
-          @contract_class,
-          action_name: @action_name,
-        )
-
-        @body_param.instance_eval(&block) if block
-
-        @body_param
+        if block
+          @body ||= Object.new(
+            @contract_class,
+            action_name: @action_name,
+          )
+          @body.instance_eval(&block)
+        end
+        @body
       end
     end
   end

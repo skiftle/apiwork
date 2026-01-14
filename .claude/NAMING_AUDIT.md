@@ -63,6 +63,30 @@ reflection = model_class.reflect_on_association(name)
 association = Association.new(name, reflection)
 ```
 
+### Context-aware naming
+
+Don't repeat context that's already clear from the class/module name:
+
+```ruby
+# Inside TypeRegistry - context is clear
+class TypeRegistry
+  def find(name)
+    definition = @store[name]  # Good - we know it's a type definition
+  end
+end
+
+# Inside EnumRegistry - context is clear
+class EnumRegistry
+  def find(name)
+    definition = @store[name]  # Good - we know it's an enum definition
+  end
+end
+
+# Outside any registry - context needed
+type_definition = type_registry.find(name)
+enum_definition = enum_registry.find(name)
+```
+
 ### Symbol collections
 
 Follow the `*_names` pattern for collections of symbols:
@@ -141,7 +165,9 @@ end
 |-----------|--------------|
 | `data` | Specific: `type_data`, `param_options` |
 | `item` | Specific: `type`, `param`, `variant` |
-| `definition` | Specific: `type_definition`, `enum_definition` |
+| `definition` (outside context) | Specific: `type_definition`, `enum_definition` |
+
+Note: `definition` is OK inside `TypeRegistry`, `EnumRegistry`, etc. where context is clear.
 
 ### `_data` suffix without reason
 

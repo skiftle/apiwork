@@ -37,8 +37,8 @@ module Apiwork
           return { body: {}, query: {} } unless request
 
           {
-            body: build_param(request.body_param),
-            query: build_param(request.query_param),
+            body: build_param(request.body),
+            query: build_param(request.query),
           }
         end
 
@@ -50,11 +50,11 @@ module Apiwork
           return { body: {}, no_content: false } unless response
           return { body: {}, no_content: true } if response.no_content?
 
-          body_param = response.body_param
-          return { body: {}, no_content: false } unless body_param
+          body_shape = response.body
+          return { body: {}, no_content: false } unless body_shape
 
           result_wrapper = response.result_wrapper
-          dumped = Param.new(body_param, result_wrapper:).to_h
+          dumped = Param.new(body_shape, result_wrapper:).to_h
           { body: dumped, no_content: false }
         end
 

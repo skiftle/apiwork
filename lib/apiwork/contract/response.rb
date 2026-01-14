@@ -9,7 +9,6 @@ module Apiwork
     # @api public
     class Response
       attr_reader :action_name,
-                  :body_param,
                   :contract_class
 
       attr_accessor :result_wrapper
@@ -17,7 +16,7 @@ module Apiwork
       def initialize(contract_class, action_name)
         @contract_class = contract_class
         @action_name = action_name
-        @body_param = nil
+        @body = nil
         @result_wrapper = nil
         @no_content = false
       end
@@ -63,15 +62,15 @@ module Apiwork
       #     decimal :amount
       #   end
       def body(&block)
-        @body_param ||= Object.new(
-          @contract_class,
-          action_name: @action_name,
-          wrapped: true,
-        )
-
-        @body_param.instance_eval(&block) if block
-
-        @body_param
+        if block
+          @body ||= Object.new(
+            @contract_class,
+            action_name: @action_name,
+            wrapped: true,
+          )
+          @body.instance_eval(&block)
+        end
+        @body
       end
     end
   end

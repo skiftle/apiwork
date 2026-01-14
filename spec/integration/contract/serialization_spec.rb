@@ -65,7 +65,7 @@ RSpec.describe 'Contract Definition' do
 
       action = contract_class_with_meta.action_for(:test)
       response = action.response
-      body_def = response.body_param
+      body_def = response.body
 
       expect(body_def.params[:meta]).to be_present
       meta_shape = body_def.params[:meta][:shape]

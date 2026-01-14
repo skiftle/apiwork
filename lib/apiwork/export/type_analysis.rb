@@ -89,8 +89,8 @@ module Apiwork
         end
 
         def circular_reference?(type_name, type_definition, filter: :custom_only)
-          refs = type_references(type_definition, filter:)
-          refs.include?(type_name)
+          reference_names = type_references(type_definition, filter:)
+          reference_names.include?(type_name)
         end
 
         def primitive_type?(type)

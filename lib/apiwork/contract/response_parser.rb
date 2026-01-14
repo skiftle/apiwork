@@ -12,10 +12,9 @@ module Apiwork
       end
 
       def parse(body)
-        definition = body_param
-        return ResponseResult.new(body:) unless definition&.params&.any?
+        return ResponseResult.new(body:) unless body_shape&.params&.any?
 
-        validated = definition.validate(body)
+        validated = body_shape.validate(body)
 
         ResponseResult.new(body: validated[:params], issues: validated[:issues])
       end
@@ -26,8 +25,8 @@ module Apiwork
         @action ||= contract_class.action_for(action_name)
       end
 
-      def body_param
-        action&.response&.body_param
+      def body_shape
+        action&.response&.body
       end
     end
   end
