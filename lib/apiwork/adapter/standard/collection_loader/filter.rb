@@ -324,14 +324,14 @@ module Apiwork
           def build_uuid_where_clause(key, value, target_klass)
             column = target_klass.arel_table[key]
 
-            normalizer = lambda do |val|
-              case val
+            normalizer = lambda do |value|
+              case value
               when String
-                val.include?(',') ? { in: val.split(',') } : { eq: val }
+                value.include?(',') ? { in: value.split(',') } : { eq: value }
               when Array
-                { in: val }
+                { in: value }
               else
-                val
+                value
               end
             end
 
@@ -349,7 +349,7 @@ module Apiwork
           def build_string_where_clause(key, value, target_klass)
             column = target_klass.arel_table[key]
 
-            normalizer = ->(val) { val.is_a?(String) || val.nil? ? { eq: val } : val }
+            normalizer = ->(value) { value.is_a?(String) || value.nil? ? { eq: value } : value }
 
             builder = Builder.new(column, key, allowed_types: [Hash], issues: @issues)
 
@@ -380,7 +380,7 @@ module Apiwork
               return column.eq(parse_date(value, key))
             end
 
-            normalizer = ->(val) { val }
+            normalizer = ->(value) { value }
 
             builder = Builder.new(column, key, allowed_types: [Hash], issues: @issues)
 
@@ -425,7 +425,7 @@ module Apiwork
           def build_numeric_where_clause(key, value, target_klass)
             column = target_klass.arel_table[key]
 
-            normalizer = ->(val) { [String, Numeric, NilClass].any? { |type| val.is_a?(type) } ? { eq: val } : val }
+            normalizer = ->(value) { [String, Numeric, NilClass].any? { |type| value.is_a?(type) } ? { eq: value } : value }
 
             builder = Builder.new(column, key, allowed_types: [Hash], issues: @issues)
 
@@ -477,11 +477,11 @@ module Apiwork
           def build_boolean_where_clause(key, value, target_klass)
             column = target_klass.arel_table[key]
 
-            normalizer = lambda do |val|
-              if [true, false, nil].include?(val) || ['true', 'false', '1', '0', 1, 0].include?(val)
-                { eq: normalize_boolean(val) }
+            normalizer = lambda do |value|
+              if [true, false, nil].include?(value) || ['true', 'false', '1', '0', 1, 0].include?(value)
+                { eq: normalize_boolean(value) }
               else
-                val
+                value
               end
             end
 

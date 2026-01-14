@@ -248,12 +248,12 @@ module Apiwork
           base_type_name = type_name.to_s.delete_prefix('nullable_').to_sym
           nullable = type_name.to_s.start_with?('nullable_')
 
-          definition = FILTER_DEFINITIONS[base_type_name]
-          raise ConfigurationError, "Unknown global filter type: #{type_name.inspect}" unless definition
+          filter_definition = FILTER_DEFINITIONS[base_type_name]
+          raise ConfigurationError, "Unknown global filter type: #{type_name.inspect}" unless filter_definition
 
-          register_filter_type(definition[:depends_on]) if definition[:depends_on]
+          register_filter_type(filter_definition[:depends_on]) if filter_definition[:depends_on]
 
-          params = definition[:params].dup
+          params = filter_definition[:params].dup
           params << NULLABLE_EXTENSION if nullable
 
           primitives = %i[string integer decimal boolean datetime date uuid time binary number]
