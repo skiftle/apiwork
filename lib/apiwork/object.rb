@@ -2,221 +2,1241 @@
 
 module Apiwork
   class Object
-    TYPES = %i[
-      string integer decimal boolean number
-      datetime date uuid time binary
-    ].freeze
-
     attr_reader :params
 
     def initialize
       @params = {}
     end
 
-    # @!method string(name, **options)
-    #   @api public
-    #   Defines a string field.
-    #   @param name [Symbol] field name
-    #   @return [void]
+    # @api public
+    # Defines a string.
     #
-    # @!method string?(name, **options)
-    #   @api public
-    #   Defines an optional string field.
-    #   @param name [Symbol] field name
-    #   @return [void]
-    #
-    # @!method integer(name, **options)
-    #   @api public
-    #   Defines an integer field.
-    #   @param name [Symbol] field name
-    #   @return [void]
-    #
-    # @!method integer?(name, **options)
-    #   @api public
-    #   Defines an optional integer field.
-    #   @param name [Symbol] field name
-    #   @return [void]
-    #
-    # @!method decimal(name, **options)
-    #   @api public
-    #   Defines a decimal field.
-    #   @param name [Symbol] field name
-    #   @return [void]
-    #
-    # @!method decimal?(name, **options)
-    #   @api public
-    #   Defines an optional decimal field.
-    #   @param name [Symbol] field name
-    #   @return [void]
-    #
-    # @!method boolean(name, **options)
-    #   @api public
-    #   Defines a boolean field.
-    #   @param name [Symbol] field name
-    #   @return [void]
-    #
-    # @!method boolean?(name, **options)
-    #   @api public
-    #   Defines an optional boolean field.
-    #   @param name [Symbol] field name
-    #   @return [void]
-    #
-    # @!method number(name, **options)
-    #   @api public
-    #   Defines a number field.
-    #   @param name [Symbol] field name
-    #   @return [void]
-    #
-    # @!method number?(name, **options)
-    #   @api public
-    #   Defines an optional number field.
-    #   @param name [Symbol] field name
-    #   @return [void]
-    #
-    # @!method datetime(name, **options)
-    #   @api public
-    #   Defines a datetime field.
-    #   @param name [Symbol] field name
-    #   @return [void]
-    #
-    # @!method datetime?(name, **options)
-    #   @api public
-    #   Defines an optional datetime field.
-    #   @param name [Symbol] field name
-    #   @return [void]
-    #
-    # @!method date(name, **options)
-    #   @api public
-    #   Defines a date field.
-    #   @param name [Symbol] field name
-    #   @return [void]
-    #
-    # @!method date?(name, **options)
-    #   @api public
-    #   Defines an optional date field.
-    #   @param name [Symbol] field name
-    #   @return [void]
-    #
-    # @!method uuid(name, **options)
-    #   @api public
-    #   Defines a UUID field.
-    #   @param name [Symbol] field name
-    #   @return [void]
-    #
-    # @!method uuid?(name, **options)
-    #   @api public
-    #   Defines an optional UUID field.
-    #   @param name [Symbol] field name
-    #   @return [void]
-    #
-    # @!method time(name, **options)
-    #   @api public
-    #   Defines a time field.
-    #   @param name [Symbol] field name
-    #   @return [void]
-    #
-    # @!method time?(name, **options)
-    #   @api public
-    #   Defines an optional time field.
-    #   @param name [Symbol] field name
-    #   @return [void]
-    #
-    # @!method binary(name, **options)
-    #   @api public
-    #   Defines a binary field.
-    #   @param name [Symbol] field name
-    #   @return [void]
-    #
-    # @!method binary?(name, **options)
-    #   @api public
-    #   Defines an optional binary field.
-    #   @param name [Symbol] field name
-    #   @return [void]
-    TYPES.each do |type_name|
-      define_method(type_name) do |name, **options|
-        param(name, type: type_name, **options)
-      end
-
-      define_method(:"#{type_name}?") do |name, **options|
-        param(name, optional: true, type: type_name, **options)
-      end
+    # @param name [Symbol] the name
+    # @param as [Symbol, nil] target attribute name
+    # @param default [Object, nil] default value
+    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param description [String, nil] documentation description
+    # @param enum [Array, Symbol, nil] allowed values
+    # @param example [String, nil] example value
+    # @param format [Symbol, nil] format hint (:email, :uri, :uuid)
+    # @param max [Integer, nil] maximum length
+    # @param min [Integer, nil] minimum length
+    # @param nullable [Boolean, nil] whether null is allowed
+    # @param optional [Boolean, nil] whether it can be omitted
+    # @param required [Boolean, nil] explicit required flag
+    # @param store [Boolean, nil] whether to persist
+    # @return [void]
+    def string(
+      name,
+      as: nil,
+      default: nil,
+      deprecated: nil,
+      description: nil,
+      enum: nil,
+      example: nil,
+      format: nil,
+      max: nil,
+      min: nil,
+      nullable: nil,
+      optional: nil,
+      required: nil,
+      store: nil
+    )
+      param(
+        name,
+        as:,
+        default:,
+        deprecated:,
+        description:,
+        enum:,
+        example:,
+        format:,
+        max:,
+        min:,
+        nullable:,
+        optional:,
+        required:,
+        store:,
+        type: :string,
+      )
     end
 
-    # @!method object(name, **options, &block)
-    #   @api public
-    #   Defines an object field.
-    #   @param name [Symbol] field name
-    #   @yield block defining object fields
-    #   @return [void]
+    # @api public
+    # Defines an optional string.
     #
-    # @!method object?(name, **options, &block)
-    #   @api public
-    #   Defines an optional object field.
-    #   @param name [Symbol] field name
-    #   @yield block defining object fields
-    #   @return [void]
-    def object(name, **options, &block)
-      param(name, type: :object, **options, &block)
+    # @param name [Symbol] the name
+    # @param as [Symbol, nil] target attribute name
+    # @param default [Object, nil] default value
+    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param description [String, nil] documentation description
+    # @param enum [Array, Symbol, nil] allowed values
+    # @param example [String, nil] example value
+    # @param format [Symbol, nil] format hint (:email, :uri, :uuid)
+    # @param max [Integer, nil] maximum length
+    # @param min [Integer, nil] minimum length
+    # @param nullable [Boolean, nil] whether null is allowed
+    # @param required [Boolean, nil] explicit required flag
+    # @param store [Boolean, nil] whether to persist
+    # @return [void]
+    def string?(
+      name,
+      as: nil,
+      default: nil,
+      deprecated: nil,
+      description: nil,
+      enum: nil,
+      example: nil,
+      format: nil,
+      max: nil,
+      min: nil,
+      nullable: nil,
+      required: nil,
+      store: nil
+    )
+      param(
+        name,
+        as:,
+        default:,
+        deprecated:,
+        description:,
+        enum:,
+        example:,
+        format:,
+        max:,
+        min:,
+        nullable:,
+        required:,
+        store:,
+        optional: true,
+        type: :string,
+      )
     end
 
-    def object?(name, **options, &block)
-      object(name, optional: true, **options, &block)
-    end
-
-    # @!method array(name, **options, &block)
-    #   @api public
-    #   Defines an array field.
-    #   @param name [Symbol] field name
-    #   @yield block defining element type
-    #   @return [void]
+    # @api public
+    # Defines an integer.
     #
-    # @!method array?(name, **options, &block)
-    #   @api public
-    #   Defines an optional array field.
-    #   @param name [Symbol] field name
-    #   @yield block defining element type
-    #   @return [void]
-    def array(name, **options, &block)
-      param(name, type: :array, **options, &block)
+    # @param name [Symbol] the name
+    # @param as [Symbol, nil] target attribute name
+    # @param default [Object, nil] default value
+    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param description [String, nil] documentation description
+    # @param enum [Array, Symbol, nil] allowed values
+    # @param example [Integer, nil] example value
+    # @param max [Integer, nil] maximum value
+    # @param min [Integer, nil] minimum value
+    # @param nullable [Boolean, nil] whether null is allowed
+    # @param optional [Boolean, nil] whether it can be omitted
+    # @param required [Boolean, nil] explicit required flag
+    # @param store [Boolean, nil] whether to persist
+    # @return [void]
+    def integer(
+      name,
+      as: nil,
+      default: nil,
+      deprecated: nil,
+      description: nil,
+      enum: nil,
+      example: nil,
+      max: nil,
+      min: nil,
+      nullable: nil,
+      optional: nil,
+      required: nil,
+      store: nil
+    )
+      param(
+        name,
+        as:,
+        default:,
+        deprecated:,
+        description:,
+        enum:,
+        example:,
+        max:,
+        min:,
+        nullable:,
+        optional:,
+        required:,
+        store:,
+        type: :integer,
+      )
     end
 
-    def array?(name, **options, &block)
-      array(name, optional: true, **options, &block)
-    end
-
-    # @!method union(name, **options, &block)
-    #   @api public
-    #   Defines a union field.
-    #   @param name [Symbol] field name
-    #   @param discriminator [Symbol] discriminator field for tagged unions
-    #   @yield block defining union variants
-    #   @return [void]
+    # @api public
+    # Defines an optional integer.
     #
-    # @!method union?(name, **options, &block)
-    #   @api public
-    #   Defines an optional union field.
-    #   @param name [Symbol] field name
-    #   @param discriminator [Symbol] discriminator field for tagged unions
-    #   @yield block defining union variants
-    #   @return [void]
-    def union(name, **options, &block)
-      param(name, type: :union, **options, &block)
+    # @param name [Symbol] the name
+    # @param as [Symbol, nil] target attribute name
+    # @param default [Object, nil] default value
+    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param description [String, nil] documentation description
+    # @param enum [Array, Symbol, nil] allowed values
+    # @param example [Integer, nil] example value
+    # @param max [Integer, nil] maximum value
+    # @param min [Integer, nil] minimum value
+    # @param nullable [Boolean, nil] whether null is allowed
+    # @param required [Boolean, nil] explicit required flag
+    # @param store [Boolean, nil] whether to persist
+    # @return [void]
+    def integer?(
+      name,
+      as: nil,
+      default: nil,
+      deprecated: nil,
+      description: nil,
+      enum: nil,
+      example: nil,
+      max: nil,
+      min: nil,
+      nullable: nil,
+      required: nil,
+      store: nil
+    )
+      param(
+        name,
+        as:,
+        default:,
+        deprecated:,
+        description:,
+        enum:,
+        example:,
+        max:,
+        min:,
+        nullable:,
+        required:,
+        store:,
+        optional: true,
+        type: :integer,
+      )
     end
 
-    def union?(name, **options, &block)
-      union(name, optional: true, **options, &block)
+    # @api public
+    # Defines a decimal.
+    #
+    # @param name [Symbol] the name
+    # @param as [Symbol, nil] target attribute name
+    # @param default [Object, nil] default value
+    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param description [String, nil] documentation description
+    # @param example [Numeric, nil] example value
+    # @param max [Numeric, nil] maximum value
+    # @param min [Numeric, nil] minimum value
+    # @param nullable [Boolean, nil] whether null is allowed
+    # @param optional [Boolean, nil] whether it can be omitted
+    # @param required [Boolean, nil] explicit required flag
+    # @param store [Boolean, nil] whether to persist
+    # @return [void]
+    def decimal(
+      name,
+      as: nil,
+      default: nil,
+      deprecated: nil,
+      description: nil,
+      example: nil,
+      max: nil,
+      min: nil,
+      nullable: nil,
+      optional: nil,
+      required: nil,
+      store: nil
+    )
+      param(
+        name,
+        as:,
+        default:,
+        deprecated:,
+        description:,
+        example:,
+        max:,
+        min:,
+        nullable:,
+        optional:,
+        required:,
+        store:,
+        type: :decimal,
+      )
     end
 
-    def literal(name, value:, **options)
-      param(name, value:, type: :literal, **options)
+    # @api public
+    # Defines an optional decimal.
+    #
+    # @param name [Symbol] the name
+    # @param as [Symbol, nil] target attribute name
+    # @param default [Object, nil] default value
+    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param description [String, nil] documentation description
+    # @param example [Numeric, nil] example value
+    # @param max [Numeric, nil] maximum value
+    # @param min [Numeric, nil] minimum value
+    # @param nullable [Boolean, nil] whether null is allowed
+    # @param required [Boolean, nil] explicit required flag
+    # @param store [Boolean, nil] whether to persist
+    # @return [void]
+    def decimal?(
+      name,
+      as: nil,
+      default: nil,
+      deprecated: nil,
+      description: nil,
+      example: nil,
+      max: nil,
+      min: nil,
+      nullable: nil,
+      required: nil,
+      store: nil
+    )
+      param(
+        name,
+        as:,
+        default:,
+        deprecated:,
+        description:,
+        example:,
+        max:,
+        min:,
+        nullable:,
+        required:,
+        store:,
+        optional: true,
+        type: :decimal,
+      )
     end
 
-    def reference(name, to: nil, **options)
-      param(name, type: to || name, **options)
+    # @api public
+    # Defines a number.
+    #
+    # @param name [Symbol] the name
+    # @param as [Symbol, nil] target attribute name
+    # @param default [Object, nil] default value
+    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param description [String, nil] documentation description
+    # @param example [Numeric, nil] example value
+    # @param max [Numeric, nil] maximum value
+    # @param min [Numeric, nil] minimum value
+    # @param nullable [Boolean, nil] whether null is allowed
+    # @param optional [Boolean, nil] whether it can be omitted
+    # @param required [Boolean, nil] explicit required flag
+    # @param store [Boolean, nil] whether to persist
+    # @return [void]
+    def number(
+      name,
+      as: nil,
+      default: nil,
+      deprecated: nil,
+      description: nil,
+      example: nil,
+      max: nil,
+      min: nil,
+      nullable: nil,
+      optional: nil,
+      required: nil,
+      store: nil
+    )
+      param(
+        name,
+        as:,
+        default:,
+        deprecated:,
+        description:,
+        example:,
+        max:,
+        min:,
+        nullable:,
+        optional:,
+        required:,
+        store:,
+        type: :number,
+      )
     end
 
-    def reference?(name, to: nil, **options)
-      reference(name, to:, optional: true, **options)
+    # @api public
+    # Defines an optional number.
+    #
+    # @param name [Symbol] the name
+    # @param as [Symbol, nil] target attribute name
+    # @param default [Object, nil] default value
+    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param description [String, nil] documentation description
+    # @param example [Numeric, nil] example value
+    # @param max [Numeric, nil] maximum value
+    # @param min [Numeric, nil] minimum value
+    # @param nullable [Boolean, nil] whether null is allowed
+    # @param required [Boolean, nil] explicit required flag
+    # @param store [Boolean, nil] whether to persist
+    # @return [void]
+    def number?(
+      name,
+      as: nil,
+      default: nil,
+      deprecated: nil,
+      description: nil,
+      example: nil,
+      max: nil,
+      min: nil,
+      nullable: nil,
+      required: nil,
+      store: nil
+    )
+      param(
+        name,
+        as:,
+        default:,
+        deprecated:,
+        description:,
+        example:,
+        max:,
+        min:,
+        nullable:,
+        required:,
+        store:,
+        optional: true,
+        type: :number,
+      )
+    end
+
+    # @api public
+    # Defines a boolean.
+    #
+    # @param name [Symbol] the name
+    # @param as [Symbol, nil] target attribute name
+    # @param default [Object, nil] default value
+    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param description [String, nil] documentation description
+    # @param example [Boolean, nil] example value
+    # @param nullable [Boolean, nil] whether null is allowed
+    # @param optional [Boolean, nil] whether it can be omitted
+    # @param required [Boolean, nil] explicit required flag
+    # @param store [Boolean, nil] whether to persist
+    # @return [void]
+    def boolean(
+      name,
+      as: nil,
+      default: nil,
+      deprecated: nil,
+      description: nil,
+      example: nil,
+      nullable: nil,
+      optional: nil,
+      required: nil,
+      store: nil
+    )
+      param(
+        name,
+        as:,
+        default:,
+        deprecated:,
+        description:,
+        example:,
+        nullable:,
+        optional:,
+        required:,
+        store:,
+        type: :boolean,
+      )
+    end
+
+    # @api public
+    # Defines an optional boolean.
+    #
+    # @param name [Symbol] the name
+    # @param as [Symbol, nil] target attribute name
+    # @param default [Object, nil] default value
+    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param description [String, nil] documentation description
+    # @param example [Boolean, nil] example value
+    # @param nullable [Boolean, nil] whether null is allowed
+    # @param required [Boolean, nil] explicit required flag
+    # @param store [Boolean, nil] whether to persist
+    # @return [void]
+    def boolean?(
+      name,
+      as: nil,
+      default: nil,
+      deprecated: nil,
+      description: nil,
+      example: nil,
+      nullable: nil,
+      required: nil,
+      store: nil
+    )
+      param(
+        name,
+        as:,
+        default:,
+        deprecated:,
+        description:,
+        example:,
+        nullable:,
+        required:,
+        store:,
+        optional: true,
+        type: :boolean,
+      )
+    end
+
+    # @api public
+    # Defines a datetime.
+    #
+    # @param name [Symbol] the name
+    # @param as [Symbol, nil] target attribute name
+    # @param default [Object, nil] default value
+    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param description [String, nil] documentation description
+    # @param example [String, nil] example value
+    # @param nullable [Boolean, nil] whether null is allowed
+    # @param optional [Boolean, nil] whether it can be omitted
+    # @param required [Boolean, nil] explicit required flag
+    # @param store [Boolean, nil] whether to persist
+    # @return [void]
+    def datetime(
+      name,
+      as: nil,
+      default: nil,
+      deprecated: nil,
+      description: nil,
+      example: nil,
+      nullable: nil,
+      optional: nil,
+      required: nil,
+      store: nil
+    )
+      param(
+        name,
+        as:,
+        default:,
+        deprecated:,
+        description:,
+        example:,
+        nullable:,
+        optional:,
+        required:,
+        store:,
+        type: :datetime,
+      )
+    end
+
+    # @api public
+    # Defines an optional datetime.
+    #
+    # @param name [Symbol] the name
+    # @param as [Symbol, nil] target attribute name
+    # @param default [Object, nil] default value
+    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param description [String, nil] documentation description
+    # @param example [String, nil] example value
+    # @param nullable [Boolean, nil] whether null is allowed
+    # @param required [Boolean, nil] explicit required flag
+    # @param store [Boolean, nil] whether to persist
+    # @return [void]
+    def datetime?(
+      name,
+      as: nil,
+      default: nil,
+      deprecated: nil,
+      description: nil,
+      example: nil,
+      nullable: nil,
+      required: nil,
+      store: nil
+    )
+      param(
+        name,
+        as:,
+        default:,
+        deprecated:,
+        description:,
+        example:,
+        nullable:,
+        required:,
+        store:,
+        optional: true,
+        type: :datetime,
+      )
+    end
+
+    # @api public
+    # Defines a date.
+    #
+    # @param name [Symbol] the name
+    # @param as [Symbol, nil] target attribute name
+    # @param default [Object, nil] default value
+    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param description [String, nil] documentation description
+    # @param example [String, nil] example value
+    # @param nullable [Boolean, nil] whether null is allowed
+    # @param optional [Boolean, nil] whether it can be omitted
+    # @param required [Boolean, nil] explicit required flag
+    # @param store [Boolean, nil] whether to persist
+    # @return [void]
+    def date(
+      name,
+      as: nil,
+      default: nil,
+      deprecated: nil,
+      description: nil,
+      example: nil,
+      nullable: nil,
+      optional: nil,
+      required: nil,
+      store: nil
+    )
+      param(
+        name,
+        as:,
+        default:,
+        deprecated:,
+        description:,
+        example:,
+        nullable:,
+        optional:,
+        required:,
+        store:,
+        type: :date,
+      )
+    end
+
+    # @api public
+    # Defines an optional date.
+    #
+    # @param name [Symbol] the name
+    # @param as [Symbol, nil] target attribute name
+    # @param default [Object, nil] default value
+    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param description [String, nil] documentation description
+    # @param example [String, nil] example value
+    # @param nullable [Boolean, nil] whether null is allowed
+    # @param required [Boolean, nil] explicit required flag
+    # @param store [Boolean, nil] whether to persist
+    # @return [void]
+    def date?(
+      name,
+      as: nil,
+      default: nil,
+      deprecated: nil,
+      description: nil,
+      example: nil,
+      nullable: nil,
+      required: nil,
+      store: nil
+    )
+      param(
+        name,
+        as:,
+        default:,
+        deprecated:,
+        description:,
+        example:,
+        nullable:,
+        required:,
+        store:,
+        optional: true,
+        type: :date,
+      )
+    end
+
+    # @api public
+    # Defines a UUID.
+    #
+    # @param name [Symbol] the name
+    # @param as [Symbol, nil] target attribute name
+    # @param default [Object, nil] default value
+    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param description [String, nil] documentation description
+    # @param example [String, nil] example value
+    # @param nullable [Boolean, nil] whether null is allowed
+    # @param optional [Boolean, nil] whether it can be omitted
+    # @param required [Boolean, nil] explicit required flag
+    # @param store [Boolean, nil] whether to persist
+    # @return [void]
+    def uuid(
+      name,
+      as: nil,
+      default: nil,
+      deprecated: nil,
+      description: nil,
+      example: nil,
+      nullable: nil,
+      optional: nil,
+      required: nil,
+      store: nil
+    )
+      param(
+        name,
+        as:,
+        default:,
+        deprecated:,
+        description:,
+        example:,
+        nullable:,
+        optional:,
+        required:,
+        store:,
+        type: :uuid,
+      )
+    end
+
+    # @api public
+    # Defines an optional UUID.
+    #
+    # @param name [Symbol] the name
+    # @param as [Symbol, nil] target attribute name
+    # @param default [Object, nil] default value
+    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param description [String, nil] documentation description
+    # @param example [String, nil] example value
+    # @param nullable [Boolean, nil] whether null is allowed
+    # @param required [Boolean, nil] explicit required flag
+    # @param store [Boolean, nil] whether to persist
+    # @return [void]
+    def uuid?(
+      name,
+      as: nil,
+      default: nil,
+      deprecated: nil,
+      description: nil,
+      example: nil,
+      nullable: nil,
+      required: nil,
+      store: nil
+    )
+      param(
+        name,
+        as:,
+        default:,
+        deprecated:,
+        description:,
+        example:,
+        nullable:,
+        required:,
+        store:,
+        optional: true,
+        type: :uuid,
+      )
+    end
+
+    # @api public
+    # Defines a time.
+    #
+    # @param name [Symbol] the name
+    # @param as [Symbol, nil] target attribute name
+    # @param default [Object, nil] default value
+    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param description [String, nil] documentation description
+    # @param example [String, nil] example value
+    # @param nullable [Boolean, nil] whether null is allowed
+    # @param optional [Boolean, nil] whether it can be omitted
+    # @param required [Boolean, nil] explicit required flag
+    # @param store [Boolean, nil] whether to persist
+    # @return [void]
+    def time(
+      name,
+      as: nil,
+      default: nil,
+      deprecated: nil,
+      description: nil,
+      example: nil,
+      nullable: nil,
+      optional: nil,
+      required: nil,
+      store: nil
+    )
+      param(
+        name,
+        as:,
+        default:,
+        deprecated:,
+        description:,
+        example:,
+        nullable:,
+        optional:,
+        required:,
+        store:,
+        type: :time,
+      )
+    end
+
+    # @api public
+    # Defines an optional time.
+    #
+    # @param name [Symbol] the name
+    # @param as [Symbol, nil] target attribute name
+    # @param default [Object, nil] default value
+    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param description [String, nil] documentation description
+    # @param example [String, nil] example value
+    # @param nullable [Boolean, nil] whether null is allowed
+    # @param required [Boolean, nil] explicit required flag
+    # @param store [Boolean, nil] whether to persist
+    # @return [void]
+    def time?(
+      name,
+      as: nil,
+      default: nil,
+      deprecated: nil,
+      description: nil,
+      example: nil,
+      nullable: nil,
+      required: nil,
+      store: nil
+    )
+      param(
+        name,
+        as:,
+        default:,
+        deprecated:,
+        description:,
+        example:,
+        nullable:,
+        required:,
+        store:,
+        optional: true,
+        type: :time,
+      )
+    end
+
+    # @api public
+    # Defines a binary.
+    #
+    # @param name [Symbol] the name
+    # @param as [Symbol, nil] target attribute name
+    # @param default [Object, nil] default value
+    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param description [String, nil] documentation description
+    # @param example [String, nil] example value
+    # @param nullable [Boolean, nil] whether null is allowed
+    # @param optional [Boolean, nil] whether it can be omitted
+    # @param required [Boolean, nil] explicit required flag
+    # @param store [Boolean, nil] whether to persist
+    # @return [void]
+    def binary(
+      name,
+      as: nil,
+      default: nil,
+      deprecated: nil,
+      description: nil,
+      example: nil,
+      nullable: nil,
+      optional: nil,
+      required: nil,
+      store: nil
+    )
+      param(
+        name,
+        as:,
+        default:,
+        deprecated:,
+        description:,
+        example:,
+        nullable:,
+        optional:,
+        required:,
+        store:,
+        type: :binary,
+      )
+    end
+
+    # @api public
+    # Defines an optional binary.
+    #
+    # @param name [Symbol] the name
+    # @param as [Symbol, nil] target attribute name
+    # @param default [Object, nil] default value
+    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param description [String, nil] documentation description
+    # @param example [String, nil] example value
+    # @param nullable [Boolean, nil] whether null is allowed
+    # @param required [Boolean, nil] explicit required flag
+    # @param store [Boolean, nil] whether to persist
+    # @return [void]
+    def binary?(
+      name,
+      as: nil,
+      default: nil,
+      deprecated: nil,
+      description: nil,
+      example: nil,
+      nullable: nil,
+      required: nil,
+      store: nil
+    )
+      param(
+        name,
+        as:,
+        default:,
+        deprecated:,
+        description:,
+        example:,
+        nullable:,
+        required:,
+        store:,
+        optional: true,
+        type: :binary,
+      )
+    end
+
+    # @api public
+    # Defines an object.
+    #
+    # @param name [Symbol] the name
+    # @param as [Symbol, nil] target attribute name
+    # @param default [Object, nil] default value
+    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param description [String, nil] documentation description
+    # @param nullable [Boolean, nil] whether null is allowed
+    # @param optional [Boolean, nil] whether it can be omitted
+    # @param required [Boolean, nil] explicit required flag
+    # @param store [Boolean, nil] whether to persist
+    # @yield block defining nested structure
+    # @return [void]
+    def object(
+      name,
+      as: nil,
+      default: nil,
+      deprecated: nil,
+      description: nil,
+      nullable: nil,
+      optional: nil,
+      required: nil,
+      store: nil,
+      &block
+    )
+      param(
+        name,
+        as:,
+        default:,
+        deprecated:,
+        description:,
+        nullable:,
+        optional:,
+        required:,
+        store:,
+        type: :object,
+        &block
+      )
+    end
+
+    # @api public
+    # Defines an optional object.
+    #
+    # @param name [Symbol] the name
+    # @param as [Symbol, nil] target attribute name
+    # @param default [Object, nil] default value
+    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param description [String, nil] documentation description
+    # @param nullable [Boolean, nil] whether null is allowed
+    # @param required [Boolean, nil] explicit required flag
+    # @param store [Boolean, nil] whether to persist
+    # @yield block defining nested structure
+    # @return [void]
+    def object?(
+      name,
+      as: nil,
+      default: nil,
+      deprecated: nil,
+      description: nil,
+      nullable: nil,
+      required: nil,
+      store: nil,
+      &block
+    )
+      param(
+        name,
+        as:,
+        default:,
+        deprecated:,
+        description:,
+        nullable:,
+        required:,
+        store:,
+        optional: true,
+        type: :object,
+        &block
+      )
+    end
+
+    # @api public
+    # Defines an array.
+    #
+    # @param name [Symbol] the name
+    # @param as [Symbol, nil] target attribute name
+    # @param default [Object, nil] default value
+    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param description [String, nil] documentation description
+    # @param nullable [Boolean, nil] whether null is allowed
+    # @param of [Symbol, Hash, nil] element type
+    # @param optional [Boolean, nil] whether it can be omitted
+    # @param required [Boolean, nil] explicit required flag
+    # @param store [Boolean, nil] whether to persist
+    # @yield block defining element type
+    # @return [void]
+    def array(
+      name,
+      as: nil,
+      default: nil,
+      deprecated: nil,
+      description: nil,
+      nullable: nil,
+      of: nil,
+      optional: nil,
+      required: nil,
+      store: nil,
+      &block
+    )
+      param(
+        name,
+        as:,
+        default:,
+        deprecated:,
+        description:,
+        nullable:,
+        of:,
+        optional:,
+        required:,
+        store:,
+        type: :array,
+        &block
+      )
+    end
+
+    # @api public
+    # Defines an optional array.
+    #
+    # @param name [Symbol] the name
+    # @param as [Symbol, nil] target attribute name
+    # @param default [Object, nil] default value
+    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param description [String, nil] documentation description
+    # @param nullable [Boolean, nil] whether null is allowed
+    # @param of [Symbol, Hash, nil] element type
+    # @param required [Boolean, nil] explicit required flag
+    # @param store [Boolean, nil] whether to persist
+    # @yield block defining element type
+    # @return [void]
+    def array?(
+      name,
+      as: nil,
+      default: nil,
+      deprecated: nil,
+      description: nil,
+      nullable: nil,
+      of: nil,
+      required: nil,
+      store: nil,
+      &block
+    )
+      param(
+        name,
+        as:,
+        default:,
+        deprecated:,
+        description:,
+        nullable:,
+        of:,
+        required:,
+        store:,
+        optional: true,
+        type: :array,
+        &block
+      )
+    end
+
+    # @api public
+    # Defines a union.
+    #
+    # @param name [Symbol] the name
+    # @param as [Symbol, nil] target attribute name
+    # @param default [Object, nil] default value
+    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param description [String, nil] documentation description
+    # @param discriminator [Symbol, nil] discriminator field name
+    # @param nullable [Boolean, nil] whether null is allowed
+    # @param optional [Boolean, nil] whether it can be omitted
+    # @param required [Boolean, nil] explicit required flag
+    # @param store [Boolean, nil] whether to persist
+    # @yield block defining union variants
+    # @return [void]
+    def union(
+      name,
+      as: nil,
+      default: nil,
+      deprecated: nil,
+      description: nil,
+      discriminator: nil,
+      nullable: nil,
+      optional: nil,
+      required: nil,
+      store: nil,
+      &block
+    )
+      param(
+        name,
+        as:,
+        default:,
+        deprecated:,
+        description:,
+        discriminator:,
+        nullable:,
+        optional:,
+        required:,
+        store:,
+        type: :union,
+        &block
+      )
+    end
+
+    # @api public
+    # Defines an optional union.
+    #
+    # @param name [Symbol] the name
+    # @param as [Symbol, nil] target attribute name
+    # @param default [Object, nil] default value
+    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param description [String, nil] documentation description
+    # @param discriminator [Symbol, nil] discriminator field name
+    # @param nullable [Boolean, nil] whether null is allowed
+    # @param required [Boolean, nil] explicit required flag
+    # @param store [Boolean, nil] whether to persist
+    # @yield block defining union variants
+    # @return [void]
+    def union?(
+      name,
+      as: nil,
+      default: nil,
+      deprecated: nil,
+      description: nil,
+      discriminator: nil,
+      nullable: nil,
+      required: nil,
+      store: nil,
+      &block
+    )
+      param(
+        name,
+        as:,
+        default:,
+        deprecated:,
+        description:,
+        discriminator:,
+        nullable:,
+        required:,
+        store:,
+        optional: true,
+        type: :union,
+        &block
+      )
+    end
+
+    # @api public
+    # Defines a literal value.
+    #
+    # @param name [Symbol] the name
+    # @param value [Object] the exact value (required)
+    # @param as [Symbol, nil] target attribute name
+    # @param default [Object, nil] default value
+    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param description [String, nil] documentation description
+    # @param optional [Boolean, nil] whether it can be omitted
+    # @param store [Boolean, nil] whether to persist
+    # @return [void]
+    def literal(
+      name,
+      value:,
+      as: nil,
+      default: nil,
+      deprecated: nil,
+      description: nil,
+      optional: nil,
+      store: nil
+    )
+      param(
+        name,
+        as:,
+        default:,
+        deprecated:,
+        description:,
+        optional:,
+        store:,
+        value:,
+        type: :literal,
+      )
+    end
+
+    # @api public
+    # Defines a reference to a named type.
+    #
+    # @param name [Symbol] the name
+    # @param to [Symbol, nil] target type name (defaults to name)
+    # @param as [Symbol, nil] target attribute name
+    # @param default [Object, nil] default value
+    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param description [String, nil] documentation description
+    # @param nullable [Boolean, nil] whether null is allowed
+    # @param optional [Boolean, nil] whether it can be omitted
+    # @param required [Boolean, nil] explicit required flag
+    # @param store [Boolean, nil] whether to persist
+    # @return [void]
+    def reference(
+      name,
+      to: nil,
+      as: nil,
+      default: nil,
+      deprecated: nil,
+      description: nil,
+      nullable: nil,
+      optional: nil,
+      required: nil,
+      store: nil
+    )
+      param(
+        name,
+        as:,
+        default:,
+        deprecated:,
+        description:,
+        nullable:,
+        optional:,
+        required:,
+        store:,
+        type: to || name,
+      )
+    end
+
+    # @api public
+    # Defines an optional reference to a named type.
+    #
+    # @param name [Symbol] the name
+    # @param to [Symbol, nil] target type name (defaults to name)
+    # @param as [Symbol, nil] target attribute name
+    # @param default [Object, nil] default value
+    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param description [String, nil] documentation description
+    # @param nullable [Boolean, nil] whether null is allowed
+    # @param required [Boolean, nil] explicit required flag
+    # @param store [Boolean, nil] whether to persist
+    # @return [void]
+    def reference?(
+      name,
+      to: nil,
+      as: nil,
+      default: nil,
+      deprecated: nil,
+      description: nil,
+      nullable: nil,
+      required: nil,
+      store: nil
+    )
+      param(
+        name,
+        as:,
+        default:,
+        deprecated:,
+        description:,
+        nullable:,
+        required:,
+        store:,
+        optional: true,
+        type: to || name,
+      )
     end
 
     def param(name, type: nil, **options, &block)

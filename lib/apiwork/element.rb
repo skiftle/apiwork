@@ -2,12 +2,6 @@
 
 module Apiwork
   class Element
-    TYPES = %i[
-      string integer decimal boolean number
-      datetime date uuid time binary
-      object array union
-    ].freeze
-
     attr_reader :custom_type,
                 :discriminator,
                 :enum,
@@ -32,80 +26,143 @@ module Apiwork
       @value = nil
     end
 
-    # @!method string(**options, &block)
-    #   @api public
-    #   Defines a string element.
-    #   @return [void]
+    # @api public
+    # Defines a string.
     #
-    # @!method integer(**options, &block)
-    #   @api public
-    #   Defines an integer element.
-    #   @return [void]
-    #
-    # @!method decimal(**options, &block)
-    #   @api public
-    #   Defines a decimal element.
-    #   @return [void]
-    #
-    # @!method boolean(**options, &block)
-    #   @api public
-    #   Defines a boolean element.
-    #   @return [void]
-    #
-    # @!method number(**options, &block)
-    #   @api public
-    #   Defines a number element.
-    #   @return [void]
-    #
-    # @!method datetime(**options, &block)
-    #   @api public
-    #   Defines a datetime element.
-    #   @return [void]
-    #
-    # @!method date(**options, &block)
-    #   @api public
-    #   Defines a date element.
-    #   @return [void]
-    #
-    # @!method uuid(**options, &block)
-    #   @api public
-    #   Defines a UUID element.
-    #   @return [void]
-    #
-    # @!method time(**options, &block)
-    #   @api public
-    #   Defines a time element.
-    #   @return [void]
-    #
-    # @!method binary(**options, &block)
-    #   @api public
-    #   Defines a binary element.
-    #   @return [void]
-    #
-    # @!method object(**options, &block)
-    #   @api public
-    #   Defines an object element.
-    #   @return [void]
-    #
-    # @!method array(**options, &block)
-    #   @api public
-    #   Defines an array element.
-    #   @return [void]
-    #
-    # @!method union(**options, &block)
-    #   @api public
-    #   Defines a union element.
-    #   @return [void]
-    TYPES.each do |type_name|
-      define_method(type_name) do |**options, &block|
-        of(type_name, **options, &block)
-      end
+    # @param enum [Array, Symbol, nil] allowed values
+    # @param format [Symbol, nil] format hint
+    # @param max [Integer, nil] maximum length
+    # @param min [Integer, nil] minimum length
+    # @return [void]
+    def string(enum: nil, format: nil, max: nil, min: nil)
+      of(:string, enum:, format:, max:, min:)
     end
 
+    # @api public
+    # Defines an integer.
+    #
+    # @param enum [Array, Symbol, nil] allowed values
+    # @param max [Integer, nil] maximum value
+    # @param min [Integer, nil] minimum value
+    # @return [void]
+    def integer(enum: nil, max: nil, min: nil)
+      of(:integer, enum:, max:, min:)
+    end
+
+    # @api public
+    # Defines a decimal.
+    #
+    # @param max [Numeric, nil] maximum value
+    # @param min [Numeric, nil] minimum value
+    # @return [void]
+    def decimal(max: nil, min: nil)
+      of(:decimal, max:, min:)
+    end
+
+    # @api public
+    # Defines a number.
+    #
+    # @param max [Numeric, nil] maximum value
+    # @param min [Numeric, nil] minimum value
+    # @return [void]
+    def number(max: nil, min: nil)
+      of(:number, max:, min:)
+    end
+
+    # @api public
+    # Defines a boolean.
+    #
+    # @return [void]
+    def boolean
+      of(:boolean)
+    end
+
+    # @api public
+    # Defines a datetime.
+    #
+    # @return [void]
+    def datetime
+      of(:datetime)
+    end
+
+    # @api public
+    # Defines a date.
+    #
+    # @return [void]
+    def date
+      of(:date)
+    end
+
+    # @api public
+    # Defines a UUID.
+    #
+    # @return [void]
+    def uuid
+      of(:uuid)
+    end
+
+    # @api public
+    # Defines a time.
+    #
+    # @return [void]
+    def time
+      of(:time)
+    end
+
+    # @api public
+    # Defines a binary.
+    #
+    # @return [void]
+    def binary
+      of(:binary)
+    end
+
+    # @api public
+    # Defines an object.
+    #
+    # @param shape [Object, nil] pre-built shape
+    # @yield block defining nested structure
+    # @return [void]
+    def object(shape: nil, &block)
+      of(:object, shape:, &block)
+    end
+
+    # @api public
+    # Defines an array.
+    #
+    # @param shape [Object, nil] pre-built shape
+    # @yield block defining element type
+    # @return [void]
+    def array(shape: nil, &block)
+      of(:array, shape:, &block)
+    end
+
+    # @api public
+    # Defines a union.
+    #
+    # @param discriminator [Symbol, nil] discriminator field name
+    # @param shape [Union, nil] pre-built shape
+    # @yield block defining union variants
+    # @return [void]
+    def union(discriminator: nil, shape: nil, &block)
+      of(:union, discriminator:, shape:, &block)
+    end
+
+    # @api public
+    # Defines a literal value.
+    #
+    # @param value [Object] the exact value (required)
+    # @return [void]
     def literal(value:)
       of(:literal, value:)
     end
 
+    # @api public
+    # Defines a reference to a named type.
+    #
+    # @param type_name [Symbol] type name
+    # @param to [Symbol, nil] target type name (defaults to type_name)
+    # @return [void]
     def reference(type_name, to: nil)
       of(to || type_name)
     end
