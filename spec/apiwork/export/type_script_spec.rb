@@ -12,15 +12,15 @@ RSpec.describe Apiwork::Export::TypeScript do
     end
   end
 
-  describe '#version' do
+  describe 'version option' do
     it 'uses default version when not specified' do
       gen = described_class.new(path)
-      expect(gen.send(:version)).to eq('5')
+      expect(gen.options[:version]).to eq('5')
     end
 
     it 'allows version override' do
       gen = described_class.new(path, version: '4')
-      expect(gen.send(:version)).to eq('4')
+      expect(gen.options[:version]).to eq('4')
     end
   end
 

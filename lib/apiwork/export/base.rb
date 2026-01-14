@@ -34,7 +34,15 @@ module Apiwork
     class Base
       include Configurable
 
+      option :key_format, default: :keep, enum: %i[keep camel underscore kebab], type: :symbol
+      option :locale, default: nil, type: :symbol
+
+      attr_reader :api_path,
+                  :options
+
       class << self
+        attr_reader :output_type
+
         # @api public
         # The export name.
         #
@@ -57,13 +65,8 @@ module Apiwork
           @output_type = type
         end
 
-        attr_reader :output_type
-
-        def generate(api_path, format: nil, key_format: nil, locale: nil, version: nil)
-          export = new(api_path, key_format:, locale:, version:)
-
-          raise ArgumentError, "#{export_name} export does not support format options" if export.string_output? && format
-
+        def generate(api_path, format: nil, **options)
+          export = new(api_path, **options)
           resolved_format = format || :json
 
           if export.hash_output? && !export.supports_format?(resolved_format)
@@ -90,26 +93,10 @@ module Apiwork
           @file_extension = value
         end
 
-        CORE_OPTIONS_TYPES = {
-          format: :symbol,
-          key_format: :symbol,
-          locale: :symbol,
-          version: :string,
-        }.freeze
-
         def extract_options(source)
           result = {}
 
-          CORE_OPTIONS_TYPES.each do |name, type|
-            value = source[name] || source[name.to_s]
-            next if value.nil?
-
-            result[name] = type == :symbol ? value.to_sym : value
-          end
-
           options.each do |name, option|
-            next if CORE_OPTIONS_TYPES.key?(name)
-
             value = source[name] || source[name.to_s]
             next if value.nil?
 
@@ -169,19 +156,12 @@ module Apiwork
         end
       end
 
-      option :locale, default: nil, type: :symbol
-
-      attr_reader :api_path,
-                  :options
-
-      def initialize(api_path, key_format: nil, locale: nil, version: nil)
+      def initialize(api_path, **options)
         @api_path = api_path
         @api_class = API.find!(api_path)
 
-        @options = self.class.default_options
-        @options[:key_format] = key_format || @api_class.key_format
-        @options[:locale] = locale if locale
-        @options[:version] = version if version
+        @options = self.class.default_options.merge(options.compact)
+        @options[:key_format] ||= @api_class.key_format
         validate_options!
 
         @introspection = @api_class.introspect(locale: @options[:locale])
@@ -263,14 +243,20 @@ module Apiwork
         @introspection
       end
 
+      # @api public
+      # The key format for this export.
+      #
+      # @return [Symbol]
       def key_format
         @options[:key_format]
       end
 
-      def version
-        @options[:version]
-      end
-
+      # @api public
+      # Transforms a key according to the configured key format.
+      #
+      # @param key [String, Symbol] the key to transform
+      # @param strategy [Symbol, nil] override the default key_format
+      # @return [String]
       def transform_key(key, strategy = nil)
         key = key.to_s
         strategy ||= key_format

@@ -8,7 +8,6 @@ module Apiwork
       file_extension '.ts'
 
       option :version, default: '5', enum: %w[4 5], type: :string
-      option :key_format, default: :keep, enum: %i[keep camel underscore kebab], type: :symbol
 
       def generate
         types = []

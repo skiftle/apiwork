@@ -9,13 +9,12 @@ module Apiwork
       output :hash
 
       option :version, default: '3.1.0', enum: %w[3.1.0], type: :string
-      option :key_format, default: :keep, enum: %i[keep camel underscore kebab], type: :symbol
 
       def generate
         {
           components: { schemas: build_schemas },
           info: build_info,
-          openapi: version,
+          openapi: options[:version],
           paths: build_paths,
           servers: build_servers,
         }.slice(*KEY_ORDER).compact
