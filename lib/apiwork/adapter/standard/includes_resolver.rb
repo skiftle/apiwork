@@ -33,12 +33,12 @@ module Apiwork
           visited = visited.dup.add(schema_class.name)
           result = {}
 
-          schema_class.associations.each do |name, definition|
-            next unless definition.include == :always
+          schema_class.associations.each do |name, association|
+            next unless association.include == :always
 
-            association = schema_class.model_class.reflect_on_association(name)
+            reflection = schema_class.model_class.reflect_on_association(name)
 
-            nested_schema_class = resolve_schema_class(definition, association)
+            nested_schema_class = resolve_schema_class(association, reflection)
             next unless nested_schema_class
 
             if nested_schema_class.respond_to?(:new)
@@ -134,15 +134,15 @@ module Apiwork
           [false, 'false'].include?(value)
         end
 
-        def resolve_schema_class(definition, association)
-          definition.schema_class || infer_association_schema(association)
+        def resolve_schema_class(association, reflection)
+          association.schema_class || infer_association_schema(reflection)
         end
 
-        def infer_association_schema(association)
-          return nil if association.polymorphic?
+        def infer_association_schema(reflection)
+          return nil if reflection.polymorphic?
 
           namespace = schema_class.name.deconstantize
-          "#{namespace}::#{association.klass.name.demodulize}Schema".safe_constantize
+          "#{namespace}::#{reflection.klass.name.demodulize}Schema".safe_constantize
         end
       end
     end

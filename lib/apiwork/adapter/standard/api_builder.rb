@@ -259,10 +259,10 @@ module Apiwork
           primitives = %i[string integer decimal boolean datetime date uuid time binary number]
 
           registrar.object(type_name) do
-            params.each do |param_definition|
-              name = param_definition[:name]
-              type = param_definition[:type]
-              element_type = param_definition[:of]
+            params.each do |param_options|
+              name = param_options[:name]
+              type = param_options[:type]
+              element_type = param_options[:of]
 
               if element_type
                 array name, optional: true do

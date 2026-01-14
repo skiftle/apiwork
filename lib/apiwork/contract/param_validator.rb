@@ -412,13 +412,13 @@ module Apiwork
         variant_errors = []
         most_specific_error = nil
 
-        variants.each do |variant_definition|
-          variant_type = variant_definition[:type]
+        variants.each do |variant|
+          variant_type = variant[:type]
 
           error, validated_value = validate_variant(
             name,
             value,
-            variant_definition,
+            variant,
             path,
             current_depth:,
             max_depth:,
@@ -535,10 +535,10 @@ module Apiwork
         end
       end
 
-      def validate_variant(name, value, variant_definition, path, current_depth:, discriminator: nil, max_depth:)
-        variant_type = variant_definition[:type]
-        variant_of = variant_definition[:of]
-        variant_shape = variant_definition[:shape]
+      def validate_variant(name, value, variant, path, current_depth:, discriminator: nil, max_depth:)
+        variant_type = variant[:type]
+        variant_of = variant[:of]
+        variant_shape = variant[:shape]
 
         type_definition = @shape.contract_class.resolve_custom_type(variant_type)
         if type_definition
@@ -641,14 +641,14 @@ module Apiwork
         type_error = validate_type(name, value, variant_type, path)
         return [type_error, nil] if type_error
 
-        if variant_definition[:enum]&.exclude?(value)
+        if variant[:enum]&.exclude?(value)
           enum_error = Issue.new(
             :value_invalid,
             'Invalid value',
             path:,
             meta: {
               actual: value,
-              expected: variant_definition[:enum],
+              expected: variant[:enum],
               field: name,
             },
           )

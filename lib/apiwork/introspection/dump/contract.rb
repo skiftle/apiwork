@@ -40,19 +40,19 @@ module Apiwork
 
         def build_local_types
           @contract_class.api_class.type_registry.each_pair
-            .select { |_name, definition| definition.scope == @contract_class }
-            .sort_by { |name, _definition| name.to_s }
-            .each_with_object({}) do |(name, definition), result|
-              result[name] = @type_dump.build_type(name, definition)
+            .select { |_name, type_definition| type_definition.scope == @contract_class }
+            .sort_by { |name, _type_definition| name.to_s }
+            .each_with_object({}) do |(name, type_definition), result|
+              result[name] = @type_dump.build_type(name, type_definition)
           end
         end
 
         def build_local_enums
           @contract_class.api_class.enum_registry.each_pair
-            .select { |_name, definition| definition.scope == @contract_class }
-            .sort_by { |name, _definition| name.to_s }
-            .each_with_object({}) do |(name, definition), result|
-              result[name] = @type_dump.build_enum(name, definition)
+            .select { |_name, enum_definition| enum_definition.scope == @contract_class }
+            .sort_by { |name, _enum_definition| name.to_s }
+            .each_with_object({}) do |(name, enum_definition), result|
+              result[name] = @type_dump.build_enum(name, enum_definition)
           end
         end
 
@@ -71,10 +71,10 @@ module Apiwork
             pending_types.each do |type_name|
               processed_types << type_name
 
-              definition = type_registry[type_name]
-              next unless definition
+              type_definition = type_registry[type_name]
+              next unless type_definition
 
-              dumped = @type_dump.build_type(type_name, definition)
+              dumped = @type_dump.build_type(type_name, type_definition)
               dumped_types[type_name] = dumped
 
               collect_references(dumped, referenced_types, referenced_enums)
@@ -82,8 +82,8 @@ module Apiwork
           end
 
           dumped_enums = referenced_enums.each_with_object({}) do |enum_name, result|
-            definition = enum_registry[enum_name]
-            result[enum_name] = @type_dump.build_enum(enum_name, definition) if definition
+            enum_definition = enum_registry[enum_name]
+            result[enum_name] = @type_dump.build_enum(enum_name, enum_definition) if enum_definition
           end
 
           sorted_types = dumped_types.sort_by { |name, _type| name.to_s }.to_h

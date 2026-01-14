@@ -224,19 +224,19 @@ module Apiwork
           result
         end
 
-        def build_union(union_definition)
+        def build_union(union)
           {
-            discriminator: union_definition.discriminator,
-            variants: union_definition.variants.map { |variant| build_variant(variant) },
+            discriminator: union.discriminator,
+            variants: union.variants.map { |variant| build_variant(variant) },
           }
         end
 
-        def build_variant(variant_definition)
-          variant_type = variant_definition[:custom_type] || variant_definition[:type]
+        def build_variant(variant)
+          variant_type = variant[:custom_type] || variant[:type]
           is_registered = registered_type?(variant_type)
 
           ref = is_registered ? qualified_name(variant_type, @contract_param) : nil
-          resolved_type = is_registered ? :ref : (variant_definition[:type] || :unknown)
+          resolved_type = is_registered ? :ref : (variant[:type] || :unknown)
 
           {
             ref:,
@@ -245,54 +245,54 @@ module Apiwork
             deprecated: false,
             description: nil,
             discriminator: nil,
-            enum: resolve_variant_enum(variant_definition),
+            enum: resolve_variant_enum(variant),
             example: nil,
             format: nil,
             max: nil,
             min: nil,
             nullable: false,
-            of: resolve_variant_of(variant_definition),
+            of: resolve_variant_of(variant),
             optional: false,
-            partial: variant_definition[:partial] == true,
-            shape: resolve_variant_shape(variant_definition, variant_type),
-            tag: variant_definition[:tag],
+            partial: variant[:partial] == true,
+            shape: resolve_variant_shape(variant, variant_type),
+            tag: variant[:tag],
             type: resolved_type,
-            value: variant_definition[:value],
+            value: variant[:value],
             variants: [],
           }
         end
 
-        def resolve_variant_enum(variant_definition)
-          return nil unless variant_definition[:enum]
+        def resolve_variant_enum(variant)
+          return nil unless variant[:enum]
 
-          if variant_definition[:enum].is_a?(Symbol)
+          if variant[:enum].is_a?(Symbol)
             if @contract_param.contract_class.respond_to?(:schema_class) &&
                @contract_param.contract_class.schema_class
-              scope = scope_for_enum(@contract_param, variant_definition[:enum])
+              scope = scope_for_enum(@contract_param, variant[:enum])
               api_class = @contract_param.contract_class.api_class
-              api_class.scoped_enum_name(scope, variant_definition[:enum])
+              api_class.scoped_enum_name(scope, variant[:enum])
             else
-              variant_definition[:enum]
+              variant[:enum]
             end
           else
-            variant_definition[:enum]
+            variant[:enum]
           end
         end
 
-        def resolve_variant_of(variant_definition)
-          return nil unless variant_definition[:of]
+        def resolve_variant_of(variant)
+          return nil unless variant[:of]
 
-          if registered_type?(variant_definition[:of])
-            ref_name = qualified_name(variant_definition[:of], @contract_param)
+          if registered_type?(variant[:of])
+            ref_name = qualified_name(variant[:of], @contract_param)
             { ref: ref_name, shape: {}, type: :ref }
           else
-            build_of_from_symbol(variant_definition[:of])
+            build_of_from_symbol(variant[:of])
           end
         end
 
-        def resolve_variant_shape(variant_definition, variant_type)
-          if variant_definition[:shape]
-            build_nested_shape(variant_definition[:shape])
+        def resolve_variant_shape(variant, variant_type)
+          if variant[:shape]
+            build_nested_shape(variant[:shape])
           else
             {}
           end

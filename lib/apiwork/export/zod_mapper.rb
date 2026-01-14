@@ -70,9 +70,9 @@ module Apiwork
       def build_action_request_query_schema(resource_name, action_name, query_params, parent_identifiers: [])
         schema_name = action_type_name(resource_name, action_name, 'RequestQuery', parent_identifiers:)
 
-        properties = query_params.sort_by { |name, _param| name.to_s }.map do |param_name, param_definition|
+        properties = query_params.sort_by { |name, _param| name.to_s }.map do |param_name, param_options|
           key = transform_key(param_name)
-          zod_type = map_field(param_definition)
+          zod_type = map_field(param_options)
           "  #{key}: #{zod_type}"
         end.join(",\n")
 
@@ -82,9 +82,9 @@ module Apiwork
       def build_action_request_body_schema(resource_name, action_name, body_params, parent_identifiers: [])
         schema_name = action_type_name(resource_name, action_name, 'RequestBody', parent_identifiers:)
 
-        properties = body_params.sort_by { |name, _param| name.to_s }.map do |param_name, param_definition|
+        properties = body_params.sort_by { |name, _param| name.to_s }.map do |param_name, param_options|
           key = transform_key(param_name)
-          zod_type = map_field(param_definition)
+          zod_type = map_field(param_options)
           "  #{key}: #{zod_type}"
         end.join(",\n")
 
