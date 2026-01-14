@@ -84,7 +84,7 @@ module Apiwork
       end
 
       def mapper
-        @mapper ||= TypeScriptMapper.new(data, key_format:)
+        @mapper ||= TypeScriptMapper.new(self)
       end
 
       def traverse_resources(resources = data.resources, &block)

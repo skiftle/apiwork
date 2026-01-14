@@ -17,19 +17,15 @@ module Apiwork
         uuid: 'z.uuid()',
       }.freeze
 
-      attr_reader :data,
-                  :key_format
-
-      def initialize(data, key_format: :keep)
-        @data = data
-        @key_format = key_format
+      def initialize(export)
+        @export = export
       end
 
       def build_object_schema(type_name, type, recursive: false)
         schema_name = pascal_case(type_name)
 
         properties = type.shape.sort_by { |name, _param| name.to_s }.map do |name, param|
-          key = transform_key(name)
+          key = @export.transform_key(name)
           zod_type = map_field(param)
           "  #{key}: #{zod_type}"
         end.join(",\n")
@@ -50,7 +46,7 @@ module Apiwork
           base_schema = map_param(variant)
 
           if type.discriminator && variant.tag && !ref_contains_discriminator?(variant, type.discriminator)
-            discriminator_key = transform_key(type.discriminator)
+            discriminator_key = @export.transform_key(type.discriminator)
             "#{base_schema}.extend({ #{discriminator_key}: z.literal('#{variant.tag}') })"
           else
             base_schema
@@ -60,7 +56,7 @@ module Apiwork
         union_body = variant_schemas.map { |schema| "  #{schema}" }.join(",\n")
 
         if type.discriminator
-          discriminator_key = transform_key(type.discriminator)
+          discriminator_key = @export.transform_key(type.discriminator)
           "export const #{schema_name}Schema = z.discriminatedUnion('#{discriminator_key}', [\n#{union_body}\n]);"
         else
           "export const #{schema_name}Schema = z.union([\n#{union_body}\n]);"
@@ -71,7 +67,7 @@ module Apiwork
         schema_name = action_type_name(resource_name, action_name, 'RequestQuery', parent_identifiers:)
 
         properties = query_params.sort_by { |name, _param| name.to_s }.map do |param_name, param|
-          key = transform_key(param_name)
+          key = @export.transform_key(param_name)
           zod_type = map_field(param)
           "  #{key}: #{zod_type}"
         end.join(",\n")
@@ -83,7 +79,7 @@ module Apiwork
         schema_name = action_type_name(resource_name, action_name, 'RequestBody', parent_identifiers:)
 
         properties = body_params.sort_by { |name, _param| name.to_s }.map do |param_name, param|
-          key = transform_key(param_name)
+          key = @export.transform_key(param_name)
           zod_type = map_field(param)
           "  #{key}: #{zod_type}"
         end.join(",\n")
@@ -166,7 +162,7 @@ module Apiwork
         partial = param.partial?
 
         properties = param.shape.sort_by { |name, _field| name.to_s }.map do |name, field|
-          key = transform_key(name)
+          key = @export.transform_key(name)
           zod_type = if partial
                        map_field(field, force_optional: false)
                      else
@@ -207,7 +203,7 @@ module Apiwork
       end
 
       def map_discriminated_union(param)
-        discriminator_field = transform_key(param.discriminator)
+        discriminator_field = @export.transform_key(param.discriminator)
 
         variant_schemas = param.variants.map { |variant| map_param(variant) }
 
@@ -267,13 +263,13 @@ module Apiwork
       private
 
       def type_or_enum_reference?(symbol)
-        data.types.key?(symbol) || data.enums.key?(symbol)
+        @export.data.types.key?(symbol) || @export.data.enums.key?(symbol)
       end
 
       def ref_contains_discriminator?(variant, discriminator)
         return false unless variant.ref?
 
-        referenced_type = data.types[variant.ref]
+        referenced_type = @export.data.types[variant.ref]
         return false unless referenced_type
 
         referenced_type.shape.key?(discriminator)
@@ -282,7 +278,7 @@ module Apiwork
       def resolve_enum_schema(param)
         return nil unless param.scalar? && param.enum?
 
-        if param.enum_ref? && data.enums.key?(param.enum)
+        if param.enum_ref? && @export.data.enums.key?(param.enum)
           "#{pascal_case(param.enum)}Schema"
         else
           enum_literal = param.enum.map { |value| "'#{value}'" }.join(', ')
@@ -295,22 +291,6 @@ module Apiwork
         optional = force_optional.nil? ? param.optional? : force_optional
         type += '.optional()' if optional
         type
-      end
-
-      def transform_key(key)
-        key = key.to_s
-
-        leading_underscore = key.start_with?('_')
-        base = leading_underscore ? key[1..] : key
-
-        transformed = case key_format
-                      when :camel then base.camelize(:lower)
-                      when :kebab then base.dasherize
-                      when :underscore then base.underscore
-                      else base
-                      end
-
-        leading_underscore ? "_#{transformed}" : transformed
       end
     end
   end

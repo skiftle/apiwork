@@ -3,19 +3,15 @@
 module Apiwork
   module Export
     class TypeScriptMapper
-      attr_reader :data,
-                  :key_format
-
-      def initialize(data, key_format: :keep)
-        @data = data
-        @key_format = key_format
+      def initialize(export)
+        @export = export
       end
 
       def build_interface(type_name, type)
         type_name = pascal_case(type_name)
 
         properties = type.shape.sort_by { |name, _param| name.to_s }.map do |name, param|
-          key = transform_key(name)
+          key = @export.transform_key(name)
           ts_type = map_field(param)
           optional_marker = param.optional? ? '?' : ''
 
@@ -45,7 +41,7 @@ module Apiwork
           base_type = map_param(variant)
 
           if type.discriminator && variant.tag && !ref_contains_discriminator?(variant, type.discriminator)
-            discriminator_key = transform_key(type.discriminator)
+            discriminator_key = @export.transform_key(type.discriminator)
             "{ #{discriminator_key}: '#{variant.tag}' } & #{base_type}"
           else
             base_type
@@ -70,7 +66,7 @@ module Apiwork
         type_name = action_type_name(resource_name, action_name, 'RequestQuery', parent_identifiers:)
 
         properties = query_params.sort_by { |name, _param| name.to_s }.map do |param_name, param|
-          key = transform_key(param_name)
+          key = @export.transform_key(param_name)
           ts_type = map_field(param)
           optional_marker = param.optional? ? '?' : ''
           "  #{key}#{optional_marker}: #{ts_type};"
@@ -83,7 +79,7 @@ module Apiwork
         type_name = action_type_name(resource_name, action_name, 'RequestBody', parent_identifiers:)
 
         properties = body_params.sort_by { |name, _param| name.to_s }.map do |param_name, param|
-          key = transform_key(param_name)
+          key = @export.transform_key(param_name)
           ts_type = map_field(param)
           optional_marker = param.optional? ? '?' : ''
           "  #{key}#{optional_marker}: #{ts_type};"
@@ -171,7 +167,7 @@ module Apiwork
         partial = param.object? && param.partial?
 
         properties = param.shape.sort_by { |name, _field| name.to_s }.map do |name, field|
-          key = transform_key(name)
+          key = @export.transform_key(name)
           ts_type = map_field(field)
           optional_marker = partial || field.optional? ? '?' : ''
           "#{key}#{optional_marker}: #{ts_type}"
@@ -257,32 +253,16 @@ module Apiwork
       private
 
       def type_or_enum_reference?(symbol)
-        data.types.key?(symbol) || data.enums.key?(symbol)
+        @export.data.types.key?(symbol) || @export.data.enums.key?(symbol)
       end
 
       def ref_contains_discriminator?(variant, discriminator)
         return false unless variant.ref?
 
-        referenced_type = data.types[variant.ref]
+        referenced_type = @export.data.types[variant.ref]
         return false unless referenced_type
 
         referenced_type.shape.key?(discriminator)
-      end
-
-      def transform_key(key)
-        key = key.to_s
-
-        leading_underscore = key.start_with?('_')
-        base = leading_underscore ? key[1..] : key
-
-        transformed = case key_format
-                      when :camel then base.camelize(:lower)
-                      when :kebab then base.dasherize
-                      when :underscore then base.underscore
-                      else base
-                      end
-
-        leading_underscore ? "_#{transformed}" : transformed
       end
     end
   end
