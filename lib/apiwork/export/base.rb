@@ -255,14 +255,12 @@ module Apiwork
       # Transforms a key according to the configured key format.
       #
       # @param key [String, Symbol] the key to transform
-      # @param strategy [Symbol, nil] override the default key_format
       # @return [String]
-      def transform_key(key, strategy = nil)
+      def transform_key(key)
         key = key.to_s
-        strategy ||= key_format
 
         transform = lambda do |key_string|
-          case strategy
+          case key_format
           when :camel then key_string.camelize(:lower)
           when :kebab then key_string.dasherize
           when :underscore then key_string.underscore

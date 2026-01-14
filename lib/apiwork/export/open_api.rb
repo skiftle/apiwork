@@ -41,7 +41,10 @@ module Apiwork
         return nil unless data.info&.servers&.any?
 
         data.info.servers.map do |server|
-          { description: server.description, url: server.url }.compact
+          {
+            description: server.description,
+            url: server.url,
+          }.compact
         end
       end
 
@@ -128,7 +131,7 @@ module Apiwork
         if key_format == :keep
           joined
         else
-          transform_key(joined, key_format)
+          transform_key(joined)
         end
       end
 
@@ -559,7 +562,7 @@ module Apiwork
       end
 
       def schema_name(name)
-        transform_key(name, key_format)
+        transform_key(name)
       end
 
       def type_exists?(symbol)
