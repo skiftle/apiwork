@@ -68,64 +68,49 @@ module Apiwork
       end
 
       def expand_transitive_dependencies(type_names)
-        all_type_data = @data.types.transform_values(&:to_h)
         added = true
 
         while added
           added = false
           type_names.dup.each do |type_name|
-            type_data = all_type_data[type_name]
-            next unless type_data
+            type = @data.types[type_name]
+            next unless type
 
-            refs = collect_refs_from_type_data(type_data, all_type_data.keys)
-            refs.each do |ref|
-              next if type_names.include?(ref)
+            reference_names = collect_reference_names_from_type(type)
+            reference_names.each do |reference_name|
+              next unless @data.types.key?(reference_name)
+              next if type_names.include?(reference_name)
 
-              type_names << ref
+              type_names << reference_name
               added = true
             end
           end
         end
       end
 
-      def collect_refs_from_type_data(type_data, known_types)
-        refs = []
-        collect_refs_from_shape(type_data[:shape], known_types, refs)
-        collect_refs_from_variants(type_data[:variants], known_types, refs)
-        refs.uniq
-      end
+      def collect_reference_names_from_type(type)
+        reference_names = []
 
-      def collect_refs_from_shape(shape, known_types, refs)
-        return unless shape.is_a?(Hash)
-
-        shape.each_value do |field|
-          next unless field.is_a?(Hash)
-
-          refs << field[:ref] if field[:ref].is_a?(Symbol) && known_types.include?(field[:ref])
-
-          collect_of_ref(field[:of], known_types, refs)
-          collect_refs_from_shape(field[:shape], known_types, refs)
-          collect_refs_from_variants(field[:variants], known_types, refs)
+        if type.object?
+          type.shape.each_value { |param| collect_reference_names_from_param(param, reference_names) }
+        elsif type.union?
+          type.variants.each { |param| collect_reference_names_from_param(param, reference_names) }
         end
+
+        reference_names.uniq
       end
 
-      def collect_refs_from_variants(variants, known_types, refs)
-        return unless variants.is_a?(Array)
+      def collect_reference_names_from_param(param, reference_names)
+        reference_names << param.ref if param.ref?
 
-        variants.each do |variant|
-          next unless variant.is_a?(Hash)
+        param.shape.each_value { |nested| collect_reference_names_from_param(nested, reference_names) } if param.object?
 
-          refs << variant[:ref] if variant[:ref].is_a?(Symbol) && known_types.include?(variant[:ref])
-
-          collect_of_ref(variant[:of], known_types, refs)
-          collect_refs_from_shape(variant[:shape], known_types, refs)
+        if param.array?
+          collect_reference_names_from_param(param.of, reference_names) if param.of
+          param.shape.each_value { |nested| collect_reference_names_from_param(nested, reference_names) }
         end
-      end
 
-      def collect_of_ref(of_data, known_types, refs)
-        return unless of_data.is_a?(Hash)
-
-        refs << of_data[:ref] if of_data[:ref].is_a?(Symbol) && known_types.include?(of_data[:ref])
+        param.variants.each { |variant| collect_reference_names_from_param(variant, reference_names) } if param.union?
       end
 
       def collect_enum_names_from_actions
@@ -168,29 +153,30 @@ module Apiwork
 
       def collect_enum_names_from_types(resolved_types, enum_names)
         resolved_types.each_value do |type|
-          collect_enums_from_type_data(type.to_h, enum_names)
+          collect_enums_from_type(type, enum_names)
         end
       end
 
-      def collect_enums_from_type_data(type_data, enum_names)
-        shape = type_data[:shape] || {}
-        shape.each_value do |field|
-          next unless field.is_a?(Hash)
+      def collect_enums_from_type(type, enum_names)
+        if type.object?
+          type.shape.each_value { |param| collect_enums_from_type_param(param, enum_names) }
+        elsif type.union?
+          type.variants.each { |param| collect_enums_from_type_param(param, enum_names) }
+        end
+      end
 
-          enum_names << field[:enum] if field[:enum].is_a?(Symbol)
-          enum_names << field[:ref] if field[:ref].is_a?(Symbol) && @data.enums.key?(field[:ref])
+      def collect_enums_from_type_param(param, enum_names)
+        enum_names << param.enum if param.enum_ref?
+        enum_names << param.ref if param.ref? && @data.enums.key?(param.ref)
 
-          of_ref = field[:of][:ref] if field[:of].is_a?(Hash)
-          enum_names << of_ref if of_ref.is_a?(Symbol) && @data.enums.key?(of_ref)
+        param.shape.each_value { |nested| collect_enums_from_type_param(nested, enum_names) } if param.object?
 
-          collect_enums_from_type_data(field, enum_names) if field[:shape]
+        if param.array?
+          collect_enums_from_type_param(param.of, enum_names) if param.of
+          param.shape.each_value { |nested| collect_enums_from_type_param(nested, enum_names) }
         end
 
-        return unless type_data[:variants].is_a?(Array)
-
-        type_data[:variants].each do |variant|
-          collect_enums_from_type_data(variant, enum_names) if variant.is_a?(Hash)
-        end
+        param.variants.each { |variant| collect_enums_from_type_param(variant, enum_names) } if param.union?
       end
     end
   end
