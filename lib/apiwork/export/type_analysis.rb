@@ -5,7 +5,7 @@ module Apiwork
     class TypeAnalysis
       class << self
         def topological_sort_types(all_types)
-          reverse_deps = Hash.new { |h, k| h[k] = [] }
+          reverse_deps = Hash.new { |hash, key| hash[key] = [] }
 
           all_types.each do |type_name, type_shape|
             referenced_types = type_references(type_shape, filter: all_types.keys)
