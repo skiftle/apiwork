@@ -402,15 +402,15 @@ module Apiwork
         options:,
         &block
       )
-        expansion_key = [@contract_class.object_id, type]
+        shape = Object.new(
+          @contract_class,
+          action_name: @action_name,
+          visited_types: visited_types.dup.add([@contract_class.object_id, type]),
+        )
 
-        visited_with_current = visited_types.dup.add(expansion_key)
+        copy_type_definition_params(type_definition, shape)
 
-        shape_param_definition = Object.new(@contract_class, action_name: @action_name, visited_types: visited_with_current)
-
-        copy_type_definition_params(type_definition, shape_param_definition)
-
-        shape_param_definition.instance_eval(&block) if block_given?
+        shape.instance_eval(&block) if block_given?
 
         @params[name] = (@params[name] || {}).merge(
           {
@@ -421,7 +421,7 @@ module Apiwork
             name:,
             of:,
             optional:,
-            shape: shape_param_definition,
+            shape:,
             type: :object,
             **options,
           }.compact,
@@ -456,9 +456,9 @@ module Apiwork
         if resolved_shape
           @params[name][:shape] = resolved_shape
         elsif block_given? && type != :array
-          shape_param_definition = Object.new(@contract_class, action_name: @action_name)
-          shape_param_definition.instance_eval(&block)
-          @params[name][:shape] = shape_param_definition
+          nested_shape = Object.new(@contract_class, action_name: @action_name)
+          nested_shape.instance_eval(&block)
+          @params[name][:shape] = nested_shape
         end
       end
 

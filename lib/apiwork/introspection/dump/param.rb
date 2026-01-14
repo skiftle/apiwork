@@ -409,13 +409,13 @@ module Apiwork
           schema_class = resolve_schema_class
           return nil unless schema_class
 
-          if (attribute_definition = schema_class.attributes[param_name])
-            description = i18n_attribute_description(attribute_definition)
+          if (attribute = schema_class.attributes[param_name])
+            description = i18n_attribute_description(attribute)
             return description if description
           end
 
-          if (association_definition = schema_class.associations[param_name])
-            description = i18n_association_description(association_definition)
+          if (association = schema_class.associations[param_name])
+            description = i18n_association_description(association)
             return description if description
           end
 
@@ -429,22 +429,22 @@ module Apiwork
           nil
         end
 
-        def i18n_attribute_description(attribute_definition)
+        def i18n_attribute_description(attribute)
           api_class = @contract_param.contract_class.api_class
           return nil unless api_class
 
-          schema_name = attribute_definition.schema_class_name
-          attribute_name = attribute_definition.name
+          schema_name = attribute.schema_class_name
+          attribute_name = attribute.name
 
           api_class.translate(:schemas, schema_name, :attributes, attribute_name, :description)
         end
 
-        def i18n_association_description(association_definition)
+        def i18n_association_description(association)
           api_class = @contract_param.contract_class.api_class
           return nil unless api_class
 
-          schema_name = association_definition.schema_class_name
-          association_name = association_definition.name
+          schema_name = association.schema_class_name
+          association_name = association.name
 
           api_class.translate(:schemas, schema_name, :associations, association_name, :description)
         end
