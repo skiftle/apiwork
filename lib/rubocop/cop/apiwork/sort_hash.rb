@@ -78,7 +78,7 @@ module RuboCop
         end
 
         def has_duplicate_keys?(pairs)
-          keys = pairs.map { |p| key_name(p) }
+          keys = pairs.map { |pair| key_name(pair) }
           keys.size != keys.uniq.size
         end
 
@@ -104,9 +104,9 @@ module RuboCop
 
         def sort_pairs(pairs)
           if shorthands_first?
-            pairs.sort_by { |p| [shorthand?(p) ? 0 : 1, key_name(p)] }
+            pairs.sort_by { |pair| [shorthand?(pair) ? 0 : 1, key_name(pair)] }
           else
-            pairs.sort_by { |p| key_name(p) }
+            pairs.sort_by { |pair| key_name(pair) }
           end
         end
 

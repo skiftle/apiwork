@@ -14,7 +14,7 @@ namespace :apiwork do
     desc 'Write exports to files'
     task write: :environment do
       # Load API definitions
-      Dir[Rails.root.join('config/apis/**/*.rb')].sort.each { |f| load f }
+      Dir[Rails.root.join('config/apis/**/*.rb')].sort.each { |file| load file }
 
       api_path = ENV['API_PATH']
       export_name = ENV['EXPORT_NAME']&.to_sym

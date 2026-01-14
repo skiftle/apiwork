@@ -276,7 +276,7 @@ module Apiwork
       resource_base = resource_name.to_s.singularize
       namespaces = api_class.structure.namespaces
 
-      contract_name = [*namespaces.map { |n| n.to_s.camelize }, "#{resource_base.camelize}Contract"].join('::')
+      contract_name = [*namespaces.map { |namespace| namespace.to_s.camelize }, "#{resource_base.camelize}Contract"].join('::')
       contract_path = ['app/contracts', *namespaces, "#{resource_base}_contract.rb"].join('/')
 
       raise ConfigurationError,

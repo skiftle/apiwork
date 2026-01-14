@@ -38,7 +38,7 @@ module Apiwork
     end
 
     def public_api?(obj)
-      api_tag = obj.docstring.tags(:api).find { |t| t.text == 'public' }
+      api_tag = obj.docstring.tags(:api).find { |tag| tag.text == 'public' }
 
       if obj.type == :method
         return false unless api_tag
@@ -46,7 +46,7 @@ module Apiwork
         parent = obj.namespace
         return true unless parent
 
-        parent_api_tag = parent.docstring.tags(:api).find { |t| t.text == 'public' }
+        parent_api_tag = parent.docstring.tags(:api).find { |tag| tag.text == 'public' }
         return api_tag.object_id != parent_api_tag&.object_id
       end
 
@@ -100,11 +100,11 @@ module Apiwork
       end
 
       methods
-        .select { |m| public_api?(m) }
-        .select { |m| documented?(m) }
+        .select { |method| public_api?(method) }
+        .select { |method| documented?(method) }
         .uniq(&:name)
         .sort_by(&:name)
-        .map { |m| serialize_method(m) }
+        .map { |method| serialize_method(method) }
     end
 
     def documented?(method)
@@ -205,7 +205,7 @@ module Apiwork
 
     def module_filepath(path)
       parts = path.sub('Apiwork::', '').split('::')
-      file_parts = parts.map { |p| dasherize(p) }
+      file_parts = parts.map { |part| dasherize(part) }
       filename = file_parts.any? ? "#{file_parts.join('-')}.md" : 'index.md'
       File.join(OUTPUT_DIR, filename)
     end
@@ -238,7 +238,7 @@ module Apiwork
     def linkify_type(type_str)
       parsed = yard_type_parser.parse(type_str)
       names = extract_type_names(parsed)
-      linkable_names = names.select { |n| linkable_type?(n) }
+      linkable_names = names.select { |name| linkable_type?(name) }
 
       if linkable_names.empty?
         "`#{type_str}`"
@@ -427,7 +427,7 @@ module Apiwork
       end
 
       if method[:returns]
-        types = method[:returns][:types].map { |t| linkify_type(t) }.join(', ')
+        types = method[:returns][:types].map { |type| linkify_type(type) }.join(', ')
         description = linkify_yard_refs(method[:returns][:description])
         parts << "**Returns**\n"
         parts << (description.blank? ? "#{types}\n" : "#{types} — #{description}\n")

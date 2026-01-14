@@ -185,7 +185,7 @@ module Apiwork
       def extract_namespaces(path)
         return [] if path == '/'
 
-        path.split('/').reject(&:empty?).map { |n| n.tr('-', '_').to_sym }
+        path.split('/').reject(&:empty?).map { |segment| segment.tr('-', '_').to_sym }
       end
 
       def collect_all_schema_classes
@@ -281,7 +281,7 @@ module Apiwork
 
       def infer_contract_class_name(name)
         contract_name = name.to_s.singularize.camelize
-        [*@namespaces.map { |n| n.to_s.camelize }, "#{contract_name}Contract"].join('::')
+        [*@namespaces.map { |namespace| namespace.to_s.camelize }, "#{contract_name}Contract"].join('::')
       end
 
       def contract_path_to_class_name(path)

@@ -196,7 +196,7 @@ module Apiwork
           end
         end
 
-        all_types.sort_by { |t| t[:name] }.map { |t| t[:code] }.join("\n\n")
+        all_types.sort_by { |type_entry| type_entry[:name] }.map { |type_entry| type_entry[:code] }.join("\n\n")
       end
 
       def traverse_resources(resources = data.resources, &block)
