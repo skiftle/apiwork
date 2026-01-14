@@ -6,7 +6,7 @@ info:
 paths:
   "/invoices":
     get:
-      operationId: invoices_index
+      operationId: invoicesIndex
       responses:
         '200':
           content:
@@ -22,14 +22,14 @@ paths:
                 - invoices
           description: Successful response
     post:
-      operationId: invoices_create
+      operationId: invoicesCreate
       requestBody:
         content:
           application/json:
             schema:
               properties:
                 invoice:
-                  "$ref": "#/components/schemas/invoice_payload"
+                  "$ref": "#/components/schemas/invoicePayload"
               type: object
               required:
               - invoice
@@ -48,7 +48,7 @@ paths:
           description: Successful response
   "/invoices/{id}":
     get:
-      operationId: invoices_show
+      operationId: invoicesShow
       parameters:
       - in: path
         name: id
@@ -68,7 +68,7 @@ paths:
                 - invoice
           description: Successful response
     patch:
-      operationId: invoices_update
+      operationId: invoicesUpdate
       parameters:
       - in: path
         name: id
@@ -81,7 +81,7 @@ paths:
             schema:
               properties:
                 invoice:
-                  "$ref": "#/components/schemas/invoice_payload"
+                  "$ref": "#/components/schemas/invoicePayload"
               type: object
               required:
               - invoice
@@ -99,7 +99,7 @@ paths:
                 - invoice
           description: Successful response
     delete:
-      operationId: invoices_destroy
+      operationId: invoicesDestroy
       parameters:
       - in: path
         name: id
@@ -113,13 +113,13 @@ components:
   schemas:
     invoice:
       properties:
-        created_at:
+        createdAt:
           type: string
           format: date-time
         id:
           type: string
           format: uuid
-        issued_on:
+        issuedOn:
           type: string
           format: date
         notes:
@@ -128,21 +128,21 @@ components:
           type: string
         status:
           type: string
-        updated_at:
+        updatedAt:
           type: string
           format: date-time
       type: object
       required:
-      - created_at
+      - createdAt
       - id
-      - issued_on
+      - issuedOn
       - notes
       - number
       - status
-      - updated_at
-    invoice_payload:
+      - updatedAt
+    invoicePayload:
       properties:
-        issued_on:
+        issuedOn:
           type: string
           format: date
         notes:
@@ -153,7 +153,7 @@ components:
           type: string
       type: object
       required:
-      - issued_on
+      - issuedOn
       - notes
       - number
       - status

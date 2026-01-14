@@ -4,16 +4,16 @@ export interface ErrorResponseBody {
 }
 
 export interface Invoice {
-  created_at: string;
+  createdAt: string;
   customer: Record<string, unknown>;
-  customer_id: string;
+  customerId: string;
   id: string;
-  issued_on: null | string;
+  issuedOn: null | string;
   lines: unknown[];
   notes: null | string;
   number: string;
   status: null | string;
-  updated_at: string;
+  updatedAt: string;
 }
 
 export interface InvoiceArchiveSuccessResponseBody {
@@ -22,8 +22,8 @@ export interface InvoiceArchiveSuccessResponseBody {
 }
 
 export interface InvoiceCreatePayload {
-  customer_id: string;
-  issued_on?: null | string;
+  customerId: string;
+  issuedOn?: null | string;
   lines?: unknown[];
   notes?: null | string;
   number: string;
@@ -59,15 +59,15 @@ export interface InvoiceShowSuccessResponseBody {
 }
 
 export interface InvoiceSort {
-  created_at?: SortDirection;
-  issued_on?: SortDirection;
+  createdAt?: SortDirection;
+  issuedOn?: SortDirection;
   status?: SortDirection;
-  updated_at?: SortDirection;
+  updatedAt?: SortDirection;
 }
 
 export interface InvoiceUpdatePayload {
-  customer_id?: string;
-  issued_on?: null | string;
+  customerId?: string;
+  issuedOn?: null | string;
   lines?: unknown[];
   notes?: null | string;
   number?: string;
@@ -148,11 +148,11 @@ export type Layer = 'contract' | 'domain' | 'http';
 
 export interface NullableStringFilter {
   contains?: string;
-  ends_with?: string;
+  endsWith?: string;
   eq?: string;
   in?: string[];
   null?: boolean;
-  starts_with?: string;
+  startsWith?: string;
 }
 
 export interface OffsetPagination {
@@ -167,8 +167,8 @@ export type SortDirection = 'asc' | 'desc';
 
 export interface StringFilter {
   contains?: string;
-  ends_with?: string;
+  endsWith?: string;
   eq?: string;
   in?: string[];
-  starts_with?: string;
+  startsWith?: string;
 }

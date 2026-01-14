@@ -1,15 +1,15 @@
 export interface Comment {
-  author_name: null | string;
+  authorName: null | string;
   body: string;
   commentable?: CommentCommentable;
-  created_at: string;
+  createdAt: string;
   id: string;
 }
 
-export type CommentCommentable = { commentable_type: 'post' } & Post | { commentable_type: 'video' } & Video | { commentable_type: 'image' } & Image;
+export type CommentCommentable = { commentableType: 'post' } & Post | { commentableType: 'video' } & Video | { commentableType: 'image' } & Image;
 
 export interface CommentCreatePayload {
-  author_name?: null | string;
+  authorName?: null | string;
   body: string;
 }
 
@@ -39,11 +39,11 @@ export interface CommentShowSuccessResponseBody {
 }
 
 export interface CommentSort {
-  created_at?: SortDirection;
+  createdAt?: SortDirection;
 }
 
 export interface CommentUpdatePayload {
-  author_name?: null | string;
+  authorName?: null | string;
   body?: string;
 }
 
@@ -137,7 +137,7 @@ export interface ErrorResponseBody {
 
 export interface Image {
   comments?: Record<string, unknown>[];
-  created_at: string;
+  createdAt: string;
   height: null | number;
   id: string;
   title: string;
@@ -166,7 +166,7 @@ export interface OffsetPagination {
 export interface Post {
   body: null | string;
   comments?: Record<string, unknown>[];
-  created_at: string;
+  createdAt: string;
   id: string;
   title: string;
 }
@@ -175,7 +175,7 @@ export type SortDirection = 'asc' | 'desc';
 
 export interface Video {
   comments?: Record<string, unknown>[];
-  created_at: string;
+  createdAt: string;
   duration: null | number;
   id: string;
   title: string;

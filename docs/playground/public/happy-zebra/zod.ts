@@ -64,9 +64,9 @@ export const PostPageSchema = z.object({
 
 export const ProfileSchema = z.object({
   bio: z.string().nullable(),
-  created_at: z.iso.datetime(),
+  createdAt: z.iso.datetime(),
   id: z.string(),
-  updated_at: z.iso.datetime(),
+  updatedAt: z.iso.datetime(),
   user: z.record(z.string(), z.unknown()).optional(),
   website: z.string().nullable()
 });
@@ -89,10 +89,10 @@ export const ProfileNestedUpdatePayloadSchema = z.object({
 
 export const StringFilterSchema = z.object({
   contains: z.string().optional(),
-  ends_with: z.string().optional(),
+  endsWith: z.string().optional(),
   eq: z.string().optional(),
   in: z.array(z.string()).optional(),
-  starts_with: z.string().optional()
+  startsWith: z.string().optional()
 });
 
 export const UserPageSchema = z.object({
@@ -101,8 +101,8 @@ export const UserPageSchema = z.object({
 });
 
 export const UserSortSchema = z.object({
-  created_at: SortDirectionSchema.optional(),
-  updated_at: SortDirectionSchema.optional()
+  createdAt: SortDirectionSchema.optional(),
+  updatedAt: SortDirectionSchema.optional()
 });
 
 export const CommentCreateSuccessResponseBodySchema = z.object({
@@ -177,12 +177,12 @@ export const PostUpdateSuccessResponseBodySchema = z.object({
 });
 
 export const UserSchema = z.object({
-  created_at: z.iso.datetime(),
+  createdAt: z.iso.datetime(),
   email: z.string(),
   id: z.string(),
   posts: z.array(PostSchema),
   profile: ProfileSchema,
-  updated_at: z.iso.datetime(),
+  updatedAt: z.iso.datetime(),
   username: z.string()
 });
 
@@ -649,9 +649,9 @@ export type PostsUpdateResponseBody = ErrorResponseBody | PostUpdateSuccessRespo
 
 export interface Profile {
   bio: null | string;
-  created_at: string;
+  createdAt: string;
   id: string;
-  updated_at: string;
+  updatedAt: string;
   user?: Record<string, unknown>;
   website: null | string;
 }
@@ -678,19 +678,19 @@ export type SortDirection = 'asc' | 'desc';
 
 export interface StringFilter {
   contains?: string;
-  ends_with?: string;
+  endsWith?: string;
   eq?: string;
   in?: string[];
-  starts_with?: string;
+  startsWith?: string;
 }
 
 export interface User {
-  created_at: string;
+  createdAt: string;
   email: string;
   id: string;
   posts: Post[];
   profile: Profile;
-  updated_at: string;
+  updatedAt: string;
   username: string;
 }
 
@@ -731,8 +731,8 @@ export interface UserShowSuccessResponseBody {
 }
 
 export interface UserSort {
-  created_at?: SortDirection;
-  updated_at?: SortDirection;
+  createdAt?: SortDirection;
+  updatedAt?: SortDirection;
 }
 
 export interface UserUpdatePayload {

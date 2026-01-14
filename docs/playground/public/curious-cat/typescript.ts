@@ -23,15 +23,15 @@ export interface OffsetPagination {
 
 export interface Profile {
   addresses: { city: string; primary: boolean; street: string; zip: string }[];
-  created_at: string;
+  createdAt: string;
   email: string;
   id: string;
   metadata: string;
   name: string;
-  preferences: { notifications: { email: boolean; push: boolean }; ui: { sidebar_collapsed: boolean; theme: string } };
+  preferences: { notifications: { email: boolean; push: boolean }; ui: { sidebarCollapsed: boolean; theme: string } };
   settings: { language: string; notifications: boolean; theme: string };
   tags: string[];
-  updated_at: string;
+  updatedAt: string;
 }
 
 export interface ProfileCreatePayload {
@@ -39,7 +39,7 @@ export interface ProfileCreatePayload {
   email: string;
   metadata: string;
   name: string;
-  preferences: { notifications: { email: boolean; push: boolean }; ui: { sidebar_collapsed: boolean; theme: string } };
+  preferences: { notifications: { email: boolean; push: boolean }; ui: { sidebarCollapsed: boolean; theme: string } };
   settings: { language: string; notifications: boolean; theme: string };
   tags: string[];
 }
@@ -70,7 +70,7 @@ export interface ProfileUpdatePayload {
   email?: string;
   metadata?: string;
   name?: string;
-  preferences?: { notifications: { email: boolean; push: boolean }; ui: { sidebar_collapsed: boolean; theme: string } };
+  preferences?: { notifications: { email: boolean; push: boolean }; ui: { sidebarCollapsed: boolean; theme: string } };
   settings?: { language: string; notifications: boolean; theme: string };
   tags?: string[];
 }

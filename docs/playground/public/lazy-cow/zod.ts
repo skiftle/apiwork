@@ -6,7 +6,7 @@ export const StatusHealthResponseSchema = z.object({
   body: StatusHealthResponseBodySchema
 });
 
-export const StatusStatsResponseBodySchema = z.object({ posts_count: z.number().int(), uptime_seconds: z.number().int(), users_count: z.number().int() });
+export const StatusStatsResponseBodySchema = z.object({ postsCount: z.number().int(), uptimeSeconds: z.number().int(), usersCount: z.number().int() });
 
 export const StatusStatsResponseSchema = z.object({
   body: StatusStatsResponseBodySchema
@@ -22,4 +22,4 @@ export interface StatusStatsResponse {
   body: StatusStatsResponseBody;
 }
 
-export type StatusStatsResponseBody = { posts_count: number; uptime_seconds: number; users_count: number };
+export type StatusStatsResponseBody = { postsCount: number; uptimeSeconds: number; usersCount: number };

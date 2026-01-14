@@ -49,7 +49,7 @@ export type Layer = 'contract' | 'domain' | 'http';
 export interface Motorcycle {
   brand: string;
   color: null | string;
-  engine_cc: null | number;
+  engineCc: null | number;
   id: string;
   model: string;
   type: 'motorcycle';
@@ -59,7 +59,7 @@ export interface Motorcycle {
 export interface MotorcycleCreatePayload {
   brand: string;
   color?: null | string;
-  engine_cc?: null | number;
+  engineCc?: null | number;
   model: string;
   type: 'motorcycle';
   year?: null | number;
@@ -68,7 +68,7 @@ export interface MotorcycleCreatePayload {
 export interface MotorcycleUpdatePayload {
   brand?: string;
   color?: null | string;
-  engine_cc?: null | number;
+  engineCc?: null | number;
   model?: string;
   type?: 'motorcycle';
   year?: null | number;
@@ -97,10 +97,10 @@ export type SortDirection = 'asc' | 'desc';
 
 export interface StringFilter {
   contains?: string;
-  ends_with?: string;
+  endsWith?: string;
   eq?: string;
   in?: string[];
-  starts_with?: string;
+  startsWith?: string;
 }
 
 export interface Truck {
@@ -108,7 +108,7 @@ export interface Truck {
   color: null | string;
   id: string;
   model: string;
-  payload_capacity: null | number;
+  payloadCapacity: null | number;
   type: 'truck';
   year: null | number;
 }
@@ -117,7 +117,7 @@ export interface TruckCreatePayload {
   brand: string;
   color?: null | string;
   model: string;
-  payload_capacity?: null | number;
+  payloadCapacity?: null | number;
   type: 'truck';
   year?: null | number;
 }
@@ -126,7 +126,7 @@ export interface TruckUpdatePayload {
   brand?: string;
   color?: null | string;
   model?: string;
-  payload_capacity?: null | number;
+  payloadCapacity?: null | number;
   type?: 'truck';
   year?: null | number;
 }

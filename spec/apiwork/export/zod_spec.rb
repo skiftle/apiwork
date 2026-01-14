@@ -11,8 +11,9 @@ RSpec.describe Apiwork::Export::Zod do
       expect(described_class.default_options[:version]).to eq('4')
     end
 
-    it 'has default key_format' do
-      expect(described_class.default_options[:key_format]).to eq(:keep)
+    it 'inherits key_format from API' do
+      export = described_class.new(path)
+      expect(export.key_format).to eq(:keep)
     end
   end
 

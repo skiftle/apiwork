@@ -1,19 +1,19 @@
 export interface Article {
   body: null | string;
   category?: Record<string, unknown> | null;
-  created_at: string;
+  createdAt: string;
   id: string;
-  published_on: null | string;
+  publishedOn: null | string;
   rating: null | number;
   status: ArticleStatus | null;
   title: string;
-  updated_at: string;
-  view_count: null | number;
+  updatedAt: string;
+  viewCount: null | number;
 }
 
 export interface ArticleCreatePayload {
   body?: null | string;
-  published_on?: null | string;
+  publishedOn?: null | string;
   status?: ArticleStatus | null;
   title: string;
 }
@@ -27,11 +27,11 @@ export interface ArticleFilter {
   _and?: ArticleFilter[];
   _not?: ArticleFilter;
   _or?: ArticleFilter[];
-  published_on?: NullableDateFilter | string;
+  publishedOn?: NullableDateFilter | string;
   rating?: NullableDecimalFilter | number;
   status?: ArticleStatusFilter;
   title?: StringFilter | string;
-  view_count?: NullableIntegerFilter | number;
+  viewCount?: NullableIntegerFilter | number;
 }
 
 export interface ArticleIndexSuccessResponseBody {
@@ -51,11 +51,11 @@ export interface ArticleShowSuccessResponseBody {
 }
 
 export interface ArticleSort {
-  created_at?: SortDirection;
-  published_on?: SortDirection;
+  createdAt?: SortDirection;
+  publishedOn?: SortDirection;
   rating?: SortDirection;
   status?: SortDirection;
-  view_count?: SortDirection;
+  viewCount?: SortDirection;
 }
 
 export type ArticleStatus = 'archived' | 'draft' | 'published';
@@ -64,7 +64,7 @@ export type ArticleStatusFilter = ArticleStatus | { eq?: ArticleStatus; in?: Art
 
 export interface ArticleUpdatePayload {
   body?: null | string;
-  published_on?: null | string;
+  publishedOn?: null | string;
   status?: ArticleStatus | null;
   title?: string;
 }
@@ -201,8 +201,8 @@ export type SortDirection = 'asc' | 'desc';
 
 export interface StringFilter {
   contains?: string;
-  ends_with?: string;
+  endsWith?: string;
   eq?: string;
   in?: string[];
-  starts_with?: string;
+  startsWith?: string;
 }

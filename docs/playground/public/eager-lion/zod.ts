@@ -5,21 +5,21 @@ export const LayerSchema = z.enum(['contract', 'domain', 'http']);
 export const SortDirectionSchema = z.enum(['asc', 'desc']);
 
 export const InvoiceSchema = z.object({
-  created_at: z.iso.datetime(),
+  createdAt: z.iso.datetime(),
   customer: z.record(z.string(), z.unknown()),
-  customer_id: z.string(),
+  customerId: z.string(),
   id: z.string(),
-  issued_on: z.iso.date().nullable(),
+  issuedOn: z.iso.date().nullable(),
   lines: z.array(z.unknown()),
   notes: z.string().nullable(),
   number: z.string(),
   status: z.string().nullable(),
-  updated_at: z.iso.datetime()
+  updatedAt: z.iso.datetime()
 });
 
 export const InvoiceCreatePayloadSchema = z.object({
-  customer_id: z.string(),
-  issued_on: z.iso.date().nullable().optional(),
+  customerId: z.string(),
+  issuedOn: z.iso.date().nullable().optional(),
   lines: z.array(z.unknown()).optional(),
   notes: z.string().nullable().optional(),
   number: z.string()
@@ -31,15 +31,15 @@ export const InvoicePageSchema = z.object({
 });
 
 export const InvoiceSortSchema = z.object({
-  created_at: SortDirectionSchema.optional(),
-  issued_on: SortDirectionSchema.optional(),
+  createdAt: SortDirectionSchema.optional(),
+  issuedOn: SortDirectionSchema.optional(),
   status: SortDirectionSchema.optional(),
-  updated_at: SortDirectionSchema.optional()
+  updatedAt: SortDirectionSchema.optional()
 });
 
 export const InvoiceUpdatePayloadSchema = z.object({
-  customer_id: z.string().optional(),
-  issued_on: z.iso.date().nullable().optional(),
+  customerId: z.string().optional(),
+  issuedOn: z.iso.date().nullable().optional(),
   lines: z.array(z.unknown()).optional(),
   notes: z.string().nullable().optional(),
   number: z.string().optional()
@@ -55,11 +55,11 @@ export const IssueSchema = z.object({
 
 export const NullableStringFilterSchema = z.object({
   contains: z.string().optional(),
-  ends_with: z.string().optional(),
+  endsWith: z.string().optional(),
   eq: z.string().optional(),
   in: z.array(z.string()).optional(),
   null: z.boolean().optional(),
-  starts_with: z.string().optional()
+  startsWith: z.string().optional()
 });
 
 export const OffsetPaginationSchema = z.object({
@@ -72,10 +72,10 @@ export const OffsetPaginationSchema = z.object({
 
 export const StringFilterSchema = z.object({
   contains: z.string().optional(),
-  ends_with: z.string().optional(),
+  endsWith: z.string().optional(),
   eq: z.string().optional(),
   in: z.array(z.string()).optional(),
-  starts_with: z.string().optional()
+  startsWith: z.string().optional()
 });
 
 export const InvoiceArchiveSuccessResponseBodySchema = z.object({
@@ -181,16 +181,16 @@ export interface ErrorResponseBody {
 }
 
 export interface Invoice {
-  created_at: string;
+  createdAt: string;
   customer: Record<string, unknown>;
-  customer_id: string;
+  customerId: string;
   id: string;
-  issued_on: null | string;
+  issuedOn: null | string;
   lines: unknown[];
   notes: null | string;
   number: string;
   status: null | string;
-  updated_at: string;
+  updatedAt: string;
 }
 
 export interface InvoiceArchiveSuccessResponseBody {
@@ -199,8 +199,8 @@ export interface InvoiceArchiveSuccessResponseBody {
 }
 
 export interface InvoiceCreatePayload {
-  customer_id: string;
-  issued_on?: null | string;
+  customerId: string;
+  issuedOn?: null | string;
   lines?: unknown[];
   notes?: null | string;
   number: string;
@@ -236,15 +236,15 @@ export interface InvoiceShowSuccessResponseBody {
 }
 
 export interface InvoiceSort {
-  created_at?: SortDirection;
-  issued_on?: SortDirection;
+  createdAt?: SortDirection;
+  issuedOn?: SortDirection;
   status?: SortDirection;
-  updated_at?: SortDirection;
+  updatedAt?: SortDirection;
 }
 
 export interface InvoiceUpdatePayload {
-  customer_id?: string;
-  issued_on?: null | string;
+  customerId?: string;
+  issuedOn?: null | string;
   lines?: unknown[];
   notes?: null | string;
   number?: string;
@@ -325,11 +325,11 @@ export type Layer = 'contract' | 'domain' | 'http';
 
 export interface NullableStringFilter {
   contains?: string;
-  ends_with?: string;
+  endsWith?: string;
   eq?: string;
   in?: string[];
   null?: boolean;
-  starts_with?: string;
+  startsWith?: string;
 }
 
 export interface OffsetPagination {
@@ -344,8 +344,8 @@ export type SortDirection = 'asc' | 'desc';
 
 export interface StringFilter {
   contains?: string;
-  ends_with?: string;
+  endsWith?: string;
   eq?: string;
   in?: string[];
-  starts_with?: string;
+  startsWith?: string;
 }

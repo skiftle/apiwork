@@ -26,35 +26,35 @@ paths:
         required: false
         schema:
           oneOf:
-          - "$ref": "#/components/schemas/task_filter"
+          - "$ref": "#/components/schemas/taskFilter"
           - items:
-              "$ref": "#/components/schemas/task_filter"
+              "$ref": "#/components/schemas/taskFilter"
             type: array
       - in: query
         name: include
         required: false
         schema:
-          "$ref": "#/components/schemas/task_include"
+          "$ref": "#/components/schemas/taskInclude"
       - in: query
         name: page
         required: false
         schema:
-          "$ref": "#/components/schemas/task_page"
+          "$ref": "#/components/schemas/taskPage"
       - in: query
         name: sort
         required: false
         schema:
           oneOf:
-          - "$ref": "#/components/schemas/task_sort"
+          - "$ref": "#/components/schemas/taskSort"
           - items:
-              "$ref": "#/components/schemas/task_sort"
+              "$ref": "#/components/schemas/taskSort"
             type: array
       responses:
         '200':
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/task_index_success_response_body"
+                "$ref": "#/components/schemas/taskIndexSuccessResponseBody"
           description: Successful response
     post:
       description: Creates a task and returns the created resource
@@ -67,14 +67,14 @@ paths:
         name: include
         required: false
         schema:
-          "$ref": "#/components/schemas/task_include"
+          "$ref": "#/components/schemas/taskInclude"
       requestBody:
         content:
           application/json:
             schema:
               properties:
                 task:
-                  "$ref": "#/components/schemas/task_create_payload"
+                  "$ref": "#/components/schemas/taskCreatePayload"
               type: object
               required:
               - task
@@ -84,14 +84,14 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/task_create_success_response_body"
+                "$ref": "#/components/schemas/taskCreateSuccessResponseBody"
           description: Successful response
         '422':
           description: Unprocessable Entity
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/error_response_body"
+                "$ref": "#/components/schemas/errorResponseBody"
   "/tasks/{id}":
     get:
       description: Returns a single task by ID
@@ -109,13 +109,13 @@ paths:
         name: include
         required: false
         schema:
-          "$ref": "#/components/schemas/task_include"
+          "$ref": "#/components/schemas/taskInclude"
       responses:
         '200':
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/task_show_success_response_body"
+                "$ref": "#/components/schemas/taskShowSuccessResponseBody"
           description: Successful response
     patch:
       description: Updates an existing task
@@ -133,14 +133,14 @@ paths:
         name: include
         required: false
         schema:
-          "$ref": "#/components/schemas/task_include"
+          "$ref": "#/components/schemas/taskInclude"
       requestBody:
         content:
           application/json:
             schema:
               properties:
                 task:
-                  "$ref": "#/components/schemas/task_update_payload"
+                  "$ref": "#/components/schemas/taskUpdatePayload"
               type: object
               required:
               - task
@@ -150,14 +150,14 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/task_update_success_response_body"
+                "$ref": "#/components/schemas/taskUpdateSuccessResponseBody"
           description: Successful response
         '422':
           description: Unprocessable Entity
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/error_response_body"
+                "$ref": "#/components/schemas/errorResponseBody"
     delete:
       description: Permanently removes a task
       operationId: deleteTask
@@ -174,7 +174,7 @@ paths:
         name: include
         required: false
         schema:
-          "$ref": "#/components/schemas/task_include"
+          "$ref": "#/components/schemas/taskInclude"
       responses:
         '204':
           description: No content
@@ -198,25 +198,25 @@ paths:
         name: include
         required: false
         schema:
-          "$ref": "#/components/schemas/task_include"
+          "$ref": "#/components/schemas/taskInclude"
       responses:
         '200':
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/task_archive_success_response_body"
+                "$ref": "#/components/schemas/taskArchiveSuccessResponseBody"
           description: Successful response
         '422':
           description: Unprocessable Entity
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/error_response_body"
+                "$ref": "#/components/schemas/errorResponseBody"
 components:
   schemas:
     comment:
       properties:
-        author_name:
+        authorName:
           type:
           - string
           - 'null'
@@ -226,7 +226,7 @@ components:
           type: string
           description: Comment content
           example: This looks good, ready for review.
-        created_at:
+        createdAt:
           type: string
           format: date-time
           description: When the comment was created
@@ -236,11 +236,11 @@ components:
       type: object
       description: A comment on a task
       required:
-      - author_name
+      - authorName
       - body
-      - created_at
+      - createdAt
       - id
-    error_response_body:
+    errorResponseBody:
       properties:
         issues:
           items:
@@ -278,7 +278,7 @@ components:
       - meta
       - path
       - pointer
-    offset_pagination:
+    offsetPagination:
       properties:
         current:
           type: integer
@@ -316,7 +316,7 @@ components:
             "$ref": "#/components/schemas/comment"
           type: array
           description: Discussion comments on this task
-        created_at:
+        createdAt:
           type: string
           format: date-time
           description: Timestamp when the task was created
@@ -326,7 +326,7 @@ components:
           - 'null'
           description: Detailed description of what needs to be done
           example: Add OAuth2 login support for Google and GitHub providers
-        due_date:
+        dueDate:
           type:
           - string
           - 'null'
@@ -358,7 +358,7 @@ components:
           type: string
           description: Short title describing the task
           example: Implement user authentication
-        updated_at:
+        updatedAt:
           type: string
           format: date-time
           description: Timestamp of last modification
@@ -366,15 +366,15 @@ components:
       description: A task representing work to be completed
       required:
       - archived
-      - created_at
+      - createdAt
       - description
-      - due_date
+      - dueDate
       - id
       - priority
       - status
       - title
-      - updated_at
-    task_archive_success_response_body:
+      - updatedAt
+    taskArchiveSuccessResponseBody:
       properties:
         meta:
           properties: {}
@@ -384,7 +384,7 @@ components:
       type: object
       required:
       - task
-    task_create_payload:
+    taskCreatePayload:
       properties:
         description:
           type:
@@ -392,7 +392,7 @@ components:
           - 'null'
           description: Detailed description of what needs to be done
           example: Add OAuth2 login support for Google and GitHub providers
-        due_date:
+        dueDate:
           type:
           - string
           - 'null'
@@ -425,7 +425,7 @@ components:
       description: A task representing work to be completed
       required:
       - title
-    task_create_success_response_body:
+    taskCreateSuccessResponseBody:
       properties:
         meta:
           properties: {}
@@ -435,38 +435,38 @@ components:
       type: object
       required:
       - task
-    task_filter:
+    taskFilter:
       properties:
         _and:
           items:
-            "$ref": "#/components/schemas/task_filter"
+            "$ref": "#/components/schemas/taskFilter"
           type: array
         _not:
-          "$ref": "#/components/schemas/task_filter"
+          "$ref": "#/components/schemas/taskFilter"
         _or:
           items:
-            "$ref": "#/components/schemas/task_filter"
+            "$ref": "#/components/schemas/taskFilter"
           type: array
         priority:
-          "$ref": "#/components/schemas/task_priority_filter"
+          "$ref": "#/components/schemas/taskPriorityFilter"
         status:
-          "$ref": "#/components/schemas/task_status_filter"
+          "$ref": "#/components/schemas/taskStatusFilter"
       type: object
       description: A task representing work to be completed
-    task_include:
+    taskInclude:
       properties:
         assignee:
           type: boolean
         comments:
           type: boolean
       type: object
-    task_index_success_response_body:
+    taskIndexSuccessResponseBody:
       properties:
         meta:
           properties: {}
           type: object
         pagination:
-          "$ref": "#/components/schemas/offset_pagination"
+          "$ref": "#/components/schemas/offsetPagination"
         tasks:
           items:
             "$ref": "#/components/schemas/task"
@@ -475,7 +475,7 @@ components:
       required:
       - pagination
       - tasks
-    task_page:
+    taskPage:
       properties:
         number:
           type: integer
@@ -485,7 +485,7 @@ components:
           minimum: 1
           maximum: 100
       type: object
-    task_priority_filter:
+    taskPriorityFilter:
       oneOf:
       - enum:
         - low
@@ -514,7 +514,7 @@ components:
         required:
         - eq
         - in
-    task_show_success_response_body:
+    taskShowSuccessResponseBody:
       properties:
         meta:
           properties: {}
@@ -524,21 +524,21 @@ components:
       type: object
       required:
       - task
-    task_sort:
+    taskSort:
       properties:
-        created_at:
+        createdAt:
           enum:
           - asc
           - desc
           type: string
-        due_date:
+        dueDate:
           enum:
           - asc
           - desc
           type: string
       type: object
       description: A task representing work to be completed
-    task_status_filter:
+    taskStatusFilter:
       oneOf:
       - enum:
         - pending
@@ -567,7 +567,7 @@ components:
         required:
         - eq
         - in
-    task_update_payload:
+    taskUpdatePayload:
       properties:
         description:
           type:
@@ -575,7 +575,7 @@ components:
           - 'null'
           description: Detailed description of what needs to be done
           example: Add OAuth2 login support for Google and GitHub providers
-        due_date:
+        dueDate:
           type:
           - string
           - 'null'
@@ -606,7 +606,7 @@ components:
           example: Implement user authentication
       type: object
       description: A task representing work to be completed
-    task_update_success_response_body:
+    taskUpdateSuccessResponseBody:
       properties:
         meta:
           properties: {}

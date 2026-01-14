@@ -34,7 +34,7 @@ module Apiwork
     class Base
       include Configurable
 
-      option :key_format, default: :keep, enum: %i[keep camel underscore kebab], type: :symbol
+      option :key_format, enum: %i[keep camel underscore kebab], type: :symbol
       option :locale, default: nil, type: :symbol
 
       attr_reader :api_path,
@@ -161,7 +161,7 @@ module Apiwork
         @api_class = API.find!(api_path)
 
         @options = self.class.default_options.merge(options.compact)
-        @options[:key_format] ||= @api_class.key_format
+        @options[:key_format] ||= @api_class.key_format || :keep
         validate_options!
 
         @introspection = @api_class.introspect(locale: @options[:locale])

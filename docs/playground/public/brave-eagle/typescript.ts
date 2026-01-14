@@ -4,14 +4,14 @@ export interface Comment {
    * Name of the person who wrote the comment
    * @example "John Doe"
    */
-  author_name: null | string;
+  authorName: null | string;
   /**
    * Comment content
    * @example "This looks good, ready for review."
    */
   body: string;
   /** When the comment was created */
-  created_at: string;
+  createdAt: string;
   /** Unique comment identifier */
   id: string;
 }
@@ -50,7 +50,7 @@ export interface Task {
   /** Discussion comments on this task */
   comments?: Comment[];
   /** Timestamp when the task was created */
-  created_at: string;
+  createdAt: string;
   /**
    * Detailed description of what needs to be done
    * @example "Add OAuth2 login support for Google and GitHub providers"
@@ -60,7 +60,7 @@ export interface Task {
    * Target date for task completion
    * @example "2024-02-01T00:00:00Z"
    */
-  due_date: null | string;
+  dueDate: null | string;
   /** Unique task identifier */
   id: string;
   /**
@@ -79,7 +79,7 @@ export interface Task {
    */
   title: string;
   /** Timestamp of last modification */
-  updated_at: string;
+  updatedAt: string;
 }
 
 export interface TaskArchiveSuccessResponseBody {
@@ -98,7 +98,7 @@ export interface TaskCreatePayload {
    * Target date for task completion
    * @example "2024-02-01T00:00:00Z"
    */
-  due_date?: null | string;
+  dueDate?: null | string;
   /**
    * Priority level for task ordering
    * @example "high"
@@ -157,8 +157,8 @@ export interface TaskShowSuccessResponseBody {
 
 /** A task representing work to be completed */
 export interface TaskSort {
-  created_at?: SortDirection;
-  due_date?: SortDirection;
+  createdAt?: SortDirection;
+  dueDate?: SortDirection;
 }
 
 export type TaskStatus = 'archived' | 'completed' | 'in_progress' | 'pending';
@@ -176,7 +176,7 @@ export interface TaskUpdatePayload {
    * Target date for task completion
    * @example "2024-02-01T00:00:00Z"
    */
-  due_date?: null | string;
+  dueDate?: null | string;
   /**
    * Priority level for task ordering
    * @example "high"

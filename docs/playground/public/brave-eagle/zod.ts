@@ -9,9 +9,9 @@ export const TaskPrioritySchema = z.enum(['critical', 'high', 'low', 'medium']);
 export const TaskStatusSchema = z.enum(['archived', 'completed', 'in_progress', 'pending']);
 
 export const CommentSchema = z.object({
-  author_name: z.string().nullable(),
+  authorName: z.string().nullable(),
   body: z.string(),
-  created_at: z.iso.datetime(),
+  createdAt: z.iso.datetime(),
   id: z.string()
 });
 
@@ -33,7 +33,7 @@ export const OffsetPaginationSchema = z.object({
 
 export const TaskCreatePayloadSchema = z.object({
   description: z.string().nullable().optional(),
-  due_date: z.iso.datetime().nullable().optional(),
+  dueDate: z.iso.datetime().nullable().optional(),
   priority: TaskPrioritySchema.nullable().optional(),
   status: TaskStatusSchema.nullable().optional(),
   title: z.string()
@@ -55,8 +55,8 @@ export const TaskPriorityFilterSchema = z.union([
 ]);
 
 export const TaskSortSchema = z.object({
-  created_at: SortDirectionSchema.optional(),
-  due_date: SortDirectionSchema.optional()
+  createdAt: SortDirectionSchema.optional(),
+  dueDate: SortDirectionSchema.optional()
 });
 
 export const TaskStatusFilterSchema = z.union([
@@ -66,7 +66,7 @@ export const TaskStatusFilterSchema = z.union([
 
 export const TaskUpdatePayloadSchema = z.object({
   description: z.string().nullable().optional(),
-  due_date: z.iso.datetime().nullable().optional(),
+  dueDate: z.iso.datetime().nullable().optional(),
   priority: TaskPrioritySchema.nullable().optional(),
   status: TaskStatusSchema.nullable().optional(),
   title: z.string().optional()
@@ -95,14 +95,14 @@ export const TaskSchema = z.object({
   archived: z.boolean().nullable(),
   assignee: UserSchema.nullable().optional(),
   comments: z.array(CommentSchema).optional(),
-  created_at: z.iso.datetime(),
+  createdAt: z.iso.datetime(),
   description: z.string().nullable(),
-  due_date: z.iso.datetime().nullable(),
+  dueDate: z.iso.datetime().nullable(),
   id: z.string(),
   priority: TaskPrioritySchema.nullable(),
   status: TaskStatusSchema.nullable(),
   title: z.string(),
-  updated_at: z.iso.datetime()
+  updatedAt: z.iso.datetime()
 });
 
 export const TaskArchiveSuccessResponseBodySchema = z.object({
@@ -230,14 +230,14 @@ export interface Comment {
    * Name of the person who wrote the comment
    * @example "John Doe"
    */
-  author_name: null | string;
+  authorName: null | string;
   /**
    * Comment content
    * @example "This looks good, ready for review."
    */
   body: string;
   /** When the comment was created */
-  created_at: string;
+  createdAt: string;
   /** Unique comment identifier */
   id: string;
 }
@@ -276,7 +276,7 @@ export interface Task {
   /** Discussion comments on this task */
   comments?: Comment[];
   /** Timestamp when the task was created */
-  created_at: string;
+  createdAt: string;
   /**
    * Detailed description of what needs to be done
    * @example "Add OAuth2 login support for Google and GitHub providers"
@@ -286,7 +286,7 @@ export interface Task {
    * Target date for task completion
    * @example "2024-02-01T00:00:00Z"
    */
-  due_date: null | string;
+  dueDate: null | string;
   /** Unique task identifier */
   id: string;
   /**
@@ -305,7 +305,7 @@ export interface Task {
    */
   title: string;
   /** Timestamp of last modification */
-  updated_at: string;
+  updatedAt: string;
 }
 
 export interface TaskArchiveSuccessResponseBody {
@@ -324,7 +324,7 @@ export interface TaskCreatePayload {
    * Target date for task completion
    * @example "2024-02-01T00:00:00Z"
    */
-  due_date?: null | string;
+  dueDate?: null | string;
   /**
    * Priority level for task ordering
    * @example "high"
@@ -383,8 +383,8 @@ export interface TaskShowSuccessResponseBody {
 
 /** A task representing work to be completed */
 export interface TaskSort {
-  created_at?: SortDirection;
-  due_date?: SortDirection;
+  createdAt?: SortDirection;
+  dueDate?: SortDirection;
 }
 
 export type TaskStatus = 'archived' | 'completed' | 'in_progress' | 'pending';
@@ -402,7 +402,7 @@ export interface TaskUpdatePayload {
    * Target date for task completion
    * @example "2024-02-01T00:00:00Z"
    */
-  due_date?: null | string;
+  dueDate?: null | string;
   /**
    * Priority level for task ordering
    * @example "high"

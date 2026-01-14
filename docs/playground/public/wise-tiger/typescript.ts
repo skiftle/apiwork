@@ -23,14 +23,14 @@ export interface OffsetPagination {
 
 /** A project with tasks and deadlines */
 export interface Project {
-  created_at: string;
+  createdAt: string;
   deadline: null | string;
   description: null | string;
   id: string;
   name: string;
   priority: ProjectPriority | null;
   status: ProjectStatus | null;
-  updated_at: string;
+  updatedAt: string;
 }
 
 /** A project with tasks and deadlines */
@@ -78,7 +78,7 @@ export interface ProjectShowSuccessResponseBody {
 
 /** A project with tasks and deadlines */
 export interface ProjectSort {
-  created_at?: SortDirection;
+  createdAt?: SortDirection;
   deadline?: SortDirection;
 }
 

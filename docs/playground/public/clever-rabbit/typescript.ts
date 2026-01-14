@@ -15,11 +15,11 @@ export type Layer = 'contract' | 'domain' | 'http';
 
 export interface NullableStringFilter {
   contains?: string;
-  ends_with?: string;
+  endsWith?: string;
   eq?: string;
   in?: string[];
   null?: boolean;
-  starts_with?: string;
+  startsWith?: string;
 }
 
 export interface OffsetPagination {
@@ -31,20 +31,20 @@ export interface OffsetPagination {
 }
 
 export interface Order {
-  created_at: string;
+  createdAt: string;
   id: string;
-  line_items: unknown[];
-  order_number: string;
-  shipping_address: Record<string, unknown>;
+  lineItems: unknown[];
+  orderNumber: string;
+  shippingAddress: Record<string, unknown>;
   status: null | string;
   total: null | number;
-  updated_at: string;
+  updatedAt: string;
 }
 
 export interface OrderCreatePayload {
-  line_items?: unknown[];
-  order_number: string;
-  shipping_address?: Record<string, unknown>;
+  lineItems?: unknown[];
+  orderNumber: string;
+  shippingAddress?: Record<string, unknown>;
 }
 
 export interface OrderCreateSuccessResponseBody {
@@ -76,14 +76,14 @@ export interface OrderShowSuccessResponseBody {
 }
 
 export interface OrderSort {
-  created_at?: SortDirection;
+  createdAt?: SortDirection;
   status?: SortDirection;
 }
 
 export interface OrderUpdatePayload {
-  line_items?: unknown[];
-  order_number?: string;
-  shipping_address?: Record<string, unknown>;
+  lineItems?: unknown[];
+  orderNumber?: string;
+  shippingAddress?: Record<string, unknown>;
 }
 
 export interface OrderUpdateSuccessResponseBody {

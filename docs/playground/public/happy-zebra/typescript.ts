@@ -243,9 +243,9 @@ export type PostsUpdateResponseBody = ErrorResponseBody | PostUpdateSuccessRespo
 
 export interface Profile {
   bio: null | string;
-  created_at: string;
+  createdAt: string;
   id: string;
-  updated_at: string;
+  updatedAt: string;
   user?: Record<string, unknown>;
   website: null | string;
 }
@@ -272,19 +272,19 @@ export type SortDirection = 'asc' | 'desc';
 
 export interface StringFilter {
   contains?: string;
-  ends_with?: string;
+  endsWith?: string;
   eq?: string;
   in?: string[];
-  starts_with?: string;
+  startsWith?: string;
 }
 
 export interface User {
-  created_at: string;
+  createdAt: string;
   email: string;
   id: string;
   posts: Post[];
   profile: Profile;
-  updated_at: string;
+  updatedAt: string;
   username: string;
 }
 
@@ -325,8 +325,8 @@ export interface UserShowSuccessResponseBody {
 }
 
 export interface UserSort {
-  created_at?: SortDirection;
-  updated_at?: SortDirection;
+  createdAt?: SortDirection;
+  updatedAt?: SortDirection;
 }
 
 export interface UserUpdatePayload {

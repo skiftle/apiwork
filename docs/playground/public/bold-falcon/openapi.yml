@@ -6,47 +6,47 @@ info:
 paths:
   "/articles":
     get:
-      operationId: articles_index
+      operationId: articlesIndex
       parameters:
       - in: query
         name: filter
         required: false
         schema:
           oneOf:
-          - "$ref": "#/components/schemas/article_filter"
+          - "$ref": "#/components/schemas/articleFilter"
           - items:
-              "$ref": "#/components/schemas/article_filter"
+              "$ref": "#/components/schemas/articleFilter"
             type: array
       - in: query
         name: page
         required: false
         schema:
-          "$ref": "#/components/schemas/article_page"
+          "$ref": "#/components/schemas/articlePage"
       - in: query
         name: sort
         required: false
         schema:
           oneOf:
-          - "$ref": "#/components/schemas/article_sort"
+          - "$ref": "#/components/schemas/articleSort"
           - items:
-              "$ref": "#/components/schemas/article_sort"
+              "$ref": "#/components/schemas/articleSort"
             type: array
       responses:
         '200':
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/article_index_success_response_body"
+                "$ref": "#/components/schemas/articleIndexSuccessResponseBody"
           description: Successful response
     post:
-      operationId: articles_create
+      operationId: articlesCreate
       requestBody:
         content:
           application/json:
             schema:
               properties:
                 article:
-                  "$ref": "#/components/schemas/article_create_payload"
+                  "$ref": "#/components/schemas/articleCreatePayload"
               type: object
               required:
               - article
@@ -56,17 +56,17 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/article_create_success_response_body"
+                "$ref": "#/components/schemas/articleCreateSuccessResponseBody"
           description: Successful response
         '422':
           description: Unprocessable Entity
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/error_response_body"
+                "$ref": "#/components/schemas/errorResponseBody"
   "/articles/{id}":
     get:
-      operationId: articles_show
+      operationId: articlesShow
       parameters:
       - in: path
         name: id
@@ -78,10 +78,10 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/article_show_success_response_body"
+                "$ref": "#/components/schemas/articleShowSuccessResponseBody"
           description: Successful response
     patch:
-      operationId: articles_update
+      operationId: articlesUpdate
       parameters:
       - in: path
         name: id
@@ -94,7 +94,7 @@ paths:
             schema:
               properties:
                 article:
-                  "$ref": "#/components/schemas/article_update_payload"
+                  "$ref": "#/components/schemas/articleUpdatePayload"
               type: object
               required:
               - article
@@ -104,16 +104,16 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/article_update_success_response_body"
+                "$ref": "#/components/schemas/articleUpdateSuccessResponseBody"
           description: Successful response
         '422':
           description: Unprocessable Entity
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/error_response_body"
+                "$ref": "#/components/schemas/errorResponseBody"
     delete:
-      operationId: articles_destroy
+      operationId: articlesDestroy
       parameters:
       - in: path
         name: id
@@ -136,12 +136,12 @@ components:
           type:
           - object
           - 'null'
-        created_at:
+        createdAt:
           type: string
           format: date-time
         id:
           type: string
-        published_on:
+        publishedOn:
           type:
           - string
           - 'null'
@@ -160,31 +160,31 @@ components:
           - 'null'
         title:
           type: string
-        updated_at:
+        updatedAt:
           type: string
           format: date-time
-        view_count:
+        viewCount:
           type:
           - integer
           - 'null'
       type: object
       required:
       - body
-      - created_at
+      - createdAt
       - id
-      - published_on
+      - publishedOn
       - rating
       - status
       - title
-      - updated_at
-      - view_count
-    article_create_payload:
+      - updatedAt
+      - viewCount
+    articleCreatePayload:
       properties:
         body:
           type:
           - string
           - 'null'
-        published_on:
+        publishedOn:
           type:
           - string
           - 'null'
@@ -202,7 +202,7 @@ components:
       type: object
       required:
       - title
-    article_create_success_response_body:
+    articleCreateSuccessResponseBody:
       properties:
         article:
           "$ref": "#/components/schemas/article"
@@ -212,39 +212,39 @@ components:
       type: object
       required:
       - article
-    article_filter:
+    articleFilter:
       properties:
         _and:
           items:
-            "$ref": "#/components/schemas/article_filter"
+            "$ref": "#/components/schemas/articleFilter"
           type: array
         _not:
-          "$ref": "#/components/schemas/article_filter"
+          "$ref": "#/components/schemas/articleFilter"
         _or:
           items:
-            "$ref": "#/components/schemas/article_filter"
+            "$ref": "#/components/schemas/articleFilter"
           type: array
-        published_on:
+        publishedOn:
           oneOf:
           - type: string
             format: date
-          - "$ref": "#/components/schemas/nullable_date_filter"
+          - "$ref": "#/components/schemas/nullableDateFilter"
         rating:
           oneOf:
           - type: number
-          - "$ref": "#/components/schemas/nullable_decimal_filter"
+          - "$ref": "#/components/schemas/nullableDecimalFilter"
         status:
-          "$ref": "#/components/schemas/article_status_filter"
+          "$ref": "#/components/schemas/articleStatusFilter"
         title:
           oneOf:
           - type: string
-          - "$ref": "#/components/schemas/string_filter"
-        view_count:
+          - "$ref": "#/components/schemas/stringFilter"
+        viewCount:
           oneOf:
           - type: integer
-          - "$ref": "#/components/schemas/nullable_integer_filter"
+          - "$ref": "#/components/schemas/nullableIntegerFilter"
       type: object
-    article_index_success_response_body:
+    articleIndexSuccessResponseBody:
       properties:
         articles:
           items:
@@ -254,12 +254,12 @@ components:
           properties: {}
           type: object
         pagination:
-          "$ref": "#/components/schemas/offset_pagination"
+          "$ref": "#/components/schemas/offsetPagination"
       type: object
       required:
       - articles
       - pagination
-    article_page:
+    articlePage:
       properties:
         number:
           type: integer
@@ -269,7 +269,7 @@ components:
           minimum: 1
           maximum: 100
       type: object
-    article_show_success_response_body:
+    articleShowSuccessResponseBody:
       properties:
         article:
           "$ref": "#/components/schemas/article"
@@ -279,14 +279,14 @@ components:
       type: object
       required:
       - article
-    article_sort:
+    articleSort:
       properties:
-        created_at:
+        createdAt:
           enum:
           - asc
           - desc
           type: string
-        published_on:
+        publishedOn:
           enum:
           - asc
           - desc
@@ -301,13 +301,13 @@ components:
           - asc
           - desc
           type: string
-        view_count:
+        viewCount:
           enum:
           - asc
           - desc
           type: string
       type: object
-    article_status_filter:
+    articleStatusFilter:
       oneOf:
       - enum:
         - archived
@@ -333,13 +333,13 @@ components:
         required:
         - eq
         - in
-    article_update_payload:
+    articleUpdatePayload:
       properties:
         body:
           type:
           - string
           - 'null'
-        published_on:
+        publishedOn:
           type:
           - string
           - 'null'
@@ -355,7 +355,7 @@ components:
         title:
           type: string
       type: object
-    article_update_success_response_body:
+    articleUpdateSuccessResponseBody:
       properties:
         article:
           "$ref": "#/components/schemas/article"
@@ -365,7 +365,7 @@ components:
       type: object
       required:
       - article
-    date_filter_between:
+    dateFilterBetween:
       properties:
         from:
           type: string
@@ -374,14 +374,14 @@ components:
           type: string
           format: date
       type: object
-    decimal_filter_between:
+    decimalFilterBetween:
       properties:
         from:
           type: number
         to:
           type: number
       type: object
-    error_response_body:
+    errorResponseBody:
       properties:
         issues:
           items:
@@ -397,7 +397,7 @@ components:
       required:
       - issues
       - layer
-    integer_filter_between:
+    integerFilterBetween:
       properties:
         from:
           type: integer
@@ -426,10 +426,10 @@ components:
       - meta
       - path
       - pointer
-    nullable_date_filter:
+    nullableDateFilter:
       properties:
         between:
-          "$ref": "#/components/schemas/date_filter_between"
+          "$ref": "#/components/schemas/dateFilterBetween"
         eq:
           type: string
           format: date
@@ -453,10 +453,10 @@ components:
         'null':
           type: boolean
       type: object
-    nullable_decimal_filter:
+    nullableDecimalFilter:
       properties:
         between:
-          "$ref": "#/components/schemas/decimal_filter_between"
+          "$ref": "#/components/schemas/decimalFilterBetween"
         eq:
           type: number
         gt:
@@ -474,10 +474,10 @@ components:
         'null':
           type: boolean
       type: object
-    nullable_integer_filter:
+    nullableIntegerFilter:
       properties:
         between:
-          "$ref": "#/components/schemas/integer_filter_between"
+          "$ref": "#/components/schemas/integerFilterBetween"
         eq:
           type: integer
         gt:
@@ -495,7 +495,7 @@ components:
         'null':
           type: boolean
       type: object
-    offset_pagination:
+    offsetPagination:
       properties:
         current:
           type: integer
@@ -516,11 +516,11 @@ components:
       - current
       - items
       - total
-    string_filter:
+    stringFilter:
       properties:
         contains:
           type: string
-        ends_with:
+        endsWith:
           type: string
         eq:
           type: string
@@ -528,6 +528,6 @@ components:
           items:
             type: string
           type: array
-        starts_with:
+        startsWith:
           type: string
       type: object

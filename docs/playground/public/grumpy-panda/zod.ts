@@ -4,14 +4,14 @@ export const LayerSchema = z.enum(['contract', 'domain', 'http']);
 
 export const ActivitySchema = z.object({
   action: z.string(),
-  created_at: z.iso.datetime(),
+  createdAt: z.iso.datetime(),
   id: z.string(),
-  occurred_at: z.iso.datetime().nullable()
+  occurredAt: z.iso.datetime().nullable()
 });
 
 export const ActivityCreatePayloadSchema = z.object({
   action: z.string(),
-  occurred_at: z.iso.datetime().nullable().optional()
+  occurredAt: z.iso.datetime().nullable().optional()
 });
 
 export const ActivityPageSchema = z.object({
@@ -22,7 +22,7 @@ export const ActivityPageSchema = z.object({
 
 export const ActivityUpdatePayloadSchema = z.object({
   action: z.string().optional(),
-  occurred_at: z.iso.datetime().nullable().optional()
+  occurredAt: z.iso.datetime().nullable().optional()
 });
 
 export const CursorPaginationSchema = z.object({
@@ -166,14 +166,14 @@ export type ActivitiesUpdateResponseBody = ActivityUpdateSuccessResponseBody | E
 
 export interface Activity {
   action: string;
-  created_at: string;
+  createdAt: string;
   id: string;
-  occurred_at: null | string;
+  occurredAt: null | string;
 }
 
 export interface ActivityCreatePayload {
   action: string;
-  occurred_at?: null | string;
+  occurredAt?: null | string;
 }
 
 export interface ActivityCreateSuccessResponseBody {
@@ -200,7 +200,7 @@ export interface ActivityShowSuccessResponseBody {
 
 export interface ActivityUpdatePayload {
   action?: string;
-  occurred_at?: null | string;
+  occurredAt?: null | string;
 }
 
 export interface ActivityUpdateSuccessResponseBody {

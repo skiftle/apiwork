@@ -6,29 +6,29 @@ info:
 paths:
   "/activities":
     get:
-      operationId: activities_index
+      operationId: activitiesIndex
       parameters:
       - in: query
         name: page
         required: false
         schema:
-          "$ref": "#/components/schemas/activity_page"
+          "$ref": "#/components/schemas/activityPage"
       responses:
         '200':
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/activity_index_success_response_body"
+                "$ref": "#/components/schemas/activityIndexSuccessResponseBody"
           description: Successful response
     post:
-      operationId: activities_create
+      operationId: activitiesCreate
       requestBody:
         content:
           application/json:
             schema:
               properties:
                 activity:
-                  "$ref": "#/components/schemas/activity_create_payload"
+                  "$ref": "#/components/schemas/activityCreatePayload"
               type: object
               required:
               - activity
@@ -38,17 +38,17 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/activity_create_success_response_body"
+                "$ref": "#/components/schemas/activityCreateSuccessResponseBody"
           description: Successful response
         '422':
           description: Unprocessable Entity
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/error_response_body"
+                "$ref": "#/components/schemas/errorResponseBody"
   "/activities/{id}":
     get:
-      operationId: activities_show
+      operationId: activitiesShow
       parameters:
       - in: path
         name: id
@@ -60,10 +60,10 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/activity_show_success_response_body"
+                "$ref": "#/components/schemas/activityShowSuccessResponseBody"
           description: Successful response
     patch:
-      operationId: activities_update
+      operationId: activitiesUpdate
       parameters:
       - in: path
         name: id
@@ -76,7 +76,7 @@ paths:
             schema:
               properties:
                 activity:
-                  "$ref": "#/components/schemas/activity_update_payload"
+                  "$ref": "#/components/schemas/activityUpdatePayload"
               type: object
               required:
               - activity
@@ -86,16 +86,16 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/activity_update_success_response_body"
+                "$ref": "#/components/schemas/activityUpdateSuccessResponseBody"
           description: Successful response
         '422':
           description: Unprocessable Entity
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/error_response_body"
+                "$ref": "#/components/schemas/errorResponseBody"
     delete:
-      operationId: activities_destroy
+      operationId: activitiesDestroy
       parameters:
       - in: path
         name: id
@@ -111,12 +111,12 @@ components:
       properties:
         action:
           type: string
-        created_at:
+        createdAt:
           type: string
           format: date-time
         id:
           type: string
-        occurred_at:
+        occurredAt:
           type:
           - string
           - 'null'
@@ -124,14 +124,14 @@ components:
       type: object
       required:
       - action
-      - created_at
+      - createdAt
       - id
-      - occurred_at
-    activity_create_payload:
+      - occurredAt
+    activityCreatePayload:
       properties:
         action:
           type: string
-        occurred_at:
+        occurredAt:
           type:
           - string
           - 'null'
@@ -139,7 +139,7 @@ components:
       type: object
       required:
       - action
-    activity_create_success_response_body:
+    activityCreateSuccessResponseBody:
       properties:
         activity:
           "$ref": "#/components/schemas/activity"
@@ -149,7 +149,7 @@ components:
       type: object
       required:
       - activity
-    activity_index_success_response_body:
+    activityIndexSuccessResponseBody:
       properties:
         activities:
           items:
@@ -159,12 +159,12 @@ components:
           properties: {}
           type: object
         pagination:
-          "$ref": "#/components/schemas/cursor_pagination"
+          "$ref": "#/components/schemas/cursorPagination"
       type: object
       required:
       - activities
       - pagination
-    activity_page:
+    activityPage:
       properties:
         after:
           type: string
@@ -175,7 +175,7 @@ components:
           minimum: 1
           maximum: 100
       type: object
-    activity_show_success_response_body:
+    activityShowSuccessResponseBody:
       properties:
         activity:
           "$ref": "#/components/schemas/activity"
@@ -185,17 +185,17 @@ components:
       type: object
       required:
       - activity
-    activity_update_payload:
+    activityUpdatePayload:
       properties:
         action:
           type: string
-        occurred_at:
+        occurredAt:
           type:
           - string
           - 'null'
           format: date-time
       type: object
-    activity_update_success_response_body:
+    activityUpdateSuccessResponseBody:
       properties:
         activity:
           "$ref": "#/components/schemas/activity"
@@ -205,7 +205,7 @@ components:
       type: object
       required:
       - activity
-    cursor_pagination:
+    cursorPagination:
       properties:
         next:
           type:
@@ -216,7 +216,7 @@ components:
           - string
           - 'null'
       type: object
-    error_response_body:
+    errorResponseBody:
       properties:
         issues:
           items:

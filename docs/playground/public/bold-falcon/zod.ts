@@ -9,19 +9,19 @@ export const SortDirectionSchema = z.enum(['asc', 'desc']);
 export const ArticleSchema = z.object({
   body: z.string().nullable(),
   category: z.record(z.string(), z.unknown()).nullable().optional(),
-  created_at: z.iso.datetime(),
+  createdAt: z.iso.datetime(),
   id: z.string(),
-  published_on: z.iso.date().nullable(),
+  publishedOn: z.iso.date().nullable(),
   rating: z.number().nullable(),
   status: ArticleStatusSchema.nullable(),
   title: z.string(),
-  updated_at: z.iso.datetime(),
-  view_count: z.number().int().nullable()
+  updatedAt: z.iso.datetime(),
+  viewCount: z.number().int().nullable()
 });
 
 export const ArticleCreatePayloadSchema = z.object({
   body: z.string().nullable().optional(),
-  published_on: z.iso.date().nullable().optional(),
+  publishedOn: z.iso.date().nullable().optional(),
   status: ArticleStatusSchema.nullable().optional(),
   title: z.string()
 });
@@ -32,11 +32,11 @@ export const ArticlePageSchema = z.object({
 });
 
 export const ArticleSortSchema = z.object({
-  created_at: SortDirectionSchema.optional(),
-  published_on: SortDirectionSchema.optional(),
+  createdAt: SortDirectionSchema.optional(),
+  publishedOn: SortDirectionSchema.optional(),
   rating: SortDirectionSchema.optional(),
   status: SortDirectionSchema.optional(),
-  view_count: SortDirectionSchema.optional()
+  viewCount: SortDirectionSchema.optional()
 });
 
 export const ArticleStatusFilterSchema = z.union([
@@ -46,7 +46,7 @@ export const ArticleStatusFilterSchema = z.union([
 
 export const ArticleUpdatePayloadSchema = z.object({
   body: z.string().nullable().optional(),
-  published_on: z.iso.date().nullable().optional(),
+  publishedOn: z.iso.date().nullable().optional(),
   status: ArticleStatusSchema.nullable().optional(),
   title: z.string().optional()
 });
@@ -84,10 +84,10 @@ export const OffsetPaginationSchema = z.object({
 
 export const StringFilterSchema = z.object({
   contains: z.string().optional(),
-  ends_with: z.string().optional(),
+  endsWith: z.string().optional(),
   eq: z.string().optional(),
   in: z.array(z.string()).optional(),
-  starts_with: z.string().optional()
+  startsWith: z.string().optional()
 });
 
 export const ArticleCreateSuccessResponseBodySchema = z.object({
@@ -153,11 +153,11 @@ export const ArticleFilterSchema: z.ZodType<ArticleFilter> = z.lazy(() => z.obje
   _and: z.array(ArticleFilterSchema).optional(),
   _not: ArticleFilterSchema.optional(),
   _or: z.array(ArticleFilterSchema).optional(),
-  published_on: z.union([z.iso.date(), NullableDateFilterSchema]).optional(),
+  publishedOn: z.union([z.iso.date(), NullableDateFilterSchema]).optional(),
   rating: z.union([z.number(), NullableDecimalFilterSchema]).optional(),
   status: ArticleStatusFilterSchema.optional(),
   title: z.union([z.string(), StringFilterSchema]).optional(),
-  view_count: z.union([z.number().int(), NullableIntegerFilterSchema]).optional()
+  viewCount: z.union([z.number().int(), NullableIntegerFilterSchema]).optional()
 }));
 
 export const ArticlesIndexRequestQuerySchema = z.object({
@@ -215,19 +215,19 @@ export const ArticlesDestroyResponse = z.never();
 export interface Article {
   body: null | string;
   category?: Record<string, unknown> | null;
-  created_at: string;
+  createdAt: string;
   id: string;
-  published_on: null | string;
+  publishedOn: null | string;
   rating: null | number;
   status: ArticleStatus | null;
   title: string;
-  updated_at: string;
-  view_count: null | number;
+  updatedAt: string;
+  viewCount: null | number;
 }
 
 export interface ArticleCreatePayload {
   body?: null | string;
-  published_on?: null | string;
+  publishedOn?: null | string;
   status?: ArticleStatus | null;
   title: string;
 }
@@ -241,11 +241,11 @@ export interface ArticleFilter {
   _and?: ArticleFilter[];
   _not?: ArticleFilter;
   _or?: ArticleFilter[];
-  published_on?: NullableDateFilter | string;
+  publishedOn?: NullableDateFilter | string;
   rating?: NullableDecimalFilter | number;
   status?: ArticleStatusFilter;
   title?: StringFilter | string;
-  view_count?: NullableIntegerFilter | number;
+  viewCount?: NullableIntegerFilter | number;
 }
 
 export interface ArticleIndexSuccessResponseBody {
@@ -265,11 +265,11 @@ export interface ArticleShowSuccessResponseBody {
 }
 
 export interface ArticleSort {
-  created_at?: SortDirection;
-  published_on?: SortDirection;
+  createdAt?: SortDirection;
+  publishedOn?: SortDirection;
   rating?: SortDirection;
   status?: SortDirection;
-  view_count?: SortDirection;
+  viewCount?: SortDirection;
 }
 
 export type ArticleStatus = 'archived' | 'draft' | 'published';
@@ -278,7 +278,7 @@ export type ArticleStatusFilter = ArticleStatus | { eq?: ArticleStatus; in?: Art
 
 export interface ArticleUpdatePayload {
   body?: null | string;
-  published_on?: null | string;
+  publishedOn?: null | string;
   status?: ArticleStatus | null;
   title?: string;
 }
@@ -415,8 +415,8 @@ export type SortDirection = 'asc' | 'desc';
 
 export interface StringFilter {
   contains?: string;
-  ends_with?: string;
+  endsWith?: string;
   eq?: string;
   in?: string[];
-  starts_with?: string;
+  startsWith?: string;
 }

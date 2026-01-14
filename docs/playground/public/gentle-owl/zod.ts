@@ -5,7 +5,7 @@ export const LayerSchema = z.enum(['contract', 'domain', 'http']);
 export const SortDirectionSchema = z.enum(['asc', 'desc']);
 
 export const CommentCreatePayloadSchema = z.object({
-  author_name: z.string().nullable().optional(),
+  authorName: z.string().nullable().optional(),
   body: z.string()
 });
 
@@ -19,17 +19,17 @@ export const CommentPageSchema = z.object({
 });
 
 export const CommentSortSchema = z.object({
-  created_at: SortDirectionSchema.optional()
+  createdAt: SortDirectionSchema.optional()
 });
 
 export const CommentUpdatePayloadSchema = z.object({
-  author_name: z.string().nullable().optional(),
+  authorName: z.string().nullable().optional(),
   body: z.string().optional()
 });
 
 export const ImageSchema = z.object({
   comments: z.array(z.record(z.string(), z.unknown())).optional(),
-  created_at: z.iso.datetime(),
+  createdAt: z.iso.datetime(),
   height: z.number().int().nullable(),
   id: z.string(),
   title: z.string(),
@@ -56,14 +56,14 @@ export const OffsetPaginationSchema = z.object({
 export const PostSchema = z.object({
   body: z.string().nullable(),
   comments: z.array(z.record(z.string(), z.unknown())).optional(),
-  created_at: z.iso.datetime(),
+  createdAt: z.iso.datetime(),
   id: z.string(),
   title: z.string()
 });
 
 export const VideoSchema = z.object({
   comments: z.array(z.record(z.string(), z.unknown())).optional(),
-  created_at: z.iso.datetime(),
+  createdAt: z.iso.datetime(),
   duration: z.number().int().nullable(),
   id: z.string(),
   title: z.string(),
@@ -75,17 +75,17 @@ export const ErrorResponseBodySchema = z.object({
   layer: LayerSchema
 });
 
-export const CommentCommentableSchema = z.discriminatedUnion('commentable_type', [
-  PostSchema.extend({ commentable_type: z.literal('post') }),
-  VideoSchema.extend({ commentable_type: z.literal('video') }),
-  ImageSchema.extend({ commentable_type: z.literal('image') })
+export const CommentCommentableSchema = z.discriminatedUnion('commentableType', [
+  PostSchema.extend({ commentableType: z.literal('post') }),
+  VideoSchema.extend({ commentableType: z.literal('video') }),
+  ImageSchema.extend({ commentableType: z.literal('image') })
 ]);
 
 export const CommentSchema = z.object({
-  author_name: z.string().nullable(),
+  authorName: z.string().nullable(),
   body: z.string(),
   commentable: CommentCommentableSchema.optional(),
-  created_at: z.iso.datetime(),
+  createdAt: z.iso.datetime(),
   id: z.string()
 });
 
@@ -189,17 +189,17 @@ export const CommentsDestroyRequestSchema = z.object({
 export const CommentsDestroyResponse = z.never();
 
 export interface Comment {
-  author_name: null | string;
+  authorName: null | string;
   body: string;
   commentable?: CommentCommentable;
-  created_at: string;
+  createdAt: string;
   id: string;
 }
 
-export type CommentCommentable = { commentable_type: 'post' } & Post | { commentable_type: 'video' } & Video | { commentable_type: 'image' } & Image;
+export type CommentCommentable = { commentableType: 'post' } & Post | { commentableType: 'video' } & Video | { commentableType: 'image' } & Image;
 
 export interface CommentCreatePayload {
-  author_name?: null | string;
+  authorName?: null | string;
   body: string;
 }
 
@@ -229,11 +229,11 @@ export interface CommentShowSuccessResponseBody {
 }
 
 export interface CommentSort {
-  created_at?: SortDirection;
+  createdAt?: SortDirection;
 }
 
 export interface CommentUpdatePayload {
-  author_name?: null | string;
+  authorName?: null | string;
   body?: string;
 }
 
@@ -327,7 +327,7 @@ export interface ErrorResponseBody {
 
 export interface Image {
   comments?: Record<string, unknown>[];
-  created_at: string;
+  createdAt: string;
   height: null | number;
   id: string;
   title: string;
@@ -356,7 +356,7 @@ export interface OffsetPagination {
 export interface Post {
   body: null | string;
   comments?: Record<string, unknown>[];
-  created_at: string;
+  createdAt: string;
   id: string;
   title: string;
 }
@@ -365,7 +365,7 @@ export type SortDirection = 'asc' | 'desc';
 
 export interface Video {
   comments?: Record<string, unknown>[];
-  created_at: string;
+  createdAt: string;
   duration: null | number;
   id: string;
   title: string;

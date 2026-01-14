@@ -6,7 +6,7 @@ info:
 paths:
   "/status/health":
     get:
-      operationId: status_health
+      operationId: statusHealth
       responses:
         '200':
           content:
@@ -28,24 +28,24 @@ paths:
           description: Successful response
   "/status/stats":
     get:
-      operationId: status_stats
+      operationId: statusStats
       responses:
         '200':
           content:
             application/json:
               schema:
                 properties:
-                  posts_count:
+                  postsCount:
                     type: integer
-                  uptime_seconds:
+                  uptimeSeconds:
                     type: integer
-                  users_count:
+                  usersCount:
                     type: integer
                 type: object
                 required:
-                - posts_count
-                - uptime_seconds
-                - users_count
+                - postsCount
+                - uptimeSeconds
+                - usersCount
           description: Successful response
 components:
   schemas: {}

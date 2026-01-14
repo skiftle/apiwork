@@ -20,15 +20,15 @@ export const OffsetPaginationSchema = z.object({
 
 export const ProfileSchema = z.object({
   addresses: z.array(z.object({ city: z.string(), primary: z.boolean(), street: z.string(), zip: z.string() })),
-  created_at: z.iso.datetime(),
+  createdAt: z.iso.datetime(),
   email: z.email(),
   id: z.string(),
   metadata: z.string(),
   name: z.string(),
-  preferences: z.object({ notifications: z.object({ email: z.boolean(), push: z.boolean() }), ui: z.object({ sidebar_collapsed: z.boolean(), theme: z.string() }) }),
+  preferences: z.object({ notifications: z.object({ email: z.boolean(), push: z.boolean() }), ui: z.object({ sidebarCollapsed: z.boolean(), theme: z.string() }) }),
   settings: z.object({ language: z.string(), notifications: z.boolean(), theme: z.string() }),
   tags: z.array(z.string()),
-  updated_at: z.iso.datetime()
+  updatedAt: z.iso.datetime()
 });
 
 export const ProfileCreatePayloadSchema = z.object({
@@ -36,7 +36,7 @@ export const ProfileCreatePayloadSchema = z.object({
   email: z.email(),
   metadata: z.string(),
   name: z.string(),
-  preferences: z.object({ notifications: z.object({ email: z.boolean(), push: z.boolean() }), ui: z.object({ sidebar_collapsed: z.boolean(), theme: z.string() }) }),
+  preferences: z.object({ notifications: z.object({ email: z.boolean(), push: z.boolean() }), ui: z.object({ sidebarCollapsed: z.boolean(), theme: z.string() }) }),
   settings: z.object({ language: z.string(), notifications: z.boolean(), theme: z.string() }),
   tags: z.array(z.string())
 });
@@ -51,7 +51,7 @@ export const ProfileUpdatePayloadSchema = z.object({
   email: z.email().optional(),
   metadata: z.string().optional(),
   name: z.string().optional(),
-  preferences: z.object({ notifications: z.object({ email: z.boolean(), push: z.boolean() }), ui: z.object({ sidebar_collapsed: z.boolean(), theme: z.string() }) }).optional(),
+  preferences: z.object({ notifications: z.object({ email: z.boolean(), push: z.boolean() }), ui: z.object({ sidebarCollapsed: z.boolean(), theme: z.string() }) }).optional(),
   settings: z.object({ language: z.string(), notifications: z.boolean(), theme: z.string() }).optional(),
   tags: z.array(z.string()).optional()
 });
@@ -157,15 +157,15 @@ export interface OffsetPagination {
 
 export interface Profile {
   addresses: { city: string; primary: boolean; street: string; zip: string }[];
-  created_at: string;
+  createdAt: string;
   email: string;
   id: string;
   metadata: string;
   name: string;
-  preferences: { notifications: { email: boolean; push: boolean }; ui: { sidebar_collapsed: boolean; theme: string } };
+  preferences: { notifications: { email: boolean; push: boolean }; ui: { sidebarCollapsed: boolean; theme: string } };
   settings: { language: string; notifications: boolean; theme: string };
   tags: string[];
-  updated_at: string;
+  updatedAt: string;
 }
 
 export interface ProfileCreatePayload {
@@ -173,7 +173,7 @@ export interface ProfileCreatePayload {
   email: string;
   metadata: string;
   name: string;
-  preferences: { notifications: { email: boolean; push: boolean }; ui: { sidebar_collapsed: boolean; theme: string } };
+  preferences: { notifications: { email: boolean; push: boolean }; ui: { sidebarCollapsed: boolean; theme: string } };
   settings: { language: string; notifications: boolean; theme: string };
   tags: string[];
 }
@@ -204,7 +204,7 @@ export interface ProfileUpdatePayload {
   email?: string;
   metadata?: string;
   name?: string;
-  preferences?: { notifications: { email: boolean; push: boolean }; ui: { sidebar_collapsed: boolean; theme: string } };
+  preferences?: { notifications: { email: boolean; push: boolean }; ui: { sidebarCollapsed: boolean; theme: string } };
   settings?: { language: string; notifications: boolean; theme: string };
   tags?: string[];
 }

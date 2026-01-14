@@ -25,14 +25,14 @@ export const OffsetPaginationSchema = z.object({
 });
 
 export const ProjectSchema = z.object({
-  created_at: z.iso.datetime(),
+  createdAt: z.iso.datetime(),
   deadline: z.iso.date().nullable(),
   description: z.string().nullable(),
   id: z.string(),
   name: z.string(),
   priority: ProjectPrioritySchema.nullable(),
   status: ProjectStatusSchema.nullable(),
-  updated_at: z.iso.datetime()
+  updatedAt: z.iso.datetime()
 });
 
 export const ProjectCreatePayloadSchema = z.object({
@@ -54,7 +54,7 @@ export const ProjectPriorityFilterSchema = z.union([
 ]);
 
 export const ProjectSortSchema = z.object({
-  created_at: SortDirectionSchema.optional(),
+  createdAt: SortDirectionSchema.optional(),
   deadline: SortDirectionSchema.optional()
 });
 
@@ -182,14 +182,14 @@ export interface OffsetPagination {
 
 /** A project with tasks and deadlines */
 export interface Project {
-  created_at: string;
+  createdAt: string;
   deadline: null | string;
   description: null | string;
   id: string;
   name: string;
   priority: ProjectPriority | null;
   status: ProjectStatus | null;
-  updated_at: string;
+  updatedAt: string;
 }
 
 /** A project with tasks and deadlines */
@@ -237,7 +237,7 @@ export interface ProjectShowSuccessResponseBody {
 
 /** A project with tasks and deadlines */
 export interface ProjectSort {
-  created_at?: SortDirection;
+  createdAt?: SortDirection;
   deadline?: SortDirection;
 }
 

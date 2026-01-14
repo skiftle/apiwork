@@ -50,14 +50,14 @@ export type ActivitiesUpdateResponseBody = ActivityUpdateSuccessResponseBody | E
 
 export interface Activity {
   action: string;
-  created_at: string;
+  createdAt: string;
   id: string;
-  occurred_at: null | string;
+  occurredAt: null | string;
 }
 
 export interface ActivityCreatePayload {
   action: string;
-  occurred_at?: null | string;
+  occurredAt?: null | string;
 }
 
 export interface ActivityCreateSuccessResponseBody {
@@ -84,7 +84,7 @@ export interface ActivityShowSuccessResponseBody {
 
 export interface ActivityUpdatePayload {
   action?: string;
-  occurred_at?: null | string;
+  occurredAt?: null | string;
 }
 
 export interface ActivityUpdateSuccessResponseBody {

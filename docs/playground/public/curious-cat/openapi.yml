@@ -6,29 +6,29 @@ info:
 paths:
   "/profiles":
     get:
-      operationId: profiles_index
+      operationId: profilesIndex
       parameters:
       - in: query
         name: page
         required: false
         schema:
-          "$ref": "#/components/schemas/profile_page"
+          "$ref": "#/components/schemas/profilePage"
       responses:
         '200':
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/profile_index_success_response_body"
+                "$ref": "#/components/schemas/profileIndexSuccessResponseBody"
           description: Successful response
     post:
-      operationId: profiles_create
+      operationId: profilesCreate
       requestBody:
         content:
           application/json:
             schema:
               properties:
                 profile:
-                  "$ref": "#/components/schemas/profile_create_payload"
+                  "$ref": "#/components/schemas/profileCreatePayload"
               type: object
               required:
               - profile
@@ -38,17 +38,17 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/profile_create_success_response_body"
+                "$ref": "#/components/schemas/profileCreateSuccessResponseBody"
           description: Successful response
         '422':
           description: Unprocessable Entity
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/error_response_body"
+                "$ref": "#/components/schemas/errorResponseBody"
   "/profiles/{id}":
     get:
-      operationId: profiles_show
+      operationId: profilesShow
       parameters:
       - in: path
         name: id
@@ -60,10 +60,10 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/profile_show_success_response_body"
+                "$ref": "#/components/schemas/profileShowSuccessResponseBody"
           description: Successful response
     patch:
-      operationId: profiles_update
+      operationId: profilesUpdate
       parameters:
       - in: path
         name: id
@@ -76,7 +76,7 @@ paths:
             schema:
               properties:
                 profile:
-                  "$ref": "#/components/schemas/profile_update_payload"
+                  "$ref": "#/components/schemas/profileUpdatePayload"
               type: object
               required:
               - profile
@@ -86,16 +86,16 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/profile_update_success_response_body"
+                "$ref": "#/components/schemas/profileUpdateSuccessResponseBody"
           description: Successful response
         '422':
           description: Unprocessable Entity
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/error_response_body"
+                "$ref": "#/components/schemas/errorResponseBody"
     delete:
-      operationId: profiles_destroy
+      operationId: profilesDestroy
       parameters:
       - in: path
         name: id
@@ -107,7 +107,7 @@ paths:
           description: No content
 components:
   schemas:
-    error_response_body:
+    errorResponseBody:
       properties:
         issues:
           items:
@@ -145,7 +145,7 @@ components:
       - meta
       - path
       - pointer
-    offset_pagination:
+    offsetPagination:
       properties:
         current:
           type: integer
@@ -186,7 +186,7 @@ components:
             - street
             - zip
           type: array
-        created_at:
+        createdAt:
           type: string
           format: date-time
         email:
@@ -212,13 +212,13 @@ components:
               - push
             ui:
               properties:
-                sidebar_collapsed:
+                sidebarCollapsed:
                   type: boolean
                 theme:
                   type: string
               type: object
               required:
-              - sidebar_collapsed
+              - sidebarCollapsed
               - theme
           type: object
           required:
@@ -241,13 +241,13 @@ components:
           items:
             type: string
           type: array
-        updated_at:
+        updatedAt:
           type: string
           format: date-time
       type: object
       required:
       - addresses
-      - created_at
+      - createdAt
       - email
       - id
       - metadata
@@ -255,8 +255,8 @@ components:
       - preferences
       - settings
       - tags
-      - updated_at
-    profile_create_payload:
+      - updatedAt
+    profileCreatePayload:
       properties:
         addresses:
           items:
@@ -297,13 +297,13 @@ components:
               - push
             ui:
               properties:
-                sidebar_collapsed:
+                sidebarCollapsed:
                   type: boolean
                 theme:
                   type: string
               type: object
               required:
-              - sidebar_collapsed
+              - sidebarCollapsed
               - theme
           type: object
           required:
@@ -335,7 +335,7 @@ components:
       - preferences
       - settings
       - tags
-    profile_create_success_response_body:
+    profileCreateSuccessResponseBody:
       properties:
         meta:
           properties: {}
@@ -345,13 +345,13 @@ components:
       type: object
       required:
       - profile
-    profile_index_success_response_body:
+    profileIndexSuccessResponseBody:
       properties:
         meta:
           properties: {}
           type: object
         pagination:
-          "$ref": "#/components/schemas/offset_pagination"
+          "$ref": "#/components/schemas/offsetPagination"
         profiles:
           items:
             "$ref": "#/components/schemas/profile"
@@ -360,7 +360,7 @@ components:
       required:
       - pagination
       - profiles
-    profile_page:
+    profilePage:
       properties:
         number:
           type: integer
@@ -370,7 +370,7 @@ components:
           minimum: 1
           maximum: 100
       type: object
-    profile_show_success_response_body:
+    profileShowSuccessResponseBody:
       properties:
         meta:
           properties: {}
@@ -380,7 +380,7 @@ components:
       type: object
       required:
       - profile
-    profile_update_payload:
+    profileUpdatePayload:
       properties:
         addresses:
           items:
@@ -421,13 +421,13 @@ components:
               - push
             ui:
               properties:
-                sidebar_collapsed:
+                sidebarCollapsed:
                   type: boolean
                 theme:
                   type: string
               type: object
               required:
-              - sidebar_collapsed
+              - sidebarCollapsed
               - theme
           type: object
           required:
@@ -451,7 +451,7 @@ components:
             type: string
           type: array
       type: object
-    profile_update_success_response_body:
+    profileUpdateSuccessResponseBody:
       properties:
         meta:
           properties: {}

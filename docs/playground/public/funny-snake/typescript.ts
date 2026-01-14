@@ -1,15 +1,15 @@
 export interface Invoice {
-  created_at: string;
+  createdAt: string;
   id: string;
-  issued_on: string;
+  issuedOn: string;
   notes: string;
   number: string;
   status: string;
-  updated_at: string;
+  updatedAt: string;
 }
 
 export interface InvoicePayload {
-  issued_on: string;
+  issuedOn: string;
   notes: string;
   number: string;
   status: string;

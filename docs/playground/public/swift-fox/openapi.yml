@@ -6,29 +6,29 @@ info:
 paths:
   "/contacts":
     get:
-      operationId: contacts_index
+      operationId: contactsIndex
       parameters:
       - in: query
         name: page
         required: false
         schema:
-          "$ref": "#/components/schemas/contact_page"
+          "$ref": "#/components/schemas/contactPage"
       responses:
         '200':
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/contact_index_success_response_body"
+                "$ref": "#/components/schemas/contactIndexSuccessResponseBody"
           description: Successful response
     post:
-      operationId: contacts_create
+      operationId: contactsCreate
       requestBody:
         content:
           application/json:
             schema:
               properties:
                 contact:
-                  "$ref": "#/components/schemas/contact_create_payload"
+                  "$ref": "#/components/schemas/contactCreatePayload"
               type: object
               required:
               - contact
@@ -38,17 +38,17 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/contact_create_success_response_body"
+                "$ref": "#/components/schemas/contactCreateSuccessResponseBody"
           description: Successful response
         '422':
           description: Unprocessable Entity
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/error_response_body"
+                "$ref": "#/components/schemas/errorResponseBody"
   "/contacts/{id}":
     get:
-      operationId: contacts_show
+      operationId: contactsShow
       parameters:
       - in: path
         name: id
@@ -60,10 +60,10 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/contact_show_success_response_body"
+                "$ref": "#/components/schemas/contactShowSuccessResponseBody"
           description: Successful response
     patch:
-      operationId: contacts_update
+      operationId: contactsUpdate
       parameters:
       - in: path
         name: id
@@ -76,7 +76,7 @@ paths:
             schema:
               properties:
                 contact:
-                  "$ref": "#/components/schemas/contact_update_payload"
+                  "$ref": "#/components/schemas/contactUpdatePayload"
               type: object
               required:
               - contact
@@ -86,16 +86,16 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/contact_update_success_response_body"
+                "$ref": "#/components/schemas/contactUpdateSuccessResponseBody"
           description: Successful response
         '422':
           description: Unprocessable Entity
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/error_response_body"
+                "$ref": "#/components/schemas/errorResponseBody"
     delete:
-      operationId: contacts_destroy
+      operationId: contactsDestroy
       parameters:
       - in: path
         name: id
@@ -128,7 +128,7 @@ components:
       - name
       - notes
       - phone
-    contact_create_payload:
+    contactCreatePayload:
       properties:
         email:
           type:
@@ -143,7 +143,7 @@ components:
       type: object
       required:
       - name
-    contact_create_success_response_body:
+    contactCreateSuccessResponseBody:
       properties:
         contact:
           "$ref": "#/components/schemas/contact"
@@ -153,7 +153,7 @@ components:
       type: object
       required:
       - contact
-    contact_index_success_response_body:
+    contactIndexSuccessResponseBody:
       properties:
         contacts:
           items:
@@ -163,12 +163,12 @@ components:
           properties: {}
           type: object
         pagination:
-          "$ref": "#/components/schemas/offset_pagination"
+          "$ref": "#/components/schemas/offsetPagination"
       type: object
       required:
       - contacts
       - pagination
-    contact_page:
+    contactPage:
       properties:
         number:
           type: integer
@@ -178,7 +178,7 @@ components:
           minimum: 1
           maximum: 100
       type: object
-    contact_show_success_response_body:
+    contactShowSuccessResponseBody:
       properties:
         contact:
           "$ref": "#/components/schemas/contact"
@@ -188,7 +188,7 @@ components:
       type: object
       required:
       - contact
-    contact_update_payload:
+    contactUpdatePayload:
       properties:
         email:
           type:
@@ -201,7 +201,7 @@ components:
         phone:
           type: string
       type: object
-    contact_update_success_response_body:
+    contactUpdateSuccessResponseBody:
       properties:
         contact:
           "$ref": "#/components/schemas/contact"
@@ -211,7 +211,7 @@ components:
       type: object
       required:
       - contact
-    error_response_body:
+    errorResponseBody:
       properties:
         issues:
           items:
@@ -249,7 +249,7 @@ components:
       - meta
       - path
       - pointer
-    offset_pagination:
+    offsetPagination:
       properties:
         current:
           type: integer

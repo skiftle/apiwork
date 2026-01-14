@@ -6,47 +6,47 @@ info:
 paths:
   "/orders":
     get:
-      operationId: orders_index
+      operationId: ordersIndex
       parameters:
       - in: query
         name: filter
         required: false
         schema:
           oneOf:
-          - "$ref": "#/components/schemas/order_filter"
+          - "$ref": "#/components/schemas/orderFilter"
           - items:
-              "$ref": "#/components/schemas/order_filter"
+              "$ref": "#/components/schemas/orderFilter"
             type: array
       - in: query
         name: page
         required: false
         schema:
-          "$ref": "#/components/schemas/order_page"
+          "$ref": "#/components/schemas/orderPage"
       - in: query
         name: sort
         required: false
         schema:
           oneOf:
-          - "$ref": "#/components/schemas/order_sort"
+          - "$ref": "#/components/schemas/orderSort"
           - items:
-              "$ref": "#/components/schemas/order_sort"
+              "$ref": "#/components/schemas/orderSort"
             type: array
       responses:
         '200':
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/order_index_success_response_body"
+                "$ref": "#/components/schemas/orderIndexSuccessResponseBody"
           description: Successful response
     post:
-      operationId: orders_create
+      operationId: ordersCreate
       requestBody:
         content:
           application/json:
             schema:
               properties:
                 order:
-                  "$ref": "#/components/schemas/order_create_payload"
+                  "$ref": "#/components/schemas/orderCreatePayload"
               type: object
               required:
               - order
@@ -56,17 +56,17 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/order_create_success_response_body"
+                "$ref": "#/components/schemas/orderCreateSuccessResponseBody"
           description: Successful response
         '422':
           description: Unprocessable Entity
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/error_response_body"
+                "$ref": "#/components/schemas/errorResponseBody"
   "/orders/{id}":
     get:
-      operationId: orders_show
+      operationId: ordersShow
       parameters:
       - in: path
         name: id
@@ -78,10 +78,10 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/order_show_success_response_body"
+                "$ref": "#/components/schemas/orderShowSuccessResponseBody"
           description: Successful response
     patch:
-      operationId: orders_update
+      operationId: ordersUpdate
       parameters:
       - in: path
         name: id
@@ -94,7 +94,7 @@ paths:
             schema:
               properties:
                 order:
-                  "$ref": "#/components/schemas/order_update_payload"
+                  "$ref": "#/components/schemas/orderUpdatePayload"
               type: object
               required:
               - order
@@ -104,16 +104,16 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/order_update_success_response_body"
+                "$ref": "#/components/schemas/orderUpdateSuccessResponseBody"
           description: Successful response
         '422':
           description: Unprocessable Entity
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/error_response_body"
+                "$ref": "#/components/schemas/errorResponseBody"
     delete:
-      operationId: orders_destroy
+      operationId: ordersDestroy
       parameters:
       - in: path
         name: id
@@ -125,7 +125,7 @@ paths:
           description: No content
 components:
   schemas:
-    error_response_body:
+    errorResponseBody:
       properties:
         issues:
           items:
@@ -163,11 +163,11 @@ components:
       - meta
       - path
       - pointer
-    nullable_string_filter:
+    nullableStringFilter:
       properties:
         contains:
           type: string
-        ends_with:
+        endsWith:
           type: string
         eq:
           type: string
@@ -177,10 +177,10 @@ components:
           type: array
         'null':
           type: boolean
-        starts_with:
+        startsWith:
           type: string
       type: object
-    offset_pagination:
+    offsetPagination:
       properties:
         current:
           type: integer
@@ -203,17 +203,17 @@ components:
       - total
     order:
       properties:
-        created_at:
+        createdAt:
           type: string
           format: date-time
         id:
           type: string
-        line_items:
+        lineItems:
           items: {}
           type: array
-        order_number:
+        orderNumber:
           type: string
-        shipping_address:
+        shippingAddress:
           properties: {}
           type: object
         status:
@@ -224,33 +224,33 @@ components:
           type:
           - number
           - 'null'
-        updated_at:
+        updatedAt:
           type: string
           format: date-time
       type: object
       required:
-      - created_at
+      - createdAt
       - id
-      - line_items
-      - order_number
-      - shipping_address
+      - lineItems
+      - orderNumber
+      - shippingAddress
       - status
       - total
-      - updated_at
-    order_create_payload:
+      - updatedAt
+    orderCreatePayload:
       properties:
-        line_items:
+        lineItems:
           items: {}
           type: array
-        order_number:
+        orderNumber:
           type: string
-        shipping_address:
+        shippingAddress:
           properties: {}
           type: object
       type: object
       required:
-      - order_number
-    order_create_success_response_body:
+      - orderNumber
+    orderCreateSuccessResponseBody:
       properties:
         meta:
           properties: {}
@@ -260,24 +260,24 @@ components:
       type: object
       required:
       - order
-    order_filter:
+    orderFilter:
       properties:
         _and:
           items:
-            "$ref": "#/components/schemas/order_filter"
+            "$ref": "#/components/schemas/orderFilter"
           type: array
         _not:
-          "$ref": "#/components/schemas/order_filter"
+          "$ref": "#/components/schemas/orderFilter"
         _or:
           items:
-            "$ref": "#/components/schemas/order_filter"
+            "$ref": "#/components/schemas/orderFilter"
           type: array
         status:
           oneOf:
           - type: string
-          - "$ref": "#/components/schemas/nullable_string_filter"
+          - "$ref": "#/components/schemas/nullableStringFilter"
       type: object
-    order_index_success_response_body:
+    orderIndexSuccessResponseBody:
       properties:
         meta:
           properties: {}
@@ -287,12 +287,12 @@ components:
             "$ref": "#/components/schemas/order"
           type: array
         pagination:
-          "$ref": "#/components/schemas/offset_pagination"
+          "$ref": "#/components/schemas/offsetPagination"
       type: object
       required:
       - orders
       - pagination
-    order_page:
+    orderPage:
       properties:
         number:
           type: integer
@@ -302,7 +302,7 @@ components:
           minimum: 1
           maximum: 100
       type: object
-    order_show_success_response_body:
+    orderShowSuccessResponseBody:
       properties:
         meta:
           properties: {}
@@ -312,9 +312,9 @@ components:
       type: object
       required:
       - order
-    order_sort:
+    orderSort:
       properties:
-        created_at:
+        createdAt:
           enum:
           - asc
           - desc
@@ -325,18 +325,18 @@ components:
           - desc
           type: string
       type: object
-    order_update_payload:
+    orderUpdatePayload:
       properties:
-        line_items:
+        lineItems:
           items: {}
           type: array
-        order_number:
+        orderNumber:
           type: string
-        shipping_address:
+        shippingAddress:
           properties: {}
           type: object
       type: object
-    order_update_success_response_body:
+    orderUpdateSuccessResponseBody:
       properties:
         meta:
           properties: {}

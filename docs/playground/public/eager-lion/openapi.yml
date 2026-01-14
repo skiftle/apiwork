@@ -6,47 +6,47 @@ info:
 paths:
   "/invoices":
     get:
-      operationId: invoices_index
+      operationId: invoicesIndex
       parameters:
       - in: query
         name: filter
         required: false
         schema:
           oneOf:
-          - "$ref": "#/components/schemas/invoice_filter"
+          - "$ref": "#/components/schemas/invoiceFilter"
           - items:
-              "$ref": "#/components/schemas/invoice_filter"
+              "$ref": "#/components/schemas/invoiceFilter"
             type: array
       - in: query
         name: page
         required: false
         schema:
-          "$ref": "#/components/schemas/invoice_page"
+          "$ref": "#/components/schemas/invoicePage"
       - in: query
         name: sort
         required: false
         schema:
           oneOf:
-          - "$ref": "#/components/schemas/invoice_sort"
+          - "$ref": "#/components/schemas/invoiceSort"
           - items:
-              "$ref": "#/components/schemas/invoice_sort"
+              "$ref": "#/components/schemas/invoiceSort"
             type: array
       responses:
         '200':
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/invoice_index_success_response_body"
+                "$ref": "#/components/schemas/invoiceIndexSuccessResponseBody"
           description: Successful response
     post:
-      operationId: invoices_create
+      operationId: invoicesCreate
       requestBody:
         content:
           application/json:
             schema:
               properties:
                 invoice:
-                  "$ref": "#/components/schemas/invoice_create_payload"
+                  "$ref": "#/components/schemas/invoiceCreatePayload"
               type: object
               required:
               - invoice
@@ -56,17 +56,17 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/invoice_create_success_response_body"
+                "$ref": "#/components/schemas/invoiceCreateSuccessResponseBody"
           description: Successful response
         '422':
           description: Unprocessable Entity
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/error_response_body"
+                "$ref": "#/components/schemas/errorResponseBody"
   "/invoices/{id}":
     get:
-      operationId: invoices_show
+      operationId: invoicesShow
       parameters:
       - in: path
         name: id
@@ -78,10 +78,10 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/invoice_show_success_response_body"
+                "$ref": "#/components/schemas/invoiceShowSuccessResponseBody"
           description: Successful response
     patch:
-      operationId: invoices_update
+      operationId: invoicesUpdate
       parameters:
       - in: path
         name: id
@@ -94,7 +94,7 @@ paths:
             schema:
               properties:
                 invoice:
-                  "$ref": "#/components/schemas/invoice_update_payload"
+                  "$ref": "#/components/schemas/invoiceUpdatePayload"
               type: object
               required:
               - invoice
@@ -104,16 +104,16 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/invoice_update_success_response_body"
+                "$ref": "#/components/schemas/invoiceUpdateSuccessResponseBody"
           description: Successful response
         '422':
           description: Unprocessable Entity
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/error_response_body"
+                "$ref": "#/components/schemas/errorResponseBody"
     delete:
-      operationId: invoices_destroy
+      operationId: invoicesDestroy
       parameters:
       - in: path
         name: id
@@ -125,7 +125,7 @@ paths:
           description: No content
   "/invoices/{id}/archive":
     patch:
-      operationId: invoices_archive
+      operationId: invoicesArchive
       parameters:
       - in: path
         name: id
@@ -137,17 +137,17 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/invoice_archive_success_response_body"
+                "$ref": "#/components/schemas/invoiceArchiveSuccessResponseBody"
           description: Successful response
         '422':
           description: Unprocessable Entity
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/error_response_body"
+                "$ref": "#/components/schemas/errorResponseBody"
 components:
   schemas:
-    error_response_body:
+    errorResponseBody:
       properties:
         issues:
           items:
@@ -165,17 +165,17 @@ components:
       - layer
     invoice:
       properties:
-        created_at:
+        createdAt:
           type: string
           format: date-time
         customer:
           properties: {}
           type: object
-        customer_id:
+        customerId:
           type: string
         id:
           type: string
-        issued_on:
+        issuedOn:
           type:
           - string
           - 'null'
@@ -193,22 +193,22 @@ components:
           type:
           - string
           - 'null'
-        updated_at:
+        updatedAt:
           type: string
           format: date-time
       type: object
       required:
-      - created_at
+      - createdAt
       - customer
-      - customer_id
+      - customerId
       - id
-      - issued_on
+      - issuedOn
       - lines
       - notes
       - number
       - status
-      - updated_at
-    invoice_archive_success_response_body:
+      - updatedAt
+    invoiceArchiveSuccessResponseBody:
       properties:
         invoice:
           "$ref": "#/components/schemas/invoice"
@@ -218,11 +218,11 @@ components:
       type: object
       required:
       - invoice
-    invoice_create_payload:
+    invoiceCreatePayload:
       properties:
-        customer_id:
+        customerId:
           type: string
-        issued_on:
+        issuedOn:
           type:
           - string
           - 'null'
@@ -238,9 +238,9 @@ components:
           type: string
       type: object
       required:
-      - customer_id
+      - customerId
       - number
-    invoice_create_success_response_body:
+    invoiceCreateSuccessResponseBody:
       properties:
         invoice:
           "$ref": "#/components/schemas/invoice"
@@ -250,28 +250,28 @@ components:
       type: object
       required:
       - invoice
-    invoice_filter:
+    invoiceFilter:
       properties:
         _and:
           items:
-            "$ref": "#/components/schemas/invoice_filter"
+            "$ref": "#/components/schemas/invoiceFilter"
           type: array
         _not:
-          "$ref": "#/components/schemas/invoice_filter"
+          "$ref": "#/components/schemas/invoiceFilter"
         _or:
           items:
-            "$ref": "#/components/schemas/invoice_filter"
+            "$ref": "#/components/schemas/invoiceFilter"
           type: array
         number:
           oneOf:
           - type: string
-          - "$ref": "#/components/schemas/string_filter"
+          - "$ref": "#/components/schemas/stringFilter"
         status:
           oneOf:
           - type: string
-          - "$ref": "#/components/schemas/nullable_string_filter"
+          - "$ref": "#/components/schemas/nullableStringFilter"
       type: object
-    invoice_index_success_response_body:
+    invoiceIndexSuccessResponseBody:
       properties:
         invoices:
           items:
@@ -281,12 +281,12 @@ components:
           properties: {}
           type: object
         pagination:
-          "$ref": "#/components/schemas/offset_pagination"
+          "$ref": "#/components/schemas/offsetPagination"
       type: object
       required:
       - invoices
       - pagination
-    invoice_page:
+    invoicePage:
       properties:
         number:
           type: integer
@@ -296,7 +296,7 @@ components:
           minimum: 1
           maximum: 100
       type: object
-    invoice_show_success_response_body:
+    invoiceShowSuccessResponseBody:
       properties:
         invoice:
           "$ref": "#/components/schemas/invoice"
@@ -306,14 +306,14 @@ components:
       type: object
       required:
       - invoice
-    invoice_sort:
+    invoiceSort:
       properties:
-        created_at:
+        createdAt:
           enum:
           - asc
           - desc
           type: string
-        issued_on:
+        issuedOn:
           enum:
           - asc
           - desc
@@ -323,17 +323,17 @@ components:
           - asc
           - desc
           type: string
-        updated_at:
+        updatedAt:
           enum:
           - asc
           - desc
           type: string
       type: object
-    invoice_update_payload:
+    invoiceUpdatePayload:
       properties:
-        customer_id:
+        customerId:
           type: string
-        issued_on:
+        issuedOn:
           type:
           - string
           - 'null'
@@ -348,7 +348,7 @@ components:
         number:
           type: string
       type: object
-    invoice_update_success_response_body:
+    invoiceUpdateSuccessResponseBody:
       properties:
         invoice:
           "$ref": "#/components/schemas/invoice"
@@ -380,11 +380,11 @@ components:
       - meta
       - path
       - pointer
-    nullable_string_filter:
+    nullableStringFilter:
       properties:
         contains:
           type: string
-        ends_with:
+        endsWith:
           type: string
         eq:
           type: string
@@ -394,10 +394,10 @@ components:
           type: array
         'null':
           type: boolean
-        starts_with:
+        startsWith:
           type: string
       type: object
-    offset_pagination:
+    offsetPagination:
       properties:
         current:
           type: integer
@@ -418,11 +418,11 @@ components:
       - current
       - items
       - total
-    string_filter:
+    stringFilter:
       properties:
         contains:
           type: string
-        ends_with:
+        endsWith:
           type: string
         eq:
           type: string
@@ -430,6 +430,6 @@ components:
           items:
             type: string
           type: array
-        starts_with:
+        startsWith:
           type: string
       type: object
