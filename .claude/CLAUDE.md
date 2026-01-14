@@ -124,6 +124,33 @@ If the answer is "yes, but…" — rewrite.
 | Method names: nouns for getters, verbs for actions                     |                                                          |
 | For single-use conversions, inline it                                  |                                                          |
 
+### Variable Names Match Class Names
+
+Variables should be named after their class:
+
+```ruby
+# Good — variable name matches class
+attribute = schema_class.attributes[key]      # Attribute
+association = schema_class.associations[key]  # Association
+type_definition = registry.find(name)         # TypeDefinition
+enum_definition = registry.find(name)         # EnumDefinition
+
+# Bad — misleading suffix
+attribute_definition = schema_class.attributes[key]  # Class is Attribute, not AttributeDefinition
+```
+
+**Exception:** When a variable can hold multiple types, use a semantic name:
+
+```ruby
+# shape can be Contract::Object, Contract::Union, or API::Object
+shape = Object.new(contract_class)
+
+# param_options is a Hash from .params iteration, not a class instance
+shape.params.each do |name, param_options|
+  # ...
+end
+```
+
 ### Context-aware Naming
 
 Inside a context, use short names. Outside, add context:
