@@ -79,7 +79,7 @@ end`,
     title: "Shape your",
     titleAccent: "contracts",
     description:
-      "One definition validates requests, shapes responses, and generates documentation. The type system handles everything — dates, enums, nested objects, discriminated unions — and maps perfectly to every output format.",
+      "One definition validates requests, shapes responses, and generates documentation. Apiwork turns Ruby's expressive syntax into a declarative type system for APIs — describing dates, enums, nested objects, and discriminated unions with exact semantics across every output format.",
     alt: true,
     blobVariant: 2,
     codeBlocks: [
@@ -91,7 +91,7 @@ end`,
   action :index do
     request do
       query do
-        string :status, enum: :status, optional: true
+        string? :status, enum: :status
       end
     end
 
