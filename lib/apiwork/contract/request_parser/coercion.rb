@@ -5,23 +5,23 @@ module Apiwork
     class RequestParser
       class Coercion
         class << self
-          def coerce_hash(hash, definition, type_cache: nil)
+          def coerce_hash(hash, shape, type_cache: nil)
             coerced = hash.dup
 
-            definition.params.each do |name, param_options|
+            shape.params.each do |name, param_options|
               next unless coerced.key?(name)
 
-              coerced[name] = coerce_value(coerced[name], param_options, definition, type_cache:)
+              coerced[name] = coerce_value(coerced[name], param_options, shape, type_cache:)
             end
 
             coerced
           end
 
-          def coerce_value(value, param_options, definition, type_cache: nil)
+          def coerce_value(value, param_options, shape, type_cache: nil)
             type = param_options[:type]
 
-            return coerce_union(value, param_options[:union], definition, type_cache:) if type == :union
-            return coerce_array(value, param_options, definition, type_cache:) if type == :array && value.is_a?(Array)
+            return coerce_union(value, param_options[:union], shape, type_cache:) if type == :union
+            return coerce_array(value, param_options, shape, type_cache:) if type == :array && value.is_a?(Array)
             return coerce_hash(value, param_options[:shape], type_cache:) if param_options[:shape] && value.is_a?(Hash)
 
             if Coercer.performable?(type)
@@ -32,12 +32,12 @@ module Apiwork
             value
           end
 
-          def coerce_array(array, param_options, definition, type_cache: nil)
+          def coerce_array(array, param_options, shape, type_cache: nil)
             type_cache ||= {}
             custom_shape = nil
 
             if param_options[:of] && !Coercer.performable?(param_options[:of])
-              custom_shape = resolve_custom_shape(param_options[:of], definition, type_cache)
+              custom_shape = resolve_custom_shape(param_options[:of], shape, type_cache)
             end
 
             array.map do |item|
@@ -54,7 +54,7 @@ module Apiwork
             end
           end
 
-          def coerce_union(value, union, definition, type_cache: nil)
+          def coerce_union(value, union, shape, type_cache: nil)
             type_cache ||= {}
 
             if union.variants.any? { |variant| variant[:type] == :boolean }
@@ -71,7 +71,7 @@ module Apiwork
               end
 
               if matching_variant
-                custom_shape = resolve_custom_shape(matching_variant[:type], definition, type_cache)
+                custom_shape = resolve_custom_shape(matching_variant[:type], shape, type_cache)
                 return coerce_hash(value, custom_shape, type_cache:) if custom_shape
               end
             end
@@ -81,7 +81,7 @@ module Apiwork
               variant_of = variant[:of]
 
               if variant_type == :array && value.is_a?(Array) && variant_of
-                custom_shape = resolve_custom_shape(variant_of, definition, type_cache)
+                custom_shape = resolve_custom_shape(variant_of, shape, type_cache)
                 if custom_shape
                   coerced_array = value.map do |item|
                     item.is_a?(Hash) ? coerce_hash(item, custom_shape, type_cache:) : item
@@ -92,7 +92,7 @@ module Apiwork
 
               next if discriminator
 
-              custom_shape = resolve_custom_shape(variant_type, definition, type_cache)
+              custom_shape = resolve_custom_shape(variant_type, shape, type_cache)
               next unless custom_shape
 
               if value.is_a?(Hash)
@@ -106,13 +106,13 @@ module Apiwork
 
           private
 
-          def resolve_custom_shape(type_name, definition, type_cache)
+          def resolve_custom_shape(type_name, shape, type_cache)
             return type_cache[type_name] if type_cache.key?(type_name)
 
-            type_definition = definition.contract_class.resolve_custom_type(type_name)
+            type_definition = shape.contract_class.resolve_custom_type(type_name)
             return type_cache[type_name] = nil unless type_definition
 
-            custom_param = Object.new(definition.contract_class)
+            custom_param = Object.new(shape.contract_class)
             custom_param.copy_type_definition_params(type_definition, custom_param)
             type_cache[type_name] = custom_param
           end

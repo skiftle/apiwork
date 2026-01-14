@@ -5,43 +5,43 @@ module Apiwork
     class RequestParser
       class Transformation
         class << self
-          def apply(params, definition)
+          def apply(params, shape)
             return params unless params.is_a?(Hash)
 
             transformed = params.dup
 
-            definition.params.each do |name, param_definition|
+            shape.params.each do |name, param_options|
               next unless transformed.key?(name)
 
               value = transformed[name]
 
-              if param_definition[:as]
-                transformed[param_definition[:as]] = transformed.delete(name)
-                name = param_definition[:as]
+              if param_options[:as]
+                transformed[param_options[:as]] = transformed.delete(name)
+                name = param_options[:as]
                 value = transformed[name]
               end
 
-              if param_definition[:shape] && value.is_a?(Hash)
-                transformed[name] = apply(value, param_definition[:shape])
-              elsif param_definition[:shape] && value.is_a?(Array)
+              if param_options[:shape] && value.is_a?(Hash)
+                transformed[name] = apply(value, param_options[:shape])
+              elsif param_options[:shape] && value.is_a?(Array)
                 transformed[name] = value.map do |item|
-                  item.is_a?(Hash) ? apply(item, param_definition[:shape]) : item
+                  item.is_a?(Hash) ? apply(item, param_options[:shape]) : item
                 end
-              elsif param_definition[:type] == :array && param_definition[:of] && value.is_a?(Array)
-                transformed_array = transform_custom_type_array(value, param_definition, definition)
+              elsif param_options[:type] == :array && param_options[:of] && value.is_a?(Array)
+                transformed_array = transform_custom_type_array(value, param_options, shape)
                 transformed[name] = transformed_array if transformed_array
               end
             end
 
-            apply_sti_discriminator_transform(transformed, definition)
+            apply_sti_discriminator_transform(transformed, shape)
 
             transformed
           end
 
           private
 
-          def apply_sti_discriminator_transform(params, definition)
-            definition.params.each do |name, param_options|
+          def apply_sti_discriminator_transform(params, shape)
+            shape.params.each do |name, param_options|
               params[name] = param_options[:store] if param_options[:store] && params.key?(name)
 
               value = params[name]
@@ -50,29 +50,29 @@ module Apiwork
               if param_options[:shape]
                 apply_sti_discriminator_transform(value, param_options[:shape])
               elsif param_options[:union]
-                apply_sti_transform_to_union_value(value, param_options[:union], definition)
+                apply_sti_transform_to_union_value(value, param_options[:union], shape)
               elsif param_options[:type].is_a?(Symbol)
-                apply_sti_transform_to_custom_type(value, param_options[:type], definition)
+                apply_sti_transform_to_custom_type(value, param_options[:type], shape)
               end
             end
           end
 
-          def apply_sti_transform_to_union_value(value, union_definition, parent_definition)
-            discriminator = union_definition.discriminator
+          def apply_sti_transform_to_union_value(value, union, parent_shape)
+            discriminator = union.discriminator
             return unless discriminator && value.key?(discriminator)
 
             tag = value[discriminator]
-            variant = union_definition.variants.find do |variant|
+            variant = union.variants.find do |variant|
               variant[:tag].to_s == tag.to_s
             end
             return unless variant
 
             variant_type = variant[:type]
-            apply_sti_transform_to_custom_type(value, variant_type, parent_definition)
+            apply_sti_transform_to_custom_type(value, variant_type, parent_shape)
           end
 
-          def apply_sti_transform_to_custom_type(value, type_name, parent_definition)
-            contract_class = parent_definition&.contract_class
+          def apply_sti_transform_to_custom_type(value, type_name, parent_shape)
+            contract_class = parent_shape&.contract_class
             return unless contract_class
 
             type_definition = contract_class.resolve_custom_type(type_name)
@@ -80,17 +80,17 @@ module Apiwork
             if type_definition
               temp_param = Object.new(
                 contract_class,
-                action_name: parent_definition.action_name,
+                action_name: parent_shape.action_name,
               )
               temp_param.copy_type_definition_params(type_definition, temp_param)
               apply_sti_discriminator_transform(value, temp_param)
             else
-              apply_sti_transform_to_registered_union(value, type_name, parent_definition)
+              apply_sti_transform_to_registered_union(value, type_name, parent_shape)
             end
           end
 
-          def apply_sti_transform_to_registered_union(value, type_name, parent_definition)
-            contract_class = parent_definition&.contract_class
+          def apply_sti_transform_to_registered_union(value, type_name, parent_shape)
+            contract_class = parent_shape&.contract_class
             api_class = contract_class.api_class
             return unless api_class
 
@@ -108,18 +108,18 @@ module Apiwork
             variant = payload[:variants]&.find { |v| v[:tag].to_s == tag.to_s }
             return unless variant
 
-            apply_sti_transform_to_custom_type(value, variant[:type], parent_definition)
+            apply_sti_transform_to_custom_type(value, variant[:type], parent_shape)
           end
 
-          def transform_custom_type_array(value, param_definition, definition)
-            shape = resolve_custom_type_shape(param_definition[:of], definition)
+          def transform_custom_type_array(value, param_options, shape)
+            shape = resolve_custom_type_shape(param_options[:of], shape)
             return value.map { |item| item.is_a?(Hash) ? apply(item, shape) : item } if shape
 
             nil
           end
 
-          def resolve_custom_type_shape(type_name, definition)
-            contract_class = definition&.contract_class
+          def resolve_custom_type_shape(type_name, shape)
+            contract_class = shape&.contract_class
             return nil unless contract_class
 
             type_definition = contract_class.resolve_custom_type(type_name)
@@ -128,7 +128,7 @@ module Apiwork
             if type_definition.object?
               temp_param = Object.new(
                 contract_class,
-                action_name: definition.action_name,
+                action_name: shape.action_name,
               )
               temp_param.copy_type_definition_params(type_definition, temp_param)
               temp_param
@@ -141,7 +141,7 @@ module Apiwork
 
               temp_param = Object.new(
                 contract_class,
-                action_name: definition.action_name,
+                action_name: shape.action_name,
               )
               temp_param.copy_type_definition_params(variant_type_definition, temp_param)
               temp_param

@@ -54,9 +54,9 @@ module Apiwork
     def merge_variant_shapes(existing_variant, new_shape)
       return unless new_shape.respond_to?(:params)
 
-      new_shape.params.each do |name, param_data|
+      new_shape.params.each do |name, param_options|
         existing_variant[:shape].params[name] =
-          (existing_variant[:shape].params[name] || {}).merge(param_data)
+          (existing_variant[:shape].params[name] || {}).merge(param_options)
       end
     end
 

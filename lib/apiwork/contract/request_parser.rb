@@ -26,17 +26,17 @@ module Apiwork
       private
 
       def parse_part(data, part_type)
-        definition = definition_for(part_type)
-        return [{}, []] if definition.nil? && data.blank?
-        return [data, []] unless definition
+        shape = shape_for(part_type)
+        return [{}, []] if shape.nil? && data.blank?
+        return [data, []] unless shape
 
-        coerced_data = @coerce ? coerce(data, definition) : data
-        validated = validate(coerced_data, definition)
+        coerced_data = @coerce ? coerce(data, shape) : data
+        validated = validate(coerced_data, shape)
 
         return [{}, validated[:issues]] if validated[:issues].any?
 
-        deserialized = deserialize(validated[:params], definition)
-        transformed = transform(deserialized, definition)
+        deserialized = deserialize(validated[:params], shape)
+        transformed = transform(deserialized, shape)
 
         [transformed, []]
       end
@@ -45,7 +45,7 @@ module Apiwork
         @action ||= contract_class.action_for(action_name)
       end
 
-      def definition_for(part_type)
+      def shape_for(part_type)
         case part_type
         when :query
           action&.request&.query_param
@@ -54,26 +54,26 @@ module Apiwork
         end
       end
 
-      def coerce(data, definition)
+      def coerce(data, shape)
         return data unless data.is_a?(Hash)
 
-        Coercion.coerce_hash(data, definition)
+        Coercion.coerce_hash(data, shape)
       end
 
-      def validate(data, definition)
-        definition.validate(data) || { issues: [], params: data }
+      def validate(data, shape)
+        shape.validate(data) || { issues: [], params: data }
       end
 
-      def deserialize(data, definition)
+      def deserialize(data, shape)
         return data unless data.is_a?(Hash)
 
-        Deserialization.deserialize_hash(data, definition)
+        Deserialization.deserialize_hash(data, shape)
       end
 
-      def transform(data, definition)
+      def transform(data, shape)
         return data unless data.is_a?(Hash)
 
-        Transformation.apply(data, definition)
+        Transformation.apply(data, shape)
       end
     end
   end
