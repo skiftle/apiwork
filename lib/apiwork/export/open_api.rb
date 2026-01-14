@@ -368,9 +368,9 @@ module Apiwork
         result[:description] = param.description if param.description
         result[:example] = param.example if param.example
 
-        param.shape.each do |name, field_param|
+        param.shape.each do |name, field|
           transformed_key = transform_key(name)
-          result[:properties][transformed_key] = map_field(field_param)
+          result[:properties][transformed_key] = map_field(field)
         end
 
         if param.shape.any?
@@ -406,9 +406,9 @@ module Apiwork
       def map_inline_object(shape)
         result = { properties: {}, type: 'object' }
 
-        shape.each do |name, field_param|
+        shape.each do |name, field|
           transformed_key = transform_key(name)
-          result[:properties][transformed_key] = map_field(field_param)
+          result[:properties][transformed_key] = map_field(field)
         end
 
         required_fields = shape.reject { |_name, field| field.optional? }.keys.map { |key| transform_key(key) }

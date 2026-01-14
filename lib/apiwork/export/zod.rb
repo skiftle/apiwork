@@ -59,9 +59,9 @@ module Apiwork
         return '' if surface.enums.empty?
 
         surface.enums.map do |name, enum|
-          schema_name = zod_mapper.pascal_case(name)
+          type_name = zod_mapper.pascal_case(name)
           enum_literal = enum.values.sort.map { |value| "'#{value}'" }.join(', ')
-          "export const #{schema_name}Schema = z.enum([#{enum_literal}]);"
+          "export const #{type_name}Schema = z.enum([#{enum_literal}]);"
         end.join("\n\n")
       end
 
@@ -118,8 +118,8 @@ module Apiwork
 
             response = action.response
             if response&.no_content?
-              schema_name = zod_mapper.action_type_name(resource_name, action_name, 'Response', parent_identifiers:)
-              schemas << "export const #{schema_name} = z.never();"
+              type_name = zod_mapper.action_type_name(resource_name, action_name, 'Response', parent_identifiers:)
+              schemas << "export const #{type_name} = z.never();"
             elsif response&.body?
               schemas << zod_mapper.build_action_response_body_schema(resource_name, action_name, response.body, parent_identifiers:)
               schemas << zod_mapper.build_action_response_schema(resource_name, action_name, { body: response.body }, parent_identifiers:)

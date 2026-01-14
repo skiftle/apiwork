@@ -12,7 +12,7 @@ module Apiwork
       end
 
       def build_interface(type_name, type)
-        type_name_pascal = pascal_case(type_name)
+        type_name = pascal_case(type_name)
 
         properties = type.shape.sort_by { |name, _param| name.to_s }.map do |name, param|
           key = transform_key(name)
@@ -31,15 +31,15 @@ module Apiwork
         type_jsdoc = jsdoc(description: type.description, example: type.example)
 
         code = if properties.empty?
-                 "export type #{type_name_pascal} = Record<string, unknown>;"
+                 "export type #{type_name} = Record<string, unknown>;"
                else
-                 "export interface #{type_name_pascal} {\n#{properties}\n}"
+                 "export interface #{type_name} {\n#{properties}\n}"
                end
         type_jsdoc ? "#{type_jsdoc}\n#{code}" : code
       end
 
       def build_union_type(type_name, type)
-        type_name_pascal = pascal_case(type_name)
+        type_name = pascal_case(type_name)
 
         variant_types = type.variants.map do |variant|
           base_type = map_param(variant)
@@ -52,7 +52,7 @@ module Apiwork
           end
         end
 
-        code = "export type #{type_name_pascal} = #{variant_types.join(' | ')};"
+        code = "export type #{type_name} = #{variant_types.join(' | ')};"
         type_jsdoc = jsdoc(description: type.description)
         type_jsdoc ? "#{type_jsdoc}\n#{code}" : code
       end
@@ -170,10 +170,10 @@ module Apiwork
 
         partial = param.object? && param.partial?
 
-        properties = param.shape.sort_by { |name, _field| name.to_s }.map do |name, field_param|
+        properties = param.shape.sort_by { |name, _field| name.to_s }.map do |name, field|
           key = transform_key(name)
-          ts_type = map_field(field_param)
-          optional_marker = partial || field_param.optional? ? '?' : ''
+          ts_type = map_field(field)
+          optional_marker = partial || field.optional? ? '?' : ''
           "#{key}#{optional_marker}: #{ts_type}"
         end.join('; ')
 
@@ -276,14 +276,10 @@ module Apiwork
         base = leading_underscore ? key[1..] : key
 
         transformed = case key_format
-                      when :camel
-                        base.camelize(:lower)
-                      when :kebab
-                        base.dasherize
-                      when :pascal
-                        base.camelize(:upper)
-                      else
-                        base
+                      when :camel then base.camelize(:lower)
+                      when :kebab then base.dasherize
+                      when :underscore then base.underscore
+                      else base
                       end
 
         leading_underscore ? "_#{transformed}" : transformed

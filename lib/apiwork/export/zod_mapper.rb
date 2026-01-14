@@ -70,9 +70,9 @@ module Apiwork
       def build_action_request_query_schema(resource_name, action_name, query_params, parent_identifiers: [])
         schema_name = action_type_name(resource_name, action_name, 'RequestQuery', parent_identifiers:)
 
-        properties = query_params.sort_by { |name, _param| name.to_s }.map do |param_name, param_options|
+        properties = query_params.sort_by { |name, _param| name.to_s }.map do |param_name, param|
           key = transform_key(param_name)
-          zod_type = map_field(param_options)
+          zod_type = map_field(param)
           "  #{key}: #{zod_type}"
         end.join(",\n")
 
@@ -82,9 +82,9 @@ module Apiwork
       def build_action_request_body_schema(resource_name, action_name, body_params, parent_identifiers: [])
         schema_name = action_type_name(resource_name, action_name, 'RequestBody', parent_identifiers:)
 
-        properties = body_params.sort_by { |name, _param| name.to_s }.map do |param_name, param_options|
+        properties = body_params.sort_by { |name, _param| name.to_s }.map do |param_name, param|
           key = transform_key(param_name)
-          zod_type = map_field(param_options)
+          zod_type = map_field(param)
           "  #{key}: #{zod_type}"
         end.join(",\n")
 
@@ -165,12 +165,12 @@ module Apiwork
 
         partial = param.partial?
 
-        properties = param.shape.sort_by { |name, _field| name.to_s }.map do |name, field_param|
+        properties = param.shape.sort_by { |name, _field| name.to_s }.map do |name, field|
           key = transform_key(name)
           zod_type = if partial
-                       map_field(field_param, force_optional: false)
+                       map_field(field, force_optional: false)
                      else
-                       map_field(field_param)
+                       map_field(field)
                      end
           "#{key}: #{zod_type}"
         end.join(', ')
@@ -304,14 +304,10 @@ module Apiwork
         base = leading_underscore ? key[1..] : key
 
         transformed = case key_format
-                      when :camel
-                        base.camelize(:lower)
-                      when :kebab
-                        base.dasherize
-                      when :pascal
-                        base.camelize(:upper)
-                      else
-                        base
+                      when :camel then base.camelize(:lower)
+                      when :kebab then base.dasherize
+                      when :underscore then base.underscore
+                      else base
                       end
 
         leading_underscore ? "_#{transformed}" : transformed
