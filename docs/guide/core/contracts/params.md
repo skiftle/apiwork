@@ -41,6 +41,24 @@ datetime :deleted_at, nullable: true              # can be null
 object :metadata, optional: true, nullable: true  # can omit or null
 ```
 
+### Shorthand
+
+Every type has a `?` variant that sets `optional: true`:
+
+```ruby
+string? :notes                    # same as: string :notes, optional: true
+integer? :count
+array? :tags do
+  string
+end
+```
+
+All options work the same:
+
+```ruby
+string? :bio, max: 500, nullable: true
+```
+
 ### Defaults
 
 When a field is omitted, use a default value:
