@@ -57,7 +57,7 @@ module Apiwork
           end
         end
 
-        union_body = variant_schemas.map { |v| "  #{v}" }.join(",\n")
+        union_body = variant_schemas.map { |schema| "  #{schema}" }.join(",\n")
 
         if type.discriminator
           discriminator_key = transform_key(type.discriminator)

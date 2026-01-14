@@ -59,7 +59,7 @@ module Apiwork
 
       def build_enum_type(enum_name, enum)
         type_name = pascal_case(enum_name)
-        type_literal = enum.values.sort.map { |v| "'#{v}'" }.join(' | ')
+        type_literal = enum.values.sort.map { |value| "'#{value}'" }.join(' | ')
 
         code = "export type #{type_name} = #{type_literal};"
         type_jsdoc = jsdoc(description: enum.description)

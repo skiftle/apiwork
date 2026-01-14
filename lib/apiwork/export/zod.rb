@@ -61,7 +61,7 @@ module Apiwork
 
         surface.enums.map do |name, enum|
           schema_name = zod_mapper.pascal_case(name)
-          enum_literal = enum.values.sort.map { |v| "'#{v}'" }.join(', ')
+          enum_literal = enum.values.sort.map { |value| "'#{value}'" }.join(', ')
           "export const #{schema_name}Schema = z.enum([#{enum_literal}]);"
         end.join("\n\n")
       end
@@ -136,7 +136,7 @@ module Apiwork
 
         surface.enums.each do |name, enum|
           type_name = typescript_mapper.pascal_case(name)
-          type_literal = enum.values.sort.map { |v| "'#{v}'" }.join(' | ')
+          type_literal = enum.values.sort.map { |value| "'#{value}'" }.join(' | ')
           all_types << { code: "export type #{type_name} = #{type_literal};", name: type_name }
         end
 

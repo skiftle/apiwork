@@ -214,8 +214,8 @@ module Apiwork
       path.sub('Apiwork::', '')
     end
 
-    def dasherize(str)
-      str.underscore.dasherize
+    def dasherize(string)
+      string.underscore.dasherize
     end
 
     def linkify_yard_refs(text)

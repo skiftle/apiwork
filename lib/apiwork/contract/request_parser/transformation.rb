@@ -105,7 +105,7 @@ module Apiwork
             return unless discriminator && value.key?(discriminator)
 
             tag = value[discriminator]
-            variant = payload[:variants]&.find { |v| v[:tag].to_s == tag.to_s }
+            variant = payload[:variants]&.find { |variant| variant[:tag].to_s == tag.to_s }
             return unless variant
 
             apply_sti_transform_to_custom_type(value, variant[:type], parent_shape)

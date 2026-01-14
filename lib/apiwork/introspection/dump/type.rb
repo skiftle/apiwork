@@ -148,7 +148,7 @@ module Apiwork
           return [] unless shape
           return [] unless shape.respond_to?(:variants)
 
-          shape.variants.map { |v| build_variant(v, nil) }
+          shape.variants.map { |variant| build_variant(variant, nil) }
         end
 
         def resolve_type_ref(type_value, scope)

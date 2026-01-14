@@ -60,7 +60,7 @@ module Apiwork
           api_path = api_class.path
 
           options = { format:, key_format:, locale:, version: }.compact
-          options_label = options.any? ? " (#{options.map { |k, v| "#{k}: #{v}" }.join(', ')})" : ''
+          options_label = options.any? ? " (#{options.map { |key, value| "#{key}: #{value}" }.join(', ')})" : ''
           Rails.logger.debug "  ✓ #{api_path} to #{export_name}#{options_label}"
 
           content = generate(export_name, api_path, format:, key_format:, locale:, version:)
