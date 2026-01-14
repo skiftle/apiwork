@@ -55,7 +55,7 @@ class ExampleGenerator
   end
 
   def generated_dirs
-    Apiwork::API.all.map do |api_class|
+    Apiwork::API.values.map do |api_class|
       api_class.path.delete_prefix('/').underscore.dasherize
     end
   end
@@ -76,7 +76,7 @@ class ExampleGenerator
   end
 
   def each_api
-    Apiwork::API.all.sort_by(&:path).each do |api_class|
+    Apiwork::API.values.sort_by(&:path).each do |api_class|
       namespace = api_class.path.delete_prefix('/').underscore
       metadata = metadata_for(namespace)
       yield api_class, namespace, metadata

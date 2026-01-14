@@ -49,7 +49,7 @@ Apiwork::Export.register(ProtobufExport)
 
 `.export_name(name = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L43)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L51)
 
 The export name.
 
@@ -69,7 +69,7 @@ The export name.
 
 `.file_extension(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L85)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L88)
 
 The file extension for string exports.
 
@@ -144,7 +144,7 @@ end
 
 `.output(type = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L52)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L60)
 
 Declares the output type for this export.
 
@@ -162,7 +162,7 @@ Declares the output type for this export.
 
 `#data`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L262)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L242)
 
 The API introspection facade.
 
@@ -182,7 +182,7 @@ This is the primary interface for accessing introspection data in export generat
 
 `#generate`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L206)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L186)
 
 Generates the export output.
 
@@ -197,5 +197,39 @@ to types, enums, resources, actions, and other introspection data.
 **See also**
 
 - [Introspection::API](introspection-api)
+
+---
+
+### #key_format
+
+`#key_format`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L250)
+
+The key format for this export.
+
+**Returns**
+
+`Symbol`
+
+---
+
+### #transform_key
+
+`#transform_key(key)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L259)
+
+Transforms a key according to the configured key format.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `key` | `String, Symbol` | the key to transform |
+
+**Returns**
+
+`String`
 
 ---

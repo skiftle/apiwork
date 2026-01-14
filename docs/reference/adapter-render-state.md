@@ -29,7 +29,7 @@ end
 
 ```ruby
 def render_collection(collection, schema_class, state)
-  response = { data: collection.map { |r| serialize(r) } }
+  response = { data: collection.map { |record| serialize(record) } }
   response[:cache] = true if state.action.get?
   response
 end

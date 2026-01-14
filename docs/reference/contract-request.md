@@ -10,7 +10,7 @@ next: false
 
 Defines query params and body for a request.
 
-Returns [Object](object) via `query` and `body`.
+Returns [Contract::Object](contract-object) via `query` and `body`.
 
 ## Instance Methods
 
@@ -18,7 +18,7 @@ Returns [Object](object) via `query` and `body`.
 
 `#body(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request.rb#L59)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request.rb#L57)
 
 Defines the request body for this request.
 
@@ -47,7 +47,7 @@ end
 
 `#query(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request.rb#L35)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request.rb#L33)
 
 Defines query parameters for this request.
 

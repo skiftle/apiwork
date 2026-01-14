@@ -5,7 +5,7 @@ module Apiwork
     # @api public
     # Defines query params and body for a request.
     #
-    # Returns {Object} via `query` and `body`.
+    # Returns {Contract::Object} via `query` and `body`.
     class Request
       attr_reader :action_name,
                   :contract_class
@@ -27,8 +27,8 @@ module Apiwork
       #
       # @example
       #   query do
-      #     integer :page, optional: true
-      #     string :status, enum: :status, optional: true
+      #     integer? :page
+      #     string? :status, enum: :status
       #   end
       def query(&block)
         if block

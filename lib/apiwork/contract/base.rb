@@ -313,7 +313,7 @@ module Apiwork
         #     action :show do
         #       request do
         #         query do
-        #           string :include, optional: true
+        #           string? :include
         #         end
         #       end
         #       response do

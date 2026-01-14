@@ -66,7 +66,7 @@ module Apiwork
       #       if action.collection?
       #         definition.request do
       #           query do
-      #             integer :page, optional: true
+      #             integer? :page
       #           end
       #         end
       #       end
