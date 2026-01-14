@@ -400,12 +400,12 @@ module Apiwork
         )
       end
 
-      def validate_union(name, value, union_definition, path, current_depth:, max_depth:)
-        variants = union_definition.variants
+      def validate_union(name, value, union, path, current_depth:, max_depth:)
+        variants = union.variants
 
-        if union_definition.discriminator
+        if union.discriminator
           return validate_discriminated_union(
-            name, value, union_definition, path, current_depth:, max_depth:
+            name, value, union, path, current_depth:, max_depth:
           )
         end
 
@@ -452,9 +452,9 @@ module Apiwork
         [error, nil]
       end
 
-      def validate_discriminated_union(name, value, union_definition, path, current_depth:, max_depth:)
-        discriminator = union_definition.discriminator
-        variants = union_definition.variants
+      def validate_discriminated_union(name, value, union, path, current_depth:, max_depth:)
+        discriminator = union.discriminator
+        variants = union.variants
 
         unless value.is_a?(Hash)
           error = Issue.new(
@@ -484,7 +484,7 @@ module Apiwork
           end
 
           return validate_union_without_discriminator(
-            name, value, union_definition, path, current_depth:, max_depth:
+            name, value, union, path, current_depth:, max_depth:
           )
         end
 
@@ -746,9 +746,9 @@ module Apiwork
         end
       end
 
-      def validate_union_without_discriminator(name, value, union_definition, path, current_depth:, max_depth:)
-        variants = union_definition.variants
-        discriminator = union_definition.discriminator
+      def validate_union_without_discriminator(name, value, union, path, current_depth:, max_depth:)
+        variants = union.variants
+        discriminator = union.discriminator
 
         best_result = nil
         fewest_issues = Float::INFINITY

@@ -298,13 +298,13 @@ module Apiwork
           end
         end
 
-        def build_nested_shape(shape_definition)
-          if shape_definition.is_a?(Apiwork::API::Object)
-            dump_api_object(shape_definition)
-          elsif shape_definition.is_a?(Apiwork::API::Union)
-            dump_api_union(shape_definition)
+        def build_nested_shape(shape)
+          if shape.is_a?(Apiwork::API::Object)
+            dump_api_object(shape)
+          elsif shape.is_a?(Apiwork::API::Union)
+            dump_api_union(shape)
           else
-            Param.new(shape_definition, visited: @visited).to_h
+            Param.new(shape, visited: @visited).to_h
           end
         end
 
