@@ -39,7 +39,7 @@ export interface IntegerFilterBetween {
 export interface Issue {
   code: string;
   detail: string;
-  meta: object;
+  meta: Record<string, unknown>;
   path: string[];
   pointer: string;
 }
@@ -49,7 +49,7 @@ export type Layer = 'contract' | 'domain' | 'http';
 export interface Motorcycle {
   brand: string;
   color: null | string;
-  engineCc: null | number;
+  engine_cc: null | number;
   id: string;
   model: string;
   type: 'motorcycle';
@@ -59,7 +59,7 @@ export interface Motorcycle {
 export interface MotorcycleCreatePayload {
   brand: string;
   color?: null | string;
-  engineCc?: null | number;
+  engine_cc?: null | number;
   model: string;
   type: 'motorcycle';
   year?: null | number;
@@ -68,7 +68,7 @@ export interface MotorcycleCreatePayload {
 export interface MotorcycleUpdatePayload {
   brand?: string;
   color?: null | string;
-  engineCc?: null | number;
+  engine_cc?: null | number;
   model?: string;
   type?: 'motorcycle';
   year?: null | number;
@@ -97,10 +97,10 @@ export type SortDirection = 'asc' | 'desc';
 
 export interface StringFilter {
   contains?: string;
-  endsWith?: string;
+  ends_with?: string;
   eq?: string;
   in?: string[];
-  startsWith?: string;
+  starts_with?: string;
 }
 
 export interface Truck {
@@ -108,7 +108,7 @@ export interface Truck {
   color: null | string;
   id: string;
   model: string;
-  payloadCapacity: null | number;
+  payload_capacity: null | number;
   type: 'truck';
   year: null | number;
 }
@@ -117,7 +117,7 @@ export interface TruckCreatePayload {
   brand: string;
   color?: null | string;
   model: string;
-  payloadCapacity?: null | number;
+  payload_capacity?: null | number;
   type: 'truck';
   year?: null | number;
 }
@@ -126,7 +126,7 @@ export interface TruckUpdatePayload {
   brand?: string;
   color?: null | string;
   model?: string;
-  payloadCapacity?: null | number;
+  payload_capacity?: null | number;
   type?: 'truck';
   year?: null | number;
 }
@@ -134,7 +134,7 @@ export interface TruckUpdatePayload {
 export type Vehicle = Car | Motorcycle | Truck;
 
 export interface VehicleCreateSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   vehicle: Vehicle;
 }
 
@@ -148,7 +148,7 @@ export interface VehicleFilter {
 }
 
 export interface VehicleIndexSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   pagination: OffsetPagination;
   vehicles: Vehicle[];
 }
@@ -159,7 +159,7 @@ export interface VehiclePage {
 }
 
 export interface VehicleShowSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   vehicle: Vehicle;
 }
 
@@ -168,7 +168,7 @@ export interface VehicleSort {
 }
 
 export interface VehicleUpdateSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   vehicle: Vehicle;
 }
 

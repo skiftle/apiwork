@@ -6,7 +6,7 @@ export interface ErrorResponseBody {
 export interface Issue {
   code: string;
   detail: string;
-  meta: object;
+  meta: Record<string, unknown>;
   path: string[];
   pointer: string;
 }
@@ -15,11 +15,11 @@ export type Layer = 'contract' | 'domain' | 'http';
 
 export interface NullableStringFilter {
   contains?: string;
-  endsWith?: string;
+  ends_with?: string;
   eq?: string;
   in?: string[];
   null?: boolean;
-  startsWith?: string;
+  starts_with?: string;
 }
 
 export interface OffsetPagination {
@@ -31,24 +31,24 @@ export interface OffsetPagination {
 }
 
 export interface Order {
-  createdAt: string;
+  created_at: string;
   id: string;
-  lineItems: string[];
-  orderNumber: string;
-  shippingAddress: object;
+  line_items: unknown[];
+  order_number: string;
+  shipping_address: Record<string, unknown>;
   status: null | string;
   total: null | number;
-  updatedAt: string;
+  updated_at: string;
 }
 
 export interface OrderCreatePayload {
-  lineItems?: string[];
-  orderNumber: string;
-  shippingAddress?: object;
+  line_items?: unknown[];
+  order_number: string;
+  shipping_address?: Record<string, unknown>;
 }
 
 export interface OrderCreateSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   order: Order;
 }
 
@@ -60,7 +60,7 @@ export interface OrderFilter {
 }
 
 export interface OrderIndexSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   orders: Order[];
   pagination: OffsetPagination;
 }
@@ -71,23 +71,23 @@ export interface OrderPage {
 }
 
 export interface OrderShowSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   order: Order;
 }
 
 export interface OrderSort {
-  createdAt?: SortDirection;
+  created_at?: SortDirection;
   status?: SortDirection;
 }
 
 export interface OrderUpdatePayload {
-  lineItems?: string[];
-  orderNumber?: string;
-  shippingAddress?: object;
+  line_items?: unknown[];
+  order_number?: string;
+  shipping_address?: Record<string, unknown>;
 }
 
 export interface OrderUpdateSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   order: Order;
 }
 

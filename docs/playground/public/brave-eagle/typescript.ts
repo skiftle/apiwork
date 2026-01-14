@@ -4,14 +4,14 @@ export interface Comment {
    * Name of the person who wrote the comment
    * @example "John Doe"
    */
-  authorName: null | string;
+  author_name: null | string;
   /**
    * Comment content
    * @example "This looks good, ready for review."
    */
   body: string;
   /** When the comment was created */
-  createdAt: string;
+  created_at: string;
   /** Unique comment identifier */
   id: string;
 }
@@ -24,7 +24,7 @@ export interface ErrorResponseBody {
 export interface Issue {
   code: string;
   detail: string;
-  meta: object;
+  meta: Record<string, unknown>;
   path: string[];
   pointer: string;
 }
@@ -50,7 +50,7 @@ export interface Task {
   /** Discussion comments on this task */
   comments?: Comment[];
   /** Timestamp when the task was created */
-  createdAt: string;
+  created_at: string;
   /**
    * Detailed description of what needs to be done
    * @example "Add OAuth2 login support for Google and GitHub providers"
@@ -60,7 +60,7 @@ export interface Task {
    * Target date for task completion
    * @example "2024-02-01T00:00:00Z"
    */
-  dueDate: null | string;
+  due_date: null | string;
   /** Unique task identifier */
   id: string;
   /**
@@ -79,11 +79,11 @@ export interface Task {
    */
   title: string;
   /** Timestamp of last modification */
-  updatedAt: string;
+  updated_at: string;
 }
 
 export interface TaskArchiveSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   task: Task;
 }
 
@@ -98,7 +98,7 @@ export interface TaskCreatePayload {
    * Target date for task completion
    * @example "2024-02-01T00:00:00Z"
    */
-  dueDate?: null | string;
+  due_date?: null | string;
   /**
    * Priority level for task ordering
    * @example "high"
@@ -117,7 +117,7 @@ export interface TaskCreatePayload {
 }
 
 export interface TaskCreateSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   task: Task;
 }
 
@@ -136,7 +136,7 @@ export interface TaskInclude {
 }
 
 export interface TaskIndexSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   pagination: OffsetPagination;
   tasks: Task[];
 }
@@ -151,14 +151,14 @@ export type TaskPriority = 'critical' | 'high' | 'low' | 'medium';
 export type TaskPriorityFilter = TaskPriority | { eq?: TaskPriority; in?: TaskPriority[] };
 
 export interface TaskShowSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   task: Task;
 }
 
 /** A task representing work to be completed */
 export interface TaskSort {
-  createdAt?: SortDirection;
-  dueDate?: SortDirection;
+  created_at?: SortDirection;
+  due_date?: SortDirection;
 }
 
 export type TaskStatus = 'archived' | 'completed' | 'in_progress' | 'pending';
@@ -176,7 +176,7 @@ export interface TaskUpdatePayload {
    * Target date for task completion
    * @example "2024-02-01T00:00:00Z"
    */
-  dueDate?: null | string;
+  due_date?: null | string;
   /**
    * Priority level for task ordering
    * @example "high"
@@ -195,7 +195,7 @@ export interface TaskUpdatePayload {
 }
 
 export interface TaskUpdateSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   task: Task;
 }
 

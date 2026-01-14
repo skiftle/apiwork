@@ -5,7 +5,7 @@ export const LayerSchema = z.enum(['contract', 'domain', 'http']);
 export const IssueSchema = z.object({
   code: z.string(),
   detail: z.string(),
-  meta: z.object({}),
+  meta: z.record(z.string(), z.unknown()),
   path: z.array(z.string()),
   pointer: z.string()
 });
@@ -20,23 +20,23 @@ export const OffsetPaginationSchema = z.object({
 
 export const ProfileSchema = z.object({
   addresses: z.array(z.object({ city: z.string(), primary: z.boolean(), street: z.string(), zip: z.string() })),
-  createdAt: z.iso.datetime(),
+  created_at: z.iso.datetime(),
   email: z.email(),
   id: z.string(),
-  metadata: z.object({}),
+  metadata: z.string(),
   name: z.string(),
-  preferences: z.object({ notifications: z.object({ email: z.boolean(), push: z.boolean() }), ui: z.object({ sidebarCollapsed: z.boolean(), theme: z.string() }) }),
+  preferences: z.object({ notifications: z.object({ email: z.boolean(), push: z.boolean() }), ui: z.object({ sidebar_collapsed: z.boolean(), theme: z.string() }) }),
   settings: z.object({ language: z.string(), notifications: z.boolean(), theme: z.string() }),
   tags: z.array(z.string()),
-  updatedAt: z.iso.datetime()
+  updated_at: z.iso.datetime()
 });
 
 export const ProfileCreatePayloadSchema = z.object({
   addresses: z.array(z.object({ city: z.string(), primary: z.boolean(), street: z.string(), zip: z.string() })),
   email: z.email(),
-  metadata: z.object({}),
+  metadata: z.string(),
   name: z.string(),
-  preferences: z.object({ notifications: z.object({ email: z.boolean(), push: z.boolean() }), ui: z.object({ sidebarCollapsed: z.boolean(), theme: z.string() }) }),
+  preferences: z.object({ notifications: z.object({ email: z.boolean(), push: z.boolean() }), ui: z.object({ sidebar_collapsed: z.boolean(), theme: z.string() }) }),
   settings: z.object({ language: z.string(), notifications: z.boolean(), theme: z.string() }),
   tags: z.array(z.string())
 });
@@ -49,9 +49,9 @@ export const ProfilePageSchema = z.object({
 export const ProfileUpdatePayloadSchema = z.object({
   addresses: z.array(z.object({ city: z.string(), primary: z.boolean(), street: z.string(), zip: z.string() })).optional(),
   email: z.email().optional(),
-  metadata: z.object({}).optional(),
+  metadata: z.string().optional(),
   name: z.string().optional(),
-  preferences: z.object({ notifications: z.object({ email: z.boolean(), push: z.boolean() }), ui: z.object({ sidebarCollapsed: z.boolean(), theme: z.string() }) }).optional(),
+  preferences: z.object({ notifications: z.object({ email: z.boolean(), push: z.boolean() }), ui: z.object({ sidebar_collapsed: z.boolean(), theme: z.string() }) }).optional(),
   settings: z.object({ language: z.string(), notifications: z.boolean(), theme: z.string() }).optional(),
   tags: z.array(z.string()).optional()
 });
@@ -62,23 +62,23 @@ export const ErrorResponseBodySchema = z.object({
 });
 
 export const ProfileCreateSuccessResponseBodySchema = z.object({
-  meta: z.object({}).optional(),
+  meta: z.record(z.string(), z.unknown()).optional(),
   profile: ProfileSchema
 });
 
 export const ProfileIndexSuccessResponseBodySchema = z.object({
-  meta: z.object({}).optional(),
+  meta: z.record(z.string(), z.unknown()).optional(),
   pagination: OffsetPaginationSchema,
   profiles: z.array(ProfileSchema)
 });
 
 export const ProfileShowSuccessResponseBodySchema = z.object({
-  meta: z.object({}).optional(),
+  meta: z.record(z.string(), z.unknown()).optional(),
   profile: ProfileSchema
 });
 
 export const ProfileUpdateSuccessResponseBodySchema = z.object({
-  meta: z.object({}).optional(),
+  meta: z.record(z.string(), z.unknown()).optional(),
   profile: ProfileSchema
 });
 
@@ -140,7 +140,7 @@ export interface ErrorResponseBody {
 export interface Issue {
   code: string;
   detail: string;
-  meta: object;
+  meta: Record<string, unknown>;
   path: string[];
   pointer: string;
 }
@@ -157,34 +157,34 @@ export interface OffsetPagination {
 
 export interface Profile {
   addresses: { city: string; primary: boolean; street: string; zip: string }[];
-  createdAt: string;
+  created_at: string;
   email: string;
   id: string;
-  metadata: object;
+  metadata: string;
   name: string;
-  preferences: { notifications: { email: boolean; push: boolean }; ui: { sidebarCollapsed: boolean; theme: string } };
+  preferences: { notifications: { email: boolean; push: boolean }; ui: { sidebar_collapsed: boolean; theme: string } };
   settings: { language: string; notifications: boolean; theme: string };
   tags: string[];
-  updatedAt: string;
+  updated_at: string;
 }
 
 export interface ProfileCreatePayload {
   addresses: { city: string; primary: boolean; street: string; zip: string }[];
   email: string;
-  metadata: object;
+  metadata: string;
   name: string;
-  preferences: { notifications: { email: boolean; push: boolean }; ui: { sidebarCollapsed: boolean; theme: string } };
+  preferences: { notifications: { email: boolean; push: boolean }; ui: { sidebar_collapsed: boolean; theme: string } };
   settings: { language: string; notifications: boolean; theme: string };
   tags: string[];
 }
 
 export interface ProfileCreateSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   profile: Profile;
 }
 
 export interface ProfileIndexSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   pagination: OffsetPagination;
   profiles: Profile[];
 }
@@ -195,22 +195,22 @@ export interface ProfilePage {
 }
 
 export interface ProfileShowSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   profile: Profile;
 }
 
 export interface ProfileUpdatePayload {
   addresses?: { city: string; primary: boolean; street: string; zip: string }[];
   email?: string;
-  metadata?: object;
+  metadata?: string;
   name?: string;
-  preferences?: { notifications: { email: boolean; push: boolean }; ui: { sidebarCollapsed: boolean; theme: string } };
+  preferences?: { notifications: { email: boolean; push: boolean }; ui: { sidebar_collapsed: boolean; theme: string } };
   settings?: { language: string; notifications: boolean; theme: string };
   tags?: string[];
 }
 
 export interface ProfileUpdateSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   profile: Profile;
 }
 

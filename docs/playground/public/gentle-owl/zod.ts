@@ -5,7 +5,7 @@ export const LayerSchema = z.enum(['contract', 'domain', 'http']);
 export const SortDirectionSchema = z.enum(['asc', 'desc']);
 
 export const CommentCreatePayloadSchema = z.object({
-  authorName: z.string().nullable().optional(),
+  author_name: z.string().nullable().optional(),
   body: z.string()
 });
 
@@ -19,17 +19,17 @@ export const CommentPageSchema = z.object({
 });
 
 export const CommentSortSchema = z.object({
-  createdAt: SortDirectionSchema.optional()
+  created_at: SortDirectionSchema.optional()
 });
 
 export const CommentUpdatePayloadSchema = z.object({
-  authorName: z.string().nullable().optional(),
+  author_name: z.string().nullable().optional(),
   body: z.string().optional()
 });
 
 export const ImageSchema = z.object({
-  comments: z.array(z.object({})).optional(),
-  createdAt: z.iso.datetime(),
+  comments: z.array(z.record(z.string(), z.unknown())).optional(),
+  created_at: z.iso.datetime(),
   height: z.number().int().nullable(),
   id: z.string(),
   title: z.string(),
@@ -40,7 +40,7 @@ export const ImageSchema = z.object({
 export const IssueSchema = z.object({
   code: z.string(),
   detail: z.string(),
-  meta: z.object({}),
+  meta: z.record(z.string(), z.unknown()),
   path: z.array(z.string()),
   pointer: z.string()
 });
@@ -55,15 +55,15 @@ export const OffsetPaginationSchema = z.object({
 
 export const PostSchema = z.object({
   body: z.string().nullable(),
-  comments: z.array(z.object({})).optional(),
-  createdAt: z.iso.datetime(),
+  comments: z.array(z.record(z.string(), z.unknown())).optional(),
+  created_at: z.iso.datetime(),
   id: z.string(),
   title: z.string()
 });
 
 export const VideoSchema = z.object({
-  comments: z.array(z.object({})).optional(),
-  createdAt: z.iso.datetime(),
+  comments: z.array(z.record(z.string(), z.unknown())).optional(),
+  created_at: z.iso.datetime(),
   duration: z.number().int().nullable(),
   id: z.string(),
   title: z.string(),
@@ -75,39 +75,39 @@ export const ErrorResponseBodySchema = z.object({
   layer: LayerSchema
 });
 
-export const CommentCommentableSchema = z.discriminatedUnion('commentableType', [
-  PostSchema.extend({ commentableType: z.literal('post') }),
-  VideoSchema.extend({ commentableType: z.literal('video') }),
-  ImageSchema.extend({ commentableType: z.literal('image') })
+export const CommentCommentableSchema = z.discriminatedUnion('commentable_type', [
+  PostSchema.extend({ commentable_type: z.literal('post') }),
+  VideoSchema.extend({ commentable_type: z.literal('video') }),
+  ImageSchema.extend({ commentable_type: z.literal('image') })
 ]);
 
 export const CommentSchema = z.object({
-  authorName: z.string().nullable(),
+  author_name: z.string().nullable(),
   body: z.string(),
   commentable: CommentCommentableSchema.optional(),
-  createdAt: z.iso.datetime(),
+  created_at: z.iso.datetime(),
   id: z.string()
 });
 
 export const CommentCreateSuccessResponseBodySchema = z.object({
   comment: CommentSchema,
-  meta: z.object({}).optional()
+  meta: z.record(z.string(), z.unknown()).optional()
 });
 
 export const CommentIndexSuccessResponseBodySchema = z.object({
   comments: z.array(CommentSchema),
-  meta: z.object({}).optional(),
+  meta: z.record(z.string(), z.unknown()).optional(),
   pagination: OffsetPaginationSchema
 });
 
 export const CommentShowSuccessResponseBodySchema = z.object({
   comment: CommentSchema,
-  meta: z.object({}).optional()
+  meta: z.record(z.string(), z.unknown()).optional()
 });
 
 export const CommentUpdateSuccessResponseBodySchema = z.object({
   comment: CommentSchema,
-  meta: z.object({}).optional()
+  meta: z.record(z.string(), z.unknown()).optional()
 });
 
 export const CommentsIndexRequestQuerySchema = z.object({
@@ -189,23 +189,23 @@ export const CommentsDestroyRequestSchema = z.object({
 export const CommentsDestroyResponse = z.never();
 
 export interface Comment {
-  authorName: null | string;
+  author_name: null | string;
   body: string;
   commentable?: CommentCommentable;
-  createdAt: string;
+  created_at: string;
   id: string;
 }
 
-export type CommentCommentable = { commentableType: 'post' } & Post | { commentableType: 'video' } & Video | { commentableType: 'image' } & Image;
+export type CommentCommentable = { commentable_type: 'post' } & Post | { commentable_type: 'video' } & Video | { commentable_type: 'image' } & Image;
 
 export interface CommentCreatePayload {
-  authorName?: null | string;
+  author_name?: null | string;
   body: string;
 }
 
 export interface CommentCreateSuccessResponseBody {
   comment: Comment;
-  meta?: object;
+  meta?: Record<string, unknown>;
 }
 
 export interface CommentInclude {
@@ -214,7 +214,7 @@ export interface CommentInclude {
 
 export interface CommentIndexSuccessResponseBody {
   comments: Comment[];
-  meta?: object;
+  meta?: Record<string, unknown>;
   pagination: OffsetPagination;
 }
 
@@ -225,21 +225,21 @@ export interface CommentPage {
 
 export interface CommentShowSuccessResponseBody {
   comment: Comment;
-  meta?: object;
+  meta?: Record<string, unknown>;
 }
 
 export interface CommentSort {
-  createdAt?: SortDirection;
+  created_at?: SortDirection;
 }
 
 export interface CommentUpdatePayload {
-  authorName?: null | string;
+  author_name?: null | string;
   body?: string;
 }
 
 export interface CommentUpdateSuccessResponseBody {
   comment: Comment;
-  meta?: object;
+  meta?: Record<string, unknown>;
 }
 
 export interface CommentsCreateRequest {
@@ -326,8 +326,8 @@ export interface ErrorResponseBody {
 }
 
 export interface Image {
-  comments?: object[];
-  createdAt: string;
+  comments?: Record<string, unknown>[];
+  created_at: string;
   height: null | number;
   id: string;
   title: string;
@@ -338,7 +338,7 @@ export interface Image {
 export interface Issue {
   code: string;
   detail: string;
-  meta: object;
+  meta: Record<string, unknown>;
   path: string[];
   pointer: string;
 }
@@ -355,8 +355,8 @@ export interface OffsetPagination {
 
 export interface Post {
   body: null | string;
-  comments?: object[];
-  createdAt: string;
+  comments?: Record<string, unknown>[];
+  created_at: string;
   id: string;
   title: string;
 }
@@ -364,8 +364,8 @@ export interface Post {
 export type SortDirection = 'asc' | 'desc';
 
 export interface Video {
-  comments?: object[];
-  createdAt: string;
+  comments?: Record<string, unknown>[];
+  created_at: string;
   duration: null | number;
   id: string;
   title: string;

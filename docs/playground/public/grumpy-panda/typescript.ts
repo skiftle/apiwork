@@ -50,24 +50,24 @@ export type ActivitiesUpdateResponseBody = ActivityUpdateSuccessResponseBody | E
 
 export interface Activity {
   action: string;
-  createdAt: string;
+  created_at: string;
   id: string;
-  occurredAt: null | string;
+  occurred_at: null | string;
 }
 
 export interface ActivityCreatePayload {
   action: string;
-  occurredAt?: null | string;
+  occurred_at?: null | string;
 }
 
 export interface ActivityCreateSuccessResponseBody {
   activity: Activity;
-  meta?: object;
+  meta?: Record<string, unknown>;
 }
 
 export interface ActivityIndexSuccessResponseBody {
   activities: Activity[];
-  meta?: object;
+  meta?: Record<string, unknown>;
   pagination: CursorPagination;
 }
 
@@ -79,17 +79,17 @@ export interface ActivityPage {
 
 export interface ActivityShowSuccessResponseBody {
   activity: Activity;
-  meta?: object;
+  meta?: Record<string, unknown>;
 }
 
 export interface ActivityUpdatePayload {
   action?: string;
-  occurredAt?: null | string;
+  occurred_at?: null | string;
 }
 
 export interface ActivityUpdateSuccessResponseBody {
   activity: Activity;
-  meta?: object;
+  meta?: Record<string, unknown>;
 }
 
 export interface CursorPagination {
@@ -105,7 +105,7 @@ export interface ErrorResponseBody {
 export interface Issue {
   code: string;
   detail: string;
-  meta: object;
+  meta: Record<string, unknown>;
   path: string[];
   pointer: string;
 }

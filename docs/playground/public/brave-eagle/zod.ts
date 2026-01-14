@@ -9,16 +9,16 @@ export const TaskPrioritySchema = z.enum(['critical', 'high', 'low', 'medium']);
 export const TaskStatusSchema = z.enum(['archived', 'completed', 'in_progress', 'pending']);
 
 export const CommentSchema = z.object({
-  authorName: z.string().nullable(),
+  author_name: z.string().nullable(),
   body: z.string(),
-  createdAt: z.iso.datetime(),
+  created_at: z.iso.datetime(),
   id: z.string()
 });
 
 export const IssueSchema = z.object({
   code: z.string(),
   detail: z.string(),
-  meta: z.object({}),
+  meta: z.record(z.string(), z.unknown()),
   path: z.array(z.string()),
   pointer: z.string()
 });
@@ -33,7 +33,7 @@ export const OffsetPaginationSchema = z.object({
 
 export const TaskCreatePayloadSchema = z.object({
   description: z.string().nullable().optional(),
-  dueDate: z.iso.datetime().nullable().optional(),
+  due_date: z.iso.datetime().nullable().optional(),
   priority: TaskPrioritySchema.nullable().optional(),
   status: TaskStatusSchema.nullable().optional(),
   title: z.string()
@@ -55,8 +55,8 @@ export const TaskPriorityFilterSchema = z.union([
 ]);
 
 export const TaskSortSchema = z.object({
-  createdAt: SortDirectionSchema.optional(),
-  dueDate: SortDirectionSchema.optional()
+  created_at: SortDirectionSchema.optional(),
+  due_date: SortDirectionSchema.optional()
 });
 
 export const TaskStatusFilterSchema = z.union([
@@ -66,7 +66,7 @@ export const TaskStatusFilterSchema = z.union([
 
 export const TaskUpdatePayloadSchema = z.object({
   description: z.string().nullable().optional(),
-  dueDate: z.iso.datetime().nullable().optional(),
+  due_date: z.iso.datetime().nullable().optional(),
   priority: TaskPrioritySchema.nullable().optional(),
   status: TaskStatusSchema.nullable().optional(),
   title: z.string().optional()
@@ -95,39 +95,39 @@ export const TaskSchema = z.object({
   archived: z.boolean().nullable(),
   assignee: UserSchema.nullable().optional(),
   comments: z.array(CommentSchema).optional(),
-  createdAt: z.iso.datetime(),
+  created_at: z.iso.datetime(),
   description: z.string().nullable(),
-  dueDate: z.iso.datetime().nullable(),
+  due_date: z.iso.datetime().nullable(),
   id: z.string(),
   priority: TaskPrioritySchema.nullable(),
   status: TaskStatusSchema.nullable(),
   title: z.string(),
-  updatedAt: z.iso.datetime()
+  updated_at: z.iso.datetime()
 });
 
 export const TaskArchiveSuccessResponseBodySchema = z.object({
-  meta: z.object({}).optional(),
+  meta: z.record(z.string(), z.unknown()).optional(),
   task: TaskSchema
 });
 
 export const TaskCreateSuccessResponseBodySchema = z.object({
-  meta: z.object({}).optional(),
+  meta: z.record(z.string(), z.unknown()).optional(),
   task: TaskSchema
 });
 
 export const TaskIndexSuccessResponseBodySchema = z.object({
-  meta: z.object({}).optional(),
+  meta: z.record(z.string(), z.unknown()).optional(),
   pagination: OffsetPaginationSchema,
   tasks: z.array(TaskSchema)
 });
 
 export const TaskShowSuccessResponseBodySchema = z.object({
-  meta: z.object({}).optional(),
+  meta: z.record(z.string(), z.unknown()).optional(),
   task: TaskSchema
 });
 
 export const TaskUpdateSuccessResponseBodySchema = z.object({
-  meta: z.object({}).optional(),
+  meta: z.record(z.string(), z.unknown()).optional(),
   task: TaskSchema
 });
 
@@ -230,14 +230,14 @@ export interface Comment {
    * Name of the person who wrote the comment
    * @example "John Doe"
    */
-  authorName: null | string;
+  author_name: null | string;
   /**
    * Comment content
    * @example "This looks good, ready for review."
    */
   body: string;
   /** When the comment was created */
-  createdAt: string;
+  created_at: string;
   /** Unique comment identifier */
   id: string;
 }
@@ -250,7 +250,7 @@ export interface ErrorResponseBody {
 export interface Issue {
   code: string;
   detail: string;
-  meta: object;
+  meta: Record<string, unknown>;
   path: string[];
   pointer: string;
 }
@@ -276,7 +276,7 @@ export interface Task {
   /** Discussion comments on this task */
   comments?: Comment[];
   /** Timestamp when the task was created */
-  createdAt: string;
+  created_at: string;
   /**
    * Detailed description of what needs to be done
    * @example "Add OAuth2 login support for Google and GitHub providers"
@@ -286,7 +286,7 @@ export interface Task {
    * Target date for task completion
    * @example "2024-02-01T00:00:00Z"
    */
-  dueDate: null | string;
+  due_date: null | string;
   /** Unique task identifier */
   id: string;
   /**
@@ -305,11 +305,11 @@ export interface Task {
    */
   title: string;
   /** Timestamp of last modification */
-  updatedAt: string;
+  updated_at: string;
 }
 
 export interface TaskArchiveSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   task: Task;
 }
 
@@ -324,7 +324,7 @@ export interface TaskCreatePayload {
    * Target date for task completion
    * @example "2024-02-01T00:00:00Z"
    */
-  dueDate?: null | string;
+  due_date?: null | string;
   /**
    * Priority level for task ordering
    * @example "high"
@@ -343,7 +343,7 @@ export interface TaskCreatePayload {
 }
 
 export interface TaskCreateSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   task: Task;
 }
 
@@ -362,7 +362,7 @@ export interface TaskInclude {
 }
 
 export interface TaskIndexSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   pagination: OffsetPagination;
   tasks: Task[];
 }
@@ -377,14 +377,14 @@ export type TaskPriority = 'critical' | 'high' | 'low' | 'medium';
 export type TaskPriorityFilter = TaskPriority | { eq?: TaskPriority; in?: TaskPriority[] };
 
 export interface TaskShowSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   task: Task;
 }
 
 /** A task representing work to be completed */
 export interface TaskSort {
-  createdAt?: SortDirection;
-  dueDate?: SortDirection;
+  created_at?: SortDirection;
+  due_date?: SortDirection;
 }
 
 export type TaskStatus = 'archived' | 'completed' | 'in_progress' | 'pending';
@@ -402,7 +402,7 @@ export interface TaskUpdatePayload {
    * Target date for task completion
    * @example "2024-02-01T00:00:00Z"
    */
-  dueDate?: null | string;
+  due_date?: null | string;
   /**
    * Priority level for task ordering
    * @example "high"
@@ -421,7 +421,7 @@ export interface TaskUpdatePayload {
 }
 
 export interface TaskUpdateSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   task: Task;
 }
 

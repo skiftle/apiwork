@@ -6,7 +6,7 @@ export interface ErrorResponseBody {
 export interface Issue {
   code: string;
   detail: string;
-  meta: object;
+  meta: Record<string, unknown>;
   path: string[];
   pointer: string;
 }
@@ -23,34 +23,34 @@ export interface OffsetPagination {
 
 export interface Profile {
   addresses: { city: string; primary: boolean; street: string; zip: string }[];
-  createdAt: string;
+  created_at: string;
   email: string;
   id: string;
-  metadata: object;
+  metadata: string;
   name: string;
-  preferences: { notifications: { email: boolean; push: boolean }; ui: { sidebarCollapsed: boolean; theme: string } };
+  preferences: { notifications: { email: boolean; push: boolean }; ui: { sidebar_collapsed: boolean; theme: string } };
   settings: { language: string; notifications: boolean; theme: string };
   tags: string[];
-  updatedAt: string;
+  updated_at: string;
 }
 
 export interface ProfileCreatePayload {
   addresses: { city: string; primary: boolean; street: string; zip: string }[];
   email: string;
-  metadata: object;
+  metadata: string;
   name: string;
-  preferences: { notifications: { email: boolean; push: boolean }; ui: { sidebarCollapsed: boolean; theme: string } };
+  preferences: { notifications: { email: boolean; push: boolean }; ui: { sidebar_collapsed: boolean; theme: string } };
   settings: { language: string; notifications: boolean; theme: string };
   tags: string[];
 }
 
 export interface ProfileCreateSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   profile: Profile;
 }
 
 export interface ProfileIndexSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   pagination: OffsetPagination;
   profiles: Profile[];
 }
@@ -61,22 +61,22 @@ export interface ProfilePage {
 }
 
 export interface ProfileShowSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   profile: Profile;
 }
 
 export interface ProfileUpdatePayload {
   addresses?: { city: string; primary: boolean; street: string; zip: string }[];
   email?: string;
-  metadata?: object;
+  metadata?: string;
   name?: string;
-  preferences?: { notifications: { email: boolean; push: boolean }; ui: { sidebarCollapsed: boolean; theme: string } };
+  preferences?: { notifications: { email: boolean; push: boolean }; ui: { sidebar_collapsed: boolean; theme: string } };
   settings?: { language: string; notifications: boolean; theme: string };
   tags?: string[];
 }
 
 export interface ProfileUpdateSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   profile: Profile;
 }
 

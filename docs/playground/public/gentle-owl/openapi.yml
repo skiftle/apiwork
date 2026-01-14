@@ -6,49 +6,49 @@ info:
 paths:
   "/comments":
     get:
-      operationId: commentsIndex
+      operationId: comments_index
       parameters:
       - in: query
         name: include
         required: false
         schema:
-          "$ref": "#/components/schemas/commentInclude"
+          "$ref": "#/components/schemas/comment_include"
       - in: query
         name: page
         required: false
         schema:
-          "$ref": "#/components/schemas/commentPage"
+          "$ref": "#/components/schemas/comment_page"
       - in: query
         name: sort
         required: false
         schema:
           oneOf:
-          - "$ref": "#/components/schemas/commentSort"
+          - "$ref": "#/components/schemas/comment_sort"
           - items:
-              "$ref": "#/components/schemas/commentSort"
+              "$ref": "#/components/schemas/comment_sort"
             type: array
       responses:
         '200':
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/commentIndexSuccessResponseBody"
+                "$ref": "#/components/schemas/comment_index_success_response_body"
           description: Successful response
     post:
-      operationId: commentsCreate
+      operationId: comments_create
       parameters:
       - in: query
         name: include
         required: false
         schema:
-          "$ref": "#/components/schemas/commentInclude"
+          "$ref": "#/components/schemas/comment_include"
       requestBody:
         content:
           application/json:
             schema:
               properties:
                 comment:
-                  "$ref": "#/components/schemas/commentCreatePayload"
+                  "$ref": "#/components/schemas/comment_create_payload"
               type: object
               required:
               - comment
@@ -58,17 +58,17 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/commentCreateSuccessResponseBody"
+                "$ref": "#/components/schemas/comment_create_success_response_body"
           description: Successful response
         '422':
           description: Unprocessable Entity
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/errorResponseBody"
+                "$ref": "#/components/schemas/error_response_body"
   "/comments/{id}":
     get:
-      operationId: commentsShow
+      operationId: comments_show
       parameters:
       - in: path
         name: id
@@ -79,16 +79,16 @@ paths:
         name: include
         required: false
         schema:
-          "$ref": "#/components/schemas/commentInclude"
+          "$ref": "#/components/schemas/comment_include"
       responses:
         '200':
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/commentShowSuccessResponseBody"
+                "$ref": "#/components/schemas/comment_show_success_response_body"
           description: Successful response
     patch:
-      operationId: commentsUpdate
+      operationId: comments_update
       parameters:
       - in: path
         name: id
@@ -99,14 +99,14 @@ paths:
         name: include
         required: false
         schema:
-          "$ref": "#/components/schemas/commentInclude"
+          "$ref": "#/components/schemas/comment_include"
       requestBody:
         content:
           application/json:
             schema:
               properties:
                 comment:
-                  "$ref": "#/components/schemas/commentUpdatePayload"
+                  "$ref": "#/components/schemas/comment_update_payload"
               type: object
               required:
               - comment
@@ -116,16 +116,16 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/commentUpdateSuccessResponseBody"
+                "$ref": "#/components/schemas/comment_update_success_response_body"
           description: Successful response
         '422':
           description: Unprocessable Entity
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/errorResponseBody"
+                "$ref": "#/components/schemas/error_response_body"
     delete:
-      operationId: commentsDestroy
+      operationId: comments_destroy
       parameters:
       - in: path
         name: id
@@ -136,7 +136,7 @@ paths:
         name: include
         required: false
         schema:
-          "$ref": "#/components/schemas/commentInclude"
+          "$ref": "#/components/schemas/comment_include"
       responses:
         '204':
           description: No content
@@ -144,63 +144,63 @@ components:
   schemas:
     comment:
       properties:
-        authorName:
+        author_name:
           type:
           - string
           - 'null'
         body:
           type: string
         commentable:
-          "$ref": "#/components/schemas/commentCommentable"
-        createdAt:
+          "$ref": "#/components/schemas/comment_commentable"
+        created_at:
           type: string
           format: date-time
         id:
           type: string
       type: object
       required:
-      - authorName
+      - author_name
       - body
-      - createdAt
+      - created_at
       - id
-    commentCommentable:
+    comment_commentable:
       oneOf:
       - allOf:
         - "$ref": "#/components/schemas/post"
         - properties:
-            commentableType:
+            commentable_type:
               const: post
               type: string
           required:
-          - commentableType
+          - commentable_type
           type: object
       - allOf:
         - "$ref": "#/components/schemas/video"
         - properties:
-            commentableType:
+            commentable_type:
               const: video
               type: string
           required:
-          - commentableType
+          - commentable_type
           type: object
       - allOf:
         - "$ref": "#/components/schemas/image"
         - properties:
-            commentableType:
+            commentable_type:
               const: image
               type: string
           required:
-          - commentableType
+          - commentable_type
           type: object
       discriminator:
         mapping:
           post: "#/components/schemas/post"
           video: "#/components/schemas/video"
           image: "#/components/schemas/image"
-        propertyName: commentableType
-    commentCreatePayload:
+        propertyName: commentable_type
+    comment_create_payload:
       properties:
-        authorName:
+        author_name:
           type:
           - string
           - 'null'
@@ -209,7 +209,7 @@ components:
       type: object
       required:
       - body
-    commentCreateSuccessResponseBody:
+    comment_create_success_response_body:
       properties:
         comment:
           "$ref": "#/components/schemas/comment"
@@ -219,12 +219,12 @@ components:
       type: object
       required:
       - comment
-    commentInclude:
+    comment_include:
       properties:
         commentable:
           type: boolean
       type: object
-    commentIndexSuccessResponseBody:
+    comment_index_success_response_body:
       properties:
         comments:
           items:
@@ -234,12 +234,12 @@ components:
           properties: {}
           type: object
         pagination:
-          "$ref": "#/components/schemas/offsetPagination"
+          "$ref": "#/components/schemas/offset_pagination"
       type: object
       required:
       - comments
       - pagination
-    commentPage:
+    comment_page:
       properties:
         number:
           type: integer
@@ -249,7 +249,7 @@ components:
           minimum: 1
           maximum: 100
       type: object
-    commentShowSuccessResponseBody:
+    comment_show_success_response_body:
       properties:
         comment:
           "$ref": "#/components/schemas/comment"
@@ -259,24 +259,24 @@ components:
       type: object
       required:
       - comment
-    commentSort:
+    comment_sort:
       properties:
-        createdAt:
+        created_at:
           enum:
           - asc
           - desc
           type: string
       type: object
-    commentUpdatePayload:
+    comment_update_payload:
       properties:
-        authorName:
+        author_name:
           type:
           - string
           - 'null'
         body:
           type: string
       type: object
-    commentUpdateSuccessResponseBody:
+    comment_update_success_response_body:
       properties:
         comment:
           "$ref": "#/components/schemas/comment"
@@ -286,7 +286,7 @@ components:
       type: object
       required:
       - comment
-    errorResponseBody:
+    error_response_body:
       properties:
         issues:
           items:
@@ -309,7 +309,7 @@ components:
             properties: {}
             type: object
           type: array
-        createdAt:
+        created_at:
           type: string
           format: date-time
         height:
@@ -328,7 +328,7 @@ components:
           - 'null'
       type: object
       required:
-      - createdAt
+      - created_at
       - height
       - id
       - title
@@ -356,7 +356,7 @@ components:
       - meta
       - path
       - pointer
-    offsetPagination:
+    offset_pagination:
       properties:
         current:
           type: integer
@@ -388,7 +388,7 @@ components:
             properties: {}
             type: object
           type: array
-        createdAt:
+        created_at:
           type: string
           format: date-time
         id:
@@ -398,7 +398,7 @@ components:
       type: object
       required:
       - body
-      - createdAt
+      - created_at
       - id
       - title
     video:
@@ -408,7 +408,7 @@ components:
             properties: {}
             type: object
           type: array
-        createdAt:
+        created_at:
           type: string
           format: date-time
         duration:
@@ -423,7 +423,7 @@ components:
           type: string
       type: object
       required:
-      - createdAt
+      - created_at
       - duration
       - id
       - title

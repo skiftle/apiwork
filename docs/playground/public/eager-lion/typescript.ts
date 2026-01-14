@@ -4,34 +4,34 @@ export interface ErrorResponseBody {
 }
 
 export interface Invoice {
-  createdAt: string;
-  customer: object;
-  customerId: string;
+  created_at: string;
+  customer: Record<string, unknown>;
+  customer_id: string;
   id: string;
-  issuedOn: null | string;
-  lines: string[];
+  issued_on: null | string;
+  lines: unknown[];
   notes: null | string;
   number: string;
   status: null | string;
-  updatedAt: string;
+  updated_at: string;
 }
 
 export interface InvoiceArchiveSuccessResponseBody {
   invoice: Invoice;
-  meta?: object;
+  meta?: Record<string, unknown>;
 }
 
 export interface InvoiceCreatePayload {
-  customerId: string;
-  issuedOn?: null | string;
-  lines?: string[];
+  customer_id: string;
+  issued_on?: null | string;
+  lines?: unknown[];
   notes?: null | string;
   number: string;
 }
 
 export interface InvoiceCreateSuccessResponseBody {
   invoice: Invoice;
-  meta?: object;
+  meta?: Record<string, unknown>;
 }
 
 export interface InvoiceFilter {
@@ -44,7 +44,7 @@ export interface InvoiceFilter {
 
 export interface InvoiceIndexSuccessResponseBody {
   invoices: Invoice[];
-  meta?: object;
+  meta?: Record<string, unknown>;
   pagination: OffsetPagination;
 }
 
@@ -55,27 +55,27 @@ export interface InvoicePage {
 
 export interface InvoiceShowSuccessResponseBody {
   invoice: Invoice;
-  meta?: object;
+  meta?: Record<string, unknown>;
 }
 
 export interface InvoiceSort {
-  createdAt?: SortDirection;
-  issuedOn?: SortDirection;
+  created_at?: SortDirection;
+  issued_on?: SortDirection;
   status?: SortDirection;
-  updatedAt?: SortDirection;
+  updated_at?: SortDirection;
 }
 
 export interface InvoiceUpdatePayload {
-  customerId?: string;
-  issuedOn?: null | string;
-  lines?: string[];
+  customer_id?: string;
+  issued_on?: null | string;
+  lines?: unknown[];
   notes?: null | string;
   number?: string;
 }
 
 export interface InvoiceUpdateSuccessResponseBody {
   invoice: Invoice;
-  meta?: object;
+  meta?: Record<string, unknown>;
 }
 
 export interface InvoicesArchiveResponse {
@@ -139,7 +139,7 @@ export type InvoicesUpdateResponseBody = ErrorResponseBody | InvoiceUpdateSucces
 export interface Issue {
   code: string;
   detail: string;
-  meta: object;
+  meta: Record<string, unknown>;
   path: string[];
   pointer: string;
 }
@@ -148,11 +148,11 @@ export type Layer = 'contract' | 'domain' | 'http';
 
 export interface NullableStringFilter {
   contains?: string;
-  endsWith?: string;
+  ends_with?: string;
   eq?: string;
   in?: string[];
   null?: boolean;
-  startsWith?: string;
+  starts_with?: string;
 }
 
 export interface OffsetPagination {
@@ -167,8 +167,8 @@ export type SortDirection = 'asc' | 'desc';
 
 export interface StringFilter {
   contains?: string;
-  endsWith?: string;
+  ends_with?: string;
   eq?: string;
   in?: string[];
-  startsWith?: string;
+  starts_with?: string;
 }

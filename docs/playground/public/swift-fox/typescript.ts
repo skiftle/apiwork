@@ -15,12 +15,12 @@ export interface ContactCreatePayload {
 
 export interface ContactCreateSuccessResponseBody {
   contact: Contact;
-  meta?: object;
+  meta?: Record<string, unknown>;
 }
 
 export interface ContactIndexSuccessResponseBody {
   contacts: Contact[];
-  meta?: object;
+  meta?: Record<string, unknown>;
   pagination: OffsetPagination;
 }
 
@@ -31,7 +31,7 @@ export interface ContactPage {
 
 export interface ContactShowSuccessResponseBody {
   contact: Contact;
-  meta?: object;
+  meta?: Record<string, unknown>;
 }
 
 export interface ContactUpdatePayload {
@@ -43,7 +43,7 @@ export interface ContactUpdatePayload {
 
 export interface ContactUpdateSuccessResponseBody {
   contact: Contact;
-  meta?: object;
+  meta?: Record<string, unknown>;
 }
 
 export interface ContactsCreateRequest {
@@ -104,7 +104,7 @@ export interface ErrorResponseBody {
 export interface Issue {
   code: string;
   detail: string;
-  meta: object;
+  meta: Record<string, unknown>;
   path: string[];
   pointer: string;
 }
