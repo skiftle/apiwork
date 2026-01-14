@@ -70,7 +70,7 @@ module Apiwork
           temp_param = Contract::Object.new(nil)
 
           params.each do |param_name, param_options|
-            add_param_to_definition(temp_param, param_name, param_options)
+            add_param_to_shape(temp_param, param_name, param_options)
           end
 
           temp_param.validate(value, current_depth:, max_depth:, path: field_path)
@@ -103,7 +103,7 @@ module Apiwork
           end
         end
 
-        def add_param_to_definition(target_param, param_name, param_options)
+        def add_param_to_shape(target_param, param_name, param_options)
           nested_shape = param_options[:shape]
 
           if nested_shape.is_a?(Object)

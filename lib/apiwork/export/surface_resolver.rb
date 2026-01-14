@@ -168,11 +168,11 @@ module Apiwork
 
       def collect_enum_names_from_types(resolved_types, enum_names)
         resolved_types.each_value do |type|
-          collect_enums_from_type_definition(type.to_h, enum_names)
+          collect_enums_from_type_data(type.to_h, enum_names)
         end
       end
 
-      def collect_enums_from_type_definition(type_data, enum_names)
+      def collect_enums_from_type_data(type_data, enum_names)
         shape = type_data[:shape] || {}
         shape.each_value do |field|
           next unless field.is_a?(Hash)
@@ -183,13 +183,13 @@ module Apiwork
           of_ref = field[:of][:ref] if field[:of].is_a?(Hash)
           enum_names << of_ref if of_ref.is_a?(Symbol) && @data.enums.key?(of_ref)
 
-          collect_enums_from_type_definition(field, enum_names) if field[:shape]
+          collect_enums_from_type_data(field, enum_names) if field[:shape]
         end
 
         return unless type_data[:variants].is_a?(Array)
 
         type_data[:variants].each do |variant|
-          collect_enums_from_type_definition(variant, enum_names) if variant.is_a?(Hash)
+          collect_enums_from_type_data(variant, enum_names) if variant.is_a?(Hash)
         end
       end
     end

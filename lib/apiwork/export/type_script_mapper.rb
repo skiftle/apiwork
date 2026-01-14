@@ -42,7 +42,7 @@ module Apiwork
         type_name_pascal = pascal_case(type_name)
 
         variant_types = type.variants.map do |variant|
-          base_type = map_type_definition(variant)
+          base_type = map_param(variant)
 
           if type.discriminator && variant.tag && !ref_contains_discriminator?(variant, type.discriminator)
             discriminator_key = transform_key(type.discriminator)
@@ -112,7 +112,7 @@ module Apiwork
 
       def build_action_response_body_type(resource_name, action_name, response_body_definition, parent_identifiers: [])
         type_name = action_type_name(resource_name, action_name, 'ResponseBody', parent_identifiers:)
-        ts_type = map_type_definition(response_body_definition)
+        ts_type = map_param(response_body_definition)
         "export type #{type_name} = #{ts_type};"
       end
 
@@ -138,7 +138,7 @@ module Apiwork
                         param.enum.sort.map { |value| "'#{value}'" }.join(' | ')
                       end
                     else
-                      map_type_definition(param)
+                      map_param(param)
                     end
 
         if param.nullable?
@@ -149,7 +149,7 @@ module Apiwork
         base_type
       end
 
-      def map_type_definition(param)
+      def map_param(param)
         if param.object?
           map_object_type(param)
         elsif param.array?
@@ -190,7 +190,7 @@ module Apiwork
 
         return 'unknown[]' unless items_type
 
-        element_type = map_type_definition(items_type)
+        element_type = map_param(items_type)
 
         if element_type.include?(' | ') || element_type.include?(' & ')
           "(#{element_type})[]"
@@ -201,7 +201,7 @@ module Apiwork
 
       def map_union_type(param)
         variants = param.variants.map do |variant|
-          map_type_definition(variant)
+          map_param(variant)
         end
         variants.sort.join(' | ')
       end

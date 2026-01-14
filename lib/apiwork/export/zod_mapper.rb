@@ -47,7 +47,7 @@ module Apiwork
         schema_name = pascal_case(type_name)
 
         variant_schemas = type.variants.map do |variant|
-          base_schema = map_type_definition(variant)
+          base_schema = map_param(variant)
 
           if type.discriminator && variant.tag && !ref_contains_discriminator?(variant, type.discriminator)
             discriminator_key = transform_key(type.discriminator)
@@ -112,7 +112,7 @@ module Apiwork
       def build_action_response_body_schema(resource_name, action_name, response_body, parent_identifiers: [])
         schema_name = action_type_name(resource_name, action_name, 'ResponseBody', parent_identifiers:)
 
-        zod_schema = map_type_definition(response_body)
+        zod_schema = map_param(response_body)
 
         "export const #{schema_name}Schema = #{zod_schema};"
       end
@@ -138,13 +138,13 @@ module Apiwork
           return apply_modifiers(type, param, force_optional:)
         end
 
-        type = map_type_definition(param)
+        type = map_param(param)
         type = resolve_enum_schema(param) || type
 
         apply_modifiers(type, param, force_optional:)
       end
 
-      def map_type_definition(param)
+      def map_param(param)
         if param.object?
           map_object_type(param)
         elsif param.array?
@@ -186,7 +186,7 @@ module Apiwork
           items_schema = map_object_type(param)
           base = "z.array(#{items_schema})"
         elsif items_type
-          items_schema = map_type_definition(items_type)
+          items_schema = map_param(items_type)
           base = "z.array(#{items_schema})"
         else
           base = 'z.array(z.unknown())'
@@ -201,7 +201,7 @@ module Apiwork
         if param.discriminator
           map_discriminated_union(param)
         else
-          variants = param.variants.map { |variant| map_type_definition(variant) }
+          variants = param.variants.map { |variant| map_param(variant) }
           "z.union([#{variants.join(', ')}])"
         end
       end
@@ -209,7 +209,7 @@ module Apiwork
       def map_discriminated_union(param)
         discriminator_field = transform_key(param.discriminator)
 
-        variant_schemas = param.variants.map { |variant| map_type_definition(variant) }
+        variant_schemas = param.variants.map { |variant| map_param(variant) }
 
         "z.discriminatedUnion('#{discriminator_field}', [#{variant_schemas.join(', ')}])"
       end

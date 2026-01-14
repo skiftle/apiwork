@@ -168,7 +168,7 @@ module Apiwork
       def build_parameter_schema(param)
         return { '$ref': "#/components/schemas/#{schema_name(param.ref)}" } if param.ref? && type_exists?(param.ref)
 
-        map_type_definition(param)
+        map_param(param)
       end
 
       def build_request_body(body_params)
@@ -212,7 +212,7 @@ module Apiwork
             responses[:'200'] = {
               content: {
                 'application/json': {
-                  schema: map_type_definition(success_variant),
+                  schema: map_param(success_variant),
                 },
               },
               description: 'Successful response',
@@ -226,7 +226,7 @@ module Apiwork
             responses[:'200'] = {
               content: {
                 'application/json': {
-                  schema: map_type_definition(body),
+                  schema: map_param(body),
                 },
               },
               description: 'Successful response',
@@ -285,7 +285,7 @@ module Apiwork
           description:,
           content: {
             'application/json': {
-              schema: map_type_definition(error_variant),
+              schema: map_param(error_variant),
             },
           },
         }
@@ -327,7 +327,7 @@ module Apiwork
           return apply_nullable(schema, param.nullable?)
         end
 
-        schema = map_type_definition(param)
+        schema = map_param(param)
 
         schema[:description] = param.description if param.description
         schema[:example] = param.example if param.example
@@ -338,7 +338,7 @@ module Apiwork
         apply_nullable(schema, param.nullable?)
       end
 
-      def map_type_definition(param)
+      def map_param(param)
         if param.object?
           map_object(param)
         elsif param.array?
@@ -392,7 +392,7 @@ module Apiwork
         items_schema = if items_param.ref? && type_exists?(items_param.ref)
                          { '$ref': "#/components/schemas/#{schema_name(items_param.ref)}" }
                        else
-                         map_type_definition(items_param)
+                         map_param(items_param)
                        end
 
         {
@@ -420,7 +420,7 @@ module Apiwork
           map_discriminated_union(param)
         else
           {
-            oneOf: param.variants.map { |variant| map_type_definition(variant) },
+            oneOf: param.variants.map { |variant| map_param(variant) },
           }
         end
       end
@@ -430,7 +430,7 @@ module Apiwork
         variants = param.variants
 
         one_of_schemas = variants.map do |variant|
-          base_schema = map_type_definition(variant)
+          base_schema = map_param(variant)
 
           if variant.tag && !ref_contains_discriminator?(variant, discriminator_field)
             discriminator_key = transform_key(discriminator_field)
