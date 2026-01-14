@@ -1,21 +1,21 @@
 export interface Comment {
-  authorName: null | string;
+  author_name: null | string;
   body: string;
   commentable?: CommentCommentable;
-  createdAt: string;
+  created_at: string;
   id: string;
 }
 
-export type CommentCommentable = { commentableType: 'post' } & Post | { commentableType: 'video' } & Video | { commentableType: 'image' } & Image;
+export type CommentCommentable = { commentable_type: 'post' } & Post | { commentable_type: 'video' } & Video | { commentable_type: 'image' } & Image;
 
 export interface CommentCreatePayload {
-  authorName?: null | string;
+  author_name?: null | string;
   body: string;
 }
 
 export interface CommentCreateSuccessResponseBody {
   comment: Comment;
-  meta?: object;
+  meta?: Record<string, unknown>;
 }
 
 export interface CommentInclude {
@@ -24,7 +24,7 @@ export interface CommentInclude {
 
 export interface CommentIndexSuccessResponseBody {
   comments: Comment[];
-  meta?: object;
+  meta?: Record<string, unknown>;
   pagination: OffsetPagination;
 }
 
@@ -35,21 +35,21 @@ export interface CommentPage {
 
 export interface CommentShowSuccessResponseBody {
   comment: Comment;
-  meta?: object;
+  meta?: Record<string, unknown>;
 }
 
 export interface CommentSort {
-  createdAt?: SortDirection;
+  created_at?: SortDirection;
 }
 
 export interface CommentUpdatePayload {
-  authorName?: null | string;
+  author_name?: null | string;
   body?: string;
 }
 
 export interface CommentUpdateSuccessResponseBody {
   comment: Comment;
-  meta?: object;
+  meta?: Record<string, unknown>;
 }
 
 export interface CommentsCreateRequest {
@@ -136,8 +136,8 @@ export interface ErrorResponseBody {
 }
 
 export interface Image {
-  comments?: object[];
-  createdAt: string;
+  comments?: Record<string, unknown>[];
+  created_at: string;
   height: null | number;
   id: string;
   title: string;
@@ -148,7 +148,7 @@ export interface Image {
 export interface Issue {
   code: string;
   detail: string;
-  meta: object;
+  meta: Record<string, unknown>;
   path: string[];
   pointer: string;
 }
@@ -165,8 +165,8 @@ export interface OffsetPagination {
 
 export interface Post {
   body: null | string;
-  comments?: object[];
-  createdAt: string;
+  comments?: Record<string, unknown>[];
+  created_at: string;
   id: string;
   title: string;
 }
@@ -174,8 +174,8 @@ export interface Post {
 export type SortDirection = 'asc' | 'desc';
 
 export interface Video {
-  comments?: object[];
-  createdAt: string;
+  comments?: Record<string, unknown>[];
+  created_at: string;
   duration: null | number;
   id: string;
   title: string;

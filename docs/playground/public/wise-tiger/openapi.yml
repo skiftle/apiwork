@@ -18,30 +18,30 @@ paths:
         required: false
         schema:
           oneOf:
-          - "$ref": "#/components/schemas/projectFilter"
+          - "$ref": "#/components/schemas/project_filter"
           - items:
-              "$ref": "#/components/schemas/projectFilter"
+              "$ref": "#/components/schemas/project_filter"
             type: array
       - in: query
         name: page
         required: false
         schema:
-          "$ref": "#/components/schemas/projectPage"
+          "$ref": "#/components/schemas/project_page"
       - in: query
         name: sort
         required: false
         schema:
           oneOf:
-          - "$ref": "#/components/schemas/projectSort"
+          - "$ref": "#/components/schemas/project_sort"
           - items:
-              "$ref": "#/components/schemas/projectSort"
+              "$ref": "#/components/schemas/project_sort"
             type: array
       responses:
         '200':
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/projectIndexSuccessResponseBody"
+                "$ref": "#/components/schemas/project_index_success_response_body"
           description: Successful response
     post:
       description: Creates a project and returns the created resource
@@ -55,7 +55,7 @@ paths:
             schema:
               properties:
                 project:
-                  "$ref": "#/components/schemas/projectCreatePayload"
+                  "$ref": "#/components/schemas/project_create_payload"
               type: object
               required:
               - project
@@ -65,14 +65,14 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/projectCreateSuccessResponseBody"
+                "$ref": "#/components/schemas/project_create_success_response_body"
           description: Successful response
         '422':
           description: Unprocessable Entity
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/errorResponseBody"
+                "$ref": "#/components/schemas/error_response_body"
   "/projects/{id}":
     get:
       description: Returns a single project by ID with all attributes
@@ -91,7 +91,7 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/projectShowSuccessResponseBody"
+                "$ref": "#/components/schemas/project_show_success_response_body"
           description: Successful response
     patch:
       description: Updates an existing project with the provided attributes
@@ -111,7 +111,7 @@ paths:
             schema:
               properties:
                 project:
-                  "$ref": "#/components/schemas/projectUpdatePayload"
+                  "$ref": "#/components/schemas/project_update_payload"
               type: object
               required:
               - project
@@ -121,14 +121,14 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/projectUpdateSuccessResponseBody"
+                "$ref": "#/components/schemas/project_update_success_response_body"
           description: Successful response
         '422':
           description: Unprocessable Entity
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/errorResponseBody"
+                "$ref": "#/components/schemas/error_response_body"
     delete:
       description: Permanently removes a project
       operationId: deleteProject
@@ -146,7 +146,7 @@ paths:
           description: No content
 components:
   schemas:
-    errorResponseBody:
+    error_response_body:
       properties:
         issues:
           items:
@@ -184,7 +184,7 @@ components:
       - meta
       - path
       - pointer
-    offsetPagination:
+    offset_pagination:
       properties:
         current:
           type: integer
@@ -207,7 +207,7 @@ components:
       - total
     project:
       properties:
-        createdAt:
+        created_at:
           type: string
           format: date-time
         deadline:
@@ -241,21 +241,21 @@ components:
           type:
           - string
           - 'null'
-        updatedAt:
+        updated_at:
           type: string
           format: date-time
       type: object
       description: A project with tasks and deadlines
       required:
-      - createdAt
+      - created_at
       - deadline
       - description
       - id
       - name
       - priority
       - status
-      - updatedAt
-    projectCreatePayload:
+      - updated_at
+    project_create_payload:
       properties:
         deadline:
           type:
@@ -290,7 +290,7 @@ components:
       description: A project with tasks and deadlines
       required:
       - name
-    projectCreateSuccessResponseBody:
+    project_create_success_response_body:
       properties:
         meta:
           properties: {}
@@ -300,31 +300,31 @@ components:
       type: object
       required:
       - project
-    projectFilter:
+    project_filter:
       properties:
         _and:
           items:
-            "$ref": "#/components/schemas/projectFilter"
+            "$ref": "#/components/schemas/project_filter"
           type: array
         _not:
-          "$ref": "#/components/schemas/projectFilter"
+          "$ref": "#/components/schemas/project_filter"
         _or:
           items:
-            "$ref": "#/components/schemas/projectFilter"
+            "$ref": "#/components/schemas/project_filter"
           type: array
         priority:
-          "$ref": "#/components/schemas/projectPriorityFilter"
+          "$ref": "#/components/schemas/project_priority_filter"
         status:
-          "$ref": "#/components/schemas/projectStatusFilter"
+          "$ref": "#/components/schemas/project_status_filter"
       type: object
       description: A project with tasks and deadlines
-    projectIndexSuccessResponseBody:
+    project_index_success_response_body:
       properties:
         meta:
           properties: {}
           type: object
         pagination:
-          "$ref": "#/components/schemas/offsetPagination"
+          "$ref": "#/components/schemas/offset_pagination"
         projects:
           items:
             "$ref": "#/components/schemas/project"
@@ -333,7 +333,7 @@ components:
       required:
       - pagination
       - projects
-    projectPage:
+    project_page:
       properties:
         number:
           type: integer
@@ -343,7 +343,7 @@ components:
           minimum: 1
           maximum: 100
       type: object
-    projectPriorityFilter:
+    project_priority_filter:
       oneOf:
       - enum:
         - critical
@@ -372,7 +372,7 @@ components:
         required:
         - eq
         - in
-    projectShowSuccessResponseBody:
+    project_show_success_response_body:
       properties:
         meta:
           properties: {}
@@ -382,9 +382,9 @@ components:
       type: object
       required:
       - project
-    projectSort:
+    project_sort:
       properties:
-        createdAt:
+        created_at:
           enum:
           - asc
           - desc
@@ -396,7 +396,7 @@ components:
           type: string
       type: object
       description: A project with tasks and deadlines
-    projectStatusFilter:
+    project_status_filter:
       oneOf:
       - enum:
         - active
@@ -425,7 +425,7 @@ components:
         required:
         - eq
         - in
-    projectUpdatePayload:
+    project_update_payload:
       properties:
         deadline:
           type:
@@ -458,7 +458,7 @@ components:
           - 'null'
       type: object
       description: A project with tasks and deadlines
-    projectUpdateSuccessResponseBody:
+    project_update_success_response_body:
       properties:
         meta:
           properties: {}

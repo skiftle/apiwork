@@ -6,7 +6,7 @@ export interface ErrorResponseBody {
 export interface Issue {
   code: string;
   detail: string;
-  meta: object;
+  meta: Record<string, unknown>;
   path: string[];
   pointer: string;
 }
@@ -23,14 +23,14 @@ export interface OffsetPagination {
 
 /** A project with tasks and deadlines */
 export interface Project {
-  createdAt: string;
+  created_at: string;
   deadline: null | string;
   description: null | string;
   id: string;
   name: string;
   priority: ProjectPriority | null;
   status: ProjectStatus | null;
-  updatedAt: string;
+  updated_at: string;
 }
 
 /** A project with tasks and deadlines */
@@ -43,7 +43,7 @@ export interface ProjectCreatePayload {
 }
 
 export interface ProjectCreateSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   project: Project;
 }
 
@@ -57,7 +57,7 @@ export interface ProjectFilter {
 }
 
 export interface ProjectIndexSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   pagination: OffsetPagination;
   projects: Project[];
 }
@@ -72,13 +72,13 @@ export type ProjectPriority = 'critical' | 'high' | 'low' | 'medium';
 export type ProjectPriorityFilter = ProjectPriority | { eq?: ProjectPriority; in?: ProjectPriority[] };
 
 export interface ProjectShowSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   project: Project;
 }
 
 /** A project with tasks and deadlines */
 export interface ProjectSort {
-  createdAt?: SortDirection;
+  created_at?: SortDirection;
   deadline?: SortDirection;
 }
 
@@ -96,7 +96,7 @@ export interface ProjectUpdatePayload {
 }
 
 export interface ProjectUpdateSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   project: Project;
 }
 

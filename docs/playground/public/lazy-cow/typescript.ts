@@ -8,4 +8,4 @@ export interface StatusStatsResponse {
   body: StatusStatsResponseBody;
 }
 
-export type StatusStatsResponseBody = { postsCount: number; uptimeSeconds: number; usersCount: number };
+export type StatusStatsResponseBody = { posts_count: number; uptime_seconds: number; users_count: number };

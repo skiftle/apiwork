@@ -32,7 +32,7 @@ export const ContactUpdatePayloadSchema = z.object({
 export const IssueSchema = z.object({
   code: z.string(),
   detail: z.string(),
-  meta: z.object({}),
+  meta: z.record(z.string(), z.unknown()),
   path: z.array(z.string()),
   pointer: z.string()
 });
@@ -47,17 +47,17 @@ export const OffsetPaginationSchema = z.object({
 
 export const ContactCreateSuccessResponseBodySchema = z.object({
   contact: ContactSchema,
-  meta: z.object({}).optional()
+  meta: z.record(z.string(), z.unknown()).optional()
 });
 
 export const ContactShowSuccessResponseBodySchema = z.object({
   contact: ContactSchema,
-  meta: z.object({}).optional()
+  meta: z.record(z.string(), z.unknown()).optional()
 });
 
 export const ContactUpdateSuccessResponseBodySchema = z.object({
   contact: ContactSchema,
-  meta: z.object({}).optional()
+  meta: z.record(z.string(), z.unknown()).optional()
 });
 
 export const ErrorResponseBodySchema = z.object({
@@ -67,7 +67,7 @@ export const ErrorResponseBodySchema = z.object({
 
 export const ContactIndexSuccessResponseBodySchema = z.object({
   contacts: z.array(ContactSchema),
-  meta: z.object({}).optional(),
+  meta: z.record(z.string(), z.unknown()).optional(),
   pagination: OffsetPaginationSchema
 });
 
@@ -138,12 +138,12 @@ export interface ContactCreatePayload {
 
 export interface ContactCreateSuccessResponseBody {
   contact: Contact;
-  meta?: object;
+  meta?: Record<string, unknown>;
 }
 
 export interface ContactIndexSuccessResponseBody {
   contacts: Contact[];
-  meta?: object;
+  meta?: Record<string, unknown>;
   pagination: OffsetPagination;
 }
 
@@ -154,7 +154,7 @@ export interface ContactPage {
 
 export interface ContactShowSuccessResponseBody {
   contact: Contact;
-  meta?: object;
+  meta?: Record<string, unknown>;
 }
 
 export interface ContactUpdatePayload {
@@ -166,7 +166,7 @@ export interface ContactUpdatePayload {
 
 export interface ContactUpdateSuccessResponseBody {
   contact: Contact;
-  meta?: object;
+  meta?: Record<string, unknown>;
 }
 
 export interface ContactsCreateRequest {
@@ -227,7 +227,7 @@ export interface ErrorResponseBody {
 export interface Issue {
   code: string;
   detail: string;
-  meta: object;
+  meta: Record<string, unknown>;
   path: string[];
   pointer: string;
 }

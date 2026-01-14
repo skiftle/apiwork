@@ -7,18 +7,18 @@ export const SortDirectionSchema = z.enum(['asc', 'desc']);
 export const IssueSchema = z.object({
   code: z.string(),
   detail: z.string(),
-  meta: z.object({}),
+  meta: z.record(z.string(), z.unknown()),
   path: z.array(z.string()),
   pointer: z.string()
 });
 
 export const NullableStringFilterSchema = z.object({
   contains: z.string().optional(),
-  endsWith: z.string().optional(),
+  ends_with: z.string().optional(),
   eq: z.string().optional(),
   in: z.array(z.string()).optional(),
   null: z.boolean().optional(),
-  startsWith: z.string().optional()
+  starts_with: z.string().optional()
 });
 
 export const OffsetPaginationSchema = z.object({
@@ -30,20 +30,20 @@ export const OffsetPaginationSchema = z.object({
 });
 
 export const OrderSchema = z.object({
-  createdAt: z.iso.datetime(),
+  created_at: z.iso.datetime(),
   id: z.string(),
-  lineItems: z.array(z.string()),
-  orderNumber: z.string(),
-  shippingAddress: z.object({}),
+  line_items: z.array(z.unknown()),
+  order_number: z.string(),
+  shipping_address: z.record(z.string(), z.unknown()),
   status: z.string().nullable(),
   total: z.number().nullable(),
-  updatedAt: z.iso.datetime()
+  updated_at: z.iso.datetime()
 });
 
 export const OrderCreatePayloadSchema = z.object({
-  lineItems: z.array(z.string()).optional(),
-  orderNumber: z.string(),
-  shippingAddress: z.object({}).optional()
+  line_items: z.array(z.unknown()).optional(),
+  order_number: z.string(),
+  shipping_address: z.record(z.string(), z.unknown()).optional()
 });
 
 export const OrderPageSchema = z.object({
@@ -52,14 +52,14 @@ export const OrderPageSchema = z.object({
 });
 
 export const OrderSortSchema = z.object({
-  createdAt: SortDirectionSchema.optional(),
+  created_at: SortDirectionSchema.optional(),
   status: SortDirectionSchema.optional()
 });
 
 export const OrderUpdatePayloadSchema = z.object({
-  lineItems: z.array(z.string()).optional(),
-  orderNumber: z.string().optional(),
-  shippingAddress: z.object({}).optional()
+  line_items: z.array(z.unknown()).optional(),
+  order_number: z.string().optional(),
+  shipping_address: z.record(z.string(), z.unknown()).optional()
 });
 
 export const ErrorResponseBodySchema = z.object({
@@ -75,23 +75,23 @@ export const OrderFilterSchema: z.ZodType<OrderFilter> = z.lazy(() => z.object({
 }));
 
 export const OrderCreateSuccessResponseBodySchema = z.object({
-  meta: z.object({}).optional(),
+  meta: z.record(z.string(), z.unknown()).optional(),
   order: OrderSchema
 });
 
 export const OrderIndexSuccessResponseBodySchema = z.object({
-  meta: z.object({}).optional(),
+  meta: z.record(z.string(), z.unknown()).optional(),
   orders: z.array(OrderSchema),
   pagination: OffsetPaginationSchema
 });
 
 export const OrderShowSuccessResponseBodySchema = z.object({
-  meta: z.object({}).optional(),
+  meta: z.record(z.string(), z.unknown()).optional(),
   order: OrderSchema
 });
 
 export const OrderUpdateSuccessResponseBodySchema = z.object({
-  meta: z.object({}).optional(),
+  meta: z.record(z.string(), z.unknown()).optional(),
   order: OrderSchema
 });
 
@@ -155,7 +155,7 @@ export interface ErrorResponseBody {
 export interface Issue {
   code: string;
   detail: string;
-  meta: object;
+  meta: Record<string, unknown>;
   path: string[];
   pointer: string;
 }
@@ -164,11 +164,11 @@ export type Layer = 'contract' | 'domain' | 'http';
 
 export interface NullableStringFilter {
   contains?: string;
-  endsWith?: string;
+  ends_with?: string;
   eq?: string;
   in?: string[];
   null?: boolean;
-  startsWith?: string;
+  starts_with?: string;
 }
 
 export interface OffsetPagination {
@@ -180,24 +180,24 @@ export interface OffsetPagination {
 }
 
 export interface Order {
-  createdAt: string;
+  created_at: string;
   id: string;
-  lineItems: string[];
-  orderNumber: string;
-  shippingAddress: object;
+  line_items: unknown[];
+  order_number: string;
+  shipping_address: Record<string, unknown>;
   status: null | string;
   total: null | number;
-  updatedAt: string;
+  updated_at: string;
 }
 
 export interface OrderCreatePayload {
-  lineItems?: string[];
-  orderNumber: string;
-  shippingAddress?: object;
+  line_items?: unknown[];
+  order_number: string;
+  shipping_address?: Record<string, unknown>;
 }
 
 export interface OrderCreateSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   order: Order;
 }
 
@@ -209,7 +209,7 @@ export interface OrderFilter {
 }
 
 export interface OrderIndexSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   orders: Order[];
   pagination: OffsetPagination;
 }
@@ -220,23 +220,23 @@ export interface OrderPage {
 }
 
 export interface OrderShowSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   order: Order;
 }
 
 export interface OrderSort {
-  createdAt?: SortDirection;
+  created_at?: SortDirection;
   status?: SortDirection;
 }
 
 export interface OrderUpdatePayload {
-  lineItems?: string[];
-  orderNumber?: string;
-  shippingAddress?: object;
+  line_items?: unknown[];
+  order_number?: string;
+  shipping_address?: Record<string, unknown>;
 }
 
 export interface OrderUpdateSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   order: Order;
 }
 

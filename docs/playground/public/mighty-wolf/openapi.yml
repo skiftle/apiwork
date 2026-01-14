@@ -6,40 +6,40 @@ info:
 paths:
   "/vehicles":
     get:
-      operationId: vehiclesIndex
+      operationId: vehicles_index
       parameters:
       - in: query
         name: filter
         required: false
         schema:
           oneOf:
-          - "$ref": "#/components/schemas/vehicleFilter"
+          - "$ref": "#/components/schemas/vehicle_filter"
           - items:
-              "$ref": "#/components/schemas/vehicleFilter"
+              "$ref": "#/components/schemas/vehicle_filter"
             type: array
       - in: query
         name: page
         required: false
         schema:
-          "$ref": "#/components/schemas/vehiclePage"
+          "$ref": "#/components/schemas/vehicle_page"
       - in: query
         name: sort
         required: false
         schema:
           oneOf:
-          - "$ref": "#/components/schemas/vehicleSort"
+          - "$ref": "#/components/schemas/vehicle_sort"
           - items:
-              "$ref": "#/components/schemas/vehicleSort"
+              "$ref": "#/components/schemas/vehicle_sort"
             type: array
       responses:
         '200':
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/vehicleIndexSuccessResponseBody"
+                "$ref": "#/components/schemas/vehicle_index_success_response_body"
           description: Successful response
     post:
-      operationId: vehiclesCreate
+      operationId: vehicles_create
       requestBody:
         content:
           application/json:
@@ -47,14 +47,14 @@ paths:
               properties:
                 vehicle:
                   oneOf:
-                  - "$ref": "#/components/schemas/carCreatePayload"
-                  - "$ref": "#/components/schemas/motorcycleCreatePayload"
-                  - "$ref": "#/components/schemas/truckCreatePayload"
+                  - "$ref": "#/components/schemas/car_create_payload"
+                  - "$ref": "#/components/schemas/motorcycle_create_payload"
+                  - "$ref": "#/components/schemas/truck_create_payload"
                   discriminator:
                     mapping:
-                      car: "#/components/schemas/carCreatePayload"
-                      motorcycle: "#/components/schemas/motorcycleCreatePayload"
-                      truck: "#/components/schemas/truckCreatePayload"
+                      car: "#/components/schemas/car_create_payload"
+                      motorcycle: "#/components/schemas/motorcycle_create_payload"
+                      truck: "#/components/schemas/truck_create_payload"
                     propertyName: type
               type: object
               required:
@@ -65,17 +65,17 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/vehicleCreateSuccessResponseBody"
+                "$ref": "#/components/schemas/vehicle_create_success_response_body"
           description: Successful response
         '422':
           description: Unprocessable Entity
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/errorResponseBody"
+                "$ref": "#/components/schemas/error_response_body"
   "/vehicles/{id}":
     get:
-      operationId: vehiclesShow
+      operationId: vehicles_show
       parameters:
       - in: path
         name: id
@@ -87,10 +87,10 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/vehicleShowSuccessResponseBody"
+                "$ref": "#/components/schemas/vehicle_show_success_response_body"
           description: Successful response
     patch:
-      operationId: vehiclesUpdate
+      operationId: vehicles_update
       parameters:
       - in: path
         name: id
@@ -104,14 +104,14 @@ paths:
               properties:
                 vehicle:
                   oneOf:
-                  - "$ref": "#/components/schemas/carUpdatePayload"
-                  - "$ref": "#/components/schemas/motorcycleUpdatePayload"
-                  - "$ref": "#/components/schemas/truckUpdatePayload"
+                  - "$ref": "#/components/schemas/car_update_payload"
+                  - "$ref": "#/components/schemas/motorcycle_update_payload"
+                  - "$ref": "#/components/schemas/truck_update_payload"
                   discriminator:
                     mapping:
-                      car: "#/components/schemas/carUpdatePayload"
-                      motorcycle: "#/components/schemas/motorcycleUpdatePayload"
-                      truck: "#/components/schemas/truckUpdatePayload"
+                      car: "#/components/schemas/car_update_payload"
+                      motorcycle: "#/components/schemas/motorcycle_update_payload"
+                      truck: "#/components/schemas/truck_update_payload"
                     propertyName: type
               type: object
               required:
@@ -122,16 +122,16 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/vehicleUpdateSuccessResponseBody"
+                "$ref": "#/components/schemas/vehicle_update_success_response_body"
           description: Successful response
         '422':
           description: Unprocessable Entity
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/errorResponseBody"
+                "$ref": "#/components/schemas/error_response_body"
     delete:
-      operationId: vehiclesDestroy
+      operationId: vehicles_destroy
       parameters:
       - in: path
         name: id
@@ -175,7 +175,7 @@ components:
       - model
       - type
       - year
-    carCreatePayload:
+    car_create_payload:
       properties:
         brand:
           type: string
@@ -201,7 +201,7 @@ components:
       - brand
       - model
       - type
-    carUpdatePayload:
+    car_update_payload:
       properties:
         brand:
           type: string
@@ -223,7 +223,7 @@ components:
           - integer
           - 'null'
       type: object
-    errorResponseBody:
+    error_response_body:
       properties:
         issues:
           items:
@@ -239,7 +239,7 @@ components:
       required:
       - issues
       - layer
-    integerFilterBetween:
+    integer_filter_between:
       properties:
         from:
           type: integer
@@ -276,7 +276,7 @@ components:
           type:
           - string
           - 'null'
-        engineCc:
+        engine_cc:
           type:
           - integer
           - 'null'
@@ -295,12 +295,12 @@ components:
       required:
       - brand
       - color
-      - engineCc
+      - engine_cc
       - id
       - model
       - type
       - year
-    motorcycleCreatePayload:
+    motorcycle_create_payload:
       properties:
         brand:
           type: string
@@ -308,7 +308,7 @@ components:
           type:
           - string
           - 'null'
-        engineCc:
+        engine_cc:
           type:
           - integer
           - 'null'
@@ -326,7 +326,7 @@ components:
       - brand
       - model
       - type
-    motorcycleUpdatePayload:
+    motorcycle_update_payload:
       properties:
         brand:
           type: string
@@ -334,7 +334,7 @@ components:
           type:
           - string
           - 'null'
-        engineCc:
+        engine_cc:
           type:
           - integer
           - 'null'
@@ -348,10 +348,10 @@ components:
           - integer
           - 'null'
       type: object
-    nullableIntegerFilter:
+    nullable_integer_filter:
       properties:
         between:
-          "$ref": "#/components/schemas/integerFilterBetween"
+          "$ref": "#/components/schemas/integer_filter_between"
         eq:
           type: integer
         gt:
@@ -369,7 +369,7 @@ components:
         'null':
           type: boolean
       type: object
-    offsetPagination:
+    offset_pagination:
       properties:
         current:
           type: integer
@@ -390,11 +390,11 @@ components:
       - current
       - items
       - total
-    stringFilter:
+    string_filter:
       properties:
         contains:
           type: string
-        endsWith:
+        ends_with:
           type: string
         eq:
           type: string
@@ -402,7 +402,7 @@ components:
           items:
             type: string
           type: array
-        startsWith:
+        starts_with:
           type: string
       type: object
     truck:
@@ -417,7 +417,7 @@ components:
           type: string
         model:
           type: string
-        payloadCapacity:
+        payload_capacity:
           type:
           - number
           - 'null'
@@ -434,10 +434,10 @@ components:
       - color
       - id
       - model
-      - payloadCapacity
+      - payload_capacity
       - type
       - year
-    truckCreatePayload:
+    truck_create_payload:
       properties:
         brand:
           type: string
@@ -447,7 +447,7 @@ components:
           - 'null'
         model:
           type: string
-        payloadCapacity:
+        payload_capacity:
           type:
           - number
           - 'null'
@@ -463,7 +463,7 @@ components:
       - brand
       - model
       - type
-    truckUpdatePayload:
+    truck_update_payload:
       properties:
         brand:
           type: string
@@ -473,7 +473,7 @@ components:
           - 'null'
         model:
           type: string
-        payloadCapacity:
+        payload_capacity:
           type:
           - number
           - 'null'
@@ -496,7 +496,7 @@ components:
           motorcycle: "#/components/schemas/motorcycle"
           truck: "#/components/schemas/truck"
         propertyName: type
-    vehicleCreateSuccessResponseBody:
+    vehicle_create_success_response_body:
       properties:
         meta:
           properties: {}
@@ -506,38 +506,38 @@ components:
       type: object
       required:
       - vehicle
-    vehicleFilter:
+    vehicle_filter:
       properties:
         _and:
           items:
-            "$ref": "#/components/schemas/vehicleFilter"
+            "$ref": "#/components/schemas/vehicle_filter"
           type: array
         _not:
-          "$ref": "#/components/schemas/vehicleFilter"
+          "$ref": "#/components/schemas/vehicle_filter"
         _or:
           items:
-            "$ref": "#/components/schemas/vehicleFilter"
+            "$ref": "#/components/schemas/vehicle_filter"
           type: array
         brand:
           oneOf:
           - type: string
-          - "$ref": "#/components/schemas/stringFilter"
+          - "$ref": "#/components/schemas/string_filter"
         model:
           oneOf:
           - type: string
-          - "$ref": "#/components/schemas/stringFilter"
+          - "$ref": "#/components/schemas/string_filter"
         year:
           oneOf:
           - type: integer
-          - "$ref": "#/components/schemas/nullableIntegerFilter"
+          - "$ref": "#/components/schemas/nullable_integer_filter"
       type: object
-    vehicleIndexSuccessResponseBody:
+    vehicle_index_success_response_body:
       properties:
         meta:
           properties: {}
           type: object
         pagination:
-          "$ref": "#/components/schemas/offsetPagination"
+          "$ref": "#/components/schemas/offset_pagination"
         vehicles:
           items:
             "$ref": "#/components/schemas/vehicle"
@@ -546,7 +546,7 @@ components:
       required:
       - pagination
       - vehicles
-    vehiclePage:
+    vehicle_page:
       properties:
         number:
           type: integer
@@ -556,7 +556,7 @@ components:
           minimum: 1
           maximum: 100
       type: object
-    vehicleShowSuccessResponseBody:
+    vehicle_show_success_response_body:
       properties:
         meta:
           properties: {}
@@ -566,7 +566,7 @@ components:
       type: object
       required:
       - vehicle
-    vehicleSort:
+    vehicle_sort:
       properties:
         year:
           enum:
@@ -574,7 +574,7 @@ components:
           - desc
           type: string
       type: object
-    vehicleUpdateSuccessResponseBody:
+    vehicle_update_success_response_body:
       properties:
         meta:
           properties: {}

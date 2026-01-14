@@ -11,12 +11,12 @@ export interface CommentCreatePayload {
 
 export interface CommentCreateSuccessResponseBody {
   comment: Comment;
-  meta?: object;
+  meta?: Record<string, unknown>;
 }
 
 export interface CommentIndexSuccessResponseBody {
   comments: Comment[];
-  meta?: object;
+  meta?: Record<string, unknown>;
   pagination: OffsetPagination;
 }
 
@@ -45,7 +45,7 @@ export interface CommentPage {
 
 export interface CommentShowSuccessResponseBody {
   comment: Comment;
-  meta?: object;
+  meta?: Record<string, unknown>;
 }
 
 export interface CommentUpdatePayload {
@@ -55,7 +55,7 @@ export interface CommentUpdatePayload {
 
 export interface CommentUpdateSuccessResponseBody {
   comment: Comment;
-  meta?: object;
+  meta?: Record<string, unknown>;
 }
 
 export interface CommentsCreateRequest {
@@ -116,7 +116,7 @@ export interface ErrorResponseBody {
 export interface Issue {
   code: string;
   detail: string;
-  meta: object;
+  meta: Record<string, unknown>;
   path: string[];
   pointer: string;
 }
@@ -143,12 +143,12 @@ export interface PostCreatePayload {
 }
 
 export interface PostCreateSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   post: Post;
 }
 
 export interface PostIndexSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   pagination: OffsetPagination;
   posts: Post[];
 }
@@ -177,7 +177,7 @@ export interface PostPage {
 }
 
 export interface PostShowSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   post: Post;
 }
 
@@ -187,7 +187,7 @@ export interface PostUpdatePayload {
 }
 
 export interface PostUpdateSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   post: Post;
 }
 
@@ -243,10 +243,10 @@ export type PostsUpdateResponseBody = ErrorResponseBody | PostUpdateSuccessRespo
 
 export interface Profile {
   bio: null | string;
-  createdAt: string;
+  created_at: string;
   id: string;
-  updatedAt: string;
-  user?: object;
+  updated_at: string;
+  user?: Record<string, unknown>;
   website: null | string;
 }
 
@@ -272,19 +272,19 @@ export type SortDirection = 'asc' | 'desc';
 
 export interface StringFilter {
   contains?: string;
-  endsWith?: string;
+  ends_with?: string;
   eq?: string;
   in?: string[];
-  startsWith?: string;
+  starts_with?: string;
 }
 
 export interface User {
-  createdAt: string;
+  created_at: string;
   email: string;
   id: string;
   posts: Post[];
   profile: Profile;
-  updatedAt: string;
+  updated_at: string;
   username: string;
 }
 
@@ -296,7 +296,7 @@ export interface UserCreatePayload {
 }
 
 export interface UserCreateSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   user: User;
 }
 
@@ -309,7 +309,7 @@ export interface UserFilter {
 }
 
 export interface UserIndexSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   pagination: OffsetPagination;
   users: User[];
 }
@@ -320,13 +320,13 @@ export interface UserPage {
 }
 
 export interface UserShowSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   user: User;
 }
 
 export interface UserSort {
-  createdAt?: SortDirection;
-  updatedAt?: SortDirection;
+  created_at?: SortDirection;
+  updated_at?: SortDirection;
 }
 
 export interface UserUpdatePayload {
@@ -337,7 +337,7 @@ export interface UserUpdatePayload {
 }
 
 export interface UserUpdateSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   user: User;
 }
 

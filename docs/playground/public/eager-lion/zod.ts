@@ -5,22 +5,22 @@ export const LayerSchema = z.enum(['contract', 'domain', 'http']);
 export const SortDirectionSchema = z.enum(['asc', 'desc']);
 
 export const InvoiceSchema = z.object({
-  createdAt: z.iso.datetime(),
-  customer: z.object({}),
-  customerId: z.string(),
+  created_at: z.iso.datetime(),
+  customer: z.record(z.string(), z.unknown()),
+  customer_id: z.string(),
   id: z.string(),
-  issuedOn: z.iso.date().nullable(),
-  lines: z.array(z.string()),
+  issued_on: z.iso.date().nullable(),
+  lines: z.array(z.unknown()),
   notes: z.string().nullable(),
   number: z.string(),
   status: z.string().nullable(),
-  updatedAt: z.iso.datetime()
+  updated_at: z.iso.datetime()
 });
 
 export const InvoiceCreatePayloadSchema = z.object({
-  customerId: z.string(),
-  issuedOn: z.iso.date().nullable().optional(),
-  lines: z.array(z.string()).optional(),
+  customer_id: z.string(),
+  issued_on: z.iso.date().nullable().optional(),
+  lines: z.array(z.unknown()).optional(),
   notes: z.string().nullable().optional(),
   number: z.string()
 });
@@ -31,16 +31,16 @@ export const InvoicePageSchema = z.object({
 });
 
 export const InvoiceSortSchema = z.object({
-  createdAt: SortDirectionSchema.optional(),
-  issuedOn: SortDirectionSchema.optional(),
+  created_at: SortDirectionSchema.optional(),
+  issued_on: SortDirectionSchema.optional(),
   status: SortDirectionSchema.optional(),
-  updatedAt: SortDirectionSchema.optional()
+  updated_at: SortDirectionSchema.optional()
 });
 
 export const InvoiceUpdatePayloadSchema = z.object({
-  customerId: z.string().optional(),
-  issuedOn: z.iso.date().nullable().optional(),
-  lines: z.array(z.string()).optional(),
+  customer_id: z.string().optional(),
+  issued_on: z.iso.date().nullable().optional(),
+  lines: z.array(z.unknown()).optional(),
   notes: z.string().nullable().optional(),
   number: z.string().optional()
 });
@@ -48,18 +48,18 @@ export const InvoiceUpdatePayloadSchema = z.object({
 export const IssueSchema = z.object({
   code: z.string(),
   detail: z.string(),
-  meta: z.object({}),
+  meta: z.record(z.string(), z.unknown()),
   path: z.array(z.string()),
   pointer: z.string()
 });
 
 export const NullableStringFilterSchema = z.object({
   contains: z.string().optional(),
-  endsWith: z.string().optional(),
+  ends_with: z.string().optional(),
   eq: z.string().optional(),
   in: z.array(z.string()).optional(),
   null: z.boolean().optional(),
-  startsWith: z.string().optional()
+  starts_with: z.string().optional()
 });
 
 export const OffsetPaginationSchema = z.object({
@@ -72,30 +72,30 @@ export const OffsetPaginationSchema = z.object({
 
 export const StringFilterSchema = z.object({
   contains: z.string().optional(),
-  endsWith: z.string().optional(),
+  ends_with: z.string().optional(),
   eq: z.string().optional(),
   in: z.array(z.string()).optional(),
-  startsWith: z.string().optional()
+  starts_with: z.string().optional()
 });
 
 export const InvoiceArchiveSuccessResponseBodySchema = z.object({
   invoice: InvoiceSchema,
-  meta: z.object({}).optional()
+  meta: z.record(z.string(), z.unknown()).optional()
 });
 
 export const InvoiceCreateSuccessResponseBodySchema = z.object({
   invoice: InvoiceSchema,
-  meta: z.object({}).optional()
+  meta: z.record(z.string(), z.unknown()).optional()
 });
 
 export const InvoiceShowSuccessResponseBodySchema = z.object({
   invoice: InvoiceSchema,
-  meta: z.object({}).optional()
+  meta: z.record(z.string(), z.unknown()).optional()
 });
 
 export const InvoiceUpdateSuccessResponseBodySchema = z.object({
   invoice: InvoiceSchema,
-  meta: z.object({}).optional()
+  meta: z.record(z.string(), z.unknown()).optional()
 });
 
 export const ErrorResponseBodySchema = z.object({
@@ -105,7 +105,7 @@ export const ErrorResponseBodySchema = z.object({
 
 export const InvoiceIndexSuccessResponseBodySchema = z.object({
   invoices: z.array(InvoiceSchema),
-  meta: z.object({}).optional(),
+  meta: z.record(z.string(), z.unknown()).optional(),
   pagination: OffsetPaginationSchema
 });
 
@@ -181,34 +181,34 @@ export interface ErrorResponseBody {
 }
 
 export interface Invoice {
-  createdAt: string;
-  customer: object;
-  customerId: string;
+  created_at: string;
+  customer: Record<string, unknown>;
+  customer_id: string;
   id: string;
-  issuedOn: null | string;
-  lines: string[];
+  issued_on: null | string;
+  lines: unknown[];
   notes: null | string;
   number: string;
   status: null | string;
-  updatedAt: string;
+  updated_at: string;
 }
 
 export interface InvoiceArchiveSuccessResponseBody {
   invoice: Invoice;
-  meta?: object;
+  meta?: Record<string, unknown>;
 }
 
 export interface InvoiceCreatePayload {
-  customerId: string;
-  issuedOn?: null | string;
-  lines?: string[];
+  customer_id: string;
+  issued_on?: null | string;
+  lines?: unknown[];
   notes?: null | string;
   number: string;
 }
 
 export interface InvoiceCreateSuccessResponseBody {
   invoice: Invoice;
-  meta?: object;
+  meta?: Record<string, unknown>;
 }
 
 export interface InvoiceFilter {
@@ -221,7 +221,7 @@ export interface InvoiceFilter {
 
 export interface InvoiceIndexSuccessResponseBody {
   invoices: Invoice[];
-  meta?: object;
+  meta?: Record<string, unknown>;
   pagination: OffsetPagination;
 }
 
@@ -232,27 +232,27 @@ export interface InvoicePage {
 
 export interface InvoiceShowSuccessResponseBody {
   invoice: Invoice;
-  meta?: object;
+  meta?: Record<string, unknown>;
 }
 
 export interface InvoiceSort {
-  createdAt?: SortDirection;
-  issuedOn?: SortDirection;
+  created_at?: SortDirection;
+  issued_on?: SortDirection;
   status?: SortDirection;
-  updatedAt?: SortDirection;
+  updated_at?: SortDirection;
 }
 
 export interface InvoiceUpdatePayload {
-  customerId?: string;
-  issuedOn?: null | string;
-  lines?: string[];
+  customer_id?: string;
+  issued_on?: null | string;
+  lines?: unknown[];
   notes?: null | string;
   number?: string;
 }
 
 export interface InvoiceUpdateSuccessResponseBody {
   invoice: Invoice;
-  meta?: object;
+  meta?: Record<string, unknown>;
 }
 
 export interface InvoicesArchiveResponse {
@@ -316,7 +316,7 @@ export type InvoicesUpdateResponseBody = ErrorResponseBody | InvoiceUpdateSucces
 export interface Issue {
   code: string;
   detail: string;
-  meta: object;
+  meta: Record<string, unknown>;
   path: string[];
   pointer: string;
 }
@@ -325,11 +325,11 @@ export type Layer = 'contract' | 'domain' | 'http';
 
 export interface NullableStringFilter {
   contains?: string;
-  endsWith?: string;
+  ends_with?: string;
   eq?: string;
   in?: string[];
   null?: boolean;
-  startsWith?: string;
+  starts_with?: string;
 }
 
 export interface OffsetPagination {
@@ -344,8 +344,8 @@ export type SortDirection = 'asc' | 'desc';
 
 export interface StringFilter {
   contains?: string;
-  endsWith?: string;
+  ends_with?: string;
   eq?: string;
   in?: string[];
-  startsWith?: string;
+  starts_with?: string;
 }

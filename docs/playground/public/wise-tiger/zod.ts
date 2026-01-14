@@ -11,7 +11,7 @@ export const SortDirectionSchema = z.enum(['asc', 'desc']);
 export const IssueSchema = z.object({
   code: z.string(),
   detail: z.string(),
-  meta: z.object({}),
+  meta: z.record(z.string(), z.unknown()),
   path: z.array(z.string()),
   pointer: z.string()
 });
@@ -25,14 +25,14 @@ export const OffsetPaginationSchema = z.object({
 });
 
 export const ProjectSchema = z.object({
-  createdAt: z.iso.datetime(),
+  created_at: z.iso.datetime(),
   deadline: z.iso.date().nullable(),
   description: z.string().nullable(),
   id: z.string(),
   name: z.string(),
   priority: ProjectPrioritySchema.nullable(),
   status: ProjectStatusSchema.nullable(),
-  updatedAt: z.iso.datetime()
+  updated_at: z.iso.datetime()
 });
 
 export const ProjectCreatePayloadSchema = z.object({
@@ -54,7 +54,7 @@ export const ProjectPriorityFilterSchema = z.union([
 ]);
 
 export const ProjectSortSchema = z.object({
-  createdAt: SortDirectionSchema.optional(),
+  created_at: SortDirectionSchema.optional(),
   deadline: SortDirectionSchema.optional()
 });
 
@@ -77,23 +77,23 @@ export const ErrorResponseBodySchema = z.object({
 });
 
 export const ProjectCreateSuccessResponseBodySchema = z.object({
-  meta: z.object({}).optional(),
+  meta: z.record(z.string(), z.unknown()).optional(),
   project: ProjectSchema
 });
 
 export const ProjectIndexSuccessResponseBodySchema = z.object({
-  meta: z.object({}).optional(),
+  meta: z.record(z.string(), z.unknown()).optional(),
   pagination: OffsetPaginationSchema,
   projects: z.array(ProjectSchema)
 });
 
 export const ProjectShowSuccessResponseBodySchema = z.object({
-  meta: z.object({}).optional(),
+  meta: z.record(z.string(), z.unknown()).optional(),
   project: ProjectSchema
 });
 
 export const ProjectUpdateSuccessResponseBodySchema = z.object({
-  meta: z.object({}).optional(),
+  meta: z.record(z.string(), z.unknown()).optional(),
   project: ProjectSchema
 });
 
@@ -165,7 +165,7 @@ export interface ErrorResponseBody {
 export interface Issue {
   code: string;
   detail: string;
-  meta: object;
+  meta: Record<string, unknown>;
   path: string[];
   pointer: string;
 }
@@ -182,14 +182,14 @@ export interface OffsetPagination {
 
 /** A project with tasks and deadlines */
 export interface Project {
-  createdAt: string;
+  created_at: string;
   deadline: null | string;
   description: null | string;
   id: string;
   name: string;
   priority: ProjectPriority | null;
   status: ProjectStatus | null;
-  updatedAt: string;
+  updated_at: string;
 }
 
 /** A project with tasks and deadlines */
@@ -202,7 +202,7 @@ export interface ProjectCreatePayload {
 }
 
 export interface ProjectCreateSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   project: Project;
 }
 
@@ -216,7 +216,7 @@ export interface ProjectFilter {
 }
 
 export interface ProjectIndexSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   pagination: OffsetPagination;
   projects: Project[];
 }
@@ -231,13 +231,13 @@ export type ProjectPriority = 'critical' | 'high' | 'low' | 'medium';
 export type ProjectPriorityFilter = ProjectPriority | { eq?: ProjectPriority; in?: ProjectPriority[] };
 
 export interface ProjectShowSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   project: Project;
 }
 
 /** A project with tasks and deadlines */
 export interface ProjectSort {
-  createdAt?: SortDirection;
+  created_at?: SortDirection;
   deadline?: SortDirection;
 }
 
@@ -255,7 +255,7 @@ export interface ProjectUpdatePayload {
 }
 
 export interface ProjectUpdateSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   project: Project;
 }
 

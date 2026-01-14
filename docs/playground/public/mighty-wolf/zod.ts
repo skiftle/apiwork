@@ -40,7 +40,7 @@ export const IntegerFilterBetweenSchema = z.object({
 export const IssueSchema = z.object({
   code: z.string(),
   detail: z.string(),
-  meta: z.object({}),
+  meta: z.record(z.string(), z.unknown()),
   path: z.array(z.string()),
   pointer: z.string()
 });
@@ -48,7 +48,7 @@ export const IssueSchema = z.object({
 export const MotorcycleSchema = z.object({
   brand: z.string(),
   color: z.string().nullable(),
-  engineCc: z.number().int().nullable(),
+  engine_cc: z.number().int().nullable(),
   id: z.string(),
   model: z.string(),
   type: z.literal('motorcycle'),
@@ -58,7 +58,7 @@ export const MotorcycleSchema = z.object({
 export const MotorcycleCreatePayloadSchema = z.object({
   brand: z.string(),
   color: z.string().nullable().optional(),
-  engineCc: z.number().int().nullable().optional(),
+  engine_cc: z.number().int().nullable().optional(),
   model: z.string(),
   type: z.literal('motorcycle'),
   year: z.number().int().nullable().optional()
@@ -67,7 +67,7 @@ export const MotorcycleCreatePayloadSchema = z.object({
 export const MotorcycleUpdatePayloadSchema = z.object({
   brand: z.string().optional(),
   color: z.string().nullable().optional(),
-  engineCc: z.number().int().nullable().optional(),
+  engine_cc: z.number().int().nullable().optional(),
   model: z.string().optional(),
   type: z.literal('motorcycle').optional(),
   year: z.number().int().nullable().optional()
@@ -83,10 +83,10 @@ export const OffsetPaginationSchema = z.object({
 
 export const StringFilterSchema = z.object({
   contains: z.string().optional(),
-  endsWith: z.string().optional(),
+  ends_with: z.string().optional(),
   eq: z.string().optional(),
   in: z.array(z.string()).optional(),
-  startsWith: z.string().optional()
+  starts_with: z.string().optional()
 });
 
 export const TruckSchema = z.object({
@@ -94,7 +94,7 @@ export const TruckSchema = z.object({
   color: z.string().nullable(),
   id: z.string(),
   model: z.string(),
-  payloadCapacity: z.number().nullable(),
+  payload_capacity: z.number().nullable(),
   type: z.literal('truck'),
   year: z.number().int().nullable()
 });
@@ -103,7 +103,7 @@ export const TruckCreatePayloadSchema = z.object({
   brand: z.string(),
   color: z.string().nullable().optional(),
   model: z.string(),
-  payloadCapacity: z.number().nullable().optional(),
+  payload_capacity: z.number().nullable().optional(),
   type: z.literal('truck'),
   year: z.number().int().nullable().optional()
 });
@@ -112,7 +112,7 @@ export const TruckUpdatePayloadSchema = z.object({
   brand: z.string().optional(),
   color: z.string().nullable().optional(),
   model: z.string().optional(),
-  payloadCapacity: z.number().nullable().optional(),
+  payload_capacity: z.number().nullable().optional(),
   type: z.literal('truck').optional(),
   year: z.number().int().nullable().optional()
 });
@@ -158,23 +158,23 @@ export const VehicleFilterSchema: z.ZodType<VehicleFilter> = z.lazy(() => z.obje
 }));
 
 export const VehicleCreateSuccessResponseBodySchema = z.object({
-  meta: z.object({}).optional(),
+  meta: z.record(z.string(), z.unknown()).optional(),
   vehicle: VehicleSchema
 });
 
 export const VehicleIndexSuccessResponseBodySchema = z.object({
-  meta: z.object({}).optional(),
+  meta: z.record(z.string(), z.unknown()).optional(),
   pagination: OffsetPaginationSchema,
   vehicles: z.array(VehicleSchema)
 });
 
 export const VehicleShowSuccessResponseBodySchema = z.object({
-  meta: z.object({}).optional(),
+  meta: z.record(z.string(), z.unknown()).optional(),
   vehicle: VehicleSchema
 });
 
 export const VehicleUpdateSuccessResponseBodySchema = z.object({
-  meta: z.object({}).optional(),
+  meta: z.record(z.string(), z.unknown()).optional(),
   vehicle: VehicleSchema
 });
 
@@ -271,7 +271,7 @@ export interface IntegerFilterBetween {
 export interface Issue {
   code: string;
   detail: string;
-  meta: object;
+  meta: Record<string, unknown>;
   path: string[];
   pointer: string;
 }
@@ -281,7 +281,7 @@ export type Layer = 'contract' | 'domain' | 'http';
 export interface Motorcycle {
   brand: string;
   color: null | string;
-  engineCc: null | number;
+  engine_cc: null | number;
   id: string;
   model: string;
   type: 'motorcycle';
@@ -291,7 +291,7 @@ export interface Motorcycle {
 export interface MotorcycleCreatePayload {
   brand: string;
   color?: null | string;
-  engineCc?: null | number;
+  engine_cc?: null | number;
   model: string;
   type: 'motorcycle';
   year?: null | number;
@@ -300,7 +300,7 @@ export interface MotorcycleCreatePayload {
 export interface MotorcycleUpdatePayload {
   brand?: string;
   color?: null | string;
-  engineCc?: null | number;
+  engine_cc?: null | number;
   model?: string;
   type?: 'motorcycle';
   year?: null | number;
@@ -329,10 +329,10 @@ export type SortDirection = 'asc' | 'desc';
 
 export interface StringFilter {
   contains?: string;
-  endsWith?: string;
+  ends_with?: string;
   eq?: string;
   in?: string[];
-  startsWith?: string;
+  starts_with?: string;
 }
 
 export interface Truck {
@@ -340,7 +340,7 @@ export interface Truck {
   color: null | string;
   id: string;
   model: string;
-  payloadCapacity: null | number;
+  payload_capacity: null | number;
   type: 'truck';
   year: null | number;
 }
@@ -349,7 +349,7 @@ export interface TruckCreatePayload {
   brand: string;
   color?: null | string;
   model: string;
-  payloadCapacity?: null | number;
+  payload_capacity?: null | number;
   type: 'truck';
   year?: null | number;
 }
@@ -358,7 +358,7 @@ export interface TruckUpdatePayload {
   brand?: string;
   color?: null | string;
   model?: string;
-  payloadCapacity?: null | number;
+  payload_capacity?: null | number;
   type?: 'truck';
   year?: null | number;
 }
@@ -366,7 +366,7 @@ export interface TruckUpdatePayload {
 export type Vehicle = Car | Motorcycle | Truck;
 
 export interface VehicleCreateSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   vehicle: Vehicle;
 }
 
@@ -380,7 +380,7 @@ export interface VehicleFilter {
 }
 
 export interface VehicleIndexSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   pagination: OffsetPagination;
   vehicles: Vehicle[];
 }
@@ -391,7 +391,7 @@ export interface VehiclePage {
 }
 
 export interface VehicleShowSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   vehicle: Vehicle;
 }
 
@@ -400,7 +400,7 @@ export interface VehicleSort {
 }
 
 export interface VehicleUpdateSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   vehicle: Vehicle;
 }
 

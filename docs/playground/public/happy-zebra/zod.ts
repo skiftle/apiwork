@@ -44,7 +44,7 @@ export const CommentUpdatePayloadSchema = z.object({
 export const IssueSchema = z.object({
   code: z.string(),
   detail: z.string(),
-  meta: z.object({}),
+  meta: z.record(z.string(), z.unknown()),
   path: z.array(z.string()),
   pointer: z.string()
 });
@@ -64,10 +64,10 @@ export const PostPageSchema = z.object({
 
 export const ProfileSchema = z.object({
   bio: z.string().nullable(),
-  createdAt: z.iso.datetime(),
+  created_at: z.iso.datetime(),
   id: z.string(),
-  updatedAt: z.iso.datetime(),
-  user: z.object({}).optional(),
+  updated_at: z.iso.datetime(),
+  user: z.record(z.string(), z.unknown()).optional(),
   website: z.string().nullable()
 });
 
@@ -89,10 +89,10 @@ export const ProfileNestedUpdatePayloadSchema = z.object({
 
 export const StringFilterSchema = z.object({
   contains: z.string().optional(),
-  endsWith: z.string().optional(),
+  ends_with: z.string().optional(),
   eq: z.string().optional(),
   in: z.array(z.string()).optional(),
-  startsWith: z.string().optional()
+  starts_with: z.string().optional()
 });
 
 export const UserPageSchema = z.object({
@@ -101,23 +101,23 @@ export const UserPageSchema = z.object({
 });
 
 export const UserSortSchema = z.object({
-  createdAt: SortDirectionSchema.optional(),
-  updatedAt: SortDirectionSchema.optional()
+  created_at: SortDirectionSchema.optional(),
+  updated_at: SortDirectionSchema.optional()
 });
 
 export const CommentCreateSuccessResponseBodySchema = z.object({
   comment: CommentSchema,
-  meta: z.object({}).optional()
+  meta: z.record(z.string(), z.unknown()).optional()
 });
 
 export const CommentShowSuccessResponseBodySchema = z.object({
   comment: CommentSchema,
-  meta: z.object({}).optional()
+  meta: z.record(z.string(), z.unknown()).optional()
 });
 
 export const CommentUpdateSuccessResponseBodySchema = z.object({
   comment: CommentSchema,
-  meta: z.object({}).optional()
+  meta: z.record(z.string(), z.unknown()).optional()
 });
 
 export const PostSchema = z.object({
@@ -138,7 +138,7 @@ export const ErrorResponseBodySchema = z.object({
 
 export const CommentIndexSuccessResponseBodySchema = z.object({
   comments: z.array(CommentSchema),
-  meta: z.object({}).optional(),
+  meta: z.record(z.string(), z.unknown()).optional(),
   pagination: OffsetPaginationSchema
 });
 
@@ -156,33 +156,33 @@ export const UserFilterSchema: z.ZodType<UserFilter> = z.lazy(() => z.object({
 }));
 
 export const PostCreateSuccessResponseBodySchema = z.object({
-  meta: z.object({}).optional(),
+  meta: z.record(z.string(), z.unknown()).optional(),
   post: PostSchema
 });
 
 export const PostIndexSuccessResponseBodySchema = z.object({
-  meta: z.object({}).optional(),
+  meta: z.record(z.string(), z.unknown()).optional(),
   pagination: OffsetPaginationSchema,
   posts: z.array(PostSchema)
 });
 
 export const PostShowSuccessResponseBodySchema = z.object({
-  meta: z.object({}).optional(),
+  meta: z.record(z.string(), z.unknown()).optional(),
   post: PostSchema
 });
 
 export const PostUpdateSuccessResponseBodySchema = z.object({
-  meta: z.object({}).optional(),
+  meta: z.record(z.string(), z.unknown()).optional(),
   post: PostSchema
 });
 
 export const UserSchema = z.object({
-  createdAt: z.iso.datetime(),
+  created_at: z.iso.datetime(),
   email: z.string(),
   id: z.string(),
   posts: z.array(PostSchema),
   profile: ProfileSchema,
-  updatedAt: z.iso.datetime(),
+  updated_at: z.iso.datetime(),
   username: z.string()
 });
 
@@ -213,23 +213,23 @@ export const PostUpdatePayloadSchema = z.object({
 });
 
 export const UserCreateSuccessResponseBodySchema = z.object({
-  meta: z.object({}).optional(),
+  meta: z.record(z.string(), z.unknown()).optional(),
   user: UserSchema
 });
 
 export const UserIndexSuccessResponseBodySchema = z.object({
-  meta: z.object({}).optional(),
+  meta: z.record(z.string(), z.unknown()).optional(),
   pagination: OffsetPaginationSchema,
   users: z.array(UserSchema)
 });
 
 export const UserShowSuccessResponseBodySchema = z.object({
-  meta: z.object({}).optional(),
+  meta: z.record(z.string(), z.unknown()).optional(),
   user: UserSchema
 });
 
 export const UserUpdateSuccessResponseBodySchema = z.object({
-  meta: z.object({}).optional(),
+  meta: z.record(z.string(), z.unknown()).optional(),
   user: UserSchema
 });
 
@@ -417,12 +417,12 @@ export interface CommentCreatePayload {
 
 export interface CommentCreateSuccessResponseBody {
   comment: Comment;
-  meta?: object;
+  meta?: Record<string, unknown>;
 }
 
 export interface CommentIndexSuccessResponseBody {
   comments: Comment[];
-  meta?: object;
+  meta?: Record<string, unknown>;
   pagination: OffsetPagination;
 }
 
@@ -451,7 +451,7 @@ export interface CommentPage {
 
 export interface CommentShowSuccessResponseBody {
   comment: Comment;
-  meta?: object;
+  meta?: Record<string, unknown>;
 }
 
 export interface CommentUpdatePayload {
@@ -461,7 +461,7 @@ export interface CommentUpdatePayload {
 
 export interface CommentUpdateSuccessResponseBody {
   comment: Comment;
-  meta?: object;
+  meta?: Record<string, unknown>;
 }
 
 export interface CommentsCreateRequest {
@@ -522,7 +522,7 @@ export interface ErrorResponseBody {
 export interface Issue {
   code: string;
   detail: string;
-  meta: object;
+  meta: Record<string, unknown>;
   path: string[];
   pointer: string;
 }
@@ -549,12 +549,12 @@ export interface PostCreatePayload {
 }
 
 export interface PostCreateSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   post: Post;
 }
 
 export interface PostIndexSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   pagination: OffsetPagination;
   posts: Post[];
 }
@@ -583,7 +583,7 @@ export interface PostPage {
 }
 
 export interface PostShowSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   post: Post;
 }
 
@@ -593,7 +593,7 @@ export interface PostUpdatePayload {
 }
 
 export interface PostUpdateSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   post: Post;
 }
 
@@ -649,10 +649,10 @@ export type PostsUpdateResponseBody = ErrorResponseBody | PostUpdateSuccessRespo
 
 export interface Profile {
   bio: null | string;
-  createdAt: string;
+  created_at: string;
   id: string;
-  updatedAt: string;
-  user?: object;
+  updated_at: string;
+  user?: Record<string, unknown>;
   website: null | string;
 }
 
@@ -678,19 +678,19 @@ export type SortDirection = 'asc' | 'desc';
 
 export interface StringFilter {
   contains?: string;
-  endsWith?: string;
+  ends_with?: string;
   eq?: string;
   in?: string[];
-  startsWith?: string;
+  starts_with?: string;
 }
 
 export interface User {
-  createdAt: string;
+  created_at: string;
   email: string;
   id: string;
   posts: Post[];
   profile: Profile;
-  updatedAt: string;
+  updated_at: string;
   username: string;
 }
 
@@ -702,7 +702,7 @@ export interface UserCreatePayload {
 }
 
 export interface UserCreateSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   user: User;
 }
 
@@ -715,7 +715,7 @@ export interface UserFilter {
 }
 
 export interface UserIndexSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   pagination: OffsetPagination;
   users: User[];
 }
@@ -726,13 +726,13 @@ export interface UserPage {
 }
 
 export interface UserShowSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   user: User;
 }
 
 export interface UserSort {
-  createdAt?: SortDirection;
-  updatedAt?: SortDirection;
+  created_at?: SortDirection;
+  updated_at?: SortDirection;
 }
 
 export interface UserUpdatePayload {
@@ -743,7 +743,7 @@ export interface UserUpdatePayload {
 }
 
 export interface UserUpdateSuccessResponseBody {
-  meta?: object;
+  meta?: Record<string, unknown>;
   user: User;
 }
 

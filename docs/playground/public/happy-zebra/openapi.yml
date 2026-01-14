@@ -6,47 +6,47 @@ info:
 paths:
   "/users":
     get:
-      operationId: usersIndex
+      operationId: users_index
       parameters:
       - in: query
         name: filter
         required: false
         schema:
           oneOf:
-          - "$ref": "#/components/schemas/userFilter"
+          - "$ref": "#/components/schemas/user_filter"
           - items:
-              "$ref": "#/components/schemas/userFilter"
+              "$ref": "#/components/schemas/user_filter"
             type: array
       - in: query
         name: page
         required: false
         schema:
-          "$ref": "#/components/schemas/userPage"
+          "$ref": "#/components/schemas/user_page"
       - in: query
         name: sort
         required: false
         schema:
           oneOf:
-          - "$ref": "#/components/schemas/userSort"
+          - "$ref": "#/components/schemas/user_sort"
           - items:
-              "$ref": "#/components/schemas/userSort"
+              "$ref": "#/components/schemas/user_sort"
             type: array
       responses:
         '200':
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/userIndexSuccessResponseBody"
+                "$ref": "#/components/schemas/user_index_success_response_body"
           description: Successful response
     post:
-      operationId: usersCreate
+      operationId: users_create
       requestBody:
         content:
           application/json:
             schema:
               properties:
                 user:
-                  "$ref": "#/components/schemas/userCreatePayload"
+                  "$ref": "#/components/schemas/user_create_payload"
               type: object
               required:
               - user
@@ -56,17 +56,17 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/userCreateSuccessResponseBody"
+                "$ref": "#/components/schemas/user_create_success_response_body"
           description: Successful response
         '422':
           description: Unprocessable Entity
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/errorResponseBody"
+                "$ref": "#/components/schemas/error_response_body"
   "/users/{id}":
     get:
-      operationId: usersShow
+      operationId: users_show
       parameters:
       - in: path
         name: id
@@ -78,10 +78,10 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/userShowSuccessResponseBody"
+                "$ref": "#/components/schemas/user_show_success_response_body"
           description: Successful response
     patch:
-      operationId: usersUpdate
+      operationId: users_update
       parameters:
       - in: path
         name: id
@@ -94,7 +94,7 @@ paths:
             schema:
               properties:
                 user:
-                  "$ref": "#/components/schemas/userUpdatePayload"
+                  "$ref": "#/components/schemas/user_update_payload"
               type: object
               required:
               - user
@@ -104,16 +104,16 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/userUpdateSuccessResponseBody"
+                "$ref": "#/components/schemas/user_update_success_response_body"
           description: Successful response
         '422':
           description: Unprocessable Entity
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/errorResponseBody"
+                "$ref": "#/components/schemas/error_response_body"
     delete:
-      operationId: usersDestroy
+      operationId: users_destroy
       parameters:
       - in: path
         name: id
@@ -125,29 +125,29 @@ paths:
           description: No content
   "/posts":
     get:
-      operationId: postsIndex
+      operationId: posts_index
       parameters:
       - in: query
         name: page
         required: false
         schema:
-          "$ref": "#/components/schemas/postPage"
+          "$ref": "#/components/schemas/post_page"
       responses:
         '200':
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/postIndexSuccessResponseBody"
+                "$ref": "#/components/schemas/post_index_success_response_body"
           description: Successful response
     post:
-      operationId: postsCreate
+      operationId: posts_create
       requestBody:
         content:
           application/json:
             schema:
               properties:
                 post:
-                  "$ref": "#/components/schemas/postCreatePayload"
+                  "$ref": "#/components/schemas/post_create_payload"
               type: object
               required:
               - post
@@ -157,17 +157,17 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/postCreateSuccessResponseBody"
+                "$ref": "#/components/schemas/post_create_success_response_body"
           description: Successful response
         '422':
           description: Unprocessable Entity
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/errorResponseBody"
+                "$ref": "#/components/schemas/error_response_body"
   "/posts/{id}":
     get:
-      operationId: postsShow
+      operationId: posts_show
       parameters:
       - in: path
         name: id
@@ -179,10 +179,10 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/postShowSuccessResponseBody"
+                "$ref": "#/components/schemas/post_show_success_response_body"
           description: Successful response
     patch:
-      operationId: postsUpdate
+      operationId: posts_update
       parameters:
       - in: path
         name: id
@@ -195,7 +195,7 @@ paths:
             schema:
               properties:
                 post:
-                  "$ref": "#/components/schemas/postUpdatePayload"
+                  "$ref": "#/components/schemas/post_update_payload"
               type: object
               required:
               - post
@@ -205,16 +205,16 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/postUpdateSuccessResponseBody"
+                "$ref": "#/components/schemas/post_update_success_response_body"
           description: Successful response
         '422':
           description: Unprocessable Entity
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/errorResponseBody"
+                "$ref": "#/components/schemas/error_response_body"
     delete:
-      operationId: postsDestroy
+      operationId: posts_destroy
       parameters:
       - in: path
         name: id
@@ -226,29 +226,29 @@ paths:
           description: No content
   "/comments":
     get:
-      operationId: commentsIndex
+      operationId: comments_index
       parameters:
       - in: query
         name: page
         required: false
         schema:
-          "$ref": "#/components/schemas/commentPage"
+          "$ref": "#/components/schemas/comment_page"
       responses:
         '200':
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/commentIndexSuccessResponseBody"
+                "$ref": "#/components/schemas/comment_index_success_response_body"
           description: Successful response
     post:
-      operationId: commentsCreate
+      operationId: comments_create
       requestBody:
         content:
           application/json:
             schema:
               properties:
                 comment:
-                  "$ref": "#/components/schemas/commentCreatePayload"
+                  "$ref": "#/components/schemas/comment_create_payload"
               type: object
               required:
               - comment
@@ -258,17 +258,17 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/commentCreateSuccessResponseBody"
+                "$ref": "#/components/schemas/comment_create_success_response_body"
           description: Successful response
         '422':
           description: Unprocessable Entity
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/errorResponseBody"
+                "$ref": "#/components/schemas/error_response_body"
   "/comments/{id}":
     get:
-      operationId: commentsShow
+      operationId: comments_show
       parameters:
       - in: path
         name: id
@@ -280,10 +280,10 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/commentShowSuccessResponseBody"
+                "$ref": "#/components/schemas/comment_show_success_response_body"
           description: Successful response
     patch:
-      operationId: commentsUpdate
+      operationId: comments_update
       parameters:
       - in: path
         name: id
@@ -296,7 +296,7 @@ paths:
             schema:
               properties:
                 comment:
-                  "$ref": "#/components/schemas/commentUpdatePayload"
+                  "$ref": "#/components/schemas/comment_update_payload"
               type: object
               required:
               - comment
@@ -306,16 +306,16 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/commentUpdateSuccessResponseBody"
+                "$ref": "#/components/schemas/comment_update_success_response_body"
           description: Successful response
         '422':
           description: Unprocessable Entity
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/errorResponseBody"
+                "$ref": "#/components/schemas/error_response_body"
     delete:
-      operationId: commentsDestroy
+      operationId: comments_destroy
       parameters:
       - in: path
         name: id
@@ -340,7 +340,7 @@ components:
       - author
       - body
       - id
-    commentCreatePayload:
+    comment_create_payload:
       properties:
         author:
           type: string
@@ -350,7 +350,7 @@ components:
       required:
       - author
       - body
-    commentCreateSuccessResponseBody:
+    comment_create_success_response_body:
       properties:
         comment:
           "$ref": "#/components/schemas/comment"
@@ -360,7 +360,7 @@ components:
       type: object
       required:
       - comment
-    commentIndexSuccessResponseBody:
+    comment_index_success_response_body:
       properties:
         comments:
           items:
@@ -370,12 +370,12 @@ components:
           properties: {}
           type: object
         pagination:
-          "$ref": "#/components/schemas/offsetPagination"
+          "$ref": "#/components/schemas/offset_pagination"
       type: object
       required:
       - comments
       - pagination
-    commentNestedCreatePayload:
+    comment_nested_create_payload:
       properties:
         _destroy:
           type: boolean
@@ -393,16 +393,16 @@ components:
       - _type
       - author
       - body
-    commentNestedPayload:
+    comment_nested_payload:
       oneOf:
-      - "$ref": "#/components/schemas/commentNestedCreatePayload"
-      - "$ref": "#/components/schemas/commentNestedUpdatePayload"
+      - "$ref": "#/components/schemas/comment_nested_create_payload"
+      - "$ref": "#/components/schemas/comment_nested_update_payload"
       discriminator:
         mapping:
-          create: "#/components/schemas/commentNestedCreatePayload"
-          update: "#/components/schemas/commentNestedUpdatePayload"
+          create: "#/components/schemas/comment_nested_create_payload"
+          update: "#/components/schemas/comment_nested_update_payload"
         propertyName: _type
-    commentNestedUpdatePayload:
+    comment_nested_update_payload:
       properties:
         _destroy:
           type: boolean
@@ -418,7 +418,7 @@ components:
       type: object
       required:
       - _type
-    commentPage:
+    comment_page:
       properties:
         number:
           type: integer
@@ -428,7 +428,7 @@ components:
           minimum: 1
           maximum: 100
       type: object
-    commentShowSuccessResponseBody:
+    comment_show_success_response_body:
       properties:
         comment:
           "$ref": "#/components/schemas/comment"
@@ -438,14 +438,14 @@ components:
       type: object
       required:
       - comment
-    commentUpdatePayload:
+    comment_update_payload:
       properties:
         author:
           type: string
         body:
           type: string
       type: object
-    commentUpdateSuccessResponseBody:
+    comment_update_success_response_body:
       properties:
         comment:
           "$ref": "#/components/schemas/comment"
@@ -455,7 +455,7 @@ components:
       type: object
       required:
       - comment
-    errorResponseBody:
+    error_response_body:
       properties:
         issues:
           items:
@@ -493,7 +493,7 @@ components:
       - meta
       - path
       - pointer
-    offsetPagination:
+    offset_pagination:
       properties:
         current:
           type: integer
@@ -529,18 +529,18 @@ components:
       - comments
       - id
       - title
-    postCreatePayload:
+    post_create_payload:
       properties:
         comments:
           items:
-            "$ref": "#/components/schemas/commentNestedPayload"
+            "$ref": "#/components/schemas/comment_nested_payload"
           type: array
         title:
           type: string
       type: object
       required:
       - title
-    postCreateSuccessResponseBody:
+    post_create_success_response_body:
       properties:
         meta:
           properties: {}
@@ -550,13 +550,13 @@ components:
       type: object
       required:
       - post
-    postIndexSuccessResponseBody:
+    post_index_success_response_body:
       properties:
         meta:
           properties: {}
           type: object
         pagination:
-          "$ref": "#/components/schemas/offsetPagination"
+          "$ref": "#/components/schemas/offset_pagination"
         posts:
           items:
             "$ref": "#/components/schemas/post"
@@ -565,7 +565,7 @@ components:
       required:
       - pagination
       - posts
-    postNestedCreatePayload:
+    post_nested_create_payload:
       properties:
         _destroy:
           type: boolean
@@ -574,7 +574,7 @@ components:
           type: string
         comments:
           items:
-            "$ref": "#/components/schemas/commentNestedPayload"
+            "$ref": "#/components/schemas/comment_nested_payload"
           type: array
         id:
           type: integer
@@ -584,16 +584,16 @@ components:
       required:
       - _type
       - title
-    postNestedPayload:
+    post_nested_payload:
       oneOf:
-      - "$ref": "#/components/schemas/postNestedCreatePayload"
-      - "$ref": "#/components/schemas/postNestedUpdatePayload"
+      - "$ref": "#/components/schemas/post_nested_create_payload"
+      - "$ref": "#/components/schemas/post_nested_update_payload"
       discriminator:
         mapping:
-          create: "#/components/schemas/postNestedCreatePayload"
-          update: "#/components/schemas/postNestedUpdatePayload"
+          create: "#/components/schemas/post_nested_create_payload"
+          update: "#/components/schemas/post_nested_update_payload"
         propertyName: _type
-    postNestedUpdatePayload:
+    post_nested_update_payload:
       properties:
         _destroy:
           type: boolean
@@ -602,7 +602,7 @@ components:
           type: string
         comments:
           items:
-            "$ref": "#/components/schemas/commentNestedPayload"
+            "$ref": "#/components/schemas/comment_nested_payload"
           type: array
         id:
           type: integer
@@ -611,7 +611,7 @@ components:
       type: object
       required:
       - _type
-    postPage:
+    post_page:
       properties:
         number:
           type: integer
@@ -621,7 +621,7 @@ components:
           minimum: 1
           maximum: 100
       type: object
-    postShowSuccessResponseBody:
+    post_show_success_response_body:
       properties:
         meta:
           properties: {}
@@ -631,16 +631,16 @@ components:
       type: object
       required:
       - post
-    postUpdatePayload:
+    post_update_payload:
       properties:
         comments:
           items:
-            "$ref": "#/components/schemas/commentNestedPayload"
+            "$ref": "#/components/schemas/comment_nested_payload"
           type: array
         title:
           type: string
       type: object
-    postUpdateSuccessResponseBody:
+    post_update_success_response_body:
       properties:
         meta:
           properties: {}
@@ -656,12 +656,12 @@ components:
           type:
           - string
           - 'null'
-        createdAt:
+        created_at:
           type: string
           format: date-time
         id:
           type: string
-        updatedAt:
+        updated_at:
           type: string
           format: date-time
         user:
@@ -674,11 +674,11 @@ components:
       type: object
       required:
       - bio
-      - createdAt
+      - created_at
       - id
-      - updatedAt
+      - updated_at
       - website
-    profileNestedCreatePayload:
+    profile_nested_create_payload:
       properties:
         _destroy:
           type: boolean
@@ -698,16 +698,16 @@ components:
       type: object
       required:
       - _type
-    profileNestedPayload:
+    profile_nested_payload:
       oneOf:
-      - "$ref": "#/components/schemas/profileNestedCreatePayload"
-      - "$ref": "#/components/schemas/profileNestedUpdatePayload"
+      - "$ref": "#/components/schemas/profile_nested_create_payload"
+      - "$ref": "#/components/schemas/profile_nested_update_payload"
       discriminator:
         mapping:
-          create: "#/components/schemas/profileNestedCreatePayload"
-          update: "#/components/schemas/profileNestedUpdatePayload"
+          create: "#/components/schemas/profile_nested_create_payload"
+          update: "#/components/schemas/profile_nested_update_payload"
         propertyName: _type
-    profileNestedUpdatePayload:
+    profile_nested_update_payload:
       properties:
         _destroy:
           type: boolean
@@ -727,11 +727,11 @@ components:
       type: object
       required:
       - _type
-    stringFilter:
+    string_filter:
       properties:
         contains:
           type: string
-        endsWith:
+        ends_with:
           type: string
         eq:
           type: string
@@ -739,12 +739,12 @@ components:
           items:
             type: string
           type: array
-        startsWith:
+        starts_with:
           type: string
       type: object
     user:
       properties:
-        createdAt:
+        created_at:
           type: string
           format: date-time
         email:
@@ -757,37 +757,37 @@ components:
           type: array
         profile:
           "$ref": "#/components/schemas/profile"
-        updatedAt:
+        updated_at:
           type: string
           format: date-time
         username:
           type: string
       type: object
       required:
-      - createdAt
+      - created_at
       - email
       - id
       - posts
       - profile
-      - updatedAt
+      - updated_at
       - username
-    userCreatePayload:
+    user_create_payload:
       properties:
         email:
           type: string
         posts:
           items:
-            "$ref": "#/components/schemas/postNestedPayload"
+            "$ref": "#/components/schemas/post_nested_payload"
           type: array
         profile:
-          "$ref": "#/components/schemas/profileNestedPayload"
+          "$ref": "#/components/schemas/profile_nested_payload"
         username:
           type: string
       type: object
       required:
       - email
       - username
-    userCreateSuccessResponseBody:
+    user_create_success_response_body:
       properties:
         meta:
           properties: {}
@@ -797,34 +797,34 @@ components:
       type: object
       required:
       - user
-    userFilter:
+    user_filter:
       properties:
         _and:
           items:
-            "$ref": "#/components/schemas/userFilter"
+            "$ref": "#/components/schemas/user_filter"
           type: array
         _not:
-          "$ref": "#/components/schemas/userFilter"
+          "$ref": "#/components/schemas/user_filter"
         _or:
           items:
-            "$ref": "#/components/schemas/userFilter"
+            "$ref": "#/components/schemas/user_filter"
           type: array
         email:
           oneOf:
           - type: string
-          - "$ref": "#/components/schemas/stringFilter"
+          - "$ref": "#/components/schemas/string_filter"
         username:
           oneOf:
           - type: string
-          - "$ref": "#/components/schemas/stringFilter"
+          - "$ref": "#/components/schemas/string_filter"
       type: object
-    userIndexSuccessResponseBody:
+    user_index_success_response_body:
       properties:
         meta:
           properties: {}
           type: object
         pagination:
-          "$ref": "#/components/schemas/offsetPagination"
+          "$ref": "#/components/schemas/offset_pagination"
         users:
           items:
             "$ref": "#/components/schemas/user"
@@ -833,7 +833,7 @@ components:
       required:
       - pagination
       - users
-    userPage:
+    user_page:
       properties:
         number:
           type: integer
@@ -843,7 +843,7 @@ components:
           minimum: 1
           maximum: 100
       type: object
-    userShowSuccessResponseBody:
+    user_show_success_response_body:
       properties:
         meta:
           properties: {}
@@ -853,33 +853,33 @@ components:
       type: object
       required:
       - user
-    userSort:
+    user_sort:
       properties:
-        createdAt:
+        created_at:
           enum:
           - asc
           - desc
           type: string
-        updatedAt:
+        updated_at:
           enum:
           - asc
           - desc
           type: string
       type: object
-    userUpdatePayload:
+    user_update_payload:
       properties:
         email:
           type: string
         posts:
           items:
-            "$ref": "#/components/schemas/postNestedPayload"
+            "$ref": "#/components/schemas/post_nested_payload"
           type: array
         profile:
-          "$ref": "#/components/schemas/profileNestedPayload"
+          "$ref": "#/components/schemas/profile_nested_payload"
         username:
           type: string
       type: object
-    userUpdateSuccessResponseBody:
+    user_update_success_response_body:
       properties:
         meta:
           properties: {}

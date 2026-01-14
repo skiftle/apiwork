@@ -1,42 +1,42 @@
 export interface Article {
   body: null | string;
-  category?: null | object;
-  createdAt: string;
+  category?: Record<string, unknown> | null;
+  created_at: string;
   id: string;
-  publishedOn: null | string;
+  published_on: null | string;
   rating: null | number;
   status: ArticleStatus | null;
   title: string;
-  updatedAt: string;
-  viewCount: null | number;
+  updated_at: string;
+  view_count: null | number;
 }
 
 export interface ArticleCreatePayload {
   body?: null | string;
-  publishedOn?: null | string;
+  published_on?: null | string;
   status?: ArticleStatus | null;
   title: string;
 }
 
 export interface ArticleCreateSuccessResponseBody {
   article: Article;
-  meta?: object;
+  meta?: Record<string, unknown>;
 }
 
 export interface ArticleFilter {
   _and?: ArticleFilter[];
   _not?: ArticleFilter;
   _or?: ArticleFilter[];
-  publishedOn?: NullableDateFilter | string;
+  published_on?: NullableDateFilter | string;
   rating?: NullableDecimalFilter | number;
   status?: ArticleStatusFilter;
   title?: StringFilter | string;
-  viewCount?: NullableIntegerFilter | number;
+  view_count?: NullableIntegerFilter | number;
 }
 
 export interface ArticleIndexSuccessResponseBody {
   articles: Article[];
-  meta?: object;
+  meta?: Record<string, unknown>;
   pagination: OffsetPagination;
 }
 
@@ -47,15 +47,15 @@ export interface ArticlePage {
 
 export interface ArticleShowSuccessResponseBody {
   article: Article;
-  meta?: object;
+  meta?: Record<string, unknown>;
 }
 
 export interface ArticleSort {
-  createdAt?: SortDirection;
-  publishedOn?: SortDirection;
+  created_at?: SortDirection;
+  published_on?: SortDirection;
   rating?: SortDirection;
   status?: SortDirection;
-  viewCount?: SortDirection;
+  view_count?: SortDirection;
 }
 
 export type ArticleStatus = 'archived' | 'draft' | 'published';
@@ -64,14 +64,14 @@ export type ArticleStatusFilter = ArticleStatus | { eq?: ArticleStatus; in?: Art
 
 export interface ArticleUpdatePayload {
   body?: null | string;
-  publishedOn?: null | string;
+  published_on?: null | string;
   status?: ArticleStatus | null;
   title?: string;
 }
 
 export interface ArticleUpdateSuccessResponseBody {
   article: Article;
-  meta?: object;
+  meta?: Record<string, unknown>;
 }
 
 export interface ArticlesCreateRequest {
@@ -149,7 +149,7 @@ export interface IntegerFilterBetween {
 export interface Issue {
   code: string;
   detail: string;
-  meta: object;
+  meta: Record<string, unknown>;
   path: string[];
   pointer: string;
 }
@@ -201,8 +201,8 @@ export type SortDirection = 'asc' | 'desc';
 
 export interface StringFilter {
   contains?: string;
-  endsWith?: string;
+  ends_with?: string;
   eq?: string;
   in?: string[];
-  startsWith?: string;
+  starts_with?: string;
 }

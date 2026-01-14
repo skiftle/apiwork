@@ -4,14 +4,14 @@ export const LayerSchema = z.enum(['contract', 'domain', 'http']);
 
 export const ActivitySchema = z.object({
   action: z.string(),
-  createdAt: z.iso.datetime(),
+  created_at: z.iso.datetime(),
   id: z.string(),
-  occurredAt: z.iso.datetime().nullable()
+  occurred_at: z.iso.datetime().nullable()
 });
 
 export const ActivityCreatePayloadSchema = z.object({
   action: z.string(),
-  occurredAt: z.iso.datetime().nullable().optional()
+  occurred_at: z.iso.datetime().nullable().optional()
 });
 
 export const ActivityPageSchema = z.object({
@@ -22,7 +22,7 @@ export const ActivityPageSchema = z.object({
 
 export const ActivityUpdatePayloadSchema = z.object({
   action: z.string().optional(),
-  occurredAt: z.iso.datetime().nullable().optional()
+  occurred_at: z.iso.datetime().nullable().optional()
 });
 
 export const CursorPaginationSchema = z.object({
@@ -33,29 +33,29 @@ export const CursorPaginationSchema = z.object({
 export const IssueSchema = z.object({
   code: z.string(),
   detail: z.string(),
-  meta: z.object({}),
+  meta: z.record(z.string(), z.unknown()),
   path: z.array(z.string()),
   pointer: z.string()
 });
 
 export const ActivityCreateSuccessResponseBodySchema = z.object({
   activity: ActivitySchema,
-  meta: z.object({}).optional()
+  meta: z.record(z.string(), z.unknown()).optional()
 });
 
 export const ActivityShowSuccessResponseBodySchema = z.object({
   activity: ActivitySchema,
-  meta: z.object({}).optional()
+  meta: z.record(z.string(), z.unknown()).optional()
 });
 
 export const ActivityUpdateSuccessResponseBodySchema = z.object({
   activity: ActivitySchema,
-  meta: z.object({}).optional()
+  meta: z.record(z.string(), z.unknown()).optional()
 });
 
 export const ActivityIndexSuccessResponseBodySchema = z.object({
   activities: z.array(ActivitySchema),
-  meta: z.object({}).optional(),
+  meta: z.record(z.string(), z.unknown()).optional(),
   pagination: CursorPaginationSchema
 });
 
@@ -166,24 +166,24 @@ export type ActivitiesUpdateResponseBody = ActivityUpdateSuccessResponseBody | E
 
 export interface Activity {
   action: string;
-  createdAt: string;
+  created_at: string;
   id: string;
-  occurredAt: null | string;
+  occurred_at: null | string;
 }
 
 export interface ActivityCreatePayload {
   action: string;
-  occurredAt?: null | string;
+  occurred_at?: null | string;
 }
 
 export interface ActivityCreateSuccessResponseBody {
   activity: Activity;
-  meta?: object;
+  meta?: Record<string, unknown>;
 }
 
 export interface ActivityIndexSuccessResponseBody {
   activities: Activity[];
-  meta?: object;
+  meta?: Record<string, unknown>;
   pagination: CursorPagination;
 }
 
@@ -195,17 +195,17 @@ export interface ActivityPage {
 
 export interface ActivityShowSuccessResponseBody {
   activity: Activity;
-  meta?: object;
+  meta?: Record<string, unknown>;
 }
 
 export interface ActivityUpdatePayload {
   action?: string;
-  occurredAt?: null | string;
+  occurred_at?: null | string;
 }
 
 export interface ActivityUpdateSuccessResponseBody {
   activity: Activity;
-  meta?: object;
+  meta?: Record<string, unknown>;
 }
 
 export interface CursorPagination {
@@ -221,7 +221,7 @@ export interface ErrorResponseBody {
 export interface Issue {
   code: string;
   detail: string;
-  meta: object;
+  meta: Record<string, unknown>;
   path: string[];
   pointer: string;
 }
