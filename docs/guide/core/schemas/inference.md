@@ -23,8 +23,8 @@ Everything inferred can be overridden when needed.
 | Association nullable      | Foreign key constraint   | `nullable: true`        |
 | Foreign key column        | Rails reflection         | (automatic)             |
 | Polymorphic discriminator | Rails reflection         | `discriminator: :type`  |
-| STI column                | `inheritance_column`     | `discriminated! :kind`  |
-| STI variant tag           | `sti_name`               | `variant :custom`       |
+| STI column                | `inheritance_column`     | `discriminated!`        |
+| STI variant tag           | `sti_name`               | `variant as: :custom`   |
 | Allow destroy             | `nested_attributes_options` | `allow_destroy: true` |
 | Root key                  | `model_name.element`     | `root :item, :items`    |
 
@@ -285,27 +285,33 @@ class Truck < Vehicle; end
 
 # Schemas - parent first, children inherit from parent
 class VehicleSchema < Apiwork::Schema::Base
-  discriminated! :kind  # Uses :type column (auto-detected)
+  discriminated!  # Uses :type column (auto-detected)
 end
 
 class CarSchema < VehicleSchema
-  variant :car  # tag from argument, type from model's sti_name
+  variant as: :car  # tag from argument, type from model's sti_name
 end
 
 class TruckSchema < VehicleSchema
-  variant :truck  # tag from argument, type from model's sti_name
+  variant as: :truck  # tag from argument, type from model's sti_name
 end
+```
+
+Override JSON field name:
+
+```ruby
+discriminated! as: :kind  # JSON field is "kind", column is still :type
 ```
 
 Override column:
 
 ```ruby
-discriminated! :kind, column: :category  # Use :category instead of :type
+discriminated! as: :kind, by: :category  # JSON field is "kind", column is :category
 ```
 
 ### STI Variant Tag
 
-If you omit the tag argument, it defaults to `model_class.sti_name`:
+If you omit the `as:` argument, it defaults to `model_class.sti_name`:
 
 ```ruby
 # Model with custom STI name
@@ -325,7 +331,7 @@ Override with custom tag:
 
 ```ruby
 class TruckSchema < VehicleSchema
-  variant :heavy_truck  # Custom tag instead of sti_name
+  variant as: :heavy_truck  # Custom tag instead of sti_name
 end
 ```
 

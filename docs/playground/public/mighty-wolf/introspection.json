@@ -247,7 +247,7 @@
                 "nullable": false,
                 "optional": false,
                 "type": "union",
-                "discriminator": "kind",
+                "discriminator": "type",
                 "variants": [
                   {
                     "default": null,
@@ -341,7 +341,7 @@
                 "nullable": false,
                 "optional": false,
                 "type": "union",
-                "discriminator": "kind",
+                "discriminator": "type",
                 "variants": [
                   {
                     "default": null,
@@ -504,16 +504,6 @@
           "max": null,
           "min": null
         },
-        "kind": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "literal",
-          "value": "car"
-        },
         "model": {
           "default": null,
           "deprecated": false,
@@ -525,6 +515,16 @@
           "format": null,
           "max": null,
           "min": null
+        },
+        "type": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "literal",
+          "value": "car"
         },
         "year": {
           "default": null,
@@ -584,16 +584,6 @@
           "max": null,
           "min": null
         },
-        "kind": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "literal",
-          "value": "car"
-        },
         "model": {
           "default": null,
           "deprecated": false,
@@ -605,6 +595,16 @@
           "format": null,
           "max": null,
           "min": null
+        },
+        "type": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "literal",
+          "value": "car"
         },
         "year": {
           "default": null,
@@ -664,16 +664,6 @@
           "max": null,
           "min": null
         },
-        "kind": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "literal",
-          "value": "car"
-        },
         "model": {
           "default": null,
           "deprecated": false,
@@ -685,6 +675,16 @@
           "format": null,
           "max": null,
           "min": null
+        },
+        "type": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "literal",
+          "value": "car"
         },
         "year": {
           "default": null,
@@ -1017,16 +1017,6 @@
           "max": null,
           "min": null
         },
-        "kind": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "literal",
-          "value": "motorcycle"
-        },
         "model": {
           "default": null,
           "deprecated": false,
@@ -1038,6 +1028,16 @@
           "format": null,
           "max": null,
           "min": null
+        },
+        "type": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "literal",
+          "value": "motorcycle"
         },
         "year": {
           "default": null,
@@ -1097,16 +1097,6 @@
           "max": null,
           "min": null
         },
-        "kind": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "literal",
-          "value": "motorcycle"
-        },
         "model": {
           "default": null,
           "deprecated": false,
@@ -1118,6 +1108,16 @@
           "format": null,
           "max": null,
           "min": null
+        },
+        "type": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "literal",
+          "value": "motorcycle"
         },
         "year": {
           "default": null,
@@ -1177,16 +1177,6 @@
           "max": null,
           "min": null
         },
-        "kind": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "literal",
-          "value": "motorcycle"
-        },
         "model": {
           "default": null,
           "deprecated": false,
@@ -1198,6 +1188,16 @@
           "format": null,
           "max": null,
           "min": null
+        },
+        "type": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "literal",
+          "value": "motorcycle"
         },
         "year": {
           "default": null,
@@ -1522,16 +1522,6 @@
           "max": null,
           "min": null
         },
-        "kind": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "literal",
-          "value": "truck"
-        },
         "model": {
           "default": null,
           "deprecated": false,
@@ -1554,6 +1544,16 @@
           "type": "decimal",
           "max": null,
           "min": null
+        },
+        "type": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "literal",
+          "value": "truck"
         },
         "year": {
           "default": null,
@@ -1601,16 +1601,6 @@
           "max": null,
           "min": null
         },
-        "kind": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "literal",
-          "value": "truck"
-        },
         "model": {
           "default": null,
           "deprecated": false,
@@ -1633,6 +1623,16 @@
           "type": "decimal",
           "max": null,
           "min": null
+        },
+        "type": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "literal",
+          "value": "truck"
         },
         "year": {
           "default": null,
@@ -1680,16 +1680,6 @@
           "max": null,
           "min": null
         },
-        "kind": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "literal",
-          "value": "truck"
-        },
         "model": {
           "default": null,
           "deprecated": false,
@@ -1713,6 +1703,16 @@
           "max": null,
           "min": null
         },
+        "type": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "literal",
+          "value": "truck"
+        },
         "year": {
           "default": null,
           "deprecated": false,
@@ -1732,7 +1732,7 @@
     "vehicle": {
       "deprecated": false,
       "description": null,
-      "discriminator": "kind",
+      "discriminator": "type",
       "example": null,
       "shape": {},
       "type": "union",
@@ -1772,7 +1772,7 @@
     "vehicle_create_payload": {
       "deprecated": false,
       "description": null,
-      "discriminator": "kind",
+      "discriminator": "type",
       "example": null,
       "shape": {},
       "type": "union",
@@ -2147,7 +2147,7 @@
     "vehicle_update_payload": {
       "deprecated": false,
       "description": null,
-      "discriminator": "kind",
+      "discriminator": "type",
       "example": null,
       "shape": {},
       "type": "union",

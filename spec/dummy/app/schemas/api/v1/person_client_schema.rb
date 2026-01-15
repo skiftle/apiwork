@@ -4,7 +4,7 @@ module Api
   module V1
     class PersonClientSchema < ClientSchema
       model PersonClient
-      variant :person
+      variant as: :person
 
       attribute :birth_date, writable: true
     end

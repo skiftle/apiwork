@@ -14,22 +14,16 @@
   },
   "response": {
     "body": {
-      "layer": "contract",
-      "issues": [
-        {
-          "code": "field_missing",
-          "detail": "Required",
-          "meta": {
-            "field": "kind"
-          },
-          "path": [
-            "vehicle",
-            "kind"
-          ],
-          "pointer": "/vehicle/kind"
-        }
-      ]
+      "vehicle": {
+        "type": "motorcycle",
+        "id": "5f50c425-905a-59fb-aed6-64946b81714e",
+        "brand": "Harley-Davidson",
+        "model": "Street Glide",
+        "year": 2023,
+        "color": "black",
+        "engineCc": null
+      }
     },
-    "status": 400
+    "status": 201
   }
 }

@@ -4,7 +4,7 @@ module Api
   module V1
     class CompanyClientSchema < ClientSchema
       model CompanyClient
-      variant :company
+      variant as: :company
 
       attribute :industry, writable: true
       attribute :registration_number, writable: true

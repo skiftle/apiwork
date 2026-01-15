@@ -2,7 +2,7 @@
 
 module MightyWolf
   class CarSchema < VehicleSchema
-    variant :car
+    variant as: :car
 
     attribute :doors, writable: true
   end

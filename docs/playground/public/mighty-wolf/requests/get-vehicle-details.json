@@ -6,7 +6,7 @@
   "response": {
     "body": {
       "vehicle": {
-        "kind": "car",
+        "type": "car",
         "id": "244334d1-b797-570d-8abf-3244124aa288",
         "brand": "Volvo",
         "model": "EX30",

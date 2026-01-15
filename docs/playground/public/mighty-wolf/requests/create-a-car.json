@@ -14,22 +14,16 @@
   },
   "response": {
     "body": {
-      "layer": "contract",
-      "issues": [
-        {
-          "code": "field_missing",
-          "detail": "Required",
-          "meta": {
-            "field": "kind"
-          },
-          "path": [
-            "vehicle",
-            "kind"
-          ],
-          "pointer": "/vehicle/kind"
-        }
-      ]
+      "vehicle": {
+        "type": "car",
+        "id": "28dc3c84-70c5-5b7c-974d-5295a40b1648",
+        "brand": "Volvo",
+        "model": "EX30",
+        "year": 2024,
+        "color": "red",
+        "doors": null
+      }
     },
-    "status": 400
+    "status": 201
   }
 }

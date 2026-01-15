@@ -407,22 +407,24 @@ module Apiwork
         # Call on the base schema to enable discriminated responses. Variant
         # schemas must call `variant` to register themselves.
         #
-        # @param name [Symbol] discriminator field name in API responses
-        # @param column [Symbol] Rails column (default: inheritance_column)
+        # @param as [Symbol] discriminator field name in API responses
+        #   (defaults to inheritance_column, usually :type)
+        # @param by [Symbol] Rails column (default: inheritance_column)
         # @return [self]
         #
         # @example Base schema with discriminated variants
         #   class ClientSchema < Apiwork::Schema::Base
-        #     discriminated! :kind
+        #     discriminated!
         #   end
         #
         #   class PersonClientSchema < ClientSchema
-        #     variant :person
+        #     variant as: :person
         #   end
-        def discriminated!(name, column: nil)
+        def discriminated!(as: nil, by: nil)
           ensure_auto_detection_complete
-          resolved_column = column || model_class.inheritance_column.to_sym
-          self._discriminator = Discriminator.new(name:, column: resolved_column)
+          resolved_column = by || model_class.inheritance_column.to_sym
+          resolved_name = as || resolved_column
+          self._discriminator = Discriminator.new(name: resolved_name, column: resolved_column)
           self
         end
 
@@ -441,17 +443,17 @@ module Apiwork
         # Responses will use the variant's attributes based on the
         # record's actual type.
         #
-        # @param tag [Symbol] discriminator tag in API responses
+        # @param as [Symbol] discriminator tag in API responses
         #   (defaults to model's sti_name)
         # @return [self]
         #
         # @example
         #   class PersonClientSchema < ClientSchema
-        #     variant :person
+        #     variant as: :person
         #   end
-        def variant(tag = nil)
+        def variant(as: nil)
           ensure_auto_detection_complete
-          resolved_tag = (tag || model_class.sti_name).to_sym
+          resolved_tag = (as || model_class.sti_name).to_sym
           self.variant_tag = resolved_tag
 
           variant = Variant.new(

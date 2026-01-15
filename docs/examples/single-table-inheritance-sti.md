@@ -112,7 +112,7 @@ GET /mighty_wolf/vehicles
 {
   "vehicles": [
     {
-      "kind": "car",
+      "type": "car",
       "id": "7900de74-233c-5bc9-bc0c-6679f7a345a5",
       "brand": "Volvo",
       "model": "EX30",
@@ -121,7 +121,7 @@ GET /mighty_wolf/vehicles
       "doors": null
     },
     {
-      "kind": "motorcycle",
+      "type": "motorcycle",
       "id": "7806556d-7175-57da-9ab8-a1d92437b144",
       "brand": "Harley-Davidson",
       "model": "Street Glide",
@@ -130,7 +130,7 @@ GET /mighty_wolf/vehicles
       "engineCc": null
     },
     {
-      "kind": "truck",
+      "type": "truck",
       "id": "0cfa971d-c697-5cff-be68-cf775df891c1",
       "brand": "Ford",
       "model": "F-150",
@@ -165,7 +165,7 @@ GET /mighty_wolf/vehicles/244334d1-b797-570d-8abf-3244124aa288
 ```json
 {
   "vehicle": {
-    "kind": "car",
+    "type": "car",
     "id": "244334d1-b797-570d-8abf-3244124aa288",
     "brand": "Volvo",
     "model": "EX30",
@@ -198,25 +198,19 @@ Content-Type: application/json
 }
 ```
 
-**Response** `400`
+**Response** `201`
 
 ```json
 {
-  "layer": "contract",
-  "issues": [
-    {
-      "code": "field_missing",
-      "detail": "Required",
-      "meta": {
-        "field": "kind"
-      },
-      "path": [
-        "vehicle",
-        "kind"
-      ],
-      "pointer": "/vehicle/kind"
-    }
-  ]
+  "vehicle": {
+    "type": "car",
+    "id": "28dc3c84-70c5-5b7c-974d-5295a40b1648",
+    "brand": "Volvo",
+    "model": "EX30",
+    "year": 2024,
+    "color": "red",
+    "doors": null
+  }
 }
 ```
 
@@ -242,25 +236,19 @@ Content-Type: application/json
 }
 ```
 
-**Response** `400`
+**Response** `201`
 
 ```json
 {
-  "layer": "contract",
-  "issues": [
-    {
-      "code": "field_missing",
-      "detail": "Required",
-      "meta": {
-        "field": "kind"
-      },
-      "path": [
-        "vehicle",
-        "kind"
-      ],
-      "pointer": "/vehicle/kind"
-    }
-  ]
+  "vehicle": {
+    "type": "motorcycle",
+    "id": "5f50c425-905a-59fb-aed6-64946b81714e",
+    "brand": "Harley-Davidson",
+    "model": "Street Glide",
+    "year": 2023,
+    "color": "black",
+    "engineCc": null
+  }
 }
 ```
 
@@ -286,25 +274,19 @@ Content-Type: application/json
 }
 ```
 
-**Response** `400`
+**Response** `201`
 
 ```json
 {
-  "layer": "contract",
-  "issues": [
-    {
-      "code": "field_missing",
-      "detail": "Required",
-      "meta": {
-        "field": "kind"
-      },
-      "path": [
-        "vehicle",
-        "kind"
-      ],
-      "pointer": "/vehicle/kind"
-    }
-  ]
+  "vehicle": {
+    "type": "truck",
+    "id": "bc709869-2a84-54ce-8bad-69ffeb2112d5",
+    "brand": "Ford",
+    "model": "F-150",
+    "year": 2024,
+    "color": "blue",
+    "payloadCapacity": null
+  }
 }
 ```
 

@@ -283,7 +283,7 @@ InvoiceSchema.deserialize(params[:invoices])
 
 ### .discriminated!
 
-`.discriminated!(name, column: nil)`
+`.discriminated!(as: nil, by: nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L426)
 
@@ -296,8 +296,8 @@ schemas must call `variant` to register themselves.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `name` | `Symbol` | discriminator field name in API responses (required) |
-| `column` | `Symbol` | database column name (defaults to Rails inheritance_column, usually :type) |
+| `as` | `Symbol` | discriminator field name in API responses (defaults to column name) |
+| `by` | `Symbol` | database column name (defaults to Rails inheritance_column, usually :type) |
 
 **Returns**
 
@@ -307,12 +307,12 @@ schemas must call `variant` to register themselves.
 
 ```ruby
 class VehicleSchema < Apiwork::Schema::Base
-  discriminated! :kind
+  discriminated!
   attribute :name
 end
 
 class CarSchema < VehicleSchema
-  variant :car
+  variant as: :car
   attribute :doors
 end
 ```
@@ -569,7 +569,7 @@ InvoiceSchema.serialize(Invoice.all)
 
 ### .variant
 
-`.variant(tag = nil)`
+`.variant(as: nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L450)
 
@@ -583,7 +583,7 @@ record's actual type.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `tag` | `Symbol` | discriminator value in API responses (defaults to model's sti_name) |
+| `as` | `Symbol` | discriminator value in API responses (defaults to model's sti_name) |
 
 **Returns**
 
@@ -593,7 +593,7 @@ record's actual type.
 
 ```ruby
 class CarSchema < VehicleSchema
-  variant :car
+  variant as: :car
   attribute :doors
 end
 ```
@@ -615,7 +615,7 @@ Returns the discriminator configuration for STI schemas.
 **Example**
 
 ```ruby
-VehicleSchema.discriminator.name      # => :kind
+VehicleSchema.discriminator.name      # => :type
 VehicleSchema.discriminator.column    # => :type
 VehicleSchema.discriminator.variants  # => { car: Variant, truck: Variant }
 ```
