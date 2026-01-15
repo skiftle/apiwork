@@ -56,7 +56,7 @@ module Apiwork
           end
         end
 
-        def build_referenced_types_and_enums(actions_data)
+        def build_referenced_types_and_enums(actions_dump)
           type_registry = @contract_class.api_class.type_registry
           enum_registry = @contract_class.api_class.enum_registry
 
@@ -65,7 +65,7 @@ module Apiwork
           dumped_types = {}
           processed_types = Set.new
 
-          collect_references(actions_data, referenced_types, referenced_enums)
+          collect_references(actions_dump, referenced_types, referenced_enums)
 
           until (pending_types = referenced_types - processed_types).empty?
             pending_types.each do |type_name|
@@ -92,20 +92,20 @@ module Apiwork
           [sorted_types, sorted_enums]
         end
 
-        def collect_references(data, types, enums)
-          case data
+        def collect_references(dump, types, enums)
+          case dump
           when Hash
-            types << data[:ref].to_sym if data[:type] == :ref && data[:ref]
+            types << dump[:ref].to_sym if dump[:type] == :ref && dump[:ref]
 
-            of_data = data[:of]
-            types << of_data[:ref].to_sym if of_data.is_a?(Hash) && of_data[:type] == :ref && of_data[:ref]
+            of_dump = dump[:of]
+            types << of_dump[:ref].to_sym if of_dump.is_a?(Hash) && of_dump[:type] == :ref && of_dump[:ref]
 
-            enum_data = data[:enum]
-            enums << enum_data if enum_data.is_a?(Symbol)
+            enum_value = dump[:enum]
+            enums << enum_value if enum_value.is_a?(Symbol)
 
-            data.each_value { |value| collect_references(value, types, enums) }
+            dump.each_value { |value| collect_references(value, types, enums) }
           when Array
-            data.each { |item| collect_references(item, types, enums) }
+            dump.each { |item| collect_references(item, types, enums) }
           end
         end
 

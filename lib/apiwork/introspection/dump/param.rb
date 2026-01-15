@@ -94,14 +94,14 @@ module Apiwork
         end
 
         def build_union_param(options)
-          union_data = build_union(options[:union])
+          union_dump = build_union(options[:union])
 
           {
             as: options[:as],
             default: options[:default],
             deprecated: options[:deprecated] == true,
             description: resolve_attribute_description(options),
-            discriminator: union_data[:discriminator],
+            discriminator: union_dump[:discriminator],
             enum: nil,
             example: options[:example],
             format: options[:format],
@@ -116,7 +116,7 @@ module Apiwork
             tag: nil,
             type: :union,
             value: nil,
-            variants: union_data[:variants],
+            variants: union_dump[:variants],
           }
         end
 

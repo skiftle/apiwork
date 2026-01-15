@@ -30,56 +30,56 @@ module Apiwork
 
     def extract_modules
       YARD::Registry.all(:class, :module)
-        .select { |obj| obj.path.start_with?('Apiwork') }
-        .select { |obj| public_api?(obj) }
-        .map { |obj| serialize_module(obj) }
+        .select { |yard_object| yard_object.path.start_with?('Apiwork') }
+        .select { |yard_object| public_api?(yard_object) }
+        .map { |yard_object| serialize_module(yard_object) }
         .reject { |mod| mod[:class_methods].empty? && mod[:instance_methods].empty? }
         .sort_by { |mod| mod[:path] }
     end
 
-    def public_api?(obj)
-      api_tag = obj.docstring.tags(:api).find { |tag| tag.text == 'public' }
+    def public_api?(yard_object)
+      api_tag = yard_object.docstring.tags(:api).find { |tag| tag.text == 'public' }
 
-      if obj.type == :method
+      if yard_object.type == :method
         return false unless api_tag
 
-        parent = obj.namespace
+        parent = yard_object.namespace
         return true unless parent
 
         parent_api_tag = parent.docstring.tags(:api).find { |tag| tag.text == 'public' }
         return api_tag.object_id != parent_api_tag&.object_id
       end
 
-      has_own_docstring = !obj.docstring.to_s.strip.empty?
+      has_own_docstring = !yard_object.docstring.to_s.strip.empty?
       return true if has_own_docstring && api_tag
 
-      return false unless obj.file
+      return false unless yard_object.file
 
-      lines = File.readlines(obj.file)
-      docstring_range = obj.docstring.line_range
+      lines = File.readlines(yard_object.file)
+      docstring_range = yard_object.docstring.line_range
 
       start_line = if docstring_range
                      docstring_range.first - 1
                    else
-                     [obj.line - 5, 0].max
+                     [yard_object.line - 5, 0].max
                    end
-      end_line = obj.line
+      end_line = yard_object.line
 
       preceding_lines = lines[start_line...end_line].join
       preceding_lines.include?('@api public')
     end
 
-    def serialize_module(obj)
+    def serialize_module(yard_object)
       {
-        class_methods: extract_methods(obj, :class),
-        docstring: obj.docstring.to_s,
-        examples: extract_examples(obj),
-        file: relative_path(obj.file),
-        instance_methods: extract_methods(obj, :instance),
-        line: obj.line,
-        name: obj.name.to_s,
-        path: obj.path,
-        type: obj.type,
+        class_methods: extract_methods(yard_object, :class),
+        docstring: yard_object.docstring.to_s,
+        examples: extract_examples(yard_object),
+        file: relative_path(yard_object.file),
+        instance_methods: extract_methods(yard_object, :instance),
+        line: yard_object.line,
+        name: yard_object.name.to_s,
+        path: yard_object.path,
+        type: yard_object.type,
       }
     end
 
@@ -89,14 +89,14 @@ module Apiwork
       file.delete_prefix("#{GEM_ROOT}/")
     end
 
-    def extract_methods(obj, scope)
-      methods = obj.meths(scope:, visibility: :public)
+    def extract_methods(yard_object, scope)
+      methods = yard_object.meths(scope:, visibility: :public)
 
-      obj.mixins(:instance).each do |mixin|
-        mixin_obj = YARD::Registry.at(mixin.path)
-        next unless mixin_obj
+      yard_object.mixins(:instance).each do |mixin|
+        mixin_yard_object = YARD::Registry.at(mixin.path)
+        next unless mixin_yard_object
 
-        methods += mixin_obj.meths(scope:, visibility: :public)
+        methods += mixin_yard_object.meths(scope:, visibility: :public)
       end
 
       methods
@@ -279,10 +279,10 @@ module Apiwork
 
     def build_linkable_types
       YARD::Registry.all(:class, :module)
-        .select { |obj| obj.path.start_with?('Apiwork') }
-        .select { |obj| public_api?(obj) }
-        .flat_map do |obj|
-          path = obj.path.delete_prefix('Apiwork::')
+        .select { |yard_object| yard_object.path.start_with?('Apiwork') }
+        .select { |yard_object| public_api?(yard_object) }
+        .flat_map do |yard_object|
+          path = yard_object.path.delete_prefix('Apiwork::')
           parts = path.split('::')
           Array.new(parts.size) { |i| parts[i..].join('::') }
         end
@@ -302,10 +302,10 @@ module Apiwork
     def build_type_path_lookup
       lookup = {}
       YARD::Registry.all(:class, :module)
-        .select { |obj| obj.path.start_with?('Apiwork') }
-        .select { |obj| public_api?(obj) }
-        .each do |obj|
-          full_path = obj.path.delete_prefix('Apiwork::')
+        .select { |yard_object| yard_object.path.start_with?('Apiwork') }
+        .select { |yard_object| public_api?(yard_object) }
+        .each do |yard_object|
+          full_path = yard_object.path.delete_prefix('Apiwork::')
           parts = full_path.split('::')
 
           parts.size.times do |index|

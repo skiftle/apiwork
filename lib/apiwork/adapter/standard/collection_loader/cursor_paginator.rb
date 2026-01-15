@@ -34,11 +34,11 @@ module Apiwork
             pk_column = table[primary_key]
 
             if @params[:after]
-              cursor_data = decode_cursor(@params[:after])
-              @relation.where(pk_column.gt(cursor_data[primary_key])).order(pk_column.asc).limit(page_size + 1).to_a
+              decoded_cursor = decode_cursor(@params[:after])
+              @relation.where(pk_column.gt(decoded_cursor[primary_key])).order(pk_column.asc).limit(page_size + 1).to_a
             elsif @params[:before]
-              cursor_data = decode_cursor(@params[:before])
-              records = @relation.where(pk_column.lt(cursor_data[primary_key])).order(pk_column.desc).limit(page_size + 1).to_a
+              decoded_cursor = decode_cursor(@params[:before])
+              records = @relation.where(pk_column.lt(decoded_cursor[primary_key])).order(pk_column.desc).limit(page_size + 1).to_a
               records.reverse
             else
               @relation.order(pk_column.asc).limit(page_size + 1).to_a

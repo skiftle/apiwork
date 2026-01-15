@@ -13,13 +13,13 @@ module Apiwork
       end
 
       def parse(query, body)
-        query_data, query_issues = parse_part(query, :query)
-        body_data, body_issues = parse_part(body, :body)
+        parsed_query, query_issues = parse_part(query, :query)
+        parsed_body, body_issues = parse_part(body, :body)
 
         RequestResult.new(
-          body: body_data,
+          body: parsed_body,
           issues: query_issues + body_issues,
-          query: query_data,
+          query: parsed_query,
         )
       end
 
@@ -30,8 +30,8 @@ module Apiwork
         return [{}, []] if shape.nil? && data.blank?
         return [data, []] unless shape
 
-        coerced_data = @coerce ? coerce(data, shape) : data
-        validated = validate(coerced_data, shape)
+        coerced = @coerce ? coerce(data, shape) : data
+        validated = validate(coerced, shape)
 
         return [{}, validated[:issues]] if validated[:issues].any?
 

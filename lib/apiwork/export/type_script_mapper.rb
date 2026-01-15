@@ -88,17 +88,17 @@ module Apiwork
         "export interface #{type_name} {\n#{properties}\n}"
       end
 
-      def build_action_request_type(resource_name, action_name, request_data, parent_identifiers: [])
+      def build_action_request_type(resource_name, action_name, request, parent_identifiers: [])
         type_name = action_type_name(resource_name, action_name, 'Request', parent_identifiers:)
 
         nested_properties = []
 
-        if request_data[:query]&.any?
+        if request[:query]&.any?
           query_type_name = action_type_name(resource_name, action_name, 'RequestQuery', parent_identifiers:)
           nested_properties << "  query: #{query_type_name};"
         end
 
-        if request_data[:body]&.any?
+        if request[:body]&.any?
           body_type_name = action_type_name(resource_name, action_name, 'RequestBody', parent_identifiers:)
           nested_properties << "  body: #{body_type_name};"
         end
@@ -112,7 +112,7 @@ module Apiwork
         "export type #{type_name} = #{ts_type};"
       end
 
-      def build_action_response_type(resource_name, action_name, response_data, parent_identifiers: [])
+      def build_action_response_type(resource_name, action_name, response, parent_identifiers: [])
         type_name = action_type_name(resource_name, action_name, 'Response', parent_identifiers:)
         body_type_name = action_type_name(resource_name, action_name, 'ResponseBody', parent_identifiers:)
         "export interface #{type_name} {\n  body: #{body_type_name};\n}"

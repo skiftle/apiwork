@@ -11,15 +11,15 @@ module Apiwork
 
         def to_h
           resources = build_resources
-          type_data = @type_dump.to_h
+          type_dump_hash = @type_dump.to_h
 
           {
             resources:,
-            enums: type_data[:enums],
+            enums: type_dump_hash[:enums],
             error_codes: build_error_codes(collect_all_error_code_keys(resources)),
             info: build_info,
             path: @api_class.path,
-            types: type_data[:types],
+            types: type_dump_hash[:types],
           }
         end
 
