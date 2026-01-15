@@ -126,10 +126,7 @@ module Apiwork
                       map_param(param)
                     end
 
-        if param.nullable?
-          members = [base_type, 'null'].sort
-          base_type = members.join(' | ')
-        end
+        base_type = [base_type, 'null'].sort.join(' | ') if param.nullable?
 
         base_type
       end
@@ -185,10 +182,7 @@ module Apiwork
       end
 
       def map_union_type(param)
-        variants = param.variants.map do |variant|
-          map_param(variant)
-        end
-        variants.sort.join(' | ')
+        param.variants.map { |variant| map_param(variant) }.sort.join(' | ')
       end
 
       def map_literal_type(param)

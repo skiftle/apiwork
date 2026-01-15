@@ -220,16 +220,10 @@ module Apiwork
 
         contract = merged.delete(:contract)
 
-        contract_class_name = if contract
-                                contract_path_to_class_name(contract)
-                              else
-                                infer_contract_class_name(name)
-                              end
-
         resource = Resource.new(
           name:,
           singular:,
-          contract_class_name:,
+          contract_class_name: contract ? contract_path_to_class_name(contract) : infer_contract_class_name(name),
           parent: parent_name,
           **merged,
         )
@@ -280,8 +274,7 @@ module Apiwork
       end
 
       def infer_contract_class_name(name)
-        contract_name = name.to_s.singularize.camelize
-        [*@namespaces.map { |namespace| namespace.to_s.camelize }, "#{contract_name}Contract"].join('::')
+        [*@namespaces.map { |namespace| namespace.to_s.camelize }, "#{name.to_s.singularize.camelize}Contract"].join('::')
       end
 
       def contract_path_to_class_name(path)

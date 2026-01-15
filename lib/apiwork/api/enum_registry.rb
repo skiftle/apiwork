@@ -54,8 +54,7 @@ module Apiwork
       end
 
       def find(name, scope: nil)
-        definition = scope ? @store[scoped_name(scope, name)] : nil
-        definition || @store[name]
+        (scope ? @store[scoped_name(scope, name)] : nil) || @store[name]
       end
 
       def values(name, scope: nil)
@@ -87,8 +86,7 @@ module Apiwork
         example:,
         values:
       )
-        existing = @store[key]
-        @store[key] = existing.merge(
+        @store[key] = @store[key].merge(
           deprecated:,
           description:,
           example:,
