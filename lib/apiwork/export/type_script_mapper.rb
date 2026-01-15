@@ -108,8 +108,7 @@ module Apiwork
 
       def build_action_response_body_type(resource_name, action_name, response_body_definition, parent_identifiers: [])
         type_name = action_type_name(resource_name, action_name, 'ResponseBody', parent_identifiers:)
-        ts_type = map_param(response_body_definition)
-        "export type #{type_name} = #{ts_type};"
+        "export type #{type_name} = #{map_param(response_body_definition)};"
       end
 
       def build_action_response_type(resource_name, action_name, response, parent_identifiers: [])
@@ -120,8 +119,7 @@ module Apiwork
 
       def action_type_name(resource_name, action_name, suffix, parent_identifiers: [])
         base_parts = parent_identifiers + [resource_name.to_s, action_name.to_s]
-        base_name = pascal_case(base_parts.join('_'))
-        "#{base_name}#{suffix.camelize}"
+        "#{pascal_case(base_parts.join('_'))}#{suffix.camelize}"
       end
 
       def map_field(param)

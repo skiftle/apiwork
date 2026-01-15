@@ -38,8 +38,7 @@ module Apiwork
             end
           end
 
-          elapsed = Time.zone.now - start_time
-          Rails.logger.debug "\nGenerated #{count} file#{count == 1 ? '' : 's'} in #{elapsed.round(2)}s"
+          Rails.logger.debug "\nGenerated #{count} file#{count == 1 ? '' : 's'} in #{(Time.zone.now - start_time).round(2)}s"
 
           count
         end
