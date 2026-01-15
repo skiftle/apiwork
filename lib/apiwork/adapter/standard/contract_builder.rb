@@ -746,28 +746,28 @@ module Apiwork
 
             local_schema_class.associations.each do |name, association|
               association_type = association_type_map[name]
-              is_optional = association.include != :always
+              optional = association.include != :always
 
               if association_type
                 if association.singular?
                   param name,
+                        optional:,
                         nullable: association.nullable?,
-                        optional: is_optional,
                         type: association_type
                 elsif association.collection?
                   param name,
+                        optional:,
                         nullable: association.nullable?,
                         of: association_type,
-                        optional: is_optional,
                         type: :array
                 end
               elsif association.singular?
-                param name, nullable: association.nullable?, optional: is_optional, type: :object
+                param name, optional:, nullable: association.nullable?, type: :object
               elsif association.collection?
                 param name,
+                      optional:,
                       nullable: association.nullable?,
                       of: :object,
-                      optional: is_optional,
                       type: :array
               end
             end
