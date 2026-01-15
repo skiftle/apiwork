@@ -124,8 +124,7 @@ module Apiwork
       end
 
       def operation_id(resource, action_name)
-        parts = resource.parent_identifiers + [resource.identifier, action_name.to_s]
-        joined = parts.join('_')
+        joined = (resource.parent_identifiers + [resource.identifier, action_name.to_s]).join('_')
 
         if key_format == :keep
           joined
@@ -455,8 +454,7 @@ module Apiwork
           tag = variant.tag
           next unless tag
 
-          transformed_tag = transform_key(tag.to_s)
-          mapping[transformed_tag] = "#/components/schemas/#{schema_name(variant.ref)}" if variant.ref? && type_exists?(variant.ref)
+          mapping[transform_key(tag.to_s)] = "#/components/schemas/#{schema_name(variant.ref)}" if variant.ref? && type_exists?(variant.ref)
         end
 
         result = { oneOf: one_of_schemas }

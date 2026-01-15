@@ -65,19 +65,19 @@ module Apiwork
 
       def build_type_schemas
         types_hash = surface.types.transform_values(&:to_h)
-        sorted_type_names = TypeAnalysis.topological_sort_types(types_hash).map(&:first)
 
-        schemas = sorted_type_names.map do |type_name|
+        TypeAnalysis.topological_sort_types(types_hash).map(&:first).map do |type_name|
           type = surface.types[type_name]
           if type.union?
             zod_mapper.build_union_schema(type_name, type)
           else
-            recursive = TypeAnalysis.circular_reference?(type_name, types_hash[type_name], filter: :custom_only)
-            zod_mapper.build_object_schema(type_name, type, recursive:)
+            zod_mapper.build_object_schema(
+              type_name,
+              type,
+              recursive: TypeAnalysis.circular_reference?(type_name, types_hash[type_name], filter: :custom_only),
+            )
           end
-        end
-
-        schemas.join("\n\n")
+        end.join("\n\n")
       end
 
       def build_action_schemas
@@ -116,8 +116,7 @@ module Apiwork
 
             response = action.response
             if response&.no_content?
-              type_name = zod_mapper.action_type_name(resource_name, action_name, 'Response', parent_identifiers:)
-              schemas << "export const #{type_name} = z.never();"
+              schemas << "export const #{zod_mapper.action_type_name(resource_name, action_name, 'Response', parent_identifiers:)} = z.never();"
             elsif response&.body?
               schemas << zod_mapper.build_action_response_body_schema(resource_name, action_name, response.body, parent_identifiers:)
               schemas << zod_mapper.build_action_response_schema(resource_name, action_name, { body: response.body }, parent_identifiers:)
@@ -133,17 +132,14 @@ module Apiwork
 
         surface.enums.each do |name, enum|
           type_name = typescript_mapper.pascal_case(name)
-          type_literal = enum.values.sort.map { |value| "'#{value}'" }.join(' | ')
-          all_types << { code: "export type #{type_name} = #{type_literal};", name: type_name }
+          all_types << { code: "export type #{type_name} = #{enum.values.sort.map { |value| "'#{value}'" }.join(' | ')};", name: type_name }
         end
 
         surface.types.each do |name, type|
-          code = if type.union?
-                   typescript_mapper.build_union_type(name, type)
-                 else
-                   typescript_mapper.build_interface(name, type)
-                 end
-          all_types << { code:, name: typescript_mapper.pascal_case(name) }
+          all_types << {
+            code: type.union? ? typescript_mapper.build_union_type(name, type) : typescript_mapper.build_interface(name, type),
+            name: typescript_mapper.pascal_case(name),
+          }
         end
 
         traverse_resources do |resource|
