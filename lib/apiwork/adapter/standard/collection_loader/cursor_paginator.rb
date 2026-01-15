@@ -34,11 +34,9 @@ module Apiwork
             pk_column = table[primary_key]
 
             if @params[:after]
-              decoded_cursor = decode_cursor(@params[:after])
-              @relation.where(pk_column.gt(decoded_cursor[primary_key])).order(pk_column.asc).limit(page_size + 1).to_a
+              @relation.where(pk_column.gt(decode_cursor(@params[:after])[primary_key])).order(pk_column.asc).limit(page_size + 1).to_a
             elsif @params[:before]
-              decoded_cursor = decode_cursor(@params[:before])
-              records = @relation.where(pk_column.lt(decoded_cursor[primary_key])).order(pk_column.desc).limit(page_size + 1).to_a
+              records = @relation.where(pk_column.lt(decode_cursor(@params[:before])[primary_key])).order(pk_column.desc).limit(page_size + 1).to_a
               records.reverse
             else
               @relation.order(pk_column.asc).limit(page_size + 1).to_a

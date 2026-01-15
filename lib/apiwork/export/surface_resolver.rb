@@ -76,8 +76,7 @@ module Apiwork
             type = @data.types[type_name]
             next unless type
 
-            reference_names = collect_reference_names_from_type(type)
-            reference_names.each do |reference_name|
+            collect_reference_names_from_type(type).each do |reference_name|
               next unless @data.types.key?(reference_name)
               next if type_names.include?(reference_name)
 
