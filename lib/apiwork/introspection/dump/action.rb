@@ -27,10 +27,13 @@ module Apiwork
           contract_class = @contract_action.contract_class
           return nil unless contract_class.name
 
-          contract_name = contract_class.name.demodulize.delete_suffix('Contract').underscore
-          action_name = @contract_action.name
-
-          contract_class.api_class.translate(:contracts, contract_name, :actions, action_name, field)
+          contract_class.api_class.translate(
+            :contracts,
+            contract_class.name.demodulize.delete_suffix('Contract').underscore,
+            :actions,
+            @contract_action.name,
+            field,
+          )
         end
 
         def build_request(request)
@@ -53,9 +56,7 @@ module Apiwork
           body_shape = response.body
           return { body: {}, no_content: false } unless body_shape
 
-          result_wrapper = response.result_wrapper
-          dumped = Param.new(body_shape, result_wrapper:).to_h
-          { body: dumped, no_content: false }
+          { body: Param.new(body_shape, result_wrapper: response.result_wrapper).to_h, no_content: false }
         end
 
         def raises

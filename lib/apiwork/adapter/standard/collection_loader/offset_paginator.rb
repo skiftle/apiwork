@@ -18,12 +18,11 @@ module Apiwork
           def paginate
             page_number = @params.fetch(:number, 1).to_i
             limit = resolve_limit
-            offset = (page_number - 1) * limit
 
-            metadata = build_metadata(page_number, limit)
-            paginated_relation = @relation.limit(limit).offset(offset)
-
-            [paginated_relation, metadata]
+            [
+              @relation.limit(limit).offset((page_number - 1) * limit),
+              build_metadata(page_number, limit),
+            ]
           end
 
           private

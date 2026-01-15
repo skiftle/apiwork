@@ -20,9 +20,11 @@ module Apiwork
         end
 
         def issues
-          locale_key = @schema_class.api_class.structure.locale_key
-          root_path = [@schema_class.root_key.singular.to_sym]
-          IssueMapper.call(@record, locale_key:, root_path:)
+          IssueMapper.call(
+            @record,
+            locale_key: @schema_class.api_class.structure.locale_key,
+            root_path: [@schema_class.root_key.singular.to_sym],
+          )
         end
       end
     end
