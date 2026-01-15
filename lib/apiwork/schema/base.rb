@@ -50,11 +50,17 @@ module Apiwork
       #   @return [Hash{Symbol => Association}] defined associations
       class_attribute :associations, default: {}, instance_accessor: false
 
-      # @api public
-      # @return [Union, nil] the union configuration
+      # @!method union
+      #   @!scope class
+      #   @api public
+      #   @return [Schema::Union, nil] the union configuration
       class_attribute :union, default: nil, instance_accessor: false
 
-      class_attribute :variant_tag, default: nil, instance_accessor: false
+      # @!method tag
+      #   @!scope class
+      #   @api public
+      #   @return [Symbol, nil] the variant's tag, or nil if not a variant
+      class_attribute :tag, default: nil, instance_accessor: false
       class_attribute :_root, default: nil, instance_accessor: false
       class_attribute :_adapter_config, default: {}, instance_accessor: false
       class_attribute :_description, default: nil, instance_accessor: false
@@ -448,7 +454,7 @@ module Apiwork
         def variant(as: nil)
           ensure_auto_detection_complete
           resolved_tag = (as || model_class.sti_name).to_sym
-          self.variant_tag = resolved_tag
+          self.tag = resolved_tag
 
           variant = Union::Variant.new(
             schema_class: self,
@@ -617,7 +623,7 @@ module Apiwork
         end
 
         def variant?
-          variant_tag.present?
+          tag.present?
         end
 
         def resolve_variant(record)
@@ -741,7 +747,7 @@ module Apiwork
         return unless parent_schema.union
 
         discriminator_name = parent_schema.union.discriminator
-        variant_tag = self.class.variant_tag
+        variant_tag = self.class.tag
 
         fields[discriminator_name] = variant_tag.to_s
       end

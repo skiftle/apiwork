@@ -1,5 +1,5 @@
 ---
-order: 64
+order: 65
 prev: false
 next: false
 ---
@@ -16,10 +16,10 @@ Used by adapters to serialize records based on their actual type.
 **Example**
 
 ```ruby
-variant = VehicleSchema.union.variants[:car]
-variant.tag           # => :car
-variant.type          # => "Car"
-variant.schema_class  # => CarSchema
+variant = ClientSchema.union.variants[:person]
+variant.tag           # => :person
+variant.type          # => "PersonClient"
+variant.schema_class  # => PersonClientSchema
 ```
 
 ## Instance Methods
@@ -32,7 +32,7 @@ variant.schema_class  # => CarSchema
 
 **Returns**
 
-[Schema::Base](schema-base) — the schema class for this variant
+`Class` — the schema class for this variant
 
 ---
 

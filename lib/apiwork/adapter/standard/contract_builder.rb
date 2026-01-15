@@ -721,7 +721,7 @@ module Apiwork
             if local_schema_class.variant?
               parent_schema = local_schema_class.superclass
               discriminator_name = parent_schema.union.discriminator
-              variant_tag = local_schema_class.variant_tag.to_s
+              variant_tag = local_schema_class.tag.to_s
 
               literal discriminator_name, value: variant_tag
             end

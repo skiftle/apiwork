@@ -73,7 +73,7 @@ Returns whether this schema is abstract.
 
 `.adapter(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L145)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L148)
 
 Configures adapter options for this schema.
 
@@ -115,7 +115,7 @@ Hash{Symbol =&gt; [Association](schema-association)} — defined associations
 
 `.attribute(name, decode: nil, deprecated: false, description: nil, empty: nil, encode: nil, enum: nil, example: nil, filterable: nil, format: nil, max: nil, min: nil, nullable: nil, optional: nil, sortable: nil, type: nil, writable: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L188)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L191)
 
 Defines an attribute for serialization and API contracts.
 
@@ -166,7 +166,7 @@ Hash{Symbol =&gt; [Attribute](schema-attribute)} — defined attributes
 
 `.belongs_to(name, class_name: nil, deprecated: false, description: nil, example: nil, filterable: false, include: :optional, nullable: nil, optional: nil, polymorphic: nil, schema: nil, sortable: false, writable: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L370)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L373)
 
 Defines a belongs_to association for serialization and contracts.
 
@@ -197,7 +197,7 @@ belongs_to :category, filterable: true
 
 `.deprecated!`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L490)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L499)
 
 Marks this schema as deprecated.
 
@@ -218,7 +218,7 @@ end
 
 `.description(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L474)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L483)
 
 Sets or gets a description for this schema.
 
@@ -249,7 +249,7 @@ end
 
 `.deserialize(hash_or_array)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L554)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L563)
 
 Deserializes a hash or an array of hashes using this schema's decode transformers.
 
@@ -285,9 +285,9 @@ InvoiceSchema.deserialize(params[:invoices])
 
 `.discriminated!(as: nil, by: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L426)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L428)
 
-Enables STI (Single Table Inheritance) polymorphism for this schema.
+Declares this schema as discriminated (polymorphic).
 
 Call on the base schema to enable discriminated responses. Variant
 schemas must call `variant` to register themselves.
@@ -296,24 +296,22 @@ schemas must call `variant` to register themselves.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `as` | `Symbol` | discriminator field name in API responses (defaults to column name) |
-| `by` | `Symbol` | database column name (defaults to Rails inheritance_column, usually :type) |
+| `as` | `Symbol` | discriminator field name in API responses (defaults to inheritance_column, usually :type) |
+| `by` | `Symbol` | Rails column (default: inheritance_column) |
 
 **Returns**
 
 `self`
 
-**Example: Base schema with STI**
+**Example: Base schema with discriminated variants**
 
 ```ruby
-class VehicleSchema < Apiwork::Schema::Base
+class ClientSchema < Apiwork::Schema::Base
   discriminated!
-  attribute :name
 end
 
-class CarSchema < VehicleSchema
-  variant as: :car
-  attribute :doors
+class PersonClientSchema < ClientSchema
+  variant as: :person
 end
 ```
 
@@ -323,7 +321,7 @@ end
 
 `.example(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L506)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L515)
 
 Sets or gets an example value for this schema.
 
@@ -353,7 +351,7 @@ end
 
 `.has_many(name, allow_destroy: false, class_name: nil, deprecated: false, description: nil, example: nil, filterable: false, include: :optional, nullable: nil, optional: nil, polymorphic: nil, schema: nil, sortable: false, writable: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L318)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L321)
 
 Defines a has_many association for serialization and contracts.
 
@@ -390,7 +388,7 @@ has_many :tags, include: :always
 
 `.has_one(name, class_name: nil, deprecated: false, description: nil, example: nil, filterable: false, include: :optional, nullable: nil, optional: nil, polymorphic: nil, schema: nil, sortable: false, writable: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L264)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L267)
 
 Defines a has_one association for serialization and contracts.
 
@@ -434,7 +432,7 @@ has_one :imageable, polymorphic: [:product, :user]
 
 `.model(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L97)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L100)
 
 The model class.
 
@@ -473,7 +471,7 @@ end
 
 `.root(singular, plural = singular.to_s.pluralize)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L123)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L126)
 
 Declares the JSON root key for this schema.
 
@@ -500,7 +498,7 @@ end
 
 `.root_key`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L575)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L584)
 
 The root key for JSON responses.
 
@@ -528,7 +526,7 @@ InvoiceSchema.root_key.plural    # => "invoices"
 
 `.serialize(record_or_collection, context: {}, include: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L531)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L540)
 
 Serializes a record or a collection of records using this schema.
 
@@ -567,13 +565,37 @@ InvoiceSchema.serialize(Invoice.all)
 
 ---
 
+### .tag
+
+`.tag`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L63)
+
+**Returns**
+
+`Symbol`, `nil` — the variant's tag, or nil if not a variant
+
+---
+
+### .union
+
+`.union`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L57)
+
+**Returns**
+
+[Schema::Union](schema-union), `nil` — the union configuration
+
+---
+
 ### .variant
 
 `.variant(as: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L450)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L454)
 
-Registers this schema as an STI variant of its parent.
+Registers this schema as a variant of its parent.
 
 The parent schema must have called `discriminated!` first.
 Responses will use the variant's attributes based on the
@@ -583,7 +605,7 @@ record's actual type.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `as` | `Symbol` | discriminator value in API responses (defaults to model's sti_name) |
+| `as` | `Symbol` | discriminator tag in API responses (defaults to model's sti_name) |
 
 **Returns**
 
@@ -592,61 +614,10 @@ record's actual type.
 **Example**
 
 ```ruby
-class CarSchema < VehicleSchema
-  variant as: :car
-  attribute :doors
+class PersonClientSchema < ClientSchema
+  variant as: :person
 end
 ```
-
----
-
-### .union
-
-`.union`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L56)
-
-Returns the union configuration for STI schemas.
-
-**Returns**
-
-`Union`, `nil` — the union or nil if not an STI schema
-
-**Example**
-
-```ruby
-VehicleSchema.union.discriminator  # => :type
-VehicleSchema.union.column         # => :type
-VehicleSchema.union.variants       # => { car: Variant, truck: Variant }
-```
-
----
-
-### .discriminated?
-
-`.discriminated?`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L56)
-
-Returns whether this schema is a discriminated STI base with registered variants.
-
-**Returns**
-
-`Boolean` — true if discriminated with variants
-
----
-
-### .variant?
-
-`.variant?`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L56)
-
-Returns whether this schema is an STI variant.
-
-**Returns**
-
-`Boolean` — true if this is a variant schema
 
 ---
 
@@ -656,7 +627,7 @@ Returns whether this schema is an STI variant.
 
 `#context`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L69)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L72)
 
 **Returns**
 
@@ -668,7 +639,7 @@ Returns whether this schema is an STI variant.
 
 `#record`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L73)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L76)
 
 **Returns**
 
