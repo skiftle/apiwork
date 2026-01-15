@@ -141,13 +141,13 @@ module Apiwork
 
         case type
         when :object
-          builder = Object.new
-          builder.instance_eval(&block)
-          builder
+          shape = Object.new
+          shape.instance_eval(&block)
+          shape
         when :union
-          builder = Union.new(discriminator:)
-          builder.instance_eval(&block)
-          builder
+          shape = Union.new(discriminator:)
+          shape.instance_eval(&block)
+          shape
         end
       end
     end

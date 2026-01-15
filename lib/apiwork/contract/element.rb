@@ -61,10 +61,10 @@ module Apiwork
             @shape = shape
             @defined = true
           elsif block
-            builder = Object.new(@contract_class)
-            builder.instance_eval(&block)
+            shape = Object.new(@contract_class)
+            shape.instance_eval(&block)
             @type = :object
-            @shape = builder
+            @shape = shape
             @defined = true
           else
             raise ArgumentError, 'object requires a block or shape'
@@ -92,10 +92,10 @@ module Apiwork
             @discriminator = discriminator
             @defined = true
           elsif block
-            builder = Union.new(@contract_class, discriminator:)
-            builder.instance_eval(&block)
+            shape = Union.new(@contract_class, discriminator:)
+            shape.instance_eval(&block)
             @type = :union
-            @shape = builder
+            @shape = shape
             @discriminator = discriminator
             @defined = true
           else
