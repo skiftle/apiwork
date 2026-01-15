@@ -4,19 +4,20 @@ prev: false
 next: false
 ---
 
-# Schema::Variant
+# Schema::Union::Variant
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/variant.rb#L15)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/union/variant.rb#L17)
 
-Represents a variant in a discriminated union.
+Represents a variant in a discriminated union schema.
 
-Variants map discriminator values to their schema classes.
+Variants map discriminator tags to their schema classes.
 Used by adapters to serialize records based on their actual type.
 
 **Example**
 
 ```ruby
-variant = VehicleSchema.variants[:car]
+variant = VehicleSchema.union.variants[:car]
+variant.tag           # => :car
 variant.type          # => "Car"
 variant.schema_class  # => CarSchema
 ```
@@ -27,7 +28,7 @@ variant.schema_class  # => CarSchema
 
 `#schema_class`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/variant.rb#L18)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/union/variant.rb#L20)
 
 **Returns**
 
@@ -35,14 +36,26 @@ variant.schema_class  # => CarSchema
 
 ---
 
+### #tag
+
+`#tag`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/union/variant.rb#L24)
+
+**Returns**
+
+`Symbol` — the discriminator tag
+
+---
+
 ### #type
 
 `#type`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/variant.rb#L22)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/union/variant.rb#L28)
 
 **Returns**
 
-`String` — the discriminator value
+`String` — the Rails STI type
 
 ---

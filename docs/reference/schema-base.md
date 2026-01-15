@@ -600,24 +600,24 @@ end
 
 ---
 
-### .discriminator
+### .union
 
-`.discriminator`
+`.union`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L56)
 
-Returns the discriminator configuration for STI schemas.
+Returns the union configuration for STI schemas.
 
 **Returns**
 
-`Discriminator`, `nil` — the discriminator or nil if not an STI schema
+`Union`, `nil` — the union or nil if not an STI schema
 
 **Example**
 
 ```ruby
-VehicleSchema.discriminator.name      # => :type
-VehicleSchema.discriminator.column    # => :type
-VehicleSchema.discriminator.variants  # => { car: Variant, truck: Variant }
+VehicleSchema.union.discriminator  # => :type
+VehicleSchema.union.column         # => :type
+VehicleSchema.union.variants       # => { car: Variant, truck: Variant }
 ```
 
 ---

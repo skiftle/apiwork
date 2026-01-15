@@ -50,10 +50,9 @@ module Apiwork
       #   @return [Hash{Symbol => Association}] defined associations
       class_attribute :associations, default: {}, instance_accessor: false
 
-      # @!method self.discriminator
-      #   @api public
-      #   @return [Discriminator, nil] the discriminator configuration
-      class_attribute :_discriminator, default: nil, instance_accessor: false
+      # @api public
+      # @return [Union, nil] the union configuration
+      class_attribute :union, default: nil, instance_accessor: false
 
       class_attribute :variant_tag, default: nil, instance_accessor: false
       class_attribute :_root, default: nil, instance_accessor: false
@@ -422,18 +421,13 @@ module Apiwork
         #   end
         def discriminated!(as: nil, by: nil)
           ensure_auto_detection_complete
-          resolved_column = by || model_class.inheritance_column.to_sym
-          resolved_name = as || resolved_column
-          self._discriminator = Discriminator.new(name: resolved_name, column: resolved_column)
-          self
-        end
 
-        # @api public
-        # Returns the discriminator configuration.
-        #
-        # @return [Discriminator, nil]
-        def discriminator
-          _discriminator
+          self.union = Union.new(
+            column: by || model_class.inheritance_column.to_sym,
+            discriminator: as || resolved_column,
+          )
+
+          self
         end
 
         # @api public
@@ -456,12 +450,12 @@ module Apiwork
           resolved_tag = (as || model_class.sti_name).to_sym
           self.variant_tag = resolved_tag
 
-          variant = Variant.new(
+          variant = Union::Variant.new(
             schema_class: self,
             tag: resolved_tag,
             type: model_class.sti_name,
           )
-          superclass.discriminator.register(variant)
+          superclass.union.register(variant)
           superclass._abstract = true
 
           self
@@ -619,7 +613,7 @@ module Apiwork
         end
 
         def discriminated?
-          _discriminator.present? && !variant? && _discriminator.variants.any?
+          union.present? && !variant? && union.variants.any?
         end
 
         def variant?
@@ -627,9 +621,9 @@ module Apiwork
         end
 
         def resolve_variant(record)
-          return nil unless _discriminator
+          return nil unless union
 
-          _discriminator.resolve(record)&.schema_class
+          union.resolve(record)&.schema_class
         end
 
         def deprecated?
@@ -744,9 +738,9 @@ module Apiwork
 
       def add_discriminator_field(fields)
         parent_schema = self.class.superclass
-        return unless parent_schema.discriminator
+        return unless parent_schema.union
 
-        discriminator_name = parent_schema.discriminator.name
+        discriminator_name = parent_schema.union.discriminator
         variant_tag = self.class.variant_tag
 
         fields[discriminator_name] = variant_tag.to_s

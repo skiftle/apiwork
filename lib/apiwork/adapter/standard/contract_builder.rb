@@ -291,11 +291,11 @@ module Apiwork
 
         def sti_request_union(action_name)
           union_type_name = :"#{action_name}_payload"
-          discriminator = schema_class.discriminator
-          discriminator_name = discriminator.name
-          discriminator_column = discriminator.column
+          union = schema_class.union
+          discriminator_name = union.discriminator
+          discriminator_column = union.column
           builder = self
-          needs_transform = discriminator.needs_transform?
+          needs_transform = union.needs_transform?
 
           build_sti_union(union_type_name: union_type_name) do |variant_schema_class, tag, _visited|
             variant_name = variant_schema_class.name.demodulize.delete_suffix('Schema').underscore
@@ -305,7 +305,7 @@ module Apiwork
               registrar.api_registrar.object(variant_type_name) do
                 as_column = discriminator_name != discriminator_column ? discriminator_column : nil
                 discriminator_optional = action_name == :update
-                variant = discriminator.variants[tag.to_sym]
+                variant = union.variants[tag.to_sym]
                 store_value = needs_transform && variant ? variant.type : nil
 
                 literal discriminator_name, as: as_column, optional: discriminator_optional, store: store_value, value: tag.to_s
@@ -720,7 +720,7 @@ module Apiwork
           registrar.object(root_key, schema_class: local_schema_class) do
             if local_schema_class.variant?
               parent_schema = local_schema_class.superclass
-              discriminator_name = parent_schema.discriminator.name
+              discriminator_name = parent_schema.union.discriminator
               variant_tag = local_schema_class.variant_tag.to_s
 
               literal discriminator_name, value: variant_tag
@@ -821,12 +821,12 @@ module Apiwork
         end
 
         def build_sti_union(union_type_name:, visited: Set.new)
-          discriminator = schema_class.discriminator
-          return nil unless discriminator&.variants&.any?
+          schema_union = schema_class.union
+          return nil unless schema_union&.variants&.any?
 
-          discriminator_name = discriminator.name
+          discriminator_name = schema_union.discriminator
 
-          variant_types = discriminator.variants.filter_map do |tag, variant|
+          variant_types = schema_union.variants.filter_map do |tag, variant|
             variant_schema_class = variant.schema_class
             variant_type = yield(variant_schema_class, tag, visited)
             { tag: tag.to_s, type: variant_type } if variant_type
@@ -852,7 +852,7 @@ module Apiwork
 
         def build_sti_response_union_type(visited: Set.new)
           union_type_name = schema_class.root_key.singular.to_sym
-          discriminator_name = schema_class.discriminator.name
+          discriminator_name = schema_class.union.discriminator
           builder = self
 
           build_sti_union(union_type_name:, visited: visited) do |variant_schema_class, tag, _visit_set|
@@ -938,7 +938,7 @@ module Apiwork
         def sti_base_schema?
           return false unless schema_class.discriminated?
 
-          schema_class.discriminator&.variants&.any?
+          schema_class.union&.variants&.any?
         end
 
         def resolve_association_resource(association)

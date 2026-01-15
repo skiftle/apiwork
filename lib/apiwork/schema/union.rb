@@ -3,22 +3,21 @@
 module Apiwork
   module Schema
     # @api public
-    # Configuration for discriminated (polymorphic) schemas.
+    # Configuration for discriminated union schemas.
     #
     # Holds the discriminator field name, Rails column, and registered variants.
     # Used by adapters to serialize records based on their actual type.
     #
     # @example
-    #   ClientSchema.discriminator.name     # => :kind
-    #   ClientSchema.discriminator.column   # => :type
-    #   ClientSchema.discriminator.variants # => {person: Variant, company: Variant}
+    #   ClientSchema.union.discriminator # => :kind
+    #   ClientSchema.union.column        # => :type
+    #   ClientSchema.union.variants      # => {person: Union::Variant, company: Union::Variant}
     #
     # @see Schema::Base.discriminated!
-    # @see Variant
-    class Discriminator
+    class Union
       # @api public
       # @return [Symbol] JSON field name for the discriminator
-      attr_reader :name
+      attr_reader :discriminator
 
       # @api public
       # @return [Symbol] Rails column name (typically :type)
@@ -28,8 +27,8 @@ module Apiwork
       # @return [Hash{Symbol => Variant}] registered variants
       attr_reader :variants
 
-      def initialize(column:, name:)
-        @name = name
+      def initialize(column:, discriminator:)
+        @discriminator = discriminator
         @column = column
         @variants = {}
       end
