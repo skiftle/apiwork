@@ -304,7 +304,7 @@ module Apiwork
         # @param action_name [Symbol] the controller action name (:index, :show, :create, :update, :destroy, or custom)
         # @param replace [Boolean] replace existing action definition (default: false)
         # @yield block for defining request/response contract
-        # @return [Action] the action definition
+        # @return [Contract::Action] the action definition
         # @see Contract::Action
         #
         # @example Basic CRUD action

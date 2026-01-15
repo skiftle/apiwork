@@ -64,9 +64,15 @@ module Apiwork
       class_attribute :_deprecated, default: false, instance_accessor: false
       class_attribute :_example, default: nil, instance_accessor: false
 
-      attr_reader :context,
-                  :include,
-                  :object
+      # @api public
+      # @return [Hash] custom context passed during serialization
+      attr_reader :context
+
+      # @api public
+      # @return [ActiveRecord::Base] the model instance being serialized
+      attr_reader :object
+
+      attr_reader :include
 
       class << self
         attr_writer :type
@@ -506,7 +512,7 @@ module Apiwork
         end
 
         # @api public
-        # Serializes a record or collection using this schema.
+        # Serializes a record or a collection of records using this schema.
         #
         # Converts ActiveRecord objects to JSON-ready hashes based on
         # attribute and association definitions.
@@ -533,7 +539,7 @@ module Apiwork
         end
 
         # @api public
-        # Deserializes a hash using this schema's decode transformers.
+        # Deserializes a hash or an array of hashes using this schema's decode transformers.
         #
         # Transforms incoming data by applying decode transformers defined
         # on each attribute. Use this for processing request payloads,

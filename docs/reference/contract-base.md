@@ -102,7 +102,7 @@ response format, and documentation.
 
 **Returns**
 
-[Action](adapter-action) — the action definition
+[Contract::Action](contract-action) — the action definition
 
 **See also**
 
