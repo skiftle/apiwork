@@ -69,7 +69,7 @@ module Apiwork
       attr_reader :context
 
       # @api public
-      # @return [ActiveRecord::Base] the model instance being serialized
+      # @return [ActiveRecord::Base] the record being serialized
       attr_reader :record
 
       class << self
@@ -512,7 +512,7 @@ module Apiwork
         # @api public
         # Serializes a record or a collection of records using this schema.
         #
-        # Converts ActiveRecord objects to JSON-ready hashes based on
+        # Converts records to JSON-ready hashes based on
         # attribute and association definitions.
         #
         # @param record_or_collection [ActiveRecord::Base, Array<ActiveRecord::Base>] record(s) to serialize

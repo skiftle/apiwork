@@ -65,7 +65,7 @@ Called for show, create, update, destroy:
 
 ```ruby
 def render_record(record, schema_class, action_data)
-  # record - The model instance
+  # record - The record being serialized
   # schema_class - The schema class for serialization
   # action_data - Request context
 end

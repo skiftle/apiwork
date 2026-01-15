@@ -4,7 +4,7 @@ order: 7
 
 # Serialization
 
-Schemas can [serialize objects directly](../schemas/serialization.md). Within the Execution Engine, the adapter adds transformations for requests and responses.
+Schemas can [serialize records directly](../schemas/serialization.md). Within the Execution Engine, the adapter adds transformations for requests and responses.
 
 ## Response Serialization
 

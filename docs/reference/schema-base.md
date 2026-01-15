@@ -73,7 +73,7 @@ Returns whether this schema is abstract.
 
 `.adapter(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L147)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L145)
 
 Configures adapter options for this schema.
 
@@ -115,7 +115,7 @@ Hash{Symbol =&gt; [Association](schema-association)} — defined associations
 
 `.attribute(name, decode: nil, deprecated: false, description: nil, empty: nil, encode: nil, enum: nil, example: nil, filterable: nil, format: nil, max: nil, min: nil, nullable: nil, optional: nil, sortable: nil, type: nil, writable: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L190)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L188)
 
 Defines an attribute for serialization and API contracts.
 
@@ -166,7 +166,7 @@ Hash{Symbol =&gt; [Attribute](schema-attribute)} — defined attributes
 
 `.belongs_to(name, class_name: nil, deprecated: false, description: nil, example: nil, filterable: false, include: :optional, nullable: nil, optional: nil, polymorphic: nil, schema: nil, sortable: false, writable: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L372)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L370)
 
 Defines a belongs_to association for serialization and contracts.
 
@@ -197,7 +197,7 @@ belongs_to :category, filterable: true
 
 `.deprecated!`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L492)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L490)
 
 Marks this schema as deprecated.
 
@@ -218,7 +218,7 @@ end
 
 `.description(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L476)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L474)
 
 Sets or gets a description for this schema.
 
@@ -249,7 +249,7 @@ end
 
 `.deserialize(hash_or_array)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L556)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L554)
 
 Deserializes a hash or an array of hashes using this schema's decode transformers.
 
@@ -285,7 +285,7 @@ InvoiceSchema.deserialize(params[:invoices])
 
 `.discriminator(name = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L428)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L426)
 
 Enables STI (Single Table Inheritance) polymorphism for this schema.
 
@@ -322,7 +322,7 @@ end
 
 `.example(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L508)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L506)
 
 Sets or gets an example value for this schema.
 
@@ -352,7 +352,7 @@ end
 
 `.has_many(name, allow_destroy: false, class_name: nil, deprecated: false, description: nil, example: nil, filterable: false, include: :optional, nullable: nil, optional: nil, polymorphic: nil, schema: nil, sortable: false, writable: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L320)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L318)
 
 Defines a has_many association for serialization and contracts.
 
@@ -389,7 +389,7 @@ has_many :tags, include: :always
 
 `.has_one(name, class_name: nil, deprecated: false, description: nil, example: nil, filterable: false, include: :optional, nullable: nil, optional: nil, polymorphic: nil, schema: nil, sortable: false, writable: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L266)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L264)
 
 Defines a has_one association for serialization and contracts.
 
@@ -433,7 +433,7 @@ has_one :imageable, polymorphic: [:product, :user]
 
 `.model(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L99)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L97)
 
 The model class.
 
@@ -472,7 +472,7 @@ end
 
 `.root(singular, plural = singular.to_s.pluralize)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L125)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L123)
 
 Declares the JSON root key for this schema.
 
@@ -499,7 +499,7 @@ end
 
 `.root_key`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L577)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L575)
 
 The root key for JSON responses.
 
@@ -527,11 +527,11 @@ InvoiceSchema.root_key.plural    # => "invoices"
 
 `.serialize(record_or_collection, context: {}, include: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L533)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L531)
 
 Serializes a record or a collection of records using this schema.
 
-Converts ActiveRecord objects to JSON-ready hashes based on
+Converts records to JSON-ready hashes based on
 attribute and association definitions.
 
 **Parameters**
@@ -570,7 +570,7 @@ InvoiceSchema.serialize(Invoice.all)
 
 `.variant(as: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L452)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L450)
 
 Registers this schema as an STI variant of its parent.
 
@@ -633,6 +633,6 @@ Hash{Symbol =&gt; [Variant](schema-variant)} — registered variants
 
 **Returns**
 
-`ActiveRecord::Base` — the model instance being serialized
+`ActiveRecord::Base` — the record being serialized
 
 ---
