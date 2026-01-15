@@ -208,8 +208,7 @@ module Apiwork
         namespace = @owner_schema_class.name.deconstantize
         schema_name = "#{tag.to_s.camelize}Schema"
 
-        full_name = namespace.present? ? "#{namespace}::#{schema_name}" : schema_name
-        full_name.safe_constantize
+        (namespace.present? ? "#{namespace}::#{schema_name}" : schema_name).safe_constantize
       end
 
       def column_for(name)

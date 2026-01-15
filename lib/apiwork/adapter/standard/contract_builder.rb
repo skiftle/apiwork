@@ -244,7 +244,6 @@ module Apiwork
 
         def build_result_wrapper(action_name, response_type:)
           success_type_name = :"#{action_name}_success_response_body"
-          full_name = registrar.scoped_type_name(success_type_name)
 
           unless registrar.type?(success_type_name)
             builder = self
@@ -257,7 +256,7 @@ module Apiwork
             end
           end
 
-          { error_type: :error_response_body, success_type: full_name }
+          { error_type: :error_response_body, success_type: registrar.scoped_type_name(success_type_name) }
         end
 
         def build_single_response(contract_action, result_wrapper)
@@ -719,11 +718,8 @@ module Apiwork
 
           registrar.object(root_key, schema_class: local_schema_class) do
             if local_schema_class.variant?
-              parent_schema = local_schema_class.superclass
-              discriminator_name = parent_schema.union.discriminator
-              variant_tag = local_schema_class.tag.to_s
-
-              literal discriminator_name, value: variant_tag
+              literal local_schema_class.superclass.union.discriminator,
+                      value: local_schema_class.tag.to_s
             end
 
             association_type_map = {}
@@ -912,8 +908,7 @@ module Apiwork
         end
 
         def enum_filter_type(attribute)
-          scoped_name = registrar.scoped_type_name(attribute.name)
-          :"#{scoped_name}_filter"
+          :"#{registrar.scoped_type_name(attribute.name)}_filter"
         end
 
         def register_enum_filter(enum_name)

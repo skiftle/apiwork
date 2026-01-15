@@ -746,10 +746,7 @@ module Apiwork
         parent_schema = self.class.superclass
         return unless parent_schema.union
 
-        discriminator_name = parent_schema.union.discriminator
-        variant_tag = self.class.tag
-
-        fields[discriminator_name] = variant_tag.to_s
+        fields[parent_schema.union.discriminator] = self.class.tag.to_s
       end
 
       def serialize_association(name, association)
