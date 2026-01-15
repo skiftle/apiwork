@@ -2,7 +2,7 @@
 
 module MightyWolf
   class MotorcycleSchema < VehicleSchema
-    variant as: :motorcycle
+    variant :motorcycle
 
     attribute :engine_cc, writable: true
   end

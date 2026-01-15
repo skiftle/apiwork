@@ -3,26 +3,34 @@
 module Apiwork
   module Schema
     # @api public
-    # Represents a variant in a discriminated union.
+    # Represents a variant in a discriminated schema.
     #
-    # Variants map discriminator values to their schema classes.
+    # Variants map discriminator tags to their schema classes.
     # Used by adapters to serialize records based on their actual type.
     #
     # @example
-    #   variant = VehicleSchema.variants[:car]
-    #   variant.type          # => "Car"
-    #   variant.schema_class  # => CarSchema
+    #   variant = ClientSchema.discriminator.variants[:person]
+    #   variant.tag           # => :person
+    #   variant.type          # => "PersonClient"
+    #   variant.schema_class  # => PersonClientSchema
+    #
+    # @see Discriminator
     class Variant
       # @api public
-      # @return [Schema::Base] the schema class for this variant
+      # @return [Class] the schema class for this variant
       attr_reader :schema_class
 
       # @api public
-      # @return [String] the discriminator value
+      # @return [Symbol] the discriminator tag
+      attr_reader :tag
+
+      # @api public
+      # @return [String] the Rails STI type
       attr_reader :type
 
-      def initialize(schema_class, type)
+      def initialize(schema_class:, tag:, type:)
         @schema_class = schema_class
+        @tag = tag
         @type = type
       end
     end

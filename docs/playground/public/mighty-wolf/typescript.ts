@@ -3,8 +3,8 @@ export interface Car {
   color: null | string;
   doors: null | number;
   id: string;
+  kind: 'car';
   model: string;
-  type: 'car';
   year: null | number;
 }
 
@@ -12,8 +12,8 @@ export interface CarCreatePayload {
   brand: string;
   color?: null | string;
   doors?: null | number;
+  kind: 'car';
   model: string;
-  type: 'car';
   year?: null | number;
 }
 
@@ -21,8 +21,8 @@ export interface CarUpdatePayload {
   brand?: string;
   color?: null | string;
   doors?: null | number;
+  kind?: 'car';
   model?: string;
-  type?: 'car';
   year?: null | number;
 }
 
@@ -51,8 +51,8 @@ export interface Motorcycle {
   color: null | string;
   engineCc: null | number;
   id: string;
+  kind: 'motorcycle';
   model: string;
-  type: 'motorcycle';
   year: null | number;
 }
 
@@ -60,8 +60,8 @@ export interface MotorcycleCreatePayload {
   brand: string;
   color?: null | string;
   engineCc?: null | number;
+  kind: 'motorcycle';
   model: string;
-  type: 'motorcycle';
   year?: null | number;
 }
 
@@ -69,8 +69,8 @@ export interface MotorcycleUpdatePayload {
   brand?: string;
   color?: null | string;
   engineCc?: null | number;
+  kind?: 'motorcycle';
   model?: string;
-  type?: 'motorcycle';
   year?: null | number;
 }
 
@@ -107,27 +107,27 @@ export interface Truck {
   brand: string;
   color: null | string;
   id: string;
+  kind: 'truck';
   model: string;
   payloadCapacity: null | number;
-  type: 'truck';
   year: null | number;
 }
 
 export interface TruckCreatePayload {
   brand: string;
   color?: null | string;
+  kind: 'truck';
   model: string;
   payloadCapacity?: null | number;
-  type: 'truck';
   year?: null | number;
 }
 
 export interface TruckUpdatePayload {
   brand?: string;
   color?: null | string;
+  kind?: 'truck';
   model?: string;
   payloadCapacity?: null | number;
-  type?: 'truck';
   year?: null | number;
 }
 

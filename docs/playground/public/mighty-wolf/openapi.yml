@@ -55,7 +55,7 @@ paths:
                       car: "#/components/schemas/carCreatePayload"
                       motorcycle: "#/components/schemas/motorcycleCreatePayload"
                       truck: "#/components/schemas/truckCreatePayload"
-                    propertyName: type
+                    propertyName: kind
               type: object
               required:
               - vehicle
@@ -112,7 +112,7 @@ paths:
                       car: "#/components/schemas/carUpdatePayload"
                       motorcycle: "#/components/schemas/motorcycleUpdatePayload"
                       truck: "#/components/schemas/truckUpdatePayload"
-                    propertyName: type
+                    propertyName: kind
               type: object
               required:
               - vehicle
@@ -157,10 +157,10 @@ components:
           - 'null'
         id:
           type: string
-        model:
-          type: string
-        type:
+        kind:
           const: car
+          type: string
+        model:
           type: string
         year:
           type:
@@ -172,8 +172,8 @@ components:
       - color
       - doors
       - id
+      - kind
       - model
-      - type
       - year
     carCreatePayload:
       properties:
@@ -187,10 +187,10 @@ components:
           type:
           - integer
           - 'null'
-        model:
-          type: string
-        type:
+        kind:
           const: car
+          type: string
+        model:
           type: string
         year:
           type:
@@ -199,8 +199,8 @@ components:
       type: object
       required:
       - brand
+      - kind
       - model
-      - type
     carUpdatePayload:
       properties:
         brand:
@@ -213,10 +213,10 @@ components:
           type:
           - integer
           - 'null'
-        model:
-          type: string
-        type:
+        kind:
           const: car
+          type: string
+        model:
           type: string
         year:
           type:
@@ -282,10 +282,10 @@ components:
           - 'null'
         id:
           type: string
-        model:
-          type: string
-        type:
+        kind:
           const: motorcycle
+          type: string
+        model:
           type: string
         year:
           type:
@@ -297,8 +297,8 @@ components:
       - color
       - engineCc
       - id
+      - kind
       - model
-      - type
       - year
     motorcycleCreatePayload:
       properties:
@@ -312,10 +312,10 @@ components:
           type:
           - integer
           - 'null'
-        model:
-          type: string
-        type:
+        kind:
           const: motorcycle
+          type: string
+        model:
           type: string
         year:
           type:
@@ -324,8 +324,8 @@ components:
       type: object
       required:
       - brand
+      - kind
       - model
-      - type
     motorcycleUpdatePayload:
       properties:
         brand:
@@ -338,10 +338,10 @@ components:
           type:
           - integer
           - 'null'
-        model:
-          type: string
-        type:
+        kind:
           const: motorcycle
+          type: string
+        model:
           type: string
         year:
           type:
@@ -415,15 +415,15 @@ components:
           - 'null'
         id:
           type: string
+        kind:
+          const: truck
+          type: string
         model:
           type: string
         payloadCapacity:
           type:
           - number
           - 'null'
-        type:
-          const: truck
-          type: string
         year:
           type:
           - integer
@@ -433,9 +433,9 @@ components:
       - brand
       - color
       - id
+      - kind
       - model
       - payloadCapacity
-      - type
       - year
     truckCreatePayload:
       properties:
@@ -445,15 +445,15 @@ components:
           type:
           - string
           - 'null'
+        kind:
+          const: truck
+          type: string
         model:
           type: string
         payloadCapacity:
           type:
           - number
           - 'null'
-        type:
-          const: truck
-          type: string
         year:
           type:
           - integer
@@ -461,8 +461,8 @@ components:
       type: object
       required:
       - brand
+      - kind
       - model
-      - type
     truckUpdatePayload:
       properties:
         brand:
@@ -471,15 +471,15 @@ components:
           type:
           - string
           - 'null'
+        kind:
+          const: truck
+          type: string
         model:
           type: string
         payloadCapacity:
           type:
           - number
           - 'null'
-        type:
-          const: truck
-          type: string
         year:
           type:
           - integer
@@ -495,7 +495,7 @@ components:
           car: "#/components/schemas/car"
           motorcycle: "#/components/schemas/motorcycle"
           truck: "#/components/schemas/truck"
-        propertyName: type
+        propertyName: kind
     vehicleCreateSuccessResponseBody:
       properties:
         meta:

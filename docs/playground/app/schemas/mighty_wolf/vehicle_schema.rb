@@ -2,7 +2,7 @@
 
 module MightyWolf
   class VehicleSchema < Apiwork::Schema::Base
-    discriminator
+    discriminated! :kind
 
     attribute :id
     attribute :brand, filterable: true, writable: true

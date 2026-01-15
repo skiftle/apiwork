@@ -3,7 +3,7 @@
 module Api
   module V1
     class ClientSchema < Apiwork::Schema::Base
-      discriminator :kind
+      discriminated! :kind
 
       attribute :name, writable: true
       attribute :email, writable: true

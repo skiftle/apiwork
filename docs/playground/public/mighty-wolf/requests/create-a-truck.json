@@ -14,16 +14,22 @@
   },
   "response": {
     "body": {
-      "vehicle": {
-        "type": "truck",
-        "id": "bc709869-2a84-54ce-8bad-69ffeb2112d5",
-        "brand": "Ford",
-        "model": "F-150",
-        "year": 2024,
-        "color": "blue",
-        "payloadCapacity": null
-      }
+      "layer": "contract",
+      "issues": [
+        {
+          "code": "field_missing",
+          "detail": "Required",
+          "meta": {
+            "field": "kind"
+          },
+          "path": [
+            "vehicle",
+            "kind"
+          ],
+          "pointer": "/vehicle/kind"
+        }
+      ]
     },
-    "status": 201
+    "status": 400
   }
 }

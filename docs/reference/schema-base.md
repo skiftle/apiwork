@@ -281,9 +281,9 @@ InvoiceSchema.deserialize(params[:invoices])
 
 ---
 
-### .discriminator
+### .discriminated!
 
-`.discriminator(name = nil)`
+`.discriminated!(name, column: nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L426)
 
@@ -296,7 +296,8 @@ schemas must call `variant` to register themselves.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `name` | `Symbol` | discriminator field name in API responses (defaults to Rails inheritance_column, usually :type) |
+| `name` | `Symbol` | discriminator field name in API responses (required) |
+| `column` | `Symbol` | database column name (defaults to Rails inheritance_column, usually :type) |
 
 **Returns**
 
@@ -306,12 +307,12 @@ schemas must call `variant` to register themselves.
 
 ```ruby
 class VehicleSchema < Apiwork::Schema::Base
-  discriminator :vehicle_type
+  discriminated! :kind
   attribute :name
 end
 
 class CarSchema < VehicleSchema
-  variant as: :car
+  variant :car
   attribute :doors
 end
 ```
@@ -568,13 +569,13 @@ InvoiceSchema.serialize(Invoice.all)
 
 ### .variant
 
-`.variant(as: nil)`
+`.variant(tag = nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L450)
 
 Registers this schema as an STI variant of its parent.
 
-The parent schema must have called `discriminator` first.
+The parent schema must have called `discriminated!` first.
 Responses will use the variant's attributes based on the
 record's actual type.
 
@@ -582,7 +583,7 @@ record's actual type.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `as` | `Symbol` | discriminator value in API responses (defaults to model's sti_name) |
+| `tag` | `Symbol` | discriminator value in API responses (defaults to model's sti_name) |
 
 **Returns**
 
@@ -592,22 +593,60 @@ record's actual type.
 
 ```ruby
 class CarSchema < VehicleSchema
-  variant as: :car
+  variant :car
   attribute :doors
 end
 ```
 
 ---
 
-### .variants
+### .discriminator
 
-`.variants`
+`.discriminator`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L56)
 
+Returns the discriminator configuration for STI schemas.
+
 **Returns**
 
-Hash{Symbol =&gt; [Variant](schema-variant)} — registered variants
+`Discriminator`, `nil` — the discriminator or nil if not an STI schema
+
+**Example**
+
+```ruby
+VehicleSchema.discriminator.name      # => :kind
+VehicleSchema.discriminator.column    # => :type
+VehicleSchema.discriminator.variants  # => { car: Variant, truck: Variant }
+```
+
+---
+
+### .discriminated?
+
+`.discriminated?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L56)
+
+Returns whether this schema is a discriminated STI base with registered variants.
+
+**Returns**
+
+`Boolean` — true if discriminated with variants
+
+---
+
+### .variant?
+
+`.variant?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L56)
+
+Returns whether this schema is an STI variant.
+
+**Returns**
+
+`Boolean` — true if this is a variant schema
 
 ---
 

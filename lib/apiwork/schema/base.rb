@@ -50,13 +50,11 @@ module Apiwork
       #   @return [Hash{Symbol => Association}] defined associations
       class_attribute :associations, default: {}, instance_accessor: false
 
-      # @!method self.variants
+      # @!method self.discriminator
       #   @api public
-      #   @return [Hash{Symbol => Variant}] registered variants
-      class_attribute :variants, default: {}, instance_accessor: false
+      #   @return [Discriminator, nil] the discriminator configuration
+      class_attribute :_discriminator, default: nil, instance_accessor: false
 
-      class_attribute :discriminator_column, default: nil, instance_accessor: false
-      class_attribute :discriminator_name, default: nil, instance_accessor: false
       class_attribute :variant_tag, default: nil, instance_accessor: false
       class_attribute :_root, default: nil, instance_accessor: false
       class_attribute :_adapter_config, default: {}, instance_accessor: false
@@ -404,56 +402,65 @@ module Apiwork
         end
 
         # @api public
-        # Enables STI (Single Table Inheritance) polymorphism for this schema.
+        # Declares this schema as discriminated (polymorphic).
         #
         # Call on the base schema to enable discriminated responses. Variant
         # schemas must call `variant` to register themselves.
         #
         # @param name [Symbol] discriminator field name in API responses
-        #   (defaults to Rails inheritance_column, usually :type)
+        # @param column [Symbol] Rails column (default: inheritance_column)
         # @return [self]
         #
-        # @example Base schema with STI
-        #   class VehicleSchema < Apiwork::Schema::Base
-        #     discriminator :vehicle_type
-        #     attribute :name
+        # @example Base schema with discriminated variants
+        #   class ClientSchema < Apiwork::Schema::Base
+        #     discriminated! :kind
         #   end
         #
-        #   class CarSchema < VehicleSchema
-        #     variant as: :car
-        #     attribute :doors
+        #   class PersonClientSchema < ClientSchema
+        #     variant :person
         #   end
-        def discriminator(name = nil)
+        def discriminated!(name, column: nil)
           ensure_auto_detection_complete
-          column = model_class.inheritance_column.to_sym
-          self.discriminator_column = column
-          self.discriminator_name = name || column
+          resolved_column = column || model_class.inheritance_column.to_sym
+          self._discriminator = Discriminator.new(name:, column: resolved_column)
           self
         end
 
         # @api public
-        # Registers this schema as an STI variant of its parent.
+        # Returns the discriminator configuration.
         #
-        # The parent schema must have called `discriminator` first.
+        # @return [Discriminator, nil]
+        def discriminator
+          _discriminator
+        end
+
+        # @api public
+        # Registers this schema as a variant of its parent.
+        #
+        # The parent schema must have called `discriminated!` first.
         # Responses will use the variant's attributes based on the
         # record's actual type.
         #
-        # @param as [Symbol] discriminator value in API responses
+        # @param tag [Symbol] discriminator tag in API responses
         #   (defaults to model's sti_name)
         # @return [self]
         #
         # @example
-        #   class CarSchema < VehicleSchema
-        #     variant as: :car
-        #     attribute :doors
+        #   class PersonClientSchema < ClientSchema
+        #     variant :person
         #   end
-        def variant(as: nil)
+        def variant(tag = nil)
           ensure_auto_detection_complete
-          tag = as || model_class.sti_name
+          resolved_tag = (tag || model_class.sti_name).to_sym
+          self.variant_tag = resolved_tag
 
-          self.variant_tag = tag.to_sym
-
-          superclass.register_variant(self, variant_tag, model_class.sti_name)
+          variant = Variant.new(
+            schema_class: self,
+            tag: resolved_tag,
+            type: model_class.sti_name,
+          )
+          superclass.discriminator.register(variant)
+          superclass._abstract = true
 
           self
         end
@@ -609,27 +616,18 @@ module Apiwork
           end
         end
 
-        def register_variant(schema_class, tag, type)
-          self.variants = variants.merge(tag => Variant.new(schema_class, type))
-          self._abstract = true
+        def discriminated?
+          _discriminator.present? && !variant? && _discriminator.variants.any?
         end
 
-        def sti_base?
-          return false if sti_variant?
-
-          discriminator_column.present? && variants.any?
-        end
-
-        def sti_variant?
+        def variant?
           variant_tag.present?
         end
 
-        def needs_discriminator_transform?
-          variants.any? { |tag, variant| tag.to_s != variant.type }
-        end
+        def resolve_variant(record)
+          return nil unless _discriminator
 
-        def discriminator_sti_mapping
-          variants.transform_values(&:type)
+          _discriminator.resolve(record)&.schema_class
         end
 
         def deprecated?
@@ -671,20 +669,12 @@ module Apiwork
         end
 
         def serialize_record(record, context: {}, include: nil)
-          if sti_base?
-            variant_schema_class = resolve_sti_variant(record)
+          if discriminated?
+            variant_schema_class = resolve_variant(record)
             return variant_schema_class.new(record, context:, include:).as_json if variant_schema_class
           end
 
           new(record, context:, include:).as_json
-        end
-
-        def resolve_sti_variant(record)
-          discriminator_value = record.public_send(discriminator_column)
-          variant = variants.values.find { |variant| variant.type == discriminator_value }
-          return nil unless variant
-
-          variant.schema_class
         end
 
         private
@@ -731,7 +721,7 @@ module Apiwork
       def as_json
         fields = {}
 
-        add_discriminator_field(fields) if self.class.sti_variant?
+        add_discriminator_field(fields) if self.class.variant?
 
         self.class.attributes.each do |name, attribute|
           value = respond_to?(name) ? public_send(name) : record.public_send(name)
@@ -752,9 +742,9 @@ module Apiwork
 
       def add_discriminator_field(fields)
         parent_schema = self.class.superclass
-        discriminator_name = parent_schema.discriminator_name
-        return unless discriminator_name
+        return unless parent_schema.discriminator
 
+        discriminator_name = parent_schema.discriminator.name
         variant_tag = self.class.variant_tag
 
         fields[discriminator_name] = variant_tag.to_s
@@ -770,9 +760,9 @@ module Apiwork
         nested_includes = @include[name] || @include[name.to_s] || @include[name.to_sym] if @include.is_a?(Hash)
 
         if association.collection?
-          target.map { |record| serialize_sti_aware(record, schema_class, nested_includes) }
+          target.map { |record| serialize_variant_aware(record, schema_class, nested_includes) }
         else
-          serialize_sti_aware(target, schema_class, nested_includes)
+          serialize_variant_aware(target, schema_class, nested_includes)
         end
       end
 
@@ -787,9 +777,9 @@ module Apiwork
         "#{namespace}::#{reflection.klass.name.demodulize}Schema".safe_constantize
       end
 
-      def serialize_sti_aware(record, schema_class, nested_includes)
-        if schema_class.sti_base?
-          variant_schema_class = schema_class.resolve_sti_variant(record)
+      def serialize_variant_aware(record, schema_class, nested_includes)
+        if schema_class.discriminated?
+          variant_schema_class = schema_class.resolve_variant(record)
           return variant_schema_class.new(record, context: context, include: nested_includes).as_json if variant_schema_class
         end
 

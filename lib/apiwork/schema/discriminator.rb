@@ -1,0 +1,68 @@
+# frozen_string_literal: true
+
+module Apiwork
+  module Schema
+    # @api public
+    # Configuration for discriminated (polymorphic) schemas.
+    #
+    # Holds the discriminator field name, Rails column, and registered variants.
+    # Used by adapters to serialize records based on their actual type.
+    #
+    # @example
+    #   ClientSchema.discriminator.name     # => :kind
+    #   ClientSchema.discriminator.column   # => :type
+    #   ClientSchema.discriminator.variants # => {person: Variant, company: Variant}
+    #
+    # @see Schema::Base.discriminated!
+    # @see Variant
+    class Discriminator
+      # @api public
+      # @return [Symbol] JSON field name for the discriminator
+      attr_reader :name
+
+      # @api public
+      # @return [Symbol] Rails column name (typically :type)
+      attr_reader :column
+
+      # @api public
+      # @return [Hash{Symbol => Variant}] registered variants
+      attr_reader :variants
+
+      def initialize(column:, name:)
+        @name = name
+        @column = column
+        @variants = {}
+      end
+
+      # @api public
+      # Resolves which variant to use for a record.
+      #
+      # @param record [ActiveRecord::Base] the record to resolve
+      # @return [Variant, nil] the matching variant or nil
+      def resolve(record)
+        type_value = record.public_send(column)
+        variants.values.find { |variant| variant.type == type_value }
+      end
+
+      # @api public
+      # Returns whether any variant has a tag different from its type.
+      #
+      # @return [Boolean] true if transformation is needed
+      def needs_transform?
+        variants.any? { |tag, variant| tag.to_s != variant.type }
+      end
+
+      # @api public
+      # Returns a mapping of tags to Rails STI types.
+      #
+      # @return [Hash{Symbol => String}] tag to type mapping
+      def mapping
+        variants.transform_values(&:type)
+      end
+
+      def register(variant)
+        @variants = variants.merge(variant.tag => variant).freeze
+      end
+    end
+  end
+end

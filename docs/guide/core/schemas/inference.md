@@ -23,8 +23,8 @@ Everything inferred can be overridden when needed.
 | Association nullable      | Foreign key constraint   | `nullable: true`        |
 | Foreign key column        | Rails reflection         | (automatic)             |
 | Polymorphic discriminator | Rails reflection         | `discriminator: :type`  |
-| STI column                | `inheritance_column`     | `discriminator :type`   |
-| STI variant tag           | `sti_name`               | `variant as: :custom`   |
+| STI column                | `inheritance_column`     | `discriminated! :kind`  |
+| STI variant tag           | `sti_name`               | `variant :custom`       |
 | Allow destroy             | `nested_attributes_options` | `allow_destroy: true` |
 | Root key                  | `model_name.element`     | `root :item, :items`    |
 
@@ -285,27 +285,27 @@ class Truck < Vehicle; end
 
 # Schemas - parent first, children inherit from parent
 class VehicleSchema < Apiwork::Schema::Base
-  discriminator  # Uses :type column (auto-detected)
+  discriminated! :kind  # Uses :type column (auto-detected)
 end
 
 class CarSchema < VehicleSchema
-  variant  # tag: 'Car' (from model's sti_name)
+  variant :car  # tag from argument, type from model's sti_name
 end
 
 class TruckSchema < VehicleSchema
-  variant  # tag: 'Truck' (from model's sti_name)
+  variant :truck  # tag from argument, type from model's sti_name
 end
 ```
 
 Override column:
 
 ```ruby
-discriminator :kind  # Use :kind instead of :type
+discriminated! :kind, column: :category  # Use :category instead of :type
 ```
 
 ### STI Variant Tag
 
-The variant tag is auto-detected from `model_class.sti_name`:
+If you omit the tag argument, it defaults to `model_class.sti_name`:
 
 ```ruby
 # Model with custom STI name
@@ -325,7 +325,7 @@ Override with custom tag:
 
 ```ruby
 class TruckSchema < VehicleSchema
-  variant as: :heavy_truck  # Custom tag instead of sti_name
+  variant :heavy_truck  # Custom tag instead of sti_name
 end
 ```
 

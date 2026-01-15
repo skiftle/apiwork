@@ -7,7 +7,7 @@
     "body": {
       "vehicles": [
         {
-          "type": "car",
+          "kind": "car",
           "id": "7900de74-233c-5bc9-bc0c-6679f7a345a5",
           "brand": "Volvo",
           "model": "EX30",
@@ -16,7 +16,7 @@
           "doors": null
         },
         {
-          "type": "motorcycle",
+          "kind": "motorcycle",
           "id": "7806556d-7175-57da-9ab8-a1d92437b144",
           "brand": "Harley-Davidson",
           "model": "Street Glide",
@@ -25,7 +25,7 @@
           "engineCc": null
         },
         {
-          "type": "truck",
+          "kind": "truck",
           "id": "0cfa971d-c697-5cff-be68-cf775df891c1",
           "brand": "Ford",
           "model": "F-150",
