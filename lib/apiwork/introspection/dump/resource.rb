@@ -34,8 +34,7 @@ module Apiwork
           actions = {}
 
           @resource.actions.each do |action_name, adapter_action|
-            path = build_full_action_path(resource_path, action_name, adapter_action)
-            actions[action_name] = { path:, method: adapter_action.method }
+            actions[action_name] = { method: adapter_action.method, path: build_full_action_path(resource_path, action_name, adapter_action) }
 
             contract_action = contract_class&.action_for(action_name)
             unless contract_action
@@ -60,8 +59,7 @@ module Apiwork
         def build_resource_path(formatted_segment)
           return formatted_segment if @parent_identifiers.empty?
 
-          param_name = @parent_param || "#{@parent_identifiers.last.singularize}_id"
-          ":#{param_name}/#{formatted_segment}"
+          ":#{@parent_param || "#{@parent_identifiers.last.singularize}_id"}/#{formatted_segment}"
         end
 
         def build_nested_resources(resource_path)
@@ -81,9 +79,7 @@ module Apiwork
         end
 
         def build_full_action_path(resource_path, action_name, adapter_action)
-          segment = action_path_segment(action_name, adapter_action)
-          full_path = "/#{resource_path}#{segment}"
-          full_path.delete_suffix('/')
+          "/#{resource_path}#{action_path_segment(action_name, adapter_action)}".delete_suffix('/')
         end
 
         def action_path_segment(action_name, adapter_action)

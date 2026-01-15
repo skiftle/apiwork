@@ -19,18 +19,14 @@ module Apiwork
           }
         end
 
-        types_hash = surface.types.transform_values(&:to_h)
-        sorted_type_names = TypeAnalysis.topological_sort_types(types_hash).map(&:first)
-
-        sorted_type_names.each do |type_name|
+        TypeAnalysis.topological_sort_types(surface.types.transform_values(&:to_h)).map(&:first).each do |type_name|
           type = surface.types[type_name]
-          type_name_pascal = mapper.pascal_case(type_name)
           code = if type.union?
                    mapper.build_union_type(type_name, type)
                  else
                    mapper.build_interface(type_name, type)
                  end
-          types << { code:, name: type_name_pascal }
+          types << { code:, name: mapper.pascal_case(type_name) }
         end
 
         traverse_resources do |resource|

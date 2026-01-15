@@ -103,8 +103,7 @@ module Apiwork
         end
 
         def build_variant(variant, scope)
-          variant_type = variant[:custom_type] || variant[:type]
-          is_registered = registered_type?(variant_type)
+          is_registered = registered_type?(variant[:custom_type] || variant[:type])
 
           ref = is_registered ? variant_type : nil
           resolved_type = is_registered ? :ref : (variant[:type] || :unknown)
@@ -247,9 +246,8 @@ module Apiwork
         def resolve_type_description(type_name, type_definition)
           return type_definition.description if type_definition.description
 
-          if type_definition.schema_class.respond_to?(:description)
-            schema_description = type_definition.schema_class.description
-            return schema_description if schema_description
+          if type_definition.schema_class.respond_to?(:description) && type_definition.schema_class.description
+            return type_definition.schema_class.description
           end
 
           result = @api_class.translate(:types, type_name, :description)

@@ -11,7 +11,7 @@ module Apiwork
             referenced_types = type_references(type_shape, filter: all_types.keys)
 
             referenced_types.each do |referenced_type|
-              next if referenced_type == type_name # Skip self-references (recursive types)
+              next if referenced_type == type_name
 
               reverse_deps[referenced_type] << type_name
             end
@@ -39,8 +39,7 @@ module Apiwork
           if sorted.size == all_types.size
             sorted.map { |type_name| [type_name, all_types[type_name]] }
           else
-            unsorted_types = all_types.keys - sorted
-            (sorted + unsorted_types).map { |type_name| [type_name, all_types[type_name]] }
+            (sorted + (all_types.keys - sorted)).map { |type_name| [type_name, all_types[type_name]] }
           end
         end
 
@@ -89,8 +88,7 @@ module Apiwork
         end
 
         def circular_reference?(type_name, type_definition, filter: :custom_only)
-          reference_names = type_references(type_definition, filter:)
-          reference_names.include?(type_name)
+          type_references(type_definition, filter:).include?(type_name)
         end
 
         def primitive_type?(type)
