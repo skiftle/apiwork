@@ -30,15 +30,11 @@ module Apiwork
         return [{}, []] if shape.nil? && data.blank?
         return [data, []] unless shape
 
-        coerced = @coerce ? coerce(data, shape) : data
-        validated = validate(coerced, shape)
+        validated = validate(@coerce ? coerce(data, shape) : data, shape)
 
         return [{}, validated[:issues]] if validated[:issues].any?
 
-        deserialized = deserialize(validated[:params], shape)
-        transformed = transform(deserialized, shape)
-
-        [transformed, []]
+        [transform(deserialize(validated[:params], shape), shape), []]
       end
 
       def action

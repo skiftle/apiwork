@@ -64,63 +64,64 @@ module Apiwork
       end
 
       def build_action_request_query_schema(resource_name, action_name, query_params, parent_identifiers: [])
-        schema_name = action_type_name(resource_name, action_name, 'RequestQuery', parent_identifiers:)
-
         properties = query_params.sort_by { |name, _param| name.to_s }.map do |param_name, param|
           key = @export.transform_key(param_name)
           zod_type = map_field(param)
           "  #{key}: #{zod_type}"
         end.join(",\n")
 
-        "export const #{schema_name}Schema = z.object({\n#{properties}\n});"
+        "export const #{action_type_name(resource_name, action_name, 'RequestQuery', parent_identifiers:)}Schema = z.object({\n#{properties}\n});"
       end
 
       def build_action_request_body_schema(resource_name, action_name, body_params, parent_identifiers: [])
-        schema_name = action_type_name(resource_name, action_name, 'RequestBody', parent_identifiers:)
-
         properties = body_params.sort_by { |name, _param| name.to_s }.map do |param_name, param|
           key = @export.transform_key(param_name)
           zod_type = map_field(param)
           "  #{key}: #{zod_type}"
         end.join(",\n")
 
-        "export const #{schema_name}Schema = z.object({\n#{properties}\n});"
+        "export const #{action_type_name(resource_name, action_name, 'RequestBody', parent_identifiers:)}Schema = z.object({\n#{properties}\n});"
       end
 
       def build_action_request_schema(resource_name, action_name, request, parent_identifiers: [])
-        schema_name = action_type_name(resource_name, action_name, 'Request', parent_identifiers:)
-
         nested_properties = []
 
         if request[:query]&.any?
-          query_schema_name = action_type_name(resource_name, action_name, 'RequestQuery', parent_identifiers:)
-          nested_properties << "  query: #{query_schema_name}Schema"
+          nested_properties << "  query: #{action_type_name(resource_name, action_name, 'RequestQuery', parent_identifiers:)}Schema"
         end
 
         if request[:body]&.any?
-          body_schema_name = action_type_name(resource_name, action_name, 'RequestBody', parent_identifiers:)
-          nested_properties << "  body: #{body_schema_name}Schema"
+          nested_properties << "  body: #{action_type_name(resource_name, action_name, 'RequestBody', parent_identifiers:)}Schema"
         end
 
-        "export const #{schema_name}Schema = z.object({\n#{nested_properties.join(",\n")}\n});"
+        "export const #{action_type_name(
+          resource_name,
+          action_name,
+          'Request',
+          parent_identifiers:,
+        )}Schema = z.object({\n#{nested_properties.join(",\n")}\n});"
       end
 
       def build_action_response_body_schema(resource_name, action_name, response_body, parent_identifiers: [])
-        schema_name = action_type_name(resource_name, action_name, 'ResponseBody', parent_identifiers:)
-
-        "export const #{schema_name}Schema = #{map_param(response_body)};"
+        "export const #{action_type_name(resource_name, action_name, 'ResponseBody', parent_identifiers:)}Schema = #{map_param(response_body)};"
       end
 
       def build_action_response_schema(resource_name, action_name, response, parent_identifiers: [])
-        schema_name = action_type_name(resource_name, action_name, 'Response', parent_identifiers:)
-        body_schema_name = action_type_name(resource_name, action_name, 'ResponseBody', parent_identifiers:)
-
-        "export const #{schema_name}Schema = z.object({\n  body: #{body_schema_name}Schema\n});"
+        "export const #{action_type_name(
+          resource_name,
+          action_name,
+          'Response',
+          parent_identifiers:,
+        )}Schema = z.object({\n  body: #{action_type_name(
+          resource_name,
+          action_name,
+          'ResponseBody',
+          parent_identifiers:,
+        )}Schema\n});"
       end
 
       def action_type_name(resource_name, action_name, suffix, parent_identifiers: [])
-        base_parts = parent_identifiers + [resource_name.to_s, action_name.to_s]
-        "#{pascal_case(base_parts.join('_'))}#{suffix.split(/(?=[A-Z])/).map(&:capitalize).join}"
+        "#{pascal_case((parent_identifiers + [resource_name.to_s, action_name.to_s]).join('_'))}#{suffix.split(/(?=[A-Z])/).map(&:capitalize).join}"
       end
 
       def map_field(param, force_optional: nil)

@@ -54,17 +54,12 @@ module Apiwork
       end
 
       def build_enum_type(enum_name, enum)
-        type_name = pascal_case(enum_name)
-        type_literal = enum.values.sort.map { |value| "'#{value}'" }.join(' | ')
-
-        code = "export type #{type_name} = #{type_literal};"
+        code = "export type #{pascal_case(enum_name)} = #{enum.values.sort.map { |value| "'#{value}'" }.join(' | ')};"
         type_jsdoc = jsdoc(description: enum.description)
         type_jsdoc ? "#{type_jsdoc}\n#{code}" : code
       end
 
       def build_action_request_query_type(resource_name, action_name, query_params, parent_identifiers: [])
-        type_name = action_type_name(resource_name, action_name, 'RequestQuery', parent_identifiers:)
-
         properties = query_params.sort_by { |name, _param| name.to_s }.map do |param_name, param|
           key = @export.transform_key(param_name)
           ts_type = map_field(param)
@@ -72,12 +67,10 @@ module Apiwork
           "  #{key}#{optional_marker}: #{ts_type};"
         end.join("\n")
 
-        "export interface #{type_name} {\n#{properties}\n}"
+        "export interface #{action_type_name(resource_name, action_name, 'RequestQuery', parent_identifiers:)} {\n#{properties}\n}"
       end
 
       def build_action_request_body_type(resource_name, action_name, body_params, parent_identifiers: [])
-        type_name = action_type_name(resource_name, action_name, 'RequestBody', parent_identifiers:)
-
         properties = body_params.sort_by { |name, _param| name.to_s }.map do |param_name, param|
           key = @export.transform_key(param_name)
           ts_type = map_field(param)
@@ -85,41 +78,39 @@ module Apiwork
           "  #{key}#{optional_marker}: #{ts_type};"
         end.join("\n")
 
-        "export interface #{type_name} {\n#{properties}\n}"
+        "export interface #{action_type_name(resource_name, action_name, 'RequestBody', parent_identifiers:)} {\n#{properties}\n}"
       end
 
       def build_action_request_type(resource_name, action_name, request, parent_identifiers: [])
-        type_name = action_type_name(resource_name, action_name, 'Request', parent_identifiers:)
-
         nested_properties = []
 
-        if request[:query]&.any?
-          query_type_name = action_type_name(resource_name, action_name, 'RequestQuery', parent_identifiers:)
-          nested_properties << "  query: #{query_type_name};"
-        end
+        nested_properties << "  query: #{action_type_name(resource_name, action_name, 'RequestQuery', parent_identifiers:)};" if request[:query]&.any?
 
-        if request[:body]&.any?
-          body_type_name = action_type_name(resource_name, action_name, 'RequestBody', parent_identifiers:)
-          nested_properties << "  body: #{body_type_name};"
-        end
+        nested_properties << "  body: #{action_type_name(resource_name, action_name, 'RequestBody', parent_identifiers:)};" if request[:body]&.any?
 
-        "export interface #{type_name} {\n#{nested_properties.join("\n")}\n}"
+        "export interface #{action_type_name(resource_name, action_name, 'Request', parent_identifiers:)} {\n#{nested_properties.join("\n")}\n}"
       end
 
       def build_action_response_body_type(resource_name, action_name, response_body_definition, parent_identifiers: [])
-        type_name = action_type_name(resource_name, action_name, 'ResponseBody', parent_identifiers:)
-        "export type #{type_name} = #{map_param(response_body_definition)};"
+        "export type #{action_type_name(resource_name, action_name, 'ResponseBody', parent_identifiers:)} = #{map_param(response_body_definition)};"
       end
 
       def build_action_response_type(resource_name, action_name, response, parent_identifiers: [])
-        type_name = action_type_name(resource_name, action_name, 'Response', parent_identifiers:)
-        body_type_name = action_type_name(resource_name, action_name, 'ResponseBody', parent_identifiers:)
-        "export interface #{type_name} {\n  body: #{body_type_name};\n}"
+        "export interface #{action_type_name(
+          resource_name,
+          action_name,
+          'Response',
+          parent_identifiers:,
+        )} {\n  body: #{action_type_name(
+          resource_name,
+          action_name,
+          'ResponseBody',
+          parent_identifiers:,
+        )};\n}"
       end
 
       def action_type_name(resource_name, action_name, suffix, parent_identifiers: [])
-        base_parts = parent_identifiers + [resource_name.to_s, action_name.to_s]
-        "#{pascal_case(base_parts.join('_'))}#{suffix.camelize}"
+        "#{pascal_case((parent_identifiers + [resource_name.to_s, action_name.to_s]).join('_'))}#{suffix.camelize}"
       end
 
       def map_field(param)
