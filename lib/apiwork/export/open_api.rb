@@ -80,10 +80,9 @@ module Apiwork
       def build_resource_paths(paths, resource)
         resource.actions.each do |action_name, action|
           openapi_formatted_path = openapi_path(action.path)
-          method = action.method.to_s.downcase
 
           paths[openapi_formatted_path] ||= {}
-          paths[openapi_formatted_path][method] = build_operation(
+          paths[openapi_formatted_path][action.method.to_s.downcase] = build_operation(
             resource,
             action_name,
             action,
@@ -314,10 +313,7 @@ module Apiwork
       end
 
       def map_field(param)
-        if param.ref? && type_exists?(param.ref)
-          schema = { '$ref': "#/components/schemas/#{schema_name(param.ref)}" }
-          return apply_nullable(schema, param.nullable?)
-        end
+        return apply_nullable({ '$ref': "#/components/schemas/#{schema_name(param.ref)}" }, param.nullable?) if param.ref? && type_exists?(param.ref)
 
         if param.scalar? && param.enum?
           if param.enum_ref? && enum_exists?(param.enum)
@@ -369,8 +365,7 @@ module Apiwork
         result[:example] = param.example if param.example
 
         param.shape.each do |name, field|
-          transformed_key = transform_key(name)
-          result[:properties][transformed_key] = map_field(field)
+          result[:properties][transform_key(name)] = map_field(field)
         end
 
         if param.shape.any?
@@ -407,8 +402,7 @@ module Apiwork
         result = { properties: {}, type: 'object' }
 
         shape.each do |name, field|
-          transformed_key = transform_key(name)
-          result[:properties][transformed_key] = map_field(field)
+          result[:properties][transform_key(name)] = map_field(field)
         end
 
         required_fields = shape.reject { |_name, field| field.optional? }.keys.map { |key| transform_key(key) }
@@ -555,8 +549,7 @@ module Apiwork
             ],
           }
         else
-          current_type = schema[:type]
-          schema[:type] = [current_type, 'null']
+          schema[:type] = [schema[:type], 'null']
           schema
         end
       end

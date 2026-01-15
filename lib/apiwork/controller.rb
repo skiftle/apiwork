@@ -117,9 +117,7 @@ module Apiwork
     #     expose invoice, status: :created
     #   end
     def expose(data, meta: {}, status: nil)
-      contract_action = contract_class.actions[action_name.to_sym]
-
-      if contract_action&.response&.no_content?
+      if contract_class.actions[action_name.to_sym]&.response&.no_content?
         head :no_content
         return
       end
@@ -219,13 +217,12 @@ module Apiwork
     end
 
     def build_render_state(meta = {})
-      action = Adapter::Action.new(
-        action_name,
-        request.method_symbol,
-        resource&.actions&.dig(action_name.to_sym)&.type,
-      )
       Adapter::RenderState.new(
-        action,
+        Adapter::Action.new(
+          action_name,
+          request.method_symbol,
+          resource&.actions&.dig(action_name.to_sym)&.type,
+        ),
         context:,
         meta:,
         query: resource ? contract.query : {},

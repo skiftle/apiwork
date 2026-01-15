@@ -224,13 +224,15 @@ module Apiwork
       end
 
       def validate_array_param(value, param_options, field_path, max_depth, current_depth)
-        array_validation_options = {
-          current_depth:,
-          field_path:,
-          max_depth:,
-          param_options:,
-        }
-        array_issues, array_values = validate_array(value, array_validation_options)
+        array_issues, array_values = validate_array(
+          value,
+          {
+            current_depth:,
+            field_path:,
+            max_depth:,
+            param_options:,
+          },
+        )
         if array_issues.empty?
           {
             issues: [],
