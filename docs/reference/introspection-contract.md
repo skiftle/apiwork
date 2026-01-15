@@ -37,11 +37,11 @@ end
 
 **Returns**
 
-Hash{Symbol =&gt; [Action](adapter-action)} — actions defined on this contract
+Hash{Symbol =&gt; [Introspection::Action](introspection-action)} — actions defined on this contract
 
 **See also**
 
-- [Action](adapter-action)
+- [Introspection::Action](introspection-action)
 
 ---
 

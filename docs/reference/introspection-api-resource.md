@@ -36,11 +36,11 @@ end
 
 **Returns**
 
-Hash{Symbol =&gt; [Action](adapter-action)} — actions defined on this resource
+Hash{Symbol =&gt; [Introspection::Action](introspection-action)} — actions defined on this resource
 
 **See also**
 
-- [Action](adapter-action)
+- [Introspection::Action](introspection-action)
 
 ---
 

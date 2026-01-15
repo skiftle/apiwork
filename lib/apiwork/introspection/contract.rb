@@ -24,8 +24,8 @@ module Apiwork
       end
 
       # @api public
-      # @return [Hash{Symbol => Action}] actions defined on this contract
-      # @see Action
+      # @return [Hash{Symbol => Introspection::Action}] actions defined on this contract
+      # @see Introspection::Action
       def actions
         @actions ||= @dump[:actions].transform_values { |dump| Action.new(dump) }
       end
