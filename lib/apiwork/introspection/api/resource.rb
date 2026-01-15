@@ -19,39 +19,39 @@ module Apiwork
       #     action.response # => Action::Response
       #   end
       class Resource
-        def initialize(data)
-          @data = data
+        def initialize(dump)
+          @dump = dump
         end
 
         # @api public
         # @return [String] resource identifier
         def identifier
-          @data[:identifier]
+          @dump[:identifier]
         end
 
         # @api public
         # @return [String] URL path segment
         def path
-          @data[:path]
+          @dump[:path]
         end
 
         # @api public
         # @return [Array<String>] parent resource identifiers
         def parent_identifiers
-          @data[:parent_identifiers]
+          @dump[:parent_identifiers]
         end
 
         # @api public
         # @return [Hash{Symbol => Introspection::Action}] actions defined on this resource
         # @see Introspection::Action
         def actions
-          @actions ||= @data[:actions].transform_values { |dump| Action.new(dump) }
+          @actions ||= @dump[:actions].transform_values { |dump| Action.new(dump) }
         end
 
         # @api public
         # @return [Hash{Symbol => Resource}] nested resources
         def resources
-          @resources ||= @data[:resources].transform_values { |dump| Resource.new(dump) }
+          @resources ||= @dump[:resources].transform_values { |dump| Resource.new(dump) }
         end
 
         # @api public

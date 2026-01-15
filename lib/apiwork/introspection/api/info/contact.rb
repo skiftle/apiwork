@@ -13,26 +13,26 @@ module Apiwork
         #   contact.email  # => "support@example.com"
         #   contact.url    # => "https://example.com/support"
         class Contact
-          def initialize(data)
-            @data = data
+          def initialize(dump)
+            @dump = dump
           end
 
           # @api public
           # @return [String, nil] contact name
           def name
-            @data[:name]
+            @dump[:name]
           end
 
           # @api public
           # @return [String, nil] contact email
           def email
-            @data[:email]
+            @dump[:email]
           end
 
           # @api public
           # @return [String, nil] contact URL
           def url
-            @data[:url]
+            @dump[:url]
           end
 
           # @api public

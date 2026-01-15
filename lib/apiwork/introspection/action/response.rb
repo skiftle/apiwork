@@ -16,21 +16,21 @@ module Apiwork
       #   response.no_content?  # => true
       #   response.body?        # => false
       class Response
-        def initialize(data)
-          @data = data
+        def initialize(dump)
+          @dump = dump
         end
 
         # @api public
         # @return [Param, nil] response body definition
         # @see Param
         def body
-          @body ||= @data[:body] ? Param.build(@data[:body]) : nil
+          @body ||= @dump[:body] ? Param.build(@dump[:body]) : nil
         end
 
         # @api public
         # @return [Boolean] whether this is a no-content response (204)
         def no_content?
-          @data[:no_content]
+          @dump[:no_content]
         end
 
         # @api public

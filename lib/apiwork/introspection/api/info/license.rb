@@ -12,26 +12,29 @@ module Apiwork
         #   license.name  # => "MIT"
         #   license.url   # => "https://opensource.org/licenses/MIT"
         class License
-          def initialize(data)
-            @data = data
+          def initialize(dump)
+            @dump = dump
           end
 
           # @api public
           # @return [String, nil] license name
           def name
-            @data[:name]
+            @dump[:name]
           end
 
           # @api public
           # @return [String, nil] license URL
           def url
-            @data[:url]
+            @dump[:url]
           end
 
           # @api public
           # @return [Hash] structured representation
           def to_h
-            { name: name, url: url }
+            {
+              name: name,
+              url: url,
+            }
           end
         end
       end

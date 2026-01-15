@@ -14,22 +14,22 @@ module Apiwork
       #   request.body?               # => false
       #   request.query[:page]        # => Param for page param
       class Request
-        def initialize(data)
-          @data = data
+        def initialize(dump)
+          @dump = dump
         end
 
         # @api public
         # @return [Hash{Symbol => Param}] query parameters as Param objects
         # @see Param
         def query
-          @query ||= @data[:query].transform_values { |dump| Param.build(dump) }
+          @query ||= @dump[:query].transform_values { |dump| Param.build(dump) }
         end
 
         # @api public
         # @return [Hash{Symbol => Param}] body parameters as Param objects
         # @see Param
         def body
-          @body ||= @data[:body].transform_values { |dump| Param.build(dump) }
+          @body ||= @dump[:body].transform_values { |dump| Param.build(dump) }
         end
 
         # @api public

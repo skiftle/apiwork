@@ -13,26 +13,29 @@ module Apiwork
         #     puts server.description  # => "Production server"
         #   end
         class Server
-          def initialize(data)
-            @data = data
+          def initialize(dump)
+            @dump = dump
           end
 
           # @api public
           # @return [String, nil] server URL
           def url
-            @data[:url]
+            @dump[:url]
           end
 
           # @api public
           # @return [String, nil] server description
           def description
-            @data[:description]
+            @dump[:description]
           end
 
           # @api public
           # @return [Hash] structured representation
           def to_h
-            { description: description, url: url }
+            {
+              description: description,
+              url: url,
+            }
           end
         end
       end

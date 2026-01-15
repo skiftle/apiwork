@@ -14,59 +14,59 @@ module Apiwork
       #   info.contact&.email   # => "support@example.com"
       #   info.license&.name    # => "MIT"
       class Info
-        def initialize(data)
-          @data = data
+        def initialize(dump)
+          @dump = dump
         end
 
         # @api public
         # @return [String, nil] API title
         def title
-          @data[:title]
+          @dump[:title]
         end
 
         # @api public
         # @return [String, nil] API version
         def version
-          @data[:version]
+          @dump[:version]
         end
 
         # @api public
         # @return [String, nil] API description
         def description
-          @data[:description]
+          @dump[:description]
         end
 
         # @api public
         # @return [String, nil] short summary
         def summary
-          @data[:summary]
+          @dump[:summary]
         end
 
         # @api public
         # @return [String, nil] terms of service URL
         def terms_of_service
-          @data[:terms_of_service]
+          @dump[:terms_of_service]
         end
 
         # @api public
         # @return [Info::Contact, nil] contact information
         # @see Info::Contact
         def contact
-          @contact ||= @data[:contact] ? Contact.new(@data[:contact]) : nil
+          @contact ||= @dump[:contact] ? Contact.new(@dump[:contact]) : nil
         end
 
         # @api public
         # @return [Info::License, nil] license information
         # @see Info::License
         def license
-          @license ||= @data[:license] ? License.new(@data[:license]) : nil
+          @license ||= @dump[:license] ? License.new(@dump[:license]) : nil
         end
 
         # @api public
         # @return [Array<Info::Server>] server definitions
         # @see Info::Server
         def servers
-          @servers ||= @data[:servers].map { |server| Server.new(server) }
+          @servers ||= @dump[:servers].map { |server| Server.new(server) }
         end
 
         # @api public
