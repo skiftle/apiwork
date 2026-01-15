@@ -108,9 +108,7 @@ module Apiwork
       def build_action_response_body_schema(resource_name, action_name, response_body, parent_identifiers: [])
         schema_name = action_type_name(resource_name, action_name, 'ResponseBody', parent_identifiers:)
 
-        zod_schema = map_param(response_body)
-
-        "export const #{schema_name}Schema = #{zod_schema};"
+        "export const #{schema_name}Schema = #{map_param(response_body)};"
       end
 
       def build_action_response_schema(resource_name, action_name, response, parent_identifiers: [])
@@ -122,9 +120,7 @@ module Apiwork
 
       def action_type_name(resource_name, action_name, suffix, parent_identifiers: [])
         base_parts = parent_identifiers + [resource_name.to_s, action_name.to_s]
-        base_name = pascal_case(base_parts.join('_'))
-        suffix_pascal = suffix.split(/(?=[A-Z])/).map(&:capitalize).join
-        "#{base_name}#{suffix_pascal}"
+        "#{pascal_case(base_parts.join('_'))}#{suffix.split(/(?=[A-Z])/).map(&:capitalize).join}"
       end
 
       def map_field(param, force_optional: nil)

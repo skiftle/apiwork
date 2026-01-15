@@ -59,9 +59,7 @@ module Apiwork
         return '' if surface.enums.empty?
 
         surface.enums.map do |name, enum|
-          type_name = zod_mapper.pascal_case(name)
-          enum_literal = enum.values.sort.map { |value| "'#{value}'" }.join(', ')
-          "export const #{type_name}Schema = z.enum([#{enum_literal}]);"
+          "export const #{zod_mapper.pascal_case(name)}Schema = z.enum([#{enum.values.sort.map { |value| "'#{value}'" }.join(', ')}]);"
         end.join("\n\n")
       end
 
@@ -140,13 +138,12 @@ module Apiwork
         end
 
         surface.types.each do |name, type|
-          type_name_pascal = typescript_mapper.pascal_case(name)
           code = if type.union?
                    typescript_mapper.build_union_type(name, type)
                  else
                    typescript_mapper.build_interface(name, type)
                  end
-          all_types << { code:, name: type_name_pascal }
+          all_types << { code:, name: typescript_mapper.pascal_case(name) }
         end
 
         traverse_resources do |resource|
