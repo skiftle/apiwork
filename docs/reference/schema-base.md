@@ -251,7 +251,7 @@ end
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L556)
 
-Deserializes a hash using this schema's decode transformers.
+Deserializes a hash or an array of hashes using this schema's decode transformers.
 
 Transforms incoming data by applying decode transformers defined
 on each attribute. Use this for processing request payloads,
@@ -529,7 +529,7 @@ InvoiceSchema.root_key.plural    # => "invoices"
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L533)
 
-Serializes a record or collection using this schema.
+Serializes a record or a collection of records using this schema.
 
 Converts ActiveRecord objects to JSON-ready hashes based on
 attribute and association definitions.
@@ -625,11 +625,11 @@ Hash{Symbol =&gt; [Variant](schema-variant)} — registered variants
 
 ---
 
-### #object
+### #record
 
-`#object`
+`#record`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L75)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L73)
 
 **Returns**
 

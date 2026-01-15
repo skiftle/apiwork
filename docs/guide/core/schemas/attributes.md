@@ -99,12 +99,12 @@ class PostSchema < Apiwork::Schema::Base
   attribute :full_title, type: :string
 
   def full_title
-    "#{object.status.upcase}: #{object.title}"
+    "#{record.status.upcase}: #{record.title}"
   end
 end
 ```
 
-The `object` method returns the current model instance.
+The `record` method returns the current model instance.
 
 ::: warning Explicit Type Required
 Computed attributes require an explicit `type`. There's no model column to infer from.
@@ -404,8 +404,8 @@ end
 
 def stats
   {
-    views: object.view_count,
-    likes: object.likes.count,
+    views: record.view_count,
+    likes: record.likes.count,
   }
 end
 
@@ -420,7 +420,7 @@ attribute :recent_activity do
 end
 
 def recent_activity
-  object.activities.last(10).map do |activity|
+  record.activities.last(10).map do |activity|
     {
       action: activity.name,
       timestamp: activity.created_at,

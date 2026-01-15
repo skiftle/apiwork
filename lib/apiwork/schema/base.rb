@@ -70,9 +70,7 @@ module Apiwork
 
       # @api public
       # @return [ActiveRecord::Base] the model instance being serialized
-      attr_reader :object
-
-      attr_reader :include
+      attr_reader :record
 
       class << self
         attr_writer :type
@@ -724,8 +722,8 @@ module Apiwork
         end
       end
 
-      def initialize(object, context: {}, include: nil)
-        @object = object
+      def initialize(record, context: {}, include: nil)
+        @record = record
         @context = context
         @include = include
       end
@@ -736,7 +734,7 @@ module Apiwork
         add_discriminator_field(fields) if self.class.sti_variant?
 
         self.class.attributes.each do |name, attribute|
-          value = respond_to?(name) ? public_send(name) : object.public_send(name)
+          value = respond_to?(name) ? public_send(name) : record.public_send(name)
           value = attribute.encode(value)
           fields[name] = value
         end
@@ -763,7 +761,7 @@ module Apiwork
       end
 
       def serialize_association(name, association)
-        target = object.public_send(name)
+        target = record.public_send(name)
         return nil if target.nil?
 
         schema_class = association.schema_class || resolve_association_schema(name)
@@ -781,7 +779,7 @@ module Apiwork
       def resolve_association_schema(association_name)
         return nil unless self.class.model_class
 
-        reflection = object.class.reflect_on_association(association_name)
+        reflection = record.class.reflect_on_association(association_name)
         return nil unless reflection
         return nil if reflection.polymorphic?
 
