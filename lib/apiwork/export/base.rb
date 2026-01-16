@@ -194,7 +194,7 @@ module Apiwork
         @api_path = api_path
         @api_class = API.find!(api_path)
 
-        config = @api_class.export_config(self.class.export_name)
+        config = @api_class.export_configs[self.class.export_name]
         api_config = config ? extract_options_from_config(config) : {}
         @options = self.class.default_options.merge(api_config).merge(options.compact)
         @options[:key_format] ||= @api_class.key_format || :keep

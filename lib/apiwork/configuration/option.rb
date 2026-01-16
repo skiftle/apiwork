@@ -16,6 +16,7 @@ module Apiwork
     #
     # @see Adapter::Base
     # @see Export::Base
+    # @see Configuration
     class Option
       include Validatable
 

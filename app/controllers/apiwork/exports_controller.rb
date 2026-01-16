@@ -8,7 +8,7 @@ module Apiwork
       export_class = Export.find!(export_name)
 
       raw_options = { key_format: api_class.key_format }
-        .merge(api_class.export_config(export_name))
+        .merge(api_class.export_configs[export_name])
         .merge(params.to_unsafe_h.symbolize_keys)
 
       format = raw_options[:format]&.to_sym

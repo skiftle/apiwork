@@ -6,7 +6,7 @@ next: false
 
 # Configuration::Option
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/configuration/option.rb#L19)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/configuration/option.rb#L20)
 
 Block context for nested configuration options.
 
@@ -28,7 +28,7 @@ end
 
 `#option(name, default: nil, enum: nil, type:, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/configuration/option.rb#L46)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/configuration/option.rb#L47)
 
 Defines a nested option.
 

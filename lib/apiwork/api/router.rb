@@ -13,22 +13,16 @@ module Apiwork
           api_classes.each do |api_class|
             next if api_class.path.blank? || api_class.structure.blank?
 
-            if api_class.exports?
+            if api_class.export_configs.any?
               scope path: api_class.path do
-                api_class.exports.each do |export_name|
-                  config = api_class.export_config(export_name)
-                  next unless config
+                api_class.export_configs.each do |export_name, export_config|
+                  next unless case export_config.endpoint.mode
+                              when :always then true
+                              when :never then false
+                              when :auto then Rails.env.development?
+                              end
 
-                  should_mount = case config.endpoint.mode
-                                 when :always then true
-                                 when :never then false
-                                 when :auto then Rails.env.development?
-                                 end
-
-                  next unless should_mount
-
-                  path = config.endpoint.path || "/.#{export_name}"
-                  get path,
+                  get export_config.endpoint.path || "/.#{export_name}",
                       defaults: { export_name:, api_path: api_class.path },
                       to: 'apiwork/exports#show'
                 end

@@ -550,18 +550,6 @@ module Apiwork
           transform_response_keys(hash)
         end
 
-        def export_config(name)
-          @export_configs[name]
-        end
-
-        def exports
-          @export_configs.keys
-        end
-
-        def exports?
-          @export_configs.any?
-        end
-
         def type?(name, scope: nil)
           type_registry.exists?(name, scope:)
         end
