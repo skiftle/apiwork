@@ -165,8 +165,11 @@ For custom workflows, generate exports in code:
 
 ```ruby
 content = Apiwork::Export.generate(:openapi, '/api/v1')
+content = Apiwork::Export.generate(:openapi, '/api/v1', format: :yaml)
 content = Apiwork::Export.generate(:typescript, '/api/v1', key_format: :camel)
 ```
+
+Universal options (`key_format`, `locale`, `format`) work for all exports. Each export may define additional options — see [OpenAPI](./openapi.md), [TypeScript](./typescript.md), [Zod](./zod.md).
 
 ## Endpoint Configuration
 

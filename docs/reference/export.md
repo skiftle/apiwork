@@ -64,7 +64,7 @@ Apiwork::Export.find!(:openapi)
 
 ### .generate
 
-`.generate(export_name, api_path, format: nil, **options)`
+`.generate(export_name, api_path, format: nil, key_format: nil, locale: nil, **options)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export.rb#L59)
 
@@ -76,10 +76,10 @@ Generates an export for an API.
 |------|------|-------------|
 | `export_name` | `Symbol` | the export name (:openapi, :typescript, :zod) |
 | `api_path` | `String` | the API mount path |
-| `format` | `Symbol` | output format (:json, :yaml) - only for data exports |
-| `locale` | `Symbol, nil` | locale for translations (default: nil) |
+| `format` | `Symbol` | output format (:json, :yaml) - hash exports only |
+| `locale` | `Symbol, nil` | locale for translations |
 | `key_format` | `Symbol, nil` | key casing (:camel, :underscore, :kebab, :keep) |
-| `version` | `String, nil` | export version (export-specific) |
+| `options` | `` | export-specific keyword arguments |
 
 **Returns**
 
@@ -94,7 +94,7 @@ Generates an export for an API.
 ```ruby
 Apiwork::Export.generate(:openapi, '/api/v1')
 Apiwork::Export.generate(:openapi, '/api/v1', format: :yaml)
-Apiwork::Export.generate(:typescript, '/api/v1', locale: :es, key_format: :camel)
+Apiwork::Export.generate(:typescript, '/api/v1', key_format: :camel)
 ```
 
 ---

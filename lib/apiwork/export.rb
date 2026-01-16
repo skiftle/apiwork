@@ -44,21 +44,21 @@ module Apiwork
       #
       # @param export_name [Symbol] the export name (:openapi, :typescript, :zod)
       # @param api_path [String] the API mount path
-      # @param format [Symbol] output format (:json, :yaml) - only for data exports
-      # @param locale [Symbol, nil] locale for translations (default: nil)
+      # @param format [Symbol] output format (:json, :yaml) - hash exports only
+      # @param locale [Symbol, nil] locale for translations
       # @param key_format [Symbol, nil] key casing (:camel, :underscore, :kebab, :keep)
-      # @param version [String, nil] export version (export-specific)
+      # @param options export-specific keyword arguments
       # @return [String] the generated export
-      # @raise [ArgumentError] if format is not supported by the export
+      # @raise [ConfigurationError] if export is not declared for the API
       # @see Export::Base
       #
       # @example
       #   Apiwork::Export.generate(:openapi, '/api/v1')
       #   Apiwork::Export.generate(:openapi, '/api/v1', format: :yaml)
-      #   Apiwork::Export.generate(:typescript, '/api/v1', locale: :es, key_format: :camel)
-      def generate(export_name, api_path, format: nil, **options)
+      #   Apiwork::Export.generate(:typescript, '/api/v1', key_format: :camel)
+      def generate(export_name, api_path, format: nil, key_format: nil, locale: nil, **options)
         export_class = find!(export_name)
-        export_class.generate(api_path, format:, **options)
+        export_class.generate(api_path, format:, key_format:, locale:, **options)
       end
 
       def register_defaults!

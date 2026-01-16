@@ -190,7 +190,7 @@ module Apiwork
         end
       end
 
-      def initialize(api_path, **options)
+      def initialize(api_path, key_format: nil, locale: nil, **options)
         @api_path = api_path
         @api_class = API.find!(api_path)
 
@@ -202,7 +202,8 @@ module Apiwork
 
         config = @api_class.export_configs[self.class.export_name]
         api_config = extract_options_from_config(config)
-        @options = self.class.default_options.merge(api_config).merge(options.compact)
+        all_options = options.merge(key_format:, locale:).compact
+        @options = self.class.default_options.merge(api_config).merge(all_options)
         @options[:key_format] ||= @api_class.key_format || :keep
         validate_options!
 
