@@ -430,7 +430,7 @@ class Schema
       # ...
     end
 
-    def resolve_option(name)
+    def build_query(params)
       # ...
     end
   end
@@ -683,10 +683,10 @@ def adapter_class
 end
 
 # Or guard at entry point, not throughout
-def resolve_option(name)
+def load_schema(name)
   return nil unless api_class  # Guard once at entry
 
-  adapter_class = api_class.adapter.class  # Then trust it
+  schema_class = api_class.schemas[name]  # Then trust it
   # ...
 end
 ```

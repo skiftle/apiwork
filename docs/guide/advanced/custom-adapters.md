@@ -323,14 +323,14 @@ end
 
 ### Accessing Options
 
-Read option values with `resolve_option`:
+Read option values with `adapter_config`:
 
 ```ruby
 def render_collection(collection, schema_class, action_data)
-  timeout = resolve_option(:timeout)
-  cache_enabled = resolve_option(:cache, :enabled)
+  timeout = schema_class.adapter_config.timeout
+  cache_enabled = schema_class.adapter_config.cache.enabled
   # ...
 end
 ```
 
-For nested options, pass the parent key first, then the child key.
+For nested options, chain method calls.
