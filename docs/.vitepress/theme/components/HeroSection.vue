@@ -5,7 +5,7 @@
         A contract-driven API layer for <span class="highlight">Rails</span>
       </h1>
       <p class="tagline">
-        Define your API <em>once</em> — and stop fixing drift everywhere else
+        Define your API <em>once</em> — and generate everything from it
       </p>
       <div class="actions">
         <a href="/examples/" class="btn outline">See Examples</a>

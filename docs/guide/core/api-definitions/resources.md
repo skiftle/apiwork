@@ -1,5 +1,5 @@
 ---
-order: 2
+order: 3
 ---
 
 # Resources
@@ -8,7 +8,7 @@ Resources define your API endpoints. They follow Rails routing conventions:
 
 - Define which endpoints exist
 - Link each endpoint to its [contract](../contracts/introduction.md)
-- Form part of the API's metadata for [export generation](./exports.md)
+- Form part of the API's metadata for [exports](./exports.md)
 
 ## Plural Resources
 

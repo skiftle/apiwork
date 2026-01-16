@@ -6,7 +6,7 @@ order: 1
 
 Contracts define what goes in and what comes out of each resource action.
 
-You declare the shape of requests and responses using [params](./params.md) and [types](../type-system/introduction.md). Apiwork validates incoming data, rejects anything that doesn't match, and logs response mismatches in development.
+You declare the shape of requests and responses using the [type system](../type-system/introduction.md). Apiwork validates incoming data, rejects anything that doesn't match, and logs response mismatches in development.
 
 ## A Minimal Contract
 

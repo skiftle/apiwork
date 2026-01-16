@@ -43,7 +43,7 @@ ClientSchema.union.variants      # => {person: Union::Variant, company: Union::V
 
 **Returns**
 
-`Symbol` — JSON field name for the discriminator
+`Symbol` — key name for the discriminator
 
 ---
 

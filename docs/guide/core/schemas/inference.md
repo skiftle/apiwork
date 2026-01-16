@@ -270,70 +270,14 @@ class PostSchema < Apiwork::Schema::Base
 end
 ```
 
-## STI Detection
+## Single Table Inheritance
 
-For Single Table Inheritance, Apiwork detects:
+Apiwork detects STI hierarchies from Rails:
 
-- Inheritance column (default: `type`)
-- STI name for each variant
+- Inheritance column from `inheritance_column` (default: `:type`)
+- Variant tag from `sti_name` (e.g., `"Car"`)
 
-```ruby
-# Models
-class Vehicle < ApplicationRecord; end
-class Car < Vehicle; end
-class Truck < Vehicle; end
-
-# Schemas - parent first, children inherit from parent
-class VehicleSchema < Apiwork::Schema::Base
-  discriminated!  # Uses :type column (auto-detected)
-end
-
-class CarSchema < VehicleSchema
-  variant as: :car  # tag from argument, type from model's sti_name
-end
-
-class TruckSchema < VehicleSchema
-  variant as: :truck  # tag from argument, type from model's sti_name
-end
-```
-
-Override JSON field name:
-
-```ruby
-discriminated! as: :kind  # JSON field is "kind", column is still :type
-```
-
-Override column:
-
-```ruby
-discriminated! as: :kind, by: :category  # JSON field is "kind", column is :category
-```
-
-### STI Variant Tag
-
-If you omit the `as:` argument, it defaults to `model_class.sti_name`:
-
-```ruby
-# Model with custom STI name
-class Truck < Vehicle
-  def self.sti_name
-    'truck_vehicle'
-  end
-end
-
-# Schema - tag auto-detected as 'truck_vehicle'
-class TruckSchema < VehicleSchema
-  variant  # tag: 'truck_vehicle' (from sti_name)
-end
-```
-
-Override with custom tag:
-
-```ruby
-class TruckSchema < VehicleSchema
-  variant as: :heavy_truck  # Custom tag instead of sti_name
-end
-```
+See [Single Table Inheritance](./single-table-inheritance.md) for setup and customization.
 
 ## Root Key Detection
 

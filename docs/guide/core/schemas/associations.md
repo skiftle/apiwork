@@ -42,7 +42,7 @@ end
 
 ## Auto-Detection
 
-Schema and nullable are inferred from your model and database. [Inference](./inference.md) explains the detection rules.
+Schema and nullable are inferred from your model and database.
 
 ```ruby
 # These are equivalent:

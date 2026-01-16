@@ -10,12 +10,13 @@ The API definition describes the shape of your API:
 - Which actions they offer
 - How everything is organized
 
-It's also where you configure API-specific settings:
+It's also where you:
 
-- Key format (camelCase, snake_case)
-- Which [exports](./exports.md) to generate
-- Adapter options
-- Global types and enums
+- [Configure](./configuration.md) settings (key format, pagination)
+- Define [resources](./resources.md)
+- Define [global types](./types.md)
+- Enable [exports](./exports.md)
+- Add [metadata](./metadata.md) (title, version, servers)
 
 ```ruby
 # config/apis/api_v1.rb
@@ -49,7 +50,7 @@ end
 
 The conversion is straightforward: `/api/v1` becomes `Api::V1`.
 
-## Root Path
+## Root Mount
 
 For APIs without a prefix:
 

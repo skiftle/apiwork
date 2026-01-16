@@ -53,7 +53,7 @@ curl http://localhost:3000/api/v1/.typescript > src/api/types.ts
 
 :::
 
-Endpoints support custom paths and other options — see [API Configuration](../api-definitions/configuration.md#exports).
+Endpoints support custom paths and other options — see [Exports](../api-definitions/exports.md).
 
 ### Rake Tasks
 

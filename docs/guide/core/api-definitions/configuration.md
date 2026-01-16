@@ -1,75 +1,14 @@
 ---
-order: 3
+order: 2
 ---
 
 # Configuration
 
 API-level configuration applies to all resources within the API.
 
-## Info Block
-
-Metadata for documentation and export generation:
-
-```ruby
-Apiwork::API.define '/api/v1' do
-  info do
-    title 'My API'
-    version '1.0.0'
-    description 'Public API for my application'
-  end
-end
-```
-
-Available options:
-
-```ruby
-info do
-  title 'My API'
-  version '1.0.0'
-  description 'Full description'
-  summary 'Short summary'
-  deprecated!
-  terms_of_service 'https://example.com/tos'
-
-  contact do
-    name 'API Support'
-    email 'api@example.com'
-    url 'https://example.com/support'
-  end
-
-  license do
-    name 'MIT'
-    url 'https://opensource.org/licenses/MIT'
-  end
-
-  server do
-    url 'https://api.example.com'
-    description 'Production'
-  end
-  server do
-    url 'https://staging-api.example.com'
-    description 'Staging'
-  end
-
-  tags 'Posts', 'Comments', 'Users'
-end
-```
-
-## Raises
-
-Declare which errors all endpoints can raise:
-
-```ruby
-Apiwork::API.define '/api/v1' do
-  raises :bad_request, :unauthorized, :forbidden, :not_found, :internal_server_error
-end
-```
-
-These appear in generated OpenAPI exports as possible responses for all endpoints.
-
 ## Key Format
 
-Control how JSON keys are transformed:
+Control how keys are transformed in requests and responses:
 
 ```ruby
 Apiwork::API.define '/api/v1' do
@@ -79,75 +18,12 @@ end
 
 Options:
 
-- `:keep` - no transformation (default)
-- `:camel` - `created_at` becomes `createdAt` in responses, `createdAt` becomes `created_at` in requests
-- `:kebab` - `created_at` becomes `created-at` (JSON:API style)
-- `:underscore` - all keys use snake_case
-
-### JSON Columns
-
-Key transformation applies recursively to the entire response, including data from JSON/JSONB columns:
-
-```ruby
-# If a model has a JSON column:
-class User < ApplicationRecord
-  # metadata is a JSON column storing: { "first_name": "John", "last_login": "2024-01-15" }
-end
-
-# With key_format :camel, the response will be:
-{
-  "id": 1,
-  "metadata": {
-    "firstName": "John",    # Keys inside JSON are also transformed
-    "lastLogin": "2024-01-15"
-  }
-}
-```
-
-This is usually desired. To preserve original keys in a JSON column, use `encode:`:
-
-```ruby
-class UserSchema < Apiwork::Schema
-  attribute :id
-  attribute :metadata, encode: ->(v) { v.deep_stringify_keys }
-end
-```
-
-### Custom Transformation
-
-Key transformation happens via two methods on the API class:
-
-- `transform_request(hash)` — transforms incoming request parameters
-- `transform_response(hash)` — transforms outgoing response data
-
-Override these for custom behavior:
-
-```ruby
-class Api::V1 < Apiwork::API::Base
-  mount '/api/v1'
-
-  def self.transform_response(hash)
-    result = super  # Apply key_format transformation first
-    result[:_generated_at] = Time.current.iso8601
-    result
-  end
-end
-```
-
-To completely replace the default transformation:
-
-```ruby
-class Api::V1 < Apiwork::API::Base
-  mount '/api/v1'
-
-  def self.transform_request(hash)
-    # Custom logic without calling super
-    hash.deep_transform_keys { |k| k.to_s.downcase.to_sym }
-  end
-end
-```
-
-For more advanced customization, consider [creating a custom adapter](../../advanced/custom-adapters.md).
+| Option            | Ruby Key     | JSON Key     |
+| ----------------- | ------------ | ------------ |
+| `:keep` (default) | `created_at` | `created_at` |
+| `:camel`          | `created_at` | `createdAt`  |
+| `:kebab`          | `created_at` | `created-at` |
+| `:underscore`     | `created_at` | `created_at` |
 
 ## Path Format
 
@@ -219,9 +95,13 @@ Apiwork::API.define '/api/v1' do
 end
 ```
 
-## Adapter Configuration
+## Adapter
 
-Configure the built-in adapter:
+The adapter handles filtering, sorting, pagination, and serialization.
+
+### Configuring the Built-in Adapter
+
+Without arguments, configure the default adapter:
 
 ```ruby
 Apiwork::API.define '/api/v1' do
@@ -236,51 +116,29 @@ end
 
 [Execution Engine](../execution-engine/introduction.md) covers pagination strategies, filtering operators, and sorting options.
 
-## Exports
+### Using a Custom Adapter
 
-Expose export endpoints:
-
-```ruby
-Apiwork::API.define '/api/v1' do
-  export :openapi
-  export :typescript
-end
-```
-
-Each declaration enables a runtime endpoint at `/.{format}`.
-
-Configure individual exports:
-
-```ruby
-export :openapi do
-  path '/openapi.json'
-  key_format :camel
-end
-```
-
-::: info Endpoints Only
-`export` declarations only affect endpoints. Rake tasks and programmatic generation work for all formats regardless of declarations.
-:::
-
-[Export Generation](../exports/introduction.md) covers all generation methods.
-
-## Global Types and Enums
-
-Define types and anums available to all contracts in this API:
+Switch to a registered adapter:
 
 ```ruby
 Apiwork::API.define '/api/v1' do
-  object :address do
-    string :street
-    string :city
-    string :country
+  adapter :jsonapi
+end
+```
+
+Or switch and configure:
+
+```ruby
+Apiwork::API.define '/api/v1' do
+  adapter :jsonapi do
+    pagination do
+      strategy :cursor
+    end
   end
-
-  enum :status, values: %w[pending active archived]
 end
 ```
 
-[Type System](../type-system/introduction.md) covers types, enums, and scoping rules.
+See [Custom Adapters](../../advanced/custom-adapters.md) for creating your own.
 
 #### See also
 

@@ -24,7 +24,7 @@ The type system has three distinct concepts:
 
 **Objects** define structure. **Unions** define alternatives. **Enums** constrain values.
 
-Technically, only objects and unions are types — they define shape. Enums are value constraints applied to a field, not standalone types.
+Technically, only objects and unions are types — they define shape. Enums are value constraints applied to a param, not standalone types.
 
 ```ruby
 object :invoice do
@@ -82,8 +82,8 @@ object :invoice do
   string :number
   string :status, enum: %w[draft sent paid]
   decimal :total
-  array :line_items do
-    reference :line_item
+  array :items do
+    reference :items
   end
 end
 ```
@@ -119,14 +119,15 @@ Structural types (`:array`, `:object`) and special types (`:binary`, `:literal`,
 
 ## Next Steps
 
-| Topic                   | Description                                         |
-| ----------------------- | --------------------------------------------------- |
-| [Types](./types.md)     | Optionality, nullability, defaults, and constraints |
-| [Objects](./objects.md) | Reusable named objects                              |
-| [Unions](./unions.md)   | Multiple shapes with a discriminator                |
-| [Enums](./enums.md)     | Restrict values to a fixed set                      |
-| [Scoping](./scoping.md) | API-level vs contract-scoped types                  |
-| [Merging](./merging.md) | Extending and composing types                       |
+| Topic                       | Description                               |
+| --------------------------- | ----------------------------------------- |
+| [Types](./types.md)         | Primitives, scalars, and special types    |
+| [Modifiers](./modifiers.md) | Optional, nullable, defaults, constraints |
+| [Objects](./objects.md)     | Reusable named objects                    |
+| [Unions](./unions.md)       | Multiple shapes with a discriminator      |
+| [Enums](./enums.md)         | Restrict values to a fixed set            |
+| [Scoping](./scoping.md)     | API-level vs contract-scoped types        |
+| [Merging](./merging.md)     | Extending and composing types             |
 
 #### See also
 

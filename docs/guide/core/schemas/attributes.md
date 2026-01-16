@@ -37,7 +37,7 @@ attribute :title, type: :string, nullable: false
 attribute :status  # Detects Rails enum values automatically
 ```
 
-[Inference](./inference.md) explains how types, nullability, and enums are detected from your database and models.
+Types, nullability, and enums are detected from your database and models.
 
 ## Options Reference
 

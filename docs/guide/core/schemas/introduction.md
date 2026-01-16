@@ -68,7 +68,7 @@ class AuthorSchema < Apiwork::Schema::Base
 end
 ```
 
-[Inference](./inference.md) explains all the detection rules for types, nullability, defaults, and enum values.
+Apiwork infers types, nullability, defaults, and enum values from your database and models.
 
 ## Connecting to Contract
 

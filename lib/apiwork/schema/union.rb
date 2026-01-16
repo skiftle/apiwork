@@ -16,7 +16,7 @@ module Apiwork
     # @see Schema::Base.discriminated!
     class Union
       # @api public
-      # @return [Symbol] JSON field name for the discriminator
+      # @return [Symbol] key name for the discriminator
       attr_reader :discriminator
 
       # @api public
