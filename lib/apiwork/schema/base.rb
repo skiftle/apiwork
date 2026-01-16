@@ -153,6 +153,21 @@ module Apiwork
           config.instance_eval(&block)
         end
 
+        # @api public
+        # The merged adapter configuration for this schema.
+        #
+        # Configuration values are resolved in order:
+        # 1. Schema-level (defined in the schema class via `adapter do`)
+        # 2. API-level (defined in the API definition via `adapter do`)
+        # 3. Adapter defaults (defined in the adapter class)
+        #
+        # @return [Configuration]
+        # @see API::Base#adapter_config
+        # @see Adapter::Base
+        #
+        # @example
+        #   schema_class.adapter_config.pagination.default_size
+        #   schema_class.adapter_config.pagination.strategy
         def adapter_config
           @adapter_config ||= api_class.adapter_config.merge(_adapter_config)
         end

@@ -1,5 +1,5 @@
 ---
-order: 27
+order: 28
 prev: false
 next: false
 ---
@@ -69,7 +69,7 @@ The export name.
 
 `.file_extension(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L88)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L122)
 
 The file extension for string exports.
 
@@ -92,7 +92,7 @@ their extension from the format (:json becomes .json, :yaml becomes .yaml).
 
 `.option(name, type:, default: nil, enum: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/configurable.rb#L40)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/configurable.rb#L50)
 
 Defines a configuration option.
 
@@ -162,7 +162,7 @@ Declares the output type for this export.
 
 `#data`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L242)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L251)
 
 The API introspection facade.
 
@@ -182,7 +182,7 @@ This is the primary interface for accessing introspection data in export generat
 
 `#generate`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L186)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L229)
 
 Generates the export output.
 
@@ -204,7 +204,7 @@ to types, enums, resources, actions, and other introspection data.
 
 `#key_format`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L250)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L259)
 
 The key format for this export.
 
@@ -218,7 +218,7 @@ The key format for this export.
 
 `#transform_key(key)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L259)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L268)
 
 Transforms a key according to the configured key format.
 

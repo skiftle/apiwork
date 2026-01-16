@@ -2,9 +2,17 @@
 
 module Apiwork
   # @api public
-  # DSL evaluator for adapter and export configuration.
+  # Typed access to configuration values with automatic defaults.
   #
-  # Used within configuration blocks in {Adapter::Base} and {Export::Base}.
+  # @see API::Base#adapter_config
+  # @see Schema::Base.adapter_config
+  #
+  # @example Reading values
+  #   config.pagination.default_size  # => 20
+  #   config.pagination.strategy      # => :offset
+  #
+  # @example Using dig for dynamic access
+  #   config.dig(:pagination, :default_size)  # => 20
   class Configuration
     def initialize(options_source, storage = {})
       @options = extract_options(options_source)
@@ -44,6 +52,14 @@ module Apiwork
       Configuration.new(@options, @storage.deep_merge(hash))
     end
 
+    # @api public
+    # Accesses nested configuration values by key path.
+    #
+    # @param keys [Array<Symbol>] one or more keys to traverse
+    #
+    # @example
+    #   config.dig(:pagination)             # => #<Apiwork::Configuration:...>
+    #   config.dig(:pagination, :strategy)  # => :offset
     def dig(*keys)
       keys.compact.reduce(self) { |config, key| config.public_send(key) }
     end
