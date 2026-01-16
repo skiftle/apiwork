@@ -44,16 +44,53 @@ This creates endpoints at `/.openapi`, `/.typescript`, and `/.zod`:
 
 Endpoints generate on each request — convenient for development, but not ideal for production traffic.
 
-::: tip
-Fetch exports directly from your running server:
+#### Query Parameters
+
+Pass options as query parameters:
 
 ```bash
-curl http://localhost:3000/api/v1/.typescript > src/api/types.ts
+curl http://localhost:3000/api/v1/.typescript?key_format=camel
+curl http://localhost:3000/api/v1/.openapi?format=yaml
 ```
 
-:::
+Available parameters:
 
-Endpoints support custom paths and other options — see [Exports](../api-definitions/exports.md).
+| Parameter    | Values                                 | Default          |
+| ------------ | -------------------------------------- | ---------------- |
+| `key_format` | `keep`, `camel`, `kebab`, `underscore` | API's key_format |
+| `locale`     | Any locale symbol                      | —                |
+| `format`     | `json`, `yaml`                         | `json`           |
+
+#### Option Precedence
+
+Options resolve in this order (highest priority last):
+
+1. API default (`key_format` from API definition)
+2. Export config (`export :openapi do ... end`)
+3. Query parameters (override everything)
+
+```ruby
+Apiwork::API.define '/api/v1' do
+  key_format :underscore  # Default for all exports
+
+  export :openapi do
+    key_format :camel     # Override for OpenAPI
+  end
+end
+```
+
+```bash
+# Uses :camel (from export config)
+curl /api/v1/.openapi
+
+# Uses :kebab (query param overrides config)
+curl /api/v1/.openapi?key_format=kebab
+
+# Uses :underscore (API default, no export config)
+curl /api/v1/.typescript
+```
+
+Endpoints support custom paths — see [Exports](../api-definitions/exports.md).
 
 ### Rake Tasks
 
