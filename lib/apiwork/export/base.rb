@@ -194,8 +194,14 @@ module Apiwork
         @api_path = api_path
         @api_class = API.find!(api_path)
 
+        unless @api_class.export_configs.key?(self.class.export_name)
+          raise ConfigurationError,
+                "Export :#{self.class.export_name} is not declared for #{api_path}. " \
+                "Add `export :#{self.class.export_name}` to your API definition."
+        end
+
         config = @api_class.export_configs[self.class.export_name]
-        api_config = config ? extract_options_from_config(config) : {}
+        api_config = extract_options_from_config(config)
         @options = self.class.default_options.merge(api_config).merge(options.compact)
         @options[:key_format] ||= @api_class.key_format || :keep
         validate_options!

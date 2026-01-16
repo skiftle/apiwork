@@ -203,6 +203,8 @@ RSpec.describe Apiwork::Export::Zod do
 
     it 'transforms keys to camelCase with :camel' do
       api_class = Apiwork::API.define '/api/zod_camel_test' do
+        export :zod
+
         object :test_type do
           string :user_name
         end
@@ -236,6 +238,8 @@ RSpec.describe Apiwork::Export::Zod do
   describe 'union types' do
     before(:all) do
       api_class = Apiwork::API.define '/api/zod_union_test' do
+        export :zod
+
         union :payment_method, discriminator: :type do
           variant tag: 'card' do
             object do
@@ -302,6 +306,8 @@ RSpec.describe Apiwork::Export::Zod do
   describe 'self-referencing types' do
     before(:all) do
       api_class = Apiwork::API.define '/api/zod_circular_test' do
+        export :zod
+
         object :tree_node do
           string :value
           array :children, optional: true do
@@ -348,6 +354,8 @@ RSpec.describe Apiwork::Export::Zod do
   describe 'recursive filter types with direct ref' do
     before(:all) do
       api_class = Apiwork::API.define '/api/zod_recursive_filter_test' do
+        export :zod
+
         object :node_filter do
           reference :_not, optional: true, to: :node_filter
           array :_and, optional: true do
@@ -406,6 +414,8 @@ RSpec.describe Apiwork::Export::Zod do
   describe 'literal types' do
     before(:all) do
       api_class = Apiwork::API.define '/api/zod_literal_test' do
+        export :zod
+
         object :constants do
           literal :string_lit, value: 'hello'
           literal :number_lit, value: 42
@@ -453,6 +463,8 @@ RSpec.describe Apiwork::Export::Zod do
   describe 'min/max constraints' do
     before(:all) do
       api_class = Apiwork::API.define '/api/zod_constraints_test' do
+        export :zod
+
         object :bounded do
           string :limited_string, max: 100, min: 1
           integer :limited_number, max: 1000, min: 0
@@ -504,6 +516,8 @@ RSpec.describe Apiwork::Export::Zod do
   describe 'format mapping' do
     before(:all) do
       api_class = Apiwork::API.define '/api/zod_format_test' do
+        export :zod
+
         object :formatted do
           string :email_field, format: :email
           string :url_field, format: :url

@@ -17,7 +17,6 @@ module Apiwork
           end
 
           api_classes = api_path ? [find_api_class(api_path)] : API.values
-          export_names = export_name ? [export_name] : Registry.keys
 
           start_time = Time.zone.now
           count = 0
@@ -25,7 +24,9 @@ module Apiwork
           Rails.logger.debug 'Generating artifacts...'
 
           api_classes.each do |api_class|
-            export_names.each do |name|
+            available_exports = export_name ? [export_name.to_sym] : api_class.export_configs.keys
+
+            available_exports.each do |name|
               count += generate_file(
                 api_class:,
                 format:,

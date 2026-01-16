@@ -295,7 +295,10 @@ RSpec.describe Apiwork::Export::TypeScript do
 
   describe 'metadata support' do
     def create_test_api_with_contract(api_path, &api_block)
-      api_class = Apiwork::API.define(api_path, &api_block)
+      api_class = Apiwork::API.define(api_path) do
+        export :typescript
+        instance_eval(&api_block)
+      end
 
       contract_class = Class.new(Apiwork::Contract::Base)
       contract_class.instance_variable_set(:@api_class, api_class)

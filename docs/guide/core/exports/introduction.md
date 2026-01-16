@@ -12,19 +12,9 @@ Exports are generated from [introspection](../introspection/introduction.md) —
 
 When your API changes, its exports change with it.
 
-## Generating Exports
+## Declaration
 
-Three ways to generate exports:
-
-| Method         | Best For    | Requires Declaration |
-| -------------- | ----------- | -------------------- |
-| Endpoints      | Development | Yes                  |
-| Rake Tasks     | Production  | No                   |
-| Programmatic   | Custom      | No                   |
-
-### Endpoints
-
-Expose exports as runtime endpoints:
+Declare which exports to enable:
 
 ```ruby
 Apiwork::API.define '/api/v1' do
@@ -34,7 +24,21 @@ Apiwork::API.define '/api/v1' do
 end
 ```
 
-This creates endpoints at `/.openapi`, `/.typescript`, and `/.zod`:
+Once declared, exports can be generated via endpoints, rake tasks, or code.
+
+## Generating Exports
+
+Three ways to generate declared exports:
+
+| Method       | Best For    |
+| ------------ | ----------- |
+| Endpoints    | Development |
+| Rake Tasks   | Production  |
+| Programmatic | Custom      |
+
+### Endpoints
+
+By default, endpoints are mounted in development only:
 
 | Format     | Endpoint                  |
 | ---------- | ------------------------- |
@@ -99,8 +103,6 @@ curl /api/v1/.openapi?key_format=kebab
 curl /api/v1/.typescript
 ```
 
-Endpoints support custom paths — see [Exports](../api-definitions/exports.md).
-
 ### Rake Tasks
 
 Generate exports to files:
@@ -109,7 +111,7 @@ Generate exports to files:
 rake apiwork:export:write OUTPUT=public/exports
 ```
 
-This generates all formats (OpenAPI, TypeScript, Zod) for all APIs:
+This generates declared exports for all APIs:
 
 ```text
 public/exports/
@@ -133,7 +135,7 @@ public/exports/
 Examples:
 
 ```bash
-# All exports for all APIs
+# All declared exports for all APIs
 rake apiwork:export:write OUTPUT=public/exports
 
 # Only OpenAPI for /api/v1
@@ -165,6 +167,86 @@ For custom workflows, generate exports in code:
 content = Apiwork::Export.generate(:openapi, '/api/v1')
 content = Apiwork::Export.generate(:typescript, '/api/v1', key_format: :camel)
 ```
+
+## Endpoint Configuration
+
+Control endpoint behavior with the `endpoint` block:
+
+```ruby
+export :openapi do
+  endpoint do
+    mode :always
+    path '/openapi.json'
+  end
+end
+```
+
+### Mode
+
+| Mode      | Behavior                              |
+| --------- | ------------------------------------- |
+| `:auto`   | Development only (default)            |
+| `:always` | Always mount endpoint                 |
+| `:never`  | Never mount endpoint (rake/code only) |
+
+```ruby
+export :openapi do
+  endpoint do
+    mode :auto  # Only in development (default)
+  end
+end
+
+export :typescript do
+  endpoint do
+    mode :never  # Generate via rake task only
+  end
+end
+```
+
+### Custom Path
+
+```ruby
+export :openapi do
+  endpoint do
+    path '/openapi.json'  # Instead of /.openapi
+  end
+end
+```
+
+### Production Considerations
+
+Endpoints generate on each request, which is slow for production traffic. Recommended approaches:
+
+**Generate at build time** (recommended):
+
+```bash
+# In CI/CD pipeline
+rake apiwork:export:write OUTPUT=public/exports
+```
+
+Serve the static files from your CDN or web server.
+
+**Disable endpoints entirely**:
+
+```ruby
+export :openapi do
+  endpoint do
+    mode :never
+  end
+end
+```
+
+**If you need runtime endpoints in production**:
+
+```ruby
+export :openapi do
+  endpoint do
+    mode :always
+  end
+end
+```
+
+Consider caching the response at the HTTP level (Rack middleware, reverse proxy, or CDN).
 
 #### See also
 
