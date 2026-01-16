@@ -144,7 +144,7 @@ RSpec.describe 'Custom Adapter', type: :integration do
     let(:api_class) { Apiwork::API.find!('/api/v1') }
 
     it 'API has adapter_config available' do
-      expect(api_class.adapter_config).to be_a(Hash)
+      expect(api_class.adapter_config).to be_a(Apiwork::Configuration)
     end
 
     it 'adapter instance is accessible via api.adapter' do

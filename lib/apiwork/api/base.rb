@@ -18,8 +18,7 @@ module Apiwork
     #   end
     class Base
       class << self
-        attr_reader :adapter_config,
-                    :enum_registry,
+        attr_reader :enum_registry,
                     :export_configs,
                     :structure,
                     :type_registry
@@ -148,13 +147,19 @@ module Apiwork
           @adapter_name = name if name.is_a?(Symbol)
 
           if block
-            adapter_class = Adapter.find!(@adapter_name || :standard)
-            config = Configuration.new(adapter_class, @adapter_config)
-            config.instance_eval(&block)
+            adapter_config.instance_eval(&block)
             return
           end
 
-          @adapter ||= Adapter.find!(@adapter_name || :standard).new
+          @adapter ||= adapter_class.new
+        end
+
+        def adapter_class
+          Adapter.find!(@adapter_name || :standard)
+        end
+
+        def adapter_config
+          @adapter_config ||= Configuration.new(adapter_class)
         end
 
         # @api public
@@ -500,7 +505,7 @@ module Apiwork
           @info = nil
           @raises = []
           @export_configs = {}
-          @adapter_config = {}
+          @adapter_config = nil
           @structure = Structure.new(path)
           @type_registry = TypeRegistry.new
           @enum_registry = EnumRegistry.new

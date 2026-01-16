@@ -40,9 +40,19 @@ module Apiwork
       @options.key?(name) || super
     end
 
+    def merge(hash)
+      Configuration.new(@options, @storage.deep_merge(hash))
+    end
+
+    def dig(*keys)
+      keys.compact.reduce(self) { |config, key| config.public_send(key) }
+    end
+
     private
 
     def extract_options(source)
+      return source if source.is_a?(Hash)
+
       source.respond_to?(:options) ? source.options : source.children
     end
   end

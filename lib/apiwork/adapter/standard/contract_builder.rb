@@ -539,8 +539,8 @@ module Apiwork
         end
 
         def build_page_type
-          strategy = schema_class.resolve_option(:pagination, :strategy)
-          max_size = schema_class.resolve_option(:pagination, :max_size)
+          strategy = schema_class.adapter_config.pagination.strategy
+          max_size = schema_class.adapter_config.pagination.max_size
 
           type_name = type_name(:page, 1)
 
@@ -564,7 +564,7 @@ module Apiwork
         end
 
         def build_pagination_type
-          strategy = schema_class.resolve_option(:pagination, :strategy)
+          strategy = schema_class.adapter_config.pagination.strategy
           strategy == :offset ? :offset_pagination : :cursor_pagination
         end
 

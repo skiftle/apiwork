@@ -149,8 +149,12 @@ module Apiwork
           return unless block
 
           self._adapter_config = _adapter_config.dup
-          config = Configuration.new(api_class.adapter.class, _adapter_config)
+          config = Configuration.new(api_class.adapter_class, _adapter_config)
           config.instance_eval(&block)
+        end
+
+        def adapter_config
+          @adapter_config ||= api_class.adapter_config.merge(_adapter_config)
         end
 
         # @api public
@@ -601,21 +605,6 @@ module Apiwork
           return nil if namespace.blank?
 
           API.find("/#{namespace.underscore.tr('::', '/')}")
-        end
-
-        def resolve_option(name, subkey = nil)
-          option = api_class.adapter.class.options[name]
-          return nil unless option
-
-          if option.nested? && subkey
-            value = _adapter_config.dig(name, subkey)
-            value = api_class.adapter_config.dig(name, subkey) if value.nil?
-            value.nil? ? option.children[subkey]&.default : value
-          else
-            value = _adapter_config[name]
-            value = api_class.adapter_config[name] if value.nil?
-            value.nil? ? option.resolved_default : value
-          end
         end
 
         def discriminated?

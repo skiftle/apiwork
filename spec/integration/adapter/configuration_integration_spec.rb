@@ -3,9 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe 'Adapter Configuration Integration', type: :request do
-  # Test adapter configuration features using ONLY public APIs and runtime behavior
-  # The public API is: adapter blocks in API and Schema with resolve_option
-
   describe 'API-level adapter configuration' do
     let(:config_test_api) do
       Apiwork::API.define '/api/config_test' do
@@ -26,16 +23,15 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
       config_test_api # Trigger let to create API
     end
 
-    it 'applies API configuration via schema resolve_option' do
+    it 'applies API configuration via schema adapter_config' do
       schema_class = Class.new(Apiwork::Schema::Base) do
         def self.name
           'Api::ConfigTest::PostSchema'
         end
       end
 
-      # Should use API configuration via resolve_option
-      expect(schema_class.resolve_option(:pagination, :default_size)).to eq(25)
-      expect(schema_class.resolve_option(:pagination, :max_size)).to eq(100)
+      expect(schema_class.adapter_config.pagination.default_size).to eq(25)
+      expect(schema_class.adapter_config.pagination.max_size).to eq(100)
     end
 
     it 'applies key_format at API level' do
@@ -81,9 +77,8 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
     end
 
     it 'schema adapter configuration overrides API adapter configuration' do
-      # Schema overrides should win
-      expect(schema_with_config.resolve_option(:pagination, :default_size)).to eq(50)
-      expect(schema_with_config.resolve_option(:pagination, :max_size)).to eq(150)
+      expect(schema_with_config.adapter_config.pagination.default_size).to eq(50)
+      expect(schema_with_config.adapter_config.pagination.max_size).to eq(150)
     end
 
     it 'key_format is at API level' do
@@ -128,14 +123,9 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
     it 'schema overrides API, API overrides adapter defaults' do
       schema = Api::Resolution::PostSchema
 
-      # Schema override wins over API
-      expect(schema.resolve_option(:pagination, :default_size)).to eq(50)
-
-      # API value when not in schema
-      expect(schema.resolve_option(:pagination, :max_size)).to eq(200)
-
-      # Adapter default when not in API or schema
-      expect(schema.resolve_option(:pagination, :strategy)).to eq(:offset)
+      expect(schema.adapter_config.pagination.default_size).to eq(50)
+      expect(schema.adapter_config.pagination.max_size).to eq(200)
+      expect(schema.adapter_config.pagination.strategy).to eq(:offset)
     end
 
     it 'key_format is at API level' do
@@ -202,7 +192,7 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
 
     it 'stores adapter config when called with block' do
       api_class = Apiwork::API.find!('/api/dual_purpose')
-      expect(api_class.adapter_config[:pagination][:default_size]).to eq(30)
+      expect(api_class.adapter_config.pagination.default_size).to eq(30)
     end
 
     it 'stores key_format at API level' do

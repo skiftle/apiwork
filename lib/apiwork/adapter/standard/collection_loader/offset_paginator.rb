@@ -32,7 +32,7 @@ module Apiwork
           end
 
           def default_limit
-            @schema_class.resolve_option(:pagination, :default_size)
+            @schema_class.adapter_config.pagination.default_size
           end
 
           def build_metadata(page_number, limit)

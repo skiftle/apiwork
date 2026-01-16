@@ -76,7 +76,7 @@ module Apiwork
       # @return [Set<Object>] unique option values
       def options_for(option, key = nil)
         @structure.schema_classes
-          .filter_map { |schema| schema.resolve_option(option, key) }
+          .filter_map { |schema| schema.adapter_config.dig(option, key) }
           .to_set
       end
 
