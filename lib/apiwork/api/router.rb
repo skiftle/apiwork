@@ -16,7 +16,19 @@ module Apiwork
             if api_class.exports?
               scope path: api_class.path do
                 api_class.exports.each do |export_name|
-                  get api_class.export_path(export_name),
+                  config = api_class.export_config(export_name)
+                  next unless config
+
+                  should_mount = case config.endpoint.mode
+                                 when :always then true
+                                 when :never then false
+                                 when :auto then Rails.env.development?
+                                 end
+
+                  next unless should_mount
+
+                  path = config.endpoint.path || "/.#{export_name}"
+                  get path,
                       defaults: { export_name:, api_path: api_class.path },
                       to: 'apiwork/exports#show'
                 end

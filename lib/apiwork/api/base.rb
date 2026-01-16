@@ -21,7 +21,6 @@ module Apiwork
         attr_reader :adapter_config,
                     :enum_registry,
                     :export_configs,
-                    :exports,
                     :structure,
                     :type_registry
 
@@ -85,9 +84,12 @@ module Apiwork
         #     export :openapi
         #   end
         #
-        # @example With custom path
+        # @example With endpoint config
         #   export :typescript do
-        #     path '/types.ts'
+        #     endpoint do
+        #       mode :always
+        #       path '/types.ts'
+        #     end
         #   end
         def export(name, &block)
           unless Export.exists?(name)
@@ -97,15 +99,20 @@ module Apiwork
                   "Available: #{available}"
           end
 
-          @exports.add(name)
-          @export_configs[name] ||= {}
-          @export_configs[name][:path] ||= "/.#{name}"
+          unless @export_configs[name]
+            export_class = Export.find!(name)
 
-          return unless block
+            options = Configurable.define(extends: export_class) do
+              option :endpoint, type: :hash do
+                option :mode, default: :auto, enum: %i[auto always never], type: :symbol
+                option :path, type: :string
+              end
+            end
 
-          export_class = Export.find!(name)
-          config = Configuration.new(export_class, @export_configs[name])
-          config.instance_eval(&block)
+            @export_configs[name] = Configuration.new(options)
+          end
+
+          @export_configs[name].instance_eval(&block) if block
         end
 
         # @api public
@@ -492,7 +499,6 @@ module Apiwork
           @path = path
           @info = nil
           @raises = []
-          @exports = Set.new
           @export_configs = {}
           @adapter_config = {}
           @structure = Structure.new(path)
@@ -531,16 +537,16 @@ module Apiwork
           transform_response_keys(hash)
         end
 
-        def export_path(name)
-          @export_configs.dig(name, :path) || "/.#{name}"
+        def export_config(name)
+          @export_configs[name]
         end
 
-        def export_config(name)
-          @export_configs[name] || {}
+        def exports
+          @export_configs.keys
         end
 
         def exports?
-          @exports.any?
+          @export_configs.any?
         end
 
         def type?(name, scope: nil)

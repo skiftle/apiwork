@@ -194,11 +194,20 @@ module Apiwork
         @api_path = api_path
         @api_class = API.find!(api_path)
 
-        @options = self.class.default_options.merge(options.compact)
+        config = @api_class.export_config(self.class.export_name)
+        api_config = config ? extract_options_from_config(config) : {}
+        @options = self.class.default_options.merge(api_config).merge(options.compact)
         @options[:key_format] ||= @api_class.key_format || :keep
         validate_options!
 
         @introspection = @api_class.introspect(locale: @options[:locale])
+      end
+
+      def extract_options_from_config(config)
+        self.class.options.keys.each_with_object({}) do |key, hash|
+          value = config.public_send(key)
+          hash[key] = value unless value.nil?
+        end
       end
 
       def validate_options!

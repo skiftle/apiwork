@@ -4,6 +4,16 @@ module Apiwork
   module Configurable
     extend ActiveSupport::Concern
 
+    def self.define(extends: nil, &block)
+      Class.new do
+        include Configurable
+
+        self.options = extends.options.dup if extends.respond_to?(:options)
+
+        class_eval(&block) if block
+      end
+    end
+
     included do
       class_attribute :options, default: {}, instance_predicate: false
     end

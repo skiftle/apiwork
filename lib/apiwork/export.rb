@@ -56,8 +56,9 @@ module Apiwork
       #   Apiwork::Export.generate(:openapi, '/api/v1')
       #   Apiwork::Export.generate(:openapi, '/api/v1', format: :yaml)
       #   Apiwork::Export.generate(:typescript, '/api/v1', locale: :es, key_format: :camel)
-      def generate(export_name, api_path, format: nil, key_format: nil, locale: nil, version: nil)
-        find!(export_name).generate(api_path, format:, key_format:, locale:, version:)
+      def generate(export_name, api_path, format: nil, **options)
+        export_class = find!(export_name)
+        export_class.generate(api_path, format:, **options)
       end
 
       def register_defaults!

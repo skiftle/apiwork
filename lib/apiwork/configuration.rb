@@ -11,10 +11,22 @@ module Apiwork
       @storage = storage
     end
 
-    def method_missing(name, value = nil, &block)
+    def method_missing(name, *args, &block)
       option = @options[name]
       raise ConfigurationError, "Unknown option: #{name}" unless option
 
+      if args.empty? && !block
+        stored = @storage[name]
+
+        if option.nested?
+          nested_storage = stored || {}
+          return Configuration.new(option, nested_storage)
+        end
+
+        return stored.nil? ? option.default : stored
+      end
+
+      value = args.first
       if block && option.nested?
         @storage[name] ||= {}
         Configuration.new(option, @storage[name]).instance_eval(&block)
