@@ -23,6 +23,10 @@ export :typescript do
 end
 ```
 
+| Option    | Values   | Default |
+| --------- | -------- | ------- |
+| `version` | `4`, `5` | `5`     |
+
 ## Output
 
 The generated output includes:

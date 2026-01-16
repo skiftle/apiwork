@@ -6,7 +6,7 @@ order: 1
 
 Exports describe your API in formats understood by external tools.
 
-Built-in exports include OpenAPI, TypeScript, and Zod, but exports are a general mechanism that can be extended with [custom formats](../../advanced/custom-exports.md).
+Built-in exports include OpenAPI, TypeScript, and Zod, but exports are a general mechanism that can be extended with [custom exports](../../advanced/custom-exports.md).
 
 Exports are generated from [introspection](../introspection/introduction.md) — the unified representation of your API definitions, contracts, and schemas. Instead of maintaining separate specification files, exports are derived directly from this structure and always reflect the current API.
 
@@ -53,20 +53,22 @@ curl http://localhost:3000/api/v1/.openapi?format=yaml
 curl http://localhost:3000/api/v1/.typescript?key_format=camel
 ```
 
-| Parameter    | Values                                 | Default          | Applies To |
-| ------------ | -------------------------------------- | ---------------- | ---------- |
-| `key_format` | `keep`, `camel`, `kebab`, `underscore` | API's key_format | All        |
-| `locale`     | Any locale symbol                      | —                | All        |
-| `format`     | `json`, `yaml`                         | `json`           | OpenAPI    |
-| `version`    | See below                              | Export default   | Per export |
+**Universal options** (available for all exports):
 
-Export versions:
+| Parameter    | Values                                 | Default          |
+| ------------ | -------------------------------------- | ---------------- |
+| `key_format` | `keep`, `camel`, `kebab`, `underscore` | API's key_format |
+| `locale`     | Any locale symbol                      | —                |
 
-| Export     | Versions | Default |
-| ---------- | -------- | ------- |
-| OpenAPI    | `3.1.0`  | `3.1.0` |
-| TypeScript | `4`, `5` | `5`     |
-| Zod        | `4`      | `4`     |
+**Serialization** (hash exports only):
+
+| Parameter | Values         | Default |
+| --------- | -------------- | ------- |
+| `format`  | `json`, `yaml` | `json`  |
+
+Each export may define additional options — see [OpenAPI](./openapi.md), [TypeScript](./typescript.md), [Zod](./zod.md).
+
+Custom exports can define their own options — see [Custom Exports](../../advanced/custom-exports.md).
 
 #### Option Precedence
 

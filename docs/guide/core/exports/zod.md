@@ -23,6 +23,10 @@ export :zod do
 end
 ```
 
+| Option    | Values | Default |
+| --------- | ------ | ------- |
+| `version` | `4`    | `4`     |
+
 ## Output
 
 The generated output includes:
@@ -80,10 +84,6 @@ const validated = PostCreateRequestSchema.parse(formData);
 // Validate response from API
 const post = PostSchema.parse(await response.json());
 ```
-
-## Version
-
-Generates schemas compatible with **Zod v4**.
 
 ## Ordering
 

@@ -23,6 +23,11 @@ export :openapi do
 end
 ```
 
+| Option    | Values         | Default |
+| --------- | -------------- | ------- |
+| `version` | `3.1.0`        | `3.1.0` |
+| `format`  | `json`, `yaml` | `json`  |
+
 ## API Metadata
 
 Provide metadata in the `info` block:
@@ -150,10 +155,6 @@ end
 Appears in the OpenAPI export as possible responses.
 
 [Contracts: Actions](../contracts/actions.md#metadata) shows how to add `summary`, `description`, `tags`, and `operation_id` to your actions.
-
-## Version
-
-Generates specifications following **OpenAPI 3.1.0**.
 
 #### See also
 
