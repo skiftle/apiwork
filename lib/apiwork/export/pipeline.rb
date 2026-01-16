@@ -63,8 +63,8 @@ module Apiwork
           Rails.logger.debug "  ✓ #{api_path} to #{export_name}#{options_label}"
 
           content = generate(export_name, api_path, format:, key_format:, locale:, version:)
-          export = Registry.find!(export_name).new(api_path, key_format:, locale:, version:)
-          extension = export.file_extension_for(format:)
+          export_class = Registry.find!(export_name)
+          extension = export_class.file_extension_for(format:)
 
           file_path = Writer.write(
             api_path:,

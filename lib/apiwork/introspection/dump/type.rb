@@ -103,10 +103,8 @@ module Apiwork
         end
 
         def build_variant(variant, scope)
-          is_registered = registered_type?(variant[:custom_type] || variant[:type])
-
-          ref = is_registered ? variant_type : nil
-          resolved_type = is_registered ? :ref : (variant[:type] || :unknown)
+          ref = resolve_type_ref(variant[:custom_type] || variant[:type], scope)
+          resolved_type = ref ? :ref : (variant[:type] || :unknown)
 
           {
             ref:,

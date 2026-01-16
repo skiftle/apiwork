@@ -66,15 +66,49 @@ module Apiwork
         end
 
         def generate(api_path, format: nil, **options)
-          export = new(api_path, **options)
           resolved_format = format || :json
 
-          if export.hash_output? && !export.supports_format?(resolved_format)
+          if hash_output? && !supports_format?(resolved_format)
             raise ArgumentError, "#{export_name} export does not support #{resolved_format} format"
           end
 
+          export = new(api_path, **options)
           content = export.generate
           export.serialize(content, format: resolved_format)
+        end
+
+        def hash_output?
+          output_type == :hash
+        end
+
+        def string_output?
+          output_type == :string
+        end
+
+        def supports_format?(format)
+          return true if hash_output? && %i[json yaml].include?(format)
+
+          false
+        end
+
+        def file_extension_for(format: nil)
+          resolved = format || :json
+
+          if hash_output?
+            resolved == :yaml ? '.yaml' : '.json'
+          else
+            file_extension
+          end
+        end
+
+        def content_type_for(format: nil)
+          resolved = format || :json
+
+          if hash_output?
+            resolved == :yaml ? 'application/yaml' : 'application/json'
+          else
+            'text/plain; charset=utf-8'
+          end
         end
 
         # @api public
@@ -185,40 +219,6 @@ module Apiwork
       # @see Introspection::API
       def generate
         raise NotImplementedError, "#{self.class} must implement #generate"
-      end
-
-      def hash_output?
-        self.class.output_type == :hash
-      end
-
-      def string_output?
-        self.class.output_type == :string
-      end
-
-      def supports_format?(format)
-        return true if hash_output? && %i[json yaml].include?(format)
-
-        false
-      end
-
-      def file_extension_for(format: nil)
-        resolved = format || :json
-
-        if hash_output?
-          resolved == :yaml ? '.yaml' : '.json'
-        else
-          self.class.file_extension
-        end
-      end
-
-      def content_type_for(format: nil)
-        resolved = format || :json
-
-        if hash_output?
-          resolved == :yaml ? 'application/yaml' : 'application/json'
-        else
-          'text/plain; charset=utf-8'
-        end
       end
 
       def serialize(content, format:)

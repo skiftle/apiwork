@@ -164,21 +164,21 @@ RSpec.describe Apiwork::Export::OpenAPI do
 
   describe 'file extension' do
     it 'returns .json for JSON format' do
-      expect(generator.file_extension_for(format: :json)).to eq('.json')
+      expect(described_class.file_extension_for(format: :json)).to eq('.json')
     end
 
     it 'returns .yaml for YAML format' do
-      expect(generator.file_extension_for(format: :yaml)).to eq('.yaml')
+      expect(described_class.file_extension_for(format: :yaml)).to eq('.yaml')
     end
   end
 
   describe 'content type' do
     it 'returns application/json for JSON format' do
-      expect(generator.content_type_for(format: :json)).to eq('application/json')
+      expect(described_class.content_type_for(format: :json)).to eq('application/json')
     end
 
     it 'returns application/yaml for YAML format' do
-      expect(generator.content_type_for(format: :yaml)).to eq('application/yaml')
+      expect(described_class.content_type_for(format: :yaml)).to eq('application/yaml')
     end
   end
 

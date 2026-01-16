@@ -49,17 +49,24 @@ Endpoints generate on each request — convenient for development, but not ideal
 Pass options as query parameters:
 
 ```bash
-curl http://localhost:3000/api/v1/.typescript?key_format=camel
 curl http://localhost:3000/api/v1/.openapi?format=yaml
+curl http://localhost:3000/api/v1/.typescript?key_format=camel
 ```
 
-Available parameters:
+| Parameter    | Values                                 | Default          | Applies To |
+| ------------ | -------------------------------------- | ---------------- | ---------- |
+| `key_format` | `keep`, `camel`, `kebab`, `underscore` | API's key_format | All        |
+| `locale`     | Any locale symbol                      | —                | All        |
+| `format`     | `json`, `yaml`                         | `json`           | OpenAPI    |
+| `version`    | See below                              | Export default   | Per export |
 
-| Parameter    | Values                                 | Default          |
-| ------------ | -------------------------------------- | ---------------- |
-| `key_format` | `keep`, `camel`, `kebab`, `underscore` | API's key_format |
-| `locale`     | Any locale symbol                      | —                |
-| `format`     | `json`, `yaml`                         | `json`           |
+Export versions:
+
+| Export     | Versions | Default |
+| ---------- | -------- | ------- |
+| OpenAPI    | `3.1.0`  | `3.1.0` |
+| TypeScript | `4`, `5` | `5`     |
+| Zod        | `4`      | `4`     |
 
 #### Option Precedence
 
