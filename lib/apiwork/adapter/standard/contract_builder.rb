@@ -662,8 +662,8 @@ module Apiwork
 
           create_type_name = :nested_create_payload
           builder = self
-          id_attribute = schema_class.attributes[:id]
-          id_type = id_attribute ? map_type(id_attribute.type) : :integer
+          model_class = schema_class.model_class
+          id_type = map_type(model_class.type_for_attribute(model_class.primary_key).type)
 
           unless registrar.type?(create_type_name)
             registrar.object(create_type_name) do
