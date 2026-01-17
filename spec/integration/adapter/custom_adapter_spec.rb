@@ -93,8 +93,12 @@ RSpec.describe 'Custom Adapter', type: :integration do
       expect(adapter).to respond_to(:render_error)
     end
 
-    it 'responds to transform_request' do
-      expect(adapter).to respond_to(:transform_request)
+    it 'responds to normalize_request' do
+      expect(adapter).to respond_to(:normalize_request)
+    end
+
+    it 'responds to prepare_request' do
+      expect(adapter).to respond_to(:prepare_request)
     end
 
     it 'responds to transform_response' do

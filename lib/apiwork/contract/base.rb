@@ -515,17 +515,24 @@ module Apiwork
         api_class.adapter
       end
 
-      def initialize(action_name, query, body, coerce: false)
-        query = api_class.transform_request(query)
-        query = adapter.transform_request(query)
-        body = api_class.transform_request(body)
-        body = adapter.transform_request(body)
+      def normalize_request(body:, query:)
+        normalized = api_class.normalize_request(body:, query:)
+        adapter.normalize_request(body: normalized[:body], query: normalized[:query])
+      end
 
+      def prepare_request(body:, query:)
+        prepared = api_class.prepare_request(body:, query:)
+        adapter.prepare_request(body: prepared[:body], query: prepared[:query])
+      end
+
+      def initialize(action_name, query, body, coerce: false)
+        normalize_request(body:, query:) => { query:, body: }
         result = RequestParser.new(self.class, action_name, coerce:).parse(query, body)
+        prepare_request(body: result.body, query: result.query) => { query:, body: }
 
         @action_name = action_name.to_sym
-        @query = adapter.transform_params(result.query)
-        @body = adapter.transform_params(result.body)
+        @query = query
+        @body = body
         @issues = result.issues
       end
 

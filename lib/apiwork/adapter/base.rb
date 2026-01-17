@@ -113,13 +113,25 @@ module Apiwork
       end
 
       # @api public
-      # Transforms incoming request parameters.
+      # Normalizes incoming request parameters before validation.
       # Override to customize key casing, unwrapping, etc.
       #
-      # @param hash [Hash] the request parameters
-      # @return [Hash] the transformed parameters
-      def transform_request(hash)
-        hash
+      # @param query [Hash] the query parameters
+      # @param body [Hash] the body parameters
+      # @return [Hash] hash with :query and :body keys
+      def normalize_request(query:, body:)
+        { query:, body: }
+      end
+
+      # @api public
+      # Prepares validated parameters before the controller receives them.
+      # Override to apply semantic transformations (e.g., _op to _destroy).
+      #
+      # @param query [Hash] the validated query parameters
+      # @param body [Hash] the validated body parameters
+      # @return [Hash] hash with :query and :body keys
+      def prepare_request(query:, body:)
+        { query:, body: }
       end
 
       # @api public
@@ -131,16 +143,6 @@ module Apiwork
       # @return [Hash] the transformed response
       def transform_response(hash, schema_class)
         hash
-      end
-
-      # @api public
-      # Transforms validated parameters before the controller receives them.
-      # Override to apply semantic transformations (e.g., _op to _destroy).
-      #
-      # @param params [Hash] the validated parameters
-      # @return [Hash] the transformed parameters
-      def transform_params(params)
-        params
       end
 
       def build_api_registrar(api_class)

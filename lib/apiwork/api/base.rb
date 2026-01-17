@@ -542,8 +542,15 @@ module Apiwork
           end
         end
 
-        def transform_request(hash)
-          transform_request_keys(hash)
+        def normalize_request(query:, body:)
+          {
+            query: transform_request_keys(query),
+            body: transform_request_keys(body),
+          }
+        end
+
+        def prepare_request(query:, body:)
+          { query:, body: }
         end
 
         def transform_response(hash)
