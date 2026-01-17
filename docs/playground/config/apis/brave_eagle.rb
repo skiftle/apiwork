@@ -3,6 +3,10 @@
 Apiwork::API.define '/brave_eagle' do
   key_format :camel
 
+  export :openapi
+  export :typescript
+  export :zod
+
   info do
     title 'Task Management API'
     version '1.0.0'

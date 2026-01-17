@@ -111,9 +111,9 @@ class ExampleGenerator
   end
 
   def write_specs(api_class, dir)
-    write_typescript(api_class, dir)
-    write_zod(api_class, dir)
-    write_openapi(api_class, dir)
+    write_typescript(api_class, dir) if api_class.export_configs.key?(:typescript)
+    write_zod(api_class, dir) if api_class.export_configs.key?(:zod)
+    write_openapi(api_class, dir) if api_class.export_configs.key?(:openapi)
     write_introspection(api_class, dir)
   end
 

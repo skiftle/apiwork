@@ -447,9 +447,10 @@ module Apiwork
         def discriminated!(as: nil, by: nil)
           ensure_auto_detection_complete
 
+          column = by || model_class.inheritance_column.to_sym
           self.union = Union.new(
-            column: by || model_class.inheritance_column.to_sym,
-            discriminator: as || resolved_column,
+            column:,
+            discriminator: as || column,
           )
 
           self
