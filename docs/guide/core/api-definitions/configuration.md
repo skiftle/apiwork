@@ -114,7 +114,7 @@ Apiwork::API.define '/api/v1' do
 end
 ```
 
-[Execution Engine](../execution-engine/introduction.md) covers pagination strategies, filtering operators, and sorting options.
+[Standard Adapter](../adapters/standard-adapter/introduction.md) covers pagination strategies, filtering operators, and sorting options.
 
 ### Using a Custom Adapter
 

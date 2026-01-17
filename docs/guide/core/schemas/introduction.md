@@ -82,21 +82,21 @@ end
 
 With `schema!`, Apiwork auto-generates request bodies, response shapes, filter types, sort options and includes — all from the schema definition.
 
-At runtime, the [Execution Engine](../execution-engine/introduction.md) interprets these definitions and handles validation, querying, and serialization automatically.
+At runtime, the [adapter](../adapters/introduction.md) interprets these definitions and handles validation, querying, and serialization automatically.
 
 ## Schemas as Instructions
 
-Schemas are purely declarative — they describe *what* exists, not *how* to process it. The [Execution Engine](../execution-engine/introduction.md) interprets your schema and handles everything: building contracts, validating requests, querying the database, and serializing responses.
+Schemas are purely declarative — they describe *what* exists, not *how* to process it. The [adapter](../adapters/introduction.md) interprets your schema and handles everything: building contracts, validating requests, querying the database, and serializing responses.
 
-Schema definitions also tell the Execution Engine:
+Schema definitions also tell the adapter:
 
-- Which fields are safe to [filter](../execution-engine/filtering.md) on
-- Which attributes can be [sorted](../execution-engine/sorting.md) by
-- How results are [paginated](../execution-engine/pagination.md)
-- Which associations can be [included](../execution-engine/includes.md)
+- Which fields are safe to [filter](../adapters/standard-adapter/filtering.md) on
+- Which attributes can be [sorted](../adapters/standard-adapter/sorting.md) by
+- How results are [paginated](../adapters/standard-adapter/pagination.md)
+- Which associations can be [included](../adapters/standard-adapter/includes.md)
 - How nested writes should be handled
 
-The Execution Engine uses schema definitions for all API behavior.
+The adapter uses schema definitions for all API behavior.
 
 ## Root Key
 
@@ -128,7 +128,7 @@ The built-in adapter wraps single records in the singular form, and collections 
 }
 ```
 
-Request bodies follow the same pattern — create and update payloads are wrapped in the singular root key. See [Serialization](../execution-engine/serialization.md) for details on how the adapter transforms data.
+Request bodies follow the same pattern — create and update payloads are wrapped in the singular root key. See [Serialization](../adapters/standard-adapter/serialization.md) for details on how the adapter transforms data.
 
 Override when you need a different name:
 

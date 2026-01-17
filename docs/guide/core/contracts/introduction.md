@@ -8,7 +8,7 @@ Contracts define what goes in and what comes out of each resource action.
 
 Resource actions are defined by your [API definitions](../api-definitions/introduction.md). For example, a `resources :posts` declaration exposes the standard CRUD actions (`index`, `show`, `create`, `update`, `destroy`), each of which can be described and enforced by a contract.
 
-You declare the shape of requests and responses using the [type system](../type-system/introduction.md). At runtime, Apiwork executes these contracts as a typed boundary: coercing input values into their declared types (booleans, numbers, dates, datetimes, times, decimals, enums, and more), validating constraints, rejecting invalid data, and logging response mismatches in development.
+You declare the shape of requests and responses using [types](../types/introduction.md). At runtime, Apiwork executes these contracts as a typed boundary: coercing input values into their declared types (booleans, numbers, dates, datetimes, times, decimals, enums, and more), validating constraints, rejecting invalid data, and logging response mismatches in development.
 
 ## A Minimal Contract
 

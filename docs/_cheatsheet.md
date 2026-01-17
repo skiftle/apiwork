@@ -655,9 +655,9 @@ export const InvoiceFilterSchema = z.object({
 
 #### See also
 
-- [Filtering](core/execution-engine/filtering.md) — operators, types, validation
-- [Sorting](core/execution-engine/sorting.md) — multi-field, associations
-- [Pagination](core/execution-engine/pagination.md) — offset vs cursor strategies
-- [Includes](core/execution-engine/includes.md) — eager loading, nesting
+- [Filtering](core/adapters/standard-adapter/filtering.md) — operators, types, validation
+- [Sorting](core/adapters/standard-adapter/sorting.md) — multi-field, associations
+- [Pagination](core/adapters/standard-adapter/pagination.md) — offset vs cursor strategies
+- [Includes](core/adapters/standard-adapter/includes.md) — eager loading, nesting
 - [Associations](core/schemas/associations.md) — writable, filterable, polymorphic
 - [Error Responses](core/errors/introduction.md) — contract, domain, HTTP layers

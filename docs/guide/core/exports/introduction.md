@@ -6,7 +6,7 @@ order: 1
 
 Exports describe your API in formats understood by external tools.
 
-Built-in exports include OpenAPI, TypeScript, and Zod, but exports are a general mechanism that can be extended with [custom exports](../../advanced/custom-exports.md).
+Built-in exports include OpenAPI, TypeScript, and Zod, but exports are a general mechanism that can be extended with [custom exports](./custom-exports.md).
 
 Exports are generated from [introspection](../introspection/introduction.md) — the unified representation of your API definitions, contracts, and schemas. Instead of maintaining separate specification files, exports are derived directly from this structure and always reflect the current API.
 
@@ -72,7 +72,7 @@ curl http://localhost:3000/api/v1/.typescript?key_format=camel
 
 Each export may define additional options — see [OpenAPI](./openapi.md), [TypeScript](./typescript.md), [Zod](./zod.md).
 
-Custom exports can define their own options — see [Custom Exports](../../advanced/custom-exports.md).
+Custom exports can define their own options — see [Custom Exports](./custom-exports.md).
 
 #### Option Precedence
 
@@ -253,5 +253,5 @@ Consider caching the response at the HTTP level (Rack middleware, reverse proxy,
 
 #### See also
 
-- [Custom Exports](../../advanced/custom-exports.md) — creating your own export formats
+- [Custom Exports](./custom-exports.md) — creating your own export formats
 - [Export reference](../../../reference/export.md) — programmatic generation API

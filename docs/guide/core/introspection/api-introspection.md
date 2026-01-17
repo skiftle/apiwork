@@ -93,7 +93,7 @@ Pass `locale:` for translated descriptions:
 api = Apiwork::API.introspect('/api/v1', locale: :sv)
 ```
 
-Translations come from your I18n files. See [i18n](../../advanced/i18n.md) for configuration.
+Translations come from your I18n files.
 
 ---
 

@@ -107,10 +107,6 @@ Apiwork::ErrorCode.register :account_frozen, status: 403
 
 Status must be 400-599.
 
-## i18n
-
-Error messages support translations. See the [i18n section](/guide/advanced/i18n) for details.
-
 ## Examples
 
 ### Not Found

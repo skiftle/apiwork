@@ -1,10 +1,10 @@
 ---
-order: 2
+order: 3
 ---
 
 # Custom Adapters
 
-The built-in adapter handles filtering, sorting, pagination, and serialization for ActiveRecord models. Custom adapters let you change *how* these are done — different pagination formats, custom response structures, specialized filtering logic, or alternative serialization strategies.
+The [standard adapter](./standard-adapter/introduction.md) handles filtering, sorting, pagination, and serialization for ActiveRecord models. Custom adapters let you change *how* these are done — different pagination formats, custom response structures, specialized filtering logic, or alternative serialization strategies.
 
 ::: info
 Schemas require ActiveRecord models for type inference and association discovery. Custom adapters customize behavior, not the underlying data layer.

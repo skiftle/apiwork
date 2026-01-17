@@ -204,7 +204,7 @@ attribute :title, filterable: true
 attribute :status, filterable: true
 ```
 
-For query syntax, operators, and logical combinators, see [Filtering](../execution-engine/filtering.md).
+For query syntax, operators, and logical combinators, see [Filtering](../adapters/standard-adapter/filtering.md).
 
 ---
 
@@ -220,7 +220,7 @@ Only attributes backed by a database column can be sortable.
 attribute :created_at, sortable: true
 ```
 
-For query syntax and multi-field sorting, see [Sorting](../execution-engine/sorting.md).
+For query syntax and multi-field sorting, see [Sorting](../adapters/standard-adapter/sorting.md).
 
 ---
 
@@ -641,7 +641,7 @@ end
 
 ### Field Types
 
-Inside `object` blocks, all [scalar and structure types](../type-system/types.md) are available: `string`, `integer`, `boolean`, `datetime`, `object`, `array`, etc.
+Inside `object` blocks, all [scalar and structure types](../types/types.md) are available: `string`, `integer`, `boolean`, `datetime`, `object`, `array`, etc.
 
 Each field accepts options: `optional`, `nullable`, `description`, `example`, `enum`, `min`, `max`.
 

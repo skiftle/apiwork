@@ -4,7 +4,7 @@ order: 6
 
 # Single Table Inheritance
 
-Apiwork represents Rails Single Table Inheritance (STI) hierarchies as [discriminated unions](../type-system/unions.md#discriminated-unions). The base class becomes a union type, each subclass becomes a variant, and a discriminator field identifies which variant a record belongs to. This enables type-safe serialization where each variant includes only its own attributes.
+Apiwork represents Rails Single Table Inheritance (STI) hierarchies as [discriminated unions](../types/unions.md#discriminated-unions). The base class becomes a union type, each subclass becomes a variant, and a discriminator field identifies which variant a record belongs to. This enables type-safe serialization where each variant includes only its own attributes.
 
 ## Setup
 

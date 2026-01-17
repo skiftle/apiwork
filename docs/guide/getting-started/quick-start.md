@@ -199,9 +199,9 @@ With minimal code, you now have:
 
 1. **Validation** — Requests are validated against your schema before reaching the controller
 2. **Serialization** — Responses are automatically formatted using the schema
-3. **[Filtering](../core/execution-engine/filtering.md)** — `filterable: true` fields can be filtered via `?filter[field][op]=value`
-4. **[Sorting](../core/execution-engine/sorting.md)** — `sortable: true` fields can be sorted via `?sort[field]=asc|desc`
-5. **[Pagination](../core/execution-engine/pagination.md)** — Built-in offset-based pagination via `?page[number]=1&page[size]=10`
+3. **[Filtering](../core/adapters/standard-adapter/filtering.md)** — `filterable: true` fields can be filtered via `?filter[field][op]=value`
+4. **[Sorting](../core/adapters/standard-adapter/sorting.md)** — `sortable: true` fields can be sorted via `?sort[field]=asc|desc`
+5. **[Pagination](../core/adapters/standard-adapter/pagination.md)** — Built-in offset-based pagination via `?page[number]=1&page[size]=10`
 6. **[Exports](../core/exports/introduction.md)** — OpenAPI, TypeScript, and Zod exports generated from the same source
 
 ## There's More
@@ -210,13 +210,13 @@ This was the simplest possible example. Apiwork also supports:
 
 - **Associations** — sideloading via `?include=comments`
 - **Nested writes** — create or update related records in a single request
-- **[Includes](../core/execution-engine/includes.md)** — control which associations appear in responses
-- **[Advanced filtering](../core/execution-engine/filtering.md)** — operators like `contains`, `starts_with`, and `_and`/`_or` logic
-- **[Cursor pagination](../core/execution-engine/pagination.md#cursor-pagination)** — for large datasets
+- **[Includes](../core/adapters/standard-adapter/includes.md)** — control which associations appear in responses
+- **[Advanced filtering](../core/adapters/standard-adapter/filtering.md)** — operators like `contains`, `starts_with`, and `_and`/`_or` logic
+- **[Cursor pagination](../core/adapters/standard-adapter/pagination.md#cursor-pagination)** — for large datasets
 - **Custom types** — enums, unions, and polymorphic associations
 
 ## Next Steps
 
-- [Execution Engine](../core/execution-engine/introduction.md) — filtering, sorting, pagination, and eager loading in depth
+- [Adapters](../core/adapters/introduction.md) — filtering, sorting, pagination, and eager loading in depth
 - [Contracts](../core/contracts/introduction.md) — custom validation and action-specific params
 - [Schemas](../core/schemas/introduction.md) — associations, computed attributes, and more

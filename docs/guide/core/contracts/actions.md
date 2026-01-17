@@ -175,7 +175,7 @@ These appear in generated [OpenAPI exports](../exports/openapi.md) as possible e
 Actions support declaration merging. When you define an action that already exists, the definitions combine rather than replace.
 
 ::: info Same pattern for types
-This is the same merge behavior used for [type definitions](../type-system/merging.md). The concept applies consistently across Apiwork.
+This is the same merge behavior used for [type definitions](../types/merging.md). The concept applies consistently across Apiwork.
 :::
 
 ### The Concept
@@ -347,8 +347,6 @@ end
 ### Translations
 
 Summaries and descriptions can be translated. Define them in locale files instead of inline, and they'll change with `I18n.locale`.
-
-[i18n: Action Metadata](../../advanced/i18n.md#action-metadata) shows how to set up locale files for multilingual documentation.
 
 #### See also
 

@@ -4,7 +4,7 @@ order: 1
 
 # Introduction
 
-The **Type System** defines the language used by Apiwork contracts.
+Types define the structure of data in your contracts.
 
 It describes data shapes, constraints, and semantics declaratively. These definitions express what data is allowed at the API boundary — and how it is interpreted.
 
@@ -14,7 +14,7 @@ Types are defined in Ruby, but are purely declarative. They describe both the wi
 
 ## Three Concepts
 
-The type system has three distinct concepts:
+There are three distinct concepts:
 
 | Concept    | Purpose                           | DSL                         |
 | ---------- | --------------------------------- | --------------------------- |
@@ -52,9 +52,9 @@ enum :status, values: %w[draft sent paid]
 
 ---
 
-## What the Type System Defines
+## What Types Define
 
-The type system defines:
+Types define:
 
 - What fields exist
 - Which values are allowed
@@ -68,7 +68,7 @@ It does **not** define runtime behavior, such as:
 - how data is queried
 - how responses are rendered
 
-Those concerns belong to the [Execution Engine](../execution-engine/introduction.md).
+Those concerns belong to the [Adapter](../adapters/introduction.md).
 
 ---
 

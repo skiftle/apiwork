@@ -8,7 +8,7 @@ Apiwork is built around four core layers: **API definitions**, **contracts**, **
 
 API definitions describe your API surface and endpoints. Contracts define the data model and constraints at the boundary. Schemas act as a bridge between your domain models and the contract, while adapters interpret schemas and provide the runtime.
 
-Together they form a single source of truth that drives both [introspection](../core/introspection/introduction.md) and [execution](../core/execution-engine/introduction.md).
+Together they form a single source of truth that drives both [introspection](../core/introspection/introduction.md) and [execution](../core/adapters/introduction.md).
 
 You can use Apiwork with just API definitions and contracts, or add schemas and adapters to run a fully executable API. Apiwork ships with a built-in adapter that provides a complete API runtime out of the box.
 
@@ -166,7 +166,7 @@ From this, Apiwork generates:
 - Filter types (filterable fields only)
 - Sort types (sortable fields only)
 
-See [Action Defaults](../core/execution-engine/action-defaults.md) for what gets generated, and [Schemas](../core/schemas/introduction.md) for the full guide.
+See [Action Defaults](../core/adapters/standard-adapter/action-defaults.md) for what gets generated, and [Schemas](../core/schemas/introduction.md) for the full guide.
 
 ### Customizing Generated Actions
 

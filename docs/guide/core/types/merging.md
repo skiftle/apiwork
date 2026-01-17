@@ -104,21 +104,6 @@ class InvoiceContract < Apiwork::Contract::Base
 end
 ```
 
-## i18n Alternative
-
-You can also use [i18n](/guide/advanced/i18n) for descriptions:
-
-```yaml
-# config/locales/apiwork.en.yml
-en:
-  apiwork:
-    types:
-      invoice_filter:
-        description: "Filter invoices by date, status, or customer"
-```
-
-Merging takes precedence over i18n.
-
 #### See also
 
 - [Contract::Base reference](../../../reference/contract-base.md) — type definition methods

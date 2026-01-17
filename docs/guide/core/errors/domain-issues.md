@@ -102,7 +102,7 @@ errors.add(:transfer, :insufficient_funds)
 
 **Why not pass Rails messages?** Messages are for humans, codes are for machines. Rails messages can contain interpolations or model names that don't fit an API context.
 
-You control the `detail` via [i18n](../../advanced/i18n.md#domain-issues). Default is the code titleized (`:insufficient_funds` becomes "Insufficient funds").
+The `detail` defaults to the code titleized (`:insufficient_funds` becomes "Insufficient funds").
 
 ## Record-Level Errors
 
@@ -152,10 +152,6 @@ All 23 domain error codes:
 | `format`    | Invalid format    | —                              |
 | `associated`| Invalid           | —                              |
 | `invalid`   | Invalid           | —                              |
-
-::: tip
-Translate detail messages via i18n. See [i18n](../../advanced/i18n.md#domain-issues).
-:::
 
 ## Meta Reference
 

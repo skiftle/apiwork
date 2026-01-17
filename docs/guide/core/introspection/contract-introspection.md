@@ -82,7 +82,7 @@ Pass `locale:` for translated descriptions:
 InvoiceContract.introspect(locale: :sv)
 ```
 
-Translations come from your I18n files. See [i18n](../../advanced/i18n.md) for configuration.
+Translations come from your I18n files.
 
 ---
 
