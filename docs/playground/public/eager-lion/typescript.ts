@@ -162,7 +162,7 @@ export interface LineNestedCreatePayload {
   _destroy?: boolean;
   _type: 'create';
   description?: null | string;
-  id?: number;
+  id?: string;
   price?: null | number;
   quantity?: null | number;
 }
@@ -173,7 +173,7 @@ export interface LineNestedUpdatePayload {
   _destroy?: boolean;
   _type: 'update';
   description?: null | string;
-  id?: number;
+  id?: string;
   price?: null | number;
   quantity?: null | number;
 }

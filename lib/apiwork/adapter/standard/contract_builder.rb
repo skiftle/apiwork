@@ -662,12 +662,13 @@ module Apiwork
 
           create_type_name = :nested_create_payload
           builder = self
-          schema_class
+          id_attribute = schema_class.attributes[:id]
+          id_type = id_attribute ? map_type(id_attribute.type) : :integer
 
           unless registrar.type?(create_type_name)
             registrar.object(create_type_name) do
               literal :_type, value: 'create'
-              integer :id, optional: true
+              param :id, optional: true, type: id_type
               builder.writable_params(self, :create, nested: true)
               boolean :_destroy, optional: true
             end
@@ -677,7 +678,7 @@ module Apiwork
           unless registrar.type?(update_type_name)
             registrar.object(update_type_name) do
               literal :_type, value: 'update'
-              integer :id, optional: true
+              param :id, optional: true, type: id_type
               builder.writable_params(self, :update, nested: true)
               boolean :_destroy, optional: true
             end

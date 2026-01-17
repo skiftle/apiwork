@@ -191,7 +191,7 @@ components:
           const: create
           type: string
         id:
-          type: integer
+          type: string
         productName:
           type: string
         quantity:
@@ -223,7 +223,7 @@ components:
           const: update
           type: string
         id:
-          type: integer
+          type: string
         productName:
           type: string
         quantity:
@@ -451,7 +451,7 @@ components:
         country:
           type: string
         id:
-          type: integer
+          type: string
         postalCode:
           type: string
         street:
@@ -484,7 +484,7 @@ components:
         country:
           type: string
         id:
-          type: integer
+          type: string
         postalCode:
           type: string
         street:

@@ -20,7 +20,7 @@ export const CommentNestedCreatePayloadSchema = z.object({
   _type: z.literal('create'),
   author: z.string(),
   body: z.string(),
-  id: z.number().int().optional()
+  id: z.string().optional()
 });
 
 export const CommentNestedUpdatePayloadSchema = z.object({
@@ -28,7 +28,7 @@ export const CommentNestedUpdatePayloadSchema = z.object({
   _type: z.literal('update'),
   author: z.string().optional(),
   body: z.string().optional(),
-  id: z.number().int().optional()
+  id: z.string().optional()
 });
 
 export const CommentPageSchema = z.object({
@@ -66,7 +66,7 @@ export const ProfileNestedCreatePayloadSchema = z.object({
   _destroy: z.boolean().optional(),
   _type: z.literal('create'),
   bio: z.string().nullable().optional(),
-  id: z.number().int().optional(),
+  id: z.string().optional(),
   website: z.string().nullable().optional()
 });
 
@@ -74,7 +74,7 @@ export const ProfileNestedUpdatePayloadSchema = z.object({
   _destroy: z.boolean().optional(),
   _type: z.literal('update'),
   bio: z.string().nullable().optional(),
-  id: z.number().int().optional(),
+  id: z.string().optional(),
   website: z.string().nullable().optional()
 });
 
@@ -176,7 +176,7 @@ export const PostNestedCreatePayloadSchema = z.object({
   _destroy: z.boolean().optional(),
   _type: z.literal('create'),
   comments: z.array(CommentNestedPayloadSchema).optional(),
-  id: z.number().int().optional(),
+  id: z.string().optional(),
   title: z.string()
 });
 
@@ -184,7 +184,7 @@ export const PostNestedUpdatePayloadSchema = z.object({
   _destroy: z.boolean().optional(),
   _type: z.literal('update'),
   comments: z.array(CommentNestedPayloadSchema).optional(),
-  id: z.number().int().optional(),
+  id: z.string().optional(),
   title: z.string().optional()
 });
 
@@ -466,7 +466,7 @@ export interface CommentNestedCreatePayload {
   _type: 'create';
   author: string;
   body: string;
-  id?: number;
+  id?: string;
 }
 
 export type CommentNestedPayload = CommentNestedCreatePayload | CommentNestedUpdatePayload;
@@ -476,7 +476,7 @@ export interface CommentNestedUpdatePayload {
   _type: 'update';
   author?: string;
   body?: string;
-  id?: number;
+  id?: string;
 }
 
 export interface CommentPage {
@@ -598,7 +598,7 @@ export interface PostNestedCreatePayload {
   _destroy?: boolean;
   _type: 'create';
   comments?: CommentNestedPayload[];
-  id?: number;
+  id?: string;
   title: string;
 }
 
@@ -608,7 +608,7 @@ export interface PostNestedUpdatePayload {
   _destroy?: boolean;
   _type: 'update';
   comments?: CommentNestedPayload[];
-  id?: number;
+  id?: string;
   title?: string;
 }
 
@@ -699,7 +699,7 @@ export interface ProfileNestedCreatePayload {
   _destroy?: boolean;
   _type: 'create';
   bio?: null | string;
-  id?: number;
+  id?: string;
   website?: null | string;
 }
 
@@ -709,7 +709,7 @@ export interface ProfileNestedUpdatePayload {
   _destroy?: boolean;
   _type: 'update';
   bio?: null | string;
-  id?: number;
+  id?: string;
   website?: null | string;
 }
 

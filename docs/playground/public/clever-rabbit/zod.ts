@@ -22,7 +22,7 @@ export const LineItemSchema = z.object({
 export const LineItemNestedCreatePayloadSchema = z.object({
   _destroy: z.boolean().optional(),
   _type: z.literal('create'),
-  id: z.number().int().optional(),
+  id: z.string().optional(),
   productName: z.string(),
   quantity: z.number().int().nullable().optional(),
   unitPrice: z.number().nullable().optional()
@@ -31,7 +31,7 @@ export const LineItemNestedCreatePayloadSchema = z.object({
 export const LineItemNestedUpdatePayloadSchema = z.object({
   _destroy: z.boolean().optional(),
   _type: z.literal('update'),
-  id: z.number().int().optional(),
+  id: z.string().optional(),
   productName: z.string().optional(),
   quantity: z.number().int().nullable().optional(),
   unitPrice: z.number().nullable().optional()
@@ -77,7 +77,7 @@ export const ShippingAddressNestedCreatePayloadSchema = z.object({
   _type: z.literal('create'),
   city: z.string(),
   country: z.string(),
-  id: z.number().int().optional(),
+  id: z.string().optional(),
   postalCode: z.string(),
   street: z.string()
 });
@@ -87,7 +87,7 @@ export const ShippingAddressNestedUpdatePayloadSchema = z.object({
   _type: z.literal('update'),
   city: z.string().optional(),
   country: z.string().optional(),
-  id: z.number().int().optional(),
+  id: z.string().optional(),
   postalCode: z.string().optional(),
   street: z.string().optional()
 });
@@ -235,7 +235,7 @@ export interface LineItem {
 export interface LineItemNestedCreatePayload {
   _destroy?: boolean;
   _type: 'create';
-  id?: number;
+  id?: string;
   productName: string;
   quantity?: null | number;
   unitPrice?: null | number;
@@ -246,7 +246,7 @@ export type LineItemNestedPayload = LineItemNestedCreatePayload | LineItemNested
 export interface LineItemNestedUpdatePayload {
   _destroy?: boolean;
   _type: 'update';
-  id?: number;
+  id?: string;
   productName?: string;
   quantity?: null | number;
   unitPrice?: null | number;
@@ -395,7 +395,7 @@ export interface ShippingAddressNestedCreatePayload {
   _type: 'create';
   city: string;
   country: string;
-  id?: number;
+  id?: string;
   postalCode: string;
   street: string;
 }
@@ -407,7 +407,7 @@ export interface ShippingAddressNestedUpdatePayload {
   _type: 'update';
   city?: string;
   country?: string;
-  id?: number;
+  id?: string;
   postalCode?: string;
   street?: string;
 }

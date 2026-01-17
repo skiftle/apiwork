@@ -23,7 +23,7 @@ export interface LineItem {
 export interface LineItemNestedCreatePayload {
   _destroy?: boolean;
   _type: 'create';
-  id?: number;
+  id?: string;
   productName: string;
   quantity?: null | number;
   unitPrice?: null | number;
@@ -34,7 +34,7 @@ export type LineItemNestedPayload = LineItemNestedCreatePayload | LineItemNested
 export interface LineItemNestedUpdatePayload {
   _destroy?: boolean;
   _type: 'update';
-  id?: number;
+  id?: string;
   productName?: string;
   quantity?: null | number;
   unitPrice?: null | number;
@@ -183,7 +183,7 @@ export interface ShippingAddressNestedCreatePayload {
   _type: 'create';
   city: string;
   country: string;
-  id?: number;
+  id?: string;
   postalCode: string;
   street: string;
 }
@@ -195,7 +195,7 @@ export interface ShippingAddressNestedUpdatePayload {
   _type: 'update';
   city?: string;
   country?: string;
-  id?: number;
+  id?: string;
   postalCode?: string;
   street?: string;
 }

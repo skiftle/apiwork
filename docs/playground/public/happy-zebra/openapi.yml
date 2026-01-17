@@ -413,7 +413,7 @@ components:
         body:
           type: string
         id:
-          type: integer
+          type: string
       type: object
       required:
       - _type
@@ -440,7 +440,7 @@ components:
         body:
           type: string
         id:
-          type: integer
+          type: string
       type: object
       required:
       - _type
@@ -603,7 +603,7 @@ components:
             "$ref": "#/components/schemas/commentNestedPayload"
           type: array
         id:
-          type: integer
+          type: string
         title:
           type: string
       type: object
@@ -631,7 +631,7 @@ components:
             "$ref": "#/components/schemas/commentNestedPayload"
           type: array
         id:
-          type: integer
+          type: string
         title:
           type: string
       type: object
@@ -722,7 +722,7 @@ components:
           - string
           - 'null'
         id:
-          type: integer
+          type: string
         website:
           type:
           - string
@@ -751,7 +751,7 @@ components:
           - string
           - 'null'
         id:
-          type: integer
+          type: string
         website:
           type:
           - string

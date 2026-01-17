@@ -25,7 +25,7 @@ export interface CommentNestedCreatePayload {
   _type: 'create';
   author: string;
   body: string;
-  id?: number;
+  id?: string;
 }
 
 export type CommentNestedPayload = CommentNestedCreatePayload | CommentNestedUpdatePayload;
@@ -35,7 +35,7 @@ export interface CommentNestedUpdatePayload {
   _type: 'update';
   author?: string;
   body?: string;
-  id?: number;
+  id?: string;
 }
 
 export interface CommentPage {
@@ -157,7 +157,7 @@ export interface PostNestedCreatePayload {
   _destroy?: boolean;
   _type: 'create';
   comments?: CommentNestedPayload[];
-  id?: number;
+  id?: string;
   title: string;
 }
 
@@ -167,7 +167,7 @@ export interface PostNestedUpdatePayload {
   _destroy?: boolean;
   _type: 'update';
   comments?: CommentNestedPayload[];
-  id?: number;
+  id?: string;
   title?: string;
 }
 
@@ -258,7 +258,7 @@ export interface ProfileNestedCreatePayload {
   _destroy?: boolean;
   _type: 'create';
   bio?: null | string;
-  id?: number;
+  id?: string;
   website?: null | string;
 }
 
@@ -268,7 +268,7 @@ export interface ProfileNestedUpdatePayload {
   _destroy?: boolean;
   _type: 'update';
   bio?: null | string;
-  id?: number;
+  id?: string;
   website?: null | string;
 }
 

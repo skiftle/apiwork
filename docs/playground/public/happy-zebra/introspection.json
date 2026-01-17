@@ -1194,7 +1194,7 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "integer",
+          "type": "string",
           "format": null,
           "max": null,
           "min": null
@@ -1289,7 +1289,7 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "integer",
+          "type": "string",
           "format": null,
           "max": null,
           "min": null
@@ -1859,7 +1859,7 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "integer",
+          "type": "string",
           "format": null,
           "max": null,
           "min": null
@@ -1964,7 +1964,7 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "integer",
+          "type": "string",
           "format": null,
           "max": null,
           "min": null
@@ -2284,7 +2284,7 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "integer",
+          "type": "string",
           "format": null,
           "max": null,
           "min": null
@@ -2379,7 +2379,7 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "integer",
+          "type": "string",
           "format": null,
           "max": null,
           "min": null

@@ -426,7 +426,7 @@ components:
           - string
           - 'null'
         id:
-          type: integer
+          type: string
         price:
           type:
           - number
@@ -459,7 +459,7 @@ components:
           - string
           - 'null'
         id:
-          type: integer
+          type: string
         price:
           type:
           - number

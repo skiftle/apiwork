@@ -40,7 +40,7 @@ export const LineNestedCreatePayloadSchema = z.object({
   _destroy: z.boolean().optional(),
   _type: z.literal('create'),
   description: z.string().nullable().optional(),
-  id: z.number().int().optional(),
+  id: z.string().optional(),
   price: z.number().nullable().optional(),
   quantity: z.number().int().nullable().optional()
 });
@@ -49,7 +49,7 @@ export const LineNestedUpdatePayloadSchema = z.object({
   _destroy: z.boolean().optional(),
   _type: z.literal('update'),
   description: z.string().nullable().optional(),
-  id: z.number().int().optional(),
+  id: z.string().optional(),
   price: z.number().nullable().optional(),
   quantity: z.number().int().nullable().optional()
 });
@@ -374,7 +374,7 @@ export interface LineNestedCreatePayload {
   _destroy?: boolean;
   _type: 'create';
   description?: null | string;
-  id?: number;
+  id?: string;
   price?: null | number;
   quantity?: null | number;
 }
@@ -385,7 +385,7 @@ export interface LineNestedUpdatePayload {
   _destroy?: boolean;
   _type: 'update';
   description?: null | string;
-  id?: number;
+  id?: string;
   price?: null | number;
   quantity?: null | number;
 }
