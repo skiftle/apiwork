@@ -5,28 +5,26 @@ module FunnySnake
     before_action :set_invoice, only: %i[show update destroy]
 
     def index
-      invoices = Invoice.all
-      expose({ invoices: invoices.map(&:as_json) })
+      expose invoices: Invoice.all.map(&:as_json)
     end
 
     def show
-      expose({ invoice: invoice.as_json })
+      expose invoice: invoice.as_json
     end
 
     def create
       invoice = Invoice.create(contract.body[:invoice])
-
-      expose({ invoice: invoice.as_json })
+      expose invoice: invoice.as_json
     end
 
     def update
       invoice.update(contract.body[:invoice])
-      expose({ invoice: invoice.as_json })
+      expose invoice: invoice.as_json
     end
 
     def destroy
       invoice.destroy
-      expose invoice
+      expose invoice:
     end
 
     private

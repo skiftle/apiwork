@@ -5,16 +5,9 @@
   },
   "response": {
     "body": {
-      "invoice": {
-        "id": "3feffae7-450f-582f-8951-90b31f1322f4",
-        "createdAt": "2024-01-01T12:00:00.000Z",
-        "issuedOn": null,
-        "notes": null,
-        "number": "INV-001",
-        "status": "draft",
-        "updatedAt": "2024-01-01T12:00:00.000Z"
-      }
+      "status": 500,
+      "error": "Internal Server Error"
     },
-    "status": 200
+    "status": 500
   }
 }
