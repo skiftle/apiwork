@@ -4,7 +4,13 @@ order: 3
 
 # Core Concepts
 
-Apiwork has three main pieces: **API definitions**, **contracts**, and **schemas**.
+Apiwork is built around four core layers: **API definitions**, **contracts**, **schemas**, and **adapters**.
+
+API definitions describe your API surface and endpoints. Contracts define the data model and constraints at the boundary. Schemas act as a bridge between your domain models and the contract, while adapters interpret schemas and provide the runtime.
+
+Together they form a single source of truth that drives both introspection and execution.
+
+You can use Apiwork with just API definitions and contracts, or add schemas and adapters to run a fully executable API. Apiwork ships with a built-in adapter that provides a complete API runtime out of the box.
 
 ## API Definition
 
@@ -126,12 +132,14 @@ You can also write contracts entirely by hand without schemas. This is useful fo
 :::
 
 The schema knows:
+
 - Which fields exist (from `attribute`)
 - Which can be written (from `writable: true`)
 - Which can be filtered or sorted (from `filterable:` / `sortable:`)
 - How associations nest (from `has_many`, `belongs_to`, etc.)
 
 From this, Apiwork generates:
+
 - Request types for create/update (writable fields only)
 - Response types for all actions (all exposed fields)
 - Filter types (filterable fields only)

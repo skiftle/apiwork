@@ -38,6 +38,7 @@ The path you pass to `define` determines two things:
 2. **Namespace** - where Apiwork looks for controllers and contracts
 
 ```ruby
+# config/apis/api_v1.rb
 Apiwork::API.define '/api/v1' do
   resources :posts
 end
@@ -55,6 +56,7 @@ The conversion is straightforward: `/api/v1` becomes `Api::V1`.
 For APIs without a prefix:
 
 ```ruby
+# config/apis/root.rb
 Apiwork::API.define '/' do
   resources :posts
 end

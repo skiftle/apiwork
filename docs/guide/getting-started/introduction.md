@@ -20,28 +20,29 @@ The contract defines the API surface: what the API accepts, what it returns, and
 
 The contract is not documentation and it is not configuration. It is the definition of the API itself.
 
-## From Domain to API
-
-In a typical Rails application, much of the information that defines an API already exists. Column types, nullability, enums, and relations are described in the database schema and the Active Record models built on top of it.
-
-Apiwork builds on this foundation.
-
-Schemas connect your domain model to the API layer. They describe which attributes and relations are exposed, how records can be queried, and how writes are handled. From this structure, Apiwork can derive contracts automatically.
-
-Instead of manually describing every field and constraint, you describe what should be exposed and how it should behave. The database defines the shape. The schema defines the boundary.
-
-## Convention and Consistency
+## Convention as Consistency
 
 In most APIs, the same patterns appear again and again. Resources are filtered in similar ways. Sorting follows the same conventions. Pagination works consistently across endpoints. Relations are included predictably. Nested writes follow the same rules.
 
 These are API concerns rather than domain concerns.
 
-Apiwork captures these conventions in its schema and adapter system. Schemas describe the API model. Adapters execute it.
+Apiwork captures these conventions in its schema and adapter system. Schemas describe the API model. Adapters execute it at the boundary.
 
 Apiwork includes a built-in adapter that implements a conventional API model with consistent filtering, predictable sorting, standard pagination, relation traversal, N+1-safe loading, and nested writes.
 This adapter provides a complete API runtime out of the box.
 
 Adapters are not fixed. You can replace them, extend them, or write your own. The contract language stays the same. The schema model stays the same. Only the execution strategy changes.
+
+## From Domain to API
+
+In a typical Rails application, most of what defines the API already exists. Column types, nullability, enums, and relations are defined in the database schema and expressed through Active Record models.
+Apiwork builds on this foundation.
+
+The database defines the data model. Schemas define how that model is exposed through the API.
+
+Schemas connect your domain model to the API layer. They define which attributes and relations are exposed, how records can be queried, and how writes are handled. From this structure, Apiwork can derive contracts automatically.
+
+Instead of manually describing every field and constraint, you describe what should be exposed and how it should behave.
 
 ## Built on Introspection
 
