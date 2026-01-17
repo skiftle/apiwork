@@ -528,20 +528,10 @@ GET /bold_falcon/articles?filter[category][name][eq]=Technology
   "layer": "contract",
   "issues": [
     {
-      "code": "field_unknown",
-      "detail": "Unknown field",
+      "code": "association_schema_missing",
+      "detail": "Association schema missing",
       "meta": {
-        "allowed": [
-          "_and",
-          "_or",
-          "_not",
-          "title",
-          "status",
-          "view_count",
-          "rating",
-          "published_on"
-        ],
-        "field": "category"
+        "association": "category"
       },
       "path": [
         "filter",

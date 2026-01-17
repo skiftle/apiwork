@@ -962,7 +962,7 @@ module Apiwork
           return nil if reflection.polymorphic?
 
           namespace = schema_class.name.deconstantize
-          "#{namespace}::#{reflection.klass.name}Schema".safe_constantize
+          "#{namespace}::#{reflection.klass.name.demodulize}Schema".safe_constantize
         end
 
         def import_association_contract(association_schema, visited)

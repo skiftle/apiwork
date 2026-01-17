@@ -1,6 +1,6 @@
 export interface Article {
   body: null | string;
-  category?: Record<string, unknown> | null;
+  category?: Category | null;
   createdAt: string;
   id: string;
   publishedOn: null | string;
@@ -27,11 +27,16 @@ export interface ArticleFilter {
   _and?: ArticleFilter[];
   _not?: ArticleFilter;
   _or?: ArticleFilter[];
+  category?: CategoryFilter;
   publishedOn?: NullableDateFilter | string;
   rating?: NullableDecimalFilter | number;
   status?: ArticleStatusFilter;
   title?: StringFilter | string;
   viewCount?: NullableIntegerFilter | number;
+}
+
+export interface ArticleInclude {
+  category?: boolean;
 }
 
 export interface ArticleIndexSuccessResponseBody {
@@ -75,6 +80,7 @@ export interface ArticleUpdateSuccessResponseBody {
 }
 
 export interface ArticlesCreateRequest {
+  query: ArticlesCreateRequestQuery;
   body: ArticlesCreateRequestBody;
 }
 
@@ -82,11 +88,23 @@ export interface ArticlesCreateRequestBody {
   article: ArticleCreatePayload;
 }
 
+export interface ArticlesCreateRequestQuery {
+  include?: ArticleInclude;
+}
+
 export interface ArticlesCreateResponse {
   body: ArticlesCreateResponseBody;
 }
 
 export type ArticlesCreateResponseBody = ArticleCreateSuccessResponseBody | ErrorResponseBody;
+
+export interface ArticlesDestroyRequest {
+  query: ArticlesDestroyRequestQuery;
+}
+
+export interface ArticlesDestroyRequestQuery {
+  include?: ArticleInclude;
+}
 
 export type ArticlesDestroyResponse = never;
 
@@ -96,6 +114,7 @@ export interface ArticlesIndexRequest {
 
 export interface ArticlesIndexRequestQuery {
   filter?: ArticleFilter | ArticleFilter[];
+  include?: ArticleInclude;
   page?: ArticlePage;
   sort?: ArticleSort | ArticleSort[];
 }
@@ -106,6 +125,14 @@ export interface ArticlesIndexResponse {
 
 export type ArticlesIndexResponseBody = ArticleIndexSuccessResponseBody | ErrorResponseBody;
 
+export interface ArticlesShowRequest {
+  query: ArticlesShowRequestQuery;
+}
+
+export interface ArticlesShowRequestQuery {
+  include?: ArticleInclude;
+}
+
 export interface ArticlesShowResponse {
   body: ArticlesShowResponseBody;
 }
@@ -113,6 +140,7 @@ export interface ArticlesShowResponse {
 export type ArticlesShowResponseBody = ArticleShowSuccessResponseBody | ErrorResponseBody;
 
 export interface ArticlesUpdateRequest {
+  query: ArticlesUpdateRequestQuery;
   body: ArticlesUpdateRequestBody;
 }
 
@@ -120,11 +148,29 @@ export interface ArticlesUpdateRequestBody {
   article: ArticleUpdatePayload;
 }
 
+export interface ArticlesUpdateRequestQuery {
+  include?: ArticleInclude;
+}
+
 export interface ArticlesUpdateResponse {
   body: ArticlesUpdateResponseBody;
 }
 
 export type ArticlesUpdateResponseBody = ArticleUpdateSuccessResponseBody | ErrorResponseBody;
+
+export interface Category {
+  id: string;
+  name: string;
+  slug: string;
+}
+
+export interface CategoryFilter {
+  _and?: CategoryFilter[];
+  _not?: CategoryFilter;
+  _or?: CategoryFilter[];
+  name?: StringFilter | string;
+  slug?: StringFilter | string;
+}
 
 export interface DateFilterBetween {
   from?: string;

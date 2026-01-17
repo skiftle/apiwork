@@ -4,25 +4,9 @@ export const LayerSchema = z.enum(['contract', 'domain', 'http']);
 
 export const SortDirectionSchema = z.enum(['asc', 'desc']);
 
-export const InvoiceSchema = z.object({
-  createdAt: z.iso.datetime(),
-  customer: z.record(z.string(), z.unknown()),
-  customerId: z.string(),
+export const CustomerSchema = z.object({
   id: z.string(),
-  issuedOn: z.iso.date().nullable(),
-  lines: z.array(z.unknown()),
-  notes: z.string().nullable(),
-  number: z.string(),
-  status: z.string().nullable(),
-  updatedAt: z.iso.datetime()
-});
-
-export const InvoiceCreatePayloadSchema = z.object({
-  customerId: z.string(),
-  issuedOn: z.iso.date().nullable().optional(),
-  lines: z.array(z.unknown()).optional(),
-  notes: z.string().nullable().optional(),
-  number: z.string()
+  name: z.string()
 });
 
 export const InvoicePageSchema = z.object({
@@ -37,20 +21,37 @@ export const InvoiceSortSchema = z.object({
   updatedAt: SortDirectionSchema.optional()
 });
 
-export const InvoiceUpdatePayloadSchema = z.object({
-  customerId: z.string().optional(),
-  issuedOn: z.iso.date().nullable().optional(),
-  lines: z.array(z.unknown()).optional(),
-  notes: z.string().nullable().optional(),
-  number: z.string().optional()
-});
-
 export const IssueSchema = z.object({
   code: z.string(),
   detail: z.string(),
   meta: z.record(z.string(), z.unknown()),
   path: z.array(z.string()),
   pointer: z.string()
+});
+
+export const LineSchema = z.object({
+  description: z.string().nullable(),
+  id: z.string(),
+  price: z.number().nullable(),
+  quantity: z.number().int().nullable()
+});
+
+export const LineNestedCreatePayloadSchema = z.object({
+  _destroy: z.boolean().optional(),
+  _type: z.literal('create'),
+  description: z.string().nullable().optional(),
+  id: z.number().int().optional(),
+  price: z.number().nullable().optional(),
+  quantity: z.number().int().nullable().optional()
+});
+
+export const LineNestedUpdatePayloadSchema = z.object({
+  _destroy: z.boolean().optional(),
+  _type: z.literal('update'),
+  description: z.string().nullable().optional(),
+  id: z.number().int().optional(),
+  price: z.number().nullable().optional(),
+  quantity: z.number().int().nullable().optional()
 });
 
 export const NullableStringFilterSchema = z.object({
@@ -78,6 +79,37 @@ export const StringFilterSchema = z.object({
   startsWith: z.string().optional()
 });
 
+export const ErrorResponseBodySchema = z.object({
+  issues: z.array(IssueSchema),
+  layer: LayerSchema
+});
+
+export const InvoiceSchema = z.object({
+  createdAt: z.iso.datetime(),
+  customer: CustomerSchema,
+  customerId: z.string(),
+  id: z.string(),
+  issuedOn: z.iso.date().nullable(),
+  lines: z.array(LineSchema),
+  notes: z.string().nullable(),
+  number: z.string(),
+  status: z.string().nullable(),
+  updatedAt: z.iso.datetime()
+});
+
+export const LineNestedPayloadSchema = z.discriminatedUnion('_type', [
+  LineNestedCreatePayloadSchema,
+  LineNestedUpdatePayloadSchema
+]);
+
+export const InvoiceFilterSchema: z.ZodType<InvoiceFilter> = z.lazy(() => z.object({
+  _and: z.array(InvoiceFilterSchema).optional(),
+  _not: InvoiceFilterSchema.optional(),
+  _or: z.array(InvoiceFilterSchema).optional(),
+  number: z.union([z.string(), StringFilterSchema]).optional(),
+  status: z.union([z.string(), NullableStringFilterSchema]).optional()
+}));
+
 export const InvoiceArchiveSuccessResponseBodySchema = z.object({
   invoice: InvoiceSchema,
   meta: z.record(z.string(), z.unknown()).optional()
@@ -86,6 +118,12 @@ export const InvoiceArchiveSuccessResponseBodySchema = z.object({
 export const InvoiceCreateSuccessResponseBodySchema = z.object({
   invoice: InvoiceSchema,
   meta: z.record(z.string(), z.unknown()).optional()
+});
+
+export const InvoiceIndexSuccessResponseBodySchema = z.object({
+  invoices: z.array(InvoiceSchema),
+  meta: z.record(z.string(), z.unknown()).optional(),
+  pagination: OffsetPaginationSchema
 });
 
 export const InvoiceShowSuccessResponseBodySchema = z.object({
@@ -98,24 +136,21 @@ export const InvoiceUpdateSuccessResponseBodySchema = z.object({
   meta: z.record(z.string(), z.unknown()).optional()
 });
 
-export const ErrorResponseBodySchema = z.object({
-  issues: z.array(IssueSchema),
-  layer: LayerSchema
+export const InvoiceCreatePayloadSchema = z.object({
+  customerId: z.string(),
+  issuedOn: z.iso.date().nullable().optional(),
+  lines: z.array(LineNestedPayloadSchema).optional(),
+  notes: z.string().nullable().optional(),
+  number: z.string()
 });
 
-export const InvoiceIndexSuccessResponseBodySchema = z.object({
-  invoices: z.array(InvoiceSchema),
-  meta: z.record(z.string(), z.unknown()).optional(),
-  pagination: OffsetPaginationSchema
+export const InvoiceUpdatePayloadSchema = z.object({
+  customerId: z.string().optional(),
+  issuedOn: z.iso.date().nullable().optional(),
+  lines: z.array(LineNestedPayloadSchema).optional(),
+  notes: z.string().nullable().optional(),
+  number: z.string().optional()
 });
-
-export const InvoiceFilterSchema: z.ZodType<InvoiceFilter> = z.lazy(() => z.object({
-  _and: z.array(InvoiceFilterSchema).optional(),
-  _not: InvoiceFilterSchema.optional(),
-  _or: z.array(InvoiceFilterSchema).optional(),
-  number: z.union([z.string(), StringFilterSchema]).optional(),
-  status: z.union([z.string(), NullableStringFilterSchema]).optional()
-}));
 
 export const InvoicesIndexRequestQuerySchema = z.object({
   filter: z.union([InvoiceFilterSchema, z.array(InvoiceFilterSchema)]).optional(),
@@ -175,6 +210,11 @@ export const InvoicesArchiveResponseSchema = z.object({
   body: InvoicesArchiveResponseBodySchema
 });
 
+export interface Customer {
+  id: string;
+  name: string;
+}
+
 export interface ErrorResponseBody {
   issues: Issue[];
   layer: Layer;
@@ -182,11 +222,11 @@ export interface ErrorResponseBody {
 
 export interface Invoice {
   createdAt: string;
-  customer: Record<string, unknown>;
+  customer: Customer;
   customerId: string;
   id: string;
   issuedOn: null | string;
-  lines: unknown[];
+  lines: Line[];
   notes: null | string;
   number: string;
   status: null | string;
@@ -201,7 +241,7 @@ export interface InvoiceArchiveSuccessResponseBody {
 export interface InvoiceCreatePayload {
   customerId: string;
   issuedOn?: null | string;
-  lines?: unknown[];
+  lines?: LineNestedPayload[];
   notes?: null | string;
   number: string;
 }
@@ -245,7 +285,7 @@ export interface InvoiceSort {
 export interface InvoiceUpdatePayload {
   customerId?: string;
   issuedOn?: null | string;
-  lines?: unknown[];
+  lines?: LineNestedPayload[];
   notes?: null | string;
   number?: string;
 }
@@ -322,6 +362,33 @@ export interface Issue {
 }
 
 export type Layer = 'contract' | 'domain' | 'http';
+
+export interface Line {
+  description: null | string;
+  id: string;
+  price: null | number;
+  quantity: null | number;
+}
+
+export interface LineNestedCreatePayload {
+  _destroy?: boolean;
+  _type: 'create';
+  description?: null | string;
+  id?: number;
+  price?: null | number;
+  quantity?: null | number;
+}
+
+export type LineNestedPayload = LineNestedCreatePayload | LineNestedUpdatePayload;
+
+export interface LineNestedUpdatePayload {
+  _destroy?: boolean;
+  _type: 'update';
+  description?: null | string;
+  id?: number;
+  price?: null | number;
+  quantity?: null | number;
+}
 
 export interface NullableStringFilter {
   contains?: string;

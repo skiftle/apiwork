@@ -1,3 +1,8 @@
+export interface Customer {
+  id: string;
+  name: string;
+}
+
 export interface ErrorResponseBody {
   issues: Issue[];
   layer: Layer;
@@ -5,11 +10,11 @@ export interface ErrorResponseBody {
 
 export interface Invoice {
   createdAt: string;
-  customer: Record<string, unknown>;
+  customer: Customer;
   customerId: string;
   id: string;
   issuedOn: null | string;
-  lines: unknown[];
+  lines: Line[];
   notes: null | string;
   number: string;
   status: null | string;
@@ -24,7 +29,7 @@ export interface InvoiceArchiveSuccessResponseBody {
 export interface InvoiceCreatePayload {
   customerId: string;
   issuedOn?: null | string;
-  lines?: unknown[];
+  lines?: LineNestedPayload[];
   notes?: null | string;
   number: string;
 }
@@ -68,7 +73,7 @@ export interface InvoiceSort {
 export interface InvoiceUpdatePayload {
   customerId?: string;
   issuedOn?: null | string;
-  lines?: unknown[];
+  lines?: LineNestedPayload[];
   notes?: null | string;
   number?: string;
 }
@@ -145,6 +150,33 @@ export interface Issue {
 }
 
 export type Layer = 'contract' | 'domain' | 'http';
+
+export interface Line {
+  description: null | string;
+  id: string;
+  price: null | number;
+  quantity: null | number;
+}
+
+export interface LineNestedCreatePayload {
+  _destroy?: boolean;
+  _type: 'create';
+  description?: null | string;
+  id?: number;
+  price?: null | number;
+  quantity?: null | number;
+}
+
+export type LineNestedPayload = LineNestedCreatePayload | LineNestedUpdatePayload;
+
+export interface LineNestedUpdatePayload {
+  _destroy?: boolean;
+  _type: 'update';
+  description?: null | string;
+  id?: number;
+  price?: null | number;
+  quantity?: null | number;
+}
 
 export interface NullableStringFilter {
   contains?: string;

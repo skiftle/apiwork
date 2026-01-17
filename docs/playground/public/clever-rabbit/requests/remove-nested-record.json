@@ -1,12 +1,12 @@
 {
   "request": {
     "method": "PATCH",
-    "path": "/clever_rabbit/orders/26e15ccf-de43-5826-a54e-fcd80f398f17",
+    "path": "/clever_rabbit/orders/d7b4402f-dd0a-5398-982d-dacd5b07955c",
     "body": {
       "order": {
         "line_items": [
           {
-            "id": "5f3ed1ba-29ae-52cc-a142-856d80fd8e3b",
+            "id": "855dd577-4696-5477-8c71-4e8debd866be",
             "_destroy": true
           }
         ]
@@ -15,24 +15,26 @@
   },
   "response": {
     "body": {
-      "order": {
-        "id": "26e15ccf-de43-5826-a54e-fcd80f398f17",
-        "orderNumber": "ORD-001",
-        "status": "pending",
-        "total": null,
-        "createdAt": "2024-01-01T12:00:00.000Z",
-        "updatedAt": "2024-01-01T12:00:00.000Z",
-        "lineItems": [
-          {
-            "id": "c2942eb4-b212-59b3-b491-f61561ea8210",
-            "productName": "Widget to Remove",
-            "quantity": 1,
-            "unitPrice": "29.99"
-          }
-        ],
-        "shippingAddress": null
-      }
+      "layer": "contract",
+      "issues": [
+        {
+          "code": "type_invalid",
+          "detail": "Invalid type",
+          "meta": {
+            "actual": "string",
+            "expected": "integer",
+            "field": "id"
+          },
+          "path": [
+            "order",
+            "line_items",
+            "0",
+            "id"
+          ],
+          "pointer": "/order/line_items/0/id"
+        }
+      ]
     },
-    "status": 200
+    "status": 400
   }
 }

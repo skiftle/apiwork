@@ -246,8 +246,12 @@ export interface Profile {
   createdAt: string;
   id: string;
   updatedAt: string;
-  user?: Record<string, unknown>;
+  user?: User;
   website: null | string;
+}
+
+export interface ProfileInclude {
+  user?: UserInclude | boolean;
 }
 
 export interface ProfileNestedCreatePayload {
@@ -308,6 +312,10 @@ export interface UserFilter {
   username?: StringFilter | string;
 }
 
+export interface UserInclude {
+  profile?: ProfileInclude;
+}
+
 export interface UserIndexSuccessResponseBody {
   meta?: Record<string, unknown>;
   pagination: OffsetPagination;
@@ -342,6 +350,7 @@ export interface UserUpdateSuccessResponseBody {
 }
 
 export interface UsersCreateRequest {
+  query: UsersCreateRequestQuery;
   body: UsersCreateRequestBody;
 }
 
@@ -349,11 +358,23 @@ export interface UsersCreateRequestBody {
   user: UserCreatePayload;
 }
 
+export interface UsersCreateRequestQuery {
+  include?: UserInclude;
+}
+
 export interface UsersCreateResponse {
   body: UsersCreateResponseBody;
 }
 
 export type UsersCreateResponseBody = ErrorResponseBody | UserCreateSuccessResponseBody;
+
+export interface UsersDestroyRequest {
+  query: UsersDestroyRequestQuery;
+}
+
+export interface UsersDestroyRequestQuery {
+  include?: UserInclude;
+}
 
 export type UsersDestroyResponse = never;
 
@@ -363,6 +384,7 @@ export interface UsersIndexRequest {
 
 export interface UsersIndexRequestQuery {
   filter?: UserFilter | UserFilter[];
+  include?: UserInclude;
   page?: UserPage;
   sort?: UserSort | UserSort[];
 }
@@ -373,6 +395,14 @@ export interface UsersIndexResponse {
 
 export type UsersIndexResponseBody = ErrorResponseBody | UserIndexSuccessResponseBody;
 
+export interface UsersShowRequest {
+  query: UsersShowRequestQuery;
+}
+
+export interface UsersShowRequestQuery {
+  include?: UserInclude;
+}
+
 export interface UsersShowResponse {
   body: UsersShowResponseBody;
 }
@@ -380,11 +410,16 @@ export interface UsersShowResponse {
 export type UsersShowResponseBody = ErrorResponseBody | UserShowSuccessResponseBody;
 
 export interface UsersUpdateRequest {
+  query: UsersUpdateRequestQuery;
   body: UsersUpdateRequestBody;
 }
 
 export interface UsersUpdateRequestBody {
   user: UserUpdatePayload;
+}
+
+export interface UsersUpdateRequestQuery {
+  include?: UserInclude;
 }
 
 export interface UsersUpdateResponse {

@@ -6,24 +6,15 @@ export const LayerSchema = z.enum(['contract', 'domain', 'http']);
 
 export const SortDirectionSchema = z.enum(['asc', 'desc']);
 
-export const ArticleSchema = z.object({
-  body: z.string().nullable(),
-  category: z.record(z.string(), z.unknown()).nullable().optional(),
-  createdAt: z.iso.datetime(),
-  id: z.string(),
-  publishedOn: z.iso.date().nullable(),
-  rating: z.number().nullable(),
-  status: ArticleStatusSchema.nullable(),
-  title: z.string(),
-  updatedAt: z.iso.datetime(),
-  viewCount: z.number().int().nullable()
-});
-
 export const ArticleCreatePayloadSchema = z.object({
   body: z.string().nullable().optional(),
   publishedOn: z.iso.date().nullable().optional(),
   status: ArticleStatusSchema.nullable().optional(),
   title: z.string()
+});
+
+export const ArticleIncludeSchema = z.object({
+  category: z.boolean().optional()
 });
 
 export const ArticlePageSchema = z.object({
@@ -49,6 +40,12 @@ export const ArticleUpdatePayloadSchema = z.object({
   publishedOn: z.iso.date().nullable().optional(),
   status: ArticleStatusSchema.nullable().optional(),
   title: z.string().optional()
+});
+
+export const CategorySchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  slug: z.string()
 });
 
 export const DateFilterBetweenSchema = z.object({
@@ -90,19 +87,17 @@ export const StringFilterSchema = z.object({
   startsWith: z.string().optional()
 });
 
-export const ArticleCreateSuccessResponseBodySchema = z.object({
-  article: ArticleSchema,
-  meta: z.record(z.string(), z.unknown()).optional()
-});
-
-export const ArticleShowSuccessResponseBodySchema = z.object({
-  article: ArticleSchema,
-  meta: z.record(z.string(), z.unknown()).optional()
-});
-
-export const ArticleUpdateSuccessResponseBodySchema = z.object({
-  article: ArticleSchema,
-  meta: z.record(z.string(), z.unknown()).optional()
+export const ArticleSchema = z.object({
+  body: z.string().nullable(),
+  category: CategorySchema.nullable().optional(),
+  createdAt: z.iso.datetime(),
+  id: z.string(),
+  publishedOn: z.iso.date().nullable(),
+  rating: z.number().nullable(),
+  status: ArticleStatusSchema.nullable(),
+  title: z.string(),
+  updatedAt: z.iso.datetime(),
+  viewCount: z.number().int().nullable()
 });
 
 export const NullableDateFilterSchema = z.object({
@@ -143,16 +138,40 @@ export const ErrorResponseBodySchema = z.object({
   layer: LayerSchema
 });
 
+export const CategoryFilterSchema: z.ZodType<CategoryFilter> = z.lazy(() => z.object({
+  _and: z.array(CategoryFilterSchema).optional(),
+  _not: CategoryFilterSchema.optional(),
+  _or: z.array(CategoryFilterSchema).optional(),
+  name: z.union([z.string(), StringFilterSchema]).optional(),
+  slug: z.union([z.string(), StringFilterSchema]).optional()
+}));
+
+export const ArticleCreateSuccessResponseBodySchema = z.object({
+  article: ArticleSchema,
+  meta: z.record(z.string(), z.unknown()).optional()
+});
+
 export const ArticleIndexSuccessResponseBodySchema = z.object({
   articles: z.array(ArticleSchema),
   meta: z.record(z.string(), z.unknown()).optional(),
   pagination: OffsetPaginationSchema
 });
 
+export const ArticleShowSuccessResponseBodySchema = z.object({
+  article: ArticleSchema,
+  meta: z.record(z.string(), z.unknown()).optional()
+});
+
+export const ArticleUpdateSuccessResponseBodySchema = z.object({
+  article: ArticleSchema,
+  meta: z.record(z.string(), z.unknown()).optional()
+});
+
 export const ArticleFilterSchema: z.ZodType<ArticleFilter> = z.lazy(() => z.object({
   _and: z.array(ArticleFilterSchema).optional(),
   _not: ArticleFilterSchema.optional(),
   _or: z.array(ArticleFilterSchema).optional(),
+  category: CategoryFilterSchema.optional(),
   publishedOn: z.union([z.iso.date(), NullableDateFilterSchema]).optional(),
   rating: z.union([z.number(), NullableDecimalFilterSchema]).optional(),
   status: ArticleStatusFilterSchema.optional(),
@@ -162,6 +181,7 @@ export const ArticleFilterSchema: z.ZodType<ArticleFilter> = z.lazy(() => z.obje
 
 export const ArticlesIndexRequestQuerySchema = z.object({
   filter: z.union([ArticleFilterSchema, z.array(ArticleFilterSchema)]).optional(),
+  include: ArticleIncludeSchema.optional(),
   page: ArticlePageSchema.optional(),
   sort: z.union([ArticleSortSchema, z.array(ArticleSortSchema)]).optional()
 });
@@ -176,10 +196,22 @@ export const ArticlesIndexResponseSchema = z.object({
   body: ArticlesIndexResponseBodySchema
 });
 
+export const ArticlesShowRequestQuerySchema = z.object({
+  include: ArticleIncludeSchema.optional()
+});
+
+export const ArticlesShowRequestSchema = z.object({
+  query: ArticlesShowRequestQuerySchema
+});
+
 export const ArticlesShowResponseBodySchema = z.union([ArticleShowSuccessResponseBodySchema, ErrorResponseBodySchema]);
 
 export const ArticlesShowResponseSchema = z.object({
   body: ArticlesShowResponseBodySchema
+});
+
+export const ArticlesCreateRequestQuerySchema = z.object({
+  include: ArticleIncludeSchema.optional()
 });
 
 export const ArticlesCreateRequestBodySchema = z.object({
@@ -187,6 +219,7 @@ export const ArticlesCreateRequestBodySchema = z.object({
 });
 
 export const ArticlesCreateRequestSchema = z.object({
+  query: ArticlesCreateRequestQuerySchema,
   body: ArticlesCreateRequestBodySchema
 });
 
@@ -196,11 +229,16 @@ export const ArticlesCreateResponseSchema = z.object({
   body: ArticlesCreateResponseBodySchema
 });
 
+export const ArticlesUpdateRequestQuerySchema = z.object({
+  include: ArticleIncludeSchema.optional()
+});
+
 export const ArticlesUpdateRequestBodySchema = z.object({
   article: ArticleUpdatePayloadSchema
 });
 
 export const ArticlesUpdateRequestSchema = z.object({
+  query: ArticlesUpdateRequestQuerySchema,
   body: ArticlesUpdateRequestBodySchema
 });
 
@@ -210,11 +248,19 @@ export const ArticlesUpdateResponseSchema = z.object({
   body: ArticlesUpdateResponseBodySchema
 });
 
+export const ArticlesDestroyRequestQuerySchema = z.object({
+  include: ArticleIncludeSchema.optional()
+});
+
+export const ArticlesDestroyRequestSchema = z.object({
+  query: ArticlesDestroyRequestQuerySchema
+});
+
 export const ArticlesDestroyResponse = z.never();
 
 export interface Article {
   body: null | string;
-  category?: Record<string, unknown> | null;
+  category?: Category | null;
   createdAt: string;
   id: string;
   publishedOn: null | string;
@@ -241,11 +287,16 @@ export interface ArticleFilter {
   _and?: ArticleFilter[];
   _not?: ArticleFilter;
   _or?: ArticleFilter[];
+  category?: CategoryFilter;
   publishedOn?: NullableDateFilter | string;
   rating?: NullableDecimalFilter | number;
   status?: ArticleStatusFilter;
   title?: StringFilter | string;
   viewCount?: NullableIntegerFilter | number;
+}
+
+export interface ArticleInclude {
+  category?: boolean;
 }
 
 export interface ArticleIndexSuccessResponseBody {
@@ -289,6 +340,7 @@ export interface ArticleUpdateSuccessResponseBody {
 }
 
 export interface ArticlesCreateRequest {
+  query: ArticlesCreateRequestQuery;
   body: ArticlesCreateRequestBody;
 }
 
@@ -296,11 +348,23 @@ export interface ArticlesCreateRequestBody {
   article: ArticleCreatePayload;
 }
 
+export interface ArticlesCreateRequestQuery {
+  include?: ArticleInclude;
+}
+
 export interface ArticlesCreateResponse {
   body: ArticlesCreateResponseBody;
 }
 
 export type ArticlesCreateResponseBody = ArticleCreateSuccessResponseBody | ErrorResponseBody;
+
+export interface ArticlesDestroyRequest {
+  query: ArticlesDestroyRequestQuery;
+}
+
+export interface ArticlesDestroyRequestQuery {
+  include?: ArticleInclude;
+}
 
 export type ArticlesDestroyResponse = never;
 
@@ -310,6 +374,7 @@ export interface ArticlesIndexRequest {
 
 export interface ArticlesIndexRequestQuery {
   filter?: ArticleFilter | ArticleFilter[];
+  include?: ArticleInclude;
   page?: ArticlePage;
   sort?: ArticleSort | ArticleSort[];
 }
@@ -320,6 +385,14 @@ export interface ArticlesIndexResponse {
 
 export type ArticlesIndexResponseBody = ArticleIndexSuccessResponseBody | ErrorResponseBody;
 
+export interface ArticlesShowRequest {
+  query: ArticlesShowRequestQuery;
+}
+
+export interface ArticlesShowRequestQuery {
+  include?: ArticleInclude;
+}
+
 export interface ArticlesShowResponse {
   body: ArticlesShowResponseBody;
 }
@@ -327,6 +400,7 @@ export interface ArticlesShowResponse {
 export type ArticlesShowResponseBody = ArticleShowSuccessResponseBody | ErrorResponseBody;
 
 export interface ArticlesUpdateRequest {
+  query: ArticlesUpdateRequestQuery;
   body: ArticlesUpdateRequestBody;
 }
 
@@ -334,11 +408,29 @@ export interface ArticlesUpdateRequestBody {
   article: ArticleUpdatePayload;
 }
 
+export interface ArticlesUpdateRequestQuery {
+  include?: ArticleInclude;
+}
+
 export interface ArticlesUpdateResponse {
   body: ArticlesUpdateResponseBody;
 }
 
 export type ArticlesUpdateResponseBody = ArticleUpdateSuccessResponseBody | ErrorResponseBody;
+
+export interface Category {
+  id: string;
+  name: string;
+  slug: string;
+}
+
+export interface CategoryFilter {
+  _and?: CategoryFilter[];
+  _not?: CategoryFilter;
+  _or?: CategoryFilter[];
+  name?: StringFilter | string;
+  slug?: StringFilter | string;
+}
 
 export interface DateFilterBetween {
   from?: string;

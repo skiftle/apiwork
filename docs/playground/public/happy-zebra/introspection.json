@@ -85,6 +85,16 @@
                   }
                 ]
               },
+              "include": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": true,
+                "type": "ref",
+                "ref": "user_include"
+              },
               "page": {
                 "default": null,
                 "deprecated": false,
@@ -188,7 +198,18 @@
           "raises": [],
           "request": {
             "body": {},
-            "query": {}
+            "query": {
+              "include": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": true,
+                "type": "ref",
+                "ref": "user_include"
+              }
+            }
           },
           "response": {
             "body": {
@@ -250,7 +271,18 @@
                 "ref": "user_create_payload"
               }
             },
-            "query": {}
+            "query": {
+              "include": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": true,
+                "type": "ref",
+                "ref": "user_include"
+              }
+            }
           },
           "response": {
             "body": {
@@ -312,7 +344,18 @@
                 "ref": "user_update_payload"
               }
             },
-            "query": {}
+            "query": {
+              "include": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": true,
+                "type": "ref",
+                "ref": "user_include"
+              }
+            }
           },
           "response": {
             "body": {
@@ -361,7 +404,18 @@
           "raises": [],
           "request": {
             "body": {},
-            "query": {}
+            "query": {
+              "include": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": true,
+                "type": "ref",
+                "ref": "user_include"
+              }
+            }
           },
           "response": {
             "body": {
@@ -2126,9 +2180,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "object",
-          "partial": false,
-          "shape": {}
+          "type": "ref",
+          "ref": "user"
         },
         "website": {
           "default": null,
@@ -2141,6 +2194,47 @@
           "format": null,
           "max": null,
           "min": null
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "profile_include": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "user": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "union",
+          "discriminator": null,
+          "variants": [
+            {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "boolean"
+            },
+            {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "ref",
+              "ref": "user_include"
+            }
+          ]
         }
       },
       "type": "object",
@@ -2738,6 +2832,26 @@
               "ref": "string_filter"
             }
           ]
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "user_include": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "profile": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "ref",
+          "ref": "profile_include"
         }
       },
       "type": "object",

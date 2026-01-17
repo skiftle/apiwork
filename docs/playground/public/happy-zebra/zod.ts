@@ -62,15 +62,6 @@ export const PostPageSchema = z.object({
   size: z.number().int().min(1).max(100).optional()
 });
 
-export const ProfileSchema = z.object({
-  bio: z.string().nullable(),
-  createdAt: z.iso.datetime(),
-  id: z.string(),
-  updatedAt: z.iso.datetime(),
-  user: z.record(z.string(), z.unknown()).optional(),
-  website: z.string().nullable()
-});
-
 export const ProfileNestedCreatePayloadSchema = z.object({
   _destroy: z.boolean().optional(),
   _type: z.literal('create'),
@@ -176,16 +167,6 @@ export const PostUpdateSuccessResponseBodySchema = z.object({
   post: PostSchema
 });
 
-export const UserSchema = z.object({
-  createdAt: z.iso.datetime(),
-  email: z.string(),
-  id: z.string(),
-  posts: z.array(PostSchema),
-  profile: ProfileSchema,
-  updatedAt: z.iso.datetime(),
-  username: z.string()
-});
-
 export const PostCreatePayloadSchema = z.object({
   comments: z.array(CommentNestedPayloadSchema).optional(),
   title: z.string()
@@ -212,27 +193,6 @@ export const PostUpdatePayloadSchema = z.object({
   title: z.string().optional()
 });
 
-export const UserCreateSuccessResponseBodySchema = z.object({
-  meta: z.record(z.string(), z.unknown()).optional(),
-  user: UserSchema
-});
-
-export const UserIndexSuccessResponseBodySchema = z.object({
-  meta: z.record(z.string(), z.unknown()).optional(),
-  pagination: OffsetPaginationSchema,
-  users: z.array(UserSchema)
-});
-
-export const UserShowSuccessResponseBodySchema = z.object({
-  meta: z.record(z.string(), z.unknown()).optional(),
-  user: UserSchema
-});
-
-export const UserUpdateSuccessResponseBodySchema = z.object({
-  meta: z.record(z.string(), z.unknown()).optional(),
-  user: UserSchema
-});
-
 export const PostNestedPayloadSchema = z.discriminatedUnion('_type', [
   PostNestedCreatePayloadSchema,
   PostNestedUpdatePayloadSchema
@@ -252,8 +212,57 @@ export const UserUpdatePayloadSchema = z.object({
   username: z.string().optional()
 });
 
+export const ProfileSchema = z.object({
+  bio: z.string().nullable(),
+  createdAt: z.iso.datetime(),
+  id: z.string(),
+  updatedAt: z.iso.datetime(),
+  user: UserSchema.optional(),
+  website: z.string().nullable()
+});
+
+export const ProfileIncludeSchema = z.object({
+  user: z.union([z.boolean(), UserIncludeSchema]).optional()
+});
+
+export const UserSchema = z.object({
+  createdAt: z.iso.datetime(),
+  email: z.string(),
+  id: z.string(),
+  posts: z.array(PostSchema),
+  profile: ProfileSchema,
+  updatedAt: z.iso.datetime(),
+  username: z.string()
+});
+
+export const UserCreateSuccessResponseBodySchema = z.object({
+  meta: z.record(z.string(), z.unknown()).optional(),
+  user: UserSchema
+});
+
+export const UserIncludeSchema = z.object({
+  profile: ProfileIncludeSchema.optional()
+});
+
+export const UserIndexSuccessResponseBodySchema = z.object({
+  meta: z.record(z.string(), z.unknown()).optional(),
+  pagination: OffsetPaginationSchema,
+  users: z.array(UserSchema)
+});
+
+export const UserShowSuccessResponseBodySchema = z.object({
+  meta: z.record(z.string(), z.unknown()).optional(),
+  user: UserSchema
+});
+
+export const UserUpdateSuccessResponseBodySchema = z.object({
+  meta: z.record(z.string(), z.unknown()).optional(),
+  user: UserSchema
+});
+
 export const UsersIndexRequestQuerySchema = z.object({
   filter: z.union([UserFilterSchema, z.array(UserFilterSchema)]).optional(),
+  include: UserIncludeSchema.optional(),
   page: UserPageSchema.optional(),
   sort: z.union([UserSortSchema, z.array(UserSortSchema)]).optional()
 });
@@ -268,10 +277,22 @@ export const UsersIndexResponseSchema = z.object({
   body: UsersIndexResponseBodySchema
 });
 
+export const UsersShowRequestQuerySchema = z.object({
+  include: UserIncludeSchema.optional()
+});
+
+export const UsersShowRequestSchema = z.object({
+  query: UsersShowRequestQuerySchema
+});
+
 export const UsersShowResponseBodySchema = z.union([UserShowSuccessResponseBodySchema, ErrorResponseBodySchema]);
 
 export const UsersShowResponseSchema = z.object({
   body: UsersShowResponseBodySchema
+});
+
+export const UsersCreateRequestQuerySchema = z.object({
+  include: UserIncludeSchema.optional()
 });
 
 export const UsersCreateRequestBodySchema = z.object({
@@ -279,6 +300,7 @@ export const UsersCreateRequestBodySchema = z.object({
 });
 
 export const UsersCreateRequestSchema = z.object({
+  query: UsersCreateRequestQuerySchema,
   body: UsersCreateRequestBodySchema
 });
 
@@ -288,11 +310,16 @@ export const UsersCreateResponseSchema = z.object({
   body: UsersCreateResponseBodySchema
 });
 
+export const UsersUpdateRequestQuerySchema = z.object({
+  include: UserIncludeSchema.optional()
+});
+
 export const UsersUpdateRequestBodySchema = z.object({
   user: UserUpdatePayloadSchema
 });
 
 export const UsersUpdateRequestSchema = z.object({
+  query: UsersUpdateRequestQuerySchema,
   body: UsersUpdateRequestBodySchema
 });
 
@@ -300,6 +327,14 @@ export const UsersUpdateResponseBodySchema = z.union([UserUpdateSuccessResponseB
 
 export const UsersUpdateResponseSchema = z.object({
   body: UsersUpdateResponseBodySchema
+});
+
+export const UsersDestroyRequestQuerySchema = z.object({
+  include: UserIncludeSchema.optional()
+});
+
+export const UsersDestroyRequestSchema = z.object({
+  query: UsersDestroyRequestQuerySchema
 });
 
 export const UsersDestroyResponse = z.never();
@@ -652,8 +687,12 @@ export interface Profile {
   createdAt: string;
   id: string;
   updatedAt: string;
-  user?: Record<string, unknown>;
+  user?: User;
   website: null | string;
+}
+
+export interface ProfileInclude {
+  user?: UserInclude | boolean;
 }
 
 export interface ProfileNestedCreatePayload {
@@ -714,6 +753,10 @@ export interface UserFilter {
   username?: StringFilter | string;
 }
 
+export interface UserInclude {
+  profile?: ProfileInclude;
+}
+
 export interface UserIndexSuccessResponseBody {
   meta?: Record<string, unknown>;
   pagination: OffsetPagination;
@@ -748,6 +791,7 @@ export interface UserUpdateSuccessResponseBody {
 }
 
 export interface UsersCreateRequest {
+  query: UsersCreateRequestQuery;
   body: UsersCreateRequestBody;
 }
 
@@ -755,11 +799,23 @@ export interface UsersCreateRequestBody {
   user: UserCreatePayload;
 }
 
+export interface UsersCreateRequestQuery {
+  include?: UserInclude;
+}
+
 export interface UsersCreateResponse {
   body: UsersCreateResponseBody;
 }
 
 export type UsersCreateResponseBody = ErrorResponseBody | UserCreateSuccessResponseBody;
+
+export interface UsersDestroyRequest {
+  query: UsersDestroyRequestQuery;
+}
+
+export interface UsersDestroyRequestQuery {
+  include?: UserInclude;
+}
 
 export type UsersDestroyResponse = never;
 
@@ -769,6 +825,7 @@ export interface UsersIndexRequest {
 
 export interface UsersIndexRequestQuery {
   filter?: UserFilter | UserFilter[];
+  include?: UserInclude;
   page?: UserPage;
   sort?: UserSort | UserSort[];
 }
@@ -779,6 +836,14 @@ export interface UsersIndexResponse {
 
 export type UsersIndexResponseBody = ErrorResponseBody | UserIndexSuccessResponseBody;
 
+export interface UsersShowRequest {
+  query: UsersShowRequestQuery;
+}
+
+export interface UsersShowRequestQuery {
+  include?: UserInclude;
+}
+
 export interface UsersShowResponse {
   body: UsersShowResponseBody;
 }
@@ -786,11 +851,16 @@ export interface UsersShowResponse {
 export type UsersShowResponseBody = ErrorResponseBody | UserShowSuccessResponseBody;
 
 export interface UsersUpdateRequest {
+  query: UsersUpdateRequestQuery;
   body: UsersUpdateRequestBody;
 }
 
 export interface UsersUpdateRequestBody {
   user: UserUpdatePayload;
+}
+
+export interface UsersUpdateRequestQuery {
+  include?: UserInclude;
 }
 
 export interface UsersUpdateResponse {

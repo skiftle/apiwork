@@ -27,16 +27,6 @@ export const CommentUpdatePayloadSchema = z.object({
   body: z.string().optional()
 });
 
-export const ImageSchema = z.object({
-  comments: z.array(z.record(z.string(), z.unknown())).optional(),
-  createdAt: z.iso.datetime(),
-  height: z.number().int().nullable(),
-  id: z.string(),
-  title: z.string(),
-  url: z.string(),
-  width: z.number().int().nullable()
-});
-
 export const IssueSchema = z.object({
   code: z.string(),
   detail: z.string(),
@@ -53,33 +43,10 @@ export const OffsetPaginationSchema = z.object({
   total: z.number().int()
 });
 
-export const PostSchema = z.object({
-  body: z.string().nullable(),
-  comments: z.array(z.record(z.string(), z.unknown())).optional(),
-  createdAt: z.iso.datetime(),
-  id: z.string(),
-  title: z.string()
-});
-
-export const VideoSchema = z.object({
-  comments: z.array(z.record(z.string(), z.unknown())).optional(),
-  createdAt: z.iso.datetime(),
-  duration: z.number().int().nullable(),
-  id: z.string(),
-  title: z.string(),
-  url: z.string()
-});
-
 export const ErrorResponseBodySchema = z.object({
   issues: z.array(IssueSchema),
   layer: LayerSchema
 });
-
-export const CommentCommentableSchema = z.discriminatedUnion('commentableType', [
-  PostSchema.extend({ commentableType: z.literal('post') }),
-  VideoSchema.extend({ commentableType: z.literal('video') }),
-  ImageSchema.extend({ commentableType: z.literal('image') })
-]);
 
 export const CommentSchema = z.object({
   authorName: z.string().nullable(),
@@ -88,6 +55,12 @@ export const CommentSchema = z.object({
   createdAt: z.iso.datetime(),
   id: z.string()
 });
+
+export const CommentCommentableSchema = z.discriminatedUnion('commentableType', [
+  PostSchema.extend({ commentableType: z.literal('post') }),
+  VideoSchema.extend({ commentableType: z.literal('video') }),
+  ImageSchema.extend({ commentableType: z.literal('image') })
+]);
 
 export const CommentCreateSuccessResponseBodySchema = z.object({
   comment: CommentSchema,
@@ -108,6 +81,33 @@ export const CommentShowSuccessResponseBodySchema = z.object({
 export const CommentUpdateSuccessResponseBodySchema = z.object({
   comment: CommentSchema,
   meta: z.record(z.string(), z.unknown()).optional()
+});
+
+export const ImageSchema = z.object({
+  comments: z.array(CommentSchema).optional(),
+  createdAt: z.iso.datetime(),
+  height: z.number().int().nullable(),
+  id: z.string(),
+  title: z.string(),
+  url: z.string(),
+  width: z.number().int().nullable()
+});
+
+export const PostSchema = z.object({
+  body: z.string().nullable(),
+  comments: z.array(CommentSchema).optional(),
+  createdAt: z.iso.datetime(),
+  id: z.string(),
+  title: z.string()
+});
+
+export const VideoSchema = z.object({
+  comments: z.array(CommentSchema).optional(),
+  createdAt: z.iso.datetime(),
+  duration: z.number().int().nullable(),
+  id: z.string(),
+  title: z.string(),
+  url: z.string()
 });
 
 export const CommentsIndexRequestQuerySchema = z.object({
@@ -326,7 +326,7 @@ export interface ErrorResponseBody {
 }
 
 export interface Image {
-  comments?: Record<string, unknown>[];
+  comments?: Comment[];
   createdAt: string;
   height: null | number;
   id: string;
@@ -355,7 +355,7 @@ export interface OffsetPagination {
 
 export interface Post {
   body: null | string;
-  comments?: Record<string, unknown>[];
+  comments?: Comment[];
   createdAt: string;
   id: string;
   title: string;
@@ -364,7 +364,7 @@ export interface Post {
 export type SortDirection = 'asc' | 'desc';
 
 export interface Video {
-  comments?: Record<string, unknown>[];
+  comments?: Comment[];
   createdAt: string;
   duration: null | number;
   id: string;

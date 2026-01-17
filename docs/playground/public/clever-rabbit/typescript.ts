@@ -13,6 +13,33 @@ export interface Issue {
 
 export type Layer = 'contract' | 'domain' | 'http';
 
+export interface LineItem {
+  id: string;
+  productName: string;
+  quantity: null | number;
+  unitPrice: null | number;
+}
+
+export interface LineItemNestedCreatePayload {
+  _destroy?: boolean;
+  _type: 'create';
+  id?: number;
+  productName: string;
+  quantity?: null | number;
+  unitPrice?: null | number;
+}
+
+export type LineItemNestedPayload = LineItemNestedCreatePayload | LineItemNestedUpdatePayload;
+
+export interface LineItemNestedUpdatePayload {
+  _destroy?: boolean;
+  _type: 'update';
+  id?: number;
+  productName?: string;
+  quantity?: null | number;
+  unitPrice?: null | number;
+}
+
 export interface NullableStringFilter {
   contains?: string;
   endsWith?: string;
@@ -33,18 +60,18 @@ export interface OffsetPagination {
 export interface Order {
   createdAt: string;
   id: string;
-  lineItems: unknown[];
+  lineItems: LineItem[];
   orderNumber: string;
-  shippingAddress: Record<string, unknown>;
+  shippingAddress: ShippingAddress;
   status: null | string;
   total: null | number;
   updatedAt: string;
 }
 
 export interface OrderCreatePayload {
-  lineItems?: unknown[];
+  lineItems?: LineItemNestedPayload[];
   orderNumber: string;
-  shippingAddress?: Record<string, unknown>;
+  shippingAddress?: ShippingAddressNestedPayload;
 }
 
 export interface OrderCreateSuccessResponseBody {
@@ -81,9 +108,9 @@ export interface OrderSort {
 }
 
 export interface OrderUpdatePayload {
-  lineItems?: unknown[];
+  lineItems?: LineItemNestedPayload[];
   orderNumber?: string;
-  shippingAddress?: Record<string, unknown>;
+  shippingAddress?: ShippingAddressNestedPayload;
 }
 
 export interface OrderUpdateSuccessResponseBody {
@@ -142,5 +169,35 @@ export interface OrdersUpdateResponse {
 }
 
 export type OrdersUpdateResponseBody = ErrorResponseBody | OrderUpdateSuccessResponseBody;
+
+export interface ShippingAddress {
+  city: string;
+  country: string;
+  id: string;
+  postalCode: string;
+  street: string;
+}
+
+export interface ShippingAddressNestedCreatePayload {
+  _destroy?: boolean;
+  _type: 'create';
+  city: string;
+  country: string;
+  id?: number;
+  postalCode: string;
+  street: string;
+}
+
+export type ShippingAddressNestedPayload = ShippingAddressNestedCreatePayload | ShippingAddressNestedUpdatePayload;
+
+export interface ShippingAddressNestedUpdatePayload {
+  _destroy?: boolean;
+  _type: 'update';
+  city?: string;
+  country?: string;
+  id?: number;
+  postalCode?: string;
+  street?: string;
+}
 
 export type SortDirection = 'asc' | 'desc';

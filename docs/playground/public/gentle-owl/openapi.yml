@@ -306,8 +306,7 @@ components:
       properties:
         comments:
           items:
-            properties: {}
-            type: object
+            "$ref": "#/components/schemas/comment"
           type: array
         createdAt:
           type: string
@@ -385,8 +384,7 @@ components:
           - 'null'
         comments:
           items:
-            properties: {}
-            type: object
+            "$ref": "#/components/schemas/comment"
           type: array
         createdAt:
           type: string
@@ -405,8 +403,7 @@ components:
       properties:
         comments:
           items:
-            properties: {}
-            type: object
+            "$ref": "#/components/schemas/comment"
           type: array
         createdAt:
           type: string

@@ -147,6 +147,16 @@ paths:
                 "$ref": "#/components/schemas/errorResponseBody"
 components:
   schemas:
+    customer:
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+      type: object
+      required:
+      - id
+      - name
     errorResponseBody:
       properties:
         issues:
@@ -169,8 +179,7 @@ components:
           type: string
           format: date-time
         customer:
-          properties: {}
-          type: object
+          "$ref": "#/components/schemas/customer"
         customerId:
           type: string
         id:
@@ -181,7 +190,8 @@ components:
           - 'null'
           format: date
         lines:
-          items: {}
+          items:
+            "$ref": "#/components/schemas/line"
           type: array
         notes:
           type:
@@ -228,7 +238,8 @@ components:
           - 'null'
           format: date
         lines:
-          items: {}
+          items:
+            "$ref": "#/components/schemas/lineNestedPayload"
           type: array
         notes:
           type:
@@ -339,7 +350,8 @@ components:
           - 'null'
           format: date
         lines:
-          items: {}
+          items:
+            "$ref": "#/components/schemas/lineNestedPayload"
           type: array
         notes:
           type:
@@ -380,6 +392,85 @@ components:
       - meta
       - path
       - pointer
+    line:
+      properties:
+        description:
+          type:
+          - string
+          - 'null'
+        id:
+          type: string
+        price:
+          type:
+          - number
+          - 'null'
+        quantity:
+          type:
+          - integer
+          - 'null'
+      type: object
+      required:
+      - description
+      - id
+      - price
+      - quantity
+    lineNestedCreatePayload:
+      properties:
+        _destroy:
+          type: boolean
+        _type:
+          const: create
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        id:
+          type: integer
+        price:
+          type:
+          - number
+          - 'null'
+        quantity:
+          type:
+          - integer
+          - 'null'
+      type: object
+      required:
+      - _type
+    lineNestedPayload:
+      oneOf:
+      - "$ref": "#/components/schemas/lineNestedCreatePayload"
+      - "$ref": "#/components/schemas/lineNestedUpdatePayload"
+      discriminator:
+        mapping:
+          create: "#/components/schemas/lineNestedCreatePayload"
+          update: "#/components/schemas/lineNestedUpdatePayload"
+        propertyName: _type
+    lineNestedUpdatePayload:
+      properties:
+        _destroy:
+          type: boolean
+        _type:
+          const: update
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        id:
+          type: integer
+        price:
+          type:
+          - number
+          - 'null'
+        quantity:
+          type:
+          - integer
+          - 'null'
+      type: object
+      required:
+      - _type
     nullableStringFilter:
       properties:
         contains:

@@ -18,6 +18,11 @@ paths:
               "$ref": "#/components/schemas/userFilter"
             type: array
       - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/userInclude"
+      - in: query
         name: page
         required: false
         schema:
@@ -40,6 +45,12 @@ paths:
           description: Successful response
     post:
       operationId: usersCreate
+      parameters:
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/userInclude"
       requestBody:
         content:
           application/json:
@@ -73,6 +84,11 @@ paths:
         required: true
         schema:
           type: string
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/userInclude"
       responses:
         '200':
           content:
@@ -88,6 +104,11 @@ paths:
         required: true
         schema:
           type: string
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/userInclude"
       requestBody:
         content:
           application/json:
@@ -120,6 +141,11 @@ paths:
         required: true
         schema:
           type: string
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/userInclude"
       responses:
         '204':
           description: No content
@@ -665,8 +691,7 @@ components:
           type: string
           format: date-time
         user:
-          properties: {}
-          type: object
+          "$ref": "#/components/schemas/user"
         website:
           type:
           - string
@@ -678,6 +703,13 @@ components:
       - id
       - updatedAt
       - website
+    profileInclude:
+      properties:
+        user:
+          oneOf:
+          - type: boolean
+          - "$ref": "#/components/schemas/userInclude"
+      type: object
     profileNestedCreatePayload:
       properties:
         _destroy:
@@ -817,6 +849,11 @@ components:
           oneOf:
           - type: string
           - "$ref": "#/components/schemas/stringFilter"
+      type: object
+    userInclude:
+      properties:
+        profile:
+          "$ref": "#/components/schemas/profileInclude"
       type: object
     userIndexSuccessResponseBody:
       properties:

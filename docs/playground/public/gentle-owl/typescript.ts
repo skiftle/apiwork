@@ -136,7 +136,7 @@ export interface ErrorResponseBody {
 }
 
 export interface Image {
-  comments?: Record<string, unknown>[];
+  comments?: Comment[];
   createdAt: string;
   height: null | number;
   id: string;
@@ -165,7 +165,7 @@ export interface OffsetPagination {
 
 export interface Post {
   body: null | string;
-  comments?: Record<string, unknown>[];
+  comments?: Comment[];
   createdAt: string;
   id: string;
   title: string;
@@ -174,7 +174,7 @@ export interface Post {
 export type SortDirection = 'asc' | 'desc';
 
 export interface Video {
-  comments?: Record<string, unknown>[];
+  comments?: Comment[];
   createdAt: string;
   duration: null | number;
   id: string;
