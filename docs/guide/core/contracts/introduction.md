@@ -6,7 +6,9 @@ order: 1
 
 Contracts define what goes in and what comes out of each resource action.
 
-You declare the shape of requests and responses using the [type system](../type-system/introduction.md). Apiwork validates incoming data, rejects anything that doesn't match, and logs response mismatches in development.
+Resource actions are defined by your [API definitions](../api-definitions/introduction.md). For example, a `resources :posts` declaration exposes the standard CRUD actions (`index`, `show`, `create`, `update`, `destroy`), each of which can be described and enforced by a contract.
+
+You declare the shape of requests and responses using the [type system](../type-system/introduction.md). At runtime, Apiwork executes these contracts as a typed boundary: coercing input values into their declared types (booleans, numbers, dates, datetimes, times, decimals, enums, and more), validating constraints, rejecting invalid data, and logging response mismatches in development.
 
 ## A Minimal Contract
 
@@ -46,6 +48,16 @@ class PostContract < Apiwork::Contract::Base
 end
 ```
 
+When a contract is connected to a schema, that contract enters schema mode.
+
+In schema mode, the contract is driven by its schema through an adapter. The adapter interprets the schema and defines how resource actions, requests, and responses are derived from it.
+
+The adapter implements the API conventions and enforces consistent behavior across the entire API.
+
+The built-in adapter provides a complete REST API runtime out of the box. For each resource defined in your API definitions, it automatically generates the corresponding resource actions and derives their behavior from the schema as the source of truth.
+
+All generated behavior remains fully customizable. You can override individual actions, replace them entirely, or extend them by merging additional behavior on top.
+
 Now responses are serialized through the schema. See [Schemas](../schemas/introduction.md).
 
 ## What Happens at Runtime
@@ -68,24 +80,6 @@ Now responses are serialized through the schema. See [Schemas](../schemas/introd
 ::: info Strict in, lenient out
 Request validation is strict: invalid data returns 400 Bad Request. Response checking is lenient: mismatches are logged but never break your API.
 :::
-
-## Manual Usage
-
-You rarely need this, but contracts work standalone:
-
-```ruby
-contract = PostContract.new(
-  query: request.query_parameters.deep_symbolize_keys,
-  body: request.request_parameters.deep_symbolize_keys,
-  action: :create
-)
-
-if contract.valid?
-  contract.body   # Parsed, coerced data
-else
-  contract.issues # Validation errors
-end
-```
 
 #### See also
 

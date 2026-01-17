@@ -18,6 +18,10 @@ module Apiwork
       def create_apis_directory
         empty_directory 'config/apis'
       end
+
+      def add_route
+        route "mount Apiwork => '/'"
+      end
     end
   end
 end

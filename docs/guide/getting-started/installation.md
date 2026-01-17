@@ -25,7 +25,7 @@ bundle install
 
 ## Setup
 
-Run the install generator to create the directory structure Apiwork expects:
+Run the install generator to create the directory structure and mount Apiwork in your routes:
 
 ```bash
 rails generate apiwork:install
@@ -44,6 +44,14 @@ config/
 ```
 
 These sit alongside your existing `app/controllers/` and `app/models/`. Your contracts and schemas inherit from these application-level base classes, just like controllers inherit from `ApplicationController`.
+
+The generator also adds the following to your `config/routes.rb`:
+
+```ruby
+mount Apiwork => '/'
+```
+
+The final URL combines the mount point with each API's path — mounting at `/` with an API defined at `/api/v1` creates routes at `/api/v1/posts`.
 
 ## Generators
 
@@ -72,7 +80,7 @@ The path `/api/v1` determines both the mount point and the namespace. Apiwork ex
 - Schemas in `Api::V1::` (e.g. `Api::V1::PostSchema`)
 
 ::: tip
-For a root-level API with no path prefix, use `rails generate apiwork:api /`
+For a root-level API with no path prefix, use `rails generate apiwork:api /`. This creates `config/apis/root.rb`.
 :::
 
 ### apiwork:contract

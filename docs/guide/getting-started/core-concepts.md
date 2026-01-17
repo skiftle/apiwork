@@ -8,7 +8,7 @@ Apiwork is built around four core layers: **API definitions**, **contracts**, **
 
 API definitions describe your API surface and endpoints. Contracts define the data model and constraints at the boundary. Schemas act as a bridge between your domain models and the contract, while adapters interpret schemas and provide the runtime.
 
-Together they form a single source of truth that drives both introspection and execution.
+Together they form a single source of truth that drives both [introspection](../core/introspection/introduction.md) and [execution](../core/execution-engine/introduction.md).
 
 You can use Apiwork with just API definitions and contracts, or add schemas and adapters to run a fully executable API. Apiwork ships with a built-in adapter that provides a complete API runtime out of the box.
 
@@ -73,6 +73,27 @@ end
 ```
 
 This defines what goes in and what comes out. The contract validates incoming requests and documents response shapes for generated exports.
+
+## Controller
+
+Controllers include `Apiwork::Controller` and have two differences from standard Rails:
+
+- Use `expose` to return data
+- Use `contract.query` and `contract.body` for validated params
+
+```ruby
+def create
+  post = Post.create(contract.body[:post])
+  expose post
+end
+```
+
+- `contract.query` — URL parameters (filters, sorting, pagination)
+- `contract.body` — request body (create/update payloads)
+
+::: tip
+Requests with undefined fields are rejected. `contract.query` and `contract.body` contain only validated fields.
+:::
 
 ## Schema
 
@@ -174,27 +195,6 @@ end
 ```
 
 See [Actions](../core/contracts/actions.md) for all action options.
-
-## Controller
-
-Controllers include `Apiwork::Controller` and have two differences from standard Rails:
-
-- Use `expose` to return data
-- Use `contract.body` for validated params
-
-```ruby
-def create
-  post = Post.create(contract.body[:post])
-  expose post
-end
-```
-
-- `contract.query` — URL parameters (filters, sorting, pagination)
-- `contract.body` — request body (create/update payloads)
-
-::: tip
-Requests with undefined fields are rejected. `contract.query` and `contract.body` contain only validated fields.
-:::
 
 ## How They Connect
 
