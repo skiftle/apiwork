@@ -21,18 +21,21 @@ export interface CommentIndexSuccessResponseBody {
 }
 
 export interface CommentNestedCreatePayload {
-  _destroy?: boolean;
-  _type: 'create';
+  _op?: 'create';
   author: string;
   body: string;
   id?: string;
 }
 
-export type CommentNestedPayload = CommentNestedCreatePayload | CommentNestedUpdatePayload;
+export interface CommentNestedDeletePayload {
+  _op?: 'delete';
+  id: string;
+}
+
+export type CommentNestedPayload = CommentNestedCreatePayload | CommentNestedUpdatePayload | CommentNestedDeletePayload;
 
 export interface CommentNestedUpdatePayload {
-  _destroy?: boolean;
-  _type: 'update';
+  _op?: 'update';
   author?: string;
   body?: string;
   id?: string;
@@ -154,18 +157,21 @@ export interface PostIndexSuccessResponseBody {
 }
 
 export interface PostNestedCreatePayload {
-  _destroy?: boolean;
-  _type: 'create';
+  _op?: 'create';
   comments?: CommentNestedPayload[];
   id?: string;
   title: string;
 }
 
-export type PostNestedPayload = PostNestedCreatePayload | PostNestedUpdatePayload;
+export interface PostNestedDeletePayload {
+  _op?: 'delete';
+  id: string;
+}
+
+export type PostNestedPayload = PostNestedCreatePayload | PostNestedUpdatePayload | PostNestedDeletePayload;
 
 export interface PostNestedUpdatePayload {
-  _destroy?: boolean;
-  _type: 'update';
+  _op?: 'update';
   comments?: CommentNestedPayload[];
   id?: string;
   title?: string;
@@ -255,18 +261,21 @@ export interface ProfileInclude {
 }
 
 export interface ProfileNestedCreatePayload {
-  _destroy?: boolean;
-  _type: 'create';
+  _op?: 'create';
   bio?: null | string;
   id?: string;
   website?: null | string;
 }
 
-export type ProfileNestedPayload = ProfileNestedCreatePayload | ProfileNestedUpdatePayload;
+export interface ProfileNestedDeletePayload {
+  _op?: 'delete';
+  id: string;
+}
+
+export type ProfileNestedPayload = ProfileNestedCreatePayload | ProfileNestedUpdatePayload | ProfileNestedDeletePayload;
 
 export interface ProfileNestedUpdatePayload {
-  _destroy?: boolean;
-  _type: 'update';
+  _op?: 'update';
   bio?: null | string;
   id?: string;
   website?: null | string;

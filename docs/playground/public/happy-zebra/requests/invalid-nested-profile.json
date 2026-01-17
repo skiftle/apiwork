@@ -15,23 +15,34 @@
   },
   "response": {
     "body": {
-      "layer": "contract",
+      "layer": "domain",
       "issues": [
         {
-          "code": "field_missing",
-          "detail": "Required",
+          "code": "max",
+          "detail": "Too long",
           "meta": {
-            "field": "_type"
+            "max": 500
           },
           "path": [
             "user",
             "profile",
-            "_type"
+            "bio"
           ],
-          "pointer": "/user/profile/_type"
+          "pointer": "/user/profile/bio"
+        },
+        {
+          "code": "invalid",
+          "detail": "Invalid",
+          "meta": {},
+          "path": [
+            "user",
+            "profile",
+            "website"
+          ],
+          "pointer": "/user/profile/website"
         }
       ]
     },
-    "status": 400
+    "status": 422
   }
 }

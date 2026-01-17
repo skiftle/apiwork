@@ -416,9 +416,7 @@ components:
       - quantity
     lineNestedCreatePayload:
       properties:
-        _destroy:
-          type: boolean
-        _type:
+        _op:
           const: create
           type: string
         description:
@@ -436,22 +434,30 @@ components:
           - integer
           - 'null'
       type: object
+    lineNestedDeletePayload:
+      properties:
+        _op:
+          const: delete
+          type: string
+        id:
+          type: string
+      type: object
       required:
-      - _type
+      - id
     lineNestedPayload:
       oneOf:
       - "$ref": "#/components/schemas/lineNestedCreatePayload"
       - "$ref": "#/components/schemas/lineNestedUpdatePayload"
+      - "$ref": "#/components/schemas/lineNestedDeletePayload"
       discriminator:
         mapping:
           create: "#/components/schemas/lineNestedCreatePayload"
           update: "#/components/schemas/lineNestedUpdatePayload"
-        propertyName: _type
+          delete: "#/components/schemas/lineNestedDeletePayload"
+        propertyName: _op
     lineNestedUpdatePayload:
       properties:
-        _destroy:
-          type: boolean
-        _type:
+        _op:
           const: update
           type: string
         description:
@@ -469,8 +475,6 @@ components:
           - integer
           - 'null'
       type: object
-      required:
-      - _type
     nullableStringFilter:
       properties:
         contains:

@@ -37,17 +37,20 @@ export const LineSchema = z.object({
 });
 
 export const LineNestedCreatePayloadSchema = z.object({
-  _destroy: z.boolean().optional(),
-  _type: z.literal('create'),
+  _op: z.literal('create').optional(),
   description: z.string().nullable().optional(),
   id: z.string().optional(),
   price: z.number().nullable().optional(),
   quantity: z.number().int().nullable().optional()
 });
 
+export const LineNestedDeletePayloadSchema = z.object({
+  _op: z.literal('delete').optional(),
+  id: z.string()
+});
+
 export const LineNestedUpdatePayloadSchema = z.object({
-  _destroy: z.boolean().optional(),
-  _type: z.literal('update'),
+  _op: z.literal('update').optional(),
   description: z.string().nullable().optional(),
   id: z.string().optional(),
   price: z.number().nullable().optional(),
@@ -97,9 +100,10 @@ export const InvoiceSchema = z.object({
   updatedAt: z.iso.datetime()
 });
 
-export const LineNestedPayloadSchema = z.discriminatedUnion('_type', [
+export const LineNestedPayloadSchema = z.discriminatedUnion('_op', [
   LineNestedCreatePayloadSchema,
-  LineNestedUpdatePayloadSchema
+  LineNestedUpdatePayloadSchema,
+  LineNestedDeletePayloadSchema
 ]);
 
 export const InvoiceFilterSchema: z.ZodType<InvoiceFilter> = z.lazy(() => z.object({
@@ -371,19 +375,22 @@ export interface Line {
 }
 
 export interface LineNestedCreatePayload {
-  _destroy?: boolean;
-  _type: 'create';
+  _op?: 'create';
   description?: null | string;
   id?: string;
   price?: null | number;
   quantity?: null | number;
 }
 
-export type LineNestedPayload = LineNestedCreatePayload | LineNestedUpdatePayload;
+export interface LineNestedDeletePayload {
+  _op?: 'delete';
+  id: string;
+}
+
+export type LineNestedPayload = LineNestedCreatePayload | LineNestedUpdatePayload | LineNestedDeletePayload;
 
 export interface LineNestedUpdatePayload {
-  _destroy?: boolean;
-  _type: 'update';
+  _op?: 'update';
   description?: null | string;
   id?: string;
   price?: null | number;

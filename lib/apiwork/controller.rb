@@ -81,8 +81,8 @@ module Apiwork
     def contract
       @contract ||= contract_class.new(
         action_name,
-        transformed_query_parameters,
-        transformed_body_parameters,
+        request.query_parameters.deep_symbolize_keys,
+        request.request_parameters.deep_symbolize_keys,
         coerce: true,
       )
     end
@@ -123,12 +123,13 @@ module Apiwork
       end
 
       schema_class = contract_class.schema_class
+      render_state = build_render_state(meta)
 
       json = if schema_class
                if data.is_a?(Enumerable)
-                 adapter.render_collection(data, schema_class, build_render_state(meta))
+                 adapter.render_collection(data, schema_class, render_state)
                else
-                 adapter.render_record(data, schema_class, build_render_state(meta))
+                 adapter.render_record(data, schema_class, render_state)
                end
              else
                data[:meta] = meta if meta.present?
@@ -227,18 +228,6 @@ module Apiwork
         meta:,
         query: resource ? contract.query : {},
       )
-    end
-
-    def transformed_query_parameters
-      parameters = request.query_parameters.deep_symbolize_keys
-      parameters = api_class.transform_request(parameters)
-      adapter.transform_request(parameters)
-    end
-
-    def transformed_body_parameters
-      parameters = request.request_parameters.deep_symbolize_keys
-      parameters = api_class.transform_request(parameters)
-      adapter.transform_request(parameters)
     end
 
     def contract_class

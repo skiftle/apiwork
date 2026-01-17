@@ -159,19 +159,22 @@ export interface Line {
 }
 
 export interface LineNestedCreatePayload {
-  _destroy?: boolean;
-  _type: 'create';
+  _op?: 'create';
   description?: null | string;
   id?: string;
   price?: null | number;
   quantity?: null | number;
 }
 
-export type LineNestedPayload = LineNestedCreatePayload | LineNestedUpdatePayload;
+export interface LineNestedDeletePayload {
+  _op?: 'delete';
+  id: string;
+}
+
+export type LineNestedPayload = LineNestedCreatePayload | LineNestedUpdatePayload | LineNestedDeletePayload;
 
 export interface LineNestedUpdatePayload {
-  _destroy?: boolean;
-  _type: 'update';
+  _op?: 'update';
   description?: null | string;
   id?: string;
   price?: null | number;

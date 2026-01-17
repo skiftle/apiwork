@@ -403,9 +403,7 @@ components:
       - pagination
     commentNestedCreatePayload:
       properties:
-        _destroy:
-          type: boolean
-        _type:
+        _op:
           const: create
           type: string
         author:
@@ -416,23 +414,32 @@ components:
           type: string
       type: object
       required:
-      - _type
       - author
       - body
+    commentNestedDeletePayload:
+      properties:
+        _op:
+          const: delete
+          type: string
+        id:
+          type: string
+      type: object
+      required:
+      - id
     commentNestedPayload:
       oneOf:
       - "$ref": "#/components/schemas/commentNestedCreatePayload"
       - "$ref": "#/components/schemas/commentNestedUpdatePayload"
+      - "$ref": "#/components/schemas/commentNestedDeletePayload"
       discriminator:
         mapping:
           create: "#/components/schemas/commentNestedCreatePayload"
           update: "#/components/schemas/commentNestedUpdatePayload"
-        propertyName: _type
+          delete: "#/components/schemas/commentNestedDeletePayload"
+        propertyName: _op
     commentNestedUpdatePayload:
       properties:
-        _destroy:
-          type: boolean
-        _type:
+        _op:
           const: update
           type: string
         author:
@@ -442,8 +449,6 @@ components:
         id:
           type: string
       type: object
-      required:
-      - _type
     commentPage:
       properties:
         number:
@@ -593,9 +598,7 @@ components:
       - posts
     postNestedCreatePayload:
       properties:
-        _destroy:
-          type: boolean
-        _type:
+        _op:
           const: create
           type: string
         comments:
@@ -608,22 +611,31 @@ components:
           type: string
       type: object
       required:
-      - _type
       - title
+    postNestedDeletePayload:
+      properties:
+        _op:
+          const: delete
+          type: string
+        id:
+          type: string
+      type: object
+      required:
+      - id
     postNestedPayload:
       oneOf:
       - "$ref": "#/components/schemas/postNestedCreatePayload"
       - "$ref": "#/components/schemas/postNestedUpdatePayload"
+      - "$ref": "#/components/schemas/postNestedDeletePayload"
       discriminator:
         mapping:
           create: "#/components/schemas/postNestedCreatePayload"
           update: "#/components/schemas/postNestedUpdatePayload"
-        propertyName: _type
+          delete: "#/components/schemas/postNestedDeletePayload"
+        propertyName: _op
     postNestedUpdatePayload:
       properties:
-        _destroy:
-          type: boolean
-        _type:
+        _op:
           const: update
           type: string
         comments:
@@ -635,8 +647,6 @@ components:
         title:
           type: string
       type: object
-      required:
-      - _type
     postPage:
       properties:
         number:
@@ -712,9 +722,7 @@ components:
       type: object
     profileNestedCreatePayload:
       properties:
-        _destroy:
-          type: boolean
-        _type:
+        _op:
           const: create
           type: string
         bio:
@@ -728,22 +736,30 @@ components:
           - string
           - 'null'
       type: object
+    profileNestedDeletePayload:
+      properties:
+        _op:
+          const: delete
+          type: string
+        id:
+          type: string
+      type: object
       required:
-      - _type
+      - id
     profileNestedPayload:
       oneOf:
       - "$ref": "#/components/schemas/profileNestedCreatePayload"
       - "$ref": "#/components/schemas/profileNestedUpdatePayload"
+      - "$ref": "#/components/schemas/profileNestedDeletePayload"
       discriminator:
         mapping:
           create: "#/components/schemas/profileNestedCreatePayload"
           update: "#/components/schemas/profileNestedUpdatePayload"
-        propertyName: _type
+          delete: "#/components/schemas/profileNestedDeletePayload"
+        propertyName: _op
     profileNestedUpdatePayload:
       properties:
-        _destroy:
-          type: boolean
-        _type:
+        _op:
           const: update
           type: string
         bio:
@@ -757,8 +773,6 @@ components:
           - string
           - 'null'
       type: object
-      required:
-      - _type
     stringFilter:
       properties:
         contains:

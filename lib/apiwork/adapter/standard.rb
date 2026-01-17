@@ -52,6 +52,35 @@ module Apiwork
       def transform_request(hash)
         RequestTransformer.transform(hash)
       end
+
+      def transform_params(params)
+        transform_nested_op_fields(params)
+      end
+
+      private
+
+      def transform_nested_op_fields(params)
+        return params unless params.is_a?(Hash)
+
+        params.transform_values do |value|
+          case value
+          when Hash
+            transform_op_field(transform_nested_op_fields(value))
+          when Array
+            value.map { |item| item.is_a?(Hash) ? transform_op_field(transform_nested_op_fields(item)) : item }
+          else
+            value
+          end
+        end
+      end
+
+      def transform_op_field(hash)
+        return hash unless hash.key?(:_op)
+
+        op = hash.delete(:_op)
+        hash[:_destroy] = true if op == 'delete'
+        hash
+      end
     end
   end
 end

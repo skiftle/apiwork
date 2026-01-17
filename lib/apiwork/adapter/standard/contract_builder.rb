@@ -90,6 +90,7 @@ module Apiwork
 
         def writable_params(request, action_name, nested: false, target_schema_class: nil)
           target_schema_class ||= schema_class
+
           target_schema_class.attributes.each do |name, attribute|
             next unless attribute.writable_for?(action_name)
 
@@ -667,20 +668,26 @@ module Apiwork
 
           unless registrar.type?(create_type_name)
             registrar.object(create_type_name) do
-              literal :_type, value: 'create'
+              literal :_op, optional: true, value: 'create'
               param :id, optional: true, type: id_type
               builder.writable_params(self, :create, nested: true)
-              boolean :_destroy, optional: true
             end
           end
 
           update_type_name = :nested_update_payload
           unless registrar.type?(update_type_name)
             registrar.object(update_type_name) do
-              literal :_type, value: 'update'
+              literal :_op, optional: true, value: 'update'
               param :id, optional: true, type: id_type
               builder.writable_params(self, :update, nested: true)
-              boolean :_destroy, optional: true
+            end
+          end
+
+          delete_type_name = :nested_delete_payload
+          unless registrar.type?(delete_type_name)
+            registrar.object(delete_type_name) do
+              literal :_op, optional: true, value: 'delete'
+              param :id, type: id_type
             end
           end
 
@@ -689,13 +696,17 @@ module Apiwork
 
           create_qualified_name = registrar.scoped_type_name(create_type_name)
           update_qualified_name = registrar.scoped_type_name(update_type_name)
+          delete_qualified_name = registrar.scoped_type_name(delete_type_name)
 
-          registrar.union(nested_payload_type_name, discriminator: :_type) do
+          registrar.union(nested_payload_type_name, discriminator: :_op) do
             variant tag: 'create' do
               reference create_qualified_name
             end
             variant tag: 'update' do
               reference update_qualified_name
+            end
+            variant tag: 'delete' do
+              reference delete_qualified_name
             end
           end
         end

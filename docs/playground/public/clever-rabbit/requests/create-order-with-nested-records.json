@@ -28,23 +28,36 @@
   },
   "response": {
     "body": {
-      "layer": "contract",
-      "issues": [
-        {
-          "code": "field_missing",
-          "detail": "Required",
-          "meta": {
-            "field": "_type"
+      "order": {
+        "id": "3870eeb2-49db-5e22-857a-ca2bcd2e4612",
+        "orderNumber": "ORD-001",
+        "status": "pending",
+        "total": null,
+        "createdAt": "2024-01-01T12:00:00.000Z",
+        "updatedAt": "2024-01-01T12:00:00.000Z",
+        "lineItems": [
+          {
+            "id": "ad73acbb-0926-5060-9b75-5888bde61fc7",
+            "productName": "Widget",
+            "quantity": 2,
+            "unitPrice": "29.99"
           },
-          "path": [
-            "order",
-            "shipping_address",
-            "_type"
-          ],
-          "pointer": "/order/shipping_address/_type"
+          {
+            "id": "987c1624-9b7b-5467-910c-4dc0035b91ee",
+            "productName": "Gadget",
+            "quantity": 1,
+            "unitPrice": "49.99"
+          }
+        ],
+        "shippingAddress": {
+          "id": "3cb3bbd4-ed44-5c37-a3bf-f77ea95a7e5a",
+          "street": "123 Main St",
+          "city": "Springfield",
+          "postalCode": "12345",
+          "country": "USA"
         }
-      ]
+      }
     },
-    "status": 400
+    "status": 201
   }
 }

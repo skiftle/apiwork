@@ -161,26 +161,25 @@ Content-Type: application/json
 }
 ```
 
-**Response** `400`
+**Response** `201`
 
 ```json
 {
-  "layer": "contract",
-  "issues": [
-    {
-      "code": "field_missing",
-      "detail": "Required",
-      "meta": {
-        "field": "_type"
-      },
-      "path": [
-        "user",
-        "profile",
-        "_type"
-      ],
-      "pointer": "/user/profile/_type"
-    }
-  ]
+  "user": {
+    "id": "571466c2-02cb-52cb-a9d1-7bd5f8e21034",
+    "createdAt": "2024-01-01T12:00:00.000Z",
+    "updatedAt": "2024-01-01T12:00:00.000Z",
+    "email": "john@example.com",
+    "username": "johndoe",
+    "profile": {
+      "id": "c8f3124b-cf0c-55c4-b8e7-106c58c6a686",
+      "createdAt": "2024-01-01T12:00:00.000Z",
+      "updatedAt": "2024-01-01T12:00:00.000Z",
+      "bio": "Software developer",
+      "website": "https://example.com"
+    },
+    "posts": []
+  }
 }
 ```
 
@@ -301,24 +300,35 @@ Content-Type: application/json
 }
 ```
 
-**Response** `400`
+**Response** `422`
 
 ```json
 {
-  "layer": "contract",
+  "layer": "domain",
   "issues": [
     {
-      "code": "field_missing",
-      "detail": "Required",
+      "code": "max",
+      "detail": "Too long",
       "meta": {
-        "field": "_type"
+        "max": 500
       },
       "path": [
         "user",
         "profile",
-        "_type"
+        "bio"
       ],
-      "pointer": "/user/profile/_type"
+      "pointer": "/user/profile/bio"
+    },
+    {
+      "code": "invalid",
+      "detail": "Invalid",
+      "meta": {},
+      "path": [
+        "user",
+        "profile",
+        "website"
+      ],
+      "pointer": "/user/profile/website"
     }
   ]
 }
@@ -363,7 +373,7 @@ Content-Type: application/json
 ```json
 {
   "user": {
-    "id": "571466c2-02cb-52cb-a9d1-7bd5f8e21034",
+    "id": "4448fe72-0e01-5b7d-962d-1a20ce251a01",
     "createdAt": "2024-01-01T12:00:00.000Z",
     "updatedAt": "2024-01-01T12:00:00.000Z",
     "email": "deep@example.com",

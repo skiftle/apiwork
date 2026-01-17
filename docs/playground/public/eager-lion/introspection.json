@@ -1333,22 +1333,13 @@
       "discriminator": null,
       "example": null,
       "shape": {
-        "_destroy": {
+        "_op": {
           "default": null,
           "deprecated": false,
           "description": null,
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "boolean"
-        },
-        "_type": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
           "type": "literal",
           "value": "create"
         },
@@ -1403,10 +1394,42 @@
       "type": "object",
       "variants": []
     },
+    "line_nested_delete_payload": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "_op": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "literal",
+          "value": "delete"
+        },
+        "id": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
     "line_nested_payload": {
       "deprecated": false,
       "description": null,
-      "discriminator": "_type",
+      "discriminator": "_op",
       "example": null,
       "shape": {},
       "type": "union",
@@ -1430,6 +1453,16 @@
           "optional": false,
           "type": "ref",
           "ref": "line_nested_update_payload"
+        },
+        {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "ref",
+          "ref": "line_nested_delete_payload"
         }
       ]
     },
@@ -1439,22 +1472,13 @@
       "discriminator": null,
       "example": null,
       "shape": {
-        "_destroy": {
+        "_op": {
           "default": null,
           "deprecated": false,
           "description": null,
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "boolean"
-        },
-        "_type": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
           "type": "literal",
           "value": "update"
         },

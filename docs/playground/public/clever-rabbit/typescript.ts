@@ -21,19 +21,22 @@ export interface LineItem {
 }
 
 export interface LineItemNestedCreatePayload {
-  _destroy?: boolean;
-  _type: 'create';
+  _op?: 'create';
   id?: string;
   productName: string;
   quantity?: null | number;
   unitPrice?: null | number;
 }
 
-export type LineItemNestedPayload = LineItemNestedCreatePayload | LineItemNestedUpdatePayload;
+export interface LineItemNestedDeletePayload {
+  _op?: 'delete';
+  id: string;
+}
+
+export type LineItemNestedPayload = LineItemNestedCreatePayload | LineItemNestedUpdatePayload | LineItemNestedDeletePayload;
 
 export interface LineItemNestedUpdatePayload {
-  _destroy?: boolean;
-  _type: 'update';
+  _op?: 'update';
   id?: string;
   productName?: string;
   quantity?: null | number;
@@ -179,8 +182,7 @@ export interface ShippingAddress {
 }
 
 export interface ShippingAddressNestedCreatePayload {
-  _destroy?: boolean;
-  _type: 'create';
+  _op?: 'create';
   city: string;
   country: string;
   id?: string;
@@ -188,11 +190,15 @@ export interface ShippingAddressNestedCreatePayload {
   street: string;
 }
 
-export type ShippingAddressNestedPayload = ShippingAddressNestedCreatePayload | ShippingAddressNestedUpdatePayload;
+export interface ShippingAddressNestedDeletePayload {
+  _op?: 'delete';
+  id: string;
+}
+
+export type ShippingAddressNestedPayload = ShippingAddressNestedCreatePayload | ShippingAddressNestedUpdatePayload | ShippingAddressNestedDeletePayload;
 
 export interface ShippingAddressNestedUpdatePayload {
-  _destroy?: boolean;
-  _type: 'update';
+  _op?: 'update';
   city?: string;
   country?: string;
   id?: string;

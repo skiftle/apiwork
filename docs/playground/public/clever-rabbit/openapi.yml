@@ -185,9 +185,7 @@ components:
       - unitPrice
     lineItemNestedCreatePayload:
       properties:
-        _destroy:
-          type: boolean
-        _type:
+        _op:
           const: create
           type: string
         id:
@@ -204,22 +202,31 @@ components:
           - 'null'
       type: object
       required:
-      - _type
       - productName
+    lineItemNestedDeletePayload:
+      properties:
+        _op:
+          const: delete
+          type: string
+        id:
+          type: string
+      type: object
+      required:
+      - id
     lineItemNestedPayload:
       oneOf:
       - "$ref": "#/components/schemas/lineItemNestedCreatePayload"
       - "$ref": "#/components/schemas/lineItemNestedUpdatePayload"
+      - "$ref": "#/components/schemas/lineItemNestedDeletePayload"
       discriminator:
         mapping:
           create: "#/components/schemas/lineItemNestedCreatePayload"
           update: "#/components/schemas/lineItemNestedUpdatePayload"
-        propertyName: _type
+          delete: "#/components/schemas/lineItemNestedDeletePayload"
+        propertyName: _op
     lineItemNestedUpdatePayload:
       properties:
-        _destroy:
-          type: boolean
-        _type:
+        _op:
           const: update
           type: string
         id:
@@ -235,8 +242,6 @@ components:
           - number
           - 'null'
       type: object
-      required:
-      - _type
     nullableStringFilter:
       properties:
         contains:
@@ -441,9 +446,7 @@ components:
       - street
     shippingAddressNestedCreatePayload:
       properties:
-        _destroy:
-          type: boolean
-        _type:
+        _op:
           const: create
           type: string
         city:
@@ -458,25 +461,34 @@ components:
           type: string
       type: object
       required:
-      - _type
       - city
       - country
       - postalCode
       - street
+    shippingAddressNestedDeletePayload:
+      properties:
+        _op:
+          const: delete
+          type: string
+        id:
+          type: string
+      type: object
+      required:
+      - id
     shippingAddressNestedPayload:
       oneOf:
       - "$ref": "#/components/schemas/shippingAddressNestedCreatePayload"
       - "$ref": "#/components/schemas/shippingAddressNestedUpdatePayload"
+      - "$ref": "#/components/schemas/shippingAddressNestedDeletePayload"
       discriminator:
         mapping:
           create: "#/components/schemas/shippingAddressNestedCreatePayload"
           update: "#/components/schemas/shippingAddressNestedUpdatePayload"
-        propertyName: _type
+          delete: "#/components/schemas/shippingAddressNestedDeletePayload"
+        propertyName: _op
     shippingAddressNestedUpdatePayload:
       properties:
-        _destroy:
-          type: boolean
-        _type:
+        _op:
           const: update
           type: string
         city:
@@ -490,5 +502,3 @@ components:
         street:
           type: string
       type: object
-      required:
-      - _type

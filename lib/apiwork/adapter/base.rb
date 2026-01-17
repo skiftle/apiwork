@@ -133,6 +133,16 @@ module Apiwork
         hash
       end
 
+      # @api public
+      # Transforms validated parameters before the controller receives them.
+      # Override to apply semantic transformations (e.g., _op to _destroy).
+      #
+      # @param params [Hash] the validated parameters
+      # @return [Hash] the transformed parameters
+      def transform_params(params)
+        params
+      end
+
       def build_api_registrar(api_class)
         APIRegistrar.new(api_class)
       end

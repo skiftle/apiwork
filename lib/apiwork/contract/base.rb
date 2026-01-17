@@ -507,12 +507,26 @@ module Apiwork
         end
       end
 
+      def api_class
+        self.class.api_class
+      end
+
+      def adapter
+        api_class.adapter
+      end
+
       def initialize(action_name, query, body, coerce: false)
+        query = api_class.transform_request(query)
+        query = adapter.transform_request(query)
+        body = api_class.transform_request(body)
+        body = adapter.transform_request(body)
+
         result = RequestParser.new(self.class, action_name, coerce:).parse(query, body)
-        @query = result.query
-        @body = result.body
-        @issues = result.issues
+
         @action_name = action_name.to_sym
+        @query = adapter.transform_params(result.query)
+        @body = adapter.transform_params(result.body)
+        @issues = result.issues
       end
 
       # @api public
