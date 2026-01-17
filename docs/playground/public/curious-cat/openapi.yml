@@ -194,8 +194,7 @@ components:
           format: email
         id:
           type: string
-        metadata:
-          type: string
+        metadata: {}
         name:
           type: string
         preferences:
@@ -279,8 +278,7 @@ components:
         email:
           type: string
           format: email
-        metadata:
-          type: string
+        metadata: {}
         name:
           type: string
         preferences:
@@ -403,8 +401,7 @@ components:
         email:
           type: string
           format: email
-        metadata:
-          type: string
+        metadata: {}
         name:
           type: string
         preferences:

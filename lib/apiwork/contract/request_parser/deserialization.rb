@@ -39,6 +39,7 @@ module Apiwork
 
           def resolve_attribute(param_options, shape)
             return nil unless shape
+            return nil unless shape.respond_to?(:contract_class)
 
             param_name = param_options[:name]
             return nil unless param_name
@@ -51,6 +52,7 @@ module Apiwork
 
           def resolve_schema_class(param_options, shape)
             return nil unless shape
+            return nil unless shape.respond_to?(:contract_class)
 
             type_name = param_options[:type]
             return nil unless type_name.is_a?(Symbol)

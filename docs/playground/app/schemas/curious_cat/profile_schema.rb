@@ -44,7 +44,7 @@ module CuriousCat
       end
     end
 
-    attribute :metadata, writable: true
+    attribute :metadata, type: :unknown, writable: true
 
     attribute :created_at
     attribute :updated_at

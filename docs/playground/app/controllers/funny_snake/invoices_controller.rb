@@ -24,7 +24,7 @@ module FunnySnake
 
     def destroy
       invoice.destroy
-      expose invoice:
+      expose invoice: invoice.as_json
     end
 
     private

@@ -23,7 +23,7 @@ export const ProfileSchema = z.object({
   createdAt: z.iso.datetime(),
   email: z.email(),
   id: z.string(),
-  metadata: z.string(),
+  metadata: z.unknown(),
   name: z.string(),
   preferences: z.object({ notifications: z.object({ email: z.boolean(), push: z.boolean() }), ui: z.object({ sidebarCollapsed: z.boolean(), theme: z.string() }) }),
   settings: z.object({ language: z.string(), notifications: z.boolean(), theme: z.string() }),
@@ -34,7 +34,7 @@ export const ProfileSchema = z.object({
 export const ProfileCreatePayloadSchema = z.object({
   addresses: z.array(z.object({ city: z.string(), primary: z.boolean(), street: z.string(), zip: z.string() })),
   email: z.email(),
-  metadata: z.string(),
+  metadata: z.unknown(),
   name: z.string(),
   preferences: z.object({ notifications: z.object({ email: z.boolean(), push: z.boolean() }), ui: z.object({ sidebarCollapsed: z.boolean(), theme: z.string() }) }),
   settings: z.object({ language: z.string(), notifications: z.boolean(), theme: z.string() }),
@@ -49,7 +49,7 @@ export const ProfilePageSchema = z.object({
 export const ProfileUpdatePayloadSchema = z.object({
   addresses: z.array(z.object({ city: z.string(), primary: z.boolean(), street: z.string(), zip: z.string() })).optional(),
   email: z.email().optional(),
-  metadata: z.string().optional(),
+  metadata: z.unknown().optional(),
   name: z.string().optional(),
   preferences: z.object({ notifications: z.object({ email: z.boolean(), push: z.boolean() }), ui: z.object({ sidebarCollapsed: z.boolean(), theme: z.string() }) }).optional(),
   settings: z.object({ language: z.string(), notifications: z.boolean(), theme: z.string() }).optional(),
@@ -160,7 +160,7 @@ export interface Profile {
   createdAt: string;
   email: string;
   id: string;
-  metadata: string;
+  metadata: unknown;
   name: string;
   preferences: { notifications: { email: boolean; push: boolean }; ui: { sidebarCollapsed: boolean; theme: string } };
   settings: { language: string; notifications: boolean; theme: string };
@@ -171,7 +171,7 @@ export interface Profile {
 export interface ProfileCreatePayload {
   addresses: { city: string; primary: boolean; street: string; zip: string }[];
   email: string;
-  metadata: string;
+  metadata: unknown;
   name: string;
   preferences: { notifications: { email: boolean; push: boolean }; ui: { sidebarCollapsed: boolean; theme: string } };
   settings: { language: string; notifications: boolean; theme: string };
@@ -202,7 +202,7 @@ export interface ProfileShowSuccessResponseBody {
 export interface ProfileUpdatePayload {
   addresses?: { city: string; primary: boolean; street: string; zip: string }[];
   email?: string;
-  metadata?: string;
+  metadata?: unknown;
   name?: string;
   preferences?: { notifications: { email: boolean; push: boolean }; ui: { sidebarCollapsed: boolean; theme: string } };
   settings?: { language: string; notifications: boolean; theme: string };

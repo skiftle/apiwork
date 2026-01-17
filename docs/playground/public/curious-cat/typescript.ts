@@ -26,7 +26,7 @@ export interface Profile {
   createdAt: string;
   email: string;
   id: string;
-  metadata: string;
+  metadata: unknown;
   name: string;
   preferences: { notifications: { email: boolean; push: boolean }; ui: { sidebarCollapsed: boolean; theme: string } };
   settings: { language: string; notifications: boolean; theme: string };
@@ -37,7 +37,7 @@ export interface Profile {
 export interface ProfileCreatePayload {
   addresses: { city: string; primary: boolean; street: string; zip: string }[];
   email: string;
-  metadata: string;
+  metadata: unknown;
   name: string;
   preferences: { notifications: { email: boolean; push: boolean }; ui: { sidebarCollapsed: boolean; theme: string } };
   settings: { language: string; notifications: boolean; theme: string };
@@ -68,7 +68,7 @@ export interface ProfileShowSuccessResponseBody {
 export interface ProfileUpdatePayload {
   addresses?: { city: string; primary: boolean; street: string; zip: string }[];
   email?: string;
-  metadata?: string;
+  metadata?: unknown;
   name?: string;
   preferences?: { notifications: { email: boolean; push: boolean }; ui: { sidebarCollapsed: boolean; theme: string } };
   settings?: { language: string; notifications: boolean; theme: string };

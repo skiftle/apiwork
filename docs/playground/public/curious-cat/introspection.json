@@ -643,10 +643,7 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
+          "type": "unknown"
         },
         "name": {
           "default": null,
@@ -957,10 +954,7 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
+          "type": "unknown"
         },
         "name": {
           "default": null,
@@ -1411,10 +1405,7 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
+          "type": "unknown"
         },
         "name": {
           "default": null,
