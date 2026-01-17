@@ -98,7 +98,7 @@ scenarios:
           order_number: ORD-001
 
   - title: Remove nested record
-    description: Delete line item using _destroy
+    description: Delete line item using _op
     order: 6
     method: PATCH
     path: /clever_rabbit/orders/:order_id
@@ -122,4 +122,4 @@ scenarios:
       order:
         line_items:
           - id: :line_item_id
-            _destroy: true
+            _op: 'delete'

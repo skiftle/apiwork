@@ -24,7 +24,7 @@ There are three distinct concepts:
 
 **Objects** define structure. **Unions** define alternatives. **Enums** constrain values.
 
-Technically, only objects and unions are types — they define shape. Enums are value constraints applied to a param, not standalone types.
+Technically, only objects and unions are _types_ — they define shape. Enums are value constraints applied to a param, not standalone types.
 
 ```ruby
 object :invoice do
