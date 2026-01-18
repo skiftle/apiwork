@@ -4,46 +4,122 @@ module Apiwork
   module Adapter
     module Hook
       class Response
-        attr_reader :transforms
+        attr_reader :finalize_transforms
 
         def initialize
-          @record = Record.new
-          @collection = Collection.new
-          @error = Error.new
-          @transforms = []
+          @prepare_hooks = { collection: nil, error: nil, record: nil }
+          @render_hooks = { collection: nil, error: nil, record: nil }
+          @finalize_transforms = []
+          @current_stage = nil
         end
 
-        def record(&block)
-          @record.instance_eval(&block) if block
-          @record
+        def prepare(&block)
+          @current_stage = :prepare
+          instance_eval(&block)
+          @current_stage = nil
         end
 
-        def collection(&block)
-          @collection.instance_eval(&block) if block
-          @collection
+        def render(&block)
+          @current_stage = :render
+          instance_eval(&block)
+          @current_stage = nil
         end
 
-        def error(&block)
-          @error.instance_eval(&block) if block
-          @error
+        def finalize(&block)
+          @current_stage = :finalize
+          instance_eval(&block)
+          @current_stage = nil
+        end
+
+        def record(callable = nil, &block)
+          hook = callable || block
+          case @current_stage
+          when :prepare
+            @prepare_hooks[:record] = hook
+          when :render
+            @render_hooks[:record] = hook
+          end
+        end
+
+        def collection(callable = nil, &block)
+          hook = callable || block
+          case @current_stage
+          when :prepare
+            @prepare_hooks[:collection] = hook
+          when :render
+            @render_hooks[:collection] = hook
+          end
+        end
+
+        def error(callable = nil, &block)
+          hook = callable || block
+          case @current_stage
+          when :prepare
+            @prepare_hooks[:error] = hook
+          when :render
+            @render_hooks[:error] = hook
+          end
         end
 
         def transform(callable = nil, &block)
-          transformer = callable || block
-          return unless transformer
+          return unless @current_stage == :finalize
 
-          @transforms << transformer
+          @finalize_transforms << (callable || block)
         end
 
-        def run_transforms(response, **context)
-          @transforms.reduce(response) { |res, t| call_transformer(t, res, **context) }
+        def run_prepare_record(record, schema_class, state)
+          return record unless @prepare_hooks[:record]
+
+          call_hook(@prepare_hooks[:record], record, schema_class, state)
+        end
+
+        def run_prepare_collection(collection, schema_class, state)
+          return collection unless @prepare_hooks[:collection]
+
+          call_hook(@prepare_hooks[:collection], collection, schema_class, state)
+        end
+
+        def run_prepare_error(issues, layer, state)
+          return issues unless @prepare_hooks[:error]
+
+          call_hook(@prepare_hooks[:error], issues, layer, state)
+        end
+
+        def run_render_record(data, schema_class, state)
+          return data unless @render_hooks[:record]
+
+          call_hook(@render_hooks[:record], data, schema_class, state)
+        end
+
+        def run_render_collection(result, schema_class, state)
+          return result unless @render_hooks[:collection]
+
+          call_hook(@render_hooks[:collection], result, schema_class, state)
+        end
+
+        def run_render_error(issues, layer, state)
+          return issues unless @render_hooks[:error]
+
+          call_hook(@render_hooks[:error], issues, layer, state)
+        end
+
+        def run_finalize(response, **context)
+          @finalize_transforms.reduce(response) { |res, t| call_transformer(t, res, **context) }
         end
 
         def inherit_from(parent)
-          @transforms = parent.transforms + @transforms
+          @finalize_transforms = parent.finalize_transforms + @finalize_transforms
         end
 
         private
+
+        def call_hook(hook, *args)
+          if hook.respond_to?(:call)
+            hook.call(*args)
+          else
+            hook.new.call(*args)
+          end
+        end
 
         def call_transformer(transformer, response, **context)
           callable = transformer.respond_to?(:call) ? transformer : transformer.new

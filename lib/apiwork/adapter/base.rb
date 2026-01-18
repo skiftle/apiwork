@@ -13,8 +13,8 @@ module Apiwork
     #     adapter_name :jsonapi
     #
     #     response do
-    #       record do
-    #         render { |data, schema_class, state|
+    #       render do
+    #         record { |data, schema_class, state|
     #           { data: { type: schema_class.root_key.singular, attributes: data } }
     #         }
     #       end
@@ -63,8 +63,12 @@ module Apiwork
         #
         # @example
         #   request do
-        #     transform { |request| request.transform(&:deep_symbolize_keys) }
-        #     transform OpFieldTransformer, stage: :post
+        #     before_validation do
+        #       transform KeyNormalizer
+        #     end
+        #     after_validation do
+        #       transform OpFieldTransformer
+        #     end
         #   end
         def request(&block)
           return @request ||= Hook::Request.new unless block
@@ -81,18 +85,18 @@ module Apiwork
         #
         # @example
         #   response do
-        #     record do
-        #       prepare { |record, schema_class, state| ... }
-        #       render { |data, schema_class, state| ... }
+        #     prepare do
+        #       record RecordPreparer
+        #       collection CollectionPreparer
         #     end
-        #     collection do
-        #       prepare { |collection, schema_class, state| ... }
-        #       render { |result, schema_class, state| ... }
+        #     render do
+        #       record RecordRenderer
+        #       collection CollectionRenderer
+        #       error ErrorRenderer
         #     end
-        #     error do
-        #       render { |issues, layer, state| ... }
+        #     finalize do
+        #       transform KeyTransformer
         #     end
-        #     transform { |response| response }
         #   end
         def response(&block)
           return @response ||= Hook::Response.new unless block
@@ -120,11 +124,15 @@ module Apiwork
       end
 
       request do
-        transform KeyNormalizer
+        before_validation do
+          transform KeyNormalizer
+        end
       end
 
       response do
-        transform KeyTransformer
+        finalize do
+          transform KeyTransformer
+        end
       end
 
       def register_api(registrar, capabilities)
@@ -136,35 +144,35 @@ module Apiwork
       end
 
       def render_collection(collection, schema_class, state)
-        hooks = self.class.response.collection
-        prepared = hooks.run_prepare(collection, schema_class, state)
+        response = self.class.response
+        prepared = response.run_prepare_collection(collection, schema_class, state)
         serialized = serialize_collection(prepared, schema_class, state)
-        hooks.run_render(serialized, schema_class, state)
+        response.run_render_collection(serialized, schema_class, state)
       end
 
       def render_record(record, schema_class, state)
-        hooks = self.class.response.record
-        prepared = hooks.run_prepare(record, schema_class, state)
+        response = self.class.response
+        prepared = response.run_prepare_record(record, schema_class, state)
         serialized = serialize_record(prepared, schema_class, state)
-        hooks.run_render(serialized, schema_class, state)
+        response.run_render_record(serialized, schema_class, state)
       end
 
       def render_error(layer, issues, state)
-        hooks = self.class.response.error
-        prepared = hooks.run_prepare(issues, layer, state)
-        hooks.run_render(prepared, layer, state)
+        response = self.class.response
+        prepared = response.run_prepare_error(issues, layer, state)
+        response.run_render_error(prepared, layer, state)
       end
 
       def normalize_request(request, api_class:)
-        self.class.request.run_transforms(request, api_class:)
+        self.class.request.run_before_transforms(request, api_class:)
       end
 
       def prepare_request(request, api_class:)
-        self.class.request.run_post_transforms(request, api_class:)
+        self.class.request.run_after_transforms(request, api_class:)
       end
 
       def transform_response(response, api_class:)
-        self.class.response.run_transforms(response, api_class:)
+        self.class.response.run_finalize(response, api_class:)
       end
 
       def build_api_registrar(api_class)

@@ -4,35 +4,49 @@ module Apiwork
   module Adapter
     module Hook
       class Request
-        attr_reader :post_transforms, :transforms
+        attr_reader :after_transforms, :before_transforms
 
         def initialize
-          @transforms = []
-          @post_transforms = []
+          @before_transforms = []
+          @after_transforms = []
+          @current_stage = nil
         end
 
-        def transform(callable = nil, stage: nil, &block)
+        def before_validation(&block)
+          @current_stage = :before
+          instance_eval(&block)
+          @current_stage = nil
+        end
+
+        def after_validation(&block)
+          @current_stage = :after
+          instance_eval(&block)
+          @current_stage = nil
+        end
+
+        def transform(callable = nil, &block)
           transformer = callable || block
           return unless transformer
 
-          if stage == :post
-            @post_transforms << transformer
-          else
-            @transforms << transformer
+          case @current_stage
+          when :before
+            @before_transforms << transformer
+          when :after
+            @after_transforms << transformer
           end
         end
 
-        def run_transforms(request, **context)
-          @transforms.reduce(request) { |req, t| call_transformer(t, req, **context) }
+        def run_before_transforms(request, **context)
+          @before_transforms.reduce(request) { |req, t| call_transformer(t, req, **context) }
         end
 
-        def run_post_transforms(request, **context)
-          @post_transforms.reduce(request) { |req, t| call_transformer(t, req, **context) }
+        def run_after_transforms(request, **context)
+          @after_transforms.reduce(request) { |req, t| call_transformer(t, req, **context) }
         end
 
         def inherit_from(parent)
-          @transforms = parent.transforms + @transforms
-          @post_transforms = parent.post_transforms + @post_transforms
+          @before_transforms = parent.before_transforms + @before_transforms
+          @after_transforms = parent.after_transforms + @after_transforms
         end
 
         private

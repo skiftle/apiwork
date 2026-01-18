@@ -5,27 +5,6 @@ module Apiwork
     class Standard < Base
       adapter_name :standard
 
-      request do
-        normalize CoolNormalize
-        transform CoolTransformer
-      end
-
-      response do
-        transform CoolTransformer
-
-        record do
-          render CoolRecordRenderer
-        end
-
-        collection do
-          render CoolCollectionRenderer
-        end
-
-        error do
-          render CoolErrorRenderer
-        end
-      end
-
       option :pagination, type: :hash do
         option :strategy, default: :offset, enum: %i[offset cursor], type: :symbol
         option :default_size, default: 20, type: :integer
@@ -38,41 +17,43 @@ module Apiwork
       end
 
       request do
-        transform { |request| request.transform(&RequestTransformer.method(:transform)) }
-        transform(stage: :post) { |request| request.transform(&OpFieldTransformer.method(:transform)) }
+        before_validation do
+          transform { |request| request.transform(&RequestTransformer.method(:transform)) }
+        end
+        after_validation do
+          transform { |request| request.transform(&OpFieldTransformer.method(:transform)) }
+        end
       end
 
       response do
-        record do
-          prepare do |record, schema_class, state|
+        prepare do
+          record do |record, schema_class, state|
             RecordValidator.validate!(record, schema_class)
             RecordLoader.load(record, schema_class, state.request)
           end
 
-          render do |data, schema_class, state|
+          collection do |collection, schema_class, state|
+            CollectionLoader.load(collection, schema_class, state)
+          end
+        end
+
+        render do
+          record do |data, schema_class, state|
             {
               schema_class.root_key.singular => data,
               meta: state.meta.presence,
             }.compact
           end
-        end
 
-        collection do
-          prepare do |collection, schema_class, state|
-            CollectionLoader.load(collection, schema_class, state)
-          end
-
-          render do |result, schema_class, state|
+          collection do |result, schema_class, state|
             {
               schema_class.root_key.plural => result[:data],
               pagination: result[:metadata][:pagination],
               meta: state.meta.presence,
             }.compact
           end
-        end
 
-        error do
-          render do |issues, layer, _state|
+          error do |issues, layer, _state|
             {
               layer:,
               issues: issues.map(&:to_h),
