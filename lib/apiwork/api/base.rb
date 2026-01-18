@@ -543,10 +543,7 @@ module Apiwork
         end
 
         def normalize_request(request)
-          Adapter::RequestContext.new(
-            body: transform_request_keys(request.body),
-            query: transform_request_keys(request.query),
-          )
+          request.transform(&method(:transform_request_keys))
         end
 
         def prepare_request(request)
@@ -554,7 +551,7 @@ module Apiwork
         end
 
         def transform_response(response)
-          Adapter::ResponseContext.new(body: transform_response_keys(response.body))
+          response.transform(&method(:transform_response_keys))
         end
 
         def type?(name, scope: nil)

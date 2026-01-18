@@ -30,6 +30,30 @@ module Apiwork
       def initialize(body:)
         @body = body
       end
+
+      # @api public
+      # Transforms the response body.
+      #
+      # @yield [Hash] the response body
+      # @return [ResponseContext] new context with transformed body
+      #
+      # @example
+      #   response.transform { |data| camelize(data) }
+      def transform
+        self.class.new(body: yield(body))
+      end
+
+      # @api public
+      # Transforms the response body.
+      #
+      # @yield [Hash] the response body
+      # @return [ResponseContext] new context with transformed body
+      #
+      # @example
+      #   response.transform_body { |data| camelize(data) }
+      def transform_body
+        self.class.new(body: yield(body))
+      end
     end
   end
 end

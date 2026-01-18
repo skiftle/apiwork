@@ -50,17 +50,11 @@ module Apiwork
       end
 
       def normalize_request(request)
-        RequestContext.new(
-          body: RequestTransformer.transform(request.body),
-          query: RequestTransformer.transform(request.query),
-        )
+        request.transform(&RequestTransformer.method(:transform))
       end
 
       def prepare_request(request)
-        RequestContext.new(
-          body: transform_nested_op_fields(request.body),
-          query: transform_nested_op_fields(request.query),
-        )
+        request.transform(&method(:transform_nested_op_fields))
       end
 
       private

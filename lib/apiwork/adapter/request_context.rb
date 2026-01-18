@@ -42,6 +42,42 @@ module Apiwork
         @query = query
         @body = body
       end
+
+      # @api public
+      # Transforms both query and body with the same block.
+      #
+      # @yield [Hash] each field (query, then body)
+      # @return [RequestContext] new context with transformed data
+      #
+      # @example
+      #   request.transform { |data| normalize(data) }
+      def transform
+        self.class.new(body: yield(body), query: yield(query))
+      end
+
+      # @api public
+      # Transforms only the query.
+      #
+      # @yield [Hash] the query parameters
+      # @return [RequestContext] new context with transformed query
+      #
+      # @example
+      #   request.transform_query { |q| normalize(q) }
+      def transform_query
+        self.class.new(body: body, query: yield(query))
+      end
+
+      # @api public
+      # Transforms only the body.
+      #
+      # @yield [Hash] the request body
+      # @return [RequestContext] new context with transformed body
+      #
+      # @example
+      #   request.transform_body { |b| prepare(b) }
+      def transform_body
+        self.class.new(body: yield(body), query: query)
+      end
     end
   end
 end
