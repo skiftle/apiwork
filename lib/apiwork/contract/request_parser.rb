@@ -13,6 +13,8 @@ module Apiwork
       end
 
       def parse(request)
+        request = coerce_request(request) if @coerce
+
         parsed_query, query_issues = parse_part(request.query, :query)
         parsed_body, body_issues = parse_part(request.body, :body)
 
@@ -24,12 +26,18 @@ module Apiwork
 
       private
 
+      def coerce_request(request)
+        request
+          .transform_query { |q| coerce(q, shape_for(:query)) }
+          .transform_body { |b| coerce(b, shape_for(:body)) }
+      end
+
       def parse_part(data, part_type)
         shape = shape_for(part_type)
         return [{}, []] if shape.nil? && data.blank?
         return [data, []] unless shape
 
-        validated = validate(@coerce ? coerce(data, shape) : data, shape)
+        validated = validate(data, shape)
 
         return [{}, validated[:issues]] if validated[:issues].any?
 
@@ -50,6 +58,7 @@ module Apiwork
       end
 
       def coerce(data, shape)
+        return data unless shape
         return data unless data.is_a?(Hash)
 
         Coercion.coerce_hash(data, shape)

@@ -11,75 +11,53 @@ module Apiwork
         option :max_size, default: 100, type: :integer
       end
 
-      def register_api(registrar, capabilities)
-        APIBuilder.build(registrar, capabilities)
+      register do
+        api { |registrar, capabilities| APIBuilder.build(registrar, capabilities) }
+        contract { |registrar, schema_class, actions| ContractBuilder.build(registrar, schema_class, actions) }
       end
 
-      def register_contract(registrar, schema_class, actions)
-        ContractBuilder.build(registrar, schema_class, actions)
+      request do
+        before_validation { |request| request.transform(&RequestTransformer.method(:transform)) }
+        after_validation { |request| request.transform(&OpFieldTransformer.method(:transform)) }
       end
 
-      def render_collection(collection, schema_class, state)
-        CollectionLoader.load(collection, schema_class, state) => { data:, metadata: }
-        data = schema_class.serialize(data, context: state.context, include: state.request.query[:include])
+      response do
+        record do
+          prepare do |record, schema_class, state|
+            RecordValidator.validate!(record, schema_class)
+            RecordLoader.load(record, schema_class, state.request)
+          end
 
-        {
-          schema_class.root_key.plural => data,
-          pagination: metadata[:pagination],
-          meta: state.meta.presence,
-        }.compact
-      end
-
-      def render_record(record, schema_class, state)
-        RecordValidator.validate!(record, schema_class)
-
-        data = RecordLoader.load(record, schema_class, state.request)
-        data = schema_class.serialize(data, context: state.context, include: state.request.query[:include])
-
-        {
-          schema_class.root_key.singular => data,
-          meta: state.meta.presence,
-        }.compact
-      end
-
-      def render_error(layer, issues, state)
-        {
-          layer:,
-          issues: issues.map(&:to_h),
-        }
-      end
-
-      def normalize_request(request)
-        request.transform(&RequestTransformer.method(:transform))
-      end
-
-      def prepare_request(request)
-        request.transform(&method(:transform_nested_op_fields))
-      end
-
-      private
-
-      def transform_nested_op_fields(params)
-        return params unless params.is_a?(Hash)
-
-        params.transform_values do |value|
-          case value
-          when Hash
-            transform_op_field(transform_nested_op_fields(value))
-          when Array
-            value.map { |item| item.is_a?(Hash) ? transform_op_field(transform_nested_op_fields(item)) : item }
-          else
-            value
+          render do |data, schema_class, state|
+            {
+              schema_class.root_key.singular => data,
+              meta: state.meta.presence,
+            }.compact
           end
         end
-      end
 
-      def transform_op_field(hash)
-        return hash unless hash.key?(:_op)
+        collection do
+          prepare do |collection, schema_class, state|
+            CollectionLoader.load(collection, schema_class, state)
+          end
 
-        op = hash.delete(:_op)
-        hash[:_destroy] = true if op == 'delete'
-        hash
+          render do |result, schema_class, state|
+            {
+              schema_class.root_key.plural => result[:data],
+              pagination: result[:metadata][:pagination],
+              meta: state.meta.presence,
+            }.compact
+          end
+        end
+
+        error do
+          render do |issues, layer, _state|
+            {
+              layer:,
+              issues: issues.map(&:to_h),
+            }
+          end
+        end
       end
     end
   end
