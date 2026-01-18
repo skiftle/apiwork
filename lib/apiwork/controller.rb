@@ -143,8 +143,7 @@ module Apiwork
       end
 
       response = Adapter::Response.new(body: json)
-      response = adapter.transform_response(response)
-      response = api_class.transform_response(response)
+      response = adapter.transform_response(response, api_class: api_class)
       json = response.body
 
       render json:, status: status || (action_name.to_sym == :create ? :created : :ok)

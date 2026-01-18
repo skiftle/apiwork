@@ -63,8 +63,8 @@ module Apiwork
         #
         # @example
         #   request do
-        #     before_validation { |request| request.transform(&:deep_symbolize_keys) }
-        #     after_validation { |request| request }
+        #     transform { |request| request.transform(&:deep_symbolize_keys) }
+        #     transform OpFieldTransformer, stage: :post
         #   end
         def request(&block)
           return @request ||= Hook::Request.new unless block
@@ -82,18 +82,17 @@ module Apiwork
         # @example
         #   response do
         #     record do
-        #       prepare { |record, state| ... }
-        #       render { |data, state| ... }
+        #       prepare { |record, schema_class, state| ... }
+        #       render { |data, schema_class, state| ... }
         #     end
         #     collection do
-        #       prepare { |collection, state| ... }
-        #       render { |result, state| ... }
+        #       prepare { |collection, schema_class, state| ... }
+        #       render { |result, schema_class, state| ... }
         #     end
         #     error do
-        #       prepare { |issues, state| ... }
-        #       render { |issues, state| ... }
+        #       render { |issues, layer, state| ... }
         #     end
-        #     finalize { |response| response }
+        #     transform { |response| response }
         #   end
         def response(&block)
           return @response ||= Hook::Response.new unless block
@@ -104,49 +103,38 @@ module Apiwork
 
         def inherited(subclass)
           super
+
+          parent_request = @request || Hook::Request.new
+          parent_response = @response || Hook::Response.new
+
+          subclass_request = Hook::Request.new
+          subclass_request.inherit_from(parent_request)
+
+          subclass_response = Hook::Response.new
+          subclass_response.inherit_from(parent_response)
+
           subclass.instance_variable_set(:@register, Hook::Register.new)
-          subclass.instance_variable_set(:@request, Hook::Request.new)
-          subclass.instance_variable_set(:@response, Hook::Response.new)
+          subclass.instance_variable_set(:@request, subclass_request)
+          subclass.instance_variable_set(:@response, subclass_response)
         end
       end
 
-      # @api public
-      # Registers types from schemas for the API.
-      # Uses the api hook defined in the register block.
-      # @see Adapter::APIRegistrar
-      # @see Adapter::Capabilities
+      request do
+        transform KeyNormalizer
+      end
+
+      response do
+        transform KeyTransformer
+      end
+
       def register_api(registrar, capabilities)
         self.class.register.run_api(registrar, capabilities)
       end
 
-      # @api public
-      # Registers types for a contract.
-      #
-      # Called once per contract during API initialization. Uses the contract
-      # hook defined in the register block.
-      #
-      # @param registrar [Adapter::ContractRegistrar] for defining contract-scoped types
-      # @param schema_class [Class] a {Schema::Base} subclass with attribute/association metadata
-      # @param actions [Hash{Symbol => Adapter::Action}] resource actions.
-      #   Keys are action names (:index, :show, :create, :update, :destroy, or custom)
-      #
-      # @see Adapter::ContractRegistrar
-      # @see Schema::Base
-      # @see Adapter::Action
       def register_contract(registrar, schema_class, actions)
         self.class.register.run_contract(registrar, schema_class, actions)
       end
 
-      # @api public
-      # Renders a collection response.
-      #
-      # Flow: prepare → serialize → render.
-      #
-      # @param collection [Enumerable] the records to render
-      # @param schema_class [Class] a {Schema::Base} subclass
-      # @param state [Adapter::RenderState] runtime context
-      # @return [Hash] the response hash
-      # @see Adapter::RenderState
       def render_collection(collection, schema_class, state)
         hooks = self.class.response.collection
         prepared = hooks.run_prepare(collection, schema_class, state)
@@ -154,16 +142,6 @@ module Apiwork
         hooks.run_render(serialized, schema_class, state)
       end
 
-      # @api public
-      # Renders a single record response.
-      #
-      # Flow: prepare → serialize → render.
-      #
-      # @param record [Object] the record to render
-      # @param schema_class [Class] a {Schema::Base} subclass
-      # @param state [Adapter::RenderState] runtime context
-      # @return [Hash] the response hash
-      # @see Adapter::RenderState
       def render_record(record, schema_class, state)
         hooks = self.class.response.record
         prepared = hooks.run_prepare(record, schema_class, state)
@@ -171,53 +149,22 @@ module Apiwork
         hooks.run_render(serialized, schema_class, state)
       end
 
-      # @api public
-      # Renders an error response.
-      #
-      # Flow: prepare → render.
-      #
-      # @param layer [Symbol] the error layer (:http, :contract, :domain)
-      # @param issues [Array<Issue>] the validation issues
-      # @param state [Adapter::RenderState] runtime context
-      # @return [Hash] the error response hash
-      # @see Issue
       def render_error(layer, issues, state)
         hooks = self.class.response.error
         prepared = hooks.run_prepare(issues, layer, state)
         hooks.run_render(prepared, layer, state)
       end
 
-      # @api public
-      # Normalizes incoming request parameters before validation.
-      # Uses the before_validation hook from the request block.
-      #
-      # @param request [Request] the request to normalize
-      # @return [Request] the normalized request
-      # @see Request
-      def normalize_request(request)
-        self.class.request.run_before_validation(request)
+      def normalize_request(request, api_class:)
+        self.class.request.run_transforms(request, api_class:)
       end
 
-      # @api public
-      # Prepares validated parameters before the controller receives them.
-      # Uses the after_validation hook from the request block.
-      #
-      # @param request [Request] the validated request
-      # @return [Request] the prepared request
-      # @see Request
-      def prepare_request(request)
-        self.class.request.run_after_validation(request)
+      def prepare_request(request, api_class:)
+        self.class.request.run_post_transforms(request, api_class:)
       end
 
-      # @api public
-      # Transforms outgoing response data.
-      # Uses the finalize hook from the response block.
-      #
-      # @param response [Response] the response to transform
-      # @return [Response] the transformed response
-      # @see Response
-      def transform_response(response)
-        self.class.response.run_finalize(response)
+      def transform_response(response, api_class:)
+        self.class.response.run_transforms(response, api_class:)
       end
 
       def build_api_registrar(api_class)

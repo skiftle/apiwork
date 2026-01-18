@@ -520,13 +520,11 @@ module Apiwork
       end
 
       def normalize_request(request)
-        request = api_class.normalize_request(request)
-        adapter.normalize_request(request)
+        adapter.normalize_request(request, api_class: api_class)
       end
 
       def prepare_request(request)
-        request = api_class.prepare_request(request)
-        adapter.prepare_request(request)
+        adapter.prepare_request(request, api_class: api_class)
       end
 
       def initialize(action_name, request, coerce: false)

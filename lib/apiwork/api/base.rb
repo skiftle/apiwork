@@ -542,18 +542,6 @@ module Apiwork
           end
         end
 
-        def normalize_request(request)
-          request.transform(&method(:transform_request_keys))
-        end
-
-        def prepare_request(request)
-          request
-        end
-
-        def transform_response(response)
-          response.transform(&method(:transform_response_keys))
-        end
-
         def type?(name, scope: nil)
           type_registry.exists?(name, scope:)
         end
@@ -623,26 +611,6 @@ module Apiwork
         private
 
         attr_reader :built_contracts
-
-        def transform_request_keys(hash)
-          case @key_format
-          when :camel, :kebab
-            hash.deep_transform_keys { |key| key.to_s.underscore.to_sym }
-          else
-            hash
-          end
-        end
-
-        def transform_response_keys(hash)
-          case @key_format
-          when :camel
-            hash.deep_transform_keys { |key| key.to_s.camelize(:lower).to_sym }
-          when :kebab
-            hash.deep_transform_keys { |key| key.to_s.dasherize.to_sym }
-          else
-            hash
-          end
-        end
 
         def build_contracts_for_resource(resource)
           contract_class = resource.resolve_contract_class

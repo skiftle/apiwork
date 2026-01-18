@@ -73,14 +73,14 @@ end
 
 ---
 
-### #query
+### #request
 
-`#query`
+`#request`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/render_state.rb#L41)
 
 **Returns**
 
-`Hash` — parsed query parameters
+[Adapter::Request](adapter-request), `nil` — the parsed request
 
 ---

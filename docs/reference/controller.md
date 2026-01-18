@@ -1,5 +1,5 @@
 ---
-order: 24
+order: 26
 prev: false
 next: false
 ---
@@ -72,7 +72,7 @@ skip_contract_validation!
 
 `#context`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L201)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L206)
 
 The serialization context passed to schemas.
 
@@ -138,7 +138,7 @@ end
 
 `#expose(data, meta: {}, status: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L119)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L120)
 
 Exposes data as an API response.
 
@@ -191,7 +191,7 @@ end
 
 `#expose_error(code_key, detail: nil, path: nil, meta: {})`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L170)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L175)
 
 Exposes an error response using a registered error code.
 

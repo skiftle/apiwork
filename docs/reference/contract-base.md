@@ -1,5 +1,5 @@
 ---
-order: 19
+order: 21
 prev: false
 next: false
 ---
@@ -85,7 +85,7 @@ Returns whether this contract is abstract.
 
 `.action(action_name, replace: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L348)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L352)
 
 Defines an action (endpoint) for this contract.
 
@@ -159,7 +159,7 @@ end
 
 `.enum(name, values: nil, description: nil, example: nil, deprecated: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L213)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L217)
 
 Defines an enum scoped to this contract.
 
@@ -198,7 +198,7 @@ string :status, enum: :status
 
 `.identifier(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L97)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L101)
 
 The scope prefix for contract-scoped types.
 
@@ -237,7 +237,7 @@ end
 
 `.import(contract_class, as:)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L275)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L279)
 
 Imports types from another contract for reuse.
 
@@ -280,7 +280,7 @@ end
 
 `.introspect(expand: false, locale: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L378)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L382)
 
 Returns a hash representation of this contract's structure.
 
@@ -318,7 +318,7 @@ InvoiceContract.introspect(expand: true)
 
 `.object(name, description: nil, example: nil, format: nil, deprecated: false, schema_class: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L174)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L178)
 
 Defines a reusable object type scoped to this contract.
 
@@ -364,7 +364,7 @@ end
 
 `.schema!`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L134)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L138)
 
 Links this contract to its schema using naming convention.
 
@@ -410,7 +410,7 @@ end
 
 `.union(name, discriminator: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L246)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L250)
 
 Defines a discriminated union type scoped to this contract.
 
@@ -450,7 +450,7 @@ end
 
 `#action_name`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L71)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L67)
 
 **Returns**
 
@@ -462,7 +462,7 @@ end
 
 `#body`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L63)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L75)
 
 **Returns**
 
@@ -474,7 +474,7 @@ end
 
 `#invalid?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L528)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L551)
 
 Returns whether the contract has validation issues.
 
@@ -488,7 +488,7 @@ Returns whether the contract has validation issues.
 
 `#issues`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L67)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L63)
 
 **Returns**
 
@@ -500,7 +500,7 @@ Array&lt;[Issue](issue)&gt; — validation issues (empty if valid)
 
 `#query`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L59)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L71)
 
 **Returns**
 
@@ -508,11 +508,23 @@ Array&lt;[Issue](issue)&gt; — validation issues (empty if valid)
 
 ---
 
+### #request
+
+`#request`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L59)
+
+**Returns**
+
+[Adapter::Request](adapter-request) — the parsed and validated request
+
+---
+
 ### #valid?
 
 `#valid?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L521)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L544)
 
 Returns whether the contract passed validation.
 

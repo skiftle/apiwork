@@ -6,21 +6,25 @@ next: false
 
 # Adapter::Base
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L22)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L26)
 
 Base class for adapters.
 
 Subclass this to create custom response formats (JSON:API, HAL, etc.).
-Override the render and transform methods to customize behavior.
+Use the hooks DSL to define request/response transformations.
 
-**Example: Custom adapter**
+**Example: Custom adapter with hooks**
 
 ```ruby
 class JSONAPIAdapter < Apiwork::Adapter::Base
   adapter_name :jsonapi
 
-  def render_record(record, schema_class, state)
-    { data: { type: '...', attributes: '...' } }
+  response do
+    record do
+      render { |data, schema_class, state|
+        { data: { type: schema_class.root_key.singular, attributes: data } }
+      }
+    end
   end
 end
 
@@ -32,9 +36,9 @@ Apiwork::Adapter.register(JSONAPIAdapter)
 
 ### .adapter_name
 
-`.adapter_name(name = nil)`
+`.adapter_name(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L31)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L35)
 
 The adapter name.
 
@@ -42,7 +46,7 @@ The adapter name.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `name` | `Symbol, nil` | the adapter name to set |
+| `value` | `Symbol, nil` | the adapter name to set |
 
 **Returns**
 
@@ -102,186 +106,70 @@ end
 
 ---
 
-## Instance Methods
+### .register
 
-### #register_api
+`.register(&block)`
 
-`#register_api(registrar, capabilities)`
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L51)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L42)
-
-Registers types from schemas for the API.
-Override to customize type registration.
-
-**See also**
-
-- [Adapter::APIRegistrar](adapter-api-registrar)
-- [Adapter::Capabilities](adapter-capabilities)
-
----
-
-### #register_contract
-
-`#register_contract(registrar, schema_class, actions)`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L75)
-
-Registers types for a contract.
-
-Called once per contract during API initialization. Override to customize
-how request/response types are generated from schema definitions.
-
-**Parameters**
-
-| Name | Type | Description |
-|------|------|-------------|
-| `registrar` | `Adapter::ContractRegistrar` | for defining contract-scoped types |
-| `schema_class` | `Class` | a [Schema::Base](schema-base) subclass with attribute/association metadata |
-| `actions` | `Hash{Symbol => Adapter::Action}` | resource actions. Keys are action names (:index, :show, :create, :update, :destroy, or custom) |
-
-**See also**
-
-- [Adapter::ContractRegistrar](adapter-contract-registrar)
-- [Schema::Base](schema-base)
-- [Adapter::Action](adapter-action)
+Defines registration hooks for API and contract setup.
 
 **Example**
 
 ```ruby
-def register_contract(registrar, schema_class, actions)
-  actions.each do |name, action|
-    definition = registrar.action(name)
-
-    if action.collection?
-      definition.request do
-        query do
-          integer? :page
-        end
-      end
-    end
-  end
+register do
+  api { |registrar, capabilities| ... }
+  contract { |registrar, schema_class, actions| ... }
 end
 ```
 
 ---
 
-### #render_collection
+### .request
 
-`#render_collection(collection, schema_class, state)`
+`.request(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L87)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L69)
 
-Renders a collection response.
+Defines request transformation hooks.
 
-**Parameters**
+**Example**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `collection` | `Enumerable` | the records to render |
-| `schema_class` | `Class` | a [Schema::Base](schema-base) subclass |
-| `state` | `Adapter::RenderState` | runtime context |
-
-**Returns**
-
-`Hash` — the response hash
-
-**See also**
-
-- [Adapter::RenderState](adapter-render-state)
+```ruby
+request do
+  before_validation { |request| request.transform(&:deep_symbolize_keys) }
+  after_validation { |request| request }
+end
+```
 
 ---
 
-### #render_error
+### .response
 
-`#render_error(layer, issues, state)`
+`.response(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L111)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L98)
 
-Renders an error response.
+Defines response transformation hooks.
 
-**Parameters**
+**Example**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `layer` | `Symbol` | the error layer (:http, :contract, :domain) |
-| `issues` | `Array<Issue>` | the validation issues |
-| `state` | `Adapter::RenderState` | runtime context |
-
-**Returns**
-
-`Hash` — the error response hash
-
-**See also**
-
-- [Issue](issue)
-
----
-
-### #render_record
-
-`#render_record(record, schema_class, state)`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L99)
-
-Renders a single record response.
-
-**Parameters**
-
-| Name | Type | Description |
-|------|------|-------------|
-| `record` | `Object` | the record to render |
-| `schema_class` | `Class` | a [Schema::Base](schema-base) subclass |
-| `state` | `Adapter::RenderState` | runtime context |
-
-**Returns**
-
-`Hash` — the response hash
-
-**See also**
-
-- [Adapter::RenderState](adapter-render-state)
-
----
-
-### #transform_request
-
-`#transform_request(hash)`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L121)
-
-Transforms incoming request parameters.
-Override to customize key casing, unwrapping, etc.
-
-**Parameters**
-
-| Name | Type | Description |
-|------|------|-------------|
-| `hash` | `Hash` | the request parameters |
-
-**Returns**
-
-`Hash` — the transformed parameters
-
----
-
-### #transform_response
-
-`#transform_response(hash, schema_class)`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L132)
-
-Transforms outgoing response data.
-Override to customize key casing, wrapping, etc.
-
-**Parameters**
-
-| Name | Type | Description |
-|------|------|-------------|
-| `hash` | `Hash` | the response data |
-| `schema_class` | `Class` | a [Schema::Base](schema-base) subclass (optional) |
-
-**Returns**
-
-`Hash` — the transformed response
+```ruby
+response do
+  record do
+    prepare { |record, state| ... }
+    render { |data, state| ... }
+  end
+  collection do
+    prepare { |collection, state| ... }
+    render { |result, state| ... }
+  end
+  error do
+    prepare { |issues, state| ... }
+    render { |issues, state| ... }
+  end
+  finalize { |response| response }
+end
+```
 
 ---

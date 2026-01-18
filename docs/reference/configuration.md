@@ -1,5 +1,5 @@
 ---
-order: 16
+order: 18
 prev: false
 next: false
 ---
@@ -44,6 +44,26 @@ Accesses nested configuration values by key path.
 ```ruby
 config.dig(:pagination)             # => #<Apiwork::Configuration:...>
 config.dig(:pagination, :strategy)  # => :offset
+```
+
+---
+
+### #to_h
+
+`#to_h`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/configuration.rb#L74)
+
+Converts the configuration to a hash.
+
+**Returns**
+
+`Hash` — all configuration values as a hash
+
+**Example**
+
+```ruby
+config.to_h  # => { pagination: { strategy: :offset, default_size: 20 } }
 ```
 
 ---

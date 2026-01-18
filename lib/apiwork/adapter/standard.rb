@@ -5,6 +5,27 @@ module Apiwork
     class Standard < Base
       adapter_name :standard
 
+      request do
+        normalize CoolNormalize
+        transform CoolTransformer
+      end
+
+      response do
+        transform CoolTransformer
+
+        record do
+          render CoolRecordRenderer
+        end
+
+        collection do
+          render CoolCollectionRenderer
+        end
+
+        error do
+          render CoolErrorRenderer
+        end
+      end
+
       option :pagination, type: :hash do
         option :strategy, default: :offset, enum: %i[offset cursor], type: :symbol
         option :default_size, default: 20, type: :integer
@@ -17,8 +38,8 @@ module Apiwork
       end
 
       request do
-        before_validation { |request| request.transform(&RequestTransformer.method(:transform)) }
-        after_validation { |request| request.transform(&OpFieldTransformer.method(:transform)) }
+        transform { |request| request.transform(&RequestTransformer.method(:transform)) }
+        transform(stage: :post) { |request| request.transform(&OpFieldTransformer.method(:transform)) }
       end
 
       response do
