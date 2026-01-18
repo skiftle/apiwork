@@ -542,19 +542,19 @@ module Apiwork
           end
         end
 
-        def normalize_request(query, body)
-          {
-            body: transform_request_keys(body),
-            query: transform_request_keys(query),
-          }
+        def normalize_request(request)
+          Adapter::RequestContext.new(
+            body: transform_request_keys(request.body),
+            query: transform_request_keys(request.query),
+          )
         end
 
-        def prepare_request(query, body)
-          { body:, query: }
+        def prepare_request(request)
+          request
         end
 
-        def transform_response(hash)
-          transform_response_keys(hash)
+        def transform_response(response)
+          Adapter::ResponseContext.new(body: transform_response_keys(response.body))
         end
 
         def type?(name, scope: nil)

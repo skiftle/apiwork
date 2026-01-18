@@ -141,8 +141,10 @@ module Apiwork
         result.issues.each { |issue| Rails.logger.warn(issue.to_s) }
       end
 
-      json = adapter.transform_response(json)
-      json = api_class.transform_response(json)
+      response = Adapter::ResponseContext.new(body: json)
+      response = adapter.transform_response(response)
+      response = api_class.transform_response(response)
+      json = response.body
 
       render json:, status: status || (action_name.to_sym == :create ? :created : :ok)
     end

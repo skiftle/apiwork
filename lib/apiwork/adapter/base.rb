@@ -116,32 +116,33 @@ module Apiwork
       # Normalizes incoming request parameters before validation.
       # Override to customize key casing, unwrapping, etc.
       #
-      # @param query [Hash] the query parameters
-      # @param body [Hash] the body parameters
-      # @return [Hash] hash with :query and :body keys
-      def normalize_request(query, body)
-        { body:, query: }
+      # @param request [RequestContext] the request to normalize
+      # @return [RequestContext] the normalized request
+      # @see RequestContext
+      def normalize_request(request)
+        request
       end
 
       # @api public
       # Prepares validated parameters before the controller receives them.
       # Override to apply semantic transformations (e.g., _op to _destroy).
       #
-      # @param query [Hash] the validated query parameters
-      # @param body [Hash] the validated body parameters
-      # @return [Hash] hash with :query and :body keys
-      def prepare_request(query, body)
-        { body:, query: }
+      # @param request [RequestContext] the validated request
+      # @return [RequestContext] the prepared request
+      # @see RequestContext
+      def prepare_request(request)
+        request
       end
 
       # @api public
       # Transforms outgoing response data.
       # Override to customize key casing, wrapping, etc.
       #
-      # @param hash [Hash] the response data
-      # @return [Hash] the transformed response
-      def transform_response(hash)
-        hash
+      # @param response [ResponseContext] the response to transform
+      # @return [ResponseContext] the transformed response
+      # @see ResponseContext
+      def transform_response(response)
+        response
       end
 
       def build_api_registrar(api_class)

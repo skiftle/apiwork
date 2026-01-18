@@ -12,14 +12,13 @@ module Apiwork
         @coerce = coerce
       end
 
-      def parse(query, body)
-        parsed_query, query_issues = parse_part(query, :query)
-        parsed_body, body_issues = parse_part(body, :body)
+      def parse(request)
+        parsed_query, query_issues = parse_part(request.query, :query)
+        parsed_body, body_issues = parse_part(request.body, :body)
 
-        RequestResult.new(
-          body: parsed_body,
+        ParseResult.new(
           issues: query_issues + body_issues,
-          query: parsed_query,
+          request: Adapter::RequestContext.new(body: parsed_body, query: parsed_query),
         )
       end
 
