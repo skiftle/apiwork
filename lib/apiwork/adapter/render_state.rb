@@ -37,14 +37,14 @@ module Apiwork
       attr_reader :meta
 
       # @api public
-      # @return [Hash] parsed query parameters
-      attr_reader :query
+      # @return [Adapter::Request, nil] the parsed request
+      attr_reader :request
 
-      def initialize(action, context: {}, meta: {}, query: {})
+      def initialize(action, context: {}, meta: {}, request: nil)
         @action = action
         @context = context
         @meta = meta
-        @query = query
+        @request = request
       end
     end
   end

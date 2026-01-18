@@ -55,12 +55,8 @@ module Apiwork
       class_attribute :_schema_class, instance_accessor: false
 
       # @api public
-      # @return [Hash] parsed and validated query parameters
-      attr_reader :query
-
-      # @api public
-      # @return [Hash] parsed and validated request body
-      attr_reader :body
+      # @return [Adapter::Request] the parsed and validated request
+      attr_reader :request
 
       # @api public
       # @return [Array<Issue>] validation issues (empty if valid)
@@ -69,6 +65,14 @@ module Apiwork
       # @api public
       # @return [Symbol] the current action name
       attr_reader :action_name
+
+      # @api public
+      # @return [Hash] parsed and validated query parameters
+      delegate :query, to: :request
+
+      # @api public
+      # @return [Hash] parsed and validated request body
+      delegate :body, to: :request
 
       class << self
         attr_writer :api_class
@@ -525,15 +529,12 @@ module Apiwork
         adapter.prepare_request(request)
       end
 
-      def initialize(action_name, query, body, coerce: false)
-        request = Adapter::RequestContext.new(body:, query:)
+      def initialize(action_name, request, coerce: false)
         request = normalize_request(request)
         result = RequestParser.new(self.class, action_name, coerce:).parse(request)
-        request = prepare_request(result.request)
+        @request = prepare_request(result.request)
 
         @action_name = action_name.to_sym
-        @query = request.query
-        @body = request.body
         @issues = result.issues
       end
 

@@ -21,7 +21,7 @@ module Apiwork
           return { data: @collection, metadata: {} } unless @state.action.index?
           return { data: @collection, metadata: {} } unless @collection.is_a?(ActiveRecord::Relation)
 
-          params = @state.query.slice(:filter, :include, :page, :sort)
+          params = @state.request.query.slice(:filter, :include, :page, :sort)
 
           issues = []
 

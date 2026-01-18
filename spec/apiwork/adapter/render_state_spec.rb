@@ -43,17 +43,19 @@ RSpec.describe Apiwork::Adapter::RenderState do
     end
   end
 
-  describe '#query' do
-    it 'defaults to empty hash' do
+  describe '#request' do
+    it 'defaults to nil' do
       action = build_action(:show, :get)
       state = described_class.new(action)
-      expect(state.query).to eq({})
+      expect(state.request).to be_nil
     end
 
-    it 'stores provided query' do
+    it 'stores provided request' do
       action = build_action(:index, :get)
-      state = described_class.new(action, query: { page: { size: 10 } })
-      expect(state.query).to eq({ page: { size: 10 } })
+      request = Apiwork::Adapter::Request.new(body: {}, query: { page: { size: 10 } })
+      state = described_class.new(action, request:)
+      expect(state.request).to eq(request)
+      expect(state.request.query).to eq({ page: { size: 10 } })
     end
   end
 

@@ -116,9 +116,9 @@ module Apiwork
       # Normalizes incoming request parameters before validation.
       # Override to customize key casing, unwrapping, etc.
       #
-      # @param request [RequestContext] the request to normalize
-      # @return [RequestContext] the normalized request
-      # @see RequestContext
+      # @param request [Request] the request to normalize
+      # @return [Request] the normalized request
+      # @see Request
       def normalize_request(request)
         request
       end
@@ -127,9 +127,9 @@ module Apiwork
       # Prepares validated parameters before the controller receives them.
       # Override to apply semantic transformations (e.g., _op to _destroy).
       #
-      # @param request [RequestContext] the validated request
-      # @return [RequestContext] the prepared request
-      # @see RequestContext
+      # @param request [Request] the validated request
+      # @return [Request] the prepared request
+      # @see Request
       def prepare_request(request)
         request
       end
@@ -138,9 +138,9 @@ module Apiwork
       # Transforms outgoing response data.
       # Override to customize key casing, wrapping, etc.
       #
-      # @param response [ResponseContext] the response to transform
-      # @return [ResponseContext] the transformed response
-      # @see ResponseContext
+      # @param response [Response] the response to transform
+      # @return [Response] the transformed response
+      # @see Response
       def transform_response(response)
         response
       end

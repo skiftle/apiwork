@@ -6,21 +6,23 @@ module Apiwork
       class RecordLoader
         attr_reader :schema_class
 
-        def self.load(record, schema_class, query)
-          new(record, schema_class, query).load
+        def self.load(record, schema_class, request)
+          new(record, schema_class, request).load
         end
 
-        def initialize(record, schema_class, query)
+        def initialize(record, schema_class, request)
           @record = record
           @schema_class = schema_class
-          @query = query
+          @request = request
         end
 
         def load
           return @record unless @record.is_a?(ActiveRecord::Base)
-          return @record if @query[:include].blank?
 
-          includes_hash_value = build_includes_hash(@query[:include])
+          include_param = @request.query[:include]
+          return @record if include_param.blank?
+
+          includes_hash_value = build_includes_hash(include_param)
           return @record if includes_hash_value.empty?
 
           ActiveRecord::Associations::Preloader.new(associations: includes_hash_value, records: [@record]).call

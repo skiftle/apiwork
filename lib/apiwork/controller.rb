@@ -79,12 +79,13 @@ module Apiwork
     #     end
     #   end
     def contract
-      @contract ||= contract_class.new(
-        action_name,
-        request.query_parameters.deep_symbolize_keys,
-        request.request_parameters.deep_symbolize_keys,
-        coerce: true,
-      )
+      @contract ||= begin
+        api_request = Adapter::Request.new(
+          body: request.request_parameters,
+          query: request.query_parameters,
+        ).transform(&:deep_symbolize_keys)
+        contract_class.new(action_name, api_request, coerce: true)
+      end
     end
 
     # @api public
@@ -141,7 +142,7 @@ module Apiwork
         result.issues.each { |issue| Rails.logger.warn(issue.to_s) }
       end
 
-      response = Adapter::ResponseContext.new(body: json)
+      response = Adapter::Response.new(body: json)
       response = adapter.transform_response(response)
       response = api_class.transform_response(response)
       json = response.body
@@ -229,7 +230,7 @@ module Apiwork
         ),
         context:,
         meta:,
-        query: resource ? contract.query : {},
+        request: resource ? contract.request : nil,
       )
     end
 

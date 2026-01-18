@@ -21,7 +21,7 @@ module Apiwork
 
       def render_collection(collection, schema_class, state)
         CollectionLoader.load(collection, schema_class, state) => { data:, metadata: }
-        data = schema_class.serialize(data, context: state.context, include: state.query[:include])
+        data = schema_class.serialize(data, context: state.context, include: state.request.query[:include])
 
         {
           schema_class.root_key.plural => data,
@@ -33,8 +33,8 @@ module Apiwork
       def render_record(record, schema_class, state)
         RecordValidator.validate!(record, schema_class)
 
-        data = RecordLoader.load(record, schema_class, state.query)
-        data = schema_class.serialize(data, context: state.context, include: state.query[:include])
+        data = RecordLoader.load(record, schema_class, state.request)
+        data = schema_class.serialize(data, context: state.context, include: state.request.query[:include])
 
         {
           schema_class.root_key.singular => data,

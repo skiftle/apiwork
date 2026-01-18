@@ -6,7 +6,7 @@ module Apiwork
     #
     # @see RequestParser
     class ParseResult
-      # @return [RequestContext] the parsed request with validated data
+      # @return [Adapter::Request] the parsed request with validated data
       attr_reader :request
 
       # @return [Array<Issue>] validation issues (empty if valid)
