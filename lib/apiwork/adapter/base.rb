@@ -26,10 +26,10 @@ module Apiwork
         # @api public
         # The adapter name.
         #
-        # @param name [Symbol, nil] the adapter name to set
+        # @param value [Symbol, nil] the adapter name to set
         # @return [Symbol, nil]
-        def adapter_name(name = nil)
-          @adapter_name = name.to_sym if name
+        def adapter_name(value = nil)
+          @adapter_name = value.to_sym if value
           @adapter_name
         end
       end
@@ -119,8 +119,8 @@ module Apiwork
       # @param query [Hash] the query parameters
       # @param body [Hash] the body parameters
       # @return [Hash] hash with :query and :body keys
-      def normalize_request(query:, body:)
-        { query:, body: }
+      def normalize_request(query, body)
+        { body:, query: }
       end
 
       # @api public
@@ -130,8 +130,8 @@ module Apiwork
       # @param query [Hash] the validated query parameters
       # @param body [Hash] the validated body parameters
       # @return [Hash] hash with :query and :body keys
-      def prepare_request(query:, body:)
-        { query:, body: }
+      def prepare_request(query, body)
+        { body:, query: }
       end
 
       # @api public
@@ -139,9 +139,8 @@ module Apiwork
       # Override to customize key casing, wrapping, etc.
       #
       # @param hash [Hash] the response data
-      # @param schema_class [Class] a {Schema::Base} subclass (optional)
       # @return [Hash] the transformed response
-      def transform_response(hash, schema_class)
+      def transform_response(hash)
         hash
       end
 

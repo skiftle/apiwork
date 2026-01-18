@@ -49,14 +49,14 @@ module Apiwork
         }
       end
 
-      def normalize_request(body:, query:)
+      def normalize_request(query, body)
         {
           body: RequestTransformer.transform(body),
           query: RequestTransformer.transform(query),
         }
       end
 
-      def prepare_request(body:, query:)
+      def prepare_request(query, body)
         {
           body: transform_nested_op_fields(body),
           query: transform_nested_op_fields(query),
