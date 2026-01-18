@@ -13,9 +13,16 @@
   },
   "response": {
     "body": {
-      "status": 500,
-      "error": "Internal Server Error"
+      "invoice": {
+        "id": "cd3a4e6a-5247-5f84-876f-e4ff358e30f5",
+        "createdAt": "2024-01-01T12:00:00.000Z",
+        "issuedOn": "2024-01-15",
+        "notes": "First invoice",
+        "number": "INV-001",
+        "status": "draft",
+        "updatedAt": "2024-01-01T12:00:00.000Z"
+      }
     },
-    "status": 500
+    "status": 201
   }
 }
