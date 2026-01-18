@@ -1062,6 +1062,8 @@ module Apiwork
           else :unknown
           end
         end
+
+        class AssociationResource; end
       end
     end
   end

@@ -7,6 +7,8 @@ module Apiwork
         def call(collection, schema_class, state)
           CollectionLoader.load(collection, schema_class, state)
         end
+
+        class CollectionLoader; end
       end
     end
   end
