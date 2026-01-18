@@ -12,53 +12,29 @@ module Apiwork
       end
 
       register do
-        api { |registrar, capabilities| APIBuilder.build(registrar, capabilities) }
-        contract { |registrar, schema_class, actions| ContractBuilder.build(registrar, schema_class, actions) }
+        api APIBuilder
+        contract ContractBuilder
       end
 
       request do
         before_validation do
-          transform { |request| request.transform(&RequestTransformer.method(:transform)) }
+          transform RequestTransformer
         end
         after_validation do
-          transform { |request| request.transform(&OpFieldTransformer.method(:transform)) }
+          transform OpFieldTransformer
         end
       end
 
       response do
         prepare do
-          record do |record, schema_class, state|
-            RecordValidator.validate!(record, schema_class)
-            RecordLoader.load(record, schema_class, state.request)
-          end
-
-          collection do |collection, schema_class, state|
-            CollectionLoader.load(collection, schema_class, state)
-          end
+          record RecordPreparer
+          collection CollectionPreparer
         end
 
         render do
-          record do |data, schema_class, state|
-            {
-              schema_class.root_key.singular => data,
-              meta: state.meta.presence,
-            }.compact
-          end
-
-          collection do |result, schema_class, state|
-            {
-              schema_class.root_key.plural => result[:data],
-              pagination: result[:metadata][:pagination],
-              meta: state.meta.presence,
-            }.compact
-          end
-
-          error do |issues, layer, _state|
-            {
-              layer:,
-              issues: issues.map(&:to_h),
-            }
-          end
+          record RecordRenderer
+          collection CollectionRenderer
+          error ErrorRenderer
         end
       end
     end

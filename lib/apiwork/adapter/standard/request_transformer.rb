@@ -6,16 +6,8 @@ module Apiwork
       class RequestTransformer
         NUMERIC_KEY_PATTERN = /^\d+$/
 
-        def self.transform(params)
-          new(params).transform
-        end
-
-        def initialize(params)
-          @params = params
-        end
-
-        def transform
-          normalize_indexed_hashes(@params)
+        def call(request)
+          request.transform { |hash| normalize_indexed_hashes(hash) }
         end
 
         private

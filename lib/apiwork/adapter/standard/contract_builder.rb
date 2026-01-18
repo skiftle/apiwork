@@ -7,19 +7,19 @@ module Apiwork
         MAX_RECURSION_DEPTH = 3
 
         def self.build(registrar, schema_class, actions)
-          new(registrar, schema_class, actions:, build: true)
+          new.call(registrar, schema_class, actions)
         end
 
         def self.for_schema(registrar, schema_class)
-          new(registrar, schema_class)
+          new.call(registrar, schema_class)
         end
 
-        def initialize(registrar, schema_class, actions: nil, build: false)
+        def call(registrar, schema_class, actions = nil)
           @registrar = registrar
           @schema_class = schema_class
           @actions = actions
 
-          return unless build
+          return self unless actions
 
           build_enums
           build_actions

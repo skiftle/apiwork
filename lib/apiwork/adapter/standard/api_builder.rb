@@ -148,10 +148,10 @@ module Apiwork
         NULLABLE_EXTENSION = { name: :null, type: :boolean }.freeze
 
         def self.build(registrar, capabilities)
-          new(registrar, capabilities)
+          new.call(registrar, capabilities)
         end
 
-        def initialize(registrar, capabilities)
+        def call(registrar, capabilities)
           @registrar = registrar
           @capabilities = capabilities
 
