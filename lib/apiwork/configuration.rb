@@ -64,6 +64,24 @@ module Apiwork
       keys.compact.reduce(self) { |config, key| config.public_send(key) }
     end
 
+    # @api public
+    # Converts the configuration to a hash.
+    #
+    # @return [Hash] all configuration values as a hash
+    #
+    # @example
+    #   config.to_h  # => { pagination: { strategy: :offset, default_size: 20 } }
+    def to_h
+      @options.each_with_object({}) do |(name, option), result|
+        if option.nested?
+          result[name] = Configuration.new(option, @storage[name] || {}).to_h
+        else
+          stored = @storage[name]
+          result[name] = stored.nil? ? option.default : stored
+        end
+      end
+    end
+
     private
 
     def extract_options(source)
