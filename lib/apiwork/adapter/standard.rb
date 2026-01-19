@@ -11,31 +11,41 @@ module Apiwork
         option :max_size, default: 100, type: :integer
       end
 
-      register do
-        api APIBuilder
-        contract ContractBuilder
+      api_builder APIBuilder
+      contract_builder ContractBuilder
+
+      transform_request RequestTransformer
+      transform_request OpFieldTransformer, post: true
+
+      def prepare_record(record, schema_class, state)
+        RecordValidator.validate!(record, schema_class)
+        RecordLoader.load(record, schema_class, state.request)
       end
 
-      request do
-        before_validation do
-          transform RequestTransformer
-        end
-        after_validation do
-          transform OpFieldTransformer
-        end
+      def prepare_collection(collection, schema_class, state)
+        CollectionLoader.load(collection, schema_class, state)
       end
 
-      response do
-        prepare do
-          record RecordPreparer
-          collection CollectionPreparer
-        end
+      def render_record(data, schema_class, state)
+        {
+          schema_class.root_key.singular => data,
+          meta: state.meta.presence,
+        }.compact
+      end
 
-        render do
-          record RecordRenderer
-          collection CollectionRenderer
-          error ErrorRenderer
-        end
+      def render_collection(result, schema_class, state)
+        {
+          schema_class.root_key.plural => result[:data],
+          pagination: result[:metadata][:pagination],
+          meta: state.meta.presence,
+        }.compact
+      end
+
+      def render_error(issues, layer, _state)
+        {
+          layer:,
+          issues: issues.map(&:to_h),
+        }
       end
     end
   end

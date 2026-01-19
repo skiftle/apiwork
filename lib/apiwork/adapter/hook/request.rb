@@ -9,30 +9,13 @@ module Apiwork
         def initialize
           @before_transforms = []
           @after_transforms = []
-          @current_stage = nil
         end
 
-        def before_validation(&block)
-          @current_stage = :before
-          instance_eval(&block)
-          @current_stage = nil
-        end
-
-        def after_validation(&block)
-          @current_stage = :after
-          instance_eval(&block)
-          @current_stage = nil
-        end
-
-        def transform(callable = nil, &block)
-          transformer = callable || block
-          return unless transformer
-
-          case @current_stage
-          when :before
-            @before_transforms << transformer
-          when :after
+        def add_transform(transformer, post: false)
+          if post
             @after_transforms << transformer
+          else
+            @before_transforms << transformer
           end
         end
 

@@ -101,8 +101,8 @@ RSpec.describe 'Custom Adapter', type: :integration do
       expect(adapter).to respond_to(:prepare_request)
     end
 
-    it 'responds to transform_response' do
-      expect(adapter).to respond_to(:transform_response)
+    it 'responds to transform_response_output' do
+      expect(adapter).to respond_to(:transform_response_output)
     end
 
     it 'responds to register_api' do

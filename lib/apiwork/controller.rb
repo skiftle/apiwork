@@ -128,9 +128,9 @@ module Apiwork
 
       json = if schema_class
                if data.is_a?(Enumerable)
-                 adapter.render_collection(data, schema_class, render_state)
+                 adapter.process_collection(data, schema_class, render_state)
                else
-                 adapter.render_record(data, schema_class, render_state)
+                 adapter.process_record(data, schema_class, render_state)
                end
              else
                data[:meta] = meta if meta.present?
@@ -143,7 +143,7 @@ module Apiwork
       end
 
       response = Adapter::Response.new(body: json)
-      response = adapter.transform_response(response, api_class: api_class)
+      response = adapter.transform_response_output(response, api_class: api_class)
       json = response.body
 
       render json:, status: status || (action_name.to_sym == :create ? :created : :ok)
@@ -216,7 +216,7 @@ module Apiwork
     end
 
     def render_error(layer, issues, status)
-      json = adapter.render_error(layer, issues, build_render_state)
+      json = adapter.process_error(layer, issues, build_render_state)
       render json:, status:
     end
 

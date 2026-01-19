@@ -2,107 +2,45 @@
 
 module Apiwork
   module Adapter
-    # @api public
-    # Base class for adapters.
-    #
-    # Subclass this to create custom response formats (JSON:API, HAL, etc.).
-    # Use the hooks DSL to define request/response transformations.
-    #
-    # @example Custom adapter with hooks
-    #   class JSONAPIAdapter < Apiwork::Adapter::Base
-    #     adapter_name :jsonapi
-    #
-    #     response do
-    #       render do
-    #         record { |data, schema_class, state|
-    #           { data: { type: schema_class.root_key.singular, attributes: data } }
-    #         }
-    #       end
-    #     end
-    #   end
-    #
-    #   # Register the adapter
-    #   Apiwork::Adapter.register(JSONAPIAdapter)
     class Base
       include Configurable
 
       class << self
-        # @api public
-        # The adapter name.
-        #
-        # @param value [Symbol, nil] the adapter name to set
-        # @return [Symbol, nil]
         def adapter_name(value = nil)
           @adapter_name = value.to_sym if value
           @adapter_name
         end
 
-        # @api public
-        # Defines registration hooks for API and contract setup.
-        #
-        # @yield block evaluated in the context of {Hook::Register}
-        # @see Hook::Register
-        #
-        # @example
-        #   register do
-        #     api { |registrar, capabilities| ... }
-        #     contract { |registrar, schema_class, actions| ... }
-        #   end
-        def register(&block)
-          return @register ||= Hook::Register.new unless block
-
-          @register ||= Hook::Register.new
-          @register.instance_eval(&block)
+        def api_builder(builder_class = nil)
+          @api_builder = builder_class if builder_class
+          @api_builder
         end
 
-        # @api public
-        # Defines request transformation hooks.
-        #
-        # @yield block evaluated in the context of {Hook::Request}
-        # @see Hook::Request
-        #
-        # @example
-        #   request do
-        #     before_validation do
-        #       transform KeyNormalizer
-        #     end
-        #     after_validation do
-        #       transform OpFieldTransformer
-        #     end
-        #   end
-        def request(&block)
-          return @request ||= Hook::Request.new unless block
+        def contract_builder(builder_class = nil)
+          @contract_builder = builder_class if builder_class
+          @contract_builder
+        end
 
+        def transform_request(*transformers, post: false)
           @request ||= Hook::Request.new
-          @request.instance_eval(&block)
+          transformers.each do |transformer|
+            @request.add_transform(transformer, post:)
+          end
         end
 
-        # @api public
-        # Defines response transformation hooks.
-        #
-        # @yield block evaluated in the context of {Hook::Response}
-        # @see Hook::Response
-        #
-        # @example
-        #   response do
-        #     prepare do
-        #       record RecordPreparer
-        #       collection CollectionPreparer
-        #     end
-        #     render do
-        #       record RecordRenderer
-        #       collection CollectionRenderer
-        #       error ErrorRenderer
-        #     end
-        #     finalize do
-        #       transform KeyTransformer
-        #     end
-        #   end
-        def response(&block)
-          return @response ||= Hook::Response.new unless block
-
+        def transform_response(*transformers, post: false)
           @response ||= Hook::Response.new
-          @response.instance_eval(&block)
+          transformers.each do |transformer|
+            @response.add_transform(transformer, post:)
+          end
+        end
+
+        def request
+          @request ||= Hook::Request.new
+        end
+
+        def response
+          @response ||= Hook::Response.new
         end
 
         def inherited(subclass)
@@ -117,50 +55,67 @@ module Apiwork
           subclass_response = Hook::Response.new
           subclass_response.inherit_from(parent_response)
 
-          subclass.instance_variable_set(:@register, Hook::Register.new)
           subclass.instance_variable_set(:@request, subclass_request)
           subclass.instance_variable_set(:@response, subclass_response)
         end
       end
 
-      request do
-        before_validation do
-          transform KeyNormalizer
-        end
+      transform_request KeyNormalizer
+      transform_response KeyTransformer
+
+      def process_collection(collection, schema_class, state)
+        prepared = prepare_collection(collection, schema_class, state)
+        serialized = serialize_collection(prepared, schema_class, state)
+        render_collection(serialized, schema_class, state)
       end
 
-      response do
-        finalize do
-          transform KeyTransformer
-        end
+      def process_record(record, schema_class, state)
+        prepared = prepare_record(record, schema_class, state)
+        serialized = serialize_record(prepared, schema_class, state)
+        render_record(serialized, schema_class, state)
+      end
+
+      def process_error(layer, issues, state)
+        prepared = prepare_error(issues, layer, state)
+        render_error(prepared, layer, state)
+      end
+
+      def prepare_record(record, _schema_class, _state)
+        record
+      end
+
+      def prepare_collection(collection, _schema_class, _state)
+        collection
+      end
+
+      def prepare_error(issues, _layer, _state)
+        issues
+      end
+
+      def render_record(data, _schema_class, _state)
+        data
+      end
+
+      def render_collection(result, _schema_class, _state)
+        result
+      end
+
+      def render_error(issues, _layer, _state)
+        issues
       end
 
       def register_api(registrar, capabilities)
-        self.class.register.run_api(registrar, capabilities)
+        builder_class = self.class.api_builder
+        return unless builder_class
+
+        builder_class.build(registrar, capabilities)
       end
 
       def register_contract(registrar, schema_class, actions)
-        self.class.register.run_contract(registrar, schema_class, actions)
-      end
+        builder_class = self.class.contract_builder
+        return unless builder_class
 
-      def render_collection(collection, schema_class, state)
-        response = self.class.response
-        prepared = response.run_prepare_collection(collection, schema_class, state)
-        serialized = serialize_collection(prepared, schema_class, state)
-        response.run_render_collection(serialized, schema_class, state)
-      end
-
-      def render_record(record, schema_class, state)
-        response = self.class.response
-        prepared = response.run_prepare_record(record, schema_class, state)
-        serialized = serialize_record(prepared, schema_class, state)
-        response.run_render_record(serialized, schema_class, state)
-      end
-
-      def render_error(layer, issues, state)
-        response = self.class.response
-        prepared = response.run_prepare_error(issues, layer, state)
-        response.run_render_error(prepared, layer, state)
+        builder_class.build(registrar, schema_class, actions)
       end
 
       def normalize_request(request, api_class:)
@@ -171,8 +126,8 @@ module Apiwork
         self.class.request.run_after_transforms(request, api_class:)
       end
 
-      def transform_response(response, api_class:)
-        self.class.response.run_finalize(response, api_class:)
+      def transform_response_output(response, api_class:)
+        self.class.response.run_transforms(response, api_class:)
       end
 
       def build_api_registrar(api_class)
