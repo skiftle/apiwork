@@ -6,7 +6,6 @@ module Apiwork
       adapter_name :standard
 
       transform_request RequestTransformer
-      transform_request OpFieldTransformer, post: true
 
       resource_envelope Envelope::Resource
       error_envelope Envelope::Error
@@ -15,6 +14,7 @@ module Apiwork
       feature Feature::Sorting
       feature Feature::Pagination
       feature Feature::Including
+      feature Feature::Writing
     end
   end
 end

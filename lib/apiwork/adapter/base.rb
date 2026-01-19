@@ -54,6 +54,10 @@ module Apiwork
           @features ||= []
           @features << klass
 
+          klass.request_transformers.each do |transformer|
+            transform_request transformer[:klass], post: transformer[:post]
+          end
+
           return unless klass.options.any?
 
           name = klass.feature_name

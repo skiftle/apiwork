@@ -26,6 +26,15 @@ module Apiwork
         def input_type
           @input_type || :any
         end
+
+        def request_transformer(klass, post: false)
+          @request_transformers ||= []
+          @request_transformers << { klass:, post: }
+        end
+
+        def request_transformers
+          @request_transformers || []
+        end
       end
 
       attr_reader :config
