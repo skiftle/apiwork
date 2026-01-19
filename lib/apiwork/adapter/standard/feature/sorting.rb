@@ -20,7 +20,7 @@ module Apiwork
             sort_params = state.request&.query&.dig(:sort)
 
             issues = []
-            sorted = CollectionLoader::Sorter.sort(collection, state.schema_class, sort_params, issues)
+            sorted = Sorter.sort(collection, state.schema_class, sort_params, issues)
 
             raise ContractError, issues if issues.any?
 

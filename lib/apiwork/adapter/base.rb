@@ -108,29 +108,19 @@ module Apiwork
         end
 
         # @api public
-        # Sets or gets the record envelope class.
+        # Sets or gets the resource envelope class.
         #
-        # @param klass [Class] an Envelope::Record subclass (optional)
+        # The resource envelope handles both single records and collections
+        # for a given schema class.
+        #
+        # @param klass [Class] an Envelope::Resource subclass (optional)
         # @return [Class, nil]
         #
         # @example
-        #   record_envelope RecordEnvelope
-        def record_envelope(klass = nil)
-          @record_envelope = klass if klass
-          @record_envelope || (superclass.respond_to?(:record_envelope) && superclass.record_envelope)
-        end
-
-        # @api public
-        # Sets or gets the collection envelope class.
-        #
-        # @param klass [Class] an Envelope::Collection subclass (optional)
-        # @return [Class, nil]
-        #
-        # @example
-        #   collection_envelope CollectionEnvelope
-        def collection_envelope(klass = nil)
-          @collection_envelope = klass if klass
-          @collection_envelope || (superclass.respond_to?(:collection_envelope) && superclass.collection_envelope)
+        #   resource_envelope ResourceEnvelope
+        def resource_envelope(klass = nil)
+          @resource_envelope = klass if klass
+          @resource_envelope || (superclass.respond_to?(:resource_envelope) && superclass.resource_envelope)
         end
 
         # @api public
@@ -215,13 +205,13 @@ module Apiwork
       transform_response KeyTransformer
 
       def process_collection(collection, schema_class, state)
-        envelope_class = self.class.collection_envelope
+        envelope_class = self.class.resource_envelope
         if envelope_class
           envelope = envelope_class.new(schema_class)
-          prepared = envelope.prepare(collection, state)
+          prepared = envelope.prepare_collection(collection, state)
           result, metadata = apply_features(prepared, state)
-          serialized = serialize_collection_data(result, envelope, state)
-          envelope.render(serialized, metadata, state)
+          serialized = envelope.serialize_collection(result[:data], state)
+          envelope.render_collection(serialized, metadata, state)
         else
           prepared = prepare_collection(collection, schema_class, state)
           serialized = serialize_collection(prepared, schema_class, state)
@@ -230,12 +220,12 @@ module Apiwork
       end
 
       def process_record(record, schema_class, state)
-        envelope_class = self.class.record_envelope
+        envelope_class = self.class.resource_envelope
         if envelope_class
           envelope = envelope_class.new(schema_class)
-          prepared = envelope.prepare(record, state)
-          serialized = envelope.serialize(prepared, state)
-          envelope.render(serialized, state)
+          prepared = envelope.prepare_record(record, state)
+          serialized = envelope.serialize_record(prepared, state)
+          envelope.render_record(serialized, state)
         else
           prepared = prepare_record(record, schema_class, state)
           serialized = serialize_record(prepared, schema_class, state)

@@ -20,43 +20,11 @@ module Apiwork
       feature Feature::Pagination
       feature Feature::Including
 
-      record_envelope Envelope::Record
-      collection_envelope Envelope::Collection
+      resource_envelope Envelope::Resource
       error_envelope Envelope::Error
 
       transform_request RequestTransformer
       transform_request OpFieldTransformer, post: true
-
-      def prepare_record(record, schema_class, state)
-        RecordValidator.validate!(record, schema_class)
-        RecordLoader.load(record, schema_class, state.request)
-      end
-
-      def prepare_collection(collection, schema_class, state)
-        CollectionLoader.load(collection, schema_class, state)
-      end
-
-      def render_record(data, schema_class, state)
-        {
-          schema_class.root_key.singular => data,
-          meta: state.meta.presence,
-        }.compact
-      end
-
-      def render_collection(result, schema_class, state)
-        {
-          schema_class.root_key.plural => result[:data],
-          pagination: result[:metadata][:pagination],
-          meta: state.meta.presence,
-        }.compact
-      end
-
-      def render_error(issues, layer, _state)
-        {
-          layer:,
-          issues: issues.map(&:to_h),
-        }
-      end
     end
   end
 end

@@ -16,7 +16,7 @@ module Apiwork
             return data unless collection.is_a?(ActiveRecord::Relation)
 
             params = state.request&.query&.slice(:filter, :include, :page, :sort) || {}
-            loaded = CollectionLoader::EagerLoader.load(collection, state.schema_class, params)
+            loaded = EagerLoader.load(collection, state.schema_class, params)
 
             data.merge(data: loaded)
           end

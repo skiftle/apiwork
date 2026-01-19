@@ -39,9 +39,9 @@ module Apiwork
 
             case strategy
             when :offset
-              CollectionLoader::OffsetPaginator.paginate(collection, schema_class, page_params)
+              OffsetPaginator.paginate(collection, schema_class, page_params)
             else
-              CollectionLoader::CursorPaginator.paginate(collection, schema_class, page_params)
+              CursorPaginator.paginate(collection, schema_class, page_params)
             end
           end
         end

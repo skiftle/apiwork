@@ -21,7 +21,7 @@ module Apiwork
             return data if filter_params.blank?
 
             issues = []
-            filtered = CollectionLoader::Filter.filter(collection, state.schema_class, filter_params, issues)
+            filtered = Filter.filter(collection, state.schema_class, filter_params, issues)
 
             raise ContractError, issues if issues.any?
 
