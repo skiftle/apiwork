@@ -173,70 +173,24 @@ module Apiwork
       transform_response KeyTransformer
 
       def process_collection(collection, schema_class, state)
-        envelope_class = self.class.resource_envelope
-        if envelope_class
-          envelope = envelope_class.new(schema_class)
-          prepared = envelope.prepare_collection(collection, state)
-          result, metadata = apply_features(prepared, state)
-          serialized = envelope.serialize_collection(result[:data], state)
-          envelope.render_collection(serialized, metadata, state)
-        else
-          prepared = prepare_collection(collection, schema_class, state)
-          serialized = serialize_collection(prepared, schema_class, state)
-          render_collection(serialized, schema_class, state)
-        end
+        envelope = self.class.resource_envelope.new(schema_class)
+        prepared = envelope.prepare_collection(collection, state)
+        result, metadata = apply_features(prepared, state)
+        serialized = envelope.serialize_collection(result[:data], state)
+        envelope.render_collection(serialized, metadata, state)
       end
 
       def process_record(record, schema_class, state)
-        envelope_class = self.class.resource_envelope
-        if envelope_class
-          envelope = envelope_class.new(schema_class)
-          prepared = envelope.prepare_record(record, state)
-          serialized = envelope.serialize_record(prepared, state)
-          envelope.render_record(serialized, state)
-        else
-          prepared = prepare_record(record, schema_class, state)
-          serialized = serialize_record(prepared, schema_class, state)
-          render_record(serialized, schema_class, state)
-        end
+        envelope = self.class.resource_envelope.new(schema_class)
+        prepared = envelope.prepare_record(record, state)
+        serialized = envelope.serialize_record(prepared, state)
+        envelope.render_record(serialized, state)
       end
 
       def process_error(layer, issues, state)
-        envelope_class = self.class.error_envelope
-        if envelope_class
-          envelope = envelope_class.new
-          prepared = prepare_error(issues, layer, state)
-          envelope.render(prepared, layer, state)
-        else
-          prepared = prepare_error(issues, layer, state)
-          render_error(prepared, layer, state)
-        end
-      end
-
-      # @api public
-      # Prepares a record before serialization.
-      #
-      # Override to add eager loading, validation, or transformation.
-      #
-      # @param record [ActiveRecord::Base] record to prepare
-      # @param _schema_class [Class] the schema class
-      # @param _state [Adapter::RenderState] render context
-      # @return [ActiveRecord::Base] the prepared record
-      def prepare_record(record, _schema_class, _state)
-        record
-      end
-
-      # @api public
-      # Prepares a collection before serialization.
-      #
-      # Override to add filtering, sorting, pagination, or eager loading.
-      #
-      # @param collection [Enumerable] collection to prepare
-      # @param _schema_class [Class] the schema class
-      # @param _state [Adapter::RenderState] render context
-      # @return [Hash] prepared result with :data and :metadata keys
-      def prepare_collection(collection, _schema_class, _state)
-        collection
+        envelope = self.class.error_envelope.new
+        prepared = prepare_error(issues, layer, state)
+        envelope.render(prepared, layer, state)
       end
 
       # @api public
@@ -249,45 +203,6 @@ module Apiwork
       # @param _state [Adapter::RenderState] render context
       # @return [Array<Issue>] the prepared issues
       def prepare_error(issues, _layer, _state)
-        issues
-      end
-
-      # @api public
-      # Renders a single record response.
-      #
-      # Override to customize the response structure.
-      #
-      # @param data [Hash] serialized record data
-      # @param _schema_class [Class] the schema class
-      # @param _state [Adapter::RenderState] render context
-      # @return [Hash] the response body
-      def render_record(data, _schema_class, _state)
-        data
-      end
-
-      # @api public
-      # Renders a collection response.
-      #
-      # Override to customize the response structure.
-      #
-      # @param result [Hash] prepared collection with :data and :metadata
-      # @param _schema_class [Class] the schema class
-      # @param _state [Adapter::RenderState] render context
-      # @return [Hash] the response body
-      def render_collection(result, _schema_class, _state)
-        result
-      end
-
-      # @api public
-      # Renders an error response.
-      #
-      # Override to customize the error structure.
-      #
-      # @param issues [Array<Issue>] prepared error issues
-      # @param _layer [Symbol] error layer (:contract, :domain, :http)
-      # @param _state [Adapter::RenderState] render context
-      # @return [Hash] the error response body
-      def render_error(issues, _layer, _state)
         issues
       end
 
@@ -354,32 +269,6 @@ module Apiwork
 
       def adapter_config_for(feature_name)
         {}
-      end
-
-      def serialize_collection_data(result, envelope, state)
-        return result unless result.is_a?(Hash) && result.key?(:data)
-
-        data = result[:data]
-        serialized = data.map { |record| envelope.serialize(record, state) }
-        result.merge(data: serialized)
-      end
-
-      def serialize_collection(prepared, schema_class, state)
-        return prepared unless schema_class
-        return prepared unless prepared.is_a?(Hash) && prepared.key?(:data)
-
-        data = prepared[:data]
-        include_param = state.request&.query&.dig(:include)
-        serialized = schema_class.serialize(data, context: state.context, include: include_param)
-
-        prepared.merge(data: serialized)
-      end
-
-      def serialize_record(prepared, schema_class, state)
-        return prepared unless schema_class
-
-        include_param = state.request&.query&.dig(:include)
-        schema_class.serialize(prepared, context: state.context, include: include_param)
       end
     end
   end

@@ -7,39 +7,6 @@ RSpec.describe 'Custom Adapter', type: :integration do
     let(:custom_adapter_class) do
       Class.new(Apiwork::Adapter::Base) do
         adapter_name :billing
-
-        def render_collection(collection, schema_class, state)
-          {
-            data: collection.map { |record| serialize_record(record, schema_class, state) },
-            meta: { adapter: 'billing', total: collection.size },
-          }
-        end
-
-        def render_record(record, schema_class, state)
-          {
-            data: serialize_record(record, schema_class, state),
-            meta: { adapter: 'billing' },
-          }
-        end
-
-        def render_error(layer, issues, _state)
-          {
-            errors: issues.map do |issue|
-              {
-                code: issue.code,
-                message: issue.detail,
-                source: { pointer: issue.pointer },
-              }
-            end,
-            meta: { layer:, adapter: 'billing' },
-          }
-        end
-
-        private
-
-        def serialize_record(record, schema_class, state)
-          schema_class.as_json(record, context: state.context, include: state.includes)
-        end
       end
     end
 
@@ -80,18 +47,6 @@ RSpec.describe 'Custom Adapter', type: :integration do
 
   describe 'Adapter::Base methods' do
     let(:adapter) { Apiwork::Adapter::Standard.new }
-
-    it 'responds to render_collection' do
-      expect(adapter).to respond_to(:render_collection)
-    end
-
-    it 'responds to render_record' do
-      expect(adapter).to respond_to(:render_record)
-    end
-
-    it 'responds to render_error' do
-      expect(adapter).to respond_to(:render_error)
-    end
 
     it 'responds to normalize_request' do
       expect(adapter).to respond_to(:normalize_request)
