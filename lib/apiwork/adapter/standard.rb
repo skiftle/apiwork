@@ -13,7 +13,6 @@ module Apiwork
 
       feature Feature::Filtering
       feature Feature::Sorting
-      feature Feature::Preloading
       feature Feature::Pagination
       feature Feature::Including
     end

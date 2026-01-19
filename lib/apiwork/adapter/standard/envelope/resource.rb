@@ -14,21 +14,18 @@ module Apiwork
             Loader.load(record, schema_class, state.request)
           end
 
-          def render_record(data, state)
+          def render_record(data, metadata, state)
             {
               schema_class.root_key.singular => data,
+              **metadata,
               meta: state.meta.presence,
             }.compact
-          end
-
-          def prepare_collection(collection, state)
-            { data: collection, metadata: {} }
           end
 
           def render_collection(data, metadata, state)
             {
               schema_class.root_key.plural => data,
-              pagination: metadata[:pagination],
+              **metadata,
               meta: state.meta.presence,
             }.compact
           end

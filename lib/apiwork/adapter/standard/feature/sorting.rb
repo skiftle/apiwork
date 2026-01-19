@@ -22,7 +22,7 @@ module Apiwork
           end
 
           def extract(request, schema_class)
-            request&.query&.dig(:sort)
+            request.query[:sort]
           end
 
           def includes(params, schema_class)

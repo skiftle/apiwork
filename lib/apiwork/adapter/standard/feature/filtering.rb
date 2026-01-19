@@ -149,7 +149,7 @@ module Apiwork
           end
 
           def extract(request, schema_class)
-            request&.query&.dig(:filter) || {}
+            request.query[:filter] || {}
           end
 
           def includes(params, schema_class)

@@ -181,16 +181,19 @@ module Apiwork
       def process_collection(collection, schema_class, state)
         envelope = self.class.resource_envelope.new(schema_class)
         prepared = envelope.prepare_collection(collection, state)
-        result, metadata = apply_features(prepared, state)
-        serialized = envelope.serialize_collection(result[:data], state)
+        result, metadata = apply_features({ data: prepared }, state)
+        serialize_options = result[:serialize_options] || {}
+        serialized = envelope.serialize_collection(result[:data], serialize_options, state)
         envelope.render_collection(serialized, metadata, state)
       end
 
       def process_record(record, schema_class, state)
         envelope = self.class.resource_envelope.new(schema_class)
         prepared = envelope.prepare_record(record, state)
-        serialized = envelope.serialize_record(prepared, state)
-        envelope.render_record(serialized, state)
+        result, metadata = apply_features({ data: prepared }, state)
+        serialize_options = result[:serialize_options] || {}
+        serialized = envelope.serialize_record(result[:data], serialize_options, state)
+        envelope.render_record(serialized, metadata, state)
       end
 
       def process_error(layer, issues, state)

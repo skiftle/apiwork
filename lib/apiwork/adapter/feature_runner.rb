@@ -20,8 +20,9 @@ module Apiwork
         context = build_context(state)
         result = run_pipeline(applicable, preloaded, params_map, context)
         metadata = collect_metadata(applicable, result)
+        serialize_options = collect_serialize_options(applicable, params_map, state.schema_class)
 
-        [result, metadata]
+        [result.merge(serialize_options:), metadata]
       end
 
       private
@@ -54,6 +55,12 @@ module Apiwork
       def collect_metadata(features, result)
         features.each_with_object({}) do |feature, meta|
           meta.merge!(feature.metadata(result))
+        end
+      end
+
+      def collect_serialize_options(features, params_map, schema_class)
+        features.each_with_object({}) do |feature, opts|
+          opts.merge!(feature.serialize_options(params_map[feature], schema_class))
         end
       end
 

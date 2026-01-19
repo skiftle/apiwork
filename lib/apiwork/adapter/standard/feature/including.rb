@@ -6,7 +6,6 @@ module Apiwork
       module Feature
         class Including < Adapter::Feature
           feature_name :including
-          applies_to :index, :show
           input :any
 
           def contract(registrar, schema_class)
@@ -14,7 +13,7 @@ module Apiwork
           end
 
           def extract(request, schema_class)
-            request&.query&.dig(:include) || {}
+            request.query[:include] || {}
           end
 
           def includes(params, schema_class)
@@ -25,8 +24,8 @@ module Apiwork
             IncludesResolver.deep_merge_includes(always, explicit).keys
           end
 
-          def apply(data, params, context)
-            data.merge(serialize_includes: params)
+          def serialize_options(params, schema_class)
+            { include: params }
           end
 
           private

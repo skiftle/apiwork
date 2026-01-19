@@ -47,6 +47,10 @@ module Apiwork
         []
       end
 
+      def serialize_options(params, schema_class)
+        {}
+      end
+
       def apply(data, params, context)
         data
       end

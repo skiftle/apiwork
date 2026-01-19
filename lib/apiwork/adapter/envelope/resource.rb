@@ -17,26 +17,32 @@ module Apiwork
           record
         end
 
-        def serialize_record(record, state)
-          include_param = state.request.query[:include]
-          schema_class.serialize(record, context: state.context, include: include_param)
+        def serialize_record(record, serialize_options, state)
+          schema_class.serialize(
+            record,
+            context: state.context,
+            include: serialize_options[:include],
+          )
         end
 
-        def render_record(data, state)
-          { schema_class.root_key.singular => data, meta: state.meta.presence }.compact
+        def render_record(data, metadata, state)
+          raise NotImplementedError
         end
 
         def prepare_collection(collection, state)
-          { data: collection, metadata: {} }
+          collection
         end
 
-        def serialize_collection(collection, state)
-          include_param = state.request.query[:include]
-          schema_class.serialize(collection, context: state.context, include: include_param)
+        def serialize_collection(collection, serialize_options, state)
+          schema_class.serialize(
+            collection,
+            context: state.context,
+            include: serialize_options[:include],
+          )
         end
 
         def render_collection(data, metadata, state)
-          { schema_class.root_key.plural => data, **metadata, meta: state.meta.presence }.compact
+          raise NotImplementedError
         end
       end
     end

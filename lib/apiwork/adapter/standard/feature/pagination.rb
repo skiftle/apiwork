@@ -26,7 +26,7 @@ module Apiwork
           end
 
           def extract(request, schema_class)
-            request&.query&.dig(:page) || {}
+            request.query[:page] || {}
           end
 
           def includes(params, schema_class)
