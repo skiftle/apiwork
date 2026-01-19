@@ -134,7 +134,8 @@ module Apiwork
         # @api public
         # Registers response transformers.
         #
-        # Transformers process the response after rendering.
+        # Use `post: false` (default) for pre-serialization transforms.
+        # Use `post: true` for post-serialization transforms.
         #
         # @param transformers [Array<Class>] transformer classes with `.transform(response, api_class:)`
         # @param post [Boolean] run after other transforms (default: false)

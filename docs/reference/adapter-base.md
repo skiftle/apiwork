@@ -58,64 +58,6 @@ adapter_name :billing
 
 ---
 
-### .api_builder
-
-`.api_builder(builder_class = nil)`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L52)
-
-Sets or gets the API builder class.
-
-The builder registers API-level types and query parameters
-during introspection.
-
-**Parameters**
-
-| Name | Type | Description |
-|------|------|-------------|
-| `builder_class` | `Class` | builder with `.build(registrar, capabilities)` (optional) |
-
-**Returns**
-
-`Class`, `nil`
-
-**Example**
-
-```ruby
-api_builder MyAPIBuilder
-```
-
----
-
-### .contract_builder
-
-`.contract_builder(builder_class = nil)`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L68)
-
-Sets or gets the contract builder class.
-
-The builder registers contract-level types and action parameters
-during introspection.
-
-**Parameters**
-
-| Name | Type | Description |
-|------|------|-------------|
-| `builder_class` | `Class` | builder with `.build(registrar, schema_class, actions)` (optional) |
-
-**Returns**
-
-`Class`, `nil`
-
-**Example**
-
-```ruby
-contract_builder MyContractBuilder
-```
-
----
-
 ### .option
 
 `.option(name, type:, default: nil, enum: nil, &block)`
@@ -208,11 +150,12 @@ transform_request OpFieldTransformer, post: true
 
 `.transform_response(*transformers, post: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L106)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L144)
 
 Registers response transformers.
 
-Transformers process the response after rendering.
+Use `post: false` (default) for pre-serialization transforms.
+Use `post: true` for post-serialization transforms.
 
 **Parameters**
 
@@ -229,6 +172,12 @@ Transformers process the response after rendering.
 
 ```ruby
 transform_response KeyTransformer
+```
+
+**Example: Post-serialization transform**
+
+```ruby
+transform_response FinalFormatter, post: true
 ```
 
 ---

@@ -4,22 +4,29 @@ module Apiwork
   module Adapter
     module Hook
       class Response
-        attr_reader :transforms
+        attr_reader :after_transforms, :before_transforms
 
         def initialize
-          @transforms = []
+          @before_transforms = []
+          @after_transforms = []
         end
 
         def add_transform(transformer, post: false)
-          @transforms << transformer
+          if post
+            @after_transforms << transformer
+          else
+            @before_transforms << transformer
+          end
         end
 
         def run_transforms(response, **context)
-          @transforms.reduce(response) { |res, t| call_transformer(t, res, **context) }
+          result = @before_transforms.reduce(response) { |res, t| call_transformer(t, res, **context) }
+          @after_transforms.reduce(result) { |res, t| call_transformer(t, res, **context) }
         end
 
         def inherit_from(parent)
-          @transforms = parent.transforms + @transforms
+          @before_transforms = parent.before_transforms + @before_transforms
+          @after_transforms = parent.after_transforms + @after_transforms
         end
 
         private

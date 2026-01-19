@@ -30,14 +30,6 @@ module Apiwork
       def metadata(result, state)
         {}
       end
-
-      def transform_request(request, phase:)
-        request
-      end
-
-      def transform_response(response)
-        response
-      end
     end
   end
 end
