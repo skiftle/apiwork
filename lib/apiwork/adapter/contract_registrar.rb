@@ -200,6 +200,9 @@ module Apiwork
         adapter.feature_instances.each do |feature|
           feature.contract(sub_registrar, schema)
         end
+
+        resource_envelope_class = adapter.class.resource_envelope
+        resource_envelope_class&.new(schema)&.define(sub_registrar, {})
       end
     end
   end
