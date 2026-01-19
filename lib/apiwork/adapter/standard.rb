@@ -7,14 +7,14 @@ module Apiwork
 
       transform_request RequestTransformer
 
-      resource_envelope Envelope::Resource
-      error_envelope Envelope::Error
-
       feature Feature::Filtering
       feature Feature::Sorting
       feature Feature::Pagination
       feature Feature::Including
       feature Feature::Writing
+
+      resource_envelope Envelope::Resource
+      error_envelope Envelope::Error
     end
   end
 end
