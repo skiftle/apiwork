@@ -12,6 +12,7 @@ module Apiwork
       feature Feature::Pagination
       feature Feature::Including
       feature Feature::Writing
+      feature Feature::Serialization
 
       resource_envelope Envelope::Resource
       error_envelope Envelope::Error
