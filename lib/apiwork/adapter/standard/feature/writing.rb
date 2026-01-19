@@ -10,7 +10,7 @@ module Apiwork
 
           request_transformer OpFieldTransformer, post: true
 
-          def contract(registrar, schema_class)
+          def contract(registrar, schema_class, actions)
             TypeBuilder.build(registrar, schema_class)
           end
         end

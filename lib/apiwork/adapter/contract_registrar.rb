@@ -198,7 +198,7 @@ module Apiwork
         adapter = contract_class.api_class.adapter
 
         adapter.feature_instances.each do |feature|
-          feature.contract(sub_registrar, schema)
+          feature.contract(sub_registrar, schema, {})
         end
 
         resource_envelope_class = adapter.class.resource_envelope

@@ -8,8 +8,20 @@ module Apiwork
           feature_name :including
           input :any
 
-          def contract(registrar, schema_class)
+          def contract(registrar, schema_class, actions)
             TypeBuilder.build(registrar, schema_class)
+
+            return unless registrar.type?(:include)
+
+            actions.each_key do |action_name|
+              registrar.action(action_name) do
+                request do
+                  query do
+                    reference? :include
+                  end
+                end
+              end
+            end
           end
 
           def extract(request, schema_class)

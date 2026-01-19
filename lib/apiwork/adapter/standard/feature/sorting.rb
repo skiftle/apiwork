@@ -17,8 +17,21 @@ module Apiwork
             registrar.enum :sort_direction, values: %w[asc desc]
           end
 
-          def contract(registrar, schema_class)
+          def contract(registrar, schema_class, actions)
             TypeBuilder.build(registrar, schema_class)
+
+            return unless registrar.type?(:sort)
+
+            registrar.action(:index) do
+              request do
+                query do
+                  union? :sort do
+                    variant { reference :sort }
+                    variant { array { reference :sort } }
+                  end
+                end
+              end
+            end
           end
 
           def extract(request, schema_class)

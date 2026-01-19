@@ -46,7 +46,7 @@ module Apiwork
 
       def api(registrar, capabilities); end
 
-      def contract(registrar, schema_class); end
+      def contract(registrar, schema_class, actions); end
 
       def extract(request, schema_class)
         {}

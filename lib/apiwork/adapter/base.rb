@@ -230,7 +230,7 @@ module Apiwork
 
       def register_contract(registrar, schema_class, actions)
         feature_instances.each do |feature|
-          feature.contract(registrar, schema_class)
+          feature.contract(registrar, schema_class, actions)
         end
 
         resource_envelope_class = self.class.resource_envelope

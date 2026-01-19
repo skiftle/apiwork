@@ -42,25 +42,6 @@ module Apiwork
               response.object :meta, optional: true
             end
 
-            def query_params(request)
-              if registrar.type?(:filter)
-                request.union :filter, optional: true do
-                  variant { reference :filter }
-                  variant { array { reference :filter } }
-                end
-              end
-
-              if registrar.type?(:sort)
-                request.union :sort, optional: true do
-                  variant { reference :sort }
-                  variant { array { reference :sort } }
-                end
-              end
-
-              request.reference :page, optional: true, to: :page if registrar.type?(:page)
-              request.reference :include, optional: true, to: :include if registrar.type?(:include)
-            end
-
             def writable_request(request, action_name)
               payload_type_name = :"#{action_name}_payload"
 
@@ -96,26 +77,14 @@ module Apiwork
               builder = self
 
               case action.name
-              when :index
-                contract_action.request do
-                  query { builder.query_params(self) }
-                end
-              when :show
-                build_member_query_params(contract_action)
               when :create
                 contract_action.request do
                   body { builder.writable_request(self, :create) }
                 end
-                build_member_query_params(contract_action)
               when :update
                 contract_action.request do
                   body { builder.writable_request(self, :update) }
                 end
-                build_member_query_params(contract_action)
-              when :destroy
-                build_member_query_params(contract_action)
-              else
-                build_member_query_params(contract_action) if action.member?
               end
             end
 
@@ -172,16 +141,6 @@ module Apiwork
               contract_action.response do
                 self.result_wrapper = result_wrapper
                 body { builder.collection_response(self) }
-              end
-            end
-
-            def build_member_query_params(contract_action)
-              registrar_local = registrar
-
-              contract_action.request do
-                query do
-                  reference :include, optional: true, to: :include if registrar_local.type?(:include)
-                end
               end
             end
 

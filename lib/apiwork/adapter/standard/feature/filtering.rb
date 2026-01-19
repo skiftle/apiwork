@@ -144,8 +144,21 @@ module Apiwork
             filter_types_to_register.each { |type| register_filter_type(registrar, type) }
           end
 
-          def contract(registrar, schema_class)
+          def contract(registrar, schema_class, actions)
             TypeBuilder.build(registrar, schema_class)
+
+            return unless registrar.type?(:filter)
+
+            registrar.action(:index) do
+              request do
+                query do
+                  union? :filter do
+                    variant { reference :filter }
+                    variant { array { reference :filter } }
+                  end
+                end
+              end
+            end
           end
 
           def extract(request, schema_class)

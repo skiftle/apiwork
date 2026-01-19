@@ -21,8 +21,18 @@ module Apiwork
             register_cursor_pagination(registrar) if strategies.include?(:cursor)
           end
 
-          def contract(registrar, schema_class)
-            build_page_type(registrar, schema_class)
+          def contract(registrar, schema_class, actions)
+            type_name = build_page_type(registrar, schema_class)
+
+            return unless type_name
+
+            registrar.action(:index) do
+              request do
+                query do
+                  reference? :page, to: type_name
+                end
+              end
+            end
           end
 
           def extract(request, schema_class)
