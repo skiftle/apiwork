@@ -26,12 +26,12 @@ module Apiwork
                   :name,
                   :type
 
-      def initialize(name, type, default: nil, enum: nil, &block)
+      def initialize(name, type, children: nil, default: nil, enum: nil, &block)
         @name = name
         @type = type
         @default = default
         @enum = enum
-        @children = {}
+        @children = children || {}
 
         instance_eval(&block) if block && type == :hash
       end

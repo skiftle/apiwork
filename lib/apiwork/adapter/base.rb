@@ -53,6 +53,11 @@ module Apiwork
         def feature(klass)
           @features ||= []
           @features << klass
+
+          return unless klass.options.any?
+
+          name = klass.feature_name
+          options[name] = Configuration::Option.new(name, :hash, children: klass.options)
         end
 
         # @api public
