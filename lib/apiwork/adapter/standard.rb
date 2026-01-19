@@ -14,6 +14,16 @@ module Apiwork
       api_builder APIBuilder
       contract_builder ContractBuilder
 
+      feature Feature::Filtering
+      feature Feature::Sorting
+      feature Feature::Preloading
+      feature Feature::Pagination
+      feature Feature::Including
+
+      record_envelope Envelope::Record
+      collection_envelope Envelope::Collection
+      error_envelope Envelope::Error
+
       transform_request RequestTransformer
       transform_request OpFieldTransformer, post: true
 

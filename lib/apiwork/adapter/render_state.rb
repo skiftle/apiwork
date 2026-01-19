@@ -40,11 +40,16 @@ module Apiwork
       # @return [Adapter::Request, nil] the parsed request
       attr_reader :request
 
-      def initialize(action, context: {}, meta: {}, request: nil)
+      # @api public
+      # @return [Class, nil] the schema class for this request
+      attr_reader :schema_class
+
+      def initialize(action, context: {}, meta: {}, request: nil, schema_class: nil)
         @action = action
         @context = context
         @meta = meta
         @request = request
+        @schema_class = schema_class
       end
     end
   end

@@ -124,7 +124,7 @@ module Apiwork
       end
 
       schema_class = contract_class.schema_class
-      render_state = build_render_state(meta)
+      render_state = build_render_state(meta, schema_class:)
 
       json = if schema_class
                if data.is_a?(Enumerable)
@@ -220,7 +220,7 @@ module Apiwork
       render json:, status:
     end
 
-    def build_render_state(meta = {})
+    def build_render_state(meta = {}, schema_class: nil)
       Adapter::RenderState.new(
         Adapter::Action.new(
           action_name,
@@ -229,6 +229,7 @@ module Apiwork
         ),
         context:,
         meta:,
+        schema_class:,
         request: resource ? contract.request : nil,
       )
     end

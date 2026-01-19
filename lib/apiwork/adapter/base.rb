@@ -71,6 +71,82 @@ module Apiwork
         end
 
         # @api public
+        # Registers a feature for this adapter.
+        #
+        # Features are self-contained concerns (pagination, filtering, etc.)
+        # that handle both introspection and runtime behavior.
+        #
+        # @param klass [Class] a Feature subclass
+        # @return [void]
+        #
+        # @example
+        #   feature Pagination
+        #   feature Filtering
+        def feature(klass)
+          @features ||= []
+          @features << klass
+        end
+
+        # @api public
+        # Skips an inherited feature by name.
+        #
+        # @param name [Symbol] the feature_name to skip
+        # @return [void]
+        #
+        # @example
+        #   skip_feature :pagination
+        def skip_feature(name)
+          @skipped_features ||= []
+          @skipped_features << name.to_sym
+        end
+
+        def features
+          inherited = superclass.respond_to?(:features) ? superclass.features : []
+          skipped = @skipped_features || []
+          all = (inherited + (@features || [])).uniq
+          all.reject { |f| skipped.include?(f.feature_name) }
+        end
+
+        # @api public
+        # Sets or gets the record envelope class.
+        #
+        # @param klass [Class] an Envelope::Record subclass (optional)
+        # @return [Class, nil]
+        #
+        # @example
+        #   record_envelope RecordEnvelope
+        def record_envelope(klass = nil)
+          @record_envelope = klass if klass
+          @record_envelope || (superclass.respond_to?(:record_envelope) && superclass.record_envelope)
+        end
+
+        # @api public
+        # Sets or gets the collection envelope class.
+        #
+        # @param klass [Class] an Envelope::Collection subclass (optional)
+        # @return [Class, nil]
+        #
+        # @example
+        #   collection_envelope CollectionEnvelope
+        def collection_envelope(klass = nil)
+          @collection_envelope = klass if klass
+          @collection_envelope || (superclass.respond_to?(:collection_envelope) && superclass.collection_envelope)
+        end
+
+        # @api public
+        # Sets or gets the error envelope class.
+        #
+        # @param klass [Class] an Envelope::Error subclass (optional)
+        # @return [Class, nil]
+        #
+        # @example
+        #   error_envelope ErrorEnvelope
+        def error_envelope(klass = nil)
+          @error_envelope = klass if klass
+          @error_envelope || (superclass.respond_to?(:error_envelope) && superclass.error_envelope)
+        end
+
+        # @api public
         # Registers request transformers.
         #
         # Use `post: false` (default) for pre-validation transforms.
@@ -139,20 +215,44 @@ module Apiwork
       transform_response KeyTransformer
 
       def process_collection(collection, schema_class, state)
-        prepared = prepare_collection(collection, schema_class, state)
-        serialized = serialize_collection(prepared, schema_class, state)
-        render_collection(serialized, schema_class, state)
+        envelope_class = self.class.collection_envelope
+        if envelope_class
+          envelope = envelope_class.new(schema_class)
+          prepared = envelope.prepare(collection, state)
+          result, metadata = apply_features(prepared, state)
+          serialized = serialize_collection_data(result, envelope, state)
+          envelope.render(serialized, metadata, state)
+        else
+          prepared = prepare_collection(collection, schema_class, state)
+          serialized = serialize_collection(prepared, schema_class, state)
+          render_collection(serialized, schema_class, state)
+        end
       end
 
       def process_record(record, schema_class, state)
-        prepared = prepare_record(record, schema_class, state)
-        serialized = serialize_record(prepared, schema_class, state)
-        render_record(serialized, schema_class, state)
+        envelope_class = self.class.record_envelope
+        if envelope_class
+          envelope = envelope_class.new(schema_class)
+          prepared = envelope.prepare(record, state)
+          serialized = envelope.serialize(prepared, state)
+          envelope.render(serialized, state)
+        else
+          prepared = prepare_record(record, schema_class, state)
+          serialized = serialize_record(prepared, schema_class, state)
+          render_record(serialized, schema_class, state)
+        end
       end
 
       def process_error(layer, issues, state)
-        prepared = prepare_error(issues, layer, state)
-        render_error(prepared, layer, state)
+        envelope_class = self.class.error_envelope
+        if envelope_class
+          envelope = envelope_class.new
+          prepared = prepare_error(issues, layer, state)
+          envelope.render(prepared, layer, state)
+        else
+          prepared = prepare_error(issues, layer, state)
+          render_error(prepared, layer, state)
+        end
       end
 
       # @api public
@@ -271,7 +371,36 @@ module Apiwork
         Capabilities.new(structure)
       end
 
+      def feature_instances
+        @feature_instances ||= self.class.features.map do |klass|
+          config = adapter_config_for(klass.feature_name)
+          klass.new(config)
+        end
+      end
+
       private
+
+      def apply_features(data, state)
+        metadata = {}
+        result = feature_instances.reduce(data) do |current, feature|
+          processed = feature.apply(current, state)
+          metadata.merge!(feature.metadata(processed, state))
+          processed
+        end
+        [result, metadata]
+      end
+
+      def adapter_config_for(feature_name)
+        {}
+      end
+
+      def serialize_collection_data(result, envelope, state)
+        return result unless result.is_a?(Hash) && result.key?(:data)
+
+        data = result[:data]
+        serialized = data.map { |record| envelope.serialize(record, state) }
+        result.merge(data: serialized)
+      end
 
       def serialize_collection(prepared, schema_class, state)
         return prepared unless schema_class
