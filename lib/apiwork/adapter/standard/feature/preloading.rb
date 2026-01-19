@@ -6,19 +6,19 @@ module Apiwork
       module Feature
         class Preloading < Adapter::Feature
           feature_name :preloading
+          applies_to :index, :show
+          input :any
 
-          def apply(data, state)
-            return data unless state.action.index?
-            return data unless state.schema_class
-            return data unless data.is_a?(Hash) && data.key?(:data)
+          def extract(request, schema_class)
+            {}
+          end
 
-            collection = data[:data]
-            return data unless collection.is_a?(ActiveRecord::Relation)
+          def includes(params, schema_class)
+            []
+          end
 
-            params = state.request&.query&.slice(:filter, :include, :page, :sort) || {}
-            loaded = EagerLoader.load(collection, state.schema_class, params)
-
-            data.merge(data: loaded)
+          def apply(data, params, context)
+            data
           end
         end
       end

@@ -6,6 +6,8 @@ module Apiwork
       module Feature
         class Filtering < Adapter::Feature
           feature_name :filtering
+          applies_to :index
+          input :collection
 
           option :max_depth, default: 3, type: :integer
 
@@ -146,19 +148,21 @@ module Apiwork
             TypeBuilder.build(registrar, schema_class)
           end
 
-          def apply(data, state)
-            return data unless state.action.index?
-            return data unless state.schema_class
-            return data unless data.is_a?(Hash) && data.key?(:data)
+          def extract(request, schema_class)
+            request&.query&.dig(:filter) || {}
+          end
 
-            collection = data[:data]
-            return data unless collection.is_a?(ActiveRecord::Relation)
+          def includes(params, schema_class)
+            return [] if params.blank?
 
-            filter_params = state.request&.query&.dig(:filter)
-            return data if filter_params.blank?
+            IncludesResolver::AssociationExtractor.new(schema_class).extract_from_filter(params).keys
+          end
+
+          def apply(data, params, context)
+            return data if params.blank?
 
             issues = []
-            filtered = Filter.filter(collection, state.schema_class, filter_params, issues)
+            filtered = Filter.filter(data[:data], context.schema_class, params, issues)
 
             raise ContractError, issues if issues.any?
 

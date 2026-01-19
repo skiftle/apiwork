@@ -264,13 +264,8 @@ module Apiwork
       private
 
       def apply_features(data, state)
-        metadata = {}
-        result = feature_instances.reduce(data) do |current, feature|
-          processed = feature.apply(current, state)
-          metadata.merge!(feature.metadata(processed, state))
-          processed
-        end
-        [result, metadata]
+        runner = FeatureRunner.new(feature_instances)
+        runner.run(data, state)
       end
 
       def adapter_config_for(feature_name)
