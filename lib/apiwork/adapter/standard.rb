@@ -11,9 +11,6 @@ module Apiwork
         option :max_size, default: 100, type: :integer
       end
 
-      api_builder APIBuilder
-      contract_builder ContractBuilder
-
       feature Feature::Filtering
       feature Feature::Sorting
       feature Feature::Preloading

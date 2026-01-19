@@ -11,7 +11,7 @@ module Apiwork
           @schema_class = schema_class
         end
 
-        def define(registrar); end
+        def define(registrar, actions); end
 
         def prepare_record(record, state)
           record

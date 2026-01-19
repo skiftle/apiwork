@@ -7,6 +7,10 @@ module Apiwork
         class Including < Adapter::Feature
           feature_name :including
 
+          def contract(registrar, schema_class)
+            TypeBuilder.build(registrar, schema_class)
+          end
+
           def apply(data, state)
             data
           end

@@ -39,38 +39,6 @@ module Apiwork
         end
 
         # @api public
-        # Sets or gets the API builder class.
-        #
-        # The builder registers API-level types and query parameters
-        # during introspection.
-        #
-        # @param builder_class [Class] builder with `.build(registrar, capabilities)` (optional)
-        # @return [Class, nil]
-        #
-        # @example
-        #   api_builder MyAPIBuilder
-        def api_builder(builder_class = nil)
-          @api_builder = builder_class if builder_class
-          @api_builder
-        end
-
-        # @api public
-        # Sets or gets the contract builder class.
-        #
-        # The builder registers contract-level types and action parameters
-        # during introspection.
-        #
-        # @param builder_class [Class] builder with `.build(registrar, schema_class, actions)` (optional)
-        # @return [Class, nil]
-        #
-        # @example
-        #   contract_builder MyContractBuilder
-        def contract_builder(builder_class = nil)
-          @contract_builder = builder_class if builder_class
-          @contract_builder
-        end
-
-        # @api public
         # Registers a feature for this adapter.
         #
         # Features are self-contained concerns (pagination, filtering, etc.)
@@ -324,17 +292,21 @@ module Apiwork
       end
 
       def register_api(registrar, capabilities)
-        builder_class = self.class.api_builder
-        return unless builder_class
+        feature_instances.each do |feature|
+          feature.api(registrar, capabilities)
+        end
 
-        builder_class.build(registrar, capabilities)
+        error_envelope_class = self.class.error_envelope
+        error_envelope_class.new.define(registrar) if error_envelope_class # rubocop:disable Style/SafeNavigation
       end
 
       def register_contract(registrar, schema_class, actions)
-        builder_class = self.class.contract_builder
-        return unless builder_class
+        feature_instances.each do |feature|
+          feature.contract(registrar, schema_class)
+        end
 
-        builder_class.build(registrar, schema_class, actions)
+        resource_envelope_class = self.class.resource_envelope
+        resource_envelope_class.new(schema_class).define(registrar, actions) if resource_envelope_class # rubocop:disable Style/SafeNavigation
       end
 
       def normalize_request(request, api_class:)

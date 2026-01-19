@@ -5,7 +5,9 @@ module Apiwork
     class Standard
       module Envelope
         class Resource < Adapter::Envelope::Resource
-          def define(registrar); end
+          def define(registrar, actions)
+            TypeBuilder.build(registrar, schema_class, actions)
+          end
 
           def prepare_record(record, state)
             Validator.validate!(record, schema_class)

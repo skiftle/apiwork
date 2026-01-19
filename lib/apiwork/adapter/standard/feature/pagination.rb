@@ -11,6 +11,18 @@ module Apiwork
           option :default_size, default: 20, type: :integer
           option :max_size, default: 100, type: :integer
 
+          def api(registrar, capabilities)
+            return unless capabilities.index_actions?
+
+            strategies = capabilities.options_for(:pagination, :strategy)
+            register_offset_pagination(registrar) if strategies.include?(:offset)
+            register_cursor_pagination(registrar) if strategies.include?(:cursor)
+          end
+
+          def contract(registrar, schema_class)
+            build_page_type(registrar, schema_class)
+          end
+
           def apply(data, state)
             return data unless state.action.index?
             return data unless state.schema_class
@@ -34,6 +46,23 @@ module Apiwork
 
           private
 
+          def register_offset_pagination(registrar)
+            registrar.object :offset_pagination do
+              integer :current
+              integer :next, nullable: true, optional: true
+              integer :prev, nullable: true, optional: true
+              integer :total
+              integer :items
+            end
+          end
+
+          def register_cursor_pagination(registrar)
+            registrar.object :cursor_pagination do
+              string :next, nullable: true, optional: true
+              string :prev, nullable: true, optional: true
+            end
+          end
+
           def paginate(collection, schema_class, page_params)
             strategy = schema_class.adapter_config.pagination.strategy
 
@@ -43,6 +72,36 @@ module Apiwork
             else
               CursorPaginator.paginate(collection, schema_class, page_params)
             end
+          end
+
+          def build_page_type(registrar, schema_class)
+            strategy = schema_class.adapter_config.pagination.strategy
+            max_size = schema_class.adapter_config.pagination.max_size
+
+            type_name = page_type_name(schema_class)
+
+            existing_type = registrar.type?(type_name)
+            return type_name if existing_type
+
+            if strategy == :cursor
+              registrar.api_registrar.object(type_name, scope: nil) do
+                string :after, optional: true
+                string :before, optional: true
+                integer :size, max: max_size, min: 1, optional: true
+              end
+            else
+              registrar.api_registrar.object(type_name, scope: nil) do
+                integer :number, min: 1, optional: true
+                integer :size, max: max_size, min: 1, optional: true
+              end
+            end
+
+            type_name
+          end
+
+          def page_type_name(schema_class)
+            schema_name = schema_class.name.demodulize.delete_suffix('Schema').underscore
+            :"#{schema_name}_page"
           end
         end
       end
