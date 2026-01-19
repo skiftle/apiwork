@@ -6,30 +6,28 @@ next: false
 
 # Adapter::Base
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L26)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L24)
 
 Base class for adapters.
 
-Subclass this to create custom response formats (JSON:API, HAL, etc.).
-Use the hooks DSL to define request/response transformations.
+Subclass to create custom adapters with different response formats.
+Override [#prepare_record](#prepare-record), [#prepare_collection](#prepare-collection), [#render_record](#render-record),
+[#render_collection](#render-collection), and [#render_error](#render-error) to customize behavior.
 
-**Example: Custom adapter with hooks**
+**Example: Custom adapter**
 
 ```ruby
-class JSONAPIAdapter < Apiwork::Adapter::Base
-  adapter_name :jsonapi
+class BillingAdapter < Apiwork::Adapter::Base
+  adapter_name :billing
 
-  response do
-    record do
-      render { |data, schema_class, state|
-        { data: { type: schema_class.root_key.singular, attributes: data } }
-      }
-    end
+  def render_record(data, schema_class, state)
+    { data: data, meta: { adapter: 'billing' } }
+  end
+
+  def render_error(issues, layer, state)
+    { errors: issues.map(&:to_h) }
   end
 end
-
-# Register the adapter
-Apiwork::Adapter.register(JSONAPIAdapter)
 ```
 
 ## Class Methods
@@ -38,19 +36,83 @@ Apiwork::Adapter.register(JSONAPIAdapter)
 
 `.adapter_name(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L35)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L36)
 
-The adapter name.
+Sets or gets the adapter name.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `value` | `Symbol, nil` | the adapter name to set |
+| `value` | `Symbol, String` | adapter name (optional) |
 
 **Returns**
 
 `Symbol`, `nil`
+
+**Example**
+
+```ruby
+adapter_name :billing
+```
+
+---
+
+### .api_builder
+
+`.api_builder(builder_class = nil)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L52)
+
+Sets or gets the API builder class.
+
+The builder registers API-level types and query parameters
+during introspection.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `builder_class` | `Class` | builder with `.build(registrar, capabilities)` (optional) |
+
+**Returns**
+
+`Class`, `nil`
+
+**Example**
+
+```ruby
+api_builder MyAPIBuilder
+```
+
+---
+
+### .contract_builder
+
+`.contract_builder(builder_class = nil)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L68)
+
+Sets or gets the contract builder class.
+
+The builder registers contract-level types and action parameters
+during introspection.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `builder_class` | `Class` | builder with `.build(registrar, schema_class, actions)` (optional) |
+
+**Returns**
+
+`Class`, `nil`
+
+**Example**
+
+```ruby
+contract_builder MyContractBuilder
+```
 
 ---
 
@@ -106,70 +168,213 @@ end
 
 ---
 
-### .register
+### .transform_request
 
-`.register(&block)`
+`.transform_request(*transformers, post: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L51)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L88)
 
-Defines registration hooks for API and contract setup.
+Registers request transformers.
 
-**Example**
+Use `post: false` (default) for pre-validation transforms.
+Use `post: true` for post-validation transforms.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `transformers` | `Array<Class>` | transformer classes with `.transform(request, api_class:)` |
+| `post` | `Boolean` | run after validation (default: false) |
+
+**Returns**
+
+`void`
+
+**Example: Pre-validation transform**
 
 ```ruby
-register do
-  api { |registrar, capabilities| ... }
-  contract { |registrar, schema_class, actions| ... }
-end
+transform_request KeyNormalizer
+```
+
+**Example: Post-validation transform**
+
+```ruby
+transform_request OpFieldTransformer, post: true
 ```
 
 ---
 
-### .request
+### .transform_response
 
-`.request(&block)`
+`.transform_response(*transformers, post: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L69)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L106)
 
-Defines request transformation hooks.
+Registers response transformers.
+
+Transformers process the response after rendering.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `transformers` | `Array<Class>` | transformer classes with `.transform(response, api_class:)` |
+| `post` | `Boolean` | run after other transforms (default: false) |
+
+**Returns**
+
+`void`
 
 **Example**
 
 ```ruby
-request do
-  before_validation { |request| request.transform(&:deep_symbolize_keys) }
-  after_validation { |request| request }
-end
+transform_response KeyTransformer
 ```
 
 ---
 
-### .response
+## Instance Methods
 
-`.response(&block)`
+### #prepare_collection
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L98)
+`#prepare_collection(collection, _schema_class, _state)`
 
-Defines response transformation hooks.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L180)
 
-**Example**
+Prepares a collection before serialization.
 
-```ruby
-response do
-  record do
-    prepare { |record, state| ... }
-    render { |data, state| ... }
-  end
-  collection do
-    prepare { |collection, state| ... }
-    render { |result, state| ... }
-  end
-  error do
-    prepare { |issues, state| ... }
-    render { |issues, state| ... }
-  end
-  finalize { |response| response }
-end
-```
+Override to add filtering, sorting, pagination, or eager loading.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `collection` | `Enumerable` | collection to prepare |
+| `_schema_class` | `Class` | the schema class |
+| `_state` | `Adapter::RenderState` | render context |
+
+**Returns**
+
+`Hash` — prepared result with :data and :metadata keys
+
+---
+
+### #prepare_error
+
+`#prepare_error(issues, _layer, _state)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L193)
+
+Prepares error issues before rendering.
+
+Override to transform or enrich error data.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `issues` | `Array<Issue>` | error issues |
+| `_layer` | `Symbol` | error layer (:contract, :domain, :http) |
+| `_state` | `Adapter::RenderState` | render context |
+
+**Returns**
+
+Array&lt;[Issue](issue)&gt; — the prepared issues
+
+---
+
+### #prepare_record
+
+`#prepare_record(record, _schema_class, _state)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L167)
+
+Prepares a record before serialization.
+
+Override to add eager loading, validation, or transformation.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `record` | `ActiveRecord::Base` | record to prepare |
+| `_schema_class` | `Class` | the schema class |
+| `_state` | `Adapter::RenderState` | render context |
+
+**Returns**
+
+`ActiveRecord::Base` — the prepared record
+
+---
+
+### #render_collection
+
+`#render_collection(result, _schema_class, _state)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L219)
+
+Renders a collection response.
+
+Override to customize the response structure.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `result` | `Hash` | prepared collection with :data and :metadata |
+| `_schema_class` | `Class` | the schema class |
+| `_state` | `Adapter::RenderState` | render context |
+
+**Returns**
+
+`Hash` — the response body
+
+---
+
+### #render_error
+
+`#render_error(issues, _layer, _state)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L232)
+
+Renders an error response.
+
+Override to customize the error structure.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `issues` | `Array<Issue>` | prepared error issues |
+| `_layer` | `Symbol` | error layer (:contract, :domain, :http) |
+| `_state` | `Adapter::RenderState` | render context |
+
+**Returns**
+
+`Hash` — the error response body
+
+---
+
+### #render_record
+
+`#render_record(data, _schema_class, _state)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L206)
+
+Renders a single record response.
+
+Override to customize the response structure.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `data` | `Hash` | serialized record data |
+| `_schema_class` | `Class` | the schema class |
+| `_state` | `Adapter::RenderState` | render context |
+
+**Returns**
+
+`Hash` — the response body
 
 ---
