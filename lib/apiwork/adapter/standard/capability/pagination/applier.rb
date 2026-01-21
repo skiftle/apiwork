@@ -11,21 +11,19 @@ module Apiwork
             end
 
             def apply
-              paginated, pagination_result = paginate(context.data, context.schema_class, context.params)
+              paginated, pagination_result = paginate
               context.metadata[:pagination] = pagination_result[:pagination]
               paginated
             end
 
             private
 
-            def paginate(collection, schema_class, page_params)
-              strategy = schema_class.adapter_config.pagination.strategy
-
-              case strategy
+            def paginate
+              case config.strategy
               when :offset
-                OffsetPaginator.paginate(collection, schema_class, page_params)
+                OffsetPaginator.paginate(context.data, config, context.params)
               else
-                CursorPaginator.paginate(collection, schema_class, page_params)
+                CursorPaginator.paginate(context.data, config, context.params)
               end
             end
           end

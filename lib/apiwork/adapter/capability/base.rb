@@ -201,7 +201,18 @@ module Apiwork
         private
 
         def build_applier(context)
-          self.class.applier.new(config, context)
+          merged_config = build_merged_config(context.schema_class)
+          self.class.applier.new(merged_config, context)
+        end
+
+        def build_merged_config(schema_class)
+          capability_name = self.class.capability_name
+          return config unless capability_name
+
+          schema_config = schema_class.adapter_config.public_send(capability_name).to_h
+          config.merge(schema_config)
+        rescue ConfigurationError
+          config
         end
 
         def valid_input?(data)

@@ -6,13 +6,13 @@ module Apiwork
       module Capability
         class Pagination < Adapter::Capability::Base
           class CursorPaginator
-            def self.paginate(relation, schema_class, params)
-              new(relation, schema_class, params).paginate
+            def self.paginate(relation, config, params)
+              new(relation, config, params).paginate
             end
 
-            def initialize(relation, schema_class, params)
+            def initialize(relation, config, params)
               @relation = relation
-              @schema_class = schema_class
+              @config = config
               @params = params
             end
 
@@ -45,11 +45,7 @@ module Apiwork
             end
 
             def resolve_page_size
-              @params.fetch(:size, default_page_size).to_i
-            end
-
-            def default_page_size
-              @schema_class.adapter_config.pagination.default_size
+              @params.fetch(:size, @config.default_size).to_i
             end
 
             def primary_key

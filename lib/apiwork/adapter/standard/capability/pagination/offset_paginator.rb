@@ -6,13 +6,13 @@ module Apiwork
       module Capability
         class Pagination < Adapter::Capability::Base
           class OffsetPaginator
-            def self.paginate(relation, schema_class, params)
-              new(relation, schema_class, params).paginate
+            def self.paginate(relation, config, params)
+              new(relation, config, params).paginate
             end
 
-            def initialize(relation, schema_class, params)
+            def initialize(relation, config, params)
               @relation = relation
-              @schema_class = schema_class
+              @config = config
               @params = params
             end
 
@@ -29,11 +29,7 @@ module Apiwork
             private
 
             def resolve_limit
-              [@params.fetch(:size, default_limit).to_i, 1].max
-            end
-
-            def default_limit
-              @schema_class.adapter_config.pagination.default_size
+              [@params.fetch(:size, @config.default_size).to_i, 1].max
             end
 
             def build_metadata(page_number, limit)
