@@ -56,6 +56,12 @@ module Apiwork
             { pagination: result[:pagination] }
           end
 
+          def extend_collection_response(response, schema_class)
+            config = schema_class.adapter_config.pagination
+            pagination_type = config.strategy == :offset ? :offset_pagination : :cursor_pagination
+            response.reference :pagination, to: pagination_type
+          end
+
           private
 
           def register_offset_pagination(registrar)

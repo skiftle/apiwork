@@ -12,8 +12,8 @@ module Apiwork
           attr_reader :response_types_class
         end
 
-        def contract(registrar, schema_class, actions)
-          self.class.response_types_class&.build(registrar, schema_class, actions)
+        def contract(registrar, schema_class, actions, capabilities: [])
+          self.class.response_types_class&.build(registrar, schema_class, actions, capabilities:)
         end
 
         def build_record_response(data, metadata, state)

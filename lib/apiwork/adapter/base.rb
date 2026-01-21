@@ -240,7 +240,7 @@ module Apiwork
         representation_class&.new(schema_class)&.contract(registrar, schema_class, actions)
 
         document_class = self.class.document
-        document_class&.new(schema_class)&.contract(registrar, schema_class, actions)
+        document_class&.new(schema_class)&.contract(registrar, schema_class, actions, capabilities: capability_instances)
       end
 
       def normalize_request(request, api_class:)

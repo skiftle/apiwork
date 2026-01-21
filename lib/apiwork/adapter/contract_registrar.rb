@@ -205,7 +205,7 @@ module Apiwork
         representation_class&.new(schema)&.contract(sub_registrar, schema, {})
 
         document_class = adapter.class.document
-        document_class&.new(schema)&.contract(sub_registrar, schema, {})
+        document_class&.new(schema)&.contract(sub_registrar, schema, {}, capabilities: adapter.capability_instances)
       end
     end
   end

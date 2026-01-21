@@ -69,6 +69,22 @@ module Apiwork
           {}
         end
 
+        # Extends the collection response type with capability-specific fields.
+        #
+        # @api public
+        # @param response [Object] the response builder
+        # @param schema_class [Class] the schema class
+        # @return [void]
+        def extend_collection_response(response, schema_class); end
+
+        # Extends the record response type with capability-specific fields.
+        #
+        # @api public
+        # @param response [Object] the response builder
+        # @param schema_class [Class] the schema class
+        # @return [void]
+        def extend_record_response(response, schema_class); end
+
         def applies?(action, data)
           return true if self.class.applies_to_actions.empty?
           return false unless self.class.applies_to_actions.include?(action.name)

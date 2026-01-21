@@ -7,19 +7,21 @@ module Apiwork
         module Types
           class Responses
             attr_reader :actions,
+                        :capabilities,
                         :registrar,
                         :schema_class
 
             class << self
-              def build(registrar, schema_class, actions)
-                new(registrar, schema_class, actions).build
+              def build(registrar, schema_class, actions, capabilities: [])
+                new(registrar, schema_class, actions, capabilities:).build
               end
             end
 
-            def initialize(registrar, schema_class, actions)
+            def initialize(registrar, schema_class, actions, capabilities: [])
               @registrar = registrar
               @schema_class = schema_class
               @actions = actions
+              @capabilities = capabilities
             end
 
             def build
@@ -28,6 +30,11 @@ module Apiwork
 
             def single_response(response)
               response.reference schema_class.root_key.singular.to_sym, to: resource_type_name
+
+              capabilities.each do |capability|
+                capability.extend_record_response(response, schema_class)
+              end
+
               response.object :meta, optional: true
             end
 
@@ -37,7 +44,11 @@ module Apiwork
               response.array schema_class.root_key.plural.to_sym do
                 reference type_name
               end
-              response.reference :pagination, to: pagination_response_type
+
+              capabilities.each do |capability|
+                capability.extend_collection_response(response, schema_class)
+              end
+
               response.object :meta, optional: true
             end
 
@@ -113,11 +124,6 @@ module Apiwork
 
             def resource_type_name
               schema_class.root_key.singular.to_sym
-            end
-
-            def pagination_response_type
-              strategy = schema_class.adapter_config.pagination.strategy
-              strategy == :offset ? :offset_pagination : :cursor_pagination
             end
           end
         end
