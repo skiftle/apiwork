@@ -697,6 +697,58 @@ Trust your invariants. Fix construction, not symptoms.
 
 ---
 
+## Bug Fixing
+
+**Fix root cause, not symptoms.**
+
+When fixing a bug, ask: "Why does this happen?" not "How can I work around it?"
+
+| Symptom Fix | Root Cause Fix |
+|-------------|----------------|
+| Add special case in consumer | Fix the producer |
+| Patch specific feature to create missing state | Fix why state is missing |
+| Add nil check where value is used | Ensure value is never nil |
+| Rely on specific capability existing | Fix core behavior to work independently |
+
+### Example
+
+Problem: Unknown query params pass validation when no `include` type exists.
+
+```ruby
+# BAD — symptom fix in Including capability
+# Relies on this specific capability existing
+def register(context)
+  context.actions.each_key do |action_name|
+    context.registrar.action(action_name) do
+      request do
+        query  # Force query shape to exist
+      end
+    end
+  end
+end
+
+# GOOD — root cause fix in Request
+# Consistent with Action#request pattern
+def query(&block)
+  @query ||= Object.new(@contract_class, action_name: @action_name)
+  @query.instance_eval(&block) if block
+  @query
+end
+```
+
+**Principle:** If `Action#request` always returns an object, `Request#query` should too. Fix the inconsistency, not the consumer.
+
+### Questions to ask
+
+1. Why is this value nil/missing/wrong?
+2. Where should this value be set?
+3. What pattern do similar methods follow?
+4. Would this fix work if that specific feature didn't exist?
+
+If your fix depends on a specific feature, capability, or configuration existing — it's a symptom fix.
+
+---
+
 ## YARD
 
 Only for `@api public` methods.
