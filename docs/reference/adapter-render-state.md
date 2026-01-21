@@ -84,3 +84,15 @@ end
 [Adapter::Request](adapter-request), `nil` — the parsed request
 
 ---
+
+### #schema_class
+
+`#schema_class`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/render_state.rb#L45)
+
+**Returns**
+
+`Class`, `nil` — the schema class for this request
+
+---

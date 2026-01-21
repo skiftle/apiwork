@@ -42,7 +42,7 @@ end
 
 `#action(name, replace: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L53)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L54)
 
 Defines an action. Multiple calls to the same action merge definitions.
 
@@ -63,7 +63,7 @@ Defines an action. Multiple calls to the same action merge definitions.
 
 `#api_registrar`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L110)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L111)
 
 Returns a registrar for API-level types.
 Use this to define or resolve types at the API scope.
@@ -74,11 +74,42 @@ Use this to define or resolve types at the API scope.
 
 ---
 
+### #ensure_association_types
+
+`#ensure_association_types(association)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L128)
+
+Ensures all feature types are built for an association's contract.
+Call this before referencing types from another contract.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `association` | `Schema::Association` | the association to import |
+
+**Returns**
+
+`Symbol`, `nil` — the alias name for referencing types, or nil if import failed
+
+**Example**
+
+```ruby
+schema_class.associations.each do |name, association|
+  if alias_name = registrar.ensure_association_types(association)
+    reference name, to: :"#{alias_name}_filter"
+  end
+end
+```
+
+---
+
 ### #enum
 
 `#enum(name, values:)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L39)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L40)
 
 Defines an enum type scoped to this contract.
 
@@ -95,7 +126,7 @@ Defines an enum type scoped to this contract.
 
 `#find_contract_for_schema(schema_class)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L81)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L82)
 
 Finds the contract class for an associated schema.
 
@@ -115,7 +146,7 @@ Finds the contract class for an associated schema.
 
 `#import(type_name, from:)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L62)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L63)
 
 Imports a type from another contract or the API.
 
@@ -132,7 +163,7 @@ Imports a type from another contract or the API.
 
 `#imports`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L92)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L93)
 
 The hash of imported types.
 
@@ -146,7 +177,7 @@ The hash of imported types.
 
 `#object(name, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L32)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L33)
 
 Defines a named object type scoped to this contract.
 
@@ -162,7 +193,7 @@ Defines a named object type scoped to this contract.
 
 `#scoped_enum_name(name)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L75)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L76)
 
 The fully qualified name for an enum in this contract's scope.
 
@@ -182,7 +213,7 @@ The fully qualified name for an enum in this contract's scope.
 
 `#scoped_type_name(name)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L69)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L70)
 
 The fully qualified name for a type in this contract's scope.
 
@@ -202,7 +233,7 @@ The fully qualified name for a type in this contract's scope.
 
 `#union(name, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L46)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L47)
 
 Defines a union type scoped to this contract.
 

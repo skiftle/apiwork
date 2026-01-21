@@ -6,20 +6,14 @@ module Apiwork
     # Base class for adapters.
     #
     # Subclass to create custom adapters with different response formats.
-    # Override {#prepare_record}, {#prepare_collection}, {#render_record},
-    # {#render_collection}, and {#render_error} to customize behavior.
+    # Configure with {representation} for serialization and {document} for response wrapping.
     #
     # @example Custom adapter
     #   class BillingAdapter < Apiwork::Adapter::Base
     #     adapter_name :billing
     #
-    #     def render_record(data, schema_class, state)
-    #       { data: data, meta: { adapter: 'billing' } }
-    #     end
-    #
-    #     def render_error(issues, layer, state)
-    #       { errors: issues.map(&:to_h) }
-    #     end
+    #     representation BillingRepresentation
+    #     document BillingDocument
     #   end
     class Base
       include Configurable
@@ -112,30 +106,6 @@ module Apiwork
         def document(klass = nil)
           @document = klass if klass
           @document || (superclass.respond_to?(:document) && superclass.document)
-        end
-
-        # @api public
-        # Sets or gets the resource envelope class.
-        #
-        # @deprecated Use {representation} and {document} instead.
-        #
-        # @param klass [Class] an Envelope::Resource subclass (optional)
-        # @return [Class, nil]
-        def resource_envelope(klass = nil)
-          @resource_envelope = klass if klass
-          @resource_envelope || (superclass.respond_to?(:resource_envelope) && superclass.resource_envelope)
-        end
-
-        # @api public
-        # Sets or gets the error envelope class.
-        #
-        # @deprecated Use {representation} and {document} instead.
-        #
-        # @param klass [Class] an Envelope::Error subclass (optional)
-        # @return [Class, nil]
-        def error_envelope(klass = nil)
-          @error_envelope = klass if klass
-          @error_envelope || (superclass.respond_to?(:error_envelope) && superclass.error_envelope)
         end
 
         # @api public
