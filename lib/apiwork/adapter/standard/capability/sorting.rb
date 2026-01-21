@@ -11,47 +11,9 @@ module Apiwork
 
           option :max_depth, default: 2, type: :integer
 
-          def api_types(registrar, capabilities)
-            return unless capabilities.sortable?
-
-            registrar.enum :sort_direction, values: %w[asc desc]
-          end
-
-          def contract_types(registrar, schema_class, actions)
-            TypeBuilder.build(registrar, schema_class)
-
-            return unless registrar.type?(:sort)
-
-            registrar.action(:index) do
-              request do
-                query do
-                  union? :sort do
-                    variant { reference :sort }
-                    variant { array { reference :sort } }
-                  end
-                end
-              end
-            end
-          end
-
-          def extract(request, schema_class)
-            request.query[:sort]
-          end
-
-          def includes(params, schema_class)
-            return [] if params.blank?
-
-            IncludesResolver::AssociationExtractor.new(schema_class).extract_from_sort(params).keys
-          end
-
-          def apply(data, metadata, params, context)
-            issues = []
-            sorted = Sorter.sort(data, context.schema_class, params, issues)
-
-            raise ContractError, issues if issues.any?
-
-            sorted
-          end
+          applier Applier
+          api_types_class ApiTypes
+          contract_types_class ContractTypes
         end
       end
     end

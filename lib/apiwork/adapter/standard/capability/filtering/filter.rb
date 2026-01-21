@@ -27,13 +27,17 @@ module Apiwork
 
             LOGICAL_OPERATORS = %i[_and _or _not].freeze
 
-            attr_reader :schema_class
+            attr_reader :issues, :schema_class
 
-            def self.filter(relation, schema_class, filter_params, issues)
-              new(relation, schema_class, issues).filter(filter_params)
+            def self.apply(context)
+              filter = new(context.data, context.schema_class)
+              result = filter.filter(context.params)
+              raise ContractError, filter.issues if filter.issues.any?
+
+              result
             end
 
-            def initialize(relation, schema_class, issues)
+            def initialize(relation, schema_class, issues = [])
               @relation = relation
               @schema_class = schema_class
               @issues = issues
@@ -140,7 +144,7 @@ module Apiwork
               return scope if conditions_array.blank?
 
               conditions_array.reduce(scope) do |current_scope, filter_hash|
-                Filter.filter(current_scope, schema_class, filter_hash, @issues)
+                Filter.new(current_scope, schema_class, @issues).filter(filter_hash)
               end
             end
 

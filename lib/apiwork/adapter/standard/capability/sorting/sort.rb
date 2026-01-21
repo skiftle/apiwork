@@ -5,14 +5,18 @@ module Apiwork
     class Standard
       module Capability
         class Sorting < Adapter::Capability::Base
-          class Sorter
-            attr_reader :schema_class
+          class Sort
+            attr_reader :issues, :schema_class
 
-            def self.sort(relation, schema_class, sort_params, issues)
-              new(relation, schema_class, issues).sort(sort_params)
+            def self.apply(context)
+              sorter = new(context.data, context.schema_class)
+              result = sorter.sort(context.params)
+              raise ContractError, sorter.issues if sorter.issues.any?
+
+              result
             end
 
-            def initialize(relation, schema_class, issues)
+            def initialize(relation, schema_class, issues = [])
               @relation = relation
               @schema_class = schema_class
               @issues = issues
@@ -115,7 +119,7 @@ module Apiwork
                     next
                   end
 
-                  nested_query = Sorter.new(association.klass.all, association_resource, @issues)
+                  nested_query = Sort.new(association.klass.all, association_resource, @issues)
                   nested_orders, nested_joins = nested_query.build_order_clauses(value, association.klass)
                   orders.concat(nested_orders)
 
