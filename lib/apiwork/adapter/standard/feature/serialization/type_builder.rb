@@ -55,8 +55,6 @@ module Apiwork
                 association_type_map[name] = build_association_type(association)
               end
 
-              build_enums
-
               local_schema_class = schema_class
               registrar.object(type_name, schema_class: local_schema_class) do
                 local_schema_class.attributes.each do |name, attribute|
@@ -147,11 +145,17 @@ module Apiwork
             def build_sti_response_union_type(visited: Set.new)
               union_type_name = schema_class.root_key.singular.to_sym
               discriminator_name = schema_class.union.discriminator
+              builder = self
 
-              build_sti_union(union_type_name:, visited:) do |variant_schema_class, tag, _visit_set|
+              build_sti_union(union_type_name:, visited:) do |variant_schema_class, tag, visit_set|
                 variant_type_name = variant_schema_class.root_key.singular.to_sym
 
                 unless registrar.api_registrar.type?(variant_type_name)
+                  association_type_map = {}
+                  variant_schema_class.associations.each do |name, association|
+                    association_type_map[name] = builder.send(:build_association_type, association, visited: visit_set)
+                  end
+
                   registrar.api_registrar.object(variant_type_name, schema_class: variant_schema_class) do
                     literal discriminator_name, value: tag.to_s
 
@@ -165,6 +169,30 @@ module Apiwork
                             nullable: attribute.nullable?,
                             type: TypeMapper.map(attribute.type),
                             **enum_option
+                    end
+
+                    variant_schema_class.associations.each do |name, association|
+                      association_type = association_type_map[name]
+
+                      base_options = {
+                        deprecated: association.deprecated,
+                        description: association.description,
+                        example: association.example,
+                        nullable: association.nullable?,
+                        optional: association.include != :always,
+                      }
+
+                      if association.singular?
+                        param name, type: association_type || :object, **base_options
+                      elsif association.collection?
+                        if association_type
+                          param name, type: :array, **base_options do
+                            of association_type
+                          end
+                        else
+                          param name, type: :array, **base_options
+                        end
+                      end
                     end
                   end
                 end
