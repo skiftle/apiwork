@@ -19,10 +19,11 @@ module Apiwork
 
         context = build_context(state)
         result = run_pipeline(applicable, preloaded, params_map, context)
-        metadata = collect_metadata(applicable, result)
+        response = {}
+        collect_response_fields(applicable, response, result)
         serialize_options = collect_serialize_options(applicable, params_map, state.schema_class)
 
-        [result.merge(serialize_options:), metadata]
+        [result.merge(serialize_options:), response]
       end
 
       private
@@ -58,10 +59,8 @@ module Apiwork
         end
       end
 
-      def collect_metadata(capabilities, result)
-        capabilities.each_with_object({}) do |capability, meta|
-          meta.merge!(capability.response_metadata(result))
-        end
+      def collect_response_fields(capabilities, response, result)
+        capabilities.each { |c| c.response_fields(response, result) }
       end
 
       def collect_serialize_options(capabilities, params_map, schema_class)

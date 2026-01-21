@@ -50,10 +50,10 @@ module Apiwork
             data.merge(data: paginated, pagination: pagination_result[:pagination])
           end
 
-          def response_metadata(result)
-            return {} unless result.is_a?(Hash) && result.key?(:pagination)
+          def response_fields(response, result)
+            return unless result.is_a?(Hash) && result.key?(:pagination)
 
-            { pagination: result[:pagination] }
+            response[:pagination] = result[:pagination]
           end
 
           def collection_response_types(response, schema_class)

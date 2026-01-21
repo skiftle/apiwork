@@ -16,11 +16,11 @@ module Apiwork
           self.class.response_types_class&.build(registrar, schema_class, actions, capabilities:)
         end
 
-        def build_record_response(data, metadata, state)
+        def build_record_response(response, data, state)
           raise NotImplementedError
         end
 
-        def build_collection_response(data, metadata, state)
+        def build_collection_response(response, data, state)
           raise NotImplementedError
         end
 

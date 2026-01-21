@@ -94,14 +94,13 @@ module Apiwork
           data
         end
 
-        # Returns metadata to include in the response.
+        # Adds capability-specific fields to the response hash.
         #
         # @api public
+        # @param response [Hash] the response hash to add fields to
         # @param result [Object] the result data
-        # @return [Hash] metadata hash
-        def response_metadata(result)
-          {}
-        end
+        # @return [void]
+        def response_fields(response, result); end
 
         def applies?(action, data)
           return true if self.class.applies_to_actions.empty?
