@@ -2,8 +2,8 @@
 
 module Apiwork
   module Adapter
-    class Standard
-      class Representation < Adapter::Representation::Base
+    module Representation
+      class Default < Base
         types Types::Errors
         resource_types Types::Resources
 

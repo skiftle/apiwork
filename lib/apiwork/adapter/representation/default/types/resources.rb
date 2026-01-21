@@ -2,8 +2,8 @@
 
 module Apiwork
   module Adapter
-    class Standard
-      class Representation < Adapter::Representation::Base
+    module Representation
+      class Default < Base
         module Types
           class Resources
             attr_reader :registrar,
@@ -67,7 +67,7 @@ module Apiwork
                     example: attribute.example,
                     format: attribute.format,
                     nullable: attribute.nullable?,
-                    type: TypeMapper.map(attribute.type),
+                    type: Standard::TypeMapper.map(attribute.type),
                     **enum_option,
                     **of_option,
                   }
@@ -167,7 +167,7 @@ module Apiwork
                             example: attribute.example,
                             format: attribute.format,
                             nullable: attribute.nullable?,
-                            type: TypeMapper.map(attribute.type),
+                            type: Standard::TypeMapper.map(attribute.type),
                             **enum_option
                     end
 
@@ -255,13 +255,13 @@ module Apiwork
             end
 
             def resolve_association_resource(association)
-              return AssociationResource.polymorphic if association.polymorphic?
+              return Standard::AssociationResource.polymorphic if association.polymorphic?
 
               resolved_schema = resolve_schema_from_association(association)
               return nil unless resolved_schema
 
               sti = resolved_schema.discriminated?
-              AssociationResource.for(resolved_schema, sti:)
+              Standard::AssociationResource.for(resolved_schema, sti:)
             end
 
             def resolve_schema_from_association(association)

@@ -2,8 +2,8 @@
 
 module Apiwork
   module Adapter
-    class Standard
-      class Document < Adapter::Document::Base
+    module Document
+      class Default < Base
         module Types
           class Responses
             attr_reader :actions,

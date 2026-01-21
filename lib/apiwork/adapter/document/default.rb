@@ -2,8 +2,8 @@
 
 module Apiwork
   module Adapter
-    class Standard
-      class Document < Adapter::Document::Base
+    module Document
+      class Default < Base
         response_types Types::Responses
 
         attr_reader :schema_class
@@ -31,8 +31,8 @@ module Apiwork
 
         def build_error_response(issues, layer, state)
           {
+            issues:,
             layer:,
-            issues: issues.map(&:to_h),
           }
         end
       end
