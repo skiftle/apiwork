@@ -13,7 +13,7 @@ module Apiwork
           option :default_size, default: 20, type: :integer
           option :max_size, default: 100, type: :integer
 
-          def api(registrar, capabilities)
+          def api_types(registrar, capabilities)
             return unless capabilities.index_actions?
 
             strategies = capabilities.options_for(:pagination, :strategy)
@@ -21,7 +21,7 @@ module Apiwork
             register_cursor_pagination(registrar) if strategies.include?(:cursor)
           end
 
-          def contract(registrar, schema_class, actions)
+          def contract_types(registrar, schema_class, actions)
             type_name = build_page_type(registrar, schema_class)
 
             return unless type_name
@@ -50,13 +50,13 @@ module Apiwork
             data.merge(data: paginated, pagination: pagination_result[:pagination])
           end
 
-          def metadata(result)
+          def response_metadata(result)
             return {} unless result.is_a?(Hash) && result.key?(:pagination)
 
             { pagination: result[:pagination] }
           end
 
-          def extend_collection_response(response, schema_class)
+          def collection_response_types(response, schema_class)
             config = schema_class.adapter_config.pagination
             pagination_type = config.strategy == :offset ? :offset_pagination : :cursor_pagination
             response.reference :pagination, to: pagination_type

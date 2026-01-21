@@ -60,7 +60,7 @@ module Apiwork
 
       def collect_metadata(capabilities, result)
         capabilities.each_with_object({}) do |capability, meta|
-          meta.merge!(capability.metadata(result))
+          meta.merge!(capability.response_metadata(result))
         end
       end
 

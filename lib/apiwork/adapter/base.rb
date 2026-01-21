@@ -224,7 +224,7 @@ module Apiwork
 
       def register_api(registrar, adapter_capabilities)
         capability_instances.each do |capability|
-          capability.api(registrar, adapter_capabilities)
+          capability.api_types(registrar, adapter_capabilities)
         end
 
         representation_class = self.class.representation
@@ -233,7 +233,7 @@ module Apiwork
 
       def register_contract(registrar, schema_class, actions)
         capability_instances.each do |capability|
-          capability.contract(registrar, schema_class, actions)
+          capability.contract_types(registrar, schema_class, actions)
         end
 
         representation_class = self.class.representation

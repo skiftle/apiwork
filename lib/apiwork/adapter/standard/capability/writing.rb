@@ -11,7 +11,7 @@ module Apiwork
 
           request_transformer OpFieldTransformer, post: true
 
-          def contract(registrar, schema_class, actions)
+          def contract_types(registrar, schema_class, actions)
             TypeBuilder.build(registrar, schema_class)
 
             root_key = schema_class.root_key.singular.to_sym

@@ -32,7 +32,7 @@ module Apiwork
               response.reference schema_class.root_key.singular.to_sym, to: resource_type_name
 
               capabilities.each do |capability|
-                capability.extend_record_response(response, schema_class)
+                capability.record_response_types(response, schema_class)
               end
 
               response.object :meta, optional: true
@@ -46,7 +46,7 @@ module Apiwork
               end
 
               capabilities.each do |capability|
-                capability.extend_collection_response(response, schema_class)
+                capability.collection_response_types(response, schema_class)
               end
 
               response.object :meta, optional: true

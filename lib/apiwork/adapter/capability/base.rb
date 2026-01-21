@@ -45,9 +45,38 @@ module Apiwork
           @config = Configuration.new(self.class, merged)
         end
 
-        def api(registrar, capabilities); end
+        # Registers API-wide types for this capability.
+        #
+        # @api public
+        # @param registrar [Object] the type registrar
+        # @param capabilities [Object] adapter capabilities info
+        # @return [void]
+        def api_types(registrar, capabilities); end
 
-        def contract(registrar, schema_class, actions); end
+        # Registers contract types for this capability.
+        #
+        # @api public
+        # @param registrar [Object] the type registrar
+        # @param schema_class [Class] the schema class
+        # @param actions [Hash] the actions
+        # @return [void]
+        def contract_types(registrar, schema_class, actions); end
+
+        # Adds fields to the collection response type.
+        #
+        # @api public
+        # @param response [Object] the response builder
+        # @param schema_class [Class] the schema class
+        # @return [void]
+        def collection_response_types(response, schema_class); end
+
+        # Adds fields to the record response type.
+        #
+        # @api public
+        # @param response [Object] the response builder
+        # @param schema_class [Class] the schema class
+        # @return [void]
+        def record_response_types(response, schema_class); end
 
         def extract(request, schema_class)
           {}
@@ -65,25 +94,14 @@ module Apiwork
           data
         end
 
-        def metadata(result)
+        # Returns metadata to include in the response.
+        #
+        # @api public
+        # @param result [Object] the result data
+        # @return [Hash] metadata hash
+        def response_metadata(result)
           {}
         end
-
-        # Extends the collection response type with capability-specific fields.
-        #
-        # @api public
-        # @param response [Object] the response builder
-        # @param schema_class [Class] the schema class
-        # @return [void]
-        def extend_collection_response(response, schema_class); end
-
-        # Extends the record response type with capability-specific fields.
-        #
-        # @api public
-        # @param response [Object] the response builder
-        # @param schema_class [Class] the schema class
-        # @return [void]
-        def extend_record_response(response, schema_class); end
 
         def applies?(action, data)
           return true if self.class.applies_to_actions.empty?

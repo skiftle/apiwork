@@ -128,7 +128,7 @@ module Apiwork
 
           PRIMITIVES = %i[string integer decimal boolean datetime date uuid time binary number].freeze
 
-          def api(registrar, capabilities)
+          def api_types(registrar, capabilities)
             return unless capabilities.filter_types.any?
 
             filter_types_to_register = Set.new
@@ -144,7 +144,7 @@ module Apiwork
             filter_types_to_register.each { |type| register_filter_type(registrar, type) }
           end
 
-          def contract(registrar, schema_class, actions)
+          def contract_types(registrar, schema_class, actions)
             TypeBuilder.build(registrar, schema_class)
 
             return unless registrar.type?(:filter)

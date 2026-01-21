@@ -11,13 +11,13 @@ module Apiwork
 
           option :max_depth, default: 2, type: :integer
 
-          def api(registrar, capabilities)
+          def api_types(registrar, capabilities)
             return unless capabilities.sortable?
 
             registrar.enum :sort_direction, values: %w[asc desc]
           end
 
-          def contract(registrar, schema_class, actions)
+          def contract_types(registrar, schema_class, actions)
             TypeBuilder.build(registrar, schema_class)
 
             return unless registrar.type?(:sort)

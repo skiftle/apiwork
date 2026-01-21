@@ -8,7 +8,7 @@ module Apiwork
           capability_name :including
           input :any
 
-          def contract(registrar, schema_class, actions)
+          def contract_types(registrar, schema_class, actions)
             TypeBuilder.build(registrar, schema_class)
 
             return unless registrar.type?(:include)

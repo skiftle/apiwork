@@ -8,6 +8,7 @@ module Apiwork
       transform_request RequestTransformer
 
       representation Representation::Default
+
       document Document::Default
 
       capability Capability::Filtering

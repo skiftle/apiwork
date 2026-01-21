@@ -198,7 +198,7 @@ module Apiwork
         adapter = contract_class.api_class.adapter
 
         adapter.capability_instances.each do |capability|
-          capability.contract(sub_registrar, schema, {})
+          capability.contract_types(sub_registrar, schema, {})
         end
 
         representation_class = adapter.class.representation
