@@ -24,7 +24,7 @@ module Apiwork
           raise NotImplementedError
         end
 
-        def build_error_response(issues, layer, state)
+        def build_error_response(serialized, state)
           raise NotImplementedError
         end
       end

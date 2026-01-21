@@ -201,27 +201,26 @@ module Apiwork
         metadata
       end
 
-      def process_error(layer, issues, state)
-        prepared = prepare_error(issues, layer, state)
+      def process_error(error, state)
+        prepared_error = prepare_error(error, state)
 
         rep = representation_instance(state.schema_class)
         doc = document_instance(state.schema_class)
 
-        serialized = prepared.map { |issue| rep.serialize_error(issue, context: state.context) }
-        doc.build_error_response(serialized, layer, state)
+        serialized = rep.serialize_error(prepared_error, context: state.context)
+        doc.build_error_response(serialized, state)
       end
 
       # @api public
-      # Prepares error issues before rendering.
+      # Prepares error before rendering.
       #
       # Override to transform or enrich error data.
       #
-      # @param issues [Array<Issue>] error issues
-      # @param _layer [Symbol] error layer (:contract, :domain, :http)
+      # @param error [ConstraintError] the error
       # @param _state [Adapter::RenderState] render context
-      # @return [Array<Issue>] the prepared issues
-      def prepare_error(issues, _layer, _state)
-        issues
+      # @return [ConstraintError] the prepared error
+      def prepare_error(error, _state)
+        error
       end
 
       def register_api(registrar, adapter_capabilities)

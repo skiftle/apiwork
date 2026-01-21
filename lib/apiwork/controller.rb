@@ -33,8 +33,8 @@ module Apiwork
 
       before_action :validate_contract
 
-      rescue_from ContractError, DomainError do |error|
-        render_error error.layer, error.issues, error.status
+      rescue_from ConstraintError do |error|
+        render_error error
       end
     end
 
@@ -187,7 +187,7 @@ module Apiwork
         path: path || (error_code.attach_path? ? request.path.delete_prefix(api_class.path).split('/').reject(&:blank?) : []),
       )
 
-      render_error :http, [issue], error_code.status
+      render_error HttpError.new([issue], error_code)
     end
 
     # @api public
@@ -215,9 +215,9 @@ module Apiwork
       raise ContractError, contract.issues
     end
 
-    def render_error(layer, issues, status)
-      json = adapter.process_error(layer, issues, build_render_state)
-      render json:, status:
+    def render_error(error)
+      json = adapter.process_error(error, build_render_state)
+      render json:, status: error.status
     end
 
     def build_render_state(meta = {}, schema_class: nil)

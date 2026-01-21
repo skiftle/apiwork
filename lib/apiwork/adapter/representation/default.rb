@@ -23,7 +23,10 @@ module Apiwork
         end
 
         def serialize_error(error, context:)
-          error.to_h
+          {
+            issues: error.issues.map(&:to_h),
+            layer: error.layer,
+          }
         end
       end
     end

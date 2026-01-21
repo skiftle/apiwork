@@ -23,11 +23,8 @@ module Apiwork
           response[:meta] = state.meta if state.meta.present?
         end
 
-        def build_error_response(issues, layer, state)
-          {
-            issues:,
-            layer:,
-          }
+        def build_error_response(serialized, state)
+          serialized
         end
       end
     end
