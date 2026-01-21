@@ -31,13 +31,8 @@ module Apiwork
       #     string? :status, enum: :status
       #   end
       def query(&block)
-        if block
-          @query ||= Object.new(
-            @contract_class,
-            action_name: @action_name,
-          )
-          @query.instance_eval(&block)
-        end
+        @query ||= Object.new(@contract_class, action_name: @action_name)
+        @query.instance_eval(&block) if block
         @query
       end
 
@@ -55,13 +50,8 @@ module Apiwork
       #     decimal :amount
       #   end
       def body(&block)
-        if block
-          @body ||= Object.new(
-            @contract_class,
-            action_name: @action_name,
-          )
-          @body.instance_eval(&block)
-        end
+        @body ||= Object.new(@contract_class, action_name: @action_name)
+        @body.instance_eval(&block) if block
         @body
       end
     end
