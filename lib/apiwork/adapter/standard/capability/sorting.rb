@@ -44,13 +44,13 @@ module Apiwork
             IncludesResolver::AssociationExtractor.new(schema_class).extract_from_sort(params).keys
           end
 
-          def apply(data, params, context)
+          def apply(data, metadata, params, context)
             issues = []
-            sorted = Sorter.sort(data[:data], context.schema_class, params, issues)
+            sorted = Sorter.sort(data, context.schema_class, params, issues)
 
             raise ContractError, issues if issues.any?
 
-            data.merge(data: sorted)
+            sorted
           end
         end
       end

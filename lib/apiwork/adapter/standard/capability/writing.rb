@@ -33,9 +33,8 @@ module Apiwork
             end
           end
 
-          def apply(data, _params, context)
-            record = data[:data]
-            validate_record!(record, context.schema_class)
+          def apply(data, _metadata, _params, context)
+            validate_record!(data, context.schema_class)
             data
           end
 

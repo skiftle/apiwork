@@ -43,17 +43,10 @@ module Apiwork
             []
           end
 
-          def apply(data, params, context)
-            collection = data[:data]
-            paginated, pagination_result = paginate(collection, context.schema_class, params)
-
-            data.merge(data: paginated, pagination: pagination_result[:pagination])
-          end
-
-          def response_fields(response, result)
-            return unless result.is_a?(Hash) && result.key?(:pagination)
-
-            response[:pagination] = result[:pagination]
+          def apply(data, metadata, params, context)
+            paginated, pagination_result = paginate(data, context.schema_class, params)
+            metadata[:pagination] = pagination_result[:pagination]
+            paginated
           end
 
           def collection_response_types(response, schema_class)

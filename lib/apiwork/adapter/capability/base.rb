@@ -90,17 +90,9 @@ module Apiwork
           {}
         end
 
-        def apply(data, params, context)
+        def apply(data, metadata, params, context)
           data
         end
-
-        # Adds capability-specific fields to the response hash.
-        #
-        # @api public
-        # @param response [Hash] the response hash to add fields to
-        # @param result [Object] the result data
-        # @return [void]
-        def response_fields(response, result); end
 
         def applies?(action, data)
           return true if self.class.applies_to_actions.empty?
