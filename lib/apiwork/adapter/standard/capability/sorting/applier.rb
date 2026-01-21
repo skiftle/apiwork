@@ -17,7 +17,7 @@ module Apiwork
             end
 
             def apply
-              Sort.apply(context)
+              Adapter::Capability::ApplyResult.new(data: Sort.apply(context))
             end
           end
         end

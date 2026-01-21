@@ -12,8 +12,10 @@ module Apiwork
 
             def apply
               paginated, pagination_result = paginate
-              context.metadata[:pagination] = pagination_result[:pagination]
-              paginated
+              Adapter::Capability::ApplyResult.new(
+                additions: { pagination: pagination_result[:pagination] },
+                data: paginated,
+              )
             end
 
             private

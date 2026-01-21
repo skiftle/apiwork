@@ -8,7 +8,7 @@ module Apiwork
           class Applier < Adapter::Capability::Applier::Base
             def apply
               validate_record!(context.data, context.schema_class)
-              context.data
+              Adapter::Capability::ApplyResult.new(data: context.data)
             end
 
             private

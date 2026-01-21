@@ -7,13 +7,11 @@ module Apiwork
       # Context object for runtime capability operations.
       #
       # Passed to Applier methods during request processing.
-      # Accumulates state as the pipeline progresses.
       #
       # @example Accessing context in an Applier
       #   def apply(context)
       #     paginated = paginate(context.data, context.params)
-      #     context.metadata[:pagination] = stats
-      #     paginated
+      #     ApplyResult.new(data: paginated, additions: { pagination: stats })
       #   end
       class ApplierContext
         # @api public
@@ -33,10 +31,6 @@ module Apiwork
         attr_accessor :data
 
         # @api public
-        # @return [Hash] response metadata hash (capabilities add fields here)
-        attr_accessor :metadata
-
-        # @api public
         # @return [Hash] extracted params (set after extract)
         attr_accessor :params
 
@@ -44,7 +38,6 @@ module Apiwork
           @request = request
           @schema_class = schema_class
           @action = action
-          @metadata = {}
         end
       end
     end

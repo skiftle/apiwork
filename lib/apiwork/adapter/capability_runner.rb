@@ -18,10 +18,10 @@ module Apiwork
         preloaded = preload_associations(collection, all_includes)
 
         context = build_context(state)
-        transformed, metadata = run_pipeline(applicable, preloaded, params_map, context)
+        transformed, additions = run_pipeline(applicable, preloaded, params_map, context)
         serialize_options = collect_serialize_options(applicable, params_map, state.schema_class)
 
-        [{ serialize_options:, data: transformed }, metadata]
+        [{ serialize_options:, data: transformed }, additions]
       end
 
       private
@@ -52,13 +52,15 @@ module Apiwork
       end
 
       def run_pipeline(capabilities, collection, params_map, context)
-        metadata = {}
+        additions = {}
 
         data = capabilities.reduce(collection) do |current, capability|
-          capability.apply(current, metadata, params_map[capability], context)
+          result = capability.apply(current, params_map[capability], context)
+          additions.merge!(result.additions)
+          result.data
         end
 
-        [data, metadata]
+        [data, additions]
       end
 
       def collect_serialize_options(capabilities, params_map, schema_class)

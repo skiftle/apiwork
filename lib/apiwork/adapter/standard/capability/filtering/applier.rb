@@ -17,9 +17,8 @@ module Apiwork
             end
 
             def apply
-              return context.data if context.params.blank?
-
-              Filter.apply(context)
+              data = context.params.blank? ? context.data : Filter.apply(context)
+              Adapter::Capability::ApplyResult.new(data:)
             end
           end
         end

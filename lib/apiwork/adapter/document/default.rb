@@ -13,18 +13,24 @@ module Apiwork
           @schema_class = schema_class
         end
 
-        def build_record_response(response, data, state)
-          response[schema_class.root_key.singular] = data
-          response[:meta] = state.meta if state.meta.present?
+        def build_record_response(data, additions, state)
+          {
+            schema_class.root_key.singular => data,
+            **additions,
+            meta: state.meta.presence,
+          }.compact
         end
 
-        def build_collection_response(response, data, state)
-          response[schema_class.root_key.plural] = data
-          response[:meta] = state.meta if state.meta.present?
+        def build_collection_response(data, additions, state)
+          {
+            schema_class.root_key.plural => data,
+            **additions,
+            meta: state.meta.presence,
+          }.compact
         end
 
-        def build_error_response(serialized, state)
-          serialized
+        def build_error_response(data, state)
+          data
         end
       end
     end

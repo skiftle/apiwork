@@ -177,8 +177,8 @@ module Apiwork
           build_applier(context).serialize_options
         end
 
-        def apply(data, metadata, params, adapter_context)
-          return data unless self.class.applier
+        def apply(data, params, adapter_context)
+          return Capability::ApplyResult.new(data:) unless self.class.applier
 
           context = ApplierContext.new(
             action: adapter_context.action,
@@ -186,7 +186,6 @@ module Apiwork
             schema_class: adapter_context.schema_class,
           )
           context.data = data
-          context.metadata = metadata
           context.params = params
           build_applier(context).apply
         end

@@ -17,7 +17,8 @@ module Apiwork
         #     end
         #
         #     def apply
-        #       transform(context.data, context.params)
+        #       transformed = transform(context.data, context.params)
+        #       ApplyResult.new(data: transformed, additions: { my_key: stats })
         #     end
         #   end
         class Base
@@ -51,11 +52,11 @@ module Apiwork
           end
 
           # @api public
-          # Transforms the data.
+          # Transforms the data and returns additions for the response.
           #
-          # @return [Object] the transformed data
+          # @return [ApplyResult] the transformed data and response additions
           def apply
-            context.data
+            Capability::ApplyResult.new(data: context.data)
           end
 
           # @api public
