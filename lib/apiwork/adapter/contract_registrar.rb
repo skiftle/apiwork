@@ -197,12 +197,15 @@ module Apiwork
         sub_registrar = self.class.new(association_contract, importing: @importing)
         adapter = contract_class.api_class.adapter
 
-        adapter.feature_instances.each do |feature|
-          feature.contract(sub_registrar, schema, {})
+        adapter.capability_instances.each do |capability|
+          capability.contract(sub_registrar, schema, {})
         end
 
-        resource_envelope_class = adapter.class.resource_envelope
-        resource_envelope_class&.new(schema)&.define(sub_registrar, {})
+        representation_class = adapter.class.representation
+        representation_class&.new(schema)&.contract(sub_registrar, schema, {})
+
+        document_class = adapter.class.document
+        document_class&.new(schema)&.contract(sub_registrar, schema, {})
       end
     end
   end

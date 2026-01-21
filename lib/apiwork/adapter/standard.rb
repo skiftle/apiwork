@@ -7,15 +7,14 @@ module Apiwork
 
       transform_request RequestTransformer
 
-      feature Feature::Filtering
-      feature Feature::Sorting
-      feature Feature::Pagination
-      feature Feature::Including
-      feature Feature::Writing
-      feature Feature::Serialization
+      representation Representation
+      document Document
 
-      resource_envelope Envelope::Resource
-      error_envelope Envelope::Error
+      capability Capability::Filtering
+      capability Capability::Sorting
+      capability Capability::Pagination
+      capability Capability::Including
+      capability Capability::Writing
     end
   end
 end

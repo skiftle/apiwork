@@ -39,20 +39,20 @@ module Apiwork
         end
 
         # @api public
-        # Registers a feature for this adapter.
+        # Registers a capability for this adapter.
         #
-        # Features are self-contained concerns (pagination, filtering, etc.)
+        # Capabilities are self-contained concerns (pagination, filtering, etc.)
         # that handle both introspection and runtime behavior.
         #
-        # @param klass [Class] a Feature subclass
+        # @param klass [Class] a Capability::Base subclass
         # @return [void]
         #
         # @example
-        #   feature Pagination
-        #   feature Filtering
-        def feature(klass)
-          @features ||= []
-          @features << klass
+        #   capability Pagination
+        #   capability Filtering
+        def capability(klass)
+          @capabilities ||= []
+          @capabilities << klass
 
           klass.request_transformers.each do |transformer|
             transform_request transformer[:klass], post: transformer[:post]
@@ -60,41 +60,67 @@ module Apiwork
 
           return unless klass.options.any?
 
-          name = klass.feature_name
+          name = klass.capability_name
           options[name] = Configuration::Option.new(name, :hash, children: klass.options)
         end
 
         # @api public
-        # Skips an inherited feature by name.
+        # Skips an inherited capability by name.
         #
-        # @param name [Symbol] the feature_name to skip
+        # @param name [Symbol] the capability_name to skip
         # @return [void]
         #
         # @example
-        #   skip_feature :pagination
-        def skip_feature(name)
-          @skipped_features ||= []
-          @skipped_features << name.to_sym
+        #   skip_capability :pagination
+        def skip_capability(name)
+          @skipped_capabilities ||= []
+          @skipped_capabilities << name.to_sym
         end
 
-        def features
-          inherited = superclass.respond_to?(:features) ? superclass.features : []
-          skipped = @skipped_features || []
-          all = (inherited + (@features || [])).uniq
-          all.reject { |f| skipped.include?(f.feature_name) }
+        def capabilities
+          inherited = superclass.respond_to?(:capabilities) ? superclass.capabilities : []
+          skipped = @skipped_capabilities || []
+          all = (inherited + (@capabilities || [])).uniq
+          all.reject { |c| skipped.include?(c.capability_name) }
+        end
+
+        # @api public
+        # Sets or gets the representation class.
+        #
+        # Representation defines API objects (resources, errors) and handles serialization.
+        #
+        # @param klass [Class] a Representation::Base subclass (optional)
+        # @return [Class, nil]
+        #
+        # @example
+        #   representation StandardRepresentation
+        def representation(klass = nil)
+          @representation = klass if klass
+          @representation || (superclass.respond_to?(:representation) && superclass.representation)
+        end
+
+        # @api public
+        # Sets or gets the document class.
+        #
+        # Document defines response envelopes and wraps serialized data.
+        #
+        # @param klass [Class] a Document::Base subclass (optional)
+        # @return [Class, nil]
+        #
+        # @example
+        #   document StandardDocument
+        def document(klass = nil)
+          @document = klass if klass
+          @document || (superclass.respond_to?(:document) && superclass.document)
         end
 
         # @api public
         # Sets or gets the resource envelope class.
         #
-        # The resource envelope handles both single records and collections
-        # for a given schema class.
+        # @deprecated Use {representation} and {document} instead.
         #
         # @param klass [Class] an Envelope::Resource subclass (optional)
         # @return [Class, nil]
-        #
-        # @example
-        #   resource_envelope ResourceEnvelope
         def resource_envelope(klass = nil)
           @resource_envelope = klass if klass
           @resource_envelope || (superclass.respond_to?(:resource_envelope) && superclass.resource_envelope)
@@ -103,11 +129,10 @@ module Apiwork
         # @api public
         # Sets or gets the error envelope class.
         #
+        # @deprecated Use {representation} and {document} instead.
+        #
         # @param klass [Class] an Envelope::Error subclass (optional)
         # @return [Class, nil]
-        #
-        # @example
-        #   error_envelope ErrorEnvelope
         def error_envelope(klass = nil)
           @error_envelope = klass if klass
           @error_envelope || (superclass.respond_to?(:error_envelope) && superclass.error_envelope)
@@ -183,27 +208,35 @@ module Apiwork
       transform_response KeyTransformer
 
       def process_collection(collection, schema_class, state)
-        envelope = self.class.resource_envelope.new(schema_class)
-        prepared = envelope.prepare_collection(collection, state)
-        result, metadata = apply_features({ data: prepared }, state)
+        result, metadata = apply_capabilities({ data: collection }, state)
         serialize_options = result[:serialize_options] || {}
-        serialized = envelope.serialize_collection(result[:data], serialize_options, state)
-        envelope.render_collection(serialized, metadata, state)
+
+        rep = representation_instance(schema_class)
+        doc = document_instance(schema_class)
+
+        serialized = rep.serialize_resource(result[:data], serialize_options:, context: state.context)
+        doc.build_collection_response(serialized, metadata, state)
       end
 
       def process_record(record, schema_class, state)
-        envelope = self.class.resource_envelope.new(schema_class)
-        prepared = envelope.prepare_record(record, state)
-        result, metadata = apply_features({ data: prepared }, state)
+        result, metadata = apply_capabilities({ data: record }, state)
         serialize_options = result[:serialize_options] || {}
-        serialized = envelope.serialize_record(result[:data], serialize_options, state)
-        envelope.render_record(serialized, metadata, state)
+
+        rep = representation_instance(schema_class)
+        doc = document_instance(schema_class)
+
+        serialized = rep.serialize_resource(result[:data], serialize_options:, context: state.context)
+        doc.build_record_response(serialized, metadata, state)
       end
 
       def process_error(layer, issues, state)
-        envelope = self.class.error_envelope.new
         prepared = prepare_error(issues, layer, state)
-        envelope.render(prepared, layer, state)
+
+        rep = representation_instance(state.schema_class)
+        doc = document_instance(state.schema_class)
+
+        serialized = prepared.map { |issue| rep.serialize_error(issue, context: state.context) }
+        doc.build_error_response(serialized, layer, state)
       end
 
       # @api public
@@ -219,22 +252,25 @@ module Apiwork
         issues
       end
 
-      def register_api(registrar, capabilities)
-        feature_instances.each do |feature|
-          feature.api(registrar, capabilities)
+      def register_api(registrar, adapter_capabilities)
+        capability_instances.each do |capability|
+          capability.api(registrar, adapter_capabilities)
         end
 
-        error_envelope_class = self.class.error_envelope
-        error_envelope_class.new.define(registrar) if error_envelope_class # rubocop:disable Style/SafeNavigation
+        representation_class = self.class.representation
+        representation_class&.new(nil)&.api(registrar, adapter_capabilities)
       end
 
       def register_contract(registrar, schema_class, actions)
-        feature_instances.each do |feature|
-          feature.contract(registrar, schema_class, actions)
+        capability_instances.each do |capability|
+          capability.contract(registrar, schema_class, actions)
         end
 
-        resource_envelope_class = self.class.resource_envelope
-        resource_envelope_class.new(schema_class).define(registrar, actions) if resource_envelope_class # rubocop:disable Style/SafeNavigation
+        representation_class = self.class.representation
+        representation_class&.new(schema_class)&.contract(registrar, schema_class, actions)
+
+        document_class = self.class.document
+        document_class&.new(schema_class)&.contract(registrar, schema_class, actions)
       end
 
       def normalize_request(request, api_class:)
@@ -261,21 +297,29 @@ module Apiwork
         Capabilities.new(structure)
       end
 
-      def feature_instances
-        @feature_instances ||= self.class.features.map do |klass|
-          config = adapter_config_for(klass.feature_name)
+      def capability_instances
+        @capability_instances ||= self.class.capabilities.map do |klass|
+          config = adapter_config_for(klass.capability_name)
           klass.new(config)
         end
       end
 
       private
 
-      def apply_features(data, state)
-        runner = FeatureRunner.new(feature_instances)
+      def representation_instance(schema_class)
+        self.class.representation.new(schema_class)
+      end
+
+      def document_instance(schema_class)
+        self.class.document.new(schema_class)
+      end
+
+      def apply_capabilities(data, state)
+        runner = CapabilityRunner.new(capability_instances)
         runner.run(data, state)
       end
 
-      def adapter_config_for(feature_name)
+      def adapter_config_for(capability_name)
         {}
       end
     end
