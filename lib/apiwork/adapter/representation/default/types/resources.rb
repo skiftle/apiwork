@@ -67,7 +67,7 @@ module Apiwork
                     example: attribute.example,
                     format: attribute.format,
                     nullable: attribute.nullable?,
-                    type: Standard::TypeMapper.map(attribute.type),
+                    type: attribute.type,
                     **enum_option,
                     **of_option,
                   }
@@ -167,7 +167,7 @@ module Apiwork
                             example: attribute.example,
                             format: attribute.format,
                             nullable: attribute.nullable?,
-                            type: Standard::TypeMapper.map(attribute.type),
+                            type: attribute.type,
                             **enum_option
                     end
 

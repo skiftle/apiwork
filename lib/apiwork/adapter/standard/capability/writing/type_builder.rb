@@ -97,7 +97,7 @@ module Apiwork
                 format: attribute.format,
                 nullable: attribute.nullable?,
                 optional: action_name == :update || attribute.optional?,
-                type: TypeMapper.map(attribute.type),
+                type: attribute.type,
               }
 
               options[:min] = attribute.min if attribute.min
@@ -258,7 +258,7 @@ module Apiwork
 
             def primary_key_type
               model_class = schema_class.model_class
-              TypeMapper.map(model_class.type_for_attribute(model_class.primary_key).type)
+              model_class.type_for_attribute(model_class.primary_key).type
             end
 
             def sti_base_schema?

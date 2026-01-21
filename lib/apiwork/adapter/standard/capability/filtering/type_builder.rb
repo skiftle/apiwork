@@ -67,15 +67,12 @@ module Apiwork
 
                   if attribute.enum
                     reference name, optional: true, to: filter_type
+                  elsif %i[object array union].include?(attribute.type)
+                    reference name, optional: true, to: filter_type
                   else
-                    mapped_type = TypeMapper.map(attribute.type)
-                    if %i[object array union].include?(mapped_type)
-                      reference name, optional: true, to: filter_type
-                    else
-                      union name, optional: true do
-                        variant { of(mapped_type) }
-                        variant { reference filter_type }
-                      end
+                    union name, optional: true do
+                      variant { of(attribute.type) }
+                      variant { reference filter_type }
                     end
                   end
                 end
