@@ -48,9 +48,9 @@ module Apiwork
 
                   association_resource = builder.resolve_association_resource(association)
                   next unless association_resource
-                  next unless association_resource.schema_class
+                  next unless association_resource[:schema_class]
 
-                  if visited.include?(association_resource.schema_class)
+                  if visited.include?(association_resource[:schema_class])
                     boolean name, optional: true unless association.include == :always
                   else
                     alias_name = registrar_local.ensure_association_types(association)
@@ -60,7 +60,7 @@ module Apiwork
                                                  registrar_local.type?(imported_type) ? imported_type : nil
                                                else
                                                  builder.build_include_type_for_schema(
-                                                   association_resource.schema_class,
+                                                   association_resource[:schema_class],
                                                    visited:,
                                                    depth: depth + 1,
                                                  )
@@ -94,12 +94,12 @@ module Apiwork
                 else
                   association_resource = resolve_association_resource(association)
                   next false unless association_resource
-                  next false unless association_resource.schema_class
+                  next false unless association_resource[:schema_class]
 
-                  if new_visited.include?(association_resource.schema_class)
+                  if new_visited.include?(association_resource[:schema_class])
                     association.include != :always
                   elsif association.include == :always
-                    nested_builder = self.class.new(registrar, association_resource.schema_class)
+                    nested_builder = self.class.new(registrar, association_resource[:schema_class])
                     nested_builder.has_includable_params?(depth: depth + 1, visited: new_visited)
                   else
                     true
@@ -121,13 +121,12 @@ module Apiwork
             end
 
             def resolve_association_resource(association)
-              return Standard::AssociationResource.polymorphic if association.polymorphic?
+              return nil if association.polymorphic?
 
               resolved_schema = resolve_schema_from_association(association)
               return nil unless resolved_schema
 
-              sti = resolved_schema.discriminated?
-              Standard::AssociationResource.for(resolved_schema, sti:)
+              { schema_class: resolved_schema, sti: resolved_schema.discriminated? }
             end
 
             def resolve_schema_from_association(association)

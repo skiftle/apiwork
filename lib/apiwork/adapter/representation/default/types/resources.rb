@@ -207,9 +207,9 @@ module Apiwork
               association_resource = resolve_association_resource(association)
               return nil unless association_resource
 
-              return build_sti_association_type(association, association_resource.schema_class, visited:) if association_resource.sti?
+              return build_sti_association_type(association, association_resource[:schema_class], visited:) if association_resource[:sti]
 
-              return nil if visited.include?(association_resource.schema_class)
+              return nil if visited.include?(association_resource[:schema_class])
 
               alias_name = registrar.ensure_association_types(association)
               return alias_name if alias_name
@@ -255,13 +255,12 @@ module Apiwork
             end
 
             def resolve_association_resource(association)
-              return Standard::AssociationResource.polymorphic if association.polymorphic?
+              return nil if association.polymorphic?
 
               resolved_schema = resolve_schema_from_association(association)
               return nil unless resolved_schema
 
-              sti = resolved_schema.discriminated?
-              Standard::AssociationResource.for(resolved_schema, sti:)
+              { schema_class: resolved_schema, sti: resolved_schema.discriminated? }
             end
 
             def resolve_schema_from_association(association)

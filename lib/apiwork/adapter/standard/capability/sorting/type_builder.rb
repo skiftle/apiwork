@@ -61,11 +61,11 @@ module Apiwork
                                           else
                                             association_resource = builder.resolve_association_resource(association)
                                             next unless association_resource
-                                            next unless association_resource.schema_class
-                                            next if visited.include?(association_resource.schema_class)
+                                            next unless association_resource[:schema_class]
+                                            next if visited.include?(association_resource[:schema_class])
 
                                             builder.build_sort_type_for_schema(
-                                              association_resource.schema_class,
+                                              association_resource[:schema_class],
                                               visited:,
                                               depth: depth + 1,
                                             )
@@ -99,18 +99,17 @@ module Apiwork
                 next false unless association.sortable?
 
                 association_resource = resolve_association_resource(association)
-                association_resource&.schema_class && visited.exclude?(association_resource.schema_class)
+                association_resource&.dig(:schema_class) && visited.exclude?(association_resource[:schema_class])
               end
             end
 
             def resolve_association_resource(association)
-              return Standard::AssociationResource.polymorphic if association.polymorphic?
+              return nil if association.polymorphic?
 
               resolved_schema = resolve_schema_from_association(association)
               return nil unless resolved_schema
 
-              sti = resolved_schema.discriminated?
-              Standard::AssociationResource.for(resolved_schema, sti:)
+              { schema_class: resolved_schema, sti: resolved_schema.discriminated? }
             end
 
             def resolve_schema_from_association(association)

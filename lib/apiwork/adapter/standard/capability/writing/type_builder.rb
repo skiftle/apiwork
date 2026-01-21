@@ -150,18 +150,18 @@ module Apiwork
               return nil if association.polymorphic?
 
               association_resource = resolve_association_resource(association)
-              return nil unless association_resource&.schema_class
+              return nil unless association_resource&.dig(:schema_class)
 
               alias_name = registrar.ensure_association_types(association)
               return nil unless alias_name
 
               association_payload_type = :"#{alias_name}_nested_payload"
 
-              association_contract_class = registrar.find_contract_for_schema(association_resource.schema_class)
+              association_contract_class = registrar.find_contract_for_schema(association_resource[:schema_class])
 
               if association_contract_class&.schema?
                 association_registrar = ContractRegistrar.new(association_contract_class)
-                sub_builder = self.class.new(association_registrar, association_resource.schema_class)
+                sub_builder = self.class.new(association_registrar, association_resource[:schema_class])
                 sub_builder.build_nested_payload_union
               end
 
@@ -172,8 +172,7 @@ module Apiwork
               resolved_schema = resolve_schema_from_association(association)
               return nil unless resolved_schema
 
-              sti = resolved_schema.discriminated?
-              AssociationResource.for(resolved_schema, sti:)
+              { schema_class: resolved_schema, sti: resolved_schema.discriminated? }
             end
 
             def resolve_schema_from_association(association)
