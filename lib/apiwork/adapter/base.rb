@@ -6,14 +6,16 @@ module Apiwork
     # Base class for adapters.
     #
     # Subclass to create custom adapters with different response formats.
-    # Configure with {representation} for serialization and {document} for response wrapping.
+    # Configure with {representation} for serialization and document classes for response wrapping.
     #
     # @example Custom adapter
     #   class BillingAdapter < Apiwork::Adapter::Base
     #     adapter_name :billing
     #
     #     representation BillingRepresentation
-    #     document BillingDocument
+    #     record_document BillingRecordDocument
+    #     collection_document BillingCollectionDocument
+    #     error_document BillingErrorDocument
     #   end
     class Base
       include Configurable
@@ -94,18 +96,42 @@ module Apiwork
         end
 
         # @api public
-        # Sets or gets the document class.
-        #
-        # Document defines response envelopes and wraps serialized data.
+        # Sets or gets the record document class.
         #
         # @param klass [Class] a Document::Base subclass (optional)
-        # @return [Class, nil]
+        # @return [Class]
         #
         # @example
-        #   document StandardDocument
-        def document(klass = nil)
-          @document = klass if klass
-          @document || (superclass.respond_to?(:document) && superclass.document)
+        #   record_document CustomRecordDocument
+        def record_document(klass = nil)
+          @record_document = klass if klass
+          @record_document || (superclass.respond_to?(:record_document) && superclass.record_document) || Document::Record
+        end
+
+        # @api public
+        # Sets or gets the collection document class.
+        #
+        # @param klass [Class] a Document::Base subclass (optional)
+        # @return [Class]
+        #
+        # @example
+        #   collection_document CustomCollectionDocument
+        def collection_document(klass = nil)
+          @collection_document = klass if klass
+          @collection_document || (superclass.respond_to?(:collection_document) && superclass.collection_document) || Document::Collection
+        end
+
+        # @api public
+        # Sets or gets the error document class.
+        #
+        # @param klass [Class] a Document::Base subclass (optional)
+        # @return [Class]
+        #
+        # @example
+        #   error_document CustomErrorDocument
+        def error_document(klass = nil)
+          @error_document = klass if klass
+          @error_document || (superclass.respond_to?(:error_document) && superclass.error_document) || Document::Error
         end
 
         # @api public
@@ -182,10 +208,9 @@ module Apiwork
         serialize_options = result[:serialize_options] || {}
 
         rep = representation_instance(schema_class)
-        doc = document_instance(schema_class)
-
         serialized = rep.serialize_resource(result[:data], serialize_options:, context: state.context)
-        doc.build_collection_response(serialized, additions, state)
+
+        self.class.collection_document.new(schema_class).build_response(serialized, additions, state.meta)
       end
 
       def process_record(record, schema_class, state)
@@ -193,20 +218,18 @@ module Apiwork
         serialize_options = result[:serialize_options] || {}
 
         rep = representation_instance(schema_class)
-        doc = document_instance(schema_class)
-
         serialized = rep.serialize_resource(result[:data], serialize_options:, context: state.context)
-        doc.build_record_response(serialized, additions, state)
+
+        self.class.record_document.new(schema_class).build_response(serialized, additions, state.meta)
       end
 
       def process_error(error, state)
         prepared_error = prepare_error(error, state)
 
         rep = representation_instance(state.schema_class)
-        doc = document_instance(state.schema_class)
-
         serialized = rep.serialize_error(prepared_error, context: state.context)
-        doc.build_error_response(serialized, state)
+
+        self.class.error_document.new.build_response(serialized)
       end
 
       # @api public
@@ -238,8 +261,7 @@ module Apiwork
         representation_class = self.class.representation
         representation_class&.new(schema_class)&.contract(registrar, schema_class, actions)
 
-        document_class = self.class.document
-        document_class&.new(schema_class)&.contract(registrar, schema_class, actions, capabilities: capability_instances)
+        self.class.record_document.new(schema_class).contract(registrar, actions, capabilities: capability_instances)
       end
 
       def normalize_request(request, api_class:)
@@ -277,10 +299,6 @@ module Apiwork
 
       def representation_instance(schema_class)
         self.class.representation.new(schema_class)
-      end
-
-      def document_instance(schema_class)
-        self.class.document.new(schema_class)
       end
 
       def apply_capabilities(data, state)

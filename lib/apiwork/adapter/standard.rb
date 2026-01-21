@@ -9,8 +9,6 @@ module Apiwork
 
       representation Representation::Default
 
-      document Document::Default
-
       capability Capability::Filtering
       capability Capability::Sorting
       capability Capability::Pagination
