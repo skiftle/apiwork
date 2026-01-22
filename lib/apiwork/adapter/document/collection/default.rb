@@ -5,7 +5,7 @@ module Apiwork
     module Document
       module Collection
         class Default < Base
-          response_types Document::Types::Responses
+          shape Shape
 
           def build
             {

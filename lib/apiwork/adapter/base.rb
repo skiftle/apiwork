@@ -247,7 +247,7 @@ module Apiwork
         representation_class = self.class.representation
         representation_class&.new(schema_class)&.contract(registrar, schema_class, actions)
 
-        self.class.record_document.response_types_class&.build(registrar, schema_class, actions, capabilities: capabilities)
+        build_action_responses(registrar, schema_class, actions)
       end
 
       def normalize_request(request, api_class:)
@@ -289,6 +289,81 @@ module Apiwork
       def apply_capabilities(data, state)
         runner = CapabilityRunner.new(capabilities)
         runner.run(data, state)
+      end
+
+      def build_action_responses(registrar, schema_class, actions)
+        actions.each_value do |action|
+          build_action_response(registrar, schema_class, action)
+        end
+      end
+
+      def build_action_response(registrar, schema_class, action)
+        contract_action = registrar.action(action.name)
+        return if contract_action.resets_response?
+
+        case action.name
+        when :index
+          build_collection_action_response(registrar, schema_class, action, contract_action)
+        when :show, :create, :update
+          build_record_action_response(registrar, schema_class, action, contract_action)
+        when :destroy
+          contract_action.response { no_content! }
+        else
+          build_custom_action_response(registrar, schema_class, action, contract_action)
+        end
+      end
+
+      def build_record_action_response(registrar, schema_class, action, contract_action)
+        result_wrapper = build_result_wrapper(registrar, schema_class, action.name, :record)
+
+        record_shape_class = self.class.record_document.shape_class
+        caps = capabilities
+
+        contract_action.response do
+          self.result_wrapper = result_wrapper
+          body { record_shape_class.build(self, schema_class, capabilities: caps) }
+        end
+      end
+
+      def build_collection_action_response(registrar, schema_class, action, contract_action)
+        result_wrapper = build_result_wrapper(registrar, schema_class, action.name, :collection)
+
+        collection_shape_class = self.class.collection_document.shape_class
+        caps = capabilities
+
+        contract_action.response do
+          self.result_wrapper = result_wrapper
+          body { collection_shape_class.build(self, schema_class, capabilities: caps) }
+        end
+      end
+
+      def build_custom_action_response(registrar, schema_class, action, contract_action)
+        if action.method == :delete
+          contract_action.response { no_content! }
+        elsif action.collection?
+          build_collection_action_response(registrar, schema_class, action, contract_action)
+        elsif action.member?
+          build_record_action_response(registrar, schema_class, action, contract_action)
+        end
+      end
+
+      def build_result_wrapper(registrar, schema_class, action_name, response_type)
+        success_type_name = :"#{action_name}_success_response_body"
+
+        unless registrar.type?(success_type_name)
+          shape_class = if response_type == :collection
+                          self.class.collection_document.shape_class
+                        else
+                          self.class.record_document.shape_class
+                        end
+          caps = capabilities
+
+          registrar.object(success_type_name) do
+            shape_class.build(self, schema_class, capabilities: caps)
+          end
+        end
+
+        { error_type: :error_response_body, success_type: registrar.scoped_type_name(success_type_name) }
       end
     end
   end

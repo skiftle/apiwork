@@ -206,7 +206,12 @@ module Apiwork
         representation_class = adapter.class.representation
         representation_class&.new(schema)&.contract(sub_registrar, schema, {})
 
-        adapter.class.record_document.response_types_class&.build(sub_registrar, schema, {}, capabilities: adapter.capabilities)
+        record_shape_class = adapter.class.record_document.shape_class
+        caps = adapter.capabilities
+        type_name = :"#{schema.root_key.singular}_resource"
+        sub_registrar.object(type_name) do
+          record_shape_class.build(self, schema, capabilities: caps)
+        end
       end
     end
   end
