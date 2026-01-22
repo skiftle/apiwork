@@ -20,7 +20,7 @@ module Apiwork
         # @return [Array<Capability::Base>] adapter capabilities
         attr_reader :capabilities
 
-        def initialize(capabilities:, schema_class:)
+        def initialize(schema_class, capabilities)
           @schema_class = schema_class
           @capabilities = capabilities
         end

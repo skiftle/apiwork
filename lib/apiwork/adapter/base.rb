@@ -317,7 +317,7 @@ module Apiwork
         result_wrapper = build_result_wrapper(registrar, schema_class, action.name, :record)
 
         record_shape_class = self.class.record_document.shape_class
-        shape_context = Document::ShapeContext.new(capabilities:, schema_class:)
+        shape_context = Document::ShapeContext.new(schema_class, capabilities)
 
         contract_action.response do
           self.result_wrapper = result_wrapper
@@ -329,7 +329,7 @@ module Apiwork
         result_wrapper = build_result_wrapper(registrar, schema_class, action.name, :collection)
 
         collection_shape_class = self.class.collection_document.shape_class
-        shape_context = Document::ShapeContext.new(capabilities:, schema_class:)
+        shape_context = Document::ShapeContext.new(schema_class, capabilities)
 
         contract_action.response do
           self.result_wrapper = result_wrapper
@@ -356,7 +356,7 @@ module Apiwork
                         else
                           self.class.record_document.shape_class
                         end
-          shape_context = Document::ShapeContext.new(capabilities:, schema_class:)
+          shape_context = Document::ShapeContext.new(schema_class, capabilities)
 
           registrar.object(success_type_name) do
             shape_class.build(self, shape_context)
