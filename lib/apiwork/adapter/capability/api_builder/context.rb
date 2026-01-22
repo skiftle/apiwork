@@ -5,11 +5,13 @@ module Apiwork
     module Capability
       module ApiBuilder
         class Context
-          attr_reader :capabilities, :registrar
+          attr_reader :capabilities, :capability_name, :options, :registrar
 
-          def initialize(capabilities:, registrar:)
+          def initialize(capabilities:, capability_name: nil, options: nil, registrar:)
             @registrar = registrar
             @capabilities = capabilities
+            @capability_name = capability_name
+            @options = options
           end
         end
       end

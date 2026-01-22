@@ -50,7 +50,7 @@ module Apiwork
             @request_transformers || []
           end
 
-          def api(builder_class = nil, &block)
+          def api_builder(builder_class = nil, &block)
             if builder_class
               self._api_builder_class = builder_class
             elsif block
@@ -58,7 +58,7 @@ module Apiwork
             end
           end
 
-          def contract(builder_class = nil, &block)
+          def contract_builder(builder_class = nil, &block)
             if builder_class
               self._contract_builder_class = builder_class
             elsif block
@@ -74,7 +74,7 @@ module Apiwork
             end
           end
 
-          def apply_collection(applier_class = nil, &block)
+          def collection_applier(applier_class = nil, &block)
             if applier_class
               self._collection_applier_class = applier_class
             elsif block
@@ -82,7 +82,7 @@ module Apiwork
             end
           end
 
-          def apply_record(applier_class = nil, &block)
+          def record_applier(applier_class = nil, &block)
             if applier_class
               self._record_applier_class = applier_class
             elsif block
@@ -90,7 +90,7 @@ module Apiwork
             end
           end
 
-          def apply_data(applier_class = nil, &block)
+          def data_applier(applier_class = nil, &block)
             if applier_class
               self._data_applier_class = applier_class
             elsif block
@@ -200,7 +200,12 @@ module Apiwork
           builder_class = self.class.api_builder_class
           return unless builder_class
 
-          context = ApiBuilder::Context.new(capabilities:, registrar:)
+          context = ApiBuilder::Context.new(
+            capabilities:,
+            capability_name: self.class.capability_name,
+            options: config,
+            registrar:,
+          )
           builder_class.new(context).build
         end
 

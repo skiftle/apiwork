@@ -9,9 +9,8 @@ module Apiwork
             def build
               return unless capabilities.index_actions?
 
-              strategies = capabilities.options_for(:pagination, :strategy)
-              register_offset_pagination if strategies.include?(:offset)
-              register_cursor_pagination if strategies.include?(:cursor)
+              register_offset_pagination if configured(:strategy).include?(:offset)
+              register_cursor_pagination if configured(:strategy).include?(:cursor)
             end
 
             private

@@ -8,8 +8,8 @@ module Apiwork
           capability_name :including
           input :any
 
-          contract ContractBuilder
-          apply_data DataApplier
+          contract_builder ContractBuilder
+          data_applier DataApplier
         end
       end
     end

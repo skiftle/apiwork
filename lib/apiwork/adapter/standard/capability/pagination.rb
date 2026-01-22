@@ -13,9 +13,9 @@ module Apiwork
           option :default_size, default: 20, type: :integer
           option :max_size, default: 100, type: :integer
 
-          api ApiBuilder
-          contract ContractBuilder
-          apply_collection CollectionApplier
+          api_builder ApiBuilder
+          contract_builder ContractBuilder
+          collection_applier CollectionApplier
 
           response_shape do
             pagination_type = options.strategy == :offset ? :offset_pagination : :cursor_pagination
