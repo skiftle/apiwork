@@ -24,11 +24,11 @@ module Apiwork
           private
 
           def wrap_callable(callable)
-            Class.new do
+            Class.new(Shape) do
               @callable = callable
 
-              def self.build(response, schema_class, capabilities:)
-                @callable.call(response, schema_class, capabilities:)
+              def build
+                self.class.instance_variable_get(:@callable).call(builder, context)
               end
             end
           end

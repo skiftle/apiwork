@@ -317,11 +317,11 @@ module Apiwork
         result_wrapper = build_result_wrapper(registrar, schema_class, action.name, :record)
 
         record_shape_class = self.class.record_document.shape_class
-        caps = capabilities
+        shape_context = Document::ShapeContext.new(capabilities:, schema_class:)
 
         contract_action.response do
           self.result_wrapper = result_wrapper
-          body { record_shape_class.build(self, schema_class, capabilities: caps) }
+          body { record_shape_class.build(self, shape_context) }
         end
       end
 
@@ -329,11 +329,11 @@ module Apiwork
         result_wrapper = build_result_wrapper(registrar, schema_class, action.name, :collection)
 
         collection_shape_class = self.class.collection_document.shape_class
-        caps = capabilities
+        shape_context = Document::ShapeContext.new(capabilities:, schema_class:)
 
         contract_action.response do
           self.result_wrapper = result_wrapper
-          body { collection_shape_class.build(self, schema_class, capabilities: caps) }
+          body { collection_shape_class.build(self, shape_context) }
         end
       end
 
@@ -356,10 +356,10 @@ module Apiwork
                         else
                           self.class.record_document.shape_class
                         end
-          caps = capabilities
+          shape_context = Document::ShapeContext.new(capabilities:, schema_class:)
 
           registrar.object(success_type_name) do
-            shape_class.build(self, schema_class, capabilities: caps)
+            shape_class.build(self, shape_context)
           end
         end
 

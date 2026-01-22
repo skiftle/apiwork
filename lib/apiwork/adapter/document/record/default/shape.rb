@@ -5,28 +5,16 @@ module Apiwork
     module Document
       module Record
         class Default < Base
-          class Shape
-            class << self
-              def build(response, schema_class, capabilities:)
-                new(response, schema_class, capabilities).build
-              end
-            end
-
-            def initialize(response, schema_class, capabilities)
-              @response = response
-              @schema_class = schema_class
-              @capabilities = capabilities
-            end
-
+          class Shape < Document::Shape
             def build
-              type_name = @schema_class.root_key.singular.to_sym
-              @response.reference type_name, to: type_name
+              type_name = context.schema_class.root_key.singular.to_sym
+              builder.reference type_name, to: type_name
 
-              @capabilities.each do |capability|
-                capability.record_response_types(@response, @schema_class)
+              context.capabilities.each do |capability|
+                capability.record_response_types(builder, context.schema_class)
               end
 
-              @response.object? :meta
+              builder.object? :meta
             end
           end
         end
