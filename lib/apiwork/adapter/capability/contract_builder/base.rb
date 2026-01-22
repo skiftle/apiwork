@@ -13,6 +13,7 @@ module Apiwork
                    :enum,
                    :import,
                    :object,
+                   :scoped_enum_name,
                    :scoped_type_name,
                    :type?,
                    :union,
