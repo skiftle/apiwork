@@ -9,26 +9,21 @@ module Apiwork
             def build
               return unless capabilities.index_actions?
 
-              register_offset_pagination if configured(:strategy).include?(:offset)
-              register_cursor_pagination if configured(:strategy).include?(:cursor)
-            end
-
-            private
-
-            def register_offset_pagination
-              object :offset_pagination do
-                integer :current
-                integer :next, nullable: true, optional: true
-                integer :prev, nullable: true, optional: true
-                integer :total
-                integer :items
+              if configured(:strategy).include?(:offset)
+                object :offset_pagination do
+                  integer :current
+                  integer? :next, nullable: true
+                  integer? :prev, nullable: true
+                  integer :total
+                  integer :items
+                end
               end
-            end
 
-            def register_cursor_pagination
+              return unless configured(:strategy).include?(:cursor)
+
               object :cursor_pagination do
-                string :next, nullable: true, optional: true
-                string :prev, nullable: true, optional: true
+                string? :next, nullable: true
+                string? :prev, nullable: true
               end
             end
           end
