@@ -6,10 +6,10 @@ module Apiwork
       module Capability
         class Pagination
           class Shape < Adapter::Capability::Shape::Base
-            def build(object, context)
+            def build_shape
               pagination_config = context.schema_class.adapter_config.pagination
               pagination_type = pagination_config.strategy == :offset ? :offset_pagination : :cursor_pagination
-              object.reference :pagination, to: pagination_type
+              reference :pagination, to: pagination_type
             end
           end
         end

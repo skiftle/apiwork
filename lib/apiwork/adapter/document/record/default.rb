@@ -5,15 +5,15 @@ module Apiwork
     module Document
       module Record
         class Default < Base
-          shape do |object, context|
-            object.reference context.schema_class.root_key.singular.to_sym
-            context.capability_shapes.each_value { |shape| object.merge!(shape) }
-            object.object? :meta
+          shape do
+            reference context.schema_class.root_key.singular.to_sym
+            context.capability_shapes.each_value(&method(:merge!))
+            object? :meta
           end
 
           def build
             {
-              schema_class.root_key.singular => data,
+              schema_class.root_key.singular.to_sym => data,
               **additions,
               meta: meta.presence,
             }.compact

@@ -5,20 +5,20 @@ module Apiwork
     module Document
       module Collection
         class Default < Base
-          shape do |object, context|
+          shape do
             root_key = context.schema_class.root_key
 
-            object.array root_key.plural.to_sym do
+            array root_key.plural.to_sym do
               reference root_key.singular.to_sym
             end
 
-            context.capability_shapes.each_value { |shape| object.merge!(shape) }
-            object.object? :meta
+            context.capability_shapes.each_value(&method(:merge!))
+            object? :meta
           end
 
           def build
             {
-              schema_class.root_key.plural => data,
+              schema_class.root_key.plural.to_sym => data,
               **additions,
               meta: meta.presence,
             }.compact

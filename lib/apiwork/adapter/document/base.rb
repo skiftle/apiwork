@@ -28,7 +28,8 @@ module Apiwork
               @callable = callable
 
               def build
-                self.class.instance_variable_get(:@callable).call(object, context)
+                builder = ShapeBuilder.new(target, context)
+                builder.instance_exec(&self.class.instance_variable_get(:@callable))
               end
             end
           end

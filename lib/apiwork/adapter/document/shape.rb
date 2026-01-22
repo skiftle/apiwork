@@ -7,32 +7,69 @@ module Apiwork
       # Base class for document shapes.
       #
       # Subclass to define response type structure for record or collection documents.
-      # Access object and context through reader methods.
+      # The block is evaluated in the context of a {ShapeBuilder}, providing direct
+      # access to type definition methods and context.
       #
-      # @example Custom shape
+      # @example Custom shape class
       #   class MyShape < Document::Shape
       #     def build
-      #       object.reference :invoice, to: :invoice
-      #       object.object? :meta
+      #       reference :invoice
+      #       object? :meta
       #     end
+      #   end
+      #
+      # @example Inline shape block
+      #   shape do
+      #     reference context.schema_class.root_key.singular.to_sym
+      #     object? :meta
       #   end
       class Shape
         class << self
-          def build(object, context)
-            new(object, context).build
+          def build(target, context)
+            new(target, context).build
           end
         end
-
-        # @api public
-        # @return [Contract::Object] the response type object
-        attr_reader :object
 
         # @api public
         # @return [ShapeContext] the shape context
         attr_reader :context
 
-        def initialize(object, context)
-          @object = object
+        attr_reader :target
+
+        delegate :array,
+                 :array?,
+                 :binary,
+                 :binary?,
+                 :boolean,
+                 :boolean?,
+                 :date,
+                 :date?,
+                 :datetime,
+                 :datetime?,
+                 :decimal,
+                 :decimal?,
+                 :integer,
+                 :integer?,
+                 :literal,
+                 :merge!,
+                 :number,
+                 :number?,
+                 :object,
+                 :object?,
+                 :reference,
+                 :reference?,
+                 :string,
+                 :string?,
+                 :time,
+                 :time?,
+                 :union,
+                 :union?,
+                 :uuid,
+                 :uuid?,
+                 to: :target
+
+        def initialize(target, context)
+          @target = target
           @context = context
         end
 
