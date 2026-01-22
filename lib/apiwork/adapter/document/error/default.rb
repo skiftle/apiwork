@@ -5,7 +5,7 @@ module Apiwork
     module Document
       module Error
         class Default < Base
-          def build_response(error)
+          def build
             error
           end
         end

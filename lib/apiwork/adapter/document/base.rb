@@ -12,17 +12,7 @@ module Apiwork
           attr_reader :response_types_class
         end
 
-        attr_reader :schema_class
-
-        def initialize(schema_class = nil)
-          @schema_class = schema_class
-        end
-
-        def contract(registrar, actions, capabilities: [])
-          self.class.response_types_class&.build(registrar, schema_class, actions, capabilities:)
-        end
-
-        def build_response(*)
+        def build
           raise NotImplementedError
         end
       end

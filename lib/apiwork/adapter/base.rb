@@ -210,7 +210,7 @@ module Apiwork
         rep = representation_instance(schema_class)
         serialized = rep.serialize_resource(result[:data], serialize_options:, context: state.context)
 
-        self.class.collection_document.new(schema_class).build_response(serialized, additions, state.meta)
+        self.class.collection_document.new(schema_class, serialized, additions, state.meta).build
       end
 
       def process_record(record, schema_class, state)
@@ -220,7 +220,7 @@ module Apiwork
         rep = representation_instance(schema_class)
         serialized = rep.serialize_resource(result[:data], serialize_options:, context: state.context)
 
-        self.class.record_document.new(schema_class).build_response(serialized, additions, state.meta)
+        self.class.record_document.new(schema_class, serialized, additions, state.meta).build
       end
 
       def process_error(error, state)
@@ -229,7 +229,7 @@ module Apiwork
         rep = representation_instance(state.schema_class)
         serialized = rep.serialize_error(prepared_error, context: state.context)
 
-        self.class.error_document.new.build_response(serialized)
+        self.class.error_document.new(serialized).build
       end
 
       # @api public
@@ -261,7 +261,7 @@ module Apiwork
         representation_class = self.class.representation
         representation_class&.new(schema_class)&.contract(registrar, schema_class, actions)
 
-        self.class.record_document.new(schema_class).contract(registrar, actions, capabilities: capability_instances)
+        self.class.record_document.response_types_class&.build(registrar, schema_class, actions, capabilities: capability_instances)
       end
 
       def normalize_request(request, api_class:)

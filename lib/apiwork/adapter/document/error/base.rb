@@ -5,8 +5,11 @@ module Apiwork
     module Document
       module Error
         class Base < Document::Base
-          def build_response(error)
-            raise NotImplementedError
+          attr_reader :error
+
+          def initialize(error)
+            super()
+            @error = error
           end
         end
       end

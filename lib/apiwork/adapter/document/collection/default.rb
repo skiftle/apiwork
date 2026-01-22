@@ -7,9 +7,9 @@ module Apiwork
         class Default < Base
           response_types Document::Types::Responses
 
-          def build_response(collection, additions, meta)
+          def build
             {
-              schema_class.root_key.plural => collection,
+              schema_class.root_key.plural => data,
               **additions,
               meta: meta.presence,
             }.compact
