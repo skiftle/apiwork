@@ -5,9 +5,9 @@ module Apiwork
     class Standard
       module Capability
         class Pagination
-          class ApiBuilder < Adapter::Capability::ApiBuilder::Base
+          class APIBuilder < Adapter::Capability::APIBuilder::Base
             def build
-              return unless capabilities.index_actions?
+              return unless index_actions?
 
               if configured(:strategy).include?(:offset)
                 object :offset_pagination do

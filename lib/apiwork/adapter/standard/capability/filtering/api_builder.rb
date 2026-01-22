@@ -5,7 +5,7 @@ module Apiwork
     class Standard
       module Capability
         class Filtering
-          class ApiBuilder < Adapter::Capability::ApiBuilder::Base
+          class APIBuilder < Adapter::Capability::APIBuilder::Base
             FILTER_DEFINITIONS = {
               boolean_filter: {
                 params: [
@@ -123,15 +123,15 @@ module Apiwork
             PRIMITIVES = %i[string integer decimal boolean datetime date uuid time binary number].freeze
 
             def build
-              return unless capabilities.filter_types.any?
+              return unless filterable?
 
               filter_types_to_register = Set.new
 
-              capabilities.filter_types.each do |type|
+              filter_types.each do |type|
                 filter_types_to_register.add(determine_filter_type(type, nullable: false))
               end
 
-              capabilities.nullable_filter_types.each do |type|
+              nullable_filter_types.each do |type|
                 filter_types_to_register.add(determine_filter_type(type, nullable: true))
               end
 

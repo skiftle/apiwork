@@ -230,13 +230,13 @@ module Apiwork
         self.class.error_document.new(serialized).build
       end
 
-      def register_api(registrar, adapter_capabilities)
+      def register_api(registrar, features)
         capabilities.each do |capability|
-          capability.api_types(registrar, adapter_capabilities)
+          capability.api_types(registrar, features)
         end
 
         representation_class = self.class.representation
-        representation_class&.new(nil)&.api(registrar, adapter_capabilities)
+        representation_class&.new(nil)&.api(registrar, features)
       end
 
       def register_contract(registrar, schema_class, actions)
@@ -270,8 +270,8 @@ module Apiwork
         ContractRegistrar.new(contract_class)
       end
 
-      def build_capabilities(structure)
-        Capabilities.new(structure)
+      def build_features(structure)
+        Features.new(structure)
       end
 
       def capabilities

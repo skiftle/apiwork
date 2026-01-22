@@ -69,33 +69,33 @@ RSpec.describe 'Custom Adapter', type: :integration do
     end
   end
 
-  describe 'Adapter capabilities' do
+  describe 'Adapter features' do
     let(:api_class) { Apiwork::API.find!('/api/v1') }
-    let(:capabilities) { api_class.adapter.build_capabilities(api_class.structure) }
+    let(:features) { api_class.adapter.build_features(api_class.structure) }
 
-    it 'provides capabilities object for conditional registration' do
-      expect(capabilities).to respond_to(:filter_types)
-      expect(capabilities).to respond_to(:nullable_filter_types)
-      expect(capabilities).to respond_to(:sortable?)
-      expect(capabilities).to respond_to(:filterable?)
-      expect(capabilities).to respond_to(:resources?)
-      expect(capabilities).to respond_to(:index_actions?)
+    it 'provides features object for conditional registration' do
+      expect(features).to respond_to(:filter_types)
+      expect(features).to respond_to(:nullable_filter_types)
+      expect(features).to respond_to(:sortable?)
+      expect(features).to respond_to(:filterable?)
+      expect(features).to respond_to(:resources?)
+      expect(features).to respond_to(:index_actions?)
     end
 
     it 'filter_types returns array of types' do
-      expect(capabilities.filter_types).to be_an(Array)
+      expect(features.filter_types).to be_an(Array)
     end
 
     it 'resources? returns true for API with resources' do
-      expect(capabilities.resources?).to be(true)
+      expect(features.resources?).to be(true)
     end
 
     it 'filterable? responds with boolean' do
-      expect(capabilities.filterable?).to be(true).or be(false)
+      expect(features.filterable?).to be(true).or be(false)
     end
 
     it 'sortable? responds with boolean' do
-      expect(capabilities.sortable?).to be(true).or be(false)
+      expect(features.sortable?).to be(true).or be(false)
     end
   end
 

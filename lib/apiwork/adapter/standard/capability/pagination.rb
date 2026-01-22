@@ -13,7 +13,7 @@ module Apiwork
           option :default_size, default: 20, type: :integer
           option :max_size, default: 100, type: :integer
 
-          api_builder ApiBuilder
+          api_builder APIBuilder
           contract_builder ContractBuilder
           collection_applier CollectionApplier
 

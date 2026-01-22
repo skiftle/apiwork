@@ -603,9 +603,9 @@ module Apiwork
             build_contracts_for_resource(resource)
           end
 
-          capabilities = adapter.build_capabilities(@structure)
+          features = adapter.build_features(@structure)
           registrar = adapter.build_api_registrar(self)
-          adapter.register_api(registrar, capabilities)
+          adapter.register_api(registrar, features)
         end
 
         private

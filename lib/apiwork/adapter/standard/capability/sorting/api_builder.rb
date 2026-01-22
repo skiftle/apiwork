@@ -5,9 +5,9 @@ module Apiwork
     class Standard
       module Capability
         class Sorting
-          class ApiBuilder < Adapter::Capability::ApiBuilder::Base
+          class APIBuilder < Adapter::Capability::APIBuilder::Base
             def build
-              return unless capabilities.sortable?
+              return unless sortable?
 
               enum :sort_direction, values: %w[asc desc]
             end

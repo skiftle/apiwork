@@ -31,8 +31,8 @@ module Apiwork
 
           def api
             @api ||= begin
-              context = ApiBuilder::Context.new(capabilities: nil, registrar: api_registrar)
-              ApiBuilder::Base.new(context)
+              context = APIBuilder::Context.new(capabilities: nil, registrar: api_registrar)
+              APIBuilder::Base.new(context)
             end
           end
 

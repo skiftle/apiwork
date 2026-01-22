@@ -99,7 +99,7 @@ module Apiwork
           end
 
           def wrap_api_block(callable)
-            Class.new(ApiBuilder::Base) do
+            Class.new(APIBuilder::Base) do
               define_method(:build) do
                 instance_exec(&callable)
               end
@@ -196,15 +196,15 @@ module Apiwork
           @config = Configuration.new(self.class, merged)
         end
 
-        def api_types(registrar, capabilities)
+        def api_types(registrar, features)
           builder_class = self.class.api_builder_class
           return unless builder_class
 
-          context = ApiBuilder::Context.new(
-            capabilities:,
+          context = APIBuilder::Context.new(
+            features:,
+            registrar:,
             capability_name: self.class.capability_name,
             options: config,
-            registrar:,
           )
           builder_class.new(context).build
         end
