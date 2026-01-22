@@ -138,16 +138,17 @@ module Apiwork
 
             def register_enum_filter(enum_name)
               filter_name = :"#{enum_name}_filter"
+              scoped_name = registrar.scoped_enum_name(enum_name)
 
               return if registrar.type?(filter_name)
 
               registrar.union(filter_name) do
-                variant { reference enum_name }
+                variant { reference scoped_name }
                 variant partial: true do
                   object do
-                    reference :eq, to: enum_name
+                    reference :eq, to: scoped_name
                     array :in do
-                      reference enum_name
+                      reference scoped_name
                     end
                   end
                 end
