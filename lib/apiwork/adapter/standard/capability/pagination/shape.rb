@@ -5,15 +5,11 @@ module Apiwork
     class Standard
       module Capability
         class Pagination
-          class ResponseTypes < Adapter::Capability::ResponseTypes::Base
-            def collection(context)
+          class Shape < Adapter::Capability::Shape::Base
+            def build(object, context)
               pagination_config = context.schema_class.adapter_config.pagination
               pagination_type = pagination_config.strategy == :offset ? :offset_pagination : :cursor_pagination
-              context.response.reference :pagination, to: pagination_type
-            end
-
-            def record(context)
-              # Pagination only applies to collections
+              object.reference :pagination, to: pagination_type
             end
           end
         end

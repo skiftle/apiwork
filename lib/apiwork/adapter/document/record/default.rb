@@ -7,11 +7,7 @@ module Apiwork
         class Default < Base
           shape do |object, context|
             object.reference context.schema_class.root_key.singular.to_sym
-
-            context.capabilities.each do |capability|
-              capability.record_response_types(object, context.schema_class)
-            end
-
+            context.capability_shapes.each_value { |shape| object.merge!(shape) }
             object.object? :meta
           end
 

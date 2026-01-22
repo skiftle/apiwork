@@ -68,13 +68,13 @@ module Apiwork
           end
 
           # @api public
-          # Declares the response types class for response type registration.
+          # Declares the shape class for response shape building.
           #
-          # @param klass [Class] a ResponseTypes::Base subclass
+          # @param klass [Class] a Shape::Base subclass
           # @return [Class, nil]
-          def response_types_class(klass = nil)
-            @response_types_class = klass if klass
-            @response_types_class
+          def shape_class(klass = nil)
+            @shape_class = klass if klass
+            @shape_class
           end
         end
 
@@ -93,8 +93,8 @@ module Apiwork
           @contract_types_instance ||= self.class.contract_types_class&.new(config)
         end
 
-        def response_types_instance
-          @response_types_instance ||= self.class.response_types_class&.new(config)
+        def shape_instance
+          @shape_instance ||= self.class.shape_class&.new(config)
         end
 
         # Registers API-wide types for this capability.
@@ -126,32 +126,27 @@ module Apiwork
           contract_types_instance.register(context)
         end
 
-        # Adds fields to the collection response type.
-        # Delegates to response_types_instance if available.
-        #
         # @api public
-        # @param response [Object] the response builder
-        # @param schema_class [Class] the schema class
-        # @return [void]
-        def collection_response_types(response, schema_class)
-          return unless response_types_instance
-
-          context = ResponseTypesContext.new(response:, schema_class:)
-          response_types_instance.collection(context)
+        # Returns whether this capability applies to the given document type.
+        #
+        # @param type [Symbol] :record or :collection
+        # @return [Boolean]
+        def applies_to_type?(type)
+          input = self.class.input_type
+          input == :any || input == type
         end
 
-        # Adds fields to the record response type.
-        # Delegates to response_types_instance if available.
-        #
         # @api public
-        # @param response [Object] the response builder
-        # @param schema_class [Class] the schema class
-        # @return [void]
-        def record_response_types(response, schema_class)
-          return unless response_types_instance
+        # Returns the shape for this capability.
+        #
+        # @param context [Document::ShapeContext] the shape context
+        # @return [Apiwork::Object, nil]
+        def shape(context)
+          return nil unless shape_instance
 
-          context = ResponseTypesContext.new(response:, schema_class:)
-          response_types_instance.record(context)
+          object = API::Object.new
+          shape_instance.build(object, context)
+          object.params.empty? ? nil : object
         end
 
         def extract(request, schema_class)

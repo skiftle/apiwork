@@ -9,6 +9,16 @@ module Apiwork
     end
 
     # @api public
+    # Merges params from another object into this one.
+    #
+    # @param other [Apiwork::Object] the object to merge from
+    # @return [self]
+    def merge!(other)
+      @params.merge!(other.params)
+      self
+    end
+
+    # @api public
     # Defines a string.
     #
     # @param name [Symbol] the name

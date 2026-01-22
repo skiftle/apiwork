@@ -16,7 +16,7 @@ module Apiwork
           applier Applier
           api_types_class ApiTypes
           contract_types_class ContractTypes
-          response_types_class ResponseTypes
+          shape_class Shape
         end
       end
     end

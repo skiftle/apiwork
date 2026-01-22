@@ -12,10 +12,7 @@ module Apiwork
               reference root_key.singular.to_sym
             end
 
-            context.capabilities.each do |capability|
-              capability.collection_response_types(object, context.schema_class)
-            end
-
+            context.capability_shapes.each_value { |shape| object.merge!(shape) }
             object.object? :meta
           end
 
