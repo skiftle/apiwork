@@ -6,6 +6,19 @@ module Apiwork
       class Base
         include Configurable
 
+        class_attribute :_api_builder_class
+        class_attribute :_api_block
+        class_attribute :_contract_builder_class
+        class_attribute :_contract_block
+        class_attribute :_response_shape_builder_class
+        class_attribute :_response_shape_block
+        class_attribute :_collection_applier_class
+        class_attribute :_collection_applier_block
+        class_attribute :_record_applier_class
+        class_attribute :_record_applier_block
+        class_attribute :_data_applier_class
+        class_attribute :_data_applier_block
+
         class << self
           def capability_name(value = nil)
             @capability_name = value.to_sym if value
@@ -75,6 +88,144 @@ module Apiwork
           def shape_class(klass = nil)
             @shape_class = klass if klass
             @shape_class
+          end
+
+          def api(builder_class = nil, &block)
+            if builder_class
+              self._api_builder_class = builder_class
+            elsif block
+              self._api_block = block
+            end
+          end
+
+          def contract(builder_class = nil, &block)
+            if builder_class
+              self._contract_builder_class = builder_class
+            elsif block
+              self._contract_block = block
+            end
+          end
+
+          def response_shape(builder_class = nil, &block)
+            if builder_class
+              self._response_shape_builder_class = builder_class
+            elsif block
+              self._response_shape_block = block
+            end
+          end
+
+          def apply_collection(applier_class = nil, &block)
+            if applier_class
+              self._collection_applier_class = applier_class
+            elsif block
+              self._collection_applier_block = block
+            end
+          end
+
+          def apply_record(applier_class = nil, &block)
+            if applier_class
+              self._record_applier_class = applier_class
+            elsif block
+              self._record_applier_block = block
+            end
+          end
+
+          def apply_data(applier_class = nil, &block)
+            if applier_class
+              self._data_applier_class = applier_class
+            elsif block
+              self._data_applier_block = block
+            end
+          end
+
+          def wrap_api_block(callable)
+            Class.new(APIBuilder::Base) do
+              define_method(:build) do
+                instance_exec(&callable)
+              end
+            end
+          end
+
+          def wrap_contract_block(callable)
+            Class.new(ContractBuilder::Base) do
+              define_method(:build) do
+                instance_exec(&callable)
+              end
+            end
+          end
+
+          def wrap_response_shape_block(callable)
+            Class.new(ResponseShapeBuilder::Base) do
+              define_method(:build) do
+                instance_exec(&callable)
+              end
+            end
+          end
+
+          def wrap_collection_applier_block(callable)
+            Class.new(CollectionApplier::Base) do
+              define_method(:apply) do
+                instance_exec(&callable)
+              end
+            end
+          end
+
+          def wrap_record_applier_block(callable)
+            Class.new(RecordApplier::Base) do
+              define_method(:apply) do
+                instance_exec(&callable)
+              end
+            end
+          end
+
+          def wrap_data_applier_block(callable)
+            Class.new(DataApplier::Base) do
+              define_method(:apply) do
+                instance_exec(&callable)
+              end
+            end
+          end
+
+          def api_builder_class
+            return _api_builder_class if _api_builder_class
+            return wrap_api_block(_api_block) if _api_block
+
+            nil
+          end
+
+          def contract_builder_class
+            return _contract_builder_class if _contract_builder_class
+            return wrap_contract_block(_contract_block) if _contract_block
+
+            nil
+          end
+
+          def response_shape_builder_class
+            return _response_shape_builder_class if _response_shape_builder_class
+            return wrap_response_shape_block(_response_shape_block) if _response_shape_block
+
+            nil
+          end
+
+          def collection_applier_class
+            return _collection_applier_class if _collection_applier_class
+            return wrap_collection_applier_block(_collection_applier_block) if _collection_applier_block
+
+            nil
+          end
+
+          def record_applier_class
+            return _record_applier_class if _record_applier_class
+            return wrap_record_applier_block(_record_applier_block) if _record_applier_block
+
+            nil
+          end
+
+          def data_applier_class
+            return _data_applier_class if _data_applier_class
+            return wrap_data_applier_block(_data_applier_block) if _data_applier_block
+
+            nil
           end
         end
 
