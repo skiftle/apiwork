@@ -9,6 +9,10 @@ module Apiwork
 
       representation Representation::Default
 
+      record_document Document::Record::Default
+      collection_document Document::Collection::Default
+      error_document Document::Error::Default
+
       capability Capability::Filtering
       capability Capability::Sorting
       capability Capability::Pagination

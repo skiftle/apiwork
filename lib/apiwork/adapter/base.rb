@@ -105,7 +105,7 @@ module Apiwork
         #   record_document CustomRecordDocument
         def record_document(klass = nil)
           @record_document = klass if klass
-          @record_document || (superclass.respond_to?(:record_document) && superclass.record_document) || Document::Record
+          @record_document || (superclass.respond_to?(:record_document) && superclass.record_document)
         end
 
         # @api public
@@ -118,7 +118,7 @@ module Apiwork
         #   collection_document CustomCollectionDocument
         def collection_document(klass = nil)
           @collection_document = klass if klass
-          @collection_document || (superclass.respond_to?(:collection_document) && superclass.collection_document) || Document::Collection
+          @collection_document || (superclass.respond_to?(:collection_document) && superclass.collection_document)
         end
 
         # @api public
@@ -131,7 +131,7 @@ module Apiwork
         #   error_document CustomErrorDocument
         def error_document(klass = nil)
           @error_document = klass if klass
-          @error_document || (superclass.respond_to?(:error_document) && superclass.error_document) || Document::Error
+          @error_document || (superclass.respond_to?(:error_document) && superclass.error_document)
         end
 
         # @api public

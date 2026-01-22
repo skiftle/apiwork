@@ -3,9 +3,11 @@
 module Apiwork
   module Adapter
     module Document
-      class Error < Base
-        def build_response(error)
-          error
+      module Error
+        class Default < Base
+          def build_response(error)
+            error
+          end
         end
       end
     end
