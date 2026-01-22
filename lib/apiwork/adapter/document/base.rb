@@ -28,7 +28,7 @@ module Apiwork
               @callable = callable
 
               def build
-                self.class.instance_variable_get(:@callable).call(builder, context)
+                self.class.instance_variable_get(:@callable).call(object, context)
               end
             end
           end

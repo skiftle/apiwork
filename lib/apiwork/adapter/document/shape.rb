@@ -7,32 +7,32 @@ module Apiwork
       # Base class for document shapes.
       #
       # Subclass to define response type structure for record or collection documents.
-      # Access builder and context through reader methods.
+      # Access object and context through reader methods.
       #
       # @example Custom shape
       #   class MyShape < Document::Shape
       #     def build
-      #       builder.reference :invoice, to: :invoice
-      #       builder.object? :meta
+      #       object.reference :invoice, to: :invoice
+      #       object.object? :meta
       #     end
       #   end
       class Shape
         class << self
-          def build(builder, context)
-            new(builder, context).build
+          def build(object, context)
+            new(object, context).build
           end
         end
 
         # @api public
-        # @return [Object] the response type builder
-        attr_reader :builder
+        # @return [Contract::Object] the response type object
+        attr_reader :object
 
         # @api public
         # @return [ShapeContext] the shape context
         attr_reader :context
 
-        def initialize(builder, context)
-          @builder = builder
+        def initialize(object, context)
+          @object = object
           @context = context
         end
 
