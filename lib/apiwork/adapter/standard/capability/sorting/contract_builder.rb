@@ -32,11 +32,11 @@ module Apiwork
 
               object :sort do
                 attribute_sorts.each do |name|
-                  reference name, optional: true, to: :sort_direction
+                  reference? name, to: :sort_direction
                 end
 
                 association_sorts.each do |sort|
-                  reference sort[:name], optional: true, to: sort[:type]
+                  reference? sort[:name], to: sort[:type]
                 end
               end
             end

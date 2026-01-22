@@ -33,27 +33,27 @@ module Apiwork
               association_filters = collect_association_filters
 
               object :filter do
-                array :_and, optional: true do
+                array? :_and do
                   reference :filter
                 end
-                array :_or, optional: true do
+                array? :_or do
                   reference :filter
                 end
-                reference :_not, optional: true, to: :filter
+                reference? :_not, to: :filter
 
                 attribute_filters.each do |filter|
                   if filter[:union]
-                    union filter[:name], optional: true do
+                    union? filter[:name] do
                       variant { of(filter[:type]) }
                       variant { reference filter[:filter_type] }
                     end
                   else
-                    reference filter[:name], optional: true, to: filter[:filter_type]
+                    reference? filter[:name], to: filter[:filter_type]
                   end
                 end
 
                 association_filters.each do |filter|
-                  reference filter[:name], optional: true, to: filter[:filter_type]
+                  reference? filter[:name], to: filter[:filter_type]
                 end
               end
             end
