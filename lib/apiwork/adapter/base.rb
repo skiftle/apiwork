@@ -224,28 +224,14 @@ module Apiwork
       end
 
       def process_error(error, state)
-        prepared_error = prepare_error(error, state)
-
         rep = representation_instance(state.schema_class)
-        serialized = rep.serialize_error(prepared_error, context: state.context)
+        serialized = rep.serialize_error(error, context: state.context)
 
         self.class.error_document.new(serialized).build
       end
 
-      # @api public
-      # Prepares error before rendering.
-      #
-      # Override to transform or enrich error data.
-      #
-      # @param error [ConstraintError] the error
-      # @param _state [Adapter::RenderState] render context
-      # @return [ConstraintError] the prepared error
-      def prepare_error(error, _state)
-        error
-      end
-
       def register_api(registrar, adapter_capabilities)
-        capability_instances.each do |capability|
+        capabilities.each do |capability|
           capability.api_types(registrar, adapter_capabilities)
         end
 
@@ -254,14 +240,14 @@ module Apiwork
       end
 
       def register_contract(registrar, schema_class, actions)
-        capability_instances.each do |capability|
+        capabilities.each do |capability|
           capability.contract_types(registrar, schema_class, actions)
         end
 
         representation_class = self.class.representation
         representation_class&.new(schema_class)&.contract(registrar, schema_class, actions)
 
-        self.class.record_document.response_types_class&.build(registrar, schema_class, actions, capabilities: capability_instances)
+        self.class.record_document.response_types_class&.build(registrar, schema_class, actions, capabilities: capabilities)
       end
 
       def normalize_request(request, api_class:)
@@ -288,10 +274,9 @@ module Apiwork
         Capabilities.new(structure)
       end
 
-      def capability_instances
-        @capability_instances ||= self.class.capabilities.map do |klass|
-          config = adapter_config_for(klass.capability_name)
-          klass.new(config)
+      def capabilities
+        @capabilities ||= self.class.capabilities.map do |klass|
+          klass.new({})
         end
       end
 
@@ -302,12 +287,8 @@ module Apiwork
       end
 
       def apply_capabilities(data, state)
-        runner = CapabilityRunner.new(capability_instances)
+        runner = CapabilityRunner.new(capabilities)
         runner.run(data, state)
-      end
-
-      def adapter_config_for(capability_name)
-        {}
       end
     end
   end
