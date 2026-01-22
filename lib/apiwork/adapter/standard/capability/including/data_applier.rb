@@ -5,21 +5,17 @@ module Apiwork
     class Standard
       module Capability
         class Including
-          class Applier < Adapter::Capability::Applier::Base
-            def extract
-              context.request.query[:include] || {}
-            end
+          class DataApplier < Adapter::Capability::DataApplier::Base
+            def apply
+              include_params = request.query[:include] || {}
 
-            def includes
-              resolver = IncludesResolver.new(context.schema_class)
+              resolver = IncludesResolver.new(schema_class)
               always = resolver.always_included
-              explicit = build_explicit_includes(context.params, context.schema_class)
+              explicit = build_explicit_includes(include_params, schema_class)
 
-              IncludesResolver.deep_merge_includes(always, explicit).keys
-            end
+              includes = IncludesResolver.deep_merge_includes(always, explicit).keys
 
-            def serialize_options
-              { include: context.params }
+              result(data:, includes:, serialize_options: { include: include_params })
             end
 
             private

@@ -5,13 +5,13 @@ module Apiwork
     class Standard
       module Capability
         class Sorting
-          class ContractTypes < Adapter::Capability::ContractTypes::Base
-            def register(context)
-              TypeBuilder.build(context.registrar, context.schema_class)
+          class ContractBuilder < Adapter::Capability::ContractBuilder::Base
+            def build
+              TypeBuilder.build(registrar, schema_class)
 
-              return unless context.registrar.type?(:sort)
+              return unless type?(:sort)
 
-              context.registrar.action(:index) do
+              action(:index) do
                 request do
                   query do
                     union? :sort do

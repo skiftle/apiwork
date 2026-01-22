@@ -5,7 +5,7 @@ module Apiwork
     class Standard
       module Capability
         class Filtering
-          class ApiTypes < Adapter::Capability::ApiTypes::Base
+          class ApiBuilder < Adapter::Capability::ApiBuilder::Base
             FILTER_DEFINITIONS = {
               boolean_filter: {
                 params: [
@@ -120,23 +120,22 @@ module Apiwork
             }.freeze
 
             NULLABLE_EXTENSION = { name: :null, type: :boolean }.freeze
-
             PRIMITIVES = %i[string integer decimal boolean datetime date uuid time binary number].freeze
 
-            def register(context)
-              return unless context.capabilities.filter_types.any?
+            def build
+              return unless capabilities.filter_types.any?
 
               filter_types_to_register = Set.new
 
-              context.capabilities.filter_types.each do |type|
+              capabilities.filter_types.each do |type|
                 filter_types_to_register.add(determine_filter_type(type, nullable: false))
               end
 
-              context.capabilities.nullable_filter_types.each do |type|
+              capabilities.nullable_filter_types.each do |type|
                 filter_types_to_register.add(determine_filter_type(type, nullable: true))
               end
 
-              filter_types_to_register.each { |type| register_filter_type(context.registrar, type) }
+              filter_types_to_register.each { |type| register_filter_type(type) }
             end
 
             private
@@ -157,19 +156,19 @@ module Apiwork
               nullable ? :"nullable_#{base_type}" : base_type
             end
 
-            def register_filter_type(registrar, type_name)
+            def register_filter_type(type_name)
               base_type_name = type_name.to_s.delete_prefix('nullable_').to_sym
               nullable = type_name.to_s.start_with?('nullable_')
 
               filter_definition = FILTER_DEFINITIONS[base_type_name]
               raise ConfigurationError, "Unknown global filter type: #{type_name.inspect}" unless filter_definition
 
-              register_filter_type(registrar, filter_definition[:depends_on]) if filter_definition[:depends_on]
+              register_filter_type(filter_definition[:depends_on]) if filter_definition[:depends_on]
 
               params = filter_definition[:params].dup
               params << NULLABLE_EXTENSION if nullable
 
-              registrar.object(type_name) do
+              object(type_name) do
                 params.each do |param_options|
                   name = param_options[:name]
                   type = param_options[:type]

@@ -5,13 +5,13 @@ module Apiwork
     class Standard
       module Capability
         class Filtering
-          class ContractTypes < Adapter::Capability::ContractTypes::Base
-            def register(context)
-              TypeBuilder.build(context.registrar, context.schema_class)
+          class ContractBuilder < Adapter::Capability::ContractBuilder::Base
+            def build
+              TypeBuilder.build(registrar, schema_class)
 
-              return unless context.registrar.type?(:filter)
+              return unless type?(:filter)
 
-              context.registrar.action(:index) do
+              action(:index) do
                 request do
                   query do
                     union? :filter do

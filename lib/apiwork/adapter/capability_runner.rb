@@ -13,29 +13,30 @@ module Apiwork
 
         return [data, {}] if applicable.empty?
 
-        params_map = extract_all_params(applicable, state)
-        all_includes = collect_includes(applicable, params_map, state.schema_class)
-        preloaded = preload_associations(collection, all_includes)
-
         context = build_context(state)
-        transformed, additions = run_pipeline(applicable, preloaded, params_map, context)
-        serialize_options = collect_serialize_options(applicable, params_map, state.schema_class)
+        transformed, additions, serialize_options = run_pipeline(applicable, collection, context)
 
         [{ serialize_options:, data: transformed }, additions]
       end
 
       private
 
-      def extract_all_params(capabilities, state)
-        capabilities.index_with do |capability|
-          capability.extract(state.request, state.schema_class)
-        end
-      end
+      def run_pipeline(capabilities, collection, context)
+        additions = {}
+        serialize_options = {}
+        includes = []
 
-      def collect_includes(capabilities, params_map, schema_class)
-        capabilities.flat_map do |capability|
-          capability.includes(params_map[capability], schema_class)
-        end.uniq
+        data = capabilities.reduce(collection) do |current, capability|
+          result = capability.apply(current, context)
+          additions.merge!(result.additions)
+          serialize_options.merge!(result.serialize_options || {})
+          includes.concat(result.includes || [])
+          result.data
+        end
+
+        preloaded = preload_associations(data, includes.uniq)
+
+        [preloaded, additions, serialize_options]
       end
 
       def preload_associations(data, includes)
@@ -51,27 +52,10 @@ module Apiwork
         end
       end
 
-      def run_pipeline(capabilities, collection, params_map, context)
-        additions = {}
-
-        data = capabilities.reduce(collection) do |current, capability|
-          result = capability.apply(current, params_map[capability], context)
-          additions.merge!(result.additions)
-          result.data
-        end
-
-        [data, additions]
-      end
-
-      def collect_serialize_options(capabilities, params_map, schema_class)
-        capabilities.each_with_object({}) do |capability, opts|
-          opts.merge!(capability.serialize_options(params_map[capability], schema_class))
-        end
-      end
-
       def build_context(state)
         CapabilityContext.new(
           action: state.action,
+          request: state.request,
           schema_class: state.schema_class,
           user_context: state.context,
         )

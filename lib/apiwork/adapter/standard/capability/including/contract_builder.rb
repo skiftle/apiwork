@@ -5,14 +5,14 @@ module Apiwork
     class Standard
       module Capability
         class Including
-          class ContractTypes < Adapter::Capability::ContractTypes::Base
-            def register(context)
-              TypeBuilder.build(context.registrar, context.schema_class)
+          class ContractBuilder < Adapter::Capability::ContractBuilder::Base
+            def build
+              TypeBuilder.build(registrar, schema_class)
 
-              return unless context.registrar.type?(:include)
+              return unless type?(:include)
 
-              context.actions.each_key do |action_name|
-                context.registrar.action(action_name) do
+              actions.each_key do |action_name|
+                action(action_name) do
                   request do
                     query do
                       reference? :include

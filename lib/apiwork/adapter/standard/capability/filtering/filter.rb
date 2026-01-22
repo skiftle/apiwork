@@ -29,9 +29,9 @@ module Apiwork
 
             attr_reader :issues, :schema_class
 
-            def self.apply(context)
-              filter = new(context.data, context.schema_class)
-              result = filter.filter(context.params)
+            def self.apply(relation, params, schema_class)
+              filter = new(relation, schema_class)
+              result = filter.filter(params)
               raise ContractError, filter.issues if filter.issues.any?
 
               result

@@ -50,46 +50,6 @@ module Apiwork
             @request_transformers || []
           end
 
-          # @api public
-          # Declares the applier class for runtime behavior.
-          #
-          # @param klass [Class] an Applier::Base subclass
-          # @return [Class, nil]
-          def applier(klass = nil)
-            @applier_class = klass if klass
-            @applier_class
-          end
-
-          # @api public
-          # Declares the API types class for global type registration.
-          #
-          # @param klass [Class] an ApiTypes::Base subclass
-          # @return [Class, nil]
-          def api_types_class(klass = nil)
-            @api_types_class = klass if klass
-            @api_types_class
-          end
-
-          # @api public
-          # Declares the contract types class for per-schema type registration.
-          #
-          # @param klass [Class] a ContractTypes::Base subclass
-          # @return [Class, nil]
-          def contract_types_class(klass = nil)
-            @contract_types_class = klass if klass
-            @contract_types_class
-          end
-
-          # @api public
-          # Declares the shape class for response shape building.
-          #
-          # @param klass [Class] a Shape::Base subclass
-          # @return [Class, nil]
-          def shape_class(klass = nil)
-            @shape_class = klass if klass
-            @shape_class
-          end
-
           def api(builder_class = nil, &block)
             if builder_class
               self._api_builder_class = builder_class
@@ -139,7 +99,7 @@ module Apiwork
           end
 
           def wrap_api_block(callable)
-            Class.new(APIBuilder::Base) do
+            Class.new(ApiBuilder::Base) do
               define_method(:build) do
                 instance_exec(&callable)
               end
@@ -236,104 +196,55 @@ module Apiwork
           @config = Configuration.new(self.class, merged)
         end
 
-        def api_types_instance
-          @api_types_instance ||= self.class.api_types_class&.new(config)
-        end
-
-        def contract_types_instance
-          @contract_types_instance ||= self.class.contract_types_class&.new(config)
-        end
-
-        def shape_instance
-          @shape_instance ||= self.class.shape_class&.new(config)
-        end
-
-        # Registers API-wide types for this capability.
-        # Delegates to api_types_instance if available.
-        #
-        # @api public
-        # @param registrar [Object] the type registrar
-        # @param capabilities [Object] adapter capabilities info
-        # @return [void]
         def api_types(registrar, capabilities)
-          return unless api_types_instance
+          builder_class = self.class.api_builder_class
+          return unless builder_class
 
-          context = ApiTypesContext.new(capabilities:, registrar:)
-          api_types_instance.register(context)
+          context = ApiBuilder::Context.new(capabilities:, registrar:)
+          builder_class.new(context).build
         end
 
-        # Registers contract types for this capability.
-        # Delegates to contract_types_instance if available.
-        #
-        # @api public
-        # @param registrar [Object] the type registrar
-        # @param schema_class [Class] the schema class
-        # @param actions [Hash] the actions
-        # @return [void]
         def contract_types(registrar, schema_class, actions)
-          return unless contract_types_instance
+          builder_class = self.class.contract_builder_class
+          return unless builder_class
 
-          context = ContractTypesContext.new(actions:, registrar:, schema_class:)
-          contract_types_instance.register(context)
+          context = ContractBuilder::Context.new(
+            actions:,
+            registrar:,
+            schema_class:,
+            options: merged_config(schema_class),
+          )
+          builder_class.new(context).build
         end
 
-        # @api public
-        # Returns whether this capability applies to the given document type.
-        #
-        # @param type [Symbol] :record or :collection
-        # @return [Boolean]
         def applies_to_type?(type)
           input = self.class.input_type
           input == :any || input == type
         end
 
-        # @api public
-        # Returns the shape for this capability.
-        #
-        # @param context [Document::ShapeContext] the shape context
-        # @return [Apiwork::Object, nil]
-        def shape(context)
-          return nil unless shape_instance
+        def shape(shape_context)
+          builder_class = self.class.response_shape_builder_class
+          return nil unless builder_class
 
-          object = API::Object.new
-          shape_instance.build(object, context)
-          object.params.empty? ? nil : object
-        end
-
-        def extract(request, schema_class)
-          return {} unless self.class.applier
-
-          context = ApplierContext.new(request:, schema_class:, action: nil)
-          build_applier(context).extract
-        end
-
-        def includes(params, schema_class)
-          return [] unless self.class.applier
-
-          context = ApplierContext.new(schema_class:, action: nil, request: nil)
-          context.params = params
-          build_applier(context).includes
-        end
-
-        def serialize_options(params, schema_class)
-          return {} unless self.class.applier
-
-          context = ApplierContext.new(schema_class:, action: nil, request: nil)
-          context.params = params
-          build_applier(context).serialize_options
-        end
-
-        def apply(data, params, adapter_context)
-          return Capability::ApplyResult.new(data:) unless self.class.applier
-
-          context = ApplierContext.new(
-            action: adapter_context.action,
-            request: nil,
-            schema_class: adapter_context.schema_class,
+          target = API::Object.new
+          context = ResponseShapeBuilder::Context.new(
+            target:,
+            options: merged_config(shape_context.schema_class),
+            schema_class: shape_context.schema_class,
           )
-          context.data = data
-          context.params = params
-          build_applier(context).apply
+          builder_class.new(context).build
+          target.params.empty? ? nil : target
+        end
+
+        def apply(data, adapter_context)
+          applier_class = resolve_applier_class(data)
+
+          if applier_class
+            context = build_applier_context(data, adapter_context)
+            applier_class.new(context).apply
+          else
+            ApplyResult.new(data:)
+          end
         end
 
         def applies?(action, data)
@@ -345,12 +256,33 @@ module Apiwork
 
         private
 
-        def build_applier(context)
-          merged_config = build_merged_config(context.schema_class)
-          self.class.applier.new(merged_config, context)
+        def resolve_applier_class(data)
+          case self.class.input_type
+          when :collection
+            self.class.collection_applier_class
+          when :record
+            self.class.record_applier_class
+          else
+            self.class.data_applier_class || self.class.collection_applier_class || self.class.record_applier_class
+          end
         end
 
-        def build_merged_config(schema_class)
+        def build_applier_context(data, adapter_context)
+          options = merged_config(adapter_context.schema_class)
+          request = adapter_context.request
+          schema_class = adapter_context.schema_class
+
+          case self.class.input_type
+          when :collection
+            CollectionApplier::Context.new(options:, request:, schema_class:, collection: data)
+          when :record
+            RecordApplier::Context.new(options:, request:, schema_class:, record: data)
+          else
+            DataApplier::Context.new(data:, options:, request:, schema_class:)
+          end
+        end
+
+        def merged_config(schema_class)
           capability_name = self.class.capability_name
           return config unless capability_name
 

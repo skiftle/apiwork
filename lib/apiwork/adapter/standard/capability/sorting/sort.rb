@@ -8,9 +8,9 @@ module Apiwork
           class Sort
             attr_reader :issues, :schema_class
 
-            def self.apply(context)
-              sorter = new(context.data, context.schema_class)
-              result = sorter.sort(context.params)
+            def self.apply(relation, params, schema_class)
+              sorter = new(relation, schema_class)
+              result = sorter.sort(params)
               raise ContractError, sorter.issues if sorter.issues.any?
 
               result

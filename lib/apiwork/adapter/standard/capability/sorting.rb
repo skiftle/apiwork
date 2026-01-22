@@ -11,9 +11,9 @@ module Apiwork
 
           option :max_depth, default: 2, type: :integer
 
-          applier Applier
-          api_types_class ApiTypes
-          contract_types_class ContractTypes
+          api ApiBuilder
+          contract ContractBuilder
+          apply_collection CollectionApplier
         end
       end
     end

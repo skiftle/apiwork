@@ -3,19 +3,19 @@
 module Apiwork
   module Adapter
     module Capability
-      module APIBuilder
+      module ApiBuilder
         class Base
-          attr_reader :api_class, :capabilities
+          attr_reader :capabilities, :registrar
 
           delegate :enum,
                    :enum?,
                    :object,
                    :type?,
                    :union,
-                   to: :api_class
+                   to: :registrar
 
           def initialize(context)
-            @api_class = context.api_class
+            @registrar = context.registrar
             @capabilities = context.capabilities
           end
 
