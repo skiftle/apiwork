@@ -5,11 +5,11 @@ module Apiwork
     module Document
       module Error
         class Base < Document::Base
-          attr_reader :error
+          attr_reader :data
 
-          def initialize(error)
+          def initialize(data)
             super()
-            @error = error
+            @data = data
           end
         end
       end

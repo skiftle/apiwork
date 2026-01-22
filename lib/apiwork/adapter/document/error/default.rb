@@ -6,7 +6,7 @@ module Apiwork
       module Error
         class Default < Base
           def build
-            error
+            data
           end
         end
       end
