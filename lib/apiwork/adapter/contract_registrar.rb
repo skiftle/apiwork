@@ -128,9 +128,11 @@ module Apiwork
       def ensure_association_types(association)
         schema = resolve_association_schema(association)
         return nil unless schema
-        return nil if importing?(schema)
 
         alias_name = schema.root_key.singular.to_sym
+
+        return alias_name if importing?(schema) && imports.key?(alias_name)
+        return nil if importing?(schema)
 
         association_contract = if imports.key?(alias_name)
                                  imports[alias_name]

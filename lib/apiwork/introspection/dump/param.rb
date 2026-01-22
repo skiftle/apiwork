@@ -194,6 +194,8 @@ module Apiwork
           elsif registered_type?(of_value)
             ref_name = qualified_name(of_value, @contract_param)
             { ref: ref_name, shape: {}, type: :ref }
+          elsif of_value.is_a?(Symbol) && imported_type?(of_value, @contract_param)
+            { ref: of_value, shape: {}, type: :ref }
           else
             build_of_from_symbol(of_value, shape: options[:shape])
           end
