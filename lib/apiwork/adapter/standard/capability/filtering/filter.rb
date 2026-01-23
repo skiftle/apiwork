@@ -6,27 +6,6 @@ module Apiwork
       module Capability
         class Filtering < Adapter::Capability::Base
           class Filter
-            EQUALITY_OPERATORS = %i[eq].freeze
-            COMPARISON_OPERATORS = %i[gt gte lt lte].freeze
-            RANGE_OPERATORS = %i[between].freeze
-            COLLECTION_OPERATORS = %i[in].freeze
-            STRING_SPECIFIC_OPERATORS = %i[contains starts_with ends_with].freeze
-            NULL_OPERATORS = %i[null].freeze
-
-            STRING_OPERATORS = (EQUALITY_OPERATORS + COLLECTION_OPERATORS + STRING_SPECIFIC_OPERATORS).freeze
-            DATE_OPERATORS = (EQUALITY_OPERATORS + COMPARISON_OPERATORS + RANGE_OPERATORS + COLLECTION_OPERATORS).freeze
-            NUMERIC_OPERATORS = (EQUALITY_OPERATORS + COMPARISON_OPERATORS + RANGE_OPERATORS + COLLECTION_OPERATORS).freeze
-            UUID_OPERATORS = (EQUALITY_OPERATORS + COLLECTION_OPERATORS).freeze
-            BOOLEAN_OPERATORS = EQUALITY_OPERATORS.freeze
-
-            NULLABLE_STRING_OPERATORS = (STRING_OPERATORS + NULL_OPERATORS).freeze
-            NULLABLE_DATE_OPERATORS = (DATE_OPERATORS + NULL_OPERATORS).freeze
-            NULLABLE_NUMERIC_OPERATORS = (NUMERIC_OPERATORS + NULL_OPERATORS).freeze
-            NULLABLE_UUID_OPERATORS = (UUID_OPERATORS + NULL_OPERATORS).freeze
-            NULLABLE_BOOLEAN_OPERATORS = (BOOLEAN_OPERATORS + NULL_OPERATORS).freeze
-
-            LOGICAL_OPERATORS = %i[_and _or _not].freeze
-
             attr_reader :issues, :schema_class
 
             def self.apply(relation, params, schema_class)
@@ -87,9 +66,9 @@ module Apiwork
                 scope = with_joins_and_distinct(scope, joins) { |scoped| scoped.where(conditions.reduce(:and)) } if conditions.any?
               end
 
-              scope = apply_not(scope, logical_ops[:_not]) if logical_ops.key?(:_not)
-              scope = apply_or(scope, logical_ops[:_or]) if logical_ops.key?(:_or)
-              scope = apply_and(scope, logical_ops[:_and]) if logical_ops.key?(:_and)
+              scope = apply_not(scope, logical_ops[Constants::NOT]) if logical_ops.key?(Constants::NOT)
+              scope = apply_or(scope, logical_ops[Constants::OR]) if logical_ops.key?(Constants::OR)
+              scope = apply_and(scope, logical_ops[Constants::AND]) if logical_ops.key?(Constants::AND)
 
               scope
             end
@@ -163,20 +142,20 @@ module Apiwork
                 all_joins = all_joins.deep_merge(joins)
               end
 
-              if logical_ops.key?(:_and)
-                cond, joins = process_logical_operator(logical_ops[:_and], :and)
+              if logical_ops.key?(Constants::AND)
+                cond, joins = process_logical_operator(logical_ops[Constants::AND], :and)
                 conditions << cond if cond
                 all_joins = all_joins.deep_merge(joins)
               end
 
-              if logical_ops.key?(:_or)
-                cond, joins = process_logical_operator(logical_ops[:_or], :or)
+              if logical_ops.key?(Constants::OR)
+                cond, joins = process_logical_operator(logical_ops[Constants::OR], :or)
                 conditions << cond if cond
                 all_joins = all_joins.deep_merge(joins)
               end
 
-              if logical_ops.key?(:_not)
-                not_cond, joins = build_conditions_recursive(logical_ops[:_not])
+              if logical_ops.key?(Constants::NOT)
+                not_cond, joins = build_conditions_recursive(logical_ops[Constants::NOT])
                 conditions << not_cond.not if not_cond
                 all_joins = all_joins.deep_merge(joins)
               end
@@ -342,7 +321,7 @@ module Apiwork
 
               builder = Builder.new(column, key, allowed_types: [Hash], issues: @issues)
 
-              builder.build(value, normalizer:, valid_operators: NULLABLE_UUID_OPERATORS) do |operator, compare|
+              builder.build(value, normalizer:, valid_operators: Constants::NULLABLE_UUID_OPERATORS) do |operator, compare|
                 case operator
                 when :eq then column.eq(compare)
                 when :in then column.in(compare)
@@ -361,7 +340,7 @@ module Apiwork
               builder.build(
                 value,
                 normalizer:,
-                valid_operators: NULLABLE_STRING_OPERATORS,
+                valid_operators: Constants::NULLABLE_STRING_OPERATORS,
               ) do |operator, compare|
                 case operator
                 when :eq then column.eq(compare)
@@ -389,7 +368,7 @@ module Apiwork
 
               builder = Builder.new(column, key, allowed_types: [Hash], issues: @issues)
 
-              builder.build(value, normalizer:, valid_operators: NULLABLE_DATE_OPERATORS) do |operator, compare|
+              builder.build(value, normalizer:, valid_operators: Constants::NULLABLE_DATE_OPERATORS) do |operator, compare|
                 if operator == :null
                   handle_null_operator(column, compare)
                 elsif compare.blank?
@@ -437,7 +416,7 @@ module Apiwork
               builder.build(
                 value,
                 normalizer:,
-                valid_operators: NULLABLE_NUMERIC_OPERATORS,
+                valid_operators: Constants::NULLABLE_NUMERIC_OPERATORS,
               ) do |operator, compare|
                 case operator
                 when :eq
@@ -495,7 +474,7 @@ module Apiwork
               builder.build(
                 value,
                 normalizer:,
-                valid_operators: NULLABLE_BOOLEAN_OPERATORS,
+                valid_operators: Constants::NULLABLE_BOOLEAN_OPERATORS,
               ) do |operator, compare|
                 case operator
                 when :eq
@@ -570,7 +549,7 @@ module Apiwork
             end
 
             def separate_logical_operators(params)
-              [params.slice(*LOGICAL_OPERATORS), params.except(*LOGICAL_OPERATORS)]
+              [params.slice(*Constants::LOGICAL_OPERATORS), params.except(*Constants::LOGICAL_OPERATORS)]
             end
 
             def with_joins_and_distinct(scope, joins)

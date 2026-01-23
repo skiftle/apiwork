@@ -57,10 +57,10 @@ module Apiwork
           hash.each_with_object({}) do |(key, value), result|
             key = key.to_sym
 
-            if %i[_or _and].include?(key) && value.is_a?(Array)
+            if [Capability::Filtering::Constants::OR, Capability::Filtering::Constants::AND].include?(key) && value.is_a?(Array)
               value.each { |item| result.deep_merge!(extract_from_hash(item, visited)) }
               next
-            elsif key == :_not && value.is_a?(Hash)
+            elsif key == Capability::Filtering::Constants::NOT && value.is_a?(Hash)
               result.deep_merge!(extract_from_hash(value, visited))
               next
             end

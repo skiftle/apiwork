@@ -33,13 +33,13 @@ module Apiwork
               association_filters = collect_association_filters
 
               object :filter do
-                array? :_and do
+                array? Constants::AND do
                   reference :filter
                 end
-                array? :_or do
+                array? Constants::OR do
                   reference :filter
                 end
-                reference? :_not, to: :filter
+                reference? Constants::NOT, to: :filter
 
                 attribute_filters.each do |filter|
                   if filter[:union]
