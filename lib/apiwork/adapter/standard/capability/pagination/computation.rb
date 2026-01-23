@@ -9,17 +9,14 @@ module Apiwork
             scope :collection
 
             def apply
-              paginated, pagination_result = paginate
-              result(
-                data: paginated,
-                document: { pagination: pagination_result[:pagination] },
-              )
+              data, pagination = paginate
+              result(data:, document: { pagination: })
             end
 
             private
 
             def paginate
-              page_params = request.query[:page] || {}
+              page_params = request.query.fetch(:page, {})
 
               case options.strategy
               when :offset

@@ -12,8 +12,7 @@ module Apiwork
           option :max_size, default: 100, type: :integer
 
           shape do
-            pagination_type = options.strategy == :offset ? :offset_pagination : :cursor_pagination
-            reference :pagination, to: pagination_type
+            reference :pagination, to: (options.strategy == :cursor ? :cursor_pagination : :offset_pagination)
           end
 
           api API

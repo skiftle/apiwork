@@ -37,13 +37,11 @@ module Apiwork
               total = (items.to_f / limit).ceil
 
               {
-                pagination: {
-                  items:,
-                  total:,
-                  current: page_number,
-                  next: (page_number < total ? page_number + 1 : nil),
-                  prev: (page_number > 1 ? page_number - 1 : nil),
-                },
+                items:,
+                total:,
+                current: page_number,
+                next: (page_number < total ? page_number + 1 : nil),
+                prev: (page_number > 1 ? page_number - 1 : nil),
               }
             end
 
