@@ -57,7 +57,7 @@ module Apiwork
             next unless klass
 
             envelope = klass.envelope
-            next unless envelope&.build_block
+            next unless envelope&.json_block
 
             scope = klass.scope
             next if scope && scope != self.class.document_type
@@ -67,8 +67,8 @@ module Apiwork
               schema_class:,
               options: capability.config,
             )
-            build_result = context.instance_exec(&envelope.build_block)
-            result.merge!(build_result) if build_result.is_a?(Hash)
+            json_result = context.instance_exec(&envelope.json_block)
+            result.merge!(json_result) if json_result.is_a?(Hash)
           end
         end
       end

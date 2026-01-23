@@ -5,14 +5,14 @@ module Apiwork
     module Capability
       module Computation
         class Envelope
-          attr_reader :build_block, :shape_block
+          attr_reader :json_block, :shape_block
 
           def initialize(&block)
             instance_eval(&block)
           end
 
-          def build(&block)
-            @build_block = block
+          def json(&block)
+            @json_block = block
           end
 
           def shape(&block)

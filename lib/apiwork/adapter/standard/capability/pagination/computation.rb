@@ -14,7 +14,7 @@ module Apiwork
                 reference :pagination, to: pagination_type
               end
 
-              build do
+              json do
                 { pagination: additions[:pagination] }
               end
             end
