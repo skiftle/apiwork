@@ -3,7 +3,7 @@
 module Apiwork
   module Adapter
     module Capability
-      module DataApplier
+      module Result
         class Base
           attr_reader :data, :options, :request, :schema_class
 

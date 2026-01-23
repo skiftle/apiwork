@@ -5,7 +5,7 @@ module Apiwork
     class Standard
       module Capability
         class Filtering
-          class ContractBuilder < Adapter::Capability::ContractBuilder::Base
+          class Contract < Adapter::Capability::Contract::Base
             def build
               build_filter_type
               return unless type?(:filter)

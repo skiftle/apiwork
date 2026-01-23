@@ -5,11 +5,11 @@ module Apiwork
     class Standard
       module Capability
         class Pagination
-          class CollectionApplier < Adapter::Capability::CollectionApplier::Base
+          class Result < Adapter::Capability::Result::Base
             def apply
               paginated, pagination_result = paginate
               result(
-                collection: paginated,
+                data: paginated,
                 pagination: pagination_result[:pagination],
               )
             end
@@ -21,9 +21,9 @@ module Apiwork
 
               case options.strategy
               when :offset
-                OffsetPaginator.paginate(collection, options, page_params)
+                OffsetPaginator.paginate(data, options, page_params)
               else
-                CursorPaginator.paginate(collection, options, page_params)
+                CursorPaginator.paginate(data, options, page_params)
               end
             end
           end

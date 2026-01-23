@@ -5,7 +5,7 @@ module Apiwork
     class Standard
       module Capability
         class Including
-          class ContractBuilder < Adapter::Capability::ContractBuilder::Base
+          class Contract < Adapter::Capability::Contract::Base
             MAX_RECURSION_DEPTH = 3
 
             def build
@@ -45,7 +45,7 @@ module Apiwork
                       next
                     end
 
-                    association_schema = ContractBuilder.resolve_association_schema(target_ref, association)
+                    association_schema = Contract.resolve_association_schema(target_ref, association)
                     next unless association_schema
 
                     if visited_ref.include?(association_schema)
@@ -57,7 +57,7 @@ module Apiwork
                                                    imported_type = :"#{alias_name}_include"
                                                    registrar_ref.type?(imported_type) ? imported_type : nil
                                                  else
-                                                   ContractBuilder.build_include_type(
+                                                   Contract.build_include_type(
                                                      registrar_ref,
                                                      association_schema,
                                                      depth: current_depth + 1,

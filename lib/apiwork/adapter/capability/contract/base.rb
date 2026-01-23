@@ -3,7 +3,7 @@
 module Apiwork
   module Adapter
     module Capability
-      module ContractBuilder
+      module Contract
         class Base
           attr_reader :actions, :options, :schema_class
 
@@ -33,8 +33,8 @@ module Apiwork
 
           def api
             @api ||= begin
-              context = APIBuilder::Context.new(capabilities: nil, registrar: api_registrar)
-              APIBuilder::Base.new(context)
+              context = API::Context.new(capabilities: nil, registrar: api_registrar)
+              API::Base.new(context)
             end
           end
 

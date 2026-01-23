@@ -5,10 +5,10 @@ module Apiwork
     class Standard
       module Capability
         class Writing
-          class RecordApplier < Adapter::Capability::RecordApplier::Base
+          class Result < Adapter::Capability::Result::Base
             def apply
-              validate_record!(record, schema_class)
-              result(record:)
+              validate_record!(data, schema_class)
+              result(data:)
             end
 
             private

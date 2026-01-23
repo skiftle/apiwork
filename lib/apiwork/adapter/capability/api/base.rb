@@ -3,7 +3,7 @@
 module Apiwork
   module Adapter
     module Capability
-      module APIBuilder
+      module API
         class Base
           attr_reader :options,
                       :registrar

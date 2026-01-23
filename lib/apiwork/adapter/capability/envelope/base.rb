@@ -3,7 +3,7 @@
 module Apiwork
   module Adapter
     module Capability
-      module ResponseShapeBuilder
+      module Envelope
         class Base
           attr_reader :options, :schema_class
 

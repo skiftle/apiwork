@@ -6,18 +6,14 @@ module Apiwork
       class Base
         include Configurable
 
-        class_attribute :_api_builder_class
+        class_attribute :_api_class
         class_attribute :_api_block
-        class_attribute :_contract_builder_class
+        class_attribute :_contract_class
         class_attribute :_contract_block
-        class_attribute :_response_shape_builder_class
-        class_attribute :_response_shape_block
-        class_attribute :_collection_applier_class
-        class_attribute :_collection_applier_block
-        class_attribute :_record_applier_class
-        class_attribute :_record_applier_block
-        class_attribute :_data_applier_class
-        class_attribute :_data_applier_block
+        class_attribute :_envelope_class
+        class_attribute :_envelope_block
+        class_attribute :_result_class
+        class_attribute :_result_block
 
         class << self
           def capability_name(value = nil)
@@ -50,56 +46,40 @@ module Apiwork
             @request_transformers || []
           end
 
-          def api_builder(builder_class = nil, &block)
-            if builder_class
-              self._api_builder_class = builder_class
+          def api(klass = nil, &block)
+            if klass
+              self._api_class = klass
             elsif block
               self._api_block = block
             end
           end
 
-          def contract_builder(builder_class = nil, &block)
-            if builder_class
-              self._contract_builder_class = builder_class
+          def contract(klass = nil, &block)
+            if klass
+              self._contract_class = klass
             elsif block
               self._contract_block = block
             end
           end
 
-          def response_shape(builder_class = nil, &block)
-            if builder_class
-              self._response_shape_builder_class = builder_class
+          def envelope(klass = nil, &block)
+            if klass
+              self._envelope_class = klass
             elsif block
-              self._response_shape_block = block
+              self._envelope_block = block
             end
           end
 
-          def collection_applier(applier_class = nil, &block)
-            if applier_class
-              self._collection_applier_class = applier_class
+          def result(klass = nil, &block)
+            if klass
+              self._result_class = klass
             elsif block
-              self._collection_applier_block = block
-            end
-          end
-
-          def record_applier(applier_class = nil, &block)
-            if applier_class
-              self._record_applier_class = applier_class
-            elsif block
-              self._record_applier_block = block
-            end
-          end
-
-          def data_applier(applier_class = nil, &block)
-            if applier_class
-              self._data_applier_class = applier_class
-            elsif block
-              self._data_applier_block = block
+              self._result_block = block
             end
           end
 
           def wrap_api_block(callable)
-            Class.new(APIBuilder::Base) do
+            Class.new(API::Base) do
               define_method(:build) do
                 instance_exec(&callable)
               end
@@ -107,83 +87,53 @@ module Apiwork
           end
 
           def wrap_contract_block(callable)
-            Class.new(ContractBuilder::Base) do
+            Class.new(Contract::Base) do
               define_method(:build) do
                 instance_exec(&callable)
               end
             end
           end
 
-          def wrap_response_shape_block(callable)
-            Class.new(ResponseShapeBuilder::Base) do
+          def wrap_envelope_block(callable)
+            Class.new(Envelope::Base) do
               define_method(:build) do
                 instance_exec(&callable)
               end
             end
           end
 
-          def wrap_collection_applier_block(callable)
-            Class.new(CollectionApplier::Base) do
+          def wrap_result_block(callable)
+            Class.new(Result::Base) do
               define_method(:apply) do
                 instance_exec(&callable)
               end
             end
           end
 
-          def wrap_record_applier_block(callable)
-            Class.new(RecordApplier::Base) do
-              define_method(:apply) do
-                instance_exec(&callable)
-              end
-            end
-          end
-
-          def wrap_data_applier_block(callable)
-            Class.new(DataApplier::Base) do
-              define_method(:apply) do
-                instance_exec(&callable)
-              end
-            end
-          end
-
-          def api_builder_class
-            return _api_builder_class if _api_builder_class
+          def api_class
+            return _api_class if _api_class
             return wrap_api_block(_api_block) if _api_block
 
             nil
           end
 
-          def contract_builder_class
-            return _contract_builder_class if _contract_builder_class
+          def contract_class
+            return _contract_class if _contract_class
             return wrap_contract_block(_contract_block) if _contract_block
 
             nil
           end
 
-          def response_shape_builder_class
-            return _response_shape_builder_class if _response_shape_builder_class
-            return wrap_response_shape_block(_response_shape_block) if _response_shape_block
+          def envelope_class
+            return _envelope_class if _envelope_class
+            return wrap_envelope_block(_envelope_block) if _envelope_block
 
             nil
           end
 
-          def collection_applier_class
-            return _collection_applier_class if _collection_applier_class
-            return wrap_collection_applier_block(_collection_applier_block) if _collection_applier_block
-
-            nil
-          end
-
-          def record_applier_class
-            return _record_applier_class if _record_applier_class
-            return wrap_record_applier_block(_record_applier_block) if _record_applier_block
-
-            nil
-          end
-
-          def data_applier_class
-            return _data_applier_class if _data_applier_class
-            return wrap_data_applier_block(_data_applier_block) if _data_applier_block
+          def result_class
+            return _result_class if _result_class
+            return wrap_result_block(_result_block) if _result_block
 
             nil
           end
@@ -197,29 +147,29 @@ module Apiwork
         end
 
         def api_types(registrar, features)
-          builder_class = self.class.api_builder_class
-          return unless builder_class
+          klass = self.class.api_class
+          return unless klass
 
-          context = APIBuilder::Context.new(
+          context = API::Context.new(
             features:,
             registrar:,
             capability_name: self.class.capability_name,
             options: config,
           )
-          builder_class.new(context).build
+          klass.new(context).build
         end
 
         def contract_types(registrar, schema_class, actions)
-          builder_class = self.class.contract_builder_class
-          return unless builder_class
+          klass = self.class.contract_class
+          return unless klass
 
-          context = ContractBuilder::Context.new(
+          context = Contract::Context.new(
             actions:,
             registrar:,
             schema_class:,
             options: merged_config(schema_class),
           )
-          builder_class.new(context).build
+          klass.new(context).build
         end
 
         def applies_to_type?(type)
@@ -228,25 +178,30 @@ module Apiwork
         end
 
         def shape(shape_context)
-          builder_class = self.class.response_shape_builder_class
-          return nil unless builder_class
+          klass = self.class.envelope_class
+          return nil unless klass
 
-          target = API::Object.new
-          context = ResponseShapeBuilder::Context.new(
+          target = ::Apiwork::API::Object.new
+          context = Envelope::Context.new(
             target:,
             options: merged_config(shape_context.schema_class),
             schema_class: shape_context.schema_class,
           )
-          builder_class.new(context).build
+          klass.new(context).build
           target.params.empty? ? nil : target
         end
 
         def apply(data, adapter_context)
-          applier_class = resolve_applier_class(data)
+          klass = self.class.result_class
 
-          if applier_class
-            context = build_applier_context(data, adapter_context)
-            applier_class.new(context).apply
+          if klass
+            context = Result::Context.new(
+              data:,
+              options: merged_config(adapter_context.schema_class),
+              request: adapter_context.request,
+              schema_class: adapter_context.schema_class,
+            )
+            klass.new(context).apply
           else
             ApplyResult.new(data:)
           end
@@ -260,32 +215,6 @@ module Apiwork
         end
 
         private
-
-        def resolve_applier_class(data)
-          case self.class.input_type
-          when :collection
-            self.class.collection_applier_class
-          when :record
-            self.class.record_applier_class
-          else
-            self.class.data_applier_class || self.class.collection_applier_class || self.class.record_applier_class
-          end
-        end
-
-        def build_applier_context(data, adapter_context)
-          options = merged_config(adapter_context.schema_class)
-          request = adapter_context.request
-          schema_class = adapter_context.schema_class
-
-          case self.class.input_type
-          when :collection
-            CollectionApplier::Context.new(options:, request:, schema_class:, collection: data)
-          when :record
-            RecordApplier::Context.new(options:, request:, schema_class:, record: data)
-          else
-            DataApplier::Context.new(data:, options:, request:, schema_class:)
-          end
-        end
 
         def merged_config(schema_class)
           capability_name = self.class.capability_name

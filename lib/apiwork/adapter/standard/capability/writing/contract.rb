@@ -5,7 +5,7 @@ module Apiwork
     class Standard
       module Capability
         class Writing
-          class ContractBuilder < Adapter::Capability::ContractBuilder::Base
+          class Contract < Adapter::Capability::Contract::Base
             def build
               build_enums
               build_payload_types

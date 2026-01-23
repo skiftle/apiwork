@@ -5,7 +5,7 @@ module Apiwork
     class Standard
       module Capability
         class Filtering
-          class APIBuilder < Adapter::Capability::APIBuilder::Base
+          class API < Adapter::Capability::API::Base
             FILTER_DEFINITIONS = {
               boolean_filter: {
                 params: [

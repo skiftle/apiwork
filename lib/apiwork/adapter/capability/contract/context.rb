@@ -3,14 +3,15 @@
 module Apiwork
   module Adapter
     module Capability
-      module ResponseShapeBuilder
+      module Contract
         class Context
-          attr_reader :options, :schema_class, :target
+          attr_reader :actions, :options, :registrar, :schema_class
 
-          def initialize(options:, schema_class:, target:)
+          def initialize(actions:, options:, registrar:, schema_class:)
+            @registrar = registrar
             @schema_class = schema_class
+            @actions = actions
             @options = options
-            @target = target
           end
         end
       end

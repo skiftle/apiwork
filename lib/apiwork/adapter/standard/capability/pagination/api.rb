@@ -5,7 +5,7 @@ module Apiwork
     class Standard
       module Capability
         class Pagination
-          class APIBuilder < Adapter::Capability::APIBuilder::Base
+          class API < Adapter::Capability::API::Base
             def build
               return unless index_actions?
 

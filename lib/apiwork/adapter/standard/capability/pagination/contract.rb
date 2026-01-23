@@ -5,7 +5,7 @@ module Apiwork
     class Standard
       module Capability
         class Pagination
-          class ContractBuilder < Adapter::Capability::ContractBuilder::Base
+          class Contract < Adapter::Capability::Contract::Base
             def build
               return unless actions.key?(:index)
 

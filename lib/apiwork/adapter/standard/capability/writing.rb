@@ -11,8 +11,8 @@ module Apiwork
 
           request_transformer OpFieldTransformer, post: true
 
-          contract_builder ContractBuilder
-          record_applier RecordApplier
+          contract Contract
+          result Result
         end
       end
     end

@@ -5,15 +5,15 @@ module Apiwork
     class Standard
       module Capability
         class Filtering
-          class CollectionApplier < Adapter::Capability::CollectionApplier::Base
+          class Result < Adapter::Capability::Result::Base
             def apply
               filter_params = request.query[:filter]
-              return result(collection:) if filter_params.blank?
+              return result(data:) if filter_params.blank?
 
               includes = IncludesResolver::AssociationExtractor.new(schema_class).extract_from_filter(filter_params).keys
-              filtered = Filter.apply(collection, filter_params, schema_class)
+              filtered = Filter.apply(data, filter_params, schema_class)
 
-              result(includes:, collection: filtered)
+              result(includes:, data: filtered)
             end
           end
         end

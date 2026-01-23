@@ -5,7 +5,7 @@ module Apiwork
     class Standard
       module Capability
         class Sorting
-          class ContractBuilder < Adapter::Capability::ContractBuilder::Base
+          class Contract < Adapter::Capability::Contract::Base
             def build
               build_sort_type
               return unless type?(:sort)
