@@ -70,6 +70,7 @@ If something looks cleaner in isolation but introduces variation, it is not allo
 | Small, focused objects with one responsibility                   |                                                    |
 | Explicit over implicit — no magic, monkey patching, or defensive guesswork |                                           |
 | Use stable identifiers for registry keys (not class references)  |                                                    |
+| Execution details belong in documentation, not in names          |                                                    |
 
 **Breaking changes are acceptable. Inconsistency is not.**
 
