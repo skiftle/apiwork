@@ -11,6 +11,7 @@ module Apiwork
                    :api_registrar,
                    :ensure_association_types,
                    :enum,
+                   :find_contract_for_schema,
                    :import,
                    :object,
                    :scoped_enum_name,
