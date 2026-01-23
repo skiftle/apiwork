@@ -12,7 +12,6 @@ module Apiwork
               reference root_key.singular.to_sym
             end
 
-            context.capability_shapes.each_value(&method(:merge!))
             object? :meta
           end
 

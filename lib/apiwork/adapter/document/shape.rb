@@ -27,6 +27,15 @@ module Apiwork
         class << self
           def build(target, context)
             new(target, context).build
+            merge_capability_shapes(target, context)
+          end
+
+          private
+
+          def merge_capability_shapes(target, context)
+            context.capability_shapes.each_value do |shape|
+              target.merge!(shape)
+            end
           end
         end
 

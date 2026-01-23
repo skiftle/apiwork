@@ -7,7 +7,6 @@ module Apiwork
         class Default < Base
           shape do
             reference context.schema_class.root_key.singular.to_sym
-            context.capability_shapes.each_value(&method(:merge!))
             object? :meta
           end
 
