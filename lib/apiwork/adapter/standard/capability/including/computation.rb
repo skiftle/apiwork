@@ -10,27 +10,9 @@ module Apiwork
               include_params = request.query[:include] || {}
 
               resolver = IncludesResolver.new(schema_class)
-              always = resolver.always_included
-              explicit = build_explicit_includes(include_params, schema_class)
-
-              includes = IncludesResolver.deep_merge_includes(always, explicit).keys
+              includes = IncludesResolver.merge(resolver.always_included, resolver.from_params(include_params)).keys
 
               result(data:, includes:, serialize_options: { include: include_params })
-            end
-
-            private
-
-            def build_explicit_includes(params, schema_class)
-              return {} if params.blank?
-
-              result = {}
-              params.each do |key, value|
-                key = key.to_sym
-                next if [false, 'false'].include?(value)
-
-                result[key] = value.is_a?(Hash) ? build_explicit_includes(value, schema_class) : {}
-              end
-              result
             end
           end
         end

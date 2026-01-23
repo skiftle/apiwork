@@ -12,7 +12,7 @@ module Apiwork
               filter_params = request.query[:filter]
               return result(data:) if filter_params.blank?
 
-              includes = IncludesResolver::AssociationExtractor.new(schema_class).extract_from_filter(filter_params).keys
+              includes = IncludesResolver.new(schema_class).from_params(filter_params).keys
               filtered = Filter.apply(data, filter_params, schema_class)
 
               result(includes:, data: filtered)
