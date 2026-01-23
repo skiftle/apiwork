@@ -5,10 +5,10 @@ module Apiwork
     class Standard
       module Capability
         class Filtering
-          class Result < Adapter::Capability::Result::Base
-            def apply
-              return result(data:) unless data.is_a?(ActiveRecord::Relation)
+          class Computation < Adapter::Capability::Computation::Base
+            scope :collection
 
+            def apply
               filter_params = request.query[:filter]
               return result(data:) if filter_params.blank?
 

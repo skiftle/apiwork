@@ -5,14 +5,15 @@ module Apiwork
     module Document
       module Collection
         class Base < Document::Base
-          attr_reader :additions, :data, :meta, :schema_class
+          attr_reader :additions, :capabilities, :data, :meta, :schema_class
 
-          def initialize(schema_class, data, additions, meta)
+          def initialize(schema_class, data, additions, capabilities, meta)
             super()
-            @schema_class = schema_class
-            @data = data
             @additions = additions
+            @capabilities = capabilities
+            @data = data
             @meta = meta
+            @schema_class = schema_class
           end
         end
       end

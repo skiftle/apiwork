@@ -3,9 +3,9 @@
 module Apiwork
   module Adapter
     module Capability
-      module Envelope
-        class Base
-          attr_reader :document_type, :options, :schema_class
+      module Computation
+        class ShapeContext
+          attr_reader :options, :schema_class
 
           delegate :array,
                    :array?,
@@ -39,23 +39,10 @@ module Apiwork
                    :uuid?,
                    to: :target
 
-          def initialize(context)
-            @document_type = context.document_type
-            @schema_class = context.schema_class
-            @options = context.options
-            @target = context.target
-          end
-
-          def build
-            raise NotImplementedError
-          end
-
-          def collection?
-            document_type == :collection
-          end
-
-          def record?
-            document_type == :record
+          def initialize(options:, schema_class:, target:)
+            @options = options
+            @schema_class = schema_class
+            @target = target
           end
 
           private

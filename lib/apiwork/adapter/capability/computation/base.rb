@@ -3,9 +3,24 @@
 module Apiwork
   module Adapter
     module Capability
-      module Result
+      module Computation
         class Base
           attr_reader :data, :options, :request, :schema_class
+
+          class << self
+            def scope(value = nil)
+              @scope = value if value
+              @scope
+            end
+
+            def envelope(&block)
+              if block
+                @envelope = Envelope.new(&block)
+              else
+                @envelope
+              end
+            end
+          end
 
           def initialize(context)
             @data = context.data

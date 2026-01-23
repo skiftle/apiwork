@@ -5,10 +5,21 @@ module Apiwork
     class Standard
       module Capability
         class Pagination
-          class Result < Adapter::Capability::Result::Base
-            def apply
-              return result(data:) unless data.is_a?(ActiveRecord::Relation)
+          class Computation < Adapter::Capability::Computation::Base
+            scope :collection
 
+            envelope do
+              shape do
+                pagination_type = options.strategy == :offset ? :offset_pagination : :cursor_pagination
+                reference :pagination, to: pagination_type
+              end
+
+              build do
+                json[:pagination] = additions[:pagination]
+              end
+            end
+
+            def apply
               paginated, pagination_result = paginate
               result(
                 data: paginated,

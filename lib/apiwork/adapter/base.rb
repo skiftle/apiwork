@@ -204,23 +204,23 @@ module Apiwork
       transform_response KeyTransformer
 
       def process_collection(collection, schema_class, state)
-        result, additions = apply_capabilities({ data: collection }, state)
+        result, additions = apply_capabilities({ data: collection }, state, document_type: :collection)
         serialize_options = result[:serialize_options] || {}
 
         rep = representation_instance(schema_class)
         serialized = rep.serialize_resource(result[:data], serialize_options:, context: state.context)
 
-        self.class.collection_document.new(schema_class, serialized, additions, state.meta).build
+        self.class.collection_document.new(schema_class, serialized, additions, capabilities, state.meta).build
       end
 
       def process_record(record, schema_class, state)
-        result, additions = apply_capabilities({ data: record }, state)
+        result, additions = apply_capabilities({ data: record }, state, document_type: :record)
         serialize_options = result[:serialize_options] || {}
 
         rep = representation_instance(schema_class)
         serialized = rep.serialize_resource(result[:data], serialize_options:, context: state.context)
 
-        self.class.record_document.new(schema_class, serialized, additions, state.meta).build
+        self.class.record_document.new(schema_class, serialized, additions, capabilities, state.meta).build
       end
 
       def process_error(error, state)
@@ -286,8 +286,8 @@ module Apiwork
         self.class.representation.new(schema_class)
       end
 
-      def apply_capabilities(data, state)
-        runner = CapabilityRunner.new(capabilities)
+      def apply_capabilities(data, state, document_type:)
+        runner = CapabilityRunner.new(capabilities, document_type:)
         runner.run(data, state)
       end
 

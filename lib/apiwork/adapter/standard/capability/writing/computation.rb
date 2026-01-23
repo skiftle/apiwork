@@ -5,7 +5,9 @@ module Apiwork
     class Standard
       module Capability
         class Writing
-          class Result < Adapter::Capability::Result::Base
+          class Computation < Adapter::Capability::Computation::Base
+            scope :record
+
             def apply
               validate_record!(data, schema_class)
               result(data:)

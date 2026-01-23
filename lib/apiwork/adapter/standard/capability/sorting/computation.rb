@@ -5,10 +5,10 @@ module Apiwork
     class Standard
       module Capability
         class Sorting
-          class Result < Adapter::Capability::Result::Base
-            def apply
-              return result(data:) unless data.is_a?(ActiveRecord::Relation)
+          class Computation < Adapter::Capability::Computation::Base
+            scope :collection
 
+            def apply
               sort_params = request.query[:sort]
               return result(data:) if sort_params.blank?
 

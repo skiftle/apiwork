@@ -13,14 +13,7 @@ module Apiwork
 
           api API
           contract Contract
-          result Result
-
-          envelope do
-            next unless collection?
-
-            pagination_type = options.strategy == :offset ? :offset_pagination : :cursor_pagination
-            reference :pagination, to: pagination_type
-          end
+          computation Computation
         end
       end
     end

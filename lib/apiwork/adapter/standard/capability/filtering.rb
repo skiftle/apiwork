@@ -11,7 +11,7 @@ module Apiwork
 
           api API
           contract Contract
-          result Result
+          computation Computation
         end
       end
     end

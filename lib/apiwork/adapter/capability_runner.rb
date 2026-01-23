@@ -3,8 +3,9 @@
 module Apiwork
   module Adapter
     class CapabilityRunner
-      def initialize(capabilities)
+      def initialize(capabilities, document_type:)
         @capabilities = capabilities
+        @document_type = document_type
       end
 
       def run(data, state)
@@ -53,6 +54,7 @@ module Apiwork
       def build_context(state)
         CapabilityContext.new(
           action: state.action,
+          document_type: @document_type,
           request: state.request,
           schema_class: state.schema_class,
           user_context: state.context,

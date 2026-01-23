@@ -10,10 +10,8 @@ module Apiwork
         class_attribute :_api_block
         class_attribute :_contract_class
         class_attribute :_contract_block
-        class_attribute :_envelope_class
-        class_attribute :_envelope_block
-        class_attribute :_result_class
-        class_attribute :_result_block
+        class_attribute :_computation_class
+        class_attribute :_computation_block
 
         class << self
           def capability_name(value = nil)
@@ -46,19 +44,11 @@ module Apiwork
             end
           end
 
-          def envelope(klass = nil, &block)
+          def computation(klass = nil, &block)
             if klass
-              self._envelope_class = klass
+              self._computation_class = klass
             elsif block
-              self._envelope_block = block
-            end
-          end
-
-          def result(klass = nil, &block)
-            if klass
-              self._result_class = klass
-            elsif block
-              self._result_block = block
+              self._computation_block = block
             end
           end
 
@@ -78,16 +68,8 @@ module Apiwork
             end
           end
 
-          def wrap_envelope_block(callable)
-            Class.new(Envelope::Base) do
-              define_method(:build) do
-                instance_exec(&callable)
-              end
-            end
-          end
-
-          def wrap_result_block(callable)
-            Class.new(Result::Base) do
+          def wrap_computation_block(callable)
+            Class.new(Computation::Base) do
               define_method(:apply) do
                 instance_exec(&callable)
               end
@@ -108,16 +90,9 @@ module Apiwork
             nil
           end
 
-          def envelope_class
-            return _envelope_class if _envelope_class
-            return wrap_envelope_block(_envelope_block) if _envelope_block
-
-            nil
-          end
-
-          def result_class
-            return _result_class if _result_class
-            return wrap_result_block(_result_block) if _result_block
+          def computation_class
+            return _computation_class if _computation_class
+            return wrap_computation_block(_computation_block) if _computation_block
 
             nil
           end
@@ -157,25 +132,33 @@ module Apiwork
         end
 
         def shape(shape_context)
-          klass = self.class.envelope_class
+          klass = self.class.computation_class
           return nil unless klass
 
+          envelope = klass.envelope
+          return nil unless envelope&.shape_block
+
+          scope = klass.scope
+          return nil if scope && scope != shape_context.type
+
           target = ::Apiwork::API::Object.new
-          context = Envelope::Context.new(
+          context = Computation::ShapeContext.new(
             target:,
-            document_type: shape_context.type,
             options: merged_config(shape_context.schema_class),
             schema_class: shape_context.schema_class,
           )
-          klass.new(context).build
+          context.instance_exec(&envelope.shape_block)
           target.params.empty? ? nil : target
         end
 
         def apply(data, adapter_context)
-          klass = self.class.result_class
+          klass = self.class.computation_class
           return ApplyResult.new(data:) unless klass
 
-          context = Result::Context.new(
+          scope = klass.scope
+          return ApplyResult.new(data:) if scope && scope != adapter_context.document_type
+
+          context = Computation::Context.new(
             data:,
             options: merged_config(adapter_context.schema_class),
             request: adapter_context.request,
