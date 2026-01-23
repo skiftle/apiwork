@@ -37,7 +37,6 @@ module Apiwork
         # @return [Hash{Symbol => Apiwork::Object}]
         def capability_shapes
           @capability_shapes ||= capabilities
-            .select { |capability| capability.applies_to_type?(type) }
             .each_with_object({}) do |capability, hash|
               shape = capability.shape(self)
               hash[capability.class.capability_name] = shape if shape

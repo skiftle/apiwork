@@ -6,8 +6,6 @@ module Apiwork
       module Capability
         class Sorting < Adapter::Capability::Base
           capability_name :sorting
-          applies_to :index
-          input :collection
 
           option :max_depth, default: 2, type: :integer
 

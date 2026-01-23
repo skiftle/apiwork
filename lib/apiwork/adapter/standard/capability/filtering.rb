@@ -6,8 +6,6 @@ module Apiwork
       module Capability
         class Filtering < Adapter::Capability::Base
           capability_name :filtering
-          applies_to :index
-          input :collection
 
           option :max_depth, default: 3, type: :integer
 

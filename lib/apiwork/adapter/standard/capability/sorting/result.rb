@@ -7,6 +7,8 @@ module Apiwork
         class Sorting
           class Result < Adapter::Capability::Result::Base
             def apply
+              return result(data:) unless data.is_a?(ActiveRecord::Relation)
+
               sort_params = request.query[:sort]
               return result(data:) if sort_params.blank?
 

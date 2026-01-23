@@ -7,6 +7,8 @@ module Apiwork
         class Filtering
           class Result < Adapter::Capability::Result::Base
             def apply
+              return result(data:) unless data.is_a?(ActiveRecord::Relation)
+
               filter_params = request.query[:filter]
               return result(data:) if filter_params.blank?
 

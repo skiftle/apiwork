@@ -21,22 +21,6 @@ module Apiwork
             @capability_name
           end
 
-          def applies_to(*action_types)
-            @applies_to = action_types.map(&:to_sym)
-          end
-
-          def applies_to_actions
-            @applies_to || []
-          end
-
-          def input(type)
-            @input_type = type
-          end
-
-          def input_type
-            @input_type || :any
-          end
-
           def request_transformer(klass, post: false)
             @request_transformers ||= []
             @request_transformers << { klass:, post: }
@@ -172,11 +156,6 @@ module Apiwork
           klass.new(context).build
         end
 
-        def applies_to_type?(type)
-          input = self.class.input_type
-          input == :any || input == type
-        end
-
         def shape(shape_context)
           klass = self.class.envelope_class
           return nil unless klass
@@ -184,6 +163,7 @@ module Apiwork
           target = ::Apiwork::API::Object.new
           context = Envelope::Context.new(
             target:,
+            document_type: shape_context.type,
             options: merged_config(shape_context.schema_class),
             schema_class: shape_context.schema_class,
           )
@@ -193,25 +173,15 @@ module Apiwork
 
         def apply(data, adapter_context)
           klass = self.class.result_class
+          return ApplyResult.new(data:) unless klass
 
-          if klass
-            context = Result::Context.new(
-              data:,
-              options: merged_config(adapter_context.schema_class),
-              request: adapter_context.request,
-              schema_class: adapter_context.schema_class,
-            )
-            klass.new(context).apply
-          else
-            ApplyResult.new(data:)
-          end
-        end
-
-        def applies?(action, data)
-          return true if self.class.applies_to_actions.empty?
-          return false unless self.class.applies_to_actions.include?(action.name)
-
-          valid_input?(data)
+          context = Result::Context.new(
+            data:,
+            options: merged_config(adapter_context.schema_class),
+            request: adapter_context.request,
+            schema_class: adapter_context.schema_class,
+          )
+          klass.new(context).apply
         end
 
         private
@@ -224,17 +194,6 @@ module Apiwork
           config.merge(schema_config)
         rescue ConfigurationError
           config
-        end
-
-        def valid_input?(data)
-          case self.class.input_type
-          when :collection
-            data.is_a?(ActiveRecord::Relation)
-          when :record
-            data.is_a?(ActiveRecord::Base)
-          else
-            true
-          end
         end
       end
     end

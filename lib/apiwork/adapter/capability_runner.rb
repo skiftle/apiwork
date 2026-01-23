@@ -9,12 +9,10 @@ module Apiwork
 
       def run(data, state)
         collection = data[:data]
-        applicable = @capabilities.select { |c| c.applies?(state.action, collection) }
-
-        return [data, {}] if applicable.empty?
+        return [data, {}] if @capabilities.empty?
 
         context = build_context(state)
-        transformed, additions, serialize_options = run_pipeline(applicable, collection, context)
+        transformed, additions, serialize_options = run_pipeline(@capabilities, collection, context)
 
         [{ serialize_options:, data: transformed }, additions]
       end

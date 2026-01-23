@@ -6,7 +6,6 @@ module Apiwork
       module Capability
         class Including < Adapter::Capability::Base
           capability_name :including
-          input :any
 
           contract Contract
           result Result

@@ -5,7 +5,7 @@ module Apiwork
     module Capability
       module Envelope
         class Base
-          attr_reader :options, :schema_class
+          attr_reader :document_type, :options, :schema_class
 
           delegate :array,
                    :array?,
@@ -40,6 +40,7 @@ module Apiwork
                    to: :target
 
           def initialize(context)
+            @document_type = context.document_type
             @schema_class = context.schema_class
             @options = context.options
             @target = context.target
@@ -47,6 +48,14 @@ module Apiwork
 
           def build
             raise NotImplementedError
+          end
+
+          def collection?
+            document_type == :collection
+          end
+
+          def record?
+            document_type == :record
           end
 
           private

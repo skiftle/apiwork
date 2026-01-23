@@ -6,8 +6,6 @@ module Apiwork
       module Capability
         class Writing < Adapter::Capability::Base
           capability_name :writing
-          applies_to :create, :update
-          input :record
 
           request_transformer OpFieldTransformer, post: true
 

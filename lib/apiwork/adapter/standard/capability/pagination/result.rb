@@ -7,6 +7,8 @@ module Apiwork
         class Pagination
           class Result < Adapter::Capability::Result::Base
             def apply
+              return result(data:) unless data.is_a?(ActiveRecord::Relation)
+
               paginated, pagination_result = paginate
               result(
                 data: paginated,
