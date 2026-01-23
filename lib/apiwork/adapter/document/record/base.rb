@@ -7,19 +7,19 @@ module Apiwork
         class Base < Document::Base
           document_type :record
 
-          attr_reader :additions, :capabilities, :data, :meta, :schema_class
+          attr_reader :capabilities, :data, :document, :meta, :schema_class
 
-          def initialize(schema_class, data, additions, capabilities, meta)
+          def initialize(schema_class, data, document, capabilities, meta)
             super()
-            @additions = additions
             @capabilities = capabilities
             @data = data
+            @document = document
             @meta = meta
             @schema_class = schema_class
           end
 
           def build
-            json.merge(collect_capability_builds).compact
+            json.merge(document).compact
           end
         end
       end

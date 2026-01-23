@@ -48,29 +48,6 @@ module Apiwork
         def build
           raise NotImplementedError
         end
-
-        private
-
-        def collect_capability_builds
-          capabilities.each_with_object({}) do |capability, result|
-            klass = capability.class.computation_class
-            next unless klass
-
-            envelope = klass.envelope
-            next unless envelope&.json_block
-
-            scope = klass.scope
-            next if scope && scope != self.class.document_type
-
-            context = Capability::Computation::BuildContext.new(
-              additions:,
-              schema_class:,
-              options: capability.config,
-            )
-            json_result = context.instance_exec(&envelope.json_block)
-            result.merge!(json_result) if json_result.is_a?(Hash)
-          end
-        end
       end
     end
   end

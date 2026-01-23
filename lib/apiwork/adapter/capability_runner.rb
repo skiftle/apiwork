@@ -13,21 +13,21 @@ module Apiwork
         return [data, {}] if @capabilities.empty?
 
         context = build_context(state)
-        transformed, additions, serialize_options = run_pipeline(@capabilities, collection, context)
+        transformed, document, serialize_options = run_pipeline(@capabilities, collection, context)
 
-        [{ serialize_options:, data: transformed }, additions]
+        [{ serialize_options:, data: transformed }, document]
       end
 
       private
 
       def run_pipeline(capabilities, collection, context)
-        additions = {}
+        document = {}
         serialize_options = {}
         includes = []
 
         data = capabilities.reduce(collection) do |current, capability|
           result = capability.apply(current, context)
-          additions.merge!(result.additions)
+          document.merge!(result.document) if result.document
           serialize_options.merge!(result.serialize_options || {})
           includes.concat(result.includes || [])
           result.data
@@ -35,7 +35,7 @@ module Apiwork
 
         preloaded = preload_associations(data, includes.uniq)
 
-        [preloaded, additions, serialize_options]
+        [preloaded, document, serialize_options]
       end
 
       def preload_associations(data, includes)

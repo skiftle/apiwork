@@ -12,14 +12,6 @@ module Apiwork
               @scope = value if value
               @scope
             end
-
-            def envelope(&block)
-              if block
-                @envelope = Envelope.new(&block)
-              else
-                @envelope
-              end
-            end
           end
 
           def initialize(context)
@@ -33,10 +25,10 @@ module Apiwork
             raise NotImplementedError
           end
 
-          def result(data: nil, includes: nil, serialize_options: nil, **additions)
+          def result(data: nil, document: nil, includes: nil, serialize_options: nil)
             ApplyResult.new(
-              additions:,
               data:,
+              document:,
               includes:,
               serialize_options:,
             )

@@ -8,22 +8,11 @@ module Apiwork
           class Computation < Adapter::Capability::Computation::Base
             scope :collection
 
-            envelope do
-              shape do
-                pagination_type = options.strategy == :offset ? :offset_pagination : :cursor_pagination
-                reference :pagination, to: pagination_type
-              end
-
-              json do
-                { pagination: additions[:pagination] }
-              end
-            end
-
             def apply
               paginated, pagination_result = paginate
               result(
                 data: paginated,
-                pagination: pagination_result[:pagination],
+                document: { pagination: pagination_result[:pagination] },
               )
             end
 

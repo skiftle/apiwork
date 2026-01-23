@@ -52,6 +52,11 @@ module Apiwork
             end
           end
 
+          def shape(&block)
+            @shape_block = block if block
+            @shape_block
+          end
+
           def wrap_api_block(callable)
             Class.new(API::Base) do
               define_method(:build) do
@@ -132,22 +137,20 @@ module Apiwork
         end
 
         def shape(shape_context)
+          shape_block = self.class.shape
+          return nil unless shape_block
+
           klass = self.class.computation_class
-          return nil unless klass
-
-          envelope = klass.envelope
-          return nil unless envelope&.shape_block
-
-          scope = klass.scope
+          scope = klass&.scope
           return nil if scope && scope != shape_context.type
 
           target = ::Apiwork::API::Object.new
-          context = Computation::ShapeContext.new(
+          context = ShapeContext.new(
             target:,
             options: merged_config(shape_context.schema_class),
             schema_class: shape_context.schema_class,
           )
-          context.instance_exec(&envelope.shape_block)
+          context.instance_exec(&shape_block)
           target.params.empty? ? nil : target
         end
 
