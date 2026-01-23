@@ -15,7 +15,7 @@ module Apiwork
               end
 
               build do
-                json[:pagination] = additions[:pagination]
+                { pagination: additions[:pagination] }
               end
             end
 

@@ -15,38 +15,11 @@ module Apiwork
             object? :meta
           end
 
-          def build
-            json = {
+          def json
+            {
               schema_class.root_key.plural.to_sym => data,
               meta: meta.presence,
             }
-
-            run_build_blocks(json, :collection)
-
-            json.compact
-          end
-
-          private
-
-          def run_build_blocks(json, document_type)
-            capabilities.each do |capability|
-              klass = capability.class.computation_class
-              next unless klass
-
-              envelope = klass.envelope
-              next unless envelope&.build_block
-
-              scope = klass.scope
-              next if scope && scope != document_type
-
-              context = Capability::Computation::BuildContext.new(
-                additions:,
-                json:,
-                schema_class:,
-                options: capability.config,
-              )
-              context.instance_exec(&envelope.build_block)
-            end
           end
         end
       end
