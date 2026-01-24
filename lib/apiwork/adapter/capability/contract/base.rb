@@ -108,22 +108,9 @@ module Apiwork
             raise NotImplementedError
           end
 
-          # @api public
-          # Access to API-level type checking.
-          #
-          # @return [API::Base] API context for type lookups
-          def api
-            @api ||= begin
-              context = API::Context.new(capabilities: nil, registrar: api_registrar)
-              API::Base.new(context)
-            end
-          end
-
           private
 
           attr_reader :registrar
-
-          delegate :api_registrar, to: :registrar
         end
       end
     end

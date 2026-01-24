@@ -59,21 +59,6 @@ Defines an action. Multiple calls to the same action merge definitions.
 
 ---
 
-### #api_registrar
-
-`#api_registrar`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L111)
-
-Returns a registrar for API-level types.
-Use this to define or resolve types at the API scope.
-
-**Returns**
-
-[Adapter::APIRegistrar](adapter-api-registrar) — the API registrar
-
----
-
 ### #enum
 
 `#enum(name, values:)`

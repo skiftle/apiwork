@@ -57,6 +57,11 @@ module Apiwork
 
               local_schema_class = schema_class
               registrar.object(type_name, schema_class: local_schema_class) do
+                if local_schema_class.variant?
+                  discriminator_name = local_schema_class.superclass.union.discriminator
+                  literal discriminator_name, value: local_schema_class.tag.to_s
+                end
+
                 local_schema_class.attributes.each do |name, attribute|
                   enum_option = attribute.enum ? { enum: name } : {}
                   of_option = attribute.of ? { of: attribute.of } : {}
@@ -144,60 +149,15 @@ module Apiwork
 
             def build_sti_response_union_type(visited: Set.new)
               union_type_name = schema_class.root_key.singular.to_sym
-              discriminator_name = schema_class.union.discriminator
-              builder = self
 
-              build_sti_union(union_type_name:, visited:) do |variant_schema_class, tag, visit_set|
-                variant_type_name = variant_schema_class.root_key.singular.to_sym
+              build_sti_union(union_type_name:, visited:) do |variant_schema_class, _tag, _visit_set|
+                variant_contract = registrar.find_contract_for_schema(variant_schema_class)
+                next nil unless variant_contract
 
-                unless registrar.api_registrar.type?(variant_type_name)
-                  association_type_map = {}
-                  variant_schema_class.associations.each do |name, association|
-                    association_type_map[name] = builder.send(:build_association_type, association, visited: visit_set)
-                  end
+                alias_name = variant_schema_class.root_key.singular.to_sym
+                registrar.import(variant_contract, as: alias_name)
 
-                  registrar.api_registrar.object(variant_type_name, schema_class: variant_schema_class) do
-                    literal discriminator_name, value: tag.to_s
-
-                    variant_schema_class.attributes.each do |name, attribute|
-                      enum_option = attribute.enum ? { enum: name } : {}
-                      param name,
-                            deprecated: attribute.deprecated,
-                            description: attribute.description,
-                            example: attribute.example,
-                            format: attribute.format,
-                            nullable: attribute.nullable?,
-                            type: attribute.type,
-                            **enum_option
-                    end
-
-                    variant_schema_class.associations.each do |name, association|
-                      association_type = association_type_map[name]
-
-                      base_options = {
-                        deprecated: association.deprecated,
-                        description: association.description,
-                        example: association.example,
-                        nullable: association.nullable?,
-                        optional: association.include != :always,
-                      }
-
-                      if association.singular?
-                        param name, type: association_type || :object, **base_options
-                      elsif association.collection?
-                        if association_type
-                          param name, type: :array, **base_options do
-                            of association_type
-                          end
-                        else
-                          param name, type: :array, **base_options
-                        end
-                      end
-                    end
-                  end
-                end
-
-                variant_type_name
+                alias_name
               end
             end
 

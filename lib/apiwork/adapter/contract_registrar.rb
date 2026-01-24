@@ -97,14 +97,6 @@ module Apiwork
                :union,
                to: :contract_class
 
-      # @api public
-      # Returns a registrar for API-level types.
-      # Use this to define or resolve types at the API scope.
-      # @return [Adapter::APIRegistrar] the API registrar
-      def api_registrar
-        @api_registrar ||= APIRegistrar.new(contract_class.api_class)
-      end
-
       private
 
       attr_reader :contract_class
