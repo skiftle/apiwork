@@ -4,15 +4,26 @@ module Apiwork
   module Adapter
     module Capability
       module API
+        # @api public
+        # Base class for capability API phase.
+        #
+        # API phase runs once per API at initialization time.
+        # Use it to register shared types used across all contracts.
         class Base
-          attr_reader :options,
-                      :registrar
+          # @api public
+          # @return [Features] feature detection for the API
+          attr_reader :features
+
+          # @api public
+          # @return [Configuration] capability options
+          attr_reader :options
 
           # @!method enum(name, values:)
           #   @api public
           #   Defines an enum type.
           #   @param name [Symbol] the enum name
           #   @param values [Array<String>] allowed values
+          #   @return [void]
 
           # @!method enum?(name)
           #   @api public
@@ -25,6 +36,7 @@ module Apiwork
           #   Defines a named object type.
           #   @param name [Symbol] the object name
           #   @yield block defining params
+          #   @return [void]
 
           # @!method type?(name)
           #   @api public
@@ -37,6 +49,7 @@ module Apiwork
           #   Defines a union type.
           #   @param name [Symbol] the union name
           #   @yield block defining variants
+          #   @return [void]
 
           delegate :enum,
                    :enum?,
@@ -45,38 +58,6 @@ module Apiwork
                    :union,
                    to: :registrar
 
-          # @!method filter_types
-          #   @api public
-          #   @return [Array<Symbol>] data types used in filterable attributes
-
-          # @!method nullable_filter_types
-          #   @api public
-          #   @return [Array<Symbol>] data types used in nullable filterable attributes
-
-          # @!method sortable?
-          #   @api public
-          #   @return [Boolean] true if any schema has sortable attributes or associations
-
-          # @!method filterable?
-          #   @api public
-          #   @return [Boolean] true if any schema has filterable attributes
-
-          # @!method resources?
-          #   @api public
-          #   @return [Boolean] true if the API has any resources registered
-
-          # @!method index_actions?
-          #   @api public
-          #   @return [Boolean] true if any resource has an index action
-
-          delegate :filter_types,
-                   :filterable?,
-                   :index_actions?,
-                   :nullable_filter_types,
-                   :resources?,
-                   :sortable?,
-                   to: :features
-
           def initialize(context)
             @registrar = context.registrar
             @features = context.features
@@ -84,17 +65,27 @@ module Apiwork
             @options = context.options
           end
 
+          # @api public
+          # Builds API-level types for this capability.
+          #
+          # Override this method to register shared types.
+          # @return [void]
           def build
             raise NotImplementedError
           end
 
+          # @api public
+          # Returns configured options for a specific key.
+          #
+          # @param key [Symbol] the option key
+          # @return [Object] the configured value
           def configured(key)
             features.options_for(@capability_name, key)
           end
 
           private
 
-          attr_reader :features
+          attr_reader :registrar
         end
       end
     end

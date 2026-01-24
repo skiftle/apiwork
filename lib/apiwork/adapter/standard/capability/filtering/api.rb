@@ -123,15 +123,15 @@ module Apiwork
             PRIMITIVES = %i[string integer decimal boolean datetime date uuid time binary number].freeze
 
             def build
-              return unless filterable?
+              return unless features.filterable?
 
               filter_types_to_register = Set.new
 
-              filter_types.each do |type|
+              features.filter_types.each do |type|
                 filter_types_to_register.add(determine_filter_type(type, nullable: false))
               end
 
-              nullable_filter_types.each do |type|
+              features.nullable_filter_types.each do |type|
                 filter_types_to_register.add(determine_filter_type(type, nullable: true))
               end
 
