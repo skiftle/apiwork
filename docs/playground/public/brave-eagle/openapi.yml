@@ -452,7 +452,6 @@ components:
         status:
           "$ref": "#/components/schemas/taskStatusFilter"
       type: object
-      description: A task representing work to be completed
     taskInclude:
       properties:
         assignee:
@@ -537,7 +536,6 @@ components:
           - desc
           type: string
       type: object
-      description: A task representing work to be completed
     taskStatusFilter:
       oneOf:
       - enum:

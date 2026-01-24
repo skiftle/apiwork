@@ -15,7 +15,6 @@
   },
   "response": {
     "body": {
-      "layer": "domain",
       "issues": [
         {
           "code": "max",
@@ -41,7 +40,8 @@
           ],
           "pointer": "/user/profile/website"
         }
-      ]
+      ],
+      "layer": "domain"
     },
     "status": 422
   }

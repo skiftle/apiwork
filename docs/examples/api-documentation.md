@@ -205,7 +205,6 @@ Content-Type: application/json
 
 ```json
 {
-  "layer": "contract",
   "issues": [
     {
       "code": "field_unknown",
@@ -226,7 +225,8 @@ Content-Type: application/json
       ],
       "pointer": "/task/assignee_id"
     }
-  ]
+  ],
+  "layer": "contract"
 }
 ```
 

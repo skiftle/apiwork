@@ -525,13 +525,22 @@ GET /bold_falcon/articles?filter[category][name][eq]=Technology
 
 ```json
 {
-  "layer": "contract",
   "issues": [
     {
-      "code": "association_schema_missing",
-      "detail": "Association schema missing",
+      "code": "field_unknown",
+      "detail": "Unknown field",
       "meta": {
-        "association": "category"
+        "allowed": [
+          "_and",
+          "_or",
+          "_not",
+          "title",
+          "status",
+          "view_count",
+          "rating",
+          "published_on"
+        ],
+        "field": "category"
       },
       "path": [
         "filter",
@@ -539,7 +548,8 @@ GET /bold_falcon/articles?filter[category][name][eq]=Technology
       ],
       "pointer": "/filter/category"
     }
-  ]
+  ],
+  "layer": "contract"
 }
 ```
 

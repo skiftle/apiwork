@@ -5,13 +5,22 @@
   },
   "response": {
     "body": {
-      "layer": "contract",
       "issues": [
         {
-          "code": "association_schema_missing",
-          "detail": "Association schema missing",
+          "code": "field_unknown",
+          "detail": "Unknown field",
           "meta": {
-            "association": "category"
+            "allowed": [
+              "_and",
+              "_or",
+              "_not",
+              "title",
+              "status",
+              "view_count",
+              "rating",
+              "published_on"
+            ],
+            "field": "category"
           },
           "path": [
             "filter",
@@ -19,7 +28,8 @@
           ],
           "pointer": "/filter/category"
         }
-      ]
+      ],
+      "layer": "contract"
     },
     "status": 400
   }

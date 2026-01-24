@@ -317,7 +317,6 @@ components:
         status:
           "$ref": "#/components/schemas/projectStatusFilter"
       type: object
-      description: A project with tasks and deadlines
     projectIndexSuccessResponseBody:
       properties:
         meta:
@@ -395,7 +394,6 @@ components:
           - desc
           type: string
       type: object
-      description: A project with tasks and deadlines
     projectStatusFilter:
       oneOf:
       - enum:

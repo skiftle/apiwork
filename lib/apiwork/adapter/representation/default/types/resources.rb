@@ -35,6 +35,27 @@ module Apiwork
               end
             end
 
+            def import_association_contract(association_schema, visited)
+              return nil if visited.include?(association_schema)
+
+              association_contract = registrar.find_contract_for_schema(association_schema)
+
+              unless association_contract
+                contract_name = association_schema.name.sub(/Schema$/, 'Contract')
+                association_contract = begin
+                  contract_name.constantize
+                rescue NameError
+                  nil
+                end
+              end
+
+              return nil unless association_contract
+
+              alias_name = association_schema.root_key.singular.to_sym
+              registrar.import(association_contract, as: alias_name)
+              alias_name
+            end
+
             private
 
             def build_enums
@@ -243,27 +264,6 @@ module Apiwork
 
               namespace = schema_class.name.deconstantize
               "#{namespace}::#{reflection.klass.name.demodulize}Schema".safe_constantize
-            end
-
-            def import_association_contract(association_schema, visited)
-              return nil if visited.include?(association_schema)
-
-              association_contract = registrar.find_contract_for_schema(association_schema)
-
-              unless association_contract
-                contract_name = association_schema.name.sub(/Schema$/, 'Contract')
-                association_contract = begin
-                  contract_name.constantize
-                rescue NameError
-                  nil
-                end
-              end
-
-              return nil unless association_contract
-
-              alias_name = association_schema.root_key.singular.to_sym
-              registrar.import(association_contract, as: alias_name)
-              alias_name
             end
           end
         end

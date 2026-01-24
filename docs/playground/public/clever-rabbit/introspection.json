@@ -566,6 +566,51 @@
       "type": "object",
       "variants": []
     },
+    "line_item_create_payload": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "product_name": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "quantity": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": true,
+          "optional": true,
+          "type": "integer",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "unit_price": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": true,
+          "optional": true,
+          "type": "decimal",
+          "max": null,
+          "min": null
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
     "line_item_nested_create_payload": {
       "deprecated": false,
       "description": null,
@@ -733,6 +778,51 @@
           "max": null,
           "min": null
         },
+        "product_name": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "quantity": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": true,
+          "optional": true,
+          "type": "integer",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "unit_price": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": true,
+          "optional": true,
+          "type": "decimal",
+          "max": null,
+          "min": null
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "line_item_update_payload": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {
         "product_name": {
           "default": null,
           "deprecated": false,
@@ -1276,6 +1366,230 @@
       "type": "object",
       "variants": []
     },
+    "order_nested_create_payload": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "_op": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "literal",
+          "value": "create"
+        },
+        "id": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "line_items": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "array",
+          "max": null,
+          "min": null,
+          "of": {
+            "default": null,
+            "deprecated": null,
+            "description": null,
+            "example": null,
+            "nullable": null,
+            "optional": null,
+            "type": "ref",
+            "ref": "line_item_nested_payload"
+          },
+          "shape": {}
+        },
+        "order_number": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "shipping_address": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "ref",
+          "ref": "shipping_address_nested_payload"
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "order_nested_delete_payload": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "_op": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "literal",
+          "value": "delete"
+        },
+        "id": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "order_nested_payload": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": "_op",
+      "example": null,
+      "shape": {},
+      "type": "union",
+      "variants": [
+        {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "ref",
+          "ref": "order_nested_create_payload"
+        },
+        {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "ref",
+          "ref": "order_nested_update_payload"
+        },
+        {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "ref",
+          "ref": "order_nested_delete_payload"
+        }
+      ]
+    },
+    "order_nested_update_payload": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "_op": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "literal",
+          "value": "update"
+        },
+        "id": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "line_items": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "array",
+          "max": null,
+          "min": null,
+          "of": {
+            "default": null,
+            "deprecated": null,
+            "description": null,
+            "example": null,
+            "nullable": null,
+            "optional": null,
+            "type": "ref",
+            "ref": "line_item_nested_payload"
+          },
+          "shape": {}
+        },
+        "order_number": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "shipping_address": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "ref",
+          "ref": "shipping_address_nested_payload"
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
     "order_page": {
       "deprecated": false,
       "description": null,
@@ -1526,6 +1840,64 @@
       "type": "object",
       "variants": []
     },
+    "shipping_address_create_payload": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "city": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "country": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "postal_code": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "street": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
     "shipping_address_nested_create_payload": {
       "deprecated": false,
       "description": null,
@@ -1719,6 +2091,64 @@
           "min": null
         },
         "id": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "postal_code": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "street": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "shipping_address_update_payload": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "city": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "country": {
           "default": null,
           "deprecated": false,
           "description": null,

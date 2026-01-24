@@ -15,7 +15,6 @@
   },
   "response": {
     "body": {
-      "layer": "contract",
       "issues": [
         {
           "code": "field_unknown",
@@ -36,7 +35,8 @@
           ],
           "pointer": "/task/assignee_id"
         }
-      ]
+      ],
+      "layer": "contract"
     },
     "status": 400
   }

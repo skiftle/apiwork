@@ -121,7 +121,6 @@ export interface TaskCreateSuccessResponseBody {
   task: Task;
 }
 
-/** A task representing work to be completed */
 export interface TaskFilter {
   _and?: TaskFilter[];
   _not?: TaskFilter;
@@ -155,7 +154,6 @@ export interface TaskShowSuccessResponseBody {
   task: Task;
 }
 
-/** A task representing work to be completed */
 export interface TaskSort {
   createdAt?: SortDirection;
   dueDate?: SortDirection;

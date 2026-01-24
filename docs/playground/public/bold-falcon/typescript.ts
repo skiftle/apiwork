@@ -27,7 +27,6 @@ export interface ArticleFilter {
   _and?: ArticleFilter[];
   _not?: ArticleFilter;
   _or?: ArticleFilter[];
-  category?: CategoryFilter;
   publishedOn?: NullableDateFilter | string;
   rating?: NullableDecimalFilter | number;
   status?: ArticleStatusFilter;
@@ -162,14 +161,6 @@ export interface Category {
   id: string;
   name: string;
   slug: string;
-}
-
-export interface CategoryFilter {
-  _and?: CategoryFilter[];
-  _not?: CategoryFilter;
-  _or?: CategoryFilter[];
-  name?: StringFilter | string;
-  slug?: StringFilter | string;
 }
 
 export interface DateFilterBetween {

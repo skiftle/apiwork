@@ -1200,6 +1200,726 @@
       "type": "object",
       "variants": []
     },
+    "profile_nested_create_payload": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "_op": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "literal",
+          "value": "create"
+        },
+        "addresses": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "array",
+          "max": null,
+          "min": null,
+          "of": {
+            "default": null,
+            "deprecated": null,
+            "description": null,
+            "example": null,
+            "nullable": null,
+            "optional": null,
+            "type": "object",
+            "partial": null,
+            "shape": {
+              "city": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": false,
+                "type": "string",
+                "format": null,
+                "max": null,
+                "min": null
+              },
+              "primary": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": false,
+                "type": "boolean"
+              },
+              "street": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": false,
+                "type": "string",
+                "format": null,
+                "max": null,
+                "min": null
+              },
+              "zip": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": false,
+                "type": "string",
+                "format": null,
+                "max": null,
+                "min": null
+              }
+            }
+          },
+          "shape": {
+            "city": {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "string",
+              "format": null,
+              "max": null,
+              "min": null
+            },
+            "primary": {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "boolean"
+            },
+            "street": {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "string",
+              "format": null,
+              "max": null,
+              "min": null
+            },
+            "zip": {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "string",
+              "format": null,
+              "max": null,
+              "min": null
+            }
+          }
+        },
+        "email": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": "email",
+          "max": null,
+          "min": null
+        },
+        "id": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "metadata": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "unknown"
+        },
+        "name": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "preferences": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "object",
+          "partial": false,
+          "shape": {
+            "notifications": {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "object",
+              "partial": false,
+              "shape": {
+                "email": {
+                  "default": null,
+                  "deprecated": false,
+                  "description": null,
+                  "example": null,
+                  "nullable": false,
+                  "optional": false,
+                  "type": "boolean"
+                },
+                "push": {
+                  "default": null,
+                  "deprecated": false,
+                  "description": null,
+                  "example": null,
+                  "nullable": false,
+                  "optional": false,
+                  "type": "boolean"
+                }
+              }
+            },
+            "ui": {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "object",
+              "partial": false,
+              "shape": {
+                "sidebar_collapsed": {
+                  "default": null,
+                  "deprecated": false,
+                  "description": null,
+                  "example": null,
+                  "nullable": false,
+                  "optional": false,
+                  "type": "boolean"
+                },
+                "theme": {
+                  "default": null,
+                  "deprecated": false,
+                  "description": null,
+                  "example": null,
+                  "nullable": false,
+                  "optional": false,
+                  "type": "string",
+                  "format": null,
+                  "max": null,
+                  "min": null
+                }
+              }
+            }
+          }
+        },
+        "settings": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "object",
+          "partial": false,
+          "shape": {
+            "language": {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "string",
+              "format": null,
+              "max": null,
+              "min": null
+            },
+            "notifications": {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "boolean"
+            },
+            "theme": {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "string",
+              "format": null,
+              "max": null,
+              "min": null
+            }
+          }
+        },
+        "tags": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "array",
+          "max": null,
+          "min": null,
+          "of": {
+            "default": null,
+            "deprecated": null,
+            "description": null,
+            "example": null,
+            "nullable": null,
+            "optional": null,
+            "type": "string",
+            "format": null,
+            "max": null,
+            "min": null
+          },
+          "shape": {}
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "profile_nested_delete_payload": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "_op": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "literal",
+          "value": "delete"
+        },
+        "id": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "profile_nested_payload": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": "_op",
+      "example": null,
+      "shape": {},
+      "type": "union",
+      "variants": [
+        {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "ref",
+          "ref": "profile_nested_create_payload"
+        },
+        {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "ref",
+          "ref": "profile_nested_update_payload"
+        },
+        {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "ref",
+          "ref": "profile_nested_delete_payload"
+        }
+      ]
+    },
+    "profile_nested_update_payload": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "_op": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "literal",
+          "value": "update"
+        },
+        "addresses": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "array",
+          "max": null,
+          "min": null,
+          "of": {
+            "default": null,
+            "deprecated": null,
+            "description": null,
+            "example": null,
+            "nullable": null,
+            "optional": null,
+            "type": "object",
+            "partial": null,
+            "shape": {
+              "city": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": false,
+                "type": "string",
+                "format": null,
+                "max": null,
+                "min": null
+              },
+              "primary": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": false,
+                "type": "boolean"
+              },
+              "street": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": false,
+                "type": "string",
+                "format": null,
+                "max": null,
+                "min": null
+              },
+              "zip": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": false,
+                "type": "string",
+                "format": null,
+                "max": null,
+                "min": null
+              }
+            }
+          },
+          "shape": {
+            "city": {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "string",
+              "format": null,
+              "max": null,
+              "min": null
+            },
+            "primary": {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "boolean"
+            },
+            "street": {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "string",
+              "format": null,
+              "max": null,
+              "min": null
+            },
+            "zip": {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "string",
+              "format": null,
+              "max": null,
+              "min": null
+            }
+          }
+        },
+        "email": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": "email",
+          "max": null,
+          "min": null
+        },
+        "id": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "metadata": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "unknown"
+        },
+        "name": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "preferences": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "object",
+          "partial": false,
+          "shape": {
+            "notifications": {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "object",
+              "partial": false,
+              "shape": {
+                "email": {
+                  "default": null,
+                  "deprecated": false,
+                  "description": null,
+                  "example": null,
+                  "nullable": false,
+                  "optional": false,
+                  "type": "boolean"
+                },
+                "push": {
+                  "default": null,
+                  "deprecated": false,
+                  "description": null,
+                  "example": null,
+                  "nullable": false,
+                  "optional": false,
+                  "type": "boolean"
+                }
+              }
+            },
+            "ui": {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "object",
+              "partial": false,
+              "shape": {
+                "sidebar_collapsed": {
+                  "default": null,
+                  "deprecated": false,
+                  "description": null,
+                  "example": null,
+                  "nullable": false,
+                  "optional": false,
+                  "type": "boolean"
+                },
+                "theme": {
+                  "default": null,
+                  "deprecated": false,
+                  "description": null,
+                  "example": null,
+                  "nullable": false,
+                  "optional": false,
+                  "type": "string",
+                  "format": null,
+                  "max": null,
+                  "min": null
+                }
+              }
+            }
+          }
+        },
+        "settings": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "object",
+          "partial": false,
+          "shape": {
+            "language": {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "string",
+              "format": null,
+              "max": null,
+              "min": null
+            },
+            "notifications": {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "boolean"
+            },
+            "theme": {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "string",
+              "format": null,
+              "max": null,
+              "min": null
+            }
+          }
+        },
+        "tags": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "array",
+          "max": null,
+          "min": null,
+          "of": {
+            "default": null,
+            "deprecated": null,
+            "description": null,
+            "example": null,
+            "nullable": null,
+            "optional": null,
+            "type": "string",
+            "format": null,
+            "max": null,
+            "min": null
+          },
+          "shape": {}
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
     "profile_page": {
       "deprecated": false,
       "description": null,

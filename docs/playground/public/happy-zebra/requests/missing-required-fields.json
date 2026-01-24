@@ -11,7 +11,6 @@
   },
   "response": {
     "body": {
-      "layer": "contract",
       "issues": [
         {
           "code": "field_missing",
@@ -39,7 +38,8 @@
           ],
           "pointer": "/user/username"
         }
-      ]
+      ],
+      "layer": "contract"
     },
     "status": 400
   }

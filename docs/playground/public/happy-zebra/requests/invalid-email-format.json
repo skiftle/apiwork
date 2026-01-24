@@ -11,7 +11,6 @@
   },
   "response": {
     "body": {
-      "layer": "domain",
       "issues": [
         {
           "code": "invalid",
@@ -23,7 +22,8 @@
           ],
           "pointer": "/user/email"
         }
-      ]
+      ],
+      "layer": "domain"
     },
     "status": 422
   }

@@ -47,7 +47,6 @@ export interface ProjectCreateSuccessResponseBody {
   project: Project;
 }
 
-/** A project with tasks and deadlines */
 export interface ProjectFilter {
   _and?: ProjectFilter[];
   _not?: ProjectFilter;
@@ -76,7 +75,6 @@ export interface ProjectShowSuccessResponseBody {
   project: Project;
 }
 
-/** A project with tasks and deadlines */
 export interface ProjectSort {
   createdAt?: SortDirection;
   deadline?: SortDirection;

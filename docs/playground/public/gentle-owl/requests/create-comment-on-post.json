@@ -13,7 +13,6 @@
   },
   "response": {
     "body": {
-      "layer": "contract",
       "issues": [
         {
           "code": "field_unknown",
@@ -47,7 +46,8 @@
           ],
           "pointer": "/comment/commentable_id"
         }
-      ]
+      ],
+      "layer": "contract"
     },
     "status": 400
   }

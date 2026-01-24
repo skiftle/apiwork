@@ -206,7 +206,6 @@ Content-Type: application/json
 
 ```json
 {
-  "layer": "domain",
   "issues": [
     {
       "code": "invalid",
@@ -218,7 +217,8 @@ Content-Type: application/json
       ],
       "pointer": "/user/email"
     }
-  ]
+  ],
+  "layer": "domain"
 }
 ```
 
@@ -245,7 +245,6 @@ Content-Type: application/json
 
 ```json
 {
-  "layer": "contract",
   "issues": [
     {
       "code": "field_missing",
@@ -273,7 +272,8 @@ Content-Type: application/json
       ],
       "pointer": "/user/username"
     }
-  ]
+  ],
+  "layer": "contract"
 }
 ```
 
@@ -304,7 +304,6 @@ Content-Type: application/json
 
 ```json
 {
-  "layer": "domain",
   "issues": [
     {
       "code": "max",
@@ -330,7 +329,8 @@ Content-Type: application/json
       ],
       "pointer": "/user/profile/website"
     }
-  ]
+  ],
+  "layer": "domain"
 }
 ```
 
@@ -435,7 +435,6 @@ Content-Type: application/json
 
 ```json
 {
-  "layer": "domain",
   "issues": [
     {
       "code": "min",
@@ -481,7 +480,8 @@ Content-Type: application/json
       ],
       "pointer": "/user/posts/0/comments/0/author"
     }
-  ]
+  ],
+  "layer": "domain"
 }
 ```
 

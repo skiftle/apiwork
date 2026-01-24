@@ -221,7 +221,6 @@ Content-Type: application/json
 
 ```json
 {
-  "layer": "contract",
   "issues": [
     {
       "code": "field_unknown",
@@ -255,7 +254,8 @@ Content-Type: application/json
       ],
       "pointer": "/comment/commentable_id"
     }
-  ]
+  ],
+  "layer": "contract"
 }
 ```
 
@@ -284,7 +284,6 @@ Content-Type: application/json
 
 ```json
 {
-  "layer": "contract",
   "issues": [
     {
       "code": "field_unknown",
@@ -318,7 +317,8 @@ Content-Type: application/json
       ],
       "pointer": "/comment/commentable_id"
     }
-  ]
+  ],
+  "layer": "contract"
 }
 ```
 
@@ -337,7 +337,6 @@ GET /gentle_owl/comments?filter[commentable_type][eq]=GentleOwl::Post
 
 ```json
 {
-  "layer": "contract",
   "issues": [
     {
       "code": "field_unknown",
@@ -355,7 +354,8 @@ GET /gentle_owl/comments?filter[commentable_type][eq]=GentleOwl::Post
       ],
       "pointer": "/filter"
     }
-  ]
+  ],
+  "layer": "contract"
 }
 ```
 

@@ -138,14 +138,6 @@ export const ErrorResponseBodySchema = z.object({
   layer: LayerSchema
 });
 
-export const CategoryFilterSchema: z.ZodType<CategoryFilter> = z.lazy(() => z.object({
-  _and: z.array(CategoryFilterSchema).optional(),
-  _not: CategoryFilterSchema.optional(),
-  _or: z.array(CategoryFilterSchema).optional(),
-  name: z.union([z.string(), StringFilterSchema]).optional(),
-  slug: z.union([z.string(), StringFilterSchema]).optional()
-}));
-
 export const ArticleCreateSuccessResponseBodySchema = z.object({
   article: ArticleSchema,
   meta: z.record(z.string(), z.unknown()).optional()
@@ -171,7 +163,6 @@ export const ArticleFilterSchema: z.ZodType<ArticleFilter> = z.lazy(() => z.obje
   _and: z.array(ArticleFilterSchema).optional(),
   _not: ArticleFilterSchema.optional(),
   _or: z.array(ArticleFilterSchema).optional(),
-  category: CategoryFilterSchema.optional(),
   publishedOn: z.union([z.iso.date(), NullableDateFilterSchema]).optional(),
   rating: z.union([z.number(), NullableDecimalFilterSchema]).optional(),
   status: ArticleStatusFilterSchema.optional(),
@@ -287,7 +278,6 @@ export interface ArticleFilter {
   _and?: ArticleFilter[];
   _not?: ArticleFilter;
   _or?: ArticleFilter[];
-  category?: CategoryFilter;
   publishedOn?: NullableDateFilter | string;
   rating?: NullableDecimalFilter | number;
   status?: ArticleStatusFilter;
@@ -422,14 +412,6 @@ export interface Category {
   id: string;
   name: string;
   slug: string;
-}
-
-export interface CategoryFilter {
-  _and?: CategoryFilter[];
-  _not?: CategoryFilter;
-  _or?: CategoryFilter[];
-  name?: StringFilter | string;
-  slug?: StringFilter | string;
 }
 
 export interface DateFilterBetween {
