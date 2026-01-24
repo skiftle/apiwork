@@ -9,7 +9,7 @@ module Apiwork
             def build
               build_enums
               build_payload_types
-              build_nested_payload_union if api_class.schemas.nested_writable?(schema_class)
+              build_nested_payload_union if api_class.schema_registry.nested_writable?(schema_class)
 
               root_key = schema_class.root_key.singular.to_sym
 

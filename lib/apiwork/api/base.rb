@@ -20,7 +20,7 @@ module Apiwork
       class << self
         attr_reader :enum_registry,
                     :export_configs,
-                    :schemas,
+                    :schema_registry,
                     :structure,
                     :type_registry
 
@@ -518,7 +518,7 @@ module Apiwork
           @structure = Structure.new(path)
           @type_registry = TypeRegistry.new
           @enum_registry = EnumRegistry.new
-          @schemas = Schemas.new
+          @schema_registry = SchemaRegistry.new
           @built_contracts = Set.new
           @key_format = :keep
           @path_format = :keep
@@ -629,7 +629,10 @@ module Apiwork
           visited = Set.new
           @structure.each_resource do |resource|
             schema_class = resource.resolve_contract_class&.schema_class
-            mark_writable_associations(schema_class, visited) if schema_class
+            next unless schema_class
+
+            schema_registry.register(schema_class)
+            mark_writable_associations(schema_class, visited)
           end
         end
 
@@ -644,7 +647,8 @@ module Apiwork
             target_schema = resolve_target_schema(association, schema_class)
             next unless target_schema
 
-            schemas.mark(target_schema, :nested_writable)
+            schema_registry.register(target_schema)
+            schema_registry.mark(target_schema, :nested_writable)
             mark_writable_associations(target_schema, visited)
           end
         end
