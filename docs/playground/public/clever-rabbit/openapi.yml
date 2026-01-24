@@ -183,65 +183,6 @@ components:
       - productName
       - quantity
       - unitPrice
-    lineItemNestedCreatePayload:
-      properties:
-        _op:
-          const: create
-          type: string
-        id:
-          type: string
-        productName:
-          type: string
-        quantity:
-          type:
-          - integer
-          - 'null'
-        unitPrice:
-          type:
-          - number
-          - 'null'
-      type: object
-      required:
-      - productName
-    lineItemNestedDeletePayload:
-      properties:
-        _op:
-          const: delete
-          type: string
-        id:
-          type: string
-      type: object
-      required:
-      - id
-    lineItemNestedPayload:
-      oneOf:
-      - "$ref": "#/components/schemas/lineItemNestedCreatePayload"
-      - "$ref": "#/components/schemas/lineItemNestedUpdatePayload"
-      - "$ref": "#/components/schemas/lineItemNestedDeletePayload"
-      discriminator:
-        mapping:
-          create: "#/components/schemas/lineItemNestedCreatePayload"
-          update: "#/components/schemas/lineItemNestedUpdatePayload"
-          delete: "#/components/schemas/lineItemNestedDeletePayload"
-        propertyName: _op
-    lineItemNestedUpdatePayload:
-      properties:
-        _op:
-          const: update
-          type: string
-        id:
-          type: string
-        productName:
-          type: string
-        quantity:
-          type:
-          - integer
-          - 'null'
-        unitPrice:
-          type:
-          - number
-          - 'null'
-      type: object
     nullableStringFilter:
       properties:
         contains:
@@ -320,12 +261,12 @@ components:
       properties:
         lineItems:
           items:
-            "$ref": "#/components/schemas/lineItemNestedPayload"
+            "$ref": "#/components/schemas/orderLineItemNestedPayload"
           type: array
         orderNumber:
           type: string
         shippingAddress:
-          "$ref": "#/components/schemas/shippingAddressNestedPayload"
+          "$ref": "#/components/schemas/orderShippingAddressNestedPayload"
       type: object
       required:
       - orderNumber
@@ -371,6 +312,65 @@ components:
       required:
       - orders
       - pagination
+    orderLineItemNestedCreatePayload:
+      properties:
+        _op:
+          const: create
+          type: string
+        id:
+          type: string
+        productName:
+          type: string
+        quantity:
+          type:
+          - integer
+          - 'null'
+        unitPrice:
+          type:
+          - number
+          - 'null'
+      type: object
+      required:
+      - productName
+    orderLineItemNestedDeletePayload:
+      properties:
+        _op:
+          const: delete
+          type: string
+        id:
+          type: string
+      type: object
+      required:
+      - id
+    orderLineItemNestedPayload:
+      oneOf:
+      - "$ref": "#/components/schemas/orderLineItemNestedCreatePayload"
+      - "$ref": "#/components/schemas/orderLineItemNestedUpdatePayload"
+      - "$ref": "#/components/schemas/orderLineItemNestedDeletePayload"
+      discriminator:
+        mapping:
+          create: "#/components/schemas/orderLineItemNestedCreatePayload"
+          update: "#/components/schemas/orderLineItemNestedUpdatePayload"
+          delete: "#/components/schemas/orderLineItemNestedDeletePayload"
+        propertyName: _op
+    orderLineItemNestedUpdatePayload:
+      properties:
+        _op:
+          const: update
+          type: string
+        id:
+          type: string
+        productName:
+          type: string
+        quantity:
+          type:
+          - integer
+          - 'null'
+        unitPrice:
+          type:
+          - number
+          - 'null'
+      type: object
     orderPage:
       properties:
         number:
@@ -380,6 +380,64 @@ components:
           type: integer
           minimum: 1
           maximum: 100
+      type: object
+    orderShippingAddressNestedCreatePayload:
+      properties:
+        _op:
+          const: create
+          type: string
+        city:
+          type: string
+        country:
+          type: string
+        id:
+          type: string
+        postalCode:
+          type: string
+        street:
+          type: string
+      type: object
+      required:
+      - city
+      - country
+      - postalCode
+      - street
+    orderShippingAddressNestedDeletePayload:
+      properties:
+        _op:
+          const: delete
+          type: string
+        id:
+          type: string
+      type: object
+      required:
+      - id
+    orderShippingAddressNestedPayload:
+      oneOf:
+      - "$ref": "#/components/schemas/orderShippingAddressNestedCreatePayload"
+      - "$ref": "#/components/schemas/orderShippingAddressNestedUpdatePayload"
+      - "$ref": "#/components/schemas/orderShippingAddressNestedDeletePayload"
+      discriminator:
+        mapping:
+          create: "#/components/schemas/orderShippingAddressNestedCreatePayload"
+          update: "#/components/schemas/orderShippingAddressNestedUpdatePayload"
+          delete: "#/components/schemas/orderShippingAddressNestedDeletePayload"
+        propertyName: _op
+    orderShippingAddressNestedUpdatePayload:
+      properties:
+        _op:
+          const: update
+          type: string
+        city:
+          type: string
+        country:
+          type: string
+        id:
+          type: string
+        postalCode:
+          type: string
+        street:
+          type: string
       type: object
     orderShowSuccessResponseBody:
       properties:
@@ -408,12 +466,12 @@ components:
       properties:
         lineItems:
           items:
-            "$ref": "#/components/schemas/lineItemNestedPayload"
+            "$ref": "#/components/schemas/orderLineItemNestedPayload"
           type: array
         orderNumber:
           type: string
         shippingAddress:
-          "$ref": "#/components/schemas/shippingAddressNestedPayload"
+          "$ref": "#/components/schemas/orderShippingAddressNestedPayload"
       type: object
     orderUpdateSuccessResponseBody:
       properties:
@@ -444,61 +502,3 @@ components:
       - id
       - postalCode
       - street
-    shippingAddressNestedCreatePayload:
-      properties:
-        _op:
-          const: create
-          type: string
-        city:
-          type: string
-        country:
-          type: string
-        id:
-          type: string
-        postalCode:
-          type: string
-        street:
-          type: string
-      type: object
-      required:
-      - city
-      - country
-      - postalCode
-      - street
-    shippingAddressNestedDeletePayload:
-      properties:
-        _op:
-          const: delete
-          type: string
-        id:
-          type: string
-      type: object
-      required:
-      - id
-    shippingAddressNestedPayload:
-      oneOf:
-      - "$ref": "#/components/schemas/shippingAddressNestedCreatePayload"
-      - "$ref": "#/components/schemas/shippingAddressNestedUpdatePayload"
-      - "$ref": "#/components/schemas/shippingAddressNestedDeletePayload"
-      discriminator:
-        mapping:
-          create: "#/components/schemas/shippingAddressNestedCreatePayload"
-          update: "#/components/schemas/shippingAddressNestedUpdatePayload"
-          delete: "#/components/schemas/shippingAddressNestedDeletePayload"
-        propertyName: _op
-    shippingAddressNestedUpdatePayload:
-      properties:
-        _op:
-          const: update
-          type: string
-        city:
-          type: string
-        country:
-          type: string
-        id:
-          type: string
-        postalCode:
-          type: string
-        street:
-          type: string
-      type: object

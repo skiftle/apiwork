@@ -20,29 +20,6 @@ export interface LineItem {
   unitPrice: null | number;
 }
 
-export interface LineItemNestedCreatePayload {
-  _op?: 'create';
-  id?: string;
-  productName: string;
-  quantity?: null | number;
-  unitPrice?: null | number;
-}
-
-export interface LineItemNestedDeletePayload {
-  _op?: 'delete';
-  id: string;
-}
-
-export type LineItemNestedPayload = LineItemNestedCreatePayload | LineItemNestedUpdatePayload | LineItemNestedDeletePayload;
-
-export interface LineItemNestedUpdatePayload {
-  _op?: 'update';
-  id?: string;
-  productName?: string;
-  quantity?: null | number;
-  unitPrice?: null | number;
-}
-
 export interface NullableStringFilter {
   contains?: string;
   endsWith?: string;
@@ -72,9 +49,9 @@ export interface Order {
 }
 
 export interface OrderCreatePayload {
-  lineItems?: LineItemNestedPayload[];
+  lineItems?: OrderLineItemNestedPayload[];
   orderNumber: string;
-  shippingAddress?: ShippingAddressNestedPayload;
+  shippingAddress?: OrderShippingAddressNestedPayload;
 }
 
 export interface OrderCreateSuccessResponseBody {
@@ -95,9 +72,57 @@ export interface OrderIndexSuccessResponseBody {
   pagination: OffsetPagination;
 }
 
+export interface OrderLineItemNestedCreatePayload {
+  _op?: 'create';
+  id?: string;
+  productName: string;
+  quantity?: null | number;
+  unitPrice?: null | number;
+}
+
+export interface OrderLineItemNestedDeletePayload {
+  _op?: 'delete';
+  id: string;
+}
+
+export type OrderLineItemNestedPayload = OrderLineItemNestedCreatePayload | OrderLineItemNestedUpdatePayload | OrderLineItemNestedDeletePayload;
+
+export interface OrderLineItemNestedUpdatePayload {
+  _op?: 'update';
+  id?: string;
+  productName?: string;
+  quantity?: null | number;
+  unitPrice?: null | number;
+}
+
 export interface OrderPage {
   number?: number;
   size?: number;
+}
+
+export interface OrderShippingAddressNestedCreatePayload {
+  _op?: 'create';
+  city: string;
+  country: string;
+  id?: string;
+  postalCode: string;
+  street: string;
+}
+
+export interface OrderShippingAddressNestedDeletePayload {
+  _op?: 'delete';
+  id: string;
+}
+
+export type OrderShippingAddressNestedPayload = OrderShippingAddressNestedCreatePayload | OrderShippingAddressNestedUpdatePayload | OrderShippingAddressNestedDeletePayload;
+
+export interface OrderShippingAddressNestedUpdatePayload {
+  _op?: 'update';
+  city?: string;
+  country?: string;
+  id?: string;
+  postalCode?: string;
+  street?: string;
 }
 
 export interface OrderShowSuccessResponseBody {
@@ -111,9 +136,9 @@ export interface OrderSort {
 }
 
 export interface OrderUpdatePayload {
-  lineItems?: LineItemNestedPayload[];
+  lineItems?: OrderLineItemNestedPayload[];
   orderNumber?: string;
-  shippingAddress?: ShippingAddressNestedPayload;
+  shippingAddress?: OrderShippingAddressNestedPayload;
 }
 
 export interface OrderUpdateSuccessResponseBody {
@@ -179,31 +204,6 @@ export interface ShippingAddress {
   id: string;
   postalCode: string;
   street: string;
-}
-
-export interface ShippingAddressNestedCreatePayload {
-  _op?: 'create';
-  city: string;
-  country: string;
-  id?: string;
-  postalCode: string;
-  street: string;
-}
-
-export interface ShippingAddressNestedDeletePayload {
-  _op?: 'delete';
-  id: string;
-}
-
-export type ShippingAddressNestedPayload = ShippingAddressNestedCreatePayload | ShippingAddressNestedUpdatePayload | ShippingAddressNestedDeletePayload;
-
-export interface ShippingAddressNestedUpdatePayload {
-  _op?: 'update';
-  city?: string;
-  country?: string;
-  id?: string;
-  postalCode?: string;
-  street?: string;
 }
 
 export type SortDirection = 'asc' | 'desc';

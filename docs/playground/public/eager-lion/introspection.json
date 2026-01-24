@@ -736,7 +736,7 @@
             "nullable": null,
             "optional": null,
             "type": "ref",
-            "ref": "line_nested_payload"
+            "ref": "invoice_line_nested_payload"
           },
           "shape": {}
         },
@@ -984,7 +984,7 @@
       "type": "object",
       "variants": []
     },
-    "invoice_nested_create_payload": {
+    "invoice_line_nested_create_payload": {
       "deprecated": false,
       "description": null,
       "discriminator": null,
@@ -1000,13 +1000,13 @@
           "type": "literal",
           "value": "create"
         },
-        "customer_id": {
+        "description": {
           "default": null,
           "deprecated": false,
           "description": null,
           "example": null,
-          "nullable": false,
-          "optional": false,
+          "nullable": true,
+          "optional": true,
           "type": "string",
           "format": null,
           "max": null,
@@ -1024,57 +1024,25 @@
           "max": null,
           "min": null
         },
-        "issued_on": {
+        "price": {
           "default": null,
           "deprecated": false,
           "description": null,
           "example": null,
           "nullable": true,
           "optional": true,
-          "type": "date"
-        },
-        "lines": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "array",
-          "max": null,
-          "min": null,
-          "of": {
-            "default": null,
-            "deprecated": null,
-            "description": null,
-            "example": null,
-            "nullable": null,
-            "optional": null,
-            "type": "ref",
-            "ref": "line_nested_payload"
-          },
-          "shape": {}
-        },
-        "notes": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": true,
-          "optional": true,
-          "type": "string",
-          "format": null,
+          "type": "decimal",
           "max": null,
           "min": null
         },
-        "number": {
+        "quantity": {
           "default": null,
           "deprecated": false,
           "description": null,
           "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "string",
+          "nullable": true,
+          "optional": true,
+          "type": "integer",
           "format": null,
           "max": null,
           "min": null
@@ -1083,7 +1051,7 @@
       "type": "object",
       "variants": []
     },
-    "invoice_nested_delete_payload": {
+    "invoice_line_nested_delete_payload": {
       "deprecated": false,
       "description": null,
       "discriminator": null,
@@ -1115,7 +1083,7 @@
       "type": "object",
       "variants": []
     },
-    "invoice_nested_payload": {
+    "invoice_line_nested_payload": {
       "deprecated": false,
       "description": null,
       "discriminator": "_op",
@@ -1131,7 +1099,7 @@
           "nullable": false,
           "optional": false,
           "type": "ref",
-          "ref": "invoice_nested_create_payload"
+          "ref": "invoice_line_nested_create_payload"
         },
         {
           "default": null,
@@ -1141,7 +1109,7 @@
           "nullable": false,
           "optional": false,
           "type": "ref",
-          "ref": "invoice_nested_update_payload"
+          "ref": "invoice_line_nested_update_payload"
         },
         {
           "default": null,
@@ -1151,11 +1119,11 @@
           "nullable": false,
           "optional": false,
           "type": "ref",
-          "ref": "invoice_nested_delete_payload"
+          "ref": "invoice_line_nested_delete_payload"
         }
       ]
     },
-    "invoice_nested_update_payload": {
+    "invoice_line_nested_update_payload": {
       "deprecated": false,
       "description": null,
       "discriminator": null,
@@ -1171,12 +1139,12 @@
           "type": "literal",
           "value": "update"
         },
-        "customer_id": {
+        "description": {
           "default": null,
           "deprecated": false,
           "description": null,
           "example": null,
-          "nullable": false,
+          "nullable": true,
           "optional": true,
           "type": "string",
           "format": null,
@@ -1195,57 +1163,25 @@
           "max": null,
           "min": null
         },
-        "issued_on": {
+        "price": {
           "default": null,
           "deprecated": false,
           "description": null,
           "example": null,
           "nullable": true,
           "optional": true,
-          "type": "date"
-        },
-        "lines": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "array",
-          "max": null,
-          "min": null,
-          "of": {
-            "default": null,
-            "deprecated": null,
-            "description": null,
-            "example": null,
-            "nullable": null,
-            "optional": null,
-            "type": "ref",
-            "ref": "line_nested_payload"
-          },
-          "shape": {}
-        },
-        "notes": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": true,
-          "optional": true,
-          "type": "string",
-          "format": null,
+          "type": "decimal",
           "max": null,
           "min": null
         },
-        "number": {
+        "quantity": {
           "default": null,
           "deprecated": false,
           "description": null,
           "example": null,
-          "nullable": false,
+          "nullable": true,
           "optional": true,
-          "type": "string",
+          "type": "integer",
           "format": null,
           "max": null,
           "min": null
@@ -1414,7 +1350,7 @@
             "nullable": null,
             "optional": null,
             "type": "ref",
-            "ref": "line_nested_payload"
+            "ref": "invoice_line_nested_payload"
           },
           "shape": {}
         },
@@ -1627,212 +1563,6 @@
           "description": null,
           "example": null,
           "nullable": true,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "price": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": true,
-          "optional": true,
-          "type": "decimal",
-          "max": null,
-          "min": null
-        },
-        "quantity": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": true,
-          "optional": true,
-          "type": "integer",
-          "format": null,
-          "max": null,
-          "min": null
-        }
-      },
-      "type": "object",
-      "variants": []
-    },
-    "line_nested_create_payload": {
-      "deprecated": false,
-      "description": null,
-      "discriminator": null,
-      "example": null,
-      "shape": {
-        "_op": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "literal",
-          "value": "create"
-        },
-        "description": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": true,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "id": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "price": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": true,
-          "optional": true,
-          "type": "decimal",
-          "max": null,
-          "min": null
-        },
-        "quantity": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": true,
-          "optional": true,
-          "type": "integer",
-          "format": null,
-          "max": null,
-          "min": null
-        }
-      },
-      "type": "object",
-      "variants": []
-    },
-    "line_nested_delete_payload": {
-      "deprecated": false,
-      "description": null,
-      "discriminator": null,
-      "example": null,
-      "shape": {
-        "_op": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "literal",
-          "value": "delete"
-        },
-        "id": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        }
-      },
-      "type": "object",
-      "variants": []
-    },
-    "line_nested_payload": {
-      "deprecated": false,
-      "description": null,
-      "discriminator": "_op",
-      "example": null,
-      "shape": {},
-      "type": "union",
-      "variants": [
-        {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "ref",
-          "ref": "line_nested_create_payload"
-        },
-        {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "ref",
-          "ref": "line_nested_update_payload"
-        },
-        {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "ref",
-          "ref": "line_nested_delete_payload"
-        }
-      ]
-    },
-    "line_nested_update_payload": {
-      "deprecated": false,
-      "description": null,
-      "discriminator": null,
-      "example": null,
-      "shape": {
-        "_op": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "literal",
-          "value": "update"
-        },
-        "description": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": true,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "id": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
           "optional": true,
           "type": "string",
           "format": null,

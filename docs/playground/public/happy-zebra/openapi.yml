@@ -401,54 +401,6 @@ components:
       required:
       - comments
       - pagination
-    commentNestedCreatePayload:
-      properties:
-        _op:
-          const: create
-          type: string
-        author:
-          type: string
-        body:
-          type: string
-        id:
-          type: string
-      type: object
-      required:
-      - author
-      - body
-    commentNestedDeletePayload:
-      properties:
-        _op:
-          const: delete
-          type: string
-        id:
-          type: string
-      type: object
-      required:
-      - id
-    commentNestedPayload:
-      oneOf:
-      - "$ref": "#/components/schemas/commentNestedCreatePayload"
-      - "$ref": "#/components/schemas/commentNestedUpdatePayload"
-      - "$ref": "#/components/schemas/commentNestedDeletePayload"
-      discriminator:
-        mapping:
-          create: "#/components/schemas/commentNestedCreatePayload"
-          update: "#/components/schemas/commentNestedUpdatePayload"
-          delete: "#/components/schemas/commentNestedDeletePayload"
-        propertyName: _op
-    commentNestedUpdatePayload:
-      properties:
-        _op:
-          const: update
-          type: string
-        author:
-          type: string
-        body:
-          type: string
-        id:
-          type: string
-      type: object
     commentPage:
       properties:
         number:
@@ -560,11 +512,59 @@ components:
       - comments
       - id
       - title
+    postCommentNestedCreatePayload:
+      properties:
+        _op:
+          const: create
+          type: string
+        author:
+          type: string
+        body:
+          type: string
+        id:
+          type: string
+      type: object
+      required:
+      - author
+      - body
+    postCommentNestedDeletePayload:
+      properties:
+        _op:
+          const: delete
+          type: string
+        id:
+          type: string
+      type: object
+      required:
+      - id
+    postCommentNestedPayload:
+      oneOf:
+      - "$ref": "#/components/schemas/postCommentNestedCreatePayload"
+      - "$ref": "#/components/schemas/postCommentNestedUpdatePayload"
+      - "$ref": "#/components/schemas/postCommentNestedDeletePayload"
+      discriminator:
+        mapping:
+          create: "#/components/schemas/postCommentNestedCreatePayload"
+          update: "#/components/schemas/postCommentNestedUpdatePayload"
+          delete: "#/components/schemas/postCommentNestedDeletePayload"
+        propertyName: _op
+    postCommentNestedUpdatePayload:
+      properties:
+        _op:
+          const: update
+          type: string
+        author:
+          type: string
+        body:
+          type: string
+        id:
+          type: string
+      type: object
     postCreatePayload:
       properties:
         comments:
           items:
-            "$ref": "#/components/schemas/commentNestedPayload"
+            "$ref": "#/components/schemas/postCommentNestedPayload"
           type: array
         title:
           type: string
@@ -596,57 +596,6 @@ components:
       required:
       - pagination
       - posts
-    postNestedCreatePayload:
-      properties:
-        _op:
-          const: create
-          type: string
-        comments:
-          items:
-            "$ref": "#/components/schemas/commentNestedPayload"
-          type: array
-        id:
-          type: string
-        title:
-          type: string
-      type: object
-      required:
-      - title
-    postNestedDeletePayload:
-      properties:
-        _op:
-          const: delete
-          type: string
-        id:
-          type: string
-      type: object
-      required:
-      - id
-    postNestedPayload:
-      oneOf:
-      - "$ref": "#/components/schemas/postNestedCreatePayload"
-      - "$ref": "#/components/schemas/postNestedUpdatePayload"
-      - "$ref": "#/components/schemas/postNestedDeletePayload"
-      discriminator:
-        mapping:
-          create: "#/components/schemas/postNestedCreatePayload"
-          update: "#/components/schemas/postNestedUpdatePayload"
-          delete: "#/components/schemas/postNestedDeletePayload"
-        propertyName: _op
-    postNestedUpdatePayload:
-      properties:
-        _op:
-          const: update
-          type: string
-        comments:
-          items:
-            "$ref": "#/components/schemas/commentNestedPayload"
-          type: array
-        id:
-          type: string
-        title:
-          type: string
-      type: object
     postPage:
       properties:
         number:
@@ -671,7 +620,7 @@ components:
       properties:
         comments:
           items:
-            "$ref": "#/components/schemas/commentNestedPayload"
+            "$ref": "#/components/schemas/postCommentNestedPayload"
           type: array
         title:
           type: string
@@ -720,59 +669,6 @@ components:
           - type: boolean
           - "$ref": "#/components/schemas/userInclude"
       type: object
-    profileNestedCreatePayload:
-      properties:
-        _op:
-          const: create
-          type: string
-        bio:
-          type:
-          - string
-          - 'null'
-        id:
-          type: string
-        website:
-          type:
-          - string
-          - 'null'
-      type: object
-    profileNestedDeletePayload:
-      properties:
-        _op:
-          const: delete
-          type: string
-        id:
-          type: string
-      type: object
-      required:
-      - id
-    profileNestedPayload:
-      oneOf:
-      - "$ref": "#/components/schemas/profileNestedCreatePayload"
-      - "$ref": "#/components/schemas/profileNestedUpdatePayload"
-      - "$ref": "#/components/schemas/profileNestedDeletePayload"
-      discriminator:
-        mapping:
-          create: "#/components/schemas/profileNestedCreatePayload"
-          update: "#/components/schemas/profileNestedUpdatePayload"
-          delete: "#/components/schemas/profileNestedDeletePayload"
-        propertyName: _op
-    profileNestedUpdatePayload:
-      properties:
-        _op:
-          const: update
-          type: string
-        bio:
-          type:
-          - string
-          - 'null'
-        id:
-          type: string
-        website:
-          type:
-          - string
-          - 'null'
-      type: object
     stringFilter:
       properties:
         contains:
@@ -817,16 +713,64 @@ components:
       - profile
       - updatedAt
       - username
+    userCommentNestedCreatePayload:
+      properties:
+        _op:
+          const: create
+          type: string
+        author:
+          type: string
+        body:
+          type: string
+        id:
+          type: string
+      type: object
+      required:
+      - author
+      - body
+    userCommentNestedDeletePayload:
+      properties:
+        _op:
+          const: delete
+          type: string
+        id:
+          type: string
+      type: object
+      required:
+      - id
+    userCommentNestedPayload:
+      oneOf:
+      - "$ref": "#/components/schemas/userCommentNestedCreatePayload"
+      - "$ref": "#/components/schemas/userCommentNestedUpdatePayload"
+      - "$ref": "#/components/schemas/userCommentNestedDeletePayload"
+      discriminator:
+        mapping:
+          create: "#/components/schemas/userCommentNestedCreatePayload"
+          update: "#/components/schemas/userCommentNestedUpdatePayload"
+          delete: "#/components/schemas/userCommentNestedDeletePayload"
+        propertyName: _op
+    userCommentNestedUpdatePayload:
+      properties:
+        _op:
+          const: update
+          type: string
+        author:
+          type: string
+        body:
+          type: string
+        id:
+          type: string
+      type: object
     userCreatePayload:
       properties:
         email:
           type: string
         posts:
           items:
-            "$ref": "#/components/schemas/postNestedPayload"
+            "$ref": "#/components/schemas/userPostNestedPayload"
           type: array
         profile:
-          "$ref": "#/components/schemas/profileNestedPayload"
+          "$ref": "#/components/schemas/userProfileNestedPayload"
         username:
           type: string
       type: object
@@ -894,6 +838,110 @@ components:
           minimum: 1
           maximum: 100
       type: object
+    userPostNestedCreatePayload:
+      properties:
+        _op:
+          const: create
+          type: string
+        comments:
+          items:
+            "$ref": "#/components/schemas/userCommentNestedPayload"
+          type: array
+        id:
+          type: string
+        title:
+          type: string
+      type: object
+      required:
+      - title
+    userPostNestedDeletePayload:
+      properties:
+        _op:
+          const: delete
+          type: string
+        id:
+          type: string
+      type: object
+      required:
+      - id
+    userPostNestedPayload:
+      oneOf:
+      - "$ref": "#/components/schemas/userPostNestedCreatePayload"
+      - "$ref": "#/components/schemas/userPostNestedUpdatePayload"
+      - "$ref": "#/components/schemas/userPostNestedDeletePayload"
+      discriminator:
+        mapping:
+          create: "#/components/schemas/userPostNestedCreatePayload"
+          update: "#/components/schemas/userPostNestedUpdatePayload"
+          delete: "#/components/schemas/userPostNestedDeletePayload"
+        propertyName: _op
+    userPostNestedUpdatePayload:
+      properties:
+        _op:
+          const: update
+          type: string
+        comments:
+          items:
+            "$ref": "#/components/schemas/userCommentNestedPayload"
+          type: array
+        id:
+          type: string
+        title:
+          type: string
+      type: object
+    userProfileNestedCreatePayload:
+      properties:
+        _op:
+          const: create
+          type: string
+        bio:
+          type:
+          - string
+          - 'null'
+        id:
+          type: string
+        website:
+          type:
+          - string
+          - 'null'
+      type: object
+    userProfileNestedDeletePayload:
+      properties:
+        _op:
+          const: delete
+          type: string
+        id:
+          type: string
+      type: object
+      required:
+      - id
+    userProfileNestedPayload:
+      oneOf:
+      - "$ref": "#/components/schemas/userProfileNestedCreatePayload"
+      - "$ref": "#/components/schemas/userProfileNestedUpdatePayload"
+      - "$ref": "#/components/schemas/userProfileNestedDeletePayload"
+      discriminator:
+        mapping:
+          create: "#/components/schemas/userProfileNestedCreatePayload"
+          update: "#/components/schemas/userProfileNestedUpdatePayload"
+          delete: "#/components/schemas/userProfileNestedDeletePayload"
+        propertyName: _op
+    userProfileNestedUpdatePayload:
+      properties:
+        _op:
+          const: update
+          type: string
+        bio:
+          type:
+          - string
+          - 'null'
+        id:
+          type: string
+        website:
+          type:
+          - string
+          - 'null'
+      type: object
     userShowSuccessResponseBody:
       properties:
         meta:
@@ -923,10 +971,10 @@ components:
           type: string
         posts:
           items:
-            "$ref": "#/components/schemas/postNestedPayload"
+            "$ref": "#/components/schemas/userPostNestedPayload"
           type: array
         profile:
-          "$ref": "#/components/schemas/profileNestedPayload"
+          "$ref": "#/components/schemas/userProfileNestedPayload"
         username:
           type: string
       type: object

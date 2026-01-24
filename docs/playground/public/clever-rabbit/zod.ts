@@ -19,27 +19,6 @@ export const LineItemSchema = z.object({
   unitPrice: z.number().nullable()
 });
 
-export const LineItemNestedCreatePayloadSchema = z.object({
-  _op: z.literal('create').optional(),
-  id: z.string().optional(),
-  productName: z.string(),
-  quantity: z.number().int().nullable().optional(),
-  unitPrice: z.number().nullable().optional()
-});
-
-export const LineItemNestedDeletePayloadSchema = z.object({
-  _op: z.literal('delete').optional(),
-  id: z.string()
-});
-
-export const LineItemNestedUpdatePayloadSchema = z.object({
-  _op: z.literal('update').optional(),
-  id: z.string().optional(),
-  productName: z.string().optional(),
-  quantity: z.number().int().nullable().optional(),
-  unitPrice: z.number().nullable().optional()
-});
-
 export const NullableStringFilterSchema = z.object({
   contains: z.string().optional(),
   endsWith: z.string().optional(),
@@ -57,9 +36,53 @@ export const OffsetPaginationSchema = z.object({
   total: z.number().int()
 });
 
+export const OrderLineItemNestedCreatePayloadSchema = z.object({
+  _op: z.literal('create').optional(),
+  id: z.string().optional(),
+  productName: z.string(),
+  quantity: z.number().int().nullable().optional(),
+  unitPrice: z.number().nullable().optional()
+});
+
+export const OrderLineItemNestedDeletePayloadSchema = z.object({
+  _op: z.literal('delete').optional(),
+  id: z.string()
+});
+
+export const OrderLineItemNestedUpdatePayloadSchema = z.object({
+  _op: z.literal('update').optional(),
+  id: z.string().optional(),
+  productName: z.string().optional(),
+  quantity: z.number().int().nullable().optional(),
+  unitPrice: z.number().nullable().optional()
+});
+
 export const OrderPageSchema = z.object({
   number: z.number().int().min(1).optional(),
   size: z.number().int().min(1).max(100).optional()
+});
+
+export const OrderShippingAddressNestedCreatePayloadSchema = z.object({
+  _op: z.literal('create').optional(),
+  city: z.string(),
+  country: z.string(),
+  id: z.string().optional(),
+  postalCode: z.string(),
+  street: z.string()
+});
+
+export const OrderShippingAddressNestedDeletePayloadSchema = z.object({
+  _op: z.literal('delete').optional(),
+  id: z.string()
+});
+
+export const OrderShippingAddressNestedUpdatePayloadSchema = z.object({
+  _op: z.literal('update').optional(),
+  city: z.string().optional(),
+  country: z.string().optional(),
+  id: z.string().optional(),
+  postalCode: z.string().optional(),
+  street: z.string().optional()
 });
 
 export const OrderSortSchema = z.object({
@@ -75,39 +98,10 @@ export const ShippingAddressSchema = z.object({
   street: z.string()
 });
 
-export const ShippingAddressNestedCreatePayloadSchema = z.object({
-  _op: z.literal('create').optional(),
-  city: z.string(),
-  country: z.string(),
-  id: z.string().optional(),
-  postalCode: z.string(),
-  street: z.string()
-});
-
-export const ShippingAddressNestedDeletePayloadSchema = z.object({
-  _op: z.literal('delete').optional(),
-  id: z.string()
-});
-
-export const ShippingAddressNestedUpdatePayloadSchema = z.object({
-  _op: z.literal('update').optional(),
-  city: z.string().optional(),
-  country: z.string().optional(),
-  id: z.string().optional(),
-  postalCode: z.string().optional(),
-  street: z.string().optional()
-});
-
 export const ErrorResponseBodySchema = z.object({
   issues: z.array(IssueSchema),
   layer: LayerSchema
 });
-
-export const LineItemNestedPayloadSchema = z.discriminatedUnion('_op', [
-  LineItemNestedCreatePayloadSchema,
-  LineItemNestedUpdatePayloadSchema,
-  LineItemNestedDeletePayloadSchema
-]);
 
 export const OrderFilterSchema: z.ZodType<OrderFilter> = z.lazy(() => z.object({
   _and: z.array(OrderFilterSchema).optional(),
@@ -115,6 +109,18 @@ export const OrderFilterSchema: z.ZodType<OrderFilter> = z.lazy(() => z.object({
   _or: z.array(OrderFilterSchema).optional(),
   status: z.union([z.string(), NullableStringFilterSchema]).optional()
 }));
+
+export const OrderLineItemNestedPayloadSchema = z.discriminatedUnion('_op', [
+  OrderLineItemNestedCreatePayloadSchema,
+  OrderLineItemNestedUpdatePayloadSchema,
+  OrderLineItemNestedDeletePayloadSchema
+]);
+
+export const OrderShippingAddressNestedPayloadSchema = z.discriminatedUnion('_op', [
+  OrderShippingAddressNestedCreatePayloadSchema,
+  OrderShippingAddressNestedUpdatePayloadSchema,
+  OrderShippingAddressNestedDeletePayloadSchema
+]);
 
 export const OrderSchema = z.object({
   createdAt: z.iso.datetime(),
@@ -127,11 +133,17 @@ export const OrderSchema = z.object({
   updatedAt: z.iso.datetime()
 });
 
-export const ShippingAddressNestedPayloadSchema = z.discriminatedUnion('_op', [
-  ShippingAddressNestedCreatePayloadSchema,
-  ShippingAddressNestedUpdatePayloadSchema,
-  ShippingAddressNestedDeletePayloadSchema
-]);
+export const OrderCreatePayloadSchema = z.object({
+  lineItems: z.array(OrderLineItemNestedPayloadSchema).optional(),
+  orderNumber: z.string(),
+  shippingAddress: OrderShippingAddressNestedPayloadSchema.optional()
+});
+
+export const OrderUpdatePayloadSchema = z.object({
+  lineItems: z.array(OrderLineItemNestedPayloadSchema).optional(),
+  orderNumber: z.string().optional(),
+  shippingAddress: OrderShippingAddressNestedPayloadSchema.optional()
+});
 
 export const OrderCreateSuccessResponseBodySchema = z.object({
   meta: z.record(z.string(), z.unknown()).optional(),
@@ -152,18 +164,6 @@ export const OrderShowSuccessResponseBodySchema = z.object({
 export const OrderUpdateSuccessResponseBodySchema = z.object({
   meta: z.record(z.string(), z.unknown()).optional(),
   order: OrderSchema
-});
-
-export const OrderCreatePayloadSchema = z.object({
-  lineItems: z.array(LineItemNestedPayloadSchema).optional(),
-  orderNumber: z.string(),
-  shippingAddress: ShippingAddressNestedPayloadSchema.optional()
-});
-
-export const OrderUpdatePayloadSchema = z.object({
-  lineItems: z.array(LineItemNestedPayloadSchema).optional(),
-  orderNumber: z.string().optional(),
-  shippingAddress: ShippingAddressNestedPayloadSchema.optional()
 });
 
 export const OrdersIndexRequestQuerySchema = z.object({
@@ -240,29 +240,6 @@ export interface LineItem {
   unitPrice: null | number;
 }
 
-export interface LineItemNestedCreatePayload {
-  _op?: 'create';
-  id?: string;
-  productName: string;
-  quantity?: null | number;
-  unitPrice?: null | number;
-}
-
-export interface LineItemNestedDeletePayload {
-  _op?: 'delete';
-  id: string;
-}
-
-export type LineItemNestedPayload = LineItemNestedCreatePayload | LineItemNestedUpdatePayload | LineItemNestedDeletePayload;
-
-export interface LineItemNestedUpdatePayload {
-  _op?: 'update';
-  id?: string;
-  productName?: string;
-  quantity?: null | number;
-  unitPrice?: null | number;
-}
-
 export interface NullableStringFilter {
   contains?: string;
   endsWith?: string;
@@ -292,9 +269,9 @@ export interface Order {
 }
 
 export interface OrderCreatePayload {
-  lineItems?: LineItemNestedPayload[];
+  lineItems?: OrderLineItemNestedPayload[];
   orderNumber: string;
-  shippingAddress?: ShippingAddressNestedPayload;
+  shippingAddress?: OrderShippingAddressNestedPayload;
 }
 
 export interface OrderCreateSuccessResponseBody {
@@ -315,9 +292,57 @@ export interface OrderIndexSuccessResponseBody {
   pagination: OffsetPagination;
 }
 
+export interface OrderLineItemNestedCreatePayload {
+  _op?: 'create';
+  id?: string;
+  productName: string;
+  quantity?: null | number;
+  unitPrice?: null | number;
+}
+
+export interface OrderLineItemNestedDeletePayload {
+  _op?: 'delete';
+  id: string;
+}
+
+export type OrderLineItemNestedPayload = OrderLineItemNestedCreatePayload | OrderLineItemNestedUpdatePayload | OrderLineItemNestedDeletePayload;
+
+export interface OrderLineItemNestedUpdatePayload {
+  _op?: 'update';
+  id?: string;
+  productName?: string;
+  quantity?: null | number;
+  unitPrice?: null | number;
+}
+
 export interface OrderPage {
   number?: number;
   size?: number;
+}
+
+export interface OrderShippingAddressNestedCreatePayload {
+  _op?: 'create';
+  city: string;
+  country: string;
+  id?: string;
+  postalCode: string;
+  street: string;
+}
+
+export interface OrderShippingAddressNestedDeletePayload {
+  _op?: 'delete';
+  id: string;
+}
+
+export type OrderShippingAddressNestedPayload = OrderShippingAddressNestedCreatePayload | OrderShippingAddressNestedUpdatePayload | OrderShippingAddressNestedDeletePayload;
+
+export interface OrderShippingAddressNestedUpdatePayload {
+  _op?: 'update';
+  city?: string;
+  country?: string;
+  id?: string;
+  postalCode?: string;
+  street?: string;
 }
 
 export interface OrderShowSuccessResponseBody {
@@ -331,9 +356,9 @@ export interface OrderSort {
 }
 
 export interface OrderUpdatePayload {
-  lineItems?: LineItemNestedPayload[];
+  lineItems?: OrderLineItemNestedPayload[];
   orderNumber?: string;
-  shippingAddress?: ShippingAddressNestedPayload;
+  shippingAddress?: OrderShippingAddressNestedPayload;
 }
 
 export interface OrderUpdateSuccessResponseBody {
@@ -399,31 +424,6 @@ export interface ShippingAddress {
   id: string;
   postalCode: string;
   street: string;
-}
-
-export interface ShippingAddressNestedCreatePayload {
-  _op?: 'create';
-  city: string;
-  country: string;
-  id?: string;
-  postalCode: string;
-  street: string;
-}
-
-export interface ShippingAddressNestedDeletePayload {
-  _op?: 'delete';
-  id: string;
-}
-
-export type ShippingAddressNestedPayload = ShippingAddressNestedCreatePayload | ShippingAddressNestedUpdatePayload | ShippingAddressNestedDeletePayload;
-
-export interface ShippingAddressNestedUpdatePayload {
-  _op?: 'update';
-  city?: string;
-  country?: string;
-  id?: string;
-  postalCode?: string;
-  street?: string;
 }
 
 export type SortDirection = 'asc' | 'desc';
