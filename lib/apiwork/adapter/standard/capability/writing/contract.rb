@@ -242,13 +242,15 @@ module Apiwork
               resolved_schema = resolve_association_schema(association)
               return nil unless resolved_schema
 
-              alias_name = ensure_association_types(association)
-              return nil unless alias_name
+              association_contract = find_contract_for_schema(resolved_schema)
+              return nil unless association_contract
+
+              alias_name = resolved_schema.root_key.singular.to_sym
+              import(association_contract, as: alias_name)
 
               association_payload_type = :"#{alias_name}_nested_payload"
 
-              association_contract = find_contract_for_schema(resolved_schema)
-              if association_contract&.schema?
+              if association_contract.schema?
                 association_registrar = ContractRegistrar.new(association_contract)
                 self.class.build_nested_payload_for(association_registrar, resolved_schema)
               end
@@ -407,13 +409,15 @@ module Apiwork
                 resolved_schema = resolve_association_schema_for(source_schema, association)
                 return nil unless resolved_schema
 
-                alias_name = registrar.ensure_association_types(association)
-                return nil unless alias_name
+                association_contract = registrar.find_contract_for_schema(resolved_schema)
+                return nil unless association_contract
+
+                alias_name = resolved_schema.root_key.singular.to_sym
+                registrar.import(association_contract, as: alias_name)
 
                 association_payload_type = :"#{alias_name}_nested_payload"
 
-                association_contract = registrar.find_contract_for_schema(resolved_schema)
-                if association_contract&.schema?
+                if association_contract.schema?
                   association_registrar = ContractRegistrar.new(association_contract)
                   build_nested_payload_for(association_registrar, resolved_schema)
                 end

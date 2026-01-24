@@ -50,9 +50,16 @@ module Apiwork
             def collect_association_sorts
               schema_class.associations.filter_map do |name, association|
                 next unless association.sortable?
+                next if association.polymorphic?
 
-                alias_name = ensure_association_types(association)
-                next unless alias_name
+                schema = association.schema_class
+                next unless schema
+
+                contract = find_contract_for_schema(schema)
+                next unless contract
+
+                alias_name = schema.root_key.singular.to_sym
+                import(contract, as: alias_name)
 
                 nested_type = :"#{alias_name}_sort"
                 next unless type?(nested_type)

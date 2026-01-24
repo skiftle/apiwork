@@ -207,14 +207,17 @@ module Apiwork
               association_resource = resolve_association_resource(association)
               return nil unless association_resource
 
-              return build_sti_association_type(association, association_resource[:schema_class], visited:) if association_resource[:sti]
+              association_schema = association_resource[:schema_class]
 
-              return nil if visited.include?(association_resource[:schema_class])
+              return build_sti_association_type(association, association_schema, visited:) if association_resource[:sti]
+              return nil if visited.include?(association_schema)
 
-              alias_name = registrar.ensure_association_types(association)
-              return alias_name if alias_name
+              association_contract = registrar.find_contract_for_schema(association_schema)
+              return nil unless association_contract
 
-              nil
+              alias_name = association_schema.root_key.singular.to_sym
+              registrar.import(association_contract, as: alias_name)
+              alias_name
             end
 
             def build_polymorphic_association_type(association, visited: Set.new)
@@ -285,25 +288,21 @@ module Apiwork
             def import_association_contract(association_schema, visited)
               return nil if visited.include?(association_schema)
 
-              association_contract_class = registrar.find_contract_for_schema(association_schema)
+              association_contract = registrar.find_contract_for_schema(association_schema)
 
-              unless association_contract_class
+              unless association_contract
                 contract_name = association_schema.name.sub(/Schema$/, 'Contract')
-                association_contract_class = begin
+                association_contract = begin
                   contract_name.constantize
                 rescue NameError
                   nil
                 end
               end
 
-              return nil unless association_contract_class
+              return nil unless association_contract
 
               alias_name = association_schema.root_key.singular.to_sym
-
-              registrar.import(association_contract_class, as: alias_name) unless registrar.imports.key?(alias_name)
-
-              association_contract_class.api_class.ensure_contract_built!(association_contract_class) if association_contract_class.schema?
-
+              registrar.import(association_contract, as: alias_name)
               alias_name
             end
           end

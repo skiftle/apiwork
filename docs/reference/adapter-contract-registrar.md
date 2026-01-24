@@ -74,37 +74,6 @@ Use this to define or resolve types at the API scope.
 
 ---
 
-### #ensure_association_types
-
-`#ensure_association_types(association)`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L128)
-
-Ensures all feature types are built for an association's contract.
-Call this before referencing types from another contract.
-
-**Parameters**
-
-| Name | Type | Description |
-|------|------|-------------|
-| `association` | `Schema::Association` | the association to import |
-
-**Returns**
-
-`Symbol`, `nil` — the alias name for referencing types, or nil if import failed
-
-**Example**
-
-```ruby
-schema_class.associations.each do |name, association|
-  if alias_name = registrar.ensure_association_types(association)
-    reference name, to: :"#{alias_name}_filter"
-  end
-end
-```
-
----
-
 ### #enum
 
 `#enum(name, values:)`
@@ -156,20 +125,6 @@ Imports a type from another contract or the API.
 |------|------|-------------|
 | `type_name` | `Symbol` | the type to import |
 | `from` | `Class` | a [Contract::Base](contract-base) subclass |
-
----
-
-### #imports
-
-`#imports`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L93)
-
-The hash of imported types.
-
-**Returns**
-
-`Hash` — imported types
 
 ---
 

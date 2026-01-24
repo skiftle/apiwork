@@ -51,9 +51,11 @@ module Apiwork
                     if visited_ref.include?(association_schema)
                       boolean name, optional: true unless association.include == :always
                     else
-                      alias_name = registrar_ref.ensure_association_types(association)
+                      association_contract = registrar_ref.find_contract_for_schema(association_schema)
 
-                      association_include_type = if alias_name
+                      association_include_type = if association_contract
+                                                   alias_name = association_schema.root_key.singular.to_sym
+                                                   registrar_ref.import(association_contract, as: alias_name)
                                                    imported_type = :"#{alias_name}_include"
                                                    registrar_ref.type?(imported_type) ? imported_type : nil
                                                  else

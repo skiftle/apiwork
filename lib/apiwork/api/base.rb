@@ -586,7 +586,7 @@ module Apiwork
         def ensure_contract_built!(contract_class)
           return if built_contracts.include?(contract_class)
 
-          resource = @structure.find_resource { |resource| resource.contract_class == contract_class }
+          resource = @structure.find_resource { |resource| resource.resolve_contract_class == contract_class }
           return unless resource
 
           schema_class = contract_class.schema_class

@@ -75,12 +75,6 @@ module Apiwork
           #   @param name [Symbol] the base type name
           #   @return [Symbol] the scoped type name
 
-          # @!method ensure_association_types(association)
-          #   @api public
-          #   Ensures types are registered for an association.
-          #   @param association [Association] the association
-          #   @return [Symbol, nil] the alias name if registered
-
           # @!method find_contract_for_schema(schema_class)
           #   @api public
           #   Finds the contract class for a schema.
@@ -88,7 +82,6 @@ module Apiwork
           #   @return [Class, nil] the contract class
 
           delegate :action,
-                   :ensure_association_types,
                    :enum,
                    :find_contract_for_schema,
                    :import,
