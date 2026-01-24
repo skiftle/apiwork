@@ -20,6 +20,7 @@ module Apiwork
       class << self
         attr_reader :enum_registry,
                     :export_configs,
+                    :schemas,
                     :structure,
                     :type_registry
 
@@ -517,6 +518,7 @@ module Apiwork
           @structure = Structure.new(path)
           @type_registry = TypeRegistry.new
           @enum_registry = EnumRegistry.new
+          @schemas = Schemas.new
           @built_contracts = Set.new
           @key_format = :keep
           @path_format = :keep
@@ -586,6 +588,8 @@ module Apiwork
         def ensure_contract_built!(contract_class)
           return if built_contracts.include?(contract_class)
 
+          ensure_pre_pass_complete!
+
           schema_class = contract_class.schema_class
           return unless schema_class
 
@@ -598,7 +602,16 @@ module Apiwork
           adapter.register_contract(contract_registrar, schema_class, actions)
         end
 
+        def ensure_pre_pass_complete!
+          return if @pre_pass_complete
+
+          mark_nested_writable_schemas!
+          @pre_pass_complete = true
+        end
+
         def ensure_all_contracts_built!
+          mark_nested_writable_schemas!
+
           @structure.each_resource do |resource|
             build_contracts_for_resource(resource)
           end
@@ -611,6 +624,42 @@ module Apiwork
         private
 
         attr_reader :built_contracts
+
+        def mark_nested_writable_schemas!
+          visited = Set.new
+          @structure.each_resource do |resource|
+            schema_class = resource.resolve_contract_class&.schema_class
+            mark_writable_associations(schema_class, visited) if schema_class
+          end
+        end
+
+        def mark_writable_associations(schema_class, visited)
+          return if visited.include?(schema_class)
+
+          visited.add(schema_class)
+
+          schema_class.associations.each_value do |association|
+            next unless association.writable?
+
+            target_schema = resolve_target_schema(association, schema_class)
+            next unless target_schema
+
+            schemas.mark(target_schema, :nested_writable)
+            mark_writable_associations(target_schema, visited)
+          end
+        end
+
+        def resolve_target_schema(association, owner_schema)
+          return association.schema_class if association.schema_class
+          return nil unless owner_schema.model_class
+
+          reflection = owner_schema.model_class.reflect_on_association(association.name)
+          return nil unless reflection
+          return nil if reflection.polymorphic?
+
+          namespace = owner_schema.name.deconstantize
+          "#{namespace}::#{reflection.klass.name.demodulize}Schema".safe_constantize
+        end
 
         def build_contracts_for_resource(resource)
           contract_class = resource.resolve_contract_class

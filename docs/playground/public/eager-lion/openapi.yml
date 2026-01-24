@@ -239,7 +239,7 @@ components:
           format: date
         lines:
           items:
-            "$ref": "#/components/schemas/invoiceLineNestedPayload"
+            "$ref": "#/components/schemas/lineNestedPayload"
           type: array
         notes:
           type:
@@ -297,67 +297,6 @@ components:
       required:
       - invoices
       - pagination
-    invoiceLineNestedCreatePayload:
-      properties:
-        _op:
-          const: create
-          type: string
-        description:
-          type:
-          - string
-          - 'null'
-        id:
-          type: string
-        price:
-          type:
-          - number
-          - 'null'
-        quantity:
-          type:
-          - integer
-          - 'null'
-      type: object
-    invoiceLineNestedDeletePayload:
-      properties:
-        _op:
-          const: delete
-          type: string
-        id:
-          type: string
-      type: object
-      required:
-      - id
-    invoiceLineNestedPayload:
-      oneOf:
-      - "$ref": "#/components/schemas/invoiceLineNestedCreatePayload"
-      - "$ref": "#/components/schemas/invoiceLineNestedUpdatePayload"
-      - "$ref": "#/components/schemas/invoiceLineNestedDeletePayload"
-      discriminator:
-        mapping:
-          create: "#/components/schemas/invoiceLineNestedCreatePayload"
-          update: "#/components/schemas/invoiceLineNestedUpdatePayload"
-          delete: "#/components/schemas/invoiceLineNestedDeletePayload"
-        propertyName: _op
-    invoiceLineNestedUpdatePayload:
-      properties:
-        _op:
-          const: update
-          type: string
-        description:
-          type:
-          - string
-          - 'null'
-        id:
-          type: string
-        price:
-          type:
-          - number
-          - 'null'
-        quantity:
-          type:
-          - integer
-          - 'null'
-      type: object
     invoicePage:
       properties:
         number:
@@ -412,7 +351,7 @@ components:
           format: date
         lines:
           items:
-            "$ref": "#/components/schemas/invoiceLineNestedPayload"
+            "$ref": "#/components/schemas/lineNestedPayload"
           type: array
         notes:
           type:
@@ -475,6 +414,67 @@ components:
       - id
       - price
       - quantity
+    lineNestedCreatePayload:
+      properties:
+        _op:
+          const: create
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        id:
+          type: string
+        price:
+          type:
+          - number
+          - 'null'
+        quantity:
+          type:
+          - integer
+          - 'null'
+      type: object
+    lineNestedDeletePayload:
+      properties:
+        _op:
+          const: delete
+          type: string
+        id:
+          type: string
+      type: object
+      required:
+      - id
+    lineNestedPayload:
+      oneOf:
+      - "$ref": "#/components/schemas/lineNestedCreatePayload"
+      - "$ref": "#/components/schemas/lineNestedUpdatePayload"
+      - "$ref": "#/components/schemas/lineNestedDeletePayload"
+      discriminator:
+        mapping:
+          create: "#/components/schemas/lineNestedCreatePayload"
+          update: "#/components/schemas/lineNestedUpdatePayload"
+          delete: "#/components/schemas/lineNestedDeletePayload"
+        propertyName: _op
+    lineNestedUpdatePayload:
+      properties:
+        _op:
+          const: update
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        id:
+          type: string
+        price:
+          type:
+          - number
+          - 'null'
+        quantity:
+          type:
+          - integer
+          - 'null'
+      type: object
     nullableStringFilter:
       properties:
         contains:

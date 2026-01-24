@@ -84,6 +84,8 @@ module Apiwork
       #   @param schema_class [Class] a {Schema::Base} subclass
       #   @return [Contract::Base, nil]
 
+      attr_reader :contract_class
+
       delegate :action,
                :enum,
                :enum?,
@@ -96,10 +98,6 @@ module Apiwork
                :type?,
                :union,
                to: :contract_class
-
-      private
-
-      attr_reader :contract_class
     end
   end
 end

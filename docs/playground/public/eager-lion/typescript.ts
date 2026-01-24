@@ -29,7 +29,7 @@ export interface InvoiceArchiveSuccessResponseBody {
 export interface InvoiceCreatePayload {
   customerId: string;
   issuedOn?: null | string;
-  lines?: InvoiceLineNestedPayload[];
+  lines?: LineNestedPayload[];
   notes?: null | string;
   number: string;
 }
@@ -53,29 +53,6 @@ export interface InvoiceIndexSuccessResponseBody {
   pagination: OffsetPagination;
 }
 
-export interface InvoiceLineNestedCreatePayload {
-  _op?: 'create';
-  description?: null | string;
-  id?: string;
-  price?: null | number;
-  quantity?: null | number;
-}
-
-export interface InvoiceLineNestedDeletePayload {
-  _op?: 'delete';
-  id: string;
-}
-
-export type InvoiceLineNestedPayload = InvoiceLineNestedCreatePayload | InvoiceLineNestedUpdatePayload | InvoiceLineNestedDeletePayload;
-
-export interface InvoiceLineNestedUpdatePayload {
-  _op?: 'update';
-  description?: null | string;
-  id?: string;
-  price?: null | number;
-  quantity?: null | number;
-}
-
 export interface InvoicePage {
   number?: number;
   size?: number;
@@ -96,7 +73,7 @@ export interface InvoiceSort {
 export interface InvoiceUpdatePayload {
   customerId?: string;
   issuedOn?: null | string;
-  lines?: InvoiceLineNestedPayload[];
+  lines?: LineNestedPayload[];
   notes?: null | string;
   number?: string;
 }
@@ -179,6 +156,29 @@ export interface Line {
   id: string;
   price: null | number;
   quantity: null | number;
+}
+
+export interface LineNestedCreatePayload {
+  _op?: 'create';
+  description?: null | string;
+  id?: string;
+  price?: null | number;
+  quantity?: null | number;
+}
+
+export interface LineNestedDeletePayload {
+  _op?: 'delete';
+  id: string;
+}
+
+export type LineNestedPayload = LineNestedCreatePayload | LineNestedUpdatePayload | LineNestedDeletePayload;
+
+export interface LineNestedUpdatePayload {
+  _op?: 'update';
+  description?: null | string;
+  id?: string;
+  price?: null | number;
+  quantity?: null | number;
 }
 
 export interface NullableStringFilter {

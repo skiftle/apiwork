@@ -9,6 +9,7 @@ module Apiwork
             def build
               build_enums
               build_payload_types
+              build_nested_payload_union if api_class.schemas.nested_writable?(schema_class)
 
               root_key = schema_class.root_key.singular.to_sym
 
@@ -70,7 +71,7 @@ module Apiwork
                   literal discriminator_name, as: as_column, optional: discriminator_optional, store: store_value, value: local_schema_class.tag.to_s
                 end
 
-                params.each { |p| param p[:name], **p[:options] }
+                params.each { |param_config| param param_config[:name], **param_config[:options] }
               end
             end
 
@@ -81,54 +82,54 @@ module Apiwork
               build_nested_union
             end
 
-            def build_nested_create_payload(target_schema: schema_class, type_name: :nested_create_payload)
-              return if type?(type_name)
+            def build_nested_create_payload
+              return if type?(:nested_create_payload)
 
-              writable_params = collect_writable_params(:create, target_schema:)
-              id_type = target_schema.model_class.type_for_attribute(target_schema.model_class.primary_key).type
+              writable_params = collect_writable_params(:create)
+              id_type = primary_key_type
 
-              object type_name do
+              object :nested_create_payload do
                 literal :_op, optional: true, value: 'create'
                 param :id, optional: true, type: id_type
                 writable_params.each { |param_config| param param_config[:name], **param_config[:options] }
               end
             end
 
-            def build_nested_update_payload(target_schema: schema_class, type_name: :nested_update_payload)
-              return if type?(type_name)
+            def build_nested_update_payload
+              return if type?(:nested_update_payload)
 
-              writable_params = collect_writable_params(:update, target_schema:)
-              id_type = target_schema.model_class.type_for_attribute(target_schema.model_class.primary_key).type
+              writable_params = collect_writable_params(:update)
+              id_type = primary_key_type
 
-              object type_name do
+              object :nested_update_payload do
                 literal :_op, optional: true, value: 'update'
                 param :id, optional: true, type: id_type
                 writable_params.each { |param_config| param param_config[:name], **param_config[:options] }
               end
             end
 
-            def build_nested_delete_payload(target_schema: schema_class, type_name: :nested_delete_payload)
-              return if type?(type_name)
+            def build_nested_delete_payload
+              return if type?(:nested_delete_payload)
 
-              id_type = target_schema.model_class.type_for_attribute(target_schema.model_class.primary_key).type
+              id_type = primary_key_type
 
-              object type_name do
+              object :nested_delete_payload do
                 literal :_op, optional: true, value: 'delete'
                 param :id, type: id_type
               end
             end
 
-            def build_nested_union(prefix: nil, type_name: :nested_payload)
-              return if type?(type_name)
+            def build_nested_union
+              return if type?(:nested_payload)
 
-              create_name = prefix ? :"#{prefix}_nested_create_payload" : scoped_type_name(:nested_create_payload)
-              update_name = prefix ? :"#{prefix}_nested_update_payload" : scoped_type_name(:nested_update_payload)
-              delete_name = prefix ? :"#{prefix}_nested_delete_payload" : scoped_type_name(:nested_delete_payload)
+              create_type = scoped_type_name(:nested_create_payload)
+              update_type = scoped_type_name(:nested_update_payload)
+              delete_type = scoped_type_name(:nested_delete_payload)
 
-              union type_name, discriminator: :_op do
-                variant(tag: 'create') { reference create_name }
-                variant(tag: 'update') { reference update_name }
-                variant(tag: 'delete') { reference delete_name }
+              union :nested_payload, discriminator: :_op do
+                variant(tag: 'create') { reference create_type }
+                variant(tag: 'update') { reference update_type }
+                variant(tag: 'delete') { reference delete_type }
               end
             end
 
@@ -155,16 +156,16 @@ module Apiwork
               end
             end
 
-            def collect_writable_params(action_name, target_schema: schema_class)
+            def collect_writable_params(action_name)
               params = []
 
-              target_schema.attributes.each do |name, attribute|
+              schema_class.attributes.each do |name, attribute|
                 next unless attribute.writable_for?(action_name)
 
                 params << { name:, options: attribute_options(attribute, action_name) }
               end
 
-              target_schema.associations.each do |name, association|
+              schema_class.associations.each do |name, association|
                 next unless association.writable_for?(action_name)
 
                 params << { name:, options: association_options(association) }
@@ -242,17 +243,7 @@ module Apiwork
               alias_name = resolved_schema.root_key.singular.to_sym
               import(association_contract, as: alias_name)
 
-              nested_type_name = association_contract.scoped_type_name(:nested_payload)
-              build_nested_payloads_for_imported(resolved_schema, alias_name) unless type?(nested_type_name)
-
               :"#{alias_name}_nested_payload"
-            end
-
-            def build_nested_payloads_for_imported(target_schema, alias_name)
-              build_nested_create_payload(target_schema:, type_name: :"#{alias_name}_nested_create_payload")
-              build_nested_update_payload(target_schema:, type_name: :"#{alias_name}_nested_update_payload")
-              build_nested_delete_payload(target_schema:, type_name: :"#{alias_name}_nested_delete_payload")
-              build_nested_union(prefix: alias_name, type_name: :"#{alias_name}_nested_payload")
             end
 
             def resolve_association_schema(association)
@@ -269,9 +260,8 @@ module Apiwork
               "#{namespace}::#{reflection.klass.name.demodulize}Schema".safe_constantize
             end
 
-            def writable_content?
-              schema_class.attributes.values.any?(&:writable?) ||
-                schema_class.associations.values.any?(&:writable?)
+            def api_class
+              registrar.contract_class.api_class
             end
 
             def sti_base_schema?

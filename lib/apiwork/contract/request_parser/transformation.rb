@@ -112,8 +112,8 @@ module Apiwork
           end
 
           def transform_custom_type_array(value, param_options, shape)
-            shape = resolve_custom_type_shape(param_options[:of], shape)
-            return value.map { |item| item.is_a?(Hash) ? apply(item, shape) : item } if shape
+            resolved_shape = resolve_custom_type_shape(param_options[:of], shape)
+            return value.map { |item| item.is_a?(Hash) ? apply(item, resolved_shape) : item } if resolved_shape
 
             nil
           end
@@ -125,9 +125,11 @@ module Apiwork
             type_definition = contract_class.resolve_custom_type(type_name)
             return nil unless type_definition
 
+            scope_contract_class = type_definition.scope || contract_class
+
             if type_definition.object?
               temp_param = Object.new(
-                contract_class,
+                scope_contract_class,
                 action_name: shape.action_name,
               )
               temp_param.copy_type_definition_params(type_definition, temp_param)
@@ -136,11 +138,13 @@ module Apiwork
               first_variant = type_definition.variants.first
               return nil unless first_variant
 
-              variant_type_definition = contract_class.resolve_custom_type(first_variant[:type])
+              variant_type_definition = scope_contract_class.resolve_custom_type(first_variant[:type])
               return nil unless variant_type_definition&.object?
 
+              variant_contract_class = variant_type_definition.scope || scope_contract_class
+
               temp_param = Object.new(
-                contract_class,
+                variant_contract_class,
                 action_name: shape.action_name,
               )
               temp_param.copy_type_definition_params(variant_type_definition, temp_param)
