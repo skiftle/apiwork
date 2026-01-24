@@ -53,7 +53,7 @@ module Apiwork
       class_attribute :imports, instance_accessor: false
       class_attribute :_identifier, instance_accessor: false
       class_attribute :_schema_class, instance_accessor: false
-      class_attribute :building, default: false, instance_accessor: false
+      class_attribute :_building, default: false, instance_accessor: false
 
       # @api public
       # @return [Adapter::Request] the parsed and validated request
@@ -77,17 +77,6 @@ module Apiwork
 
       class << self
         attr_writer :api_class
-
-        def building?
-          building
-        end
-
-        def with_building
-          self.building = true
-          yield
-        ensure
-          self.building = false
-        end
 
         # @api public
         # The scope prefix for contract-scoped types.
@@ -309,11 +298,14 @@ module Apiwork
 
           imports[as] = contract_class
 
-          return if contract_class.building?
+          return if contract_class._building
           return unless contract_class.schema? && contract_class.api_class
 
-          contract_class.with_building do
+          contract_class._building = true
+          begin
             contract_class.api_class.ensure_contract_built!(contract_class)
+          ensure
+            contract_class._building = false
           end
         end
 
