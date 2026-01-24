@@ -27,6 +27,8 @@ module Apiwork
 
         data = capabilities.reduce(collection) do |current, capability|
           result = capability.apply(current, context)
+          next current unless result
+
           document.merge!(result.document) if result.document
           serialize_options.merge!(result.serialize_options || {})
           includes.concat(result.includes || [])

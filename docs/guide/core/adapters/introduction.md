@@ -8,26 +8,37 @@ The **adapter** is the runtime layer that executes your API. It translates betwe
 
 The adapter implements the API conventions and enforces consistent behavior across the entire API. Every resource follows the same patterns for filtering, sorting, pagination, and serialization.
 
-## Two Phases
+## Bound Contracts
 
-The adapter operates in two distinct phases: **definition time** and **request time**.
+A contract becomes **bound** when you call `schema!`. This connects the contract to a schema by naming convention — `InvoiceContract` finds `InvoiceSchema` in the same namespace.
 
-### Definition Time
+```ruby
+class InvoiceContract < Apiwork::Contract::Base
+  schema!
+end
+```
 
-When you call `schema!`, the adapter reads your schema and interprets it as an executable contract.
+Bound contracts unlock capabilities like filtering, sorting, and includes — behaviors that require knowledge of the underlying data structure. Contracts without schemas remain valid but operate without these derived behaviors.
 
-From this single definition, Apiwork derives a set of typed constraints that describe:
+## Capabilities
 
-- which query parameters are allowed
-- how data can be written
-- how responses should be serialized
+Adapters are composed of **capabilities** — modular units that provide specific functionality. The standard adapter includes capabilities for filtering, sorting, pagination, includes, and writing.
 
-### Request Time
+Each capability can contribute to three phases:
 
-When a request arrives, the contract validates it against the generated types. Then the adapter:
+| Phase | Runs | Purpose |
+|-------|------|---------|
+| **API** | Once per API | Register shared types used across all contracts |
+| **Contract** | Once per bound contract | Generate contract-specific types |
+| **Computation** | Each request | Transform data at runtime |
 
-1. **Query** — translates filter/sort/page/include into database queries
-2. **Serialize** — formats the response according to the schema
+For example, the Filtering capability:
+
+- **API phase**: Registers generic filter types (`string_filter`, `date_filter`, `uuid_filter`) — once per API
+- **Contract phase**: Generates a `filter` type from the schema's filterable attributes — once per bound contract
+- **Computation phase**: Translates filter parameters into database queries — once per request
+
+Computations can be scoped to run only for collections or single records. Pagination runs on collections. Writing validation runs on records.
 
 ## The Standard Adapter
 
