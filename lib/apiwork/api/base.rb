@@ -586,16 +586,16 @@ module Apiwork
         def ensure_contract_built!(contract_class)
           return if built_contracts.include?(contract_class)
 
-          resource = @structure.find_resource { |resource| resource.resolve_contract_class == contract_class }
-          return unless resource
-
           schema_class = contract_class.schema_class
           return unless schema_class
 
           built_contracts.add(contract_class)
 
+          resource = @structure.find_resource { |resource| resource.resolve_contract_class == contract_class }
+          actions = resource ? build_adapter_actions(resource.actions) : {}
+
           contract_registrar = adapter.build_contract_registrar(contract_class)
-          adapter.register_contract(contract_registrar, schema_class, build_adapter_actions(resource.actions))
+          adapter.register_contract(contract_registrar, schema_class, actions)
         end
 
         def ensure_all_contracts_built!
