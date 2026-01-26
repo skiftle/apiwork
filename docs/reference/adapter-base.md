@@ -6,12 +6,12 @@ next: false
 
 # Adapter::Base
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L18)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L20)
 
 Base class for adapters.
 
 Subclass to create custom adapters with different response formats.
-Configure with [representation](representation) for serialization and [document](document) for response wrapping.
+Configure with [representation](representation) for serialization and document classes for response wrapping.
 
 **Example: Custom adapter**
 
@@ -20,7 +20,9 @@ class BillingAdapter < Apiwork::Adapter::Base
   adapter_name :billing
 
   representation BillingRepresentation
-  document BillingDocument
+  record_document BillingRecordDocument
+  collection_document BillingCollectionDocument
+  error_document BillingErrorDocument
 end
 ```
 
@@ -30,7 +32,7 @@ end
 
 `.adapter_name(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L30)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L32)
 
 Sets or gets the adapter name.
 
@@ -56,7 +58,7 @@ adapter_name :billing
 
 `.capability(klass)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L47)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L49)
 
 Registers a capability for this adapter.
 
@@ -82,15 +84,13 @@ capability Filtering
 
 ---
 
-### .document
+### .collection_document
 
-`.document(klass = nil)`
+`.collection_document(klass = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L106)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L119)
 
-Sets or gets the document class.
-
-Document defines response envelopes and wraps serialized data.
+Sets or gets the collection document class.
 
 **Parameters**
 
@@ -100,12 +100,38 @@ Document defines response envelopes and wraps serialized data.
 
 **Returns**
 
-`Class`, `nil`
+`Class`
 
 **Example**
 
 ```ruby
-document StandardDocument
+collection_document CustomCollectionDocument
+```
+
+---
+
+### .error_document
+
+`.error_document(klass = nil)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L132)
+
+Sets or gets the error document class.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `klass` | `Class` | a Document::Base subclass (optional) |
+
+**Returns**
+
+`Class`
+
+**Example**
+
+```ruby
+error_document CustomErrorDocument
 ```
 
 ---
@@ -162,21 +188,47 @@ end
 
 ---
 
-### .representation
+### .record_document
 
-`.representation(klass = nil)`
+`.record_document(klass = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L91)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L106)
 
-Sets or gets the representation class.
-
-Representation defines API objects (resources, errors) and handles serialization.
+Sets or gets the record document class.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `klass` | `Class` | a Representation::Base subclass (optional) |
+| `klass` | `Class` | a Document::Base subclass (optional) |
+
+**Returns**
+
+`Class`
+
+**Example**
+
+```ruby
+record_document CustomRecordDocument
+```
+
+---
+
+### .serialization
+
+`.serialization(klass = nil)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L93)
+
+Sets or gets the serialization class.
+
+Serialization defines API objects (resources, errors) and handles serialization.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `klass` | `Class` | a Serialization::Base subclass (optional) |
 
 **Returns**
 
@@ -185,7 +237,7 @@ Representation defines API objects (resources, errors) and handles serialization
 **Example**
 
 ```ruby
-representation StandardRepresentation
+serialization Serialization::Default
 ```
 
 ---
@@ -194,7 +246,7 @@ representation StandardRepresentation
 
 `.skip_capability(name)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L69)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L71)
 
 Skips an inherited capability by name.
 
@@ -220,7 +272,7 @@ skip_capability :pagination
 
 `.transform_request(*transformers, post: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L126)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L152)
 
 Registers request transformers.
 
@@ -256,7 +308,7 @@ transform_request OpFieldTransformer, post: true
 
 `.transform_response(*transformers, post: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L145)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L171)
 
 Registers response transformers.
 
@@ -279,31 +331,5 @@ Use `post: true` for post-serialization transforms.
 ```ruby
 transform_response KeyTransformer
 ```
-
----
-
-## Instance Methods
-
-### #prepare_error
-
-`#prepare_error(issues, _layer, _state)`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L221)
-
-Prepares error issues before rendering.
-
-Override to transform or enrich error data.
-
-**Parameters**
-
-| Name | Type | Description |
-|------|------|-------------|
-| `issues` | `Array<Issue>` | error issues |
-| `_layer` | `Symbol` | error layer (:contract, :domain, :http) |
-| `_state` | `Adapter::RenderState` | render context |
-
-**Returns**
-
-Array&lt;[Issue](issue)&gt; — the prepared issues
 
 ---

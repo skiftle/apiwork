@@ -1,5 +1,5 @@
 ---
-order: 25
+order: 29
 prev: false
 next: false
 ---
@@ -22,7 +22,7 @@ Returns [Contract::Object](contract-object) via `body`.
 
 Defines the response body for this response.
 
-When using schema!, body is auto-generated from schema attributes.
+When using representation, body is auto-generated from representation attributes.
 
 **Returns**
 

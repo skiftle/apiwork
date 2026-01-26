@@ -1,14 +1,14 @@
 ---
-order: 65
+order: 69
 prev: false
 next: false
 ---
 
-# Schema::Element
+# Representation::Element
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/element.rb#L75)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/element.rb#L75)
 
-Block context for defining JSON blob structure in schema attributes.
+Block context for defining JSON blob structure in representation attributes.
 
 Used inside attribute blocks to define the shape of JSON/JSONB columns,
 Rails store attributes, or any serialized data structure.
@@ -272,7 +272,7 @@ Defines an object.
 
 `#of(type, discriminator: nil, shape: nil, **_options, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/element.rb#L95)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/element.rb#L95)
 
 Defines the element type.
 

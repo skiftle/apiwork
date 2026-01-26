@@ -1,5 +1,5 @@
 ---
-order: 14
+order: 16
 prev: false
 next: false
 ---
@@ -16,7 +16,7 @@ types specific to a resource contract (request/response shapes).
 **Example: Register request body object**
 
 ```ruby
-def register_contract(registrar, schema_class, actions)
+def register_contract(registrar, representation_class, actions)
   registrar.object :user_input do
     string :name
     string :email
@@ -27,7 +27,7 @@ end
 **Example: Define action contracts**
 
 ```ruby
-def register_contract(registrar, schema_class, actions)
+def register_contract(registrar, representation_class, actions)
   actions.each do |name, action|
     registrar.action(name) do
       # ...
@@ -42,7 +42,7 @@ end
 
 `#action(name, replace: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L54)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L53)
 
 Defines an action. Multiple calls to the same action merge definitions.
 
@@ -63,7 +63,7 @@ Defines an action. Multiple calls to the same action merge definitions.
 
 `#enum(name, values:)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L40)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L39)
 
 Defines an enum type scoped to this contract.
 
@@ -76,19 +76,19 @@ Defines an enum type scoped to this contract.
 
 ---
 
-### #find_contract_for_schema
+### #find_contract_for_representation
 
-`#find_contract_for_schema(schema_class)`
+`#find_contract_for_representation(representation_class)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L82)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L87)
 
-Finds the contract class for an associated schema.
+Finds the contract class for an associated representation.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `schema_class` | `Class` | a [Schema::Base](schema-base) subclass |
+| `representation_class` | `Class` | a [Representation::Base](representation-base) subclass |
 
 **Returns**
 
@@ -100,7 +100,7 @@ Finds the contract class for an associated schema.
 
 `#import(type_name, from:)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L63)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L62)
 
 Imports a type from another contract or the API.
 
@@ -117,7 +117,7 @@ Imports a type from another contract or the API.
 
 `#object(name, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L33)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L32)
 
 Defines a named object type scoped to this contract.
 
@@ -133,7 +133,7 @@ Defines a named object type scoped to this contract.
 
 `#scoped_enum_name(name)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L76)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L75)
 
 The fully qualified name for an enum in this contract's scope.
 
@@ -153,7 +153,7 @@ The fully qualified name for an enum in this contract's scope.
 
 `#scoped_type_name(name)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L70)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L69)
 
 The fully qualified name for a type in this contract's scope.
 
@@ -173,7 +173,7 @@ The fully qualified name for a type in this contract's scope.
 
 `#union(name, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L47)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L46)
 
 Defines a union type scoped to this contract.
 

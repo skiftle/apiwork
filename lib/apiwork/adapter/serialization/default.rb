@@ -2,7 +2,7 @@
 
 module Apiwork
   module Adapter
-    module Representation
+    module Serialization
       class Default < Base
         types Types::Errors
         resource_types Types::Resources

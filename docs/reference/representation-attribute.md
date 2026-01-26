@@ -1,14 +1,14 @@
 ---
-order: 63
+order: 67
 prev: false
 next: false
 ---
 
-# Schema::Attribute
+# Representation::Attribute
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L16)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L16)
 
-Represents an attribute defined on a schema.
+Represents an attribute defined on a representation.
 
 Attributes map to model columns and define serialization behavior.
 Used by adapters to build contracts and serialize records.
@@ -16,7 +16,7 @@ Used by adapters to build contracts and serialize records.
 **Example**
 
 ```ruby
-attribute = InvoiceSchema.attributes[:title]
+attribute = InvoiceRepresentation.attributes[:title]
 attribute.name       # => :title
 attribute.type       # => :string
 attribute.filterable? # => true
@@ -28,7 +28,7 @@ attribute.filterable? # => true
 
 `#deprecated`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L26)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L26)
 
 **Returns**
 
@@ -40,7 +40,7 @@ attribute.filterable? # => true
 
 `#description`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L30)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L30)
 
 **Returns**
 
@@ -52,7 +52,7 @@ attribute.filterable? # => true
 
 `#enum`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L34)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L34)
 
 **Returns**
 
@@ -64,7 +64,7 @@ attribute.filterable? # => true
 
 `#example`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L38)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L38)
 
 **Returns**
 
@@ -76,7 +76,7 @@ attribute.filterable? # => true
 
 `#filterable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L144)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L144)
 
 **Returns**
 
@@ -88,7 +88,7 @@ attribute.filterable? # => true
 
 `#format`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L42)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L42)
 
 **Returns**
 
@@ -100,7 +100,7 @@ attribute.filterable? # => true
 
 `#max`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L46)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L46)
 
 **Returns**
 
@@ -112,7 +112,7 @@ attribute.filterable? # => true
 
 `#min`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L50)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L50)
 
 **Returns**
 
@@ -124,7 +124,7 @@ attribute.filterable? # => true
 
 `#name`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L54)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L54)
 
 **Returns**
 
@@ -136,7 +136,7 @@ attribute.filterable? # => true
 
 `#nullable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L162)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L162)
 
 **Returns**
 
@@ -148,7 +148,7 @@ attribute.filterable? # => true
 
 `#of`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L58)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L58)
 
 **Returns**
 
@@ -160,7 +160,7 @@ attribute.filterable? # => true
 
 `#optional?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L156)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L156)
 
 **Returns**
 
@@ -172,7 +172,7 @@ attribute.filterable? # => true
 
 `#sortable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L150)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L150)
 
 **Returns**
 
@@ -184,7 +184,7 @@ attribute.filterable? # => true
 
 `#type`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L62)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L62)
 
 **Returns**
 
@@ -196,7 +196,7 @@ attribute.filterable? # => true
 
 `#writable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L170)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L170)
 
 **Returns**
 
@@ -208,7 +208,7 @@ attribute.filterable? # => true
 
 `#writable_for?(action)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute.rb#L177)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L177)
 
 **Parameters**
 

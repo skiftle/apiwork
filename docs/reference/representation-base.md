@@ -1,22 +1,22 @@
 ---
-order: 64
+order: 68
 prev: false
 next: false
 ---
 
-# Schema::Base
+# Representation::Base
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L40)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L40)
 
-Base class for resource schemas.
+Base class for resource representations.
 
-Schemas define attributes and associations for serialization.
+Representations define attributes and associations for serialization.
 Types and nullability are auto-detected from the model's database columns.
 
-**Example: Basic schema**
+**Example: Basic representation**
 
 ```ruby
-class InvoiceSchema < Apiwork::Schema::Base
+class InvoiceRepresentation < Apiwork::Representation::Base
   attribute :id
   attribute :title
   attribute :amount, type: :decimal
@@ -33,22 +33,22 @@ end
 
 `.abstract!`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L40)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L40)
 
-Marks this schema as abstract.
+Marks this representation as abstract.
 
-Abstract schemas don't require a model and serve as base classes
-for other schemas. Use this when creating application-wide base schemas.
+Abstract representations don't require a model and serve as base classes
+for other representations. Use this when creating application-wide base representations.
 Subclasses automatically become non-abstract.
 
 **Returns**
 
 `void`
 
-**Example: Application base schema**
+**Example: Application base representation**
 
 ```ruby
-class ApplicationSchema < Apiwork::Schema::Base
+class ApplicationRepresentation < Apiwork::Representation::Base
   abstract!
 end
 ```
@@ -59,9 +59,9 @@ end
 
 `.abstract?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L40)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L40)
 
-Returns whether this schema is abstract.
+Returns whether this representation is abstract.
 
 **Returns**
 
@@ -73,9 +73,9 @@ Returns whether this schema is abstract.
 
 `.adapter(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L148)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L148)
 
-Configures adapter options for this schema.
+Configures adapter options for this representation.
 
 Use this to override API-level adapter settings for a specific
 resource. Available options depend on the adapter being used.
@@ -87,7 +87,7 @@ resource. Available options depend on the adapter being used.
 **Example: Custom pagination for this resource**
 
 ```ruby
-class ActivitySchema < Apiwork::Schema::Base
+class ActivityRepresentation < Apiwork::Representation::Base
   adapter do
     pagination do
       strategy :cursor
@@ -103,12 +103,12 @@ end
 
 `.adapter_config`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L171)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L171)
 
-The merged adapter configuration for this schema.
+The merged adapter configuration for this representation.
 
 Configuration values are resolved in order:
-1. Schema-level (defined in the schema class via `adapter do`)
+1. Representation-level (defined in the representation class via `adapter do`)
 2. API-level (defined in the API definition via `adapter do`)
 3. Adapter defaults (defined in the adapter class)
 
@@ -124,8 +124,8 @@ Configuration values are resolved in order:
 **Example**
 
 ```ruby
-schema_class.adapter_config.pagination.default_size
-schema_class.adapter_config.pagination.strategy
+representation_class.adapter_config.pagination.default_size
+representation_class.adapter_config.pagination.strategy
 ```
 
 ---
@@ -134,11 +134,11 @@ schema_class.adapter_config.pagination.strategy
 
 `.associations`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L51)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L51)
 
 **Returns**
 
-Hash{Symbol =&gt; [Association](schema-association)} — defined associations
+Hash{Symbol =&gt; [Association](representation-association)} — defined associations
 
 ---
 
@@ -146,7 +146,7 @@ Hash{Symbol =&gt; [Association](schema-association)} — defined associations
 
 `.attribute(name, decode: nil, deprecated: false, description: nil, empty: nil, encode: nil, enum: nil, example: nil, filterable: nil, format: nil, max: nil, min: nil, nullable: nil, optional: nil, sortable: nil, type: nil, writable: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L210)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L210)
 
 Defines an attribute for serialization and API contracts.
 
@@ -185,19 +185,19 @@ attribute :email, writable: { on: [:create] }
 
 `.attributes`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L46)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L46)
 
 **Returns**
 
-Hash{Symbol =&gt; [Attribute](schema-attribute)} — defined attributes
+Hash{Symbol =&gt; [Attribute](representation-attribute)} — defined attributes
 
 ---
 
 ### .belongs_to
 
-`.belongs_to(name, class_name: nil, deprecated: false, description: nil, example: nil, filterable: false, include: :optional, nullable: nil, optional: nil, polymorphic: nil, schema: nil, sortable: false, writable: false)`
+`.belongs_to(name, class_name: nil, deprecated: false, description: nil, example: nil, filterable: false, include: :optional, nullable: nil, optional: nil, polymorphic: nil, representation: nil, sortable: false, writable: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L392)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L392)
 
 Defines a belongs_to association for serialization and contracts.
 
@@ -228,17 +228,17 @@ belongs_to :category, filterable: true
 
 `.deprecated!`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L519)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L519)
 
-Marks this schema as deprecated.
+Marks this representation as deprecated.
 
-Deprecated schemas are included in generated documentation
+Deprecated representations are included in generated documentation
 with a deprecation notice.
 
 **Example**
 
 ```ruby
-class LegacyOrderSchema < Apiwork::Schema::Base
+class LegacyOrderRepresentation < Apiwork::Representation::Base
   deprecated!
 end
 ```
@@ -249,9 +249,9 @@ end
 
 `.description(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L503)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L503)
 
-Sets or gets a description for this schema.
+Sets or gets a description for this representation.
 
 Used in generated documentation (OpenAPI, etc.) to describe
 what this resource represents.
@@ -269,7 +269,7 @@ what this resource represents.
 **Example**
 
 ```ruby
-class InvoiceSchema < Apiwork::Schema::Base
+class InvoiceRepresentation < Apiwork::Representation::Base
   description 'Represents a customer invoice'
 end
 ```
@@ -280,9 +280,9 @@ end
 
 `.deserialize(hash_or_array)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L583)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L583)
 
-Deserializes a hash or an array of hashes using this schema's decode transformers.
+Deserializes a hash or an array of hashes using this representation's decode transformers.
 
 Transforms incoming data by applying decode transformers defined
 on each attribute. Use this for processing request payloads,
@@ -301,13 +301,13 @@ webhooks, or any external data.
 **Example: Deserialize request payload**
 
 ```ruby
-InvoiceSchema.deserialize(params[:invoice])
+InvoiceRepresentation.deserialize(params[:invoice])
 ```
 
 **Example: Deserialize a collection**
 
 ```ruby
-InvoiceSchema.deserialize(params[:invoices])
+InvoiceRepresentation.deserialize(params[:invoices])
 ```
 
 ---
@@ -316,12 +316,12 @@ InvoiceSchema.deserialize(params[:invoices])
 
 `.discriminated!(as: nil, by: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L447)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L447)
 
-Declares this schema as discriminated (polymorphic).
+Declares this representation as discriminated (polymorphic).
 
-Call on the base schema to enable discriminated responses. Variant
-schemas must call `variant` to register themselves.
+Call on the base representation to enable discriminated responses. Variant
+representations must call `variant` to register themselves.
 
 **Parameters**
 
@@ -334,14 +334,14 @@ schemas must call `variant` to register themselves.
 
 `self`
 
-**Example: Base schema with discriminated variants**
+**Example: Base representation with discriminated variants**
 
 ```ruby
-class ClientSchema < Apiwork::Schema::Base
+class ClientRepresentation < Apiwork::Representation::Base
   discriminated!
 end
 
-class PersonClientSchema < ClientSchema
+class PersonClientRepresentation < ClientRepresentation
   variant as: :person
 end
 ```
@@ -352,9 +352,9 @@ end
 
 `.example(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L535)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L535)
 
-Sets or gets an example value for this schema.
+Sets or gets an example value for this representation.
 
 Used in generated documentation to show example responses.
 
@@ -371,7 +371,7 @@ Used in generated documentation to show example responses.
 **Example**
 
 ```ruby
-class InvoiceSchema < Apiwork::Schema::Base
+class InvoiceRepresentation < Apiwork::Representation::Base
   example { id: 1, total: 99.00, status: 'paid' }
 end
 ```
@@ -380,9 +380,9 @@ end
 
 ### .has_many
 
-`.has_many(name, allow_destroy: false, class_name: nil, deprecated: false, description: nil, example: nil, filterable: false, include: :optional, nullable: nil, optional: nil, polymorphic: nil, schema: nil, sortable: false, writable: false)`
+`.has_many(name, allow_destroy: false, class_name: nil, deprecated: false, description: nil, example: nil, filterable: false, include: :optional, nullable: nil, optional: nil, polymorphic: nil, representation: nil, sortable: false, writable: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L340)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L340)
 
 Defines a has_many association for serialization and contracts.
 
@@ -417,9 +417,9 @@ has_many :tags, include: :always
 
 ### .has_one
 
-`.has_one(name, class_name: nil, deprecated: false, description: nil, example: nil, filterable: false, include: :optional, nullable: nil, optional: nil, polymorphic: nil, schema: nil, sortable: false, writable: false)`
+`.has_one(name, class_name: nil, deprecated: false, description: nil, example: nil, filterable: false, include: :optional, nullable: nil, optional: nil, polymorphic: nil, representation: nil, sortable: false, writable: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L286)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L286)
 
 Defines a has_one association for serialization and contracts.
 
@@ -439,10 +439,10 @@ control serialization behavior, nested attributes, and querying.
 has_one :profile
 ```
 
-**Example: With explicit schema**
+**Example: With explicit representation**
 
 ```ruby
-has_one :author, schema: UserSchema
+has_one :author, representation: UserRepresentation
 ```
 
 **Example: Nested attributes**
@@ -463,12 +463,12 @@ has_one :imageable, polymorphic: [:product, :user]
 
 `.model(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L100)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L100)
 
 The model class.
 
-By default, the model is auto-detected from the schema name
-(e.g., InvoiceSchema becomes Invoice). Use this to override.
+By default, the model is auto-detected from the representation name
+(e.g., InvoiceRepresentation becomes Invoice). Use this to override.
 
 **Parameters**
 
@@ -483,7 +483,7 @@ By default, the model is auto-detected from the schema name
 **Example: Explicit model**
 
 ```ruby
-class InvoiceSchema < Apiwork::Schema::Base
+class InvoiceRepresentation < Apiwork::Representation::Base
   model Invoice
 end
 ```
@@ -491,7 +491,7 @@ end
 **Example: Namespaced model**
 
 ```ruby
-class InvoiceSchema < Apiwork::Schema::Base
+class InvoiceRepresentation < Apiwork::Representation::Base
   model Billing::Invoice
 end
 ```
@@ -502,9 +502,9 @@ end
 
 `.root(singular, plural = singular.to_s.pluralize)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L126)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L126)
 
-Declares the JSON root key for this schema.
+Declares the JSON root key for this representation.
 
 Adapters can use this to wrap responses in a root key.
 
@@ -518,7 +518,7 @@ Adapters can use this to wrap responses in a root key.
 **Example: Custom root key**
 
 ```ruby
-class InvoiceSchema < Apiwork::Schema::Base
+class InvoiceRepresentation < Apiwork::Representation::Base
   root :bill, :bills
 end
 ```
@@ -529,26 +529,26 @@ end
 
 `.root_key`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L604)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L604)
 
 The root key for JSON responses.
 
 Uses the custom root if defined via [#root](#root), otherwise derives
-from the schema type or model name.
+from the representation type or model name.
 
 **Returns**
 
-[RootKey](schema-root-key)
+[RootKey](representation-root-key)
 
 **See also**
 
-- [RootKey](schema-root-key)
+- [RootKey](representation-root-key)
 
 **Example**
 
 ```ruby
-InvoiceSchema.root_key.singular  # => "invoice"
-InvoiceSchema.root_key.plural    # => "invoices"
+InvoiceRepresentation.root_key.singular  # => "invoice"
+InvoiceRepresentation.root_key.plural    # => "invoices"
 ```
 
 ---
@@ -557,9 +557,9 @@ InvoiceSchema.root_key.plural    # => "invoices"
 
 `.serialize(record_or_collection, context: {}, include: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L560)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L560)
 
-Serializes a record or a collection of records using this schema.
+Serializes a record or a collection of records using this representation.
 
 Converts records to JSON-ready hashes based on
 attribute and association definitions.
@@ -579,19 +579,19 @@ attribute and association definitions.
 **Example: Serialize a single record**
 
 ```ruby
-InvoiceSchema.serialize(invoice)
+InvoiceRepresentation.serialize(invoice)
 ```
 
 **Example: Serialize with associations**
 
 ```ruby
-InvoiceSchema.serialize(invoice, include: [:customer, :line_items])
+InvoiceRepresentation.serialize(invoice, include: [:customer, :line_items])
 ```
 
 **Example: Serialize a collection**
 
 ```ruby
-InvoiceSchema.serialize(Invoice.all)
+InvoiceRepresentation.serialize(Invoice.all)
 ```
 
 ---
@@ -600,7 +600,7 @@ InvoiceSchema.serialize(Invoice.all)
 
 `.tag`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L63)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L63)
 
 **Returns**
 
@@ -612,11 +612,11 @@ InvoiceSchema.serialize(Invoice.all)
 
 `.union`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L57)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L57)
 
 **Returns**
 
-[Schema::Union](schema-union), `nil` — the union configuration
+[Representation::Union](representation-union), `nil` — the union configuration
 
 ---
 
@@ -624,11 +624,11 @@ InvoiceSchema.serialize(Invoice.all)
 
 `.variant(as: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L474)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L474)
 
-Registers this schema as a variant of its parent.
+Registers this representation as a variant of its parent.
 
-The parent schema must have called `discriminated!` first.
+The parent representation must have called `discriminated!` first.
 Responses will use the variant's attributes based on the
 record's actual type.
 
@@ -645,7 +645,7 @@ record's actual type.
 **Example**
 
 ```ruby
-class PersonClientSchema < ClientSchema
+class PersonClientRepresentation < ClientRepresentation
   variant as: :person
 end
 ```
@@ -658,7 +658,7 @@ end
 
 `#context`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L72)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L72)
 
 **Returns**
 
@@ -670,7 +670,7 @@ end
 
 `#record`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L76)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L76)
 
 **Returns**
 

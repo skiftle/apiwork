@@ -81,18 +81,18 @@ module Apiwork
         end
 
         # @api public
-        # Sets or gets the representation class.
+        # Sets or gets the serialization class.
         #
-        # Representation defines API objects (resources, errors) and handles serialization.
+        # Serialization defines API objects (resources, errors) and handles serialization.
         #
-        # @param klass [Class] a Representation::Base subclass (optional)
+        # @param klass [Class] a Serialization::Base subclass (optional)
         # @return [Class, nil]
         #
         # @example
-        #   representation StandardRepresentation
-        def representation(klass = nil)
-          @representation = klass if klass
-          @representation || (superclass.respond_to?(:representation) && superclass.representation)
+        #   serialization Serialization::Default
+        def serialization(klass = nil)
+          @serialization = klass if klass
+          @serialization || (superclass.respond_to?(:serialization) && superclass.serialization)
         end
 
         # @api public
@@ -207,7 +207,7 @@ module Apiwork
         result, document = apply_capabilities({ data: collection }, state, document_type: :collection)
         serialize_options = result[:serialize_options] || {}
 
-        rep = representation_instance(representation_class)
+        rep = serialization_instance(representation_class)
         serialized = rep.serialize_resource(result[:data], serialize_options:, context: state.context)
 
         self.class.collection_document.new(representation_class, serialized, document, capabilities, state.meta).build
@@ -217,14 +217,14 @@ module Apiwork
         result, document = apply_capabilities({ data: record }, state, document_type: :record)
         serialize_options = result[:serialize_options] || {}
 
-        rep = representation_instance(representation_class)
+        rep = serialization_instance(representation_class)
         serialized = rep.serialize_resource(result[:data], serialize_options:, context: state.context)
 
         self.class.record_document.new(representation_class, serialized, document, capabilities, state.meta).build
       end
 
       def process_error(error, state)
-        rep = representation_instance(state.representation_class)
+        rep = serialization_instance(state.representation_class)
         serialized = rep.serialize_error(error, context: state.context)
 
         self.class.error_document.new(serialized).build
@@ -235,8 +235,8 @@ module Apiwork
           capability.api_types(registrar, features)
         end
 
-        representation_class = self.class.representation
-        representation_class&.new(nil)&.api(registrar, features)
+        serialization_class = self.class.serialization
+        serialization_class&.new(nil)&.api(registrar, features)
       end
 
       def register_contract(registrar, representation_class, actions)
@@ -244,8 +244,8 @@ module Apiwork
           capability.contract_types(registrar, representation_class, actions)
         end
 
-        representation_class = self.class.representation
-        representation_class&.new(representation_class)&.contract(registrar, representation_class, actions)
+        serialization_class = self.class.serialization
+        serialization_class&.new(representation_class)&.contract(registrar, representation_class, actions)
 
         build_action_responses(registrar, representation_class, actions)
       end
@@ -282,8 +282,8 @@ module Apiwork
 
       private
 
-      def representation_instance(representation_class)
-        self.class.representation.new(representation_class)
+      def serialization_instance(representation_class)
+        self.class.serialization.new(representation_class)
       end
 
       def apply_capabilities(data, state, document_type:)

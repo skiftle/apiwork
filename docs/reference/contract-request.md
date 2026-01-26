@@ -1,5 +1,5 @@
 ---
-order: 24
+order: 28
 prev: false
 next: false
 ---
@@ -18,7 +18,7 @@ Returns [Contract::Object](contract-object) via `query` and `body`.
 
 `#body(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request.rb#L57)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request.rb#L52)
 
 Defines the request body for this request.
 

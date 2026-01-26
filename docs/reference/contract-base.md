@@ -1,5 +1,5 @@
 ---
-order: 21
+order: 25
 prev: false
 next: false
 ---
@@ -11,14 +11,14 @@ next: false
 Base class for API contracts.
 
 Contracts define request/response structure for a resource.
-Link to a schema with [.schema!](#schema!) for automatic serialization.
+Link to a representation with [.representation](#representation) for automatic serialization.
 Define actions with [.action](#action) for custom validation and response shapes.
 
 **Example: Basic contract**
 
 ```ruby
 class InvoiceContract < Apiwork::Contract::Base
-  schema! InvoiceSchema
+  representation InvoiceRepresentation
 end
 ```
 
@@ -26,7 +26,7 @@ end
 
 ```ruby
 class InvoiceContract < Apiwork::Contract::Base
-  schema! InvoiceSchema
+  representation InvoiceRepresentation
 
   action :create do
     request do
@@ -85,7 +85,7 @@ Returns whether this contract is abstract.
 
 `.action(action_name, replace: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L352)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L346)
 
 Defines an action (endpoint) for this contract.
 
@@ -159,7 +159,7 @@ end
 
 `.enum(name, values: nil, description: nil, example: nil, deprecated: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L217)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L201)
 
 Defines an enum scoped to this contract.
 
@@ -198,7 +198,7 @@ string :status, enum: :status
 
 `.identifier(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L101)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L102)
 
 The scope prefix for contract-scoped types.
 
@@ -206,7 +206,7 @@ Types, enums, and unions defined in this contract are namespaced
 with this prefix in introspection output. For example, a type
 `:address` becomes `:invoice_address` when identifier is `:invoice`.
 
-If not set, prefix is derived from schema's root_key or class name.
+If not set, prefix is derived from representation's root_key or class name.
 
 **Parameters**
 
@@ -237,7 +237,7 @@ end
 
 `.import(contract_class, as:)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L279)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L263)
 
 Imports types from another contract for reuse.
 
@@ -280,7 +280,7 @@ end
 
 `.introspect(expand: false, locale: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L382)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L376)
 
 Returns a hash representation of this contract's structure.
 
@@ -316,9 +316,9 @@ InvoiceContract.introspect(expand: true)
 
 ### .object
 
-`.object(name, description: nil, example: nil, format: nil, deprecated: false, schema_class: nil, &block)`
+`.object(name, description: nil, example: nil, format: nil, deprecated: false, representation_class: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L178)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L162)
 
 Defines a reusable object type scoped to this contract.
 
@@ -335,7 +335,7 @@ with the contract's scope prefix (e.g., `:order_address`).
 | `example` | `Object` | example value for docs |
 | `format` | `String` | format hint for docs |
 | `deprecated` | `Boolean` | mark as deprecated |
-| `schema_class` | `Class` | a [Schema::Base](schema-base) subclass for type inference |
+| `representation_class` | `Class` | a [Representation::Base](representation-base) subclass for type inference |
 
 **See also**
 
@@ -360,47 +360,40 @@ end
 
 ---
 
-### .schema!
+### .representation
 
-`.schema!`
+`.representation(klass)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L138)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L127)
 
-Links this contract to its schema using naming convention.
+Links this contract to a representation class.
 
-Looks up the schema class by replacing "Contract" with "Schema"
-in the class name. Both must be in the same namespace.
-For example, `Api::V1::UserContract.schema!` finds `Api::V1::UserSchema`.
+The representation defines the attributes and associations that
+are serialized in responses. Adapters use the representation to
+auto-generate request/response types.
 
-Call this method to enable auto-generation of request/response
-types based on the schema's attributes.
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `klass` | `Class` | a [Representation::Base](representation-base) subclass |
 
 **Returns**
 
-[Schema::Base](schema-base)
+`void`
 
 **See also**
 
-- [Schema::Base](schema-base)
+- [Representation::Base](representation-base)
 
 **Example**
 
 ```ruby
-class Api::V1::UserContract < Apiwork::Contract::Base
-  schema!  # Links to Api::V1::UserSchema
+class InvoiceContract < Apiwork::Contract::Base
+  representation InvoiceRepresentation
 
-  action :create do
-    request do
-      body do
-        param :name
-      end
-    end
-    response do
-      body do
-        param :id
-      end
-    end
-  end
+  action :show
+  action :create
 end
 ```
 
@@ -410,7 +403,7 @@ end
 
 `.union(name, discriminator: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L250)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L234)
 
 Defines a discriminated union type scoped to this contract.
 
@@ -450,7 +443,7 @@ end
 
 `#action_name`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L67)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L68)
 
 **Returns**
 
@@ -462,7 +455,7 @@ end
 
 `#body`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L75)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L76)
 
 **Returns**
 
@@ -474,7 +467,7 @@ end
 
 `#invalid?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L549)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L543)
 
 Returns whether the contract has validation issues.
 
@@ -488,7 +481,7 @@ Returns whether the contract has validation issues.
 
 `#issues`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L63)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L64)
 
 **Returns**
 
@@ -500,7 +493,7 @@ Array&lt;[Issue](issue)&gt; — validation issues (empty if valid)
 
 `#query`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L71)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L72)
 
 **Returns**
 
@@ -512,7 +505,7 @@ Array&lt;[Issue](issue)&gt; — validation issues (empty if valid)
 
 `#request`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L59)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L60)
 
 **Returns**
 
@@ -524,7 +517,7 @@ Array&lt;[Issue](issue)&gt; — validation issues (empty if valid)
 
 `#valid?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L542)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L536)
 
 Returns whether the contract passed validation.
 

@@ -1,5 +1,5 @@
 ---
-order: 23
+order: 27
 prev: false
 next: false
 ---
@@ -36,7 +36,7 @@ end
 
 `#array?(name, as: nil, default: nil, deprecated: nil, description: nil, nullable: nil, of: nil, required: nil, store: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1015)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1025)
 
 Defines an optional array.
 
@@ -64,7 +64,7 @@ Defines an optional array.
 
 `#binary(name, as: nil, default: nil, deprecated: nil, description: nil, example: nil, nullable: nil, optional: nil, required: nil, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L811)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L821)
 
 Defines a binary.
 
@@ -93,7 +93,7 @@ Defines a binary.
 
 `#binary?(name, as: nil, default: nil, deprecated: nil, description: nil, example: nil, nullable: nil, required: nil, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L851)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L861)
 
 Defines an optional binary.
 
@@ -121,7 +121,7 @@ Defines an optional binary.
 
 `#boolean(name, as: nil, default: nil, deprecated: nil, description: nil, example: nil, nullable: nil, optional: nil, required: nil, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L411)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L421)
 
 Defines a boolean.
 
@@ -150,7 +150,7 @@ Defines a boolean.
 
 `#boolean?(name, as: nil, default: nil, deprecated: nil, description: nil, example: nil, nullable: nil, required: nil, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L451)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L461)
 
 Defines an optional boolean.
 
@@ -178,7 +178,7 @@ Defines an optional boolean.
 
 `#date(name, as: nil, default: nil, deprecated: nil, description: nil, example: nil, nullable: nil, optional: nil, required: nil, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L571)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L581)
 
 Defines a date.
 
@@ -207,7 +207,7 @@ Defines a date.
 
 `#date?(name, as: nil, default: nil, deprecated: nil, description: nil, example: nil, nullable: nil, required: nil, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L611)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L621)
 
 Defines an optional date.
 
@@ -235,7 +235,7 @@ Defines an optional date.
 
 `#datetime(name, as: nil, default: nil, deprecated: nil, description: nil, example: nil, nullable: nil, optional: nil, required: nil, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L491)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L501)
 
 Defines a datetime.
 
@@ -264,7 +264,7 @@ Defines a datetime.
 
 `#datetime?(name, as: nil, default: nil, deprecated: nil, description: nil, example: nil, nullable: nil, required: nil, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L531)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L541)
 
 Defines an optional datetime.
 
@@ -292,7 +292,7 @@ Defines an optional datetime.
 
 `#decimal(name, as: nil, default: nil, deprecated: nil, description: nil, example: nil, max: nil, min: nil, nullable: nil, optional: nil, required: nil, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L229)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L239)
 
 Defines a decimal.
 
@@ -323,7 +323,7 @@ Defines a decimal.
 
 `#decimal?(name, as: nil, default: nil, deprecated: nil, description: nil, example: nil, max: nil, min: nil, nullable: nil, required: nil, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L275)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L285)
 
 Defines an optional decimal.
 
@@ -353,7 +353,7 @@ Defines an optional decimal.
 
 `#integer(name, as: nil, default: nil, deprecated: nil, description: nil, enum: nil, example: nil, max: nil, min: nil, nullable: nil, optional: nil, required: nil, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L132)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L142)
 
 Defines an integer.
 
@@ -385,7 +385,7 @@ Defines an integer.
 
 `#integer?(name, as: nil, default: nil, deprecated: nil, description: nil, enum: nil, example: nil, max: nil, min: nil, nullable: nil, required: nil, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L181)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L191)
 
 Defines an optional integer.
 
@@ -416,7 +416,7 @@ Defines an optional integer.
 
 `#literal(name, value:, as: nil, default: nil, deprecated: nil, description: nil, optional: nil, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1141)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1151)
 
 Defines a literal value.
 
@@ -436,6 +436,26 @@ Defines a literal value.
 **Returns**
 
 `void`
+
+---
+
+### #merge!
+
+`#merge!(other)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L16)
+
+Merges params from another object into this one.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `other` | `Apiwork::Object` | the object to merge from |
+
+**Returns**
+
+`self`
 
 ---
 
@@ -461,7 +481,7 @@ Use for response data that doesn't belong to the resource itself.
 
 `#number(name, as: nil, default: nil, deprecated: nil, description: nil, example: nil, max: nil, min: nil, nullable: nil, optional: nil, required: nil, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L321)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L331)
 
 Defines a number.
 
@@ -492,7 +512,7 @@ Defines a number.
 
 `#number?(name, as: nil, default: nil, deprecated: nil, description: nil, example: nil, max: nil, min: nil, nullable: nil, required: nil, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L367)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L377)
 
 Defines an optional number.
 
@@ -522,7 +542,7 @@ Defines an optional number.
 
 `#object(name, as: nil, default: nil, deprecated: nil, description: nil, nullable: nil, optional: nil, required: nil, store: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L891)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L901)
 
 Defines an object.
 
@@ -550,7 +570,7 @@ Defines an object.
 
 `#object?(name, as: nil, default: nil, deprecated: nil, description: nil, nullable: nil, required: nil, store: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L931)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L941)
 
 Defines an optional object.
 
@@ -618,7 +638,7 @@ for static definitions. Use `param` for dynamic field generation.
 
 `#reference(name, to: nil, as: nil, default: nil, deprecated: nil, description: nil, nullable: nil, optional: nil, required: nil, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1178)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1188)
 
 Defines a reference to a named type.
 
@@ -647,7 +667,7 @@ Defines a reference to a named type.
 
 `#reference?(name, to: nil, as: nil, default: nil, deprecated: nil, description: nil, nullable: nil, required: nil, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1217)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1227)
 
 Defines an optional reference to a named type.
 
@@ -675,7 +695,7 @@ Defines an optional reference to a named type.
 
 `#string(name, as: nil, default: nil, deprecated: nil, description: nil, enum: nil, example: nil, format: nil, max: nil, min: nil, nullable: nil, optional: nil, required: nil, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L29)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L39)
 
 Defines a string.
 
@@ -708,7 +728,7 @@ Defines a string.
 
 `#string?(name, as: nil, default: nil, deprecated: nil, description: nil, enum: nil, example: nil, format: nil, max: nil, min: nil, nullable: nil, required: nil, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L81)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L91)
 
 Defines an optional string.
 
@@ -740,7 +760,7 @@ Defines an optional string.
 
 `#time(name, as: nil, default: nil, deprecated: nil, description: nil, example: nil, nullable: nil, optional: nil, required: nil, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L731)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L741)
 
 Defines a time.
 
@@ -769,7 +789,7 @@ Defines a time.
 
 `#time?(name, as: nil, default: nil, deprecated: nil, description: nil, example: nil, nullable: nil, required: nil, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L771)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L781)
 
 Defines an optional time.
 
@@ -797,7 +817,7 @@ Defines an optional time.
 
 `#union(name, as: nil, default: nil, deprecated: nil, description: nil, discriminator: nil, nullable: nil, optional: nil, required: nil, store: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1058)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1068)
 
 Defines a union.
 
@@ -826,7 +846,7 @@ Defines a union.
 
 `#union?(name, as: nil, default: nil, deprecated: nil, description: nil, discriminator: nil, nullable: nil, required: nil, store: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1101)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1111)
 
 Defines an optional union.
 
@@ -854,7 +874,7 @@ Defines an optional union.
 
 `#uuid(name, as: nil, default: nil, deprecated: nil, description: nil, example: nil, nullable: nil, optional: nil, required: nil, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L651)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L661)
 
 Defines a UUID.
 
@@ -883,7 +903,7 @@ Defines a UUID.
 
 `#uuid?(name, as: nil, default: nil, deprecated: nil, description: nil, example: nil, nullable: nil, required: nil, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L691)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L701)
 
 Defines an optional UUID.
 

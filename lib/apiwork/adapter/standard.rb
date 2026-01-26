@@ -7,7 +7,7 @@ module Apiwork
 
       transform_request RequestTransformer
 
-      representation Representation::Default
+      serialization Serialization::Default
 
       record_document Document::Record::Default
       collection_document Document::Collection::Default

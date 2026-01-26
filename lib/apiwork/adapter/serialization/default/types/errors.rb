@@ -2,7 +2,7 @@
 
 module Apiwork
   module Adapter
-    module Representation
+    module Serialization
       class Default < Base
         module Types
           class Errors

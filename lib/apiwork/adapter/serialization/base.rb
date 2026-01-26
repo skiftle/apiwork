@@ -2,7 +2,7 @@
 
 module Apiwork
   module Adapter
-    module Representation
+    module Serialization
       class Base
         class << self
           def types(klass)

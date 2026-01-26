@@ -1,5 +1,5 @@
 ---
-order: 26
+order: 30
 prev: false
 next: false
 ---
@@ -74,14 +74,14 @@ skip_contract_validation!
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L205)
 
-The serialization context passed to schemas.
+The serialization context passed to representations.
 
-Override this method to provide context data to your schemas.
+Override this method to provide context data to your representations.
 Common uses: current user, permissions, locale, feature flags.
 
 **Returns**
 
-`Hash` — context data available in schema serialization
+`Hash` — context data available in representation serialization
 
 **Example: Provide current user context**
 
@@ -142,8 +142,8 @@ end
 
 Exposes data as an API response.
 
-When a schema is linked via [Contract::Base.schema!](contract-base#schema!), data is serialized
-through the schema. Otherwise, data is rendered as-is. The adapter applies
+When a representation is linked via [Contract::Base.representation](contract-base#representation), data is serialized
+through the representation. Otherwise, data is rendered as-is. The adapter applies
 response transformations (key casing, wrapping, etc.).
 
 **Parameters**
@@ -156,7 +156,7 @@ response transformations (key casing, wrapping, etc.).
 
 **See also**
 
-- [Schema::Base](schema-base)
+- [Representation::Base](representation-base)
 
 **Example: Expose a single record**
 
