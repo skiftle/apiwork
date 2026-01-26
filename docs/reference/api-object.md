@@ -578,9 +578,9 @@ Defines an optional object.
 
 ### #param
 
-`#param(name, type: nil, as: nil, default: nil, deprecated: nil, description: nil, discriminator: nil, enum: nil, example: nil, format: nil, max: nil, min: nil, nullable: nil, of: nil, optional: nil, required: nil, shape: nil, store: nil, value: nil, &block)`
+`#param(name, type: nil, as: nil, default: nil, deprecated: nil, description: nil, discriminator: nil, enum: nil, example: nil, format: nil, max: nil, min: nil, nullable: nil, of: nil, optional: nil, required: nil, shape: nil, store: nil, transform: nil, value: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L53)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L54)
 
 Defines a field with explicit type.
 
@@ -609,6 +609,7 @@ for static definitions. Use `param` for dynamic field generation.
 | `required` | `Boolean, nil` | explicit required flag |
 | `shape` | `API::Object, API::Union, nil` | pre-built shape |
 | `store` | `Boolean, nil` | whether to persist |
+| `transform` | `Proc, nil` | value transformation lambda |
 | `value` | `Object, nil` | literal value |
 
 **Returns**

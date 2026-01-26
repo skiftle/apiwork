@@ -195,9 +195,9 @@ Hash{Symbol =&gt; [Attribute](representation-attribute)} — defined attributes
 
 ### .belongs_to
 
-`.belongs_to(name, class_name: nil, deprecated: false, description: nil, example: nil, filterable: false, include: :optional, nullable: nil, optional: nil, polymorphic: nil, representation: nil, sortable: false, writable: false)`
+`.belongs_to(name, deprecated: false, description: nil, example: nil, filterable: false, include: :optional, nullable: nil, optional: nil, polymorphic: nil, representation: nil, sortable: false, writable: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L392)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L388)
 
 Defines a belongs_to association for serialization and contracts.
 
@@ -228,7 +228,7 @@ belongs_to :category, filterable: true
 
 `.deprecated!`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L519)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L477)
 
 Marks this representation as deprecated.
 
@@ -249,7 +249,7 @@ end
 
 `.description(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L503)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L461)
 
 Sets or gets a description for this representation.
 
@@ -280,7 +280,7 @@ end
 
 `.deserialize(hash_or_array)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L583)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L541)
 
 Deserializes a hash or an array of hashes using this representation's decode transformers.
 
@@ -312,47 +312,11 @@ InvoiceRepresentation.deserialize(params[:invoices])
 
 ---
 
-### .discriminated!
-
-`.discriminated!(as: nil, by: nil)`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L447)
-
-Declares this representation as discriminated (polymorphic).
-
-Call on the base representation to enable discriminated responses. Variant
-representations must call `variant` to register themselves.
-
-**Parameters**
-
-| Name | Type | Description |
-|------|------|-------------|
-| `as` | `Symbol` | discriminator field name in API responses (defaults to inheritance_column, usually :type) |
-| `by` | `Symbol` | Rails column (default: inheritance_column) |
-
-**Returns**
-
-`self`
-
-**Example: Base representation with discriminated variants**
-
-```ruby
-class ClientRepresentation < Apiwork::Representation::Base
-  discriminated!
-end
-
-class PersonClientRepresentation < ClientRepresentation
-  variant as: :person
-end
-```
-
----
-
 ### .example
 
 `.example(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L535)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L493)
 
 Sets or gets an example value for this representation.
 
@@ -380,9 +344,9 @@ end
 
 ### .has_many
 
-`.has_many(name, allow_destroy: false, class_name: nil, deprecated: false, description: nil, example: nil, filterable: false, include: :optional, nullable: nil, optional: nil, polymorphic: nil, representation: nil, sortable: false, writable: false)`
+`.has_many(name, allow_destroy: false, deprecated: false, description: nil, example: nil, filterable: false, include: :optional, nullable: nil, optional: nil, polymorphic: nil, representation: nil, sortable: false, writable: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L340)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L338)
 
 Defines a has_many association for serialization and contracts.
 
@@ -417,7 +381,7 @@ has_many :tags, include: :always
 
 ### .has_one
 
-`.has_one(name, class_name: nil, deprecated: false, description: nil, example: nil, filterable: false, include: :optional, nullable: nil, optional: nil, polymorphic: nil, representation: nil, sortable: false, writable: false)`
+`.has_one(name, deprecated: false, description: nil, example: nil, filterable: false, include: :optional, nullable: nil, optional: nil, polymorphic: nil, representation: nil, sortable: false, writable: false)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L286)
 
@@ -529,7 +493,7 @@ end
 
 `.root_key`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L604)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L562)
 
 The root key for JSON responses.
 
@@ -557,7 +521,7 @@ InvoiceRepresentation.root_key.plural    # => "invoices"
 
 `.serialize(record_or_collection, context: {}, include: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L560)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L518)
 
 Serializes a record or a collection of records using this representation.
 
@@ -608,6 +572,44 @@ InvoiceRepresentation.serialize(Invoice.all)
 
 ---
 
+### .type_name
+
+`.type_name(value = nil)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L442)
+
+The API-friendly type identifier for this representation.
+
+Rails stores full class names in discriminator columns for STI and
+polymorphic associations (e.g., `"Billing::Invoice"` or `"MyApp::Post"`).
+These internal names are often acceptable in an API, but can leak
+implementation details like module structure or naming conventions.
+
+Use this to provide a cleaner, user-friendly identifier that adapters
+can use when serializing and deserializing type information.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `value` | `Symbol, String` | the type identifier |
+
+**Returns**
+
+`Symbol`, `nil`
+
+**Example**
+
+```ruby
+class CarRepresentation < VehicleRepresentation
+  type_name :car
+end
+
+CarRepresentation.type_name  # => :car
+```
+
+---
+
 ### .union
 
 `.union`
@@ -617,38 +619,6 @@ InvoiceRepresentation.serialize(Invoice.all)
 **Returns**
 
 [Representation::Union](representation-union), `nil` — the union configuration
-
----
-
-### .variant
-
-`.variant(as: nil)`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L474)
-
-Registers this representation as a variant of its parent.
-
-The parent representation must have called `discriminated!` first.
-Responses will use the variant's attributes based on the
-record's actual type.
-
-**Parameters**
-
-| Name | Type | Description |
-|------|------|-------------|
-| `as` | `Symbol` | discriminator tag in API responses (defaults to model's sti_name) |
-
-**Returns**
-
-`self`
-
-**Example**
-
-```ruby
-class PersonClientRepresentation < ClientRepresentation
-  variant as: :person
-end
-```
 
 ---
 

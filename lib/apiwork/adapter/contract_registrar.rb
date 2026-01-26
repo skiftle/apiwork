@@ -25,30 +25,11 @@ module Apiwork
     #     end
     #   end
     class ContractRegistrar
+      attr_reader :contract_class
+
       def initialize(contract_class)
         @contract_class = contract_class
       end
-
-      # @!method object(name, &block)
-      #   @api public
-      #   Defines a named object type scoped to this contract.
-      #   @param name [Symbol] the object name
-      #   @yield block defining params
-      #   @see Apiwork::Contract::Base.object
-
-      # @!method enum(name, values:)
-      #   @api public
-      #   Defines an enum type scoped to this contract.
-      #   @param name [Symbol] the enum name
-      #   @param values [Array<String>] allowed values
-      #   @see Apiwork::Contract::Base.enum
-
-      # @!method union(name, &block)
-      #   @api public
-      #   Defines a union type scoped to this contract.
-      #   @param name [Symbol] the union name
-      #   @yield block defining variants
-      #   @see Apiwork::Contract::Base.union
 
       # @!method action(name, replace: false, &block)
       #   @api public
@@ -58,34 +39,52 @@ module Apiwork
       #   @yield block defining request/response
       #   @return [Action] the action definition
       #   @see Apiwork::Contract::Base.action
-
+      #
+      # @!method enum(name, values:)
+      #   @api public
+      #   Defines an enum type scoped to this contract.
+      #   @param name [Symbol] the enum name
+      #   @param values [Array<String>] allowed values
+      #   @see Apiwork::Contract::Base.enum
+      #
+      # @!method find_contract_for_representation(representation_class)
+      #   @api public
+      #   Finds the contract class for an associated representation.
+      #   @param representation_class [Class] a {Representation::Base} subclass
+      #   @return [Contract::Base, nil]
+      #
       # @!method import(type_name, from:)
       #   @api public
       #   Imports a type from another contract or the API.
       #   @param type_name [Symbol] the type to import
       #   @param from [Class] a {Contract::Base} subclass
       #   @see Apiwork::Contract::Base.import
-
-      # @!method scoped_type_name(name)
+      #
+      # @!method object(name, &block)
       #   @api public
-      #   The fully qualified name for a type in this contract's scope.
-      #   @param name [Symbol, nil] the local type name
-      #   @return [Symbol] the scoped name
-
+      #   Defines a named object type scoped to this contract.
+      #   @param name [Symbol] the object name
+      #   @yield block defining params
+      #   @see Apiwork::Contract::Base.object
+      #
       # @!method scoped_enum_name(name)
       #   @api public
       #   The fully qualified name for an enum in this contract's scope.
       #   @param name [Symbol, nil] the local enum name
       #   @return [Symbol] the scoped name
-
-      # @!method find_contract_for_representation(representation_class)
+      #
+      # @!method scoped_type_name(name)
       #   @api public
-      #   Finds the contract class for an associated representation.
-      #   @param representation_class [Class] a {Representation::Base} subclass
-      #   @return [Contract::Base, nil]
-
-      attr_reader :contract_class
-
+      #   The fully qualified name for a type in this contract's scope.
+      #   @param name [Symbol, nil] the local type name
+      #   @return [Symbol] the scoped name
+      #
+      # @!method union(name, &block)
+      #   @api public
+      #   Defines a union type scoped to this contract.
+      #   @param name [Symbol] the union name
+      #   @yield block defining variants
+      #   @see Apiwork::Contract::Base.union
       delegate :action,
                :enum,
                :enum?,

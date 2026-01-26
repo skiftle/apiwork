@@ -463,7 +463,7 @@ Merges params from another object into this one.
 
 `#meta(optional: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L165)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L168)
 
 Shorthand for `object :meta do ... end`.
 
@@ -595,9 +595,9 @@ Defines an optional object.
 
 ### #param
 
-`#param(name, type: nil, as: nil, default: nil, deprecated: nil, description: nil, discriminator: nil, enum: nil, example: nil, format: nil, max: nil, min: nil, nullable: nil, of: nil, optional: nil, required: nil, shape: nil, store: nil, value: nil, &block)`
+`#param(name, type: nil, as: nil, default: nil, deprecated: nil, description: nil, discriminator: nil, enum: nil, example: nil, format: nil, max: nil, min: nil, nullable: nil, of: nil, optional: nil, required: nil, shape: nil, store: nil, transform: nil, value: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L63)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L64)
 
 Defines a field with explicit type.
 
@@ -626,6 +626,7 @@ for static definitions. Use `param` for dynamic field generation.
 | `required` | `Boolean, nil` | explicit required flag |
 | `shape` | `Contract::Object, Contract::Union, nil` | pre-built shape |
 | `store` | `Boolean, nil` | whether to persist |
+| `transform` | `Proc, nil` | value transformation lambda |
 | `value` | `Object, nil` | literal value |
 
 **Returns**
