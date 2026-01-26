@@ -42,7 +42,11 @@ module Apiwork
 
           def apply_sti_discriminator_transform(params, shape)
             shape.params.each do |name, param_options|
-              params[name] = param_options[:store] if param_options[:store] && params.key?(name)
+              if param_options[:store] && params.key?(name)
+                params[name] = param_options[:store]
+              elsif param_options[:transform] && params.key?(name)
+                params[name] = param_options[:transform].call(params[name])
+              end
 
               value = params[name]
               next unless value.is_a?(Hash)

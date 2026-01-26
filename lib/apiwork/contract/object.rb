@@ -57,6 +57,7 @@ module Apiwork
       # @param required [Boolean, nil] explicit required flag
       # @param shape [Contract::Object, Contract::Union, nil] pre-built shape
       # @param store [Boolean, nil] whether to persist
+      # @param transform [Proc, nil] value transformation lambda
       # @param value [Object, nil] literal value
       # @yield block for nested structure
       # @return [void]
@@ -79,6 +80,7 @@ module Apiwork
         required: nil,
         shape: nil,
         store: nil,
+        transform: nil,
         value: nil,
         &block
       )
@@ -92,6 +94,7 @@ module Apiwork
           nullable:,
           required:,
           store:,
+          transform:,
         }
 
         raise ArgumentError, 'discriminator can only be used with type: :union' if discriminator && type != :union

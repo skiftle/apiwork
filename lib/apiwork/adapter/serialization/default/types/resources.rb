@@ -202,14 +202,11 @@ module Apiwork
 
               builder = self
               discriminator = association.discriminator
-              association_local = association
 
               registrar.union(union_type_name, discriminator:) do
-                association_local.polymorphic.each_key do |tag|
-                  association_representation_class = association_local.resolve_polymorphic_representation(tag)
-                  next unless association_representation_class
-
-                  alias_name = builder.import_association_contract(association_representation_class, visited)
+                polymorphic.each do |representation_class|
+                  tag = representation_class._type_name || representation_class.model_class.polymorphic_name
+                  alias_name = builder.import_association_contract(representation_class, visited)
                   next unless alias_name
 
                   variant tag: tag.to_s do

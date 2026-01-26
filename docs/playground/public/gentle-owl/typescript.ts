@@ -14,7 +14,7 @@ export interface CommentCreatePayload {
   authorName?: null | string;
   body: string;
   commentableId: string;
-  commentableType: string;
+  commentableType: 'image' | 'post' | 'video';
 }
 
 export interface CommentCreateSuccessResponseBody {
@@ -57,7 +57,7 @@ export interface CommentUpdatePayload {
   authorName?: null | string;
   body?: string;
   commentableId?: string;
-  commentableType?: string;
+  commentableType?: 'image' | 'post' | 'video';
 }
 
 export interface CommentUpdateSuccessResponseBody {

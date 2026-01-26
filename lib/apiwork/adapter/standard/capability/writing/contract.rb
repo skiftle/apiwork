@@ -206,7 +206,30 @@ module Apiwork
                 end
               end
 
+              polymorphic_options = polymorphic_type_options(attribute)
+              options.merge!(polymorphic_options) if polymorphic_options
+
               options
+            end
+
+            def polymorphic_type_options(attribute)
+              association = representation_class.polymorphic_association_for_type_column(attribute.name)
+              return nil unless association
+
+              type_mapping = {}
+              allowed_values = []
+
+              association.polymorphic.each do |rep_class|
+                api_value = (rep_class._type_name || rep_class.model_class.polymorphic_name).to_s
+                rails_type = rep_class.model_class.polymorphic_name
+                type_mapping[api_value] = rails_type
+                allowed_values << api_value
+              end
+
+              {
+                enum: allowed_values,
+                transform: ->(value) { type_mapping[value] || value },
+              }
             end
 
             def association_options(association)

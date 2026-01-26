@@ -7,10 +7,10 @@
     "body": {
       "comments": [
         {
-          "id": "050873ac-daa3-53e7-b684-62a96fa68421",
+          "id": "dbce7141-50f8-54be-a575-221af6420d0a",
           "body": "Post comment",
           "authorName": "User 1",
-          "commentableType": "GentleOwl::Post",
+          "commentableType": "post",
           "commentableId": "53f2f96c-84a9-5d43-a211-bd0081ca6808",
           "createdAt": "2024-01-01T12:00:00.000Z"
         }

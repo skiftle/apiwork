@@ -9,7 +9,7 @@
         "id": "b90c16e5-a438-5967-a734-10adf687faa5",
         "body": "Great post!",
         "authorName": "John Doe",
-        "commentableType": "GentleOwl::Post",
+        "commentableType": "post",
         "commentableId": "f8bf7c21-5db9-52b1-bee8-5cb65c03ad75",
         "createdAt": "2024-01-01T12:00:00.000Z"
       }

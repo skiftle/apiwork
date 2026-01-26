@@ -4,7 +4,7 @@ module Api
   module V1
     class PersonClientRepresentation < ClientRepresentation
       model PersonClient
-      variant as: :person
+      type_name :person
 
       attribute :birth_date, writable: true
     end

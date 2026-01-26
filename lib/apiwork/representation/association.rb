@@ -35,7 +35,7 @@ module Apiwork
       attr_reader :name
 
       # @api public
-      # @return [Hash, nil] polymorphic type mappings
+      # @return [Array<Class>, nil] polymorphic representation classes
       attr_reader :polymorphic
 
       # @api public
@@ -159,38 +159,41 @@ module Apiwork
           .underscore
       end
 
-      def resolve_polymorphic_representation(tag)
+      def find_representation_for_type(type_value)
         return nil unless @polymorphic
 
-        explicit = @polymorphic[tag.to_sym]
-        return explicit if explicit
-
-        infer_polymorphic_representation(tag)
+        @polymorphic.find do |rep_class|
+          rep_class.model_class.polymorphic_name == type_value
+        end
       end
 
       private
 
       def normalize_polymorphic(value)
         return nil unless value
+        return nil unless value.is_a?(Array)
 
-        case value
-        when Array
-          value.each_with_object({}) { |tag, hash| hash[tag.to_sym] = nil }
-        when Hash
-          validate_polymorphic_hash!(value)
-          value.transform_keys(&:to_sym)
-        else
-          raise ConfigurationError, "polymorphic must be an Array or Hash, got #{value.class}"
+        value.each do |item|
+          validate_polymorphic_item!(item)
         end
+
+        value
       end
 
-      def validate_polymorphic_hash!(hash)
-        hash.each do |tag, representation|
-          next unless representation.is_a?(String)
+      def validate_polymorphic_item!(item)
+        return if item.is_a?(Class) && item < Apiwork::Representation::Base
 
+        if item.is_a?(Symbol)
           raise ConfigurationError,
-                'polymorphic values must be class references, not strings. ' \
-                "Use `#{tag}: #{representation.split('::').last}` instead of `#{tag}: '#{representation}'`"
+                'polymorphic requires representation classes, not symbols. ' \
+                "Use `polymorphic: [#{item.to_s.camelize}Representation]` instead of `polymorphic: [:#{item}]`"
+        elsif item.is_a?(String)
+          raise ConfigurationError,
+                'polymorphic requires representation classes, not strings. ' \
+                "Use `polymorphic: [#{item.split('::').last}]` instead of `polymorphic: ['#{item}']`"
+        else
+          raise ConfigurationError,
+                "polymorphic requires representation classes, got #{item.class}"
         end
       end
 
@@ -201,13 +204,6 @@ module Apiwork
         raise ConfigurationError,
               'representation must be a class reference, not a string. ' \
               "Use `representation: #{@representation_class.split('::').last}` instead of `representation: '#{@representation_class}'`"
-      end
-
-      def infer_polymorphic_representation(tag)
-        namespace = @owner_representation_class.name.deconstantize
-        representation_name = "#{tag.to_s.camelize}Representation"
-
-        (namespace.present? ? "#{namespace}::#{representation_name}" : representation_name).safe_constantize
       end
 
       def column_for(name)

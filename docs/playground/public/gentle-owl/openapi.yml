@@ -224,6 +224,10 @@ components:
         commentableId:
           type: string
         commentableType:
+          enum:
+          - post
+          - video
+          - image
           type: string
       type: object
       required:
@@ -316,6 +320,10 @@ components:
         commentableId:
           type: string
         commentableType:
+          enum:
+          - post
+          - video
+          - image
           type: string
       type: object
     commentUpdateSuccessResponseBody:

@@ -66,6 +66,7 @@ module Apiwork
       class_attribute :_description, default: nil, instance_accessor: false
       class_attribute :_deprecated, default: false, instance_accessor: false
       class_attribute :_example, default: nil, instance_accessor: false
+      class_attribute :_type_name, default: nil, instance_accessor: false
 
       # @api public
       # @return [Hash] custom context passed during serialization
@@ -420,65 +421,29 @@ module Apiwork
         end
 
         # @api public
-        # Declares this representation as discriminated (polymorphic).
+        # Overrides the type identifier used in API responses.
         #
-        # Call on the base representation to enable discriminated responses. Variant
-        # representations must call `variant` to register themselves.
+        # By default, Rails uses full class names for STI (e.g., "MightyWolf::Car")
+        # and polymorphic associations (e.g., "GentleOwl::Post"). Use this to
+        # provide shorter, API-friendly names instead.
         #
-        # @param as [Symbol] discriminator field name in API responses
-        #   (defaults to inheritance_column, usually :type)
-        # @param by [Symbol] Rails column (default: inheritance_column)
-        # @return [self]
+        # For STI: Overrides the discriminator value in union responses.
+        # For polymorphic: Overrides the type value in `*_type` columns.
         #
-        # @example Base representation with discriminated variants
-        #   class ClientRepresentation < Apiwork::Representation::Base
-        #     discriminated!
+        # @param value [Symbol, String] the type name to use in API
+        # @return [void]
+        #
+        # @example STI variant
+        #   class CarRepresentation < VehicleRepresentation
+        #     type_name :car  # API shows "car" instead of "MightyWolf::Car"
         #   end
         #
-        #   class PersonClientRepresentation < ClientRepresentation
-        #     variant as: :person
+        # @example Polymorphic target
+        #   class PostRepresentation < Apiwork::Representation::Base
+        #     type_name :post  # commentable_type shows "post" instead of "GentleOwl::Post"
         #   end
-        def discriminated!(as: nil, by: nil)
-          ensure_auto_detection_complete
-
-          column = by || model_class.inheritance_column.to_sym
-          self.union = Union.new(
-            column:,
-            discriminator: as || column,
-          )
-
-          self
-        end
-
-        # @api public
-        # Registers this representation as a variant of its parent.
-        #
-        # The parent representation must have called `discriminated!` first.
-        # Responses will use the variant's attributes based on the
-        # record's actual type.
-        #
-        # @param as [Symbol] discriminator tag in API responses
-        #   (defaults to model's sti_name)
-        # @return [self]
-        #
-        # @example
-        #   class PersonClientRepresentation < ClientRepresentation
-        #     variant as: :person
-        #   end
-        def variant(as: nil)
-          ensure_auto_detection_complete
-          resolved_tag = (as || model_class.sti_name).to_sym
-          self.tag = resolved_tag
-
-          variant = Union::Variant.new(
-            representation_class: self,
-            tag: resolved_tag,
-            type: model_class.sti_name,
-          )
-          superclass.union.register(variant)
-          superclass._abstract = true
-
-          self
+        def type_name(value)
+          self._type_name = value.to_sym
         end
 
         # @api public
@@ -605,6 +570,7 @@ module Apiwork
 
         def model_class
           ensure_auto_detection_complete
+          ensure_sti_auto_configuration_complete
           @model_class
         end
 
@@ -618,10 +584,12 @@ module Apiwork
         end
 
         def discriminated?
+          ensure_sti_auto_configuration_complete
           union.present? && !variant? && union.variants.any?
         end
 
         def variant?
+          ensure_sti_auto_configuration_complete
           tag.present?
         end
 
@@ -637,6 +605,12 @@ module Apiwork
 
         def type
           @type || model_class.model_name.element
+        end
+
+        def polymorphic_association_for_type_column(column_name)
+          associations.values.find do |assoc|
+            assoc.polymorphic? && assoc.discriminator == column_name
+          end
         end
 
         def deserialize_hash(hash)
@@ -711,6 +685,73 @@ module Apiwork
             )
           end
         end
+
+        def ensure_sti_auto_configuration_complete
+          return if @sti_auto_configuration_complete
+
+          @sti_auto_configuration_complete = true
+          ensure_auto_detection_complete
+          return unless @model_class
+
+          auto_configure_sti_base if sti_base_model? && union.nil? && tag.blank?
+
+          return unless sti_subclass_model? && tag.blank? && superclass_is_sti_base?
+
+          auto_register_sti_variant
+        end
+
+        def sti_base_model?
+          return false unless @model_class
+          return false unless @model_class.respond_to?(:inheritance_column)
+          return false if @model_class.abstract_class?
+
+          column = @model_class.inheritance_column
+          return false unless column
+
+          begin
+            return false unless @model_class.column_names.include?(column.to_s)
+          rescue ActiveRecord::StatementInvalid, ActiveRecord::NoDatabaseError, ActiveRecord::ConnectionNotEstablished
+            return false
+          end
+
+          @model_class == @model_class.base_class
+        end
+
+        def sti_subclass_model?
+          return false unless @model_class
+          return false unless @model_class.respond_to?(:base_class)
+          return false if @model_class.abstract_class?
+
+          @model_class != @model_class.base_class
+        end
+
+        def auto_configure_sti_base
+          column = @model_class.inheritance_column.to_sym
+          self.union = Union.new(column:, discriminator: column)
+        end
+
+        def auto_register_sti_variant
+          superclass.send(:ensure_sti_auto_configuration_complete)
+          return unless superclass.union
+
+          resolved_tag = (_type_name || @model_class.sti_name).to_sym
+          self.tag = resolved_tag
+
+          variant = Union::Variant.new(
+            representation_class: self,
+            tag: resolved_tag,
+            type: @model_class.sti_name,
+          )
+          superclass.union.register(variant)
+          superclass._abstract = true
+        end
+
+        def superclass_is_sti_base?
+          return false unless superclass.respond_to?(:model_class)
+
+          parent_model = superclass.model_class
+          parent_model && parent_model == @model_class.base_class
+        end
       end
 
       def initialize(record, context: {}, include: nil)
@@ -726,6 +767,7 @@ module Apiwork
 
         self.class.attributes.each do |name, attribute|
           value = respond_to?(name) ? public_send(name) : record.public_send(name)
+          value = map_polymorphic_type_output(name, value)
           value = attribute.encode(value)
           fields[name] = value
         end
@@ -746,6 +788,18 @@ module Apiwork
         return unless parent_representation.union
 
         fields[parent_representation.union.discriminator] = self.class.tag.to_s
+      end
+
+      def map_polymorphic_type_output(attribute_name, value)
+        return value if value.nil?
+
+        association = self.class.polymorphic_association_for_type_column(attribute_name)
+        return value unless association
+
+        rep_class = association.find_representation_for_type(value)
+        return value unless rep_class
+
+        (rep_class._type_name || rep_class.model_class.polymorphic_name).to_s
       end
 
       def serialize_association(name, association)

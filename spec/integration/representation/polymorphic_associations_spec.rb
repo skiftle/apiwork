@@ -8,50 +8,39 @@ RSpec.describe 'Polymorphic associations', type: :integration do
   let(:video_representation_class) { Class.new(Apiwork::Representation::Base) { abstract! } }
 
   describe 'polymorphic association definition' do
-    it 'accepts polymorphic option with types hash using class references' do
+    it 'accepts polymorphic option with array of representation classes' do
       post_representation = post_representation_class
       video_representation = video_representation_class
 
       representation = Class.new(Apiwork::Representation::Base) do
         abstract!
 
-        belongs_to :commentable, polymorphic: { post: post_representation, video: video_representation }
+        belongs_to :commentable, polymorphic: [post_representation, video_representation]
       end
 
       association_def = representation.associations[:commentable]
       expect(association_def.polymorphic?).to be true
-      expect(association_def.polymorphic).to eq({ post: post_representation, video: video_representation })
+      expect(association_def.polymorphic).to eq([post_representation, video_representation])
     end
 
-    it 'accepts polymorphic option with array shorthand' do
-      stub_const('Api::V1::PostRepresentation', post_representation_class)
-      stub_const('Api::V1::VideoRepresentation', video_representation_class)
-
-      representation = Class.new(Apiwork::Representation::Base) do
-        abstract!
-
-        def self.name
-          'Api::V1::CommentRepresentation'
-        end
-
-        belongs_to :commentable, polymorphic: %i[post video]
-      end
-
-      association_def = representation.associations[:commentable]
-      expect(association_def.polymorphic?).to be true
-      expect(association_def.polymorphic).to eq({ post: nil, video: nil })
-      expect(association_def.resolve_polymorphic_representation(:post)).to eq(Api::V1::PostRepresentation)
-      expect(association_def.resolve_polymorphic_representation(:video)).to eq(Api::V1::VideoRepresentation)
-    end
-
-    it 'rejects string values in polymorphic hash' do
+    it 'rejects symbol values in polymorphic array' do
       expect do
         Class.new(Apiwork::Representation::Base) do
           abstract!
 
-          belongs_to :commentable, polymorphic: { post: 'PostSchema' }
+          belongs_to :commentable, polymorphic: %i[post video]
         end
-      end.to raise_error(Apiwork::ConfigurationError, /class references, not strings/)
+      end.to raise_error(Apiwork::ConfigurationError, /representation classes, not symbols/)
+    end
+
+    it 'rejects string values in polymorphic array' do
+      expect do
+        Class.new(Apiwork::Representation::Base) do
+          abstract!
+
+          belongs_to :commentable, polymorphic: ['PostRepresentation']
+        end
+      end.to raise_error(Apiwork::ConfigurationError, /representation classes, not strings/)
     end
 
     it 'rejects string values for representation option' do
@@ -94,7 +83,7 @@ RSpec.describe 'Polymorphic associations', type: :integration do
       representation = Class.new(Apiwork::Representation::Base) do
         model model_class
 
-        belongs_to :commentable, polymorphic: { post: post_representation, video: video_representation }
+        belongs_to :commentable, polymorphic: [post_representation, video_representation]
       end
 
       association_def = representation.associations[:commentable]
@@ -110,7 +99,7 @@ RSpec.describe 'Polymorphic associations', type: :integration do
         Class.new(Apiwork::Representation::Base) do
           abstract!
 
-          belongs_to :commentable, filterable: true, polymorphic: { post: post_representation }
+          belongs_to :commentable, filterable: true, polymorphic: [post_representation]
         end
       end.to raise_error(Apiwork::ConfigurationError, /cannot use filterable: true/)
     end
@@ -122,7 +111,7 @@ RSpec.describe 'Polymorphic associations', type: :integration do
         Class.new(Apiwork::Representation::Base) do
           abstract!
 
-          belongs_to :commentable, polymorphic: { post: post_representation }, sortable: true
+          belongs_to :commentable, polymorphic: [post_representation], sortable: true
         end
       end.to raise_error(Apiwork::ConfigurationError, /cannot use sortable: true/)
     end
@@ -134,7 +123,7 @@ RSpec.describe 'Polymorphic associations', type: :integration do
         Class.new(Apiwork::Representation::Base) do
           abstract!
 
-          belongs_to :commentable, include: :optional, polymorphic: { post: post_representation }
+          belongs_to :commentable, include: :optional, polymorphic: [post_representation]
         end
       end.not_to raise_error
     end
@@ -146,7 +135,7 @@ RSpec.describe 'Polymorphic associations', type: :integration do
         Class.new(Apiwork::Representation::Base) do
           abstract!
 
-          belongs_to :commentable, include: :always, polymorphic: { post: post_representation }
+          belongs_to :commentable, include: :always, polymorphic: [post_representation]
         end
       end.not_to raise_error
     end
@@ -158,7 +147,7 @@ RSpec.describe 'Polymorphic associations', type: :integration do
         Class.new(Apiwork::Representation::Base) do
           abstract!
 
-          belongs_to :commentable, polymorphic: { post: post_representation }, writable: true
+          belongs_to :commentable, polymorphic: [post_representation], writable: true
         end
       end.to raise_error(Apiwork::ConfigurationError, /cannot use writable: true/)
     end

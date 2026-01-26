@@ -8,7 +8,7 @@ export const CommentCreatePayloadSchema = z.object({
   authorName: z.string().nullable().optional(),
   body: z.string(),
   commentableId: z.string(),
-  commentableType: z.string()
+  commentableType: z.enum(['post', 'video', 'image'])
 });
 
 export const CommentIncludeSchema = z.object({
@@ -28,7 +28,7 @@ export const CommentUpdatePayloadSchema = z.object({
   authorName: z.string().nullable().optional(),
   body: z.string().optional(),
   commentableId: z.string().optional(),
-  commentableType: z.string().optional()
+  commentableType: z.enum(['post', 'video', 'image']).optional()
 });
 
 export const IssueSchema = z.object({
@@ -226,7 +226,7 @@ export interface CommentCreatePayload {
   authorName?: null | string;
   body: string;
   commentableId: string;
-  commentableType: string;
+  commentableType: 'image' | 'post' | 'video';
 }
 
 export interface CommentCreateSuccessResponseBody {
@@ -269,7 +269,7 @@ export interface CommentUpdatePayload {
   authorName?: null | string;
   body?: string;
   commentableId?: string;
-  commentableType?: string;
+  commentableType?: 'image' | 'post' | 'video';
 }
 
 export interface CommentUpdateSuccessResponseBody {

@@ -619,6 +619,11 @@
           "nullable": false,
           "optional": false,
           "type": "string",
+          "enum": [
+            "post",
+            "video",
+            "image"
+          ],
           "format": null,
           "max": null,
           "min": null
@@ -963,6 +968,11 @@
           "nullable": false,
           "optional": true,
           "type": "string",
+          "enum": [
+            "post",
+            "video",
+            "image"
+          ],
           "format": null,
           "max": null,
           "min": null

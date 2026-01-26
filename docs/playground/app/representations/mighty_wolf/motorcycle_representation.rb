@@ -2,7 +2,7 @@
 
 module MightyWolf
   class MotorcycleRepresentation < VehicleRepresentation
-    variant as: :motorcycle
+    type_name :motorcycle
 
     attribute :engine_cc, writable: true
   end

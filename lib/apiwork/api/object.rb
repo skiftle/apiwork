@@ -47,6 +47,7 @@ module Apiwork
       # @param required [Boolean, nil] explicit required flag
       # @param shape [API::Object, API::Union, nil] pre-built shape
       # @param store [Boolean, nil] whether to persist
+      # @param transform [Proc, nil] value transformation lambda
       # @param value [Object, nil] literal value
       # @yield block for nested structure
       # @return [void]
@@ -69,6 +70,7 @@ module Apiwork
         required: nil,
         shape: nil,
         store: nil,
+        transform: nil,
         value: nil,
         &block
       )
@@ -103,6 +105,7 @@ module Apiwork
             optional:,
             required:,
             store:,
+            transform:,
             type:,
             value:,
             of: resolved_of,

@@ -4,7 +4,7 @@ module Api
   module V1
     class CompanyClientRepresentation < ClientRepresentation
       model CompanyClient
-      variant as: :company
+      type_name :company
 
       attribute :industry, writable: true
       attribute :registration_number, writable: true

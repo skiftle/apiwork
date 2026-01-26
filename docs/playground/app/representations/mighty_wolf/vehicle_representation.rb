@@ -2,8 +2,6 @@
 
 module MightyWolf
   class VehicleRepresentation < Apiwork::Representation::Base
-    discriminated!
-
     attribute :id
     attribute :brand, filterable: true, writable: true
     attribute :model, filterable: true, writable: true

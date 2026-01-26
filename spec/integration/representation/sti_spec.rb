@@ -39,16 +39,16 @@ RSpec.describe 'STI (Single Table Inheritance) API', type: :request do
       get '/api/v1/clients'
 
       json = JSON.parse(response.body)
-      kinds = json['clients'].map { |c| c['kind'] }
+      types = json['clients'].map { |c| c['type'] }
 
-      expect(kinds).to contain_exactly('person', 'company')
+      expect(types).to contain_exactly('person', 'company')
     end
 
     it 'serializes PersonClient with birth_date' do
       get '/api/v1/clients'
 
       json = JSON.parse(response.body)
-      person = json['clients'].find { |c| c['kind'] == 'person' }
+      person = json['clients'].find { |c| c['type'] == 'person' }
 
       expect(person['name']).to eq('Alice')
       expect(person['email']).to eq('alice@customer.com')
@@ -59,7 +59,7 @@ RSpec.describe 'STI (Single Table Inheritance) API', type: :request do
       get '/api/v1/clients'
 
       json = JSON.parse(response.body)
-      company = json['clients'].find { |c| c['kind'] == 'company' }
+      company = json['clients'].find { |c| c['type'] == 'company' }
 
       expect(company['name']).to eq('Acme Corp')
       expect(company['industry']).to eq('Technology')
@@ -91,7 +91,7 @@ RSpec.describe 'STI (Single Table Inheritance) API', type: :request do
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
 
-      expect(json['client']['kind']).to eq('person')
+      expect(json['client']['type']).to eq('person')
       expect(json['client']['name']).to eq('Bob')
       expect(json['client']['birth_date']).to eq('1985-03-20')
     end
@@ -102,7 +102,7 @@ RSpec.describe 'STI (Single Table Inheritance) API', type: :request do
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
 
-      expect(json['client']['kind']).to eq('company')
+      expect(json['client']['type']).to eq('company')
       expect(json['client']['name']).to eq('Widgets Inc')
       expect(json['client']['industry']).to eq('Manufacturing')
       expect(json['client']['registration_number']).to eq('WID-456')
@@ -110,45 +110,45 @@ RSpec.describe 'STI (Single Table Inheritance) API', type: :request do
   end
 
   describe 'POST /api/v1/clients' do
-    it 'creates PersonClient when kind is person' do
+    it 'creates PersonClient when type is person' do
       post '/api/v1/clients',
            as: :json,
            params: {
              client: {
                birth_date: '1995-08-10',
                email: 'new@customer.com',
-               kind: 'person',
                name: 'New Person',
+               type: 'person',
              },
            }
 
       expect(response).to have_http_status(:created)
       json = JSON.parse(response.body)
 
-      expect(json['client']['kind']).to eq('person')
+      expect(json['client']['type']).to eq('person')
       expect(json['client']['name']).to eq('New Person')
       expect(json['client']['birth_date']).to eq('1995-08-10')
 
       expect(PersonClient.last.name).to eq('New Person')
     end
 
-    it 'creates CompanyClient when kind is company' do
+    it 'creates CompanyClient when type is company' do
       post '/api/v1/clients',
            as: :json,
            params: {
              client: {
                email: 'new@company.com',
                industry: 'Finance',
-               kind: 'company',
                name: 'New Company',
                registration_number: 'NEW-789',
+               type: 'company',
              },
            }
 
       expect(response).to have_http_status(:created)
       json = JSON.parse(response.body)
 
-      expect(json['client']['kind']).to eq('company')
+      expect(json['client']['type']).to eq('company')
       expect(json['client']['name']).to eq('New Company')
       expect(json['client']['industry']).to eq('Finance')
 
@@ -183,7 +183,7 @@ RSpec.describe 'STI (Single Table Inheritance) API', type: :request do
       json = JSON.parse(response.body)
 
       expect(json['client']['name']).to eq('Updated Person')
-      expect(json['client']['kind']).to eq('person')
+      expect(json['client']['type']).to eq('person')
 
       person_client.reload
       expect(person_client.name).to eq('Updated Person')
@@ -198,7 +198,7 @@ RSpec.describe 'STI (Single Table Inheritance) API', type: :request do
       json = JSON.parse(response.body)
 
       expect(json['client']['industry']).to eq('Healthcare')
-      expect(json['client']['kind']).to eq('company')
+      expect(json['client']['type']).to eq('company')
 
       company_client.reload
       expect(company_client.industry).to eq('Healthcare')
