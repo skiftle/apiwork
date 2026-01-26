@@ -46,7 +46,7 @@ end
 # Path: /api/v1 maps to namespace Api::V1
 # Controller: Api::V1::PostsController
 # Contract: Api::V1::PostContract
-# Schema: Api::V1::PostRepresentation
+# Representation: Api::V1::PostRepresentation
 ```
 
 The conversion is straightforward: `/api/v1` becomes `Api::V1`.

@@ -42,7 +42,7 @@ end
 
 ## Auto-Detection
 
-Schema and nullable are inferred from your model and database.
+Representation and nullable are inferred from your model and database.
 
 ```ruby
 # These are equivalent:
@@ -308,7 +308,7 @@ class CommentRepresentation < Apiwork::Representation::Base
   has_many :replies, writable: true
 end
 
-class ReplySchema < Apiwork::Representation::Base
+class ReplyRepresentation < Apiwork::Representation::Base
   attribute :content
 end
 ```
@@ -448,7 +448,7 @@ Two syntaxes are supported:
 class CommentRepresentation < Apiwork::Representation::Base
   belongs_to :commentable, polymorphic: [:post, :video, :article]
 end
-# Infers PostRepresentation, VideoSchema, ArticleRepresentation from same namespace
+# Infers PostRepresentation, VideoRepresentation, ArticleRepresentation from same namespace
 ```
 
 **Hash with explicit representations** — when representation names don't follow convention:
@@ -457,7 +457,7 @@ end
 class CommentRepresentation < Apiwork::Representation::Base
   belongs_to :commentable, polymorphic: {
     post: PostRepresentation,
-    video: MediaSchema,  # Custom representation
+    video: MediaRepresentation,  # Custom representation
     article: ArticleRepresentation
   }
 end

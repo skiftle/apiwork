@@ -30,7 +30,7 @@ end
 Specify both singular and plural:
 
 ```ruby
-class PersonSchema < Apiwork::Representation::Base
+class PersonRepresentation < Apiwork::Representation::Base
   root :person, :people
 end
 ```
@@ -40,7 +40,7 @@ end
 Representations inherit adapter settings from the [API definition](/guide/core/api-definitions/introduction). Override per-representation when needed:
 
 ```ruby
-class ActivitySchema < Apiwork::Representation::Base
+class ActivityRepresentation < Apiwork::Representation::Base
   adapter do
     pagination do
       strategy :cursor
@@ -63,7 +63,7 @@ end
 
 Settings resolve in this order (first defined wins):
 
-1. **Schema** `adapter` block — most specific
+1. **Representation** `adapter` block — most specific
 2. **[API definition](/guide/core/api-definitions/introduction)** `adapter` block — API-wide defaults
 3. **Adapter defaults** — built-in fallbacks
 
@@ -83,8 +83,8 @@ Apiwork::API.define '/api/v1' do
   resources :activities
 end
 
-# ActivitySchema overrides with cursor pagination and larger page size
-class ActivitySchema < Apiwork::Representation::Base
+# ActivityRepresentation overrides with cursor pagination and larger page size
+class ActivityRepresentation < Apiwork::Representation::Base
   adapter do
     pagination do
       strategy :cursor
@@ -96,8 +96,8 @@ end
 
 In this example:
 - `GET /posts` uses offset pagination with 25 items (from API)
-- `GET /activities` uses cursor pagination with 50 items (from Schema)
-- Both respect the API-level `max_size: 100` since ActivitySchema didn't override it
+- `GET /activities` uses cursor pagination with 50 items (from Representation)
+- Both respect the API-level `max_size: 100` since ActivityRepresentation didn't override it
 
 #### See also
 

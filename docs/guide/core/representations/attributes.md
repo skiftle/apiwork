@@ -63,7 +63,7 @@ Types, nullability, and enums are detected from your database and models.
 Use `with_options` to apply options to multiple attributes:
 
 ```ruby
-class ScheduleSchema < Apiwork::Representation::Base
+class ScheduleRepresentation < Apiwork::Representation::Base
   with_options filterable: true, sortable: true do
     attribute :id
     attribute :status
@@ -142,7 +142,7 @@ attribute :name, writable: { on: [:create, :update] }  # Same as true
 Apiwork generates separate types for create and update:
 
 ```ruby
-class AuthorSchema < Apiwork::Representation::Base
+class AuthorRepresentation < Apiwork::Representation::Base
   attribute :name, writable: true
   attribute :bio, writable: { on: [:create] }
   attribute :verified, writable: { on: [:update] }
@@ -663,7 +663,7 @@ class User < ApplicationRecord
   store :settings, accessors: [:theme, :language], coder: JSON
 end
 
-# Schema
+# Representation
 class UserRepresentation < Apiwork::Representation::Base
   attribute :settings, writable: true do
     object do
@@ -684,7 +684,7 @@ Here's the complete transformation:
 # Migration
 add_column :users, :preferences, :jsonb
 
-# Schema — no block
+# Representation — no block
 class UserRepresentation < Apiwork::Representation::Base
   attribute :preferences  # type: :unknown
 end
@@ -749,7 +749,7 @@ Same transformation for arrays:
 # Migration
 add_column :posts, :tags, :jsonb  # Contains ["ruby", "rails", "api"]
 
-# Schema — no block
+# Representation — no block
 class PostRepresentation < Apiwork::Representation::Base
   attribute :tags  # type: :unknown
 end

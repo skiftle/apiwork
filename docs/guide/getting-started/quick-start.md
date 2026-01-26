@@ -219,4 +219,4 @@ This was the simplest possible example. Apiwork also supports:
 
 - [Adapters](../core/adapters/introduction.md) — filtering, sorting, pagination, and eager loading in depth
 - [Contracts](../core/contracts/introduction.md) — custom validation and action-specific params
-- [Schemas](../core/representations/introduction.md) — associations, computed attributes, and more
+- [Representations](../core/representations/introduction.md) — associations, computed attributes, and more

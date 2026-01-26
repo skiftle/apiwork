@@ -26,7 +26,7 @@ In most APIs, the same patterns appear again and again. Resources are filtered i
 
 These are API concerns rather than domain concerns.
 
-Apiwork captures these conventions in its representation and adapter system. Schemas describe the API model. Adapters execute it at the boundary.
+Apiwork captures these conventions in its representation and adapter system. Representations describe the API model. Adapters execute it at the boundary.
 
 Apiwork includes a built-in adapter that implements a conventional API model with consistent filtering, predictable sorting, standard pagination, relation traversal, N+1-safe loading, and nested writes.
 This adapter provides a complete API runtime out of the box.
@@ -38,9 +38,9 @@ Adapters are not fixed. You can replace them, extend them, or write your own. Th
 In a typical Rails application, most of what defines the API already exists. Column types, nullability, enums, and relations are defined in the database schema and expressed through Active Record models.
 Apiwork builds on this foundation.
 
-The database defines the data model. Schemas define how that model is exposed through the API.
+The database defines the data model. Representations define how that model is exposed through the API.
 
-Schemas connect your domain model to the API layer. They define which attributes and relations are exposed, how records can be queried, and how writes are handled. From this structure, Apiwork can derive contracts automatically.
+Representations connect your domain model to the API layer. They define which attributes and relations are exposed, how records can be queried, and how writes are handled. From this structure, Apiwork can derive contracts automatically.
 
 Instead of manually describing every field and constraint, you describe what should be exposed and how it should behave.
 
@@ -48,7 +48,7 @@ Instead of manually describing every field and constraint, you describe what sho
 
 Apiwork is built around the idea that the entire API is introspectable.
 
-Contracts, API definitions, and schemas are represented as structured data that can be inspected at runtime. This makes the API explicit not only in how it behaves, but in how it can be understood.
+Contracts, API definitions, and representations are represented as structured data that can be inspected at runtime. This makes the API explicit not only in how it behaves, but in how it can be understood.
 
 Because the API is introspectable by design, other representations can be derived from the same structure. API specifications, client types, and validation schemas are generated from the same source that defines the API itself.
 

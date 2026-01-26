@@ -166,12 +166,12 @@ Clients should treat cursors as opaque strings — don't parse or construct them
 
 ---
 
-## Per-Schema Override
+## Per-Representation Override
 
 Override pagination at the representation level for specific resources:
 
 ```ruby
-class ActivitySchema < Apiwork::Representation::Base
+class ActivityRepresentation < Apiwork::Representation::Base
   adapter do
     pagination do
       strategy :cursor
@@ -182,7 +182,7 @@ class ActivitySchema < Apiwork::Representation::Base
 end
 ```
 
-This takes precedence over the API-level defaults for this schema only.
+This takes precedence over the API-level defaults for this representation only.
 
 ---
 

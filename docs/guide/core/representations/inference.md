@@ -14,7 +14,7 @@ Everything inferred can be overridden when needed.
 
 | What                      | Detected From            | Override                |
 | ------------------------- | ------------------------ | ----------------------- |
-| Model class               | Schema class name        | `model YourModel`       |
+| Model class               | Representation class name | `model YourModel`       |
 | Attribute type            | Database column type     | `type: :string`         |
 | Nullable                  | Column NULL constraint   | `nullable: true`        |
 | Optional                  | NULL allowed or has default | `optional: true`     |
@@ -30,7 +30,7 @@ Everything inferred can be overridden when needed.
 
 ## Model Detection
 
-Schema class names map to model classes automatically:
+Representation class names map to model classes automatically:
 
 ```ruby
 class UserRepresentation < Apiwork::Representation::Base
@@ -45,7 +45,7 @@ end
 Override when names don't match:
 
 ```ruby
-class AccountSchema < Apiwork::Representation::Base
+class AccountRepresentation < Apiwork::Representation::Base
   model Organization  # Use Organization model instead
 end
 ```
@@ -160,8 +160,8 @@ class Account < ApplicationRecord
   enum :status, { active: 0, inactive: 1, archived: 2 }
 end
 
-# Schema
-class AccountSchema < Apiwork::Representation::Base
+# Representation
+class AccountRepresentation < Apiwork::Representation::Base
   attribute :status  # enum: [:active, :inactive, :archived] (auto)
 end
 ```
@@ -180,7 +180,7 @@ attribute :status, enum: [:pending, :approved]  # Custom values
 
 ## Association Inference
 
-### Schema Detection
+### Representation Detection
 
 Association representations are resolved by name:
 
@@ -225,7 +225,7 @@ class Post < ApplicationRecord
   belongs_to :author, class_name: 'User', foreign_key: :writer_id
 end
 
-# Schema - foreign key auto-detected as :writer_id
+# Representation - foreign key auto-detected as :writer_id
 class PostRepresentation < Apiwork::Representation::Base
   belongs_to :author  # Uses writer_id column for nullable detection
 end
@@ -243,11 +243,11 @@ class Comment < ApplicationRecord
   belongs_to :commentable, polymorphic: true
 end
 
-# Schema - discriminator auto-detected as :commentable_type
+# Representation - discriminator auto-detected as :commentable_type
 class CommentRepresentation < Apiwork::Representation::Base
   belongs_to :commentable, polymorphic: {
     post: PostRepresentation,
-    image: ImageSchema
+    image: ImageRepresentation
   }
 end
 ```
@@ -263,7 +263,7 @@ class Post < ApplicationRecord
   accepts_nested_attributes_for :comments, allow_destroy: true
 end
 
-# Schema
+# Representation
 class PostRepresentation < Apiwork::Representation::Base
   has_many :comments, writable: true
   # allow_destroy: true is auto-detected from model
@@ -312,7 +312,7 @@ end
 
 Override auto-detection when:
 
-1. **Names don't match** - Schema/model/association names differ from convention
+1. **Names don't match** - Representation/model/association names differ from convention
 2. **Virtual attributes** - Attribute doesn't exist in database
 3. **Stricter validation** - API should be stricter than database allows
 4. **Looser validation** - API should accept values database rejects

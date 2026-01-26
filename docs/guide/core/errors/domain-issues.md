@@ -380,7 +380,7 @@ First line, third adjustment, reason field.
 
 For nested errors:
 
-1. Schema association is writable:
+1. Representation association is writable:
 
    ```ruby
    has_many :lines, writable: true

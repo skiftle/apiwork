@@ -32,7 +32,7 @@ GET /posts?sort[0][published]=asc&sort[1][created_at]=desc
 
 First sort takes precedence. Results are ordered by `published` first, then by `created_at` within each group.
 
-## Schema Configuration
+## Representation Configuration
 
 Mark attributes as sortable:
 

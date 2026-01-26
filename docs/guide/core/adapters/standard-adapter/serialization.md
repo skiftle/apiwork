@@ -4,7 +4,7 @@ order: 7
 
 # Serialization
 
-Schemas can [serialize records directly](../representations/serialization.md). Within the Execution Engine, the adapter adds transformations for requests and responses.
+Representations can [serialize records directly](../representations/serialization.md). Within the Execution Engine, the adapter adds transformations for requests and responses.
 
 ## Response Serialization
 
@@ -56,10 +56,10 @@ Incoming requests go through a pipeline:
 2. **Unwrap** — Extract data from root key wrapper
 3. **Coerce** — [Convert strings to typed values](../../types/types.md#type-coercion)
 4. **Validate** — Check against [contract definitions](../contracts/introduction.md)
-5. **Decode** — Apply `Schema.deserialize()` which runs decode transformers
+5. **Decode** — Apply `Representation.deserialize()` which runs decode transformers
 
 ::: info Under the Hood
-The adapter uses `Schema.deserialize()` for decoding. Nested associations are deserialized recursively using the same transformers.
+The adapter uses `Representation.deserialize()` for decoding. Nested associations are deserialized recursively using the same transformers.
 :::
 
 ```ruby

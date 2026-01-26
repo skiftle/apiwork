@@ -99,7 +99,7 @@ InvoiceRepresentation.deserialize({
 Both `has_one` and `has_many` associations are deserialized using their representation's decode transformers.
 
 ::: info Adapter-Level Transformations
-`Schema.deserialize()` only applies decode transformers. The built-in adapter's transformation of nested payload attributes (`lines` to `lines_attributes`) is not applied at this level — that requires going through the execution engine and adapter pipeline.
+`Representation.deserialize()` only applies decode transformers. The built-in adapter's transformation of nested payload attributes (`lines` to `lines_attributes`) is not applied at this level — that requires going through the execution engine and adapter pipeline.
 :::
 
 ## Encode & Decode Transformers

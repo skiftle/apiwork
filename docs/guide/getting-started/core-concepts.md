@@ -4,13 +4,13 @@ order: 3
 
 # Core Concepts
 
-Apiwork is built around four core layers: **API definitions**, **contracts**, **schemas**, and **adapters**.
+Apiwork is built around four core layers: **API definitions**, **contracts**, **representations**, and **adapters**.
 
-API definitions describe your API surface and endpoints. Contracts define the data model and constraints at the boundary. Schemas act as a bridge between your domain models and the contract, while adapters interpret schemas and provide the runtime.
+API definitions describe your API surface and endpoints. Contracts define the data model and constraints at the boundary. Representations act as a bridge between your domain models and the contract, while adapters interpret representations and provide the runtime.
 
 Together they form a single source of truth that drives both [introspection](../core/introspection/introduction.md) and [execution](../core/adapters/introduction.md).
 
-You can use Apiwork with just API definitions and contracts, or add schemas and adapters to run a fully executable API. Apiwork ships with a built-in adapter that provides a complete API runtime out of the box.
+You can use Apiwork with just API definitions and contracts, or add representations and adapters to run a fully executable API. Apiwork ships with a built-in adapter that provides a complete API runtime out of the box.
 
 ## API Definition
 
@@ -95,14 +95,14 @@ end
 Requests with undefined fields are rejected. `contract.query` and `contract.body` contain only validated fields.
 :::
 
-## Schema
+## Representation
 
 Writing contracts by hand means defining every request type, response type, filter, and sort — for every action. That adds up.
 
 A representation sits between your model and contract. It describes what to expose and how: filtering, sorting, writing. Apiwork uses this to build the contract and handle requests.
 
 ```ruby
-class PostRepresentation < ApplicationSchema
+class PostRepresentation < ApplicationRepresentation
   attribute :id
   attribute :title, writable: true, filterable: true
   attribute :body, writable: true
@@ -125,7 +125,7 @@ You don't need to specify types. Apiwork reads your database columns and infers 
 
 ### Associations
 
-Schemas can include associations:
+Representations can include associations:
 
 ```ruby
 has_many :comments, writable: true
@@ -136,7 +136,7 @@ has_one :profile, include: :always
 - `writable: true` — allows nested attributes in create/update
 - `include: :always` — always includes the association in responses
 
-### From Schema to Contract
+### From Representation to Contract
 
 Use `representation` to generate a complete contract from your representation:
 
@@ -149,7 +149,7 @@ end
 `representation` connects to `PostRepresentation` by naming convention. This single line generates typed definitions for all CRUD actions.
 
 ::: tip
-You can also write contracts entirely by hand without schemas. This is useful for non-CRUD endpoints or custom APIs. See [Contracts](../core/contracts/introduction.md).
+You can also write contracts entirely by hand without representations. This is useful for non-CRUD endpoints or custom APIs. See [Contracts](../core/contracts/introduction.md).
 :::
 
 The representation knows:
@@ -166,7 +166,7 @@ From this, Apiwork generates:
 - Filter types (filterable fields only)
 - Sort types (sortable fields only)
 
-See [Action Defaults](../core/adapters/standard-adapter/action-defaults.md) for what gets generated, and [Schemas](../core/representations/introduction.md) for the full guide.
+See [Action Defaults](../core/adapters/standard-adapter/action-defaults.md) for what gets generated, and [Representations](../core/representations/introduction.md) for the full guide.
 
 ### Customizing Generated Actions
 
@@ -215,7 +215,7 @@ Here's how everything fits together:
                               ▼
 ┌─────────────────────────────────────────────────────────────┐
 │  app/representations/api/v1/post_representation.rb                          │
-│  Schema — defines attributes, associations, permissions     │
+│  Representation — defines attributes, associations, permissions │
 └─────────────────────────────┬───────────────────────────────┘
                               │
                               ▼
@@ -229,11 +229,11 @@ Here's how everything fits together:
 
 1. Request arrives at `/api/v1/posts`
 2. API definition routes to `PostsController`
-3. Contract validates the request using schema types
+3. Contract validates the request using representation types
 4. Controller processes the request
-5. Schema serializes the response
+5. Representation serializes the response
 
-Schema is the single source of truth. Contracts and serialization both derive from it.
+Representation is the single source of truth. Contracts and serialization both derive from it.
 
 ## Next Steps
 

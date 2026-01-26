@@ -196,7 +196,7 @@ interface CreateRequest {
 Apiwork works the same way:
 
 ```ruby
-# Schema-generated (via adapter)
+# Representation-generated (via adapter)
 action :create do
   request do
     body do

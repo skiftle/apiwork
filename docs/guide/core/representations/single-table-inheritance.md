@@ -8,7 +8,7 @@ Apiwork represents Rails Single Table Inheritance (STI) hierarchies as [discrimi
 
 ## Setup
 
-### Base Schema
+### Base Representation
 
 Mark a representation as discriminated:
 
@@ -21,7 +21,7 @@ class VehicleRepresentation < Apiwork::Representation::Base
 end
 ```
 
-### Variant Schemas
+### Variant Representations
 
 Register subclasses with `variant`:
 

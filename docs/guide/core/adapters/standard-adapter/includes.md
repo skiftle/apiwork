@@ -32,7 +32,7 @@ GET /posts?include[comments][author]=true
 
 This includes comments and each comment's author.
 
-## Schema Configuration
+## Representation Configuration
 
 Configure default include behavior in your representation:
 
