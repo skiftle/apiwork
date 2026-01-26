@@ -51,22 +51,6 @@ Single Table Inheritance with automatic variant serialization and TypeScript uni
 
 ## Schemas
 
-<small>`app/schemas/mighty_wolf/vehicle_schema.rb`</small>
-
-<<< @/playground/app/schemas/mighty_wolf/vehicle_schema.rb
-
-<small>`app/schemas/mighty_wolf/car_schema.rb`</small>
-
-<<< @/playground/app/schemas/mighty_wolf/car_schema.rb
-
-<small>`app/schemas/mighty_wolf/truck_schema.rb`</small>
-
-<<< @/playground/app/schemas/mighty_wolf/truck_schema.rb
-
-<small>`app/schemas/mighty_wolf/motorcycle_schema.rb`</small>
-
-<<< @/playground/app/schemas/mighty_wolf/motorcycle_schema.rb
-
 ## Contracts
 
 <small>`app/contracts/mighty_wolf/vehicle_contract.rb`</small>

@@ -10,11 +10,11 @@ The adapter implements the API conventions and enforces consistent behavior acro
 
 ## Bound Contracts
 
-A contract becomes **bound** when you call `schema!`. This connects the contract to a schema by naming convention — `InvoiceContract` finds `InvoiceSchema` in the same namespace.
+A contract becomes **bound** when you call `representation`. This connects the contract to a representation by naming convention — `InvoiceContract` finds `InvoiceRepresentation` in the same namespace.
 
 ```ruby
 class InvoiceContract < Apiwork::Contract::Base
-  schema!
+  representation
 end
 ```
 
@@ -35,14 +35,14 @@ Each capability can contribute to three phases:
 For example, the Filtering capability:
 
 - **API phase**: Registers generic filter types (`string_filter`, `date_filter`, `uuid_filter`) — once per API
-- **Contract phase**: Generates a `filter` type from the schema's filterable attributes — once per bound contract
+- **Contract phase**: Generates a `filter` type from the representation's filterable attributes — once per bound contract
 - **Computation phase**: Translates filter parameters into database queries — once per request
 
 Computations can be scoped to run only for collections or single records. Pagination runs on collections. Writing validation runs on records.
 
 ## The Standard Adapter
 
-Apiwork ships with a complete REST API adapter out of the box. For each resource, it automatically generates the corresponding actions and derives their behavior from the schema.
+Apiwork ships with a complete REST API adapter out of the box. For each resource, it automatically generates the corresponding actions and derives their behavior from the representation.
 
 The standard adapter provides:
 
@@ -57,4 +57,4 @@ All generated behavior remains fully customizable. You can override individual a
 
 ## Custom Adapters
 
-For different response formats or query logic, you can create a [custom adapter](./custom-adapters.md). Custom adapters let you change how queries are built and responses are rendered while keeping the schema-driven type system.
+For different response formats or query logic, you can create a [custom adapter](./custom-adapters.md). Custom adapters let you change how queries are built and responses are rendered while keeping the representation-driven type system.

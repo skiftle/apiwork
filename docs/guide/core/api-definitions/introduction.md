@@ -46,7 +46,7 @@ end
 # Path: /api/v1 maps to namespace Api::V1
 # Controller: Api::V1::PostsController
 # Contract: Api::V1::PostContract
-# Schema: Api::V1::PostSchema
+# Schema: Api::V1::PostRepresentation
 ```
 
 The conversion is straightforward: `/api/v1` becomes `Api::V1`.
@@ -82,7 +82,7 @@ Apiwork::API.define '/api/v2' do
 end
 ```
 
-Each API has its own namespace with controllers, contracts, and schemas.
+Each API has its own namespace with controllers, contracts, and representations.
 
 #### See also
 

@@ -36,10 +36,6 @@ Using built-in I18n for translatable API documentation
 
 ## Schemas
 
-<small>`app/schemas/wise_tiger/project_schema.rb`</small>
-
-<<< @/playground/app/schemas/wise_tiger/project_schema.rb
-
 ## Contracts
 
 <small>`app/contracts/wise_tiger/project_contract.rb`</small>

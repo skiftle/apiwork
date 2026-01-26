@@ -2,6 +2,6 @@
 
 module MightyWolf
   class MotorcycleContract < Apiwork::Contract::Base
-    schema!
+    representation MotorcycleRepresentation
   end
 end

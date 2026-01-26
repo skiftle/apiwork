@@ -2,6 +2,6 @@
 
 module HappyZebra
   class PostContract < Apiwork::Contract::Base
-    schema!
+    representation PostRepresentation
   end
 end

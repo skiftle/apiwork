@@ -82,7 +82,7 @@ API
 
 ## During Development
 
-Adapters derive types from schemas at runtime. Introspection makes these generated structures visible.
+Adapters derive types from representations at runtime. Introspection makes these generated structures visible.
 
 Call `.to_h` on any introspection object to get a hash representation:
 

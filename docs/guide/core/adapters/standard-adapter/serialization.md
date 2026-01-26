@@ -4,11 +4,11 @@ order: 7
 
 # Serialization
 
-Schemas can [serialize records directly](../schemas/serialization.md). Within the Execution Engine, the adapter adds transformations for requests and responses.
+Schemas can [serialize records directly](../representations/serialization.md). Within the Execution Engine, the adapter adds transformations for requests and responses.
 
 ## Response Serialization
 
-When you call `expose`, the adapter serializes your data according to the schema:
+When you call `expose`, the adapter serializes your data according to the representation:
 
 ```ruby
 def show
@@ -21,7 +21,7 @@ The adapter:
 
 1. Loads the record with eager-loaded associations (based on `?include`)
 2. Serializes attributes using `encode` transformers
-3. Wraps the result in the schema's root key
+3. Wraps the result in the representation's root key
 
 ```json
 {
@@ -70,7 +70,7 @@ The adapter uses `Schema.deserialize()` for decoding. Nested associations are de
 { amount: BigDecimal("99.99"), issued_on: Date.new(2024, 1, 15) }
 ```
 
-See [Encode & Decode Transformers](../schemas/serialization.md#encode-decode-transformers) for customizing value transformations.
+See [Encode & Decode Transformers](../representations/serialization.md#encode-decode-transformers) for customizing value transformations.
 
 ## Custom Adapters
 

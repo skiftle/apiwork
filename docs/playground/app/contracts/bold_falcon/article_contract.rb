@@ -2,6 +2,6 @@
 
 module BoldFalcon
   class ArticleContract < Apiwork::Contract::Base
-    schema!
+    representation ArticleRepresentation
   end
 end

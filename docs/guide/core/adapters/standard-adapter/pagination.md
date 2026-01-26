@@ -10,7 +10,7 @@ Two strategies: offset-based (traditional page numbers) or cursor-based (for lar
 
 ## Configuration
 
-Set pagination at the API level, or [override per schema](#per-schema-override):
+Set pagination at the API level, or [override per schema](#per-representation-override):
 
 ```ruby
 Apiwork::API.define '/api/v1' do
@@ -168,10 +168,10 @@ Clients should treat cursors as opaque strings — don't parse or construct them
 
 ## Per-Schema Override
 
-Override pagination at the schema level for specific resources:
+Override pagination at the representation level for specific resources:
 
 ```ruby
-class ActivitySchema < Apiwork::Schema::Base
+class ActivitySchema < Apiwork::Representation::Base
   adapter do
     pagination do
       strategy :cursor

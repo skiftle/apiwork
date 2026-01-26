@@ -2,6 +2,6 @@
 
 module MightyWolf
   class CarContract < Apiwork::Contract::Base
-    schema!
+    representation CarRepresentation
   end
 end

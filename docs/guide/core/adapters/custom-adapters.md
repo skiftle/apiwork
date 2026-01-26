@@ -20,19 +20,19 @@ class MyAdapter < Apiwork::Adapter::Base
 
   option :my_option, type: :string, default: 'value'
 
-  def render_collection(collection, schema_class, action_data)
+  def render_collection(collection, representation_class, action_data)
     # Load and transform collection
     # Return hash with data and metadata
     {
-      schema_class.root_key.plural => serialized_data,
+      representation_class.root_key.plural => serialized_data,
       pagination: pagination_metadata
     }
   end
 
-  def render_record(record, schema_class, action_data)
+  def render_record(record, representation_class, action_data)
     # Load and transform single record
     {
-      schema_class.root_key.singular => serialized_data
+      representation_class.root_key.singular => serialized_data
     }
   end
 
@@ -52,9 +52,9 @@ You need to implement three methods:
 Called for index and collection actions:
 
 ```ruby
-def render_collection(collection, schema_class, action_data)
+def render_collection(collection, representation_class, action_data)
   # collection - The base query/collection
-  # schema_class - The schema class for serialization
+  # representation_class - The representation class for serialization
   # action_data - Request context (query params, etc.)
 end
 ```
@@ -64,9 +64,9 @@ end
 Called for show, create, update, destroy:
 
 ```ruby
-def render_record(record, schema_class, action_data)
+def render_record(record, representation_class, action_data)
   # record - The record being serialized
-  # schema_class - The schema class for serialization
+  # representation_class - The representation class for serialization
   # action_data - Request context
 end
 ```
@@ -110,7 +110,7 @@ end
 
 ## Type Registration
 
-These hooks let your adapter register types based on schema metadata. This is how the built-in adapter automatically generates filter types, pagination types, and response shapes from your schemas.
+These hooks let your adapter register types based on schema metadata. This is how the built-in adapter automatically generates filter types, pagination types, and response shapes from your representations.
 
 ### register_api
 
@@ -159,9 +159,9 @@ The `schema_data` provides information about all schemas in the API:
 Called for each contract. Use this to register types specific to that contract:
 
 ```ruby
-def register_contract(registrar, schema_class, actions)
-  # Register enums from schema attributes
-  schema_class.attribute_definitions.each do |name, attr|
+def register_contract(registrar, representation_class, actions)
+  # Register enums from representation attributes
+  representation_class.attribute_definitions.each do |name, attr|
     if attr.enum&.any?
       registrar.enum(name, values: attr.enum)
     end
@@ -197,9 +197,9 @@ def register_contract(registrar, schema_class, actions)
   end
 
   # Register response type
-  root_key = schema_class.root_key.singular.to_sym
-  registrar.type(root_key, schema_class: schema_class) do
-    schema_class.attribute_definitions.each do |name, attr|
+  root_key = representation_class.root_key.singular.to_sym
+  registrar.type(root_key, representation_class: representation_class) do
+    representation_class.attribute_definitions.each do |name, attr|
       send(attr.type, name, nullable: attr.nullable?)
     end
   end
@@ -259,7 +259,7 @@ end
 - `deprecated(bool)` — Mark as deprecated
 - `raises(*error_codes)` — Declare possible error codes
 
-The `schema_class` is the schema associated with the contract, giving you access to:
+The `representation_class` is the representation associated with the contract, giving you access to:
 - `attribute_definitions` — All attributes with their types, options, and constraints
 - `association_definitions` — All associations
 - `root_key` — The root key for responses (singular/plural forms)
@@ -326,9 +326,9 @@ end
 Read option values with `adapter_config`:
 
 ```ruby
-def render_collection(collection, schema_class, action_data)
-  timeout = schema_class.adapter_config.timeout
-  cache_enabled = schema_class.adapter_config.cache.enabled
+def render_collection(collection, representation_class, action_data)
+  timeout = representation_class.adapter_config.timeout
+  cache_enabled = representation_class.adapter_config.cache.enabled
   # ...
 end
 ```

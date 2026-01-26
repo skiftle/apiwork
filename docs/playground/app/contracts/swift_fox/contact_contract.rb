@@ -2,6 +2,6 @@
 
 module SwiftFox
   class ContactContract < Apiwork::Contract::Base
-    schema!
+    representation ContactRepresentation
   end
 end

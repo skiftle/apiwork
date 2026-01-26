@@ -86,31 +86,11 @@ How Apiwork captures ActiveRecord validation errors and presents them in a unifi
 
 ## Schemas
 
-<small>`app/schemas/happy_zebra/user_schema.rb`</small>
-
-<<< @/playground/app/schemas/happy_zebra/user_schema.rb
-
-<small>`app/schemas/happy_zebra/profile_schema.rb`</small>
-
-<<< @/playground/app/schemas/happy_zebra/profile_schema.rb
-
-<small>`app/schemas/happy_zebra/post_schema.rb`</small>
-
-<<< @/playground/app/schemas/happy_zebra/post_schema.rb
-
-<small>`app/schemas/happy_zebra/comment_schema.rb`</small>
-
-<<< @/playground/app/schemas/happy_zebra/comment_schema.rb
-
 ## Contracts
 
 <small>`app/contracts/happy_zebra/user_contract.rb`</small>
 
 <<< @/playground/app/contracts/happy_zebra/user_contract.rb
-
-<small>`app/contracts/happy_zebra/profile_contract.rb`</small>
-
-<<< @/playground/app/contracts/happy_zebra/profile_contract.rb
 
 <small>`app/contracts/happy_zebra/post_contract.rb`</small>
 

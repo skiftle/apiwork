@@ -55,23 +55,11 @@ Complex queries with string patterns, numeric ranges, and logical operators
 
 ## Schemas
 
-<small>`app/schemas/bold_falcon/article_schema.rb`</small>
-
-<<< @/playground/app/schemas/bold_falcon/article_schema.rb
-
-<small>`app/schemas/bold_falcon/category_schema.rb`</small>
-
-<<< @/playground/app/schemas/bold_falcon/category_schema.rb
-
 ## Contracts
 
 <small>`app/contracts/bold_falcon/article_contract.rb`</small>
 
 <<< @/playground/app/contracts/bold_falcon/article_contract.rb
-
-<small>`app/contracts/bold_falcon/category_contract.rb`</small>
-
-<<< @/playground/app/contracts/bold_falcon/category_contract.rb
 
 ## Controllers
 

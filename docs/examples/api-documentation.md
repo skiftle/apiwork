@@ -73,31 +73,11 @@ Document APIs with descriptions, examples, formats, and deprecation notices at e
 
 ## Schemas
 
-<small>`app/schemas/brave_eagle/task_schema.rb`</small>
-
-<<< @/playground/app/schemas/brave_eagle/task_schema.rb
-
-<small>`app/schemas/brave_eagle/user_schema.rb`</small>
-
-<<< @/playground/app/schemas/brave_eagle/user_schema.rb
-
-<small>`app/schemas/brave_eagle/comment_schema.rb`</small>
-
-<<< @/playground/app/schemas/brave_eagle/comment_schema.rb
-
 ## Contracts
 
 <small>`app/contracts/brave_eagle/task_contract.rb`</small>
 
 <<< @/playground/app/contracts/brave_eagle/task_contract.rb
-
-<small>`app/contracts/brave_eagle/user_contract.rb`</small>
-
-<<< @/playground/app/contracts/brave_eagle/user_contract.rb
-
-<small>`app/contracts/brave_eagle/comment_contract.rb`</small>
-
-<<< @/playground/app/contracts/brave_eagle/comment_contract.rb
 
 ## Controllers
 

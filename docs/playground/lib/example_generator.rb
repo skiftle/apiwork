@@ -17,7 +17,7 @@ class ExampleGenerator
   def generate_all
     Rails.logger.debug 'Generating documentation examples...'
 
-    eager_load_schemas
+    eager_load_representations
 
     temp_dir = Rails.root.join('tmp/docs_generation')
     temp_public = temp_dir.join('public')
@@ -62,15 +62,15 @@ class ExampleGenerator
 
   private
 
-  def eager_load_schemas
-    Dir.glob(Rails.root.join('app/schemas/**/*.rb')).sort.each do |file|
-      relative = file.sub(Rails.root.join('app/schemas/').to_s, '')
+  def eager_load_representations
+    Dir.glob(Rails.root.join('app/representations/**/*.rb')).sort.each do |file|
+      relative = file.sub(Rails.root.join('app/representations/').to_s, '')
       class_name = relative.sub(/\.rb$/, '').camelize
 
       begin
         class_name.constantize
       rescue NameError
-        # Schema file doesn't define expected class, skip
+        # Representation file doesn't define expected class, skip
       end
     end
   end
@@ -275,10 +275,10 @@ class ExampleGenerator
   end
 
   def schemas_section(namespace)
-    files = files_in("app/schemas/#{namespace}")
+    files = files_in("app/representations/#{namespace}")
     return if files.empty?
 
-    content = ['## Schemas']
+    content = ['## Representations']
     files.each do |file|
       content << file_block(file)
     end

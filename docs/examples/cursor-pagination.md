@@ -33,10 +33,6 @@ Navigate through large datasets using cursor-based pagination
 
 ## Schemas
 
-<small>`app/schemas/grumpy_panda/activity_schema.rb`</small>
-
-<<< @/playground/app/schemas/grumpy_panda/activity_schema.rb
-
 ## Contracts
 
 <small>`app/contracts/grumpy_panda/activity_contract.rb`</small>

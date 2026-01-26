@@ -58,7 +58,7 @@ export const AddressSchema = z.object({ ... });
 
 // Contract-scoped (prefixed with contract name)
 export interface OrderLineItem { ... }
-export const OrderLineItemSchema = z.object({ ... });
+export const OrderLineItemRepresentation = z.object({ ... });
 
 // Contract-scoped enum
 export type PostStatus = 'draft' | 'published';

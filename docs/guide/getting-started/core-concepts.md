@@ -99,10 +99,10 @@ Requests with undefined fields are rejected. `contract.query` and `contract.body
 
 Writing contracts by hand means defining every request type, response type, filter, and sort — for every action. That adds up.
 
-A schema sits between your model and contract. It describes what to expose and how: filtering, sorting, writing. Apiwork uses this to build the contract and handle requests.
+A representation sits between your model and contract. It describes what to expose and how: filtering, sorting, writing. Apiwork uses this to build the contract and handle requests.
 
 ```ruby
-class PostSchema < ApplicationSchema
+class PostRepresentation < ApplicationSchema
   attribute :id
   attribute :title, writable: true, filterable: true
   attribute :body, writable: true
@@ -138,21 +138,21 @@ has_one :profile, include: :always
 
 ### From Schema to Contract
 
-Use `schema!` to generate a complete contract from your schema:
+Use `representation` to generate a complete contract from your representation:
 
 ```ruby
 class PostContract < ApplicationContract
-  schema!
+  representation
 end
 ```
 
-`schema!` connects to `PostSchema` by naming convention. This single line generates typed definitions for all CRUD actions.
+`representation` connects to `PostRepresentation` by naming convention. This single line generates typed definitions for all CRUD actions.
 
 ::: tip
 You can also write contracts entirely by hand without schemas. This is useful for non-CRUD endpoints or custom APIs. See [Contracts](../core/contracts/introduction.md).
 :::
 
-The schema knows:
+The representation knows:
 
 - Which fields exist (from `attribute`)
 - Which can be written (from `writable: true`)
@@ -166,7 +166,7 @@ From this, Apiwork generates:
 - Filter types (filterable fields only)
 - Sort types (sortable fields only)
 
-See [Action Defaults](../core/adapters/standard-adapter/action-defaults.md) for what gets generated, and [Schemas](../core/schemas/introduction.md) for the full guide.
+See [Action Defaults](../core/adapters/standard-adapter/action-defaults.md) for what gets generated, and [Schemas](../core/representations/introduction.md) for the full guide.
 
 ### Customizing Generated Actions
 
@@ -174,7 +174,7 @@ The defaults usually work. But you can extend or replace any action:
 
 ```ruby
 class PostContract < ApplicationContract
-  schema!
+  representation
 
   action :index do
     request do
@@ -209,12 +209,12 @@ Here's how everything fits together:
                               ▼
 ┌─────────────────────────────────────────────────────────────┐
 │  app/contracts/api/v1/post_contract.rb                      │
-│  Contract — validates requests, uses schema! for types      │
+│  Contract — validates requests, uses representation for types      │
 └─────────────────────────────┬───────────────────────────────┘
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────┐
-│  app/schemas/api/v1/post_schema.rb                          │
+│  app/representations/api/v1/post_representation.rb                          │
 │  Schema — defines attributes, associations, permissions     │
 └─────────────────────────────┬───────────────────────────────┘
                               │

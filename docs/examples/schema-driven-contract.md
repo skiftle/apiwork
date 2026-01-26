@@ -71,31 +71,11 @@ Using `schema!` to generate a complete contract from schema definitions
 
 ## Schemas
 
-<small>`app/schemas/eager_lion/invoice_schema.rb`</small>
-
-<<< @/playground/app/schemas/eager_lion/invoice_schema.rb
-
-<small>`app/schemas/eager_lion/customer_schema.rb`</small>
-
-<<< @/playground/app/schemas/eager_lion/customer_schema.rb
-
-<small>`app/schemas/eager_lion/line_schema.rb`</small>
-
-<<< @/playground/app/schemas/eager_lion/line_schema.rb
-
 ## Contracts
 
 <small>`app/contracts/eager_lion/invoice_contract.rb`</small>
 
 <<< @/playground/app/contracts/eager_lion/invoice_contract.rb
-
-<small>`app/contracts/eager_lion/customer_contract.rb`</small>
-
-<<< @/playground/app/contracts/eager_lion/customer_contract.rb
-
-<small>`app/contracts/eager_lion/line_contract.rb`</small>
-
-<<< @/playground/app/contracts/eager_lion/line_contract.rb
 
 ## Controllers
 

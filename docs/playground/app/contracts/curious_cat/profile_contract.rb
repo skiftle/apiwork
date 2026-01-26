@@ -2,6 +2,6 @@
 
 module CuriousCat
   class ProfileContract < Apiwork::Contract::Base
-    schema!
+    representation ProfileRepresentation
   end
 end

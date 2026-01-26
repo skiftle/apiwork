@@ -171,7 +171,7 @@ GET /posts?filter[_or][0][_and][0][category][eq]=tech&filter[_or][0][_and][1][_o
 Filter by fields on related records. The association must be marked `filterable: true`:
 
 ```ruby
-class PostSchema < Apiwork::Schema::Base
+class PostRepresentation < Apiwork::Representation::Base
   belongs_to :author, filterable: true
   has_many :comments, filterable: true
 end
@@ -231,7 +231,7 @@ The `null` operator is only allowed on nullable columns. Non-nullable columns re
 Apiwork validates filter parameters in two layers:
 
 ::: info Contract Validates First
-When you use `schema!`, the adapter generates typed filter definitions. The contract validates every request against these types **before the adapter runs**. Unknown fields, invalid operators, and type mismatches are rejected immediately.
+When you use `representation`, the adapter generates typed filter definitions. The contract validates every request against these types **before the adapter runs**. Unknown fields, invalid operators, and type mismatches are rejected immediately.
 :::
 
 ### What the Contract Catches
@@ -266,7 +266,7 @@ These can occur when schema configuration is incomplete:
 |------|-------|
 | `field_not_filterable` | Field exists but not marked `filterable: true` |
 | `association_not_found` | Association doesn't exist on model |
-| `association_resource_not_found` | Association schema couldn't be resolved |
+| `association_resource_not_found` | Association representation couldn't be resolved |
 
 All errors include available options in the response to aid debugging.
 

@@ -2,6 +2,6 @@
 
 module GrumpyPanda
   class ActivityContract < Apiwork::Contract::Base
-    schema!
+    representation ActivityRepresentation
   end
 end

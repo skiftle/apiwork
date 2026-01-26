@@ -58,7 +58,7 @@ end
 | `column_unknown`            | Unknown column type      | `field`                       |
 | `column_unsupported`        | Unsupported column type  | `field`, `type`               |
 | `association_not_found`     | Association not found    | `association`                 |
-| `association_schema_missing`| Association schema missing| `association`                |
+| `association_schema_missing`| Association representation missing| `association`                |
 
 ### Sort Errors
 

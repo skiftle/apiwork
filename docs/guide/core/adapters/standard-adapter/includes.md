@@ -6,7 +6,7 @@ order: 6
 
 Control which associations appear in API responses with the `include` query parameter.
 
-For association configuration options like `writable`, `filterable`, and polymorphic support, see [Associations](../schemas/associations.md).
+For association configuration options like `writable`, `filterable`, and polymorphic support, see [Associations](../representations/associations.md).
 
 ## Query Format
 
@@ -34,10 +34,10 @@ This includes comments and each comment's author.
 
 ## Schema Configuration
 
-Configure default include behavior in your schema:
+Configure default include behavior in your representation:
 
 ```ruby
-class PostSchema < Apiwork::Schema::Base
+class PostRepresentation < Apiwork::Representation::Base
   has_many :comments
   has_many :tags
   belongs_to :author, include: :always

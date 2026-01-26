@@ -4,7 +4,7 @@ order: 2
 
 # Action Defaults
 
-When using `schema!`, the adapter generates typed requests and responses for each action.
+When using `representation`, the adapter generates typed requests and responses for each action.
 
 ## Overview
 
@@ -201,7 +201,7 @@ end
 
 ## Override Defaults
 
-Contract definitions merge with schema-generated types by default. See [Declaration Merging](../contracts/actions.md#declaration-merging) for details.
+Contract definitions merge with representation-generated types by default. See [Declaration Merging](../contracts/actions.md#declaration-merging) for details.
 
 Use `replace: true` to completely override:
 

@@ -256,19 +256,19 @@ end
 # Result: :invoice has BOTH :title AND :priority
 ```
 
-### With schema!
+### With representation
 
-When using `schema!`, the adapter auto-generates request and response definitions from your schema attributes. Your custom definitions merge with these:
+When using `representation`, the adapter auto-generates request and response definitions from your representation attributes. Your custom definitions merge with these:
 
 ```ruby
 class InvoiceContract < Apiwork::Contract::Base
-  schema!  # Generates: body { string :title; decimal :amount; ... }
+  representation  # Generates: body { string :title; decimal :amount; ... }
 
   action :create do
     request do
       body do
         object :invoice do
-          string :priority  # Added to schema params
+          string :priority  # Added to representation params
         end
       end
     end
@@ -285,7 +285,7 @@ action :create do
   request replace: true do
     body do
       object :invoice do
-        string :title  # ONLY this, no schema params
+        string :title  # ONLY this, no representation params
       end
     end
   end

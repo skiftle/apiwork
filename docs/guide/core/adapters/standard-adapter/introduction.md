@@ -10,10 +10,10 @@ For custom response formats or query logic, see [Custom Adapters](../custom-adap
 
 ## Generated Types
 
-When you call `schema!`, the standard adapter generates typed definitions from your schema:
+When you call `representation`, the standard adapter generates typed definitions from your representation:
 
 ```ruby
-class InvoiceSchema < Apiwork::Schema::Base
+class InvoiceRepresentation < Apiwork::Representation::Base
   attribute :number, filterable: true, sortable: true, writable: true
   attribute :status, filterable: true, enum: %w[draft sent paid]
   attribute :issued_on, filterable: true, sortable: true

@@ -2,7 +2,7 @@
 
 module BraveEagle
   class TaskContract < Apiwork::Contract::Base
-    schema!
+    representation TaskRepresentation
 
     action :index do
       summary 'List all tasks'

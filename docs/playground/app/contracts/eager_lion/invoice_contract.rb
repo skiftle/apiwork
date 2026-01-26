@@ -2,6 +2,6 @@
 
 module EagerLion
   class InvoiceContract < Apiwork::Contract::Base
-    schema!
+    representation InvoiceRepresentation
   end
 end

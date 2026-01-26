@@ -212,13 +212,13 @@ Discriminated unions add a `discriminator` object with `propertyName` and `mappi
 ```yaml
 Filter:
   oneOf:
-    - $ref: '#/components/schemas/StringFilter'
-    - $ref: '#/components/schemas/RangeFilter'
+    - $ref: '#/components/representations/StringFilter'
+    - $ref: '#/components/representations/RangeFilter'
   discriminator:
     propertyName: kind
     mapping:
-      string: '#/components/schemas/StringFilter'
-      range: '#/components/schemas/RangeFilter'
+      string: '#/components/representations/StringFilter'
+      range: '#/components/representations/RangeFilter'
 
 StringFilter:
   type: object

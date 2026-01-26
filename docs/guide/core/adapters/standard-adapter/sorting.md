@@ -4,7 +4,7 @@ order: 4
 
 # Sorting
 
-Order results using query parameters. Fields must be marked `sortable: true` in the schema.
+Order results using query parameters. Fields must be marked `sortable: true` in the representation.
 
 ## Query Format
 
@@ -37,7 +37,7 @@ First sort takes precedence. Results are ordered by `published` first, then by `
 Mark attributes as sortable:
 
 ```ruby
-class PostSchema < Apiwork::Schema::Base
+class PostRepresentation < Apiwork::Representation::Base
   attribute :title, sortable: true
   attribute :created_at, sortable: true
   attribute :views, sortable: true
@@ -52,7 +52,7 @@ end
 Sort by fields on related records. The association must be marked `sortable: true`:
 
 ```ruby
-class PostSchema < Apiwork::Schema::Base
+class PostRepresentation < Apiwork::Representation::Base
   belongs_to :author, sortable: true
 end
 ```
@@ -95,7 +95,7 @@ end
 ## Validation
 
 ::: info Contract Validates First
-Like filtering, sort parameters are validated by the contract before reaching the adapter. The adapter generates typed sort definitions from your schema — unknown fields and invalid directions are rejected immediately.
+Like filtering, sort parameters are validated by the contract before reaching the adapter. The adapter generates typed sort definitions from your representation — unknown fields and invalid directions are rejected immediately.
 :::
 
 ### What the Contract Catches
@@ -112,7 +112,7 @@ These errors only occur with incomplete schema configuration:
 | -------------------------------- | -------------------------------------------- |
 | `field_not_sortable`             | Field exists but not marked `sortable: true` |
 | `association_not_sortable`       | Association not marked `sortable: true`      |
-| `association_resource_not_found` | Association schema couldn't be resolved      |
+| `association_resource_not_found` | Association representation couldn't be resolved      |
 
 Example error response:
 

@@ -38,27 +38,27 @@ Apiwork finds the contract from the controller name:
 
 Singular form of the controller name.
 
-## Connecting to a Schema
+## Connecting to a Representation
 
-Add `schema!` to connect the contract to its schema:
+Add `representation` to connect the contract to its representation:
 
 ```ruby
 class PostContract < Apiwork::Contract::Base
-  schema!  # Connects to PostSchema
+  representation PostRepresentation
 end
 ```
 
-When a contract is connected to a schema, that contract enters schema mode.
+When a contract is connected to a representation, that contract enters representation mode.
 
-In schema mode, the contract is driven by its schema through an adapter. The adapter interprets the schema and defines how resource actions, requests, and responses are derived from it.
+In representation mode, the contract is driven by its representation through an adapter. The adapter interprets the representation and defines how resource actions, requests, and responses are derived from it.
 
 The adapter implements the API conventions and enforces consistent behavior across the entire API.
 
-The built-in adapter provides a complete REST API runtime out of the box. For each resource defined in your API definitions, it automatically generates the corresponding resource actions and derives their behavior from the schema as the source of truth.
+The built-in adapter provides a complete REST API runtime out of the box. For each resource defined in your API definitions, it automatically generates the corresponding resource actions and derives their behavior from the representation as the source of truth.
 
 All generated behavior remains fully customizable. You can override individual actions, replace them entirely, or extend them by merging additional behavior on top.
 
-Now responses are serialized through the schema. See [Schemas](../schemas/introduction.md).
+Now responses are serialized through the representation. See [Representations](../representations/introduction.md).
 
 ## What Happens at Runtime
 

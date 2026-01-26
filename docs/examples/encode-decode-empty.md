@@ -35,10 +35,6 @@ Transform values on input/output and handle nil/empty string conversion
 
 ## Schemas
 
-<small>`app/schemas/swift_fox/contact_schema.rb`</small>
-
-<<< @/playground/app/schemas/swift_fox/contact_schema.rb
-
 ## Contracts
 
 <small>`app/contracts/swift_fox/contact_contract.rb`</small>

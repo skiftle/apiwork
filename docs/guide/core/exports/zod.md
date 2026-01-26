@@ -51,7 +51,7 @@ export const AddressSchema = z.object({
 });
 
 // Resource schemas
-export const PostSchema = z.object({
+export const PostRepresentation = z.object({
   id: z.number(),
   title: z.string(),
   body: z.string(),
@@ -70,19 +70,19 @@ export const PostCreateRequestSchema = z.object({
 
 // Inferred types
 export type Status = z.infer<typeof StatusSchema>;
-export type Post = z.infer<typeof PostSchema>;
+export type Post = z.infer<typeof PostRepresentation>;
 ```
 
 ## Usage
 
 ```typescript
-import { PostCreateRequestSchema, PostSchema } from "./api/schemas";
+import { PostCreateRequestSchema, PostRepresentation } from "./api/schemas";
 
 // Validate request before sending
 const validated = PostCreateRequestSchema.parse(formData);
 
 // Validate response from API
-const post = PostSchema.parse(await response.json());
+const post = PostRepresentation.parse(await response.json());
 ```
 
 ## Ordering
@@ -92,10 +92,10 @@ Schemas are sorted in topological order so dependencies come first.
 For recursive schemas, Apiwork uses `z.lazy()`:
 
 ```typescript
-export const CategorySchema: z.ZodType<Category> = z.lazy(() =>
+export const CategoryRepresentation: z.ZodType<Category> = z.lazy(() =>
   z.object({
     name: z.string(),
-    children: z.array(CategorySchema),
+    children: z.array(CategoryRepresentation),
   })
 );
 ```

@@ -26,12 +26,12 @@ In most APIs, the same patterns appear again and again. Resources are filtered i
 
 These are API concerns rather than domain concerns.
 
-Apiwork captures these conventions in its schema and adapter system. Schemas describe the API model. Adapters execute it at the boundary.
+Apiwork captures these conventions in its representation and adapter system. Schemas describe the API model. Adapters execute it at the boundary.
 
 Apiwork includes a built-in adapter that implements a conventional API model with consistent filtering, predictable sorting, standard pagination, relation traversal, N+1-safe loading, and nested writes.
 This adapter provides a complete API runtime out of the box.
 
-Adapters are not fixed. You can replace them, extend them, or write your own. The contract language stays the same. The schema model stays the same. Only the execution strategy changes.
+Adapters are not fixed. You can replace them, extend them, or write your own. The contract language stays the same. The representation model stays the same. Only the execution strategy changes.
 
 ## From Domain to API
 

@@ -2,6 +2,6 @@
 
 module CleverRabbit
   class OrderContract < Apiwork::Contract::Base
-    schema!
+    representation OrderRepresentation
   end
 end

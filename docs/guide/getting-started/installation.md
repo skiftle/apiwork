@@ -37,8 +37,8 @@ This creates:
 app/
 ├── contracts/
 │   └── application_contract.rb
-└── schemas/
-    └── application_schema.rb
+└── representations/
+    └── application_representation.rb
 config/
 └── apis/
 ```
@@ -77,7 +77,7 @@ The path `/api/v1` determines both the mount point and the namespace. Apiwork ex
 
 - Controllers in `Api::V1::` (e.g. `Api::V1::PostsController`)
 - Contracts in `Api::V1::` (e.g. `Api::V1::PostContract`)
-- Schemas in `Api::V1::` (e.g. `Api::V1::PostSchema`)
+- Schemas in `Api::V1::` (e.g. `Api::V1::PostRepresentation`)
 
 ::: tip
 For a root-level API with no path prefix, use `rails generate apiwork:api /`. This creates `config/apis/root.rb`.
@@ -105,7 +105,7 @@ end
 
 ### apiwork:schema
 
-Creates a schema for a resource:
+Creates a representation for a resource:
 
 ```bash
 rails generate apiwork:schema api/v1/invoice
@@ -114,17 +114,17 @@ rails generate apiwork:schema api/v1/invoice
 This generates:
 
 ```ruby
-# app/schemas/api/v1/invoice_schema.rb
+# app/representations/api/v1/invoice_representation.rb
 module Api
   module V1
-    class InvoiceSchema < ApplicationSchema
+    class InvoiceRepresentation < ApplicationSchema
     end
   end
 end
 ```
 
 ::: info
-Contracts and schemas follow the same namespace structure as your controllers. If your controller is `Api::V1::InvoicesController`, your contract is `Api::V1::InvoiceContract` and your schema is `Api::V1::InvoiceSchema`.
+Contracts and schemas follow the same namespace structure as your controllers. If your controller is `Api::V1::InvoicesController`, your contract is `Api::V1::InvoiceContract` and your representation is `Api::V1::InvoiceRepresentation`.
 :::
 
 ## Next Steps

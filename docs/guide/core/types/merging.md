@@ -73,11 +73,11 @@ interface Address {
 
 ## Extending Generated Types
 
-When using [`schema!`](../schemas/introduction.md), types are generated that you don't control directly — filter types, sort types, pagination types. Merging makes it possible to add metadata like descriptions to these types.
+When using [`representation`](../representations/introduction.md), types are generated that you don't control directly — filter types, sort types, pagination types. Merging makes it possible to add metadata like descriptions to these types.
 
 ```ruby
 class InvoiceContract < Apiwork::Contract::Base
-  schema!
+  representation
 
   # Add description to the auto-generated filter object
   object :filter, description: "Filter invoices by date, status, or customer"
@@ -98,7 +98,7 @@ The same works for enums:
 
 ```ruby
 class InvoiceContract < Apiwork::Contract::Base
-  schema!
+  representation
 
   enum :status, description: "Invoice lifecycle status"
 end

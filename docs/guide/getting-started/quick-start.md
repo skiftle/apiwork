@@ -54,15 +54,15 @@ end
 Apiwork uses the Rails router under the hood. The API definition's path (`/api/v1`) combines with the mount point (`/`) to produce routes like `/api/v1/posts`.
 :::
 
-## 4. Schema
+## 4. Representation
 
-The schema defines how posts are serialized and what can be queried:
+The representation defines how posts are serialized and what can be queried:
 
 ```ruby
-# app/schemas/api/v1/post_schema.rb
+# app/representations/api/v1/post_representation.rb
 module Api
   module V1
-    class PostSchema < ApplicationSchema
+    class PostRepresentation < ApplicationRepresentation
       attribute :id
       attribute :title, writable: true, filterable: true
       attribute :body, writable: true
@@ -84,20 +84,20 @@ Types, nullability, and defaults are auto-detected from your database columns.
 
 ## 5. Contract
 
-The contract pulls in the schema and defines what each action accepts:
+The contract connects to the representation and defines what each action accepts:
 
 ```ruby
 # app/contracts/api/v1/post_contract.rb
 module Api
   module V1
     class PostContract < ApplicationContract
-      schema!
+      representation PostRepresentation
     end
   end
 end
 ```
 
-That's it. `schema!` imports everything from `PostSchema`. The contract now knows:
+That's it. `representation` connects to `PostRepresentation`. The contract now knows:
 
 - What fields can be written (for create/update)
 - What fields can be filtered/sorted (for index)
@@ -197,8 +197,8 @@ curl http://localhost:3000/api/v1/.zod
 
 With minimal code, you now have:
 
-1. **Validation** — Requests are validated against your schema before reaching the controller
-2. **Serialization** — Responses are automatically formatted using the schema
+1. **Validation** — Requests are validated against your representation before reaching the controller
+2. **Serialization** — Responses are automatically formatted using the representation
 3. **[Filtering](../core/adapters/standard-adapter/filtering.md)** — `filterable: true` fields can be filtered via `?filter[field][op]=value`
 4. **[Sorting](../core/adapters/standard-adapter/sorting.md)** — `sortable: true` fields can be sorted via `?sort[field]=asc|desc`
 5. **[Pagination](../core/adapters/standard-adapter/pagination.md)** — Built-in offset-based pagination via `?page[number]=1&page[size]=10`
@@ -219,4 +219,4 @@ This was the simplest possible example. Apiwork also supports:
 
 - [Adapters](../core/adapters/introduction.md) — filtering, sorting, pagination, and eager loading in depth
 - [Contracts](../core/contracts/introduction.md) — custom validation and action-specific params
-- [Schemas](../core/schemas/introduction.md) — associations, computed attributes, and more
+- [Schemas](../core/representations/introduction.md) — associations, computed attributes, and more

@@ -2,6 +2,6 @@
 
 module HappyZebra
   class CommentContract < Apiwork::Contract::Base
-    schema!
+    representation CommentRepresentation
   end
 end

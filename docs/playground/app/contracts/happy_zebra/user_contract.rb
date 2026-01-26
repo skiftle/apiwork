@@ -2,6 +2,6 @@
 
 module HappyZebra
   class UserContract < Apiwork::Contract::Base
-    schema!
+    representation UserRepresentation
   end
 end

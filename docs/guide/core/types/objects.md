@@ -153,10 +153,10 @@ Apiwork detects self-references automatically. No special syntax is needed.
 In Zod, recursive types use `z.lazy()` to avoid infinite loops:
 
 ```typescript
-export const CategorySchema: z.ZodType<Category> = z.lazy(() =>
+export const CategoryRepresentation: z.ZodType<Category> = z.lazy(() =>
   z.object({
     name: z.string(),
-    children: z.array(CategorySchema),
+    children: z.array(CategoryRepresentation),
   })
 );
 ```
@@ -184,7 +184,7 @@ Category:
     children:
       type: array
       items:
-        $ref: "#/components/schemas/Category"
+        $ref: "#/components/representations/Category"
 ```
 
 ## Contract-Scoped Objects

@@ -73,31 +73,11 @@ Create, update, and delete nested records in a single request
 
 ## Schemas
 
-<small>`app/schemas/clever_rabbit/order_schema.rb`</small>
-
-<<< @/playground/app/schemas/clever_rabbit/order_schema.rb
-
-<small>`app/schemas/clever_rabbit/line_item_schema.rb`</small>
-
-<<< @/playground/app/schemas/clever_rabbit/line_item_schema.rb
-
-<small>`app/schemas/clever_rabbit/shipping_address_schema.rb`</small>
-
-<<< @/playground/app/schemas/clever_rabbit/shipping_address_schema.rb
-
 ## Contracts
 
 <small>`app/contracts/clever_rabbit/order_contract.rb`</small>
 
 <<< @/playground/app/contracts/clever_rabbit/order_contract.rb
-
-<small>`app/contracts/clever_rabbit/line_item_contract.rb`</small>
-
-<<< @/playground/app/contracts/clever_rabbit/line_item_contract.rb
-
-<small>`app/contracts/clever_rabbit/shipping_address_contract.rb`</small>
-
-<<< @/playground/app/contracts/clever_rabbit/shipping_address_contract.rb
 
 ## Controllers
 

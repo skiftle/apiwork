@@ -8,7 +8,7 @@ Exports describe your API in formats understood by external tools.
 
 Built-in exports include OpenAPI, TypeScript, and Zod, but exports are a general mechanism that can be extended with [custom exports](./custom-exports.md).
 
-Exports are generated from [introspection](../introspection/introduction.md) — the unified representation of your API definitions, contracts, and schemas. Instead of maintaining separate specification files, exports are derived directly from this structure and always reflect the current API.
+Exports are generated from [introspection](../introspection/introduction.md) — the unified representation of your API definitions, contracts, and representations. Instead of maintaining separate specification files, exports are derived directly from this structure and always reflect the current API.
 
 When your API changes, its exports change with it.
 

@@ -2,7 +2,7 @@
 
 module WiseTiger
   class ProjectContract < Apiwork::Contract::Base
-    schema!
+    representation ProjectRepresentation
 
     action :index do
       tags 'Projects'

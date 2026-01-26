@@ -16,7 +16,7 @@ A validation in a Rails model is still a *domain rule*. "Invoice numbers must be
 
 The built-in adapter automatically maps Rails model validation errors to domain issues when you call `expose`. You can also create domain issues manually for custom business logic.
 
-**Requires:** A schema (`schema!`), the built-in adapter (default), and ActiveRecord.
+**Requires:** A representation (`representation`), the built-in adapter (default), and ActiveRecord.
 
 ## HTTP Status
 
@@ -225,15 +225,15 @@ For exclusive ranges (`1...5`), `max_exclusive` is `true`.
 
 ## Paths
 
-Paths start with the schema's root key:
+Paths start with the representation's root key:
 
 ```ruby
-class InvoiceSchema < Apiwork::Schema::Base
+class InvoiceRepresentation < Apiwork::Representation::Base
   attribute :number, writable: true
 end
 ```
 
-`InvoiceSchema` produces key `invoice`, so path is `["invoice", "number"]`.
+`InvoiceRepresentation` produces key `invoice`, so path is `["invoice", "number"]`.
 
 Matches the request body. Client sent `{ "invoice": { "number": "" } }`, error points to `["invoice", "number"]`.
 
@@ -254,12 +254,12 @@ end
 ```
 
 ```ruby
-class InvoiceSchema < Apiwork::Schema::Base
+class InvoiceRepresentation < Apiwork::Representation::Base
   attribute :number, writable: true
   has_many :lines, writable: true
 end
 
-class LineSchema < Apiwork::Schema::Base
+class LineRepresentation < Apiwork::Representation::Base
   attribute :description, writable: true
   attribute :quantity, writable: true
 end

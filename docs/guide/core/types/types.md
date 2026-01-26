@@ -82,7 +82,7 @@ Now the client has full type safety.
 |----------|------|--------|
 | User-provided JSON (arbitrary) | `:unknown` | Structure varies |
 | Settings/preferences | `:object` block | Known structure |
-| Metadata with schema | `:object` block | Documented fields |
+| Metadata with representation | `:object` block | Documented fields |
 | Legacy flexible data | `:unknown` | Can't guarantee structure |
 
 ### `unknown` vs `array`

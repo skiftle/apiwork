@@ -89,39 +89,11 @@ Comments that belong to different content types (posts, videos, images)
 
 ## Schemas
 
-<small>`app/schemas/gentle_owl/comment_schema.rb`</small>
-
-<<< @/playground/app/schemas/gentle_owl/comment_schema.rb
-
-<small>`app/schemas/gentle_owl/post_schema.rb`</small>
-
-<<< @/playground/app/schemas/gentle_owl/post_schema.rb
-
-<small>`app/schemas/gentle_owl/video_schema.rb`</small>
-
-<<< @/playground/app/schemas/gentle_owl/video_schema.rb
-
-<small>`app/schemas/gentle_owl/image_schema.rb`</small>
-
-<<< @/playground/app/schemas/gentle_owl/image_schema.rb
-
 ## Contracts
 
 <small>`app/contracts/gentle_owl/comment_contract.rb`</small>
 
 <<< @/playground/app/contracts/gentle_owl/comment_contract.rb
-
-<small>`app/contracts/gentle_owl/post_contract.rb`</small>
-
-<<< @/playground/app/contracts/gentle_owl/post_contract.rb
-
-<small>`app/contracts/gentle_owl/video_contract.rb`</small>
-
-<<< @/playground/app/contracts/gentle_owl/video_contract.rb
-
-<small>`app/contracts/gentle_owl/image_contract.rb`</small>
-
-<<< @/playground/app/contracts/gentle_owl/image_contract.rb
 
 ## Controllers
 
