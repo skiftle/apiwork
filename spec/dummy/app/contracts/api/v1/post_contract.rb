@@ -3,7 +3,7 @@
 module Api
   module V1
     class PostContract < Apiwork::Contract::Base
-      schema!
+      representation PostRepresentation
 
       action :index do
         summary "List all posts"

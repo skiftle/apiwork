@@ -3,7 +3,7 @@
 module Api
   module V1
     class TaggingContract < Apiwork::Contract::Base
-      schema!
+      representation TaggingRepresentation
     end
   end
 end

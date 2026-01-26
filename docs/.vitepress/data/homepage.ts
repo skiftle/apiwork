@@ -121,7 +121,7 @@ end`,
     codeBlocks: [
       {
         language: "ruby",
-        code: `class InvoiceSchema < Apiwork::Schema::Base
+        code: `class InvoiceRepresentation < Apiwork::Representation::Base
   attribute :id
   attribute :number, sortable: true
   attribute :issued_on
@@ -134,7 +134,7 @@ end`,
       {
         language: "ruby",
         code: `class InvoiceContract < Apiwork::Contract::Base
-  schema! # That's it.
+  representation InvoiceRepresentation
 end`,
       },
     ],

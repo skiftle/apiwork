@@ -3,7 +3,7 @@
 module Api
   module V1
     class AccountContract < Apiwork::Contract::Base
-      schema!
+      representation AccountRepresentation
 
       action :show
     end

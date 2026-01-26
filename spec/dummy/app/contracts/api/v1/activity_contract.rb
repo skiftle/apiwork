@@ -3,7 +3,7 @@
 module Api
   module V1
     class ActivityContract < Apiwork::Contract::Base
-      schema!
+      representation ActivityRepresentation
     end
   end
 end

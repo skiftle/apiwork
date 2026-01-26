@@ -3,7 +3,7 @@
 module Api
   module V1
     class SafeCommentContract < Apiwork::Contract::Base
-      schema!
+      representation SafeCommentRepresentation
     end
   end
 end

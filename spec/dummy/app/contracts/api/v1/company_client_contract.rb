@@ -3,7 +3,7 @@
 module Api
   module V1
     class CompanyClientContract < Apiwork::Contract::Base
-      schema!
+      representation CompanyClientRepresentation
     end
   end
 end

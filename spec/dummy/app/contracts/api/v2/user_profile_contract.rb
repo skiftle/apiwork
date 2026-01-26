@@ -3,7 +3,7 @@
 module Api
   module V2
     class UserProfileContract < Apiwork::Contract::Base
-      schema!
+      representation UserProfileRepresentation
 
       action :index
       action :show

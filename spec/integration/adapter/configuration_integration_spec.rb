@@ -23,15 +23,15 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
       config_test_api # Trigger let to create API
     end
 
-    it 'applies API configuration via schema adapter_config' do
-      schema_class = Class.new(Apiwork::Schema::Base) do
+    it 'applies API configuration via representation adapter_config' do
+      representation_class = Class.new(Apiwork::Representation::Base) do
         def self.name
-          'Api::ConfigTest::PostSchema'
+          'Api::ConfigTest::PostRepresentation'
         end
       end
 
-      expect(schema_class.adapter_config.pagination.default_size).to eq(25)
-      expect(schema_class.adapter_config.pagination.max_size).to eq(100)
+      expect(representation_class.adapter_config.pagination.default_size).to eq(25)
+      expect(representation_class.adapter_config.pagination.max_size).to eq(100)
     end
 
     it 'applies key_format at API level' do
@@ -40,9 +40,9 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
     end
   end
 
-  describe 'Schema-level adapter configuration override' do
-    let(:schema_override_api) do
-      Apiwork::API.define '/api/schema_override' do
+  describe 'Representation-level adapter configuration override' do
+    let(:representation_override_api) do
+      Apiwork::API.define '/api/representation_override' do
         key_format :camel
 
         adapter do
@@ -56,10 +56,10 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
       end
     end
 
-    let(:schema_with_config) do
-      Class.new(Apiwork::Schema::Base) do
+    let(:representation_with_config) do
+      Class.new(Apiwork::Representation::Base) do
         def self.name
-          'Api::SchemaOverride::PostSchema'
+          'Api::RepresentationOverride::PostRepresentation'
         end
 
         adapter do
@@ -72,22 +72,22 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
     end
 
     before do
-      schema_override_api # Trigger let to create API
-      schema_with_config  # Trigger let to create Schema
+      representation_override_api
+      representation_with_config
     end
 
-    it 'schema adapter configuration overrides API adapter configuration' do
-      expect(schema_with_config.adapter_config.pagination.default_size).to eq(50)
-      expect(schema_with_config.adapter_config.pagination.max_size).to eq(150)
+    it 'representation adapter configuration overrides API adapter configuration' do
+      expect(representation_with_config.adapter_config.pagination.default_size).to eq(50)
+      expect(representation_with_config.adapter_config.pagination.max_size).to eq(150)
     end
 
     it 'key_format is at API level' do
-      api_class = Apiwork::API.find!('/api/schema_override')
+      api_class = Apiwork::API.find!('/api/representation_override')
       expect(api_class.key_format).to eq(:camel)
     end
   end
 
-  describe 'Resolution chain: Schema -> API -> Adapter default' do
+  describe 'Resolution chain: Representation -> API -> Adapter default' do
     let(:resolution_api) do
       Apiwork::API.define '/api/resolution' do
         key_format :camel
@@ -106,9 +106,9 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
     before do
       resolution_api
 
-      schema = Class.new(Apiwork::Schema::Base) do
+      representation = Class.new(Apiwork::Representation::Base) do
         def self.name
-          'Api::Resolution::PostSchema'
+          'Api::Resolution::PostRepresentation'
         end
 
         adapter do
@@ -117,15 +117,15 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
           end
         end
       end
-      stub_const('Api::Resolution::PostSchema', schema)
+      stub_const('Api::Resolution::PostRepresentation', representation)
     end
 
-    it 'schema overrides API, API overrides adapter defaults' do
-      schema = Api::Resolution::PostSchema
+    it 'representation overrides API, API overrides adapter defaults' do
+      representation = Api::Resolution::PostRepresentation
 
-      expect(schema.adapter_config.pagination.default_size).to eq(50)
-      expect(schema.adapter_config.pagination.max_size).to eq(200)
-      expect(schema.adapter_config.pagination.strategy).to eq(:offset)
+      expect(representation.adapter_config.pagination.default_size).to eq(50)
+      expect(representation.adapter_config.pagination.max_size).to eq(200)
+      expect(representation.adapter_config.pagination.strategy).to eq(:offset)
     end
 
     it 'key_format is at API level' do

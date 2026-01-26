@@ -3,7 +3,7 @@
 module Api
   module V1
     class ProfileContract < Apiwork::Contract::Base
-      schema!
+      representation ProfileRepresentation
 
       action :show
       action :create

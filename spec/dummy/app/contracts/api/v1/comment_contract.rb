@@ -3,7 +3,7 @@
 module Api
   module V1
     class CommentContract < Apiwork::Contract::Base
-      schema!
+      representation CommentRepresentation
     end
   end
 end

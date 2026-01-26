@@ -27,33 +27,33 @@ RSpec.describe 'Introspection Param Types', type: :integration do
     end
   end
 
-  describe 'ProfileSchema attributes' do
+  describe 'ProfileRepresentation attributes' do
     it 'has bio as string type' do
-      attr = Api::V1::ProfileSchema.attributes[:bio]
+      attr = Api::V1::ProfileRepresentation.attributes[:bio]
       expect(attr).to be_present
       expect(attr.type).to eq(:string)
     end
 
     it 'has balance as decimal type' do
-      attr = Api::V1::ProfileSchema.attributes[:balance]
+      attr = Api::V1::ProfileRepresentation.attributes[:balance]
       expect(attr).to be_present
       expect(attr.type).to eq(:decimal)
     end
 
     it 'has preferred_contact_time as time type' do
-      attr = Api::V1::ProfileSchema.attributes[:preferred_contact_time]
+      attr = Api::V1::ProfileRepresentation.attributes[:preferred_contact_time]
       expect(attr).to be_present
       expect(attr.type).to eq(:time)
     end
 
     it 'has external_id with uuid format' do
-      attr = Api::V1::ProfileSchema.attributes[:external_id]
+      attr = Api::V1::ProfileRepresentation.attributes[:external_id]
       expect(attr).to be_present
       expect(attr.format).to eq(:uuid)
     end
 
     it 'bio is nullable' do
-      attr = Api::V1::ProfileSchema.attributes[:bio]
+      attr = Api::V1::ProfileRepresentation.attributes[:bio]
       expect(attr.nullable?).to be(true)
     end
   end

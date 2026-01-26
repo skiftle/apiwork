@@ -3,7 +3,7 @@
 module Api
   module InferenceTest
     class PostContract < Apiwork::Contract::Base
-      schema!
+      representation PostRepresentation
     end
   end
 end

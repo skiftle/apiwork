@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe 'Format validation', type: :integration do
   describe 'ALLOWED_FORMATS constant' do
     it 'defines allowed formats for each type' do
-      expect(Apiwork::Schema::Attribute::ALLOWED_FORMATS).to eq(
+      expect(Apiwork::Representation::Attribute::ALLOWED_FORMATS).to eq(
         {
           decimal: %i[float double],
           integer: %i[int32 int64],
@@ -18,9 +18,9 @@ RSpec.describe 'Format validation', type: :integration do
 
   describe 'valid formats' do
     it 'accepts valid string formats' do
-      schema = Class.new(Apiwork::Schema::Base) do
+      schema = Class.new(Apiwork::Representation::Base) do
         def self.name
-          'TestFormatSchema'
+          'TestFormatRepresentation'
         end
         abstract!
       end
@@ -35,9 +35,9 @@ RSpec.describe 'Format validation', type: :integration do
     end
 
     it 'accepts valid integer formats' do
-      schema = Class.new(Apiwork::Schema::Base) do
+      schema = Class.new(Apiwork::Representation::Base) do
         def self.name
-          'TestFormatSchema'
+          'TestFormatRepresentation'
         end
         abstract!
       end
@@ -52,9 +52,9 @@ RSpec.describe 'Format validation', type: :integration do
     end
 
     it 'accepts valid number formats' do
-      schema = Class.new(Apiwork::Schema::Base) do
+      schema = Class.new(Apiwork::Representation::Base) do
         def self.name
-          'TestFormatSchema'
+          'TestFormatRepresentation'
         end
         abstract!
       end
@@ -69,9 +69,9 @@ RSpec.describe 'Format validation', type: :integration do
     end
 
     it 'accepts nil format' do
-      schema = Class.new(Apiwork::Schema::Base) do
+      schema = Class.new(Apiwork::Representation::Base) do
         def self.name
-          'TestFormatSchema'
+          'TestFormatRepresentation'
         end
         abstract!
       end
@@ -86,9 +86,9 @@ RSpec.describe 'Format validation', type: :integration do
 
   describe 'invalid formats' do
     it 'rejects invalid format for string type' do
-      schema = Class.new(Apiwork::Schema::Base) do
+      schema = Class.new(Apiwork::Representation::Base) do
         def self.name
-          'TestFormatSchema'
+          'TestFormatRepresentation'
         end
         abstract!
       end
@@ -101,9 +101,9 @@ RSpec.describe 'Format validation', type: :integration do
     end
 
     it 'rejects invalid format for integer type' do
-      schema = Class.new(Apiwork::Schema::Base) do
+      schema = Class.new(Apiwork::Representation::Base) do
         def self.name
-          'TestFormatSchema'
+          'TestFormatRepresentation'
         end
         abstract!
       end
@@ -116,9 +116,9 @@ RSpec.describe 'Format validation', type: :integration do
     end
 
     it 'rejects format for unsupported types' do
-      schema = Class.new(Apiwork::Schema::Base) do
+      schema = Class.new(Apiwork::Representation::Base) do
         def self.name
-          'TestFormatSchema'
+          'TestFormatRepresentation'
         end
         abstract!
       end
@@ -131,9 +131,9 @@ RSpec.describe 'Format validation', type: :integration do
     end
 
     it 'includes allowed formats in error message' do
-      schema = Class.new(Apiwork::Schema::Base) do
+      schema = Class.new(Apiwork::Representation::Base) do
         def self.name
-          'TestFormatSchema'
+          'TestFormatRepresentation'
         end
         abstract!
       end
