@@ -18,7 +18,8 @@ module Api
         end
       end
 
-      has_many :comments, representation: CommentRepresentation, writable: true, filterable: true, sortable: true, include: :optional
+      has_many :attachments
+      has_many :comments, representation: CommentRepresentation, writable: true, filterable: true, sortable: true
     end
   end
 end

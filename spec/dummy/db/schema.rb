@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_11_000001) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_26_000001) do
   create_table "accounts", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.integer "first_day_of_week", default: 1
@@ -28,6 +28,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_11_000001) do
     t.datetime "updated_at", null: false
     t.index ["action"], name: "index_activities_on_action"
     t.index ["read"], name: "index_activities_on_read"
+  end
+
+  create_table "attachments", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "filename"
+    t.integer "post_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["post_id"], name: "index_attachments_on_post_id"
   end
 
   create_table "authors", force: :cascade do |t|
@@ -125,6 +133,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_11_000001) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "attachments", "posts"
   add_foreign_key "comments", "posts"
   add_foreign_key "profiles", "users"
   add_foreign_key "replies", "comments"

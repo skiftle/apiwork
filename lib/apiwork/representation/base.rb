@@ -285,7 +285,6 @@ module Apiwork
         #   has_one :imageable, polymorphic: [:product, :user]
         def has_one(
           name,
-          class_name: nil,
           deprecated: false,
           description: nil,
           example: nil,
@@ -303,7 +302,6 @@ module Apiwork
               name,
               :has_one,
               self,
-              class_name:,
               deprecated:,
               description:,
               example:,
@@ -340,7 +338,6 @@ module Apiwork
         def has_many(
           name,
           allow_destroy: false,
-          class_name: nil,
           deprecated: false,
           description: nil,
           example: nil,
@@ -359,7 +356,6 @@ module Apiwork
               :has_many,
               self,
               allow_destroy:,
-              class_name:,
               deprecated:,
               description:,
               example:,
@@ -391,7 +387,6 @@ module Apiwork
         #   belongs_to :category, filterable: true
         def belongs_to(
           name,
-          class_name: nil,
           deprecated: false,
           description: nil,
           example: nil,
@@ -409,7 +404,6 @@ module Apiwork
               name,
               :belongs_to,
               self,
-              class_name:,
               deprecated:,
               description:,
               example:,

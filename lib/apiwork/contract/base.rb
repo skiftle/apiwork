@@ -397,13 +397,14 @@ module Apiwork
 
           return contract_class if contract_class.is_a?(Class) && contract_class < Contract::Base
 
-          _synthetic_contracts[representation_class] ||= build_synthetic_contract(representation_class)
+          _synthetic_contracts[representation_class] ||= build_synthetic_contract(representation_class, api_class)
         end
 
-        def build_synthetic_contract(representation_class)
+        def build_synthetic_contract(representation_class, api_class)
           Class.new(Contract::Base) do
             self._synthetic = true
             self._representation_class = representation_class
+            @api_class = api_class
           end
         end
 

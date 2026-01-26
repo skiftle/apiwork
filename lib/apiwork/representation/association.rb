@@ -55,7 +55,6 @@ module Apiwork
         type,
         owner_representation_class,
         allow_destroy: false,
-        class_name: nil,
         deprecated: false,
         description: nil,
         example: nil,
@@ -72,7 +71,7 @@ module Apiwork
         @type = type
         @owner_representation_class = owner_representation_class
         @model_class = owner_representation_class.model_class
-        @representation_class = representation || class_name
+        @representation_class = representation
         validate_representation!
         @polymorphic = normalize_polymorphic(polymorphic)
 
