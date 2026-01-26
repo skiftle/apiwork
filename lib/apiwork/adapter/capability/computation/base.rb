@@ -23,8 +23,8 @@ module Apiwork
           attr_reader :request
 
           # @api public
-          # @return [Class] the schema class for this request
-          attr_reader :schema_class
+          # @return [Class] the representation class for this request
+          attr_reader :representation_class
 
           class << self
             # @api public
@@ -42,7 +42,7 @@ module Apiwork
             @data = context.data
             @request = context.request
             @options = context.options
-            @schema_class = context.schema_class
+            @representation_class = context.representation_class
           end
 
           # @api public

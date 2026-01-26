@@ -4,7 +4,7 @@ module Apiwork
   module Adapter
     module Capability
       class ShapeContext
-        attr_reader :options, :schema_class
+        attr_reader :options, :representation_class
 
         delegate :array,
                  :array?,
@@ -38,9 +38,9 @@ module Apiwork
                  :uuid?,
                  to: :target
 
-        def initialize(options:, schema_class:, target:)
+        def initialize(options:, representation_class:, target:)
           @options = options
-          @schema_class = schema_class
+          @representation_class = representation_class
           @target = target
         end
 

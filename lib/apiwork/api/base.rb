@@ -20,7 +20,7 @@ module Apiwork
       class << self
         attr_reader :enum_registry,
                     :export_configs,
-                    :schema_registry,
+                    :representation_registry,
                     :structure,
                     :type_registry
 
@@ -183,7 +183,7 @@ module Apiwork
         # @param example [Object] example value for docs
         # @param format [String] format hint for docs
         # @param deprecated [Boolean] mark as deprecated
-        # @param schema_class [Class] a {Schema::Base} subclass for type inference
+        # @param representation_class [Class] a {Representation::Base} subclass for type inference
         # @see API::Object
         #
         # @example Define a reusable type
@@ -203,7 +203,7 @@ module Apiwork
           example: nil,
           format: nil,
           deprecated: false,
-          schema_class: nil,
+          representation_class: nil,
           &block
         )
           type_registry.register(
@@ -212,7 +212,7 @@ module Apiwork
             description:,
             example:,
             format:,
-            schema_class:,
+            representation_class:,
             scope:,
             kind: :object,
             &block
@@ -518,7 +518,7 @@ module Apiwork
           @structure = Structure.new(path)
           @type_registry = TypeRegistry.new
           @enum_registry = EnumRegistry.new
-          @schema_registry = SchemaRegistry.new
+          @representation_registry = RepresentationRegistry.new
           @built_contracts = Set.new
           @key_format = :keep
           @path_format = :keep
@@ -590,8 +590,8 @@ module Apiwork
 
           ensure_pre_pass_complete!
 
-          schema_class = contract_class.schema_class
-          return unless schema_class
+          representation_class = contract_class.representation_class
+          return unless representation_class
 
           built_contracts.add(contract_class)
 
@@ -599,18 +599,18 @@ module Apiwork
           actions = resource ? build_adapter_actions(resource.actions) : {}
 
           contract_registrar = adapter.build_contract_registrar(contract_class)
-          adapter.register_contract(contract_registrar, schema_class, actions)
+          adapter.register_contract(contract_registrar, representation_class, actions)
         end
 
         def ensure_pre_pass_complete!
           return if @pre_pass_complete
 
-          mark_nested_writable_schemas!
+          mark_nested_writable_representations!
           @pre_pass_complete = true
         end
 
         def ensure_all_contracts_built!
-          mark_nested_writable_schemas!
+          mark_nested_writable_representations!
 
           @structure.each_resource do |resource|
             build_contracts_for_resource(resource)
@@ -625,44 +625,44 @@ module Apiwork
 
         attr_reader :built_contracts
 
-        def mark_nested_writable_schemas!
+        def mark_nested_writable_representations!
           visited = Set.new
           @structure.each_resource do |resource|
-            schema_class = resource.resolve_contract_class&.schema_class
-            next unless schema_class
+            representation_class = resource.resolve_contract_class&.representation_class
+            next unless representation_class
 
-            schema_registry.register(schema_class)
-            mark_writable_associations(schema_class, visited)
+            representation_registry.register(representation_class)
+            mark_writable_associations(representation_class, visited)
           end
         end
 
-        def mark_writable_associations(schema_class, visited)
-          return if visited.include?(schema_class)
+        def mark_writable_associations(representation_class, visited)
+          return if visited.include?(representation_class)
 
-          visited.add(schema_class)
+          visited.add(representation_class)
 
-          schema_class.associations.each_value do |association|
+          representation_class.associations.each_value do |association|
             next unless association.writable?
 
-            target_schema = resolve_target_schema(association, schema_class)
-            next unless target_schema
+            target_representation = resolve_target_representation(association, representation_class)
+            next unless target_representation
 
-            schema_registry.register(target_schema)
-            schema_registry.mark(target_schema, :nested_writable)
-            mark_writable_associations(target_schema, visited)
+            representation_registry.register(target_representation)
+            representation_registry.mark(target_representation, :nested_writable)
+            mark_writable_associations(target_representation, visited)
           end
         end
 
-        def resolve_target_schema(association, owner_schema)
-          return association.schema_class if association.schema_class
-          return nil unless owner_schema.model_class
+        def resolve_target_representation(association, owner_representation)
+          return association.representation_class if association.representation_class
+          return nil unless owner_representation.model_class
 
-          reflection = owner_schema.model_class.reflect_on_association(association.name)
+          reflection = owner_representation.model_class.reflect_on_association(association.name)
           return nil unless reflection
           return nil if reflection.polymorphic?
 
-          namespace = owner_schema.name.deconstantize
-          "#{namespace}::#{reflection.klass.name.demodulize}Schema".safe_constantize
+          namespace = owner_representation.name.deconstantize
+          "#{namespace}::#{reflection.klass.name.demodulize}Representation".safe_constantize
         end
 
         def build_contracts_for_resource(resource)
@@ -670,13 +670,13 @@ module Apiwork
           return unless contract_class
           return if built_contracts.include?(contract_class)
 
-          schema_class = contract_class.schema_class
-          return unless schema_class
+          representation_class = contract_class.representation_class
+          return unless representation_class
 
           built_contracts.add(contract_class)
 
           contract_registrar = adapter.build_contract_registrar(contract_class)
-          adapter.register_contract(contract_registrar, schema_class, build_adapter_actions(resource.actions))
+          adapter.register_contract(contract_registrar, representation_class, build_adapter_actions(resource.actions))
         end
 
         def build_adapter_actions(actions)

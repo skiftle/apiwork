@@ -1,18 +1,18 @@
 # frozen_string_literal: true
 
 module Apiwork
-  module Schema
+  module Representation
     # @api public
-    # Represents an association defined on a schema.
+    # Represents an association defined on a representation.
     #
     # Associations map to model relationships and define serialization behavior.
     # Used by adapters to build contracts and serialize records.
     #
     # @example
-    #   association = InvoiceSchema.associations[:customer]
+    #   association = InvoiceRepresentation.associations[:customer]
     #   association.name         # => :customer
     #   association.type         # => :belongs_to
-    #   association.schema_class # => CustomerSchema
+    #   association.representation_class # => CustomerRepresentation
     class Association
       # @api public
       # @return [Boolean] whether this association is deprecated
@@ -39,8 +39,8 @@ module Apiwork
       attr_reader :polymorphic
 
       # @api public
-      # @return [Schema::Base, nil] the associated schema class
-      attr_reader :schema_class
+      # @return [Representation::Base, nil] the associated representation class
+      attr_reader :representation_class
 
       # @api public
       # @return [Symbol] association type (:has_one, :has_many, :belongs_to)
@@ -53,7 +53,7 @@ module Apiwork
       def initialize(
         name,
         type,
-        owner_schema_class,
+        owner_representation_class,
         allow_destroy: false,
         class_name: nil,
         deprecated: false,
@@ -64,16 +64,16 @@ module Apiwork
         nullable: nil,
         optional: nil,
         polymorphic: nil,
-        schema: nil,
+        representation: nil,
         sortable: false,
         writable: false
       )
         @name = name
         @type = type
-        @owner_schema_class = owner_schema_class
-        @model_class = owner_schema_class.model_class
-        @schema_class = schema || class_name
-        validate_schema!
+        @owner_representation_class = owner_representation_class
+        @model_class = owner_representation_class.model_class
+        @representation_class = representation || class_name
+        validate_representation!
         @polymorphic = normalize_polymorphic(polymorphic)
 
         @filterable = filterable
@@ -152,21 +152,21 @@ module Apiwork
         column.null
       end
 
-      def schema_class_name
-        @schema_class_name ||= @owner_schema_class
+      def representation_class_name
+        @representation_class_name ||= @owner_representation_class
           .name
           .demodulize
-          .delete_suffix('Schema')
+          .delete_suffix('Representation')
           .underscore
       end
 
-      def resolve_polymorphic_schema(tag)
+      def resolve_polymorphic_representation(tag)
         return nil unless @polymorphic
 
         explicit = @polymorphic[tag.to_sym]
         return explicit if explicit
 
-        infer_polymorphic_schema(tag)
+        infer_polymorphic_representation(tag)
       end
 
       private
@@ -186,29 +186,29 @@ module Apiwork
       end
 
       def validate_polymorphic_hash!(hash)
-        hash.each do |tag, schema|
-          next unless schema.is_a?(String)
+        hash.each do |tag, representation|
+          next unless representation.is_a?(String)
 
           raise ConfigurationError,
                 'polymorphic values must be class references, not strings. ' \
-                "Use `#{tag}: #{schema.split('::').last}` instead of `#{tag}: '#{schema}'`"
+                "Use `#{tag}: #{representation.split('::').last}` instead of `#{tag}: '#{representation}'`"
         end
       end
 
-      def validate_schema!
-        return unless @schema_class
-        return unless @schema_class.is_a?(String)
+      def validate_representation!
+        return unless @representation_class
+        return unless @representation_class.is_a?(String)
 
         raise ConfigurationError,
-              'schema must be a class reference, not a string. ' \
-              "Use `schema: #{@schema_class.split('::').last}` instead of `schema: '#{@schema_class}'`"
+              'representation must be a class reference, not a string. ' \
+              "Use `representation: #{@representation_class.split('::').last}` instead of `representation: '#{@representation_class}'`"
       end
 
-      def infer_polymorphic_schema(tag)
-        namespace = @owner_schema_class.name.deconstantize
-        schema_name = "#{tag.to_s.camelize}Schema"
+      def infer_polymorphic_representation(tag)
+        namespace = @owner_representation_class.name.deconstantize
+        representation_name = "#{tag.to_s.camelize}Representation"
 
-        (namespace.present? ? "#{namespace}::#{schema_name}" : schema_name).safe_constantize
+        (namespace.present? ? "#{namespace}::#{representation_name}" : representation_name).safe_constantize
       end
 
       def column_for(name)
@@ -273,14 +273,14 @@ module Apiwork
       end
 
       def validate_association_exists!
-        return if @owner_schema_class.abstract?
+        return if @owner_representation_class.abstract?
         return if @model_class.nil?
-        return if @schema_class
+        return if @representation_class
 
         reflection = @model_class.reflect_on_association(@name)
         return if reflection
 
-        detail = "Undefined association '#{@name}' in #{@owner_schema_class.name}: no association on model"
+        detail = "Undefined association '#{@name}' in #{@owner_representation_class.name}: no association on model"
         error = ConfigurationError.new(
           detail:,
           code: :invalid_association,
@@ -315,7 +315,7 @@ module Apiwork
 
       def validate_query_options!
         return unless @filterable || @sortable
-        return if @owner_schema_class.abstract?
+        return if @owner_representation_class.abstract?
         return unless @model_class
 
         reflection = @model_class.reflect_on_association(@name)

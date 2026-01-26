@@ -18,8 +18,8 @@ module Apiwork
           end
 
           def deserialize_value(value, param_options, shape = nil)
-            schema_class = resolve_schema_class(param_options, shape)
-            return schema_class.deserialize(value) if schema_class
+            representation_class = resolve_representation_class(param_options, shape)
+            return representation_class.deserialize(value) if representation_class
 
             attribute = resolve_attribute(param_options, shape)
             transformed_value = if attribute
@@ -45,19 +45,19 @@ module Apiwork
             return nil unless param_name
 
             contract_class = shape.contract_class
-            return nil unless contract_class.schema_class
+            return nil unless contract_class.representation_class
 
-            contract_class.schema_class.attributes[param_name]
+            contract_class.representation_class.attributes[param_name]
           end
 
-          def resolve_schema_class(param_options, shape)
+          def resolve_representation_class(param_options, shape)
             return nil unless shape
             return nil unless shape.respond_to?(:contract_class)
 
             type_name = param_options[:type]
             return nil unless type_name.is_a?(Symbol)
 
-            shape.contract_class.api_class.type_registry.schema_class(type_name, scope: shape.contract_class)
+            shape.contract_class.api_class.type_registry.representation_class(type_name, scope: shape.contract_class)
           end
 
           def deserialize_array(array, param_options, shape = nil)

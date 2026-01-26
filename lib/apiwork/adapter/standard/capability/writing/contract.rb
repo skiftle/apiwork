@@ -9,9 +9,9 @@ module Apiwork
             def build
               build_enums
               build_payload_types
-              build_nested_payload_union if api_class.schema_registry.nested_writable?(schema_class)
+              build_nested_payload_union if api_class.representation_registry.nested_writable?(representation_class)
 
-              root_key = schema_class.root_key.singular.to_sym
+              root_key = representation_class.root_key.singular.to_sym
 
               %i[create update].each do |action_name|
                 next unless actions.key?(action_name)
@@ -33,7 +33,7 @@ module Apiwork
             private
 
             def build_enums
-              schema_class.attributes.each do |name, attribute|
+              representation_class.attributes.each do |name, attribute|
                 next unless attribute.enum&.any?
 
                 enum(name, values: attribute.enum)
@@ -46,7 +46,7 @@ module Apiwork
             end
 
             def build_payload_type(action_name)
-              if sti_base_schema?
+              if sti_base_representation?
                 build_sti_payload_union(action_name)
               else
                 build_standard_payload(action_name)
@@ -58,17 +58,21 @@ module Apiwork
               return if type?(type_name)
 
               params = collect_writable_params(action_name)
-              local_schema_class = schema_class
+              local_representation_class = representation_class
 
-              object type_name, schema_class: schema_class do
-                if local_schema_class.variant?
-                  parent_union = local_schema_class.superclass.union
+              object type_name, representation_class: representation_class do
+                if local_representation_class.variant?
+                  parent_union = local_representation_class.superclass.union
                   discriminator_name = parent_union.discriminator
                   as_column = discriminator_name != parent_union.column ? parent_union.column : nil
                   discriminator_optional = action_name == :update
-                  store_value = parent_union.needs_transform? ? local_schema_class.model_class.sti_name : nil
+                  store_value = parent_union.needs_transform? ? local_representation_class.model_class.sti_name : nil
 
-                  literal discriminator_name, as: as_column, optional: discriminator_optional, store: store_value, value: local_schema_class.tag.to_s
+                  literal discriminator_name,
+                          as: as_column,
+                          optional: discriminator_optional,
+                          store: store_value,
+                          value: local_representation_class.tag.to_s
                 end
 
                 params.each { |param_config| param param_config[:name], **param_config[:options] }
@@ -135,15 +139,15 @@ module Apiwork
 
             def build_sti_payload_union(action_name)
               union_type_name = :"#{action_name}_payload"
-              schema_union = schema_class.union
-              discriminator_name = schema_union.discriminator
+              representation_union = representation_class.union
+              discriminator_name = representation_union.discriminator
 
-              variant_refs = schema_union.variants.filter_map do |tag, variant|
-                variant_schema = variant.schema_class
-                variant_contract = find_contract_for_schema(variant_schema)
+              variant_refs = representation_union.variants.filter_map do |tag, variant|
+                variant_representation = variant.representation_class
+                variant_contract = find_contract_for_representation(variant_representation)
                 next unless variant_contract
 
-                alias_name = variant_schema.root_key.singular.to_sym
+                alias_name = variant_representation.root_key.singular.to_sym
                 import(variant_contract, as: alias_name)
 
                 { tag: tag.to_s, type: :"#{alias_name}_#{action_name}_payload" }
@@ -159,13 +163,13 @@ module Apiwork
             def collect_writable_params(action_name)
               params = []
 
-              schema_class.attributes.each do |name, attribute|
+              representation_class.attributes.each do |name, attribute|
                 next unless attribute.writable_for?(action_name)
 
                 params << { name:, options: attribute_options(attribute, action_name) }
               end
 
-              schema_class.associations.each do |name, association|
+              representation_class.associations.each do |name, association|
                 next unless association.writable_for?(action_name)
 
                 params << { name:, options: association_options(association) }
@@ -234,20 +238,20 @@ module Apiwork
             def resolve_association_payload_type(association)
               return nil if association.polymorphic?
 
-              resolved_schema = resolve_association_schema(association)
-              return nil unless resolved_schema
+              resolved_representation = resolve_association_representation(association)
+              return nil unless resolved_representation
 
-              association_contract = find_contract_for_schema(resolved_schema)
+              association_contract = find_contract_for_representation(resolved_representation)
               return nil unless association_contract
 
-              alias_name = resolved_schema.root_key.singular.to_sym
+              alias_name = resolved_representation.root_key.singular.to_sym
               import(association_contract, as: alias_name)
 
               :"#{alias_name}_nested_payload"
             end
 
-            def resolve_association_schema(association)
-              return association.schema_class if association.schema_class
+            def resolve_association_representation(association)
+              return association.representation_class if association.representation_class
 
               model_class = association.model_class
               return nil unless model_class
@@ -256,20 +260,20 @@ module Apiwork
               return nil unless reflection
               return nil if reflection.polymorphic?
 
-              namespace = schema_class.name.deconstantize
-              "#{namespace}::#{reflection.klass.name.demodulize}Schema".safe_constantize
+              namespace = representation_class.name.deconstantize
+              "#{namespace}::#{reflection.klass.name.demodulize}Representation".safe_constantize
             end
 
             def api_class
               registrar.contract_class.api_class
             end
 
-            def sti_base_schema?
-              schema_class.discriminated? && schema_class.union&.variants&.any?
+            def sti_base_representation?
+              representation_class.discriminated? && representation_class.union&.variants&.any?
             end
 
             def primary_key_type
-              model = schema_class.model_class
+              model = representation_class.model_class
               model.type_for_attribute(model.primary_key).type
             end
           end

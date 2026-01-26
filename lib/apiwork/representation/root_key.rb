@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
 module Apiwork
-  module Schema
+  module Representation
     # @api public
-    # Represents the JSON root key for a schema.
+    # Represents the JSON root key for a representation.
     #
     # Root keys wrap response data in a named container.
     # Used by adapters to structure JSON responses.
     #
     # @example
-    #   root_key = InvoiceSchema.root_key
+    #   root_key = InvoiceRepresentation.root_key
     #   root_key.singular  # => "invoice"
     #   root_key.plural    # => "invoices"
     class RootKey

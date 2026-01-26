@@ -50,7 +50,7 @@ module Apiwork
       # @api public
       # Defines the response body for this response.
       #
-      # When using schema!, body is auto-generated from schema attributes.
+      # When using representation, body is auto-generated from representation attributes.
       #
       # @return [Contract::Object]
       # @see Contract::Object

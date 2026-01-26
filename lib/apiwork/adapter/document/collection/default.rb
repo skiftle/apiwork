@@ -6,7 +6,7 @@ module Apiwork
       module Collection
         class Default < Base
           shape do
-            root_key = context.schema_class.root_key
+            root_key = context.representation_class.root_key
 
             array root_key.plural.to_sym do
               reference root_key.singular.to_sym
@@ -17,7 +17,7 @@ module Apiwork
 
           def json
             {
-              schema_class.root_key.plural.to_sym => data,
+              representation_class.root_key.plural.to_sym => data,
               meta: meta.presence,
             }
           end

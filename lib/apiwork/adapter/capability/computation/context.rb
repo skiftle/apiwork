@@ -5,13 +5,13 @@ module Apiwork
     module Capability
       module Computation
         class Context
-          attr_reader :data, :options, :request, :schema_class
+          attr_reader :data, :options, :representation_class, :request
 
-          def initialize(data:, options:, request:, schema_class:)
+          def initialize(data:, options:, representation_class:, request:)
             @data = data
             @request = request
             @options = options
-            @schema_class = schema_class
+            @representation_class = representation_class
           end
         end
       end

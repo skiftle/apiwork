@@ -5,15 +5,15 @@ module Apiwork
     class CapabilityContext
       attr_reader :action,
                   :document_type,
+                  :representation_class,
                   :request,
-                  :schema_class,
                   :user_context
 
-      def initialize(action:, document_type:, request:, schema_class:, user_context:)
+      def initialize(action:, document_type:, representation_class:, request:, user_context:)
         @action = action
         @document_type = document_type
         @request = request
-        @schema_class = schema_class
+        @representation_class = representation_class
         @user_context = user_context
       end
     end

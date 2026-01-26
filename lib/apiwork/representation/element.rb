@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module Apiwork
-  module Schema
+  module Representation
     # @api public
-    # Block context for defining JSON blob structure in schema attributes.
+    # Block context for defining JSON blob structure in representation attributes.
     #
     # Used inside attribute blocks to define the shape of JSON/JSONB columns,
     # Rails store attributes, or any serialized data structure.
@@ -73,7 +73,7 @@ module Apiwork
     # @see API::Element Block context for array elements
     # @see API::Union Block context for union variants
     class Element < Apiwork::Element
-      # Schema::Element uses different of_type semantics - returns the array inner type.
+      # Representation::Element uses different of_type semantics - returns the array inner type.
       def of_type
         @of
       end
@@ -141,7 +141,7 @@ module Apiwork
             raise ArgumentError, 'union requires a block or shape'
           end
         else
-          raise ArgumentError, "Schema::Element only supports :object, :array, :union - got #{type.inspect}"
+          raise ArgumentError, "Representation::Element only supports :object, :array, :union - got #{type.inspect}"
         end
       end
     end

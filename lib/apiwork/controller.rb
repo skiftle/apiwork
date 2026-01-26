@@ -91,14 +91,14 @@ module Apiwork
     # @api public
     # Exposes data as an API response.
     #
-    # When a schema is linked via {Contract::Base.schema!}, data is serialized
-    # through the schema. Otherwise, data is rendered as-is. The adapter applies
+    # When a representation is linked via {Contract::Base.representation}, data is serialized
+    # through the representation. Otherwise, data is rendered as-is. The adapter applies
     # response transformations (key casing, wrapping, etc.).
     #
     # @param data [Object, Array] the record(s) to expose
     # @param meta [Hash] metadata to include in response (pagination, etc.)
     # @param status [Symbol, Integer] HTTP status (default: :ok, or :created for create action)
-    # @see Schema::Base
+    # @see Representation::Base
     #
     # @example Expose a single record
     #   def show
@@ -123,14 +123,14 @@ module Apiwork
         return
       end
 
-      schema_class = contract_class.schema_class
-      render_state = build_render_state(meta, schema_class:)
+      representation_class = contract_class.representation_class
+      render_state = build_render_state(meta, representation_class:)
 
-      json = if schema_class
+      json = if representation_class
                if data.is_a?(Enumerable)
-                 adapter.process_collection(data, schema_class, render_state)
+                 adapter.process_collection(data, representation_class, render_state)
                else
-                 adapter.process_record(data, schema_class, render_state)
+                 adapter.process_record(data, representation_class, render_state)
                end
              else
                data[:meta] = meta if meta.present?
@@ -191,12 +191,12 @@ module Apiwork
     end
 
     # @api public
-    # The serialization context passed to schemas.
+    # The serialization context passed to representations.
     #
-    # Override this method to provide context data to your schemas.
+    # Override this method to provide context data to your representations.
     # Common uses: current user, permissions, locale, feature flags.
     #
-    # @return [Hash] context data available in schema serialization
+    # @return [Hash] context data available in representation serialization
     #
     # @example Provide current user context
     #   def context
@@ -220,7 +220,7 @@ module Apiwork
       render json:, status: error.status
     end
 
-    def build_render_state(meta = {}, schema_class: nil)
+    def build_render_state(meta = {}, representation_class: nil)
       Adapter::RenderState.new(
         Adapter::Action.new(
           action_name,
@@ -229,7 +229,7 @@ module Apiwork
         ),
         context:,
         meta:,
-        schema_class:,
+        representation_class:,
         request: resource ? contract.request : nil,
       )
     end

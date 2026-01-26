@@ -7,15 +7,15 @@ module Apiwork
         class Base < Document::Base
           document_type :collection
 
-          attr_reader :capabilities, :data, :document, :meta, :schema_class
+          attr_reader :capabilities, :data, :document, :meta, :representation_class
 
-          def initialize(schema_class, data, document, capabilities, meta)
+          def initialize(representation_class, data, document, capabilities, meta)
             super()
             @capabilities = capabilities
             @data = data
             @document = document
             @meta = meta
-            @schema_class = schema_class
+            @representation_class = representation_class
           end
 
           def build

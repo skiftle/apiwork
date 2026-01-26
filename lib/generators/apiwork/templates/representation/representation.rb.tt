@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
 <% module_namespacing do -%>
-class <%= class_name %>Schema < <%= parent_class_name %>
+class <%= class_name %>Representation < <%= parent_class_name %>
 end
 <% end -%>

@@ -20,7 +20,7 @@ module Apiwork
       #
       # @example Inline shape block
       #   shape do
-      #     reference context.schema_class.root_key.singular.to_sym
+      #     reference context.representation_class.root_key.singular.to_sym
       #     object? :meta
       #   end
       class Shape

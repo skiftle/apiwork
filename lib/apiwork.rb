@@ -20,7 +20,7 @@ module Apiwork
       Export.register_defaults!
 
       load_api_definitions!
-      eager_load_schemas! if eager_load
+      eager_load_representations! if eager_load
     end
 
     private
@@ -35,8 +35,8 @@ module Apiwork
       API::Router.new.draw
     end
 
-    def eager_load_schemas!
-      Dir[Rails.root.join('app/schemas/**/*.rb')].sort.each(&method(:require_dependency))
+    def eager_load_representations!
+      Dir[Rails.root.join('app/representations/**/*.rb')].sort.each(&method(:require_dependency))
     end
 
     def load_api_definitions!

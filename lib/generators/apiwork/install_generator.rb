@@ -11,8 +11,8 @@ module Apiwork
         template 'application_contract.rb.tt', 'app/contracts/application_contract.rb'
       end
 
-      def create_application_schema
-        template 'application_schema.rb.tt', 'app/schemas/application_schema.rb'
+      def create_application_representation
+        template 'application_representation.rb.tt', 'app/representations/application_representation.rb'
       end
 
       def create_apis_directory

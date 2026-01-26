@@ -123,15 +123,15 @@ module Apiwork
           klass.new(context).build
         end
 
-        def contract_types(registrar, schema_class, actions)
+        def contract_types(registrar, representation_class, actions)
           klass = self.class.contract_class
           return unless klass
 
           context = Contract::Context.new(
             actions:,
             registrar:,
-            schema_class:,
-            options: merged_config(schema_class),
+            representation_class:,
+            options: merged_config(representation_class),
           )
           klass.new(context).build
         end
@@ -147,8 +147,8 @@ module Apiwork
           target = ::Apiwork::API::Object.new
           context = ShapeContext.new(
             target:,
-            options: merged_config(shape_context.schema_class),
-            schema_class: shape_context.schema_class,
+            options: merged_config(shape_context.representation_class),
+            representation_class: shape_context.representation_class,
           )
           context.instance_exec(&shape_block)
           target.params.empty? ? nil : target
@@ -163,21 +163,21 @@ module Apiwork
 
           context = Computation::Context.new(
             data:,
-            options: merged_config(adapter_context.schema_class),
+            options: merged_config(adapter_context.representation_class),
+            representation_class: adapter_context.representation_class,
             request: adapter_context.request,
-            schema_class: adapter_context.schema_class,
           )
           klass.new(context).apply
         end
 
         private
 
-        def merged_config(schema_class)
+        def merged_config(representation_class)
           capability_name = self.class.capability_name
           return config unless capability_name
 
-          schema_config = schema_class.adapter_config.public_send(capability_name).to_h
-          config.merge(schema_config)
+          representation_config = representation_class.adapter_config.public_send(capability_name).to_h
+          config.merge(representation_config)
         rescue ConfigurationError
           config
         end

@@ -4,14 +4,14 @@ module Apiwork
   module Adapter
     class Standard
       class IncludesResolver
-        attr_reader :schema_class
+        attr_reader :representation_class
 
-        def initialize(schema_class)
-          @schema_class = schema_class
+        def initialize(representation_class)
+          @representation_class = representation_class
         end
 
         def always_included(visited = Set.new)
-          associations = schema_class.associations.select { |_, a| a.include == :always }
+          associations = representation_class.associations.select { |_, a| a.include == :always }
           extract_associations(associations, visited)
         end
 
@@ -28,14 +28,14 @@ module Apiwork
         private
 
         def extract_associations(associations, visited = Set.new)
-          return {} if visited.include?(schema_class.name)
+          return {} if visited.include?(representation_class.name)
 
-          visited = visited.dup.add(schema_class.name)
+          visited = visited.dup.add(representation_class.name)
 
           associations.each_with_object({}) do |(name, association), result|
-            nested_schema = resolve_schema_class(association, name)
-            result[name] = if nested_schema
-                             self.class.new(nested_schema).always_included(visited)
+            nested_representation = resolve_representation_class(association, name)
+            result[name] = if nested_representation
+                             self.class.new(nested_representation).always_included(visited)
                            else
                              {}
                            end
@@ -44,9 +44,9 @@ module Apiwork
 
         def extract_from_hash(hash, visited = Set.new)
           return {} if hash.blank?
-          return {} if visited.include?(schema_class.name)
+          return {} if visited.include?(representation_class.name)
 
-          visited = visited.dup.add(schema_class.name)
+          visited = visited.dup.add(representation_class.name)
 
           if hash.is_a?(Array)
             return hash.each_with_object({}) do |item, result|
@@ -65,11 +65,11 @@ module Apiwork
               next
             end
 
-            association = schema_class.associations[key]
+            association = representation_class.associations[key]
             next unless association
 
-            nested = if value.is_a?(Hash) && association.schema_class.respond_to?(:associations)
-                       self.class.new(association.schema_class).from_params(value, visited)
+            nested = if value.is_a?(Hash) && association.representation_class.respond_to?(:associations)
+                       self.class.new(association.representation_class).from_params(value, visited)
                      else
                        {}
                      end
@@ -78,14 +78,14 @@ module Apiwork
           end
         end
 
-        def resolve_schema_class(association, name)
-          return association.schema_class if association.schema_class
+        def resolve_representation_class(association, name)
+          return association.representation_class if association.representation_class
 
-          reflection = schema_class.model_class.reflect_on_association(name)
+          reflection = representation_class.model_class.reflect_on_association(name)
           return nil if reflection.nil? || reflection.polymorphic?
 
-          namespace = schema_class.name.deconstantize
-          "#{namespace}::#{reflection.klass.name.demodulize}Schema".safe_constantize
+          namespace = representation_class.name.deconstantize
+          "#{namespace}::#{reflection.klass.name.demodulize}Representation".safe_constantize
         end
       end
     end

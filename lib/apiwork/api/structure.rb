@@ -30,8 +30,8 @@ module Apiwork
         @resources.values.any?(&:has_index?)
       end
 
-      def schema_classes
-        @schema_classes ||= collect_all_schema_classes
+      def representation_classes
+        @representation_classes ||= collect_all_representation_classes
       end
 
       def add_resource(resource)
@@ -188,13 +188,13 @@ module Apiwork
         path.split('/').reject(&:empty?).map { |segment| segment.tr('-', '_').to_sym }
       end
 
-      def collect_all_schema_classes
-        schema_classes = []
+      def collect_all_representation_classes
+        representation_classes = []
         each_resource do |resource|
-          schema_class = resource.schema_class
-          schema_classes << schema_class if schema_class
+          representation_class = resource.representation_class
+          representation_classes << representation_class if representation_class
         end
-        schema_classes
+        representation_classes
       end
 
       def find_resource_by_block(&block)

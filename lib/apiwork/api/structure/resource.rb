@@ -56,8 +56,8 @@ module Apiwork
           @crud_actions.include?(:index) || @resources.values.any?(&:has_index?)
         end
 
-        def schema_class
-          contract_class&.schema_class
+        def representation_class
+          contract_class&.representation_class
         end
 
         def add_action(name, method:, type:)

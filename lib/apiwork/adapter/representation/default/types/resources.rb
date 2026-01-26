@@ -7,17 +7,17 @@ module Apiwork
         module Types
           class Resources
             attr_reader :registrar,
-                        :schema_class
+                        :representation_class
 
             class << self
-              def build(registrar, schema_class)
-                new(registrar, schema_class).build
+              def build(registrar, representation_class)
+                new(registrar, representation_class).build
               end
             end
 
-            def initialize(registrar, schema_class)
+            def initialize(registrar, representation_class)
               @registrar = registrar
-              @schema_class = schema_class
+              @representation_class = representation_class
             end
 
             def build
@@ -26,22 +26,22 @@ module Apiwork
             end
 
             def resource_type_name
-              if sti_base_schema?
+              if sti_base_representation?
                 build_sti_response_union_type
               else
-                register_resource_type(schema_class.root_key.singular.to_sym) unless registrar.type?(registrar.scoped_type_name(nil))
+                register_resource_type(representation_class.root_key.singular.to_sym) unless registrar.type?(registrar.scoped_type_name(nil))
 
                 registrar.scoped_type_name(nil)
               end
             end
 
-            def import_association_contract(association_schema, visited)
-              return nil if visited.include?(association_schema)
+            def import_association_contract(association_representation, visited)
+              return nil if visited.include?(association_representation)
 
-              association_contract = registrar.find_contract_for_schema(association_schema)
+              association_contract = registrar.find_contract_for_representation(association_representation)
 
               unless association_contract
-                contract_name = association_schema.name.sub(/Schema$/, 'Contract')
+                contract_name = association_representation.name.sub(/Representation$/, 'Contract')
                 association_contract = begin
                   contract_name.constantize
                 rescue NameError
@@ -51,7 +51,7 @@ module Apiwork
 
               return nil unless association_contract
 
-              alias_name = association_schema.root_key.singular.to_sym
+              alias_name = association_representation.root_key.singular.to_sym
               registrar.import(association_contract, as: alias_name)
               alias_name
             end
@@ -59,7 +59,7 @@ module Apiwork
             private
 
             def build_enums
-              schema_class.attributes.each do |name, attribute|
+              representation_class.attributes.each do |name, attribute|
                 next unless attribute.enum&.any?
 
                 registrar.enum(name, values: attribute.enum)
@@ -72,18 +72,18 @@ module Apiwork
 
             def register_resource_type(type_name)
               association_type_map = {}
-              schema_class.associations.each do |name, association|
+              representation_class.associations.each do |name, association|
                 association_type_map[name] = build_association_type(association)
               end
 
-              local_schema_class = schema_class
-              registrar.object(type_name, schema_class: local_schema_class) do
-                if local_schema_class.variant?
-                  discriminator_name = local_schema_class.superclass.union.discriminator
-                  literal discriminator_name, value: local_schema_class.tag.to_s
+              local_representation_class = representation_class
+              registrar.object(type_name, representation_class: local_representation_class) do
+                if local_representation_class.variant?
+                  discriminator_name = local_representation_class.superclass.union.discriminator
+                  literal discriminator_name, value: local_representation_class.tag.to_s
                 end
 
-                local_schema_class.attributes.each do |name, attribute|
+                local_representation_class.attributes.each do |name, attribute|
                   enum_option = attribute.enum ? { enum: name } : {}
                   of_option = attribute.of ? { of: attribute.of } : {}
 
@@ -113,7 +113,7 @@ module Apiwork
                   param name, **param_options
                 end
 
-                local_schema_class.associations.each do |name, association|
+                local_representation_class.associations.each do |name, association|
                   association_type = association_type_map[name]
 
                   base_options = {
@@ -139,21 +139,21 @@ module Apiwork
               end
             end
 
-            def sti_base_schema?
-              return false unless schema_class.discriminated?
+            def sti_base_representation?
+              return false unless representation_class.discriminated?
 
-              schema_class.union&.variants&.any?
+              representation_class.union&.variants&.any?
             end
 
             def build_sti_union(union_type_name:, visited: Set.new)
-              schema_union = schema_class.union
-              return nil unless schema_union&.variants&.any?
+              representation_union = representation_class.union
+              return nil unless representation_union&.variants&.any?
 
-              discriminator_name = schema_union.discriminator
+              discriminator_name = representation_union.discriminator
 
-              variant_types = schema_union.variants.filter_map do |tag, variant|
-                variant_schema_class = variant.schema_class
-                variant_type = yield(variant_schema_class, tag, visited)
+              variant_types = representation_union.variants.filter_map do |tag, variant|
+                variant_representation_class = variant.representation_class
+                variant_type = yield(variant_representation_class, tag, visited)
                 { tag: tag.to_s, type: variant_type } if variant_type
               end
 
@@ -169,13 +169,13 @@ module Apiwork
             end
 
             def build_sti_response_union_type(visited: Set.new)
-              union_type_name = schema_class.root_key.singular.to_sym
+              union_type_name = representation_class.root_key.singular.to_sym
 
-              build_sti_union(union_type_name:, visited:) do |variant_schema_class, _tag, _visit_set|
-                variant_contract = registrar.find_contract_for_schema(variant_schema_class)
+              build_sti_union(union_type_name:, visited:) do |variant_representation_class, _tag, _visit_set|
+                variant_contract = registrar.find_contract_for_representation(variant_representation_class)
                 next nil unless variant_contract
 
-                alias_name = variant_schema_class.root_key.singular.to_sym
+                alias_name = variant_representation_class.root_key.singular.to_sym
                 registrar.import(variant_contract, as: alias_name)
 
                 alias_name
@@ -188,15 +188,15 @@ module Apiwork
               association_resource = resolve_association_resource(association)
               return nil unless association_resource
 
-              association_schema = association_resource[:schema_class]
+              association_representation = association_resource[:representation_class]
 
-              return build_sti_association_type(association, association_schema, visited:) if association_resource[:sti]
-              return nil if visited.include?(association_schema)
+              return build_sti_association_type(association, association_representation, visited:) if association_resource[:sti]
+              return nil if visited.include?(association_representation)
 
-              association_contract = registrar.find_contract_for_schema(association_schema)
+              association_contract = registrar.find_contract_for_representation(association_representation)
               return nil unless association_contract
 
-              alias_name = association_schema.root_key.singular.to_sym
+              alias_name = association_representation.root_key.singular.to_sym
               registrar.import(association_contract, as: alias_name)
               alias_name
             end
@@ -216,10 +216,10 @@ module Apiwork
 
               registrar.union(union_type_name, discriminator:) do
                 association_local.polymorphic.each_key do |tag|
-                  association_schema_class = association_local.resolve_polymorphic_schema(tag)
-                  next unless association_schema_class
+                  association_representation_class = association_local.resolve_polymorphic_representation(tag)
+                  next unless association_representation_class
 
-                  alias_name = builder.import_association_contract(association_schema_class, visited)
+                  alias_name = builder.import_association_contract(association_representation_class, visited)
                   next unless alias_name
 
                   variant tag: tag.to_s do
@@ -231,8 +231,8 @@ module Apiwork
               union_type_name
             end
 
-            def build_sti_association_type(association, association_schema_class, visited: Set.new)
-              alias_name = import_association_contract(association_schema_class, visited)
+            def build_sti_association_type(association, association_representation_class, visited: Set.new)
+              alias_name = import_association_contract(association_representation_class, visited)
               return nil unless alias_name
 
               alias_name
@@ -241,14 +241,14 @@ module Apiwork
             def resolve_association_resource(association)
               return nil if association.polymorphic?
 
-              resolved_schema = resolve_schema_from_association(association)
-              return nil unless resolved_schema
+              resolved_representation = resolve_representation_from_association(association)
+              return nil unless resolved_representation
 
-              { schema_class: resolved_schema, sti: resolved_schema.discriminated? }
+              { representation_class: resolved_representation, sti: resolved_representation.discriminated? }
             end
 
-            def resolve_schema_from_association(association)
-              return association.schema_class if association.schema_class
+            def resolve_representation_from_association(association)
+              return association.representation_class if association.representation_class
 
               model_class = association.model_class
               return nil unless model_class
@@ -256,14 +256,14 @@ module Apiwork
               reflection = model_class.reflect_on_association(association.name)
               return nil unless reflection
 
-              infer_association_schema(reflection)
+              infer_association_representation(reflection)
             end
 
-            def infer_association_schema(reflection)
+            def infer_association_representation(reflection)
               return nil if reflection.polymorphic?
 
-              namespace = schema_class.name.deconstantize
-              "#{namespace}::#{reflection.klass.name.demodulize}Schema".safe_constantize
+              namespace = representation_class.name.deconstantize
+              "#{namespace}::#{reflection.klass.name.demodulize}Representation".safe_constantize
             end
           end
         end

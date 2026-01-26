@@ -8,7 +8,7 @@ module Apiwork
         # Base class for capability Contract phase.
         #
         # Contract phase runs once per bound contract at registration time.
-        # Use it to generate contract-specific types based on the schema.
+        # Use it to generate contract-specific types based on the representation.
         class Base
           # @api public
           # @return [Array<Symbol>] actions available for this contract
@@ -19,8 +19,8 @@ module Apiwork
           attr_reader :options
 
           # @api public
-          # @return [Class] the schema class for this contract
-          attr_reader :schema_class
+          # @return [Class] the representation class for this contract
+          attr_reader :representation_class
 
           # @!method action(name, &block)
           #   @api public
@@ -75,15 +75,15 @@ module Apiwork
           #   @param name [Symbol] the base type name
           #   @return [Symbol] the scoped type name
 
-          # @!method find_contract_for_schema(schema_class)
+          # @!method find_contract_for_representation(representation_class)
           #   @api public
-          #   Finds the contract class for a schema.
-          #   @param schema_class [Class] the schema class
+          #   Finds the contract class for a representation.
+          #   @param representation_class [Class] the representation class
           #   @return [Class, nil] the contract class
 
           delegate :action,
                    :enum,
-                   :find_contract_for_schema,
+                   :find_contract_for_representation,
                    :import,
                    :object,
                    :scoped_enum_name,
@@ -94,7 +94,7 @@ module Apiwork
 
           def initialize(context)
             @registrar = context.registrar
-            @schema_class = context.schema_class
+            @representation_class = context.representation_class
             @actions = context.actions
             @options = context.options
           end
@@ -102,7 +102,7 @@ module Apiwork
           # @api public
           # Builds contract-level types for this capability.
           #
-          # Override this method to generate types based on the schema.
+          # Override this method to generate types based on the representation.
           # @return [void]
           def build
             raise NotImplementedError

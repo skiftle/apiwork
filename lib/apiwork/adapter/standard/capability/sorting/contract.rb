@@ -42,23 +42,23 @@ module Apiwork
             end
 
             def collect_attribute_sorts
-              schema_class.attributes.filter_map do |name, attribute|
+              representation_class.attributes.filter_map do |name, attribute|
                 name if attribute.sortable?
               end
             end
 
             def collect_association_sorts
-              schema_class.associations.filter_map do |name, association|
+              representation_class.associations.filter_map do |name, association|
                 next unless association.sortable?
                 next if association.polymorphic?
 
-                schema = association.schema_class
-                next unless schema
+                representation = association.representation_class
+                next unless representation
 
-                contract = find_contract_for_schema(schema)
+                contract = find_contract_for_representation(representation)
                 next unless contract
 
-                alias_name = schema.root_key.singular.to_sym
+                alias_name = representation.root_key.singular.to_sym
                 import(contract, as: alias_name)
 
                 nested_type = :"#{alias_name}_sort"
@@ -69,8 +69,8 @@ module Apiwork
             end
 
             def sortable_content?
-              schema_class.attributes.values.any?(&:sortable?) ||
-                schema_class.associations.values.any?(&:sortable?)
+              representation_class.attributes.values.any?(&:sortable?) ||
+                representation_class.associations.values.any?(&:sortable?)
             end
           end
         end

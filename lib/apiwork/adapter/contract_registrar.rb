@@ -9,7 +9,7 @@ module Apiwork
     # types specific to a resource contract (request/response shapes).
     #
     # @example Register request body object
-    #   def register_contract(registrar, schema_class, actions)
+    #   def register_contract(registrar, representation_class, actions)
     #     registrar.object :user_input do
     #       string :name
     #       string :email
@@ -17,7 +17,7 @@ module Apiwork
     #   end
     #
     # @example Define action contracts
-    #   def register_contract(registrar, schema_class, actions)
+    #   def register_contract(registrar, representation_class, actions)
     #     actions.each do |name, action|
     #       registrar.action(name) do
     #         # ...
@@ -78,10 +78,10 @@ module Apiwork
       #   @param name [Symbol, nil] the local enum name
       #   @return [Symbol] the scoped name
 
-      # @!method find_contract_for_schema(schema_class)
+      # @!method find_contract_for_representation(representation_class)
       #   @api public
-      #   Finds the contract class for an associated schema.
-      #   @param schema_class [Class] a {Schema::Base} subclass
+      #   Finds the contract class for an associated representation.
+      #   @param representation_class [Class] a {Representation::Base} subclass
       #   @return [Contract::Base, nil]
 
       attr_reader :contract_class
@@ -90,7 +90,7 @@ module Apiwork
                :enum,
                :enum?,
                :enum_values,
-               :find_contract_for_schema,
+               :find_contract_for_representation,
                :import,
                :object,
                :scoped_enum_name,

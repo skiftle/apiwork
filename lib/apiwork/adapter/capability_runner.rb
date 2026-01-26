@@ -57,8 +57,8 @@ module Apiwork
         CapabilityContext.new(
           action: state.action,
           document_type: @document_type,
+          representation_class: state.representation_class,
           request: state.request,
-          schema_class: state.schema_class,
           user_context: state.context,
         )
       end

@@ -20,8 +20,8 @@ module Apiwork
           self.class.types_class&.build(registrar, capabilities)
         end
 
-        def contract(registrar, schema_class, actions)
-          self.class.resource_types_class&.build(registrar, schema_class)
+        def contract(registrar, representation_class, actions)
+          self.class.resource_types_class&.build(registrar, representation_class)
         end
 
         def serialize_resource(resource, context:, serialize_options:)

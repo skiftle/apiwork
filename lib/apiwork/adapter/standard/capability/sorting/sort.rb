@@ -6,19 +6,19 @@ module Apiwork
       module Capability
         class Sorting < Adapter::Capability::Base
           class Sort
-            attr_reader :issues, :schema_class
+            attr_reader :issues, :representation_class
 
-            def self.apply(relation, params, schema_class)
-              sorter = new(relation, schema_class)
+            def self.apply(relation, params, representation_class)
+              sorter = new(relation, representation_class)
               result = sorter.sort(params)
               raise ContractError, sorter.issues if sorter.issues.any?
 
               result
             end
 
-            def initialize(relation, schema_class, issues = [])
+            def initialize(relation, representation_class, issues = [])
               @relation = relation
-              @schema_class = schema_class
+              @representation_class = representation_class
               @issues = issues
             end
 
@@ -37,20 +37,20 @@ module Apiwork
                 return @relation
               end
 
-              orders, joins = build_order_clauses(params, schema_class.model_class)
+              orders, joins = build_order_clauses(params, representation_class.model_class)
               scope = @relation.joins(joins).order(orders)
               scope = scope.distinct if joins.present?
               scope
             end
 
-            def build_order_clauses(params, target_klass = schema_class.model_class)
+            def build_order_clauses(params, target_klass = representation_class.model_class)
               params.each_with_object([[], []]) do |(key, value), (orders, joins)|
                 key = key.to_sym
 
                 if value.is_a?(String) || value.is_a?(Symbol)
-                  attribute = schema_class.attributes[key]
+                  attribute = representation_class.attributes[key]
                   unless attribute&.sortable?
-                    available = schema_class.attributes
+                    available = representation_class.attributes
                       .values
                       .select(&:sortable?)
                       .map(&:name)
@@ -97,7 +97,7 @@ module Apiwork
                     next
                   end
 
-                  unless schema_class.associations[key]&.sortable?
+                  unless representation_class.associations[key]&.sortable?
                     @issues << Issue.new(
                       :association_not_sortable,
                       'Not sortable',
@@ -107,12 +107,12 @@ module Apiwork
                     next
                   end
 
-                  association_resource = schema_class.associations[key]&.schema_class
+                  association_resource = representation_class.associations[key]&.representation_class
 
                   if association_resource.nil?
                     @issues << Issue.new(
-                      :association_schema_missing,
-                      'Association schema missing',
+                      :association_representation_missing,
+                      'Association representation missing',
                       meta: { association: key },
                       path: [:sort, key],
                     )

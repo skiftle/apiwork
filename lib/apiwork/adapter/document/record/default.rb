@@ -6,13 +6,13 @@ module Apiwork
       module Record
         class Default < Base
           shape do
-            reference context.schema_class.root_key.singular.to_sym
+            reference context.representation_class.root_key.singular.to_sym
             object? :meta
           end
 
           def json
             {
-              schema_class.root_key.singular.to_sym => data,
+              representation_class.root_key.singular.to_sym => data,
               meta: meta.presence,
             }
           end

@@ -8,9 +8,9 @@ module Apiwork
 
       def initialize(structure)
         @structure = structure
-        schema_classes = structure.schema_classes
-        @filter_types, @nullable_filter_types = extract_filterable_type_variants(schema_classes)
-        @sortable = check_sortable(schema_classes)
+        representation_classes = structure.representation_classes
+        @filter_types, @nullable_filter_types = extract_filterable_type_variants(representation_classes)
+        @sortable = check_sortable(representation_classes)
         @resources = structure.has_resources?
         @index_actions = structure.has_index_actions?
       end
@@ -32,16 +32,16 @@ module Apiwork
       end
 
       def options_for(option, key = nil)
-        @structure.schema_classes
-          .filter_map { |schema| schema.adapter_config.dig(option, key) }
+        @structure.representation_classes
+          .filter_map { |representation| representation.adapter_config.dig(option, key) }
           .to_set
       end
 
       private
 
-      def extract_filterable_type_variants(schemas)
-        filterable_attributes = schemas
-          .flat_map { |schema| schema.attributes.values }
+      def extract_filterable_type_variants(representations)
+        filterable_attributes = representations
+          .flat_map { |representation| representation.attributes.values }
           .select(&:filterable?)
 
         filterable = filterable_attributes.map(&:type).to_set
@@ -50,10 +50,10 @@ module Apiwork
         [filterable.to_a, nullable.to_a]
       end
 
-      def check_sortable(schemas)
-        schemas.any? do |schema|
-          schema.attributes.values.any?(&:sortable?) ||
-            schema.associations.values.any?(&:sortable?)
+      def check_sortable(representations)
+        representations.any? do |representation|
+          representation.attributes.values.any?(&:sortable?) ||
+            representation.associations.values.any?(&:sortable?)
         end
       end
     end

@@ -12,8 +12,8 @@ module Apiwork
               filter_params = request.query[:filter]
               return if filter_params.blank?
 
-              includes = IncludesResolver.new(schema_class).from_params(filter_params).keys
-              filtered = Filter.apply(data, filter_params, schema_class)
+              includes = IncludesResolver.new(representation_class).from_params(filter_params).keys
+              filtered = Filter.apply(data, filter_params, representation_class)
 
               result(includes:, data: filtered)
             end

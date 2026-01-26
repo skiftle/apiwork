@@ -9,7 +9,7 @@ module Apiwork
             def build
               return unless filterable?
 
-              schema_class.attributes.each do |name, attribute|
+              representation_class.attributes.each do |name, attribute|
                 next unless attribute.filterable? && attribute.enum
                 next if type?(:"#{name}_filter")
 
@@ -26,7 +26,7 @@ module Apiwork
                 end
               end
 
-              attributes = schema_class.attributes.filter_map do |name, attribute|
+              attributes = representation_class.attributes.filter_map do |name, attribute|
                 next unless attribute.filterable? && attribute.type != :unknown
 
                 filter_type = filter_type_for(attribute)
@@ -34,17 +34,17 @@ module Apiwork
                 [name, attribute.type, filter_type, shorthand]
               end
 
-              associations = schema_class.associations.filter_map do |name, association|
+              associations = representation_class.associations.filter_map do |name, association|
                 next unless association.filterable?
                 next if association.polymorphic?
 
-                schema = association.schema_class
-                next unless schema
+                representation = association.representation_class
+                next unless representation
 
-                contract = find_contract_for_schema(schema)
+                contract = find_contract_for_representation(representation)
                 next unless contract
 
-                alias_name = schema.root_key.singular.to_sym
+                alias_name = representation.root_key.singular.to_sym
                 import(contract, as: alias_name)
 
                 filter_type = :"#{alias_name}_filter"
@@ -113,8 +113,8 @@ module Apiwork
             end
 
             def filterable?
-              schema_class.attributes.values.any? { |a| a.filterable? && a.type != :unknown } ||
-                schema_class.associations.values.any?(&:filterable?)
+              representation_class.attributes.values.any? { |a| a.filterable? && a.type != :unknown } ||
+                representation_class.associations.values.any?(&:filterable?)
             end
           end
         end

@@ -8,13 +8,13 @@ module Apiwork
       #
       # @example Accessing context
       #   def build
-      #     type_name = context.schema_class.root_key.singular.to_sym
+      #     type_name = context.representation_class.root_key.singular.to_sym
       #     object.reference type_name
       #   end
       class ShapeContext
         # @api public
-        # @return [Class] the schema class
-        attr_reader :schema_class
+        # @return [Class] the representation class
+        attr_reader :representation_class
 
         # @api public
         # @return [Array<Capability::Base>] adapter capabilities
@@ -24,8 +24,8 @@ module Apiwork
         # @return [Symbol] the document type (:record or :collection)
         attr_reader :type
 
-        def initialize(schema_class, capabilities, type)
-          @schema_class = schema_class
+        def initialize(representation_class, capabilities, type)
+          @representation_class = representation_class
           @capabilities = capabilities
           @type = type
         end

@@ -9,7 +9,7 @@ module Apiwork
     # Access action predicates via `state.action.index?`.
     #
     # @example Check action type
-    #   def render_record(record, schema_class, state)
+    #   def render_record(record, representation_class, state)
     #     if state.action.show?
     #       { data: serialize(record) }
     #     else
@@ -18,7 +18,7 @@ module Apiwork
     #   end
     #
     # @example Check HTTP method
-    #   def render_collection(collection, schema_class, state)
+    #   def render_collection(collection, representation_class, state)
     #     response = { data: collection.map { |record| serialize(record) } }
     #     response[:cache] = true if state.action.get?
     #     response
@@ -41,15 +41,15 @@ module Apiwork
       attr_reader :request
 
       # @api public
-      # @return [Class, nil] the schema class for this request
-      attr_reader :schema_class
+      # @return [Class, nil] the representation class for this request
+      attr_reader :representation_class
 
-      def initialize(action, context: {}, meta: {}, request: nil, schema_class: nil)
+      def initialize(action, context: {}, meta: {}, representation_class: nil, request: nil)
         @action = action
         @context = context
         @meta = meta
         @request = request
-        @schema_class = schema_class
+        @representation_class = representation_class
       end
     end
   end

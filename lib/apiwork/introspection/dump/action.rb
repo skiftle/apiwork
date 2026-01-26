@@ -74,7 +74,7 @@ module Apiwork
         end
 
         def auto_raises
-          return [] unless @contract_action.contract_class.schema?
+          return [] unless @contract_action.contract_class.representation?
 
           action_name = @contract_action.name.to_sym
           return [:unprocessable_entity] if [:create, :update].include?(action_name)

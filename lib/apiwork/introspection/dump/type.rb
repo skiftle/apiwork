@@ -37,7 +37,7 @@ module Apiwork
               deprecated: type_definition.deprecated?,
               description: resolve_type_description(qualified_name, type_definition),
               discriminator: type_definition.discriminator,
-              example: type_definition.example || type_definition.schema_class&.example,
+              example: type_definition.example || type_definition.representation_class&.example,
               format: type_definition.format,
               shape: {},
               type: :union,
@@ -48,7 +48,7 @@ module Apiwork
               deprecated: type_definition.deprecated?,
               description: resolve_type_description(qualified_name, type_definition),
               discriminator: nil,
-              example: type_definition.example || type_definition.schema_class&.example,
+              example: type_definition.example || type_definition.representation_class&.example,
               format: type_definition.format,
               shape: build_params(type_definition),
               type: :object,
@@ -244,8 +244,8 @@ module Apiwork
         def resolve_type_description(type_name, type_definition)
           return type_definition.description if type_definition.description
 
-          if type_definition.schema_class.respond_to?(:description) && type_definition.schema_class.description
-            return type_definition.schema_class.description
+          if type_definition.representation_class.respond_to?(:description) && type_definition.representation_class.description
+            return type_definition.representation_class.description
           end
 
           result = @api_class.translate(:types, type_name, :description)

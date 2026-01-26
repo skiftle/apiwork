@@ -9,19 +9,19 @@ module Apiwork
             scope :record
 
             def apply
-              validate_record!(data, schema_class)
+              validate_record!(data, representation_class)
               result(data:)
             end
 
             private
 
-            def validate_record!(record, schema_class)
+            def validate_record!(record, representation_class)
               return unless record.respond_to?(:errors) && record.errors.any?
 
               issues = IssueMapper.call(
                 record,
-                locale_key: schema_class.api_class.structure.locale_key,
-                root_path: [schema_class.root_key.singular.to_sym],
+                locale_key: representation_class.api_class.structure.locale_key,
+                root_path: [representation_class.root_key.singular.to_sym],
               )
               raise DomainError, issues
             end

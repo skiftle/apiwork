@@ -7,15 +7,15 @@ module Apiwork
         types Types::Errors
         resource_types Types::Resources
 
-        attr_reader :schema_class
+        attr_reader :representation_class
 
-        def initialize(schema_class)
+        def initialize(representation_class)
           super()
-          @schema_class = schema_class
+          @representation_class = representation_class
         end
 
         def serialize_resource(resource, context:, serialize_options:)
-          schema_class.serialize(
+          representation_class.serialize(
             resource,
             context:,
             include: serialize_options[:include],

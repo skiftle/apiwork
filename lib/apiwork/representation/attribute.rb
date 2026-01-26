@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
 module Apiwork
-  module Schema
+  module Representation
     # @api public
-    # Represents an attribute defined on a schema.
+    # Represents an attribute defined on a representation.
     #
     # Attributes map to model columns and define serialization behavior.
     # Used by adapters to build contracts and serialize records.
     #
     # @example
-    #   attribute = InvoiceSchema.attributes[:title]
+    #   attribute = InvoiceRepresentation.attributes[:title]
     #   attribute.name       # => :title
     #   attribute.type       # => :string
     #   attribute.filterable? # => true
@@ -67,7 +67,7 @@ module Apiwork
 
       def initialize(
         name,
-        owner_schema_class,
+        owner_representation_class,
         decode: nil,
         deprecated: false,
         description: nil,
@@ -87,7 +87,7 @@ module Apiwork
         &block
       )
         @name = name
-        @owner_schema_class = owner_schema_class
+        @owner_representation_class = owner_representation_class
         @of = nil
 
         if block
@@ -99,8 +99,8 @@ module Apiwork
           @of = element.of_type if element.type == :array
         end
 
-        if owner_schema_class.model_class.present?
-          @model_class = owner_schema_class.model_class
+        if owner_representation_class.model_class.present?
+          @model_class = owner_representation_class.model_class
 
           begin
             @db_column = @model_class.column_names.include?(name.to_s)
@@ -190,11 +190,11 @@ module Apiwork
         @empty ? result.presence : result
       end
 
-      def schema_class_name
-        @schema_class_name ||= @owner_schema_class
+      def representation_class_name
+        @representation_class_name ||= @owner_representation_class
           .name
           .demodulize
-          .delete_suffix('Schema')
+          .delete_suffix('Representation')
           .underscore
       end
 

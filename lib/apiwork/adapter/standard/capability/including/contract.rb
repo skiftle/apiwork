@@ -9,7 +9,7 @@ module Apiwork
             MAX_RECURSION_DEPTH = 3
 
             def build
-              self.class.build_include_type(registrar, schema_class, depth: 0, visited: Set.new)
+              self.class.build_include_type(registrar, representation_class, depth: 0, visited: Set.new)
               return unless type?(:include)
 
               actions.each_key do |action_name|
@@ -24,17 +24,17 @@ module Apiwork
             end
 
             class << self
-              def build_include_type(registrar, target_schema, depth:, visited:)
-                return nil unless target_schema.associations.any?
-                return nil unless has_includable_params?(registrar, target_schema, depth:, visited:)
+              def build_include_type(registrar, target_representation, depth:, visited:)
+                return nil unless target_representation.associations.any?
+                return nil unless has_includable_params?(registrar, target_representation, depth:, visited:)
 
-                type_name = type_name_for(target_schema, depth)
+                type_name = type_name_for(target_representation, depth)
                 return type_name if registrar.type?(type_name)
                 return type_name if depth >= MAX_RECURSION_DEPTH
 
-                visited = visited.dup.add(target_schema)
+                visited = visited.dup.add(target_representation)
                 registrar_ref = registrar
-                target_ref = target_schema
+                target_ref = target_representation
                 visited_ref = visited
                 current_depth = depth
 
@@ -45,23 +45,23 @@ module Apiwork
                       next
                     end
 
-                    association_schema = Contract.resolve_association_schema(target_ref, association)
-                    next unless association_schema
+                    association_representation = Contract.resolve_association_representation(target_ref, association)
+                    next unless association_representation
 
-                    if visited_ref.include?(association_schema)
+                    if visited_ref.include?(association_representation)
                       boolean name, optional: true unless association.include == :always
                     else
-                      association_contract = registrar_ref.find_contract_for_schema(association_schema)
+                      association_contract = registrar_ref.find_contract_for_representation(association_representation)
 
                       association_include_type = if association_contract
-                                                   alias_name = association_schema.root_key.singular.to_sym
+                                                   alias_name = association_representation.root_key.singular.to_sym
                                                    registrar_ref.import(association_contract, as: alias_name)
                                                    imported_type = :"#{alias_name}_include"
                                                    registrar_ref.type?(imported_type) ? imported_type : nil
                                                  else
                                                    Contract.build_include_type(
                                                      registrar_ref,
-                                                     association_schema,
+                                                     association_representation,
                                                      depth: current_depth + 1,
                                                      visited: visited_ref,
                                                    )
@@ -85,22 +85,22 @@ module Apiwork
                 type_name
               end
 
-              def has_includable_params?(registrar, target_schema, depth:, visited:)
+              def has_includable_params?(registrar, target_representation, depth:, visited:)
                 return false if depth >= MAX_RECURSION_DEPTH
 
-                new_visited = visited.dup.add(target_schema)
+                new_visited = visited.dup.add(target_representation)
 
-                target_schema.associations.values.any? do |association|
+                target_representation.associations.values.any? do |association|
                   if association.polymorphic?
                     association.include != :always
                   else
-                    association_schema = resolve_association_schema(target_schema, association)
-                    next false unless association_schema
+                    association_representation = resolve_association_representation(target_representation, association)
+                    next false unless association_representation
 
-                    if new_visited.include?(association_schema)
+                    if new_visited.include?(association_representation)
                       association.include != :always
                     elsif association.include == :always
-                      has_includable_params?(registrar, association_schema, depth: depth + 1, visited: new_visited)
+                      has_includable_params?(registrar, association_representation, depth: depth + 1, visited: new_visited)
                     else
                       true
                     end
@@ -108,16 +108,16 @@ module Apiwork
                 end
               end
 
-              def type_name_for(target_schema, depth)
+              def type_name_for(representation, depth)
                 return :include if depth.zero?
 
-                schema_name = target_schema.name.demodulize.delete_suffix('Schema').underscore
-                :"#{schema_name}_include"
+                representation_name = representation.name.demodulize.delete_suffix('Representation').underscore
+                :"#{representation_name}_include"
               end
 
-              def resolve_association_schema(source_schema, association)
+              def resolve_association_representation(parent_representation, association)
                 return nil if association.polymorphic?
-                return association.schema_class if association.schema_class
+                return association.representation_class if association.representation_class
 
                 model_class = association.model_class
                 return nil unless model_class
@@ -126,8 +126,8 @@ module Apiwork
                 return nil unless reflection
                 return nil if reflection.polymorphic?
 
-                namespace = source_schema.name.deconstantize
-                "#{namespace}::#{reflection.klass.name.demodulize}Schema".safe_constantize
+                namespace = parent_representation.name.deconstantize
+                "#{namespace}::#{reflection.klass.name.demodulize}Representation".safe_constantize
               end
             end
           end

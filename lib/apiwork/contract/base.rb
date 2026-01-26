@@ -6,17 +6,17 @@ module Apiwork
     # Base class for API contracts.
     #
     # Contracts define request/response structure for a resource.
-    # Link to a schema with {.schema!} for automatic serialization.
+    # Link to a representation with {.representation} for automatic serialization.
     # Define actions with {.action} for custom validation and response shapes.
     #
     # @example Basic contract
     #   class InvoiceContract < Apiwork::Contract::Base
-    #     schema! InvoiceSchema
+    #     representation InvoiceRepresentation
     #   end
     #
     # @example With custom actions
     #   class InvoiceContract < Apiwork::Contract::Base
-    #     schema! InvoiceSchema
+    #     representation InvoiceRepresentation
     #
     #     action :create do
     #       request do
@@ -52,7 +52,7 @@ module Apiwork
       class_attribute :actions, instance_accessor: false
       class_attribute :imports, instance_accessor: false
       class_attribute :_identifier, instance_accessor: false
-      class_attribute :_schema_class, instance_accessor: false
+      class_attribute :_representation_class, instance_accessor: false
       class_attribute :_building, default: false, instance_accessor: false
 
       # @api public
@@ -85,7 +85,7 @@ module Apiwork
         # with this prefix in introspection output. For example, a type
         # `:address` becomes `:invoice_address` when identifier is `:invoice`.
         #
-        # If not set, prefix is derived from schema's root_key or class name.
+        # If not set, prefix is derived from representation's root_key or class name.
         #
         # @param value [Symbol, String] scope prefix (optional)
         # @return [String, nil]
@@ -106,49 +106,32 @@ module Apiwork
         end
 
         # @api public
-        # Links this contract to its schema using naming convention.
+        # Links this contract to a representation class.
         #
-        # Looks up the schema class by replacing "Contract" with "Schema"
-        # in the class name. Both must be in the same namespace.
-        # For example, `Api::V1::UserContract.schema!` finds `Api::V1::UserSchema`.
+        # The representation defines the attributes and associations that
+        # are serialized in responses. Adapters use the representation to
+        # auto-generate request/response types.
         #
-        # Call this method to enable auto-generation of request/response
-        # types based on the schema's attributes.
-        #
-        # @return [Schema::Base]
-        # @raise [ArgumentError] if schema class not found
-        # @see Schema::Base
+        # @param klass [Class] a {Representation::Base} subclass
+        # @return [void]
+        # @raise [ArgumentError] if klass is not a Representation subclass
+        # @see Representation::Base
         #
         # @example
-        #   class Api::V1::UserContract < Apiwork::Contract::Base
-        #     schema!  # Links to Api::V1::UserSchema
+        #   class InvoiceContract < Apiwork::Contract::Base
+        #     representation InvoiceRepresentation
         #
-        #     action :create do
-        #       request do
-        #         body do
-        #           param :name
-        #         end
-        #       end
-        #       response do
-        #         body do
-        #           param :id
-        #         end
-        #       end
-        #     end
+        #     action :show
+        #     action :create
         #   end
-        def schema!
-          return _schema_class if _schema_class
+        def representation(klass)
+          unless klass.is_a?(Class) && klass < Representation::Base
+            raise ArgumentError,
+                  'representation must be a Representation class (subclass of Apiwork::Representation::Base), ' \
+                  "got #{klass.inspect}"
+          end
 
-          schema_name = name.sub(/Contract$/, 'Schema')
-          schema_class = schema_name.constantize
-
-          self._schema_class = schema_class
-
-          schema_class
-        rescue NameError
-          raise ArgumentError,
-                "Expected to find #{schema_name} in app/schemas/. " \
-                'Contract and Schema must follow convention: XContract and XSchema'
+          self._representation_class = klass
         end
 
         # @api public
@@ -163,7 +146,7 @@ module Apiwork
         # @param example [Object] example value for docs
         # @param format [String] format hint for docs
         # @param deprecated [Boolean] mark as deprecated
-        # @param schema_class [Class] a {Schema::Base} subclass for type inference
+        # @param representation_class [Class] a {Representation::Base} subclass for type inference
         # @see API::Object
         #
         # @example Define a reusable type
@@ -182,7 +165,7 @@ module Apiwork
           example: nil,
           format: nil,
           deprecated: false,
-          schema_class: nil,
+          representation_class: nil,
           &block
         )
           api_class.object(
@@ -191,7 +174,7 @@ module Apiwork
             description:,
             example:,
             format:,
-            schema_class:,
+            representation_class:,
             scope: self,
             &block
           )
@@ -299,7 +282,7 @@ module Apiwork
           imports[as] = contract_class
 
           return if contract_class._building
-          return unless contract_class.schema? && contract_class.api_class
+          return unless contract_class.representation? && contract_class.api_class
 
           contract_class._building = true
           begin
@@ -400,20 +383,20 @@ module Apiwork
           subclass.imports = {}
         end
 
-        def find_contract_for_schema(schema_class)
-          return nil unless schema_class&.name
+        def find_contract_for_representation(representation_class)
+          return nil unless representation_class&.name
 
-          schema_class.name
-            .sub(/Schema\z/, 'Contract')
+          representation_class.name
+            .sub(/Representation\z/, 'Contract')
             .safe_constantize
         end
 
-        def schema_class
-          _schema_class
+        def representation_class
+          _representation_class
         end
 
-        def schema?
-          _schema_class.present?
+        def representation?
+          _representation_class.present?
         end
 
         def reset_build_state!
@@ -423,14 +406,14 @@ module Apiwork
 
         def scope_prefix
           return _identifier if _identifier
-          return schema_class.root_key.singular if schema_class
+          return representation_class.root_key.singular if representation_class
 
           return nil unless name
 
           name
             .demodulize
             .delete_suffix('Contract')
-            .delete_suffix('Schema')
+            .delete_suffix('Representation')
             .underscore
         end
 

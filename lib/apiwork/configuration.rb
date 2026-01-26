@@ -5,7 +5,7 @@ module Apiwork
   # Typed access to configuration values with automatic defaults.
   #
   # @see API::Base#adapter_config
-  # @see Schema::Base.adapter_config
+  # @see Representation::Base.adapter_config
   #
   # @example Reading values
   #   config.pagination.default_size  # => 20

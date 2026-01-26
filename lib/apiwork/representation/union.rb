@@ -1,19 +1,19 @@
 # frozen_string_literal: true
 
 module Apiwork
-  module Schema
+  module Representation
     # @api public
-    # Configuration for discriminated union schemas.
+    # Configuration for discriminated union representations.
     #
     # Holds the discriminator field name, Rails column, and registered variants.
     # Used by adapters to serialize records based on their actual type.
     #
     # @example
-    #   ClientSchema.union.discriminator # => :kind
-    #   ClientSchema.union.column        # => :type
-    #   ClientSchema.union.variants      # => {person: Union::Variant, company: Union::Variant}
+    #   ClientRepresentation.union.discriminator # => :kind
+    #   ClientRepresentation.union.column        # => :type
+    #   ClientRepresentation.union.variants      # => {person: Union::Variant, company: Union::Variant}
     #
-    # @see Schema::Base.discriminated!
+    # @see Representation::Base.discriminated!
     class Union
       # @api public
       # @return [Symbol] key name for the discriminator

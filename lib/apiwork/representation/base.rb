@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
 module Apiwork
-  module Schema
+  module Representation
     # @api public
-    # Base class for resource schemas.
+    # Base class for resource representations.
     #
-    # Schemas define attributes and associations for serialization.
+    # Representations define attributes and associations for serialization.
     # Types and nullability are auto-detected from the model's database columns.
     #
-    # @example Basic schema
-    #   class InvoiceSchema < Apiwork::Schema::Base
+    # @example Basic representation
+    #   class InvoiceRepresentation < Apiwork::Representation::Base
     #     attribute :id
     #     attribute :title
     #     attribute :amount, type: :decimal
@@ -22,20 +22,20 @@ module Apiwork
     # @!scope class
     # @!method abstract!
     #   @api public
-    #   Marks this schema as abstract.
+    #   Marks this representation as abstract.
     #
-    #   Abstract schemas don't require a model and serve as base classes
-    #   for other schemas. Use this when creating application-wide base schemas.
+    #   Abstract representations don't require a model and serve as base classes
+    #   for other representations. Use this when creating application-wide base representations.
     #   Subclasses automatically become non-abstract.
     #   @return [void]
-    #   @example Application base schema
-    #     class ApplicationSchema < Apiwork::Schema::Base
+    #   @example Application base representation
+    #     class ApplicationRepresentation < Apiwork::Representation::Base
     #       abstract!
     #     end
     #
     # @!method abstract?
     #   @api public
-    #   Returns whether this schema is abstract.
+    #   Returns whether this representation is abstract.
     #   @return [Boolean] true if abstract
     class Base
       include Abstractable
@@ -53,7 +53,7 @@ module Apiwork
       # @!method union
       #   @!scope class
       #   @api public
-      #   @return [Schema::Union, nil] the union configuration
+      #   @return [Representation::Union, nil] the union configuration
       class_attribute :union, default: nil, instance_accessor: false
 
       # @!method tag
@@ -81,20 +81,20 @@ module Apiwork
         # @api public
         # The model class.
         #
-        # By default, the model is auto-detected from the schema name
-        # (e.g., InvoiceSchema becomes Invoice). Use this to override.
+        # By default, the model is auto-detected from the representation name
+        # (e.g., InvoiceRepresentation becomes Invoice). Use this to override.
         #
         # @param value [Class] the ActiveRecord model class (optional)
         # @return [Class, nil]
         # @raise [ArgumentError] if value is not a Class
         #
         # @example Explicit model
-        #   class InvoiceSchema < Apiwork::Schema::Base
+        #   class InvoiceRepresentation < Apiwork::Representation::Base
         #     model Invoice
         #   end
         #
         # @example Namespaced model
-        #   class InvoiceSchema < Apiwork::Schema::Base
+        #   class InvoiceRepresentation < Apiwork::Representation::Base
         #     model Billing::Invoice
         #   end
         def model(value = nil)
@@ -112,7 +112,7 @@ module Apiwork
         end
 
         # @api public
-        # Declares the JSON root key for this schema.
+        # Declares the JSON root key for this representation.
         #
         # Adapters can use this to wrap responses in a root key.
         #
@@ -120,7 +120,7 @@ module Apiwork
         # @param plural [String, Symbol] root key for collections (default: singular.pluralize)
         #
         # @example Custom root key
-        #   class InvoiceSchema < Apiwork::Schema::Base
+        #   class InvoiceRepresentation < Apiwork::Representation::Base
         #     root :bill, :bills
         #   end
         def root(singular, plural = singular.to_s.pluralize)
@@ -128,7 +128,7 @@ module Apiwork
         end
 
         # @api public
-        # Configures adapter options for this schema.
+        # Configures adapter options for this representation.
         #
         # Use this to override API-level adapter settings for a specific
         # resource. Available options depend on the adapter being used.
@@ -137,7 +137,7 @@ module Apiwork
         # @see Adapter::Base
         #
         # @example Custom pagination for this resource
-        #   class ActivitySchema < Apiwork::Schema::Base
+        #   class ActivityRepresentation < Apiwork::Representation::Base
         #     adapter do
         #       pagination do
         #         strategy :cursor
@@ -154,10 +154,10 @@ module Apiwork
         end
 
         # @api public
-        # The merged adapter configuration for this schema.
+        # The merged adapter configuration for this representation.
         #
         # Configuration values are resolved in order:
-        # 1. Schema-level (defined in the schema class via `adapter do`)
+        # 1. Representation-level (defined in the representation class via `adapter do`)
         # 2. API-level (defined in the API definition via `adapter do`)
         # 3. Adapter defaults (defined in the adapter class)
         #
@@ -166,8 +166,8 @@ module Apiwork
         # @see Adapter::Base
         #
         # @example
-        #   schema_class.adapter_config.pagination.default_size
-        #   schema_class.adapter_config.pagination.strategy
+        #   representation_class.adapter_config.pagination.default_size
+        #   representation_class.adapter_config.pagination.strategy
         def adapter_config
           @adapter_config ||= api_class.adapter_config.merge(_adapter_config)
         end
@@ -259,7 +259,7 @@ module Apiwork
         # control serialization behavior, nested attributes, and querying.
         #
         # @param name [Symbol] association name (must match model association)
-        # @option options [Class] :schema explicit schema class for the association
+        # @option options [Class] :representation explicit representation class for the association
         # @option options [Array, Hash] :polymorphic enable polymorphic association
         #   with allowed types (Array) or explicit mappings (Hash)
         # @option options [Symbol] :include :always or :optional (default: :optional)
@@ -275,8 +275,8 @@ module Apiwork
         # @example Basic association
         #   has_one :profile
         #
-        # @example With explicit schema
-        #   has_one :author, schema: UserSchema
+        # @example With explicit representation
+        #   has_one :author, representation: UserRepresentation
         #
         # @example Nested attributes
         #   has_one :address, writable: true
@@ -294,7 +294,7 @@ module Apiwork
           nullable: nil,
           optional: nil,
           polymorphic: nil,
-          schema: nil,
+          representation: nil,
           sortable: false,
           writable: false
         )
@@ -312,7 +312,7 @@ module Apiwork
               nullable:,
               optional:,
               polymorphic:,
-              schema:,
+              representation:,
               sortable:,
               writable:,
             ),
@@ -349,7 +349,7 @@ module Apiwork
           nullable: nil,
           optional: nil,
           polymorphic: nil,
-          schema: nil,
+          representation: nil,
           sortable: false,
           writable: false
         )
@@ -368,7 +368,7 @@ module Apiwork
               nullable:,
               optional:,
               polymorphic:,
-              schema:,
+              representation:,
               sortable:,
               writable:,
             ),
@@ -400,7 +400,7 @@ module Apiwork
           nullable: nil,
           optional: nil,
           polymorphic: nil,
-          schema: nil,
+          representation: nil,
           sortable: false,
           writable: false
         )
@@ -418,7 +418,7 @@ module Apiwork
               nullable:,
               optional:,
               polymorphic:,
-              schema:,
+              representation:,
               sortable:,
               writable:,
             ),
@@ -426,22 +426,22 @@ module Apiwork
         end
 
         # @api public
-        # Declares this schema as discriminated (polymorphic).
+        # Declares this representation as discriminated (polymorphic).
         #
-        # Call on the base schema to enable discriminated responses. Variant
-        # schemas must call `variant` to register themselves.
+        # Call on the base representation to enable discriminated responses. Variant
+        # representations must call `variant` to register themselves.
         #
         # @param as [Symbol] discriminator field name in API responses
         #   (defaults to inheritance_column, usually :type)
         # @param by [Symbol] Rails column (default: inheritance_column)
         # @return [self]
         #
-        # @example Base schema with discriminated variants
-        #   class ClientSchema < Apiwork::Schema::Base
+        # @example Base representation with discriminated variants
+        #   class ClientRepresentation < Apiwork::Representation::Base
         #     discriminated!
         #   end
         #
-        #   class PersonClientSchema < ClientSchema
+        #   class PersonClientRepresentation < ClientRepresentation
         #     variant as: :person
         #   end
         def discriminated!(as: nil, by: nil)
@@ -457,9 +457,9 @@ module Apiwork
         end
 
         # @api public
-        # Registers this schema as a variant of its parent.
+        # Registers this representation as a variant of its parent.
         #
-        # The parent schema must have called `discriminated!` first.
+        # The parent representation must have called `discriminated!` first.
         # Responses will use the variant's attributes based on the
         # record's actual type.
         #
@@ -468,7 +468,7 @@ module Apiwork
         # @return [self]
         #
         # @example
-        #   class PersonClientSchema < ClientSchema
+        #   class PersonClientRepresentation < ClientRepresentation
         #     variant as: :person
         #   end
         def variant(as: nil)
@@ -477,7 +477,7 @@ module Apiwork
           self.tag = resolved_tag
 
           variant = Union::Variant.new(
-            schema_class: self,
+            representation_class: self,
             tag: resolved_tag,
             type: model_class.sti_name,
           )
@@ -488,7 +488,7 @@ module Apiwork
         end
 
         # @api public
-        # Sets or gets a description for this schema.
+        # Sets or gets a description for this representation.
         #
         # Used in generated documentation (OpenAPI, etc.) to describe
         # what this resource represents.
@@ -497,7 +497,7 @@ module Apiwork
         # @return [String, nil] the description
         #
         # @example
-        #   class InvoiceSchema < Apiwork::Schema::Base
+        #   class InvoiceRepresentation < Apiwork::Representation::Base
         #     description 'Represents a customer invoice'
         #   end
         def description(value = nil)
@@ -507,13 +507,13 @@ module Apiwork
         end
 
         # @api public
-        # Marks this schema as deprecated.
+        # Marks this representation as deprecated.
         #
-        # Deprecated schemas are included in generated documentation
+        # Deprecated representations are included in generated documentation
         # with a deprecation notice.
         #
         # @example
-        #   class LegacyOrderSchema < Apiwork::Schema::Base
+        #   class LegacyOrderRepresentation < Apiwork::Representation::Base
         #     deprecated!
         #   end
         def deprecated!
@@ -521,7 +521,7 @@ module Apiwork
         end
 
         # @api public
-        # Sets or gets an example value for this schema.
+        # Sets or gets an example value for this representation.
         #
         # Used in generated documentation to show example responses.
         #
@@ -529,7 +529,7 @@ module Apiwork
         # @return [Hash, nil] the example
         #
         # @example
-        #   class InvoiceSchema < Apiwork::Schema::Base
+        #   class InvoiceRepresentation < Apiwork::Representation::Base
         #     example { id: 1, total: 99.00, status: 'paid' }
         #   end
         def example(value = nil)
@@ -539,7 +539,7 @@ module Apiwork
         end
 
         # @api public
-        # Serializes a record or a collection of records using this schema.
+        # Serializes a record or a collection of records using this representation.
         #
         # Converts records to JSON-ready hashes based on
         # attribute and association definitions.
@@ -550,13 +550,13 @@ module Apiwork
         # @return [Hash, Array<Hash>] serialized data
         #
         # @example Serialize a single record
-        #   InvoiceSchema.serialize(invoice)
+        #   InvoiceRepresentation.serialize(invoice)
         #
         # @example Serialize with associations
-        #   InvoiceSchema.serialize(invoice, include: [:customer, :line_items])
+        #   InvoiceRepresentation.serialize(invoice, include: [:customer, :line_items])
         #
         # @example Serialize a collection
-        #   InvoiceSchema.serialize(Invoice.all)
+        #   InvoiceRepresentation.serialize(Invoice.all)
         def serialize(record_or_collection, context: {}, include: nil)
           if record_or_collection.is_a?(Enumerable)
             record_or_collection.map { |record| serialize_record(record, context:, include:) }
@@ -566,7 +566,7 @@ module Apiwork
         end
 
         # @api public
-        # Deserializes a hash or an array of hashes using this schema's decode transformers.
+        # Deserializes a hash or an array of hashes using this representation's decode transformers.
         #
         # Transforms incoming data by applying decode transformers defined
         # on each attribute. Use this for processing request payloads,
@@ -576,10 +576,10 @@ module Apiwork
         # @return [Hash, Array<Hash>] deserialized data
         #
         # @example Deserialize request payload
-        #   InvoiceSchema.deserialize(params[:invoice])
+        #   InvoiceRepresentation.deserialize(params[:invoice])
         #
         # @example Deserialize a collection
-        #   InvoiceSchema.deserialize(params[:invoices])
+        #   InvoiceRepresentation.deserialize(params[:invoices])
         def deserialize(hash_or_array)
           if hash_or_array.is_a?(Array)
             hash_or_array.map { |hash| deserialize_hash(hash) }
@@ -592,15 +592,15 @@ module Apiwork
         # The root key for JSON responses.
         #
         # Uses the custom root if defined via {#root}, otherwise derives
-        # from the schema type or model name.
+        # from the representation type or model name.
         #
         # @return [RootKey]
         # @see #root
         # @see RootKey
         #
         # @example
-        #   InvoiceSchema.root_key.singular  # => "invoice"
-        #   InvoiceSchema.root_key.plural    # => "invoices"
+        #   InvoiceRepresentation.root_key.singular  # => "invoice"
+        #   InvoiceRepresentation.root_key.plural    # => "invoices"
         def root_key
           if _root
             RootKey.new(_root[:singular], _root[:plural])
@@ -634,7 +634,7 @@ module Apiwork
         def resolve_variant(record)
           return nil unless union
 
-          union.resolve(record)&.schema_class
+          union.resolve(record)&.representation_class
         end
 
         def deprecated?
@@ -659,14 +659,14 @@ module Apiwork
           associations.each do |name, association|
             next unless result.key?(name)
 
-            schema_class = association.schema_class
-            next unless schema_class
+            representation_class = association.representation_class
+            next unless representation_class
 
             value = result[name]
             result[name] = if association.collection? && value.is_a?(Array)
-                             value.map { |item| schema_class.deserialize(item) }
+                             value.map { |item| representation_class.deserialize(item) }
                            elsif value.is_a?(Hash)
-                             schema_class.deserialize(value)
+                             representation_class.deserialize(value)
                            else
                              value
                            end
@@ -677,8 +677,8 @@ module Apiwork
 
         def serialize_record(record, context: {}, include: nil)
           if discriminated?
-            variant_schema_class = resolve_variant(record)
-            return variant_schema_class.new(record, context:, include:).as_json if variant_schema_class
+            variant_representation_class = resolve_variant(record)
+            return variant_representation_class.new(record, context:, include:).as_json if variant_representation_class
           end
 
           new(record, context:, include:).as_json
@@ -694,8 +694,8 @@ module Apiwork
           return if @model_class.present?
           return if abstract?
 
-          schema_name = name.demodulize
-          model_name = schema_name.delete_suffix('Schema')
+          representation_name = name.demodulize
+          model_name = representation_name.delete_suffix('Representation')
           return if model_name.blank?
 
           namespace = name.deconstantize
@@ -712,7 +712,7 @@ module Apiwork
               code: :model_not_found,
               detail: "Could not find model '#{model_name}' for #{name}. " \
                       "Either create the model, declare it explicitly with 'model YourModel', " \
-                      "or mark this schema as abstract with 'abstract!'",
+                      "or mark this representation as abstract with 'abstract!'",
               path: [],
             )
           end
@@ -748,29 +748,29 @@ module Apiwork
       private
 
       def add_discriminator_field(fields)
-        parent_schema = self.class.superclass
-        return unless parent_schema.union
+        parent_representation = self.class.superclass
+        return unless parent_representation.union
 
-        fields[parent_schema.union.discriminator] = self.class.tag.to_s
+        fields[parent_representation.union.discriminator] = self.class.tag.to_s
       end
 
       def serialize_association(name, association)
         target = record.public_send(name)
         return nil if target.nil?
 
-        schema_class = association.schema_class || resolve_association_schema(name)
-        return nil unless schema_class
+        representation_class = association.representation_class || resolve_association_representation(name)
+        return nil unless representation_class
 
         nested_includes = @include[name] || @include[name.to_s] || @include[name.to_sym] if @include.is_a?(Hash)
 
         if association.collection?
-          target.map { |record| serialize_variant_aware(record, schema_class, nested_includes) }
+          target.map { |record| serialize_variant_aware(record, representation_class, nested_includes) }
         else
-          serialize_variant_aware(target, schema_class, nested_includes)
+          serialize_variant_aware(target, representation_class, nested_includes)
         end
       end
 
-      def resolve_association_schema(association_name)
+      def resolve_association_representation(association_name)
         return nil unless self.class.model_class
 
         reflection = record.class.reflect_on_association(association_name)
@@ -778,16 +778,16 @@ module Apiwork
         return nil if reflection.polymorphic?
 
         namespace = self.class.name.deconstantize
-        "#{namespace}::#{reflection.klass.name.demodulize}Schema".safe_constantize
+        "#{namespace}::#{reflection.klass.name.demodulize}Representation".safe_constantize
       end
 
-      def serialize_variant_aware(record, schema_class, nested_includes)
-        if schema_class.discriminated?
-          variant_schema_class = schema_class.resolve_variant(record)
-          return variant_schema_class.new(record, context: context, include: nested_includes).as_json if variant_schema_class
+      def serialize_variant_aware(record, representation_class, nested_includes)
+        if representation_class.discriminated?
+          variant_representation_class = representation_class.resolve_variant(record)
+          return variant_representation_class.new(record, context: context, include: nested_includes).as_json if variant_representation_class
         end
 
-        schema_class.new(record, context: context, include: nested_includes).as_json
+        representation_class.new(record, context: context, include: nested_includes).as_json
       end
 
       def should_include_association?(name, association)
@@ -798,10 +798,10 @@ module Apiwork
       end
 
       def circular_reference?(association)
-        return false unless association.schema_class
+        return false unless association.representation_class
 
-        association.schema_class.associations.values.any? do |nested_association|
-          nested_association.include == :always && nested_association.schema_class == self.class
+        association.representation_class.associations.values.any? do |nested_association|
+          nested_association.include == :always && nested_association.representation_class == self.class
         end
       end
 

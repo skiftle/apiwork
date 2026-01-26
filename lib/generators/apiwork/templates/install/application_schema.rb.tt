@@ -1,5 +1,0 @@
-# frozen_string_literal: true
-
-class ApplicationSchema < Apiwork::Schema::Base
-  abstract
-end

@@ -268,8 +268,8 @@ module Apiwork
           return nil unless variant[:enum]
 
           if variant[:enum].is_a?(Symbol)
-            if @contract_param.contract_class.respond_to?(:schema_class) &&
-               @contract_param.contract_class.schema_class
+            if @contract_param.contract_class.respond_to?(:representation_class) &&
+               @contract_param.contract_class.representation_class
               scope = scope_for_enum(@contract_param, variant[:enum])
               api_class = @contract_param.contract_class.api_class
               api_class.scoped_enum_name(scope, variant[:enum])
@@ -408,15 +408,15 @@ module Apiwork
           param_name = options[:name]
           return nil unless param_name
 
-          schema_class = resolve_schema_class
-          return nil unless schema_class
+          representation_class = resolve_representation_class
+          return nil unless representation_class
 
-          if (attribute = schema_class.attributes[param_name])
+          if (attribute = representation_class.attributes[param_name])
             description = i18n_attribute_description(attribute)
             return description if description
           end
 
-          if (association = schema_class.associations[param_name])
+          if (association = representation_class.associations[param_name])
             description = i18n_association_description(association)
             return description if description
           end
@@ -424,9 +424,9 @@ module Apiwork
           nil
         end
 
-        def resolve_schema_class
+        def resolve_representation_class
           contract_class = @contract_param.contract_class
-          return contract_class.schema_class if contract_class.respond_to?(:schema_class) && contract_class.schema_class
+          return contract_class.representation_class if contract_class.respond_to?(:representation_class) && contract_class.representation_class
 
           nil
         end
@@ -435,20 +435,20 @@ module Apiwork
           api_class = @contract_param.contract_class.api_class
           return nil unless api_class
 
-          schema_name = attribute.schema_class_name
+          representation_name = attribute.representation_class_name
           attribute_name = attribute.name
 
-          api_class.translate(:schemas, schema_name, :attributes, attribute_name, :description)
+          api_class.translate(:representations, representation_name, :attributes, attribute_name, :description)
         end
 
         def i18n_association_description(association)
           api_class = @contract_param.contract_class.api_class
           return nil unless api_class
 
-          schema_name = association.schema_class_name
+          representation_name = association.representation_class_name
           association_name = association.name
 
-          api_class.translate(:schemas, schema_name, :associations, association_name, :description)
+          api_class.translate(:representations, representation_name, :associations, association_name, :description)
         end
 
         def scope_for_enum(contract_param, _enum_name)

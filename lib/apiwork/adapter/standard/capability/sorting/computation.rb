@@ -12,8 +12,8 @@ module Apiwork
               sort_params = request.query[:sort]
               return if sort_params.blank?
 
-              includes = IncludesResolver.new(schema_class).from_params(sort_params).keys
-              sorted = Sort.apply(data, sort_params, schema_class)
+              includes = IncludesResolver.new(representation_class).from_params(sort_params).keys
+              sorted = Sort.apply(data, sort_params, representation_class)
 
               result(includes:, data: sorted)
             end

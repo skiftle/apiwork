@@ -11,7 +11,7 @@ module Apiwork
                     :format,
                     :kind,
                     :name,
-                    :schema_class,
+                    :representation_class,
                     :scope
 
         def initialize(
@@ -24,7 +24,7 @@ module Apiwork
           discriminator: nil,
           example: nil,
           format: nil,
-          schema_class: nil
+          representation_class: nil
         )
           @name = name
           @kind = kind
@@ -35,7 +35,7 @@ module Apiwork
           @discriminator = discriminator
           @example = example
           @format = format
-          @schema_class = schema_class
+          @representation_class = representation_class
           @shape = nil
         end
 
@@ -86,7 +86,7 @@ module Apiwork
             example: example || @example,
             format: format || @format,
             kind: @kind,
-            schema_class: @schema_class,
+            representation_class: @representation_class,
             scope: @scope,
           )
         end
