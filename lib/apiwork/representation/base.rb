@@ -420,44 +420,29 @@ module Apiwork
         end
 
         # @api public
-        # Sets or gets the type identifier used in API responses.
+        # The API-friendly type identifier for this representation.
         #
-        # By default, Rails uses full class names for STI (e.g., "MightyWolf::Car")
-        # and polymorphic associations (e.g., "GentleOwl::Post"). Use this to
-        # provide shorter, API-friendly names instead.
+        # Rails stores full class names in discriminator columns for STI and
+        # polymorphic associations (e.g., `"Billing::Invoice"` or `"MyApp::Post"`).
+        # These internal names are often acceptable in an API, but can leak
+        # implementation details like module structure or naming conventions.
         #
-        # **STI (Single Table Inheritance):**
-        # When a model uses STI, the discriminator value in union responses
-        # will use this name instead of the Rails class name.
+        # Use this to provide a cleaner, user-friendly identifier that adapters
+        # can use when serializing and deserializing type information.
         #
-        # **Polymorphic associations:**
-        # When this representation is a target of a polymorphic association,
-        # the `*_type` column value is mapped:
-        # - Output: Rails class name becomes type_name ("GentleOwl::Post" becomes "post")
-        # - Input: type_name becomes Rails class name ("post" becomes "GentleOwl::Post")
-        # - Filters: type_name becomes Rails class name
+        # @param value [Symbol, String] the type identifier
+        # @return [Symbol, nil]
         #
-        # @param value [Symbol, String, nil] the type name to use in API
-        # @return [Symbol, nil] the type name
-        #
-        # @example STI variant
+        # @example
         #   class CarRepresentation < VehicleRepresentation
-        #     type_name :car  # API shows "car" instead of "MightyWolf::Car"
+        #     type_name :car
         #   end
         #
-        # @example Polymorphic target
-        #   class PostRepresentation < Apiwork::Representation::Base
-        #     type_name :post  # commentable_type shows "post" instead of "GentleOwl::Post"
-        #   end
-        #
-        # @example Reading the type name
-        #   PostRepresentation.type_name  # => :post
+        #   CarRepresentation.type_name  # => :car
         def type_name(value = nil)
-          if value
-            @type_name = value.to_sym
-          else
-            @type_name
-          end
+          return @type_name if value.nil?
+
+          @type_name = value.to_sym
         end
 
         # @api public
