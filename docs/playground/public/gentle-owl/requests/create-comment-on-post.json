@@ -6,35 +6,22 @@
       "comment": {
         "body": "This is a great article!",
         "author_name": "Jane Doe",
-        "commentable_type": "GentleOwl::Post",
+        "commentable_type": "post",
         "commentable_id": "f32a709f-0312-5981-a770-feaf25b51a04"
       }
     }
   },
   "response": {
     "body": {
-      "issues": [
-        {
-          "code": "value_invalid",
-          "detail": "Invalid value",
-          "meta": {
-            "actual": "GentleOwl::Post",
-            "expected": [
-              "post",
-              "video",
-              "image"
-            ],
-            "field": "commentable_type"
-          },
-          "path": [
-            "comment",
-            "commentable_type"
-          ],
-          "pointer": "/comment/commentable_type"
-        }
-      ],
-      "layer": "contract"
+      "comment": {
+        "id": "dbce7141-50f8-54be-a575-221af6420d0a",
+        "body": "This is a great article!",
+        "authorName": "Jane Doe",
+        "commentableType": "post",
+        "commentableId": "f32a709f-0312-5981-a770-feaf25b51a04",
+        "createdAt": "2024-01-01T12:00:00.000Z"
+      }
     },
-    "status": 400
+    "status": 201
   }
 }

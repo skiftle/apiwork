@@ -81,7 +81,7 @@ scenarios:
       comment:
         body: This is a great article!
         author_name: Jane Doe
-        commentable_type: GentleOwl::Post
+        commentable_type: post
         commentable_id: :post_id
 
   - title: Create comment on video
@@ -98,7 +98,7 @@ scenarios:
       comment:
         body: Very helpful video!
         author_name: Bob Smith
-        commentable_type: GentleOwl::Video
+        commentable_type: video
         commentable_id: :video_id
 
   - title: Filter by content type

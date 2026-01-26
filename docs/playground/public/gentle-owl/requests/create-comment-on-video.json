@@ -6,35 +6,22 @@
       "comment": {
         "body": "Very helpful video!",
         "author_name": "Bob Smith",
-        "commentable_type": "GentleOwl::Video",
+        "commentable_type": "video",
         "commentable_id": "f78a691a-9f85-54c7-a39d-9f47d579942b"
       }
     }
   },
   "response": {
     "body": {
-      "issues": [
-        {
-          "code": "value_invalid",
-          "detail": "Invalid value",
-          "meta": {
-            "actual": "GentleOwl::Video",
-            "expected": [
-              "post",
-              "video",
-              "image"
-            ],
-            "field": "commentable_type"
-          },
-          "path": [
-            "comment",
-            "commentable_type"
-          ],
-          "pointer": "/comment/commentable_type"
-        }
-      ],
-      "layer": "contract"
+      "comment": {
+        "id": "993459b6-a155-510a-9f23-be59835d3fee",
+        "body": "Very helpful video!",
+        "authorName": "Bob Smith",
+        "commentableType": "video",
+        "commentableId": "f78a691a-9f85-54c7-a39d-9f47d579942b",
+        "createdAt": "2024-01-01T12:00:00.000Z"
+      }
     },
-    "status": 400
+    "status": 201
   }
 }
