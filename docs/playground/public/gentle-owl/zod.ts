@@ -1,8 +1,15 @@
 import { z } from 'zod';
 
+export const CommentCommentableTypeSchema = z.enum(['image', 'post', 'video']);
+
 export const LayerSchema = z.enum(['contract', 'domain', 'http']);
 
 export const SortDirectionSchema = z.enum(['asc', 'desc']);
+
+export const CommentCommentableTypeFilterSchema = z.union([
+  CommentCommentableTypeSchema,
+  z.object({ eq: CommentCommentableTypeSchema, in: z.array(CommentCommentableTypeSchema) }).partial()
+]);
 
 export const CommentCreatePayloadSchema = z.object({
   authorName: z.string().nullable().optional(),
@@ -47,25 +54,17 @@ export const OffsetPaginationSchema = z.object({
   total: z.number().int()
 });
 
-export const StringFilterSchema = z.object({
-  contains: z.string().optional(),
-  endsWith: z.string().optional(),
-  eq: z.string().optional(),
-  in: z.array(z.string()).optional(),
-  startsWith: z.string().optional()
-});
+export const CommentFilterSchema: z.ZodType<CommentFilter> = z.lazy(() => z.object({
+  _and: z.array(CommentFilterSchema).optional(),
+  _not: CommentFilterSchema.optional(),
+  _or: z.array(CommentFilterSchema).optional(),
+  commentableType: CommentCommentableTypeFilterSchema.optional()
+}));
 
 export const ErrorResponseBodySchema = z.object({
   issues: z.array(IssueSchema),
   layer: LayerSchema
 });
-
-export const CommentFilterSchema: z.ZodType<CommentFilter> = z.lazy(() => z.object({
-  _and: z.array(CommentFilterSchema).optional(),
-  _not: CommentFilterSchema.optional(),
-  _or: z.array(CommentFilterSchema).optional(),
-  commentableType: z.union([z.string(), StringFilterSchema]).optional()
-}));
 
 export const CommentSchema = z.object({
   authorName: z.string().nullable(),
@@ -222,6 +221,10 @@ export interface Comment {
 
 export type CommentCommentable = { commentableType: 'post' } & Post | { commentableType: 'video' } & Video | { commentableType: 'image' } & Image;
 
+export type CommentCommentableType = 'image' | 'post' | 'video';
+
+export type CommentCommentableTypeFilter = CommentCommentableType | { eq?: CommentCommentableType; in?: CommentCommentableType[] };
+
 export interface CommentCreatePayload {
   authorName?: null | string;
   body: string;
@@ -238,7 +241,7 @@ export interface CommentFilter {
   _and?: CommentFilter[];
   _not?: CommentFilter;
   _or?: CommentFilter[];
-  commentableType?: StringFilter | string;
+  commentableType?: CommentCommentableTypeFilter;
 }
 
 export interface CommentInclude {
@@ -398,14 +401,6 @@ export interface Post {
 }
 
 export type SortDirection = 'asc' | 'desc';
-
-export interface StringFilter {
-  contains?: string;
-  endsWith?: string;
-  eq?: string;
-  in?: string[];
-  startsWith?: string;
-}
 
 export interface Video {
   comments?: Comment[];

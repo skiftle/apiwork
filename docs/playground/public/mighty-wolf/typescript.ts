@@ -4,7 +4,7 @@ export interface Car {
   doors: null | number;
   id: string;
   model: string;
-  type: 'car';
+  type: string;
   year: null | number;
 }
 
@@ -52,7 +52,7 @@ export interface Motorcycle {
   engineCc: null | number;
   id: string;
   model: string;
-  type: 'motorcycle';
+  type: string;
   year: null | number;
 }
 
@@ -109,7 +109,7 @@ export interface Truck {
   id: string;
   model: string;
   payloadCapacity: null | number;
-  type: 'truck';
+  type: string;
   year: null | number;
 }
 
@@ -144,6 +144,7 @@ export interface VehicleFilter {
   _or?: VehicleFilter[];
   brand?: StringFilter | string;
   model?: StringFilter | string;
+  type?: VehicleTypeFilter;
   year?: NullableIntegerFilter | number;
 }
 
@@ -166,6 +167,10 @@ export interface VehicleShowSuccessResponseBody {
 export interface VehicleSort {
   year?: SortDirection;
 }
+
+export type VehicleType = 'car' | 'motorcycle' | 'truck';
+
+export type VehicleTypeFilter = VehicleType | { eq?: VehicleType; in?: VehicleType[] };
 
 export interface VehicleUpdateSuccessResponseBody {
   meta?: Record<string, unknown>;

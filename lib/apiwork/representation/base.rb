@@ -66,7 +66,6 @@ module Apiwork
       class_attribute :_description, default: nil, instance_accessor: false
       class_attribute :_deprecated, default: false, instance_accessor: false
       class_attribute :_example, default: nil, instance_accessor: false
-      class_attribute :_type_name, default: nil, instance_accessor: false
 
       # @api public
       # @return [Hash] custom context passed during serialization
@@ -421,17 +420,25 @@ module Apiwork
         end
 
         # @api public
-        # Overrides the type identifier used in API responses.
+        # Sets or gets the type identifier used in API responses.
         #
         # By default, Rails uses full class names for STI (e.g., "MightyWolf::Car")
         # and polymorphic associations (e.g., "GentleOwl::Post"). Use this to
         # provide shorter, API-friendly names instead.
         #
-        # For STI: Overrides the discriminator value in union responses.
-        # For polymorphic: Overrides the type value in `*_type` columns.
+        # **STI (Single Table Inheritance):**
+        # When a model uses STI, the discriminator value in union responses
+        # will use this name instead of the Rails class name.
         #
-        # @param value [Symbol, String] the type name to use in API
-        # @return [void]
+        # **Polymorphic associations:**
+        # When this representation is a target of a polymorphic association,
+        # the `*_type` column value is mapped:
+        # - Output: Rails class name becomes type_name ("GentleOwl::Post" becomes "post")
+        # - Input: type_name becomes Rails class name ("post" becomes "GentleOwl::Post")
+        # - Filters: type_name becomes Rails class name
+        #
+        # @param value [Symbol, String, nil] the type name to use in API
+        # @return [Symbol, nil] the type name
         #
         # @example STI variant
         #   class CarRepresentation < VehicleRepresentation
@@ -442,8 +449,15 @@ module Apiwork
         #   class PostRepresentation < Apiwork::Representation::Base
         #     type_name :post  # commentable_type shows "post" instead of "GentleOwl::Post"
         #   end
-        def type_name(value)
-          self._type_name = value.to_sym
+        #
+        # @example Reading the type name
+        #   PostRepresentation.type_name  # => :post
+        def type_name(value = nil)
+          if value
+            @type_name = value.to_sym
+          else
+            @type_name
+          end
         end
 
         # @api public
@@ -613,6 +627,25 @@ module Apiwork
           end
         end
 
+        def sti_union_for_type_column(column_name)
+          target_union = union
+          target_model = model_class
+
+          if variant? && superclass.respond_to?(:union)
+            target_union = superclass.union
+            target_model = superclass.model_class
+          end
+
+          return nil unless target_union
+          return nil unless target_union.variants.any?
+          return nil unless target_model.respond_to?(:inheritance_column)
+
+          inheritance_col = target_model.inheritance_column.to_sym
+          return nil unless column_name.to_sym == inheritance_col
+
+          target_union
+        end
+
         def deserialize_hash(hash)
           return hash unless hash.is_a?(Hash)
 
@@ -734,7 +767,7 @@ module Apiwork
           superclass.send(:ensure_sti_auto_configuration_complete)
           return unless superclass.union
 
-          resolved_tag = (_type_name || @model_class.sti_name).to_sym
+          resolved_tag = (type_name || @model_class.sti_name).to_sym
           self.tag = resolved_tag
 
           variant = Union::Variant.new(
@@ -767,7 +800,7 @@ module Apiwork
 
         self.class.attributes.each do |name, attribute|
           value = respond_to?(name) ? public_send(name) : record.public_send(name)
-          value = map_polymorphic_type_output(name, value)
+          value = map_type_column_output(name, value)
           value = attribute.encode(value)
           fields[name] = value
         end
@@ -790,16 +823,22 @@ module Apiwork
         fields[parent_representation.union.discriminator] = self.class.tag.to_s
       end
 
-      def map_polymorphic_type_output(attribute_name, value)
+      def map_type_column_output(attribute_name, value)
         return value if value.nil?
 
         association = self.class.polymorphic_association_for_type_column(attribute_name)
-        return value unless association
+        if association
+          representation_class = association.find_representation_for_type(value)
+          return (representation_class.type_name || representation_class.model_class.polymorphic_name).to_s if representation_class
+        end
 
-        rep_class = association.find_representation_for_type(value)
-        return value unless rep_class
+        union = self.class.sti_union_for_type_column(attribute_name)
+        if union
+          variant = union.variants.values.find { |v| v.type == value }
+          return variant.tag.to_s if variant
+        end
 
-        (rep_class._type_name || rep_class.model_class.polymorphic_name).to_s
+        value
       end
 
       def serialize_association(name, association)

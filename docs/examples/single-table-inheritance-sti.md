@@ -292,6 +292,42 @@ Content-Type: application/json
 
 </details>
 
+<details>
+<summary>Filter by vehicle type</summary>
+
+**Request**
+
+```http
+GET /mighty_wolf/vehicles?filter[type][eq]=car
+```
+
+**Response** `200`
+
+```json
+{
+  "vehicles": [
+    {
+      "type": "car",
+      "id": "c325d8ae-b611-5fb6-b350-d3416209d5b3",
+      "brand": "Volvo",
+      "model": "EX30",
+      "year": null,
+      "color": null,
+      "doors": null
+    }
+  ],
+  "pagination": {
+    "items": 1,
+    "total": 1,
+    "current": 1,
+    "next": null,
+    "prev": null
+  }
+}
+```
+
+</details>
+
 ---
 
 ## Generated Output

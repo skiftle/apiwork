@@ -150,8 +150,8 @@ end
 
 | Value | Order |
 |-------|-------|
-| `asc` | Ascending (A→Z, 0→9, oldest→newest) |
-| `desc` | Descending (Z→A, 9→0, newest→oldest) |
+| `asc` | Ascending (A-Z, 0-9, oldest first) |
+| `desc` | Descending (Z-A, 9-0, newest first) |
 
 ---
 
@@ -509,8 +509,8 @@ Response:
 Apiwork::API.define '/api/v1' do
   path_format :kebab
 
-  resources :line_items        # → /api/v1/line-items
-  resources :shipping_addresses  # → /api/v1/shipping-addresses
+  resources :line_items        # becomes /api/v1/line-items
+  resources :shipping_addresses  # becomes /api/v1/shipping-addresses
 end
 ```
 

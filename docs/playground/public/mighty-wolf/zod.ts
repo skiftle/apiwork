@@ -4,13 +4,15 @@ export const LayerSchema = z.enum(['contract', 'domain', 'http']);
 
 export const SortDirectionSchema = z.enum(['asc', 'desc']);
 
+export const VehicleTypeSchema = z.enum(['car', 'motorcycle', 'truck']);
+
 export const CarSchema = z.object({
   brand: z.string(),
   color: z.string().nullable(),
   doors: z.number().int().nullable(),
   id: z.string(),
   model: z.string(),
-  type: z.literal('car'),
+  type: z.string(),
   year: z.number().int().nullable()
 });
 
@@ -51,7 +53,7 @@ export const MotorcycleSchema = z.object({
   engineCc: z.number().int().nullable(),
   id: z.string(),
   model: z.string(),
-  type: z.literal('motorcycle'),
+  type: z.string(),
   year: z.number().int().nullable()
 });
 
@@ -95,7 +97,7 @@ export const TruckSchema = z.object({
   id: z.string(),
   model: z.string(),
   payloadCapacity: z.number().nullable(),
-  type: z.literal('truck'),
+  type: z.string(),
   year: z.number().int().nullable()
 });
 
@@ -126,6 +128,11 @@ export const VehicleSortSchema = z.object({
   year: SortDirectionSchema.optional()
 });
 
+export const VehicleTypeFilterSchema = z.union([
+  VehicleTypeSchema,
+  z.object({ eq: VehicleTypeSchema, in: z.array(VehicleTypeSchema) }).partial()
+]);
+
 export const NullableIntegerFilterSchema = z.object({
   between: IntegerFilterBetweenSchema.optional(),
   eq: z.number().int().optional(),
@@ -154,6 +161,7 @@ export const VehicleFilterSchema: z.ZodType<VehicleFilter> = z.lazy(() => z.obje
   _or: z.array(VehicleFilterSchema).optional(),
   brand: z.union([z.string(), StringFilterSchema]).optional(),
   model: z.union([z.string(), StringFilterSchema]).optional(),
+  type: VehicleTypeFilterSchema.optional(),
   year: z.union([z.number().int(), NullableIntegerFilterSchema]).optional()
 }));
 
@@ -236,7 +244,7 @@ export interface Car {
   doors: null | number;
   id: string;
   model: string;
-  type: 'car';
+  type: string;
   year: null | number;
 }
 
@@ -284,7 +292,7 @@ export interface Motorcycle {
   engineCc: null | number;
   id: string;
   model: string;
-  type: 'motorcycle';
+  type: string;
   year: null | number;
 }
 
@@ -341,7 +349,7 @@ export interface Truck {
   id: string;
   model: string;
   payloadCapacity: null | number;
-  type: 'truck';
+  type: string;
   year: null | number;
 }
 
@@ -376,6 +384,7 @@ export interface VehicleFilter {
   _or?: VehicleFilter[];
   brand?: StringFilter | string;
   model?: StringFilter | string;
+  type?: VehicleTypeFilter;
   year?: NullableIntegerFilter | number;
 }
 
@@ -398,6 +407,10 @@ export interface VehicleShowSuccessResponseBody {
 export interface VehicleSort {
   year?: SortDirection;
 }
+
+export type VehicleType = 'car' | 'motorcycle' | 'truck';
+
+export type VehicleTypeFilter = VehicleType | { eq?: VehicleType; in?: VehicleType[] };
 
 export interface VehicleUpdateSuccessResponseBody {
   meta?: Record<string, unknown>;

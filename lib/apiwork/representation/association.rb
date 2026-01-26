@@ -162,8 +162,8 @@ module Apiwork
       def find_representation_for_type(type_value)
         return nil unless @polymorphic
 
-        @polymorphic.find do |rep_class|
-          rep_class.model_class.polymorphic_name == type_value
+        @polymorphic.find do |representation_class|
+          representation_class.model_class.polymorphic_name == type_value
         end
       end
 

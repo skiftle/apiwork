@@ -270,7 +270,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-GET /gentle_owl/comments?filter[commentable_type][eq]=GentleOwl::Post
+GET /gentle_owl/comments?filter[commentable_type][eq]=post
 ```
 
 **Response** `200`

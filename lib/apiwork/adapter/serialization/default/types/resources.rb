@@ -205,7 +205,7 @@ module Apiwork
 
               registrar.union(union_type_name, discriminator:) do
                 polymorphic.each do |representation_class|
-                  tag = representation_class._type_name || representation_class.model_class.polymorphic_name
+                  tag = representation_class.type_name || representation_class.model_class.polymorphic_name
                   alias_name = builder.import_association_contract(representation_class, visited)
                   next unless alias_name
 

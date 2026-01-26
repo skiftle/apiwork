@@ -160,7 +160,6 @@ components:
         model:
           type: string
         type:
-          const: car
           type: string
         year:
           type:
@@ -285,7 +284,6 @@ components:
         model:
           type: string
         type:
-          const: motorcycle
           type: string
         year:
           type:
@@ -422,7 +420,6 @@ components:
           - number
           - 'null'
         type:
-          const: truck
           type: string
         year:
           type:
@@ -526,6 +523,8 @@ components:
           oneOf:
           - type: string
           - "$ref": "#/components/schemas/stringFilter"
+        type:
+          "$ref": "#/components/schemas/vehicleTypeFilter"
         year:
           oneOf:
           - type: integer
@@ -574,6 +573,32 @@ components:
           - desc
           type: string
       type: object
+    vehicleTypeFilter:
+      oneOf:
+      - enum:
+        - car
+        - motorcycle
+        - truck
+        type: string
+      - properties:
+          eq:
+            enum:
+            - car
+            - motorcycle
+            - truck
+            type: string
+          in:
+            items:
+              enum:
+              - car
+              - motorcycle
+              - truck
+              type: string
+            type: array
+        type: object
+        required:
+        - eq
+        - in
     vehicleUpdateSuccessResponseBody:
       properties:
         meta:

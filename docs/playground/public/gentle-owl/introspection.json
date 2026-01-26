@@ -1,5 +1,15 @@
 {
   "enums": {
+    "comment_commentable_type": {
+      "deprecated": false,
+      "description": null,
+      "example": null,
+      "values": [
+        "post",
+        "video",
+        "image"
+      ]
+    },
     "layer": {
       "deprecated": false,
       "description": null,
@@ -569,6 +579,70 @@
         }
       ]
     },
+    "comment_commentable_type_filter": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {},
+      "type": "union",
+      "variants": [
+        {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "ref",
+          "ref": "comment_commentable_type"
+        },
+        {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "object",
+          "partial": true,
+          "shape": {
+            "eq": {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "ref",
+              "ref": "comment_commentable_type"
+            },
+            "in": {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "array",
+              "max": null,
+              "min": null,
+              "of": {
+                "default": null,
+                "deprecated": null,
+                "description": null,
+                "example": null,
+                "nullable": null,
+                "optional": null,
+                "type": "ref",
+                "ref": "comment_commentable_type"
+              },
+              "shape": {}
+            }
+          }
+        }
+      ]
+    },
     "comment_create_payload": {
       "deprecated": false,
       "description": null,
@@ -730,32 +804,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "union",
-          "discriminator": null,
-          "variants": [
-            {
-              "default": null,
-              "deprecated": false,
-              "description": null,
-              "example": null,
-              "nullable": false,
-              "optional": false,
-              "type": "string",
-              "format": null,
-              "max": null,
-              "min": null
-            },
-            {
-              "default": null,
-              "deprecated": false,
-              "description": null,
-              "example": null,
-              "nullable": false,
-              "optional": false,
-              "type": "ref",
-              "ref": "string_filter"
-            }
-          ]
+          "type": "ref",
+          "ref": "comment_commentable_type_filter"
         }
       },
       "type": "object",

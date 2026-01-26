@@ -26,11 +26,15 @@ module Apiwork
                 end
               end
 
+              build_polymorphic_type_filters
+              build_sti_type_filters
+
               attributes = representation_class.attributes.filter_map do |name, attribute|
                 next unless attribute.filterable? && attribute.type != :unknown
 
                 filter_type = filter_type_for(attribute)
-                shorthand = !attribute.enum && !%i[object array union].include?(attribute.type)
+                has_custom_filter = attribute.enum || polymorphic_type_column?(attribute) || sti_type_column?(attribute)
+                shorthand = !has_custom_filter && !%i[object array union].include?(attribute.type)
                 [name, attribute.type, filter_type, shorthand]
               end
 
@@ -94,8 +98,72 @@ module Apiwork
 
             private
 
+            def build_polymorphic_type_filters
+              representation_class.attributes.each do |name, attribute|
+                next unless attribute.filterable?
+
+                association = representation_class.polymorphic_association_for_type_column(name)
+                next unless association
+                next if type?(:"#{name}_filter")
+
+                allowed_values = association.polymorphic.map do |representation_class|
+                  (representation_class.type_name || representation_class.model_class.polymorphic_name).to_s
+                end
+
+                enum name, values: allowed_values
+
+                scoped = scoped_enum_name(name)
+
+                union :"#{name}_filter" do
+                  variant { reference scoped }
+                  variant partial: true do
+                    object do
+                      reference :eq, to: scoped
+                      array(:in) { reference scoped }
+                    end
+                  end
+                end
+              end
+            end
+
+            def build_sti_type_filters
+              representation_class.attributes.each do |name, attribute|
+                next unless attribute.filterable?
+
+                sti_union = representation_class.sti_union_for_type_column(name)
+                next unless sti_union
+                next if type?(:"#{name}_filter")
+
+                allowed_values = sti_union.variants.values.map { |v| v.tag.to_s }
+
+                enum name, values: allowed_values
+
+                scoped = scoped_enum_name(name)
+
+                union :"#{name}_filter" do
+                  variant { reference scoped }
+                  variant partial: true do
+                    object do
+                      reference :eq, to: scoped
+                      array(:in) { reference scoped }
+                    end
+                  end
+                end
+              end
+            end
+
+            def polymorphic_type_column?(attribute)
+              representation_class.polymorphic_association_for_type_column(attribute.name).present?
+            end
+
+            def sti_type_column?(attribute)
+              representation_class.sti_union_for_type_column(attribute.name).present?
+            end
+
             def filter_type_for(attribute)
               return :"#{attribute.name}_filter" if attribute.enum
+              return :"#{attribute.name}_filter" if polymorphic_type_column?(attribute)
+              return :"#{attribute.name}_filter" if sti_type_column?(attribute)
 
               base = case attribute.type
                      when :string then :string_filter

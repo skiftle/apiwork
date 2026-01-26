@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "GET",
-    "path": "/gentle_owl/comments?filter[commentable_type][eq]=GentleOwl::Post"
+    "path": "/gentle_owl/comments?filter[commentable_type][eq]=post"
   },
   "response": {
     "body": {

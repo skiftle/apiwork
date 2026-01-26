@@ -10,6 +10,10 @@ export interface Comment {
 
 export type CommentCommentable = { commentableType: 'post' } & Post | { commentableType: 'video' } & Video | { commentableType: 'image' } & Image;
 
+export type CommentCommentableType = 'image' | 'post' | 'video';
+
+export type CommentCommentableTypeFilter = CommentCommentableType | { eq?: CommentCommentableType; in?: CommentCommentableType[] };
+
 export interface CommentCreatePayload {
   authorName?: null | string;
   body: string;
@@ -26,7 +30,7 @@ export interface CommentFilter {
   _and?: CommentFilter[];
   _not?: CommentFilter;
   _or?: CommentFilter[];
-  commentableType?: StringFilter | string;
+  commentableType?: CommentCommentableTypeFilter;
 }
 
 export interface CommentInclude {
@@ -186,14 +190,6 @@ export interface Post {
 }
 
 export type SortDirection = 'asc' | 'desc';
-
-export interface StringFilter {
-  contains?: string;
-  endsWith?: string;
-  eq?: string;
-  in?: string[];
-  startsWith?: string;
-}
 
 export interface Video {
   comments?: Comment[];

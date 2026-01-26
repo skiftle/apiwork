@@ -213,6 +213,32 @@ components:
           video: "#/components/schemas/video"
           image: "#/components/schemas/image"
         propertyName: commentableType
+    commentCommentableTypeFilter:
+      oneOf:
+      - enum:
+        - post
+        - video
+        - image
+        type: string
+      - properties:
+          eq:
+            enum:
+            - post
+            - video
+            - image
+            type: string
+          in:
+            items:
+              enum:
+              - post
+              - video
+              - image
+              type: string
+            type: array
+        type: object
+        required:
+        - eq
+        - in
     commentCreatePayload:
       properties:
         authorName:
@@ -257,9 +283,7 @@ components:
             "$ref": "#/components/schemas/commentFilter"
           type: array
         commentableType:
-          oneOf:
-          - type: string
-          - "$ref": "#/components/schemas/stringFilter"
+          "$ref": "#/components/schemas/commentCommentableTypeFilter"
       type: object
     commentInclude:
       properties:
@@ -449,21 +473,6 @@ components:
       - createdAt
       - id
       - title
-    stringFilter:
-      properties:
-        contains:
-          type: string
-        endsWith:
-          type: string
-        eq:
-          type: string
-        in:
-          items:
-            type: string
-          type: array
-        startsWith:
-          type: string
-      type: object
     video:
       properties:
         comments:

@@ -103,3 +103,25 @@ scenarios:
         model: F-150
         year: 2024
         color: blue
+
+  - title: Filter by vehicle type
+    description: Filter vehicles by STI type
+    order: 6
+    method: GET
+    path: /mighty_wolf/vehicles?filter[type][eq]=car
+    setup:
+      - create: vehicle
+        fields:
+          type: MightyWolf::Car
+          brand: Volvo
+          model: EX30
+      - create: vehicle
+        fields:
+          type: MightyWolf::Motorcycle
+          brand: Harley-Davidson
+          model: Street Glide
+      - create: vehicle
+        fields:
+          type: MightyWolf::Truck
+          brand: Ford
+          model: F-150

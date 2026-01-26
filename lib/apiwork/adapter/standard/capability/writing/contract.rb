@@ -219,9 +219,9 @@ module Apiwork
               type_mapping = {}
               allowed_values = []
 
-              association.polymorphic.each do |rep_class|
-                api_value = (rep_class._type_name || rep_class.model_class.polymorphic_name).to_s
-                rails_type = rep_class.model_class.polymorphic_name
+              association.polymorphic.each do |representation_class|
+                api_value = (representation_class.type_name || representation_class.model_class.polymorphic_name).to_s
+                rails_type = representation_class.model_class.polymorphic_name
                 type_mapping[api_value] = rails_type
                 allowed_values << api_value
               end

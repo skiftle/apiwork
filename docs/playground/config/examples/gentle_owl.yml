@@ -105,7 +105,7 @@ scenarios:
     description: Filter comments by commentable type
     order: 5
     method: GET
-    path: /gentle_owl/comments?filter[commentable_type][eq]=GentleOwl::Post
+    path: /gentle_owl/comments?filter[commentable_type][eq]=post
     setup:
       - create: post
         fields:

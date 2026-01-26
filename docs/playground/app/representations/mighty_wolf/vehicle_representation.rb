@@ -3,6 +3,7 @@
 module MightyWolf
   class VehicleRepresentation < Apiwork::Representation::Base
     attribute :id
+    attribute :type, filterable: true
     attribute :brand, filterable: true, writable: true
     attribute :model, filterable: true, writable: true
     attribute :year, filterable: true, sortable: true, writable: true
