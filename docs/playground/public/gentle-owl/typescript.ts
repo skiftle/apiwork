@@ -2,6 +2,8 @@ export interface Comment {
   authorName: null | string;
   body: string;
   commentable?: CommentCommentable;
+  commentableId: string;
+  commentableType: string;
   createdAt: string;
   id: string;
 }
@@ -11,11 +13,20 @@ export type CommentCommentable = { commentableType: 'post' } & Post | { commenta
 export interface CommentCreatePayload {
   authorName?: null | string;
   body: string;
+  commentableId: string;
+  commentableType: string;
 }
 
 export interface CommentCreateSuccessResponseBody {
   comment: Comment;
   meta?: Record<string, unknown>;
+}
+
+export interface CommentFilter {
+  _and?: CommentFilter[];
+  _not?: CommentFilter;
+  _or?: CommentFilter[];
+  commentableType?: StringFilter | string;
 }
 
 export interface CommentInclude {
@@ -45,6 +56,8 @@ export interface CommentSort {
 export interface CommentUpdatePayload {
   authorName?: null | string;
   body?: string;
+  commentableId?: string;
+  commentableType?: string;
 }
 
 export interface CommentUpdateSuccessResponseBody {
@@ -86,6 +99,7 @@ export interface CommentsIndexRequest {
 }
 
 export interface CommentsIndexRequestQuery {
+  filter?: CommentFilter | CommentFilter[];
   include?: CommentInclude;
   page?: CommentPage;
   sort?: CommentSort | CommentSort[];
@@ -172,6 +186,14 @@ export interface Post {
 }
 
 export type SortDirection = 'asc' | 'desc';
+
+export interface StringFilter {
+  contains?: string;
+  endsWith?: string;
+  eq?: string;
+  in?: string[];
+  startsWith?: string;
+}
 
 export interface Video {
   comments?: Comment[];

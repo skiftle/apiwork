@@ -71,7 +71,19 @@ Document APIs with descriptions, examples, formats, and deprecation notices at e
 
 </details>
 
-## Schemas
+## Representations
+
+<small>`app/representations/brave_eagle/task_representation.rb`</small>
+
+<<< @/playground/app/representations/brave_eagle/task_representation.rb
+
+<small>`app/representations/brave_eagle/user_representation.rb`</small>
+
+<<< @/playground/app/representations/brave_eagle/user_representation.rb
+
+<small>`app/representations/brave_eagle/comment_representation.rb`</small>
+
+<<< @/playground/app/representations/brave_eagle/comment_representation.rb
 
 ## Contracts
 

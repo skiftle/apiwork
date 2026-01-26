@@ -36,7 +36,11 @@ Define typed JSON columns with object shapes, arrays, and nested structures
 
 </details>
 
-## Schemas
+## Representations
+
+<small>`app/representations/curious_cat/profile_representation.rb`</small>
+
+<<< @/playground/app/representations/curious_cat/profile_representation.rb
 
 ## Contracts
 

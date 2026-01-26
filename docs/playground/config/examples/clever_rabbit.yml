@@ -11,16 +11,14 @@ sections:
       - app/models/clever_rabbit/order.rb
       - app/models/clever_rabbit/line_item.rb
       - app/models/clever_rabbit/shipping_address.rb
-  - title: Schemas
+  - title: Representations
     files:
-      - app/schemas/clever_rabbit/order_schema.rb
-      - app/schemas/clever_rabbit/line_item_schema.rb
-      - app/schemas/clever_rabbit/shipping_address_schema.rb
+      - app/representations/clever_rabbit/order_representation.rb
+      - app/representations/clever_rabbit/line_item_representation.rb
+      - app/representations/clever_rabbit/shipping_address_representation.rb
   - title: Contracts
     files:
       - app/contracts/clever_rabbit/order_contract.rb
-      - app/contracts/clever_rabbit/line_item_contract.rb
-      - app/contracts/clever_rabbit/shipping_address_contract.rb
   - title: Controllers
     files:
       - app/controllers/clever_rabbit/orders_controller.rb

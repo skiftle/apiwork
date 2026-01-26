@@ -34,7 +34,11 @@ Using built-in I18n for translatable API documentation
 
 </details>
 
-## Schemas
+## Representations
+
+<small>`app/representations/wise_tiger/project_representation.rb`</small>
+
+<<< @/playground/app/representations/wise_tiger/project_representation.rb
 
 ## Contracts
 

@@ -9,9 +9,9 @@ sections:
   - title: Models
     files:
       - app/models/curious_cat/profile.rb
-  - title: Schemas
+  - title: Representations
     files:
-      - app/schemas/curious_cat/profile_schema.rb
+      - app/representations/curious_cat/profile_representation.rb
   - title: Contracts
     files:
       - app/contracts/curious_cat/profile_contract.rb

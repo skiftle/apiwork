@@ -10,14 +10,13 @@ sections:
     files:
       - app/models/bold_falcon/article.rb
       - app/models/bold_falcon/category.rb
-  - title: Schemas
+  - title: Representations
     files:
-      - app/schemas/bold_falcon/article_schema.rb
-      - app/schemas/bold_falcon/category_schema.rb
+      - app/representations/bold_falcon/article_representation.rb
+      - app/representations/bold_falcon/category_representation.rb
   - title: Contracts
     files:
       - app/contracts/bold_falcon/article_contract.rb
-      - app/contracts/bold_falcon/category_contract.rb
   - title: Controllers
     files:
       - app/controllers/bold_falcon/articles_controller.rb

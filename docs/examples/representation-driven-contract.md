@@ -2,9 +2,9 @@
 order: 2
 ---
 
-# Schema-Driven Contract
+# Representation-Driven Contract
 
-Using `schema!` to generate a complete contract from schema definitions
+Using `representation` to generate a complete contract from representation definitions
 
 ## API Definition
 
@@ -69,7 +69,19 @@ Using `schema!` to generate a complete contract from schema definitions
 
 </details>
 
-## Schemas
+## Representations
+
+<small>`app/representations/eager_lion/invoice_representation.rb`</small>
+
+<<< @/playground/app/representations/eager_lion/invoice_representation.rb
+
+<small>`app/representations/eager_lion/customer_representation.rb`</small>
+
+<<< @/playground/app/representations/eager_lion/customer_representation.rb
+
+<small>`app/representations/eager_lion/line_representation.rb`</small>
+
+<<< @/playground/app/representations/eager_lion/line_representation.rb
 
 ## Contracts
 

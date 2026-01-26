@@ -5,26 +5,24 @@
   },
   "response": {
     "body": {
-      "issues": [
+      "comments": [
         {
-          "code": "field_unknown",
-          "detail": "Unknown field",
-          "meta": {
-            "allowed": [
-              "sort",
-              "page",
-              "include"
-            ],
-            "field": "filter"
-          },
-          "path": [
-            "filter"
-          ],
-          "pointer": "/filter"
+          "id": "050873ac-daa3-53e7-b684-62a96fa68421",
+          "body": "Post comment",
+          "authorName": "User 1",
+          "commentableType": "GentleOwl::Post",
+          "commentableId": "53f2f96c-84a9-5d43-a211-bd0081ca6808",
+          "createdAt": "2024-01-01T12:00:00.000Z"
         }
       ],
-      "layer": "contract"
+      "pagination": {
+        "items": 1,
+        "total": 1,
+        "current": 1,
+        "next": null,
+        "prev": null
+      }
     },
-    "status": 400
+    "status": 200
   }
 }

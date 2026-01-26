@@ -33,7 +33,11 @@ Transform values on input/output and handle nil/empty string conversion
 
 </details>
 
-## Schemas
+## Representations
+
+<small>`app/representations/swift_fox/contact_representation.rb`</small>
+
+<<< @/playground/app/representations/swift_fox/contact_representation.rb
 
 ## Contracts
 

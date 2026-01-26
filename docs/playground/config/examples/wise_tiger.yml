@@ -9,9 +9,9 @@ sections:
   - title: Models
     files:
       - app/models/wise_tiger/project.rb
-  - title: Schemas
+  - title: Representations
     files:
-      - app/schemas/wise_tiger/project_schema.rb
+      - app/representations/wise_tiger/project_representation.rb
   - title: Contracts
     files:
       - app/contracts/wise_tiger/project_contract.rb

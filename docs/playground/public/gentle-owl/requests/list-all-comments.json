@@ -10,12 +10,16 @@
           "id": "d1ff1866-6fad-545c-839e-2d972eb5729c",
           "body": "Great post!",
           "authorName": "John Doe",
+          "commentableType": "GentleOwl::Post",
+          "commentableId": "96988365-65b2-5455-a8a8-491aa772ba47",
           "createdAt": "2024-01-01T12:00:00.000Z"
         },
         {
           "id": "6027b33b-0a17-5c68-bcc1-527ae6105f2c",
           "body": "Helpful video!",
           "authorName": "Jane Doe",
+          "commentableType": "GentleOwl::Video",
+          "commentableId": "df4ddc5a-953d-52f5-b5b5-7ddf16fa8f57",
           "createdAt": "2024-01-01T12:00:00.000Z"
         }
       ],

@@ -11,16 +11,14 @@ sections:
       - app/models/brave_eagle/task.rb
       - app/models/brave_eagle/user.rb
       - app/models/brave_eagle/comment.rb
-  - title: Schemas
+  - title: Representations
     files:
-      - app/schemas/brave_eagle/task_schema.rb
-      - app/schemas/brave_eagle/user_schema.rb
-      - app/schemas/brave_eagle/comment_schema.rb
+      - app/representations/brave_eagle/task_representation.rb
+      - app/representations/brave_eagle/user_representation.rb
+      - app/representations/brave_eagle/comment_representation.rb
   - title: Contracts
     files:
       - app/contracts/brave_eagle/task_contract.rb
-      - app/contracts/brave_eagle/user_contract.rb
-      - app/contracts/brave_eagle/comment_contract.rb
   - title: Controllers
     files:
       - app/controllers/brave_eagle/tasks_controller.rb

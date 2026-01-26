@@ -9,6 +9,15 @@ paths:
       operationId: commentsIndex
       parameters:
       - in: query
+        name: filter
+        required: false
+        schema:
+          oneOf:
+          - "$ref": "#/components/schemas/commentFilter"
+          - items:
+              "$ref": "#/components/schemas/commentFilter"
+            type: array
+      - in: query
         name: include
         required: false
         schema:
@@ -152,6 +161,10 @@ components:
           type: string
         commentable:
           "$ref": "#/components/schemas/commentCommentable"
+        commentableId:
+          type: string
+        commentableType:
+          type: string
         createdAt:
           type: string
           format: date-time
@@ -161,6 +174,8 @@ components:
       required:
       - authorName
       - body
+      - commentableId
+      - commentableType
       - createdAt
       - id
     commentCommentable:
@@ -206,9 +221,15 @@ components:
           - 'null'
         body:
           type: string
+        commentableId:
+          type: string
+        commentableType:
+          type: string
       type: object
       required:
       - body
+      - commentableId
+      - commentableType
     commentCreateSuccessResponseBody:
       properties:
         comment:
@@ -219,6 +240,23 @@ components:
       type: object
       required:
       - comment
+    commentFilter:
+      properties:
+        _and:
+          items:
+            "$ref": "#/components/schemas/commentFilter"
+          type: array
+        _not:
+          "$ref": "#/components/schemas/commentFilter"
+        _or:
+          items:
+            "$ref": "#/components/schemas/commentFilter"
+          type: array
+        commentableType:
+          oneOf:
+          - type: string
+          - "$ref": "#/components/schemas/stringFilter"
+      type: object
     commentInclude:
       properties:
         commentable:
@@ -274,6 +312,10 @@ components:
           - string
           - 'null'
         body:
+          type: string
+        commentableId:
+          type: string
+        commentableType:
           type: string
       type: object
     commentUpdateSuccessResponseBody:
@@ -399,6 +441,21 @@ components:
       - createdAt
       - id
       - title
+    stringFilter:
+      properties:
+        contains:
+          type: string
+        endsWith:
+          type: string
+        eq:
+          type: string
+        in:
+          items:
+            type: string
+          type: array
+        startsWith:
+          type: string
+      type: object
     video:
       properties:
         comments:

@@ -12,12 +12,12 @@ sections:
       - app/models/mighty_wolf/car.rb
       - app/models/mighty_wolf/truck.rb
       - app/models/mighty_wolf/motorcycle.rb
-  - title: Schemas
+  - title: Representations
     files:
-      - app/schemas/mighty_wolf/vehicle_schema.rb
-      - app/schemas/mighty_wolf/car_schema.rb
-      - app/schemas/mighty_wolf/truck_schema.rb
-      - app/schemas/mighty_wolf/motorcycle_schema.rb
+      - app/representations/mighty_wolf/vehicle_representation.rb
+      - app/representations/mighty_wolf/car_representation.rb
+      - app/representations/mighty_wolf/truck_representation.rb
+      - app/representations/mighty_wolf/motorcycle_representation.rb
   - title: Contracts
     files:
       - app/contracts/mighty_wolf/vehicle_contract.rb

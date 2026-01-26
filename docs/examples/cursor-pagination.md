@@ -31,7 +31,11 @@ Navigate through large datasets using cursor-based pagination
 
 </details>
 
-## Schemas
+## Representations
+
+<small>`app/representations/grumpy_panda/activity_representation.rb`</small>
+
+<<< @/playground/app/representations/grumpy_panda/activity_representation.rb
 
 ## Contracts
 

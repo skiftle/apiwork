@@ -1,5 +1,5 @@
-title: Schema-Driven Contract
-description: Using `schema!` to generate a complete contract from schema definitions
+title: Representation-Driven Contract
+description: Using `representation` to generate a complete contract from representation definitions
 order: 2
 
 sections:
@@ -11,16 +11,14 @@ sections:
       - app/models/eager_lion/invoice.rb
       - app/models/eager_lion/customer.rb
       - app/models/eager_lion/line.rb
-  - title: Schemas
+  - title: Representations
     files:
-      - app/schemas/eager_lion/invoice_schema.rb
-      - app/schemas/eager_lion/customer_schema.rb
-      - app/schemas/eager_lion/line_schema.rb
+      - app/representations/eager_lion/invoice_representation.rb
+      - app/representations/eager_lion/customer_representation.rb
+      - app/representations/eager_lion/line_representation.rb
   - title: Contracts
     files:
       - app/contracts/eager_lion/invoice_contract.rb
-      - app/contracts/eager_lion/customer_contract.rb
-      - app/contracts/eager_lion/line_contract.rb
   - title: Controllers
     files:
       - app/controllers/eager_lion/invoices_controller.rb

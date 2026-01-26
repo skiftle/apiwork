@@ -53,7 +53,15 @@ Complex queries with string patterns, numeric ranges, and logical operators
 
 </details>
 
-## Schemas
+## Representations
+
+<small>`app/representations/bold_falcon/article_representation.rb`</small>
+
+<<< @/playground/app/representations/bold_falcon/article_representation.rb
+
+<small>`app/representations/bold_falcon/category_representation.rb`</small>
+
+<<< @/playground/app/representations/bold_falcon/category_representation.rb
 
 ## Contracts
 

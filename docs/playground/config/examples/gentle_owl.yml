@@ -12,18 +12,15 @@ sections:
       - app/models/gentle_owl/post.rb
       - app/models/gentle_owl/video.rb
       - app/models/gentle_owl/image.rb
-  - title: Schemas
+  - title: Representations
     files:
-      - app/schemas/gentle_owl/comment_schema.rb
-      - app/schemas/gentle_owl/post_schema.rb
-      - app/schemas/gentle_owl/video_schema.rb
-      - app/schemas/gentle_owl/image_schema.rb
+      - app/representations/gentle_owl/comment_representation.rb
+      - app/representations/gentle_owl/post_representation.rb
+      - app/representations/gentle_owl/video_representation.rb
+      - app/representations/gentle_owl/image_representation.rb
   - title: Contracts
     files:
       - app/contracts/gentle_owl/comment_contract.rb
-      - app/contracts/gentle_owl/post_contract.rb
-      - app/contracts/gentle_owl/video_contract.rb
-      - app/contracts/gentle_owl/image_contract.rb
   - title: Controllers
     files:
       - app/controllers/gentle_owl/comments_controller.rb

@@ -41,6 +41,50 @@
           "request": {
             "body": {},
             "query": {
+              "filter": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": true,
+                "type": "union",
+                "discriminator": null,
+                "variants": [
+                  {
+                    "default": null,
+                    "deprecated": false,
+                    "description": null,
+                    "example": null,
+                    "nullable": false,
+                    "optional": false,
+                    "type": "ref",
+                    "ref": "comment_filter"
+                  },
+                  {
+                    "default": null,
+                    "deprecated": false,
+                    "description": null,
+                    "example": null,
+                    "nullable": false,
+                    "optional": false,
+                    "type": "array",
+                    "max": null,
+                    "min": null,
+                    "of": {
+                      "default": null,
+                      "deprecated": null,
+                      "description": null,
+                      "example": null,
+                      "nullable": null,
+                      "optional": null,
+                      "type": "ref",
+                      "ref": "comment_filter"
+                    },
+                    "shape": {}
+                  }
+                ]
+              },
               "include": {
                 "default": null,
                 "deprecated": false,
@@ -436,6 +480,30 @@
           "type": "ref",
           "ref": "comment_commentable"
         },
+        "commentable_id": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "commentable_type": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
         "created_at": {
           "default": null,
           "deprecated": false,
@@ -530,6 +598,30 @@
           "format": null,
           "max": null,
           "min": null
+        },
+        "commentable_id": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "commentable_type": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
         }
       },
       "type": "object",
@@ -561,6 +653,104 @@
           "type": "object",
           "partial": false,
           "shape": {}
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "comment_filter": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "_and": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "array",
+          "max": null,
+          "min": null,
+          "of": {
+            "default": null,
+            "deprecated": null,
+            "description": null,
+            "example": null,
+            "nullable": null,
+            "optional": null,
+            "type": "ref",
+            "ref": "comment_filter"
+          },
+          "shape": {}
+        },
+        "_not": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "ref",
+          "ref": "comment_filter"
+        },
+        "_or": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "array",
+          "max": null,
+          "min": null,
+          "of": {
+            "default": null,
+            "deprecated": null,
+            "description": null,
+            "example": null,
+            "nullable": null,
+            "optional": null,
+            "type": "ref",
+            "ref": "comment_filter"
+          },
+          "shape": {}
+        },
+        "commentable_type": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "union",
+          "discriminator": null,
+          "variants": [
+            {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "string",
+              "format": null,
+              "max": null,
+              "min": null
+            },
+            {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "ref",
+              "ref": "string_filter"
+            }
+          ]
         }
       },
       "type": "object",
@@ -742,6 +932,30 @@
           "min": null
         },
         "body": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "commentable_id": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "commentable_type": {
           "default": null,
           "deprecated": false,
           "description": null,
@@ -1078,7 +1292,8 @@
               "example": null,
               "nullable": false,
               "optional": false,
-              "type": "string_filter"
+              "type": "ref",
+              "ref": "string_filter"
             }
           ]
         }
@@ -1556,7 +1771,8 @@
               "example": null,
               "nullable": false,
               "optional": false,
-              "type": "string_filter"
+              "type": "ref",
+              "ref": "string_filter"
             }
           ]
         }
@@ -1644,6 +1860,88 @@
           "min": null
         },
         "title": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "string_filter": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "shape": {
+        "contains": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "ends_with": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "eq": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "in": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "array",
+          "max": null,
+          "min": null,
+          "of": {
+            "default": null,
+            "deprecated": null,
+            "description": null,
+            "example": null,
+            "nullable": null,
+            "optional": null,
+            "type": "string",
+            "format": null,
+            "max": null,
+            "min": null
+          },
+          "shape": {}
+        },
+        "starts_with": {
           "default": null,
           "deprecated": false,
           "description": null,
@@ -1883,7 +2181,8 @@
               "example": null,
               "nullable": false,
               "optional": false,
-              "type": "string_filter"
+              "type": "ref",
+              "ref": "string_filter"
             }
           ]
         }

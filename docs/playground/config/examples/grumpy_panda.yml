@@ -9,9 +9,9 @@ sections:
   - title: Models
     files:
       - app/models/grumpy_panda/activity.rb
-  - title: Schemas
+  - title: Representations
     files:
-      - app/schemas/grumpy_panda/activity_schema.rb
+      - app/representations/grumpy_panda/activity_representation.rb
   - title: Contracts
     files:
       - app/contracts/grumpy_panda/activity_contract.rb

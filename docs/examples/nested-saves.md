@@ -71,7 +71,19 @@ Create, update, and delete nested records in a single request
 
 </details>
 
-## Schemas
+## Representations
+
+<small>`app/representations/clever_rabbit/order_representation.rb`</small>
+
+<<< @/playground/app/representations/clever_rabbit/order_representation.rb
+
+<small>`app/representations/clever_rabbit/line_item_representation.rb`</small>
+
+<<< @/playground/app/representations/clever_rabbit/line_item_representation.rb
+
+<small>`app/representations/clever_rabbit/shipping_address_representation.rb`</small>
+
+<<< @/playground/app/representations/clever_rabbit/shipping_address_representation.rb
 
 ## Contracts
 

@@ -12,16 +12,15 @@ sections:
       - app/models/happy_zebra/profile.rb
       - app/models/happy_zebra/post.rb
       - app/models/happy_zebra/comment.rb
-  - title: Schemas
+  - title: Representations
     files:
-      - app/schemas/happy_zebra/user_schema.rb
-      - app/schemas/happy_zebra/profile_schema.rb
-      - app/schemas/happy_zebra/post_schema.rb
-      - app/schemas/happy_zebra/comment_schema.rb
+      - app/representations/happy_zebra/user_representation.rb
+      - app/representations/happy_zebra/profile_representation.rb
+      - app/representations/happy_zebra/post_representation.rb
+      - app/representations/happy_zebra/comment_representation.rb
   - title: Contracts
     files:
       - app/contracts/happy_zebra/user_contract.rb
-      - app/contracts/happy_zebra/profile_contract.rb
       - app/contracts/happy_zebra/post_contract.rb
       - app/contracts/happy_zebra/comment_contract.rb
   - title: Controllers

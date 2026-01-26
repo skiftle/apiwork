@@ -9,9 +9,9 @@ sections:
   - title: Models
     files:
       - app/models/swift_fox/contact.rb
-  - title: Schemas
+  - title: Representations
     files:
-      - app/schemas/swift_fox/contact_schema.rb
+      - app/representations/swift_fox/contact_representation.rb
   - title: Contracts
     files:
       - app/contracts/swift_fox/contact_contract.rb

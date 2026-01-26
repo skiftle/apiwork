@@ -6,7 +6,9 @@ export const SortDirectionSchema = z.enum(['asc', 'desc']);
 
 export const CommentCreatePayloadSchema = z.object({
   authorName: z.string().nullable().optional(),
-  body: z.string()
+  body: z.string(),
+  commentableId: z.string(),
+  commentableType: z.string()
 });
 
 export const CommentIncludeSchema = z.object({
@@ -24,7 +26,9 @@ export const CommentSortSchema = z.object({
 
 export const CommentUpdatePayloadSchema = z.object({
   authorName: z.string().nullable().optional(),
-  body: z.string().optional()
+  body: z.string().optional(),
+  commentableId: z.string().optional(),
+  commentableType: z.string().optional()
 });
 
 export const IssueSchema = z.object({
@@ -43,15 +47,32 @@ export const OffsetPaginationSchema = z.object({
   total: z.number().int()
 });
 
+export const StringFilterSchema = z.object({
+  contains: z.string().optional(),
+  endsWith: z.string().optional(),
+  eq: z.string().optional(),
+  in: z.array(z.string()).optional(),
+  startsWith: z.string().optional()
+});
+
 export const ErrorResponseBodySchema = z.object({
   issues: z.array(IssueSchema),
   layer: LayerSchema
 });
 
+export const CommentFilterSchema: z.ZodType<CommentFilter> = z.lazy(() => z.object({
+  _and: z.array(CommentFilterSchema).optional(),
+  _not: CommentFilterSchema.optional(),
+  _or: z.array(CommentFilterSchema).optional(),
+  commentableType: z.union([z.string(), StringFilterSchema]).optional()
+}));
+
 export const CommentSchema = z.object({
   authorName: z.string().nullable(),
   body: z.string(),
   commentable: CommentCommentableSchema.optional(),
+  commentableId: z.string(),
+  commentableType: z.string(),
   createdAt: z.iso.datetime(),
   id: z.string()
 });
@@ -111,6 +132,7 @@ export const VideoSchema = z.object({
 });
 
 export const CommentsIndexRequestQuerySchema = z.object({
+  filter: z.union([CommentFilterSchema, z.array(CommentFilterSchema)]).optional(),
   include: CommentIncludeSchema.optional(),
   page: CommentPageSchema.optional(),
   sort: z.union([CommentSortSchema, z.array(CommentSortSchema)]).optional()
@@ -192,6 +214,8 @@ export interface Comment {
   authorName: null | string;
   body: string;
   commentable?: CommentCommentable;
+  commentableId: string;
+  commentableType: string;
   createdAt: string;
   id: string;
 }
@@ -201,11 +225,20 @@ export type CommentCommentable = { commentableType: 'post' } & Post | { commenta
 export interface CommentCreatePayload {
   authorName?: null | string;
   body: string;
+  commentableId: string;
+  commentableType: string;
 }
 
 export interface CommentCreateSuccessResponseBody {
   comment: Comment;
   meta?: Record<string, unknown>;
+}
+
+export interface CommentFilter {
+  _and?: CommentFilter[];
+  _not?: CommentFilter;
+  _or?: CommentFilter[];
+  commentableType?: StringFilter | string;
 }
 
 export interface CommentInclude {
@@ -235,6 +268,8 @@ export interface CommentSort {
 export interface CommentUpdatePayload {
   authorName?: null | string;
   body?: string;
+  commentableId?: string;
+  commentableType?: string;
 }
 
 export interface CommentUpdateSuccessResponseBody {
@@ -276,6 +311,7 @@ export interface CommentsIndexRequest {
 }
 
 export interface CommentsIndexRequestQuery {
+  filter?: CommentFilter | CommentFilter[];
   include?: CommentInclude;
   page?: CommentPage;
   sort?: CommentSort | CommentSort[];
@@ -362,6 +398,14 @@ export interface Post {
 }
 
 export type SortDirection = 'asc' | 'desc';
+
+export interface StringFilter {
+  contains?: string;
+  endsWith?: string;
+  eq?: string;
+  in?: string[];
+  startsWith?: string;
+}
 
 export interface Video {
   comments?: Comment[];

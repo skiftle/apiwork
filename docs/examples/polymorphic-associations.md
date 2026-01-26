@@ -87,7 +87,23 @@ Comments that belong to different content types (posts, videos, images)
 
 </details>
 
-## Schemas
+## Representations
+
+<small>`app/representations/gentle_owl/comment_representation.rb`</small>
+
+<<< @/playground/app/representations/gentle_owl/comment_representation.rb
+
+<small>`app/representations/gentle_owl/post_representation.rb`</small>
+
+<<< @/playground/app/representations/gentle_owl/post_representation.rb
+
+<small>`app/representations/gentle_owl/video_representation.rb`</small>
+
+<<< @/playground/app/representations/gentle_owl/video_representation.rb
+
+<small>`app/representations/gentle_owl/image_representation.rb`</small>
+
+<<< @/playground/app/representations/gentle_owl/image_representation.rb
 
 ## Contracts
 
@@ -125,12 +141,16 @@ GET /gentle_owl/comments
       "id": "d1ff1866-6fad-545c-839e-2d972eb5729c",
       "body": "Great post!",
       "authorName": "John Doe",
+      "commentableType": "GentleOwl::Post",
+      "commentableId": "96988365-65b2-5455-a8a8-491aa772ba47",
       "createdAt": "2024-01-01T12:00:00.000Z"
     },
     {
       "id": "6027b33b-0a17-5c68-bcc1-527ae6105f2c",
       "body": "Helpful video!",
       "authorName": "Jane Doe",
+      "commentableType": "GentleOwl::Video",
+      "commentableId": "df4ddc5a-953d-52f5-b5b5-7ddf16fa8f57",
       "createdAt": "2024-01-01T12:00:00.000Z"
     }
   ],
@@ -163,6 +183,8 @@ GET /gentle_owl/comments/b90c16e5-a438-5967-a734-10adf687faa5
     "id": "b90c16e5-a438-5967-a734-10adf687faa5",
     "body": "Great post!",
     "authorName": "John Doe",
+    "commentableType": "GentleOwl::Post",
+    "commentableId": "f8bf7c21-5db9-52b1-bee8-5cb65c03ad75",
     "createdAt": "2024-01-01T12:00:00.000Z"
   }
 }
@@ -189,45 +211,18 @@ Content-Type: application/json
 }
 ```
 
-**Response** `400`
+**Response** `201`
 
 ```json
 {
-  "issues": [
-    {
-      "code": "field_unknown",
-      "detail": "Unknown field",
-      "meta": {
-        "allowed": [
-          "body",
-          "author_name"
-        ],
-        "field": "commentable_type"
-      },
-      "path": [
-        "comment",
-        "commentable_type"
-      ],
-      "pointer": "/comment/commentable_type"
-    },
-    {
-      "code": "field_unknown",
-      "detail": "Unknown field",
-      "meta": {
-        "allowed": [
-          "body",
-          "author_name"
-        ],
-        "field": "commentable_id"
-      },
-      "path": [
-        "comment",
-        "commentable_id"
-      ],
-      "pointer": "/comment/commentable_id"
-    }
-  ],
-  "layer": "contract"
+  "comment": {
+    "id": "dbce7141-50f8-54be-a575-221af6420d0a",
+    "body": "This is a great article!",
+    "authorName": "Jane Doe",
+    "commentableType": "GentleOwl::Post",
+    "commentableId": "f32a709f-0312-5981-a770-feaf25b51a04",
+    "createdAt": "2024-01-01T12:00:00.000Z"
+  }
 }
 ```
 
@@ -252,45 +247,18 @@ Content-Type: application/json
 }
 ```
 
-**Response** `400`
+**Response** `201`
 
 ```json
 {
-  "issues": [
-    {
-      "code": "field_unknown",
-      "detail": "Unknown field",
-      "meta": {
-        "allowed": [
-          "body",
-          "author_name"
-        ],
-        "field": "commentable_type"
-      },
-      "path": [
-        "comment",
-        "commentable_type"
-      ],
-      "pointer": "/comment/commentable_type"
-    },
-    {
-      "code": "field_unknown",
-      "detail": "Unknown field",
-      "meta": {
-        "allowed": [
-          "body",
-          "author_name"
-        ],
-        "field": "commentable_id"
-      },
-      "path": [
-        "comment",
-        "commentable_id"
-      ],
-      "pointer": "/comment/commentable_id"
-    }
-  ],
-  "layer": "contract"
+  "comment": {
+    "id": "993459b6-a155-510a-9f23-be59835d3fee",
+    "body": "Very helpful video!",
+    "authorName": "Bob Smith",
+    "commentableType": "GentleOwl::Video",
+    "commentableId": "f78a691a-9f85-54c7-a39d-9f47d579942b",
+    "createdAt": "2024-01-01T12:00:00.000Z"
+  }
 }
 ```
 
@@ -305,29 +273,27 @@ Content-Type: application/json
 GET /gentle_owl/comments?filter[commentable_type][eq]=GentleOwl::Post
 ```
 
-**Response** `400`
+**Response** `200`
 
 ```json
 {
-  "issues": [
+  "comments": [
     {
-      "code": "field_unknown",
-      "detail": "Unknown field",
-      "meta": {
-        "allowed": [
-          "sort",
-          "page",
-          "include"
-        ],
-        "field": "filter"
-      },
-      "path": [
-        "filter"
-      ],
-      "pointer": "/filter"
+      "id": "050873ac-daa3-53e7-b684-62a96fa68421",
+      "body": "Post comment",
+      "authorName": "User 1",
+      "commentableType": "GentleOwl::Post",
+      "commentableId": "53f2f96c-84a9-5d43-a211-bd0081ca6808",
+      "createdAt": "2024-01-01T12:00:00.000Z"
     }
   ],
-  "layer": "contract"
+  "pagination": {
+    "items": 1,
+    "total": 1,
+    "current": 1,
+    "next": null,
+    "prev": null
+  }
 }
 ```
 
