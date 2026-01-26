@@ -54,6 +54,8 @@ module Apiwork
       class_attribute :_identifier, instance_accessor: false
       class_attribute :_representation_class, instance_accessor: false
       class_attribute :_building, default: false, instance_accessor: false
+      class_attribute :_synthetic_contracts, default: {}, instance_accessor: false
+      class_attribute :_synthetic, default: false, instance_accessor: false
 
       # @api public
       # @return [Adapter::Request] the parsed and validated request
@@ -77,6 +79,10 @@ module Apiwork
 
       class << self
         attr_writer :api_class
+
+        def synthetic?
+          _synthetic
+        end
 
         # @api public
         # The scope prefix for contract-scoped types.
@@ -386,9 +392,19 @@ module Apiwork
         def find_contract_for_representation(representation_class)
           return nil unless representation_class&.name
 
-          representation_class.name
-            .sub(/Representation\z/, 'Contract')
-            .safe_constantize
+          contract_name = representation_class.name.sub(/Representation\z/, 'Contract')
+          contract_class = contract_name.safe_constantize
+
+          return contract_class if contract_class.is_a?(Class) && contract_class < Contract::Base
+
+          _synthetic_contracts[representation_class] ||= build_synthetic_contract(representation_class)
+        end
+
+        def build_synthetic_contract(representation_class)
+          Class.new(Contract::Base) do
+            self._synthetic = true
+            self._representation_class = representation_class
+          end
         end
 
         def representation_class

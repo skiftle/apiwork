@@ -39,16 +39,6 @@ module Apiwork
               return nil if visited.include?(association_representation)
 
               association_contract = registrar.find_contract_for_representation(association_representation)
-
-              unless association_contract
-                contract_name = association_representation.name.sub(/Representation$/, 'Contract')
-                association_contract = begin
-                  contract_name.constantize
-                rescue NameError
-                  nil
-                end
-              end
-
               return nil unless association_contract
 
               alias_name = association_representation.root_key.singular.to_sym
