@@ -207,27 +207,27 @@ module Apiwork
         result, metadata = apply_capabilities({ data: collection }, representation_class, request, document_type: :collection)
         serialize_options = result[:serialize_options] || {}
 
-        rep = serialization_instance(representation_class)
-        serialized = rep.serialize_resource(result[:data], serialize_options:, context: user_context)
+        serialization = serialization_instance(representation_class)
+        data = serialization.serialize_resource(result[:data], serialize_options:, context: user_context)
 
-        self.class.collection_document.new(serialized, representation_class.root_key, metadata, capabilities, meta).json
+        self.class.collection_document.new(data, metadata, representation_class.root_key, capabilities, meta).json
       end
 
       def process_record(record, representation_class, request, meta: {}, user_context: {})
         result, metadata = apply_capabilities({ data: record }, representation_class, request, document_type: :record)
         serialize_options = result[:serialize_options] || {}
 
-        rep = serialization_instance(representation_class)
-        serialized = rep.serialize_resource(result[:data], serialize_options:, context: user_context)
+        serialization = serialization_instance(representation_class)
+        data = serialization.serialize_resource(result[:data], serialize_options:, context: user_context)
 
-        self.class.record_document.new(serialized, representation_class.root_key, metadata, capabilities, meta).json
+        self.class.record_document.new(data, metadata, representation_class.root_key, capabilities, meta).json
       end
 
       def process_error(error, representation_class, user_context: {})
-        rep = serialization_instance(representation_class)
-        serialized = rep.serialize_error(error, context: user_context)
+        serialization = serialization_instance(representation_class)
+        data = serialization.serialize_error(error, context: user_context)
 
-        self.class.error_document.new(serialized).json
+        self.class.error_document.new(data).json
       end
 
       def register_api(api_class, features)

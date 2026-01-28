@@ -9,10 +9,10 @@ module Apiwork
 
           attr_reader :capabilities, :meta, :metadata, :root_key
 
-          def initialize(data, root_key, metadata, capabilities, meta)
+          def initialize(data, metadata, root_key, capabilities, meta)
             super(data)
-            @root_key = root_key
             @metadata = metadata
+            @root_key = root_key
             @capabilities = capabilities
             @meta = meta
           end
