@@ -104,7 +104,7 @@ Return nil if no changes are made.
 
 ### #result
 
-`#result(data: nil, document: nil, includes: nil, serialize_options: nil)`
+`#result(data: nil, includes: nil, metadata: nil, serialize_options: nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/computation/base.rb#L67)
 
@@ -115,7 +115,7 @@ Creates a result object.
 | Name | Type | Description |
 |------|------|-------------|
 | `data` | `Object, nil` | transformed data |
-| `document` | `Hash, nil` | metadata to add to response |
+| `metadata` | `Hash, nil` | metadata to add to response |
 | `includes` | `Array, nil` | associations to preload |
 | `serialize_options` | `Hash, nil` | options for serialization |
 

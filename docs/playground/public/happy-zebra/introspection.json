@@ -2294,29 +2294,7 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "union",
-          "discriminator": null,
-          "variants": [
-            {
-              "default": null,
-              "deprecated": false,
-              "description": null,
-              "example": null,
-              "nullable": false,
-              "optional": false,
-              "type": "boolean"
-            },
-            {
-              "default": null,
-              "deprecated": false,
-              "description": null,
-              "example": null,
-              "nullable": false,
-              "optional": false,
-              "type": "ref",
-              "ref": "user_include"
-            }
-          ]
+          "type": "boolean"
         }
       },
       "type": "object",
