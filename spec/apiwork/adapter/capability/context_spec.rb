@@ -43,20 +43,6 @@ RSpec.describe Apiwork::Adapter::Capability::Context do
     end
   end
 
-  describe '#document_type' do
-    it 'defaults to nil' do
-      action = build_action(:show, :get)
-      context = described_class.new(action:)
-      expect(context.document_type).to be_nil
-    end
-
-    it 'stores provided document_type' do
-      action = build_action(:index, :get)
-      context = described_class.new(action:, document_type: :collection)
-      expect(context.document_type).to eq(:collection)
-    end
-  end
-
   describe '#request' do
     it 'defaults to nil' do
       action = build_action(:show, :get)
@@ -70,28 +56,6 @@ RSpec.describe Apiwork::Adapter::Capability::Context do
       context = described_class.new(action:, request:)
       expect(context.request).to eq(request)
       expect(context.request.query).to eq({ page: { size: 10 } })
-    end
-  end
-
-  describe '#with_document_type' do
-    it 'returns a new context with the document_type set' do
-      action = build_action(:index, :get)
-      context = described_class.new(action:, context: { user_id: 1 }, meta: { total: 100 })
-      new_context = context.with_document_type(:collection)
-
-      expect(new_context).not_to eq(context)
-      expect(new_context.document_type).to eq(:collection)
-      expect(new_context.action).to eq(action)
-      expect(new_context.context).to eq({ user_id: 1 })
-      expect(new_context.meta).to eq({ total: 100 })
-    end
-
-    it 'returns self if document_type is already set to same value' do
-      action = build_action(:index, :get)
-      context = described_class.new(action:, document_type: :collection)
-      new_context = context.with_document_type(:collection)
-
-      expect(new_context).to eq(context)
     end
   end
 

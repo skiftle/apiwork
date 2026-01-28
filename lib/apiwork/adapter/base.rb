@@ -204,8 +204,7 @@ module Apiwork
       transform_response KeyTransformer
 
       def process_collection(collection, representation_class, context)
-        scoped_context = context.with_document_type(:collection)
-        result, document = apply_capabilities({ data: collection }, scoped_context)
+        result, document = apply_capabilities({ data: collection }, context, document_type: :collection)
         serialize_options = result[:serialize_options] || {}
 
         rep = serialization_instance(representation_class)
@@ -215,8 +214,7 @@ module Apiwork
       end
 
       def process_record(record, representation_class, context)
-        scoped_context = context.with_document_type(:record)
-        result, document = apply_capabilities({ data: record }, scoped_context)
+        result, document = apply_capabilities({ data: record }, context, document_type: :record)
         serialize_options = result[:serialize_options] || {}
 
         rep = serialization_instance(representation_class)
@@ -280,8 +278,8 @@ module Apiwork
         self.class.serialization.new(representation_class)
       end
 
-      def apply_capabilities(data, context)
-        runner = Capability::Runner.new(capabilities, document_type: context.document_type)
+      def apply_capabilities(data, context, document_type:)
+        runner = Capability::Runner.new(capabilities, document_type:)
         runner.run(data, context)
       end
 

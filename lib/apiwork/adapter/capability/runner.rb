@@ -13,8 +13,7 @@ module Apiwork
           collection = data[:data]
           return [data, {}] if @capabilities.empty?
 
-          scoped_context = context.with_document_type(@document_type)
-          transformed, document, serialize_options = run_pipeline(@capabilities, collection, scoped_context)
+          transformed, document, serialize_options = run_pipeline(@capabilities, collection, context)
 
           [{ serialize_options:, data: transformed }, document]
         end
@@ -27,7 +26,7 @@ module Apiwork
           includes = []
 
           data = capabilities.reduce(collection) do |current, capability|
-            result = capability.apply(current, context)
+            result = capability.apply(current, context, document_type: @document_type)
             next current unless result
 
             document.merge!(result.document) if result.document

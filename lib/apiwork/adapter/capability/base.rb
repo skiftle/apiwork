@@ -146,18 +146,18 @@ module Apiwork
           target.params.empty? ? nil : target
         end
 
-        def apply(data, adapter_context)
+        def apply(data, context, document_type:)
           klass = self.class.computation_class
           return ApplyResult.new(data:) unless klass
 
           scope = klass.scope
-          return ApplyResult.new(data:) if scope && scope != adapter_context.document_type
+          return ApplyResult.new(data:) if scope && scope != document_type
 
           klass.new(
             data,
-            adapter_context.representation_class,
-            merged_config(adapter_context.representation_class),
-            adapter_context.request,
+            context.representation_class,
+            merged_config(context.representation_class),
+            context.request,
           ).apply
         end
 
