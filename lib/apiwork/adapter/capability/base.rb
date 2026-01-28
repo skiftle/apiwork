@@ -114,26 +114,24 @@ module Apiwork
           klass = self.class.api_class
           return unless klass
 
-          context = API::Context.new(
+          klass.new(
             api_class:,
             features:,
             capability_name: self.class.capability_name,
             options: config,
-          )
-          klass.new(context).build
+          ).build
         end
 
         def contract_types(contract_class, representation_class, actions)
           klass = self.class.contract_class
           return unless klass
 
-          context = Contract::Context.new(
+          klass.new(
             actions:,
             contract_class:,
             representation_class:,
             options: merged_config(representation_class),
-          )
-          klass.new(context).build
+          ).build
         end
 
         def shape(shape_context)
@@ -165,13 +163,12 @@ module Apiwork
           scope = klass.scope
           return ApplyResult.new(data:) if scope && scope != adapter_context.document_type
 
-          context = Computation::Context.new(
+          klass.new(
             data:,
             options: merged_config(adapter_context.representation_class),
             representation_class: adapter_context.representation_class,
             request: adapter_context.request,
-          )
-          klass.new(context).apply
+          ).apply
         end
 
         private

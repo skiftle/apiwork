@@ -38,11 +38,11 @@ module Apiwork
             end
           end
 
-          def initialize(context)
-            @data = context.data
-            @request = context.request
-            @options = context.options
-            @representation_class = context.representation_class
+          def initialize(data:, options:, representation_class:, request:)
+            @data = data
+            @options = options
+            @representation_class = representation_class
+            @request = request
           end
 
           # @api public

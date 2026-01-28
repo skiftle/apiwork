@@ -58,11 +58,11 @@ module Apiwork
                    :union,
                    to: :api_class
 
-          def initialize(context)
-            @api_class = context.api_class
-            @features = context.features
-            @capability_name = context.capability_name
-            @options = context.options
+          def initialize(api_class, features, capability_name: nil, options: nil)
+            @api_class = api_class
+            @features = features
+            @capability_name = capability_name
+            @options = options
           end
 
           # @api public
