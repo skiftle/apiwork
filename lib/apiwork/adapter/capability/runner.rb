@@ -10,12 +10,9 @@ module Apiwork
         end
 
         def run(data, representation_class, request)
-          collection = data[:data]
-          return [data, {}] if @capabilities.empty?
+          return [data, {}, {}] if @capabilities.empty?
 
-          transformed, metadata, serialize_options = run_pipeline(@capabilities, collection, representation_class, request)
-
-          [{ serialize_options:, data: transformed }, metadata]
+          run_pipeline(@capabilities, data, representation_class, request)
         end
 
         private

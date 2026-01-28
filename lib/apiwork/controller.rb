@@ -128,9 +128,9 @@ module Apiwork
 
       json = if representation_class
                if data.is_a?(Enumerable)
-                 adapter.process_collection(data, representation_class, api_request, meta:, user_context: context)
+                 adapter.process_collection(data, representation_class, api_request, context:, meta:)
                else
-                 adapter.process_record(data, representation_class, api_request, meta:, user_context: context)
+                 adapter.process_record(data, representation_class, api_request, context:, meta:)
                end
              else
                data[:meta] = meta if meta.present?
@@ -217,7 +217,7 @@ module Apiwork
 
     def render_error(error)
       representation_class = resource ? contract_class.representation_class : nil
-      json = adapter.process_error(error, representation_class, user_context: context)
+      json = adapter.process_error(error, representation_class, context:)
       render json:, status: error.status
     end
 

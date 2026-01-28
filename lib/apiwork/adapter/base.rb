@@ -203,29 +203,27 @@ module Apiwork
       transform_request KeyNormalizer
       transform_response KeyTransformer
 
-      def process_collection(collection, representation_class, request, meta: {}, user_context: {})
-        result, metadata = apply_capabilities({ data: collection }, representation_class, request, document_type: :collection)
-        serialize_options = result[:serialize_options] || {}
+      def process_collection(collection, representation_class, request, context: {}, meta: {})
+        collection, metadata, serialize_options = apply_capabilities(collection, representation_class, request, document_type: :collection)
 
         serialization = serialization_instance(representation_class)
-        data = serialization.serialize_resource(result[:data], serialize_options:, context: user_context)
+        data = serialization.serialize_resource(collection, context:, serialize_options:)
 
         self.class.collection_document.new(data, metadata, representation_class.root_key, capabilities, meta).json
       end
 
-      def process_record(record, representation_class, request, meta: {}, user_context: {})
-        result, metadata = apply_capabilities({ data: record }, representation_class, request, document_type: :record)
-        serialize_options = result[:serialize_options] || {}
+      def process_record(record, representation_class, request, context: {}, meta: {})
+        record, metadata, serialize_options = apply_capabilities(record, representation_class, request, document_type: :record)
 
         serialization = serialization_instance(representation_class)
-        data = serialization.serialize_resource(result[:data], serialize_options:, context: user_context)
+        data = serialization.serialize_resource(record, context:, serialize_options:)
 
         self.class.record_document.new(data, metadata, representation_class.root_key, capabilities, meta).json
       end
 
-      def process_error(error, representation_class, user_context: {})
+      def process_error(error, representation_class, context: {})
         serialization = serialization_instance(representation_class)
-        data = serialization.serialize_error(error, context: user_context)
+        data = serialization.serialize_error(error, context:)
 
         self.class.error_document.new(data).json
       end
