@@ -51,7 +51,7 @@ module Apiwork
           @data = data
         end
 
-        def build
+        def json
           raise NotImplementedError
         end
       end

@@ -210,7 +210,7 @@ module Apiwork
         rep = serialization_instance(representation_class)
         serialized = rep.serialize_resource(result[:data], serialize_options:, context: user_context)
 
-        self.class.collection_document.new(serialized, representation_class.root_key, metadata, capabilities, meta).build
+        self.class.collection_document.new(serialized, representation_class.root_key, metadata, capabilities, meta).json
       end
 
       def process_record(record, representation_class, request, meta: {}, user_context: {})
@@ -220,14 +220,14 @@ module Apiwork
         rep = serialization_instance(representation_class)
         serialized = rep.serialize_resource(result[:data], serialize_options:, context: user_context)
 
-        self.class.record_document.new(serialized, representation_class.root_key, metadata, capabilities, meta).build
+        self.class.record_document.new(serialized, representation_class.root_key, metadata, capabilities, meta).json
       end
 
       def process_error(error, representation_class, user_context: {})
         rep = serialization_instance(representation_class)
         serialized = rep.serialize_error(error, context: user_context)
 
-        self.class.error_document.new(serialized).build
+        self.class.error_document.new(serialized).json
       end
 
       def register_api(api_class, features)

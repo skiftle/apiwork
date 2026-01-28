@@ -16,10 +16,6 @@ module Apiwork
             @capabilities = capabilities
             @meta = meta
           end
-
-          def build
-            json
-          end
         end
       end
     end
