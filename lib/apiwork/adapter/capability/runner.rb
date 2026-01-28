@@ -13,15 +13,15 @@ module Apiwork
           collection = data[:data]
           return [data, {}] if @capabilities.empty?
 
-          transformed, document, serialize_options = run_pipeline(@capabilities, collection, representation_class, request)
+          transformed, metadata, serialize_options = run_pipeline(@capabilities, collection, representation_class, request)
 
-          [{ serialize_options:, data: transformed }, document]
+          [{ serialize_options:, data: transformed }, metadata]
         end
 
         private
 
         def run_pipeline(capabilities, collection, representation_class, request)
-          document = {}
+          metadata = {}
           serialize_options = {}
           includes = []
 
@@ -29,7 +29,7 @@ module Apiwork
             result = capability.apply(current, representation_class, request, document_type: @document_type)
             next current unless result
 
-            document.merge!(result.document) if result.document
+            metadata.merge!(result.metadata) if result.metadata
             serialize_options.merge!(result.serialize_options || {})
             includes.concat(result.includes || [])
             result.data
@@ -37,7 +37,7 @@ module Apiwork
 
           preloaded = preload_associations(data, includes.uniq)
 
-          [preloaded, document, serialize_options]
+          [preloaded, metadata, serialize_options]
         end
 
         def preload_associations(data, includes)

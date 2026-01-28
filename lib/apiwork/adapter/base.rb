@@ -204,23 +204,23 @@ module Apiwork
       transform_response KeyTransformer
 
       def process_collection(collection, representation_class, request, meta: {}, user_context: {})
-        result, document = apply_capabilities({ data: collection }, representation_class, request, document_type: :collection)
+        result, metadata = apply_capabilities({ data: collection }, representation_class, request, document_type: :collection)
         serialize_options = result[:serialize_options] || {}
 
         rep = serialization_instance(representation_class)
         serialized = rep.serialize_resource(result[:data], serialize_options:, context: user_context)
 
-        self.class.collection_document.new(representation_class, serialized, document, capabilities, meta).build
+        self.class.collection_document.new(serialized, representation_class, metadata, capabilities, meta).build
       end
 
       def process_record(record, representation_class, request, meta: {}, user_context: {})
-        result, document = apply_capabilities({ data: record }, representation_class, request, document_type: :record)
+        result, metadata = apply_capabilities({ data: record }, representation_class, request, document_type: :record)
         serialize_options = result[:serialize_options] || {}
 
         rep = serialization_instance(representation_class)
         serialized = rep.serialize_resource(result[:data], serialize_options:, context: user_context)
 
-        self.class.record_document.new(representation_class, serialized, document, capabilities, meta).build
+        self.class.record_document.new(serialized, representation_class, metadata, capabilities, meta).build
       end
 
       def process_error(error, representation_class, user_context: {})

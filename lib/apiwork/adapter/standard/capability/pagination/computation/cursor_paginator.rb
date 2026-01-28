@@ -24,9 +24,7 @@ module Apiwork
                 has_more = records.size > page_size
                 records = records.first(page_size)
 
-                metadata = build_metadata(records, has_more)
-
-                [records, metadata]
+                [records, build_metadata(records, has_more)]
               end
 
               private
@@ -61,8 +59,10 @@ module Apiwork
 
               def build_metadata(records, has_more)
                 {
-                  next: has_more && records.any? ? encode_cursor(records.last) : nil,
-                  prev: (@params[:after] || @params[:before]) && records.any? ? encode_cursor(records.first) : nil,
+                  pagination: {
+                    next: has_more && records.any? ? encode_cursor(records.last) : nil,
+                    prev: (@params[:after] || @params[:before]) && records.any? ? encode_cursor(records.first) : nil,
+                  },
                 }
               end
 

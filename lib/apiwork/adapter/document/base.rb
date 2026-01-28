@@ -4,7 +4,7 @@ module Apiwork
   module Adapter
     module Document
       class Base
-        attr_reader :capabilities, :data, :document, :meta, :representation_class
+        attr_reader :data
 
         class << self
           def document_type(value = nil)
@@ -47,19 +47,11 @@ module Apiwork
           end
         end
 
-        def initialize(representation_class, data, document, capabilities, meta)
-          @representation_class = representation_class
+        def initialize(data)
           @data = data
-          @document = document
-          @capabilities = capabilities
-          @meta = meta
         end
 
         def build
-          json.merge(document).compact
-        end
-
-        def json
           raise NotImplementedError
         end
       end

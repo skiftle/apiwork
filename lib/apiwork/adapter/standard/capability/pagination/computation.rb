@@ -9,8 +9,8 @@ module Apiwork
             scope :collection
 
             def apply
-              data, pagination = paginate
-              result(data:, document: { pagination: })
+              data, metadata = paginate
+              result(data:, metadata:)
             end
 
             private

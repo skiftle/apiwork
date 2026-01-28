@@ -60,15 +60,15 @@ module Apiwork
           # Creates a result object.
           #
           # @param data [Object, nil] transformed data
-          # @param document [Hash, nil] metadata to add to response
+          # @param metadata [Hash, nil] metadata to add to response
           # @param includes [Array, nil] associations to preload
           # @param serialize_options [Hash, nil] options for serialization
           # @return [ApplyResult]
-          def result(data: nil, document: nil, includes: nil, serialize_options: nil)
+          def result(data: nil, includes: nil, metadata: nil, serialize_options: nil)
             ApplyResult.new(
               data:,
-              document:,
               includes:,
+              metadata:,
               serialize_options:,
             )
           end
