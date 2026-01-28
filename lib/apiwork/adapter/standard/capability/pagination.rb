@@ -18,9 +18,6 @@ module Apiwork
           api API
           contract Contract
           computation Computation
-
-          # each_bound_contract do |context|
-          # end
         end
       end
     end

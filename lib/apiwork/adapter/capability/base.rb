@@ -132,18 +132,14 @@ module Apiwork
           scope = klass&.scope
           return nil if scope && scope != shape_context.type
 
-          target = ::Apiwork::API::Object.new
-          shape = Shape.new(
-            target,
-            shape_context.representation_class,
-            merged_config(shape_context.representation_class),
-          )
+          object = ::Apiwork::API::Object.new
+          shape = Shape.new(object, merged_config(shape_context.representation_class))
           if shape_block.arity.positive?
             shape_block.call(shape)
           else
             shape.instance_exec(&shape_block)
           end
-          target.params.empty? ? nil : target
+          object.params.empty? ? nil : object
         end
 
         def apply(data, representation_class, request, document_type:)

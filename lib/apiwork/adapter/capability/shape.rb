@@ -4,7 +4,7 @@ module Apiwork
   module Adapter
     module Capability
       class Shape
-        attr_reader :options, :representation_class
+        attr_reader :options
 
         delegate :array,
                  :array?,
@@ -36,17 +36,16 @@ module Apiwork
                  :union?,
                  :uuid,
                  :uuid?,
-                 to: :target
+                 to: :object
 
-        def initialize(target, representation_class, options)
-          @target = target
-          @representation_class = representation_class
+        def initialize(object, options)
+          @object = object
           @options = options
         end
 
         private
 
-        attr_reader :target
+        attr_reader :object
       end
     end
   end
