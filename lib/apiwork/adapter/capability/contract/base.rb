@@ -105,11 +105,11 @@ module Apiwork
                    :union,
                    to: :contract_class
 
-          def initialize(actions:, contract_class:, options:, representation_class:)
-            @actions = actions
+          def initialize(contract_class, representation_class, actions, options)
             @contract_class = contract_class
-            @options = options
             @representation_class = representation_class
+            @actions = actions
+            @options = options
           end
 
           # @api public

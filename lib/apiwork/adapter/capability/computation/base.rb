@@ -38,10 +38,10 @@ module Apiwork
             end
           end
 
-          def initialize(data:, options:, representation_class:, request:)
+          def initialize(data, representation_class, options, request)
             @data = data
-            @options = options
             @representation_class = representation_class
+            @options = options
             @request = request
           end
 
