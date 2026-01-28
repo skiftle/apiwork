@@ -15,12 +15,16 @@ module Apiwork
 
                 scoped = scoped_enum_name(name)
 
-                union :"#{name}_filter" do
-                  variant { reference scoped }
-                  variant partial: true do
-                    object do
-                      reference :eq, to: scoped
-                      array(:in) { reference scoped }
+                union :"#{name}_filter" do |union|
+                  union.variant do |element|
+                    element.reference scoped
+                  end
+                  union.variant partial: true do |element|
+                    element.object do |object|
+                      object.reference :eq, to: scoped
+                      object.array(:in) do |array|
+                        array.reference scoped
+                      end
                     end
                   end
                 end
@@ -57,39 +61,49 @@ module Apiwork
                 [name, filter_type]
               end
 
-              object :filter do
-                array? Constants::AND do
-                  reference :filter
+              object :filter do |object|
+                object.array? Constants::AND do |element|
+                  element.reference :filter
                 end
-                array? Constants::OR do
-                  reference :filter
+                object.array? Constants::OR do |element|
+                  element.reference :filter
                 end
-                reference? Constants::NOT, to: :filter
+                object.reference? Constants::NOT, to: :filter
 
                 attributes.each do |name, type, filter_type, shorthand|
                   if shorthand
-                    union? name do
-                      variant { of(type) }
-                      variant { reference filter_type }
+                    object.union? name do |union|
+                      union.variant do |element|
+                        element.of(type)
+                      end
+                      union.variant do |element|
+                        element.reference filter_type
+                      end
                     end
                   else
-                    reference? name, to: filter_type
+                    object.reference? name, to: filter_type
                   end
                 end
 
                 associations.each do |name, filter_type|
-                  reference? name, to: filter_type
+                  object.reference? name, to: filter_type
                 end
               end
 
               return unless type?(:filter)
 
-              action :index do
-                request do
-                  query do
-                    union? :filter do
-                      variant { reference :filter }
-                      variant { array { reference :filter } }
+              action :index do |action|
+                action.request do |request|
+                  request.query do |query|
+                    query.union? :filter do |union|
+                      union.variant do |element|
+                        element.reference :filter
+                      end
+                      union.variant do |element|
+                        element.array do |array|
+                          array.reference :filter
+                        end
+                      end
                     end
                   end
                 end
@@ -114,12 +128,16 @@ module Apiwork
 
                 scoped = scoped_enum_name(name)
 
-                union :"#{name}_filter" do
-                  variant { reference scoped }
-                  variant partial: true do
-                    object do
-                      reference :eq, to: scoped
-                      array(:in) { reference scoped }
+                union :"#{name}_filter" do |union|
+                  union.variant do |element|
+                    element.reference scoped
+                  end
+                  union.variant partial: true do |element|
+                    element.object do |object|
+                      object.reference :eq, to: scoped
+                      object.array(:in) do |array|
+                        array.reference scoped
+                      end
                     end
                   end
                 end
@@ -134,18 +152,22 @@ module Apiwork
                 next unless sti_union
                 next if type?(:"#{name}_filter")
 
-                allowed_values = sti_union.variants.values.map { |v| v.tag.to_s }
+                allowed_values = sti_union.variants.values.map { |variant_data| variant_data.tag.to_s }
 
                 enum name, values: allowed_values
 
                 scoped = scoped_enum_name(name)
 
-                union :"#{name}_filter" do
-                  variant { reference scoped }
-                  variant partial: true do
-                    object do
-                      reference :eq, to: scoped
-                      array(:in) { reference scoped }
+                union :"#{name}_filter" do |union|
+                  union.variant do |element|
+                    element.reference scoped
+                  end
+                  union.variant partial: true do |element|
+                    element.object do |object|
+                      object.reference :eq, to: scoped
+                      object.array(:in) do |array|
+                        array.reference scoped
+                      end
                     end
                   end
                 end

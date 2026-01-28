@@ -13,10 +13,10 @@ module Apiwork
               return unless type?(:include)
 
               actions.each_key do |action_name|
-                action(action_name) do
-                  request do
-                    query do
-                      reference? :include
+                action(action_name) do |action|
+                  action.request do |request|
+                    request.query do |query|
+                      query.reference? :include
                     end
                   end
                 end
@@ -41,7 +41,7 @@ module Apiwork
                 visited:,
               )
 
-              object(type_name) do
+              object(type_name) do |object|
                 association_params.each do |param_data|
                   name = param_data[:name]
                   include_mode = param_data[:include_mode]
@@ -50,14 +50,15 @@ module Apiwork
 
                   case param_type
                   when :boolean
-                    boolean name, optional: true unless include_mode == :always
+                    object.boolean name, optional: true unless include_mode == :always
                   when :reference
-                    reference name, optional: true, to: include_type
+                    object.reference name, optional: true, to: include_type
                   when :union
-                    assoc_type = include_type
-                    union name, optional: true do
-                      variant { boolean }
-                      variant { reference assoc_type }
+                    object.union name, optional: true do |union|
+                      union.variant(&:boolean)
+                      union.variant do |element|
+                        element.reference include_type
+                      end
                     end
                   end
                 end

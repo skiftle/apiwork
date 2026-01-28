@@ -97,9 +97,17 @@ module Apiwork
           return existing_block unless new_block
           return new_block unless existing_block
 
-          proc do
-            instance_eval(&existing_block)
-            instance_eval(&new_block)
+          proc do |shape|
+            if existing_block.arity.positive?
+              existing_block.call(shape)
+            else
+              shape.instance_eval(&existing_block)
+            end
+            if new_block.arity.positive?
+              new_block.call(shape)
+            else
+              shape.instance_eval(&new_block)
+            end
           end
         end
 
@@ -148,7 +156,9 @@ module Apiwork
                      Union.new(discriminator: @discriminator)
                    end
 
-          @shape.instance_eval(&@block) if @block
+          return unless @block
+
+          @block.arity.positive? ? @block.call(@shape) : @shape.instance_eval(&@block)
         end
       end
     end
