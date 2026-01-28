@@ -24,7 +24,7 @@ module Apiwork
 
                 contract_action.request do |request|
                   request.body do |body|
-                    body.reference root_key, to: payload_type_name
+                    body.reference(root_key, to: payload_type_name)
                   end
                 end
               end
@@ -59,7 +59,7 @@ module Apiwork
 
               params = collect_writable_params(action_name)
 
-              object type_name, representation_class: representation_class do |object|
+              object(type_name, representation_class: representation_class) do |object|
                 if representation_class.variant?
                   parent_union = representation_class.superclass.union
                   discriminator_name = parent_union.discriminator
@@ -67,15 +67,17 @@ module Apiwork
                   discriminator_optional = action_name == :update
                   store_value = parent_union.needs_transform? ? representation_class.model_class.sti_name : nil
 
-                  object.literal discriminator_name,
-                                 as: as_column,
-                                 optional: discriminator_optional,
-                                 store: store_value,
-                                 value: representation_class.tag.to_s
+                  object.literal(
+                    discriminator_name,
+                    as: as_column,
+                    optional: discriminator_optional,
+                    store: store_value,
+                    value: representation_class.tag.to_s,
+                  )
                 end
 
                 params.each do |param_config|
-                  object.param param_config[:name], **param_config[:options]
+                  object.param(param_config[:name], **param_config[:options])
                 end
               end
             end
@@ -93,11 +95,11 @@ module Apiwork
               writable_params = collect_writable_params(:create)
               id_type = primary_key_type
 
-              object :nested_create_payload do |object|
-                object.literal :_op, optional: true, value: 'create'
-                object.param :id, optional: true, type: id_type
+              object(:nested_create_payload) do |object|
+                object.literal(:_op, optional: true, value: 'create')
+                object.param(:id, optional: true, type: id_type)
                 writable_params.each do |param_config|
-                  object.param param_config[:name], **param_config[:options]
+                  object.param(param_config[:name], **param_config[:options])
                 end
               end
             end
@@ -108,11 +110,11 @@ module Apiwork
               writable_params = collect_writable_params(:update)
               id_type = primary_key_type
 
-              object :nested_update_payload do |object|
-                object.literal :_op, optional: true, value: 'update'
-                object.param :id, optional: true, type: id_type
+              object(:nested_update_payload) do |object|
+                object.literal(:_op, optional: true, value: 'update')
+                object.param(:id, optional: true, type: id_type)
                 writable_params.each do |param_config|
-                  object.param param_config[:name], **param_config[:options]
+                  object.param(param_config[:name], **param_config[:options])
                 end
               end
             end
@@ -122,9 +124,9 @@ module Apiwork
 
               id_type = primary_key_type
 
-              object :nested_delete_payload do |object|
-                object.literal :_op, optional: true, value: 'delete'
-                object.param :id, type: id_type
+              object(:nested_delete_payload) do |object|
+                object.literal(:_op, optional: true, value: 'delete')
+                object.param(:id, type: id_type)
               end
             end
 
@@ -135,15 +137,15 @@ module Apiwork
               update_type = scoped_type_name(:nested_update_payload)
               delete_type = scoped_type_name(:nested_delete_payload)
 
-              union :nested_payload, discriminator: :_op do |union|
+              union(:nested_payload, discriminator: :_op) do |union|
                 union.variant(tag: 'create') do |element|
-                  element.reference create_type
+                  element.reference(create_type)
                 end
                 union.variant(tag: 'update') do |element|
-                  element.reference update_type
+                  element.reference(update_type)
                 end
                 union.variant(tag: 'delete') do |element|
-                  element.reference delete_type
+                  element.reference(delete_type)
                 end
               end
             end
@@ -164,10 +166,10 @@ module Apiwork
                 { tag: tag.to_s, type: :"#{alias_name}_#{action_name}_payload" }
               end
 
-              union union_type_name, discriminator: discriminator_name do |union|
+              union(union_type_name, discriminator: discriminator_name) do |union|
                 variant_refs.each do |variant_ref|
                   union.variant(tag: variant_ref[:tag]) do |element|
-                    element.reference variant_ref[:type]
+                    element.reference(variant_ref[:type])
                   end
                 end
               end

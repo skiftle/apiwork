@@ -10,16 +10,16 @@ module Apiwork
               build_sort_type
               return unless type?(:sort)
 
-              action :index do |action|
+              action(:index) do |action|
                 action.request do |request|
                   request.query do |query|
-                    query.union? :sort do |union|
+                    query.union?(:sort) do |union|
                       union.variant do |element|
-                        element.reference :sort
+                        element.reference(:sort)
                       end
                       union.variant do |element|
                         element.array do |array|
-                          array.reference :sort
+                          array.reference(:sort)
                         end
                       end
                     end
@@ -36,13 +36,13 @@ module Apiwork
               attribute_sorts = collect_attribute_sorts
               association_sorts = collect_association_sorts
 
-              object :sort do |object|
+              object(:sort) do |object|
                 attribute_sorts.each do |name|
-                  object.reference? name, to: :sort_direction
+                  object.reference?(name, to: :sort_direction)
                 end
 
                 association_sorts.each do |sort_config|
-                  object.reference? sort_config[:name], to: sort_config[:type]
+                  object.reference?(sort_config[:name], to: sort_config[:type])
                 end
               end
             end

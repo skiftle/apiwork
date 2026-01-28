@@ -16,7 +16,7 @@ module Apiwork
                 action(action_name) do |action|
                   action.request do |request|
                     request.query do |query|
-                      query.reference? :include
+                      query.reference?(:include)
                     end
                   end
                 end
@@ -50,14 +50,14 @@ module Apiwork
 
                   case param_type
                   when :boolean
-                    object.boolean name, optional: true unless include_mode == :always
+                    object.boolean(name, optional: true) unless include_mode == :always
                   when :reference
-                    object.reference name, optional: true, to: include_type
+                    object.reference(name, optional: true, to: include_type)
                   when :union
-                    object.union name, optional: true do |union|
+                    object.union(name, optional: true) do |union|
                       union.variant(&:boolean)
                       union.variant do |element|
-                        element.reference include_type
+                        element.reference(include_type)
                       end
                     end
                   end

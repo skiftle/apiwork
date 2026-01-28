@@ -9,20 +9,20 @@ module Apiwork
             def build
               return unless actions.key?(:index)
 
-              object :page do |object|
+              object(:page) do |object|
                 if options.strategy == :cursor
-                  object.string? :after
-                  object.string? :before
+                  object.string?(:after)
+                  object.string?(:before)
                 else
-                  object.integer? :number, min: 1
+                  object.integer?(:number, min: 1)
                 end
-                object.integer? :size, max: options.max_size, min: 1
+                object.integer?(:size, max: options.max_size, min: 1)
               end
 
-              action :index do |action|
+              action(:index) do |action|
                 action.request do |request|
                   request.query do |query|
-                    query.reference? :page
+                    query.reference?(:page)
                   end
                 end
               end

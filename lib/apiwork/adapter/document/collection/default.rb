@@ -5,14 +5,14 @@ module Apiwork
     module Document
       module Collection
         class Default < Base
-          shape do
-            root_key = context.representation_class.root_key
+          shape do |shape|
+            root_key = shape.context.representation_class.root_key
 
-            array root_key.plural.to_sym do
-              reference root_key.singular.to_sym
+            shape.array(root_key.plural.to_sym) do |element|
+              element.reference(root_key.singular.to_sym)
             end
 
-            object? :meta
+            shape.object?(:meta)
           end
 
           def json

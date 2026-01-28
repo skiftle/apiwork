@@ -19,20 +19,18 @@ module Apiwork
             def build
               @api_class.enum :layer, values: %w[http contract domain]
 
-              @api_class.object :issue do
-                string :code
-                string :detail
-                array :path do
-                  string
-                end
-                string :pointer
-                object :meta
+              @api_class.object(:issue) do |object|
+                object.string(:code)
+                object.string(:detail)
+                object.array(:path, &:string)
+                object.string(:pointer)
+                object.object(:meta)
               end
 
-              @api_class.object :error_response_body do
-                reference :layer
-                array :issues do
-                  reference :issue
+              @api_class.object(:error_response_body) do |object|
+                object.reference(:layer)
+                object.array(:issues) do |element|
+                  element.reference(:issue)
                 end
               end
             end

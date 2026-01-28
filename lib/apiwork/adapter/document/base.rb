@@ -39,7 +39,12 @@ module Apiwork
 
               def build
                 builder = ShapeBuilder.new(target, context)
-                builder.instance_exec(&self.class.instance_variable_get(:@callable))
+                block = self.class.instance_variable_get(:@callable)
+                if block.arity.positive?
+                  block.call(builder)
+                else
+                  builder.instance_exec(&block)
+                end
               end
             end
           end

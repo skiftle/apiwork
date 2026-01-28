@@ -5,9 +5,9 @@ module Apiwork
     module Document
       module Record
         class Default < Base
-          shape do
-            reference context.representation_class.root_key.singular.to_sym
-            object? :meta
+          shape do |shape|
+            shape.reference(shape.context.representation_class.root_key.singular.to_sym)
+            shape.object?(:meta)
           end
 
           def json

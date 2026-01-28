@@ -168,20 +168,20 @@ module Apiwork
               params = filter_definition[:params].dup
               params << NULLABLE_EXTENSION if nullable
 
-              object(type_name) do
+              object(type_name) do |object|
                 params.each do |param_options|
                   name = param_options[:name]
                   type = param_options[:type]
                   element_type = param_options[:of]
 
                   if element_type
-                    array name, optional: true do
-                      of(element_type)
+                    object.array(name, optional: true) do |element|
+                      element.of(element_type)
                     end
                   elsif PRIMITIVES.include?(type)
-                    param(name, type:, optional: true)
+                    object.param(name, type:, optional: true)
                   else
-                    reference name, optional: true, to: type
+                    object.reference(name, optional: true, to: type)
                   end
                 end
               end

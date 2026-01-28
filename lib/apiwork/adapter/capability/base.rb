@@ -60,7 +60,7 @@ module Apiwork
           def wrap_api_block(callable)
             Class.new(API::Base) do
               define_method(:build) do
-                instance_exec(&callable)
+                callable.arity.positive? ? callable.call(self) : instance_exec(&callable)
               end
             end
           end
@@ -68,7 +68,7 @@ module Apiwork
           def wrap_contract_block(callable)
             Class.new(Contract::Base) do
               define_method(:build) do
-                instance_exec(&callable)
+                callable.arity.positive? ? callable.call(self) : instance_exec(&callable)
               end
             end
           end
@@ -76,7 +76,7 @@ module Apiwork
           def wrap_computation_block(callable)
             Class.new(Computation::Base) do
               define_method(:apply) do
-                instance_exec(&callable)
+                callable.arity.positive? ? callable.call(self) : instance_exec(&callable)
               end
             end
           end
@@ -150,7 +150,11 @@ module Apiwork
             options: merged_config(shape_context.representation_class),
             representation_class: shape_context.representation_class,
           )
-          context.instance_exec(&shape_block)
+          if shape_block.arity.positive?
+            shape_block.call(context)
+          else
+            context.instance_exec(&shape_block)
+          end
           target.params.empty? ? nil : target
         end
 
