@@ -133,15 +133,15 @@ module Apiwork
           return nil if scope && scope != shape_context.type
 
           target = ::Apiwork::API::Object.new
-          context = ShapeContext.new(
-            target:,
-            options: merged_config(shape_context.representation_class),
-            representation_class: shape_context.representation_class,
+          shape = Shape.new(
+            target,
+            shape_context.representation_class,
+            merged_config(shape_context.representation_class),
           )
           if shape_block.arity.positive?
-            shape_block.call(context)
+            shape_block.call(shape)
           else
-            context.instance_exec(&shape_block)
+            shape.instance_exec(&shape_block)
           end
           target.params.empty? ? nil : target
         end
