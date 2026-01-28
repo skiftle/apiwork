@@ -77,7 +77,7 @@ When using [`representation`](../representations/introduction.md), types are gen
 
 ```ruby
 class InvoiceContract < Apiwork::Contract::Base
-  representation
+  representation InvoiceRepresentation
 
   # Add description to the auto-generated filter object
   object :filter, description: "Filter invoices by date, status, or customer"
@@ -98,7 +98,7 @@ The same works for enums:
 
 ```ruby
 class InvoiceContract < Apiwork::Contract::Base
-  representation
+  representation InvoiceRepresentation
 
   enum :status, description: "Invoice lifecycle status"
 end

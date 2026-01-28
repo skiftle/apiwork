@@ -138,15 +138,15 @@ has_one :profile, include: :always
 
 ### From Representation to Contract
 
-Use `representation` to generate a complete contract from your representation:
+Use `representation` to connect a contract to its representation:
 
 ```ruby
 class PostContract < ApplicationContract
-  representation
+  representation PostRepresentation
 end
 ```
 
-`representation` connects to `PostRepresentation` by naming convention. This single line generates typed definitions for all CRUD actions.
+This single line generates typed definitions for all CRUD actions based on the representation's attributes and options.
 
 ::: tip
 You can also write contracts entirely by hand without representations. This is useful for non-CRUD endpoints or custom APIs. See [Contracts](../core/contracts/introduction.md).
@@ -174,7 +174,7 @@ The defaults usually work. But you can extend or replace any action:
 
 ```ruby
 class PostContract < ApplicationContract
-  representation
+  representation PostRepresentation
 
   action :index do
     request do

@@ -70,6 +70,30 @@ end
 
 Apiwork infers types, nullability, defaults, and enum values from your database and models.
 
+## Configuring Behavior
+
+Beyond mapping data, representations configure what operations the [adapter](../adapters/introduction.md) allows.
+
+```ruby
+class InvoiceRepresentation < Apiwork::Representation::Base
+  attribute :id
+  attribute :number, filterable: true, sortable: true
+  attribute :total, filterable: true
+  attribute :issued_on, sortable: true, writable: true
+
+  belongs_to :customer, filterable: true
+  has_many :lines, writable: true
+end
+```
+
+| Option | Effect |
+|--------|--------|
+| `filterable` | Clients can filter by this field |
+| `sortable` | Clients can sort by this field |
+| `writable` | Clients can set this field in requests |
+
+The adapter interprets these options and generates the corresponding contract types, query parameters, and runtime behavior.
+
 ## Connecting to Contract
 
 Use `representation` to connect a contract to its representation:
@@ -83,20 +107,6 @@ end
 With `representation`, Apiwork auto-generates request bodies, response shapes, filter types, sort options and includes — all from the representation definition.
 
 At runtime, the [adapter](../adapters/introduction.md) interprets these definitions and handles validation, querying, and serialization automatically.
-
-## Representations as Instructions
-
-Representations are purely declarative — they describe *what* exists, not *how* to process it. The [adapter](../adapters/introduction.md) interprets your representation and handles everything: building contracts, validating requests, querying the database, and serializing responses.
-
-Representation definitions also tell the adapter:
-
-- Which fields are safe to [filter](../adapters/standard-adapter/filtering.md) on
-- Which attributes can be [sorted](../adapters/standard-adapter/sorting.md) by
-- How results are [paginated](../adapters/standard-adapter/pagination.md)
-- Which associations can be [included](../adapters/standard-adapter/includes.md)
-- How nested writes should be handled
-
-The adapter uses representation definitions for all API behavior.
 
 ## Root Key
 

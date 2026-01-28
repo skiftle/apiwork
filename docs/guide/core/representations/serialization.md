@@ -46,7 +46,7 @@ class PostRepresentation < Apiwork::Representation::Base
   attribute :can_edit, type: :boolean
 
   def can_edit
-    context[:current_user]&.can_edit?(object)
+    context[:current_user]&.can_edit?(record)
   end
 end
 ```

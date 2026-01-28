@@ -4,11 +4,9 @@ order: 1
 
 # Introduction
 
-Contracts define what goes in and what comes out of each resource action.
+Contracts define the data structures at your API boundary.
 
-Resource actions are defined by your [API definitions](../api-definitions/introduction.md). For example, a `resources :posts` declaration exposes the standard CRUD actions (`index`, `show`, `create`, `update`, `destroy`), each of which can be described and enforced by a contract.
-
-You declare the shape of requests and responses using [types](../types/introduction.md). At runtime, Apiwork executes these contracts as a typed boundary: coercing input values into their declared types (booleans, numbers, dates, datetimes, times, decimals, enums, and more), validating constraints, rejecting invalid data, and logging response mismatches in development.
+You declare shapes using [types](../types/introduction.md). At runtime, Apiwork validates incoming requests against these definitions — coercing values into declared types, enforcing constraints, and rejecting invalid data.
 
 ## A Minimal Contract
 
@@ -26,6 +24,18 @@ end
 ```
 
 The `create` action expects a request body with `title` and `body`, both strings.
+
+## Automatic Contract Creation
+
+Not every representation needs an explicit contract. When Apiwork encounters a representation without a matching contract — through an association or STI variant — it creates one automatically.
+
+```ruby
+class OrderRepresentation < Apiwork::Representation::Base
+  has_many :lines  # LineRepresentation exists, but no LineContract
+end
+```
+
+Apiwork generates a contract for `LineRepresentation` on the fly. You only need to create a contract if you have an endpoint for the resource or need to customize the generated types.
 
 ## Naming Convention
 
@@ -59,6 +69,48 @@ The built-in adapter provides a complete REST API runtime out of the box. For ea
 All generated behavior remains fully customizable. You can override individual actions, replace them entirely, or extend them by merging additional behavior on top.
 
 Now responses are serialized through the representation. See [Representations](../representations/introduction.md).
+
+## Sharing Types Between Contracts
+
+Not every domain concept needs an endpoint. An `Address` might only appear nested inside orders or users. A `LineItem` might be used across invoices and quotes.
+
+These concepts still benefit from typed definitions. Define them in a contract:
+
+```ruby
+class AddressContract < Apiwork::Contract::Base
+  object :address do
+    string :street
+    string :city
+    string :postal_code
+    string :country
+  end
+end
+```
+
+Then [import](./imports.md) where needed:
+
+```ruby
+class OrderContract < Apiwork::Contract::Base
+  import AddressContract, as: :address
+
+  action :create do
+    request do
+      body do
+        reference :shipping_address, to: :address
+        reference :billing_address, to: :address
+      end
+    end
+  end
+end
+```
+
+`AddressContract` has no endpoint — it exists purely to define the `Address` type.
+
+`OrderContract` imports it and references the type in its actions.
+
+::: info Import prefix
+Imported types are prefixed with the `as:` name. An `:address` type from `as: :address` becomes just `:address`. Other types like `:details` would become `:address_details`.
+:::
 
 ## What Happens at Runtime
 

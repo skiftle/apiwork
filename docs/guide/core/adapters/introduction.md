@@ -10,15 +10,15 @@ The adapter implements the API conventions and enforces consistent behavior acro
 
 ## Bound Contracts
 
-A contract becomes **bound** when you call `representation`. This connects the contract to a representation by naming convention — `InvoiceContract` finds `InvoiceRepresentation` in the same namespace.
+A contract becomes **bound** when you call `representation` with a representation class.
 
 ```ruby
 class InvoiceContract < Apiwork::Contract::Base
-  representation
+  representation InvoiceRepresentation
 end
 ```
 
-Bound contracts unlock capabilities like filtering, sorting, and includes — behaviors that require knowledge of the underlying data structure. Contracts without schemas remain valid but operate without these derived behaviors.
+Bound contracts unlock capabilities like filtering, sorting, and includes — behaviors that require knowledge of the underlying data structure. Contracts without representations remain valid but operate without these derived behaviors.
 
 ## Capabilities
 
