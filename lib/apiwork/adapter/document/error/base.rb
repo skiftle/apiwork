@@ -5,10 +5,7 @@ module Apiwork
     module Document
       module Error
         class Base < Document::Base
-          attr_reader :data
-
-          def initialize(data)
-            super()
+          def initialize(data) # rubocop:disable Lint/MissingSuper
             @data = data
           end
         end

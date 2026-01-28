@@ -11,8 +11,8 @@ next: false
 Base class for document shapes.
 
 Subclass to define response type structure for record or collection documents.
-The block is evaluated in the context of a [ShapeBuilder](shape-builder), providing direct
-access to type definition methods and context.
+The block receives the shape instance with delegated type definition methods
+and access to context.
 
 **Example: Custom shape class**
 
