@@ -6,7 +6,7 @@ module Apiwork
       module Collection
         class Default < Base
           shape do |shape|
-            root_key = shape.context.representation_class.root_key
+            root_key = shape.representation_class.root_key
 
             shape.array(root_key.plural.to_sym) do |element|
               element.reference(root_key.singular.to_sym)

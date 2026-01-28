@@ -307,28 +307,24 @@ module Apiwork
 
       def build_record_action_response(contract_class, representation_class, action, contract_action)
         result_wrapper = build_result_wrapper(contract_class, representation_class, action.name, :record)
-
         record_shape_class = self.class.record_document.shape_class
-        shape_context = Document::ShapeContext.new(representation_class, capabilities, :record)
 
         contract_action.response do |response|
           response.result_wrapper = result_wrapper
           response.body do |body|
-            record_shape_class.build(body, shape_context)
+            record_shape_class.build(body, representation_class, capabilities, :record)
           end
         end
       end
 
       def build_collection_action_response(contract_class, representation_class, action, contract_action)
         result_wrapper = build_result_wrapper(contract_class, representation_class, action.name, :collection)
-
         collection_shape_class = self.class.collection_document.shape_class
-        shape_context = Document::ShapeContext.new(representation_class, capabilities, :collection)
 
         contract_action.response do |response|
           response.result_wrapper = result_wrapper
           response.body do |body|
-            collection_shape_class.build(body, shape_context)
+            collection_shape_class.build(body, representation_class, capabilities, :collection)
           end
         end
       end
@@ -352,10 +348,9 @@ module Apiwork
                         else
                           self.class.record_document.shape_class
                         end
-          shape_context = Document::ShapeContext.new(representation_class, capabilities, response_type)
 
           contract_class.object(success_type_name) do |object|
-            shape_class.build(object, shape_context)
+            shape_class.build(object, representation_class, capabilities, response_type)
           end
         end
 

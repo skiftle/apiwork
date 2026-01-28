@@ -124,16 +124,16 @@ module Apiwork
           klass.new(contract_class, representation_class, actions, merged_config(representation_class)).build
         end
 
-        def shape(shape_context)
+        def shape(representation_class, type)
           shape_block = self.class.shape
           return nil unless shape_block
 
           klass = self.class.computation_class
           scope = klass&.scope
-          return nil if scope && scope != shape_context.type
+          return nil if scope && scope != type
 
           object = ::Apiwork::API::Object.new
-          shape = Shape.new(object, merged_config(shape_context.representation_class))
+          shape = Shape.new(object, merged_config(representation_class))
           if shape_block.arity.positive?
             shape_block.call(shape)
           else

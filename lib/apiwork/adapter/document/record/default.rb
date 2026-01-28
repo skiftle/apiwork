@@ -6,7 +6,7 @@ module Apiwork
       module Record
         class Default < Base
           shape do |shape|
-            shape.reference(shape.context.representation_class.root_key.singular.to_sym)
+            shape.reference(shape.representation_class.root_key.singular.to_sym)
             shape.object?(:meta)
           end
 
