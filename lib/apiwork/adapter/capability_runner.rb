@@ -8,12 +8,12 @@ module Apiwork
         @document_type = document_type
       end
 
-      def run(data, state)
+      def run(data, context)
         collection = data[:data]
         return [data, {}] if @capabilities.empty?
 
-        context = build_context(state)
-        transformed, document, serialize_options = run_pipeline(@capabilities, collection, context)
+        scoped_context = context.with_document_type(@document_type)
+        transformed, document, serialize_options = run_pipeline(@capabilities, collection, scoped_context)
 
         [{ serialize_options:, data: transformed }, document]
       end
@@ -51,16 +51,6 @@ module Apiwork
         else
           data
         end
-      end
-
-      def build_context(state)
-        CapabilityContext.new(
-          action: state.action,
-          document_type: @document_type,
-          representation_class: state.representation_class,
-          request: state.request,
-          user_context: state.context,
-        )
       end
     end
   end

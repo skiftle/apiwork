@@ -203,29 +203,31 @@ module Apiwork
       transform_request KeyNormalizer
       transform_response KeyTransformer
 
-      def process_collection(collection, representation_class, state)
-        result, document = apply_capabilities({ data: collection }, state, document_type: :collection)
+      def process_collection(collection, representation_class, context)
+        scoped_context = context.with_document_type(:collection)
+        result, document = apply_capabilities({ data: collection }, scoped_context)
         serialize_options = result[:serialize_options] || {}
 
         rep = serialization_instance(representation_class)
-        serialized = rep.serialize_resource(result[:data], serialize_options:, context: state.context)
+        serialized = rep.serialize_resource(result[:data], serialize_options:, context: context.context)
 
-        self.class.collection_document.new(representation_class, serialized, document, capabilities, state.meta).build
+        self.class.collection_document.new(representation_class, serialized, document, capabilities, context.meta).build
       end
 
-      def process_record(record, representation_class, state)
-        result, document = apply_capabilities({ data: record }, state, document_type: :record)
+      def process_record(record, representation_class, context)
+        scoped_context = context.with_document_type(:record)
+        result, document = apply_capabilities({ data: record }, scoped_context)
         serialize_options = result[:serialize_options] || {}
 
         rep = serialization_instance(representation_class)
-        serialized = rep.serialize_resource(result[:data], serialize_options:, context: state.context)
+        serialized = rep.serialize_resource(result[:data], serialize_options:, context: context.context)
 
-        self.class.record_document.new(representation_class, serialized, document, capabilities, state.meta).build
+        self.class.record_document.new(representation_class, serialized, document, capabilities, context.meta).build
       end
 
-      def process_error(error, state)
-        rep = serialization_instance(state.representation_class)
-        serialized = rep.serialize_error(error, context: state.context)
+      def process_error(error, context)
+        rep = serialization_instance(context.representation_class)
+        serialized = rep.serialize_error(error, context: context.context)
 
         self.class.error_document.new(serialized).build
       end
@@ -278,9 +280,9 @@ module Apiwork
         self.class.serialization.new(representation_class)
       end
 
-      def apply_capabilities(data, state, document_type:)
-        runner = CapabilityRunner.new(capabilities, document_type:)
-        runner.run(data, state)
+      def apply_capabilities(data, context)
+        runner = CapabilityRunner.new(capabilities, document_type: context.document_type)
+        runner.run(data, context)
       end
 
       def build_action_responses(contract_class, representation_class, actions)
