@@ -124,13 +124,13 @@ module Apiwork
       end
 
       representation_class = contract_class.representation_class
-      adapter_context = build_context(meta:, representation_class:)
+      api_request = resource ? contract.request : nil
 
       json = if representation_class
                if data.is_a?(Enumerable)
-                 adapter.process_collection(data, representation_class, adapter_context)
+                 adapter.process_collection(data, representation_class, api_request, meta:, user_context: context)
                else
-                 adapter.process_record(data, representation_class, adapter_context)
+                 adapter.process_record(data, representation_class, api_request, meta:, user_context: context)
                end
              else
                data[:meta] = meta if meta.present?
@@ -216,22 +216,9 @@ module Apiwork
     end
 
     def render_error(error)
-      json = adapter.process_error(error, build_context)
+      representation_class = resource ? contract_class.representation_class : nil
+      json = adapter.process_error(error, representation_class, user_context: context)
       render json:, status: error.status
-    end
-
-    def build_context(meta: {}, representation_class: nil)
-      Adapter::Capability::Context.new(
-        context:,
-        meta:,
-        representation_class:,
-        action: Adapter::Action.new(
-          action_name,
-          request.method_symbol,
-          resource&.actions&.dig(action_name.to_sym)&.type,
-        ),
-        request: resource ? contract.request : nil,
-      )
     end
 
     def contract_class

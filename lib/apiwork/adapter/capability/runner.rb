@@ -9,24 +9,24 @@ module Apiwork
           @document_type = document_type
         end
 
-        def run(data, context)
+        def run(data, representation_class, request)
           collection = data[:data]
           return [data, {}] if @capabilities.empty?
 
-          transformed, document, serialize_options = run_pipeline(@capabilities, collection, context)
+          transformed, document, serialize_options = run_pipeline(@capabilities, collection, representation_class, request)
 
           [{ serialize_options:, data: transformed }, document]
         end
 
         private
 
-        def run_pipeline(capabilities, collection, context)
+        def run_pipeline(capabilities, collection, representation_class, request)
           document = {}
           serialize_options = {}
           includes = []
 
           data = capabilities.reduce(collection) do |current, capability|
-            result = capability.apply(current, context, document_type: @document_type)
+            result = capability.apply(current, representation_class, request, document_type: @document_type)
             next current unless result
 
             document.merge!(result.document) if result.document
