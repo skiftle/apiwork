@@ -8,7 +8,7 @@ module Apiwork
       #
       # Subclass to define response type structure for record or collection documents.
       # The block receives the shape instance with delegated type definition methods
-      # and access to representation_class and metadata.
+      # and access to root_key and metadata.
       #
       # @example Custom shape class
       #   class MyShape < Document::Shape
@@ -21,15 +21,15 @@ module Apiwork
       #
       # @example Inline shape block
       #   shape do |shape|
-      #     shape.reference(shape.representation_class.root_key.singular.to_sym)
+      #     shape.reference(shape.root_key.singular.to_sym)
       #     shape.object?(:meta)
       #     shape.merge!(shape.metadata)
       #   end
       class Shape
         class << self
-          def build(target, representation_class, capabilities, type)
+          def build(target, root_key, capabilities, representation_class, type)
             metadata = build_metadata(capabilities, representation_class, type)
-            new(target, representation_class, metadata).build
+            new(target, root_key, metadata).build
           end
 
           private
@@ -49,8 +49,9 @@ module Apiwork
         attr_reader :metadata
 
         # @api public
-        # @return [Class] the representation class
-        attr_reader :representation_class
+        # @return [RootKey] the root key for the representation
+        # @see Representation::RootKey
+        attr_reader :root_key
 
         attr_reader :target
 
@@ -86,9 +87,9 @@ module Apiwork
                  :uuid?,
                  to: :target
 
-        def initialize(target, representation_class, metadata)
+        def initialize(target, root_key, metadata)
           @target = target
-          @representation_class = representation_class
+          @root_key = root_key
           @metadata = metadata
         end
 

@@ -6,14 +6,14 @@ module Apiwork
       module Record
         class Default < Base
           shape do |shape|
-            shape.reference(shape.representation_class.root_key.singular.to_sym)
+            shape.reference(shape.root_key.singular.to_sym)
             shape.object?(:meta)
             shape.merge!(shape.metadata)
           end
 
           def json
             {
-              representation_class.root_key.singular.to_sym => data,
+              root_key.singular.to_sym => data,
               meta: meta.presence,
               **metadata,
             }.compact

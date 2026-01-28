@@ -7,11 +7,11 @@ module Apiwork
         class Base < Document::Base
           document_type :collection
 
-          attr_reader :capabilities, :meta, :metadata, :representation_class
+          attr_reader :capabilities, :meta, :metadata, :root_key
 
-          def initialize(data, representation_class, metadata, capabilities, meta)
+          def initialize(data, root_key, metadata, capabilities, meta)
             super(data)
-            @representation_class = representation_class
+            @root_key = root_key
             @metadata = metadata
             @capabilities = capabilities
             @meta = meta

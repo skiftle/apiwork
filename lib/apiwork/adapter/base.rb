@@ -210,7 +210,7 @@ module Apiwork
         rep = serialization_instance(representation_class)
         serialized = rep.serialize_resource(result[:data], serialize_options:, context: user_context)
 
-        self.class.collection_document.new(serialized, representation_class, metadata, capabilities, meta).build
+        self.class.collection_document.new(serialized, representation_class.root_key, metadata, capabilities, meta).build
       end
 
       def process_record(record, representation_class, request, meta: {}, user_context: {})
@@ -220,7 +220,7 @@ module Apiwork
         rep = serialization_instance(representation_class)
         serialized = rep.serialize_resource(result[:data], serialize_options:, context: user_context)
 
-        self.class.record_document.new(serialized, representation_class, metadata, capabilities, meta).build
+        self.class.record_document.new(serialized, representation_class.root_key, metadata, capabilities, meta).build
       end
 
       def process_error(error, representation_class, user_context: {})
@@ -312,7 +312,7 @@ module Apiwork
         contract_action.response do |response|
           response.result_wrapper = result_wrapper
           response.body do |body|
-            record_shape_class.build(body, representation_class, capabilities, :record)
+            record_shape_class.build(body, representation_class.root_key, capabilities, representation_class, :record)
           end
         end
       end
@@ -324,7 +324,7 @@ module Apiwork
         contract_action.response do |response|
           response.result_wrapper = result_wrapper
           response.body do |body|
-            collection_shape_class.build(body, representation_class, capabilities, :collection)
+            collection_shape_class.build(body, representation_class.root_key, capabilities, representation_class, :collection)
           end
         end
       end
@@ -350,7 +350,7 @@ module Apiwork
                         end
 
           contract_class.object(success_type_name) do |object|
-            shape_class.build(object, representation_class, capabilities, response_type)
+            shape_class.build(object, representation_class.root_key, capabilities, representation_class, response_type)
           end
         end
 

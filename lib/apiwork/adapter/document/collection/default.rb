@@ -6,10 +6,8 @@ module Apiwork
       module Collection
         class Default < Base
           shape do |shape|
-            root_key = shape.representation_class.root_key
-
-            shape.array(root_key.plural.to_sym) do |element|
-              element.reference(root_key.singular.to_sym)
+            shape.array(shape.root_key.plural.to_sym) do |element|
+              element.reference(shape.root_key.singular.to_sym)
             end
 
             shape.object?(:meta)
@@ -18,7 +16,7 @@ module Apiwork
 
           def json
             {
-              representation_class.root_key.plural.to_sym => data,
+              root_key.plural.to_sym => data,
               meta: meta.presence,
               **metadata,
             }.compact
