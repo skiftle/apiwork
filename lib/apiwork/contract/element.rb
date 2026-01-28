@@ -43,7 +43,8 @@ module Apiwork
       # @param min [Integer, nil] minimum value or length
       # @param shape [Contract::Object, Contract::Union, nil] pre-built shape
       # @param value [Object, nil] literal value (literals only)
-      # @yield block for defining nested structure
+      # @yield block for defining nested structure (instance_eval style)
+      # @yieldparam builder [Contract::Object, Contract::Union, Contract::Element] the builder (yield style)
       # @return [void]
       def of(type, discriminator: nil, enum: nil, format: nil, max: nil, min: nil, shape: nil, value: nil, &block)
         resolved_enum = enum.is_a?(Symbol) ? resolve_enum(enum) : enum
@@ -62,7 +63,7 @@ module Apiwork
             @defined = true
           elsif block
             shape = Object.new(@contract_class)
-            shape.instance_eval(&block)
+            block.arity.positive? ? yield(shape) : shape.instance_eval(&block)
             @type = :object
             @shape = shape
             @defined = true
@@ -76,7 +77,7 @@ module Apiwork
             @defined = true
           elsif block
             inner = Element.new(@contract_class)
-            inner.instance_eval(&block)
+            block.arity.positive? ? yield(inner) : inner.instance_eval(&block)
             inner.validate!
             @type = :array
             @of = inner.of_type
@@ -93,7 +94,7 @@ module Apiwork
             @defined = true
           elsif block
             shape = Union.new(@contract_class, discriminator:)
-            shape.instance_eval(&block)
+            block.arity.positive? ? yield(shape) : shape.instance_eval(&block)
             @type = :union
             @shape = shape
             @discriminator = discriminator

@@ -155,11 +155,12 @@ module Apiwork
       # Use the block to define query parameters and request body.
       #
       # @param replace [Boolean] replace inherited definition (default: false)
-      # @yield block for defining query and body
+      # @yield block for defining query and body (instance_eval style)
+      # @yieldparam builder [Contract::Request] the builder (yield style)
       # @return [Request] the request definition
       # @see Contract::Request
       #
-      # @example
+      # @example instance_eval style
       #   action :create do
       #     request do
       #       query do
@@ -170,12 +171,26 @@ module Apiwork
       #       end
       #     end
       #   end
+      #
+      # @example yield style
+      #   action :create do
+      #     request do |request|
+      #       request.query do |query|
+      #         query.boolean? :dry_run
+      #       end
+      #       request.body do |body|
+      #         body.string :title
+      #       end
+      #     end
+      #   end
       def request(replace: false, &block)
         @reset_request = replace if replace
 
         @request ||= Request.new(contract_class, name)
 
-        @request.instance_eval(&block) if block
+        if block
+          block.arity.positive? ? yield(@request) : @request.instance_eval(&block)
+        end
 
         @request
       end
@@ -186,11 +201,12 @@ module Apiwork
       # Use the block to define response body or declare no_content.
       #
       # @param replace [Boolean] replace inherited definition (default: false)
-      # @yield block for defining body or no_content
+      # @yield block for defining body or no_content (instance_eval style)
+      # @yieldparam builder [Contract::Response] the builder (yield style)
       # @return [Response] the response definition
       # @see Contract::Response
       #
-      # @example
+      # @example instance_eval style
       #   action :show do
       #     response do
       #       body do
@@ -200,18 +216,28 @@ module Apiwork
       #     end
       #   end
       #
+      # @example yield style
+      #   action :show do
+      #     response do |response|
+      #       response.body do |body|
+      #         body.uuid :id
+      #         body.string :title
+      #       end
+      #     end
+      #   end
+      #
       # @example No content response
       #   action :destroy do
-      #     response do
-      #       no_content!
-      #     end
+      #     response { no_content! }
       #   end
       def response(replace: false, &block)
         @reset_response = replace if replace
 
         @response ||= Response.new(contract_class, name)
 
-        @response.instance_eval(&block) if block
+        if block
+          block.arity.positive? ? yield(@response) : @response.instance_eval(&block)
+        end
 
         @response
       end

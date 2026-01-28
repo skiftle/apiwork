@@ -1,5 +1,5 @@
 ---
-order: 29
+order: 27
 prev: false
 next: false
 ---
@@ -18,7 +18,7 @@ Returns [Contract::Object](contract-object) via `body`.
 
 `#body(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response.rb#L64)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response.rb#L73)
 
 Defines the response body for this response.
 
@@ -32,13 +32,23 @@ When using representation, body is auto-generated from representation attributes
 
 - [Contract::Object](contract-object)
 
-**Example**
+**Example: instance_eval style**
 
 ```ruby
 body do
   integer :id
   string :title
   decimal :amount
+end
+```
+
+**Example: yield style**
+
+```ruby
+body do |body|
+  body.integer :id
+  body.string :title
+  body.decimal :amount
 end
 ```
 

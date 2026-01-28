@@ -1,5 +1,5 @@
 ---
-order: 28
+order: 26
 prev: false
 next: false
 ---
@@ -18,7 +18,7 @@ Returns [Contract::Object](contract-object) via `query` and `body`.
 
 `#body(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request.rb#L52)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request.rb#L70)
 
 Defines the request body for this request.
 
@@ -32,12 +32,21 @@ Body is parsed from the JSON request body.
 
 - [Contract::Object](contract-object)
 
-**Example**
+**Example: instance_eval style**
 
 ```ruby
 body do
   string :title
   decimal :amount
+end
+```
+
+**Example: yield style**
+
+```ruby
+body do |body|
+  body.string :title
+  body.decimal :amount
 end
 ```
 
@@ -47,7 +56,7 @@ end
 
 `#query(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request.rb#L33)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request.rb#L41)
 
 Defines query parameters for this request.
 
@@ -61,12 +70,21 @@ Query parameters are parsed from the URL query string.
 
 - [Contract::Object](contract-object)
 
-**Example**
+**Example: instance_eval style**
 
 ```ruby
 query do
   integer? :page
   string? :status, enum: :status
+end
+```
+
+**Example: yield style**
+
+```ruby
+query do |query|
+  query.integer? :page
+  query.string? :status, enum: :status
 end
 ```
 

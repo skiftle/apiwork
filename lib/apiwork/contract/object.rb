@@ -59,7 +59,8 @@ module Apiwork
       # @param store [Boolean, nil] whether to persist
       # @param transform [Proc, nil] value transformation lambda
       # @param value [Object, nil] literal value
-      # @yield block for nested structure
+      # @yield block for nested structure (instance_eval style)
+      # @yieldparam builder [Contract::Object, Contract::Union, Contract::Element] the builder (yield style)
       # @return [void]
       def param(
         name,
@@ -140,7 +141,7 @@ module Apiwork
         raise ArgumentError, 'array requires a block' unless block
 
         element = Element.new(@contract_class)
-        element.instance_eval(&block)
+        block.arity.positive? ? yield(element) : element.instance_eval(&block)
         element.validate!
 
         param(
@@ -164,14 +165,16 @@ module Apiwork
       # Use for response data that doesn't belong to the resource itself.
       #
       # @param optional [Boolean] whether meta can be omitted (default: false)
-      # @yield block defining meta params
+      # @yield block defining meta params (instance_eval style)
+      # @yieldparam builder [Contract::Object] the builder (yield style)
       def meta(optional: nil, &block)
         return unless block
 
         existing_meta = @params[:meta]
 
         if existing_meta && existing_meta[:shape]
-          existing_meta[:shape].instance_eval(&block)
+          shape = existing_meta[:shape]
+          block.arity.positive? ? yield(shape) : shape.instance_eval(&block)
         else
           param :meta, optional:, type: :object, &block
         end
@@ -272,7 +275,7 @@ module Apiwork
         raise ArgumentError, 'Union type requires a block with variant definitions' unless block_given?
 
         union = Union.new(@contract_class, discriminator:)
-        union.instance_eval(&block)
+        block.arity.positive? ? yield(union) : union.instance_eval(&block)
 
         @params[name] = (@params[name] || {}).merge(
           {
@@ -413,7 +416,9 @@ module Apiwork
 
         copy_type_definition_params(type_definition, shape)
 
-        shape.instance_eval(&block) if block_given?
+        if block_given?
+          block.arity.positive? ? yield(shape) : shape.instance_eval(&block)
+        end
 
         @params[name] = (@params[name] || {}).merge(
           {
@@ -437,7 +442,7 @@ module Apiwork
 
         if block_given? && type == :array
           element = Element.new(@contract_class)
-          element.instance_eval(&block)
+          block.arity.positive? ? yield(element) : element.instance_eval(&block)
           element.validate!
           resolved_of = element.of_type
           resolved_shape = element.shape
@@ -460,7 +465,7 @@ module Apiwork
           @params[name][:shape] = resolved_shape
         elsif block_given? && type != :array
           nested_shape = Object.new(@contract_class, action_name: @action_name)
-          nested_shape.instance_eval(&block)
+          block.arity.positive? ? yield(nested_shape) : nested_shape.instance_eval(&block)
           @params[name][:shape] = nested_shape
         end
       end

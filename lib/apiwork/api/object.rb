@@ -49,7 +49,8 @@ module Apiwork
       # @param store [Boolean, nil] whether to persist
       # @param transform [Proc, nil] value transformation lambda
       # @param value [Object, nil] literal value
-      # @yield block for nested structure
+      # @yield block for nested structure (instance_eval style)
+      # @yieldparam builder [API::Object, API::Union, API::Element] the builder (yield style)
       # @return [void]
       def param(
         name,
@@ -79,7 +80,7 @@ module Apiwork
 
         if block && type == :array
           element = Element.new
-          element.instance_eval(&block)
+          block.arity.positive? ? yield(element) : element.instance_eval(&block)
           element.validate!
           resolved_of = element.of_type
           resolved_shape = element.shape
@@ -119,7 +120,7 @@ module Apiwork
         raise ArgumentError, 'array requires a block' unless block
 
         element = Element.new
-        element.instance_eval(&block)
+        block.arity.positive? ? yield(element) : element.instance_eval(&block)
         element.validate!
 
         param(
@@ -145,11 +146,11 @@ module Apiwork
         case type
         when :object
           shape = Object.new
-          shape.instance_eval(&block)
+          block.arity.positive? ? yield(shape) : shape.instance_eval(&block)
           shape
         when :union
           shape = Union.new(discriminator:)
-          shape.instance_eval(&block)
+          block.arity.positive? ? yield(shape) : shape.instance_eval(&block)
           shape
         end
       end

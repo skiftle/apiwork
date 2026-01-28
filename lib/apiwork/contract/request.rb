@@ -22,17 +22,27 @@ module Apiwork
       #
       # Query parameters are parsed from the URL query string.
       #
+      # @yield block for defining query params (instance_eval style)
+      # @yieldparam builder [Contract::Object] the builder (yield style)
       # @return [Contract::Object]
       # @see Contract::Object
       #
-      # @example
+      # @example instance_eval style
       #   query do
       #     integer? :page
       #     string? :status, enum: :status
       #   end
+      #
+      # @example yield style
+      #   query do |query|
+      #     query.integer? :page
+      #     query.string? :status, enum: :status
+      #   end
       def query(&block)
         @query ||= Object.new(@contract_class, action_name: @action_name)
-        @query.instance_eval(&block) if block
+        if block
+          block.arity.positive? ? yield(@query) : @query.instance_eval(&block)
+        end
         @query
       end
 
@@ -41,17 +51,27 @@ module Apiwork
       #
       # Body is parsed from the JSON request body.
       #
+      # @yield block for defining body params (instance_eval style)
+      # @yieldparam builder [Contract::Object] the builder (yield style)
       # @return [Contract::Object]
       # @see Contract::Object
       #
-      # @example
+      # @example instance_eval style
       #   body do
       #     string :title
       #     decimal :amount
       #   end
+      #
+      # @example yield style
+      #   body do |body|
+      #     body.string :title
+      #     body.decimal :amount
+      #   end
       def body(&block)
         @body ||= Object.new(@contract_class, action_name: @action_name)
-        @body.instance_eval(&block) if block
+        if block
+          block.arity.positive? ? yield(@body) : @body.instance_eval(&block)
+        end
         @body
       end
     end

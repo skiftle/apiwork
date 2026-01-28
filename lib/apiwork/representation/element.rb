@@ -90,7 +90,8 @@ module Apiwork
       # @param type [Symbol] element type (:object, :array, :union)
       # @param discriminator [Symbol, nil] discriminator field name (unions only)
       # @param shape [API::Object, API::Union, nil] pre-built shape
-      # @yield block for defining nested structure
+      # @yield block for defining nested structure (instance_eval style)
+      # @yieldparam builder [API::Object, API::Union, API::Element] the builder (yield style)
       # @return [void]
       def of(type, discriminator: nil, shape: nil, **_options, &block)
         case type
@@ -101,7 +102,7 @@ module Apiwork
             @defined = true
           elsif block
             builder = API::Object.new
-            builder.instance_eval(&block)
+            block.arity.positive? ? yield(builder) : builder.instance_eval(&block)
             @type = :object
             @shape = builder
             @defined = true
@@ -115,7 +116,7 @@ module Apiwork
             @defined = true
           elsif block
             inner = API::Element.new
-            inner.instance_eval(&block)
+            block.arity.positive? ? yield(inner) : inner.instance_eval(&block)
             inner.validate!
             @type = :array
             @of = inner.of_type
@@ -132,7 +133,7 @@ module Apiwork
             @defined = true
           elsif block
             builder = API::Union.new(discriminator:)
-            builder.instance_eval(&block)
+            block.arity.positive? ? yield(builder) : builder.instance_eval(&block)
             @type = :union
             @shape = builder
             @discriminator = discriminator

@@ -15,7 +15,7 @@ module Apiwork
       raise ArgumentError, 'variant requires a block' unless block
 
       element = build_element
-      element.instance_eval(&block)
+      block.arity.positive? ? yield(element) : element.instance_eval(&block)
       element.validate!
 
       data = {

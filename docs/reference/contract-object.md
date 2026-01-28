@@ -1,5 +1,5 @@
 ---
-order: 27
+order: 25
 prev: false
 next: false
 ---
@@ -463,7 +463,7 @@ Merges params from another object into this one.
 
 `#meta(optional: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L168)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L170)
 
 Shorthand for `object :meta do ... end`.
 
@@ -597,7 +597,7 @@ Defines an optional object.
 
 `#param(name, type: nil, as: nil, default: nil, deprecated: nil, description: nil, discriminator: nil, enum: nil, example: nil, format: nil, max: nil, min: nil, nullable: nil, of: nil, optional: nil, required: nil, shape: nil, store: nil, transform: nil, value: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L64)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L65)
 
 Defines a field with explicit type.
 

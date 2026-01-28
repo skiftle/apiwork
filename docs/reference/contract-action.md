@@ -1,5 +1,5 @@
 ---
-order: 24
+order: 22
 prev: false
 next: false
 ---
@@ -142,7 +142,7 @@ end
 
 `#request(replace: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L173)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L186)
 
 Defines the request structure for this action.
 
@@ -162,7 +162,7 @@ Use the block to define query parameters and request body.
 
 - [Contract::Request](contract-request)
 
-**Example**
+**Example: instance_eval style**
 
 ```ruby
 action :create do
@@ -177,13 +177,28 @@ action :create do
 end
 ```
 
+**Example: yield style**
+
+```ruby
+action :create do
+  request do |request|
+    request.query do |query|
+      query.boolean? :dry_run
+    end
+    request.body do |body|
+      body.string :title
+    end
+  end
+end
+```
+
 ---
 
 ### #response
 
 `#response(replace: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L209)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L233)
 
 Defines the response structure for this action.
 
@@ -203,7 +218,7 @@ Use the block to define response body or declare no_content.
 
 - [Contract::Response](contract-response)
 
-**Example**
+**Example: instance_eval style**
 
 ```ruby
 action :show do
@@ -216,13 +231,24 @@ action :show do
 end
 ```
 
+**Example: yield style**
+
+```ruby
+action :show do
+  response do |response|
+    response.body do |body|
+      body.uuid :id
+      body.string :title
+    end
+  end
+end
+```
+
 **Example: No content response**
 
 ```ruby
 action :destroy do
-  response do
-    no_content!
-  end
+  response { no_content! }
 end
 ```
 

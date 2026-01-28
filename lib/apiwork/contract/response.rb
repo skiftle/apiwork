@@ -52,14 +52,23 @@ module Apiwork
       #
       # When using representation, body is auto-generated from representation attributes.
       #
+      # @yield block for defining body params (instance_eval style)
+      # @yieldparam builder [Contract::Object] the builder (yield style)
       # @return [Contract::Object]
       # @see Contract::Object
       #
-      # @example
+      # @example instance_eval style
       #   body do
       #     integer :id
       #     string :title
       #     decimal :amount
+      #   end
+      #
+      # @example yield style
+      #   body do |body|
+      #     body.integer :id
+      #     body.string :title
+      #     body.decimal :amount
       #   end
       def body(&block)
         if block
@@ -68,7 +77,7 @@ module Apiwork
             action_name: @action_name,
             wrapped: true,
           )
-          @body.instance_eval(&block)
+          block.arity.positive? ? yield(@body) : @body.instance_eval(&block)
         end
         @body
       end

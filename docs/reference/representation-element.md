@@ -1,5 +1,5 @@
 ---
-order: 69
+order: 67
 prev: false
 next: false
 ---
@@ -272,7 +272,7 @@ Defines an object.
 
 `#of(type, discriminator: nil, shape: nil, **_options, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/element.rb#L95)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/element.rb#L96)
 
 Defines the element type.
 

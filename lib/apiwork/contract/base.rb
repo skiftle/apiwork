@@ -307,11 +307,12 @@ module Apiwork
         #
         # @param action_name [Symbol] the controller action name (:index, :show, :create, :update, :destroy, or custom)
         # @param replace [Boolean] replace existing action definition (default: false)
-        # @yield block for defining request/response contract
+        # @yield block for defining request/response contract (instance_eval style)
+        # @yieldparam builder [Contract::Action] the builder (yield style)
         # @return [Contract::Action] the action definition
         # @see Contract::Action
         #
-        # @example Basic CRUD action
+        # @example instance_eval style
         #   class InvoiceContract < Apiwork::Contract::Base
         #     action :show do
         #       request do
@@ -327,27 +328,20 @@ module Apiwork
         #     end
         #   end
         #
-        # @example Action with full request/response
-        #   action :create do
-        #     summary 'Create a new invoice'
-        #     tags :billing
-        #
-        #     request do
-        #       body do
-        #         integer :customer_id
-        #         decimal :amount
+        # @example yield style
+        #   class InvoiceContract < Apiwork::Contract::Base
+        #     action :show do |action|
+        #       action.request do |request|
+        #         request.query do |query|
+        #           query.string? :include
+        #         end
+        #       end
+        #       action.response do |response|
+        #         response.body do |body|
+        #           body.uuid :id
+        #         end
         #       end
         #     end
-        #
-        #     response do
-        #       body do
-        #         uuid :id
-        #         string :status
-        #       end
-        #     end
-        #
-        #     raises :not_found
-        #     raises :unprocessable_entity
         #   end
         def action(action_name, replace: false, &block)
           action_name = action_name.to_sym
@@ -358,7 +352,9 @@ module Apiwork
                      actions[action_name] ||= Action.new(self, action_name)
                    end
 
-          action.instance_eval(&block) if block_given?
+          if block_given?
+            block.arity.positive? ? yield(action) : action.instance_eval(&block)
+          end
           actions[action_name] = action
         end
 

@@ -580,7 +580,7 @@ Defines an optional object.
 
 `#param(name, type: nil, as: nil, default: nil, deprecated: nil, description: nil, discriminator: nil, enum: nil, example: nil, format: nil, max: nil, min: nil, nullable: nil, of: nil, optional: nil, required: nil, shape: nil, store: nil, transform: nil, value: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L54)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L55)
 
 Defines a field with explicit type.
 

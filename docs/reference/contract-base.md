@@ -1,5 +1,5 @@
 ---
-order: 25
+order: 23
 prev: false
 next: false
 ---
@@ -85,7 +85,7 @@ Returns whether this contract is abstract.
 
 `.action(action_name, replace: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L352)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L346)
 
 Defines an action (endpoint) for this contract.
 
@@ -108,7 +108,7 @@ response format, and documentation.
 
 - [Contract::Action](contract-action)
 
-**Example: Basic CRUD action**
+**Example: instance_eval style**
 
 ```ruby
 class InvoiceContract < Apiwork::Contract::Base
@@ -127,29 +127,22 @@ class InvoiceContract < Apiwork::Contract::Base
 end
 ```
 
-**Example: Action with full request/response**
+**Example: yield style**
 
 ```ruby
-action :create do
-  summary 'Create a new invoice'
-  tags :billing
-
-  request do
-    body do
-      integer :customer_id
-      decimal :amount
+class InvoiceContract < Apiwork::Contract::Base
+  action :show do |action|
+    action.request do |request|
+      request.query do |query|
+        query.string? :include
+      end
+    end
+    action.response do |response|
+      response.body do |body|
+        body.uuid :id
+      end
     end
   end
-
-  response do
-    body do
-      uuid :id
-      string :status
-    end
-  end
-
-  raises :not_found
-  raises :unprocessable_entity
 end
 ```
 
@@ -280,7 +273,7 @@ end
 
 `.introspect(expand: false, locale: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L382)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L378)
 
 Returns a hash representation of this contract's structure.
 
@@ -467,7 +460,7 @@ end
 
 `#invalid?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L560)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L556)
 
 Returns whether the contract has validation issues.
 
@@ -517,7 +510,7 @@ Array&lt;[Issue](issue)&gt; — validation issues (empty if valid)
 
 `#valid?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L553)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L549)
 
 Returns whether the contract passed validation.
 

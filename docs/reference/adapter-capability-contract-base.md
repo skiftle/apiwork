@@ -1,5 +1,5 @@
 ---
-order: 15
+order: 14
 prev: false
 next: false
 ---
@@ -47,11 +47,25 @@ Defines request/response for an action.
 
 ---
 
+### #api_class
+
+`#api_class`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/contract/base.rb#L95)
+
+Returns the API class for this contract.
+
+**Returns**
+
+`Class` — the API class
+
+---
+
 ### #build
 
 `#build`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/contract/base.rb#L107)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/contract/base.rb#L120)
 
 Builds contract-level types for this capability.
 
@@ -84,6 +98,26 @@ Defines an enum type.
 
 ---
 
+### #enum?
+
+`#enum?(name)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/contract/base.rb#L39)
+
+Checks if an enum is registered.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `name` | `Symbol` | the enum name |
+
+**Returns**
+
+`Boolean` — true if enum exists
+
+---
+
 ### #find_contract_for_representation
 
 `#find_contract_for_representation(representation_class)`
@@ -108,7 +142,7 @@ Finds the contract class for a representation.
 
 `#import(name, from:)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/contract/base.rb#L39)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/contract/base.rb#L45)
 
 Imports a type from API-level registry.
 
@@ -129,7 +163,7 @@ Imports a type from API-level registry.
 
 `#object(name, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/contract/base.rb#L46)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/contract/base.rb#L52)
 
 Defines a named object type.
 
@@ -173,7 +207,7 @@ Defines a named object type.
 
 `#scoped_enum_name(name)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/contract/base.rb#L66)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/contract/base.rb#L72)
 
 Returns the scoped name for an enum.
 
@@ -193,7 +227,7 @@ Returns the scoped name for an enum.
 
 `#scoped_type_name(name)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/contract/base.rb#L72)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/contract/base.rb#L78)
 
 Returns the scoped name for a type.
 
@@ -213,7 +247,7 @@ Returns the scoped name for a type.
 
 `#type?(name)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/contract/base.rb#L53)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/contract/base.rb#L59)
 
 Checks if a type is registered.
 
@@ -233,7 +267,7 @@ Checks if a type is registered.
 
 `#union(name, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/contract/base.rb#L59)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/contract/base.rb#L65)
 
 Defines a union type.
 
