@@ -18,7 +18,7 @@ module Apiwork
           end
 
           def build
-            json.merge(metadata).compact
+            json
           end
         end
       end

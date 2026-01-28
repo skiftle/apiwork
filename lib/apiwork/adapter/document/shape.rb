@@ -8,13 +8,14 @@ module Apiwork
       #
       # Subclass to define response type structure for record or collection documents.
       # The block receives the shape instance with delegated type definition methods
-      # and access to representation_class.
+      # and access to representation_class and metadata.
       #
       # @example Custom shape class
       #   class MyShape < Document::Shape
       #     def build
       #       reference(:invoice)
       #       object?(:meta)
+      #       merge!(metadata)
       #     end
       #   end
       #
@@ -22,23 +23,30 @@ module Apiwork
       #   shape do |shape|
       #     shape.reference(shape.representation_class.root_key.singular.to_sym)
       #     shape.object?(:meta)
+      #     shape.merge!(shape.metadata)
       #   end
       class Shape
         class << self
           def build(target, representation_class, capabilities, type)
-            new(target, representation_class).build
-            merge_capability_shapes(target, representation_class, capabilities, type)
+            metadata = build_metadata(capabilities, representation_class, type)
+            new(target, representation_class, metadata).build
           end
 
           private
 
-          def merge_capability_shapes(target, representation_class, capabilities, type)
+          def build_metadata(capabilities, representation_class, type)
+            result = ::Apiwork::API::Object.new
             capabilities.each do |capability|
               shape = capability.shape(representation_class, type)
-              target.merge!(shape) if shape
+              result.merge!(shape) if shape
             end
+            result
           end
         end
+
+        # @api public
+        # @return [API::Object] capability shapes to merge
+        attr_reader :metadata
 
         # @api public
         # @return [Class] the representation class
@@ -78,9 +86,10 @@ module Apiwork
                  :uuid?,
                  to: :target
 
-        def initialize(target, representation_class)
+        def initialize(target, representation_class, metadata)
           @target = target
           @representation_class = representation_class
+          @metadata = metadata
         end
 
         def build

@@ -13,13 +13,15 @@ module Apiwork
             end
 
             shape.object?(:meta)
+            shape.merge!(shape.metadata)
           end
 
           def json
             {
               representation_class.root_key.plural.to_sym => data,
               meta: meta.presence,
-            }
+              **metadata,
+            }.compact
           end
         end
       end
