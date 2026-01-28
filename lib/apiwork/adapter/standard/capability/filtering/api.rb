@@ -125,17 +125,10 @@ module Apiwork
             def build
               return unless features.filterable?
 
-              filter_types_to_register = Set.new
-
-              features.filter_types.each do |type|
-                filter_types_to_register.add(determine_filter_type(type, nullable: false))
-              end
-
-              features.nullable_filter_types.each do |type|
-                filter_types_to_register.add(determine_filter_type(type, nullable: true))
-              end
-
-              filter_types_to_register.each { |type| register_filter_type(type) }
+              filter_types = Set.new
+              features.filter_types.each { |type| filter_types.add(determine_filter_type(type, nullable: false)) }
+              features.nullable_filter_types.each { |type| filter_types.add(determine_filter_type(type, nullable: true)) }
+              filter_types.each { |type| register_filter_type(type) }
             end
 
             private
@@ -157,33 +150,27 @@ module Apiwork
             end
 
             def register_filter_type(type_name)
-              base_type_name = type_name.to_s.delete_prefix('nullable_').to_sym
               nullable = type_name.to_s.start_with?('nullable_')
+              base_type_name = type_name.to_s.delete_prefix('nullable_').to_sym
 
               filter_definition = FILTER_DEFINITIONS[base_type_name]
               raise ConfigurationError, "Unknown global filter type: #{type_name.inspect}" unless filter_definition
 
               register_filter_type(filter_definition[:depends_on]) if filter_definition[:depends_on]
 
-              params = filter_definition[:params].dup
-              params << NULLABLE_EXTENSION if nullable
-
               object(type_name) do |object|
-                params.each do |param_options|
-                  name = param_options[:name]
-                  type = param_options[:type]
-                  element_type = param_options[:of]
-
-                  if element_type
-                    object.array(name, optional: true) do |element|
-                      element.of(element_type)
+                filter_definition[:params].each do |param_options|
+                  if param_options[:of]
+                    object.array(param_options[:name], optional: true) do |element|
+                      element.of(param_options[:of])
                     end
-                  elsif PRIMITIVES.include?(type)
-                    object.param(name, type:, optional: true)
+                  elsif PRIMITIVES.include?(param_options[:type])
+                    object.param(param_options[:name], optional: true, type: param_options[:type])
                   else
-                    object.reference(name, optional: true, to: type)
+                    object.reference(param_options[:name], optional: true, to: param_options[:type])
                   end
                 end
+                object.param(:null, optional: true, type: :boolean) if nullable
               end
             end
           end

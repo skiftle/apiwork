@@ -11,8 +11,6 @@ module Apiwork
               build_payload_types
               build_nested_payload_union if api_class.representation_registry.nested_writable?(representation_class)
 
-              root_key = representation_class.root_key.singular.to_sym
-
               %i[create update].each do |action_name|
                 next unless actions.key?(action_name)
 
@@ -24,7 +22,7 @@ module Apiwork
 
                 contract_action.request do |request|
                   request.body do |body|
-                    body.reference(root_key, to: payload_type_name)
+                    body.reference(representation_class.root_key.singular.to_sym, to: payload_type_name)
                   end
                 end
               end
@@ -57,26 +55,20 @@ module Apiwork
               type_name = :"#{action_name}_payload"
               return if type?(type_name)
 
-              params = collect_writable_params(action_name)
-
               object(type_name, representation_class: representation_class) do |object|
                 if representation_class.variant?
                   parent_union = representation_class.superclass.union
-                  discriminator_name = parent_union.discriminator
-                  as_column = discriminator_name != parent_union.column ? parent_union.column : nil
-                  discriminator_optional = action_name == :update
-                  store_value = parent_union.needs_transform? ? representation_class.model_class.sti_name : nil
 
                   object.literal(
-                    discriminator_name,
-                    as: as_column,
-                    optional: discriminator_optional,
-                    store: store_value,
+                    parent_union.discriminator,
+                    as: parent_union.discriminator != parent_union.column ? parent_union.column : nil,
+                    optional: action_name == :update,
+                    store: parent_union.needs_transform? ? representation_class.model_class.sti_name : nil,
                     value: representation_class.tag.to_s,
                   )
                 end
 
-                params.each do |param_config|
+                collect_writable_params(action_name).each do |param_config|
                   object.param(param_config[:name], **param_config[:options])
                 end
               end
@@ -92,13 +84,10 @@ module Apiwork
             def build_nested_create_payload
               return if type?(:nested_create_payload)
 
-              writable_params = collect_writable_params(:create)
-              id_type = primary_key_type
-
               object(:nested_create_payload) do |object|
                 object.literal(:_op, optional: true, value: 'create')
-                object.param(:id, optional: true, type: id_type)
-                writable_params.each do |param_config|
+                object.param(:id, optional: true, type: primary_key_type)
+                collect_writable_params(:create).each do |param_config|
                   object.param(param_config[:name], **param_config[:options])
                 end
               end
@@ -107,13 +96,10 @@ module Apiwork
             def build_nested_update_payload
               return if type?(:nested_update_payload)
 
-              writable_params = collect_writable_params(:update)
-              id_type = primary_key_type
-
               object(:nested_update_payload) do |object|
                 object.literal(:_op, optional: true, value: 'update')
-                object.param(:id, optional: true, type: id_type)
-                writable_params.each do |param_config|
+                object.param(:id, optional: true, type: primary_key_type)
+                collect_writable_params(:update).each do |param_config|
                   object.param(param_config[:name], **param_config[:options])
                 end
               end
@@ -122,51 +108,42 @@ module Apiwork
             def build_nested_delete_payload
               return if type?(:nested_delete_payload)
 
-              id_type = primary_key_type
-
               object(:nested_delete_payload) do |object|
                 object.literal(:_op, optional: true, value: 'delete')
-                object.param(:id, type: id_type)
+                object.param(:id, type: primary_key_type)
               end
             end
 
             def build_nested_union
               return if type?(:nested_payload)
 
-              create_type = scoped_type_name(:nested_create_payload)
-              update_type = scoped_type_name(:nested_update_payload)
-              delete_type = scoped_type_name(:nested_delete_payload)
-
               union(:nested_payload, discriminator: :_op) do |union|
                 union.variant(tag: 'create') do |element|
-                  element.reference(create_type)
+                  element.reference(scoped_type_name(:nested_create_payload))
                 end
                 union.variant(tag: 'update') do |element|
-                  element.reference(update_type)
+                  element.reference(scoped_type_name(:nested_update_payload))
                 end
                 union.variant(tag: 'delete') do |element|
-                  element.reference(delete_type)
+                  element.reference(scoped_type_name(:nested_delete_payload))
                 end
               end
             end
 
             def build_sti_payload_union(action_name)
-              union_type_name = :"#{action_name}_payload"
               representation_union = representation_class.union
-              discriminator_name = representation_union.discriminator
 
               variant_refs = representation_union.variants.filter_map do |tag, variant_data|
-                variant_representation = variant_data.representation_class
-                variant_contract = find_contract_for_representation(variant_representation)
+                variant_contract = find_contract_for_representation(variant_data.representation_class)
                 next unless variant_contract
 
-                alias_name = variant_representation.root_key.singular.to_sym
+                alias_name = variant_data.representation_class.root_key.singular.to_sym
                 import(variant_contract, as: alias_name)
 
                 { tag: tag.to_s, type: :"#{alias_name}_#{action_name}_payload" }
               end
 
-              union(union_type_name, discriminator: discriminator_name) do |union|
+              union(:"#{action_name}_payload", discriminator: representation_union.discriminator) do |union|
                 variant_refs.each do |variant_ref|
                   union.variant(tag: variant_ref[:tag]) do |element|
                     element.reference(variant_ref[:type])

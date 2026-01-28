@@ -127,19 +127,12 @@ module Apiwork
 
             def resolve_association_include_type(association_representation, depth:, visited:)
               association_contract = find_contract_for_representation(association_representation)
+              return build_include_type(association_representation, visited:, depth: depth + 1) unless association_contract
 
-              if association_contract
-                alias_name = association_representation.root_key.singular.to_sym
-                import(association_contract, as: alias_name)
-                imported_type = :"#{alias_name}_include"
-                type?(imported_type) ? imported_type : nil
-              else
-                build_include_type(
-                  association_representation,
-                  visited:,
-                  depth: depth + 1,
-                )
-              end
+              alias_name = association_representation.root_key.singular.to_sym
+              import(association_contract, as: alias_name)
+              imported_type = :"#{alias_name}_include"
+              type?(imported_type) ? imported_type : nil
             end
 
             def includable_params?(target_representation, depth:, visited:)
@@ -168,8 +161,7 @@ module Apiwork
             def type_name_for(representation, depth)
               return :include if depth.zero?
 
-              representation_name = representation.name.demodulize.delete_suffix('Representation').underscore
-              :"#{representation_name}_include"
+              :"#{representation.name.demodulize.delete_suffix('Representation').underscore}_include"
             end
 
             def resolve_association_representation(parent_representation, association)

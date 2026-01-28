@@ -33,15 +33,12 @@ module Apiwork
             def build_sort_type
               return unless sortable_content?
 
-              attribute_sorts = collect_attribute_sorts
-              association_sorts = collect_association_sorts
-
               object(:sort) do |object|
-                attribute_sorts.each do |name|
+                collect_attribute_sorts.each do |name|
                   object.reference?(name, to: :sort_direction)
                 end
 
-                association_sorts.each do |sort_config|
+                collect_association_sorts.each do |sort_config|
                   object.reference?(sort_config[:name], to: sort_config[:type])
                 end
               end
