@@ -16,12 +16,12 @@ module Apiwork
           attr_reader :resource_types_class, :types_class
         end
 
-        def api(registrar, capabilities)
-          self.class.types_class&.build(registrar, capabilities)
+        def api(api_class, features)
+          self.class.types_class&.build(api_class, features)
         end
 
-        def contract(registrar, representation_class, actions)
-          self.class.resource_types_class&.build(registrar, representation_class)
+        def contract(contract_class, representation_class, actions)
+          self.class.resource_types_class&.build(contract_class, representation_class)
         end
 
         def serialize_resource(resource, context:, serialize_options:)

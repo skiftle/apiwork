@@ -287,10 +287,6 @@ module Apiwork
               "#{namespace}::#{reflection.klass.name.demodulize}Representation".safe_constantize
             end
 
-            def api_class
-              registrar.contract_class.api_class
-            end
-
             def sti_base_representation?
               representation_class.discriminated? && representation_class.union&.variants&.any?
             end

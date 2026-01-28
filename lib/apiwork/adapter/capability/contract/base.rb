@@ -36,6 +36,12 @@ module Apiwork
           #   @param values [Array<String>] allowed values
           #   @return [void]
 
+          # @!method enum?(name)
+          #   @api public
+          #   Checks if an enum is registered.
+          #   @param name [Symbol] the enum name
+          #   @return [Boolean] true if enum exists
+
           # @!method import(name, from:)
           #   @api public
           #   Imports a type from API-level registry.
@@ -81,8 +87,15 @@ module Apiwork
           #   @param representation_class [Class] the representation class
           #   @return [Class, nil] the contract class
 
+          # @!method api_class
+          #   @api public
+          #   Returns the API class for this contract.
+          #   @return [Class] the API class
+
           delegate :action,
+                   :api_class,
                    :enum,
+                   :enum?,
                    :find_contract_for_representation,
                    :import,
                    :object,
@@ -90,10 +103,10 @@ module Apiwork
                    :scoped_type_name,
                    :type?,
                    :union,
-                   to: :registrar
+                   to: :contract_class
 
           def initialize(context)
-            @registrar = context.registrar
+            @contract_class = context.contract_class
             @representation_class = context.representation_class
             @actions = context.actions
             @options = context.options
@@ -110,7 +123,7 @@ module Apiwork
 
           private
 
-          attr_reader :registrar
+          attr_reader :contract_class
         end
       end
     end

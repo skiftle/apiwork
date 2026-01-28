@@ -6,17 +6,17 @@ module Apiwork
       class Default < Base
         module Types
           class Resources
-            attr_reader :registrar,
+            attr_reader :contract_class,
                         :representation_class
 
             class << self
-              def build(registrar, representation_class)
-                new(registrar, representation_class).build
+              def build(contract_class, representation_class)
+                new(contract_class, representation_class).build
               end
             end
 
-            def initialize(registrar, representation_class)
-              @registrar = registrar
+            def initialize(contract_class, representation_class)
+              @contract_class = contract_class
               @representation_class = representation_class
             end
 
@@ -29,20 +29,22 @@ module Apiwork
               if sti_base_representation?
                 build_sti_response_union_type
               else
-                register_resource_type(representation_class.root_key.singular.to_sym) unless registrar.type?(registrar.scoped_type_name(nil))
+                unless contract_class.type?(contract_class.scoped_type_name(nil))
+                  register_resource_type(representation_class.root_key.singular.to_sym)
+                end
 
-                registrar.scoped_type_name(nil)
+                contract_class.scoped_type_name(nil)
               end
             end
 
             def import_association_contract(association_representation, visited)
               return nil if visited.include?(association_representation)
 
-              association_contract = registrar.find_contract_for_representation(association_representation)
+              association_contract = contract_class.find_contract_for_representation(association_representation)
               return nil unless association_contract
 
               alias_name = association_representation.root_key.singular.to_sym
-              registrar.import(association_contract, as: alias_name)
+              contract_class.import(association_contract, as: alias_name)
               alias_name
             end
 
@@ -52,7 +54,7 @@ module Apiwork
               representation_class.attributes.each do |name, attribute|
                 next unless attribute.enum&.any?
 
-                registrar.enum(name, values: attribute.enum)
+                contract_class.enum(name, values: attribute.enum)
               end
             end
 
@@ -67,7 +69,7 @@ module Apiwork
               end
 
               local_representation_class = representation_class
-              registrar.object(type_name, representation_class: local_representation_class) do
+              contract_class.object(type_name, representation_class: local_representation_class) do
                 if local_representation_class.variant?
                   discriminator_name = local_representation_class.superclass.union.discriminator
                   literal discriminator_name, value: local_representation_class.tag.to_s
@@ -147,7 +149,7 @@ module Apiwork
                 { tag: tag.to_s, type: variant_type } if variant_type
               end
 
-              registrar.union(union_type_name, discriminator: discriminator_name) do
+              contract_class.union(union_type_name, discriminator: discriminator_name) do
                 variant_types.each do |variant_type|
                   variant tag: variant_type[:tag] do
                     reference variant_type[:type]
@@ -162,11 +164,11 @@ module Apiwork
               union_type_name = representation_class.root_key.singular.to_sym
 
               build_sti_union(union_type_name:, visited:) do |variant_representation_class, _tag, _visit_set|
-                variant_contract = registrar.find_contract_for_representation(variant_representation_class)
+                variant_contract = contract_class.find_contract_for_representation(variant_representation_class)
                 next nil unless variant_contract
 
                 alias_name = variant_representation_class.root_key.singular.to_sym
-                registrar.import(variant_contract, as: alias_name)
+                contract_class.import(variant_contract, as: alias_name)
 
                 alias_name
               end
@@ -183,11 +185,11 @@ module Apiwork
               return build_sti_association_type(association, association_representation, visited:) if association_resource[:sti]
               return nil if visited.include?(association_representation)
 
-              association_contract = registrar.find_contract_for_representation(association_representation)
+              association_contract = contract_class.find_contract_for_representation(association_representation)
               return nil unless association_contract
 
               alias_name = association_representation.root_key.singular.to_sym
-              registrar.import(association_contract, as: alias_name)
+              contract_class.import(association_contract, as: alias_name)
               alias_name
             end
 
@@ -197,13 +199,13 @@ module Apiwork
 
               union_type_name = association.name
 
-              existing_type = registrar.type?(union_type_name)
+              existing_type = contract_class.type?(union_type_name)
               return union_type_name if existing_type
 
               builder = self
               discriminator = association.discriminator
 
-              registrar.union(union_type_name, discriminator:) do
+              contract_class.union(union_type_name, discriminator:) do
                 polymorphic.each do |representation_class|
                   tag = representation_class.type_name || representation_class.model_class.polymorphic_name
                   alias_name = builder.import_association_contract(representation_class, visited)

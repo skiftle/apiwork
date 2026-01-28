@@ -5,10 +5,13 @@ module Apiwork
     module Capability
       module Contract
         class Context
-          attr_reader :actions, :options, :registrar, :representation_class
+          attr_reader :actions,
+                      :contract_class,
+                      :options,
+                      :representation_class
 
-          def initialize(actions:, options:, registrar:, representation_class:)
-            @registrar = registrar
+          def initialize(actions:, contract_class:, options:, representation_class:)
+            @contract_class = contract_class
             @representation_class = representation_class
             @actions = actions
             @options = options

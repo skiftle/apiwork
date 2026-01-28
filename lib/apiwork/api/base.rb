@@ -598,8 +598,7 @@ module Apiwork
           resource = @structure.find_resource { |resource| resource.resolve_contract_class == contract_class }
           actions = resource ? build_adapter_actions(resource.actions) : {}
 
-          contract_registrar = adapter.build_contract_registrar(contract_class)
-          adapter.register_contract(contract_registrar, representation_class, actions)
+          adapter.register_contract(contract_class, representation_class, actions)
         end
 
         def ensure_pre_pass_complete!
@@ -617,8 +616,7 @@ module Apiwork
           end
 
           features = adapter.build_features(@structure)
-          registrar = adapter.build_api_registrar(self)
-          adapter.register_api(registrar, features)
+          adapter.register_api(self, features)
         end
 
         private
@@ -675,8 +673,7 @@ module Apiwork
 
           built_contracts.add(contract_class)
 
-          contract_registrar = adapter.build_contract_registrar(contract_class)
-          adapter.register_contract(contract_registrar, representation_class, build_adapter_actions(resource.actions))
+          adapter.register_contract(contract_class, representation_class, build_adapter_actions(resource.actions))
         end
 
         def build_adapter_actions(actions)

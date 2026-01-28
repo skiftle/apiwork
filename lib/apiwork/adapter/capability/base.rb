@@ -110,26 +110,26 @@ module Apiwork
           @config = Configuration.new(self.class, merged)
         end
 
-        def api_types(registrar, features)
+        def api_types(api_class, features)
           klass = self.class.api_class
           return unless klass
 
           context = API::Context.new(
+            api_class:,
             features:,
-            registrar:,
             capability_name: self.class.capability_name,
             options: config,
           )
           klass.new(context).build
         end
 
-        def contract_types(registrar, representation_class, actions)
+        def contract_types(contract_class, representation_class, actions)
           klass = self.class.contract_class
           return unless klass
 
           context = Contract::Context.new(
             actions:,
-            registrar:,
+            contract_class:,
             representation_class:,
             options: merged_config(representation_class),
           )

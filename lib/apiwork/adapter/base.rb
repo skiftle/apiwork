@@ -230,24 +230,24 @@ module Apiwork
         self.class.error_document.new(serialized).build
       end
 
-      def register_api(registrar, features)
+      def register_api(api_class, features)
         capabilities.each do |capability|
-          capability.api_types(registrar, features)
+          capability.api_types(api_class, features)
         end
 
         serialization_class = self.class.serialization
-        serialization_class&.new(nil)&.api(registrar, features)
+        serialization_class&.new(nil)&.api(api_class, features)
       end
 
-      def register_contract(registrar, representation_class, actions)
+      def register_contract(contract_class, representation_class, actions)
         capabilities.each do |capability|
-          capability.contract_types(registrar, representation_class, actions)
+          capability.contract_types(contract_class, representation_class, actions)
         end
 
         serialization_class = self.class.serialization
-        serialization_class&.new(representation_class)&.contract(registrar, representation_class, actions)
+        serialization_class&.new(representation_class)&.contract(contract_class, representation_class, actions)
 
-        build_action_responses(registrar, representation_class, actions)
+        build_action_responses(contract_class, representation_class, actions)
       end
 
       def normalize_request(request, api_class:)
@@ -260,14 +260,6 @@ module Apiwork
 
       def transform_response_output(response, api_class:)
         self.class.response.run_transforms(response, api_class:)
-      end
-
-      def build_api_registrar(api_class)
-        APIRegistrar.new(api_class)
-      end
-
-      def build_contract_registrar(contract_class)
-        ContractRegistrar.new(contract_class)
       end
 
       def build_features(structure)
@@ -291,30 +283,30 @@ module Apiwork
         runner.run(data, state)
       end
 
-      def build_action_responses(registrar, representation_class, actions)
+      def build_action_responses(contract_class, representation_class, actions)
         actions.each_value do |action|
-          build_action_response(registrar, representation_class, action)
+          build_action_response(contract_class, representation_class, action)
         end
       end
 
-      def build_action_response(registrar, representation_class, action)
-        contract_action = registrar.action(action.name)
+      def build_action_response(contract_class, representation_class, action)
+        contract_action = contract_class.action(action.name)
         return if contract_action.resets_response?
 
         case action.name
         when :index
-          build_collection_action_response(registrar, representation_class, action, contract_action)
+          build_collection_action_response(contract_class, representation_class, action, contract_action)
         when :show, :create, :update
-          build_record_action_response(registrar, representation_class, action, contract_action)
+          build_record_action_response(contract_class, representation_class, action, contract_action)
         when :destroy
           contract_action.response { no_content! }
         else
-          build_custom_action_response(registrar, representation_class, action, contract_action)
+          build_custom_action_response(contract_class, representation_class, action, contract_action)
         end
       end
 
-      def build_record_action_response(registrar, representation_class, action, contract_action)
-        result_wrapper = build_result_wrapper(registrar, representation_class, action.name, :record)
+      def build_record_action_response(contract_class, representation_class, action, contract_action)
+        result_wrapper = build_result_wrapper(contract_class, representation_class, action.name, :record)
 
         record_shape_class = self.class.record_document.shape_class
         shape_context = Document::ShapeContext.new(representation_class, capabilities, :record)
@@ -325,8 +317,8 @@ module Apiwork
         end
       end
 
-      def build_collection_action_response(registrar, representation_class, action, contract_action)
-        result_wrapper = build_result_wrapper(registrar, representation_class, action.name, :collection)
+      def build_collection_action_response(contract_class, representation_class, action, contract_action)
+        result_wrapper = build_result_wrapper(contract_class, representation_class, action.name, :collection)
 
         collection_shape_class = self.class.collection_document.shape_class
         shape_context = Document::ShapeContext.new(representation_class, capabilities, :collection)
@@ -337,20 +329,20 @@ module Apiwork
         end
       end
 
-      def build_custom_action_response(registrar, representation_class, action, contract_action)
+      def build_custom_action_response(contract_class, representation_class, action, contract_action)
         if action.method == :delete
           contract_action.response { no_content! }
         elsif action.collection?
-          build_collection_action_response(registrar, representation_class, action, contract_action)
+          build_collection_action_response(contract_class, representation_class, action, contract_action)
         elsif action.member?
-          build_record_action_response(registrar, representation_class, action, contract_action)
+          build_record_action_response(contract_class, representation_class, action, contract_action)
         end
       end
 
-      def build_result_wrapper(registrar, representation_class, action_name, response_type)
+      def build_result_wrapper(contract_class, representation_class, action_name, response_type)
         success_type_name = :"#{action_name}_success_response_body"
 
-        unless registrar.type?(success_type_name)
+        unless contract_class.type?(success_type_name)
           shape_class = if response_type == :collection
                           self.class.collection_document.shape_class
                         else
@@ -358,12 +350,12 @@ module Apiwork
                         end
           shape_context = Document::ShapeContext.new(representation_class, capabilities, response_type)
 
-          registrar.object(success_type_name) do
+          contract_class.object(success_type_name) do
             shape_class.build(self, shape_context)
           end
         end
 
-        { error_type: :error_response_body, success_type: registrar.scoped_type_name(success_type_name) }
+        { error_type: :error_response_body, success_type: contract_class.scoped_type_name(success_type_name) }
       end
     end
   end

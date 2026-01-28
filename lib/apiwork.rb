@@ -50,7 +50,6 @@ loader = Zeitwerk::Loader.for_gem
 loader.inflector.inflect(
   'api' => 'API',
   'api_builder' => 'APIBuilder',
-  'api_registrar' => 'APIRegistrar',
   'api_serializer' => 'APISerializer',
   'json_pointer' => 'JSONPointer',
   'json' => 'JSON',

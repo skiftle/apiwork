@@ -7,19 +7,19 @@ module Apiwork
         module Types
           class Errors
             class << self
-              def build(registrar, capabilities)
-                new(registrar).build
+              def build(api_class, features)
+                new(api_class).build
               end
             end
 
-            def initialize(registrar)
-              @registrar = registrar
+            def initialize(api_class)
+              @api_class = api_class
             end
 
             def build
-              @registrar.enum :layer, values: %w[http contract domain]
+              @api_class.enum :layer, values: %w[http contract domain]
 
-              @registrar.object :issue do
+              @api_class.object :issue do
                 string :code
                 string :detail
                 array :path do
@@ -29,7 +29,7 @@ module Apiwork
                 object :meta
               end
 
-              @registrar.object :error_response_body do
+              @api_class.object :error_response_body do
                 reference :layer
                 array :issues do
                   reference :issue

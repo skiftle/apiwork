@@ -56,10 +56,10 @@ module Apiwork
                    :object,
                    :type?,
                    :union,
-                   to: :registrar
+                   to: :api_class
 
           def initialize(context)
-            @registrar = context.registrar
+            @api_class = context.api_class
             @features = context.features
             @capability_name = context.capability_name
             @options = context.options
@@ -85,7 +85,7 @@ module Apiwork
 
           private
 
-          attr_reader :registrar
+          attr_reader :api_class
         end
       end
     end
