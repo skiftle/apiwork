@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Apiwork::Adapter::CapabilityContext do
+RSpec.describe Apiwork::Adapter::Capability::Context do
   def build_action(name, method, type: nil)
     Apiwork::Adapter::Action.new(name, method, type)
   end

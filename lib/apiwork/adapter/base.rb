@@ -281,7 +281,7 @@ module Apiwork
       end
 
       def apply_capabilities(data, context)
-        runner = CapabilityRunner.new(capabilities, document_type: context.document_type)
+        runner = Capability::Runner.new(capabilities, document_type: context.document_type)
         runner.run(data, context)
       end
 

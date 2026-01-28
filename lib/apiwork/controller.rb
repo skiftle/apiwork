@@ -221,7 +221,7 @@ module Apiwork
     end
 
     def build_context(meta: {}, representation_class: nil)
-      Adapter::CapabilityContext.new(
+      Adapter::Capability::Context.new(
         context:,
         meta:,
         representation_class:,
