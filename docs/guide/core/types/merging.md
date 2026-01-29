@@ -106,4 +106,5 @@ end
 
 #### See also
 
+- [Inheritance](./inheritance.md) — creating type hierarchies with `extends`
 - [Contract::Base reference](../../../reference/contract-base.md) — type definition methods

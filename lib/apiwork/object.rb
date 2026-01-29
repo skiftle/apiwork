@@ -10,11 +10,24 @@ module Apiwork
     end
 
     # @api public
-    # Extends another type (allOf pattern).
-    # Can be called multiple times for multiple inheritance.
+    # Inherits all properties from another type.
+    # Can be called multiple times to inherit from multiple types.
     #
-    # @param type_name [Symbol, nil] the type to extend
-    # @return [Array<Symbol>] the extended types
+    # @example Single inheritance
+    #   object :admin do
+    #     extends :user
+    #     boolean :superuser
+    #   end
+    #
+    # @example Multiple inheritance
+    #   object :employee do
+    #     extends :person
+    #     extends :contactable
+    #     string :employee_id
+    #   end
+    #
+    # @param type_name [Symbol] the type to inherit from
+    # @return [Array<Symbol>] the inherited types
     def extends(type_name = nil)
       @extends << type_name if type_name
       @extends

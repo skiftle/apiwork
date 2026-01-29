@@ -1,5 +1,5 @@
 ---
-order: 62
+order: 64
 prev: false
 next: false
 ---
@@ -33,7 +33,7 @@ api.types[:payment_method].discriminator # => :type
 
 `#deprecated?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L74)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L86)
 
 **Returns**
 
@@ -69,11 +69,35 @@ api.types[:payment_method].discriminator # => :type
 
 `#example`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L68)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L80)
 
 **Returns**
 
 `Object`, `nil` — example value
+
+---
+
+### #extends
+
+`#extends`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L68)
+
+**Returns**
+
+`Array<Symbol>` — types this type extends (allOf pattern)
+
+---
+
+### #extends?
+
+`#extends?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L74)
+
+**Returns**
+
+`Boolean` — whether this type extends other types
 
 ---
 
@@ -105,7 +129,7 @@ api.types[:payment_method].discriminator # => :type
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L80)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L92)
 
 **Returns**
 

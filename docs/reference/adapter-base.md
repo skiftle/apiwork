@@ -88,7 +88,7 @@ capability Filtering
 
 `.collection_document(klass = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L119)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L134)
 
 Sets or gets the collection document class.
 
@@ -114,7 +114,7 @@ collection_document CustomCollectionDocument
 
 `.error_document(klass = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L132)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L147)
 
 Sets or gets the error document class.
 
@@ -132,6 +132,34 @@ Sets or gets the error document class.
 
 ```ruby
 error_document CustomErrorDocument
+```
+
+---
+
+### .error_serializer
+
+`.error_serializer(klass = nil)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L108)
+
+Sets or gets the error serializer class.
+
+Error serializer handles serialization of errors.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `klass` | `Class` | a Serializer::Error::Base subclass (optional) |
+
+**Returns**
+
+`Class`, `nil`
+
+**Example**
+
+```ruby
+error_serializer Serializer::Error::Default
 ```
 
 ---
@@ -192,7 +220,7 @@ end
 
 `.record_document(klass = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L106)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L121)
 
 Sets or gets the record document class.
 
@@ -214,21 +242,21 @@ record_document CustomRecordDocument
 
 ---
 
-### .serialization
+### .resource_serializer
 
-`.serialization(klass = nil)`
+`.resource_serializer(klass = nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L93)
 
-Sets or gets the serialization class.
+Sets or gets the resource serializer class.
 
-Serialization defines API objects (resources, errors) and handles serialization.
+Resource serializer handles serialization of records and collections.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `klass` | `Class` | a Serialization::Base subclass (optional) |
+| `klass` | `Class` | a Serializer::Resource::Base subclass (optional) |
 
 **Returns**
 
@@ -237,7 +265,7 @@ Serialization defines API objects (resources, errors) and handles serialization.
 **Example**
 
 ```ruby
-serialization Serialization::Default
+resource_serializer Serializer::Resource::Default
 ```
 
 ---
@@ -272,7 +300,7 @@ skip_capability :pagination
 
 `.transform_request(*transformers, post: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L152)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L167)
 
 Registers request transformers.
 
@@ -308,7 +336,7 @@ transform_request OpFieldTransformer, post: true
 
 `.transform_response(*transformers, post: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L171)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L186)
 
 Registers response transformers.
 
