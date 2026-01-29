@@ -2,11 +2,15 @@
 order: 9
 ---
 
-# Inheritance
+# Type Reuse
 
-Use `extends` to inherit all properties from another type. The child type includes all properties from the parent, plus any additional properties you define.
+Apiwork provides two ways to reuse types: inheritance with `extends` and composition with `merge!`.
 
-## Basic Inheritance
+## Inheritance with extends
+
+Use `extends` to create a type hierarchy. The relationship is preserved in the output.
+
+### Basic Inheritance
 
 ```ruby
 object :person do
@@ -23,7 +27,7 @@ end
 
 The `:employee` object has four properties: `name`, `email`, `employee_id`, and `department`.
 
-## Multiple Inheritance
+### Multiple Inheritance
 
 Call `extends` multiple times to inherit from multiple types:
 
@@ -45,7 +49,7 @@ object :customer do
 end
 ```
 
-## Generated Output
+### Generated Output
 
 **TypeScript:**
 ```typescript
@@ -90,6 +94,67 @@ Employee:
           type: string
 ```
 
+## Composition with merge!
+
+Use `merge!` to include properties from another type without creating an inheritance relationship. The properties are inlined - no reference appears in the output.
+
+### Basic Usage
+
+```ruby
+object :auditable do
+  datetime :created_at
+  datetime :updated_at
+end
+
+object :invoice do
+  merge! :auditable
+  string :number
+end
+```
+
+The `:invoice` object has three properties: `created_at`, `updated_at`, and `number`. Unlike `extends`, the output contains no reference to `:auditable`.
+
+### Multiple Merges
+
+```ruby
+object :entity do
+  merge! :identifiable
+  merge! :timestamped
+  merge! :auditable
+  string :name
+end
+```
+
+### Own Properties Override Merged
+
+```ruby
+object :base do
+  string :name
+end
+
+object :child do
+  merge! :base
+  string :name, description: "Overridden description"
+end
+```
+
+## extends vs merge!
+
+| Feature | extends | merge! |
+|---------|---------|--------|
+| Includes properties | Yes | Yes |
+| Reference in output | Yes (allOf/extends) | No (inlined) |
+| Use case | Type hierarchies | Mixins, composition |
+
+**Use `extends` when:**
+- You want a visible inheritance relationship
+- Types share an "is-a" relationship
+
+**Use `merge!` when:**
+- You want to reuse properties without inheritance
+- Types share a "has-properties-of" relationship
+- You're composing from multiple sources
+
 ## Declaration Order
 
 Define types in any order. Apiwork automatically resolves dependencies and outputs types in the correct order.
@@ -106,15 +171,7 @@ object :person do
 end
 ```
 
-## Inheritance vs Merging
-
-| Feature | Inheritance | Merging |
-|---------|-------------|---------|
-| Syntax | `extends :other` inside block | Multiple `object :name` declarations |
-| Result | New type referencing parent | Single merged type |
-| Use case | Create type hierarchies | Extend existing/generated types |
-
 #### See also
 
-- [Merging](./merging.md) — extending existing types
+- [Declaration Merging](./declaration-merging.md) — extending existing types with multiple declarations
 - [Contract::Base reference](../../../reference/contract-base.md) — type definition methods

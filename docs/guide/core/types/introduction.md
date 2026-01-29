@@ -127,7 +127,8 @@ Structural types (`:array`, `:object`) and special types (`:binary`, `:literal`,
 | [Unions](./unions.md)       | Multiple shapes with a discriminator      |
 | [Enums](./enums.md)         | Restrict values to a fixed set            |
 | [Scoping](./scoping.md)     | API-level vs contract-scoped types        |
-| [Merging](./merging.md)     | Extending and composing types             |
+| [Declaration Merging](./declaration-merging.md) | Multiple declarations combine |
+| [Type Reuse](./type-reuse.md) | Inheritance and composition               |
 
 #### See also
 

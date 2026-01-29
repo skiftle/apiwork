@@ -2,9 +2,9 @@
 order: 8
 ---
 
-# Merging
+# Declaration Merging
 
-Objects are open for extension. Multiple declarations of the same object merge together.
+Types are open for extension. Multiple declarations of the same type merge together.
 
 ## How It Works
 
@@ -73,7 +73,7 @@ interface Address {
 
 ## Extending Generated Types
 
-When using [`representation`](../representations/introduction.md), types are generated that you don't control directly — filter types, sort types, pagination types. Merging makes it possible to add metadata like descriptions to these types.
+When using [`representation`](../representations/introduction.md), types are generated that you don't control directly — filter types, sort types, pagination types. Declaration merging makes it possible to add metadata like descriptions to these types.
 
 ```ruby
 class InvoiceContract < Apiwork::Contract::Base
@@ -106,5 +106,5 @@ end
 
 #### See also
 
-- [Inheritance](./inheritance.md) — creating type hierarchies with `extends`
+- [Type Reuse](./type-reuse.md) — inheritance and composition with `extends` and `merge!`
 - [Contract::Base reference](../../../reference/contract-base.md) — type definition methods
