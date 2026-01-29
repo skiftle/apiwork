@@ -52,14 +52,13 @@ module Apiwork
                 association_type_map[name] = build_association_type(association)
               end
 
-              local_representation_class = representation_class
-              object(type_name, representation_class: local_representation_class) do
-                if local_representation_class.variant?
-                  discriminator_name = local_representation_class.superclass.union.discriminator
-                  literal discriminator_name, value: local_representation_class.tag.to_s
+              object(type_name, representation_class: representation_class) do |object|
+                if representation_class.variant?
+                  discriminator_name = representation_class.superclass.union.discriminator
+                  object.literal(discriminator_name, value: representation_class.tag.to_s)
                 end
 
-                local_representation_class.attributes.each do |name, attribute|
+                representation_class.attributes.each do |name, attribute|
                   enum_option = attribute.enum ? { enum: name } : {}
                   of_option = attribute.of ? { of: attribute.of } : {}
 
@@ -75,21 +74,21 @@ module Apiwork
                   }
 
                   if attribute.element
-                    element = attribute.element
+                    attribute_element = attribute.element
 
-                    if element.type == :array
-                      param_options[:of] = { type: element.of_type }
-                      param_options[:shape] = element.shape
+                    if attribute_element.type == :array
+                      param_options[:of] = { type: attribute_element.of_type }
+                      param_options[:shape] = attribute_element.shape
                     else
-                      param_options[:shape] = element.shape
-                      param_options[:discriminator] = element.discriminator if element.discriminator
+                      param_options[:shape] = attribute_element.shape
+                      param_options[:discriminator] = attribute_element.discriminator if attribute_element.discriminator
                     end
                   end
 
-                  param name, **param_options
+                  object.param(name, **param_options)
                 end
 
-                local_representation_class.associations.each do |name, association|
+                representation_class.associations.each do |name, association|
                   association_type = association_type_map[name]
 
                   base_options = {
@@ -101,14 +100,14 @@ module Apiwork
                   }
 
                   if association.singular?
-                    param name, type: association_type || :object, **base_options
+                    object.param(name, type: association_type || :object, **base_options)
                   elsif association.collection?
                     if association_type
-                      param name, type: :array, **base_options do
-                        of association_type
+                      object.param(name, type: :array, **base_options) do |param|
+                        param.of(association_type)
                       end
                     else
-                      param name, type: :array, **base_options
+                      object.param(name, type: :array, **base_options)
                     end
                   end
                 end
@@ -133,10 +132,10 @@ module Apiwork
                 { tag: tag.to_s, type: variant_type } if variant_type
               end
 
-              union(union_type_name, discriminator: discriminator_name) do
+              union(union_type_name, discriminator: discriminator_name) do |union|
                 variant_types.each do |variant_type|
-                  variant tag: variant_type[:tag] do
-                    reference variant_type[:type]
+                  union.variant(tag: variant_type[:tag]) do |variant|
+                    variant.reference(variant_type[:type])
                   end
                 end
               end
@@ -186,17 +185,14 @@ module Apiwork
               existing_type = type?(union_type_name)
               return union_type_name if existing_type
 
-              builder = self
-              discriminator = association.discriminator
-
-              union(union_type_name, discriminator:) do
+              union(union_type_name, discriminator: association.discriminator) do |union|
                 polymorphic.each do |poly_representation_class|
                   tag = poly_representation_class.type_name || poly_representation_class.model_class.polymorphic_name
-                  alias_name = builder.import_association_contract(poly_representation_class, visited)
+                  alias_name = import_association_contract(poly_representation_class, visited)
                   next unless alias_name
 
-                  variant tag: tag.to_s do
-                    reference alias_name
+                  union.variant(tag: tag.to_s) do |variant|
+                    variant.reference(alias_name)
                   end
                 end
               end
