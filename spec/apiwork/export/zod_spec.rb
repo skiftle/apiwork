@@ -561,4 +561,202 @@ RSpec.describe Apiwork::Export::Zod do
       expect(format_output).to include('z.uuid()')
     end
   end
+
+  describe 'extends types' do
+    describe 'single extends without own properties' do
+      before(:all) do
+        api_class = Apiwork::API.define '/api/zod_extends_single_empty' do
+          export :zod
+
+          object :base_type do |o|
+            o.string :name
+          end
+
+          object :child_type do |o|
+            o.extends :base_type
+          end
+
+          resources :items, only: [:show]
+        end
+
+        contract_class = Class.new(Apiwork::Contract::Base)
+        contract_class.instance_variable_set(:@api_class, api_class)
+        contract_class.class_eval do
+          action :show do
+            response do
+              body do
+                reference :item, to: :child_type
+              end
+            end
+          end
+        end
+        api_class.structure.resources[:items].instance_variable_set(:@contract_class, contract_class)
+
+        @extends_single_empty_output = Apiwork::Export.generate(:zod, '/api/zod_extends_single_empty')
+      end
+
+      attr_reader :extends_single_empty_output
+
+      after(:all) do
+        Apiwork::API.unregister('/api/zod_extends_single_empty')
+      end
+
+      it 'generates schema assignment without merge or extend' do
+        expect(extends_single_empty_output).to include('export const ChildTypeSchema = BaseTypeSchema;')
+      end
+
+      it 'generates base schema' do
+        expect(extends_single_empty_output).to include('export const BaseTypeSchema = z.object({')
+      end
+    end
+
+    describe 'multiple extends without own properties' do
+      before(:all) do
+        api_class = Apiwork::API.define '/api/zod_extends_multiple_empty' do
+          export :zod
+
+          object :base_a do |o|
+            o.string :name_a
+          end
+
+          object :base_b do |o|
+            o.string :name_b
+          end
+
+          object :child_type do |o|
+            o.extends :base_a
+            o.extends :base_b
+          end
+
+          resources :items, only: [:show]
+        end
+
+        contract_class = Class.new(Apiwork::Contract::Base)
+        contract_class.instance_variable_set(:@api_class, api_class)
+        contract_class.class_eval do
+          action :show do
+            response do
+              body do
+                reference :item, to: :child_type
+              end
+            end
+          end
+        end
+        api_class.structure.resources[:items].instance_variable_set(:@contract_class, contract_class)
+
+        @extends_multiple_empty_output = Apiwork::Export.generate(:zod, '/api/zod_extends_multiple_empty')
+      end
+
+      attr_reader :extends_multiple_empty_output
+
+      after(:all) do
+        Apiwork::API.unregister('/api/zod_extends_multiple_empty')
+      end
+
+      it 'generates schema with merge' do
+        expect(extends_multiple_empty_output).to include('export const ChildTypeSchema = BaseASchema.merge(BaseBSchema);')
+      end
+    end
+
+    describe 'single extends with own properties' do
+      before(:all) do
+        api_class = Apiwork::API.define '/api/zod_extends_single_props' do
+          export :zod
+
+          object :base_type do |o|
+            o.string :name
+          end
+
+          object :child_type do |o|
+            o.extends :base_type
+            o.string :extra
+          end
+
+          resources :items, only: [:show]
+        end
+
+        contract_class = Class.new(Apiwork::Contract::Base)
+        contract_class.instance_variable_set(:@api_class, api_class)
+        contract_class.class_eval do
+          action :show do
+            response do
+              body do
+                reference :item, to: :child_type
+              end
+            end
+          end
+        end
+        api_class.structure.resources[:items].instance_variable_set(:@contract_class, contract_class)
+
+        @extends_single_props_output = Apiwork::Export.generate(:zod, '/api/zod_extends_single_props')
+      end
+
+      attr_reader :extends_single_props_output
+
+      after(:all) do
+        Apiwork::API.unregister('/api/zod_extends_single_props')
+      end
+
+      it 'generates schema with extend' do
+        expect(extends_single_props_output).to include('export const ChildTypeSchema = BaseTypeSchema.extend({')
+      end
+
+      it 'includes own property in extend block' do
+        expect(extends_single_props_output).to match(/ChildTypeSchema = BaseTypeSchema\.extend\(\{[\s\S]*extra: z\.string\(\)/)
+      end
+    end
+
+    describe 'multiple extends with own properties' do
+      before(:all) do
+        api_class = Apiwork::API.define '/api/zod_extends_multiple_props' do
+          export :zod
+
+          object :base_a do |o|
+            o.string :name_a
+          end
+
+          object :base_b do |o|
+            o.string :name_b
+          end
+
+          object :child_type do |o|
+            o.extends :base_a
+            o.extends :base_b
+            o.string :extra
+          end
+
+          resources :items, only: [:show]
+        end
+
+        contract_class = Class.new(Apiwork::Contract::Base)
+        contract_class.instance_variable_set(:@api_class, api_class)
+        contract_class.class_eval do
+          action :show do
+            response do
+              body do
+                reference :item, to: :child_type
+              end
+            end
+          end
+        end
+        api_class.structure.resources[:items].instance_variable_set(:@contract_class, contract_class)
+
+        @extends_multiple_props_output = Apiwork::Export.generate(:zod, '/api/zod_extends_multiple_props')
+      end
+
+      attr_reader :extends_multiple_props_output
+
+      after(:all) do
+        Apiwork::API.unregister('/api/zod_extends_multiple_props')
+      end
+
+      it 'generates schema with merge and extend' do
+        expect(extends_multiple_props_output).to include('export const ChildTypeSchema = BaseASchema.merge(BaseBSchema).extend({')
+      end
+
+      it 'includes own property in extend block' do
+        expect(extends_multiple_props_output).to match(/ChildTypeSchema = BaseASchema\.merge\(BaseBSchema\)\.extend\(\{[\s\S]*extra: z\.string\(\)/)
+      end
+    end
+  end
 end
