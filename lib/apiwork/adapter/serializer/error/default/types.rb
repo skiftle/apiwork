@@ -2,10 +2,10 @@
 
 module Apiwork
   module Adapter
-    module Serialization
-      class Default < Base
-        module Types
-          class Errors
+    module Serializer
+      module Error
+        class Default < Base
+          class Types
             class << self
               def build(api_class, features)
                 new(api_class).build

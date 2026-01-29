@@ -7,7 +7,8 @@ module Apiwork
 
       transform_request RequestTransformer
 
-      serialization Serialization::Default
+      resource_serializer Serializer::Resource::Default
+      error_serializer Serializer::Error::Default
 
       record_document Document::Record::Default
       collection_document Document::Collection::Default

@@ -2,10 +2,10 @@
 
 module Apiwork
   module Adapter
-    module Serialization
-      class Default < Base
-        module Types
-          class Resources
+    module Serializer
+      module Resource
+        class Default < Base
+          class Types
             attr_reader :contract_class,
                         :representation_class
 
