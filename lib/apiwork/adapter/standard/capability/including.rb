@@ -7,7 +7,7 @@ module Apiwork
         class Including < Adapter::Capability::Base
           capability_name :including
 
-          contract_builder Builder::Contract
+          contract_builder ContractBuilder
           computation Computation
         end
       end

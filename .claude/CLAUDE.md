@@ -216,6 +216,118 @@ end
 
 ---
 
+## Module and Class Naming
+
+### Principle: Two levels of structure
+
+**Infrastructure-level** (adapter/, shared base classes):
+- Use nested modules for concept-namespaces
+- File structure matches module path
+
+**Domain-level** (inside capabilities, serializers):
+- Use compound names for implementations
+- Flatter file structure
+
+### Concept-namespaces (nested modules)
+
+Top-level modules that group related functionality:
+
+| Namespace | Purpose |
+|-----------|---------|
+| `Capability::` | Capability infrastructure and base classes |
+| `Serializer::` | Serialization infrastructure |
+| `Document::` | Response document handling |
+| `Builder::` | Shared builder base classes |
+| `Hook::` | Hook infrastructure |
+
+```ruby
+# Infrastructure — nested modules
+Adapter::Builder::API::Base
+Adapter::Builder::Contract::Base
+Adapter::Capability::API::Base
+Adapter::Capability::Contract::Base
+```
+
+File structure:
+```
+adapter/
+├── builder/
+│   ├── api/
+│   │   └── base.rb      # Builder::API::Base
+│   └── contract/
+│       └── base.rb      # Builder::Contract::Base
+└── capability/
+    ├── api/
+    │   └── base.rb      # Capability::API::Base
+    └── contract/
+        └── base.rb      # Capability::Contract::Base
+```
+
+### Domain implementations (compound names)
+
+Inside domain classes (capabilities, serializers), use compound names:
+
+```ruby
+# Domain — compound names
+class Filtering < Capability::Base
+  class APIBuilder < Adapter::Capability::API::Base
+  class ContractBuilder < Adapter::Capability::Contract::Base
+  class Computation < Adapter::Capability::Computation::Base
+end
+
+class Pagination < Capability::Base
+  class APIBuilder < Adapter::Capability::API::Base
+  class ContractBuilder < Adapter::Capability::Contract::Base
+  class Computation < Adapter::Capability::Computation::Base
+  class OffsetPaginator    # Strategy implementation
+  class CursorPaginator    # Strategy implementation
+end
+```
+
+File structure:
+```
+standard/capability/filtering/
+├── api_builder.rb         # Filtering::APIBuilder
+├── contract_builder.rb    # Filtering::ContractBuilder
+├── computation.rb         # Filtering::Computation
+└── filter/
+    └── ...
+```
+
+### Rule: Nested module vs Compound name
+
+| Context | Use | Example |
+|---------|-----|---------|
+| Infrastructure base class | Nested module | `Adapter::Builder::API::Base` |
+| Concept-namespace | Nested module | `Capability::`, `Serializer::` |
+| Domain implementation | Compound name | `Filtering::APIBuilder` |
+| Strategy/algorithm | Compound name | `OffsetPaginator`, `CursorPaginator` |
+| Helper class in domain | Compound name | `OperatorBuilder`, `RequestParser` |
+
+### File structure follows naming
+
+```ruby
+# Nested module = directory structure
+Adapter::Builder::API::Base
+# → lib/apiwork/adapter/builder/api/base.rb
+
+# Compound name = flat file
+Filtering::APIBuilder
+# → lib/apiwork/adapter/standard/capability/filtering/api_builder.rb
+```
+
+### DSL reference
+
+```ruby
+class Filtering < Capability::Base
+  api_builder APIBuilder           # Compound name
+  contract_builder ContractBuilder # Compound name
+  computation Computation          # Simple name
+end
+```
+
+---
+
 ## Instance Variables vs Accessors
 
 **Rule:** `attr_*` is for public API. `@variable` directly is for private state.

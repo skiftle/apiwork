@@ -5,7 +5,7 @@ module Apiwork
     module Serializer
       module Error
         class Default < Base
-          api_builder Builder::API
+          api_builder APIBuilder
 
           def serialize(error, context:)
             {

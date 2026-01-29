@@ -9,8 +9,8 @@ module Apiwork
 
           option :max_depth, default: 3, type: :integer
 
-          api_builder Builder::API
-          contract_builder Builder::Contract
+          api_builder APIBuilder
+          contract_builder ContractBuilder
           computation Computation
         end
       end
