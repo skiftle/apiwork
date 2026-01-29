@@ -64,6 +64,18 @@ module Apiwork
       end
 
       # @api public
+      # @return [Array<Symbol>] types this type extends (allOf pattern)
+      def extends
+        @dump[:extends]
+      end
+
+      # @api public
+      # @return [Boolean] whether this type extends other types
+      def extends?
+        extends.any?
+      end
+
+      # @api public
       # @return [Object, nil] example value
       def example
         @dump[:example]
@@ -83,6 +95,7 @@ module Apiwork
           description: description,
           discriminator: discriminator,
           example: example,
+          extends: extends,
           shape: shape.transform_values(&:to_h),
           type: type,
           variants: variants.map(&:to_h),

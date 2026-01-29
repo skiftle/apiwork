@@ -44,8 +44,9 @@ RSpec.describe Apiwork::Export::SurfaceResolver do
     { nullable: false, optional: false, ref: type_name, type: :ref }
   end
 
-  def build_object_type(shape: {})
+  def build_object_type(extends: [], shape: {})
     {
+      extends:,
       shape:,
       deprecated: false,
       description: nil,

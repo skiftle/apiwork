@@ -393,7 +393,7 @@ module Apiwork
 
         data_type = error_serializer_class.data_type
 
-        api_class.object(:error_response_body, extends: data_type) do |object|
+        api_class.object(:error_response_body) do |object|
           shape_class.build(object, nil, [], nil, :error, data_type:)
         end
       end

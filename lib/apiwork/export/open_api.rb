@@ -303,12 +303,25 @@ module Apiwork
 
           schemas[component_name] = if type.union?
                                       map_union(type)
+                                    elsif type.extends?
+                                      map_object_with_extends(type)
                                     else
                                       map_object(type)
                                     end
         end
 
         schemas
+      end
+
+      def map_object_with_extends(type)
+        refs = type.extends.map { |t| { '$ref': "#/components/schemas/#{schema_name(t)}" } }
+        object_schema = map_object(type)
+
+        if object_schema[:properties].empty?
+          refs.size == 1 ? refs.first : { allOf: refs }
+        else
+          { allOf: refs + [object_schema] }
+        end
       end
 
       def map_field(param)

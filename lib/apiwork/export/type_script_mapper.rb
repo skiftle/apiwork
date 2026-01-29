@@ -26,12 +26,20 @@ module Apiwork
 
         type_jsdoc = jsdoc(description: type.description, example: type.example)
 
-        code = if properties.empty?
-                 "export type #{type_name} = Record<string, unknown>;"
-               else
-                 "export interface #{type_name} {\n#{properties}\n}"
-               end
+        code = build_interface_code(type_name, properties, type.extends)
         type_jsdoc ? "#{type_jsdoc}\n#{code}" : code
+      end
+
+      def build_interface_code(type_name, properties, extends)
+        base_types = extends.map { |t| pascal_case(t) }
+
+        if properties.empty? && base_types.any?
+          "export type #{type_name} = #{base_types.join(' & ')};"
+        elsif base_types.any?
+          "export interface #{type_name} extends #{base_types.join(', ')} {\n#{properties}\n}"
+        else
+          "export interface #{type_name} {\n#{properties}\n}"
+        end
       end
 
       def build_union_type(type_name, type)

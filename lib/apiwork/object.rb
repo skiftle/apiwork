@@ -2,22 +2,22 @@
 
 module Apiwork
   class Object
-    attr_reader :extends,
-                :params
+    attr_reader :params
 
     def initialize
-      @extends = nil
+      @extends = []
       @params = {}
     end
 
     # @api public
     # Extends another type (allOf pattern).
-    # The object will inherit all fields from the referenced type.
+    # Can be called multiple times for multiple inheritance.
     #
-    # @param type_name [Symbol] the type to extend
-    # @return [void]
-    def extends(type_name)
-      @extends = type_name
+    # @param type_name [Symbol, nil] the type to extend
+    # @return [Array<Symbol>] the extended types
+    def extends(type_name = nil)
+      @extends << type_name if type_name
+      @extends
     end
 
     # @api public

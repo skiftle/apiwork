@@ -15,7 +15,6 @@ module Apiwork
         description: nil,
         discriminator: nil,
         example: nil,
-        extends: nil,
         format: nil,
         representation_class: nil,
         &block
@@ -33,7 +32,6 @@ module Apiwork
             description:,
             discriminator:,
             example:,
-            extends:,
             format:,
             kind:,
             representation_class:,

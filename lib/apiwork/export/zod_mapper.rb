@@ -34,8 +34,27 @@ module Apiwork
 
         if recursive
           "export const #{schema_name}Schema#{type_annotation} = z.lazy(() => z.object({\n#{properties}\n}));"
+        elsif type.extends?
+          build_object_schema_code(schema_name, properties, type.extends, type_annotation:)
         else
           "export const #{schema_name}Schema#{type_annotation} = z.object({\n#{properties}\n});"
+        end
+      end
+
+      def build_object_schema_code(schema_name, properties, extends, type_annotation: '')
+        base_schemas = extends.map { |t| "#{pascal_case(t)}Schema" }
+
+        base_chain = if base_schemas.size == 1
+                       base_schemas.first
+                     else
+                       first, *rest = base_schemas
+                       rest.reduce(first) { |acc, schema| "#{acc}.merge(#{schema})" }
+                     end
+
+        if properties.empty?
+          "export const #{schema_name}Schema#{type_annotation} = #{base_chain};"
+        else
+          "export const #{schema_name}Schema#{type_annotation} = #{base_chain}.extend({\n#{properties}\n});"
         end
       end
 

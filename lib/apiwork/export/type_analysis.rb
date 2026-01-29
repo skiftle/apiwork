@@ -46,6 +46,12 @@ module Apiwork
         def type_references(definition, filter: :custom_only)
           referenced_types = []
 
+          if definition[:extends].is_a?(Array)
+            definition[:extends].each do |extended_type|
+              add_type_if_matches(referenced_types, extended_type, filter)
+            end
+          end
+
           if definition[:variants].is_a?(Array)
             definition[:variants].each do |variant|
               next unless variant.is_a?(Hash)

@@ -91,6 +91,7 @@ module Apiwork
         reference_names = []
 
         if type.object?
+          reference_names.concat(type.extends) if type.extends?
           type.shape.each_value { |param| collect_reference_names_from_param(param, reference_names) }
         elsif type.union?
           type.variants.each { |param| collect_reference_names_from_param(param, reference_names) }
