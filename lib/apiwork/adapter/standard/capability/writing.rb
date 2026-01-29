@@ -9,7 +9,7 @@ module Apiwork
 
           request_transformer OpFieldTransformer, post: true
 
-          contract Contract
+          contract_builder Builder::Contract
           computation Computation
         end
       end

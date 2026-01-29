@@ -12,7 +12,7 @@ module Apiwork
         #
         # @example
         #   class MyErrorSerializer < Serializer::Error::Base
-        #     api MyAPI
+        #     api_builder Builder::API
         #
         #     def serialize(error, context:)
         #       { errors: error.issues.map(&:to_h) }
@@ -21,22 +21,21 @@ module Apiwork
         class Base
           class << self
             # @api public
-            # Sets the API type builder class.
+            # Sets or gets the API type builder class.
             #
-            # @param klass [Class] a Serializer::API::Base subclass
-            # @return [void]
-            def api(klass)
-              @api_builder = klass
+            # @param klass [Class, nil] a Builder::API::Base subclass
+            # @return [Class, nil]
+            def api_builder(klass = nil)
+              @api_builder = klass if klass
+              @api_builder
             end
-
-            attr_reader :api_builder
           end
 
           def api_types(api_class, features)
-            builder = self.class.api_builder
-            return unless builder
+            builder_class = self.class.api_builder
+            return unless builder_class
 
-            builder.new(api_class, features).build
+            builder_class.new(api_class, features).build
           end
 
           # @api public

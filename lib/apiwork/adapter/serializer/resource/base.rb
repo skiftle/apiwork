@@ -12,7 +12,7 @@ module Apiwork
         #
         # @example
         #   class MyResourceSerializer < Serializer::Resource::Base
-        #     contract MyContract
+        #     contract_builder Builder::Contract
         #
         #     def serialize(resource, context:, serialize_options:)
         #       representation_class.serialize(resource, context:)
@@ -21,15 +21,14 @@ module Apiwork
         class Base
           class << self
             # @api public
-            # Sets the Contract type builder class.
+            # Sets or gets the Contract type builder class.
             #
-            # @param klass [Class] a Serializer::Contract::Base subclass
-            # @return [void]
-            def contract(klass)
-              @contract_builder = klass
+            # @param klass [Class, nil] a Builder::Contract::Base subclass
+            # @return [Class, nil]
+            def contract_builder(klass = nil)
+              @contract_builder = klass if klass
+              @contract_builder
             end
-
-            attr_reader :contract_builder
           end
 
           # @api public
@@ -41,10 +40,10 @@ module Apiwork
           end
 
           def contract_types(contract_class)
-            builder = self.class.contract_builder
-            return unless builder
+            builder_class = self.class.contract_builder
+            return unless builder_class
 
-            builder.new(contract_class, representation_class).build
+            builder_class.new(contract_class, representation_class).build
           end
 
           # @api public

@@ -5,7 +5,7 @@ module Apiwork
     module Serializer
       module Resource
         class Default < Base
-          contract Contract
+          contract_builder Builder::Contract
 
           def serialize(resource, context:, serialize_options:)
             representation_class.serialize(

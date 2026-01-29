@@ -15,8 +15,8 @@ module Apiwork
             shape.reference(:pagination, to: (shape.options.strategy == :cursor ? :cursor_pagination : :offset_pagination))
           end
 
-          api API
-          contract Contract
+          api_builder Builder::API
+          contract_builder Builder::Contract
           computation Computation
         end
       end

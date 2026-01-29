@@ -4,88 +4,18 @@ module Apiwork
   module Adapter
     module Capability
       module API
-        # @api public
-        # Base class for capability API phase.
-        #
-        # API phase runs once per API at initialization time.
-        # Use it to register shared types used across all contracts.
-        class Base
-          # @api public
-          # @return [Features] feature detection for the API
-          attr_reader :features
-
-          # @api public
-          # @return [Configuration] capability options
+        class Base < Builder::API::Base
           attr_reader :options
 
-          # @!method enum(name, values:)
-          #   @api public
-          #   Defines an enum type.
-          #   @param name [Symbol] the enum name
-          #   @param values [Array<String>] allowed values
-          #   @return [void]
-
-          # @!method enum?(name)
-          #   @api public
-          #   Checks if an enum is registered.
-          #   @param name [Symbol] the enum name
-          #   @return [Boolean] true if enum exists
-
-          # @!method object(name, &block)
-          #   @api public
-          #   Defines a named object type.
-          #   @param name [Symbol] the object name
-          #   @yield block defining params
-          #   @return [void]
-
-          # @!method type?(name)
-          #   @api public
-          #   Checks if a type is registered.
-          #   @param name [Symbol] the type name
-          #   @return [Boolean] true if type exists
-
-          # @!method union(name, &block)
-          #   @api public
-          #   Defines a union type.
-          #   @param name [Symbol] the union name
-          #   @yield block defining variants
-          #   @return [void]
-
-          delegate :enum,
-                   :enum?,
-                   :object,
-                   :type?,
-                   :union,
-                   to: :api_class
-
           def initialize(api_class, features, capability_name: nil, options: nil)
-            @api_class = api_class
-            @features = features
+            super(api_class, features)
             @capability_name = capability_name
             @options = options
           end
 
-          # @api public
-          # Builds API-level types for this capability.
-          #
-          # Override this method to register shared types.
-          # @return [void]
-          def build
-            raise NotImplementedError
-          end
-
-          # @api public
-          # Returns configured options for a specific key.
-          #
-          # @param key [Symbol] the option key
-          # @return [Object] the configured value
           def configured(key)
             features.options_for(@capability_name, key)
           end
-
-          private
-
-          attr_reader :api_class
         end
       end
     end

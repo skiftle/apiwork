@@ -2,19 +2,21 @@
 
 module Apiwork
   module Adapter
-    module Serializer
+    module Builder
       module Contract
         # @api public
-        # Base class for serializer Contract phase.
+        # Base class for Contract-phase type builders.
         #
         # Contract phase runs once per bound contract at registration time.
         # Use it to generate contract-specific types based on the representation.
         #
         # @example
-        #   class Contract < Serializer::Contract::Base
-        #     def build
-        #       object(representation_class.root_key.singular) do |o|
-        #         # define resource shape
+        #   class Builder
+        #     class Contract < Adapter::Builder::Contract::Base
+        #       def build
+        #         object(representation_class.root_key.singular) do |o|
+        #           # define resource shape
+        #         end
         #       end
         #     end
         #   end
@@ -41,7 +43,7 @@ module Apiwork
           end
 
           # @api public
-          # Builds contract-level types for this serializer.
+          # Builds contract-level types.
           #
           # Override this method to generate types based on the representation.
           # @return [void]

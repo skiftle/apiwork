@@ -5,13 +5,7 @@ module Apiwork
     module Serializer
       module Error
         class Default < Base
-          api_builder Builder::API
-
-          def serialize(error, context:)
-            {
-              issues: error.issues.map(&:to_h),
-              layer: error.layer,
-            }
+          class Builder
           end
         end
       end

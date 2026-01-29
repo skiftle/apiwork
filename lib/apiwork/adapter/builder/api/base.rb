@@ -2,19 +2,21 @@
 
 module Apiwork
   module Adapter
-    module Serializer
+    module Builder
       module API
         # @api public
-        # Base class for serializer API phase.
+        # Base class for API-phase type builders.
         #
         # API phase runs once per API at initialization time.
         # Use it to register shared types used across all contracts.
         #
         # @example
-        #   class API < Serializer::API::Base
-        #     def build
-        #       enum :status, values: %w[active inactive]
-        #       object(:error) { |o| o.string(:message) }
+        #   class Builder
+        #     class API < Adapter::Builder::API::Base
+        #       def build
+        #         enum :status, values: %w[active inactive]
+        #         object(:error) { |o| o.string(:message) }
+        #       end
         #     end
         #   end
         class Base
@@ -35,7 +37,7 @@ module Apiwork
           end
 
           # @api public
-          # Builds API-level types for this serializer.
+          # Builds API-level types.
           #
           # Override this method to register shared types.
           # @return [void]

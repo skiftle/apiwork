@@ -6,10 +6,10 @@ module Apiwork
       class Base
         include Configurable
 
-        class_attribute :_api_class
-        class_attribute :_api_block
-        class_attribute :_contract_class
-        class_attribute :_contract_block
+        class_attribute :_api_builder
+        class_attribute :_api_builder_block
+        class_attribute :_contract_builder
+        class_attribute :_contract_builder_block
         class_attribute :_computation_class
         class_attribute :_computation_block
 
@@ -28,19 +28,19 @@ module Apiwork
             @request_transformers || []
           end
 
-          def api(klass = nil, &block)
+          def api_builder(klass = nil, &block)
             if klass
-              self._api_class = klass
+              self._api_builder = klass
             elsif block
-              self._api_block = block
+              self._api_builder_block = block
             end
           end
 
-          def contract(klass = nil, &block)
+          def contract_builder(klass = nil, &block)
             if klass
-              self._contract_class = klass
+              self._contract_builder = klass
             elsif block
-              self._contract_block = block
+              self._contract_builder_block = block
             end
           end
 
@@ -57,16 +57,16 @@ module Apiwork
             @shape_block
           end
 
-          def wrap_api_block(callable)
-            Class.new(API::Base) do
+          def wrap_api_builder_block(callable)
+            Class.new(Builder::API::Base) do
               define_method(:build) do
                 callable.arity.positive? ? callable.call(self) : instance_exec(&callable)
               end
             end
           end
 
-          def wrap_contract_block(callable)
-            Class.new(Contract::Base) do
+          def wrap_contract_builder_block(callable)
+            Class.new(Builder::Contract::Base) do
               define_method(:build) do
                 callable.arity.positive? ? callable.call(self) : instance_exec(&callable)
               end
@@ -81,16 +81,16 @@ module Apiwork
             end
           end
 
-          def api_class
-            return _api_class if _api_class
-            return wrap_api_block(_api_block) if _api_block
+          def api_builder_class
+            return _api_builder if _api_builder
+            return wrap_api_builder_block(_api_builder_block) if _api_builder_block
 
             nil
           end
 
-          def contract_class
-            return _contract_class if _contract_class
-            return wrap_contract_block(_contract_block) if _contract_block
+          def contract_builder_class
+            return _contract_builder if _contract_builder
+            return wrap_contract_builder_block(_contract_builder_block) if _contract_builder_block
 
             nil
           end
@@ -111,17 +111,22 @@ module Apiwork
         end
 
         def api_types(api_class, features)
-          klass = self.class.api_class
-          return unless klass
+          builder_class = self.class.api_builder_class
+          return unless builder_class
 
-          klass.new(api_class, features, capability_name: self.class.capability_name, options: config).build
+          builder_class.new(
+            api_class,
+            features,
+            capability_name: self.class.capability_name,
+            options: config,
+          ).build
         end
 
         def contract_types(contract_class, representation_class, actions)
-          klass = self.class.contract_class
-          return unless klass
+          builder_class = self.class.contract_builder_class
+          return unless builder_class
 
-          klass.new(contract_class, representation_class, actions, merged_config(representation_class)).build
+          builder_class.new(contract_class, representation_class, actions, merged_config(representation_class)).build
         end
 
         def shape(representation_class, type)
