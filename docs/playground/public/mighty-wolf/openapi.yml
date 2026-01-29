@@ -222,7 +222,7 @@ components:
           - integer
           - 'null'
       type: object
-    errorResponseBody:
+    error:
       properties:
         issues:
           items:
@@ -238,6 +238,8 @@ components:
       required:
       - issues
       - layer
+    errorResponseBody:
+      "$ref": "#/components/schemas/error"
     integerFilterBetween:
       properties:
         from:

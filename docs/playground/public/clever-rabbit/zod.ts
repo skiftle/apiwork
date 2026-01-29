@@ -98,7 +98,7 @@ export const ShippingAddressNestedUpdatePayloadSchema = z.object({
   street: z.string().optional()
 });
 
-export const ErrorResponseBodySchema = z.object({
+export const ErrorSchema = z.object({
   issues: z.array(IssueSchema),
   layer: LayerSchema
 });
@@ -132,6 +132,8 @@ export const ShippingAddressNestedPayloadSchema = z.discriminatedUnion('_op', [
   ShippingAddressNestedUpdatePayloadSchema,
   ShippingAddressNestedDeletePayloadSchema
 ]);
+
+export const ErrorResponseBodySchema = ErrorSchema;
 
 export const OrderCreateSuccessResponseBodySchema = z.object({
   meta: z.record(z.string(), z.unknown()).optional(),
@@ -218,10 +220,12 @@ export const OrdersUpdateResponseSchema = z.object({
 
 export const OrdersDestroyResponse = z.never();
 
-export interface ErrorResponseBody {
+export interface Error {
   issues: Issue[];
   layer: Layer;
 }
+
+export type ErrorResponseBody = Error;
 
 export interface Issue {
   code: string;

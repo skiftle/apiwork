@@ -97,10 +97,12 @@ export interface CursorPagination {
   prev?: null | string;
 }
 
-export interface ErrorResponseBody {
+export interface Error {
   issues: Issue[];
   layer: Layer;
 }
+
+export type ErrorResponseBody = Error;
 
 export interface Issue {
   code: string;

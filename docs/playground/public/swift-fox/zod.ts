@@ -60,7 +60,7 @@ export const ContactUpdateSuccessResponseBodySchema = z.object({
   meta: z.record(z.string(), z.unknown()).optional()
 });
 
-export const ErrorResponseBodySchema = z.object({
+export const ErrorSchema = z.object({
   issues: z.array(IssueSchema),
   layer: LayerSchema
 });
@@ -70,6 +70,8 @@ export const ContactIndexSuccessResponseBodySchema = z.object({
   meta: z.record(z.string(), z.unknown()).optional(),
   pagination: OffsetPaginationSchema
 });
+
+export const ErrorResponseBodySchema = ErrorSchema;
 
 export const ContactsIndexRequestQuerySchema = z.object({
   page: ContactPageSchema.optional()
@@ -219,10 +221,12 @@ export interface ContactsUpdateResponse {
 
 export type ContactsUpdateResponseBody = ContactUpdateSuccessResponseBody | ErrorResponseBody;
 
-export interface ErrorResponseBody {
+export interface Error {
   issues: Issue[];
   layer: Layer;
 }
+
+export type ErrorResponseBody = Error;
 
 export interface Issue {
   code: string;

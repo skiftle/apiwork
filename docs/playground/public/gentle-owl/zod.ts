@@ -61,10 +61,12 @@ export const CommentFilterSchema: z.ZodType<CommentFilter> = z.lazy(() => z.obje
   commentableType: CommentCommentableTypeFilterSchema.optional()
 }));
 
-export const ErrorResponseBodySchema = z.object({
+export const ErrorSchema = z.object({
   issues: z.array(IssueSchema),
   layer: LayerSchema
 });
+
+export const ErrorResponseBodySchema = ErrorSchema;
 
 export const CommentSchema = z.object({
   authorName: z.string().nullable(),
@@ -359,10 +361,12 @@ export interface CommentsUpdateResponse {
 
 export type CommentsUpdateResponseBody = CommentUpdateSuccessResponseBody | ErrorResponseBody;
 
-export interface ErrorResponseBody {
+export interface Error {
   issues: Issue[];
   layer: Layer;
 }
+
+export type ErrorResponseBody = Error;
 
 export interface Image {
   comments?: Comment[];

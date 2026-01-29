@@ -455,6 +455,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "body": {
           "default": null,
@@ -574,6 +575,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "body": {
           "default": null,
@@ -630,6 +632,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "article": {
           "default": null,
@@ -661,6 +664,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "_and": {
           "default": null,
@@ -867,6 +871,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "category": {
           "default": null,
@@ -886,6 +891,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "articles": {
           "default": null,
@@ -939,6 +945,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "number": {
           "default": null,
@@ -973,6 +980,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "article": {
           "default": null,
@@ -1004,6 +1012,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "created_at": {
           "default": null,
@@ -1064,6 +1073,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {},
       "type": "union",
       "variants": [
@@ -1128,6 +1138,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "body": {
           "default": null,
@@ -1184,6 +1195,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "article": {
           "default": null,
@@ -1215,6 +1227,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "id": {
           "default": null,
@@ -1261,6 +1274,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {},
       "type": "object",
       "variants": []
@@ -1270,6 +1284,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "_and": {
           "default": null,
@@ -1402,6 +1417,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {},
       "type": "object",
       "variants": []
@@ -1411,6 +1427,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "between": {
           "default": null,
@@ -1497,6 +1514,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "from": {
           "default": null,
@@ -1525,6 +1543,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "between": {
           "default": null,
@@ -1623,6 +1642,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "from": {
           "default": null,
@@ -1650,11 +1670,12 @@
       "type": "object",
       "variants": []
     },
-    "error_response_body": {
+    "error": {
       "deprecated": false,
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "issues": {
           "default": null,
@@ -1692,11 +1713,24 @@
       "type": "object",
       "variants": []
     },
+    "error_response_body": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [
+        "error"
+      ],
+      "shape": {},
+      "type": "object",
+      "variants": []
+    },
     "integer_filter": {
       "deprecated": false,
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "between": {
           "default": null,
@@ -1801,6 +1835,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "from": {
           "default": null,
@@ -1835,6 +1870,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "code": {
           "default": null,
@@ -1916,6 +1952,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "between": {
           "default": null,
@@ -2011,6 +2048,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "between": {
           "default": null,
@@ -2118,6 +2156,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "between": {
           "default": null,
@@ -2231,6 +2270,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "contains": {
           "default": null,
@@ -2322,6 +2362,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "current": {
           "default": null,
@@ -2392,6 +2433,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "contains": {
           "default": null,

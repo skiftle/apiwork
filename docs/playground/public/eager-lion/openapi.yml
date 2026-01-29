@@ -157,7 +157,7 @@ components:
       required:
       - id
       - name
-    errorResponseBody:
+    error:
       properties:
         issues:
           items:
@@ -173,6 +173,8 @@ components:
       required:
       - issues
       - layer
+    errorResponseBody:
+      "$ref": "#/components/schemas/error"
     invoice:
       properties:
         createdAt:

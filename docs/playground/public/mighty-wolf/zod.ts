@@ -144,7 +144,7 @@ export const NullableIntegerFilterSchema = z.object({
   null: z.boolean().optional()
 });
 
-export const ErrorResponseBodySchema = z.object({
+export const ErrorSchema = z.object({
   issues: z.array(IssueSchema),
   layer: LayerSchema
 });
@@ -164,6 +164,8 @@ export const VehicleFilterSchema: z.ZodType<VehicleFilter> = z.lazy(() => z.obje
   type: VehicleTypeFilterSchema.optional(),
   year: z.union([z.number().int(), NullableIntegerFilterSchema]).optional()
 }));
+
+export const ErrorResponseBodySchema = ErrorSchema;
 
 export const VehicleCreateSuccessResponseBodySchema = z.object({
   meta: z.record(z.string(), z.unknown()).optional(),
@@ -266,10 +268,12 @@ export interface CarUpdatePayload {
   year?: null | number;
 }
 
-export interface ErrorResponseBody {
+export interface Error {
   issues: Issue[];
   layer: Layer;
 }
+
+export type ErrorResponseBody = Error;
 
 export interface IntegerFilterBetween {
   from?: number;

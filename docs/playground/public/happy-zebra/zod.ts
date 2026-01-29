@@ -138,7 +138,7 @@ export const CommentNestedPayloadSchema = z.discriminatedUnion('_op', [
   CommentNestedDeletePayloadSchema
 ]);
 
-export const ErrorResponseBodySchema = z.object({
+export const ErrorSchema = z.object({
   issues: z.array(IssueSchema),
   layer: LayerSchema
 });
@@ -211,6 +211,8 @@ export const PostUpdatePayloadSchema = z.object({
   comments: z.array(CommentNestedPayloadSchema).optional(),
   title: z.string().optional()
 });
+
+export const ErrorResponseBodySchema = ErrorSchema;
 
 export const PostNestedPayloadSchema = z.discriminatedUnion('_op', [
   PostNestedCreatePayloadSchema,
@@ -564,10 +566,12 @@ export interface CommentsUpdateResponse {
 
 export type CommentsUpdateResponseBody = CommentUpdateSuccessResponseBody | ErrorResponseBody;
 
-export interface ErrorResponseBody {
+export interface Error {
   issues: Issue[];
   layer: Layer;
 }
+
+export type ErrorResponseBody = Error;
 
 export interface Issue {
   code: string;
