@@ -21,6 +21,16 @@ module Apiwork
         class Base
           class << self
             # @api public
+            # Sets or gets the data type resolver for this serializer.
+            #
+            # @param block [Proc, nil] block that receives representation_class and returns type name
+            # @return [Proc, nil]
+            def data_type(&block)
+              @data_type = block if block
+              @data_type
+            end
+
+            # @api public
             # Sets or gets the Contract type builder class.
             #
             # @param klass [Class, nil] a Builder::Contract::Base subclass

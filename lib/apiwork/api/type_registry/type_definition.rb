@@ -8,6 +8,7 @@ module Apiwork
                     :description,
                     :discriminator,
                     :example,
+                    :extends,
                     :format,
                     :kind,
                     :name,
@@ -23,6 +24,7 @@ module Apiwork
           description: nil,
           discriminator: nil,
           example: nil,
+          extends: nil,
           format: nil,
           representation_class: nil
         )
@@ -34,6 +36,7 @@ module Apiwork
           @description = description
           @discriminator = discriminator
           @example = example
+          @extends = extends
           @format = format
           @representation_class = representation_class
           @shape = nil
@@ -84,6 +87,7 @@ module Apiwork
             description: description || @description,
             discriminator: @discriminator,
             example: example || @example,
+            extends: @extends,
             format: format || @format,
             kind: @kind,
             representation_class: @representation_class,

@@ -6,7 +6,7 @@ module Apiwork
       module Record
         class Default < Base
           shape do |shape|
-            shape.reference(shape.root_key.singular.to_sym)
+            shape.reference(shape.root_key.singular.to_sym, to: shape.data_type)
             shape.object?(:meta)
             shape.merge!(shape.metadata)
           end

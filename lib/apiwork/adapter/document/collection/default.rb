@@ -6,8 +6,8 @@ module Apiwork
       module Collection
         class Default < Base
           shape do |shape|
-            shape.array(shape.root_key.plural.to_sym) do |element|
-              element.reference(shape.root_key.singular.to_sym)
+            shape.array(shape.root_key.plural.to_sym) do |array|
+              array.reference(shape.data_type)
             end
 
             shape.object?(:meta)

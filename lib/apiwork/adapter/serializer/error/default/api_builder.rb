@@ -17,7 +17,7 @@ module Apiwork
                 object.object(:meta)
               end
 
-              object(:error_response_body) do |object|
+              object(data_type) do |object|
                 object.reference(:layer)
                 object.array(:issues) do |element|
                   element.reference(:issue)

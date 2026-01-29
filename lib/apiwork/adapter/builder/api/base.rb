@@ -21,6 +21,10 @@ module Apiwork
         #   end
         class Base
           # @api public
+          # @return [Symbol, nil] the data type name from serializer
+          attr_reader :data_type
+
+          # @api public
           # @return [Features] feature detection for the API
           attr_reader :features
 
@@ -31,9 +35,10 @@ module Apiwork
                    :union,
                    to: :api_class
 
-          def initialize(api_class, features)
+          def initialize(api_class, features, data_type: nil)
             @api_class = api_class
             @features = features
+            @data_type = data_type
           end
 
           # @api public

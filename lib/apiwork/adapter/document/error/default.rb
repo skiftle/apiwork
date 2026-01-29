@@ -5,6 +5,10 @@ module Apiwork
     module Document
       module Error
         class Default < Base
+          shape do |shape|
+            shape.extends(shape.data_type)
+          end
+
           def json
             data
           end

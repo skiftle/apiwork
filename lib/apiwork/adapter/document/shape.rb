@@ -27,9 +27,9 @@ module Apiwork
       #   end
       class Shape
         class << self
-          def build(target, root_key, capabilities, representation_class, type)
+          def build(target, root_key, capabilities, representation_class, type, data_type: nil)
             metadata = build_metadata(capabilities, representation_class, type)
-            new(target, root_key, metadata).build
+            new(target, root_key, metadata, data_type:).build
           end
 
           private
@@ -43,6 +43,10 @@ module Apiwork
             result
           end
         end
+
+        # @api public
+        # @return [Symbol, nil] the data type name from serializer
+        attr_reader :data_type
 
         # @api public
         # @return [API::Object] capability shapes to merge
@@ -67,6 +71,7 @@ module Apiwork
                  :datetime?,
                  :decimal,
                  :decimal?,
+                 :extends,
                  :integer,
                  :integer?,
                  :literal,
@@ -87,10 +92,11 @@ module Apiwork
                  :uuid?,
                  to: :target
 
-        def initialize(target, root_key, metadata)
+        def initialize(target, root_key, metadata, data_type: nil)
           @target = target
           @root_key = root_key
           @metadata = metadata
+          @data_type = data_type
         end
 
         def build

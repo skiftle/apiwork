@@ -249,7 +249,9 @@ module Apiwork
         end
 
         error_serializer_class = self.class.error_serializer
-        error_serializer_class&.new&.api_types(api_class, features)
+        error_serializer_class.new.api_types(api_class, features)
+
+        build_error_response_body(api_class, error_serializer_class)
       end
 
       def register_contract(contract_class, representation_class, actions)
@@ -258,7 +260,7 @@ module Apiwork
         end
 
         resource_serializer_class = self.class.resource_serializer
-        resource_serializer_class&.new(representation_class)&.contract_types(contract_class)
+        resource_serializer_class.new(representation_class).contract_types(contract_class)
 
         build_action_responses(contract_class, representation_class, actions)
       end
@@ -325,11 +327,12 @@ module Apiwork
       def build_record_action_response(contract_class, representation_class, action, contract_action)
         result_wrapper = build_result_wrapper(contract_class, representation_class, action.name, :record)
         record_shape_class = self.class.record_document.shape_class
+        data_type = resolve_resource_data_type(representation_class)
 
         contract_action.response do |response|
           response.result_wrapper = result_wrapper
           response.body do |body|
-            record_shape_class.build(body, representation_class.root_key, capabilities, representation_class, :record)
+            record_shape_class.build(body, representation_class.root_key, capabilities, representation_class, :record, data_type:)
           end
         end
       end
@@ -337,11 +340,12 @@ module Apiwork
       def build_collection_action_response(contract_class, representation_class, action, contract_action)
         result_wrapper = build_result_wrapper(contract_class, representation_class, action.name, :collection)
         collection_shape_class = self.class.collection_document.shape_class
+        data_type = resolve_resource_data_type(representation_class)
 
         contract_action.response do |response|
           response.result_wrapper = result_wrapper
           response.body do |body|
-            collection_shape_class.build(body, representation_class.root_key, capabilities, representation_class, :collection)
+            collection_shape_class.build(body, representation_class.root_key, capabilities, representation_class, :collection, data_type:)
           end
         end
       end
@@ -365,13 +369,33 @@ module Apiwork
                         else
                           self.class.record_document.shape_class
                         end
+          data_type = resolve_resource_data_type(representation_class)
 
           contract_class.object(success_type_name) do |object|
-            shape_class.build(object, representation_class.root_key, capabilities, representation_class, response_type)
+            shape_class.build(object, representation_class.root_key, capabilities, representation_class, response_type, data_type:)
           end
         end
 
         { error_type: :error_response_body, success_type: contract_class.scoped_type_name(success_type_name) }
+      end
+
+      def resolve_resource_data_type(representation_class)
+        resource_serializer_class = self.class.resource_serializer
+        resource_serializer_class.data_type.call(representation_class)
+      end
+
+      def build_error_response_body(api_class, error_serializer_class)
+        return if api_class.type?(:error_response_body)
+
+        error_document = self.class.error_document
+        shape_class = error_document.shape_class
+        return unless shape_class
+
+        data_type = error_serializer_class.data_type
+
+        api_class.object(:error_response_body, extends: data_type) do |object|
+          shape_class.build(object, nil, [], nil, :error, data_type:)
+        end
       end
     end
   end

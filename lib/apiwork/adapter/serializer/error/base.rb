@@ -21,6 +21,16 @@ module Apiwork
         class Base
           class << self
             # @api public
+            # Sets or gets the data type name for this serializer.
+            #
+            # @param name [Symbol, nil] the type name
+            # @return [Symbol, nil]
+            def data_type(name = nil)
+              @data_type = name if name
+              @data_type
+            end
+
+            # @api public
             # Sets or gets the API type builder class.
             #
             # @param klass [Class, nil] a Builder::API::Base subclass
@@ -35,7 +45,7 @@ module Apiwork
             builder_class = self.class.api_builder
             return unless builder_class
 
-            builder_class.new(api_class, features).build
+            builder_class.new(api_class, features, data_type: self.class.data_type).build
           end
 
           # @api public
