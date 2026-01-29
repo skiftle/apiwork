@@ -8,14 +8,14 @@ module Apiwork
           class ContractBuilder < Adapter::Builder::Contract::Base
             def build
               build_enums
-              build_resource_type
+              resource_type_name
             end
 
             def resource_type_name
               if sti_base_representation?
                 build_sti_response_union_type
               else
-                register_resource_type(representation_class.root_key.singular.to_sym) unless type?(scoped_type_name(nil))
+                register_type(representation_class.root_key.singular.to_sym) unless type?(scoped_type_name(nil))
 
                 scoped_type_name(nil)
               end
@@ -42,11 +42,7 @@ module Apiwork
               end
             end
 
-            def build_resource_type
-              resource_type_name
-            end
-
-            def register_resource_type(type_name)
+            def register_type(type_name)
               association_type_map = {}
               representation_class.associations.each do |name, association|
                 association_type_map[name] = build_association_type(association)
@@ -73,15 +69,14 @@ module Apiwork
                     **of_option,
                   }
 
-                  if attribute.element
-                    attribute_element = attribute.element
-
-                    if attribute_element.type == :array
-                      param_options[:of] = { type: attribute_element.of_type }
-                      param_options[:shape] = attribute_element.shape
+                  element = attribute.element
+                  if element
+                    if element.type == :array
+                      param_options[:of] = { type: element.of_type }
+                      param_options[:shape] = element.shape
                     else
-                      param_options[:shape] = attribute_element.shape
-                      param_options[:discriminator] = attribute_element.discriminator if attribute_element.discriminator
+                      param_options[:shape] = element.shape
+                      param_options[:discriminator] = element.discriminator if element.discriminator
                     end
                   end
 
@@ -115,20 +110,18 @@ module Apiwork
             end
 
             def sti_base_representation?
-              return false unless representation_class.discriminated?
-
-              representation_class.union&.variants&.any?
+              representation_class.discriminated?
             end
 
             def build_sti_union(union_type_name:, visited: Set.new)
               representation_union = representation_class.union
-              return nil unless representation_union&.variants&.any?
+              return nil unless representation_union.variants.any?
 
               discriminator_name = representation_union.discriminator
 
               variant_types = representation_union.variants.filter_map do |tag, variant|
                 variant_representation_class = variant.representation_class
-                variant_type = yield(variant_representation_class, tag, visited)
+                variant_type = yield(variant_representation_class)
                 { tag: tag.to_s, type: variant_type } if variant_type
               end
 
@@ -146,7 +139,7 @@ module Apiwork
             def build_sti_response_union_type(visited: Set.new)
               union_type_name = representation_class.root_key.singular.to_sym
 
-              build_sti_union(union_type_name:, visited:) do |variant_representation_class, _tag, _visit_set|
+              build_sti_union(union_type_name:, visited:) do |variant_representation_class|
                 variant_contract = find_contract_for_representation(variant_representation_class)
                 next nil unless variant_contract
 
@@ -160,12 +153,12 @@ module Apiwork
             def build_association_type(association, visited: Set.new)
               return build_polymorphic_association_type(association, visited:) if association.polymorphic?
 
-              association_resource = resolve_association_resource(association)
+              association_resource = resolve_association(association)
               return nil unless association_resource
 
               association_representation = association_resource[:representation_class]
 
-              return build_sti_association_type(association, association_representation, visited:) if association_resource[:sti]
+              return import_association_contract(association_representation, visited) if association_resource[:sti]
               return nil if visited.include?(association_representation)
 
               association_contract = find_contract_for_representation(association_representation)
@@ -178,7 +171,7 @@ module Apiwork
 
             def build_polymorphic_association_type(association, visited: Set.new)
               polymorphic = association.polymorphic
-              return nil unless polymorphic&.any?
+              return nil unless polymorphic.any?
 
               union_type_name = association.name
 
@@ -200,14 +193,7 @@ module Apiwork
               union_type_name
             end
 
-            def build_sti_association_type(association, association_representation_class, visited: Set.new)
-              alias_name = import_association_contract(association_representation_class, visited)
-              return nil unless alias_name
-
-              alias_name
-            end
-
-            def resolve_association_resource(association)
+            def resolve_association(association)
               return nil if association.polymorphic?
 
               resolved_representation = resolve_representation_from_association(association)
