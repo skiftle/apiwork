@@ -70,6 +70,10 @@ export const PostPageSchema = z.object({
   size: z.number().int().min(1).max(100).optional()
 });
 
+export const ProfileIncludeSchema = z.object({
+  user: z.boolean().optional()
+});
+
 export const ProfileNestedCreatePayloadSchema = z.object({
   _op: z.literal('create').optional(),
   bio: z.string().nullable().optional(),
@@ -143,6 +147,10 @@ export const CommentIndexSuccessResponseBodySchema = z.object({
   comments: z.array(CommentSchema),
   meta: z.record(z.string(), z.unknown()).optional(),
   pagination: OffsetPaginationSchema
+});
+
+export const UserIncludeSchema = z.object({
+  profile: ProfileIncludeSchema.optional()
 });
 
 export const ProfileNestedPayloadSchema = z.discriminatedUnion('_op', [
@@ -233,10 +241,6 @@ export const ProfileSchema = z.object({
   website: z.string().nullable()
 });
 
-export const ProfileIncludeSchema = z.object({
-  user: z.union([z.boolean(), UserIncludeSchema]).optional()
-});
-
 export const UserSchema = z.object({
   createdAt: z.iso.datetime(),
   email: z.string(),
@@ -250,10 +254,6 @@ export const UserSchema = z.object({
 export const UserCreateSuccessResponseBodySchema = z.object({
   meta: z.record(z.string(), z.unknown()).optional(),
   user: UserSchema
-});
-
-export const UserIncludeSchema = z.object({
-  profile: ProfileIncludeSchema.optional()
 });
 
 export const UserIndexSuccessResponseBodySchema = z.object({
@@ -710,7 +710,7 @@ export interface Profile {
 }
 
 export interface ProfileInclude {
-  user?: UserInclude | boolean;
+  user?: boolean;
 }
 
 export interface ProfileNestedCreatePayload {

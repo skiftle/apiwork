@@ -257,7 +257,7 @@ export interface Profile {
 }
 
 export interface ProfileInclude {
-  user?: UserInclude | boolean;
+  user?: boolean;
 }
 
 export interface ProfileNestedCreatePayload {

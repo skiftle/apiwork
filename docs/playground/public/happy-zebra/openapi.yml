@@ -716,9 +716,7 @@ components:
     profileInclude:
       properties:
         user:
-          oneOf:
-          - type: boolean
-          - "$ref": "#/components/schemas/userInclude"
+          type: boolean
       type: object
     profileNestedCreatePayload:
       properties:
