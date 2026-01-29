@@ -249,7 +249,7 @@ module Apiwork
         end
 
         error_serializer_class = self.class.error_serializer
-        error_serializer_class&.new&.register_types(api_class, features)
+        error_serializer_class&.new&.api_types(api_class, features)
       end
 
       def register_contract(contract_class, representation_class, actions)
@@ -258,7 +258,7 @@ module Apiwork
         end
 
         resource_serializer_class = self.class.resource_serializer
-        resource_serializer_class&.new(representation_class)&.register_types(contract_class)
+        resource_serializer_class&.new(representation_class)&.contract_types(contract_class)
 
         build_action_responses(contract_class, representation_class, actions)
       end

@@ -5,7 +5,7 @@ module Apiwork
     module Serializer
       module Error
         class Default < Base
-          types Types
+          api API
 
           def serialize(error, context:)
             {

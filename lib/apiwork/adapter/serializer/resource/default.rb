@@ -5,7 +5,7 @@ module Apiwork
     module Serializer
       module Resource
         class Default < Base
-          types Types
+          contract Contract
 
           def serialize(resource, context:, serialize_options:)
             representation_class.serialize(

@@ -5,21 +5,11 @@ module Apiwork
     module Serializer
       module Error
         class Default < Base
-          class Types
-            class << self
-              def build(api_class, features)
-                new(api_class).build
-              end
-            end
-
-            def initialize(api_class)
-              @api_class = api_class
-            end
-
+          class API < Serializer::API::Base
             def build
-              @api_class.enum :layer, values: %w[http contract domain]
+              enum(:layer, values: %w[http contract domain])
 
-              @api_class.object(:issue) do |object|
+              object(:issue) do |object|
                 object.string(:code)
                 object.string(:detail)
                 object.array(:path, &:string)
@@ -27,7 +17,7 @@ module Apiwork
                 object.object(:meta)
               end
 
-              @api_class.object(:error_response_body) do |object|
+              object(:error_response_body) do |object|
                 object.reference(:layer)
                 object.array(:issues) do |element|
                   element.reference(:issue)
