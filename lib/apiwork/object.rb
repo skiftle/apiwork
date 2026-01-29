@@ -2,10 +2,12 @@
 
 module Apiwork
   class Object
-    attr_reader :params
+    attr_reader :merged,
+                :params
 
     def initialize
       @extends = []
+      @merged = []
       @params = {}
     end
 
@@ -34,12 +36,29 @@ module Apiwork
     end
 
     # @api public
-    # Merges params from another object into this one.
+    # Includes all properties from another type.
+    # Can be called multiple times to merge from multiple types.
     #
-    # @param other [Apiwork::Object] the object to merge from
+    # @example
+    #   object :admin do
+    #     merge! :user
+    #     boolean :superuser
+    #   end
+    #
+    # @param type_name [Symbol] the type to merge from
+    # @return [Array<Symbol>] the merged types
+    def merge!(type_name = nil)
+      @merged << type_name if type_name
+      @merged
+    end
+
+    # Merges params from another shape into this one.
+    # Used internally by capabilities and document shapes.
+    #
+    # @param shape [Apiwork::Object] the shape to merge from
     # @return [self]
-    def merge!(other)
-      @params.merge!(other.params)
+    def merge_shape!(shape)
+      @params.merge!(shape.params)
       self
     end
 

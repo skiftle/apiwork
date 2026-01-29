@@ -21,7 +21,7 @@ class MyShape < Document::Shape
   def build
     reference(:invoice)
     object?(:meta)
-    merge!(metadata)
+    merge_shape!(metadata)
   end
 end
 ```
@@ -32,7 +32,7 @@ end
 shape do |shape|
   shape.reference(shape.root_key.singular.to_sym)
   shape.object?(:meta)
-  shape.merge!(shape.metadata)
+  shape.merge_shape!(shape.metadata)
 end
 ```
 

@@ -63,10 +63,26 @@ module Apiwork
           return {} unless type_definition.params
 
           result = {}
+
+          expand_merged_types(type_definition, result)
+
           type_definition.params.sort_by { |name, _| name.to_s }.each do |name, param_options|
             result[name] = build_param(name, param_options, type_definition.scope)
           end
           result
+        end
+
+        def expand_merged_types(type_definition, result)
+          return unless type_definition.shape.respond_to?(:merged)
+
+          type_definition.shape.merged.each do |merged_name|
+            merged_type = @api_class.type_registry[merged_name]
+            next unless merged_type&.params
+
+            merged_type.params.each do |name, param_options|
+              result[name] = build_param(name, param_options, type_definition.scope)
+            end
+          end
         end
 
         def build_variants(type_definition)

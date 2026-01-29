@@ -236,6 +236,90 @@ RSpec.describe 'Type merging' do
     end
   end
 
+  describe 'merge! with symbols' do
+    it 'inlines params from merged type in introspection' do
+      api_class = Apiwork::API.define '/api/test' do
+        object :base do
+          string :name
+          string :email
+        end
+
+        object :admin do
+          merge! :base
+          boolean :superuser
+        end
+      end
+
+      introspection = Apiwork::Introspection::Dump::API.new(api_class).to_h
+      admin_type = introspection[:types][:admin]
+
+      expect(admin_type[:shape].keys).to contain_exactly(:email, :name, :superuser)
+    end
+
+    it 'allows own params to override merged params' do
+      api_class = Apiwork::API.define '/api/test' do
+        object :base do
+          string :name
+        end
+
+        object :child do
+          merge! :base
+          string :name, description: 'Overridden'
+        end
+      end
+
+      introspection = Apiwork::Introspection::Dump::API.new(api_class).to_h
+      child_type = introspection[:types][:child]
+
+      expect(child_type[:shape][:name][:description]).to eq('Overridden')
+    end
+
+    it 'supports multiple merged types' do
+      api_class = Apiwork::API.define '/api/test' do
+        object :contactable do
+          string :email
+          string :phone
+        end
+
+        object :timestamped do
+          datetime :created_at
+          datetime :updated_at
+        end
+
+        object :customer do
+          merge! :contactable
+          merge! :timestamped
+          string :name
+        end
+      end
+
+      introspection = Apiwork::Introspection::Dump::API.new(api_class).to_h
+      customer_type = introspection[:types][:customer]
+
+      expect(customer_type[:shape].keys).to contain_exactly(
+        :created_at, :email, :name, :phone, :updated_at
+      )
+    end
+
+    it 'does not show merge reference in output (unlike extends)' do
+      api_class = Apiwork::API.define '/api/test' do
+        object :base do
+          string :name
+        end
+
+        object :child do
+          merge! :base
+        end
+      end
+
+      introspection = Apiwork::Introspection::Dump::API.new(api_class).to_h
+      child_type = introspection[:types][:child]
+
+      expect(child_type[:extends]).to be_empty
+      expect(child_type[:shape].keys).to eq([:name])
+    end
+  end
+
   describe 'contract-scoped merging' do
     describe 'object merging' do
       it 'merges params within contract scope' do

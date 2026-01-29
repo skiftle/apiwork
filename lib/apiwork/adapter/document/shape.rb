@@ -15,7 +15,7 @@ module Apiwork
       #     def build
       #       reference(:invoice)
       #       object?(:meta)
-      #       merge!(metadata)
+      #       merge_shape!(metadata)
       #     end
       #   end
       #
@@ -23,7 +23,7 @@ module Apiwork
       #   shape do |shape|
       #     shape.reference(shape.root_key.singular.to_sym)
       #     shape.object?(:meta)
-      #     shape.merge!(shape.metadata)
+      #     shape.merge_shape!(shape.metadata)
       #   end
       class Shape
         class << self
@@ -38,7 +38,7 @@ module Apiwork
             result = ::Apiwork::API::Object.new
             capabilities.each do |capability|
               shape = capability.shape(representation_class, type)
-              result.merge!(shape) if shape
+              result.merge_shape!(shape) if shape
             end
             result
           end
@@ -76,6 +76,7 @@ module Apiwork
                  :integer?,
                  :literal,
                  :merge!,
+                 :merge_shape!,
                  :number,
                  :number?,
                  :object,

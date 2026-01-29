@@ -11,7 +11,7 @@ module Apiwork
             end
 
             shape.object?(:meta)
-            shape.merge!(shape.metadata)
+            shape.merge_shape!(shape.metadata)
           end
 
           def json
