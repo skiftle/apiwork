@@ -2,18 +2,18 @@
 
 module Apiwork
   module Adapter
-    module Document
+    module Wrapper
       class Base
         attr_reader :data
 
         class << self
-          def document_type(value = nil)
+          def wrapper_type(value = nil)
             if value
-              @document_type = value
-            elsif defined?(@document_type)
-              @document_type
-            elsif superclass.respond_to?(:document_type)
-              superclass.document_type
+              @wrapper_type = value
+            elsif defined?(@wrapper_type)
+              @wrapper_type
+            elsif superclass.respond_to?(:wrapper_type)
+              superclass.wrapper_type
             end
           end
 

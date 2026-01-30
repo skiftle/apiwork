@@ -13,9 +13,9 @@ module Apiwork
     #     adapter_name :billing
     #
     #     representation BillingRepresentation
-    #     record_document BillingRecordDocument
-    #     collection_document BillingCollectionDocument
-    #     error_document BillingErrorDocument
+    #     record_wrapper BillingRecordWrapper
+    #     collection_wrapper BillingCollectionWrapper
+    #     error_wrapper BillingErrorWrapper
     #   end
     class Base
       include Configurable
@@ -111,42 +111,42 @@ module Apiwork
         end
 
         # @api public
-        # Sets or gets the record document class.
+        # Sets or gets the record wrapper class.
         #
-        # @param klass [Class] a Document::Base subclass (optional)
+        # @param klass [Class] a Wrapper::Base subclass (optional)
         # @return [Class]
         #
         # @example
-        #   record_document CustomRecordDocument
-        def record_document(klass = nil)
-          @record_document = klass if klass
-          @record_document || (superclass.respond_to?(:record_document) && superclass.record_document)
+        #   record_wrapper CustomRecordWrapper
+        def record_wrapper(klass = nil)
+          @record_wrapper = klass if klass
+          @record_wrapper || (superclass.respond_to?(:record_wrapper) && superclass.record_wrapper)
         end
 
         # @api public
-        # Sets or gets the collection document class.
+        # Sets or gets the collection wrapper class.
         #
-        # @param klass [Class] a Document::Base subclass (optional)
+        # @param klass [Class] a Wrapper::Base subclass (optional)
         # @return [Class]
         #
         # @example
-        #   collection_document CustomCollectionDocument
-        def collection_document(klass = nil)
-          @collection_document = klass if klass
-          @collection_document || (superclass.respond_to?(:collection_document) && superclass.collection_document)
+        #   collection_wrapper CustomCollectionWrapper
+        def collection_wrapper(klass = nil)
+          @collection_wrapper = klass if klass
+          @collection_wrapper || (superclass.respond_to?(:collection_wrapper) && superclass.collection_wrapper)
         end
 
         # @api public
-        # Sets or gets the error document class.
+        # Sets or gets the error wrapper class.
         #
-        # @param klass [Class] a Document::Base subclass (optional)
+        # @param klass [Class] a Wrapper::Base subclass (optional)
         # @return [Class]
         #
         # @example
-        #   error_document CustomErrorDocument
-        def error_document(klass = nil)
-          @error_document = klass if klass
-          @error_document || (superclass.respond_to?(:error_document) && superclass.error_document)
+        #   error_wrapper CustomErrorWrapper
+        def error_wrapper(klass = nil)
+          @error_wrapper = klass if klass
+          @error_wrapper || (superclass.respond_to?(:error_wrapper) && superclass.error_wrapper)
         end
 
         # @api public
@@ -219,28 +219,28 @@ module Apiwork
       transform_response KeyTransformer
 
       def process_collection(collection, representation_class, request, context: {}, meta: {})
-        collection, metadata, serialize_options = apply_capabilities(collection, representation_class, request, document_type: :collection)
+        collection, metadata, serialize_options = apply_capabilities(collection, representation_class, request, wrapper_type: :collection)
 
         serializer = resource_serializer_instance(representation_class)
         data = serializer.serialize(collection, context:, serialize_options:)
 
-        self.class.collection_document.new(data, metadata, representation_class.root_key, capabilities, meta).json
+        self.class.collection_wrapper.new(data, metadata, representation_class.root_key, capabilities, meta).json
       end
 
       def process_record(record, representation_class, request, context: {}, meta: {})
-        record, metadata, serialize_options = apply_capabilities(record, representation_class, request, document_type: :record)
+        record, metadata, serialize_options = apply_capabilities(record, representation_class, request, wrapper_type: :record)
 
         serializer = resource_serializer_instance(representation_class)
         data = serializer.serialize(record, context:, serialize_options:)
 
-        self.class.record_document.new(data, metadata, representation_class.root_key, capabilities, meta).json
+        self.class.record_wrapper.new(data, metadata, representation_class.root_key, capabilities, meta).json
       end
 
       def process_error(error, representation_class, context: {})
         serializer = error_serializer_instance
         data = serializer.serialize(error, context:)
 
-        self.class.error_document.new(data).json
+        self.class.error_wrapper.new(data).json
       end
 
       def register_api(api_class, features)
@@ -297,8 +297,8 @@ module Apiwork
         self.class.error_serializer.new
       end
 
-      def apply_capabilities(data, representation_class, request, document_type:)
-        runner = Capability::Runner.new(capabilities, document_type:)
+      def apply_capabilities(data, representation_class, request, wrapper_type:)
+        runner = Capability::Runner.new(capabilities, wrapper_type:)
         runner.run(data, representation_class, request)
       end
 
@@ -326,7 +326,7 @@ module Apiwork
 
       def build_record_action_response(contract_class, representation_class, action, contract_action)
         result_wrapper = build_result_wrapper(contract_class, representation_class, action.name, :record)
-        record_shape_class = self.class.record_document.shape_class
+        record_shape_class = self.class.record_wrapper.shape_class
         data_type = resolve_resource_data_type(representation_class)
 
         contract_action.response do |response|
@@ -339,7 +339,7 @@ module Apiwork
 
       def build_collection_action_response(contract_class, representation_class, action, contract_action)
         result_wrapper = build_result_wrapper(contract_class, representation_class, action.name, :collection)
-        collection_shape_class = self.class.collection_document.shape_class
+        collection_shape_class = self.class.collection_wrapper.shape_class
         data_type = resolve_resource_data_type(representation_class)
 
         contract_action.response do |response|
@@ -365,9 +365,9 @@ module Apiwork
 
         unless contract_class.type?(success_type_name)
           shape_class = if response_type == :collection
-                          self.class.collection_document.shape_class
+                          self.class.collection_wrapper.shape_class
                         else
-                          self.class.record_document.shape_class
+                          self.class.record_wrapper.shape_class
                         end
           data_type = resolve_resource_data_type(representation_class)
 
@@ -387,8 +387,8 @@ module Apiwork
       def build_error_response_body(api_class, error_serializer_class)
         return if api_class.type?(:error_response_body)
 
-        error_document = self.class.error_document
-        shape_class = error_document.shape_class
+        error_wrapper = self.class.error_wrapper
+        shape_class = error_wrapper.shape_class
         return unless shape_class
 
         data_type = error_serializer_class.data_type

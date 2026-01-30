@@ -236,7 +236,7 @@ Top-level modules that group related functionality:
 |-----------|---------|
 | `Capability::` | Capability infrastructure and base classes |
 | `Serializer::` | Serialization infrastructure |
-| `Document::` | Response document handling |
+| `Wrapper::` | Response wrapper handling |
 | `Builder::` | Shared builder base classes |
 | `Hook::` | Hook infrastructure |
 

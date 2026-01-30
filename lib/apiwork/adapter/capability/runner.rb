@@ -4,9 +4,9 @@ module Apiwork
   module Adapter
     module Capability
       class Runner
-        def initialize(capabilities, document_type:)
+        def initialize(capabilities, wrapper_type:)
           @capabilities = capabilities
-          @document_type = document_type
+          @wrapper_type = wrapper_type
         end
 
         def run(data, representation_class, request)
@@ -23,7 +23,7 @@ module Apiwork
           includes = []
 
           data = capabilities.reduce(collection) do |current, capability|
-            result = capability.apply(current, representation_class, request, document_type: @document_type)
+            result = capability.apply(current, representation_class, request, wrapper_type: @wrapper_type)
             next current unless result
 
             metadata.merge!(result.metadata) if result.metadata

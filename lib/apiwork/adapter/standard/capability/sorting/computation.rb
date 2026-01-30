@@ -14,7 +14,7 @@ module Apiwork
 
               sorted_data, includes = Sort.apply(data, representation_class, params)
 
-              result(data: sorted_data, includes:)
+              result(includes:, data: sorted_data)
             end
           end
         end

@@ -2,16 +2,16 @@
 
 module Apiwork
   module Adapter
-    module Document
+    module Wrapper
       # @api public
-      # Base class for document shapes.
+      # Base class for wrapper shapes.
       #
-      # Subclass to define response type structure for record or collection documents.
+      # Subclass to define response type structure for record or collection wrappers.
       # The block receives the shape instance with delegated type definition methods
       # and access to root_key and metadata.
       #
       # @example Custom shape class
-      #   class MyShape < Document::Shape
+      #   class MyShape < Wrapper::Shape
       #     def build
       #       reference(:invoice)
       #       object?(:meta)

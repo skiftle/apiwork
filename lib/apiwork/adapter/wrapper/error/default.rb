@@ -2,7 +2,7 @@
 
 module Apiwork
   module Adapter
-    module Document
+    module Wrapper
       module Error
         class Default < Base
           shape do |shape|

@@ -147,12 +147,12 @@ module Apiwork
           object.params.empty? ? nil : object
         end
 
-        def apply(data, representation_class, request, document_type:)
+        def apply(data, representation_class, request, wrapper_type:)
           klass = self.class.computation_class
           return Result.new(data:) unless klass
 
           scope = klass.scope
-          return Result.new(data:) if scope && scope != document_type
+          return Result.new(data:) if scope && scope != wrapper_type
 
           klass.new(
             data,

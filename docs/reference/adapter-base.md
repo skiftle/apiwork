@@ -11,7 +11,7 @@ next: false
 Base class for adapters.
 
 Subclass to create custom adapters with different response formats.
-Configure with [representation](representation-base) for serialization and document classes for response wrapping.
+Configure with [representation](representation-base) for serialization and wrapper classes for response wrapping.
 
 **Example: Custom adapter**
 
@@ -20,9 +20,9 @@ class BillingAdapter < Apiwork::Adapter::Base
   adapter_name :billing
 
   representation BillingRepresentation
-  record_document BillingRecordDocument
-  collection_document BillingCollectionDocument
-  error_document BillingErrorDocument
+  record_wrapper BillingRecordDocument
+  collection_wrapper BillingCollectionDocument
+  error_wrapper BillingErrorDocument
 end
 ```
 
@@ -84,19 +84,19 @@ capability Filtering
 
 ---
 
-### .collection_document
+### .collection_wrapper
 
-`.collection_document(klass = nil)`
+`.collection_wrapper(klass = nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L134)
 
-Sets or gets the collection document class.
+Sets or gets the collection wrapper class.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `klass` | `Class` | a Document::Base subclass (optional) |
+| `klass` | `Class` | a Wrapper::Base subclass (optional) |
 
 **Returns**
 
@@ -105,24 +105,24 @@ Sets or gets the collection document class.
 **Example**
 
 ```ruby
-collection_document CustomCollectionDocument
+collection_wrapper CustomCollectionDocument
 ```
 
 ---
 
-### .error_document
+### .error_wrapper
 
-`.error_document(klass = nil)`
+`.error_wrapper(klass = nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L147)
 
-Sets or gets the error document class.
+Sets or gets the error wrapper class.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `klass` | `Class` | a Document::Base subclass (optional) |
+| `klass` | `Class` | a Wrapper::Base subclass (optional) |
 
 **Returns**
 
@@ -131,7 +131,7 @@ Sets or gets the error document class.
 **Example**
 
 ```ruby
-error_document CustomErrorDocument
+error_wrapper CustomErrorDocument
 ```
 
 ---
@@ -216,19 +216,19 @@ end
 
 ---
 
-### .record_document
+### .record_wrapper
 
-`.record_document(klass = nil)`
+`.record_wrapper(klass = nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L121)
 
-Sets or gets the record document class.
+Sets or gets the record wrapper class.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `klass` | `Class` | a Document::Base subclass (optional) |
+| `klass` | `Class` | a Wrapper::Base subclass (optional) |
 
 **Returns**
 
@@ -237,7 +237,7 @@ Sets or gets the record document class.
 **Example**
 
 ```ruby
-record_document CustomRecordDocument
+record_wrapper CustomRecordDocument
 ```
 
 ---

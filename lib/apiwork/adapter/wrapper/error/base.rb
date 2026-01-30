@@ -2,10 +2,10 @@
 
 module Apiwork
   module Adapter
-    module Document
+    module Wrapper
       module Error
-        class Base < Document::Base
-          document_type :error
+        class Base < Wrapper::Base
+          wrapper_type :error
         end
       end
     end

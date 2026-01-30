@@ -6,7 +6,7 @@ module Apiwork
       # @api public
       # Shape builder for capability response shapes.
       #
-      # Extends the document shape with capability-specific fields.
+      # Extends the wrapper shape with capability-specific fields.
       # Provides {#options} for accessing capability configuration,
       # plus all DSL methods from {API::Object} for defining structure.
       #

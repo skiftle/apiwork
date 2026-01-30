@@ -10,9 +10,9 @@ module Apiwork
       resource_serializer Serializer::Resource::Default
       error_serializer Serializer::Error::Default
 
-      record_document Document::Record::Default
-      collection_document Document::Collection::Default
-      error_document Document::Error::Default
+      record_wrapper Wrapper::Record::Default
+      collection_wrapper Wrapper::Collection::Default
+      error_wrapper Wrapper::Error::Default
 
       capability Capability::Filtering
       capability Capability::Sorting

@@ -2,10 +2,10 @@
 
 module Apiwork
   module Adapter
-    module Document
-      module Record
-        class Base < Document::Base
-          document_type :record
+    module Wrapper
+      module Collection
+        class Base < Wrapper::Base
+          wrapper_type :collection
 
           attr_reader :capabilities, :meta, :metadata, :root_key
 

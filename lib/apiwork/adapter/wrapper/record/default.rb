@@ -2,21 +2,18 @@
 
 module Apiwork
   module Adapter
-    module Document
-      module Collection
+    module Wrapper
+      module Record
         class Default < Base
           shape do |shape|
-            shape.array(shape.root_key.plural.to_sym) do |array|
-              array.reference(shape.data_type)
-            end
-
+            shape.reference(shape.root_key.singular.to_sym, to: shape.data_type)
             shape.object?(:meta)
             shape.merge_shape!(shape.metadata)
           end
 
           def json
             {
-              root_key.plural.to_sym => data,
+              root_key.singular.to_sym => data,
               meta: meta.presence,
               **metadata,
             }.compact

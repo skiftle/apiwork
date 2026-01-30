@@ -4,20 +4,20 @@ prev: false
 next: false
 ---
 
-# Adapter::Document::Shape
+# Adapter::Wrapper::Shape
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/document/shape.rb#L28)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L28)
 
-Base class for document shapes.
+Base class for wrapper shapes.
 
-Subclass to define response type structure for record or collection documents.
+Subclass to define response type structure for record or collection wrappers.
 The block receives the shape instance with delegated type definition methods
 and access to root_key and metadata.
 
 **Example: Custom shape class**
 
 ```ruby
-class MyShape < Document::Shape
+class MyShape < Wrapper::Shape
   def build
     reference(:invoice)
     object?(:meta)
@@ -42,7 +42,7 @@ end
 
 `#data_type`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/document/shape.rb#L49)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L49)
 
 **Returns**
 
@@ -54,7 +54,7 @@ end
 
 `#metadata`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/document/shape.rb#L53)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L53)
 
 **Returns**
 
@@ -66,7 +66,7 @@ end
 
 `#root_key`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/document/shape.rb#L58)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L58)
 
 **Returns**
 
