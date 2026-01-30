@@ -357,8 +357,8 @@ RSpec.describe Apiwork::Export::Zod do
         export :zod
 
         object :node_filter do
-          reference :_not, optional: true, to: :node_filter
-          array :_and, optional: true do
+          reference :NOT, optional: true, to: :node_filter
+          array :AND, optional: true do
             reference :node_filter
           end
           string :name, optional: true
@@ -402,11 +402,11 @@ RSpec.describe Apiwork::Export::Zod do
       expect(recursive_filter_output).to include('NodeFilterSchema: z.ZodType<NodeFilter> = z.lazy(() =>')
     end
 
-    it 'references itself in _not field' do
-      expect(recursive_filter_output).to include('_not: NodeFilterSchema')
+    it 'references itself in NOT field' do
+      expect(recursive_filter_output).to include('NOT: NodeFilterSchema')
     end
 
-    it 'references itself in _and array' do
+    it 'references itself in AND array' do
       expect(recursive_filter_output).to include('z.array(NodeFilterSchema)')
     end
   end

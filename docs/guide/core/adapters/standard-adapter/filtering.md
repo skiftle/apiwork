@@ -127,14 +127,14 @@ Enum fields support `eq` and `in` operators. You can also pass the value directl
 
 ## Logical Operators
 
-Combine filters with `_and`, `_or`, and `_not`.
+Combine filters with `AND`, `OR`, and `NOT`.
 
 ### OR
 
 Match posts with "Ruby" OR "Rails" in title:
 
 ```http
-GET /posts?filter[_or][0][title][contains]=Ruby&filter[_or][1][title][contains]=Rails
+GET /posts?filter[OR][0][title][contains]=Ruby&filter[OR][1][title][contains]=Rails
 ```
 
 ### AND
@@ -142,7 +142,7 @@ GET /posts?filter[_or][0][title][contains]=Ruby&filter[_or][1][title][contains]=
 Explicit AND (default behavior):
 
 ```http
-GET /posts?filter[_and][0][status][eq]=published&filter[_and][1][views][gt]=100
+GET /posts?filter[AND][0][status][eq]=published&filter[AND][1][views][gt]=100
 ```
 
 ### NOT
@@ -150,7 +150,7 @@ GET /posts?filter[_and][0][status][eq]=published&filter[_and][1][views][gt]=100
 Exclude drafts:
 
 ```http
-GET /posts?filter[_not][status][eq]=draft
+GET /posts?filter[NOT][status][eq]=draft
 ```
 
 ### Combining
@@ -158,7 +158,7 @@ GET /posts?filter[_not][status][eq]=draft
 Published posts with "Ruby" or "Rails":
 
 ```http
-GET /posts?filter[status][eq]=published&filter[_or][0][title][contains]=Ruby&filter[_or][1][title][contains]=Rails
+GET /posts?filter[status][eq]=published&filter[OR][0][title][contains]=Ruby&filter[OR][1][title][contains]=Rails
 ```
 
 ### Nesting
@@ -167,7 +167,7 @@ Logical operators can be nested for complex conditions:
 
 ```text
 # (status = draft OR status = published) AND views > 100
-GET /posts?filter[_and][0][_or][0][status][eq]=draft&filter[_and][0][_or][1][status][eq]=published&filter[_and][1][views][gt]=100
+GET /posts?filter[AND][0][OR][0][status][eq]=draft&filter[AND][0][OR][1][status][eq]=published&filter[AND][1][views][gt]=100
 ```
 
 This generates:
@@ -180,14 +180,14 @@ WHERE (status = 'draft' OR status = 'published') AND views > 100
 
 ```text
 # title contains "Ruby" OR (NOT status = archived)
-GET /posts?filter[_or][0][title][contains]=Ruby&filter[_or][1][_not][status][eq]=archived
+GET /posts?filter[OR][0][title][contains]=Ruby&filter[OR][1][NOT][status][eq]=archived
 ```
 
 **Multiple levels:**
 
 ```text
 # (category = tech AND (status = draft OR status = review)) OR featured = true
-GET /posts?filter[_or][0][_and][0][category][eq]=tech&filter[_or][0][_and][1][_or][0][status][eq]=draft&filter[_or][0][_and][1][_or][1][status][eq]=review&filter[_or][1][featured][eq]=true
+GET /posts?filter[OR][0][AND][0][category][eq]=tech&filter[OR][0][AND][1][OR][0][status][eq]=draft&filter[OR][0][AND][1][OR][1][status][eq]=review&filter[OR][1][featured][eq]=true
 ```
 
 ---

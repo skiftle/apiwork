@@ -6,9 +6,9 @@ module Apiwork
       module Capability
         class Filtering < Adapter::Capability::Base
           module Constants
-            AND = :_and
-            OR = :_or
-            NOT = :_not
+            AND = :AND
+            OR = :OR
+            NOT = :NOT
             LOGICAL_OPERATORS = [AND, OR, NOT].freeze
 
             EQUALITY_OPERATORS = %i[eq].freeze

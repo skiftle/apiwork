@@ -28,10 +28,10 @@ module Apiwork
             end
 
             def transform_op_field(hash)
-              return hash unless hash.key?(:_op)
+              return hash unless hash.key?(Constants::OP)
 
               result = hash.dup
-              op = result.delete(:_op)
+              op = result.delete(Constants::OP)
               result[:_destroy] = true if op == 'delete'
               result
             end

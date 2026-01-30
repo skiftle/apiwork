@@ -68,19 +68,19 @@ Not all operators work with all types:
 ?filter[status][eq]=sent&filter[amount][gt]=100
 
 # AND (explicit)
-?filter[_and][0][status][eq]=sent&filter[_and][1][amount][gt]=100
+?filter[AND][0][status][eq]=sent&filter[AND][1][amount][gt]=100
 
 # OR - status is draft OR status is sent
-?filter[_or][0][status][eq]=draft&filter[_or][1][status][eq]=sent
+?filter[OR][0][status][eq]=draft&filter[OR][1][status][eq]=sent
 
 # NOT - exclude drafts
-?filter[_not][status][eq]=draft
+?filter[NOT][status][eq]=draft
 
 # Complex: (status=sent AND amount>100) OR (status=draft)
-?filter[_or][0][status][eq]=sent&filter[_or][0][amount][gt]=100&filter[_or][1][status][eq]=draft
+?filter[OR][0][status][eq]=sent&filter[OR][0][amount][gt]=100&filter[OR][1][status][eq]=draft
 
 # Nested: (status=draft OR status=published) AND views > 100
-?filter[_and][0][_or][0][status][eq]=draft&filter[_and][0][_or][1][status][eq]=published&filter[_and][1][views][gt]=100
+?filter[AND][0][OR][0][status][eq]=draft&filter[AND][0][OR][1][status][eq]=published&filter[AND][1][views][gt]=100
 ```
 
 ### Association Filtering

@@ -137,11 +137,11 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
       expect(comment1.author).to eq('Modified Author')
     end
 
-    it 'destroys comments with _op: delete' do
+    it 'destroys comments with OP: delete' do
       post_params = {
         post: {
           comments: [
-            { _op: 'delete', id: comment1.id },
+            { OP: 'delete', id: comment1.id },
             {
               author: 'Author 2',
               content: 'Keep this comment',
@@ -345,7 +345,7 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
         expect(new_reply.author).to eq('New Replier')
       end
 
-      it 'destroys replies with _op: delete' do
+      it 'destroys replies with OP: delete' do
         post_params = {
           post: {
             comments: [
@@ -355,7 +355,7 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
                 id: comment.id,
                 post_id: post_record.id,
                 replies: [
-                  { _op: 'delete', id: reply.id },
+                  { OP: 'delete', id: reply.id },
                 ],
               },
             ],

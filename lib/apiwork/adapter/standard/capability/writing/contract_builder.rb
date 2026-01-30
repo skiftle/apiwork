@@ -85,7 +85,7 @@ module Apiwork
               return if type?(:nested_create_payload)
 
               object(:nested_create_payload) do |object|
-                object.literal(:_op, optional: true, value: 'create')
+                object.literal(Constants::OP, optional: true, value: 'create')
                 object.param(:id, optional: true, type: primary_key_type)
                 collect_writable_params(:create).each do |param_config|
                   object.param(param_config[:name], **param_config[:options])
@@ -97,7 +97,7 @@ module Apiwork
               return if type?(:nested_update_payload)
 
               object(:nested_update_payload) do |object|
-                object.literal(:_op, optional: true, value: 'update')
+                object.literal(Constants::OP, optional: true, value: 'update')
                 object.param(:id, optional: true, type: primary_key_type)
                 collect_writable_params(:update).each do |param_config|
                   object.param(param_config[:name], **param_config[:options])
@@ -109,7 +109,7 @@ module Apiwork
               return if type?(:nested_delete_payload)
 
               object(:nested_delete_payload) do |object|
-                object.literal(:_op, optional: true, value: 'delete')
+                object.literal(Constants::OP, optional: true, value: 'delete')
                 object.param(:id, type: primary_key_type)
               end
             end
@@ -117,7 +117,7 @@ module Apiwork
             def build_nested_union
               return if type?(:nested_payload)
 
-              union(:nested_payload, discriminator: :_op) do |union|
+              union(:nested_payload, discriminator: Constants::OP) do |union|
                 union.variant(tag: 'create') do |element|
                   element.reference(scoped_type_name(:nested_create_payload))
                 end
