@@ -50,13 +50,17 @@ module Apiwork
               description: resolve_type_description(qualified_name, type_definition),
               discriminator: nil,
               example: type_definition.example || type_definition.representation_class&.example,
-              extends: type_definition.shape.extends,
+              extends: resolve_extends(type_definition.shape.extends, type_definition.scope),
               format: type_definition.format,
               shape: build_params(type_definition),
               type: :object,
               variants: [],
             }
           end
+        end
+
+        def resolve_extends(extends, scope)
+          extends.map { |name| resolve_scoped_type_name(name, scope) || name }
         end
 
         def build_params(type_definition)

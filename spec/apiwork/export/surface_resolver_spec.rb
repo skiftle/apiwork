@@ -143,6 +143,34 @@ RSpec.describe Apiwork::Export::SurfaceResolver do
       expect(resolver.types.keys).to include(:country)
     end
 
+    it 'includes types from extends' do
+      introspection = build_introspection(
+        resources: {
+          invoices: build_resource(
+            actions: {
+              show: build_action(
+                response: {
+                  body: build_ref_param(:child),
+                  no_content: false,
+                },
+              ),
+            },
+          ),
+        },
+        types: {
+          base_a: build_object_type(shape: { name: { type: :string } }),
+          base_b: build_object_type(shape: { email: { type: :string } }),
+          child: build_object_type(extends: [:base_a, :base_b], shape: {}),
+        },
+      )
+
+      resolver = described_class.new(introspection)
+
+      expect(resolver.types.keys).to include(:child)
+      expect(resolver.types.keys).to include(:base_a)
+      expect(resolver.types.keys).to include(:base_b)
+    end
+
     it 'includes types from request body' do
       introspection = build_introspection(
         resources: {
