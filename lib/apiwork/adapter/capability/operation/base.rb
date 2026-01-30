@@ -3,11 +3,11 @@
 module Apiwork
   module Adapter
     module Capability
-      module Computation
+      module Operation
         # @api public
-        # Base class for capability Computation phase.
+        # Base class for capability Operation phase.
         #
-        # Computation phase runs on each request.
+        # Operation phase runs on each request.
         # Use it to transform data at runtime.
         class Base
           # @api public
@@ -28,7 +28,7 @@ module Apiwork
 
           class << self
             # @api public
-            # Sets the scope for this computation.
+            # Sets the scope for this operation.
             #
             # @param value [Symbol, nil] :collection or :record
             # @return [Symbol, nil] the current scope
@@ -38,7 +38,7 @@ module Apiwork
             end
 
             # @api public
-            # Defines metadata shape for this computation.
+            # Defines metadata shape for this operation.
             #
             # The block receives a shape builder with access to type DSL methods
             # and capability options.
@@ -65,7 +65,7 @@ module Apiwork
           end
 
           # @api public
-          # Transforms data for this capability.
+          # Applies this operation to the data.
           #
           # Override this method to implement transformation logic.
           # Return nil if no changes are made.

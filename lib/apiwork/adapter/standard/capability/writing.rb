@@ -9,7 +9,7 @@ module Apiwork
 
           request_transformer RequestTransformer
           contract_builder ContractBuilder
-          computation Computation
+          operation Operation
         end
       end
     end

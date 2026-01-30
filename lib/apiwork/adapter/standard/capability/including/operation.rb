@@ -5,7 +5,7 @@ module Apiwork
     class Standard
       module Capability
         class Including
-          class Computation < Adapter::Capability::Computation::Base
+          class Operation < Adapter::Capability::Operation::Base
             def apply
               params = request.query[:include] || {}
               includes = IncludesResolver.new(representation_class).resolve(params)

@@ -8,7 +8,7 @@ module Apiwork
           capability_name :including
 
           contract_builder ContractBuilder
-          computation Computation
+          operation Operation
         end
       end
     end

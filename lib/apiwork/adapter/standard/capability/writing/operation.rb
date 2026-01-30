@@ -5,7 +5,7 @@ module Apiwork
     class Standard
       module Capability
         class Writing
-          class Computation < Adapter::Capability::Computation::Base
+          class Operation < Adapter::Capability::Operation::Base
             scope :record
 
             def apply

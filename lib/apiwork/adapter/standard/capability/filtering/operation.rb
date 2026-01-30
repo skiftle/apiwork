@@ -5,7 +5,7 @@ module Apiwork
     class Standard
       module Capability
         class Filtering
-          class Computation < Adapter::Capability::Computation::Base
+          class Operation < Adapter::Capability::Operation::Base
             scope :collection
 
             def apply

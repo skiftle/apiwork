@@ -13,7 +13,7 @@ module Apiwork
 
           api_builder APIBuilder
           contract_builder ContractBuilder
-          computation Computation
+          operation Operation
         end
       end
     end

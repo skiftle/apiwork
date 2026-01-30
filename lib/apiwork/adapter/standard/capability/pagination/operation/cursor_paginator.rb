@@ -5,7 +5,7 @@ module Apiwork
     class Standard
       module Capability
         class Pagination
-          class Computation < Adapter::Capability::Computation::Base
+          class Operation < Adapter::Capability::Operation::Base
             class CursorPaginator
               def self.paginate(relation, config, params)
                 new(relation, config, params).paginate

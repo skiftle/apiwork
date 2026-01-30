@@ -10,8 +10,8 @@ module Apiwork
         class_attribute :_api_builder_block
         class_attribute :_contract_builder
         class_attribute :_contract_builder_block
-        class_attribute :_computation_class
-        class_attribute :_computation_block
+        class_attribute :_operation_class
+        class_attribute :_operation_block
 
         class << self
           def capability_name(value = nil)
@@ -44,11 +44,11 @@ module Apiwork
             end
           end
 
-          def computation(klass = nil, &block)
+          def operation(klass = nil, &block)
             if klass
-              self._computation_class = klass
+              self._operation_class = klass
             elsif block
-              self._computation_block = block
+              self._operation_block = block
             end
           end
 
@@ -68,8 +68,8 @@ module Apiwork
             end
           end
 
-          def wrap_computation_block(callable)
-            Class.new(Computation::Base) do
+          def wrap_operation_block(callable)
+            Class.new(Operation::Base) do
               define_method(:apply) do
                 callable.arity.positive? ? callable.call(self) : instance_exec(&callable)
               end
@@ -90,9 +90,9 @@ module Apiwork
             nil
           end
 
-          def computation_class
-            return _computation_class if _computation_class
-            return wrap_computation_block(_computation_block) if _computation_block
+          def operation_class
+            return _operation_class if _operation_class
+            return wrap_operation_block(_operation_block) if _operation_block
 
             nil
           end
@@ -125,7 +125,7 @@ module Apiwork
         end
 
         def shape(representation_class, type)
-          klass = self.class.computation_class
+          klass = self.class.operation_class
           return nil unless klass
 
           metadata_block = klass.metadata
@@ -145,7 +145,7 @@ module Apiwork
         end
 
         def apply(data, representation_class, request, wrapper_type:)
-          klass = self.class.computation_class
+          klass = self.class.operation_class
           return Result.new(data:) unless klass
 
           scope = klass.scope
