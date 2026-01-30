@@ -13,7 +13,8 @@ module Apiwork
               result = filter.filter(params)
               raise ContractError, filter.issues if filter.issues.any?
 
-              result
+              includes = IncludesResolver.new(representation_class).from_params(params).keys
+              [result, includes]
             end
 
             def initialize(relation, representation_class, issues = [])

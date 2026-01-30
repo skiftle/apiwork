@@ -13,7 +13,8 @@ module Apiwork
               result = sorter.sort(params)
               raise ContractError, sorter.issues if sorter.issues.any?
 
-              result
+              includes = IncludesResolver.new(representation_class).from_params(params).keys
+              [result, includes]
             end
 
             def initialize(relation, representation_class, issues = [])

@@ -9,13 +9,12 @@ module Apiwork
             scope :collection
 
             def apply
-              filter_params = request.query[:filter]
-              return if filter_params.blank?
+              params = request.query[:filter]
+              return if params.blank?
 
-              includes = IncludesResolver.new(representation_class).from_params(filter_params).keys
-              filtered = Filter.apply(data, filter_params, representation_class)
+              filtered_data, includes = Filter.apply(data, params, representation_class)
 
-              result(includes:, data: filtered)
+              result(includes:, data: filtered_data)
             end
           end
         end

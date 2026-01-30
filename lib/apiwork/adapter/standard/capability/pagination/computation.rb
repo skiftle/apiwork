@@ -16,13 +16,13 @@ module Apiwork
             private
 
             def paginate
-              page_params = request.query.fetch(:page, {})
+              params = request.query.fetch(:page, {})
 
               case options.strategy
               when :offset
-                OffsetPaginator.paginate(data, options, page_params)
+                OffsetPaginator.paginate(data, options, params)
               else
-                CursorPaginator.paginate(data, options, page_params)
+                CursorPaginator.paginate(data, options, params)
               end
             end
           end

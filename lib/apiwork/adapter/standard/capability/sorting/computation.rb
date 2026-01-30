@@ -9,13 +9,12 @@ module Apiwork
             scope :collection
 
             def apply
-              sort_params = request.query[:sort]
-              return if sort_params.blank?
+              params = request.query[:sort]
+              return if params.blank?
 
-              includes = IncludesResolver.new(representation_class).from_params(sort_params).keys
-              sorted = Sort.apply(data, sort_params, representation_class)
+              sorted_data, includes = Sort.apply(data, params, representation_class)
 
-              result(includes:, data: sorted)
+              result(data: sorted_data, includes:)
             end
           end
         end
