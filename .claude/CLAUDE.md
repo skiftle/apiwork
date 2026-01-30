@@ -168,6 +168,24 @@ invoice_total = invoice.total    # Good — context needed
 total = invoice.total            # Bad — ambiguous
 ```
 
+### Singleton Class Naming
+
+When there's only one class of a type within a module, skip the qualifier:
+
+```ruby
+# Good — Writing capability has only one request transformer
+module Writing
+  class RequestTransformer < Base; end
+end
+
+# Bad — unnecessary qualifier when there's only one
+module Writing
+  class OpFieldRequestTransformer < Base; end
+end
+```
+
+The parent module already provides context. Add qualifiers only when distinguishing between multiple classes of the same type.
+
 ### Cross-module Naming
 
 When classes share names (e.g., `Introspection::Contract` vs `Contract::Action`):

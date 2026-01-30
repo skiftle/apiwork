@@ -7,7 +7,7 @@ module Apiwork
         class Filtering < Adapter::Capability::Base
           capability_name :filtering
 
-          request_transformer IndexedHashRequestTransformer
+          request_transformer RequestTransformer
           api_builder APIBuilder
           contract_builder ContractBuilder
           computation Computation
