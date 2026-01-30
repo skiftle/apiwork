@@ -93,6 +93,17 @@ Accepts: `true`, `false`, `1`, `0`, `'true'`, `'false'`, `'yes'`, `'no'`
 | `in` | `IN (...)` | `filter[id][in][]=uuid1&filter[id][in][]=uuid2` |
 | `null` | `IS NULL` | `filter[external_id][null]=true` |
 
+### Type Notes
+
+**Binary** fields use string operators (`eq`, `contains`, `starts_with`, `ends_with`, `in`).
+
+**Complex types** are not filterable. This includes:
+
+- JSON/JSONB columns (normalized to `unknown`)
+- [Inline type definitions](/examples/inline-type-definitions) using `array`, `object`, or `union` blocks
+
+These types are excluded from filter generation. To filter structured data, create dedicated scalar columns.
+
 ### Enum
 
 Enum fields support `eq` and `in` operators. You can also pass the value directly. Invalid values return an error with valid options:

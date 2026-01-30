@@ -7,6 +7,7 @@ module Apiwork
         class Filtering
           class ContractBuilder < Adapter::Capability::Contract::Base
             TYPE_NAME = :filter
+            UNFILTERABLE_TYPES = %i[unknown array object union].freeze
 
             def build
               return unless filterable?
@@ -36,7 +37,7 @@ module Apiwork
               build_sti_type_filters
 
               attributes = representation_class.attributes.filter_map do |name, attribute|
-                next unless attribute.filterable? && attribute.type != :unknown
+                next unless attribute.filterable? && UNFILTERABLE_TYPES.exclude?(attribute.type)
 
                 filter_type = filter_type_for(attribute)
                 has_custom_filter = attribute.enum || polymorphic_type_column?(attribute) || sti_type_column?(attribute)
@@ -207,7 +208,7 @@ module Apiwork
             end
 
             def filterable?
-              representation_class.attributes.values.any? { |a| a.filterable? && a.type != :unknown } ||
+              representation_class.attributes.values.any? { |attribute| attribute.filterable? && UNFILTERABLE_TYPES.exclude?(attribute.type) } ||
                 representation_class.associations.values.any?(&:filterable?)
             end
           end
