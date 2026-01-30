@@ -6,19 +6,21 @@ module Apiwork
       module Capability
         class Sorting
           class ContractBuilder < Adapter::Capability::Contract::Base
+            TYPE_NAME = :sort
+
             def build
               return unless build_type
 
               action(:index) do |action|
                 action.request do |request|
                   request.query do |query|
-                    query.union?(:sort) do |union|
+                    query.union?(TYPE_NAME) do |union|
                       union.variant do |element|
-                        element.reference(:sort)
+                        element.reference(TYPE_NAME)
                       end
                       union.variant do |element|
                         element.array do |array|
-                          array.reference(:sort)
+                          array.reference(TYPE_NAME)
                         end
                       end
                     end
@@ -32,7 +34,7 @@ module Apiwork
             def build_type
               return unless sortable_content?
 
-              object(:sort) do |object|
+              object(TYPE_NAME) do |object|
                 collect_attribute_sorts.each do |name|
                   object.reference?(name, to: :sort_direction)
                 end
@@ -63,7 +65,7 @@ module Apiwork
                 alias_name = representation.root_key.singular.to_sym
                 import(contract, as: alias_name)
 
-                nested_type = :"#{alias_name}_sort"
+                nested_type = :"#{alias_name}_#{TYPE_NAME}"
                 next unless type?(nested_type)
 
                 { name:, type: nested_type }

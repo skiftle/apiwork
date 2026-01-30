@@ -6,16 +6,18 @@ module Apiwork
       module Capability
         class Filtering
           class ContractBuilder < Adapter::Capability::Contract::Base
+            TYPE_NAME = :filter
+
             def build
               return unless filterable?
 
               representation_class.attributes.each do |name, attribute|
                 next unless attribute.filterable? && attribute.enum
-                next if type?(:"#{name}_filter")
+                next if type?(:"#{name}_#{TYPE_NAME}")
 
                 scoped = scoped_enum_name(name)
 
-                union(:"#{name}_filter") do |u|
+                union(:"#{name}_#{TYPE_NAME}") do |u|
                   u.variant do |element|
                     element.reference(scoped)
                   end
@@ -55,20 +57,20 @@ module Apiwork
                 alias_name = representation.root_key.singular.to_sym
                 import(contract, as: alias_name)
 
-                filter_type = :"#{alias_name}_filter"
+                filter_type = :"#{alias_name}_#{TYPE_NAME}"
                 next unless type?(filter_type)
 
                 [name, filter_type]
               end
 
-              object(:filter) do |obj|
+              object(TYPE_NAME) do |obj|
                 obj.array?(Constants::AND) do |element|
-                  element.reference(:filter)
+                  element.reference(TYPE_NAME)
                 end
                 obj.array?(Constants::OR) do |element|
-                  element.reference(:filter)
+                  element.reference(TYPE_NAME)
                 end
-                obj.reference?(Constants::NOT, to: :filter)
+                obj.reference?(Constants::NOT, to: TYPE_NAME)
 
                 attributes.each do |name, type, filter_type, shorthand|
                   if shorthand
@@ -90,18 +92,18 @@ module Apiwork
                 end
               end
 
-              return unless type?(:filter)
+              return unless type?(TYPE_NAME)
 
               action(:index) do |act|
                 act.request do |request|
                   request.query do |query|
-                    query.union?(:filter) do |u|
+                    query.union?(TYPE_NAME) do |u|
                       u.variant do |element|
-                        element.reference(:filter)
+                        element.reference(TYPE_NAME)
                       end
                       u.variant do |element|
                         element.array do |array|
-                          array.reference(:filter)
+                          array.reference(TYPE_NAME)
                         end
                       end
                     end
@@ -118,7 +120,7 @@ module Apiwork
 
                 association = representation_class.polymorphic_association_for_type_column(name)
                 next unless association
-                next if type?(:"#{name}_filter")
+                next if type?(:"#{name}_#{TYPE_NAME}")
 
                 allowed_values = association.polymorphic.map do |rep_class|
                   (rep_class.type_name || rep_class.model_class.polymorphic_name).to_s
@@ -128,7 +130,7 @@ module Apiwork
 
                 scoped = scoped_enum_name(name)
 
-                union(:"#{name}_filter") do |u|
+                union(:"#{name}_#{TYPE_NAME}") do |u|
                   u.variant do |element|
                     element.reference(scoped)
                   end
@@ -150,7 +152,7 @@ module Apiwork
 
                 sti_union = representation_class.sti_union_for_type_column(name)
                 next unless sti_union
-                next if type?(:"#{name}_filter")
+                next if type?(:"#{name}_#{TYPE_NAME}")
 
                 allowed_values = sti_union.variants.values.map { |variant_data| variant_data.tag.to_s }
 
@@ -158,7 +160,7 @@ module Apiwork
 
                 scoped = scoped_enum_name(name)
 
-                union(:"#{name}_filter") do |u|
+                union(:"#{name}_#{TYPE_NAME}") do |u|
                   u.variant do |element|
                     element.reference(scoped)
                   end
@@ -183,9 +185,9 @@ module Apiwork
             end
 
             def filter_type_for(attribute)
-              return :"#{attribute.name}_filter" if attribute.enum
-              return :"#{attribute.name}_filter" if polymorphic_type_column?(attribute)
-              return :"#{attribute.name}_filter" if sti_type_column?(attribute)
+              return :"#{attribute.name}_#{TYPE_NAME}" if attribute.enum
+              return :"#{attribute.name}_#{TYPE_NAME}" if polymorphic_type_column?(attribute)
+              return :"#{attribute.name}_#{TYPE_NAME}" if sti_type_column?(attribute)
 
               base = case attribute.type
                      when :string then :string_filter

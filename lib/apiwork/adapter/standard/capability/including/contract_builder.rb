@@ -6,6 +6,7 @@ module Apiwork
       module Capability
         class Including
           class ContractBuilder < Adapter::Capability::Contract::Base
+            TYPE_NAME = :include
             MAX_RECURSION_DEPTH = 3
 
             def build
@@ -15,7 +16,7 @@ module Apiwork
                 action(action_name) do |action|
                   action.request do |request|
                     request.query do |query|
-                      query.reference?(:include)
+                      query.reference?(TYPE_NAME)
                     end
                   end
                 end
@@ -128,7 +129,7 @@ module Apiwork
 
               alias_name = representation_class.root_key.singular.to_sym
               import(contract_class, as: alias_name)
-              imported_type = :"#{alias_name}_include"
+              imported_type = :"#{alias_name}_#{TYPE_NAME}"
               type?(imported_type) ? imported_type : nil
             end
 
@@ -156,9 +157,9 @@ module Apiwork
             end
 
             def type_name_for(representation_class, depth)
-              return :include if depth.zero?
+              return TYPE_NAME if depth.zero?
 
-              :"#{representation_class.root_key.singular}_include"
+              :"#{representation_class.root_key.singular}_#{TYPE_NAME}"
             end
 
             def resolve_association_representation_class(representation_class, association)
