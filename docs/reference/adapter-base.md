@@ -11,7 +11,7 @@ next: false
 Base class for adapters.
 
 Subclass to create custom adapters with different response formats.
-Configure with [representation](representation-base) for serialization and wrapper classes for response wrapping.
+Configure with [representation](representation) for serialization and document classes for response wrapping.
 
 **Example: Custom adapter**
 
@@ -20,9 +20,9 @@ class BillingAdapter < Apiwork::Adapter::Base
   adapter_name :billing
 
   representation BillingRepresentation
-  record_wrapper BillingRecordDocument
-  collection_wrapper BillingCollectionDocument
-  error_wrapper BillingErrorDocument
+  record_wrapper BillingRecordWrapper
+  collection_wrapper BillingCollectionWrapper
+  error_wrapper BillingErrorWrapper
 end
 ```
 
@@ -56,7 +56,7 @@ adapter_name :billing
 
 ### .capability
 
-`.capability(klass)`
+`.capability(capability_class)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L49)
 
@@ -88,7 +88,7 @@ capability Filtering
 
 `.collection_wrapper(klass = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L134)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L130)
 
 Sets or gets the collection wrapper class.
 
@@ -105,33 +105,7 @@ Sets or gets the collection wrapper class.
 **Example**
 
 ```ruby
-collection_wrapper CustomCollectionDocument
-```
-
----
-
-### .error_wrapper
-
-`.error_wrapper(klass = nil)`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L147)
-
-Sets or gets the error wrapper class.
-
-**Parameters**
-
-| Name | Type | Description |
-|------|------|-------------|
-| `klass` | `Class` | a Wrapper::Base subclass (optional) |
-
-**Returns**
-
-`Class`
-
-**Example**
-
-```ruby
-error_wrapper CustomErrorDocument
+collection_wrapper CustomCollectionWrapper
 ```
 
 ---
@@ -140,7 +114,7 @@ error_wrapper CustomErrorDocument
 
 `.error_serializer(klass = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L108)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L104)
 
 Sets or gets the error serializer class.
 
@@ -160,6 +134,32 @@ Error serializer handles serialization of errors.
 
 ```ruby
 error_serializer Serializer::Error::Default
+```
+
+---
+
+### .error_wrapper
+
+`.error_wrapper(klass = nil)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L143)
+
+Sets or gets the error wrapper class.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `klass` | `Class` | a Wrapper::Base subclass (optional) |
+
+**Returns**
+
+`Class`
+
+**Example**
+
+```ruby
+error_wrapper CustomErrorWrapper
 ```
 
 ---
@@ -220,7 +220,7 @@ end
 
 `.record_wrapper(klass = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L121)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L117)
 
 Sets or gets the record wrapper class.
 
@@ -237,7 +237,7 @@ Sets or gets the record wrapper class.
 **Example**
 
 ```ruby
-record_wrapper CustomRecordDocument
+record_wrapper CustomRecordWrapper
 ```
 
 ---
@@ -246,7 +246,7 @@ record_wrapper CustomRecordDocument
 
 `.resource_serializer(klass = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L93)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L89)
 
 Sets or gets the resource serializer class.
 
@@ -274,7 +274,7 @@ resource_serializer Serializer::Resource::Default
 
 `.skip_capability(name)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L71)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L67)
 
 Skips an inherited capability by name.
 
@@ -292,72 +292,6 @@ Skips an inherited capability by name.
 
 ```ruby
 skip_capability :pagination
-```
-
----
-
-### .transform_request
-
-`.transform_request(*transformers, post: false)`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L167)
-
-Registers request transformers.
-
-Use `post: false` (default) for pre-validation transforms.
-Use `post: true` for post-validation transforms.
-
-**Parameters**
-
-| Name | Type | Description |
-|------|------|-------------|
-| `transformers` | `Array<Class>` | transformer classes with `.transform(request, api_class:)` |
-| `post` | `Boolean` | run after validation (default: false) |
-
-**Returns**
-
-`void`
-
-**Example: Pre-validation transform**
-
-```ruby
-transform_request KeyNormalizer
-```
-
-**Example: Post-validation transform**
-
-```ruby
-transform_request OpFieldTransformer, post: true
-```
-
----
-
-### .transform_response
-
-`.transform_response(*transformers, post: false)`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L186)
-
-Registers response transformers.
-
-Use `post: false` (default) for pre-serialization transforms.
-Use `post: true` for post-serialization transforms.
-
-**Parameters**
-
-| Name | Type | Description |
-|------|------|-------------|
-| `transformers` | `Array<Class>` | transformer classes with `.transform(response, api_class:)` |
-| `post` | `Boolean` | run after other transforms (default: false) |
-
-**Returns**
-
-`void`
-
-**Example**
-
-```ruby
-transform_response KeyTransformer
 ```
 
 ---

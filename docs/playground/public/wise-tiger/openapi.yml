@@ -304,13 +304,13 @@ components:
       - project
     projectFilter:
       properties:
-        _and:
+        AND:
           items:
             "$ref": "#/components/schemas/projectFilter"
           type: array
-        _not:
+        NOT:
           "$ref": "#/components/schemas/projectFilter"
-        _or:
+        OR:
           items:
             "$ref": "#/components/schemas/projectFilter"
           type: array

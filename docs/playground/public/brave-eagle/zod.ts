@@ -84,9 +84,9 @@ export const ErrorSchema = z.object({
 });
 
 export const TaskFilterSchema: z.ZodType<TaskFilter> = z.lazy(() => z.object({
-  _and: z.array(TaskFilterSchema).optional(),
-  _not: TaskFilterSchema.optional(),
-  _or: z.array(TaskFilterSchema).optional(),
+  AND: z.array(TaskFilterSchema).optional(),
+  NOT: TaskFilterSchema.optional(),
+  OR: z.array(TaskFilterSchema).optional(),
   priority: TaskPriorityFilterSchema.optional(),
   status: TaskStatusFilterSchema.optional()
 }));
@@ -352,9 +352,9 @@ export interface TaskCreateSuccessResponseBody {
 }
 
 export interface TaskFilter {
-  _and?: TaskFilter[];
-  _not?: TaskFilter;
-  _or?: TaskFilter[];
+  AND?: TaskFilter[];
+  NOT?: TaskFilter;
+  OR?: TaskFilter[];
   priority?: TaskPriorityFilter;
   status?: TaskStatusFilter;
 }

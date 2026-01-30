@@ -21,21 +21,21 @@ export interface CommentIndexSuccessResponseBody {
 }
 
 export interface CommentNestedCreatePayload {
-  _op?: 'create';
+  OP?: 'create';
   author: string;
   body: string;
   id?: string;
 }
 
 export interface CommentNestedDeletePayload {
-  _op?: 'delete';
+  OP?: 'delete';
   id: string;
 }
 
 export type CommentNestedPayload = CommentNestedCreatePayload | CommentNestedUpdatePayload | CommentNestedDeletePayload;
 
 export interface CommentNestedUpdatePayload {
-  _op?: 'update';
+  OP?: 'update';
   author?: string;
   body?: string;
   id?: string;
@@ -159,21 +159,21 @@ export interface PostIndexSuccessResponseBody {
 }
 
 export interface PostNestedCreatePayload {
-  _op?: 'create';
+  OP?: 'create';
   comments?: CommentNestedPayload[];
   id?: string;
   title: string;
 }
 
 export interface PostNestedDeletePayload {
-  _op?: 'delete';
+  OP?: 'delete';
   id: string;
 }
 
 export type PostNestedPayload = PostNestedCreatePayload | PostNestedUpdatePayload | PostNestedDeletePayload;
 
 export interface PostNestedUpdatePayload {
-  _op?: 'update';
+  OP?: 'update';
   comments?: CommentNestedPayload[];
   id?: string;
   title?: string;
@@ -263,21 +263,21 @@ export interface ProfileInclude {
 }
 
 export interface ProfileNestedCreatePayload {
-  _op?: 'create';
+  OP?: 'create';
   bio?: null | string;
   id?: string;
   website?: null | string;
 }
 
 export interface ProfileNestedDeletePayload {
-  _op?: 'delete';
+  OP?: 'delete';
   id: string;
 }
 
 export type ProfileNestedPayload = ProfileNestedCreatePayload | ProfileNestedUpdatePayload | ProfileNestedDeletePayload;
 
 export interface ProfileNestedUpdatePayload {
-  _op?: 'update';
+  OP?: 'update';
   bio?: null | string;
   id?: string;
   website?: null | string;
@@ -316,9 +316,9 @@ export interface UserCreateSuccessResponseBody {
 }
 
 export interface UserFilter {
-  _and?: UserFilter[];
-  _not?: UserFilter;
-  _or?: UserFilter[];
+  AND?: UserFilter[];
+  NOT?: UserFilter;
+  OR?: UserFilter[];
   email?: StringFilter | string;
   username?: StringFilter | string;
 }

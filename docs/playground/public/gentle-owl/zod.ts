@@ -55,9 +55,9 @@ export const OffsetPaginationSchema = z.object({
 });
 
 export const CommentFilterSchema: z.ZodType<CommentFilter> = z.lazy(() => z.object({
-  _and: z.array(CommentFilterSchema).optional(),
-  _not: CommentFilterSchema.optional(),
-  _or: z.array(CommentFilterSchema).optional(),
+  AND: z.array(CommentFilterSchema).optional(),
+  NOT: CommentFilterSchema.optional(),
+  OR: z.array(CommentFilterSchema).optional(),
   commentableType: CommentCommentableTypeFilterSchema.optional()
 }));
 
@@ -240,9 +240,9 @@ export interface CommentCreateSuccessResponseBody {
 }
 
 export interface CommentFilter {
-  _and?: CommentFilter[];
-  _not?: CommentFilter;
-  _or?: CommentFilter[];
+  AND?: CommentFilter[];
+  NOT?: CommentFilter;
+  OR?: CommentFilter[];
   commentableType?: CommentCommentableTypeFilter;
 }
 

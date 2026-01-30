@@ -936,7 +936,7 @@
       "example": null,
       "extends": [],
       "shape": {
-        "_and": {
+        "AND": {
           "default": null,
           "deprecated": false,
           "description": null,
@@ -958,7 +958,7 @@
           },
           "shape": {}
         },
-        "_not": {
+        "NOT": {
           "default": null,
           "deprecated": false,
           "description": null,
@@ -968,7 +968,7 @@
           "type": "ref",
           "ref": "project_filter"
         },
-        "_or": {
+        "OR": {
           "default": null,
           "deprecated": false,
           "description": null,

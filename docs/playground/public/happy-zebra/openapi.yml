@@ -403,7 +403,7 @@ components:
       - pagination
     commentNestedCreatePayload:
       properties:
-        _op:
+        OP:
           const: create
           type: string
         author:
@@ -418,7 +418,7 @@ components:
       - body
     commentNestedDeletePayload:
       properties:
-        _op:
+        OP:
           const: delete
           type: string
         id:
@@ -436,10 +436,10 @@ components:
           create: "#/components/schemas/commentNestedCreatePayload"
           update: "#/components/schemas/commentNestedUpdatePayload"
           delete: "#/components/schemas/commentNestedDeletePayload"
-        propertyName: _op
+        propertyName: OP
     commentNestedUpdatePayload:
       properties:
-        _op:
+        OP:
           const: update
           type: string
         author:
@@ -600,7 +600,7 @@ components:
       - posts
     postNestedCreatePayload:
       properties:
-        _op:
+        OP:
           const: create
           type: string
         comments:
@@ -616,7 +616,7 @@ components:
       - title
     postNestedDeletePayload:
       properties:
-        _op:
+        OP:
           const: delete
           type: string
         id:
@@ -634,10 +634,10 @@ components:
           create: "#/components/schemas/postNestedCreatePayload"
           update: "#/components/schemas/postNestedUpdatePayload"
           delete: "#/components/schemas/postNestedDeletePayload"
-        propertyName: _op
+        propertyName: OP
     postNestedUpdatePayload:
       properties:
-        _op:
+        OP:
           const: update
           type: string
         comments:
@@ -722,7 +722,7 @@ components:
       type: object
     profileNestedCreatePayload:
       properties:
-        _op:
+        OP:
           const: create
           type: string
         bio:
@@ -738,7 +738,7 @@ components:
       type: object
     profileNestedDeletePayload:
       properties:
-        _op:
+        OP:
           const: delete
           type: string
         id:
@@ -756,10 +756,10 @@ components:
           create: "#/components/schemas/profileNestedCreatePayload"
           update: "#/components/schemas/profileNestedUpdatePayload"
           delete: "#/components/schemas/profileNestedDeletePayload"
-        propertyName: _op
+        propertyName: OP
     profileNestedUpdatePayload:
       properties:
-        _op:
+        OP:
           const: update
           type: string
         bio:
@@ -845,13 +845,13 @@ components:
       - user
     userFilter:
       properties:
-        _and:
+        AND:
           items:
             "$ref": "#/components/schemas/userFilter"
           type: array
-        _not:
+        NOT:
           "$ref": "#/components/schemas/userFilter"
-        _or:
+        OR:
           items:
             "$ref": "#/components/schemas/userFilter"
           type: array

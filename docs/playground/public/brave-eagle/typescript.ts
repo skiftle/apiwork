@@ -124,9 +124,9 @@ export interface TaskCreateSuccessResponseBody {
 }
 
 export interface TaskFilter {
-  _and?: TaskFilter[];
-  _not?: TaskFilter;
-  _or?: TaskFilter[];
+  AND?: TaskFilter[];
+  NOT?: TaskFilter;
+  OR?: TaskFilter[];
   priority?: TaskPriorityFilter;
   status?: TaskStatusFilter;
 }

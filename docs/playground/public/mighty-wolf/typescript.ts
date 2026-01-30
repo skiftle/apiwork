@@ -141,9 +141,9 @@ export interface VehicleCreateSuccessResponseBody {
 }
 
 export interface VehicleFilter {
-  _and?: VehicleFilter[];
-  _not?: VehicleFilter;
-  _or?: VehicleFilter[];
+  AND?: VehicleFilter[];
+  NOT?: VehicleFilter;
+  OR?: VehicleFilter[];
   brand?: StringFilter | string;
   model?: StringFilter | string;
   type?: VehicleTypeFilter;

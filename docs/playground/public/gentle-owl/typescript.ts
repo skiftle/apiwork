@@ -27,9 +27,9 @@ export interface CommentCreateSuccessResponseBody {
 }
 
 export interface CommentFilter {
-  _and?: CommentFilter[];
-  _not?: CommentFilter;
-  _or?: CommentFilter[];
+  AND?: CommentFilter[];
+  NOT?: CommentFilter;
+  OR?: CommentFilter[];
   commentableType?: CommentCommentableTypeFilter;
 }
 
