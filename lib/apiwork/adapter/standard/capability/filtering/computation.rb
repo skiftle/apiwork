@@ -12,7 +12,7 @@ module Apiwork
               params = request.query[:filter]
               return if params.blank?
 
-              filtered_data, includes = Filter.apply(data, params, representation_class)
+              filtered_data, includes = Filter.apply(data, representation_class, params)
 
               result(includes:, data: filtered_data)
             end

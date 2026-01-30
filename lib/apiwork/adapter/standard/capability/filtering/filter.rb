@@ -8,7 +8,7 @@ module Apiwork
           class Filter
             attr_reader :issues, :representation_class
 
-            def self.apply(relation, params, representation_class)
+            def self.apply(relation, representation_class, params)
               filter = new(relation, representation_class)
               result = filter.filter(params)
               raise ContractError, filter.issues if filter.issues.any?

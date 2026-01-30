@@ -8,7 +8,7 @@ module Apiwork
           class Sort
             attr_reader :issues, :representation_class
 
-            def self.apply(relation, params, representation_class)
+            def self.apply(relation, representation_class, params)
               sorter = new(relation, representation_class)
               result = sorter.sort(params)
               raise ContractError, sorter.issues if sorter.issues.any?

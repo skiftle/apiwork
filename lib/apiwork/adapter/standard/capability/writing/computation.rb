@@ -10,7 +10,6 @@ module Apiwork
 
             def apply
               validate_record!(data, representation_class)
-              result(data:)
             end
 
             private

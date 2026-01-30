@@ -12,7 +12,7 @@ module Apiwork
               params = request.query[:sort]
               return if params.blank?
 
-              sorted_data, includes = Sort.apply(data, params, representation_class)
+              sorted_data, includes = Sort.apply(data, representation_class, params)
 
               result(data: sorted_data, includes:)
             end
