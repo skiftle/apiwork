@@ -4,7 +4,7 @@ order: 7
 
 # Serialization
 
-Representations can [serialize records directly](../representations/serialization.md). Within the Execution Engine, the adapter adds transformations for requests and responses.
+Representations can [serialize records directly](../../representations/serialization.md). Within the Execution Engine, the adapter adds transformations for requests and responses.
 
 ## Response Serialization
 
@@ -55,7 +55,7 @@ Incoming requests go through a pipeline:
 1. **Transform** — API and adapter transformations (key casing, etc.)
 2. **Unwrap** — Extract data from root key wrapper
 3. **Coerce** — [Convert strings to typed values](../../types/types.md#type-coercion)
-4. **Validate** — Check against [contract definitions](../contracts/introduction.md)
+4. **Validate** — Check against [contract definitions](../../contracts/introduction.md)
 5. **Decode** — Apply `Representation.deserialize()` which runs decode transformers
 
 ::: info Under the Hood
@@ -92,4 +92,4 @@ end
 
 #### See also
 
-- [Adapter::Base reference](../../../reference/adapter-base.md) — creating custom adapters
+- [Adapter::Base reference](../../../../reference/adapter-base.md) — creating custom adapters

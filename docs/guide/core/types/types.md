@@ -2,7 +2,7 @@
 order: 2
 ---
 
-# Types
+# Param Types
 
 Primitive types are the building blocks. Every param uses one of these.
 

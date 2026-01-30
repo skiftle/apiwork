@@ -114,7 +114,7 @@ Deletes a record. Returns 204 No Content with no body.
 
 **Response:** None (HTTP 204)
 
-This is the default for all DELETE method actions. See [no_content!](../contracts/actions.md#no_content) to override.
+This is the default for all DELETE method actions. See [no_content!](../../contracts/actions.md#no_content) to override.
 
 ## Custom Actions
 
@@ -201,7 +201,7 @@ end
 
 ## Override Defaults
 
-Contract definitions merge with representation-generated types by default. See [Declaration Merging](../contracts/actions.md#declaration-merging) for details.
+Contract definitions merge with representation-generated types by default. See [Declaration Merging](../../contracts/actions.md#declaration-merging) for details.
 
 Use `replace: true` to completely override:
 
@@ -255,5 +255,5 @@ def destroy
 end
 ```
 
-See [meta](../contracts/actions.md#meta) and [no_content!](../contracts/actions.md#no_content) for details.
+See [meta](../../contracts/actions.md#meta) and [no_content!](../../contracts/actions.md#no_content) for details.
 
