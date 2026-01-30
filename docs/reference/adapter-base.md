@@ -11,7 +11,7 @@ next: false
 Base class for adapters.
 
 Subclass to create custom adapters with different response formats.
-Configure with [representation](representation) for serialization and document classes for response wrapping.
+Configure with [Representation::Base](representation-base) for serialization and document classes for response wrapping.
 
 **Example: Custom adapter**
 
