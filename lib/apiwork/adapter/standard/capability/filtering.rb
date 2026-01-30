@@ -7,8 +7,6 @@ module Apiwork
         class Filtering < Adapter::Capability::Base
           capability_name :filtering
 
-          option :max_depth, default: 3, type: :integer
-
           api_builder APIBuilder
           contract_builder ContractBuilder
           computation Computation

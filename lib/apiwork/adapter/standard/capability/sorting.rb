@@ -7,8 +7,6 @@ module Apiwork
         class Sorting < Adapter::Capability::Base
           capability_name :sorting
 
-          option :max_depth, default: 2, type: :integer
-
           api_builder APIBuilder
           contract_builder ContractBuilder
           computation Computation
