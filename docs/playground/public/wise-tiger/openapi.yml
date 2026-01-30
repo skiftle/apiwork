@@ -146,7 +146,7 @@ paths:
           description: No content
 components:
   schemas:
-    errorResponseBody:
+    error:
       properties:
         issues:
           items:
@@ -162,6 +162,8 @@ components:
       required:
       - issues
       - layer
+    errorResponseBody:
+      "$ref": "#/components/schemas/error"
     issue:
       properties:
         code:

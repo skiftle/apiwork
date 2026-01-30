@@ -82,7 +82,7 @@ export const StringFilterSchema = z.object({
   startsWith: z.string().optional()
 });
 
-export const ErrorResponseBodySchema = z.object({
+export const ErrorSchema = z.object({
   issues: z.array(IssueSchema),
   layer: LayerSchema
 });
@@ -113,6 +113,8 @@ export const InvoiceFilterSchema: z.ZodType<InvoiceFilter> = z.lazy(() => z.obje
   number: z.union([z.string(), StringFilterSchema]).optional(),
   status: z.union([z.string(), NullableStringFilterSchema]).optional()
 }));
+
+export const ErrorResponseBodySchema = ErrorSchema;
 
 export const InvoiceArchiveSuccessResponseBodySchema = z.object({
   invoice: InvoiceSchema,
@@ -219,10 +221,12 @@ export interface Customer {
   name: string;
 }
 
-export interface ErrorResponseBody {
+export interface Error {
   issues: Issue[];
   layer: Layer;
 }
+
+export type ErrorResponseBody = Error;
 
 export interface Invoice {
   createdAt: string;

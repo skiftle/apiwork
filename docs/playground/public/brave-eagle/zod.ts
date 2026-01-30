@@ -78,7 +78,7 @@ export const UserSchema = z.object({
   name: z.string()
 });
 
-export const ErrorResponseBodySchema = z.object({
+export const ErrorSchema = z.object({
   issues: z.array(IssueSchema),
   layer: LayerSchema
 });
@@ -104,6 +104,8 @@ export const TaskSchema = z.object({
   title: z.string(),
   updatedAt: z.iso.datetime()
 });
+
+export const ErrorResponseBodySchema = ErrorSchema;
 
 export const TaskArchiveSuccessResponseBodySchema = z.object({
   meta: z.record(z.string(), z.unknown()).optional(),
@@ -242,10 +244,12 @@ export interface Comment {
   id: string;
 }
 
-export interface ErrorResponseBody {
+export interface Error {
   issues: Issue[];
   layer: Layer;
 }
+
+export type ErrorResponseBody = Error;
 
 export interface Issue {
   code: string;

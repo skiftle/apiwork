@@ -59,10 +59,12 @@ export const ActivityIndexSuccessResponseBodySchema = z.object({
   pagination: CursorPaginationSchema
 });
 
-export const ErrorResponseBodySchema = z.object({
+export const ErrorSchema = z.object({
   issues: z.array(IssueSchema),
   layer: LayerSchema
 });
+
+export const ErrorResponseBodySchema = ErrorSchema;
 
 export const ActivitiesIndexRequestQuerySchema = z.object({
   page: ActivityPageSchema.optional()
@@ -213,10 +215,12 @@ export interface CursorPagination {
   prev?: null | string;
 }
 
-export interface ErrorResponseBody {
+export interface Error {
   issues: Issue[];
   layer: Layer;
 }
+
+export type ErrorResponseBody = Error;
 
 export interface Issue {
   code: string;

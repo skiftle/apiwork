@@ -495,6 +495,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "brand": {
           "default": null,
@@ -589,6 +590,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "brand": {
           "default": null,
@@ -669,6 +671,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "_and": {
           "default": null,
@@ -845,6 +848,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "year": {
           "default": null,
@@ -865,6 +869,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {},
       "type": "union",
       "variants": [
@@ -929,6 +934,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "brand": {
           "default": null,
@@ -1004,11 +1010,12 @@
       "type": "object",
       "variants": []
     },
-    "error_response_body": {
+    "error": {
       "deprecated": false,
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "issues": {
           "default": null,
@@ -1046,11 +1053,24 @@
       "type": "object",
       "variants": []
     },
+    "error_response_body": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [
+        "error"
+      ],
+      "shape": {},
+      "type": "object",
+      "variants": []
+    },
     "integer_filter": {
       "deprecated": false,
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "between": {
           "default": null,
@@ -1155,6 +1175,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "from": {
           "default": null,
@@ -1189,6 +1210,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "code": {
           "default": null,
@@ -1270,6 +1292,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "brand": {
           "default": null,
@@ -1364,6 +1387,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "brand": {
           "default": null,
@@ -1444,6 +1468,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "_and": {
           "default": null,
@@ -1620,6 +1645,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "year": {
           "default": null,
@@ -1640,6 +1666,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {},
       "type": "union",
       "variants": [
@@ -1704,6 +1731,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "brand": {
           "default": null,
@@ -1784,6 +1812,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "between": {
           "default": null,
@@ -1897,6 +1926,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "current": {
           "default": null,
@@ -1967,6 +1997,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "contains": {
           "default": null,
@@ -2049,6 +2080,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "brand": {
           "default": null,
@@ -2142,6 +2174,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "brand": {
           "default": null,
@@ -2221,6 +2254,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "_and": {
           "default": null,
@@ -2397,6 +2431,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "year": {
           "default": null,
@@ -2417,6 +2452,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {},
       "type": "union",
       "variants": [
@@ -2481,6 +2517,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "brand": {
           "default": null,
@@ -2560,6 +2597,7 @@
       "description": null,
       "discriminator": "type",
       "example": null,
+      "extends": [],
       "shape": {},
       "type": "union",
       "variants": [
@@ -2600,6 +2638,7 @@
       "description": null,
       "discriminator": "type",
       "example": null,
+      "extends": [],
       "shape": {},
       "type": "union",
       "variants": [
@@ -2640,6 +2679,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "meta": {
           "default": null,
@@ -2671,6 +2711,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "_and": {
           "default": null,
@@ -2847,6 +2888,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "meta": {
           "default": null,
@@ -2900,6 +2942,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "number": {
           "default": null,
@@ -2934,6 +2977,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "meta": {
           "default": null,
@@ -2965,6 +3009,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "year": {
           "default": null,
@@ -2985,6 +3030,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {},
       "type": "union",
       "variants": [
@@ -3049,6 +3095,7 @@
       "description": null,
       "discriminator": "type",
       "example": null,
+      "extends": [],
       "shape": {},
       "type": "union",
       "variants": [
@@ -3089,6 +3136,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "meta": {
           "default": null,

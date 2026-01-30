@@ -96,10 +96,12 @@ export interface ContactsUpdateResponse {
 
 export type ContactsUpdateResponseBody = ContactUpdateSuccessResponseBody | ErrorResponseBody;
 
-export interface ErrorResponseBody {
+export interface Error {
   issues: Issue[];
   layer: Layer;
 }
+
+export type ErrorResponseBody = Error;
 
 export interface Issue {
   code: string;

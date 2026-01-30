@@ -559,6 +559,7 @@
       "description": "A comment on a task",
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "author_name": {
           "default": null,
@@ -614,6 +615,7 @@
       "description": "A comment on a task",
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "author_name": {
           "default": null,
@@ -648,6 +650,7 @@
       "description": "A comment on a task",
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "author_name": {
           "default": null,
@@ -677,11 +680,12 @@
       "type": "object",
       "variants": []
     },
-    "error_response_body": {
+    "error": {
       "deprecated": false,
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "issues": {
           "default": null,
@@ -719,11 +723,24 @@
       "type": "object",
       "variants": []
     },
+    "error_response_body": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [
+        "error"
+      ],
+      "shape": {},
+      "type": "object",
+      "variants": []
+    },
     "issue": {
       "deprecated": false,
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "code": {
           "default": null,
@@ -805,6 +822,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "contains": {
           "default": null,
@@ -896,6 +914,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "current": {
           "default": null,
@@ -966,6 +985,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "contains": {
           "default": null,
@@ -1048,6 +1068,7 @@
       "description": "A task representing work to be completed",
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "archived": {
           "default": null,
@@ -1188,6 +1209,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "meta": {
           "default": null,
@@ -1219,6 +1241,7 @@
       "description": "A task representing work to be completed",
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "description": {
           "default": null,
@@ -1288,6 +1311,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "meta": {
           "default": null,
@@ -1319,6 +1343,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "_and": {
           "default": null,
@@ -1403,6 +1428,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "assignee": {
           "default": null,
@@ -1431,6 +1457,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "meta": {
           "default": null,
@@ -1484,6 +1511,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "number": {
           "default": null,
@@ -1518,6 +1546,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {},
       "type": "union",
       "variants": [
@@ -1582,6 +1611,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "meta": {
           "default": null,
@@ -1613,6 +1643,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "created_at": {
           "default": null,
@@ -1643,6 +1674,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {},
       "type": "union",
       "variants": [
@@ -1707,6 +1739,7 @@
       "description": "A task representing work to be completed",
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "description": {
           "default": null,
@@ -1776,6 +1809,7 @@
       "description": null,
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "meta": {
           "default": null,
@@ -1807,6 +1841,7 @@
       "description": "A user who can be assigned to tasks",
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {
         "email": {
           "default": null,
@@ -1853,6 +1888,7 @@
       "description": "A user who can be assigned to tasks",
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {},
       "type": "object",
       "variants": []
@@ -1862,6 +1898,7 @@
       "description": "A user who can be assigned to tasks",
       "discriminator": null,
       "example": null,
+      "extends": [],
       "shape": {},
       "type": "object",
       "variants": []

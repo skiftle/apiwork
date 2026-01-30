@@ -133,7 +133,7 @@ export const NullableIntegerFilterSchema = z.object({
   null: z.boolean().optional()
 });
 
-export const ErrorResponseBodySchema = z.object({
+export const ErrorSchema = z.object({
   issues: z.array(IssueSchema),
   layer: LayerSchema
 });
@@ -169,6 +169,8 @@ export const ArticleFilterSchema: z.ZodType<ArticleFilter> = z.lazy(() => z.obje
   title: z.union([z.string(), StringFilterSchema]).optional(),
   viewCount: z.union([z.number().int(), NullableIntegerFilterSchema]).optional()
 }));
+
+export const ErrorResponseBodySchema = ErrorSchema;
 
 export const ArticlesIndexRequestQuerySchema = z.object({
   filter: z.union([ArticleFilterSchema, z.array(ArticleFilterSchema)]).optional(),
@@ -424,10 +426,12 @@ export interface DecimalFilterBetween {
   to?: number;
 }
 
-export interface ErrorResponseBody {
+export interface Error {
   issues: Issue[];
   layer: Layer;
 }
+
+export type ErrorResponseBody = Error;
 
 export interface IntegerFilterBetween {
   from?: number;

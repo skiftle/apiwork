@@ -148,10 +148,12 @@ export interface CommentsUpdateResponse {
 
 export type CommentsUpdateResponseBody = CommentUpdateSuccessResponseBody | ErrorResponseBody;
 
-export interface ErrorResponseBody {
+export interface Error {
   issues: Issue[];
   layer: Layer;
 }
+
+export type ErrorResponseBody = Error;
 
 export interface Image {
   comments?: Comment[];

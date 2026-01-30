@@ -56,7 +56,7 @@ export const ProfileUpdatePayloadSchema = z.object({
   tags: z.array(z.string()).optional()
 });
 
-export const ErrorResponseBodySchema = z.object({
+export const ErrorSchema = z.object({
   issues: z.array(IssueSchema),
   layer: LayerSchema
 });
@@ -81,6 +81,8 @@ export const ProfileUpdateSuccessResponseBodySchema = z.object({
   meta: z.record(z.string(), z.unknown()).optional(),
   profile: ProfileSchema
 });
+
+export const ErrorResponseBodySchema = ErrorSchema;
 
 export const ProfilesIndexRequestQuerySchema = z.object({
   page: ProfilePageSchema.optional()
@@ -132,10 +134,12 @@ export const ProfilesUpdateResponseSchema = z.object({
 
 export const ProfilesDestroyResponse = z.never();
 
-export interface ErrorResponseBody {
+export interface Error {
   issues: Issue[];
   layer: Layer;
 }
+
+export type ErrorResponseBody = Error;
 
 export interface Issue {
   code: string;

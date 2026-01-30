@@ -71,7 +71,7 @@ export const ProjectUpdatePayloadSchema = z.object({
   status: ProjectStatusSchema.nullable().optional()
 });
 
-export const ErrorResponseBodySchema = z.object({
+export const ErrorSchema = z.object({
   issues: z.array(IssueSchema),
   layer: LayerSchema
 });
@@ -104,6 +104,8 @@ export const ProjectFilterSchema: z.ZodType<ProjectFilter> = z.lazy(() => z.obje
   priority: ProjectPriorityFilterSchema.optional(),
   status: ProjectStatusFilterSchema.optional()
 }));
+
+export const ErrorResponseBodySchema = ErrorSchema;
 
 export const ProjectsIndexRequestQuerySchema = z.object({
   filter: z.union([ProjectFilterSchema, z.array(ProjectFilterSchema)]).optional(),
@@ -157,10 +159,12 @@ export const ProjectsUpdateResponseSchema = z.object({
 
 export const ProjectsDestroyResponse = z.never();
 
-export interface ErrorResponseBody {
+export interface Error {
   issues: Issue[];
   layer: Layer;
 }
+
+export type ErrorResponseBody = Error;
 
 export interface Issue {
   code: string;
