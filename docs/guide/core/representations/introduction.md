@@ -104,9 +104,9 @@ class InvoiceContract < Apiwork::Contract::Base
 end
 ```
 
-With `representation`, Apiwork auto-generates request bodies, response shapes, filter types, sort options and includes — all from the representation definition.
+With `representation`, the adapter auto-generates request bodies, response shapes, filter types, sort options, and includes — all from the representation definition.
 
-At runtime, the [adapter](../adapters/introduction.md) interprets these definitions and handles validation, querying, and serialization automatically.
+At runtime, the adapter interprets these definitions and handles validation, querying, and serialization.
 
 ## Root Key
 
