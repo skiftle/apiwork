@@ -191,9 +191,10 @@ module Apiwork
               return custom_type if sti_type_column?(attribute)
 
               type = case attribute.type
-                     when :string then :string_filter
+                     when :string, :binary then :string_filter
                      when :date then :date_filter
                      when :datetime then :datetime_filter
+                     when :time then :time_filter
                      when :integer then :integer_filter
                      when :decimal then :decimal_filter
                      when :number then :number_filter

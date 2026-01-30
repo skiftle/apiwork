@@ -61,6 +61,21 @@ GET /posts?filter[status][eq]=published&filter[views][gt]=100
 
 Date values like `2024-01-15` are expanded to cover the full day (`00:00:00` to `23:59:59`) when filtering datetime columns.
 
+### Time
+
+| Operator | SQL | Example |
+|----------|-----|---------|
+| `eq` | `= time` | `filter[start_time][eq]=14:30:00` |
+| `gt` | `> time` | `filter[start_time][gt]=09:00:00` |
+| `gte` | `>= time` | `filter[start_time][gte]=09:00:00` |
+| `lt` | `< time` | `filter[start_time][lt]=17:00:00` |
+| `lte` | `<= time` | `filter[start_time][lte]=17:00:00` |
+| `between` | `BETWEEN` | `filter[start_time][between][from]=09:00:00&filter[start_time][between][to]=17:00:00` |
+| `in` | `IN (...)` | `filter[start_time][in][]=09:00:00&filter[start_time][in][]=14:00:00` |
+| `null` | `IS NULL` | `filter[preferred_time][null]=true` |
+
+Time values are parsed as time-only (no date component). Use `HH:MM:SS` format.
+
 ### Boolean
 
 | Operator | SQL | Example |
@@ -251,10 +266,11 @@ The adapter only validates edge cases that pass contract validation:
 
 | Code | When It Fires |
 |------|---------------|
-| `invalid_date_format` | Date string couldn't be parsed (e.g., `2024-99-99`) |
-| `invalid_numeric_format` | Number parsing fails at runtime |
-| `invalid_enum_value` | Enum value changed in database after contract was built |
-| `null_not_allowed` | `null` operator on non-nullable column |
+| `date_invalid` | Date string couldn't be parsed (e.g., `2024-99-99`) |
+| `time_invalid` | Time string couldn't be parsed (e.g., `25:99:99`) |
+| `number_invalid` | Number parsing fails at runtime |
+| `enum_invalid` | Enum value changed in database after contract was built |
+| `value_null` | `null` operator on non-nullable column |
 
 These are rare — they only occur when values have the right type but fail parsing or business rules.
 

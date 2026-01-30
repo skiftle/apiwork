@@ -223,11 +223,13 @@ module Apiwork
               case column_type
               when :uuid
                 build_uuid_where_clause(key, value, target_klass)
-              when :string, :text
+              when :string, :text, :binary
                 build_string_where_clause(key, value, target_klass)
               when :date, :datetime
                 build_date_where_clause(key, value, target_klass)
-              when :decimal, :integer, :number
+              when :time
+                build_time_where_clause(key, value, target_klass)
+              when :decimal, :integer, :float
                 build_numeric_where_clause(key, value, target_klass)
               when :boolean
                 build_boolean_where_clause(key, value, target_klass)
@@ -457,6 +459,59 @@ module Apiwork
               column.eq(nil)
             end
 
+            def build_time_where_clause(key, value, target_klass)
+              column = target_klass.arel_table[key]
+              column_metadata = target_klass.columns_hash[key.to_s]
+              allow_nil = column_metadata&.null != false
+
+              if value.is_a?(String) || value.nil?
+                return handle_time_nil_value(column, key, allow_nil) if value.blank?
+
+                return column.eq(parse_time(value, key))
+              end
+
+              normalizer = ->(value) { value }
+
+              builder = Builder.new(column, key, allowed_types: [Hash], issues: @issues)
+
+              builder.build(value, normalizer:, valid_operators: Constants::NULLABLE_DATE_OPERATORS) do |operator, compare|
+                if operator == :null
+                  handle_null_operator(column, compare)
+                elsif compare.blank?
+                  handle_time_nil_value(column, key, allow_nil)
+                elsif operator == :between && compare.is_a?(Hash)
+                  from_time = parse_time(compare[:from] || compare['from'], key)
+                  to_time = parse_time(compare[:to] || compare['to'], key)
+                  next unless from_time && to_time
+
+                  column.gteq(from_time).and(column.lteq(to_time))
+                else
+                  time = parse_time(compare, key)
+                  case operator
+                  when :eq then column.eq(time)
+                  when :gt then column.gt(time)
+                  when :gte then column.gteq(time)
+                  when :lt then column.lt(time)
+                  when :lte then column.lteq(time)
+                  when :in then column.in(Array(time))
+                  end
+                end
+              end
+            end
+
+            def handle_time_nil_value(column, key, allow_nil)
+              unless allow_nil
+                @issues << Issue.new(
+                  :value_null,
+                  'Cannot be null',
+                  meta: { field: key },
+                  path: [:filter, key],
+                )
+              end
+
+              column.eq(nil)
+            end
+
             def build_numeric_where_clause(key, value, target_klass)
               column = target_klass.arel_table[key]
 
@@ -557,6 +612,18 @@ module Apiwork
               @issues << Issue.new(
                 :date_invalid,
                 'Invalid date',
+                meta: { field:, value: },
+                path: [:filter, field],
+              )
+              nil
+            end
+
+            def parse_time(value, field)
+              Time.zone.parse(value.to_s)
+            rescue ArgumentError
+              @issues << Issue.new(
+                :time_invalid,
+                'Invalid time',
                 meta: { field:, value: },
                 path: [:filter, field],
               )

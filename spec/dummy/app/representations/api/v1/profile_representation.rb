@@ -13,7 +13,7 @@ module Api
       attribute :timezone, writable: true
       attribute :external_id, filterable: true, format: :uuid
       attribute :balance, filterable: true, sortable: true
-      attribute :preferred_contact_time
+      attribute :preferred_contact_time, filterable: true, sortable: true
       attribute :created_at, filterable: true, sortable: true
       attribute :updated_at, filterable: true, sortable: true
 

@@ -51,8 +51,8 @@ module Apiwork
 
             def operators_for(type)
               case type
-              when :string then Constants::STRING_OPERATORS
-              when :date, :datetime then Constants::DATE_OPERATORS
+              when :string, :binary then Constants::STRING_OPERATORS
+              when :date, :datetime, :time then Constants::DATE_OPERATORS
               when :integer, :decimal, :number then Constants::NUMERIC_OPERATORS
               when :uuid then Constants::UUID_OPERATORS
               when :boolean then Constants::BOOLEAN_OPERATORS
