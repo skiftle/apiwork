@@ -149,10 +149,10 @@ module Apiwork
 
         def apply(data, representation_class, request, document_type:)
           klass = self.class.computation_class
-          return ApplyResult.new(data:) unless klass
+          return Result.new(data:) unless klass
 
           scope = klass.scope
-          return ApplyResult.new(data:) if scope && scope != document_type
+          return Result.new(data:) if scope && scope != document_type
 
           klass.new(
             data,

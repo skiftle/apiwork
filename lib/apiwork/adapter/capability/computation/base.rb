@@ -51,7 +51,7 @@ module Apiwork
           # Override this method to implement transformation logic.
           # Return nil if no changes are made.
           #
-          # @return [ApplyResult, nil] the result or nil for no changes
+          # @return [Result, nil] the result or nil for no changes
           def apply
             raise NotImplementedError
           end
@@ -63,9 +63,9 @@ module Apiwork
           # @param metadata [Hash, nil] metadata to add to response
           # @param includes [Array, nil] associations to preload
           # @param serialize_options [Hash, nil] options for serialization
-          # @return [ApplyResult]
+          # @return [Result]
           def result(data: nil, includes: nil, metadata: nil, serialize_options: nil)
-            ApplyResult.new(
+            Result.new(
               data:,
               includes:,
               metadata:,

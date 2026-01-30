@@ -3,7 +3,7 @@
 module Apiwork
   module Adapter
     module Capability
-      class ApplyResult
+      class Result
         attr_reader :data, :includes, :metadata, :serialize_options
 
         def initialize(data:, includes: nil, metadata: nil, serialize_options: nil)
