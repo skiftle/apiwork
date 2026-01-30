@@ -9,8 +9,7 @@ module Apiwork
             MAX_RECURSION_DEPTH = 3
 
             def build
-              build_include_type(representation_class, depth: 0, visited: Set.new)
-              return unless type?(:include)
+              return unless build_type(representation_class)
 
               actions.each_key do |action_name|
                 action(action_name) do |action|
@@ -25,7 +24,7 @@ module Apiwork
 
             private
 
-            def build_include_type(representation_class, depth:, visited:)
+            def build_type(representation_class, depth: 0, visited: Set.new)
               return nil unless representation_class.associations.any?
               return nil unless includable_params?(representation_class, depth:, visited:)
 
@@ -44,13 +43,11 @@ module Apiwork
               object(type_name) do |object|
                 association_params.each do |param_data|
                   name = param_data[:name]
-                  include_mode = param_data[:include_mode]
-                  param_type = param_data[:param_type]
                   include_type = param_data[:include_type]
 
-                  case param_type
+                  case param_data[:param_type]
                   when :boolean
-                    object.boolean(name, optional: true) unless include_mode == :always
+                    object.boolean(name, optional: true) unless param_data[:include_mode] == :always
                   when :reference
                     object.reference(name, optional: true, to: include_type)
                   when :union
@@ -83,7 +80,7 @@ module Apiwork
                 }
               end
 
-              nested_representation_class = resolve_association_representation(representation_class, association)
+              nested_representation_class = resolve_association_representation_class(representation_class, association)
               return nil unless nested_representation_class
 
               if visited.include?(nested_representation_class)
@@ -127,7 +124,7 @@ module Apiwork
 
             def resolve_association_include_type(representation_class, depth:, visited:)
               contract_class = find_contract_for_representation(representation_class)
-              return build_include_type(representation_class, visited:, depth: depth + 1) unless contract_class
+              return build_type(representation_class, visited:, depth: depth + 1) unless contract_class
 
               alias_name = representation_class.root_key.singular.to_sym
               import(contract_class, as: alias_name)
@@ -144,7 +141,7 @@ module Apiwork
                 if association.polymorphic?
                   association.include != :always
                 else
-                  nested_representation_class = resolve_association_representation(representation_class, association)
+                  nested_representation_class = resolve_association_representation_class(representation_class, association)
                   next false unless nested_representation_class
 
                   if new_visited.include?(nested_representation_class)
@@ -164,7 +161,7 @@ module Apiwork
               :"#{representation_class.root_key.singular}_include"
             end
 
-            def resolve_association_representation(representation_class, association)
+            def resolve_association_representation_class(representation_class, association)
               IncludesResolver.resolve_representation_class(representation_class, association)
             end
           end

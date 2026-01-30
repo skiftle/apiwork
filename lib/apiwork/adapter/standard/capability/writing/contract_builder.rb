@@ -253,30 +253,20 @@ module Apiwork
             def resolve_association_payload_type(association)
               return nil if association.polymorphic?
 
-              resolved_representation = resolve_association_representation(association)
-              return nil unless resolved_representation
+              resolved_representation_class = resolve_association_representation_class(association)
+              return nil unless resolved_representation_class
 
-              association_contract = find_contract_for_representation(resolved_representation)
+              association_contract = find_contract_for_representation(resolved_representation_class)
               return nil unless association_contract
 
-              alias_name = resolved_representation.root_key.singular.to_sym
+              alias_name = resolved_representation_class.root_key.singular.to_sym
               import(association_contract, as: alias_name)
 
               :"#{alias_name}_nested_payload"
             end
 
-            def resolve_association_representation(association)
-              return association.representation_class if association.representation_class
-
-              model_class = association.model_class
-              return nil unless model_class
-
-              reflection = model_class.reflect_on_association(association.name)
-              return nil unless reflection
-              return nil if reflection.polymorphic?
-
-              namespace = representation_class.name.deconstantize
-              "#{namespace}::#{reflection.klass.name.demodulize}Representation".safe_constantize
+            def resolve_association_representation_class(association)
+              IncludesResolver.resolve_representation_class(representation_class, association)
             end
 
             def sti_base_representation?

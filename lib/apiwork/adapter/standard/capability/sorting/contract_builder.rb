@@ -7,8 +7,7 @@ module Apiwork
         class Sorting
           class ContractBuilder < Adapter::Capability::Contract::Base
             def build
-              build_sort_type
-              return unless type?(:sort)
+              return unless build_type
 
               action(:index) do |action|
                 action.request do |request|
@@ -30,7 +29,7 @@ module Apiwork
 
             private
 
-            def build_sort_type
+            def build_type
               return unless sortable_content?
 
               object(:sort) do |object|
