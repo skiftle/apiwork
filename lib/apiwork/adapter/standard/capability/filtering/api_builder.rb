@@ -16,36 +16,36 @@ module Apiwork
             private
 
             def register_filter(type, nullable:)
-              type_name = filter_type_name(type, nullable:)
+              type_name = type_name(type, nullable:)
               return if type?(type_name)
 
               operators = operators_for(type)
-              register_between_type(type) if operators.include?(:between)
+              register_between(type) if operators.include?(:between)
 
-              object(type_name) do |obj|
-                operators.each { |operator| add_operator(obj, operator, type) }
-                obj.param(:null, optional: true, type: :boolean) if nullable
+              object(type_name) do |object|
+                operators.each { |operator| add_operator(object, operator, type) }
+                object.boolean?(:null) if nullable
               end
             end
 
-            def add_operator(obj, operator, type)
+            def add_operator(object, operator, type)
               case operator
               when :in
-                obj.array(:in, optional: true) { |element| element.of(type) }
+                object.array?(:in) { |array| array.of(type) }
               when :between
-                obj.reference(:between, optional: true, to: between_type_name(type))
+                object.reference?(:between, to: between_type_name(type))
               else
-                obj.param(operator, type:, optional: true)
+                object.param(operator, type:, optional: true)
               end
             end
 
-            def register_between_type(type)
+            def register_between(type)
               type_name = between_type_name(type)
               return if type?(type_name)
 
-              object(type_name) do |obj|
-                obj.param(:from, type:, optional: true)
-                obj.param(:to, type:, optional: true)
+              object(type_name) do |object|
+                object.param(:from, type:, optional: true)
+                object.param(:to, type:, optional: true)
               end
             end
 
@@ -60,7 +60,7 @@ module Apiwork
               end
             end
 
-            def filter_type_name(type, nullable:)
+            def type_name(type, nullable:)
               nullable ? [:nullable, type, :filter].join('_').to_sym : [type, :filter].join('_').to_sym
             end
 
