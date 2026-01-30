@@ -129,7 +129,7 @@ module Apiwork
 
               alias_name = representation_class.root_key.singular.to_sym
               import(contract_class, as: alias_name)
-              imported_type = :"#{alias_name}_#{TYPE_NAME}"
+              imported_type = [alias_name, TYPE_NAME].join('_').to_sym
               type?(imported_type) ? imported_type : nil
             end
 
@@ -159,7 +159,7 @@ module Apiwork
             def type_name_for(representation_class, depth)
               return TYPE_NAME if depth.zero?
 
-              :"#{representation_class.root_key.singular}_#{TYPE_NAME}"
+              [representation_class.root_key.singular, TYPE_NAME].join('_').to_sym
             end
 
             def resolve_association_representation_class(representation_class, association)

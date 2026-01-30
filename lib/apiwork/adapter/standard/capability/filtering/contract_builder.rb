@@ -13,11 +13,11 @@ module Apiwork
 
               representation_class.attributes.each do |name, attribute|
                 next unless attribute.filterable? && attribute.enum
-                next if type?(:"#{name}_#{TYPE_NAME}")
+                next if type?([name, TYPE_NAME].join('_').to_sym)
 
                 scoped = scoped_enum_name(name)
 
-                union(:"#{name}_#{TYPE_NAME}") do |u|
+                union([name, TYPE_NAME].join('_').to_sym) do |u|
                   u.variant do |element|
                     element.reference(scoped)
                   end
@@ -57,7 +57,7 @@ module Apiwork
                 alias_name = representation.root_key.singular.to_sym
                 import(contract, as: alias_name)
 
-                filter_type = :"#{alias_name}_#{TYPE_NAME}"
+                filter_type = [alias_name, TYPE_NAME].join('_').to_sym
                 next unless type?(filter_type)
 
                 [name, filter_type]
@@ -120,7 +120,7 @@ module Apiwork
 
                 association = representation_class.polymorphic_association_for_type_column(name)
                 next unless association
-                next if type?(:"#{name}_#{TYPE_NAME}")
+                next if type?([name, TYPE_NAME].join('_').to_sym)
 
                 allowed_values = association.polymorphic.map do |rep_class|
                   (rep_class.type_name || rep_class.model_class.polymorphic_name).to_s
@@ -130,7 +130,7 @@ module Apiwork
 
                 scoped = scoped_enum_name(name)
 
-                union(:"#{name}_#{TYPE_NAME}") do |u|
+                union([name, TYPE_NAME].join('_').to_sym) do |u|
                   u.variant do |element|
                     element.reference(scoped)
                   end
@@ -152,7 +152,7 @@ module Apiwork
 
                 sti_union = representation_class.sti_union_for_type_column(name)
                 next unless sti_union
-                next if type?(:"#{name}_#{TYPE_NAME}")
+                next if type?([name, TYPE_NAME].join('_').to_sym)
 
                 allowed_values = sti_union.variants.values.map { |variant_data| variant_data.tag.to_s }
 
@@ -160,7 +160,7 @@ module Apiwork
 
                 scoped = scoped_enum_name(name)
 
-                union(:"#{name}_#{TYPE_NAME}") do |u|
+                union([name, TYPE_NAME].join('_').to_sym) do |u|
                   u.variant do |element|
                     element.reference(scoped)
                   end
@@ -185,11 +185,12 @@ module Apiwork
             end
 
             def filter_type_for(attribute)
-              return :"#{attribute.name}_#{TYPE_NAME}" if attribute.enum
-              return :"#{attribute.name}_#{TYPE_NAME}" if polymorphic_type_column?(attribute)
-              return :"#{attribute.name}_#{TYPE_NAME}" if sti_type_column?(attribute)
+              custom_type = [attribute.name, TYPE_NAME].join('_').to_sym
+              return custom_type if attribute.enum
+              return custom_type if polymorphic_type_column?(attribute)
+              return custom_type if sti_type_column?(attribute)
 
-              base = case attribute.type
+              type = case attribute.type
                      when :string then :string_filter
                      when :date then :date_filter
                      when :datetime then :datetime_filter
@@ -201,7 +202,7 @@ module Apiwork
                      else :string_filter
                      end
 
-              attribute.nullable? ? :"nullable_#{base}" : base
+              attribute.nullable? ? [:nullable, type].join('_').to_sym : type
             end
 
             def filterable?

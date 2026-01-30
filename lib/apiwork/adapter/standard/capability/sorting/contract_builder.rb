@@ -65,7 +65,7 @@ module Apiwork
                 alias_name = representation.root_key.singular.to_sym
                 import(contract, as: alias_name)
 
-                nested_type = :"#{alias_name}_#{TYPE_NAME}"
+                nested_type = [alias_name, TYPE_NAME].join('_').to_sym
                 next unless type?(nested_type)
 
                 { name:, type: nested_type }
