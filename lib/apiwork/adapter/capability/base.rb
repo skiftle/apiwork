@@ -52,11 +52,6 @@ module Apiwork
             end
           end
 
-          def shape(&block)
-            @shape_block = block if block
-            @shape_block
-          end
-
           def wrap_api_builder_block(callable)
             Class.new(Builder::API::Base) do
               define_method(:build) do
@@ -130,19 +125,21 @@ module Apiwork
         end
 
         def shape(representation_class, type)
-          shape_block = self.class.shape
-          return nil unless shape_block
-
           klass = self.class.computation_class
-          scope = klass&.scope
+          return nil unless klass
+
+          metadata_block = klass.metadata
+          return nil unless metadata_block
+
+          scope = klass.scope
           return nil if scope && scope != type
 
           object = ::Apiwork::API::Object.new
           shape = Shape.new(object, merged_config(representation_class))
-          if shape_block.arity.positive?
-            shape_block.call(shape)
+          if metadata_block.arity.positive?
+            metadata_block.call(shape)
           else
-            shape.instance_exec(&shape_block)
+            shape.instance_exec(&metadata_block)
           end
           object.params.empty? ? nil : object
         end

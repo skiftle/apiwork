@@ -8,16 +8,16 @@ next: false
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/shape.rb#L17)
 
-Shape builder for capability response shapes.
+Shape builder for capability metadata.
 
-Extends the document shape with capability-specific fields.
 Provides [#options](#options) for accessing capability configuration,
 plus all DSL methods from [API::Object](api-object) for defining structure.
+Used by computations to define their metadata contribution.
 
-**Example: Add pagination to response**
+**Example: Add pagination metadata**
 
 ```ruby
-shape do |shape|
+metadata do |shape|
   shape.reference :pagination
 end
 ```

@@ -36,6 +36,25 @@ module Apiwork
               @scope = value if value
               @scope
             end
+
+            # @api public
+            # Defines metadata shape for this computation.
+            #
+            # The block receives a shape builder with access to type DSL methods
+            # and capability options.
+            #
+            # @yield [shape] block that defines metadata structure
+            # @yieldparam shape [Capability::Shape] shape builder with options
+            # @return [Proc, nil] the metadata block
+            #
+            # @example
+            #   metadata do |shape|
+            #     shape.reference(:pagination, to: :offset_pagination)
+            #   end
+            def metadata(&block)
+              @metadata_block = block if block
+              @metadata_block
+            end
           end
 
           def initialize(data, representation_class, options, request)

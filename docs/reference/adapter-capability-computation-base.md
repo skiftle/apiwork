@@ -35,6 +35,37 @@ Sets the scope for this computation.
 
 ---
 
+### .metadata
+
+`.metadata(&block)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/computation/base.rb#L52)
+
+Defines metadata shape for this computation.
+
+The block receives a shape builder with access to type DSL methods
+and capability options.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `block` | `Proc` | block that defines metadata structure |
+
+**Returns**
+
+`Proc`, `nil` — the metadata block
+
+**Example**
+
+```ruby
+metadata do |shape|
+  shape.reference(:pagination, to: :offset_pagination)
+end
+```
+
+---
+
 ## Instance Methods
 
 ### #apply

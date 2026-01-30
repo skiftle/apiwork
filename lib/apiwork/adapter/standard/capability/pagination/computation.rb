@@ -8,6 +8,10 @@ module Apiwork
           class Computation < Adapter::Capability::Computation::Base
             scope :collection
 
+            metadata do |shape|
+              shape.reference(:pagination, to: (shape.options.strategy == :cursor ? :cursor_pagination : :offset_pagination))
+            end
+
             def apply
               data, metadata = paginate
               result(data:, metadata:)

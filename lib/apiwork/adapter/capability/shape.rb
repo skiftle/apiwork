@@ -4,14 +4,14 @@ module Apiwork
   module Adapter
     module Capability
       # @api public
-      # Shape builder for capability response shapes.
+      # Shape builder for capability metadata.
       #
-      # Extends the wrapper shape with capability-specific fields.
       # Provides {#options} for accessing capability configuration,
       # plus all DSL methods from {API::Object} for defining structure.
+      # Used by computations to define their metadata contribution.
       #
-      # @example Add pagination to response
-      #   shape do |shape|
+      # @example Add pagination metadata
+      #   metadata do |shape|
       #     shape.reference :pagination
       #   end
       class Shape
