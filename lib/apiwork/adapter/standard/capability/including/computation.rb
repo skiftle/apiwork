@@ -8,9 +8,7 @@ module Apiwork
           class Computation < Adapter::Capability::Computation::Base
             def apply
               params = request.query[:include] || {}
-
-              resolver = IncludesResolver.new(representation_class)
-              includes = IncludesResolver.merge(resolver.always_included, resolver.from_params(params)).keys
+              includes = IncludesResolver.new(representation_class).resolve(params)
 
               result(data:, includes:, serialize_options: { include: params })
             end

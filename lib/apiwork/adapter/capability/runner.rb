@@ -28,17 +28,21 @@ module Apiwork
 
             metadata.merge!(result.metadata) if result.metadata
             serialize_options.merge!(result.serialize_options || {})
-            includes.concat(result.includes || [])
+            includes << result.includes if result.includes.present?
             result.data
           end
 
-          preloaded = preload_associations(data, includes.uniq)
+          preloaded = preload_associations(data, normalize_includes(includes))
 
           [preloaded, metadata, serialize_options]
         end
 
+        def normalize_includes(includes)
+          includes.flatten.compact
+        end
+
         def preload_associations(data, includes)
-          return data if includes.empty?
+          return data if includes.blank?
 
           if data.is_a?(ActiveRecord::Relation)
             data.includes(*includes)

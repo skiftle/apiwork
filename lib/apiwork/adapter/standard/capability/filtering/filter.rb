@@ -13,7 +13,7 @@ module Apiwork
               result = filter.filter(params)
               raise ContractError, filter.issues if filter.issues.any?
 
-              includes = IncludesResolver.new(representation_class).from_params(params).keys
+              includes = IncludesResolver.new(representation_class).resolve_params(params)
               [result, includes]
             end
 
@@ -612,7 +612,7 @@ module Apiwork
               return nil if reflection.polymorphic?
 
               namespace = representation_class.name.deconstantize
-              "#{namespace}::#{reflection.klass.name}Representation".safe_constantize
+              "#{namespace}::#{reflection.klass.name.demodulize}Representation".safe_constantize
             end
           end
         end

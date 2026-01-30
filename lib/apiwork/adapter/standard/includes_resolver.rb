@@ -10,6 +10,15 @@ module Apiwork
           @representation_class = representation_class
         end
 
+        def resolve(params = {})
+          merged = merge(always_included, from_params(params))
+          format(merged)
+        end
+
+        def resolve_params(params)
+          format(from_params(params))
+        end
+
         def always_included(visited = Set.new)
           associations = representation_class.associations.select { |_, a| a.include == :always }
           extract_associations(associations, visited)
@@ -19,10 +28,24 @@ module Apiwork
           extract_from_hash(params, visited)
         end
 
-        def self.merge(base, override)
+        def merge(base, override)
           return base if override.blank?
 
           base.deep_merge(override.deep_symbolize_keys)
+        end
+
+        def format(hash)
+          return [] if hash.blank?
+
+          result = hash.map do |key, value|
+            if value.blank?
+              key
+            else
+              { key => format(value) }
+            end
+          end
+
+          result.size == 1 ? result.first : result
         end
 
         private

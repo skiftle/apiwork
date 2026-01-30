@@ -161,7 +161,7 @@ module Apiwork
             def type_name_for(representation, depth)
               return :include if depth.zero?
 
-              :"#{representation.name.demodulize.delete_suffix('Representation').underscore}_include"
+              :"#{representation.root_key.singular}_include"
             end
 
             def resolve_association_representation(parent_representation, association)
