@@ -603,11 +603,26 @@ No deviations. No reordering.
 
 Class and instance method names match the class's purpose:
 
+**`-er` suffix classes use verb form of the suffix:**
+
 | Class suffix | Method name |
 |--------------|-------------|
 | `*Generator` | `generate` |
 | `*Loader` | `load` |
 | `*Builder` | `build` |
+| `*Transformer` | `transform` |
+| `*Parser` | `parse` |
+| `*Resolver` | `resolve` |
+| `*Paginator` | `paginate` |
+
+**Non-`-er` classes use semantically appropriate verb:**
+
+| Class | Method | Rationale |
+|-------|--------|-----------|
+| `Filter` | `apply` | "apply the filter" |
+| `Sort` | `apply` | "apply the sort" |
+| `Operation` | `apply` | "apply the operation" |
+| `Export` | `generate` | "generate the export" |
 
 Pattern: `initialize` takes configuration, method takes input.
 Class method combines both: `new(config).method(input)`
