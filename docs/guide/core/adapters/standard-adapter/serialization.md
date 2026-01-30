@@ -70,7 +70,7 @@ The adapter uses `Representation.deserialize()` for decoding. Nested association
 { amount: BigDecimal("99.99"), issued_on: Date.new(2024, 1, 15) }
 ```
 
-See [Encode & Decode Transformers](../representations/serialization.md#encode-decode-transformers) for customizing value transformations.
+See [Encode & Decode Transformers](../../representations/serialization.md#encode-decode-transformers) for customizing value transformations.
 
 ## Custom Adapters
 
