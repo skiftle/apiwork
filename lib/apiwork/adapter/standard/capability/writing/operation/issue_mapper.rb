@@ -62,8 +62,8 @@ module Apiwork
 
               META_CODES = %i[min max length gt gte lt lte eq ne in].freeze
 
-              def self.call(record, locale_key: nil, root_path: [])
-                new(record, root_path, locale_key).call
+              def self.map(record, locale_key: nil, root_path: [])
+                new(record, root_path, locale_key).map
               end
 
               def initialize(record, root_path, locale_key)
@@ -72,7 +72,7 @@ module Apiwork
                 @locale_key = locale_key
               end
 
-              def call
+              def map
                 return [] unless @record.respond_to?(:errors)
                 return [] unless @record.errors.any?
 
@@ -108,7 +108,7 @@ module Apiwork
                     next unless item.errors.any?
 
                     nested_path = build_association_path(association.name, index, association_type)
-                    result.concat(self.class.call(item, locale_key: @locale_key, root_path: nested_path))
+                    result.concat(self.class.map(item, locale_key: @locale_key, root_path: nested_path))
                   end
                 end
 

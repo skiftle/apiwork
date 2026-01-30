@@ -21,13 +21,7 @@ module Apiwork
 
             def paginate
               params = request.query.fetch(:page, {})
-
-              case options.strategy
-              when :offset
-                OffsetPaginator.paginate(data, options, params)
-              else
-                CursorPaginator.paginate(data, options, params)
-              end
+              Paginate.apply(data, options, params)
             end
           end
         end

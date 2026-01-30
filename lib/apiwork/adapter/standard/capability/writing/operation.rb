@@ -17,7 +17,7 @@ module Apiwork
             def validate_record!(record, representation_class)
               return unless record.respond_to?(:errors) && record.errors.any?
 
-              issues = IssueMapper.call(
+              issues = IssueMapper.map(
                 record,
                 locale_key: representation_class.api_class.structure.locale_key,
                 root_path: [representation_class.root_key.singular.to_sym],

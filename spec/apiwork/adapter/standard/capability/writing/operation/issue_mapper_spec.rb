@@ -30,13 +30,13 @@ RSpec.describe Apiwork::Adapter::Standard::Capability::Writing::Operation::Issue
     end
   end
 
-  describe '.call' do
+  describe '.map' do
     it 'returns empty array when record has no errors' do
       record_class = create_test_record(title: { presence: true })
       record = record_class.new(title: 'Valid')
       record.valid?
 
-      issues = mapper_class.call(record)
+      issues = mapper_class.map(record)
 
       expect(issues).to eq([])
     end
@@ -44,7 +44,7 @@ RSpec.describe Apiwork::Adapter::Standard::Capability::Writing::Operation::Issue
     it 'returns empty array when record does not respond to errors' do
       record = Object.new
 
-      issues = mapper_class.call(record)
+      issues = mapper_class.map(record)
 
       expect(issues).to eq([])
     end
@@ -56,7 +56,7 @@ RSpec.describe Apiwork::Adapter::Standard::Capability::Writing::Operation::Issue
       record = record_class.new(title: '')
       record.valid?
 
-      issues = mapper_class.call(record, root_path: [:data])
+      issues = mapper_class.map(record, root_path: [:data])
 
       expect(issues.first.code).to eq(:required)
     end
@@ -66,7 +66,7 @@ RSpec.describe Apiwork::Adapter::Standard::Capability::Writing::Operation::Issue
       record = record_class.new(title: 'Hi')
       record.valid?
 
-      issues = mapper_class.call(record, root_path: [:data])
+      issues = mapper_class.map(record, root_path: [:data])
 
       expect(issues.first.code).to eq(:min)
     end
@@ -76,7 +76,7 @@ RSpec.describe Apiwork::Adapter::Standard::Capability::Writing::Operation::Issue
       record = record_class.new(title: 'Too long title')
       record.valid?
 
-      issues = mapper_class.call(record, root_path: [:data])
+      issues = mapper_class.map(record, root_path: [:data])
 
       expect(issues.first.code).to eq(:max)
     end
@@ -86,7 +86,7 @@ RSpec.describe Apiwork::Adapter::Standard::Capability::Writing::Operation::Issue
       record = record_class.new(age: -1)
       record.valid?
 
-      issues = mapper_class.call(record, root_path: [:data])
+      issues = mapper_class.map(record, root_path: [:data])
 
       expect(issues.first.code).to eq(:gt)
     end
@@ -96,7 +96,7 @@ RSpec.describe Apiwork::Adapter::Standard::Capability::Writing::Operation::Issue
       record = record_class.new(status: 'unknown')
       record.valid?
 
-      issues = mapper_class.call(record, root_path: [:data])
+      issues = mapper_class.map(record, root_path: [:data])
 
       expect(issues.first.code).to eq(:in)
     end
@@ -106,7 +106,7 @@ RSpec.describe Apiwork::Adapter::Standard::Capability::Writing::Operation::Issue
       record = record_class.new
       record.errors.add(:title, :disposable)
 
-      issues = mapper_class.call(record, root_path: [:data])
+      issues = mapper_class.map(record, root_path: [:data])
 
       expect(issues.first.code).to eq(:disposable)
     end
@@ -118,7 +118,7 @@ RSpec.describe Apiwork::Adapter::Standard::Capability::Writing::Operation::Issue
       record = record_class.new(title: '')
       record.valid?
 
-      issues = mapper_class.call(record, root_path: [:data])
+      issues = mapper_class.map(record, root_path: [:data])
 
       expect(issues.first.detail).to eq('Required')
     end
@@ -128,7 +128,7 @@ RSpec.describe Apiwork::Adapter::Standard::Capability::Writing::Operation::Issue
       record = record_class.new(title: 'Hi')
       record.valid?
 
-      issues = mapper_class.call(record, root_path: [:data])
+      issues = mapper_class.map(record, root_path: [:data])
 
       expect(issues.first.detail).to eq('Too short')
     end
@@ -138,7 +138,7 @@ RSpec.describe Apiwork::Adapter::Standard::Capability::Writing::Operation::Issue
       record = record_class.new(title: 'Too long title')
       record.valid?
 
-      issues = mapper_class.call(record, root_path: [:data])
+      issues = mapper_class.map(record, root_path: [:data])
 
       expect(issues.first.detail).to eq('Too long')
     end
@@ -148,7 +148,7 @@ RSpec.describe Apiwork::Adapter::Standard::Capability::Writing::Operation::Issue
       record = record_class.new
       record.errors.add(:title, :disposable_email)
 
-      issues = mapper_class.call(record, root_path: [:data])
+      issues = mapper_class.map(record, root_path: [:data])
 
       expect(issues.first.detail).to eq('Disposable email')
     end
@@ -160,7 +160,7 @@ RSpec.describe Apiwork::Adapter::Standard::Capability::Writing::Operation::Issue
       record = record_class.new(title: 'Hi')
       record.valid?
 
-      issues = mapper_class.call(record, root_path: [:data])
+      issues = mapper_class.map(record, root_path: [:data])
 
       expect(issues.first.meta).to eq({ min: 5 })
     end
@@ -170,7 +170,7 @@ RSpec.describe Apiwork::Adapter::Standard::Capability::Writing::Operation::Issue
       record = record_class.new(title: 'This is way too long')
       record.valid?
 
-      issues = mapper_class.call(record, root_path: [:data])
+      issues = mapper_class.map(record, root_path: [:data])
 
       expect(issues.first.meta).to eq({ max: 10 })
     end
@@ -180,7 +180,7 @@ RSpec.describe Apiwork::Adapter::Standard::Capability::Writing::Operation::Issue
       record = record_class.new(age: 10)
       record.valid?
 
-      issues = mapper_class.call(record, root_path: [:data])
+      issues = mapper_class.map(record, root_path: [:data])
 
       expect(issues.first.meta).to eq({ gt: 18 })
     end
@@ -190,7 +190,7 @@ RSpec.describe Apiwork::Adapter::Standard::Capability::Writing::Operation::Issue
       record = record_class.new(title: '')
       record.valid?
 
-      issues = mapper_class.call(record, root_path: [:data])
+      issues = mapper_class.map(record, root_path: [:data])
 
       expect(issues.first.meta).to eq({})
     end
@@ -200,7 +200,7 @@ RSpec.describe Apiwork::Adapter::Standard::Capability::Writing::Operation::Issue
       record = record_class.new
       record.errors.add(:title, :unknown_code)
 
-      issues = mapper_class.call(record, root_path: [:data])
+      issues = mapper_class.map(record, root_path: [:data])
 
       expect(issues.first.meta).to eq({})
     end
@@ -210,7 +210,7 @@ RSpec.describe Apiwork::Adapter::Standard::Capability::Writing::Operation::Issue
       record = record_class.new(status: 'unknown')
       record.valid?
 
-      issues = mapper_class.call(record, root_path: [:data])
+      issues = mapper_class.map(record, root_path: [:data])
 
       expect(issues.first.meta).to eq({})
     end
@@ -222,7 +222,7 @@ RSpec.describe Apiwork::Adapter::Standard::Capability::Writing::Operation::Issue
       record = record_class.new(title: '')
       record.valid?
 
-      issues = mapper_class.call(record, root_path: [:post])
+      issues = mapper_class.map(record, root_path: [:post])
 
       expect(issues.first.path).to eq([:post, :title])
     end
@@ -232,7 +232,7 @@ RSpec.describe Apiwork::Adapter::Standard::Capability::Writing::Operation::Issue
       record = record_class.new(title: '')
       record.valid?
 
-      issues = mapper_class.call(record)
+      issues = mapper_class.map(record)
 
       expect(issues.first.path).to eq([:title])
     end
@@ -242,7 +242,7 @@ RSpec.describe Apiwork::Adapter::Standard::Capability::Writing::Operation::Issue
       record = record_class.new(title: '')
       record.valid?
 
-      issues = mapper_class.call(record, root_path: [:posts, 0])
+      issues = mapper_class.map(record, root_path: [:posts, 0])
 
       expect(issues.first.path).to eq([:posts, 0, :title])
     end
@@ -257,7 +257,7 @@ RSpec.describe Apiwork::Adapter::Standard::Capability::Writing::Operation::Issue
       record = record_class.new(age: -1, title: '')
       record.valid?
 
-      issues = mapper_class.call(record, root_path: [:data])
+      issues = mapper_class.map(record, root_path: [:data])
 
       expect(issues.length).to eq(2)
       expect(issues.map(&:code)).to contain_exactly(:required, :gt)

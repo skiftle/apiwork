@@ -603,7 +603,7 @@ No deviations. No reordering.
 
 Class and instance method names match the class's purpose:
 
-**`-er` suffix classes use verb form of the suffix:**
+**`-er` suffix classes (agents) use verb form of the suffix:**
 
 | Class suffix | Method name |
 |--------------|-------------|
@@ -613,7 +613,7 @@ Class and instance method names match the class's purpose:
 | `*Transformer` | `transform` |
 | `*Parser` | `parse` |
 | `*Resolver` | `resolve` |
-| `*Paginator` | `paginate` |
+| `*Mapper` | `map` |
 
 **Non-`-er` classes use semantically appropriate verb:**
 
@@ -621,8 +621,11 @@ Class and instance method names match the class's purpose:
 |-------|--------|-----------|
 | `Filter` | `apply` | "apply the filter" |
 | `Sort` | `apply` | "apply the sort" |
+| `Paginate` | `apply` | "apply pagination" |
 | `Operation` | `apply` | "apply the operation" |
 | `Export` | `generate` | "generate the export" |
+
+Default is `apply`. Use established domain verb when it fits better.
 
 Pattern: `initialize` takes configuration, method takes input.
 Class method combines both: `new(config).method(input)`
