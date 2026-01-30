@@ -165,18 +165,7 @@ module Apiwork
             end
 
             def resolve_association_representation(representation_class, association)
-              return nil if association.polymorphic?
-              return association.representation_class if association.representation_class
-
-              model_class = association.model_class
-              return nil unless model_class
-
-              reflection = model_class.reflect_on_association(association.name)
-              return nil unless reflection
-              return nil if reflection.polymorphic?
-
-              namespace = representation_class.name.deconstantize
-              "#{namespace}::#{reflection.klass.name.demodulize}Representation".safe_constantize
+              IncludesResolver.resolve_representation_class(representation_class, association)
             end
           end
         end
