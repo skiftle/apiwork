@@ -160,9 +160,9 @@ export const ArticleUpdateSuccessResponseBodySchema = z.object({
 });
 
 export const ArticleFilterSchema: z.ZodType<ArticleFilter> = z.lazy(() => z.object({
-  _and: z.array(ArticleFilterSchema).optional(),
-  _not: ArticleFilterSchema.optional(),
-  _or: z.array(ArticleFilterSchema).optional(),
+  AND: z.array(ArticleFilterSchema).optional(),
+  NOT: ArticleFilterSchema.optional(),
+  OR: z.array(ArticleFilterSchema).optional(),
   publishedOn: z.union([z.iso.date(), NullableDateFilterSchema]).optional(),
   rating: z.union([z.number(), NullableDecimalFilterSchema]).optional(),
   status: ArticleStatusFilterSchema.optional(),
@@ -277,9 +277,9 @@ export interface ArticleCreateSuccessResponseBody {
 }
 
 export interface ArticleFilter {
-  _and?: ArticleFilter[];
-  _not?: ArticleFilter;
-  _or?: ArticleFilter[];
+  AND?: ArticleFilter[];
+  NOT?: ArticleFilter;
+  OR?: ArticleFilter[];
   publishedOn?: NullableDateFilter | string;
   rating?: NullableDecimalFilter | number;
   status?: ArticleStatusFilter;

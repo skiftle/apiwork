@@ -673,7 +673,7 @@
       "example": null,
       "extends": [],
       "shape": {
-        "_and": {
+        "AND": {
           "default": null,
           "deprecated": false,
           "description": null,
@@ -695,7 +695,7 @@
           },
           "shape": {}
         },
-        "_not": {
+        "NOT": {
           "default": null,
           "deprecated": false,
           "description": null,
@@ -705,7 +705,7 @@
           "type": "ref",
           "ref": "car_filter"
         },
-        "_or": {
+        "OR": {
           "default": null,
           "deprecated": false,
           "description": null,
@@ -1470,7 +1470,7 @@
       "example": null,
       "extends": [],
       "shape": {
-        "_and": {
+        "AND": {
           "default": null,
           "deprecated": false,
           "description": null,
@@ -1492,7 +1492,7 @@
           },
           "shape": {}
         },
-        "_not": {
+        "NOT": {
           "default": null,
           "deprecated": false,
           "description": null,
@@ -1502,7 +1502,7 @@
           "type": "ref",
           "ref": "motorcycle_filter"
         },
-        "_or": {
+        "OR": {
           "default": null,
           "deprecated": false,
           "description": null,
@@ -2256,7 +2256,7 @@
       "example": null,
       "extends": [],
       "shape": {
-        "_and": {
+        "AND": {
           "default": null,
           "deprecated": false,
           "description": null,
@@ -2278,7 +2278,7 @@
           },
           "shape": {}
         },
-        "_not": {
+        "NOT": {
           "default": null,
           "deprecated": false,
           "description": null,
@@ -2288,7 +2288,7 @@
           "type": "ref",
           "ref": "truck_filter"
         },
-        "_or": {
+        "OR": {
           "default": null,
           "deprecated": false,
           "description": null,
@@ -2713,7 +2713,7 @@
       "example": null,
       "extends": [],
       "shape": {
-        "_and": {
+        "AND": {
           "default": null,
           "deprecated": false,
           "description": null,
@@ -2735,7 +2735,7 @@
           },
           "shape": {}
         },
-        "_not": {
+        "NOT": {
           "default": null,
           "deprecated": false,
           "description": null,
@@ -2745,7 +2745,7 @@
           "type": "ref",
           "ref": "vehicle_filter"
         },
-        "_or": {
+        "OR": {
           "default": null,
           "deprecated": false,
           "description": null,

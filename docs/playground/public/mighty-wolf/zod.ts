@@ -156,9 +156,9 @@ export const VehicleSchema = z.discriminatedUnion('type', [
 ]);
 
 export const VehicleFilterSchema: z.ZodType<VehicleFilter> = z.lazy(() => z.object({
-  _and: z.array(VehicleFilterSchema).optional(),
-  _not: VehicleFilterSchema.optional(),
-  _or: z.array(VehicleFilterSchema).optional(),
+  AND: z.array(VehicleFilterSchema).optional(),
+  NOT: VehicleFilterSchema.optional(),
+  OR: z.array(VehicleFilterSchema).optional(),
   brand: z.union([z.string(), StringFilterSchema]).optional(),
   model: z.union([z.string(), StringFilterSchema]).optional(),
   type: VehicleTypeFilterSchema.optional(),
@@ -383,9 +383,9 @@ export interface VehicleCreateSuccessResponseBody {
 }
 
 export interface VehicleFilter {
-  _and?: VehicleFilter[];
-  _not?: VehicleFilter;
-  _or?: VehicleFilter[];
+  AND?: VehicleFilter[];
+  NOT?: VehicleFilter;
+  OR?: VehicleFilter[];
   brand?: StringFilter | string;
   model?: StringFilter | string;
   type?: VehicleTypeFilter;

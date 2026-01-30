@@ -24,9 +24,9 @@ export interface ArticleCreateSuccessResponseBody {
 }
 
 export interface ArticleFilter {
-  _and?: ArticleFilter[];
-  _not?: ArticleFilter;
-  _or?: ArticleFilter[];
+  AND?: ArticleFilter[];
+  NOT?: ArticleFilter;
+  OR?: ArticleFilter[];
   publishedOn?: NullableDateFilter | string;
   rating?: NullableDecimalFilter | number;
   status?: ArticleStatusFilter;

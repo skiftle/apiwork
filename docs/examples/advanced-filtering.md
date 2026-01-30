@@ -527,9 +527,9 @@ GET /bold_falcon/articles?filter[category][name][eq]=Technology
       "detail": "Unknown field",
       "meta": {
         "allowed": [
-          "_and",
-          "_or",
-          "_not",
+          "AND",
+          "OR",
+          "NOT",
           "title",
           "status",
           "view_count",

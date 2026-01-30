@@ -98,9 +98,9 @@ export const ProjectUpdateSuccessResponseBodySchema = z.object({
 });
 
 export const ProjectFilterSchema: z.ZodType<ProjectFilter> = z.lazy(() => z.object({
-  _and: z.array(ProjectFilterSchema).optional(),
-  _not: ProjectFilterSchema.optional(),
-  _or: z.array(ProjectFilterSchema).optional(),
+  AND: z.array(ProjectFilterSchema).optional(),
+  NOT: ProjectFilterSchema.optional(),
+  OR: z.array(ProjectFilterSchema).optional(),
   priority: ProjectPriorityFilterSchema.optional(),
   status: ProjectStatusFilterSchema.optional()
 }));
@@ -211,9 +211,9 @@ export interface ProjectCreateSuccessResponseBody {
 }
 
 export interface ProjectFilter {
-  _and?: ProjectFilter[];
-  _not?: ProjectFilter;
-  _or?: ProjectFilter[];
+  AND?: ProjectFilter[];
+  NOT?: ProjectFilter;
+  OR?: ProjectFilter[];
   priority?: ProjectPriorityFilter;
   status?: ProjectStatusFilter;
 }

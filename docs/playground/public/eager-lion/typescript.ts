@@ -42,9 +42,9 @@ export interface InvoiceCreateSuccessResponseBody {
 }
 
 export interface InvoiceFilter {
-  _and?: InvoiceFilter[];
-  _not?: InvoiceFilter;
-  _or?: InvoiceFilter[];
+  AND?: InvoiceFilter[];
+  NOT?: InvoiceFilter;
+  OR?: InvoiceFilter[];
   number?: StringFilter | string;
   status?: NullableStringFilter | string;
 }
@@ -161,7 +161,7 @@ export interface Line {
 }
 
 export interface LineNestedCreatePayload {
-  _op?: 'create';
+  OP?: 'create';
   description?: null | string;
   id?: string;
   price?: null | number;
@@ -169,14 +169,14 @@ export interface LineNestedCreatePayload {
 }
 
 export interface LineNestedDeletePayload {
-  _op?: 'delete';
+  OP?: 'delete';
   id: string;
 }
 
 export type LineNestedPayload = LineNestedCreatePayload | LineNestedUpdatePayload | LineNestedDeletePayload;
 
 export interface LineNestedUpdatePayload {
-  _op?: 'update';
+  OP?: 'update';
   description?: null | string;
   id?: string;
   price?: null | number;

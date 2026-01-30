@@ -50,9 +50,9 @@ export interface ProjectCreateSuccessResponseBody {
 }
 
 export interface ProjectFilter {
-  _and?: ProjectFilter[];
-  _not?: ProjectFilter;
-  _or?: ProjectFilter[];
+  AND?: ProjectFilter[];
+  NOT?: ProjectFilter;
+  OR?: ProjectFilter[];
   priority?: ProjectPriorityFilter;
   status?: ProjectStatusFilter;
 }

@@ -37,7 +37,7 @@ export const LineSchema = z.object({
 });
 
 export const LineNestedCreatePayloadSchema = z.object({
-  _op: z.literal('create').optional(),
+  OP: z.literal('create').optional(),
   description: z.string().nullable().optional(),
   id: z.string().optional(),
   price: z.number().nullable().optional(),
@@ -45,12 +45,12 @@ export const LineNestedCreatePayloadSchema = z.object({
 });
 
 export const LineNestedDeletePayloadSchema = z.object({
-  _op: z.literal('delete').optional(),
+  OP: z.literal('delete').optional(),
   id: z.string()
 });
 
 export const LineNestedUpdatePayloadSchema = z.object({
-  _op: z.literal('update').optional(),
+  OP: z.literal('update').optional(),
   description: z.string().nullable().optional(),
   id: z.string().optional(),
   price: z.number().nullable().optional(),
@@ -100,16 +100,16 @@ export const InvoiceSchema = z.object({
   updatedAt: z.iso.datetime()
 });
 
-export const LineNestedPayloadSchema = z.discriminatedUnion('_op', [
+export const LineNestedPayloadSchema = z.discriminatedUnion('OP', [
   LineNestedCreatePayloadSchema,
   LineNestedUpdatePayloadSchema,
   LineNestedDeletePayloadSchema
 ]);
 
 export const InvoiceFilterSchema: z.ZodType<InvoiceFilter> = z.lazy(() => z.object({
-  _and: z.array(InvoiceFilterSchema).optional(),
-  _not: InvoiceFilterSchema.optional(),
-  _or: z.array(InvoiceFilterSchema).optional(),
+  AND: z.array(InvoiceFilterSchema).optional(),
+  NOT: InvoiceFilterSchema.optional(),
+  OR: z.array(InvoiceFilterSchema).optional(),
   number: z.union([z.string(), StringFilterSchema]).optional(),
   status: z.union([z.string(), NullableStringFilterSchema]).optional()
 }));
@@ -260,9 +260,9 @@ export interface InvoiceCreateSuccessResponseBody {
 }
 
 export interface InvoiceFilter {
-  _and?: InvoiceFilter[];
-  _not?: InvoiceFilter;
-  _or?: InvoiceFilter[];
+  AND?: InvoiceFilter[];
+  NOT?: InvoiceFilter;
+  OR?: InvoiceFilter[];
   number?: StringFilter | string;
   status?: NullableStringFilter | string;
 }
@@ -379,7 +379,7 @@ export interface Line {
 }
 
 export interface LineNestedCreatePayload {
-  _op?: 'create';
+  OP?: 'create';
   description?: null | string;
   id?: string;
   price?: null | number;
@@ -387,14 +387,14 @@ export interface LineNestedCreatePayload {
 }
 
 export interface LineNestedDeletePayload {
-  _op?: 'delete';
+  OP?: 'delete';
   id: string;
 }
 
 export type LineNestedPayload = LineNestedCreatePayload | LineNestedUpdatePayload | LineNestedDeletePayload;
 
 export interface LineNestedUpdatePayload {
-  _op?: 'update';
+  OP?: 'update';
   description?: null | string;
   id?: string;
   price?: null | number;

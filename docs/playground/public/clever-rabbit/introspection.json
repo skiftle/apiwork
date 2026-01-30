@@ -634,7 +634,7 @@
       "example": null,
       "extends": [],
       "shape": {
-        "_op": {
+        "OP": {
           "default": null,
           "deprecated": false,
           "description": null,
@@ -702,7 +702,7 @@
       "example": null,
       "extends": [],
       "shape": {
-        "_op": {
+        "OP": {
           "default": null,
           "deprecated": false,
           "description": null,
@@ -731,7 +731,7 @@
     "line_item_nested_payload": {
       "deprecated": false,
       "description": null,
-      "discriminator": "_op",
+      "discriminator": "OP",
       "example": null,
       "extends": [],
       "shape": {},
@@ -776,7 +776,7 @@
       "example": null,
       "extends": [],
       "shape": {
-        "_op": {
+        "OP": {
           "default": null,
           "deprecated": false,
           "description": null,
@@ -1248,7 +1248,7 @@
       "example": null,
       "extends": [],
       "shape": {
-        "_and": {
+        "AND": {
           "default": null,
           "deprecated": false,
           "description": null,
@@ -1270,7 +1270,7 @@
           },
           "shape": {}
         },
-        "_not": {
+        "NOT": {
           "default": null,
           "deprecated": false,
           "description": null,
@@ -1280,7 +1280,7 @@
           "type": "ref",
           "ref": "order_filter"
         },
-        "_or": {
+        "OR": {
           "default": null,
           "deprecated": false,
           "description": null,
@@ -1716,7 +1716,7 @@
       "example": null,
       "extends": [],
       "shape": {
-        "_op": {
+        "OP": {
           "default": null,
           "deprecated": false,
           "description": null,
@@ -1797,7 +1797,7 @@
       "example": null,
       "extends": [],
       "shape": {
-        "_op": {
+        "OP": {
           "default": null,
           "deprecated": false,
           "description": null,
@@ -1826,7 +1826,7 @@
     "shipping_address_nested_payload": {
       "deprecated": false,
       "description": null,
-      "discriminator": "_op",
+      "discriminator": "OP",
       "example": null,
       "extends": [],
       "shape": {},
@@ -1871,7 +1871,7 @@
       "example": null,
       "extends": [],
       "shape": {
-        "_op": {
+        "OP": {
           "default": null,
           "deprecated": false,
           "description": null,

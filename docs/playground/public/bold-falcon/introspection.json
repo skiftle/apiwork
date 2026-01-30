@@ -666,7 +666,7 @@
       "example": null,
       "extends": [],
       "shape": {
-        "_and": {
+        "AND": {
           "default": null,
           "deprecated": false,
           "description": null,
@@ -688,7 +688,7 @@
           },
           "shape": {}
         },
-        "_not": {
+        "NOT": {
           "default": null,
           "deprecated": false,
           "description": null,
@@ -698,7 +698,7 @@
           "type": "ref",
           "ref": "article_filter"
         },
-        "_or": {
+        "OR": {
           "default": null,
           "deprecated": false,
           "description": null,
@@ -1286,7 +1286,7 @@
       "example": null,
       "extends": [],
       "shape": {
-        "_and": {
+        "AND": {
           "default": null,
           "deprecated": false,
           "description": null,
@@ -1308,7 +1308,7 @@
           },
           "shape": {}
         },
-        "_not": {
+        "NOT": {
           "default": null,
           "deprecated": false,
           "description": null,
@@ -1318,7 +1318,7 @@
           "type": "ref",
           "ref": "category_filter"
         },
-        "_or": {
+        "OR": {
           "default": null,
           "deprecated": false,
           "description": null,
