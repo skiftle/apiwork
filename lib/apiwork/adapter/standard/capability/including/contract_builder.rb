@@ -25,18 +25,18 @@ module Apiwork
 
             private
 
-            def build_include_type(target_representation, depth:, visited:)
-              return nil unless target_representation.associations.any?
-              return nil unless includable_params?(target_representation, depth:, visited:)
+            def build_include_type(representation_class, depth:, visited:)
+              return nil unless representation_class.associations.any?
+              return nil unless includable_params?(representation_class, depth:, visited:)
 
-              type_name = type_name_for(target_representation, depth)
+              type_name = type_name_for(representation_class, depth)
               return type_name if type?(type_name)
               return type_name if depth >= MAX_RECURSION_DEPTH
 
-              visited = visited.dup.add(target_representation)
+              visited = visited.dup.add(representation_class)
 
               association_params = compute_association_params(
-                target_representation,
+                representation_class,
                 depth:,
                 visited:,
               )
@@ -67,13 +67,13 @@ module Apiwork
               type_name
             end
 
-            def compute_association_params(target_representation, depth:, visited:)
-              target_representation.associations.filter_map do |name, association|
-                compute_single_association_param(name, association, target_representation, depth:, visited:)
+            def compute_association_params(representation_class, depth:, visited:)
+              representation_class.associations.filter_map do |name, association|
+                compute_single_association_param(name, association, representation_class, depth:, visited:)
               end
             end
 
-            def compute_single_association_param(name, association, target_representation, depth:, visited:)
+            def compute_single_association_param(name, association, representation_class, depth:, visited:)
               if association.polymorphic?
                 return {
                   name:,
@@ -83,10 +83,10 @@ module Apiwork
                 }
               end
 
-              association_representation = resolve_association_representation(target_representation, association)
-              return nil unless association_representation
+              nested_representation_class = resolve_association_representation(representation_class, association)
+              return nil unless nested_representation_class
 
-              if visited.include?(association_representation)
+              if visited.include?(nested_representation_class)
                 return {
                   name:,
                   include_mode: association.include,
@@ -96,7 +96,7 @@ module Apiwork
               end
 
               association_include_type = resolve_association_include_type(
-                association_representation,
+                nested_representation_class,
                 depth:,
                 visited:,
               )
@@ -125,32 +125,32 @@ module Apiwork
               end
             end
 
-            def resolve_association_include_type(association_representation, depth:, visited:)
-              association_contract = find_contract_for_representation(association_representation)
-              return build_include_type(association_representation, visited:, depth: depth + 1) unless association_contract
+            def resolve_association_include_type(representation_class, depth:, visited:)
+              contract_class = find_contract_for_representation(representation_class)
+              return build_include_type(representation_class, visited:, depth: depth + 1) unless contract_class
 
-              alias_name = association_representation.root_key.singular.to_sym
-              import(association_contract, as: alias_name)
+              alias_name = representation_class.root_key.singular.to_sym
+              import(contract_class, as: alias_name)
               imported_type = :"#{alias_name}_include"
               type?(imported_type) ? imported_type : nil
             end
 
-            def includable_params?(target_representation, depth:, visited:)
+            def includable_params?(representation_class, depth:, visited:)
               return false if depth >= MAX_RECURSION_DEPTH
 
-              new_visited = visited.dup.add(target_representation)
+              new_visited = visited.dup.add(representation_class)
 
-              target_representation.associations.values.any? do |association|
+              representation_class.associations.values.any? do |association|
                 if association.polymorphic?
                   association.include != :always
                 else
-                  association_representation = resolve_association_representation(target_representation, association)
-                  next false unless association_representation
+                  nested_representation_class = resolve_association_representation(representation_class, association)
+                  next false unless nested_representation_class
 
-                  if new_visited.include?(association_representation)
+                  if new_visited.include?(nested_representation_class)
                     association.include != :always
                   elsif association.include == :always
-                    includable_params?(association_representation, depth: depth + 1, visited: new_visited)
+                    includable_params?(nested_representation_class, depth: depth + 1, visited: new_visited)
                   else
                     true
                   end
@@ -158,13 +158,13 @@ module Apiwork
               end
             end
 
-            def type_name_for(representation, depth)
+            def type_name_for(representation_class, depth)
               return :include if depth.zero?
 
-              :"#{representation.root_key.singular}_include"
+              :"#{representation_class.root_key.singular}_include"
             end
 
-            def resolve_association_representation(parent_representation, association)
+            def resolve_association_representation(representation_class, association)
               return nil if association.polymorphic?
               return association.representation_class if association.representation_class
 
@@ -175,7 +175,7 @@ module Apiwork
               return nil unless reflection
               return nil if reflection.polymorphic?
 
-              namespace = parent_representation.name.deconstantize
+              namespace = representation_class.name.deconstantize
               "#{namespace}::#{reflection.klass.name.demodulize}Representation".safe_constantize
             end
           end
