@@ -7,8 +7,7 @@ module Apiwork
         class Writing < Adapter::Capability::Base
           capability_name :writing
 
-          request_transformer OpFieldTransformer, post: true
-
+          request_transformer OpFieldRequestTransformer
           contract_builder ContractBuilder
           computation Computation
         end

@@ -19,9 +19,9 @@ module Apiwork
             @capability_name
           end
 
-          def request_transformer(klass, post: false)
+          def request_transformer(transformer_class)
             @request_transformers ||= []
-            @request_transformers << { klass:, post: }
+            @request_transformers << transformer_class
           end
 
           def request_transformers

@@ -4,9 +4,11 @@ module Apiwork
   module Adapter
     class Standard
       module Capability
-        class Writing
-          class OpFieldTransformer
-            def call(request)
+        class Writing < Adapter::Capability::Base
+          class OpFieldRequestTransformer < Adapter::Transformer::Request::Base
+            phase :after
+
+            def transform
               request.transform { |hash| transform_hash(hash) }
             end
 

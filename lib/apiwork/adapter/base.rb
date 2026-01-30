@@ -46,18 +46,18 @@ module Apiwork
         # @example
         #   capability Pagination
         #   capability Filtering
-        def capability(klass)
+        def capability(capability_class)
           @capabilities ||= []
-          @capabilities << klass
+          @capabilities << capability_class
 
-          klass.request_transformers.each do |transformer|
-            transform_request transformer[:klass], post: transformer[:post]
+          capability_class.request_transformers.each do |transformer_class|
+            request_transformer transformer_class
           end
 
-          return unless klass.options.any?
+          return unless capability_class.options.any?
 
-          name = klass.capability_name
-          options[name] = Configuration::Option.new(name, :hash, children: klass.options)
+          name = capability_class.capability_name
+          options[name] = Configuration::Option.new(name, :hash, children: capability_class.options)
         end
 
         # @api public
@@ -150,73 +150,50 @@ module Apiwork
         end
 
         # @api public
-        # Registers request transformers.
+        # Registers a request transformer.
         #
-        # Use `post: false` (default) for pre-validation transforms.
-        # Use `post: true` for post-validation transforms.
+        # Transformer phase (before/after validation) is determined by the
+        # transformer's `phase` class method.
         #
-        # @param transformers [Array<Class>] transformer classes with `.transform(request, api_class:)`
-        # @param post [Boolean] run after validation (default: false)
-        # @return [void]
-        #
-        # @example Pre-validation transform
-        #   transform_request KeyNormalizer
-        #
-        # @example Post-validation transform
-        #   transform_request OpFieldTransformer, post: true
-        def transform_request(*transformers, post: false)
-          @request ||= Hook::Request.new
-          transformers.each do |transformer|
-            @request.add_transform(transformer, post:)
-          end
-        end
-
-        # @api public
-        # Registers response transformers.
-        #
-        # Use `post: false` (default) for pre-serialization transforms.
-        # Use `post: true` for post-serialization transforms.
-        #
-        # @param transformers [Array<Class>] transformer classes with `.transform(response, api_class:)`
-        # @param post [Boolean] run after other transforms (default: false)
+        # @param transformer_class [Class] a Transformer::Request::Base subclass
         # @return [void]
         #
         # @example
-        #   transform_response KeyTransformer
-        def transform_response(*transformers, post: false)
-          @response ||= Hook::Response.new
-          transformers.each do |transformer|
-            @response.add_transform(transformer, post:)
-          end
+        #   request_transformer Transformer::Request::KeyNormalizer
+        def request_transformer(transformer_class)
+          @request_transformers ||= []
+          @request_transformers << transformer_class
         end
 
-        def request
-          @request ||= Hook::Request.new
+        # @api public
+        # Registers a response transformer.
+        #
+        # Transformer phase (before/after serialization) is determined by the
+        # transformer's `phase` class method.
+        #
+        # @param transformer_class [Class] a Transformer::Response::Base subclass
+        # @return [void]
+        #
+        # @example
+        #   response_transformer Transformer::Response::KeyTransformer
+        def response_transformer(transformer_class)
+          @response_transformers ||= []
+          @response_transformers << transformer_class
         end
 
-        def response
-          @response ||= Hook::Response.new
+        def request_transformers
+          inherited = superclass.respond_to?(:request_transformers) ? superclass.request_transformers : []
+          inherited + (@request_transformers || [])
         end
 
-        def inherited(subclass)
-          super
-
-          parent_request = @request || Hook::Request.new
-          parent_response = @response || Hook::Response.new
-
-          subclass_request = Hook::Request.new
-          subclass_request.inherit_from(parent_request)
-
-          subclass_response = Hook::Response.new
-          subclass_response.inherit_from(parent_response)
-
-          subclass.instance_variable_set(:@request, subclass_request)
-          subclass.instance_variable_set(:@response, subclass_response)
+        def response_transformers
+          inherited = superclass.respond_to?(:response_transformers) ? superclass.response_transformers : []
+          inherited + (@response_transformers || [])
         end
       end
 
-      transform_request KeyNormalizer
-      transform_response KeyTransformer
+      request_transformer Transformer::Request::KeyNormalizer
+      response_transformer Transformer::Response::KeyTransformer
 
       def process_collection(collection, representation_class, request, context: {}, meta: {})
         collection, metadata, serialize_options = apply_capabilities(collection, representation_class, request, wrapper_type: :collection)
@@ -266,15 +243,15 @@ module Apiwork
       end
 
       def normalize_request(request, api_class:)
-        self.class.request.run_before_transforms(request, api_class:)
+        run_request_transformers(request, api_class:, phase: :before)
       end
 
       def prepare_request(request, api_class:)
-        self.class.request.run_after_transforms(request, api_class:)
+        run_request_transformers(request, api_class:, phase: :after)
       end
 
       def transform_response_output(response, api_class:)
-        self.class.response.run_transforms(response, api_class:)
+        run_response_transformers(response, api_class:)
       end
 
       def build_features(structure)
@@ -396,6 +373,23 @@ module Apiwork
         api_class.object(:error_response_body) do |object|
           shape_class.build(object, nil, [], nil, :error, data_type:)
         end
+      end
+
+      def run_request_transformers(request, api_class:, phase:)
+        transformers = self.class.request_transformers.select { |transformer_class| transformer_class.phase == phase }
+        result = request
+        transformers.each { |transformer_class| result = transformer_class.transform(result, api_class:) }
+        result
+      end
+
+      def run_response_transformers(response, api_class:)
+        before = self.class.response_transformers.select { |transformer_class| transformer_class.phase == :before }
+        after = self.class.response_transformers.select { |transformer_class| transformer_class.phase == :after }
+
+        result = response
+        before.each { |transformer_class| result = transformer_class.transform(result, api_class:) }
+        after.each { |transformer_class| result = transformer_class.transform(result, api_class:) }
+        result
       end
     end
   end

@@ -5,8 +5,6 @@ module Apiwork
     class Standard < Base
       adapter_name :standard
 
-      transform_request RequestTransformer
-
       resource_serializer Serializer::Resource::Default
       error_serializer Serializer::Error::Default
 

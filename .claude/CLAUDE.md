@@ -238,7 +238,7 @@ Top-level modules that group related functionality:
 | `Serializer::` | Serialization infrastructure |
 | `Wrapper::` | Response wrapper handling |
 | `Builder::` | Shared builder base classes |
-| `Hook::` | Hook infrastructure |
+| `Transformer::` | Request/response transformation |
 
 ```ruby
 # Infrastructure — nested modules
