@@ -11,6 +11,7 @@ next: false
 Describes a resource action.
 
 Passed in the `actions` hash to [Adapter::Base#register_contract](adapter-base#register-contract).
+Available at runtime via [Adapter::RenderState#action](adapter-render-state#action).
 
 **Example**
 
