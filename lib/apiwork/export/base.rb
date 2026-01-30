@@ -273,21 +273,16 @@ module Apiwork
       # @param key [String, Symbol] the key to transform
       # @return [String]
       def transform_key(key)
-        key = key.to_s
+        key_string = key.to_s
 
-        transform = lambda do |key_string|
-          case key_format
-          when :camel then key_string.camelize(:lower)
-          when :kebab then key_string.dasherize
-          when :underscore then key_string.underscore
-          else key_string
-          end
+        return key_string if key_string.match?(/\A[A-Z]+\z/)
+
+        case key_format
+        when :camel then key_string.camelize(:lower)
+        when :kebab then key_string.dasherize
+        when :underscore then key_string.underscore
+        else key_string
         end
-
-        return transform.call(key) unless key.start_with?('_')
-
-        prefix = key[/^_+/]
-        "#{prefix}#{transform.call(key.delete_prefix(prefix))}"
       end
     end
   end
