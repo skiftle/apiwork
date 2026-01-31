@@ -3,7 +3,7 @@
 module Apiwork
   module Adapter
     module Wrapper
-      module Record
+      module Member
         class Default < Base
           shape do |shape|
             shape.reference(shape.root_key.singular.to_sym, to: shape.data_type)

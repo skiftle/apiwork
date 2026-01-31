@@ -8,7 +8,7 @@ module Apiwork
       resource_serializer Serializer::Resource::Default
       error_serializer Serializer::Error::Default
 
-      record_wrapper Wrapper::Record::Default
+      member_wrapper Wrapper::Member::Default
       collection_wrapper Wrapper::Collection::Default
       error_wrapper Wrapper::Error::Default
 

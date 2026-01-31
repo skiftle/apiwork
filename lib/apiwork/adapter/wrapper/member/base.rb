@@ -3,9 +3,9 @@
 module Apiwork
   module Adapter
     module Wrapper
-      module Record
+      module Member
         class Base < Wrapper::Base
-          wrapper_type :record
+          wrapper_type :member
 
           attr_reader :capabilities, :meta, :metadata, :root_key
 

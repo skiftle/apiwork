@@ -130,7 +130,7 @@ module Apiwork
                if data.is_a?(Enumerable)
                  adapter.process_collection(data, representation_class, api_request, context:, meta:)
                else
-                 adapter.process_record(data, representation_class, api_request, context:, meta:)
+                 adapter.process_member(data, representation_class, api_request, context:, meta:)
                end
              else
                data[:meta] = meta if meta.present?

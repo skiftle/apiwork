@@ -6,7 +6,7 @@ module Apiwork
       module Capability
         class Writing
           class Operation < Adapter::Capability::Operation::Base
-            scope :record
+            scope :member
 
             def apply
               validate_record!(data, representation_class)

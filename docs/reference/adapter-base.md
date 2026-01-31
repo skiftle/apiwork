@@ -20,7 +20,7 @@ class BillingAdapter < Apiwork::Adapter::Base
   adapter_name :billing
 
   representation BillingRepresentation
-  record_wrapper BillingRecordWrapper
+  member_wrapper BillingMemberWrapper
   collection_wrapper BillingCollectionWrapper
   error_wrapper BillingErrorWrapper
 end
@@ -216,9 +216,9 @@ end
 
 ---
 
-### .record_wrapper
+### .member_wrapper
 
-`.record_wrapper(klass = nil)`
+`.member_wrapper(klass = nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L117)
 
@@ -237,7 +237,7 @@ Sets or gets the record wrapper class.
 **Example**
 
 ```ruby
-record_wrapper CustomRecordWrapper
+member_wrapper CustomMemberWrapper
 ```
 
 ---

@@ -13,7 +13,7 @@ module Apiwork
     #     adapter_name :billing
     #
     #     representation BillingRepresentation
-    #     record_wrapper BillingRecordWrapper
+    #     member_wrapper BillingMemberWrapper
     #     collection_wrapper BillingCollectionWrapper
     #     error_wrapper BillingErrorWrapper
     #   end
@@ -113,10 +113,10 @@ module Apiwork
         # @return [Class]
         #
         # @example
-        #   record_wrapper CustomRecordWrapper
-        def record_wrapper(klass = nil)
-          @record_wrapper = klass if klass
-          @record_wrapper || (superclass.respond_to?(:record_wrapper) && superclass.record_wrapper)
+        #   member_wrapper CustomRecordWrapper
+        def member_wrapper(klass = nil)
+          @member_wrapper = klass if klass
+          @member_wrapper || (superclass.respond_to?(:member_wrapper) && superclass.member_wrapper)
         end
 
         # @api public
@@ -155,13 +155,13 @@ module Apiwork
         self.class.collection_wrapper.new(data, metadata, representation_class.root_key, capabilities, meta).json
       end
 
-      def process_record(record, representation_class, request, context: {}, meta: {})
-        record, metadata, serialize_options = apply_capabilities(record, representation_class, request, wrapper_type: :record)
+      def process_member(record, representation_class, request, context: {}, meta: {})
+        record, metadata, serialize_options = apply_capabilities(record, representation_class, request, wrapper_type: :member)
 
         serializer = resource_serializer_instance(representation_class)
         data = serializer.serialize(record, context:, serialize_options:)
 
-        self.class.record_wrapper.new(data, metadata, representation_class.root_key, capabilities, meta).json
+        self.class.member_wrapper.new(data, metadata, representation_class.root_key, capabilities, meta).json
       end
 
       def process_error(error, representation_class, context: {})
@@ -245,7 +245,7 @@ module Apiwork
         when :index
           build_collection_action_response(contract_class, representation_class, action, contract_action)
         when :show, :create, :update
-          build_record_action_response(contract_class, representation_class, action, contract_action)
+          build_member_action_response(contract_class, representation_class, action, contract_action)
         when :destroy
           contract_action.response { no_content! }
         else
@@ -253,15 +253,15 @@ module Apiwork
         end
       end
 
-      def build_record_action_response(contract_class, representation_class, action, contract_action)
-        result_wrapper = build_result_wrapper(contract_class, representation_class, action.name, :record)
-        record_shape_class = self.class.record_wrapper.shape_class
+      def build_member_action_response(contract_class, representation_class, action, contract_action)
+        result_wrapper = build_result_wrapper(contract_class, representation_class, action.name, :member)
+        member_shape_class = self.class.member_wrapper.shape_class
         data_type = resolve_resource_data_type(representation_class)
 
         contract_action.response do |response|
           response.result_wrapper = result_wrapper
           response.body do |body|
-            record_shape_class.build(body, representation_class.root_key, capabilities, representation_class, :record, data_type:)
+            member_shape_class.build(body, representation_class.root_key, capabilities, representation_class, :member, data_type:)
           end
         end
       end
@@ -285,7 +285,7 @@ module Apiwork
         elsif action.collection?
           build_collection_action_response(contract_class, representation_class, action, contract_action)
         elsif action.member?
-          build_record_action_response(contract_class, representation_class, action, contract_action)
+          build_member_action_response(contract_class, representation_class, action, contract_action)
         end
       end
 
@@ -296,7 +296,7 @@ module Apiwork
           shape_class = if response_type == :collection
                           self.class.collection_wrapper.shape_class
                         else
-                          self.class.record_wrapper.shape_class
+                          self.class.member_wrapper.shape_class
                         end
           data_type = resolve_resource_data_type(representation_class)
 

@@ -30,7 +30,7 @@ module Apiwork
             # @api public
             # Sets the scope for this operation.
             #
-            # @param value [Symbol, nil] :collection or :record
+            # @param value [Symbol, nil] :collection or :member
             # @return [Symbol, nil] the current scope
             def scope(value = nil)
               @scope = value if value
