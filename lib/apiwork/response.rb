@@ -2,10 +2,10 @@
 
 module Apiwork
   # @api public
-  # Represents the response being processed through the adapter pipeline.
+  # Immutable value object representing a response.
   #
-  # Response encapsulates the response body as it flows through
-  # transformation hooks.
+  # Encapsulates body parameters. Transformations return new instances,
+  # preserving immutability.
   #
   # @example Creating a response
   #   response = Response.new(body: { id: 1, title: "Hello" })
@@ -15,21 +15,21 @@ module Apiwork
   #   response.transform { |data| camelize(data) }
   class Response
     # @api public
-    # @return [Hash] the response body
+    # @return [Hash] the body parameters
     attr_reader :body
 
     # @api public
     # Creates a new response context.
     #
-    # @param body [Hash] the response body
+    # @param body [Hash] the body parameters
     def initialize(body:)
       @body = body
     end
 
     # @api public
-    # Transforms the response body.
+    # Transforms the body parameters.
     #
-    # @yield [Hash] the response body
+    # @yield [Hash] the body parameters
     # @return [Response] new context with transformed body
     #
     # @example
@@ -39,9 +39,9 @@ module Apiwork
     end
 
     # @api public
-    # Transforms the response body.
+    # Transforms the body parameters.
     #
-    # @yield [Hash] the response body
+    # @yield [Hash] the body parameters
     # @return [Response] new context with transformed body
     #
     # @example

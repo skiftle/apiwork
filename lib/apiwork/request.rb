@@ -2,11 +2,10 @@
 
 module Apiwork
   # @api public
-  # Represents the request being processed through the adapter pipeline.
+  # Immutable value object representing a request.
   #
-  # Request encapsulates query parameters and request body as they
-  # flow through normalization and preparation hooks. Each transformation
-  # step receives a request and returns a new request.
+  # Encapsulates query and body parameters. Transformations return
+  # new instances, preserving immutability.
   #
   # @example Creating a request
   #   request = Request.new(query: { page: 1 }, body: { title: "Hello" })
@@ -28,7 +27,7 @@ module Apiwork
     # Creates a new request context.
     #
     # @param query [Hash] the query parameters
-    # @param body [Hash] the request body
+    # @param body [Hash] the body parameters
     def initialize(body:, query:)
       @query = query
       @body = body
@@ -61,7 +60,7 @@ module Apiwork
     # @api public
     # Transforms only the body.
     #
-    # @yield [Hash] the request body
+    # @yield [Hash] the body parameters
     # @return [Request] new context with transformed body
     #
     # @example

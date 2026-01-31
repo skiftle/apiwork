@@ -6,13 +6,12 @@ next: false
 
 # Request
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/request.rb#L18)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/request.rb#L17)
 
-Represents the request being processed through the adapter pipeline.
+Immutable value object representing a request.
 
-Request encapsulates query parameters and request body as they
-flow through normalization and preparation hooks. Each transformation
-step receives a request and returns a new request.
+Encapsulates query and body parameters. Transformations return
+new instances, preserving immutability.
 
 **Example: Creating a request**
 
@@ -34,11 +33,11 @@ request.transform { |data| normalize(data) }
 
 `#body`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/request.rb#L25)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/request.rb#L24)
 
 **Returns**
 
-`Hash` — the request body
+`Hash` — the body parameters
 
 ---
 
@@ -46,7 +45,7 @@ request.transform { |data| normalize(data) }
 
 `#initialize(body:, query:)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/request.rb#L32)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/request.rb#L31)
 
 Creates a new request context.
 
@@ -55,7 +54,7 @@ Creates a new request context.
 | Name | Type | Description |
 |------|------|-------------|
 | `query` | `Hash` | the query parameters |
-| `body` | `Hash` | the request body |
+| `body` | `Hash` | the body parameters |
 
 **Returns**
 
@@ -67,7 +66,7 @@ Creates a new request context.
 
 `#query`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/request.rb#L21)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/request.rb#L20)
 
 **Returns**
 
@@ -79,7 +78,7 @@ Creates a new request context.
 
 `#transform`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/request.rb#L45)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/request.rb#L44)
 
 Transforms both query and body with the same block.
 
@@ -99,7 +98,7 @@ request.transform { |data| normalize(data) }
 
 `#transform_body`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/request.rb#L69)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/request.rb#L68)
 
 Transforms only the body.
 
@@ -119,7 +118,7 @@ request.transform_body { |b| prepare(b) }
 
 `#transform_query`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/request.rb#L57)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/request.rb#L56)
 
 Transforms only the query.
 

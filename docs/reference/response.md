@@ -8,10 +8,10 @@ next: false
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/response.rb#L16)
 
-Represents the response being processed through the adapter pipeline.
+Immutable value object representing a response.
 
-Response encapsulates the response body as it flows through
-transformation hooks.
+Encapsulates body parameters. Transformations return new instances,
+preserving immutability.
 
 **Example: Creating a response**
 
@@ -36,7 +36,7 @@ response.transform { |data| camelize(data) }
 
 **Returns**
 
-`Hash` — the response body
+`Hash` — the body parameters
 
 ---
 
@@ -52,7 +52,7 @@ Creates a new response context.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `body` | `Hash` | the response body |
+| `body` | `Hash` | the body parameters |
 
 **Returns**
 
@@ -66,7 +66,7 @@ Creates a new response context.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/response.rb#L37)
 
-Transforms the response body.
+Transforms the body parameters.
 
 **Returns**
 
@@ -86,7 +86,7 @@ response.transform { |data| camelize(data) }
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/response.rb#L49)
 
-Transforms the response body.
+Transforms the body parameters.
 
 **Returns**
 
