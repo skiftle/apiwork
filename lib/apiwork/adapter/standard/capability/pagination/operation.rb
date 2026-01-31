@@ -13,15 +13,9 @@ module Apiwork
             end
 
             def apply
-              data, metadata = paginate
-              result(data:, metadata:)
-            end
-
-            private
-
-            def paginate
               params = request.query.fetch(:page, {})
-              Paginate.apply(data, options, params)
+              data, metadata = Paginate.apply(self.data, options, params)
+              result(data:, metadata:)
             end
           end
         end
