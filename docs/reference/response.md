@@ -1,12 +1,12 @@
 ---
-order: 19
+order: 73
 prev: false
 next: false
 ---
 
-# Adapter::Response
+# Response
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/response.rb#L17)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/response.rb#L16)
 
 Represents the response being processed through the adapter pipeline.
 
@@ -16,7 +16,7 @@ transformation hooks.
 **Example: Creating a response**
 
 ```ruby
-response = Adapter::Response.new(body: { id: 1, title: "Hello" })
+response = Response.new(body: { id: 1, title: "Hello" })
 response.body  # => { id: 1, title: "Hello" }
 ```
 
@@ -32,7 +32,7 @@ response.transform { |data| camelize(data) }
 
 `#body`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/response.rb#L20)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/response.rb#L19)
 
 **Returns**
 
@@ -44,7 +44,7 @@ response.transform { |data| camelize(data) }
 
 `#initialize(body:)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/response.rb#L26)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/response.rb#L25)
 
 Creates a new response context.
 
@@ -56,7 +56,7 @@ Creates a new response context.
 
 **Returns**
 
-[Response](adapter-response) — a new instance of Response
+[Response](response) — a new instance of Response
 
 ---
 
@@ -64,13 +64,13 @@ Creates a new response context.
 
 `#transform`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/response.rb#L38)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/response.rb#L37)
 
 Transforms the response body.
 
 **Returns**
 
-[Response](adapter-response) — new context with transformed body
+[Response](response) — new context with transformed body
 
 **Example**
 
@@ -84,13 +84,13 @@ response.transform { |data| camelize(data) }
 
 `#transform_body`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/response.rb#L50)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/response.rb#L49)
 
 Transforms the response body.
 
 **Returns**
 
-[Response](adapter-response) — new context with transformed body
+[Response](response) — new context with transformed body
 
 **Example**
 

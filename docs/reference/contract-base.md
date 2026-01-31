@@ -1,5 +1,5 @@
 ---
-order: 28
+order: 26
 prev: false
 next: false
 ---
@@ -502,7 +502,7 @@ Array&lt;[Issue](issue)&gt; — validation issues (empty if valid)
 
 **Returns**
 
-[Adapter::Request](adapter-request) — the parsed and validated request
+[Request](request) — the parsed and validated request
 
 ---
 

@@ -58,7 +58,7 @@ module Apiwork
       class_attribute :_synthetic, default: false, instance_accessor: false
 
       # @api public
-      # @return [Adapter::Request] the parsed and validated request
+      # @return [Request] the parsed and validated request
       attr_reader :request
 
       # @api public

@@ -123,7 +123,7 @@ Return nil if no changes are made.
 
 **Returns**
 
-[Request](adapter-request) — the current request
+[Request](request) — the current request
 
 ---
 

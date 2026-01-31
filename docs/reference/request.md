@@ -1,12 +1,12 @@
 ---
-order: 18
+order: 72
 prev: false
 next: false
 ---
 
-# Adapter::Request
+# Request
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/request.rb#L19)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/request.rb#L18)
 
 Represents the request being processed through the adapter pipeline.
 
@@ -17,7 +17,7 @@ step receives a request and returns a new request.
 **Example: Creating a request**
 
 ```ruby
-request = Adapter::Request.new(query: { page: 1 }, body: { title: "Hello" })
+request = Request.new(query: { page: 1 }, body: { title: "Hello" })
 request.query  # => { page: 1 }
 request.body   # => { title: "Hello" }
 ```
@@ -34,7 +34,7 @@ request.transform { |data| normalize(data) }
 
 `#body`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/request.rb#L26)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/request.rb#L25)
 
 **Returns**
 
@@ -46,7 +46,7 @@ request.transform { |data| normalize(data) }
 
 `#initialize(body:, query:)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/request.rb#L33)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/request.rb#L32)
 
 Creates a new request context.
 
@@ -59,7 +59,7 @@ Creates a new request context.
 
 **Returns**
 
-[Request](adapter-request) — a new instance of Request
+[Request](request) — a new instance of Request
 
 ---
 
@@ -67,7 +67,7 @@ Creates a new request context.
 
 `#query`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/request.rb#L22)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/request.rb#L21)
 
 **Returns**
 
@@ -79,13 +79,13 @@ Creates a new request context.
 
 `#transform`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/request.rb#L46)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/request.rb#L45)
 
 Transforms both query and body with the same block.
 
 **Returns**
 
-[Request](adapter-request) — new context with transformed data
+[Request](request) — new context with transformed data
 
 **Example**
 
@@ -99,13 +99,13 @@ request.transform { |data| normalize(data) }
 
 `#transform_body`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/request.rb#L70)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/request.rb#L69)
 
 Transforms only the body.
 
 **Returns**
 
-[Request](adapter-request) — new context with transformed body
+[Request](request) — new context with transformed body
 
 **Example**
 
@@ -119,13 +119,13 @@ request.transform_body { |b| prepare(b) }
 
 `#transform_query`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/request.rb#L58)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/request.rb#L57)
 
 Transforms only the query.
 
 **Returns**
 
-[Request](adapter-request) — new context with transformed query
+[Request](request) — new context with transformed query
 
 **Example**
 

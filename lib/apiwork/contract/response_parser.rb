@@ -16,7 +16,7 @@ module Apiwork
         return ResponseResult.new(response:) unless body_shape&.params&.any?
 
         validated = body_shape.validate(body)
-        validated_response = Adapter::Response.new(body: validated[:params])
+        validated_response = Response.new(body: validated[:params])
 
         ResponseResult.new(issues: validated[:issues], response: validated_response)
       end

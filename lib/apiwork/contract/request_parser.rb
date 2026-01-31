@@ -20,7 +20,7 @@ module Apiwork
 
         ParseResult.new(
           issues: query_issues + body_issues,
-          request: Adapter::Request.new(body: parsed_body, query: parsed_query),
+          request: Request.new(body: parsed_body, query: parsed_query),
         )
       end
 

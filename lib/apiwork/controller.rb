@@ -80,7 +80,7 @@ module Apiwork
     #   end
     def contract
       @contract ||= begin
-        api_request = Adapter::Request.new(
+        api_request = Request.new(
           body: request.request_parameters,
           query: request.query_parameters,
         ).transform(&:deep_symbolize_keys)
@@ -137,7 +137,7 @@ module Apiwork
                data
              end
 
-      response = Adapter::Response.new(body:)
+      response = Response.new(body:)
 
       if Rails.env.development?
         result = contract_class.parse_response(response, action_name)
