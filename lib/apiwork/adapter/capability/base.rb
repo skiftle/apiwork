@@ -28,6 +28,15 @@ module Apiwork
             @request_transformers || []
           end
 
+          def response_transformer(transformer_class)
+            @response_transformers ||= []
+            @response_transformers << transformer_class
+          end
+
+          def response_transformers
+            @response_transformers || []
+          end
+
           def api_builder(klass = nil, &block)
             if klass
               self._api_builder = klass

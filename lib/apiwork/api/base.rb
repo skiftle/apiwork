@@ -556,14 +556,15 @@ module Apiwork
           request
         end
 
-        def transform_response(response)
+        def prepare_response(response)
+          result = adapter.apply_response_transformers(response)
           case key_format
           when :camel
-            response.transform { |hash| hash.deep_transform_keys { |key| key.to_s.camelize(:lower).to_sym } }
+            result.transform { |hash| hash.deep_transform_keys { |key| key.to_s.camelize(:lower).to_sym } }
           when :kebab
-            response.transform { |hash| hash.deep_transform_keys { |key| key.to_s.dasherize.to_sym } }
+            result.transform { |hash| hash.deep_transform_keys { |key| key.to_s.dasherize.to_sym } }
           else
-            response
+            result
           end
         end
 

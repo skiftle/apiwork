@@ -5,22 +5,16 @@ module Apiwork
     module Transformer
       module Response
         class Base
-          attr_reader :api_class, :response
+          attr_reader :response
 
           class << self
-            def phase(value = nil)
-              @phase = value if value
-              @phase || :after
-            end
-
-            def transform(response, api_class:)
-              new(response, api_class:).transform
+            def transform(response)
+              new(response).transform
             end
           end
 
-          def initialize(response, api_class:)
+          def initialize(response)
             @response = response
-            @api_class = api_class
           end
 
           def transform

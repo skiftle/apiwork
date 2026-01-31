@@ -197,6 +197,10 @@ module Apiwork
         run_capability_request_transformers(request, phase:)
       end
 
+      def apply_response_transformers(response)
+        run_capability_response_transformers(response)
+      end
+
       def build_features(structure)
         Features.new(structure)
       end
@@ -325,8 +329,18 @@ module Apiwork
         result
       end
 
+      def run_capability_response_transformers(response)
+        result = response
+        capability_response_transformers.each { |transformer_class| result = transformer_class.transform(result) }
+        result
+      end
+
       def capability_request_transformers
         self.class.capabilities.flat_map(&:request_transformers)
+      end
+
+      def capability_response_transformers
+        self.class.capabilities.flat_map(&:response_transformers)
       end
     end
   end
