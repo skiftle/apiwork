@@ -207,7 +207,7 @@ module Apiwork
 
       def capabilities
         @capabilities ||= self.class.capabilities.map do |klass|
-          klass.new({})
+          klass.new({}, adapter_name: self.class.adapter_name)
         end
       end
 

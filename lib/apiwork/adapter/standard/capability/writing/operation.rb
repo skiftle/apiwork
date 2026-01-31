@@ -19,7 +19,7 @@ module Apiwork
 
               issues = IssueMapper.map(
                 record,
-                locale_key: representation_class.api_class.structure.locale_key,
+                locale_key: translation_context[:locale_key],
                 root_path: [representation_class.root_key.singular.to_sym],
               )
               raise DomainError, issues

@@ -107,11 +107,13 @@ module Apiwork
           end
         end
 
-        attr_reader :config
+        attr_reader :adapter_name,
+                    :config
 
-        def initialize(config = {})
+        def initialize(config = {}, adapter_name: nil)
           merged = self.class.default_options.deep_merge(config)
           @config = Configuration.new(self.class, merged)
+          @adapter_name = adapter_name
         end
 
         def api_types(api_class, features)
@@ -165,6 +167,7 @@ module Apiwork
             representation_class,
             merged_config(representation_class),
             request,
+            translation_context: build_translation_context(representation_class),
           ).apply
         end
 
@@ -178,6 +181,16 @@ module Apiwork
           config.merge(representation_config)
         rescue ConfigurationError
           config
+        end
+
+        def build_translation_context(representation_class)
+          locale_key = representation_class.api_class&.structure&.locale_key
+
+          {
+            locale_key:,
+            adapter_name: adapter_name,
+            capability_name: self.class.capability_name,
+          }
         end
       end
     end

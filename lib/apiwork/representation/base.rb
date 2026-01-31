@@ -567,6 +567,17 @@ module Apiwork
           end
         end
 
+        # @api public
+        # The ActiveRecord model class for this representation.
+        #
+        # Auto-detected from representation name (InvoiceRepresentation becomes Invoice)
+        # or explicitly set via {.model}.
+        #
+        # @return [Class] the model class
+        # @see .model
+        #
+        # @example
+        #   InvoiceRepresentation.model_class  # => Invoice
         def model_class
           ensure_auto_detection_complete
           ensure_sti_auto_configuration_complete

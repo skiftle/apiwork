@@ -19,7 +19,7 @@ Use it to transform data at runtime.
 
 `.metadata(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L54)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L56)
 
 Defines metadata shape for this operation.
 
@@ -44,7 +44,7 @@ end
 
 `.scope(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L35)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L37)
 
 Sets the scope for this operation.
 
@@ -66,7 +66,7 @@ Sets the scope for this operation.
 
 `#apply`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L74)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L77)
 
 Applies this operation to the data.
 
@@ -131,7 +131,7 @@ Return nil if no changes are made.
 
 `#result(data: nil, includes: nil, metadata: nil, serialize_options: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L86)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L89)
 
 Creates a result object.
 
@@ -147,5 +147,39 @@ Creates a result object.
 **Returns**
 
 `Result`
+
+---
+
+### #translate
+
+`#translate(*segments, default: nil)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L114)
+
+Translates a key using the adapter's i18n convention.
+
+Lookup order:
+1. `apiwork.apis.&lt;locale_key&gt;.adapters.&lt;adapter_name&gt;.capabilities.&lt;capability_name&gt;.&lt;segments&gt;`
+2. `apiwork.adapters.&lt;adapter_name&gt;.capabilities.&lt;capability_name&gt;.&lt;segments&gt;`
+3. Provided default
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `segments` | `Array<Symbol, String>` | key path segments |
+| `default` | `String, nil` | fallback value if no translation found |
+
+**Returns**
+
+`String`, `nil` — the translated string or default
+
+**Example**
+
+```ruby
+translate(:domain_issues, :invalid, :detail)
+# Tries: apiwork.apis.billing.adapters.standard.capabilities.writing.domain_issues.invalid.detail
+# Falls back to: apiwork.adapters.standard.capabilities.writing.domain_issues.invalid.detail
+```
 
 ---

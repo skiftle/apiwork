@@ -26,6 +26,8 @@ module Apiwork
           # @return [Class] the representation class for this request
           attr_reader :representation_class
 
+          attr_reader :translation_context
+
           class << self
             # @api public
             # Sets the scope for this operation.
@@ -57,11 +59,12 @@ module Apiwork
             end
           end
 
-          def initialize(data, representation_class, options, request)
+          def initialize(data, representation_class, options, request, translation_context: {})
             @data = data
             @representation_class = representation_class
             @options = options
             @request = request
+            @translation_context = translation_context
           end
 
           # @api public
@@ -90,6 +93,41 @@ module Apiwork
               metadata:,
               serialize_options:,
             )
+          end
+
+          # @api public
+          # Translates a key using the adapter's i18n convention.
+          #
+          # Lookup order:
+          # 1. `apiwork.apis.<locale_key>.adapters.<adapter_name>.capabilities.<capability_name>.<segments>`
+          # 2. `apiwork.adapters.<adapter_name>.capabilities.<capability_name>.<segments>`
+          # 3. Provided default
+          #
+          # @param segments [Array<Symbol, String>] key path segments
+          # @param default [String, nil] fallback value if no translation found
+          # @return [String, nil] the translated string or default
+          #
+          # @example
+          #   translate(:domain_issues, :invalid, :detail)
+          #   # Tries: apiwork.apis.billing.adapters.standard.capabilities.writing.domain_issues.invalid.detail
+          #   # Falls back to: apiwork.adapters.standard.capabilities.writing.domain_issues.invalid.detail
+          def translate(*segments, default: nil)
+            adapter_name = translation_context[:adapter_name]
+            capability_name = translation_context[:capability_name]
+            locale_key = translation_context[:locale_key]
+            key_suffix = segments.join('.')
+
+            if locale_key
+              api_key = :"apiwork.apis.#{locale_key}.adapters.#{adapter_name}.capabilities.#{capability_name}.#{key_suffix}"
+              result = I18n.translate(api_key, default: nil)
+              return result if result
+            end
+
+            adapter_key = :"apiwork.adapters.#{adapter_name}.capabilities.#{capability_name}.#{key_suffix}"
+            result = I18n.translate(adapter_key, default: nil)
+            return result if result
+
+            default
           end
         end
       end

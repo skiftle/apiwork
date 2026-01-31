@@ -462,6 +462,29 @@ end
 
 ---
 
+### .model_class
+
+`.model_class`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L581)
+
+The ActiveRecord model class for this representation.
+
+Auto-detected from representation name (InvoiceRepresentation becomes Invoice)
+or explicitly set via [.model](#model).
+
+**Returns**
+
+`Class` — the model class
+
+**Example**
+
+```ruby
+InvoiceRepresentation.model_class  # => Invoice
+```
+
+---
+
 ### .root
 
 `.root(singular, plural = singular.to_s.pluralize)`

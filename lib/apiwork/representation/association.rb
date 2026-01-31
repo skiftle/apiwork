@@ -46,9 +46,12 @@ module Apiwork
       # @return [Symbol] association type (:has_one, :has_many, :belongs_to)
       attr_reader :type
 
+      # @api public
+      # @return [Class] the owner representation's model class
+      attr_reader :model_class
+
       attr_reader :allow_destroy,
-                  :discriminator,
-                  :model_class
+                  :discriminator
 
       def initialize(
         name,
