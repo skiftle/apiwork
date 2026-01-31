@@ -127,7 +127,8 @@ module Apiwork
       api_request = resource ? contract.request : nil
 
       json = if representation_class
-               if data.is_a?(Enumerable)
+               action = resource.actions[action_name.to_sym]
+               if action.collection?
                  adapter.process_collection(data, representation_class, api_request, context:, meta:)
                else
                  adapter.process_member(data, representation_class, api_request, context:, meta:)
@@ -237,7 +238,11 @@ module Apiwork
     end
 
     def resource
-      @resource ||= api_class.structure.find_resource(resource_name)
+      @resource ||= api_class.structure.find_resource_for_path(resource_path)
+    end
+
+    def resource_path
+      @resource_path ||= request.path.delete_prefix(api_class.path).split('/').reject(&:blank?)
     end
 
     def raise_api_not_found_error
@@ -250,7 +255,7 @@ module Apiwork
     end
 
     def raise_contract_not_found_error
-      resource_base = resource_name.to_s.singularize
+      resource_base = resource.name.to_s.singularize
       namespaces = api_class.structure.namespaces
 
       contract_name = [*namespaces.map { |namespace| namespace.to_s.camelize }, "#{resource_base.camelize}Contract"].join('::')
@@ -272,17 +277,6 @@ module Apiwork
       end
 
       nil
-    end
-
-    def resource_name
-      @resource_name ||= begin
-        base_name = self.class.name.underscore.delete_suffix('_controller').split('/').last
-
-        plural = base_name.to_sym
-        singular = base_name.singularize.to_sym
-
-        api_class.structure.find_resource(plural) ? plural : singular
-      end
     end
 
     def path_parts
