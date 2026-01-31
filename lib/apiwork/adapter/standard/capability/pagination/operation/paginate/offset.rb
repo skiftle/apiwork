@@ -21,32 +21,28 @@ module Apiwork
                 end
 
                 def apply
-                  page_number = @params.fetch(:number, 1).to_i
-                  limit = resolve_limit
+                  number = @params.fetch(:number, 1).to_i
+                  size = [@params.fetch(:size, @config.default_size).to_i, 1].max
 
                   [
-                    @relation.limit(limit).offset((page_number - 1) * limit),
-                    build_metadata(page_number, limit),
+                    @relation.limit(size).offset((number - 1) * size),
+                    build_metadata(number, size),
                   ]
                 end
 
                 private
 
-                def resolve_limit
-                  [@params.fetch(:size, @config.default_size).to_i, 1].max
-                end
-
-                def build_metadata(page_number, limit)
+                def build_metadata(number, size)
                   items = count_items
-                  total = (items.to_f / limit).ceil
+                  total = (items.to_f / size).ceil
 
                   {
                     pagination: {
                       items:,
                       total:,
-                      current: page_number,
-                      next: (page_number < total ? page_number + 1 : nil),
-                      prev: (page_number > 1 ? page_number - 1 : nil),
+                      current: number,
+                      next: (number < total ? number + 1 : nil),
+                      prev: (number > 1 ? number - 1 : nil),
                     },
                   }
                 end

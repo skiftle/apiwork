@@ -21,43 +21,38 @@ module Apiwork
                 end
 
                 def apply
-                  page_size = resolve_page_size
-                  records = fetch_records(page_size)
-
-                  has_more = records.size > page_size
-                  records = records.first(page_size)
+                  size = @params.fetch(:size, @config.default_size).to_i
+                  records = fetch_records(size)
+                  has_more = records.length > size
+                  records = records.first(size)
 
                   [records, build_metadata(records, has_more)]
                 end
 
                 private
 
-                def fetch_records(page_size)
+                def fetch_records(size)
                   table = @relation.klass.arel_table
-                  pk_column = table[primary_key]
+                  column = table[primary_key]
 
                   if @params[:after]
                     cursor_value = decode_cursor(@params[:after])[primary_key]
-                    @relation.where(pk_column.gt(cursor_value)).order(pk_column.asc).limit(page_size + 1).to_a
+                    @relation.where(column.gt(cursor_value)).order(column.asc).limit(size + 1).to_a
                   elsif @params[:before]
                     cursor_value = decode_cursor(@params[:before])[primary_key]
-                    @relation.where(pk_column.lt(cursor_value)).order(pk_column.desc).limit(page_size + 1).to_a.reverse
+                    @relation.where(column.lt(cursor_value)).order(column.desc).limit(size + 1).to_a.reverse
                   else
-                    @relation.order(pk_column.asc).limit(page_size + 1).to_a
+                    @relation.order(column.asc).limit(size + 1).to_a
                   end
-                end
-
-                def resolve_page_size
-                  @params.fetch(:size, @config.default_size).to_i
                 end
 
                 def primary_key
                   return @primary_key if defined?(@primary_key)
 
-                  pk = @relation.klass.primary_key
-                  raise NotImplementedError, 'Cursor pagination does not support composite primary keys' if pk.is_a?(Array)
+                  key = @relation.klass.primary_key
+                  raise NotImplementedError, 'Cursor pagination does not support composite primary keys' if key.is_a?(Array)
 
-                  @primary_key = pk.to_sym
+                  @primary_key = key.to_sym
                 end
 
                 def build_metadata(records, has_more)
