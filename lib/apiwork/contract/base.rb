@@ -540,22 +540,18 @@ module Apiwork
         issues.any?
       end
 
-      def api_class
-        self.class.api_class
-      end
-
-      def adapter
-        api_class.adapter
-      end
+      private
 
       def normalize_request(request)
+        api_class = self.class.api_class
         result = api_class.normalize_request(request)
-        adapter.apply_request_transformers(result, phase: :before)
+        api_class.adapter.apply_request_transformers(result, phase: :before)
       end
 
       def prepare_request(request)
+        api_class = self.class.api_class
         result = api_class.prepare_request(request)
-        adapter.apply_request_transformers(result, phase: :after)
+        api_class.adapter.apply_request_transformers(result, phase: :after)
       end
     end
   end
