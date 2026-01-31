@@ -26,8 +26,6 @@ module Apiwork
           # @return [Class] the representation class for this request
           attr_reader :representation_class
 
-          attr_reader :translation_context
-
           class << self
             # @api public
             # Sets the scope for this operation.
@@ -112,9 +110,9 @@ module Apiwork
           #   # Tries: apiwork.apis.billing.adapters.standard.capabilities.writing.domain_issues.invalid.detail
           #   # Falls back to: apiwork.adapters.standard.capabilities.writing.domain_issues.invalid.detail
           def translate(*segments, default: nil)
-            adapter_name = translation_context[:adapter_name]
-            capability_name = translation_context[:capability_name]
-            locale_key = translation_context[:locale_key]
+            adapter_name = @translation_context[:adapter_name]
+            capability_name = @translation_context[:capability_name]
+            locale_key = @translation_context[:locale_key]
             key_suffix = segments.join('.')
 
             if locale_key

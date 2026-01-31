@@ -63,15 +63,15 @@ module Apiwork
               META_CODES = %i[min max length gt gte lt lte eq ne in].freeze
 
               class << self
-                def map(record, locale_key: nil, root_path: [])
-                  new(record, root_path, locale_key).map
+                def map(record, translator, root_path: [])
+                  new(record, root_path, translator).map
                 end
               end
 
-              def initialize(record, root_path, locale_key)
+              def initialize(record, root_path, translator)
                 @record = record
                 @root_path = Array(root_path)
-                @locale_key = locale_key
+                @translator = translator
               end
 
               def map
@@ -110,7 +110,7 @@ module Apiwork
                     next unless item.errors.any?
 
                     nested_path = build_association_path(association.name, index, association_type)
-                    result.concat(self.class.map(item, locale_key: @locale_key, root_path: nested_path))
+                    result.concat(self.class.map(item, @translator, root_path: nested_path))
                   end
                 end
 
@@ -149,14 +149,7 @@ module Apiwork
               end
 
               def detail_for(code)
-                if @locale_key
-                  api_key = :"apiwork.apis.#{@locale_key}.adapters.standard.capabilities.writing.domain_issues.#{code}.detail"
-                  result = I18n.translate(api_key, default: nil)
-                  return result if result
-                end
-
-                adapter_key = :"apiwork.adapters.standard.capabilities.writing.domain_issues.#{code}.detail"
-                result = I18n.translate(adapter_key, default: nil)
+                result = @translator.call(:domain_issues, code, :detail)
                 return result if result
 
                 DETAIL_MAP[code] || code.to_s.humanize
