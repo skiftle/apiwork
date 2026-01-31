@@ -13,9 +13,9 @@ module Apiwork
       error_wrapper Wrapper::Error::Default
 
       capability Capability::Filtering
-      capability Capability::Sorting
-      capability Capability::Pagination
       capability Capability::Including
+      capability Capability::Pagination
+      capability Capability::Sorting
       capability Capability::Writing
     end
   end
