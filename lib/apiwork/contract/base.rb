@@ -518,29 +518,10 @@ module Apiwork
         end
       end
 
-      def api_class
-        self.class.api_class
-      end
-
-      def adapter
-        api_class.adapter
-      end
-
-      def normalize_request(request)
-        result = api_class.normalize_request(request)
-        adapter.apply_request_transformers(result, phase: :before)
-      end
-
-      def prepare_request(request)
-        result = api_class.prepare_request(request)
-        adapter.apply_request_transformers(result, phase: :after)
-      end
-
       def initialize(action_name, request, coerce: false)
         request = normalize_request(request)
         result = RequestParser.new(self.class, action_name, coerce:).parse(request)
         @request = prepare_request(result.request)
-
         @action_name = action_name.to_sym
         @issues = result.issues
       end
@@ -557,6 +538,24 @@ module Apiwork
       # @return [Boolean] true if any validation issues
       def invalid?
         issues.any?
+      end
+
+      def api_class
+        self.class.api_class
+      end
+
+      def adapter
+        api_class.adapter
+      end
+
+      def normalize_request(request)
+        result = api_class.normalize_request(request)
+        adapter.apply_request_transformers(result, phase: :before)
+      end
+
+      def prepare_request(request)
+        result = api_class.prepare_request(request)
+        adapter.apply_request_transformers(result, phase: :after)
       end
     end
   end
