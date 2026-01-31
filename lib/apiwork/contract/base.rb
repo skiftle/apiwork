@@ -70,11 +70,13 @@ module Apiwork
       attr_reader :action_name
 
       # @api public
+      # @see Request#query
       # @return [Hash] parsed and validated query parameters
       delegate :query, to: :request
 
       # @api public
-      # @return [Hash] parsed and validated request body
+      # @see Request#body
+      # @return [Hash] parsed and validated body parameters
       delegate :body, to: :request
 
       class << self
@@ -414,11 +416,6 @@ module Apiwork
           _representation_class.present?
         end
 
-        def reset_build_state!
-          self.actions = {}
-          self.imports = {}
-        end
-
         def scope_prefix
           return _identifier if _identifier
           return representation_class.root_key.singular if representation_class
@@ -428,7 +425,6 @@ module Apiwork
           name
             .demodulize
             .delete_suffix('Contract')
-            .delete_suffix('Representation')
             .underscore
         end
 

@@ -74,7 +74,7 @@ module Apiwork
         return prefix.to_sym if name.to_s.empty?
         return name.to_sym if name.to_s == prefix
 
-        :"#{prefix}_#{name}"
+        [prefix, name].join('_').to_sym
       end
 
       def clear!
