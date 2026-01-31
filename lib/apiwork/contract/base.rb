@@ -112,11 +112,13 @@ module Apiwork
         end
 
         # @api public
-        # Links this contract to a representation class.
+        # Sets the representation class for this contract.
         #
         # The representation defines the attributes and associations that
         # are serialized in responses. Adapters use the representation to
         # auto-generate request/response types.
+        #
+        # To retrieve the representation class, use {#representation_class} instead.
         #
         # @param klass [Class] a {Representation::Base} subclass
         # @return [void]

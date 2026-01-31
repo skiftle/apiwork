@@ -79,13 +79,15 @@ module Apiwork
         attr_writer :type
 
         # @api public
-        # The model class.
+        # Sets the model class for this representation.
         #
         # By default, the model is auto-detected from the representation name
         # (e.g., InvoiceRepresentation becomes Invoice). Use this to override.
         #
-        # @param value [Class] the ActiveRecord model class (optional)
-        # @return [Class, nil]
+        # To retrieve the model class, use {#model_class} instead.
+        #
+        # @param value [Class] the ActiveRecord model class
+        # @return [void]
         # @raise [ArgumentError] if value is not a Class
         #
         # @example Explicit model
@@ -97,18 +99,13 @@ module Apiwork
         #   class InvoiceRepresentation < Apiwork::Representation::Base
         #     model Billing::Invoice
         #   end
-        def model(value = nil)
-          if value
-            unless value.is_a?(Class)
-              raise ArgumentError,
-                    "model must be a Class constant, got #{value.class}. " \
-                                                       "Use: model Post (not 'Post' or :post)"
-            end
-            @model_class = value
-            value
-          else
-            @model_class
+        def model(value)
+          unless value.is_a?(Class)
+            raise ArgumentError,
+                  "model must be a Class constant, got #{value.class}. " \
+                                                     "Use: model Post (not 'Post' or :post)"
           end
+          @model_class = value
         end
 
         # @api public

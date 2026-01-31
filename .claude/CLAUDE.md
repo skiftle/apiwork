@@ -125,6 +125,38 @@ If the answer is "yes, but…" — rewrite.
 | Method names: nouns for getters, verbs for actions                     |                                                          |
 | For single-use conversions, inline it                                  |                                                          |
 
+### DSL Setters for Class References
+
+DSL setters that accept class references skip the `_class` suffix for readability:
+
+```ruby
+# Good — setter skips _class
+class InvoiceRepresentation < Representation::Base
+  model Invoice
+end
+
+class InvoiceContract < Contract::Base
+  representation InvoiceRepresentation
+end
+
+# Bad — setter with _class suffix
+model_class Invoice
+representation_class InvoiceRepresentation
+```
+
+To retrieve the class, always use the `_class` getter:
+
+```ruby
+# Good — getter uses _class
+representation.model_class
+contract.representation_class
+
+# Bad — using setter as getter
+representation.model  # Don't use for reading
+```
+
+**Important:** Class setters must NOT return their value. Other DSL methods may return values, but class setters return `nil` implicitly.
+
 ### Variable Names Match Class Names
 
 Variables should be named after their class:
