@@ -527,11 +527,13 @@ module Apiwork
       end
 
       def normalize_request(request)
-        adapter.normalize_request(request, api_class: api_class)
+        result = api_class.normalize_request(request)
+        adapter.apply_request_transformers(result, phase: :before)
       end
 
       def prepare_request(request)
-        adapter.prepare_request(request, api_class: api_class)
+        result = api_class.prepare_request(request)
+        adapter.apply_request_transformers(result, phase: :after)
       end
 
       def initialize(action_name, request, coerce: false)

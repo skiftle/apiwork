@@ -14,16 +14,8 @@ module Apiwork
     #   request.query  # => { page: 1 }
     #   request.body   # => { title: "Hello" }
     #
-    # @example In adapter hooks
-    #   def normalize_request(request)
-    #     Request.new(
-    #       query: transform(request.query),
-    #       body: transform(request.body)
-    #     )
-    #   end
-    #
-    # @see Base#normalize_request
-    # @see Base#prepare_request
+    # @example Transforming keys
+    #   request.transform { |data| normalize(data) }
     class Request
       # @api public
       # @return [Hash] the query parameters

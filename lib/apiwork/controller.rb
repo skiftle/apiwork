@@ -92,8 +92,8 @@ module Apiwork
     # Exposes data as an API response.
     #
     # When a representation is linked via {Contract::Base.representation}, data is serialized
-    # through the representation. Otherwise, data is rendered as-is. The adapter applies
-    # response transformations (key casing, wrapping, etc.).
+    # through the representation. Otherwise, data is rendered as-is. Key transformation
+    # is applied according to the API's {API::Base.key_format}.
     #
     # @param data [Object, Array] the record(s) to expose
     # @param meta [Hash] metadata to include in response (pagination, etc.)
@@ -142,7 +142,7 @@ module Apiwork
         result.issues.each { |issue| Rails.logger.warn(issue.to_s) }
       end
 
-      response = adapter.transform_response_output(Adapter::Response.new(body:), api_class:)
+      response = api_class.transform_response(Adapter::Response.new(body:))
 
       render json: response.body, status: status || (action_name.to_sym == :create ? :created : :ok)
     end

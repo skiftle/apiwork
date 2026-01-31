@@ -48,16 +48,8 @@ RSpec.describe 'Custom Adapter', type: :integration do
   describe 'Adapter::Base methods' do
     let(:adapter) { Apiwork::Adapter::Standard.new }
 
-    it 'responds to normalize_request' do
-      expect(adapter).to respond_to(:normalize_request)
-    end
-
-    it 'responds to prepare_request' do
-      expect(adapter).to respond_to(:prepare_request)
-    end
-
-    it 'responds to transform_response_output' do
-      expect(adapter).to respond_to(:transform_response_output)
+    it 'responds to apply_request_transformers' do
+      expect(adapter).to respond_to(:apply_request_transformers)
     end
 
     it 'responds to register_api' do

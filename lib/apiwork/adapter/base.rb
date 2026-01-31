@@ -193,17 +193,8 @@ module Apiwork
         build_action_responses(contract_class, representation_class, actions)
       end
 
-      def normalize_request(request, api_class:)
-        result = Transformer::Request::KeyNormalizer.transform(request, api_class:)
-        run_capability_request_transformers(result, api_class:, phase: :before)
-      end
-
-      def prepare_request(request, api_class:)
-        run_capability_request_transformers(request, api_class:, phase: :after)
-      end
-
-      def transform_response_output(response, api_class:)
-        Transformer::Response::KeyTransformer.transform(response, api_class:)
+      def apply_request_transformers(request, phase:)
+        run_capability_request_transformers(request, phase:)
       end
 
       def build_features(structure)
@@ -327,10 +318,10 @@ module Apiwork
         end
       end
 
-      def run_capability_request_transformers(request, api_class:, phase:)
+      def run_capability_request_transformers(request, phase:)
         transformers = capability_request_transformers.select { |transformer_class| transformer_class.phase == phase }
         result = request
-        transformers.each { |transformer_class| result = transformer_class.transform(result, api_class:) }
+        transformers.each { |transformer_class| result = transformer_class.transform(result) }
         result
       end
 

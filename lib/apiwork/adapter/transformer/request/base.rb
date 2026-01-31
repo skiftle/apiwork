@@ -5,7 +5,7 @@ module Apiwork
     module Transformer
       module Request
         class Base
-          attr_reader :api_class, :request
+          attr_reader :request
 
           class << self
             def phase(value = nil)
@@ -13,14 +13,13 @@ module Apiwork
               @phase || :before
             end
 
-            def transform(request, api_class:)
-              new(request, api_class:).transform
+            def transform(request)
+              new(request).transform
             end
           end
 
-          def initialize(request, api_class:)
+          def initialize(request)
             @request = request
-            @api_class = api_class
           end
 
           def transform

@@ -544,6 +544,29 @@ module Apiwork
           end
         end
 
+        def normalize_request(request)
+          return request if %i[camel kebab].exclude?(key_format)
+
+          request.transform do |hash|
+            hash.deep_transform_keys { |key| key.to_s.underscore.to_sym }
+          end
+        end
+
+        def prepare_request(request)
+          request
+        end
+
+        def transform_response(response)
+          case key_format
+          when :camel
+            response.transform { |hash| hash.deep_transform_keys { |key| key.to_s.camelize(:lower).to_sym } }
+          when :kebab
+            response.transform { |hash| hash.deep_transform_keys { |key| key.to_s.dasherize.to_sym } }
+          else
+            response
+          end
+        end
+
         def type?(name, scope: nil)
           type_registry.exists?(name, scope:)
         end

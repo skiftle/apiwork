@@ -8,16 +8,12 @@ module Apiwork
     # Response encapsulates the response body as it flows through
     # transformation hooks.
     #
-    # @example Creating a response context
+    # @example Creating a response
     #   response = Adapter::Response.new(body: { id: 1, title: "Hello" })
     #   response.body  # => { id: 1, title: "Hello" }
     #
-    # @example In adapter hooks
-    #   def transform_response(response)
-    #     Response.new(body: camelize_keys(response.body))
-    #   end
-    #
-    # @see Base#transform_response
+    # @example Transforming keys
+    #   response.transform { |data| camelize(data) }
     class Response
       # @api public
       # @return [Hash] the response body
