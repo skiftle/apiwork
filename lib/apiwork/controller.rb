@@ -124,14 +124,13 @@ module Apiwork
       end
 
       representation_class = contract_class.representation_class
-      api_request = resource ? contract.request : nil
 
-      json = if representation_class
+      body = if representation_class
                action = resource.actions[action_name.to_sym]
                if action.collection?
-                 adapter.process_collection(data, representation_class, api_request, context:, meta:)
+                 adapter.process_collection(data, representation_class, contract.request, context:, meta:)
                else
-                 adapter.process_member(data, representation_class, api_request, context:, meta:)
+                 adapter.process_member(data, representation_class, contract.request, context:, meta:)
                end
              else
                data[:meta] = meta if meta.present?
@@ -139,15 +138,13 @@ module Apiwork
              end
 
       if Rails.env.development?
-        result = contract_class.parse_response(json, action_name)
+        result = contract_class.parse_response(body, action_name)
         result.issues.each { |issue| Rails.logger.warn(issue.to_s) }
       end
 
-      response = Adapter::Response.new(body: json)
-      response = adapter.transform_response_output(response, api_class: api_class)
-      json = response.body
+      response = adapter.transform_response_output(Adapter::Response.new(body:), api_class:)
 
-      render json:, status: status || (action_name.to_sym == :create ? :created : :ok)
+      render json: response.body, status: status || (action_name.to_sym == :create ? :created : :ok)
     end
 
     # @api public
@@ -185,7 +182,7 @@ module Apiwork
         error_code.key,
         detail || error_code.description(locale_key:),
         meta:,
-        path: path || (error_code.attach_path? ? request.path.delete_prefix(api_class.path).split('/').reject(&:blank?) : []),
+        path: path || (error_code.attach_path? ? relative_path.split('/').reject(&:blank?) : []),
       )
 
       render_error HttpError.new([issue], error_code)
@@ -238,11 +235,11 @@ module Apiwork
     end
 
     def resource
-      @resource ||= api_class.structure.find_resource_for_path(resource_path)
+      @resource ||= api_class.structure.find_resource_for_path(relative_path)
     end
 
-    def resource_path
-      @resource_path ||= request.path.delete_prefix(api_class.path).split('/').reject(&:blank?)
+    def relative_path
+      @relative_path ||= request.path.delete_prefix(api_class.path)
     end
 
     def raise_api_not_found_error

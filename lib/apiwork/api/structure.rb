@@ -50,15 +50,15 @@ module Apiwork
         nil
       end
 
-      def find_resource_for_path(path_parts)
+      def find_resource_for_path(path)
         current = nil
-        path_parts.each do |part|
-          next if part.match?(/\A\d+\z/)
+        path.split('/').each do |part|
+          next if part.empty?
 
           name = part.tr('-', '_').to_sym
           target = current ? current.resources : @resources
           found = target[name] || target[name.to_s.singularize.to_sym]
-          break unless found
+          next unless found
 
           current = found
         end
