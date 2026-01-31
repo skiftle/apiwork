@@ -107,11 +107,11 @@ end
 
 **Returns**
 
-[Action::Request](contract-action/request) — request definition
+[Action::Request](introspection-action-request) — request definition
 
 **See also**
 
-- [Action::Request](contract-action/request)
+- [Action::Request](introspection-action-request)
 
 ---
 
@@ -123,11 +123,11 @@ end
 
 **Returns**
 
-[Action::Response](contract-action/response) — response definition
+[Action::Response](introspection-action-response) — response definition
 
 **See also**
 
-- [Action::Response](contract-action/response)
+- [Action::Response](introspection-action-response)
 
 ---
 
