@@ -232,6 +232,35 @@ introspection_contract = Introspection::Contract.new
 contract_action = Contract::Action.new
 ```
 
+### Private Method Prefixes
+
+Private methods use semantic prefixes:
+
+| Prefix | Purpose | Example |
+|--------|---------|---------|
+| `validate_*` | Validation logic | `validate_required`, `validate_type` |
+| `normalize_*` | Input transformation | `normalize_key`, `normalize_writable` |
+| `resolve_*` | Lookup/resolution | `resolve_enum`, `resolve_type` |
+| `build_*` | Object construction | `build_issue`, `build_meta` |
+| `detect_*` | Auto-detection | `detect_type`, `detect_model` |
+
+```ruby
+private
+
+def validate_required(name, value, options)
+  return if options[:optional]
+  # ...
+end
+
+def normalize_key(key)
+  key.to_s.underscore.to_sym
+end
+
+def resolve_type(name)
+  registry.find(name) || raise(KeyError)
+end
+```
+
 ---
 
 ## Structure
@@ -263,6 +292,45 @@ end
 
 - `ActiveSupport::Concern` for DSLs is OK
 - `config/routes.rb` and files before autoloading may use strings
+
+---
+
+## Registry Pattern
+
+All registries implement a consistent API:
+
+| Method | Purpose |
+|--------|---------|
+| `find(key)` | Returns item or nil |
+| `find!(key)` | Returns item or raises KeyError |
+| `exists?(key)` | Returns boolean |
+| `keys` | Returns all registered keys |
+| `values` | Returns all registered items |
+| `register(item)` | Adds item to registry |
+| `delete(key)` | Removes item |
+| `clear!` | Removes all items (destructive) |
+
+```ruby
+# All registries follow this pattern
+class MyRegistry < Apiwork::Registry
+  class << self
+    def normalize_key(key)
+      key.to_sym
+    end
+  end
+end
+```
+
+Public facade delegates to registry:
+
+```ruby
+module Apiwork::MyDomain
+  class << self
+    delegate :find, :find!, :exists?, :keys, :values,
+             to: Registry
+  end
+end
+```
 
 ---
 
@@ -376,6 +444,18 @@ class Filtering < Capability::Base
 end
 ```
 
+### Class Suffix Conventions
+
+| Suffix | Purpose | Example |
+|--------|---------|---------|
+| `*Base` | Abstract parent class | `Adapter::Base`, `Capability::Base` |
+| `*Definition` | Metadata/configuration holder | `TypeDefinition`, `EnumDefinition` |
+| `*Registry` | Lookup and storage | `API::Registry`, `TypeRegistry` |
+| `*Default` | Concrete standard implementation | `Serializer::Resource::Default` |
+| `*Builder` | Construction logic | `APIBuilder`, `ContractBuilder` |
+| `*Wrapper` | Response wrapping | `Wrapper::Member::Default` |
+| `*Serializer` | Serialization logic | `Resource::Serializer` |
+
 ---
 
 ## Instance Variables vs Accessors
@@ -408,6 +488,40 @@ object.send(:instance_variable_get, :@name)
 | **Private** | `private` | Same class only | `def validate!` |
 
 Semi-public methods are public Ruby methods without `@api public`. They exist for internal Apiwork use but are not part of the user-facing API. No YARD documentation.
+
+### When to Use Each Level
+
+**Public (`@api public`)** — The user-facing API. Use for:
+- Methods users call directly
+- Configuration DSL methods (`model`, `attribute`, `action`)
+- Query methods users need (`find`, `exists?`)
+- Factory methods (`define`, `create`)
+
+**Semi-public** (no YARD) — Internal Apiwork API. Use for:
+- Methods called across modules within Apiwork
+- Accessors needed by other Apiwork classes (`attribute_definitions`, `actions`)
+- Helper methods used by adapters, serializers, exporters
+- Methods tests may call for setup/verification
+
+**Private** — Same class only. Use for:
+- Implementation details (`validate_required`, `normalize_key`)
+- Helper methods used only within the class
+- Internal state management
+
+### Decision Flowchart
+
+1. Will external users call this? then **Public** (with `@api public` and YARD)
+2. Will other Apiwork modules call this? then **Semi-public** (no YARD)
+3. Only used in this class? then **Private**
+
+### Common Mistakes
+
+| Mistake | Problem | Fix |
+|---------|---------|-----|
+| Making everything public | Bloated API, hard to change | Only expose what users need |
+| Making helpers semi-public | Unnecessary coupling | Keep implementation private |
+| Using private for cross-module | Forces `send` or duplication | Make semi-public |
+| Adding YARD to semi-public | Implies user API | Remove YARD, keep method |
 
 **`protected` is forbidden.** Never use it. Choose `private` or semi-public instead.
 
@@ -621,6 +735,36 @@ No deviations. No reordering.
 
 ---
 
+## Class Method Style
+
+**Always use `class << self` blocks.** Never `def self.method`.
+
+```ruby
+# Good — class << self block
+class Schema
+  class << self
+    def find(key)
+      # ...
+    end
+
+    def register(item)
+      # ...
+    end
+  end
+end
+
+# Bad — def self.method
+class Schema
+  def self.find(key)
+    # ...
+  end
+end
+```
+
+Exception: None. The codebase uses `class << self` exclusively.
+
+---
+
 ## Methods
 
 | Do                                                         | Don't                                                 |
@@ -679,6 +823,33 @@ end
 ```
 
 Forbidden: `.run`, `.execute`, `.perform`, `.process`, `.call`
+
+### Bang Methods
+
+Bang (`!`) suffix indicates one of:
+
+| Type | Meaning | Example |
+|------|---------|---------|
+| Raises on failure | Method raises instead of returning nil/false | `validate!`, `find!` |
+| Destructive | Modifies state irreversibly | `clear!`, `delete!` |
+| State mutation | Sets a flag/state | `abstract!`, `deprecated!` |
+
+```ruby
+# Raises on failure
+def find!(key)
+  find(key) || raise(KeyError, "Key not found: #{key}")
+end
+
+# Destructive
+def clear!
+  @store.clear
+end
+
+# State mutation
+def abstract!
+  self._abstract = true
+end
+```
 
 ### Guard Logic
 
@@ -801,6 +972,55 @@ end
 (@items ||= {})[key] = value
 ```
 
+### Iteration Patterns
+
+| Operation | Method | Example |
+|-----------|--------|---------|
+| Transform | `map` | `items.map { \|item\| item.name }` |
+| Filter | `select` / `reject` | `items.select(&:valid?)` |
+| Accumulate | `each_with_object` | `items.each_with_object({}) { \|i, h\| h[i.id] = i }` |
+| Side effects | `each` | `items.each { \|item\| save(item) }` |
+| Find one | `find` | `items.find { \|item\| item.id == id }` |
+| Flatten + transform | `flat_map` | `groups.flat_map(&:items)` |
+
+**Forbidden:**
+
+| Don't | Use instead |
+|-------|-------------|
+| `inject` / `reduce` | `each_with_object` |
+| `_1`, `_2` (numbered params) | Named block params |
+| Long chains (4+ calls) | Intermediate variables |
+
+### Rails Idioms
+
+**Required idioms:**
+
+| Idiom | Purpose |
+|-------|---------|
+| `delegate :method, to: :target` | Method forwarding |
+| `class_attribute :name` | Inheritable class state |
+| `ActiveSupport::Concern` | DSL mixins |
+| `present?` / `blank?` | Nil/empty checks |
+| `presence` | Return value or nil |
+
+**String transformations:**
+
+| Method | Example |
+|--------|---------|
+| `underscore` | `"MyClass"` becomes `"my_class"` |
+| `demodulize` | `"Foo::Bar"` becomes `"Bar"` |
+| `constantize` / `safe_constantize` | String to class |
+| `pluralize` / `singularize` | Inflection |
+
+**Hash transformations:**
+
+| Method | Purpose |
+|--------|---------|
+| `transform_values` | Transform all values |
+| `transform_keys` | Transform all keys |
+| `deep_transform_keys` | Recursive key transform |
+| `deep_symbolize_keys` | All keys to symbols |
+
 ---
 
 ## Zeitwerk
@@ -816,6 +1036,18 @@ User.find(1)
 ```
 
 Use `require` only for: gems, stdlib, files outside autoload paths.
+
+---
+
+## Frozen String Literal
+
+**Every file must start with:**
+
+```ruby
+# frozen_string_literal: true
+```
+
+No exceptions. This is the only allowed comment at file top (besides shebang if needed).
 
 ---
 
