@@ -9,13 +9,15 @@ module Apiwork
             class Sort
               attr_reader :issues, :representation_class
 
-              def self.apply(relation, representation_class, params)
-                sorter = new(relation, representation_class)
-                result = sorter.sort(params)
-                raise ContractError, sorter.issues if sorter.issues.any?
+              class << self
+                def apply(relation, representation_class, params)
+                  sorter = new(relation, representation_class)
+                  result = sorter.sort(params)
+                  raise ContractError, sorter.issues if sorter.issues.any?
 
-                includes = IncludesResolver.new(representation_class).resolve_params(params)
-                [result, includes]
+                  includes = IncludesResolver.new(representation_class).resolve_params(params)
+                  [result, includes]
+                end
               end
 
               def initialize(relation, representation_class, issues = [])

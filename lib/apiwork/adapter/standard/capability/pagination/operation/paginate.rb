@@ -7,10 +7,12 @@ module Apiwork
         class Pagination
           class Operation < Adapter::Capability::Operation::Base
             module Paginate
-              def self.apply(data, options, params)
-                case options.strategy
-                when :offset then Offset.apply(data, options, params)
-                when :cursor then Cursor.apply(data, options, params)
+              class << self
+                def apply(data, options, params)
+                  case options.strategy
+                  when :offset then Offset.apply(data, options, params)
+                  when :cursor then Cursor.apply(data, options, params)
+                  end
                 end
               end
             end

@@ -62,8 +62,10 @@ module Apiwork
 
               META_CODES = %i[min max length gt gte lt lte eq ne in].freeze
 
-              def self.map(record, locale_key: nil, root_path: [])
-                new(record, root_path, locale_key).map
+              class << self
+                def map(record, locale_key: nil, root_path: [])
+                  new(record, root_path, locale_key).map
+                end
               end
 
               def initialize(record, root_path, locale_key)

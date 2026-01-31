@@ -9,13 +9,15 @@ module Apiwork
             class Filter
               attr_reader :issues, :representation_class
 
-              def self.apply(relation, representation_class, params)
-                filter = new(relation, representation_class)
-                result = filter.filter(params)
-                raise ContractError, filter.issues if filter.issues.any?
+              class << self
+                def apply(relation, representation_class, params)
+                  filter = new(relation, representation_class)
+                  result = filter.filter(params)
+                  raise ContractError, filter.issues if filter.issues.any?
 
-                includes = IncludesResolver.new(representation_class).resolve_params(params)
-                [result, includes]
+                  includes = IncludesResolver.new(representation_class).resolve_params(params)
+                  [result, includes]
+                end
               end
 
               def initialize(relation, representation_class, issues = [])

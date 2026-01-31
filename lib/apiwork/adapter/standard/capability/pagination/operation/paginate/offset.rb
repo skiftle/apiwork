@@ -8,8 +8,10 @@ module Apiwork
           class Operation < Adapter::Capability::Operation::Base
             module Paginate
               class Offset
-                def self.apply(relation, config, params)
-                  new(relation, config, params).apply
+                class << self
+                  def apply(relation, config, params)
+                    new(relation, config, params).apply
+                  end
                 end
 
                 def initialize(relation, config, params)
