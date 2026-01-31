@@ -80,12 +80,6 @@ module Apiwork
       delegate :body, to: :request
 
       class << self
-        attr_writer :api_class
-
-        def synthetic?
-          _synthetic
-        end
-
         # @api public
         # The scope prefix for contract-scoped types.
         #
@@ -383,6 +377,10 @@ module Apiwork
           api_class.introspect_contract(self, expand:, locale:)
         end
 
+        def synthetic?
+          _synthetic
+        end
+
         def inherited(subclass)
           super
           subclass.actions = {}
@@ -445,7 +443,7 @@ module Apiwork
         end
 
         def api_class
-          return @api_class if instance_variable_defined?(:@api_class)
+          return @api_class if @api_class
           return nil unless name
 
           namespace = name.deconstantize

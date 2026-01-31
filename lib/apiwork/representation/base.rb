@@ -560,7 +560,7 @@ module Apiwork
           if _root
             RootKey.new(_root[:singular], _root[:plural])
           else
-            RootKey.new(type || model_class.model_name.element)
+            RootKey.new(model_class.model_name.element)
           end
         end
 
@@ -608,10 +608,6 @@ module Apiwork
 
         def deprecated?
           _deprecated
-        end
-
-        def type
-          @type || model_class.model_name.element
         end
 
         def polymorphic_association_for_type_column(column_name)
