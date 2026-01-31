@@ -11,7 +11,8 @@ module Apiwork
         @action_name = action_name.to_sym
       end
 
-      def parse(body)
+      def parse(response)
+        body = response.body
         return ResponseResult.new(body:) unless body_shape&.params&.any?
 
         validated = body_shape.validate(body)

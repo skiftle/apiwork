@@ -137,12 +137,14 @@ module Apiwork
                data
              end
 
+      response = Adapter::Response.new(body:)
+
       if Rails.env.development?
-        result = contract_class.parse_response(body, action_name)
+        result = contract_class.parse_response(response, action_name)
         result.issues.each { |issue| Rails.logger.warn(issue.to_s) }
       end
 
-      response = api_class.prepare_response(Adapter::Response.new(body:))
+      response = api_class.prepare_response(response)
 
       render json: response.body, status: status || (action_name.to_sym == :create ? :created : :ok)
     end

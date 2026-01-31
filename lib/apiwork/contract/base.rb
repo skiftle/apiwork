@@ -456,8 +456,8 @@ module Apiwork
           API.find("/#{namespace.underscore.tr('::', '/')}")
         end
 
-        def parse_response(body, action)
-          ResponseParser.new(self, action).parse(body)
+        def parse_response(response, action)
+          ResponseParser.new(self, action).parse(response)
         end
 
         def type?(name)

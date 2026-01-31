@@ -31,7 +31,7 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
           status: 'active',
         },
       }
-      result = contract_class.parse_response(valid_output, :show)
+      result = contract_class.parse_response(Apiwork::Adapter::Response.new(body: valid_output), :show)
       expect(result.valid?).to be(true), "Expected valid result but got issues: #{result.issues.inspect}"
 
       # Invalid status enum should fail
@@ -43,7 +43,7 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
           status: 'deleted',
         },
       }
-      result = contract_class.parse_response(invalid_status, :show)
+      result = contract_class.parse_response(Apiwork::Adapter::Response.new(body: invalid_status), :show)
       expect(result.invalid?).to be(true)
       expect(result.issues.first.code).to eq(:value_invalid)
       expect(result.issues.first.detail).to eq('Invalid value')
@@ -58,7 +58,7 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
           status: 'active',
         },
       }
-      result = contract_class.parse_response(invalid_fdow, :show)
+      result = contract_class.parse_response(Apiwork::Adapter::Response.new(body: invalid_fdow), :show)
       expect(result.invalid?).to be(true)
       expect(result.issues.first.code).to eq(:value_invalid)
       expect(result.issues.first.detail).to eq('Invalid value')
@@ -88,7 +88,7 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
           name: 42, # Should be string
         },
       }
-      result = contract_class.parse_response(invalid_output, :show)
+      result = contract_class.parse_response(Apiwork::Adapter::Response.new(body: invalid_output), :show)
       expect(result.invalid?).to be(true)
       expect(result.issues.first.code).to eq(:type_invalid)
       expect(result.issues.first.path).to eq([:account, :name])
@@ -125,7 +125,7 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
           id: 1,
         },
       }
-      result = contract_class.parse_response(invalid_output, :show)
+      result = contract_class.parse_response(Apiwork::Adapter::Response.new(body: invalid_output), :show)
       expect(result.invalid?).to be(true)
       expect(result.issues.first.code).to eq(:value_invalid)
       expect(result.issues.first.path).to eq([:account, :address, :country_code])
