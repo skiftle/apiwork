@@ -11,7 +11,7 @@ next: false
 Base class for adapters.
 
 Subclass to create custom adapters with different response formats.
-Configure with [Representation::Base](representation-base) for serialization and document classes for response wrapping.
+Configure with [representation](representation) for serialization and document classes for response wrapping.
 
 **Example: Custom adapter**
 
@@ -164,6 +164,32 @@ error_wrapper CustomErrorWrapper
 
 ---
 
+### .member_wrapper
+
+`.member_wrapper(klass = nil)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L117)
+
+Sets or gets the record wrapper class.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `klass` | `Class` | a Wrapper::Base subclass (optional) |
+
+**Returns**
+
+`Class`
+
+**Example**
+
+```ruby
+member_wrapper CustomRecordWrapper
+```
+
+---
+
 ### .option
 
 `.option(name, type:, default: nil, enum: nil, &block)`
@@ -212,32 +238,6 @@ option :pagination, type: :hash do
   option :default_size, type: :integer, default: 20
   option :max_size, type: :integer, default: 100
 end
-```
-
----
-
-### .member_wrapper
-
-`.member_wrapper(klass = nil)`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L117)
-
-Sets or gets the record wrapper class.
-
-**Parameters**
-
-| Name | Type | Description |
-|------|------|-------------|
-| `klass` | `Class` | a Wrapper::Base subclass (optional) |
-
-**Returns**
-
-`Class`
-
-**Example**
-
-```ruby
-member_wrapper CustomMemberWrapper
 ```
 
 ---

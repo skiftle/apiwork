@@ -1,5 +1,5 @@
 ---
-order: 24
+order: 25
 prev: false
 next: false
 ---
@@ -10,7 +10,7 @@ next: false
 
 Defines request/response structure for an action.
 
-Returns [Request](adapter-request) via `request` and [Response](adapter-response) via `response`.
+Returns [Action::Request](contract-action/request) via `request` and [Action::Response](contract-action/response) via `response`.
 
 ## Instance Methods
 
@@ -156,11 +156,11 @@ Use the block to define query parameters and request body.
 
 **Returns**
 
-[Request](adapter-request) — the request definition
+[Action::Request](contract-action/request) — the request definition
 
 **See also**
 
-- [Contract::Request](contract-request)
+- [Action::Request](contract-action/request)
 
 **Example: instance_eval style**
 
@@ -212,11 +212,11 @@ Use the block to define response body or declare no_content.
 
 **Returns**
 
-[Response](adapter-response) — the response definition
+[Action::Response](contract-action/response) — the response definition
 
 **See also**
 
-- [Contract::Response](contract-response)
+- [Action::Response](contract-action/response)
 
 **Example: instance_eval style**
 

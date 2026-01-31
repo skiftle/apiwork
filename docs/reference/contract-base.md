@@ -1,5 +1,5 @@
 ---
-order: 25
+order: 28
 prev: false
 next: false
 ---
@@ -460,7 +460,7 @@ end
 
 `#invalid?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L556)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L558)
 
 Returns whether the contract has validation issues.
 
@@ -510,7 +510,7 @@ Array&lt;[Issue](issue)&gt; — validation issues (empty if valid)
 
 `#valid?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L549)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L551)
 
 Returns whether the contract passed validation.
 

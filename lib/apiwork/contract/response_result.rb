@@ -3,10 +3,10 @@
 module Apiwork
   module Contract
     class ResponseResult
-      attr_reader :response,
-                  :issues
+      attr_reader :issues,
+                  :response
 
-      def initialize(response:, issues: [])
+      def initialize(issues: [], response:)
         @response = response
         @issues = issues
       end

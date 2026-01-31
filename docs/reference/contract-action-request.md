@@ -1,12 +1,12 @@
 ---
-order: 28
+order: 26
 prev: false
 next: false
 ---
 
-# Contract::Request
+# Contract::Action::Request
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request.rb#L9)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action/request.rb#L10)
 
 Defines query params and body for a request.
 
@@ -18,7 +18,7 @@ Returns [Contract::Object](contract-object) via `query` and `body`.
 
 `#body(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request.rb#L70)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action/request.rb#L71)
 
 Defines the request body for this request.
 
@@ -56,7 +56,7 @@ end
 
 `#query(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request.rb#L41)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action/request.rb#L42)
 
 Defines query parameters for this request.
 

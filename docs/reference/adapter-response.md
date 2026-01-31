@@ -1,31 +1,29 @@
 ---
-order: 18
+order: 19
 prev: false
 next: false
 ---
 
 # Adapter::Response
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/response.rb#L21)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/response.rb#L17)
 
 Represents the response being processed through the adapter pipeline.
 
 Response encapsulates the response body as it flows through
 transformation hooks.
 
-**Example: Creating a response context**
+**Example: Creating a response**
 
 ```ruby
 response = Adapter::Response.new(body: { id: 1, title: "Hello" })
 response.body  # => { id: 1, title: "Hello" }
 ```
 
-**Example: In adapter hooks**
+**Example: Transforming keys**
 
 ```ruby
-def transform_response(response)
-  Response.new(body: camelize_keys(response.body))
-end
+response.transform { |data| camelize(data) }
 ```
 
 ## Instance Methods
@@ -34,7 +32,7 @@ end
 
 `#body`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/response.rb#L24)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/response.rb#L20)
 
 **Returns**
 
@@ -46,7 +44,7 @@ end
 
 `#initialize(body:)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/response.rb#L30)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/response.rb#L26)
 
 Creates a new response context.
 
@@ -66,7 +64,7 @@ Creates a new response context.
 
 `#transform`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/response.rb#L42)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/response.rb#L38)
 
 Transforms the response body.
 
@@ -86,7 +84,7 @@ response.transform { |data| camelize(data) }
 
 `#transform_body`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/response.rb#L54)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/response.rb#L50)
 
 Transforms the response body.
 

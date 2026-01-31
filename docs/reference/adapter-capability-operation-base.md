@@ -1,5 +1,5 @@
 ---
-order: 15
+order: 16
 prev: false
 next: false
 ---
@@ -52,7 +52,7 @@ Sets the scope for this operation.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `value` | `Symbol, nil` | :collection or :record |
+| `value` | `Symbol, nil` | :collection or :member |
 
 **Returns**
 

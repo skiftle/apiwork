@@ -4,7 +4,7 @@ module Apiwork
   module Contract
     # Defines request/response structure for an action.
     #
-    # Returns {Request} via `request` and {Response} via `response`.
+    # Returns {Action::Request} via `request` and {Action::Response} via `response`.
     #
     # @api public
     class Action
@@ -156,9 +156,9 @@ module Apiwork
       #
       # @param replace [Boolean] replace inherited definition (default: false)
       # @yield block for defining query and body (instance_eval style)
-      # @yieldparam builder [Contract::Request] the builder (yield style)
-      # @return [Request] the request definition
-      # @see Contract::Request
+      # @yieldparam builder [Action::Request] the builder (yield style)
+      # @return [Action::Request] the request definition
+      # @see Action::Request
       #
       # @example instance_eval style
       #   action :create do
@@ -202,9 +202,9 @@ module Apiwork
       #
       # @param replace [Boolean] replace inherited definition (default: false)
       # @yield block for defining body or no_content (instance_eval style)
-      # @yieldparam builder [Contract::Response] the builder (yield style)
-      # @return [Response] the response definition
-      # @see Contract::Response
+      # @yieldparam builder [Action::Response] the builder (yield style)
+      # @return [Action::Response] the response definition
+      # @see Action::Response
       #
       # @example instance_eval style
       #   action :show do

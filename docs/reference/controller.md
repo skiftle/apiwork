@@ -1,5 +1,5 @@
 ---
-order: 30
+order: 31
 prev: false
 next: false
 ---
@@ -143,8 +143,8 @@ end
 Exposes data as an API response.
 
 When a representation is linked via [Contract::Base.representation](contract-base#representation), data is serialized
-through the representation. Otherwise, data is rendered as-is. The adapter applies
-response transformations (key casing, wrapping, etc.).
+through the representation. Otherwise, data is rendered as-is. Key transformation
+is applied according to the API's [API::Base.key_format](api-base#key-format).
 
 **Parameters**
 

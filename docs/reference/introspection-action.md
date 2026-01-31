@@ -1,5 +1,5 @@
 ---
-order: 41
+order: 42
 prev: false
 next: false
 ---
@@ -107,11 +107,11 @@ end
 
 **Returns**
 
-[Action::Request](introspection-action-request) — request definition
+[Action::Request](contract-action/request) — request definition
 
 **See also**
 
-- [Action::Request](introspection-action-request)
+- [Action::Request](contract-action/request)
 
 ---
 
@@ -123,11 +123,11 @@ end
 
 **Returns**
 
-[Action::Response](introspection-action-response) — response definition
+[Action::Response](contract-action/response) — response definition
 
 **See also**
 
-- [Action::Response](introspection-action-response)
+- [Action::Response](contract-action/response)
 
 ---
 
