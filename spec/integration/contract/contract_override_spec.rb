@@ -15,7 +15,7 @@ RSpec.describe 'Contract Override Option', type: :request do
         api_class = Apiwork::API.find!('/api/override_test')
         expect(api_class).to be_present
 
-        resource = api_class.structure.resources[:articles]
+        resource = api_class.root_resource.resources[:articles]
         expect(resource).to be_present
         expect(resource.resolve_contract_class).to eq(Api::OverrideTest::PostContract)
       end
@@ -45,7 +45,7 @@ RSpec.describe 'Contract Override Option', type: :request do
         api_class = Apiwork::API.find!('/api/inference_test')
         expect(api_class).to be_present
 
-        resource = api_class.structure.resources[:posts]
+        resource = api_class.root_resource.resources[:posts]
         expect(resource).to be_present
         expect(resource.resolve_contract_class).to eq(Api::InferenceTest::PostContract)
       end

@@ -325,7 +325,7 @@ RSpec.describe Apiwork::Export::TypeScript do
         end
       end
 
-      api_class.structure.resources[:invoices].instance_variable_set(:@contract_class, contract_class)
+      api_class.root_resource.resources[:invoices].instance_variable_set(:@contract_class, contract_class)
 
       output = Apiwork::Export.generate(:typescript, '/api/ts_metadata_test1')
 
@@ -352,7 +352,7 @@ RSpec.describe Apiwork::Export::TypeScript do
         end
       end
 
-      api_class.structure.resources[:invoices].instance_variable_set(:@contract_class, contract_class)
+      api_class.root_resource.resources[:invoices].instance_variable_set(:@contract_class, contract_class)
 
       output = Apiwork::Export.generate(:typescript, '/api/ts_metadata_test2')
 
@@ -383,7 +383,7 @@ RSpec.describe Apiwork::Export::TypeScript do
         end
       end
 
-      api_class.structure.resources[:invoices].instance_variable_set(:@contract_class, contract_class)
+      api_class.root_resource.resources[:invoices].instance_variable_set(:@contract_class, contract_class)
 
       output = Apiwork::Export.generate(:typescript, '/api/ts_metadata_test3')
 
@@ -412,7 +412,7 @@ RSpec.describe Apiwork::Export::TypeScript do
         end
       end
 
-      api_class.structure.resources[:invoices].instance_variable_set(:@contract_class, contract_class)
+      api_class.root_resource.resources[:invoices].instance_variable_set(:@contract_class, contract_class)
 
       output = Apiwork::Export.generate(:typescript, '/api/ts_full_metadata')
 
@@ -439,7 +439,7 @@ RSpec.describe Apiwork::Export::TypeScript do
         end
       end
 
-      api_class.structure.resources[:invoices].instance_variable_set(:@contract_class, contract_class)
+      api_class.root_resource.resources[:invoices].instance_variable_set(:@contract_class, contract_class)
 
       output = Apiwork::Export.generate(:typescript, '/api/ts_enum_meta')
 
@@ -468,7 +468,7 @@ RSpec.describe Apiwork::Export::TypeScript do
         end
       end
 
-      api_class.structure.resources[:invoices].instance_variable_set(:@contract_class, contract_class)
+      api_class.root_resource.resources[:invoices].instance_variable_set(:@contract_class, contract_class)
 
       output = Apiwork::Export.generate(:typescript, '/api/ts_prop_desc')
 
@@ -499,7 +499,7 @@ RSpec.describe Apiwork::Export::TypeScript do
         end
       end
 
-      api_class.structure.resources[:invoices].instance_variable_set(:@contract_class, contract_class)
+      api_class.root_resource.resources[:invoices].instance_variable_set(:@contract_class, contract_class)
 
       output = Apiwork::Export.generate(:typescript, '/api/ts_example')
 
@@ -530,7 +530,7 @@ RSpec.describe Apiwork::Export::TypeScript do
         end
       end
 
-      api_class.structure.resources[:invoices].instance_variable_set(:@contract_class, contract_class)
+      api_class.root_resource.resources[:invoices].instance_variable_set(:@contract_class, contract_class)
 
       output = Apiwork::Export.generate(:typescript, '/api/ts_no_desc')
 

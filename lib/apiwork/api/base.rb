@@ -21,7 +21,7 @@ module Apiwork
         attr_reader :enum_registry,
                     :export_configs,
                     :representation_registry,
-                    :structure,
+                    :root_resource,
                     :type_registry
 
         # @api public
@@ -32,6 +32,14 @@ module Apiwork
         # @example
         #   api_class.path  # => "/api/v1"
         attr_reader :path
+
+        def locale_key
+          @locale_key ||= path&.delete_prefix('/')
+        end
+
+        def namespaces
+          @namespaces ||= extract_namespaces(path)
+        end
 
         # @api public
         # The key format used for request/response transformation.
@@ -388,7 +396,7 @@ module Apiwork
           path: nil,
           &block
         )
-          @structure.resources(
+          @root_resource.resources(
             name,
             concerns:,
             constraints:,
@@ -440,7 +448,7 @@ module Apiwork
           path: nil,
           &block
         )
-          @structure.resource(
+          @root_resource.resource(
             name,
             concerns:,
             constraints:,
@@ -477,7 +485,7 @@ module Apiwork
         #     resources :comments, concerns: [:archivable]
         #   end
         def concern(name, &block)
-          @structure.concern(name, &block)
+          @root_resource.concern(name, &block)
         end
 
         # @api public
@@ -498,16 +506,18 @@ module Apiwork
         #     end
         #   end
         def with_options(options = {}, &block)
-          @structure.with_options(options, &block)
+          @root_resource.with_options(options, &block)
         end
 
         def mount(path)
           @path = path
+          @locale_key = nil
+          @namespaces = nil
           @info = nil
           @raises = []
           @export_configs = {}
           @adapter_config = nil
-          @structure = Structure.new(path)
+          @root_resource = Resource.new(api_class: self)
           @type_registry = TypeRegistry.new
           @enum_registry = EnumRegistry.new
           @representation_registry = RepresentationRegistry.new
@@ -521,7 +531,7 @@ module Apiwork
         end
 
         def translate(*segments, default: nil)
-          key = :"apiwork.apis.#{structure.locale_key}.#{segments.join('.')}"
+          key = :"apiwork.apis.#{locale_key}.#{segments.join('.')}"
           I18n.translate(key, default:)
         end
 
@@ -611,7 +621,7 @@ module Apiwork
 
           built_contracts.add(contract_class)
 
-          resource = @structure.find_resource { |resource| resource.resolve_contract_class == contract_class }
+          resource = @root_resource.find_resource { |resource| resource.resolve_contract_class == contract_class }
           actions = resource ? build_adapter_actions(resource.actions) : {}
 
           adapter.register_contract(contract_class, representation_class, actions)
@@ -627,11 +637,11 @@ module Apiwork
         def ensure_all_contracts_built!
           mark_nested_writable_representations!
 
-          @structure.each_resource do |resource|
+          @root_resource.each_resource do |resource|
             build_contracts_for_resource(resource)
           end
 
-          features = adapter.build_features(@structure)
+          features = adapter.build_features(@root_resource)
           adapter.register_api(self, features)
         end
 
@@ -639,9 +649,15 @@ module Apiwork
 
         attr_reader :built_contracts
 
+        def extract_namespaces(mount_path)
+          return [] if mount_path.nil? || mount_path == '/'
+
+          mount_path.split('/').reject(&:empty?).map { |segment| segment.tr('-', '_').to_sym }
+        end
+
         def mark_nested_writable_representations!
           visited = Set.new
-          @structure.each_resource do |resource|
+          @root_resource.each_resource do |resource|
             representation_class = resource.resolve_contract_class&.representation_class
             next unless representation_class
 

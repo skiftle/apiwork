@@ -178,7 +178,7 @@ module Apiwork
       meta: {}
     )
       error_code = ErrorCode.find!(code_key)
-      locale_key = api_class.structure.locale_key
+      locale_key = api_class.locale_key
 
       issue = Issue.new(
         error_code.key,
@@ -237,7 +237,7 @@ module Apiwork
     end
 
     def resource
-      @resource ||= api_class.structure.find_resource_for_path(relative_path)
+      @resource ||= api_class.root_resource.find_resource_for_path(relative_path)
     end
 
     def relative_path
@@ -255,7 +255,7 @@ module Apiwork
 
     def raise_contract_not_found_error
       resource_base = resource.name.to_s.singularize
-      namespaces = api_class.structure.namespaces
+      namespaces = api_class.namespaces
 
       contract_name = [*namespaces.map { |namespace| namespace.to_s.camelize }, "#{resource_base.camelize}Contract"].join('::')
       contract_path = ['app/contracts', *namespaces, "#{resource_base}_contract.rb"].join('/')

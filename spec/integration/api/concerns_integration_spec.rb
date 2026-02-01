@@ -14,7 +14,7 @@ RSpec.describe 'API Concerns', type: :integration do
       resources :posts, concerns: [:auditable]
     end
 
-    resource = api.structure.find_resource(:posts)
+    resource = api.root_resource.find_resource(:posts)
     expect(resource.member_actions).to have_key(:audit_log)
     expect(resource.member_actions[:audit_log].method).to eq(:get)
   end
@@ -30,7 +30,7 @@ RSpec.describe 'API Concerns', type: :integration do
       resources :posts, concerns: [:searchable]
     end
 
-    resource = api.structure.find_resource(:posts)
+    resource = api.root_resource.find_resource(:posts)
     expect(resource.collection_actions).to have_key(:search)
     expect(resource.collection_actions[:search].method).to eq(:get)
   end
@@ -52,7 +52,7 @@ RSpec.describe 'API Concerns', type: :integration do
       resources :posts, concerns: %i[auditable searchable]
     end
 
-    resource = api.structure.find_resource(:posts)
+    resource = api.root_resource.find_resource(:posts)
     expect(resource.member_actions).to have_key(:audit_log)
     expect(resource.collection_actions).to have_key(:search)
   end

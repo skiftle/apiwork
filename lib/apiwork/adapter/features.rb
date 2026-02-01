@@ -6,13 +6,13 @@ module Apiwork
       attr_reader :filter_types,
                   :nullable_filter_types
 
-      def initialize(structure)
-        @structure = structure
-        representation_classes = structure.representation_classes
+      def initialize(root_resource)
+        @root_resource = root_resource
+        representation_classes = root_resource.representation_classes
         @filter_types, @nullable_filter_types = extract_filterable_type_variants(representation_classes)
         @sortable = check_sortable(representation_classes)
-        @resources = structure.has_resources?
-        @index_actions = structure.has_index_actions?
+        @resources = root_resource.has_resources?
+        @index_actions = root_resource.has_index_actions?
       end
 
       def sortable?
@@ -32,7 +32,7 @@ module Apiwork
       end
 
       def options_for(option, key = nil)
-        @structure.representation_classes
+        @root_resource.representation_classes
           .filter_map { |representation| representation.adapter_config.dig(option, key) }
           .to_set
       end

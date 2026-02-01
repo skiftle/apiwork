@@ -63,7 +63,7 @@ RSpec.describe 'Custom Adapter', type: :integration do
 
   describe 'Adapter features' do
     let(:api_class) { Apiwork::API.find!('/api/v1') }
-    let(:features) { api_class.adapter.build_features(api_class.structure) }
+    let(:features) { api_class.adapter.build_features(api_class.root_resource) }
 
     it 'provides features object for conditional registration' do
       expect(features).to respond_to(:filter_types)

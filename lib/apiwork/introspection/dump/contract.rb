@@ -117,7 +117,7 @@ module Apiwork
 
         def resource
           api_class = @contract_class.api_class
-          api_class.structure.find_resource(resource_name)
+          api_class.root_resource.find_resource(resource_name)
         end
 
         def resource_name

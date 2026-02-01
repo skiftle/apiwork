@@ -1,5 +1,5 @@
 ---
-order: 39
+order: 40
 prev: false
 next: false
 ---
@@ -88,7 +88,7 @@ Hash{Symbol =&gt; [Introspection::Action](introspection-action)} — actions def
 
 **Returns**
 
-Hash{Symbol =&gt; [Resource](introspection-api-resource)} — nested resources
+Hash{Symbol =&gt; [Resource](api-resource)} — nested resources
 
 ---
 

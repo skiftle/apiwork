@@ -1,5 +1,5 @@
 ---
-order: 34
+order: 35
 prev: false
 next: false
 ---
@@ -99,11 +99,11 @@ Hash{Symbol =&gt; [ErrorCode](introspection-error-code)} — error code definiti
 
 **Returns**
 
-Hash{Symbol =&gt; [API::Resource](introspection-api-resource)} — top-level resources
+Hash{Symbol =&gt; [API::Resource](api-resource)} — top-level resources
 
 **See also**
 
-- [API::Resource](introspection-api-resource)
+- [API::Resource](api-resource)
 
 ---
 

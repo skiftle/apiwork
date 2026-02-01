@@ -47,14 +47,14 @@ module Apiwork
           error_code_keys.each_with_object({}) do |code, hash|
             error_code = Apiwork::ErrorCode.find!(code)
             hash[code] = {
-              description: error_code.description(locale_key: @api_class.structure.locale_key),
+              description: error_code.description(locale_key: @api_class.locale_key),
               status: error_code.status,
             }
           end
         end
 
         def build_resources
-          @api_class.structure.resources.transform_values do |resource|
+          @api_class.root_resource.resources.transform_values do |resource|
             Resource.new(resource, @api_class).to_h
           end
         end

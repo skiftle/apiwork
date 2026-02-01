@@ -11,7 +11,7 @@ module Apiwork
 
         set.draw do
           api_classes.each do |api_class|
-            next if api_class.path.blank? || api_class.structure.blank?
+            next if api_class.path.blank? || api_class.root_resource.blank?
 
             if api_class.export_configs.any?
               scope path: api_class.path do
@@ -29,9 +29,9 @@ module Apiwork
               end
             end
 
-            scope module: api_class.structure.namespaces.map(&:to_s).join('/').underscore,
+            scope module: api_class.namespaces.map(&:to_s).join('/').underscore,
                   path: api_class.path do
-              router.draw_resources(self, api_class.structure.resources, api_class)
+              router.draw_resources(self, api_class.root_resource.resources, api_class)
             end
 
             scope path: api_class.path do

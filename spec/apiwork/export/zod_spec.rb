@@ -223,7 +223,7 @@ RSpec.describe Apiwork::Export::Zod do
           end
         end
       end
-      api_class.structure.resources[:invoices].instance_variable_set(:@contract_class, contract_class)
+      api_class.root_resource.resources[:invoices].instance_variable_set(:@contract_class, contract_class)
 
       gen = described_class.new('/api/zod_camel_test', key_format: :camel)
       output = gen.generate
@@ -283,7 +283,7 @@ RSpec.describe Apiwork::Export::Zod do
           end
         end
       end
-      api_class.structure.resources[:payments].instance_variable_set(:@contract_class, contract_class)
+      api_class.root_resource.resources[:payments].instance_variable_set(:@contract_class, contract_class)
 
       @union_output = Apiwork::Export.generate(:zod, '/api/zod_union_test')
     end
@@ -329,7 +329,7 @@ RSpec.describe Apiwork::Export::Zod do
           end
         end
       end
-      api_class.structure.resources[:nodes].instance_variable_set(:@contract_class, contract_class)
+      api_class.root_resource.resources[:nodes].instance_variable_set(:@contract_class, contract_class)
 
       @circular_output = Apiwork::Export.generate(:zod, '/api/zod_circular_test')
     end
@@ -387,7 +387,7 @@ RSpec.describe Apiwork::Export::Zod do
           end
         end
       end
-      api_class.structure.resources[:nodes].instance_variable_set(:@contract_class, contract_class)
+      api_class.root_resource.resources[:nodes].instance_variable_set(:@contract_class, contract_class)
 
       @recursive_filter_output = Apiwork::Export.generate(:zod, '/api/zod_recursive_filter_test')
     end
@@ -436,7 +436,7 @@ RSpec.describe Apiwork::Export::Zod do
           end
         end
       end
-      api_class.structure.resources[:settings].instance_variable_set(:@contract_class, contract_class)
+      api_class.root_resource.resources[:settings].instance_variable_set(:@contract_class, contract_class)
 
       @literal_output = Apiwork::Export.generate(:zod, '/api/zod_literal_test')
     end
@@ -485,7 +485,7 @@ RSpec.describe Apiwork::Export::Zod do
           end
         end
       end
-      api_class.structure.resources[:limits].instance_variable_set(:@contract_class, contract_class)
+      api_class.root_resource.resources[:limits].instance_variable_set(:@contract_class, contract_class)
 
       @constraints_output = Apiwork::Export.generate(:zod, '/api/zod_constraints_test')
     end
@@ -538,7 +538,7 @@ RSpec.describe Apiwork::Export::Zod do
           end
         end
       end
-      api_class.structure.resources[:contacts].instance_variable_set(:@contract_class, contract_class)
+      api_class.root_resource.resources[:contacts].instance_variable_set(:@contract_class, contract_class)
 
       @format_output = Apiwork::Export.generate(:zod, '/api/zod_format_test')
     end
@@ -590,7 +590,7 @@ RSpec.describe Apiwork::Export::Zod do
             end
           end
         end
-        api_class.structure.resources[:items].instance_variable_set(:@contract_class, contract_class)
+        api_class.root_resource.resources[:items].instance_variable_set(:@contract_class, contract_class)
 
         @extends_single_empty_output = Apiwork::Export.generate(:zod, '/api/zod_extends_single_empty')
       end
@@ -642,7 +642,7 @@ RSpec.describe Apiwork::Export::Zod do
             end
           end
         end
-        api_class.structure.resources[:items].instance_variable_set(:@contract_class, contract_class)
+        api_class.root_resource.resources[:items].instance_variable_set(:@contract_class, contract_class)
 
         @extends_multiple_empty_output = Apiwork::Export.generate(:zod, '/api/zod_extends_multiple_empty')
       end
@@ -686,7 +686,7 @@ RSpec.describe Apiwork::Export::Zod do
             end
           end
         end
-        api_class.structure.resources[:items].instance_variable_set(:@contract_class, contract_class)
+        api_class.root_resource.resources[:items].instance_variable_set(:@contract_class, contract_class)
 
         @extends_single_props_output = Apiwork::Export.generate(:zod, '/api/zod_extends_single_props')
       end
@@ -739,7 +739,7 @@ RSpec.describe Apiwork::Export::Zod do
             end
           end
         end
-        api_class.structure.resources[:items].instance_variable_set(:@contract_class, contract_class)
+        api_class.root_resource.resources[:items].instance_variable_set(:@contract_class, contract_class)
 
         @extends_multiple_props_output = Apiwork::Export.generate(:zod, '/api/zod_extends_multiple_props')
       end
