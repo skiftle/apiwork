@@ -1,5 +1,5 @@
 ---
-order: 13
+order: 12
 prev: false
 next: false
 ---
@@ -20,7 +20,7 @@ class Builder
   class API < Adapter::Builder::API::Base
     def build
       enum :status, values: %w[active inactive]
-      object(:error) { |o| o.string(:message) }
+      object(:error) { |object| object.string(:message) }
     end
   end
 end
@@ -32,7 +32,7 @@ end
 
 `#build`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/api/base.rb#L49)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/api/base.rb#L42)
 
 Builds API-level types.
 
@@ -41,29 +41,5 @@ Override this method to register shared types.
 **Returns**
 
 `void`
-
----
-
-### #data_type
-
-`#data_type`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/api/base.rb#L25)
-
-**Returns**
-
-`Symbol`, `nil` — the data type name from serializer
-
----
-
-### #features
-
-`#features`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/api/base.rb#L29)
-
-**Returns**
-
-`Features` — feature detection for the API
 
 ---

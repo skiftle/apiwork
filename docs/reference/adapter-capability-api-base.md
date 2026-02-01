@@ -1,5 +1,5 @@
 ---
-order: 15
+order: 14
 prev: false
 next: false
 ---
@@ -19,7 +19,7 @@ across all representations.
 
 `#build`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/api/base.rb#L49)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/api/base.rb#L42)
 
 Builds API-level types.
 
@@ -35,7 +35,7 @@ Override this method to register shared types.
 
 `#configured(key)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/api/base.rb#L36)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/api/base.rb#L41)
 
 Returns all unique values for a configuration key across all representations.
 
@@ -62,27 +62,15 @@ end
 
 ---
 
-### #data_type
+### #context
 
-`#data_type`
+`#context`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/api/base.rb#L25)
-
-**Returns**
-
-`Symbol`, `nil` — the data type name from serializer
-
----
-
-### #features
-
-`#features`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/api/base.rb#L29)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/api/base.rb#L15)
 
 **Returns**
 
-`Features` — feature detection for the API
+[Context](adapter-capability-api-context) — aggregated data across all representations
 
 ---
 
@@ -90,10 +78,10 @@ end
 
 `#options`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/api/base.rb#L15)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/api/base.rb#L19)
 
 **Returns**
 
-[Configuration](configuration) — capability options for this builder
+[Configuration](configuration) — capability options
 
 ---

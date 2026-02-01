@@ -1,5 +1,5 @@
 ---
-order: 14
+order: 13
 prev: false
 next: false
 ---
@@ -19,7 +19,7 @@ Use it to generate contract-specific types based on the representation.
 class Builder
   class Contract < Adapter::Builder::Contract::Base
     def build
-      object(representation_class.root_key.singular) do |o|
+      object(representation_class.root_key.singular) do |object|
         # define resource shape
       end
     end
@@ -33,7 +33,7 @@ end
 
 `#build`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/contract/base.rb#L50)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/contract/base.rb#L48)
 
 Builds contract-level types.
 
@@ -42,17 +42,5 @@ Override this method to generate types based on the representation.
 **Returns**
 
 `void`
-
----
-
-### #representation_class
-
-`#representation_class`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/contract/base.rb#L26)
-
-**Returns**
-
-`Class` — the representation class for this contract
 
 ---

@@ -4,22 +4,56 @@ module Apiwork
   module Adapter
     module Capability
       module API
+        # @api public
+        # Aggregated context for capability API builders.
+        #
+        # Provides access to data collected across all representations in the API.
+        # Use this to query API-wide state when building shared types.
         class Context
           def initialize(api_class)
             @representation_registry = api_class.representation_registry
             @root_resource = api_class.root_resource
           end
 
+          # @api public
+          # Returns whether any resource has index actions.
+          #
+          # @return [Boolean]
           def has_index_actions?
             @root_resource.has_index_actions?
           end
 
+          # @!method filter_types
+          #   @api public
+          #   Returns all filterable types across representations.
+          #   @return [Set<Symbol>]
+          #
+          # @!method nullable_filter_types
+          #   @api public
+          #   Returns filterable types that can be null.
+          #   @return [Set<Symbol>]
+          #
+          # @!method filterable?
+          #   @api public
+          #   Returns whether any representation has filterable attributes.
+          #   @return [Boolean]
+          #
+          # @!method sortable?
+          #   @api public
+          #   Returns whether any representation has sortable attributes.
+          #   @return [Boolean]
           delegate :filter_types,
                    :filterable?,
                    :nullable_filter_types,
                    :sortable?,
                    to: :@representation_registry
 
+          # @api public
+          # Returns aggregated configuration values for a capability.
+          #
+          # @param capability [Symbol] the capability name
+          # @param key [Symbol] the configuration key
+          # @return [Set] unique values across all representations
           def configured(capability, key)
             @representation_registry.options_for(capability, key)
           end

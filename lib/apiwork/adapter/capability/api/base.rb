@@ -10,8 +10,13 @@ module Apiwork
         # Provides access to capability options and aggregated configuration
         # across all representations.
         class Base < Builder::API::Base
-          attr_reader :context,
-                      :options
+          # @api public
+          # @return [Context] aggregated data across all representations
+          attr_reader :context
+
+          # @api public
+          # @return [Configuration] capability options
+          attr_reader :options
 
           def initialize(api_class, capability_name: nil, options: nil)
             super(api_class)

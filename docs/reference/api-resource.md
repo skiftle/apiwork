@@ -38,7 +38,7 @@ end
 
 `#collection(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L331)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L317)
 
 Block for defining collection actions.
 
@@ -63,7 +63,7 @@ end
 
 `#concern(concern_name, callable = nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L419)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L405)
 
 Defines a reusable concern.
 
@@ -94,7 +94,7 @@ resources :posts, concerns: [:commentable]
 
 `#concerns(*concern_names, **options)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L435)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L421)
 
 Includes previously defined concerns.
 
@@ -123,7 +123,7 @@ end
 
 `#delete(action_names, on: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L401)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L387)
 
 Defines a DELETE action.
 
@@ -150,7 +150,7 @@ member { delete :archive }
 
 `#get(action_names, on: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L349)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L335)
 
 Defines a GET action.
 
@@ -183,7 +183,7 @@ get :search, on: :collection
 
 `#member(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L312)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L298)
 
 Block for defining member actions (operate on :id).
 
@@ -208,7 +208,7 @@ end
 
 `#patch(action_names, on: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L375)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L361)
 
 Defines a PATCH action.
 
@@ -235,7 +235,7 @@ member { patch :mark_paid }
 
 `#post(action_names, on: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L362)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L348)
 
 Defines a POST action.
 
@@ -262,7 +262,7 @@ member { post :send }
 
 `#put(action_names, on: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L388)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L374)
 
 Defines a PUT action.
 
@@ -289,7 +289,7 @@ member { put :replace }
 
 `#resource(resource_name, concerns: nil, constraints: nil, contract: nil, controller: nil, defaults: nil, except: nil, only: nil, param: nil, path: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L245)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L231)
 
 Defines a singular resource (no index, no :id in URL).
 
@@ -326,7 +326,7 @@ resource :profile
 
 `#resources(resource_name = nil, concerns: nil, constraints: nil, contract: nil, controller: nil, defaults: nil, except: nil, only: nil, param: nil, path: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L190)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L176)
 
 Defines a plural resource with standard CRUD actions.
 
@@ -371,7 +371,7 @@ end
 
 `#with_options(options = {}, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L290)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L276)
 
 Applies options to all resources defined in the block.
 
