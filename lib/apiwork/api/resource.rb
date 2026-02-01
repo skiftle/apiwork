@@ -33,7 +33,6 @@ module Apiwork
                   :name,
                   :only,
                   :param,
-                  :parent,
                   :path,
                   :singular
 
@@ -49,7 +48,6 @@ module Apiwork
         name: nil,
         only: nil,
         param: nil,
-        parent: nil,
         path: nil,
         singular: false
       )
@@ -62,7 +60,6 @@ module Apiwork
         @name = name
         @only = only
         @param = param
-        @parent = parent
         @path = path
         @singular = singular
 
@@ -477,7 +474,6 @@ module Apiwork
           name: resource_name,
           singular:,
           contract_class_name: contract ? contract_path_to_class_name(contract) : infer_contract_class_name(resource_name),
-          parent: parent_name,
           **merged,
         )
 
@@ -527,16 +523,12 @@ module Apiwork
       end
 
       def infer_contract_class_name(resource_name)
-        namespaces = find_root_namespaces
+        namespaces = @api_class.namespaces
         [*namespaces.map { |namespace| namespace.to_s.camelize }, "#{resource_name.to_s.singularize.camelize}Contract"].join('::')
       end
 
-      def find_root_namespaces
-        @api_class.namespaces
-      end
-
       def contract_path_to_class_name(contract_path)
-        namespaces = find_root_namespaces
+        namespaces = @api_class.namespaces
         parts = if contract_path.start_with?('/')
                   contract_path[1..].split('/')
                 else
@@ -549,11 +541,11 @@ module Apiwork
         "#{parts.join('::')}Contract"
       end
 
-      def determine_crud_actions(is_singular, except:, only:)
+      def determine_crud_actions(singular, except:, only:)
         if only
           Array(only).map(&:to_sym)
         else
-          default_actions = if is_singular
+          default_actions = if singular
                               [:show, :create, :update, :destroy]
                             else
                               [:index, :show, :create, :update, :destroy]
