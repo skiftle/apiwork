@@ -7,10 +7,10 @@ module Apiwork
         class Filtering
           class APIBuilder < Adapter::Capability::API::Base
             def build
-              return unless context.filterable?
+              return unless scope.filterable?
 
-              context.filter_types.each { |type| register_filter(type, nullable: false) }
-              context.nullable_filter_types.each { |type| register_filter(type, nullable: true) }
+              scope.filter_types.each { |type| register_filter(type, nullable: false) }
+              scope.nullable_filter_types.each { |type| register_filter(type, nullable: true) }
             end
 
             private

@@ -11,8 +11,8 @@ module Apiwork
         # across all representations.
         class Base < Builder::API::Base
           # @api public
-          # @return [Context] aggregated data across all representations
-          attr_reader :context
+          # @return [Scope] aggregated data across all representations
+          attr_reader :scope
 
           # @api public
           # @return [Configuration] capability options
@@ -21,7 +21,7 @@ module Apiwork
           def initialize(api_class, capability_name: nil, options: nil)
             super(api_class)
             @capability_name = capability_name
-            @context = Context.new(api_class)
+            @scope = Scope.new(api_class)
             @options = options
           end
 
@@ -39,7 +39,7 @@ module Apiwork
           #     # build cursor pagination schema
           #   end
           def configured(key)
-            context.configured(@capability_name, key)
+            scope.configured(@capability_name, key)
           end
         end
       end

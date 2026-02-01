@@ -40,13 +40,13 @@ end
 
 ---
 
-### .scope
+### .target
 
-`.scope(value = nil)`
+`.target(value = nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L35)
 
-Sets the scope for this operation.
+Sets the target for this operation.
 
 **Parameters**
 
@@ -56,7 +56,7 @@ Sets the scope for this operation.
 
 **Returns**
 
-`Symbol`, `nil` — the current scope
+`Symbol`, `nil` — the current target
 
 ---
 

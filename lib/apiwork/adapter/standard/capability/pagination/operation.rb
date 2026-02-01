@@ -6,7 +6,7 @@ module Apiwork
       module Capability
         class Pagination
           class Operation < Adapter::Capability::Operation::Base
-            scope :collection
+            target :collection
 
             metadata do |shape|
               shape.reference(:pagination, to: (shape.options.strategy == :cursor ? :cursor_pagination : :offset_pagination))

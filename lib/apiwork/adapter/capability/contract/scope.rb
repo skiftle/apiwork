@@ -5,11 +5,11 @@ module Apiwork
     module Capability
       module Contract
         # @api public
-        # Context for capability contract builders.
+        # Scope for capability contract builders.
         #
         # Provides access to the representation and actions bound to this contract.
         # Use this to query contract-specific state when building types.
-        class Context
+        class Scope
           # @api public
           # @return [Hash{Symbol => Resource::Action}] actions bound to this contract
           attr_reader :actions

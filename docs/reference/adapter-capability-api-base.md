@@ -62,18 +62,6 @@ end
 
 ---
 
-### #context
-
-`#context`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/api/base.rb#L15)
-
-**Returns**
-
-[Context](adapter-capability-api-context) — aggregated data across all representations
-
----
-
 ### #options
 
 `#options`
@@ -83,5 +71,17 @@ end
 **Returns**
 
 [Configuration](configuration) — capability options
+
+---
+
+### #scope
+
+`#scope`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/api/base.rb#L15)
+
+**Returns**
+
+[Scope](adapter-capability-api-scope) — aggregated data across all representations
 
 ---

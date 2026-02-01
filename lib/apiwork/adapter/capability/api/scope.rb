@@ -5,23 +5,21 @@ module Apiwork
     module Capability
       module API
         # @api public
-        # Aggregated context for capability API builders.
+        # Aggregated scope for capability API builders.
         #
         # Provides access to data collected across all representations in the API.
         # Use this to query API-wide state when building shared types.
-        class Context
+        class Scope
           def initialize(api_class)
             @representation_registry = api_class.representation_registry
             @root_resource = api_class.root_resource
           end
 
-          # @api public
-          # Returns whether any resource has index actions.
-          #
-          # @return [Boolean]
-          def has_index_actions?
-            @root_resource.has_index_actions?
-          end
+          # @!method has_index_actions?
+          #   @api public
+          #   Returns whether any resource has index actions.
+          #   @return [Boolean]
+          delegate :has_index_actions?, to: :@root_resource
 
           # @!method filter_types
           #   @api public

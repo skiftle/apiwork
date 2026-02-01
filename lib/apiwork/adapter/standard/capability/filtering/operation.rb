@@ -6,7 +6,7 @@ module Apiwork
       module Capability
         class Filtering
           class Operation < Adapter::Capability::Operation::Base
-            scope :collection
+            target :collection
 
             def apply
               params = request.query[:filter]

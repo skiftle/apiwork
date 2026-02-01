@@ -11,8 +11,8 @@ module Apiwork
         # Use it to generate contract-specific types based on the representation.
         class Base < Builder::Contract::Base
           # @api public
-          # @return [Context] representation and actions for this contract
-          attr_reader :context
+          # @return [Scope] representation and actions for this contract
+          attr_reader :scope
 
           # @api public
           # @return [Configuration] capability options
@@ -22,7 +22,7 @@ module Apiwork
 
           def initialize(contract_class, representation_class, actions, options)
             super(contract_class, representation_class)
-            @context = Context.new(representation_class, actions)
+            @scope = Scope.new(representation_class, actions)
             @options = options
           end
         end

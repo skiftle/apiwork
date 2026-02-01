@@ -4,11 +4,11 @@ prev: false
 next: false
 ---
 
-# Adapter::Capability::API::Context
+# Adapter::Capability::API::Scope
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/api/context.rb#L12)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/api/scope.rb#L12)
 
-Aggregated context for capability API builders.
+Aggregated scope for capability API builders.
 
 Provides access to data collected across all representations in the API.
 Use this to query API-wide state when building shared types.
@@ -19,7 +19,7 @@ Use this to query API-wide state when building shared types.
 
 `#configured(capability, key)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/api/context.rb#L57)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/api/scope.rb#L55)
 
 Returns aggregated configuration values for a capability.
 
@@ -40,7 +40,7 @@ Returns aggregated configuration values for a capability.
 
 `#filter_types`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/api/context.rb#L45)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/api/scope.rb#L43)
 
 Returns all filterable types across representations.
 
@@ -54,7 +54,7 @@ Returns all filterable types across representations.
 
 `#filterable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/api/context.rb#L45)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/api/scope.rb#L43)
 
 Returns whether any representation has filterable attributes.
 
@@ -68,7 +68,7 @@ Returns whether any representation has filterable attributes.
 
 `#has_index_actions?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/api/context.rb#L22)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/api/scope.rb#L22)
 
 Returns whether any resource has index actions.
 
@@ -82,7 +82,7 @@ Returns whether any resource has index actions.
 
 `#nullable_filter_types`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/api/context.rb#L45)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/api/scope.rb#L43)
 
 Returns filterable types that can be null.
 
@@ -96,7 +96,7 @@ Returns filterable types that can be null.
 
 `#sortable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/api/context.rb#L45)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/api/scope.rb#L43)
 
 Returns whether any representation has sortable attributes.
 

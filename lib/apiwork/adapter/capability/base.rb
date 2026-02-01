@@ -141,7 +141,7 @@ module Apiwork
           metadata_block = klass.metadata
           return nil unless metadata_block
 
-          scope = klass.scope
+          scope = klass.target
           return nil if scope && scope != type
 
           object = ::Apiwork::API::Object.new
@@ -158,7 +158,7 @@ module Apiwork
           klass = self.class.operation_class
           return Result.new(data:) unless klass
 
-          scope = klass.scope
+          scope = klass.target
           return Result.new(data:) if scope && scope != wrapper_type
 
           klass.new(

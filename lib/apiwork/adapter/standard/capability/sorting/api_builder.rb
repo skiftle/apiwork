@@ -7,7 +7,7 @@ module Apiwork
         class Sorting
           class APIBuilder < Adapter::Capability::API::Base
             def build
-              return unless context.sortable?
+              return unless scope.sortable?
 
               enum :sort_direction, values: %w[asc desc]
             end

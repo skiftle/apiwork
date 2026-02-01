@@ -28,13 +28,13 @@ module Apiwork
 
           class << self
             # @api public
-            # Sets the scope for this operation.
+            # Sets the target for this operation.
             #
             # @param value [Symbol, nil] :collection or :member
-            # @return [Symbol, nil] the current scope
-            def scope(value = nil)
-              @scope = value if value
-              @scope
+            # @return [Symbol, nil] the current target
+            def target(value = nil)
+              @target = value if value
+              @target
             end
 
             # @api public

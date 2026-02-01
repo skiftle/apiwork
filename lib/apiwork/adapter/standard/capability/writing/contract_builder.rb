@@ -12,7 +12,7 @@ module Apiwork
               build_nested_payload_union if api_class.representation_registry.nested_writable?(representation_class)
 
               %i[create update].each do |action_name|
-                next unless context.action?(action_name)
+                next unless scope.action?(action_name)
 
                 payload_type_name = :"#{action_name}_payload"
                 next unless type?(payload_type_name)
