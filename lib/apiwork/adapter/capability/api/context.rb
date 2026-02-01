@@ -2,7 +2,7 @@
 
 module Apiwork
   module Adapter
-    module Builder
+    module Capability
       module API
         class Context
           def initialize(api_class)

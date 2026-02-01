@@ -21,8 +21,7 @@ module Apiwork
         #     end
         #   end
         class Base
-          attr_reader :context,
-                      :representation_class
+          attr_reader :representation_class
 
           delegate :api_class,
                    :enum,
@@ -36,10 +35,9 @@ module Apiwork
                    :union,
                    to: :contract_class
 
-          def initialize(contract_class, representation_class, actions: {})
+          def initialize(contract_class, representation_class)
             @contract_class = contract_class
             @representation_class = representation_class
-            @context = Context.new(representation_class, actions)
           end
 
           # @api public

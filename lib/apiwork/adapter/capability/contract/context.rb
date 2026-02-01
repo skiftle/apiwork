@@ -2,7 +2,7 @@
 
 module Apiwork
   module Adapter
-    module Builder
+    module Capability
       module Contract
         class Context
           attr_reader :actions, :representation_class

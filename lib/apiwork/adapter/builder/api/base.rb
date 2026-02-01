@@ -20,8 +20,7 @@ module Apiwork
         #     end
         #   end
         class Base
-          attr_reader :context,
-                      :data_type
+          attr_reader :data_type
 
           delegate :enum,
                    :enum?,
@@ -33,7 +32,6 @@ module Apiwork
           def initialize(api_class, data_type: nil)
             @api_class = api_class
             @data_type = data_type
-            @context = Context.new(api_class)
           end
 
           # @api public

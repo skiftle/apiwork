@@ -10,12 +10,14 @@ module Apiwork
         # Contract phase runs once per bound contract at registration time.
         # Use it to generate contract-specific types based on the representation.
         class Base < Builder::Contract::Base
-          attr_reader :options
+          attr_reader :context,
+                      :options
 
           delegate :action, to: :contract_class
 
           def initialize(contract_class, representation_class, actions, options)
-            super(contract_class, representation_class, actions:)
+            super(contract_class, representation_class)
+            @context = Context.new(representation_class, actions)
             @options = options
           end
         end
