@@ -7,7 +7,6 @@ RSpec.describe Apiwork::Adapter::Features do
     instance_double(
       Apiwork::API::Resource,
       has_index_actions?: false,
-      has_resources?: false,
       representation_classes: [],
     )
   end

@@ -11,7 +11,6 @@ module Apiwork
         representation_classes = root_resource.representation_classes
         @filter_types, @nullable_filter_types = extract_filterable_type_variants(representation_classes)
         @sortable = check_sortable(representation_classes)
-        @resources = root_resource.has_resources?
         @index_actions = root_resource.has_index_actions?
       end
 
@@ -21,10 +20,6 @@ module Apiwork
 
       def filterable?
         filter_types.any?
-      end
-
-      def resources?
-        @resources
       end
 
       def index_actions?

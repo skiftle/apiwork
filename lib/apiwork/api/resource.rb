@@ -73,16 +73,8 @@ module Apiwork
         @in_collection_block = false
       end
 
-      def has_resources?
-        @resources.any?
-      end
-
-      def has_index?
-        @crud_actions.include?(:index) || @resources.values.any?(&:has_index?)
-      end
-
       def has_index_actions?
-        @resources.values.any?(&:has_index?)
+        @resources.values.any? { |resource| resource.actions.key?(:index) || resource.has_index_actions? }
       end
 
       def representation_classes

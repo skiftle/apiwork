@@ -70,16 +70,11 @@ RSpec.describe 'Custom Adapter', type: :integration do
       expect(features).to respond_to(:nullable_filter_types)
       expect(features).to respond_to(:sortable?)
       expect(features).to respond_to(:filterable?)
-      expect(features).to respond_to(:resources?)
       expect(features).to respond_to(:index_actions?)
     end
 
     it 'filter_types returns array of types' do
       expect(features.filter_types).to be_an(Array)
-    end
-
-    it 'resources? returns true for API with resources' do
-      expect(features.resources?).to be(true)
     end
 
     it 'filterable? responds with boolean' do

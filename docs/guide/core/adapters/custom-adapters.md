@@ -149,7 +149,6 @@ The `schema_data` provides information about all schemas in the API:
 - `filterable_types` — Array of attribute types that are filterable
 - `nullable_filterable_types` — Array of filterable types that can be null
 - `sortable?` — Whether any schema has sortable attributes
-- `has_resources?` — Whether the API has any resources
 - `has_index_actions?` — Whether any resource has an index action
 - `uses_offset_pagination?` — Whether any schema uses offset pagination
 - `uses_cursor_pagination?` — Whether any schema uses cursor pagination
