@@ -159,14 +159,6 @@ module Apiwork
           Adapter.find!(@adapter_name || :standard)
         end
 
-        # @api public
-        # The adapter configuration for this API.
-        #
-        # @return [Configuration]
-        # @see Adapter::Base
-        #
-        # @example
-        #   api_class.adapter_config.pagination.default_size
         def adapter_config
           @adapter_config ||= Configuration.new(adapter_class)
         end

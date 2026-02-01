@@ -100,12 +100,17 @@ module Apiwork
         end
 
         # @api public
-        # Declares the JSON root key for this representation.
+        # Sets the JSON root key for this representation.
         #
-        # Adapters can use this to wrap responses in a root key.
+        # By default, the root key is auto-detected from the model name
+        # (e.g., Invoice becomes "invoice"/"invoices"). Use this to override.
+        #
+        # To retrieve the root key, use {#root_key} instead.
         #
         # @param singular [String, Symbol] root key for single records
         # @param plural [String, Symbol] root key for collections (default: singular.pluralize)
+        # @return [void]
+        # @see #root_key
         #
         # @example Custom root key
         #   class InvoiceRepresentation < Apiwork::Representation::Base
@@ -141,21 +146,6 @@ module Apiwork
           config.instance_eval(&block)
         end
 
-        # @api public
-        # The merged adapter configuration for this representation.
-        #
-        # Configuration values are resolved in order:
-        # 1. Representation-level (defined in the representation class via `adapter do`)
-        # 2. API-level (defined in the API definition via `adapter do`)
-        # 3. Adapter defaults (defined in the adapter class)
-        #
-        # @return [Configuration]
-        # @see API::Base#adapter_config
-        # @see Adapter::Base
-        #
-        # @example
-        #   representation_class.adapter_config.pagination.default_size
-        #   representation_class.adapter_config.pagination.strategy
         def adapter_config
           @adapter_config ||= api_class.adapter_config.merge(_adapter_config)
         end
@@ -568,14 +558,13 @@ module Apiwork
         end
 
         # @api public
-        # The root key for JSON responses.
+        # The root key for wrapping JSON responses.
         #
-        # Uses the custom root if defined via {#root}, otherwise derives
-        # from the representation type or model name.
+        # Auto-detected from model name (Invoice becomes "invoice"/"invoices")
+        # or explicitly set via {.root}.
         #
         # @return [RootKey]
-        # @see #root
-        # @see RootKey
+        # @see .root
         #
         # @example
         #   InvoiceRepresentation.root_key.singular  # => "invoice"
