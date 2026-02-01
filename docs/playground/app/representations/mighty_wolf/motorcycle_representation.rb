@@ -2,7 +2,7 @@
 
 module MightyWolf
   class MotorcycleRepresentation < VehicleRepresentation
-    type_name :motorcycle
+    sti_name :motorcycle
 
     attribute :engine_cc, writable: true
   end

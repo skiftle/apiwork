@@ -123,9 +123,7 @@ module Apiwork
                 next unless association
                 next if type?([name, TYPE_NAME].join('_').to_sym)
 
-                allowed_values = association.polymorphic.map do |rep_class|
-                  (rep_class.type_name || rep_class.model_class.polymorphic_name).to_s
-                end
+                allowed_values = association.polymorphic.map(&:polymorphic_name)
 
                 enum name, values: allowed_values
 
@@ -151,11 +149,11 @@ module Apiwork
               representation_class.attributes.each do |name, attribute|
                 next unless attribute.filterable?
 
-                sti_union = representation_class.sti_union_for_type_column(name)
-                next unless sti_union
+                inheritance = representation_class.inheritance_for_column(name)
+                next unless inheritance
                 next if type?([name, TYPE_NAME].join('_').to_sym)
 
-                allowed_values = sti_union.variants.values.map { |variant_data| variant_data.tag.to_s }
+                allowed_values = inheritance.subclasses.map(&:sti_name)
 
                 enum name, values: allowed_values
 
@@ -182,7 +180,7 @@ module Apiwork
             end
 
             def sti_type_column?(attribute)
-              representation_class.sti_union_for_type_column(attribute.name).present?
+              representation_class.inheritance_for_column(attribute.name).present?
             end
 
             def filter_type_for(attribute)

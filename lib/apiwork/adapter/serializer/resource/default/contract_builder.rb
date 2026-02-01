@@ -49,9 +49,9 @@ module Apiwork
               end
 
               object(type_name, representation_class: representation_class) do |object|
-                if representation_class.variant?
-                  discriminator_name = representation_class.superclass.union.discriminator
-                  object.literal(discriminator_name, value: representation_class.tag.to_s)
+                if representation_class.subclass?
+                  discriminator_name = representation_class.superclass.inheritance.column
+                  object.literal(discriminator_name, value: representation_class.sti_name)
                 end
 
                 representation_class.attributes.each do |name, attribute|
@@ -110,19 +110,19 @@ module Apiwork
             end
 
             def sti_base_representation?
-              representation_class.discriminated?
+              inheritance = representation_class.inheritance
+              inheritance&.subclasses&.any? && inheritance.base_class == representation_class
             end
 
             def build_sti_union(union_type_name:, visited: Set.new)
-              representation_union = representation_class.union
-              return nil unless representation_union.variants.any?
+              representation_inheritance = representation_class.inheritance
+              return nil unless representation_inheritance.subclasses.any?
 
-              discriminator_name = representation_union.discriminator
+              discriminator_name = representation_inheritance.column
 
-              variant_types = representation_union.variants.filter_map do |tag, variant|
-                variant_representation_class = variant.representation_class
-                variant_type = yield(variant_representation_class)
-                { tag: tag.to_s, type: variant_type } if variant_type
+              variant_types = representation_inheritance.subclasses.filter_map do |subclass|
+                variant_type = yield(subclass)
+                { tag: subclass.sti_name, type: variant_type } if variant_type
               end
 
               union(union_type_name, discriminator: discriminator_name) do |union|
@@ -180,11 +180,11 @@ module Apiwork
 
               union(union_type_name, discriminator: association.discriminator) do |union|
                 polymorphic.each do |poly_representation_class|
-                  tag = poly_representation_class.type_name || poly_representation_class.model_class.polymorphic_name
+                  tag = poly_representation_class.polymorphic_name
                   alias_name = import_association_contract(poly_representation_class, visited)
                   next unless alias_name
 
-                  union.variant(tag: tag.to_s) do |variant|
+                  union.variant(tag:) do |variant|
                     variant.reference(alias_name)
                   end
                 end
@@ -199,7 +199,7 @@ module Apiwork
               resolved_representation = resolve_representation_from_association(association)
               return nil unless resolved_representation
 
-              { representation_class: resolved_representation, sti: resolved_representation.discriminated? }
+              { representation_class: resolved_representation, sti: resolved_representation.inheritance&.subclasses&.any? }
             end
 
             def resolve_representation_from_association(association)

@@ -56,15 +56,14 @@ module Apiwork
               return if type?(type_name)
 
               object(type_name, representation_class: representation_class) do |object|
-                if representation_class.variant?
-                  parent_union = representation_class.superclass.union
+                if representation_class.subclass?
+                  parent_inheritance = representation_class.superclass.inheritance
 
                   object.literal(
-                    parent_union.discriminator,
-                    as: parent_union.discriminator != parent_union.column ? parent_union.column : nil,
+                    parent_inheritance.column,
                     optional: action_name == :update,
-                    store: parent_union.needs_transform? ? representation_class.model_class.sti_name : nil,
-                    value: representation_class.tag.to_s,
+                    store: parent_inheritance.needs_transform? ? representation_class.model_class.sti_name : nil,
+                    value: representation_class.sti_name,
                   )
                 end
 
@@ -131,21 +130,21 @@ module Apiwork
             end
 
             def build_sti_payload_union(action_name)
-              representation_union = representation_class.union
+              representation_inheritance = representation_class.inheritance
 
-              variant_refs = representation_union.variants.filter_map do |tag, variant_data|
-                variant_contract = find_contract_for_representation(variant_data.representation_class)
-                next unless variant_contract
+              variant_refs = representation_inheritance.subclasses.filter_map do |subclass|
+                subclass_contract = find_contract_for_representation(subclass)
+                next unless subclass_contract
 
-                alias_name = variant_data.representation_class.root_key.singular.to_sym
-                import(variant_contract, as: alias_name)
+                alias_name = subclass.root_key.singular.to_sym
+                import(subclass_contract, as: alias_name)
 
-                { tag: tag.to_s, type: :"#{alias_name}_#{action_name}_payload" }
+                { tag: subclass.sti_name, type: :"#{alias_name}_#{action_name}_payload" }
               end
 
-              union(:"#{action_name}_payload", discriminator: representation_union.discriminator) do |union|
+              union(:"#{action_name}_payload", discriminator: representation_inheritance.column) do |u|
                 variant_refs.each do |variant_ref|
-                  union.variant(tag: variant_ref[:tag]) do |element|
+                  u.variant(tag: variant_ref[:tag]) do |element|
                     element.reference(variant_ref[:type])
                   end
                 end
@@ -211,9 +210,9 @@ module Apiwork
               type_mapping = {}
               allowed_values = []
 
-              association.polymorphic.each do |representation_class|
-                api_value = (representation_class.type_name || representation_class.model_class.polymorphic_name).to_s
-                rails_type = representation_class.model_class.polymorphic_name
+              association.polymorphic.each do |poly_representation_class|
+                api_value = poly_representation_class.polymorphic_name
+                rails_type = poly_representation_class.model_class.polymorphic_name
                 type_mapping[api_value] = rails_type
                 allowed_values << api_value
               end
@@ -270,7 +269,8 @@ module Apiwork
             end
 
             def sti_base_representation?
-              representation_class.discriminated? && representation_class.union&.variants&.any?
+              inheritance = representation_class.inheritance
+              inheritance&.subclasses&.any? && inheritance.base_class == representation_class
             end
 
             def primary_key_type

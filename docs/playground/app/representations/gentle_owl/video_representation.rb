@@ -2,7 +2,7 @@
 
 module GentleOwl
   class VideoRepresentation < Apiwork::Representation::Base
-    type_name :video
+    polymorphic_name :video
 
     attribute :id
     attribute :title, filterable: true, writable: true

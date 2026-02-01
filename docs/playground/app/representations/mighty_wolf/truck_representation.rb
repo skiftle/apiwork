@@ -2,7 +2,7 @@
 
 module MightyWolf
   class TruckRepresentation < VehicleRepresentation
-    type_name :truck
+    sti_name :truck
 
     attribute :payload_capacity, writable: true
   end

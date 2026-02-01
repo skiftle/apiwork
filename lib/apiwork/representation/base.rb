@@ -50,17 +50,10 @@ module Apiwork
       #   @return [Hash{Symbol => Association}] defined associations
       class_attribute :associations, default: {}, instance_accessor: false
 
-      # @!method union
-      #   @!scope class
+      # @!method self.inheritance
       #   @api public
-      #   @return [Representation::Union, nil] the union configuration
-      class_attribute :union, default: nil, instance_accessor: false
-
-      # @!method tag
-      #   @!scope class
-      #   @api public
-      #   @return [Symbol, nil] the variant's tag, or nil if not a variant
-      class_attribute :tag, default: nil, instance_accessor: false
+      #   @return [Representation::Inheritance, nil] the inheritance configuration for STI base representations
+      class_attribute :inheritance, default: nil, instance_accessor: false
       class_attribute :_root, default: nil, instance_accessor: false
       class_attribute :_adapter_config, default: {}, instance_accessor: false
       class_attribute :_description, default: nil, instance_accessor: false
@@ -76,8 +69,6 @@ module Apiwork
       attr_reader :record
 
       class << self
-        attr_writer :type
-
         # @api public
         # Sets the model class for this representation.
         #
@@ -417,29 +408,53 @@ module Apiwork
         end
 
         # @api public
-        # The API-friendly type identifier for this representation.
+        # Sets or returns the API name for this representation in STI contexts.
         #
-        # Rails stores full class names in discriminator columns for STI and
-        # polymorphic associations (e.g., `"Billing::Invoice"` or `"MyApp::Post"`).
-        # These internal names are often acceptable in an API, but can leak
-        # implementation details like module structure or naming conventions.
+        # When set, this value is used instead of the model's sti_name in API
+        # responses and requests. When not set, falls back to model's sti_name.
         #
-        # Use this to provide a cleaner, user-friendly identifier that adapters
-        # can use when serializing and deserializing type information.
+        # @param value [String, Symbol, nil] the custom STI name
+        # @return [String] the STI name for API use
         #
-        # @param value [Symbol, String] the type identifier
-        # @return [Symbol, nil]
-        #
-        # @example
-        #   class CarRepresentation < VehicleRepresentation
-        #     type_name :car
+        # @example Custom STI name
+        #   class PersonClientRepresentation < ClientRepresentation
+        #     sti_name :person
         #   end
         #
-        #   CarRepresentation.type_name  # => :car
-        def type_name(value = nil)
-          return @type_name if value.nil?
+        #   PersonClientRepresentation.sti_name  # => "person"
+        def sti_name(value = nil)
+          return @sti_name = value.to_s if value
 
-          @type_name = value.to_sym
+          @sti_name || model_class.sti_name
+        end
+
+        # @api public
+        # Sets or returns the API name for this representation in polymorphic contexts.
+        #
+        # When set, this value is used instead of the model's polymorphic_name in API
+        # responses and requests. When not set, falls back to model's polymorphic_name.
+        #
+        # @param value [String, Symbol, nil] the custom polymorphic name
+        # @return [String] the polymorphic name for API use
+        #
+        # @example Custom polymorphic name
+        #   class PostRepresentation < Apiwork::Representation::Base
+        #     polymorphic_name :post
+        #   end
+        #
+        #   PostRepresentation.polymorphic_name  # => "post"
+        def polymorphic_name(value = nil)
+          return @polymorphic_name = value.to_s if value
+
+          @polymorphic_name || model_class.polymorphic_name
+        end
+
+        # @api public
+        # Whether this representation is registered as an STI subclass.
+        #
+        # @return [Boolean]
+        def subclass?
+          superclass.respond_to?(:inheritance) && superclass.inheritance&.subclass?(self)
         end
 
         # @api public
@@ -590,22 +605,6 @@ module Apiwork
           API.find("/#{namespace.underscore.tr('::', '/')}")
         end
 
-        def discriminated?
-          ensure_sti_auto_configuration_complete
-          union.present? && !variant? && union.variants.any?
-        end
-
-        def variant?
-          ensure_sti_auto_configuration_complete
-          tag.present?
-        end
-
-        def resolve_variant(record)
-          return nil unless union
-
-          union.resolve(record)&.representation_class
-        end
-
         def deprecated?
           _deprecated
         end
@@ -616,23 +615,15 @@ module Apiwork
           end
         end
 
-        def sti_union_for_type_column(column_name)
-          target_union = union
-          target_model = model_class
+        def inheritance_for_column(column_name)
+          target_class = subclass? ? superclass : self
+          target_inheritance = target_class.inheritance
+          target_model = target_class.model_class
 
-          if variant? && superclass.respond_to?(:union)
-            target_union = superclass.union
-            target_model = superclass.model_class
-          end
-
-          return nil unless target_union
-          return nil unless target_union.variants.any?
+          return nil unless target_inheritance&.subclasses&.any?
           return nil unless target_model.respond_to?(:inheritance_column)
 
-          inheritance_col = target_model.inheritance_column.to_sym
-          return nil unless column_name.to_sym == inheritance_col
-
-          target_union
+          target_inheritance if column_name.to_sym == target_model.inheritance_column.to_sym
         end
 
         def deserialize_hash(hash)
@@ -666,9 +657,9 @@ module Apiwork
         end
 
         def serialize_record(record, context: {}, include: nil)
-          if discriminated?
-            variant_representation_class = resolve_variant(record)
-            return variant_representation_class.new(record, context:, include:).as_json if variant_representation_class
+          if inheritance&.subclasses&.any?
+            subclass_representation = inheritance.resolve(record)
+            return subclass_representation.new(record, context:, include:).as_json if subclass_representation
           end
 
           new(record, context:, include:).as_json
@@ -715,11 +706,11 @@ module Apiwork
           ensure_auto_detection_complete
           return unless @model_class
 
-          auto_configure_sti_base if sti_base_model? && union.nil? && tag.blank?
+          auto_configure_inheritance if sti_base_model? && inheritance.nil?
 
-          return unless sti_subclass_model? && tag.blank? && superclass_is_sti_base?
+          return unless sti_subclass_model? && superclass_is_sti_base? && !subclass?
 
-          auto_register_sti_variant
+          auto_register_subclass
         end
 
         def sti_base_model?
@@ -747,24 +738,15 @@ module Apiwork
           @model_class != @model_class.base_class
         end
 
-        def auto_configure_sti_base
-          column = @model_class.inheritance_column.to_sym
-          self.union = Union.new(column:, discriminator: column)
+        def auto_configure_inheritance
+          self.inheritance = Inheritance.new(self)
         end
 
-        def auto_register_sti_variant
+        def auto_register_subclass
           superclass.send(:ensure_sti_auto_configuration_complete)
-          return unless superclass.union
+          return unless superclass.inheritance
 
-          resolved_tag = (type_name || @model_class.sti_name).to_sym
-          self.tag = resolved_tag
-
-          variant = Union::Variant.new(
-            representation_class: self,
-            tag: resolved_tag,
-            type: @model_class.sti_name,
-          )
-          superclass.union.register(variant)
+          superclass.inheritance.register(self)
           superclass._abstract = true
         end
 
@@ -785,7 +767,7 @@ module Apiwork
       def as_json
         fields = {}
 
-        add_discriminator_field(fields) if self.class.variant?
+        add_discriminator_field(fields) if self.class.subclass?
 
         self.class.attributes.each do |name, attribute|
           value = respond_to?(name) ? public_send(name) : record.public_send(name)
@@ -807,9 +789,9 @@ module Apiwork
 
       def add_discriminator_field(fields)
         parent_representation = self.class.superclass
-        return unless parent_representation.union
+        return unless parent_representation.inheritance
 
-        fields[parent_representation.union.discriminator] = self.class.tag.to_s
+        fields[parent_representation.inheritance.column] = self.class.sti_name
       end
 
       def map_type_column_output(attribute_name, value)
@@ -818,13 +800,13 @@ module Apiwork
         association = self.class.polymorphic_association_for_type_column(attribute_name)
         if association
           representation_class = association.find_representation_for_type(value)
-          return (representation_class.type_name || representation_class.model_class.polymorphic_name).to_s if representation_class
+          return representation_class.polymorphic_name if representation_class
         end
 
-        union = self.class.sti_union_for_type_column(attribute_name)
-        if union
-          variant = union.variants.values.find { |v| v.type == value }
-          return variant.tag.to_s if variant
+        inheritance = self.class.inheritance_for_column(attribute_name)
+        if inheritance
+          klass = inheritance.subclasses.find { |k| k.model_class.sti_name == value }
+          return klass.sti_name if klass
         end
 
         value
@@ -858,9 +840,9 @@ module Apiwork
       end
 
       def serialize_variant_aware(record, representation_class, nested_includes)
-        if representation_class.discriminated?
-          variant_representation_class = representation_class.resolve_variant(record)
-          return variant_representation_class.new(record, context: context, include: nested_includes).as_json if variant_representation_class
+        if representation_class.inheritance&.subclasses&.any?
+          subclass_representation = representation_class.inheritance.resolve(record)
+          return subclass_representation.new(record, context: context, include: nested_includes).as_json if subclass_representation
         end
 
         representation_class.new(record, context: context, include: nested_includes).as_json

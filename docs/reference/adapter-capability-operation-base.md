@@ -19,7 +19,7 @@ Use it to transform data at runtime.
 
 `.metadata(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L56)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L54)
 
 Defines metadata shape for this operation.
 
@@ -44,7 +44,7 @@ end
 
 `.scope(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L37)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L35)
 
 Sets the scope for this operation.
 
@@ -66,7 +66,7 @@ Sets the scope for this operation.
 
 `#apply`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L77)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L75)
 
 Applies this operation to the data.
 
@@ -131,7 +131,7 @@ Return nil if no changes are made.
 
 `#result(data: nil, includes: nil, metadata: nil, serialize_options: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L89)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L87)
 
 Creates a result object.
 
@@ -154,7 +154,7 @@ Creates a result object.
 
 `#translate(*segments, default: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L114)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L112)
 
 Translates a key using the adapter's i18n convention.
 

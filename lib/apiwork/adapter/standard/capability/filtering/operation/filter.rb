@@ -209,8 +209,8 @@ module Apiwork
                 association = representation_class.polymorphic_association_for_type_column(key)
                 value = transform_polymorphic_filter_value(value, association) if association
 
-                union = representation_class.sti_union_for_type_column(key)
-                value = transform_sti_filter_value(value, union) if union
+                inheritance = representation_class.inheritance_for_column(key)
+                value = transform_sti_filter_value(value, inheritance) if inheritance
 
                 column_type = target_klass.type_for_attribute(key).type
                 if column_type.nil?
@@ -295,30 +295,24 @@ module Apiwork
 
               def build_polymorphic_type_mapping(association)
                 association.polymorphic.each_with_object({}) do |representation_class, mapping|
-                  api_value = (representation_class.type_name || representation_class.model_class.polymorphic_name).to_s
+                  api_value = representation_class.polymorphic_name
                   db_value = representation_class.model_class.polymorphic_name
                   mapping[api_value] = db_value
                 end
               end
 
-              def transform_sti_filter_value(value, union)
-                mapping = build_sti_type_mapping(union)
+              def transform_sti_filter_value(value, inheritance)
+                mapping = inheritance.mapping
 
                 case value
                 when String
                   mapping[value] || value
                 when Hash
-                  value.transform_values { |v| transform_sti_filter_value(v, union) }
+                  value.transform_values { |v| transform_sti_filter_value(v, inheritance) }
                 when Array
-                  value.map { |v| transform_sti_filter_value(v, union) }
+                  value.map { |v| transform_sti_filter_value(v, inheritance) }
                 else
                   value
-                end
-              end
-
-              def build_sti_type_mapping(union)
-                union.variants.values.each_with_object({}) do |variant, mapping|
-                  mapping[variant.tag.to_s] = variant.type
                 end
               end
 

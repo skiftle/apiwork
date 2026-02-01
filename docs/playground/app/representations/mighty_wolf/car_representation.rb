@@ -2,7 +2,7 @@
 
 module MightyWolf
   class CarRepresentation < VehicleRepresentation
-    type_name :car
+    sti_name :car
 
     attribute :doors, writable: true
   end
