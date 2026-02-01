@@ -2,7 +2,7 @@
 
 module GentleOwl
   class PostRepresentation < Apiwork::Representation::Base
-    polymorphic_name :post
+    type_name :post
 
     attribute :id
     attribute :title, filterable: true, writable: true

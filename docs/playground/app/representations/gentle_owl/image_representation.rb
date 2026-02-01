@@ -2,7 +2,7 @@
 
 module GentleOwl
   class ImageRepresentation < Apiwork::Representation::Base
-    polymorphic_name :image
+    type_name :image
 
     attribute :id
     attribute :title, filterable: true, writable: true

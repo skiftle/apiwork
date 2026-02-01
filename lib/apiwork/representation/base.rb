@@ -408,45 +408,54 @@ module Apiwork
         end
 
         # @api public
-        # Sets or returns the API name for this representation in STI contexts.
+        # Sets or returns a custom API type name for this representation.
         #
-        # When set, this value is used instead of the model's sti_name in API
-        # responses and requests. When not set, falls back to model's sti_name.
+        # When set, this value is used instead of the model's default type names
+        # in both STI discriminators and polymorphic type columns.
         #
-        # @param value [String, Symbol, nil] the custom STI name
-        # @return [String] the STI name for API use
+        # @param value [String, Symbol, nil] the custom type name
+        # @return [String, nil] the custom type name if set
         #
-        # @example Custom STI name
+        # @example STI subclass with custom type name
         #   class PersonClientRepresentation < ClientRepresentation
-        #     sti_name :person
+        #     type_name :person
         #   end
         #
-        #   PersonClientRepresentation.sti_name  # => "person"
-        def sti_name(value = nil)
-          return @sti_name = value.to_s if value
+        # @example Polymorphic target with custom type name
+        #   class PostRepresentation < Apiwork::Representation::Base
+        #     type_name :post
+        #   end
+        #
+        # @see #sti_name
+        # @see #polymorphic_name
+        def type_name(value = nil)
+          return @type_name = value.to_s if value
 
-          @sti_name || model_class.sti_name
+          @type_name
         end
 
         # @api public
-        # Sets or returns the API name for this representation in polymorphic contexts.
+        # Returns the API name for this representation in STI contexts.
         #
-        # When set, this value is used instead of the model's polymorphic_name in API
-        # responses and requests. When not set, falls back to model's polymorphic_name.
+        # Returns the custom {#type_name} if set, otherwise falls back to
+        # the model's sti_name.
         #
-        # @param value [String, Symbol, nil] the custom polymorphic name
-        # @return [String] the polymorphic name for API use
-        #
-        # @example Custom polymorphic name
-        #   class PostRepresentation < Apiwork::Representation::Base
-        #     polymorphic_name :post
-        #   end
-        #
-        #   PostRepresentation.polymorphic_name  # => "post"
-        def polymorphic_name(value = nil)
-          return @polymorphic_name = value.to_s if value
+        # @return [String] the STI name for API use
+        # @see #type_name
+        def sti_name
+          @type_name || model_class.sti_name
+        end
 
-          @polymorphic_name || model_class.polymorphic_name
+        # @api public
+        # Returns the API name for this representation in polymorphic contexts.
+        #
+        # Returns the custom {#type_name} if set, otherwise falls back to
+        # the model's polymorphic_name.
+        #
+        # @return [String] the polymorphic name for API use
+        # @see #type_name
+        def polymorphic_name
+          @type_name || model_class.polymorphic_name
         end
 
         # @api public
