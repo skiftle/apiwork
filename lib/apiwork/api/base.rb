@@ -517,7 +517,7 @@ module Apiwork
           @raises = []
           @export_configs = {}
           @adapter_config = nil
-          @root_resource = Resource.new(api_class: self)
+          @root_resource = Resource.new(self)
           @type_registry = TypeRegistry.new
           @enum_registry = EnumRegistry.new
           @representation_registry = RepresentationRegistry.new

@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'Apiwork Routing DSL' do
   let(:api_class) { double(namespaces: [:api, :v1]) }
-  let(:root_resource) { Apiwork::API::Resource.new(api_class:) }
+  let(:root_resource) { Apiwork::API::Resource.new(api_class) }
 
   describe 'member actions' do
     context 'with member block syntax' do

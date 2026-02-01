@@ -40,7 +40,7 @@ module Apiwork
       attr_accessor :contract_class
 
       def initialize(
-        api_class: nil,
+        api_class,
         constraints: nil,
         contract_class_name: nil,
         controller: nil,
@@ -473,6 +473,7 @@ module Apiwork
         contract = merged.delete(:contract)
 
         resource = Resource.new(
+          @api_class,
           name: resource_name,
           singular:,
           contract_class_name: contract ? contract_path_to_class_name(contract) : infer_contract_class_name(resource_name),
@@ -531,9 +532,7 @@ module Apiwork
       end
 
       def find_root_namespaces
-        current = self
-        current = current.parent while current.parent.is_a?(Resource)
-        current.api_class.namespaces
+        @api_class.namespaces
       end
 
       def contract_path_to_class_name(contract_path)
