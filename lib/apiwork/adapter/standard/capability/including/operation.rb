@@ -10,7 +10,7 @@ module Apiwork
               params = request.query[:include] || {}
               includes = IncludesResolver.new(representation_class).resolve(params)
 
-              result(data:, includes:, serialize_options: { include: params })
+              result(includes:, serialize_options: { include: params })
             end
           end
         end

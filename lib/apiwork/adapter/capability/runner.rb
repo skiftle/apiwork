@@ -29,7 +29,7 @@ module Apiwork
             metadata.merge!(result.metadata) if result.metadata
             serialize_options.merge!(result.serialize_options || {})
             includes << result.includes if result.includes.present?
-            result.data
+            result.data || current
           end
 
           preloaded = preload_associations(data, normalize_includes(includes))
