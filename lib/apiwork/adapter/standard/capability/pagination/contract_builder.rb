@@ -7,7 +7,7 @@ module Apiwork
         class Pagination
           class ContractBuilder < Adapter::Capability::Contract::Base
             def build
-              return unless actions.key?(:index)
+              return unless context.action?(:index)
 
               object(:page) do |object|
                 if options.strategy == :cursor

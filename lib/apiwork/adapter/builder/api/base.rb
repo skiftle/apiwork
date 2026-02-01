@@ -15,14 +15,13 @@ module Apiwork
         #     class API < Adapter::Builder::API::Base
         #       def build
         #         enum :status, values: %w[active inactive]
-        #         object(:error) { |o| o.string(:message) }
+        #         object(:error) { |object| object.string(:message) }
         #       end
         #     end
         #   end
         class Base
-          # @api public
-          # @return [Symbol, nil] the data type name from serializer
-          attr_reader :data_type
+          attr_reader :context,
+                      :data_type
 
           delegate :enum,
                    :enum?,
@@ -34,6 +33,7 @@ module Apiwork
           def initialize(api_class, data_type: nil)
             @api_class = api_class
             @data_type = data_type
+            @context = Context.new(api_class)
           end
 
           # @api public

@@ -12,7 +12,7 @@ module Apiwork
             def build
               return unless build_type(representation_class)
 
-              actions.each_key do |action_name|
+              context.actions.each_key do |action_name|
                 action(action_name) do |action|
                   action.request do |request|
                     request.query do |query|

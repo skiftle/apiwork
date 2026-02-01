@@ -12,7 +12,7 @@ module Apiwork
               build_nested_payload_union if api_class.representation_registry.nested_writable?(representation_class)
 
               %i[create update].each do |action_name|
-                next unless actions.key?(action_name)
+                next unless context.action?(action_name)
 
                 payload_type_name = :"#{action_name}_payload"
                 next unless type?(payload_type_name)
@@ -142,9 +142,9 @@ module Apiwork
                 { tag: subclass.sti_name, type: :"#{alias_name}_#{action_name}_payload" }
               end
 
-              union(:"#{action_name}_payload", discriminator: representation_inheritance.column) do |u|
+              union(:"#{action_name}_payload", discriminator: representation_inheritance.column) do |union|
                 variant_refs.each do |variant_ref|
-                  u.variant(tag: variant_ref[:tag]) do |element|
+                  union.variant(tag: variant_ref[:tag]) do |element|
                     element.reference(variant_ref[:type])
                   end
                 end

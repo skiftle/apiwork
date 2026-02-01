@@ -14,16 +14,15 @@ module Apiwork
         #   class Builder
         #     class Contract < Adapter::Builder::Contract::Base
         #       def build
-        #         object(representation_class.root_key.singular) do |o|
+        #         object(representation_class.root_key.singular) do |object|
         #           # define resource shape
         #         end
         #       end
         #     end
         #   end
         class Base
-          # @api public
-          # @return [Class] the representation class for this contract
-          attr_reader :representation_class
+          attr_reader :context,
+                      :representation_class
 
           delegate :api_class,
                    :enum,
@@ -37,9 +36,10 @@ module Apiwork
                    :union,
                    to: :contract_class
 
-          def initialize(contract_class, representation_class)
+          def initialize(contract_class, representation_class, actions: {})
             @contract_class = contract_class
             @representation_class = representation_class
+            @context = Context.new(representation_class, actions)
           end
 
           # @api public

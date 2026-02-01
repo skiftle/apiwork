@@ -34,7 +34,7 @@ module Apiwork
           #     # build cursor pagination schema
           #   end
           def configured(key)
-            api_class.representation_registry.options_for(@capability_name, key)
+            context.configured(@capability_name, key)
           end
         end
       end
