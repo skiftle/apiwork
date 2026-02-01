@@ -61,28 +61,35 @@ RSpec.describe 'Custom Adapter', type: :integration do
     end
   end
 
-  describe 'Adapter features' do
+  describe 'RepresentationRegistry features' do
     let(:api_class) { Apiwork::API.find!('/api/v1') }
-    let(:features) { api_class.adapter.build_features(api_class.root_resource) }
+    let(:registry) { api_class.representation_registry }
 
-    it 'provides features object for conditional registration' do
-      expect(features).to respond_to(:filter_types)
-      expect(features).to respond_to(:nullable_filter_types)
-      expect(features).to respond_to(:sortable?)
-      expect(features).to respond_to(:filterable?)
-      expect(features).to respond_to(:index_actions?)
+    it 'provides feature methods for conditional registration' do
+      expect(registry).to respond_to(:filter_types)
+      expect(registry).to respond_to(:nullable_filter_types)
+      expect(registry).to respond_to(:sortable?)
+      expect(registry).to respond_to(:filterable?)
     end
 
     it 'filter_types returns array of types' do
-      expect(features.filter_types).to be_an(Array)
+      expect(registry.filter_types).to be_an(Array)
     end
 
     it 'filterable? responds with boolean' do
-      expect(features.filterable?).to be(true).or be(false)
+      expect(registry.filterable?).to be(true).or be(false)
     end
 
     it 'sortable? responds with boolean' do
-      expect(features.sortable?).to be(true).or be(false)
+      expect(registry.sortable?).to be(true).or be(false)
+    end
+  end
+
+  describe 'Resource index actions' do
+    let(:api_class) { Apiwork::API.find!('/api/v1') }
+
+    it 'has_index_actions? responds with boolean' do
+      expect(api_class.root_resource.has_index_actions?).to be(true).or be(false)
     end
   end
 

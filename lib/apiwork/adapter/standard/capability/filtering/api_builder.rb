@@ -7,10 +7,11 @@ module Apiwork
         class Filtering
           class APIBuilder < Adapter::Capability::API::Base
             def build
-              return unless features.filterable?
+              registry = api_class.representation_registry
+              return unless registry.filterable?
 
-              features.filter_types.each { |type| register_filter(type, nullable: false) }
-              features.nullable_filter_types.each { |type| register_filter(type, nullable: true) }
+              registry.filter_types.each { |type| register_filter(type, nullable: false) }
+              registry.nullable_filter_types.each { |type| register_filter(type, nullable: true) }
             end
 
             private

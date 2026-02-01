@@ -32,6 +32,45 @@ module Apiwork
         @store.clear
         @roles.clear
       end
+
+      def filter_types
+        @filter_types ||= extract_filter_types(nullable: false)
+      end
+
+      def nullable_filter_types
+        @nullable_filter_types ||= extract_filter_types(nullable: true)
+      end
+
+      def sortable?
+        return @sortable if defined?(@sortable)
+
+        @sortable = @store.any? do |representation|
+          representation.attributes.values.any?(&:sortable?) ||
+            representation.associations.values.any?(&:sortable?)
+        end
+      end
+
+      def filterable?
+        filter_types.any?
+      end
+
+      def options_for(option, key = nil)
+        @store.filter_map { |representation| representation.adapter_config.dig(option, key) }.to_set
+      end
+
+      private
+
+      def extract_filter_types(nullable:)
+        filterable_attributes = @store
+          .flat_map { |representation| representation.attributes.values }
+          .select(&:filterable?)
+
+        if nullable
+          filterable_attributes.select(&:nullable?).map(&:type).to_set.to_a
+        else
+          filterable_attributes.map(&:type).to_set.to_a
+        end
+      end
     end
   end
 end

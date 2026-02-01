@@ -171,13 +171,13 @@ module Apiwork
         self.class.error_wrapper.new(data).json
       end
 
-      def register_api(api_class, features)
+      def register_api(api_class)
         capabilities.each do |capability|
-          capability.api_types(api_class, features)
+          capability.api_types(api_class)
         end
 
         error_serializer_class = self.class.error_serializer
-        error_serializer_class.new.api_types(api_class, features)
+        error_serializer_class.new.api_types(api_class)
 
         build_error_response_body(api_class, error_serializer_class)
       end
@@ -199,10 +199,6 @@ module Apiwork
 
       def apply_response_transformers(response)
         run_capability_response_transformers(response)
-      end
-
-      def build_features(structure)
-        Features.new(structure)
       end
 
       def capabilities

@@ -41,11 +41,11 @@ module Apiwork
             end
           end
 
-          def api_types(api_class, features)
+          def api_types(api_class)
             builder_class = self.class.api_builder
             return unless builder_class
 
-            builder_class.new(api_class, features, data_type: self.class.data_type).build
+            builder_class.new(api_class, data_type: self.class.data_type).build
           end
 
           # @api public

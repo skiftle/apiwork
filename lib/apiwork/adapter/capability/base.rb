@@ -116,13 +116,12 @@ module Apiwork
           @adapter_name = adapter_name
         end
 
-        def api_types(api_class, features)
+        def api_types(api_class)
           builder_class = self.class.api_builder_class
           return unless builder_class
 
           builder_class.new(
             api_class,
-            features,
             capability_name: self.class.capability_name,
             options: config,
           ).build

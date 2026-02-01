@@ -117,61 +117,57 @@ These hooks let your adapter register types based on schema metadata. This is ho
 Called once when the API is loaded. Use this to register global types shared across all contracts:
 
 ```ruby
-def register_api(registrar, schema_data)
-  # Register pagination types
-  registrar.type :my_pagination do
-    integer :page
-    integer :total
+def register_api(api_class)
+  registry = api_class.representation_registry
+
+  # Register pagination types if any resource has index actions
+  if api_class.root_resource.has_index_actions?
+    api_class.object :my_pagination do |o|
+      o.integer :page
+      o.integer :total
+    end
   end
 
-  # Register error type
-  registrar.type :error do
-    string :code
-    string :message
-  end
-
-  # Register filter types based on schema attributes
-  if schema_data.filterable_types.include?(:string)
-    registrar.type :string_filter do
-      string? :eq
-      string? :contains
+  # Register filter types based on representation attributes
+  if registry.filterable?
+    registry.filter_types.each do |type|
+      api_class.object :"#{type}_filter" do |o|
+        o.param :eq, type: type, optional: true
+        o.param :contains, type: type, optional: true
+      end
     end
   end
 end
 ```
 
-The `registrar` provides:
+The `api_class` provides type registration methods:
 - `type(name, &block)` — Define a type
 - `enum(name, values:)` — Define an enum
 - `union(name, &block)` — Define a union type
+- `object(name, &block)` — Define an object type
 
-The `schema_data` provides information about all schemas in the API:
-- `filterable_types` — Array of attribute types that are filterable
-- `nullable_filterable_types` — Array of filterable types that can be null
-- `sortable?` — Whether any schema has sortable attributes
+The `api_class.representation_registry` provides:
+- `filter_types` — Array of attribute types that are filterable
+- `nullable_filter_types` — Array of filterable types that can be null
+- `sortable?` — Whether any representation has sortable attributes
+- `filterable?` — Whether any representation has filterable attributes
+- `options_for(capability, key)` — Get configured options across representations
+
+The `api_class.root_resource` provides:
 - `has_index_actions?` — Whether any resource has an index action
-- `uses_offset_pagination?` — Whether any schema uses offset pagination
-- `uses_cursor_pagination?` — Whether any schema uses cursor pagination
 
 ### register_contract
 
 Called for each contract. Use this to register types specific to that contract:
 
 ```ruby
-def register_contract(registrar, representation_class, actions)
-  # Register enums from representation attributes
-  representation_class.attribute_definitions.each do |name, attr|
-    if attr.enum&.any?
-      registrar.enum(name, values: attr.enum)
-    end
-  end
+def register_contract(contract_class, representation_class, actions)
+  # actions is a Hash of API::Resource::Action objects
+  # Each action has: name, method, type, member?, collection?, crud?
 
-  # Define action contracts
-  actions.each do |action_name, action_metadata|
-    # Get or create action definition, then work with it directly
-    action_definition = registrar.action(action_name)
+  actions.each do |action_name, action|
+    action_definition = contract_class.action(action_name)
 
-    # Build request/response based on action type
     case action_name
     when :index
       action_definition.request do
@@ -194,30 +190,23 @@ def register_contract(registrar, representation_class, actions)
       end
     end
   end
-
-  # Register response type
-  root_key = representation_class.root_key.singular.to_sym
-  registrar.type(root_key, representation_class: representation_class) do
-    representation_class.attribute_definitions.each do |name, attr|
-      send(attr.type, name, nullable: attr.nullable?)
-    end
-  end
 end
 ```
 
-The `registrar` provides:
-- `type(name, &block)` — Define a type
-- `enum(name, values:)` — Define an enum
-- `union(name, &block)` — Define a union type
-- `action(name, &block)` — Define an action (returns `ActionDefinition`)
-- `import(contract, as:)` — Import types from another contract
+The `actions` hash contains `API::Resource::Action` objects with:
+- `name` — Action name (:index, :show, :create, :update, :destroy, or custom)
+- `method` — HTTP method (:get, :post, :patch, :delete)
+- `type` — Action type (:member or :collection)
+- `member?` — True if action operates on a single resource
+- `collection?` — True if action operates on a collection
+- `crud?` — True if this is a standard CRUD action
 
 ### ActionDefinition
 
 `action` returns an `ActionDefinition` for configuring request/response:
 
 ```ruby
-registrar.action :index do
+contract_class.action :index do
   request do
     query { integer? :page }
   end
@@ -226,24 +215,6 @@ registrar.action :index do
       array :items do
         reference :item
       end
-    end
-  end
-end
-```
-
-Or capture and build incrementally:
-
-```ruby
-action = registrar.action(:index)
-action.request do
-  query do
-    integer :page
-  end
-end
-action.response do
-  body do
-    array :items do
-      reference :item
     end
   end
 end

@@ -622,7 +622,7 @@ module Apiwork
           built_contracts.add(contract_class)
 
           resource = @root_resource.find_resource { |resource| resource.resolve_contract_class == contract_class }
-          actions = resource ? build_adapter_actions(resource.actions) : {}
+          actions = resource ? resource.actions : {}
 
           adapter.register_contract(contract_class, representation_class, actions)
         end
@@ -641,8 +641,7 @@ module Apiwork
             build_contracts_for_resource(resource)
           end
 
-          features = adapter.build_features(@root_resource)
-          adapter.register_api(self, features)
+          adapter.register_api(self)
         end
 
         private
@@ -705,11 +704,7 @@ module Apiwork
 
           built_contracts.add(contract_class)
 
-          adapter.register_contract(contract_class, representation_class, build_adapter_actions(resource.actions))
-        end
-
-        def build_adapter_actions(actions)
-          actions.transform_values { |action| Adapter::Action.new(action.name, action.method, action.type) }
+          adapter.register_contract(contract_class, representation_class, resource.actions)
         end
       end
     end

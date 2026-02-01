@@ -14,8 +14,8 @@ module Apiwork
           # @return [Configuration] capability options for this builder
           attr_reader :options
 
-          def initialize(api_class, features, capability_name: nil, options: nil)
-            super(api_class, features)
+          def initialize(api_class, capability_name: nil, options: nil)
+            super(api_class)
             @capability_name = capability_name
             @options = options
           end
@@ -34,7 +34,7 @@ module Apiwork
           #     # build cursor pagination schema
           #   end
           def configured(key)
-            features.options_for(@capability_name, key)
+            api_class.representation_registry.options_for(@capability_name, key)
           end
         end
       end

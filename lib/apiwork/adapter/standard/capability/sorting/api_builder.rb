@@ -7,7 +7,7 @@ module Apiwork
         class Sorting
           class APIBuilder < Adapter::Capability::API::Base
             def build
-              return unless features.sortable?
+              return unless api_class.representation_registry.sortable?
 
               enum :sort_direction, values: %w[asc desc]
             end
