@@ -16,7 +16,7 @@ module Apiwork
                   raise ContractError, sorter.issues if sorter.issues.any?
 
                   includes = IncludesResolver.new(representation_class).resolve_params(params)
-                  [result, includes]
+                  { includes:, data: result }
                 end
               end
 

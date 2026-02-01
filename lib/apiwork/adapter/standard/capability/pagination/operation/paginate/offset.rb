@@ -24,10 +24,10 @@ module Apiwork
                   number = @params.fetch(:number, 1).to_i
                   size = [@params.fetch(:size, @config.default_size).to_i, 1].max
 
-                  [
-                    @relation.limit(size).offset((number - 1) * size),
-                    build_metadata(number, size),
-                  ]
+                  {
+                    data: @relation.limit(size).offset((number - 1) * size),
+                    metadata: build_metadata(number, size),
+                  }
                 end
 
                 private

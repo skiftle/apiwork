@@ -26,7 +26,7 @@ module Apiwork
                   has_more = records.length > size
                   records = records.first(size)
 
-                  [records, build_metadata(records, has_more)]
+                  { data: records, metadata: build_metadata(records, has_more) }
                 end
 
                 private
