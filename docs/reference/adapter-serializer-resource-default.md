@@ -1,28 +1,33 @@
 ---
-order: 22
+order: 23
 prev: false
 next: false
 ---
 
-# Adapter::Serializer::Resource::Base
+# Adapter::Serializer::Resource::Default
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/serializer/resource/base.rb#L21)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/serializer/resource/default.rb#L23)
 
-Base class for resource serializers.
+Default resource serializer.
 
-Resource serializers handle serialization of records and collections
-and define resource types at the contract level.
+Delegates serialization to the representation class using its root key as data type.
 
-**Example**
+**Example: Configuration**
 
 ```ruby
-class MyResourceSerializer < Serializer::Resource::Base
-  contract_builder Builder::Contract
-
-  def serialize(resource, context:, serialize_options:)
-    representation_class.serialize(resource, context:)
-  end
+class MyAdapter < Adapter::Base
+  serializer Serializer::Resource::Default
 end
+```
+
+**Example: Output**
+
+```ruby
+{
+  "id": 1,
+  "number": "INV-001",
+  "customer": { "id": 5, "name": "Acme" }
+}
 ```
 
 ## Class Methods
@@ -78,27 +83,5 @@ Sets or gets the data type resolver for this serializer.
 **Returns**
 
 `Class` — the representation class
-
----
-
-### #serialize
-
-`#serialize(resource, context:, serialize_options:)`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/serializer/resource/base.rb#L66)
-
-Serializes a resource.
-
-**Parameters**
-
-| Name | Type | Description |
-|------|------|-------------|
-| `resource` | `Object` | the resource to serialize |
-| `context` | `Hash` | serialization context |
-| `serialize_options` | `Hash` | options (e.g., include) |
-
-**Returns**
-
-`Hash` — the serialized resource
 
 ---
