@@ -10,7 +10,7 @@ next: false
 
 Base class for Contract-phase type builders.
 
-Contract phase runs once per bound contract at registration time.
+Contract phase runs once per contract with representation at registration time.
 Use it to generate contract-specific types based on the representation.
 
 **Example**

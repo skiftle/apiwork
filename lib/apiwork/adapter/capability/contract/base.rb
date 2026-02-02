@@ -7,7 +7,7 @@ module Apiwork
         # @api public
         # Base class for capability Contract phase.
         #
-        # Contract phase runs once per bound contract at registration time.
+        # Contract phase runs once per contract with representation at registration time.
         # Use it to generate contract-specific types based on the representation.
         class Base < Builder::Contract::Base
           # @api public

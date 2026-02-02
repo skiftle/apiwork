@@ -7,11 +7,11 @@ module Apiwork
         # @api public
         # Scope for capability contract builders.
         #
-        # Provides access to the representation and actions bound to this contract.
+        # Provides access to the representation and actions linked to this contract.
         # Use this to query contract-specific state when building types.
         class Scope
           # @api public
-          # @return [Hash{Symbol => Resource::Action}] actions bound to this contract
+          # @return [Hash{Symbol => Resource::Action}] actions linked to this contract
           attr_reader :actions
 
           attr_reader :representation_class

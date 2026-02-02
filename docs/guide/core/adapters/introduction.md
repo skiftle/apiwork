@@ -8,9 +8,9 @@ The **adapter** is the runtime layer that executes your API. It translates betwe
 
 The adapter implements the API conventions and enforces consistent behavior across the entire API. Every resource follows the same patterns for filtering, sorting, pagination, and serialization.
 
-## Bound Contracts
+## Contracts with Representation
 
-A contract becomes **bound** when you call `representation` with a representation class.
+A contract gains a **representation** when you call `representation` with a representation class.
 
 ```ruby
 class InvoiceContract < Apiwork::Contract::Base
@@ -18,7 +18,7 @@ class InvoiceContract < Apiwork::Contract::Base
 end
 ```
 
-Bound contracts unlock capabilities like filtering, sorting, and includes — behaviors that require knowledge of the underlying data structure. Contracts without representations remain valid but operate without these derived behaviors.
+Contracts with representation unlock capabilities like filtering, sorting, and includes — behaviors that require knowledge of the underlying data structure. Contracts without representations remain valid but operate without these derived behaviors.
 
 ## Capabilities
 
@@ -29,13 +29,13 @@ Each capability can contribute to three phases:
 | Phase | Runs | Purpose |
 |-------|------|---------|
 | **API** | Once per API | Register shared types used across all contracts |
-| **Contract** | Once per bound contract | Generate contract-specific types |
+| **Contract** | Once per contract with representation | Generate contract-specific types |
 | **Computation** | Each request | Transform data at runtime |
 
 For example, the Filtering capability:
 
 - **API phase**: Registers generic filter types (`string_filter`, `date_filter`, `uuid_filter`) — once per API
-- **Contract phase**: Generates a `filter` type from the representation's filterable attributes — once per bound contract
+- **Contract phase**: Generates a `filter` type from the representation's filterable attributes — once per contract with representation
 - **Computation phase**: Translates filter parameters into database queries — once per request
 
 Computations can be scoped to run only for collections or single records. Pagination runs on collections. Writing validation runs on records.

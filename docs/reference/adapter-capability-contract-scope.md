@@ -10,7 +10,7 @@ next: false
 
 Scope for capability contract builders.
 
-Provides access to the representation and actions bound to this contract.
+Provides access to the representation and actions linked to this contract.
 Use this to query contract-specific state when building types.
 
 ## Instance Methods
@@ -43,7 +43,7 @@ Returns whether an action exists.
 
 **Returns**
 
-`Hash{Symbol => Resource::Action}` — actions bound to this contract
+`Hash{Symbol => Resource::Action}` — actions linked to this contract
 
 ---
 
