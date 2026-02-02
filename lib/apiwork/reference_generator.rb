@@ -111,7 +111,10 @@ module Apiwork
       return true unless method.docstring.to_s.strip.empty?
 
       useful_tags = method.docstring.tags.reject do |tag|
-        tag.tag_name == 'api' || tag.text.to_s.strip.empty?
+        next true if tag.tag_name == 'api'
+        next false if tag.tag_name == 'see' && tag.name.present?
+
+        tag.text.to_s.strip.empty?
       end
       useful_tags.any?
     end
