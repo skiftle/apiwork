@@ -12,13 +12,13 @@ Shape builder for capability metadata.
 
 Provides [#options](#options) for accessing capability configuration,
 plus all DSL methods from [API::Object](api-object) for defining structure.
-Used by computations to define their metadata contribution.
+Used by operations to define their metadata contribution.
 
-**Example: Add pagination metadata**
+**Example: Add pagination metadata shape**
 
 ```ruby
-metadata do |shape|
-  shape.reference :pagination
+metadata_shape do
+  reference :pagination
 end
 ```
 

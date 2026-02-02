@@ -11,8 +11,8 @@ next: false
 Base class for wrapper shapes.
 
 Subclass to define response type structure for record or collection wrappers.
-The block receives the shape instance with delegated type definition methods
-and access to root_key and metadata.
+The block is evaluated via instance_exec, providing access to type DSL methods
+and helpers like root_key and metadata_shapes.
 
 **Example: Custom shape class**
 
@@ -21,7 +21,7 @@ class MyShape < Wrapper::Shape
   def build
     reference(:invoice)
     object?(:meta)
-    merge_shape!(metadata)
+    merge_shape!(metadata_shapes)
   end
 end
 ```
@@ -29,10 +29,10 @@ end
 **Example: Inline shape block**
 
 ```ruby
-shape do |shape|
-  shape.reference(shape.root_key.singular.to_sym)
-  shape.object?(:meta)
-  shape.merge_shape!(shape.metadata)
+shape do
+  reference(root_key.singular.to_sym)
+  object?(:meta)
+  merge_shape!(metadata_shapes)
 end
 ```
 
@@ -50,15 +50,15 @@ end
 
 ---
 
-### #metadata
+### #metadata_shapes
 
-`#metadata`
+`#metadata_shapes`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L53)
 
 **Returns**
 
-[API::Object](api-object) — capability shapes to merge
+[API::Object](api-object) — aggregated capability shapes to merge
 
 ---
 

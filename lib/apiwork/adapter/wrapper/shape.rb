@@ -7,34 +7,34 @@ module Apiwork
       # Base class for wrapper shapes.
       #
       # Subclass to define response type structure for record or collection wrappers.
-      # The block receives the shape instance with delegated type definition methods
-      # and access to root_key and metadata.
+      # The block is evaluated via instance_exec, providing access to type DSL methods
+      # and helpers like root_key and metadata_shapes.
       #
       # @example Custom shape class
       #   class MyShape < Wrapper::Shape
       #     def build
       #       reference(:invoice)
       #       object?(:meta)
-      #       merge_shape!(metadata)
+      #       merge_shape!(metadata_shapes)
       #     end
       #   end
       #
       # @example Inline shape block
-      #   shape do |shape|
-      #     shape.reference(shape.root_key.singular.to_sym)
-      #     shape.object?(:meta)
-      #     shape.merge_shape!(shape.metadata)
+      #   shape do
+      #     reference(root_key.singular.to_sym)
+      #     object?(:meta)
+      #     merge_shape!(metadata_shapes)
       #   end
       class Shape
         class << self
           def build(target, root_key, capabilities, representation_class, type, data_type: nil)
-            metadata = build_metadata(capabilities, representation_class, type)
-            new(target, root_key, metadata, data_type:).build
+            metadata_shapes = build_metadata_shapes(capabilities, representation_class, type)
+            new(target, root_key, metadata_shapes, data_type:).build
           end
 
           private
 
-          def build_metadata(capabilities, representation_class, type)
+          def build_metadata_shapes(capabilities, representation_class, type)
             result = ::Apiwork::API::Object.new
             capabilities.each do |capability|
               shape = capability.shape(representation_class, type)
@@ -49,8 +49,8 @@ module Apiwork
         attr_reader :data_type
 
         # @api public
-        # @return [API::Object] capability shapes to merge
-        attr_reader :metadata
+        # @return [API::Object] aggregated capability shapes to merge
+        attr_reader :metadata_shapes
 
         # @api public
         # @return [RootKey] the root key for the representation
@@ -93,10 +93,10 @@ module Apiwork
                  :uuid?,
                  to: :target
 
-        def initialize(target, root_key, metadata, data_type: nil)
+        def initialize(target, root_key, metadata_shapes, data_type: nil)
           @target = target
           @root_key = root_key
-          @metadata = metadata
+          @metadata_shapes = metadata_shapes
           @data_type = data_type
         end
 

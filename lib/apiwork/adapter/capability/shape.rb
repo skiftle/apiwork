@@ -8,11 +8,11 @@ module Apiwork
       #
       # Provides {#options} for accessing capability configuration,
       # plus all DSL methods from {API::Object} for defining structure.
-      # Used by computations to define their metadata contribution.
+      # Used by operations to define their metadata contribution.
       #
-      # @example Add pagination metadata
-      #   metadata do |shape|
-      #     shape.reference :pagination
+      # @example Add pagination metadata shape
+      #   metadata_shape do
+      #     reference :pagination
       #   end
       class Shape
         # @api public

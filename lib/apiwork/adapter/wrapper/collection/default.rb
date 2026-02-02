@@ -24,13 +24,13 @@ module Apiwork
         #     "pagination": { "current": 1, "total": 5 }
         #   }
         class Default < Base
-          shape do |shape|
-            shape.array(shape.root_key.plural.to_sym) do |array|
-              array.reference(shape.data_type)
+          shape do
+            array(root_key.plural.to_sym) do |array|
+              array.reference(data_type)
             end
 
-            shape.object?(:meta)
-            shape.merge_shape!(shape.metadata)
+            object?(:meta)
+            merge_shape!(metadata_shapes)
           end
 
           def json

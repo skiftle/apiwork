@@ -15,26 +15,26 @@ Use it to transform data at runtime.
 
 ## Class Methods
 
-### .metadata
+### .metadata_shape
 
-`.metadata(&block)`
+`.metadata_shape(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L54)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L53)
 
 Defines metadata shape for this operation.
 
-The block receives a shape builder with access to type DSL methods
-and capability options.
+The block is evaluated via instance_exec on a [Capability::Shape](adapter-capability-shape),
+providing access to type DSL methods and capability options.
 
 **Returns**
 
-`Proc`, `nil` — the metadata block
+`Proc`, `nil` — the metadata shape block
 
 **Example**
 
 ```ruby
-metadata do |shape|
-  shape.reference(:pagination, to: :offset_pagination)
+metadata_shape do
+  reference(:pagination, to: :offset_pagination)
 end
 ```
 
@@ -66,7 +66,7 @@ Sets the target for this operation.
 
 `#apply`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L75)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L74)
 
 Applies this operation to the data.
 
@@ -131,7 +131,7 @@ Return nil if no changes are made.
 
 `#result(data: nil, includes: nil, metadata: nil, serialize_options: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L87)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L86)
 
 Creates a result object.
 
@@ -154,7 +154,7 @@ Creates a result object.
 
 `#translate(*segments, default: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L112)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L111)
 
 Translates a key using the adapter's i18n convention.
 

@@ -40,20 +40,19 @@ module Apiwork
             # @api public
             # Defines metadata shape for this operation.
             #
-            # The block receives a shape builder with access to type DSL methods
-            # and capability options.
+            # The block is evaluated via instance_exec on a {Capability::Shape},
+            # providing access to type DSL methods and capability options.
             #
-            # @yield [shape] block that defines metadata structure
-            # @yieldparam shape [Capability::Shape] shape builder with options
-            # @return [Proc, nil] the metadata block
+            # @yield block that defines metadata structure
+            # @return [Proc, nil] the metadata shape block
             #
             # @example
-            #   metadata do |shape|
-            #     shape.reference(:pagination, to: :offset_pagination)
+            #   metadata_shape do
+            #     reference(:pagination, to: :offset_pagination)
             #   end
-            def metadata(&block)
-              @metadata_block = block if block
-              @metadata_block
+            def metadata_shape(&block)
+              @metadata_shape_block = block if block
+              @metadata_shape_block
             end
           end
 

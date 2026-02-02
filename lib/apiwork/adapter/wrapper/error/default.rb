@@ -20,8 +20,8 @@ module Apiwork
         #     "layer": "domain"
         #   }
         class Default < Base
-          shape do |shape|
-            shape.extends(shape.data_type)
+          shape do
+            extends(data_type)
           end
 
           def json

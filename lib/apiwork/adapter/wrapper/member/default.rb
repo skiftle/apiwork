@@ -20,10 +20,10 @@ module Apiwork
         #     "meta": { ... }
         #   }
         class Default < Base
-          shape do |shape|
-            shape.reference(shape.root_key.singular.to_sym, to: shape.data_type)
-            shape.object?(:meta)
-            shape.merge_shape!(shape.metadata)
+          shape do
+            reference(root_key.singular.to_sym, to: data_type)
+            object?(:meta)
+            merge_shape!(metadata_shapes)
           end
 
           def json

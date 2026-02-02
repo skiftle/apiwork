@@ -8,8 +8,8 @@ module Apiwork
           class Operation < Adapter::Capability::Operation::Base
             target :collection
 
-            metadata do |shape|
-              shape.reference(:pagination, to: (shape.options.strategy == :cursor ? :cursor_pagination : :offset_pagination))
+            metadata_shape do
+              reference(:pagination, to: (options.strategy == :cursor ? :cursor_pagination : :offset_pagination))
             end
 
             def apply
