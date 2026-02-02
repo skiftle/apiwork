@@ -24,7 +24,7 @@ module Apiwork
             extends(data_type)
           end
 
-          def json
+          def wrap
             data
           end
         end

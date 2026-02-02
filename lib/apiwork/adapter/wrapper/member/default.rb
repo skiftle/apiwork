@@ -26,7 +26,7 @@ module Apiwork
             merge_shape!(metadata_shapes)
           end
 
-          def json
+          def wrap
             {
               root_key.singular.to_sym => data,
               meta: meta.presence,

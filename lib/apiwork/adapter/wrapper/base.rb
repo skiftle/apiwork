@@ -51,7 +51,7 @@ module Apiwork
           @data = data
         end
 
-        def json
+        def wrap
           raise NotImplementedError
         end
       end
