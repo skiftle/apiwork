@@ -347,7 +347,7 @@ module Apiwork
 
       if without_apiwork.start_with?('Contract::')
         normalized = without_apiwork.delete_prefix('Contract::')
-        "contract-#{dasherize(normalized)}"
+        "contract-#{dasherize(normalized.gsub('::', '-'))}"
       elsif without_apiwork.start_with?('Introspection::')
         dasherize(without_apiwork.gsub('::', '-'))
       elsif without_apiwork.start_with?('Data::')

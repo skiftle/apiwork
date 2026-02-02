@@ -6,7 +6,7 @@ module Apiwork
     # Base class for adapters.
     #
     # Subclass to create custom adapters with different response formats.
-    # Configure with {representation} for serialization and document classes for response wrapping.
+    # Configure with {.representation} for serialization and document classes for response wrapping.
     #
     # @example Custom adapter
     #   class BillingAdapter < Apiwork::Adapter::Base
