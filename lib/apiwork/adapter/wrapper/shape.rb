@@ -12,7 +12,7 @@ module Apiwork
       #
       # @example Custom shape class
       #   class MyShape < Wrapper::Shape
-      #     def build
+      #     def apply
       #       reference(:invoice)
       #       object?(:meta)
       #       merge_shape!(metadata_shapes)
@@ -27,9 +27,9 @@ module Apiwork
       #   end
       class Shape
         class << self
-          def build(target, root_key, capabilities, representation_class, type, data_type: nil)
+          def apply(target, root_key, capabilities, representation_class, type, data_type: nil)
             metadata_shapes = build_metadata_shapes(capabilities, representation_class, type)
-            new(target, root_key, metadata_shapes, data_type:).build
+            new(target, root_key, metadata_shapes, data_type:).apply
           end
 
           private
@@ -196,7 +196,7 @@ module Apiwork
           @data_type = data_type
         end
 
-        def build
+        def apply
           raise NotImplementedError
         end
       end

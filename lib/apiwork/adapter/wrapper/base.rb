@@ -39,7 +39,7 @@ module Apiwork
             Class.new(Shape) do
               @callable = callable
 
-              def build
+              def apply
                 block = self.class.instance_variable_get(:@callable)
                 block.arity.positive? ? block.call(self) : instance_exec(&block)
               end

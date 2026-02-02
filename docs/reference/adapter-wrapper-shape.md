@@ -18,7 +18,7 @@ and helpers like root_key and metadata_shapes.
 
 ```ruby
 class MyShape < Wrapper::Shape
-  def build
+  def apply
     reference(:invoice)
     object?(:meta)
     merge_shape!(metadata_shapes)

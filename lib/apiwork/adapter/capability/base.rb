@@ -145,12 +145,7 @@ module Apiwork
           return nil if scope && scope != type
 
           object = ::Apiwork::API::Object.new
-          shape = Operation::MetadataShape.new(object, merged_config(representation_class))
-          if metadata_shape_block.arity.positive?
-            metadata_shape_block.call(shape)
-          else
-            shape.instance_exec(&metadata_shape_block)
-          end
+          Operation::MetadataShape.apply(object, merged_config(representation_class), &metadata_shape_block)
           object.params.empty? ? nil : object
         end
 

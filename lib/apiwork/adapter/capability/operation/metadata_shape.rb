@@ -16,6 +16,12 @@ module Apiwork
         #     reference :pagination
         #   end
         class MetadataShape
+          class << self
+            def apply(object, options, &block)
+              new(object, options, block).apply
+            end
+          end
+
           # @api public
           # @return [Configuration] capability options
           attr_reader :options
@@ -142,9 +148,14 @@ module Apiwork
                    :uuid?,
                    to: :object
 
-          def initialize(object, options)
+          def initialize(object, options, block)
             @object = object
             @options = options
+            @block = block
+          end
+
+          def apply
+            @block.arity.positive? ? @block.call(self) : instance_exec(&@block)
           end
 
           private

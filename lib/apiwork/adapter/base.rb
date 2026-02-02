@@ -252,7 +252,7 @@ module Apiwork
         contract_action.response do |response|
           response.result_wrapper = result_wrapper
           response.body do |body|
-            member_shape_class.build(body, representation_class.root_key, capabilities, representation_class, :member, data_type:)
+            member_shape_class.apply(body, representation_class.root_key, capabilities, representation_class, :member, data_type:)
           end
         end
       end
@@ -265,7 +265,7 @@ module Apiwork
         contract_action.response do |response|
           response.result_wrapper = result_wrapper
           response.body do |body|
-            collection_shape_class.build(body, representation_class.root_key, capabilities, representation_class, :collection, data_type:)
+            collection_shape_class.apply(body, representation_class.root_key, capabilities, representation_class, :collection, data_type:)
           end
         end
       end
@@ -292,7 +292,7 @@ module Apiwork
           data_type = resolve_resource_data_type(representation_class)
 
           contract_class.object(success_type_name) do |object|
-            shape_class.build(object, representation_class.root_key, capabilities, representation_class, response_type, data_type:)
+            shape_class.apply(object, representation_class.root_key, capabilities, representation_class, response_type, data_type:)
           end
         end
 
@@ -314,7 +314,7 @@ module Apiwork
         data_type = error_serializer_class.data_type
 
         api_class.object(:error_response_body) do |object|
-          shape_class.build(object, nil, [], nil, :error, data_type:)
+          shape_class.apply(object, nil, [], nil, :error, data_type:)
         end
       end
 
