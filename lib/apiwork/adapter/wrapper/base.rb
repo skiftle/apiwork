@@ -7,6 +7,8 @@ module Apiwork
         attr_reader :data
 
         class << self
+          attr_reader :shape_class
+
           def wrapper_type(value = nil)
             if value
               @wrapper_type = value
@@ -30,8 +32,6 @@ module Apiwork
 
             @shape_class
           end
-
-          attr_reader :shape_class
 
           private
 
