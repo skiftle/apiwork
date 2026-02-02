@@ -23,7 +23,7 @@ Use it to transform data at runtime.
 
 Defines metadata shape for this operation.
 
-The block is evaluated via instance_exec on a [Capability::Shape](adapter-capability-shape),
+The block is evaluated via instance_exec on a [Capability::Shape](capability-shape),
 providing access to type DSL methods and capability options.
 
 **Returns**
