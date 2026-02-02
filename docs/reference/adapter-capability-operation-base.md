@@ -17,25 +17,38 @@ Use it to transform data at runtime.
 
 ### .metadata_shape
 
-`.metadata_shape(&block)`
+`.metadata_shape(klass = nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L53)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L58)
 
 Defines metadata shape for this operation.
 
-The block is evaluated via instance_exec on a [Capability::Shape](capability-shape),
-providing access to type DSL methods and capability options.
+Pass a block or a [MetadataShape](adapter-capability-operation-metadata-shape) subclass.
+Blocks are evaluated via instance_exec, providing access to
+type DSL methods and capability options.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `klass` | `Class, nil` | a MetadataShape subclass |
 
 **Returns**
 
-`Proc`, `nil` — the metadata shape block
+`Class`, `nil` — the metadata shape class
 
-**Example**
+**Example: With block**
 
 ```ruby
 metadata_shape do
   reference(:pagination, to: :offset_pagination)
 end
+```
+
+**Example: With class**
+
+```ruby
+metadata_shape PaginationShape
 ```
 
 ---
@@ -66,7 +79,7 @@ Sets the target for this operation.
 
 `#apply`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L74)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L96)
 
 Applies this operation to the data.
 
@@ -131,7 +144,7 @@ Return nil if no changes are made.
 
 `#result(data: nil, includes: nil, metadata: nil, serialize_options: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L86)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L108)
 
 Creates a result object.
 
@@ -154,7 +167,7 @@ Creates a result object.
 
 `#translate(*segments, default: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L111)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L133)
 
 Translates a key using the adapter's i18n convention.
 

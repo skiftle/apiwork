@@ -138,14 +138,14 @@ module Apiwork
           klass = self.class.operation_class
           return nil unless klass
 
-          metadata_shape_block = klass.metadata_shape
-          return nil unless metadata_shape_block
+          metadata_shape_class = klass.metadata_shape
+          return nil unless metadata_shape_class
 
           scope = klass.target
           return nil if scope && scope != type
 
           object = ::Apiwork::API::Object.new
-          Operation::MetadataShape.apply(object, merged_config(representation_class), &metadata_shape_block)
+          metadata_shape_class.apply(object, merged_config(representation_class))
           object.params.empty? ? nil : object
         end
 

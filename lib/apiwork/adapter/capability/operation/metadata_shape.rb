@@ -17,8 +17,8 @@ module Apiwork
         #   end
         class MetadataShape
           class << self
-            def apply(object, options, &block)
-              new(object, options, block).apply
+            def apply(object, options)
+              new(object, options).apply
             end
           end
 
@@ -148,14 +148,13 @@ module Apiwork
                    :uuid?,
                    to: :object
 
-          def initialize(object, options, block)
+          def initialize(object, options)
             @object = object
             @options = options
-            @block = block
           end
 
           def apply
-            @block.arity.positive? ? @block.call(self) : instance_exec(&@block)
+            raise NotImplementedError
           end
 
           private

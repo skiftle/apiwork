@@ -40,19 +40,41 @@ module Apiwork
             # @api public
             # Defines metadata shape for this operation.
             #
-            # The block is evaluated via instance_exec on a {Capability::Shape},
-            # providing access to type DSL methods and capability options.
+            # Pass a block or a {MetadataShape} subclass.
+            # Blocks are evaluated via instance_exec, providing access to
+            # type DSL methods and capability options.
             #
+            # @param klass [Class, nil] a MetadataShape subclass
             # @yield block that defines metadata structure
-            # @return [Proc, nil] the metadata shape block
+            # @return [Class, nil] the metadata shape class
             #
-            # @example
+            # @example With block
             #   metadata_shape do
             #     reference(:pagination, to: :offset_pagination)
             #   end
-            def metadata_shape(&block)
-              @metadata_shape_block = block if block
-              @metadata_shape_block
+            #
+            # @example With class
+            #   metadata_shape PaginationShape
+            def metadata_shape(klass = nil, &block)
+              if klass
+                @metadata_shape_class = klass
+              elsif block
+                @metadata_shape_class = wrap_metadata_shape_block(block)
+              end
+              @metadata_shape_class
+            end
+
+            private
+
+            def wrap_metadata_shape_block(callable)
+              Class.new(MetadataShape) do
+                @callable = callable
+
+                def apply
+                  block = self.class.instance_variable_get(:@callable)
+                  block.arity.positive? ? block.call(self) : instance_exec(&block)
+                end
+              end
             end
           end
 
