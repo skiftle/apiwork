@@ -22,6 +22,21 @@ module Apiwork
         class Base
           attr_reader :data_type
 
+          # @!method enum(name, values:, **options, &block)
+          #   @api public
+          #   @see API::Base#enum
+          # @!method enum?(name)
+          #   @api public
+          #   @see API::Base#enum?
+          # @!method object(name, **options, &block)
+          #   @api public
+          #   @see API::Base#object
+          # @!method type?(name)
+          #   @api public
+          #   @see API::Base#type?
+          # @!method union(name, **options, &block)
+          #   @api public
+          #   @see API::Base#union
           delegate :enum,
                    :enum?,
                    :object,

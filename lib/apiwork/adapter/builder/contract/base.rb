@@ -23,6 +23,36 @@ module Apiwork
         class Base
           attr_reader :representation_class
 
+          # @!method api_class
+          #   @api public
+          #   @see Contract::Base.api_class
+          # @!method enum(name, values:, **options, &block)
+          #   @api public
+          #   @see Contract::Base#enum
+          # @!method enum?(name)
+          #   @api public
+          #   @see Contract::Base#enum?
+          # @!method find_contract_for_representation(representation_class)
+          #   @api public
+          #   @see Contract::Base.find_contract_for_representation
+          # @!method import(type_name, from:)
+          #   @api public
+          #   @see Contract::Base#import
+          # @!method object(name, **options, &block)
+          #   @api public
+          #   @see Contract::Base#object
+          # @!method scoped_enum_name(name)
+          #   @api public
+          #   @see Contract::Base#scoped_enum_name
+          # @!method scoped_type_name(name)
+          #   @api public
+          #   @see Contract::Base#scoped_type_name
+          # @!method type?(name)
+          #   @api public
+          #   @see Contract::Base#type?
+          # @!method union(name, **options, &block)
+          #   @api public
+          #   @see Contract::Base#union
           delegate :api_class,
                    :enum,
                    :enum?,

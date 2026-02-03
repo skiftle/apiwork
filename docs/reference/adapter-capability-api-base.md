@@ -19,7 +19,7 @@ across all representations.
 
 `#build`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/api/base.rb#L43)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/api/base.rb#L57)
 
 Builds API-level types.
 
@@ -62,6 +62,42 @@ end
 
 ---
 
+### #enum
+
+`#enum(name, values:, **options, &block)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/api/base.rb#L40)
+
+**See also**
+
+- [API::Base#enum](api-base#enum)
+
+---
+
+### #enum?
+
+`#enum?(name)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/api/base.rb#L40)
+
+**See also**
+
+- [API::Base#enum?](api-base#enum?)
+
+---
+
+### #object
+
+`#object(name, **options, &block)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/api/base.rb#L40)
+
+**See also**
+
+- [API::Base#object](api-base#object)
+
+---
+
 ### #options
 
 `#options`
@@ -83,5 +119,29 @@ end
 **Returns**
 
 [Scope](adapter-capability-api-scope) — aggregated data across all representations
+
+---
+
+### #type?
+
+`#type?(name)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/api/base.rb#L40)
+
+**See also**
+
+- [API::Base#type?](api-base#type?)
+
+---
+
+### #union
+
+`#union(name, **options, &block)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/api/base.rb#L40)
+
+**See also**
+
+- [API::Base#union](api-base#union)
 
 ---
