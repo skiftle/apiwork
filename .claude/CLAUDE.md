@@ -585,6 +585,19 @@ class Parser
 end
 ```
 
+**Exception:** `private attr_reader` is allowed when the method is needed as a delegate target:
+
+```ruby
+# Good — private attr_reader for delegate target
+class Builder
+  delegate :enum, :object, to: :api_class
+
+  private
+
+  attr_reader :api_class  # Needed for delegate
+end
+```
+
 ---
 
 ## Underscore Prefix
