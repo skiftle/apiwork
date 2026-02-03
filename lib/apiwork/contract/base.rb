@@ -387,7 +387,7 @@ module Apiwork
           subclass.imports = {}
         end
 
-        def find_contract_for_representation(representation_class)
+        def contract_for(representation_class)
           return nil unless representation_class&.name
 
           contract_name = representation_class.name.sub(/Representation\z/, 'Contract')

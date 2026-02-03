@@ -43,6 +43,18 @@ Override this method to generate types based on the representation.
 
 ---
 
+### #contract_for
+
+`#contract_for(representation_class)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/contract/base.rb#L56)
+
+**See also**
+
+- [Contract::Base.contract_for](contract-base#contract-for)
+
+---
+
 ### #enum
 
 `#enum(name, values:, **options, &block)`
@@ -64,18 +76,6 @@ Override this method to generate types based on the representation.
 **See also**
 
 - [Contract::Base#enum?](contract-base#enum?)
-
----
-
-### #find_contract_for_representation
-
-`#find_contract_for_representation(representation_class)`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/contract/base.rb#L56)
-
-**See also**
-
-- [Contract::Base.find_contract_for_representation](contract-base#find-contract-for-representation)
 
 ---
 

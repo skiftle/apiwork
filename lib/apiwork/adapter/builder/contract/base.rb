@@ -32,9 +32,9 @@ module Apiwork
           # @!method enum?(name)
           #   @api public
           #   @see Contract::Base#enum?
-          # @!method find_contract_for_representation(representation_class)
+          # @!method contract_for(representation_class)
           #   @api public
-          #   @see Contract::Base.find_contract_for_representation
+          #   @see Contract::Base.contract_for
           # @!method import(type_name, from:)
           #   @api public
           #   @see Contract::Base#import
@@ -54,9 +54,9 @@ module Apiwork
           #   @api public
           #   @see Contract::Base#union
           delegate :api_class,
+                   :contract_for,
                    :enum,
                    :enum?,
-                   :find_contract_for_representation,
                    :import,
                    :object,
                    :scoped_enum_name,

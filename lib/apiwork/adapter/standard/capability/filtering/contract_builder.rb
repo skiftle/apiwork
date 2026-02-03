@@ -52,7 +52,7 @@ module Apiwork
                 representation = association.representation_class
                 next unless representation
 
-                contract = find_contract_for_representation(representation)
+                contract = contract_for(representation)
                 next unless contract
 
                 alias_name = representation.root_key.singular.to_sym

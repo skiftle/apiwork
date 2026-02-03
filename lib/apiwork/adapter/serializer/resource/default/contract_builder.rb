@@ -24,7 +24,7 @@ module Apiwork
             def import_association_contract(association_representation, visited)
               return nil if visited.include?(association_representation)
 
-              association_contract = find_contract_for_representation(association_representation)
+              association_contract = contract_for(association_representation)
               return nil unless association_contract
 
               alias_name = association_representation.root_key.singular.to_sym
@@ -140,7 +140,7 @@ module Apiwork
               union_type_name = representation_class.root_key.singular.to_sym
 
               build_sti_union(union_type_name:, visited:) do |variant_representation_class|
-                variant_contract = find_contract_for_representation(variant_representation_class)
+                variant_contract = contract_for(variant_representation_class)
                 next nil unless variant_contract
 
                 alias_name = variant_representation_class.root_key.singular.to_sym
@@ -161,7 +161,7 @@ module Apiwork
               return import_association_contract(association_representation, visited) if association_resource[:sti]
               return nil if visited.include?(association_representation)
 
-              association_contract = find_contract_for_representation(association_representation)
+              association_contract = contract_for(association_representation)
               return nil unless association_contract
 
               alias_name = association_representation.root_key.singular.to_sym

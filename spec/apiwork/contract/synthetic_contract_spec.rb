@@ -63,44 +63,44 @@ RSpec.describe 'Synthetic contracts' do
     Apiwork::Contract::Base._synthetic_contracts.clear
   end
 
-  describe '.find_contract_for_representation' do
+  describe '.contract_for' do
     context 'when explicit contract exists' do
       it 'returns the explicit contract' do
-        contract = Apiwork::Contract::Base.find_contract_for_representation(WithContractRepresentation)
+        contract = Apiwork::Contract::Base.contract_for(WithContractRepresentation)
         expect(contract).to eq(WithContractContract)
       end
 
       it 'does not create synthetic contract' do
-        Apiwork::Contract::Base.find_contract_for_representation(WithContractRepresentation)
+        Apiwork::Contract::Base.contract_for(WithContractRepresentation)
         expect(Apiwork::Contract::Base._synthetic_contracts).to be_empty
       end
     end
 
     context 'when no explicit contract exists' do
       it 'creates a synthetic contract' do
-        contract = CallerContract.find_contract_for_representation(OrphanRepresentation)
+        contract = CallerContract.contract_for(OrphanRepresentation)
         expect(contract).to be_present
         expect(contract).to be < Apiwork::Contract::Base
       end
 
       it 'caches the synthetic contract' do
-        first_call = CallerContract.find_contract_for_representation(OrphanRepresentation)
-        second_call = CallerContract.find_contract_for_representation(OrphanRepresentation)
+        first_call = CallerContract.contract_for(OrphanRepresentation)
+        second_call = CallerContract.contract_for(OrphanRepresentation)
         expect(first_call).to equal(second_call)
       end
 
       it 'sets representation_class on synthetic contract' do
-        contract = CallerContract.find_contract_for_representation(OrphanRepresentation)
+        contract = CallerContract.contract_for(OrphanRepresentation)
         expect(contract.representation_class).to eq(OrphanRepresentation)
       end
 
       it 'inherits api_class from caller contract' do
-        contract = CallerContract.find_contract_for_representation(OrphanRepresentation)
+        contract = CallerContract.contract_for(OrphanRepresentation)
         expect(contract.api_class).to eq(caller_api_class)
       end
 
       it 'synthetic contract is anonymous (no name)' do
-        contract = CallerContract.find_contract_for_representation(OrphanRepresentation)
+        contract = CallerContract.contract_for(OrphanRepresentation)
         expect(contract.name).to be_nil
       end
     end
@@ -108,14 +108,14 @@ RSpec.describe 'Synthetic contracts' do
     context 'when representation has no name' do
       it 'returns nil' do
         anonymous_representation = Class.new(Apiwork::Representation::Base)
-        contract = Apiwork::Contract::Base.find_contract_for_representation(anonymous_representation)
+        contract = Apiwork::Contract::Base.contract_for(anonymous_representation)
         expect(contract).to be_nil
       end
     end
 
     context 'when representation is nil' do
       it 'returns nil' do
-        contract = Apiwork::Contract::Base.find_contract_for_representation(nil)
+        contract = Apiwork::Contract::Base.contract_for(nil)
         expect(contract).to be_nil
       end
     end
@@ -127,7 +127,7 @@ RSpec.describe 'Synthetic contracts' do
     end
 
     it 'returns true for synthetic contracts' do
-      contract = CallerContract.find_contract_for_representation(OrphanRepresentation)
+      contract = CallerContract.contract_for(OrphanRepresentation)
       expect(contract.synthetic?).to be(true)
     end
 

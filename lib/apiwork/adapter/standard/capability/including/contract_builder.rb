@@ -124,7 +124,7 @@ module Apiwork
             end
 
             def resolve_association_include_type(representation_class, depth:, visited:)
-              contract_class = find_contract_for_representation(representation_class)
+              contract_class = contract_for(representation_class)
               return build_type(representation_class, visited:, depth: depth + 1) unless contract_class
 
               alias_name = representation_class.root_key.singular.to_sym

@@ -133,7 +133,7 @@ module Apiwork
               representation_inheritance = representation_class.inheritance
 
               variant_refs = representation_inheritance.subclasses.filter_map do |subclass|
-                subclass_contract = find_contract_for_representation(subclass)
+                subclass_contract = contract_for(subclass)
                 next unless subclass_contract
 
                 alias_name = subclass.root_key.singular.to_sym
@@ -255,7 +255,7 @@ module Apiwork
               resolved_representation_class = resolve_association_representation_class(association)
               return nil unless resolved_representation_class
 
-              association_contract = find_contract_for_representation(resolved_representation_class)
+              association_contract = contract_for(resolved_representation_class)
               return nil unless association_contract
 
               alias_name = resolved_representation_class.root_key.singular.to_sym
