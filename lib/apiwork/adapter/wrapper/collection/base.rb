@@ -7,13 +7,12 @@ module Apiwork
         class Base < Wrapper::Base
           wrapper_type :collection
 
-          attr_reader :capabilities, :meta, :metadata, :root_key
+          attr_reader :meta, :metadata, :root_key
 
-          def initialize(data, metadata, root_key, capabilities, meta)
+          def initialize(data, metadata, root_key, meta)
             super(data)
             @metadata = metadata
             @root_key = root_key
-            @capabilities = capabilities
             @meta = meta
           end
         end

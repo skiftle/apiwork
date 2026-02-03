@@ -4,43 +4,38 @@ module Apiwork
   module Adapter
     module Wrapper
       class Base
+        class_attribute :shape_class
+
         attr_reader :data
 
         class << self
-          attr_reader :shape_class
-
           def wrapper_type(value = nil)
-            if value
-              @wrapper_type = value
-            elsif defined?(@wrapper_type)
-              @wrapper_type
-            elsif superclass.respond_to?(:wrapper_type)
-              superclass.wrapper_type
-            end
+            @wrapper_type = value if value
+            @wrapper_type || (superclass.respond_to?(:wrapper_type) && superclass.wrapper_type)
           end
 
           def shape(klass_or_callable = nil, &block)
             callable = block || klass_or_callable
 
             if callable
-              @shape_class = if callable.respond_to?(:call)
-                               wrap_callable(callable)
-                             else
-                               callable
-                             end
+              self.shape_class = if callable.respond_to?(:call)
+                                   wrap_callable(callable)
+                                 else
+                                   callable
+                                 end
             end
 
-            @shape_class
+            shape_class
           end
 
           private
 
           def wrap_callable(callable)
             Class.new(Shape) do
-              @callable = callable
+              define_singleton_method(:callable) { callable }
 
               def apply
-                block = self.class.instance_variable_get(:@callable)
+                block = self.class.callable
                 block.arity.positive? ? block.call(self) : instance_exec(&block)
               end
             end

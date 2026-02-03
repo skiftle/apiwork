@@ -152,7 +152,7 @@ module Apiwork
         serializer = resource_serializer_instance(representation_class)
         data = serializer.serialize(collection, context:, serialize_options:)
 
-        self.class.collection_wrapper.new(data, metadata, representation_class.root_key, capabilities, meta).wrap
+        self.class.collection_wrapper.new(data, metadata, representation_class.root_key, meta).wrap
       end
 
       def process_member(record, representation_class, request, context: {}, meta: {})
@@ -161,7 +161,7 @@ module Apiwork
         serializer = resource_serializer_instance(representation_class)
         data = serializer.serialize(record, context:, serialize_options:)
 
-        self.class.member_wrapper.new(data, metadata, representation_class.root_key, capabilities, meta).wrap
+        self.class.member_wrapper.new(data, metadata, representation_class.root_key, meta).wrap
       end
 
       def process_error(error, representation_class, context: {})

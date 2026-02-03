@@ -68,10 +68,10 @@ module Apiwork
 
             def wrap_metadata_shape_block(callable)
               Class.new(MetadataShape) do
-                @callable = callable
+                define_singleton_method(:callable) { callable }
 
                 def apply
-                  block = self.class.instance_variable_get(:@callable)
+                  block = self.class.callable
                   block.arity.positive? ? block.call(self) : instance_exec(&block)
                 end
               end

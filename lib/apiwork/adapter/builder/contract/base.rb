@@ -21,7 +21,8 @@ module Apiwork
         #     end
         #   end
         class Base
-          attr_reader :representation_class
+          attr_reader :contract_class,
+                      :representation_class
 
           delegate :api_class,
                    :enum,
@@ -48,10 +49,6 @@ module Apiwork
           def build
             raise NotImplementedError
           end
-
-          private
-
-          attr_reader :contract_class
         end
       end
     end

@@ -19,7 +19,7 @@ Use it to generate contract-specific types based on the representation.
 
 `#build`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/contract/base.rb#L48)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/contract/base.rb#L49)
 
 Builds contract-level types.
 

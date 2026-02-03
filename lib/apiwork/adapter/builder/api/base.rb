@@ -20,7 +20,8 @@ module Apiwork
         #     end
         #   end
         class Base
-          attr_reader :data_type
+          attr_reader :api_class,
+                      :data_type
 
           delegate :enum,
                    :enum?,
@@ -42,10 +43,6 @@ module Apiwork
           def build
             raise NotImplementedError
           end
-
-          private
-
-          attr_reader :api_class
         end
       end
     end
