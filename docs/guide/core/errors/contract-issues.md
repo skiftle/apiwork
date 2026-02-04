@@ -44,17 +44,6 @@ end
 | `array_too_large`  | Too many items    | `max`, `actual`                   |
 | `depth_exceeded`   | Too deeply nested | `depth`, `max`                    |
 
-### Sort Errors
-
-| Code                     | Detail             | Meta                              |
-| ------------------------ | ------------------ | --------------------------------- |
-| `sort_params_invalid`    | Invalid sort params| `type`                            |
-| `field_not_sortable`     | Not sortable       | `field`, `available`              |
-| `sort_value_invalid`     | Invalid sort value | `field`, `type`                   |
-| `sort_direction_invalid` | Invalid direction  | `field`, `direction`, `allowed`   |
-| `association_invalid`    | Invalid association| `field`                           |
-| `association_not_sortable`| Not sortable      | `association`                     |
-
 ### Pagination Errors
 
 | Code              | Detail          | Meta     |
@@ -202,41 +191,6 @@ end
   "meta": {
     "depth": 11,
     "max": 10
-  }
-}
-```
-
-### Sort
-
-#### field_not_sortable
-
-```json
-{
-  "layer": "contract",
-  "code": "field_not_sortable",
-  "detail": "Not sortable",
-  "path": ["sort", "body"],
-  "pointer": "/sort/body",
-  "meta": {
-    "field": "body",
-    "available": ["title", "created_at"]
-  }
-}
-```
-
-#### sort_direction_invalid
-
-```json
-{
-  "layer": "contract",
-  "code": "sort_direction_invalid",
-  "detail": "Invalid direction",
-  "path": ["sort", "title"],
-  "pointer": "/sort/title",
-  "meta": {
-    "field": "title",
-    "direction": "up",
-    "allowed": ["asc", "desc"]
   }
 }
 ```
