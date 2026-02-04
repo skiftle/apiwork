@@ -34,7 +34,7 @@ module Apiwork
         attr_reader :path
 
         def locale_key
-          @locale_key ||= path&.delete_prefix('/')
+          @locale_key ||= path.delete_prefix('/')
         end
 
         def namespaces

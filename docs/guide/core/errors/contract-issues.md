@@ -52,13 +52,11 @@ end
 | `operator_invalid`          | Invalid operator         | `field`, `operator`, `allowed`|
 | `filter_value_invalid`      | Invalid filter value     | `field`, `type`, `allowed`    |
 | `enum_invalid`              | Invalid enum value       | `field`, `value`, `allowed`   |
-| `date_invalid`              | Invalid date             | `field`, `value`              |
-| `number_invalid`            | Invalid number           | `field`, `value`              |
 | `value_null`                | Cannot be null           | `field`                       |
 | `column_unknown`            | Unknown column type      | `field`                       |
 | `column_unsupported`        | Unsupported column type  | `field`, `type`               |
 | `association_not_found`     | Association not found    | `association`                 |
-| `association_schema_missing`| Association representation missing| `association`                |
+| `association_representation_missing`| Association representation missing| `association`          |
 
 ### Sort Errors
 
@@ -287,38 +285,6 @@ end
     "field": "status",
     "value": ["archived"],
     "allowed": ["draft", "published"]
-  }
-}
-```
-
-#### date_invalid
-
-```json
-{
-  "layer": "contract",
-  "code": "date_invalid",
-  "detail": "Invalid date",
-  "path": ["filter", "created_at"],
-  "pointer": "/filter/created_at",
-  "meta": {
-    "field": "created_at",
-    "value": "not-a-date"
-  }
-}
-```
-
-#### number_invalid
-
-```json
-{
-  "layer": "contract",
-  "code": "number_invalid",
-  "detail": "Invalid number",
-  "path": ["filter", "amount"],
-  "pointer": "/filter/amount",
-  "meta": {
-    "field": "amount",
-    "value": "abc"
   }
 }
 ```

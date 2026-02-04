@@ -277,13 +277,10 @@ The adapter only validates edge cases that pass contract validation:
 
 | Code | When It Fires |
 |------|---------------|
-| `date_invalid` | Date string couldn't be parsed (e.g., `2024-99-99`) |
-| `time_invalid` | Time string couldn't be parsed (e.g., `25:99:99`) |
-| `number_invalid` | Number parsing fails at runtime |
 | `enum_invalid` | Enum value changed in database after contract was built |
 | `value_null` | `null` operator on non-nullable column |
 
-These are rare — they only occur when values have the right type but fail parsing or business rules.
+These are rare — they only occur when values pass type validation but fail business rules.
 
 ### Association Errors
 
