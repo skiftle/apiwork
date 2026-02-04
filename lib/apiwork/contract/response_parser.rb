@@ -6,8 +6,10 @@ module Apiwork
       attr_reader :action_name,
                   :contract_class
 
-      def self.parse(contract_class, action_name, response)
-        new(contract_class, action_name).parse(response)
+      class << self
+        def parse(contract_class, action_name, response)
+          new(contract_class, action_name).parse(response)
+        end
       end
 
       def initialize(contract_class, action_name)

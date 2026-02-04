@@ -4,8 +4,10 @@ module Apiwork
   module Contract
     class RequestParser
       class Deserializer
-        def self.deserialize(shape, hash)
-          new(shape).deserialize(hash)
+        class << self
+          def deserialize(shape, hash)
+            new(shape).deserialize(hash)
+          end
         end
 
         def initialize(shape)

@@ -55,8 +55,10 @@ module Apiwork
           },
         }.freeze
 
-        def self.coerce(shape, hash)
-          new(shape).coerce(hash)
+        class << self
+          def coerce(shape, hash)
+            new(shape).coerce(hash)
+          end
         end
 
         def initialize(shape)

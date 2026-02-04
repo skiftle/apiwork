@@ -4,8 +4,10 @@ module Apiwork
   module Contract
     class RequestParser
       class Transformer
-        def self.transform(shape, params)
-          new(shape).transform(params)
+        class << self
+          def transform(shape, params)
+            new(shape).transform(params)
+          end
         end
 
         def initialize(shape)
