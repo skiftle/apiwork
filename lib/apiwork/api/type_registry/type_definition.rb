@@ -64,18 +64,6 @@ module Apiwork
           shape.variants if union?
         end
 
-        def validate(value, current_depth:, field_path:, max_depth:)
-          return nil unless object?
-
-          temp_param = Contract::Object.new(nil)
-
-          params.each do |param_name, param_options|
-            add_param_to_shape(temp_param, param_name, param_options)
-          end
-
-          temp_param.validate(value, current_depth:, max_depth:, path: field_path)
-        end
-
         def merge(block:, deprecated:, description:, example:, format:)
           TypeDefinition.new(
             @name,
@@ -108,42 +96,6 @@ module Apiwork
             else
               shape.instance_eval(&new_block)
             end
-          end
-        end
-
-        def add_param_to_shape(target_param, param_name, param_options)
-          nested_shape = param_options[:shape]
-
-          if nested_shape.is_a?(Object)
-            target_param.param(
-              param_name,
-              **param_options.except(:name, :shape),
-            ) do
-              nested_shape.params.each do |nested_name, nested_param_options|
-                param(nested_name, **nested_param_options.except(:name, :shape))
-              end
-            end
-          elsif nested_shape.is_a?(Union)
-            target_param.param(
-              param_name,
-              **param_options.except(:name, :shape),
-            ) do
-              nested_shape.variants.each do |variant|
-                variant_shape = variant[:shape]
-
-                if variant_shape.is_a?(Object)
-                  variant(**variant.except(:shape)) do
-                    variant_shape.params.each do |name, param_options|
-                      param(name, **param_options.except(:name, :shape))
-                    end
-                  end
-                else
-                  variant(**variant.except(:shape))
-                end
-              end
-            end
-          else
-            target_param.param(param_name, **param_options.except(:name, :shape))
           end
         end
 

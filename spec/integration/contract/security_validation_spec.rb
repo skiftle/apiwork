@@ -16,7 +16,7 @@ RSpec.describe 'Security and edge case validation' do
 
     it 'handles array with 1000 elements' do
       large_array = (1..1000).to_a
-      result = definition.validate({ items: large_array })
+      result = Apiwork::Contract::Validator.validate(definition, { items: large_array })
 
       expect(result[:issues]).to be_empty
       expect(result[:params][:items].size).to eq(1000)
@@ -24,7 +24,7 @@ RSpec.describe 'Security and edge case validation' do
 
     it 'validates all elements in large array' do
       large_array = Array.new(100, 42)
-      result = definition.validate({ items: large_array })
+      result = Apiwork::Contract::Validator.validate(definition, { items: large_array })
 
       expect(result[:issues]).to be_empty
     end
@@ -38,7 +38,7 @@ RSpec.describe 'Security and edge case validation' do
     end
 
     it 'handles empty hash when required field missing' do
-      result = definition.validate({})
+      result = Apiwork::Contract::Validator.validate(definition, {})
 
       expect(result[:issues]).not_to be_empty
       expect(result[:issues].first.code).to eq(:field_missing)
@@ -54,7 +54,7 @@ RSpec.describe 'Security and edge case validation' do
     end
 
     it 'handles unicode characters' do
-      result = definition.validate({ text: '你好世界 🌍 Здравствуй мир' })
+      result = Apiwork::Contract::Validator.validate(definition, { text: '你好世界 🌍 Здравствуй мир' })
 
       expect(result[:issues]).to be_empty
       expect(result[:params][:text]).to eq('你好世界 🌍 Здравствуй мир')
@@ -62,7 +62,7 @@ RSpec.describe 'Security and edge case validation' do
 
     it 'handles very long strings' do
       long_string = 'a' * 100_000
-      result = definition.validate({ text: long_string })
+      result = Apiwork::Contract::Validator.validate(definition, { text: long_string })
 
       expect(result[:issues]).to be_empty
       expect(result[:params][:text].length).to eq(100_000)
@@ -73,7 +73,7 @@ RSpec.describe 'Security and edge case validation' do
         d.string :text, max: 100, optional: true
       end
 
-      result = constrained_def.validate({ text: 'a' * 101 })
+      result = Apiwork::Contract::Validator.validate(constrained_def, { text: 'a' * 101 })
 
       expect(result[:issues]).not_to be_empty
       expect(result[:issues].first.code).to eq(:string_too_long)
@@ -89,7 +89,7 @@ RSpec.describe 'Security and edge case validation' do
     end
 
     it 'rejects object when integer expected' do
-      result = definition.validate({ count: { nested: 'value' } })
+      result = Apiwork::Contract::Validator.validate(definition, { count: { nested: 'value' } })
 
       expect(result[:issues]).not_to be_empty
       issue = result[:issues].first
@@ -98,7 +98,7 @@ RSpec.describe 'Security and edge case validation' do
     end
 
     it 'rejects array when boolean expected' do
-      result = definition.validate({ active: [true, false] })
+      result = Apiwork::Contract::Validator.validate(definition, { active: [true, false] })
 
       expect(result[:issues]).not_to be_empty
       expect(result[:issues].first.code).to eq(:type_invalid)
@@ -114,14 +114,14 @@ RSpec.describe 'Security and edge case validation' do
     end
 
     it 'handles very large integers' do
-      result = definition.validate({ huge_int: 9_999_999_999_999_999_999 })
+      result = Apiwork::Contract::Validator.validate(definition, { huge_int: 9_999_999_999_999_999_999 })
 
       expect(result[:issues]).to be_empty
       expect(result[:params][:huge_int]).to eq(9_999_999_999_999_999_999)
     end
 
     it 'handles very small numbers' do
-      result = definition.validate({ precise_number: 0.000000000001 })
+      result = Apiwork::Contract::Validator.validate(definition, { precise_number: 0.000000000001 })
 
       expect(result[:issues]).to be_empty
       expect(result[:params][:precise_number]).to be_within(0.000000000001).of(0.000000000001)
@@ -136,7 +136,8 @@ RSpec.describe 'Security and edge case validation' do
         d.integer :field3
       end
 
-      result = multi_def.validate(
+      result = Apiwork::Contract::Validator.validate(
+        multi_def,
         {
           field1: 'invalid',
           field2: 'invalid',

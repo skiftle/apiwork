@@ -70,7 +70,7 @@ module Apiwork
       end
 
       def validate(data, shape)
-        shape.validate(data) || { issues: [], params: data }
+        Validator.validate(shape, data) || { issues: [], params: data }
       end
 
       def deserialize(data, shape)

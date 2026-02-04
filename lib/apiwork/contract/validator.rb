@@ -2,8 +2,14 @@
 
 module Apiwork
   module Contract
-    class ParamValidator
+    class Validator
       NUMERIC_TYPES = Set[:integer, :number, :decimal].freeze
+
+      class << self
+        def validate(shape, data, current_depth: 0, max_depth: 10, path: [])
+          new(shape).validate(data, current_depth:, max_depth:, path:)
+        end
+      end
 
       def initialize(shape)
         @shape = shape
@@ -205,7 +211,7 @@ module Apiwork
       end
 
       def validate_shape_object(value, shape_shape, field_path, max_depth, current_depth)
-        validator = ParamValidator.new(shape_shape)
+        validator = Validator.new(shape_shape)
         shape_result = validator.validate(
           value,
           max_depth:,
@@ -292,7 +298,7 @@ module Apiwork
           item_path = field_path + [index]
 
           if param_options[:shape]
-            validator = ParamValidator.new(param_options[:shape])
+            validator = Validator.new(param_options[:shape])
             shape_result = validator.validate(
               item,
               max_depth:,
@@ -356,7 +362,7 @@ module Apiwork
         custom_param = Object.new(contract_class, action_name: @shape.action_name)
         custom_param.copy_type_definition_params(type_definition, custom_param)
 
-        validator = ParamValidator.new(custom_param)
+        validator = Validator.new(custom_param)
         shape_result = validator.validate(item, max_depth:, current_depth: current_depth + 1, path: item_path)
 
         shape_result[:issues].any? ? { issues: shape_result[:issues], value: nil } : { issues: [], value: shape_result[:params] }
@@ -366,10 +372,12 @@ module Apiwork
         return nil unless type_name.is_a?(Symbol)
 
         type_definition = @shape.contract_class&.resolve_custom_type(type_name)
+        return nil unless type_definition&.object?
 
-        return nil unless type_definition
+        temp_param = Object.new(@shape.contract_class, action_name: @shape.action_name)
+        temp_param.copy_type_definition_params(type_definition, temp_param)
 
-        type_definition.validate(value, field_path:, max_depth:, current_depth: current_depth + 1)
+        Validator.new(temp_param).validate(value, max_depth:, current_depth: current_depth + 1, path: field_path)
       rescue NameError, ArgumentError
         nil
       end
@@ -565,7 +573,7 @@ module Apiwork
             return [type_error, nil]
           end
 
-          validator = ParamValidator.new(custom_param)
+          validator = Validator.new(custom_param)
           result = validator.validate(
             value,
             max_depth:,
@@ -627,7 +635,7 @@ module Apiwork
             return [type_error, nil]
           end
 
-          validator = ParamValidator.new(variant_shape)
+          validator = Validator.new(variant_shape)
           result = validator.validate(
             value,
             max_depth:,
@@ -677,7 +685,7 @@ module Apiwork
               custom_param = Object.new(contract_class, action_name: @shape.action_name)
               custom_param.copy_type_definition_params(variant_type_definition, custom_param)
 
-              validator = ParamValidator.new(custom_param)
+              validator = Validator.new(custom_param)
               result = validator.validate(item, max_depth:, current_depth: current_depth + 1, path: item_path)
 
               return [result[:issues].first, nil] if result[:issues].any?
@@ -700,7 +708,7 @@ module Apiwork
           custom_param.copy_type_definition_params(variant_type_definition, custom_param)
           custom_param.params.delete(discriminator) if discriminator
 
-          validator = ParamValidator.new(custom_param)
+          validator = Validator.new(custom_param)
           result = validator.validate(item, max_depth:, current_depth: current_depth + 1, path: item_path)
 
           return [nil, result[:params]] if result[:issues].empty?

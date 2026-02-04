@@ -180,10 +180,6 @@ module Apiwork
         end
       end
 
-      def validate(data, current_depth: 0, max_depth: 10, path: [])
-        ParamValidator.new(self).validate(data, current_depth:, max_depth:, path:)
-      end
-
       def wrapped?
         @wrapped
       end

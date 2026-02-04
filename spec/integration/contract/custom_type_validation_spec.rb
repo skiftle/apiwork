@@ -24,7 +24,8 @@ RSpec.describe 'Contract custom type unknown field validation' do
   let(:action) { contract_class.action_for(:index) }
 
   it 'catches unknown fields in custom types' do
-    result = action.request.body.validate(
+    result = Apiwork::Contract::Validator.validate(
+      action.request.body,
       {
         custom: {
           invalid_field: true, # This should be caught as unknown
@@ -39,7 +40,8 @@ RSpec.describe 'Contract custom type unknown field validation' do
   end
 
   it 'allows known fields in custom types' do
-    result = action.request.body.validate(
+    result = Apiwork::Contract::Validator.validate(
+      action.request.body,
       {
         custom: {
           another_field: 'test',
