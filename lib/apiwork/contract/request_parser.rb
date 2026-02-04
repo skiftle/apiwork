@@ -6,14 +6,17 @@ module Apiwork
       attr_reader :action_name,
                   :contract_class
 
-      def initialize(contract_class, action_name, coerce: false)
-        @contract_class = contract_class
-        @action_name = action_name.to_sym
-        @coerce = coerce
+      def self.parse(contract_class, action_name, request, coerce: false)
+        new(contract_class, action_name).parse(request, coerce:)
       end
 
-      def parse(request)
-        request = coerce_request(request) if @coerce
+      def initialize(contract_class, action_name)
+        @contract_class = contract_class
+        @action_name = action_name.to_sym
+      end
+
+      def parse(request, coerce: false)
+        request = coerce_request(request) if coerce
 
         parsed_query, query_issues = parse_part(request.query, :query)
         parsed_body, body_issues = parse_part(request.body, :body)

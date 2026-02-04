@@ -516,7 +516,7 @@ module Apiwork
 
       def initialize(action_name, request, coerce: false)
         request = normalize_request(request)
-        result = RequestParser.new(self.class, action_name, coerce:).parse(request)
+        result = RequestParser.parse(self.class, action_name, request, coerce:)
         @request = prepare_request(result.request)
         @action_name = action_name.to_sym
         @issues = result.issues
