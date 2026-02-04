@@ -123,6 +123,6 @@ Request was valid but violated a domain rule. Client can only fix by changing th
 }
 ```
 
-The standard adapter maps Rails validation errors to 23 built-in codes. Custom validations pass through as your own domain vocabulary.
+How domain issues are generated depends on your adapter. The standard adapter maps Rails validation errors automatically.
 
-See [Domain Issues](./domain-issues.md) for all codes and custom validation handling.
+See [Domain Issues](./domain-issues.md) for the concept and [Standard Adapter: Validation](../adapters/standard-adapter/validation.md) for implementation details.
