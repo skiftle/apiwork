@@ -11,11 +11,7 @@ module Apiwork
 
               class << self
                 def apply(relation, representation_class, params)
-                  sorter = new(relation, representation_class)
-                  result = sorter.sort(params)
-
-                  includes = IncludesResolver.new(representation_class).resolve_params(params)
-                  { includes:, data: result }
+                  new(relation, representation_class).apply(params)
                 end
               end
 
@@ -24,16 +20,10 @@ module Apiwork
                 @representation_class = representation_class
               end
 
-              def sort(params)
-                return @relation if params.blank?
-
-                params = params.reduce({}) { |acc, hash| acc.merge(hash) } if params.is_a?(Array)
-                return @relation unless params.is_a?(Hash)
-
-                orders, joins = build_order_clauses(params, representation_class.model_class)
-                scope = @relation.joins(joins).order(orders)
-                scope = scope.distinct if joins.present?
-                scope
+              def apply(params)
+                result = sort_data(params)
+                includes = IncludesResolver.new(representation_class).resolve_params(params)
+                { includes:, data: result }
               end
 
               def build_order_clauses(params, target_klass = representation_class.model_class)
@@ -67,6 +57,20 @@ module Apiwork
                     joins << (nested_joins.any? ? { key => nested_joins } : key)
                   end
                 end
+              end
+
+              private
+
+              def sort_data(params)
+                return @relation if params.blank?
+
+                params = params.reduce({}) { |acc, hash| acc.merge(hash) } if params.is_a?(Array)
+                return @relation unless params.is_a?(Hash)
+
+                orders, joins = build_order_clauses(params, representation_class.model_class)
+                scope = @relation.joins(joins).order(orders)
+                scope = scope.distinct if joins.present?
+                scope
               end
             end
           end

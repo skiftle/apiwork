@@ -11,11 +11,7 @@ module Apiwork
 
               class << self
                 def apply(relation, representation_class, params)
-                  filter = new(relation, representation_class)
-                  result = filter.filter(params)
-
-                  includes = IncludesResolver.new(representation_class).resolve_params(params)
-                  { includes:, data: result }
+                  new(relation, representation_class).apply(params)
                 end
               end
 
@@ -24,15 +20,10 @@ module Apiwork
                 @representation_class = representation_class
               end
 
-              def filter(params)
-                return @relation if params.blank?
-
-                case params
-                when Hash
-                  apply_hash_filter(params)
-                when Array
-                  apply_array_filter(params)
-                end
+              def apply(params)
+                result = filter_data(params)
+                includes = IncludesResolver.new(representation_class).resolve_params(params)
+                { includes:, data: result }
               end
 
               def build_where_conditions(filter, target_klass = representation_class.model_class)
@@ -54,6 +45,17 @@ module Apiwork
               end
 
               private
+
+              def filter_data(params)
+                return @relation if params.blank?
+
+                case params
+                when Hash
+                  apply_hash_filter(params)
+                when Array
+                  apply_array_filter(params)
+                end
+              end
 
               def apply_hash_filter(params)
                 logical_operators, regular_attributes = separate_logical_operators(params)
@@ -122,7 +124,7 @@ module Apiwork
                 return scope if conditions_array.blank?
 
                 conditions_array.reduce(scope) do |current_scope, filter_hash|
-                  Filter.new(current_scope, representation_class).filter(filter_hash)
+                  Filter.apply(current_scope, representation_class, filter_hash)[:data]
                 end
               end
 
