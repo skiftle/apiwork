@@ -21,9 +21,9 @@ module Apiwork
               end
 
               def apply(params)
-                result = sort_data(params)
-                includes = IncludesResolver.new(representation_class).resolve_params(params)
-                { includes:, data: result }
+                data = sort_data(params)
+                includes = IncludesResolver.resolve(representation_class, params)
+                { data:, includes: }
               end
 
               def build_order_clauses(params, target_klass = representation_class.model_class)

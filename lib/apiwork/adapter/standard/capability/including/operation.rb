@@ -7,8 +7,8 @@ module Apiwork
         class Including
           class Operation < Adapter::Capability::Operation::Base
             def apply
-              params = request.query[:include] || {}
-              includes = IncludesResolver.new(representation_class).resolve(params)
+              params = request.query.fetch(:include, {})
+              includes = IncludesResolver.resolve(representation_class, params, include_always: true)
 
               result(includes:, serialize_options: { include: params })
             end

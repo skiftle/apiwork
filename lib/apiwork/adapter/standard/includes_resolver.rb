@@ -6,31 +6,34 @@ module Apiwork
       class IncludesResolver
         attr_reader :representation_class
 
-        def self.resolve_representation_class(representation_class, association)
-          return association.representation_class if association.representation_class
-          return nil if association.polymorphic?
+        class << self
+          def resolve(representation_class, params = {}, include_always: false)
+            new(representation_class).resolve(params, include_always:)
+          end
 
-          model_class = representation_class.model_class
-          return nil unless model_class
+          def resolve_representation_class(representation_class, association)
+            return association.representation_class if association.representation_class
+            return nil if association.polymorphic?
 
-          reflection = model_class.reflect_on_association(association.name)
-          return nil if reflection.nil? || reflection.polymorphic?
+            model_class = representation_class.model_class
+            return nil unless model_class
 
-          namespace = representation_class.name.deconstantize
-          "#{namespace}::#{reflection.klass.name.demodulize}Representation".safe_constantize
+            reflection = model_class.reflect_on_association(association.name)
+            return nil if reflection.nil? || reflection.polymorphic?
+
+            namespace = representation_class.name.deconstantize
+            "#{namespace}::#{reflection.klass.name.demodulize}Representation".safe_constantize
+          end
         end
 
         def initialize(representation_class)
           @representation_class = representation_class
         end
 
-        def resolve(params = {})
-          merged = merge(always_included, from_params(params))
+        def resolve(params = {}, include_always: false)
+          base = include_always ? always_included : {}
+          merged = merge(base, from_params(params))
           format(merged)
-        end
-
-        def resolve_params(params)
-          format(from_params(params))
         end
 
         def always_included(visited = Set.new)

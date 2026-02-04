@@ -21,9 +21,9 @@ module Apiwork
               end
 
               def apply(params)
-                result = filter_data(params)
-                includes = IncludesResolver.new(representation_class).resolve_params(params)
-                { includes:, data: result }
+                data = filter_data(params)
+                includes = IncludesResolver.resolve(representation_class, params)
+                { data:, includes: }
               end
 
               def build_where_conditions(filter, target_klass = representation_class.model_class)
