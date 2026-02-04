@@ -434,6 +434,32 @@ Filtering::APIBuilder
 # → lib/apiwork/adapter/standard/capability/filtering/api_builder.rb
 ```
 
+### Reopening Classes in Nested Files
+
+When a class is defined with inheritance in one file, nested files that reopen the class must NOT repeat the inheritance:
+
+```ruby
+# main_file.rb — defines class with inheritance
+class Operation < Adapter::Capability::Operation::Base
+  # ...
+end
+
+# nested_file.rb — reopens class, NO inheritance
+class Operation  # Correct — class already exists
+  class Helper
+    # ...
+  end
+end
+
+# nested_file.rb — WRONG
+class Operation < Adapter::Capability::Operation::Base  # Don't repeat!
+  class Helper
+  end
+end
+```
+
+Inheritance is declared once where the class is defined. Nested files just reopen the class.
+
 ### DSL reference
 
 ```ruby
@@ -1033,6 +1059,30 @@ end
 | `transform_keys` | Transform all keys |
 | `deep_transform_keys` | Recursive key transform |
 | `deep_symbolize_keys` | All keys to symbols |
+
+### Symbol Construction
+
+Prefer array join over string interpolation for dynamic symbols:
+
+```ruby
+# Good — clear structure, easy to extract
+[prefix, name].join('_').to_sym
+[action_name, 'payload'].join('_').to_sym
+
+# Avoid — harder to read and extract
+:"#{prefix}_#{name}"
+:"#{action_name}_payload"
+```
+
+When the expression appears 2+ times, extract to a variable:
+
+```ruby
+type_name = [name, TYPE_NAME].join('_').to_sym
+next if type?(type_name)
+union(type_name) do |union|
+  # ...
+end
+```
 
 ---
 

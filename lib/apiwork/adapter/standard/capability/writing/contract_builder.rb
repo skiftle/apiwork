@@ -14,7 +14,7 @@ module Apiwork
               %i[create update].each do |action_name|
                 next unless scope.action?(action_name)
 
-                payload_type_name = :"#{action_name}_payload"
+                payload_type_name = [action_name, 'payload'].join('_').to_sym
                 next unless type?(payload_type_name)
 
                 contract_action = action(action_name)
@@ -52,7 +52,7 @@ module Apiwork
             end
 
             def build_standard_payload(action_name)
-              type_name = :"#{action_name}_payload"
+              type_name = [action_name, 'payload'].join('_').to_sym
               return if type?(type_name)
 
               object(type_name, representation_class: representation_class) do |object|
@@ -139,10 +139,10 @@ module Apiwork
                 alias_name = subclass.root_key.singular.to_sym
                 import(subclass_contract, as: alias_name)
 
-                { tag: subclass.sti_name, type: :"#{alias_name}_#{action_name}_payload" }
+                { tag: subclass.sti_name, type: [alias_name, action_name, 'payload'].join('_').to_sym }
               end
 
-              union(:"#{action_name}_payload", discriminator: representation_inheritance.column) do |union|
+              union([action_name, 'payload'].join('_').to_sym, discriminator: representation_inheritance.column) do |union|
                 variant_refs.each do |variant_ref|
                   union.variant(tag: variant_ref[:tag]) do |element|
                     element.reference(variant_ref[:type])
@@ -227,7 +227,7 @@ module Apiwork
               payload_type = resolve_association_payload_type(association)
 
               options = {
-                as: :"#{association.name}_attributes",
+                as: [association.name, 'attributes'].join('_').to_sym,
                 deprecated: association.deprecated,
                 description: association.description,
                 example: association.example,
@@ -261,7 +261,7 @@ module Apiwork
               alias_name = resolved_representation_class.root_key.singular.to_sym
               import(association_contract, as: alias_name)
 
-              :"#{alias_name}_nested_payload"
+              [alias_name, 'nested_payload'].join('_').to_sym
             end
 
             def resolve_association_representation_class(association)

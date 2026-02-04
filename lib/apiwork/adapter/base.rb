@@ -281,7 +281,7 @@ module Apiwork
       end
 
       def build_result_wrapper(contract_class, representation_class, action_name, response_type)
-        success_type_name = :"#{action_name}_success_response_body"
+        success_type_name = [action_name, 'success_response_body'].join('_').to_sym
 
         unless contract_class.type?(success_type_name)
           shape_class = if response_type == :collection

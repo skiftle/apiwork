@@ -5,7 +5,7 @@ module Apiwork
     class Standard
       module Capability
         class Filtering
-          class Operation < Adapter::Capability::Operation::Base
+          class Operation
             class Filter
               class Builder
                 attr_reader :allowed_types,

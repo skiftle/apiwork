@@ -5,7 +5,7 @@ module Apiwork
     class Standard
       module Capability
         class Sorting
-          class Operation < Adapter::Capability::Operation::Base
+          class Operation
             class Sort
               attr_reader :representation_class
 

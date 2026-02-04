@@ -5,7 +5,7 @@ module Apiwork
     class Standard
       module Capability
         class Writing
-          class Operation < Adapter::Capability::Operation::Base
+          class Operation
             class IssueMapper
               CODE_MAP = {
                 accepted: :accepted,
@@ -190,7 +190,7 @@ module Apiwork
                 return attribute if attribute == :base
                 return attribute unless belongs_to_association?(attribute)
 
-                :"#{attribute}_id"
+                [attribute, 'id'].join('_').to_sym
               end
 
               def belongs_to_association?(attribute)

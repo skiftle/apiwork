@@ -5,7 +5,7 @@ module Apiwork
     class Standard
       module Capability
         class Pagination
-          class Operation < Adapter::Capability::Operation::Base
+          class Operation
             module Paginate
               class Cursor
                 class << self
