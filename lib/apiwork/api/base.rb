@@ -672,25 +672,13 @@ module Apiwork
           representation_class.associations.each_value do |association|
             next unless association.writable?
 
-            target_representation = resolve_target_representation(association, representation_class)
+            target_representation = association.representation_class
             next unless target_representation
 
             representation_registry.register(target_representation)
             representation_registry.mark(target_representation, :nested_writable)
             mark_writable_associations(target_representation, visited)
           end
-        end
-
-        def resolve_target_representation(association, owner_representation)
-          return association.representation_class if association.representation_class
-          return nil unless owner_representation.model_class
-
-          reflection = owner_representation.model_class.reflect_on_association(association.name)
-          return nil unless reflection
-          return nil if reflection.polymorphic?
-
-          namespace = owner_representation.name.deconstantize
-          "#{namespace}::#{reflection.klass.name.demodulize}Representation".safe_constantize
         end
 
         def build_contracts_for_resource(resource)

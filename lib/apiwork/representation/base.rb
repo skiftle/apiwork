@@ -814,7 +814,7 @@ module Apiwork
         target = record.public_send(name)
         return nil if target.nil?
 
-        representation_class = association.representation_class || resolve_association_representation(name)
+        representation_class = association.representation_class
         return nil unless representation_class
 
         nested_includes = @include[name] || @include[name.to_s] || @include[name.to_sym] if @include.is_a?(Hash)
@@ -824,17 +824,6 @@ module Apiwork
         else
           serialize_variant_aware(target, representation_class, nested_includes)
         end
-      end
-
-      def resolve_association_representation(association_name)
-        return nil unless self.class.model_class
-
-        reflection = record.class.reflect_on_association(association_name)
-        return nil unless reflection
-        return nil if reflection.polymorphic?
-
-        namespace = self.class.name.deconstantize
-        "#{namespace}::#{reflection.klass.name.demodulize}Representation".safe_constantize
       end
 
       def serialize_variant_aware(record, representation_class, nested_includes)

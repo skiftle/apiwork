@@ -153,18 +153,18 @@ module Apiwork
             def build_association_type(association, visited: Set.new)
               return build_polymorphic_association_type(association, visited:) if association.polymorphic?
 
-              association_resource = resolve_association(association)
-              return nil unless association_resource
+              association_data = resolve_association(association)
+              return nil unless association_data
 
-              association_representation = association_resource[:representation_class]
+              association_representation_class = association_data[:representation_class]
 
-              return import_association_contract(association_representation, visited) if association_resource[:sti]
-              return nil if visited.include?(association_representation)
+              return import_association_contract(association_representation_class, visited) if association_data[:sti]
+              return nil if visited.include?(association_representation_class)
 
-              association_contract = contract_for(association_representation)
+              association_contract = contract_for(association_representation_class)
               return nil unless association_contract
 
-              alias_name = association_representation.root_key.singular.to_sym
+              alias_name = association_representation_class.root_key.singular.to_sym
               import(association_contract, as: alias_name)
               alias_name
             end
@@ -196,29 +196,10 @@ module Apiwork
             def resolve_association(association)
               return nil if association.polymorphic?
 
-              resolved_representation = resolve_representation_from_association(association)
-              return nil unless resolved_representation
+              representation_class = association.representation_class
+              return nil unless representation_class
 
-              { representation_class: resolved_representation, sti: resolved_representation.inheritance&.subclasses&.any? }
-            end
-
-            def resolve_representation_from_association(association)
-              return association.representation_class if association.representation_class
-
-              model_class = association.model_class
-              return nil unless model_class
-
-              reflection = model_class.reflect_on_association(association.name)
-              return nil unless reflection
-
-              infer_association_representation(reflection)
-            end
-
-            def infer_association_representation(reflection)
-              return nil if reflection.polymorphic?
-
-              namespace = representation_class.name.deconstantize
-              "#{namespace}::#{reflection.klass.name.demodulize}Representation".safe_constantize
+              { representation_class:, sti: representation_class.inheritance&.subclasses&.any? }
             end
           end
         end

@@ -260,12 +260,10 @@ module Apiwork
 
               def build_join_conditions(key, value, association)
                 reflection = representation_class.model_class.reflect_on_association(key)
-                association_resource = association.representation_class || infer_association_representation(reflection)
-
-                return [[], {}] unless association_resource
                 return [[], {}] unless reflection
+                return [[], {}] unless association.representation_class
 
-                nested_query = Filter.new(reflection.klass.all, association_resource)
+                nested_query = Filter.new(reflection.klass.all, association.representation_class)
                 nested_conditions, nested_joins = nested_query.build_where_conditions(value, reflection.klass)
 
                 [nested_conditions, { key => (nested_joins.any? ? nested_joins : {}) }]
@@ -456,13 +454,6 @@ module Apiwork
               def with_joins_and_distinct(scope, joins)
                 result = yield(joins.present? ? scope.joins(joins) : scope)
                 joins.present? ? result.distinct : result
-              end
-
-              def infer_association_representation(reflection)
-                return nil if reflection.polymorphic?
-
-                namespace = representation_class.name.deconstantize
-                "#{namespace}::#{reflection.klass.name.demodulize}Representation".safe_constantize
               end
             end
           end

@@ -39,10 +39,6 @@ module Apiwork
       attr_reader :polymorphic
 
       # @api public
-      # @return [Representation::Base, nil] the associated representation class
-      attr_reader :representation_class
-
-      # @api public
       # @return [Symbol] association type (:has_one, :has_many, :belongs_to)
       attr_reader :type
 
@@ -154,6 +150,17 @@ module Apiwork
         column.null
       end
 
+      # @api public
+      # Returns the representation class for this association.
+      #
+      # Returns the explicitly configured class if set, otherwise infers
+      # from the association's model class using namespace conventions.
+      #
+      # @return [Class, nil] the representation class or nil if not found
+      def representation_class
+        @representation_class || inferred_representation_class
+      end
+
       def representation_class_name
         @representation_class_name ||= @owner_representation_class
           .name
@@ -171,6 +178,17 @@ module Apiwork
       end
 
       private
+
+      def inferred_representation_class
+        return nil if polymorphic?
+        return nil unless @model_class
+
+        reflection = @model_class.reflect_on_association(@name)
+        return nil if reflection.nil? || reflection.polymorphic?
+
+        namespace = @owner_representation_class.name.deconstantize
+        "#{namespace}::#{reflection.klass.name.demodulize}Representation".safe_constantize
+      end
 
       def normalize_polymorphic(value)
         return nil unless value

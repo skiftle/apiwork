@@ -81,7 +81,7 @@ module Apiwork
                 }
               end
 
-              nested_representation_class = resolve_association_representation_class(representation_class, association)
+              nested_representation_class = association.representation_class
               return nil unless nested_representation_class
 
               if visited.include?(nested_representation_class)
@@ -142,7 +142,7 @@ module Apiwork
                 if association.polymorphic?
                   association.include != :always
                 else
-                  nested_representation_class = resolve_association_representation_class(representation_class, association)
+                  nested_representation_class = association.representation_class
                   next false unless nested_representation_class
 
                   if new_visited.include?(nested_representation_class)
@@ -162,9 +162,6 @@ module Apiwork
               [representation_class.root_key.singular, TYPE_NAME].join('_').to_sym
             end
 
-            def resolve_association_representation_class(representation_class, association)
-              IncludesResolver.resolve_representation_class(representation_class, association)
-            end
           end
         end
       end

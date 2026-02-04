@@ -10,20 +10,6 @@ module Apiwork
           def resolve(representation_class, params = {}, include_always: false)
             new(representation_class).resolve(params, include_always:)
           end
-
-          def resolve_representation_class(representation_class, association)
-            return association.representation_class if association.representation_class
-            return nil if association.polymorphic?
-
-            model_class = representation_class.model_class
-            return nil unless model_class
-
-            reflection = model_class.reflect_on_association(association.name)
-            return nil if reflection.nil? || reflection.polymorphic?
-
-            namespace = representation_class.name.deconstantize
-            "#{namespace}::#{reflection.klass.name.demodulize}Representation".safe_constantize
-          end
         end
 
         def initialize(representation_class)
@@ -73,7 +59,7 @@ module Apiwork
           visited = visited.dup.add(representation_class.name)
 
           associations.each_with_object({}) do |(name, association), result|
-            nested_representation_class = resolve_representation_class(association)
+            nested_representation_class = association.representation_class
             result[name] = if nested_representation_class
                              self.class.new(nested_representation_class).always_included(visited)
                            else
@@ -116,10 +102,6 @@ module Apiwork
 
             result[key] = nested
           end
-        end
-
-        def resolve_representation_class(association)
-          self.class.resolve_representation_class(representation_class, association)
         end
       end
     end
