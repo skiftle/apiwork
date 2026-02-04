@@ -44,12 +44,6 @@ end
 | `array_too_large`  | Too many items    | `max`, `actual`                   |
 | `depth_exceeded`   | Too deeply nested | `depth`, `max`                    |
 
-### Pagination Errors
-
-| Code              | Detail          | Meta     |
-| ----------------- | --------------- | -------- |
-| `cursor_invalid`  | Invalid cursor  | `cursor` |
-
 ## Meta Reference
 
 ### Request Body
@@ -191,23 +185,6 @@ end
   "meta": {
     "depth": 11,
     "max": 10
-  }
-}
-```
-
-### Pagination
-
-#### cursor_invalid
-
-```json
-{
-  "layer": "contract",
-  "code": "cursor_invalid",
-  "detail": "Invalid cursor",
-  "path": ["page"],
-  "pointer": "/page",
-  "meta": {
-    "cursor": "invalid-cursor-value"
   }
 }
 ```
