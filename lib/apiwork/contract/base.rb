@@ -453,7 +453,7 @@ module Apiwork
         end
 
         def parse_response(response, action)
-          ResponseParser.new(self, action).parse(response)
+          ResponseParser.parse(self, action, response)
         end
 
         def type?(name)
