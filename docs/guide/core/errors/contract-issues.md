@@ -44,14 +44,6 @@ end
 | `array_too_large`  | Too many items    | `max`, `actual`                   |
 | `depth_exceeded`   | Too deeply nested | `depth`, `max`                    |
 
-### Filter Errors
-
-| Code                        | Detail                   | Meta                          |
-| --------------------------- | ------------------------ | ----------------------------- |
-| `column_unknown`            | Unknown column type      | `field`                       |
-| `column_unsupported`        | Unsupported column type  | `field`, `type`               |
-| `association_not_found`     | Association not found    | `association`                 |
-
 ### Sort Errors
 
 | Code                     | Detail             | Meta                              |
@@ -210,23 +202,6 @@ end
   "meta": {
     "depth": 11,
     "max": 10
-  }
-}
-```
-
-### Filters
-
-#### association_not_found
-
-```json
-{
-  "layer": "contract",
-  "code": "association_not_found",
-  "detail": "Association not found",
-  "path": ["filter", "author.name"],
-  "pointer": "/filter/author.name",
-  "meta": {
-    "association": "author"
   }
 }
 ```

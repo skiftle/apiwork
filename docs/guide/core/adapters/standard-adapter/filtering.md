@@ -271,18 +271,6 @@ The contract layer handles most validation:
 
 These errors return standard contract validation errors with codes like `invalid_type` and `field_unknown`.
 
-### Adapter Validation
-
-The adapter validates edge cases that pass contract validation but indicate schema mismatches:
-
-| Code | When It Fires |
-|------|---------------|
-| `column_unknown` | Representation attribute doesn't exist as a database column |
-| `column_unsupported` | Column type is not supported for filtering (e.g., json, inet) |
-| `association_not_found` | Association doesn't exist on model |
-
-These are configuration errors — they indicate the representation doesn't match the database schema.
-
 ---
 
 ## Examples

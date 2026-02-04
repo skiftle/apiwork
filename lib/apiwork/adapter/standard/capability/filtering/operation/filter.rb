@@ -7,23 +7,21 @@ module Apiwork
         class Filtering
           class Operation < Adapter::Capability::Operation::Base
             class Filter
-              attr_reader :issues, :representation_class
+              attr_reader :representation_class
 
               class << self
                 def apply(relation, representation_class, params)
                   filter = new(relation, representation_class)
                   result = filter.filter(params)
-                  raise ContractError, filter.issues if filter.issues.any?
 
                   includes = IncludesResolver.new(representation_class).resolve_params(params)
                   { includes:, data: result }
                 end
               end
 
-              def initialize(relation, representation_class, issues = [])
+              def initialize(relation, representation_class)
                 @relation = relation
                 @representation_class = representation_class
-                @issues = issues
               end
 
               def filter(params)
@@ -124,7 +122,7 @@ module Apiwork
                 return scope if conditions_array.blank?
 
                 conditions_array.reduce(scope) do |current_scope, filter_hash|
-                  Filter.new(current_scope, representation_class, @issues).filter(filter_hash)
+                  Filter.new(current_scope, representation_class).filter(filter_hash)
                 end
               end
 
@@ -194,15 +192,7 @@ module Apiwork
                 value = transform_sti_filter_value(value, inheritance) if inheritance
 
                 column_type = target_klass.type_for_attribute(key).type
-                if column_type.nil?
-                  @issues << Issue.new(
-                    :column_unknown,
-                    'Unknown column type',
-                    meta: { field: key },
-                    path: [:filter, key],
-                  )
-                  return nil
-                end
+                return nil if column_type.nil?
 
                 case column_type
                 when :uuid
@@ -217,14 +207,6 @@ module Apiwork
                   build_numeric_where_clause(key, value, target_klass)
                 when :boolean
                   build_boolean_where_clause(key, value, target_klass)
-                else
-                  @issues << Issue.new(
-                    :column_unsupported,
-                    'Unsupported column type',
-                    meta: { field: key, type: column_type },
-                    path: [:filter, key],
-                  )
-                  nil
                 end
               end
 
@@ -279,20 +261,10 @@ module Apiwork
                 association_resource = association.representation_class || infer_association_representation(reflection)
 
                 return [[], {}] unless association_resource
+                return [[], {}] unless reflection
 
-                association_reflection = representation_class.model_class.reflect_on_association(key)
-                unless association_reflection
-                  @issues << Issue.new(
-                    :association_not_found,
-                    'Association not found',
-                    meta: { association: key },
-                    path: [:filter, key],
-                  )
-                  return [[], {}]
-                end
-
-                nested_query = Filter.new(association_reflection.klass.all, association_resource, @issues)
-                nested_conditions, nested_joins = nested_query.build_where_conditions(value, association_reflection.klass)
+                nested_query = Filter.new(reflection.klass.all, association_resource)
+                nested_conditions, nested_joins = nested_query.build_where_conditions(value, reflection.klass)
 
                 [nested_conditions, { key => (nested_joins.any? ? nested_joins : {}) }]
               end
