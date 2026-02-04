@@ -62,22 +62,6 @@ end
 }
 ```
 
-### field_unknown
-
-```json
-{
-  "layer": "contract",
-  "code": "field_unknown",
-  "detail": "Unknown field",
-  "path": ["post", "foo"],
-  "pointer": "/post/foo",
-  "meta": {
-    "field": "foo",
-    "allowed": ["title", "body", "status"]
-  }
-}
-```
-
 ### type_invalid
 
 ```json
@@ -91,39 +75,6 @@ end
     "field": "title",
     "expected": "string",
     "actual": "integer"
-  }
-}
-```
-
-### value_invalid
-
-```json
-{
-  "layer": "contract",
-  "code": "value_invalid",
-  "detail": "Invalid value",
-  "path": ["post", "status"],
-  "pointer": "/post/status",
-  "meta": {
-    "field": "status",
-    "expected": ["draft", "published"],
-    "actual": "archived"
-  }
-}
-```
-
-### value_null
-
-```json
-{
-  "layer": "contract",
-  "code": "value_null",
-  "detail": "Cannot be null",
-  "path": ["post", "title"],
-  "pointer": "/post/title",
-  "meta": {
-    "field": "title",
-    "type": "string"
   }
 }
 ```
@@ -145,86 +96,6 @@ string :title, min: 5, max: 100
     "actual": 3,
     "field": "title",
     "min": 5
-  }
-}
-```
-
-### number_too_small
-
-```ruby
-integer :quantity, min: 1, max: 100
-```
-
-```json
-{
-  "layer": "contract",
-  "code": "number_too_small",
-  "detail": "Too small",
-  "path": ["item", "quantity"],
-  "pointer": "/item/quantity",
-  "meta": {
-    "actual": 0,
-    "field": "quantity",
-    "min": 1
-  }
-}
-```
-
-### number_too_large
-
-```ruby
-integer :quantity, min: 1, max: 100
-```
-
-```json
-{
-  "layer": "contract",
-  "code": "number_too_large",
-  "detail": "Too large",
-  "path": ["item", "quantity"],
-  "pointer": "/item/quantity",
-  "meta": {
-    "actual": 150,
-    "field": "quantity",
-    "max": 100
-  }
-}
-```
-
-### array_too_large
-
-```ruby
-array :tags, min: 1, max: 10 do
-  string
-end
-```
-
-```json
-{
-  "layer": "contract",
-  "code": "array_too_large",
-  "detail": "Too many items",
-  "path": ["post", "tags"],
-  "pointer": "/post/tags",
-  "meta": {
-    "max": 10,
-    "actual": 15
-  }
-}
-```
-
-### depth_exceeded
-
-```json
-{
-  "layer": "contract",
-  "code": "depth_exceeded",
-  "detail": "Too deeply nested",
-  "path": ["deeply", "nested", "structure"],
-  "pointer": "/deeply/nested/structure",
-  "meta": {
-    "depth": 11,
-    "max": 10
   }
 }
 ```
@@ -333,40 +204,6 @@ Invalid discriminator value:
   }
 }
 ```
-
-## Output Validation
-
-Responses are also validated against the contract in **development mode**. This catches server-side bugs where your controller returns data that doesn't match the contract.
-
-```ruby
-class PostContract < Apiwork::Contract::Base
-  action :show do
-    response do
-      body do
-        string :status, enum: %w[draft published]
-      end
-    end
-  end
-end
-```
-
-If your controller returns a post with `status: "archived"` (not in the enum), Apiwork logs a warning:
-
-```text
-[Apiwork] Response validation warning: value_invalid at /post/status
-  Expected one of: draft, published
-  Actual: archived
-```
-
-Output validation:
-- Only runs in `Rails.env.development?`
-- Logs warnings to Rails logger — does not block the response
-- Validates the same constraints as request validation (types, enums, required fields)
-- Helps catch bugs where schema changes haven't been reflected in the contract
-
-::: tip
-If you see output validation warnings, update your contract enum values or fix the data being returned by your controller.
-:::
 
 #### See also
 

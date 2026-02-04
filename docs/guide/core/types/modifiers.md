@@ -24,7 +24,7 @@ datetime :deleted_at, nullable: true              # can be null
 object :metadata, optional: true, nullable: true  # can omit or null
 ```
 
-When validation fails, Apiwork returns a [contract error](../errors/contract-issues.md) with codes like `field_missing` or `value_null`.
+When validation fails, Apiwork returns a [contract error](../errors/contract-errors.md) with codes like `field_missing` or `value_null`.
 
 ## Shorthand
 
@@ -74,7 +74,7 @@ array :tags, min: 1, max: 10 do
 end
 ```
 
-See [contract errors](../errors/contract-issues.md) for validation error codes (`string_too_short`, `array_too_large`, etc.).
+See [contract errors](../errors/contract-errors.md) for validation error codes (`string_too_short`, `array_too_large`, etc.).
 
 ## Alias
 

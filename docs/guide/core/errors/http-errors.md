@@ -8,10 +8,6 @@ HTTP errors are transport-level responses — status-driven, not tied to input v
 
 Use `expose_error` when you need to communicate an HTTP-level outcome like "not found", "forbidden", or "unauthorized".
 
-## HTTP Status
-
-**Varies (400-504)** — Status depends on the error code.
-
 ## Usage
 
 ```ruby
@@ -33,7 +29,7 @@ expose_error :forbidden
 }
 ```
 
-### Parameters
+## Parameters
 
 ```ruby
 expose_error :conflict,
@@ -49,24 +45,6 @@ expose_error :conflict,
 | `path:`   | Location in request body             |
 | `meta:`   | Additional context                   |
 | `i18n:`   | Interpolation values for translation |
-
-### rescue_from
-
-A common pattern is to catch exceptions and return error codes:
-
-```ruby
-class ApplicationController < ActionController::API
-  include Apiwork::Controller
-
-  rescue_from ActiveRecord::RecordNotFound do
-    expose_error :not_found
-  end
-
-  rescue_from Pundit::NotAuthorizedError do
-    expose_error :forbidden
-  end
-end
-```
 
 ## Error Codes
 
@@ -106,94 +84,6 @@ Apiwork::ErrorCode.register :account_frozen, status: 403
 ```
 
 Status must be 400-599.
-
-## Examples
-
-### Not Found
-
-```ruby
-rescue_from ActiveRecord::RecordNotFound do |exception|
-  expose_error :not_found,
-    path: [:id],
-    meta: { model: exception.model }
-end
-```
-
-```json
-{
-  "layer": "http",
-  "issues": [
-    {
-      "code": "not_found",
-      "detail": "Not found",
-      "path": ["id"],
-      "pointer": "/id",
-      "meta": { "model": "Invoice" }
-    }
-  ]
-}
-```
-
-### Conflict
-
-```ruby
-def ship
-  order = Order.find(params[:id])
-
-  if order.shipped?
-    return expose_error :conflict,
-      detail: "Order already shipped",
-      path: [:order, :status],
-      meta: { current_status: order.status }
-  end
-
-  order.ship!
-  expose order
-end
-```
-
-```json
-{
-  "layer": "http",
-  "issues": [
-    {
-      "code": "conflict",
-      "detail": "Order already shipped",
-      "path": ["order", "status"],
-      "pointer": "/order/status",
-      "meta": { "current_status": "shipped" }
-    }
-  ]
-}
-```
-
-### Too Many Requests
-
-```ruby
-def create
-  if rate_limit_exceeded?
-    return expose_error :too_many_requests,
-      meta: { retry_after: 60 }
-  end
-
-  # ...
-end
-```
-
-```json
-{
-  "layer": "http",
-  "issues": [
-    {
-      "code": "too_many_requests",
-      "detail": "Too many requests",
-      "path": [],
-      "pointer": "",
-      "meta": { "retry_after": 60 }
-    }
-  ]
-}
-```
 
 #### See also
 

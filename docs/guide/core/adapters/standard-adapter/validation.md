@@ -438,5 +438,5 @@ Errors exist? 422 with errors. No errors? Serialized record.
 
 #### See also
 
-- [Domain Issues](../../errors/domain-issues.md) — domain layer concept
+- [Domain Errors](../../errors/domain-errors.md) — domain layer concept
 - [Issue reference](../../../../reference/issue.md) — issue object structure
