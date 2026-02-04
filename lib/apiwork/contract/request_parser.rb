@@ -61,7 +61,7 @@ module Apiwork
         return data unless shape
         return data unless data.is_a?(Hash)
 
-        Coercion.coerce_hash(data, shape)
+        Coercer.coerce(shape, data)
       end
 
       def validate(data, shape)
@@ -71,13 +71,13 @@ module Apiwork
       def deserialize(data, shape)
         return data unless data.is_a?(Hash)
 
-        Deserialization.deserialize_hash(data, shape)
+        Deserializer.deserialize(shape, data)
       end
 
       def transform(data, shape)
         return data unless data.is_a?(Hash)
 
-        Transformation.apply(data, shape)
+        Transformer.transform(shape, data)
       end
     end
   end

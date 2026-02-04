@@ -3,102 +3,90 @@
 require 'rails_helper'
 
 RSpec.describe Apiwork::Contract::RequestParser::Coercer do
-  describe '.perform' do
+  let(:contract_class) { create_test_contract }
+
+  def build_shape(type:)
+    shape = Apiwork::Contract::Object.new(contract_class)
+    shape.param(:value, type:)
+    shape
+  end
+
+  def coerce(value, type:)
+    shape = build_shape(type:)
+    result = described_class.coerce(shape, { value: })
+    result[:value]
+  end
+
+  describe '.coerce' do
     context 'integer type' do
       it 'converts valid integer string to Integer' do
-        result = described_class.perform('42', :integer)
-
-        expect(result).to eq(42)
+        expect(coerce('42', type: :integer)).to eq(42)
       end
 
       it 'converts negative integer string' do
-        result = described_class.perform('-42', :integer)
-
-        expect(result).to eq(-42)
+        expect(coerce('-42', type: :integer)).to eq(-42)
       end
 
       it 'preserves Integer value' do
-        result = described_class.perform(42, :integer)
-
-        expect(result).to eq(42)
+        expect(coerce(42, type: :integer)).to eq(42)
       end
 
-      it 'returns nil for invalid integer string' do
-        result = described_class.perform('abc', :integer)
-
-        expect(result).to be_nil
+      it 'returns original value for invalid integer string' do
+        expect(coerce('abc', type: :integer)).to eq('abc')
       end
 
-      it 'returns nil for float string' do
-        result = described_class.perform('3.14', :integer)
-
-        expect(result).to be_nil
+      it 'returns original value for float string' do
+        expect(coerce('3.14', type: :integer)).to eq('3.14')
       end
 
-      it 'returns nil for nil input' do
-        result = described_class.perform(nil, :integer)
-
-        expect(result).to be_nil
+      it 'preserves nil input' do
+        expect(coerce(nil, type: :integer)).to be_nil
       end
     end
 
     context 'boolean type' do
       it 'converts "true" to true' do
-        result = described_class.perform('true', :boolean)
-
-        expect(result).to be true
+        expect(coerce('true', type: :boolean)).to be true
       end
 
       it 'converts "1" to true' do
-        result = described_class.perform('1', :boolean)
-
-        expect(result).to be true
+        expect(coerce('1', type: :boolean)).to be true
       end
 
       it 'converts "yes" to true' do
-        result = described_class.perform('yes', :boolean)
-
-        expect(result).to be true
+        expect(coerce('yes', type: :boolean)).to be true
       end
 
       it 'converts "false" to false' do
-        result = described_class.perform('false', :boolean)
-
-        expect(result).to be false
+        expect(coerce('false', type: :boolean)).to be false
       end
 
       it 'converts "0" to false' do
-        result = described_class.perform('0', :boolean)
-
-        expect(result).to be false
+        expect(coerce('0', type: :boolean)).to be false
       end
 
       it 'converts "no" to false' do
-        result = described_class.perform('no', :boolean)
-
-        expect(result).to be false
+        expect(coerce('no', type: :boolean)).to be false
       end
 
       it 'is case insensitive' do
-        expect(described_class.perform('TRUE', :boolean)).to be true
-        expect(described_class.perform('FALSE', :boolean)).to be false
+        expect(coerce('TRUE', type: :boolean)).to be true
+        expect(coerce('FALSE', type: :boolean)).to be false
       end
 
-      it 'returns nil for invalid boolean string' do
-        result = described_class.perform('maybe', :boolean)
-
-        expect(result).to be_nil
+      it 'returns original value for invalid boolean string' do
+        expect(coerce('maybe', type: :boolean)).to eq('maybe')
       end
 
       it 'preserves boolean value' do
-        expect(described_class.perform(true, :boolean)).to be true
-        expect(described_class.perform(false, :boolean)).to be false
+        expect(coerce(true, type: :boolean)).to be true
+        expect(coerce(false, type: :boolean)).to be false
       end
     end
 
     context 'datetime type' do
       it 'converts ISO8601 string to Time' do
-        result = described_class.perform('2024-01-01T10:00:00Z', :datetime)
+        result = coerce('2024-01-01T10:00:00Z', type: :datetime)
 
         expect(result).to be_a(Time)
         expect(result.year).to eq(2024)
@@ -108,34 +96,26 @@ RSpec.describe Apiwork::Contract::RequestParser::Coercer do
 
       it 'preserves Time value' do
         time = Time.zone.now
-        result = described_class.perform(time, :datetime)
-
-        expect(result).to eq(time)
+        expect(coerce(time, type: :datetime)).to eq(time)
       end
 
       it 'preserves DateTime value' do
         datetime = DateTime.now
-        result = described_class.perform(datetime, :datetime)
-
-        expect(result).to eq(datetime)
+        expect(coerce(datetime, type: :datetime)).to eq(datetime)
       end
 
-      it 'returns nil for invalid datetime string' do
-        result = described_class.perform('not-a-date', :datetime)
-
-        expect(result).to be_nil
+      it 'returns original value for invalid datetime string' do
+        expect(coerce('not-a-date', type: :datetime)).to eq('not-a-date')
       end
 
-      it 'returns nil for nil input' do
-        result = described_class.perform(nil, :datetime)
-
-        expect(result).to be_nil
+      it 'preserves nil input' do
+        expect(coerce(nil, type: :datetime)).to be_nil
       end
     end
 
     context 'date type' do
       it 'converts date string to Date' do
-        result = described_class.perform('2024-01-01', :date)
+        result = coerce('2024-01-01', type: :date)
 
         expect(result).to be_a(Date)
         expect(result.year).to eq(2024)
@@ -145,21 +125,17 @@ RSpec.describe Apiwork::Contract::RequestParser::Coercer do
 
       it 'preserves Date value' do
         date = Time.zone.today
-        result = described_class.perform(date, :date)
-
-        expect(result).to eq(date)
+        expect(coerce(date, type: :date)).to eq(date)
       end
 
-      it 'returns nil for invalid date string' do
-        result = described_class.perform('invalid', :date)
-
-        expect(result).to be_nil
+      it 'returns original value for invalid date string' do
+        expect(coerce('invalid', type: :date)).to eq('invalid')
       end
     end
 
     context 'time type' do
       it 'converts time string to Time' do
-        result = described_class.perform('10:30:00', :time)
+        result = coerce('10:30:00', type: :time)
 
         expect(result).to be_a(Time)
         expect(result.hour).to eq(10)
@@ -168,7 +144,7 @@ RSpec.describe Apiwork::Contract::RequestParser::Coercer do
       end
 
       it 'converts time string without seconds' do
-        result = described_class.perform('14:45', :time)
+        result = coerce('14:45', type: :time)
 
         expect(result).to be_a(Time)
         expect(result.hour).to eq(14)
@@ -177,53 +153,39 @@ RSpec.describe Apiwork::Contract::RequestParser::Coercer do
 
       it 'preserves Time value' do
         time = Time.zone.now
-        result = described_class.perform(time, :time)
-
-        expect(result).to eq(time)
+        expect(coerce(time, type: :time)).to eq(time)
       end
 
-      it 'returns nil for invalid time string' do
-        result = described_class.perform('invalid', :time)
-
-        expect(result).to be_nil
+      it 'returns original value for invalid time string' do
+        expect(coerce('invalid', type: :time)).to eq('invalid')
       end
 
-      it 'returns nil for nil input' do
-        result = described_class.perform(nil, :time)
-
-        expect(result).to be_nil
+      it 'preserves nil input' do
+        expect(coerce(nil, type: :time)).to be_nil
       end
     end
 
     context 'number type' do
       it 'converts number string to Float' do
-        result = described_class.perform('3.14', :number)
-
-        expect(result).to eq(3.14)
+        expect(coerce('3.14', type: :number)).to eq(3.14)
       end
 
       it 'converts integer string to Float' do
-        result = described_class.perform('42', :number)
-
-        expect(result).to eq(42.0)
+        expect(coerce('42', type: :number)).to eq(42.0)
       end
 
       it 'preserves Float value' do
-        result = described_class.perform(3.14, :number)
-
-        expect(result).to eq(3.14)
+        expect(coerce(3.14, type: :number)).to eq(3.14)
       end
 
-      it 'returns nil for invalid number string' do
-        result = described_class.perform('abc', :number)
-
-        expect(result).to be_nil
+      it 'returns original value for invalid number string' do
+        expect(coerce('abc', type: :number)).to eq('abc')
       end
     end
 
     context 'decimal type' do
       it 'converts decimal string to BigDecimal' do
-        result = described_class.perform('19.99', :decimal)
+        result = coerce('19.99', type: :decimal)
 
         expect(result).to be_a(BigDecimal)
         expect(result).to eq(BigDecimal('19.99'))
@@ -231,63 +193,47 @@ RSpec.describe Apiwork::Contract::RequestParser::Coercer do
 
       it 'preserves BigDecimal value' do
         decimal = BigDecimal('19.99')
-        result = described_class.perform(decimal, :decimal)
-
-        expect(result).to eq(decimal)
+        expect(coerce(decimal, type: :decimal)).to eq(decimal)
       end
 
-      it 'returns nil for invalid decimal string' do
-        result = described_class.perform('abc', :decimal)
-
-        expect(result).to be_nil
+      it 'returns original value for invalid decimal string' do
+        expect(coerce('abc', type: :decimal)).to eq('abc')
       end
     end
 
     context 'uuid type' do
       it 'preserves valid UUID string' do
         uuid = '550e8400-e29b-41d4-a716-446655440000'
-        result = described_class.perform(uuid, :uuid)
-
-        expect(result).to eq(uuid)
+        expect(coerce(uuid, type: :uuid)).to eq(uuid)
       end
 
-      it 'returns nil for invalid UUID' do
-        result = described_class.perform('not-a-uuid', :uuid)
-
-        expect(result).to be_nil
+      it 'returns original value for invalid UUID' do
+        expect(coerce('not-a-uuid', type: :uuid)).to eq('not-a-uuid')
       end
 
-      it 'returns nil for nil input' do
-        result = described_class.perform(nil, :uuid)
-
-        expect(result).to be_nil
+      it 'preserves nil input' do
+        expect(coerce(nil, type: :uuid)).to be_nil
       end
     end
 
     context 'string type' do
       it 'preserves String value' do
-        result = described_class.perform('hello', :string)
-
-        expect(result).to eq('hello')
+        expect(coerce('hello', type: :string)).to eq('hello')
       end
 
       it 'converts other types to string' do
-        expect(described_class.perform(42, :string)).to eq('42')
-        expect(described_class.perform(true, :string)).to eq('true')
+        expect(coerce(42, type: :string)).to eq('42')
+        expect(coerce(true, type: :string)).to eq('true')
       end
 
-      it 'returns nil for nil input' do
-        result = described_class.perform(nil, :string)
-
-        expect(result).to be_nil
+      it 'preserves nil input' do
+        expect(coerce(nil, type: :string)).to be_nil
       end
     end
 
     context 'unknown type' do
       it 'returns original value' do
-        result = described_class.perform('value', :unknown_type)
-
-        expect(result).to eq('value')
+        expect(coerce('value', type: :unknown_type)).to eq('value')
       end
     end
   end
