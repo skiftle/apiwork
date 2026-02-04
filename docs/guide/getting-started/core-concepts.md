@@ -152,21 +152,21 @@ This single line generates typed definitions for all CRUD actions based on the r
 You can also write contracts entirely by hand without representations. This is useful for non-CRUD endpoints or custom APIs. See [Contracts](../core/contracts/introduction.md).
 :::
 
-The representation knows:
+The representation declares:
 
 - Which fields exist (from `attribute`)
 - Which can be written (from `writable: true`)
 - Which can be filtered or sorted (from `filterable:` / `sortable:`)
 - How associations nest (from `has_many`, `belongs_to`, etc.)
 
-From this, Apiwork generates:
+From this, the adapter generates types and runtime behavior. The standard adapter creates:
 
 - Request types for create/update (writable fields only)
 - Response types for all actions (all exposed fields)
 - Filter types (filterable fields only)
 - Sort types (sortable fields only)
 
-See [Action Defaults](../core/adapters/standard-adapter/action-defaults.md) for what gets generated, and [Representations](../core/representations/introduction.md) for the full guide.
+See [Action Defaults](../core/adapters/standard-adapter/action-defaults.md) for what the standard adapter generates, and [Representations](../core/representations/introduction.md) for the full guide.
 
 ### Customizing Generated Actions
 

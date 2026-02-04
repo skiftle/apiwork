@@ -32,8 +32,8 @@ end
 | `include`       | Symbol          | `:optional` | `:always` or `:optional`                 |
 | `writable`      | `bool` / `hash` | `false`     | Allow nested attributes                  |
 | `allow_destroy` | `bool`          | `false`     | Allow destroying nested records          |
-| `filterable`    | `bool`          | `false`     | Enable filtering by association          |
-| `sortable`      | `bool`          | `false`     | Enable sorting by association            |
+| `filterable`    | `bool`          | `false`     | Mark as filterable (adapter-dependent)   |
+| `sortable`      | `bool`          | `false`     | Mark as sortable (adapter-dependent)     |
 | `nullable`      | `bool`          | auto        | Allow null (auto-detected from DB)       |
 | `polymorphic`   | Array / Hash    | `nil`       | Polymorphic type mapping                 |
 | `description`   | `string`        | `nil`       | API documentation                        |
@@ -376,61 +376,16 @@ The `_type` discriminator lets TypeScript narrow the type based on the operation
 
 ---
 
-## Filtering & Sorting on Associations
+## Query Capabilities
 
-Query by fields on associated records.
-
-### Filtering
-
-Enable with `filterable: true`:
-
-::: warning ActiveRecord Association Required
-Requires an ActiveRecord association on the model. Custom methods cannot be used for filtering.
-:::
+Mark associations for query operations. The adapter interprets these declarations.
 
 ```ruby
-has_many :comments, representation: CommentRepresentation, filterable: true
-belongs_to :author, representation: AuthorRepresentation, filterable: true
+belongs_to :author, filterable: true, sortable: true
+has_many :comments, filterable: true
 ```
 
-**Query Format:**
-
-```text
-# Posts where author name is "Jane"
-GET /api/v1/posts?filter[author][name][eq]=Jane
-
-# Posts with comments containing "rails"
-GET /api/v1/posts?filter[comments][content][contains]=rails
-
-# Posts by author created after 2024
-GET /api/v1/posts?filter[author][created_at][gt]=2024-01-01
-```
-
-### Sorting
-
-Enable with `sortable: true`:
-
-::: warning ActiveRecord Association Required
-Requires an ActiveRecord association on the model. Custom methods cannot be used for sorting.
-:::
-
-```ruby
-belongs_to :author, representation: AuthorRepresentation, sortable: true
-```
-
-**Query Format:**
-
-```text
-# Posts sorted by author name
-GET /api/v1/posts?sort[author][name]=asc
-
-# Posts sorted by author creation date
-GET /api/v1/posts?sort[author][created_at]=desc
-```
-
-### Auto-Include
-
-When filtering or sorting by an association, it's automatically included for the query.
+The standard adapter supports filtering and sorting on associations. See [Filtering](../adapters/standard-adapter/filtering.md) and [Sorting](../adapters/standard-adapter/sorting.md) for query syntax.
 
 ---
 

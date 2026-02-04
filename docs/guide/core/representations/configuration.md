@@ -37,67 +37,23 @@ end
 
 ## Adapter Configuration
 
-Representations inherit adapter settings from the [API definition](/guide/core/api-definitions/introduction). Override per-representation when needed:
+Adapters may provide configuration options that can be set at the API or representation level. Representations can override API-level adapter settings.
 
 ```ruby
 class ActivityRepresentation < Apiwork::Representation::Base
   adapter do
-    pagination do
-      strategy :cursor
-      default_size 50
-      max_size 150
-    end
+    # Adapter-specific options
   end
 end
 ```
-
-### Pagination Options
-
-| Option | Values | Default | Description |
-|--------|--------|---------|-------------|
-| `strategy` | `:offset`, `:cursor` | `:offset` | Pagination style |
-| `default_size` | Integer | 20 | Items per page when not specified |
-| `max_size` | Integer | 100 | Maximum allowed page size |
-
-### Resolution Order
 
 Settings resolve in this order (first defined wins):
 
 1. **Representation** `adapter` block — most specific
-2. **[API definition](/guide/core/api-definitions/introduction)** `adapter` block — API-wide defaults
+2. **API definition** `adapter` block — API-wide defaults
 3. **Adapter defaults** — built-in fallbacks
 
-Example:
-
-```ruby
-# API definition: all resources default to 25 items per page
-Apiwork::API.define '/api/v1' do
-  adapter do
-    pagination do
-      default_size 25
-      max_size 100
-    end
-  end
-
-  resources :posts
-  resources :activities
-end
-
-# ActivityRepresentation overrides with cursor pagination and larger page size
-class ActivityRepresentation < Apiwork::Representation::Base
-  adapter do
-    pagination do
-      strategy :cursor
-      default_size 50
-    end
-  end
-end
-```
-
-In this example:
-- `GET /posts` uses offset pagination with 25 items (from API)
-- `GET /activities` uses cursor pagination with 50 items (from Representation)
-- Both respect the API-level `max_size: 100` since ActivityRepresentation didn't override it
+For standard adapter options like pagination strategies, see [Standard Adapter: Pagination](../adapters/standard-adapter/pagination.md).
 
 #### See also
 

@@ -44,8 +44,8 @@ Types, nullability, and enums are detected from your database and models.
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `writable` | `bool` / `hash` | `false` | Allow in create/update requests |
-| `filterable` | `bool` | `false` | Enable filtering |
-| `sortable` | `bool` | `false` | Enable sorting |
+| `filterable` | `bool` | `false` | Mark as filterable (adapter-dependent) |
+| `sortable` | `bool` | `false` | Mark as sortable (adapter-dependent) |
 | `encode` | `callable` | `nil` | Transform on response |
 | `decode` | `callable` | `nil` | Transform on request |
 | `empty` | `bool` | `false` | Convert nil to empty string |
@@ -191,36 +191,16 @@ Writable attributes are sent in the request body under the resource key:
 
 ---
 
-## Filtering
+## Query Capabilities
 
-The `filterable` option enables query filtering on an attribute.
-
-::: warning Database Column Required
-Only attributes backed by a database column can be filterable.
-:::
+Mark attributes for query operations. The adapter interprets these declarations and may provide filtering, sorting, or other query features.
 
 ```ruby
-attribute :title, filterable: true
 attribute :status, filterable: true
-```
-
-For query syntax, operators, and logical combinators, see [Filtering](../adapters/standard-adapter/filtering.md).
-
----
-
-## Sorting
-
-The `sortable` option enables ordering results by an attribute.
-
-::: warning Database Column Required
-Only attributes backed by a database column can be sortable.
-:::
-
-```ruby
 attribute :created_at, sortable: true
 ```
 
-For query syntax and multi-field sorting, see [Sorting](../adapters/standard-adapter/sorting.md).
+The standard adapter supports both filtering and sorting on marked attributes. See [Filtering](../adapters/standard-adapter/filtering.md) and [Sorting](../adapters/standard-adapter/sorting.md) for query syntax.
 
 ---
 

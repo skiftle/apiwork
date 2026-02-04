@@ -6,7 +6,7 @@ order: 1
 
 The **adapter** is the runtime layer that executes your API. It translates between schema definitions and HTTP — handling requests, building queries, and rendering responses.
 
-The adapter implements the API conventions and enforces consistent behavior across the entire API. Every resource follows the same patterns for filtering, sorting, pagination, and serialization.
+The adapter implements your API conventions and enforces consistent behavior across the entire API.
 
 ## Contracts with Representation
 

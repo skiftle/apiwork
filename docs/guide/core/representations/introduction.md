@@ -88,11 +88,11 @@ end
 
 | Option | Effect |
 |--------|--------|
-| `filterable` | Clients can filter by this field |
-| `sortable` | Clients can sort by this field |
-| `writable` | Clients can set this field in requests |
+| `filterable` | Mark as filterable (adapter interprets) |
+| `sortable` | Mark as sortable (adapter interprets) |
+| `writable` | Allow in request payloads |
 
-The adapter interprets these options and generates the corresponding contract types, query parameters, and runtime behavior.
+The adapter interprets these options and may generate corresponding contract types, query parameters, and runtime behavior. See [Standard Adapter](../adapters/standard-adapter/introduction.md) for how the built-in adapter handles these options.
 
 ## Connecting to Contract
 
@@ -138,7 +138,7 @@ The built-in adapter wraps single records in the singular form, and collections 
 }
 ```
 
-Request bodies follow the same pattern — create and update payloads are wrapped in the singular root key. See [Serialization](../adapters/standard-adapter/serialization.md) for details on how the adapter transforms data.
+Request bodies follow the same pattern — create and update payloads are wrapped in the singular root key.
 
 Override when you need a different name:
 

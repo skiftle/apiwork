@@ -334,10 +334,10 @@ The following are **not** automatically detected and must be specified manually:
 | Option        | Why Not Inferred                                      |
 | ------------- | ----------------------------------------------------- |
 | `min` / `max` | Column length limits don't always match API needs     |
-| `filterable`  | API query capability is a design decision             |
-| `sortable`    | API query capability is a design decision             |
+| `filterable`  | Query capability is a design decision (adapter interprets) |
+| `sortable`    | Query capability is a design decision (adapter interprets) |
 | `writable`    | Write permissions are security-sensitive              |
-| `include`     | Eager loading strategy is a performance decision      |
+| `include`     | Eager loading strategy is a performance decision (adapter interprets) |
 | `description` | Documentation requires human context                  |
 | `example`     | Examples require domain knowledge                     |
 | `format`      | Semantic formats (email, url) need explicit intent    |
