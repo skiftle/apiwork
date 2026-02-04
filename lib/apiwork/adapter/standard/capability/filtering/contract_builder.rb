@@ -14,18 +14,20 @@ module Apiwork
 
               representation_class.attributes.each do |name, attribute|
                 next unless attribute.filterable? && attribute.enum
-                next if type?([name, TYPE_NAME].join('_').to_sym)
+
+                type_name = [name, TYPE_NAME].join('_').to_sym
+                next if type?(type_name)
 
                 scoped = scoped_enum_name(name)
 
-                union([name, TYPE_NAME].join('_').to_sym) do |u|
-                  u.variant do |element|
+                union(type_name) do |union|
+                  union.variant do |element|
                     element.reference(scoped)
                   end
-                  u.variant(partial: true) do |element|
-                    element.object do |obj|
-                      obj.reference(:eq, to: scoped)
-                      obj.array(:in) do |array|
+                  union.variant(partial: true) do |element|
+                    element.object do |object|
+                      object.reference(:eq, to: scoped)
+                      object.array(:in) do |array|
                         array.reference(scoped)
                       end
                     end
@@ -64,32 +66,32 @@ module Apiwork
                 [name, filter_type]
               end
 
-              object(TYPE_NAME) do |obj|
-                obj.array?(Constants::AND) do |element|
+              object(TYPE_NAME) do |object|
+                object.array?(Constants::AND) do |element|
                   element.reference(TYPE_NAME)
                 end
-                obj.array?(Constants::OR) do |element|
+                object.array?(Constants::OR) do |element|
                   element.reference(TYPE_NAME)
                 end
-                obj.reference?(Constants::NOT, to: TYPE_NAME)
+                object.reference?(Constants::NOT, to: TYPE_NAME)
 
                 attributes.each do |name, type, filter_type, shorthand|
                   if shorthand
-                    obj.union?(name) do |u|
-                      u.variant do |element|
+                    object.union?(name) do |union|
+                      union.variant do |element|
                         element.of(type)
                       end
-                      u.variant do |element|
+                      union.variant do |element|
                         element.reference(filter_type)
                       end
                     end
                   else
-                    obj.reference?(name, to: filter_type)
+                    object.reference?(name, to: filter_type)
                   end
                 end
 
                 associations.each do |name, filter_type|
-                  obj.reference?(name, to: filter_type)
+                  object.reference?(name, to: filter_type)
                 end
               end
 
@@ -98,11 +100,11 @@ module Apiwork
               action(:index) do |act|
                 act.request do |request|
                   request.query do |query|
-                    query.union?(TYPE_NAME) do |u|
-                      u.variant do |element|
+                    query.union?(TYPE_NAME) do |union|
+                      union.variant do |element|
                         element.reference(TYPE_NAME)
                       end
-                      u.variant do |element|
+                      union.variant do |element|
                         element.array do |array|
                           array.reference(TYPE_NAME)
                         end
@@ -121,7 +123,9 @@ module Apiwork
 
                 association = representation_class.polymorphic_association_for_type_column(name)
                 next unless association
-                next if type?([name, TYPE_NAME].join('_').to_sym)
+
+                type_name = [name, TYPE_NAME].join('_').to_sym
+                next if type?(type_name)
 
                 allowed_values = association.polymorphic.map(&:polymorphic_name)
 
@@ -129,14 +133,14 @@ module Apiwork
 
                 scoped = scoped_enum_name(name)
 
-                union([name, TYPE_NAME].join('_').to_sym) do |u|
-                  u.variant do |element|
+                union(type_name) do |union|
+                  union.variant do |element|
                     element.reference(scoped)
                   end
-                  u.variant(partial: true) do |element|
-                    element.object do |obj|
-                      obj.reference(:eq, to: scoped)
-                      obj.array(:in) do |array|
+                  union.variant(partial: true) do |element|
+                    element.object do |object|
+                      object.reference(:eq, to: scoped)
+                      object.array(:in) do |array|
                         array.reference(scoped)
                       end
                     end
@@ -151,7 +155,9 @@ module Apiwork
 
                 inheritance = representation_class.inheritance_for_column(name)
                 next unless inheritance
-                next if type?([name, TYPE_NAME].join('_').to_sym)
+
+                type_name = [name, TYPE_NAME].join('_').to_sym
+                next if type?(type_name)
 
                 allowed_values = inheritance.subclasses.map(&:sti_name)
 
@@ -159,14 +165,14 @@ module Apiwork
 
                 scoped = scoped_enum_name(name)
 
-                union([name, TYPE_NAME].join('_').to_sym) do |u|
-                  u.variant do |element|
+                union(type_name) do |union|
+                  union.variant do |element|
                     element.reference(scoped)
                   end
-                  u.variant(partial: true) do |element|
-                    element.object do |obj|
-                      obj.reference(:eq, to: scoped)
-                      obj.array(:in) do |array|
+                  union.variant(partial: true) do |element|
+                    element.object do |object|
+                      object.reference(:eq, to: scoped)
+                      object.array(:in) do |array|
                         array.reference(scoped)
                       end
                     end

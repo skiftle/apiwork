@@ -52,7 +52,7 @@ module Apiwork
     # @return [Request] new context with transformed query
     #
     # @example
-    #   request.transform_query { |q| normalize(q) }
+    #   request.transform_query { |query| normalize(query) }
     def transform_query
       self.class.new(body: body, query: yield(query))
     end
@@ -64,7 +64,7 @@ module Apiwork
     # @return [Request] new context with transformed body
     #
     # @example
-    #   request.transform_body { |b| prepare(b) }
+    #   request.transform_body { |body| prepare(body) }
     def transform_body
       self.class.new(body: yield(body), query: query)
     end
