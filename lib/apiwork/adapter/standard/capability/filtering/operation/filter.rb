@@ -51,9 +51,6 @@ module Apiwork
                     association_conditions, association_joins = build_join_conditions(key, value, association)
                     conditions.concat(association_conditions)
                     joins.deep_merge!(association_joins)
-
-                  else
-                    collect_filterable_error(key, target_klass)
                   end
                 end
               end
@@ -189,20 +186,6 @@ module Apiwork
                 representation_class.new(nil, {}).instance_eval(&filterable)
               end
 
-              def collect_filterable_error(key, target_klass)
-                available = representation_class.attributes
-                  .values
-                  .select(&:filterable?)
-                  .map(&:name)
-
-                @issues << Issue.new(
-                  :field_not_filterable,
-                  'Not filterable',
-                  meta: { available:, field: key },
-                  path: [:filter, key],
-                )
-              end
-
               def build_column_condition(key, value, target_klass)
                 validate_enum_values!(key, value, target_klass) if target_klass.defined_enums.key?(key.to_s)
 
@@ -328,15 +311,7 @@ module Apiwork
                 reflection = representation_class.model_class.reflect_on_association(key)
                 association_resource = association.representation_class || infer_association_representation(reflection)
 
-                unless association_resource
-                  @issues << Issue.new(
-                    :association_representation_missing,
-                    'Association representation missing',
-                    meta: { association: key },
-                    path: [:filter, key],
-                  )
-                  return [[], {}]
-                end
+                return [[], {}] unless association_resource
 
                 association_reflection = representation_class.model_class.reflect_on_association(key)
                 unless association_reflection
@@ -369,7 +344,7 @@ module Apiwork
                   end
                 end
 
-                builder = Builder.new(column, key, allowed_types: [Hash], issues: @issues)
+                builder = Builder.new(column, key, allowed_types: [Hash])
 
                 builder.build(value, normalizer:, valid_operators: Constants::NULLABLE_UUID_OPERATORS) do |operator, compare|
                   case operator
@@ -385,7 +360,7 @@ module Apiwork
 
                 normalizer = ->(value) { value.is_a?(String) || value.nil? ? { eq: value } : value }
 
-                builder = Builder.new(column, key, allowed_types: [Hash], issues: @issues)
+                builder = Builder.new(column, key, allowed_types: [Hash])
 
                 builder.build(
                   value,
@@ -413,7 +388,7 @@ module Apiwork
 
                 normalizer = ->(value) { value }
 
-                builder = Builder.new(column, key, allowed_types: [Hash], issues: @issues)
+                builder = Builder.new(column, key, allowed_types: [Hash])
 
                 builder.build(value, normalizer:, valid_operators: Constants::NULLABLE_DATE_OPERATORS) do |operator, compare|
                   case operator
@@ -457,7 +432,7 @@ module Apiwork
 
                 normalizer = ->(value) { value }
 
-                builder = Builder.new(column, key, allowed_types: [Hash], issues: @issues)
+                builder = Builder.new(column, key, allowed_types: [Hash])
 
                 builder.build(value, normalizer:, valid_operators: Constants::NULLABLE_DATE_OPERATORS) do |operator, compare|
                   case operator
@@ -496,7 +471,7 @@ module Apiwork
 
                 normalizer = ->(value) { value.is_a?(Numeric) || value.nil? ? { eq: value } : value }
 
-                builder = Builder.new(column, key, allowed_types: [Hash], issues: @issues)
+                builder = Builder.new(column, key, allowed_types: [Hash])
 
                 builder.build(
                   value,
@@ -528,7 +503,7 @@ module Apiwork
 
                 normalizer = ->(value) { [true, false, nil].include?(value) ? { eq: value } : value }
 
-                builder = Builder.new(column, key, allowed_types: [Hash], issues: @issues)
+                builder = Builder.new(column, key, allowed_types: [Hash])
 
                 builder.build(
                   value,

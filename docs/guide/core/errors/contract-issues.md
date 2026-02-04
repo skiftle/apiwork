@@ -48,15 +48,11 @@ end
 
 | Code                        | Detail                   | Meta                          |
 | --------------------------- | ------------------------ | ----------------------------- |
-| `field_not_filterable`      | Not filterable           | `field`, `available`          |
-| `operator_invalid`          | Invalid operator         | `field`, `operator`, `allowed`|
-| `filter_value_invalid`      | Invalid filter value     | `field`, `type`, `allowed`    |
 | `enum_invalid`              | Invalid enum value       | `field`, `value`, `allowed`   |
 | `value_null`                | Cannot be null           | `field`                       |
 | `column_unknown`            | Unknown column type      | `field`                       |
 | `column_unsupported`        | Unsupported column type  | `field`, `type`               |
 | `association_not_found`     | Association not found    | `association`                 |
-| `association_representation_missing`| Association representation missing| `association`          |
 
 ### Sort Errors
 
@@ -221,56 +217,6 @@ end
 ```
 
 ### Filters
-
-#### field_not_filterable
-
-```json
-{
-  "layer": "contract",
-  "code": "field_not_filterable",
-  "detail": "Not filterable",
-  "path": ["filter", "body"],
-  "pointer": "/filter/body",
-  "meta": {
-    "field": "body",
-    "available": ["title", "status"]
-  }
-}
-```
-
-#### operator_invalid
-
-```json
-{
-  "layer": "contract",
-  "code": "operator_invalid",
-  "detail": "Invalid operator",
-  "path": ["filter", "status", "contains"],
-  "pointer": "/filter/status/contains",
-  "meta": {
-    "field": "status",
-    "operator": "contains",
-    "allowed": ["eq", "in"]
-  }
-}
-```
-
-#### filter_value_invalid
-
-```json
-{
-  "layer": "contract",
-  "code": "filter_value_invalid",
-  "detail": "Invalid filter value",
-  "path": ["filter", "status", "in"],
-  "pointer": "/filter/status/in",
-  "meta": {
-    "field": "status",
-    "type": "String",
-    "allowed": ["Array"]
-  }
-}
-```
 
 #### enum_invalid
 
