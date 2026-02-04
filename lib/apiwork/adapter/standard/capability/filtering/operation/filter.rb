@@ -408,37 +408,28 @@ module Apiwork
                 column_metadata = target_klass.columns_hash[key.to_s]
                 allow_nil = column_metadata&.null != false
 
-                if value.is_a?(String) || value.nil?
-                  return handle_date_nil_value(column, key, allow_nil) if value.blank?
-
-                  return column.eq(parse_date(value, key))
-                end
+                return handle_date_nil_value(column, key, allow_nil) if value.nil?
+                return column.eq(value) unless value.is_a?(Hash)
 
                 normalizer = ->(value) { value }
 
                 builder = Builder.new(column, key, allowed_types: [Hash], issues: @issues)
 
                 builder.build(value, normalizer:, valid_operators: Constants::NULLABLE_DATE_OPERATORS) do |operator, compare|
-                  if operator == :null
-                    handle_null_operator(column, compare)
-                  elsif compare.blank?
-                    handle_date_nil_value(column, key, allow_nil)
-                  elsif operator == :between && compare.is_a?(Hash)
-                    from_date = parse_date(compare[:from] || compare['from'], key)
-                    to_date = parse_date(compare[:to] || compare['to'], key)
+                  case operator
+                  when :null then handle_null_operator(column, compare)
+                  when :between
+                    from_date = compare[:from]
+                    to_date = compare[:to]
                     next unless from_date && to_date
 
                     column.gteq(from_date.beginning_of_day).and(column.lteq(to_date.end_of_day))
-                  else
-                    date = parse_date(compare, key)
-                    case operator
-                    when :eq then column.eq(date)
-                    when :gt then column.gt(date)
-                    when :gte then column.gteq(date)
-                    when :lt then column.lt(date)
-                    when :lte then column.lteq(date)
-                    when :in then column.in(Array(date))
-                    end
+                  when :eq then column.eq(compare)
+                  when :gt then column.gt(compare)
+                  when :gte then column.gteq(compare)
+                  when :lt then column.lt(compare)
+                  when :lte then column.lteq(compare)
+                  when :in then column.in(Array(compare))
                   end
                 end
               end
@@ -461,37 +452,28 @@ module Apiwork
                 column_metadata = target_klass.columns_hash[key.to_s]
                 allow_nil = column_metadata&.null != false
 
-                if value.is_a?(String) || value.nil?
-                  return handle_time_nil_value(column, key, allow_nil) if value.blank?
-
-                  return column.eq(parse_time(value, key))
-                end
+                return handle_time_nil_value(column, key, allow_nil) if value.nil?
+                return column.eq(value) unless value.is_a?(Hash)
 
                 normalizer = ->(value) { value }
 
                 builder = Builder.new(column, key, allowed_types: [Hash], issues: @issues)
 
                 builder.build(value, normalizer:, valid_operators: Constants::NULLABLE_DATE_OPERATORS) do |operator, compare|
-                  if operator == :null
-                    handle_null_operator(column, compare)
-                  elsif compare.blank?
-                    handle_time_nil_value(column, key, allow_nil)
-                  elsif operator == :between && compare.is_a?(Hash)
-                    from_time = parse_time(compare[:from] || compare['from'], key)
-                    to_time = parse_time(compare[:to] || compare['to'], key)
+                  case operator
+                  when :null then handle_null_operator(column, compare)
+                  when :between
+                    from_time = compare[:from]
+                    to_time = compare[:to]
                     next unless from_time && to_time
 
                     column.gteq(from_time).and(column.lteq(to_time))
-                  else
-                    time = parse_time(compare, key)
-                    case operator
-                    when :eq then column.eq(time)
-                    when :gt then column.gt(time)
-                    when :gte then column.gteq(time)
-                    when :lt then column.lt(time)
-                    when :lte then column.lteq(time)
-                    when :in then column.in(Array(time))
-                    end
+                  when :eq then column.eq(compare)
+                  when :gt then column.gt(compare)
+                  when :gte then column.gteq(compare)
+                  when :lt then column.lt(compare)
+                  when :lte then column.lteq(compare)
+                  when :in then column.in(Array(compare))
                   end
                 end
               end
@@ -512,7 +494,7 @@ module Apiwork
               def build_numeric_where_clause(key, value, target_klass)
                 column = target_klass.arel_table[key]
 
-                normalizer = ->(value) { [String, Numeric, NilClass].any? { |type| value.is_a?(type) } ? { eq: value } : value }
+                normalizer = ->(value) { value.is_a?(Numeric) || value.nil? ? { eq: value } : value }
 
                 builder = Builder.new(column, key, allowed_types: [Hash], issues: @issues)
 
@@ -522,39 +504,19 @@ module Apiwork
                   valid_operators: Constants::NULLABLE_NUMERIC_OPERATORS,
                 ) do |operator, compare|
                   case operator
-                  when :eq
-                    number = parse_numeric(compare, key)
-                    column.eq(number)
-                  when :gt
-                    number = parse_numeric(compare, key)
-                    column.gt(number)
-                  when :gte
-                    number = parse_numeric(compare, key)
-                    column.gteq(number)
-                  when :lt
-                    number = parse_numeric(compare, key)
-                    column.lt(number)
-                  when :lte
-                    number = parse_numeric(compare, key)
-                    column.lteq(number)
+                  when :eq then column.eq(compare)
+                  when :gt then column.gt(compare)
+                  when :gte then column.gteq(compare)
+                  when :lt then column.lt(compare)
+                  when :lte then column.lteq(compare)
                   when :between
-                    if compare.is_a?(Hash)
-                      from_number = parse_numeric(compare[:from] || compare['from'], key)
-                      to_number = parse_numeric(compare[:to] || compare['to'], key)
-                      next unless from_number && to_number
+                    from_number = compare[:from]
+                    to_number = compare[:to]
+                    next unless from_number && to_number
 
-                      column.between(from_number..to_number)
-                    else
-                      number = parse_numeric(compare, key)
-                      next unless number
-
-                      column.between(number..number)
-                    end
+                    column.between(from_number..to_number)
                   when :in
-                    numbers = Array(compare).filter_map { |value| parse_numeric(value, key) }
-                    next if numbers.empty?
-
-                    column.in(numbers)
+                    column.in(Array(compare))
                   when :null
                     handle_null_operator(column, compare)
                   end
@@ -564,13 +526,7 @@ module Apiwork
               def build_boolean_where_clause(key, value, target_klass)
                 column = target_klass.arel_table[key]
 
-                normalizer = lambda do |value|
-                  if [true, false, nil].include?(value) || ['true', 'false', '1', '0', 1, 0].include?(value)
-                    { eq: normalize_boolean(value) }
-                  else
-                    value
-                  end
-                end
+                normalizer = ->(value) { [true, false, nil].include?(value) ? { eq: value } : value }
 
                 builder = Builder.new(column, key, allowed_types: [Hash], issues: @issues)
 
@@ -580,74 +536,14 @@ module Apiwork
                   valid_operators: Constants::NULLABLE_BOOLEAN_OPERATORS,
                 ) do |operator, compare|
                   case operator
-                  when :eq
-                    bool_value = normalize_boolean(compare)
-                    column.eq(bool_value)
-                  when :null
-                    handle_null_operator(column, compare)
+                  when :eq then column.eq(compare)
+                  when :null then handle_null_operator(column, compare)
                   end
                 end
               end
 
               def handle_null_operator(column, compare)
-                if [true, 'true', 1, '1'].include?(compare)
-                  column.eq(nil)
-                else
-                  column.not_eq(nil)
-                end
-              end
-
-              def normalize_boolean(value)
-                return nil if value.nil?
-
-                [true, 'true', 1, '1'].include?(value)
-              end
-
-              def parse_date(value, field)
-                DateTime.parse(value.to_s)
-              rescue ArgumentError
-                @issues << Issue.new(
-                  :date_invalid,
-                  'Invalid date',
-                  meta: { field:, value: },
-                  path: [:filter, field],
-                )
-                nil
-              end
-
-              def parse_time(value, field)
-                Time.zone.parse(value.to_s)
-              rescue ArgumentError
-                @issues << Issue.new(
-                  :time_invalid,
-                  'Invalid time',
-                  meta: { field:, value: },
-                  path: [:filter, field],
-                )
-                nil
-              end
-
-              def parse_numeric(value, field)
-                case value
-                when Numeric then value
-                when String then Float(value)
-                else
-                  @issues << Issue.new(
-                    :number_invalid,
-                    'Invalid number',
-                    meta: { field:, value: },
-                    path: [:filter, field],
-                  )
-                  nil
-                end
-              rescue ArgumentError
-                @issues << Issue.new(
-                  :number_invalid,
-                  'Invalid number',
-                  meta: { field:, value: },
-                  path: [:filter, field],
-                )
-                nil
+                compare ? column.eq(nil) : column.not_eq(nil)
               end
 
               def sqlite_adapter?

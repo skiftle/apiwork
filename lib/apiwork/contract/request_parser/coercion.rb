@@ -24,6 +24,12 @@ module Apiwork
             return coerce_array(value, param_options, shape, type_cache:) if type == :array && value.is_a?(Array)
             return coerce_hash(value, param_options[:shape], type_cache:) if param_options[:shape] && value.is_a?(Hash)
 
+            if value.is_a?(Hash) && type && !Coercer.performable?(type)
+              type_cache ||= {}
+              custom_shape = resolve_custom_shape(type, shape, type_cache)
+              return coerce_hash(value, custom_shape, type_cache:) if custom_shape
+            end
+
             if Coercer.performable?(type)
               coerced = Coercer.perform(value, type)
               return coerced unless coerced.nil?

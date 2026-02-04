@@ -631,17 +631,16 @@ module Apiwork
           return if @pre_pass_complete
 
           mark_nested_writable_representations!
+          adapter.register_api(self)
           @pre_pass_complete = true
         end
 
         def ensure_all_contracts_built!
-          mark_nested_writable_representations!
+          ensure_pre_pass_complete!
 
           @root_resource.each_resource do |resource|
             build_contracts_for_resource(resource)
           end
-
-          adapter.register_api(self)
         end
 
         private
