@@ -29,8 +29,6 @@ end
 
 ## Error Codes
 
-### Request Body Errors
-
 | Code               | Detail            | Meta                              |
 | ------------------ | ----------------- | --------------------------------- |
 | `field_missing`    | Required          | `field`, `type`                   |
@@ -46,11 +44,9 @@ end
 | `array_too_large`  | Too many items    | `max`, `actual`                   |
 | `depth_exceeded`   | Too deeply nested | `depth`, `max`                    |
 
-## Meta Reference
+## Examples
 
-### Request Body
-
-#### field_missing
+### field_missing
 
 ```json
 {
@@ -66,7 +62,7 @@ end
 }
 ```
 
-#### field_unknown
+### field_unknown
 
 ```json
 {
@@ -82,7 +78,7 @@ end
 }
 ```
 
-#### type_invalid
+### type_invalid
 
 ```json
 {
@@ -99,7 +95,7 @@ end
 }
 ```
 
-#### value_invalid
+### value_invalid
 
 ```json
 {
@@ -116,7 +112,7 @@ end
 }
 ```
 
-#### value_null
+### value_null
 
 ```json
 {
@@ -132,7 +128,7 @@ end
 }
 ```
 
-#### string_too_short
+### string_too_short
 
 ```ruby
 string :title, min: 5, max: 100
@@ -153,7 +149,7 @@ string :title, min: 5, max: 100
 }
 ```
 
-#### number_too_small
+### number_too_small
 
 ```ruby
 integer :quantity, min: 1, max: 100
@@ -174,7 +170,7 @@ integer :quantity, min: 1, max: 100
 }
 ```
 
-#### number_too_large
+### number_too_large
 
 ```ruby
 integer :quantity, min: 1, max: 100
@@ -195,7 +191,7 @@ integer :quantity, min: 1, max: 100
 }
 ```
 
-#### array_too_large
+### array_too_large
 
 ```ruby
 array :tags, min: 1, max: 10 do
@@ -217,7 +213,7 @@ end
 }
 ```
 
-#### depth_exceeded
+### depth_exceeded
 
 ```json
 {

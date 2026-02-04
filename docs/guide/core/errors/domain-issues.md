@@ -153,7 +153,7 @@ All 23 domain error codes:
 | `associated`| Invalid           | —                              |
 | `invalid`   | Invalid           | —                              |
 
-## Meta Reference
+## Examples
 
 Constraints that are safe to expose go in `meta` — they help clients build better error messages without leaking implementation details:
 

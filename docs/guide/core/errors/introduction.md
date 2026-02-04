@@ -102,7 +102,7 @@ Request shape, types, or constraints don't match the contract. Client can fix by
 }
 ```
 
-See [Contract Issues](./contract-issues.md) for all 28 codes.
+See [Contract Issues](./contract-issues.md) for all 12 codes.
 
 ### `domain`
 
