@@ -385,7 +385,7 @@ belongs_to :author, filterable: true, sortable: true
 has_many :comments, filterable: true
 ```
 
-The standard adapter supports filtering and sorting on associations. See [Filtering](../adapters/standard-adapter/filtering.md) and [Sorting](../adapters/standard-adapter/sorting.md) for query syntax.
+The [standard adapter](../adapters/standard-adapter/introduction.md) supports filtering and sorting on associations. See [Filtering](../adapters/standard-adapter/filtering.md) and [Sorting](../adapters/standard-adapter/sorting.md) for query syntax.
 
 ---
 

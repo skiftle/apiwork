@@ -200,7 +200,7 @@ attribute :status, filterable: true
 attribute :created_at, sortable: true
 ```
 
-The standard adapter supports both filtering and sorting on marked attributes. See [Filtering](../adapters/standard-adapter/filtering.md) and [Sorting](../adapters/standard-adapter/sorting.md) for query syntax.
+The [standard adapter](../adapters/standard-adapter/introduction.md) supports both filtering and sorting on marked attributes. See [Filtering](../adapters/standard-adapter/filtering.md) and [Sorting](../adapters/standard-adapter/sorting.md) for query syntax.
 
 ---
 
