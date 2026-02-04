@@ -31,7 +31,7 @@ module Apiwork
       end
 
       def build_interface_code(type_name, properties, extends)
-        base_types = extends.map { |t| pascal_case(t) }
+        base_types = extends.map { |type| pascal_case(type) }
 
         if properties.empty? && base_types.any?
           "export type #{type_name} = #{base_types.join(' & ')};"

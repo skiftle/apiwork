@@ -42,7 +42,7 @@ module Apiwork
       end
 
       def build_object_schema_code(schema_name, properties, extends, type_annotation: '')
-        base_schemas = extends.map { |t| "#{pascal_case(t)}Schema" }
+        base_schemas = extends.map { |type| "#{pascal_case(type)}Schema" }
 
         base_chain = if base_schemas.size == 1
                        base_schemas.first

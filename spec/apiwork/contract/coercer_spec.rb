@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Apiwork::Contract::RequestParser::Coercer do
+RSpec.describe Apiwork::Contract::Coercer do
   let(:contract_class) { create_test_contract }
 
   def build_shape(type:)

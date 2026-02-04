@@ -20,13 +20,13 @@ RSpec.describe 'Literal and Discriminated Union Features' do
     let(:definition) { contract_class.action_for(:test).request.body }
 
     it 'accepts the exact literal value' do
-      result = Apiwork::Contract::Validator.validate(definition, { name: 'Test', status: 'archived' })
+      result = definition.validate({ name: 'Test', status: 'archived' })
       expect(result[:issues]).to be_empty
       expect(result[:params][:status]).to eq('archived')
     end
 
     it 'rejects different values' do
-      result = Apiwork::Contract::Validator.validate(definition, { name: 'Test', status: 'active' })
+      result = definition.validate({ name: 'Test', status: 'active' })
       expect(result[:issues]).not_to be_empty
       expect(result[:issues].first.code).to eq(:value_invalid)
       expect(result[:issues].first.detail).to eq('Invalid value')
@@ -84,19 +84,20 @@ RSpec.describe 'Literal and Discriminated Union Features' do
     let(:definition) { contract_class.action_for(:test).request.body }
 
     it 'validates string variant with correct discriminator' do
-      result = Apiwork::Contract::Validator.validate(definition, { filter: { kind: 'string', value: 'test' } })
+      result = definition.validate({ filter: { kind: 'string', value: 'test' } })
       expect(result[:issues]).to be_empty
       expect(result[:params][:filter][:value]).to eq('test')
     end
 
     it 'validates range variant with correct discriminator' do
-      result = Apiwork::Contract::Validator.validate(
-        definition,
-        { filter: {
-          gte: 10,
-          kind: 'range',
-          lte: 20,
-        } },
+      result = definition.validate(
+        {
+          filter: {
+            gte: 10,
+            kind: 'range',
+            lte: 20,
+          },
+        },
       )
       expect(result[:issues]).to be_empty
       expect(result[:params][:filter][:gte]).to eq(10)
@@ -104,21 +105,21 @@ RSpec.describe 'Literal and Discriminated Union Features' do
     end
 
     it 'rejects invalid discriminator value' do
-      result = Apiwork::Contract::Validator.validate(definition, { filter: { kind: 'invalid' } })
+      result = definition.validate({ filter: { kind: 'invalid' } })
       expect(result[:issues]).not_to be_empty
       expect(result[:issues].first.code).to eq(:value_invalid)
       expect(result[:issues].first.detail).to eq('Invalid value')
     end
 
     it 'rejects missing discriminator field' do
-      result = Apiwork::Contract::Validator.validate(definition, { filter: { gte: 10 } })
+      result = definition.validate({ filter: { gte: 10 } })
       expect(result[:issues]).not_to be_empty
       expect(result[:issues].first.code).to eq(:field_missing)
       expect(result[:issues].first.detail).to eq('Required')
     end
 
     it 'rejects non-hash values for discriminated unions' do
-      result = Apiwork::Contract::Validator.validate(definition, { filter: 'string' })
+      result = definition.validate({ filter: 'string' })
       expect(result[:issues]).not_to be_empty
       expect(result[:issues].first.code).to eq(:type_invalid)
     end

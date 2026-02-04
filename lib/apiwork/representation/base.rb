@@ -803,7 +803,7 @@ module Apiwork
 
         inheritance = self.class.inheritance_for_column(attribute_name)
         if inheritance
-          klass = inheritance.subclasses.find { |k| k.model_class.sti_name == value }
+          klass = inheritance.subclasses.find { |subclass| subclass.model_class.sti_name == value }
           return klass.sti_name if klass
         end
 

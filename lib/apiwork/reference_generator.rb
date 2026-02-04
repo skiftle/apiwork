@@ -287,7 +287,7 @@ module Apiwork
         .flat_map do |yard_object|
           path = yard_object.path.delete_prefix('Apiwork::')
           parts = path.split('::')
-          Array.new(parts.size) { |i| parts[i..].join('::') }
+          Array.new(parts.size) { |index| parts[index..].join('::') }
         end
         .reject { |name| RUBY_PRIMITIVES.include?(name) }
         .to_set

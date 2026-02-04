@@ -26,12 +26,13 @@ RSpec.describe 'Contract union type unknown field validation' do
   let(:contract) { contract_class.new }
   let(:action) { contract_class.action_for(:index) }
 
+  let(:definition) { action.request.body }
+
   it 'catches unknown fields in union variant (custom type)' do
-    result = Apiwork::Contract::Validator.validate(
-      action.request.body,
+    result = definition.validate(
       {
         custom: {
-          invalid_field: true, # This should be caught as unknown
+          invalid_field: true,
         },
       },
     )
@@ -43,8 +44,7 @@ RSpec.describe 'Contract union type unknown field validation' do
   end
 
   it 'allows known fields in union variant (custom type)' do
-    result = Apiwork::Contract::Validator.validate(
-      action.request.body,
+    result = definition.validate(
       {
         custom: {
           another_field: 'test',
@@ -59,12 +59,7 @@ RSpec.describe 'Contract union type unknown field validation' do
   end
 
   it 'allows boolean variant' do
-    result = Apiwork::Contract::Validator.validate(
-      action.request.body,
-      {
-        custom: true,
-      },
-    )
+    result = definition.validate({ custom: true })
 
     expect(result[:issues]).to be_empty
     expect(result[:params][:custom]).to be(true)

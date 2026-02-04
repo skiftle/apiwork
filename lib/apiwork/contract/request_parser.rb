@@ -33,8 +33,8 @@ module Apiwork
 
       def coerce_request(request)
         request
-          .transform_query { |q| coerce(q, shape_for(:query)) }
-          .transform_body { |b| coerce(b, shape_for(:body)) }
+          .transform_query { |query| coerce(query, shape_for(:query)) }
+          .transform_body { |body| coerce(body, shape_for(:body)) }
       end
 
       def parse_part(data, part_type)
@@ -42,11 +42,11 @@ module Apiwork
         return [{}, []] if shape.nil? && data.blank?
         return [data, []] unless shape
 
-        validated = validate(data, shape)
+        validated = shape.validate(data)
 
         return [{}, validated[:issues]] if validated[:issues].any?
 
-        [transform(deserialize(validated[:params], shape), shape), []]
+        [shape.transform(shape.deserialize(validated[:params])), []]
       end
 
       def action
@@ -66,23 +66,7 @@ module Apiwork
         return data unless shape
         return data unless data.is_a?(Hash)
 
-        Coercer.coerce(shape, data)
-      end
-
-      def validate(data, shape)
-        Validator.validate(shape, data) || { issues: [], params: data }
-      end
-
-      def deserialize(data, shape)
-        return data unless data.is_a?(Hash)
-
-        Deserializer.deserialize(shape, data)
-      end
-
-      def transform(data, shape)
-        return data unless data.is_a?(Hash)
-
-        Transformer.transform(shape, data)
+        shape.coerce(data)
       end
     end
   end

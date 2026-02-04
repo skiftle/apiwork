@@ -184,6 +184,22 @@ module Apiwork
         @wrapped
       end
 
+      def validate(data, current_depth: 0, max_depth: 10, path: [])
+        Validator.validate(self, data, current_depth:, max_depth:, path:)
+      end
+
+      def coerce(data)
+        Coercer.coerce(self, data)
+      end
+
+      def deserialize(data)
+        Deserializer.deserialize(self, data)
+      end
+
+      def transform(data)
+        Transformer.transform(self, data)
+      end
+
       def copy_type_definition_params(type_definition, target_param)
         return unless type_definition.object?
 

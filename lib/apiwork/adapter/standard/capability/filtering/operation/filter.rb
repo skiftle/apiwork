@@ -217,9 +217,9 @@ module Apiwork
                 when String
                   mapping[value] || value
                 when Hash
-                  value.transform_values { |v| transform_polymorphic_filter_value(v, association) }
+                  value.transform_values { |item| transform_polymorphic_filter_value(item, association) }
                 when Array
-                  value.map { |v| transform_polymorphic_filter_value(v, association) }
+                  value.map { |item| transform_polymorphic_filter_value(item, association) }
                 else
                   value
                 end
@@ -240,9 +240,9 @@ module Apiwork
                 when String
                   mapping[value] || value
                 when Hash
-                  value.transform_values { |v| transform_sti_filter_value(v, inheritance) }
+                  value.transform_values { |item| transform_sti_filter_value(item, inheritance) }
                 when Array
-                  value.map { |v| transform_sti_filter_value(v, inheritance) }
+                  value.map { |item| transform_sti_filter_value(item, inheritance) }
                 else
                   value
                 end

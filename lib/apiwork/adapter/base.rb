@@ -73,7 +73,7 @@ module Apiwork
           inherited = superclass.respond_to?(:capabilities) ? superclass.capabilities : []
           skipped = @skipped_capabilities || []
           all = (inherited + (@capabilities || [])).uniq
-          all.reject { |c| skipped.include?(c.capability_name) }
+          all.reject { |capability| skipped.include?(capability.capability_name) }
         end
 
         # @api public

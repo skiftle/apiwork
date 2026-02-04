@@ -314,7 +314,7 @@ module Apiwork
       end
 
       def map_object_with_extends(type)
-        refs = type.extends.map { |t| { '$ref': "#/components/schemas/#{schema_name(t)}" } }
+        refs = type.extends.map { |base_type| { '$ref': "#/components/schemas/#{schema_name(base_type)}" } }
         object_schema = map_object(type)
 
         if object_schema[:properties].empty?
