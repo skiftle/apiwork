@@ -106,18 +106,18 @@ These types are excluded from filter generation. To filter structured data, crea
 
 ### Enum
 
-Enum fields support `eq` and `in` operators. You can also pass the value directly. Invalid values return an error with valid options:
+Enum fields support `eq` and `in` operators. You can also pass the value directly. Invalid values return a contract error:
 
 ```json
 {
   "layer": "contract",
   "issues": [
     {
-      "code": "enum_invalid",
-      "detail": "Invalid enum value",
+      "code": "value_invalid",
+      "detail": "Invalid value",
       "path": ["filter", "status"],
       "pointer": "/filter/status",
-      "meta": { "field": "status", "value": ["unknown"], "allowed": ["draft", "published", "archived"] }
+      "meta": { "field": "status", "expected": ["draft", "published", "archived"], "actual": "unknown" }
     }
   ]
 }
@@ -273,26 +273,15 @@ These errors return standard contract validation errors with codes like `invalid
 
 ### Adapter Validation
 
-The adapter only validates edge cases that pass contract validation:
+The adapter validates edge cases that pass contract validation but indicate schema mismatches:
 
 | Code | When It Fires |
 |------|---------------|
-| `enum_invalid` | Enum value changed in database after contract was built |
-| `value_null` | `null` operator on non-nullable column |
-
-These are rare — they only occur when values pass type validation but fail business rules.
-
-### Association Errors
-
-These can occur when schema configuration is incomplete:
-
-| Code | Cause |
-|------|-------|
-| `field_not_filterable` | Field exists but not marked `filterable: true` |
+| `column_unknown` | Representation attribute doesn't exist as a database column |
+| `column_unsupported` | Column type is not supported for filtering (e.g., json, inet) |
 | `association_not_found` | Association doesn't exist on model |
-| `association_resource_not_found` | Association representation couldn't be resolved |
 
-All errors include available options in the response to aid debugging.
+These are configuration errors — they indicate the representation doesn't match the database schema.
 
 ---
 

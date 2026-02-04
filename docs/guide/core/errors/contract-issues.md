@@ -48,8 +48,6 @@ end
 
 | Code                        | Detail                   | Meta                          |
 | --------------------------- | ------------------------ | ----------------------------- |
-| `enum_invalid`              | Invalid enum value       | `field`, `value`, `allowed`   |
-| `value_null`                | Cannot be null           | `field`                       |
 | `column_unknown`            | Unknown column type      | `field`                       |
 | `column_unsupported`        | Unsupported column type  | `field`, `type`               |
 | `association_not_found`     | Association not found    | `association`                 |
@@ -217,23 +215,6 @@ end
 ```
 
 ### Filters
-
-#### enum_invalid
-
-```json
-{
-  "layer": "contract",
-  "code": "enum_invalid",
-  "detail": "Invalid enum value",
-  "path": ["filter", "status"],
-  "pointer": "/filter/status",
-  "meta": {
-    "field": "status",
-    "value": ["archived"],
-    "allowed": ["draft", "published"]
-  }
-}
-```
 
 #### association_not_found
 

@@ -187,8 +187,6 @@ module Apiwork
               end
 
               def build_column_condition(key, value, target_klass)
-                validate_enum_values!(key, value, target_klass) if target_klass.defined_enums.key?(key.to_s)
-
                 association = representation_class.polymorphic_association_for_type_column(key)
                 value = transform_polymorphic_filter_value(value, association) if association
 
@@ -227,37 +225,6 @@ module Apiwork
                     path: [:filter, key],
                   )
                   nil
-                end
-              end
-
-              def validate_enum_values!(key, value, target_klass)
-                enum_values = target_klass.defined_enums[key.to_s].keys
-                invalid_values = extract_values_from_filter(value) - enum_values
-
-                return if invalid_values.empty?
-
-                @issues << Issue.new(
-                  :enum_invalid,
-                  'Invalid enum value',
-                  meta: {
-                    allowed: enum_values,
-                    field: key,
-                    value: invalid_values,
-                  },
-                  path: [:filter, key],
-                )
-              end
-
-              def extract_values_from_filter(value)
-                case value
-                when String
-                  [value]
-                when Array
-                  value
-                when Hash
-                  value.values.flatten.compact
-                else
-                  []
                 end
               end
 
@@ -380,10 +347,8 @@ module Apiwork
 
               def build_date_where_clause(key, value, target_klass)
                 column = target_klass.arel_table[key]
-                column_metadata = target_klass.columns_hash[key.to_s]
-                allow_nil = column_metadata&.null != false
 
-                return handle_date_nil_value(column, key, allow_nil) if value.nil?
+                return handle_nil_value(column) if value.nil?
                 return column.eq(value) unless value.is_a?(Hash)
 
                 normalizer = ->(value) { value }
@@ -409,25 +374,14 @@ module Apiwork
                 end
               end
 
-              def handle_date_nil_value(column, key, allow_nil)
-                unless allow_nil
-                  @issues << Issue.new(
-                    :value_null,
-                    'Cannot be null',
-                    meta: { field: key },
-                    path: [:filter, key],
-                  )
-                end
-
+              def handle_nil_value(column)
                 column.eq(nil)
               end
 
               def build_time_where_clause(key, value, target_klass)
                 column = target_klass.arel_table[key]
-                column_metadata = target_klass.columns_hash[key.to_s]
-                allow_nil = column_metadata&.null != false
 
-                return handle_time_nil_value(column, key, allow_nil) if value.nil?
+                return handle_nil_value(column) if value.nil?
                 return column.eq(value) unless value.is_a?(Hash)
 
                 normalizer = ->(value) { value }
@@ -451,19 +405,6 @@ module Apiwork
                   when :in then column.in(Array(compare))
                   end
                 end
-              end
-
-              def handle_time_nil_value(column, key, allow_nil)
-                unless allow_nil
-                  @issues << Issue.new(
-                    :value_null,
-                    'Cannot be null',
-                    meta: { field: key },
-                    path: [:filter, key],
-                  )
-                end
-
-                column.eq(nil)
               end
 
               def build_numeric_where_clause(key, value, target_klass)
