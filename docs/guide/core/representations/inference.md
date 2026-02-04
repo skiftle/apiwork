@@ -272,12 +272,14 @@ end
 
 ## Single Table Inheritance
 
-Apiwork detects STI hierarchies from Rails:
+Apiwork automatically detects STI from Rails models:
 
 - Inheritance column from `inheritance_column` (default: `:type`)
-- Variant tag from `sti_name` (e.g., `"Car"`)
+- Subclass representations auto-register when they inherit from a base representation
 
-See [Single Table Inheritance](./single-table-inheritance.md) for setup and customization.
+The `type_name` method overrides the API discriminator value (default: `model.sti_name`).
+
+See [Single Table Inheritance](./single-table-inheritance.md) for details.
 
 ## Root Key Detection
 

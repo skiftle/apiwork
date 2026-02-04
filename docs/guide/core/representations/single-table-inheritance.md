@@ -4,146 +4,129 @@ order: 6
 
 # Single Table Inheritance
 
-Apiwork represents Rails Single Table Inheritance (STI) hierarchies as [discriminated unions](../types/unions.md#discriminated-unions). The base class becomes a union type, each subclass becomes a variant, and a discriminator field identifies which variant a record belongs to. This enables type-safe serialization where each variant includes only its own attributes.
+Apiwork automatically detects Rails STI hierarchies. Subclass representations register themselves when defined.
 
-## Setup
+## Basic Setup
 
 ### Base Representation
 
-Mark a representation as discriminated:
+Define attributes shared by all variants:
 
 ```ruby
 class VehicleRepresentation < Apiwork::Representation::Base
-  discriminated!
-
+  attribute :id
   attribute :brand
   attribute :model
 end
 ```
 
-### Variant Representations
+### Subclass Representations
 
-Register subclasses with `variant`:
+Inherit from the base and add variant-specific attributes:
 
 ```ruby
 class CarRepresentation < VehicleRepresentation
-  variant
-
   attribute :doors
 end
 
 class MotorcycleRepresentation < VehicleRepresentation
-  variant
-
-  attribute :sidecar
+  attribute :engine_cc
 end
 ```
 
-## Customization
+Apiwork detects the STI relationship from your Rails models and registers the subclasses automatically.
 
-Apiwork infers defaults from Rails:
+## Custom Type Names
 
-- Discriminator column: `inheritance_column` (typically `:type`)
-- Discriminator key: same as column name
-- Variant tag: model's `sti_name` (e.g., `"Car"`)
-
-Override when these don't fit:
+By default, the discriminator value is the model's `sti_name` (e.g., `"Car"`). Use `type_name` for custom API names:
 
 ```ruby
-class VehicleRepresentation < Apiwork::Representation::Base
-  discriminated! as: :kind # key "kind" instead of "type"
-end
-
 class CarRepresentation < VehicleRepresentation
-  variant as: :car # tag "car" instead of "Car"
+  type_name :car  # API shows "car" instead of "Car"
+
+  attribute :doors
 end
 ```
 
-Use `by:` to change the database column:
+## How It Works
+
+When Apiwork detects an STI model:
+
+1. An `Inheritance` instance is created on the base representation
+2. Subclass representations auto-register when defined
+3. The base representation becomes abstract
+
+Access STI metadata through the base representation:
 
 ```ruby
-discriminated! as: :kind, by: :category  # column "category", key "kind"
+VehicleRepresentation.inheritance.column      # => :type (from Rails)
+VehicleRepresentation.inheritance.subclasses  # => [CarRepresentation, ...]
 ```
 
 ## Serialization
 
-Records serialize with their variant's attributes:
+The adapter handles serialization. The [standard adapter](../adapters/standard-adapter/introduction.md):
 
-```ruby
-Car.create!(brand: "Volvo", model: "EX30", doors: 4)
-```
+- Resolves each record to its correct subclass representation
+- Adds the discriminator field to the output
+- Serializes variant-specific attributes
 
 ```json
 {
-  "type": "Car",
+  "type": "car",
   "brand": "Volvo",
   "model": "EX30",
   "doors": 4
 }
 ```
 
-## Exports
+## Generated Types
 
-[Exports](../exports/introduction.md) represent discriminated unions natively in each format.
-
-### OpenAPI
-
-```yaml
-vehicle:
-  oneOf:
-    - $ref: '#/components/representations/car'
-    - $ref: '#/components/representations/motorcycle'
-  discriminator:
-    mapping:
-      Car: '#/components/representations/car'
-      Motorcycle: '#/components/representations/motorcycle'
-    propertyName: type
-```
+The adapter generates types from STI metadata. The standard adapter creates discriminated unions.
 
 ### TypeScript
 
 ```typescript
 export interface Car {
-  type: 'Car';
+  type: 'car';
   brand: string;
   model: string;
-  doors: null | number;
+  doors: number | null;
 }
 
 export interface Motorcycle {
-  type: 'Motorcycle';
+  type: 'motorcycle';
   brand: string;
   model: string;
-  sidecar: boolean;
+  engine_cc: number | null;
 }
 
 export type Vehicle = Car | Motorcycle;
 ```
 
-### Zod
+### OpenAPI
 
-```typescript
-export const CarRepresentation = z.object({
-  type: z.literal('Car'),
-  brand: z.string(),
-  model: z.string(),
-  doors: z.number().int().nullable()
-});
-
-export const MotorcycleRepresentation = z.object({
-  type: z.literal('Motorcycle'),
-  brand: z.string(),
-  model: z.string(),
-  sidecar: z.boolean()
-});
-
-export const VehicleRepresentation = z.discriminatedUnion('type', [
-  CarRepresentation,
-  MotorcycleRepresentation
-]);
+```yaml
+Vehicle:
+  oneOf:
+    - $ref: '#/components/schemas/Car'
+    - $ref: '#/components/schemas/Motorcycle'
+  discriminator:
+    propertyName: type
+    mapping:
+      car: '#/components/schemas/Car'
+      motorcycle: '#/components/schemas/Motorcycle'
 ```
 
-## See Also
+## Requirements
 
-- [Single Table Inheritance example](/examples/single-table-inheritance-sti.md) — complete working example
-- [Representation::Base reference](/reference/representation-base.md) — `discriminated!` and `variant` methods
+STI requires:
+
+- Rails model with STI configured (`inheritance_column`)
+- `type` column in database (or custom `inheritance_column`)
+- Subclass representations that inherit from base representation
+
+#### See also
+
+- [Representation::Base reference](../../../reference/representation-base.md) — `type_name`, `sti_name`, `inheritance`
+- [Representation::Inheritance reference](../../../reference/representation-inheritance.md) — inheritance metadata
