@@ -56,18 +56,18 @@ module Apiwork
               private
 
               def apply_hash_filter(params)
-                logical_ops, regular_attrs = separate_logical_operators(params)
+                logical_operators, regular_attributes = separate_logical_operators(params)
 
                 scope = @relation
 
-                if regular_attrs.present?
-                  conditions, joins = build_where_conditions(regular_attrs, representation_class.model_class)
+                if regular_attributes.present?
+                  conditions, joins = build_where_conditions(regular_attributes, representation_class.model_class)
                   scope = with_joins_and_distinct(scope, joins) { |scoped| scoped.where(conditions.reduce(:and)) } if conditions.any?
                 end
 
-                scope = apply_not(scope, logical_ops[Constants::NOT]) if logical_ops.key?(Constants::NOT)
-                scope = apply_or(scope, logical_ops[Constants::OR]) if logical_ops.key?(Constants::OR)
-                scope = apply_and(scope, logical_ops[Constants::AND]) if logical_ops.key?(Constants::AND)
+                scope = apply_not(scope, logical_operators[Constants::NOT]) if logical_operators.key?(Constants::NOT)
+                scope = apply_or(scope, logical_operators[Constants::OR]) if logical_operators.key?(Constants::OR)
+                scope = apply_and(scope, logical_operators[Constants::AND]) if logical_operators.key?(Constants::AND)
 
                 scope
               end
@@ -130,32 +130,32 @@ module Apiwork
                 return [nil, {}] if filter_params.blank?
                 return [nil, {}] unless filter_params.is_a?(Hash)
 
-                logical_ops, regular_attrs = separate_logical_operators(filter_params)
+                logical_operators, regular_attributes = separate_logical_operators(filter_params)
 
                 conditions = []
                 all_joins = {}
 
-                if regular_attrs.present?
-                  attribute_conditions, joins = build_where_conditions(regular_attrs, representation_class.model_class)
+                if regular_attributes.present?
+                  attribute_conditions, joins = build_where_conditions(regular_attributes, representation_class.model_class)
                   conditions << attribute_conditions.reduce(:and) if attribute_conditions.any?
                   all_joins = all_joins.deep_merge(joins)
                 end
 
-                if logical_ops.key?(Constants::AND)
-                  cond, joins = process_logical_operator(logical_ops[Constants::AND], :and)
-                  conditions << cond if cond
+                if logical_operators.key?(Constants::AND)
+                  condition, joins = process_logical_operator(logical_operators[Constants::AND], :and)
+                  conditions << condition if condition
                   all_joins = all_joins.deep_merge(joins)
                 end
 
-                if logical_ops.key?(Constants::OR)
-                  cond, joins = process_logical_operator(logical_ops[Constants::OR], :or)
-                  conditions << cond if cond
+                if logical_operators.key?(Constants::OR)
+                  condition, joins = process_logical_operator(logical_operators[Constants::OR], :or)
+                  conditions << condition if condition
                   all_joins = all_joins.deep_merge(joins)
                 end
 
-                if logical_ops.key?(Constants::NOT)
-                  not_cond, joins = build_conditions_recursive(logical_ops[Constants::NOT])
-                  conditions << not_cond.not if not_cond
+                if logical_operators.key?(Constants::NOT)
+                  not_condition, joins = build_conditions_recursive(logical_operators[Constants::NOT])
+                  conditions << not_condition.not if not_condition
                   all_joins = all_joins.deep_merge(joins)
                 end
 
@@ -168,8 +168,8 @@ module Apiwork
                 all_joins = {}
 
                 filters.each do |filter_hash|
-                  cond, joins = build_conditions_recursive(filter_hash)
-                  collected_conditions << cond if cond
+                  condition, joins = build_conditions_recursive(filter_hash)
+                  collected_conditions << condition if condition
                   all_joins = all_joins.deep_merge(joins)
                 end
 
