@@ -790,8 +790,8 @@ module Apiwork
 
         if min_value && value < min_value
           return Issue.new(
-            :value_invalid,
-            'Invalid value',
+            :number_too_small,
+            'Too small',
             meta: {
               actual: value,
               field: name,
@@ -803,8 +803,8 @@ module Apiwork
 
         if max_value && value > max_value
           return Issue.new(
-            :value_invalid,
-            'Invalid value',
+            :number_too_large,
+            'Too large',
             meta: {
               actual: value,
               field: name,

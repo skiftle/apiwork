@@ -40,6 +40,8 @@ end
 | `value_null`       | Cannot be null    | `field`, `type`                   |
 | `string_too_short` | Too short         | `field`, `min`, `actual`          |
 | `string_too_long`  | Too long          | `field`, `max`, `actual`          |
+| `number_too_small` | Too small         | `field`, `min`, `actual`          |
+| `number_too_large` | Too large         | `field`, `max`, `actual`          |
 | `array_too_small`  | Too few items     | `min`, `actual`                   |
 | `array_too_large`  | Too many items    | `max`, `actual`                   |
 | `depth_exceeded`   | Too deeply nested | `depth`, `max`                    |
@@ -144,9 +146,51 @@ string :title, min: 5, max: 100
   "path": ["post", "title"],
   "pointer": "/post/title",
   "meta": {
-    "field": "title",
     "actual": 3,
+    "field": "title",
     "min": 5
+  }
+}
+```
+
+#### number_too_small
+
+```ruby
+integer :quantity, min: 1, max: 100
+```
+
+```json
+{
+  "layer": "contract",
+  "code": "number_too_small",
+  "detail": "Too small",
+  "path": ["item", "quantity"],
+  "pointer": "/item/quantity",
+  "meta": {
+    "actual": 0,
+    "field": "quantity",
+    "min": 1
+  }
+}
+```
+
+#### number_too_large
+
+```ruby
+integer :quantity, min: 1, max: 100
+```
+
+```json
+{
+  "layer": "contract",
+  "code": "number_too_large",
+  "detail": "Too large",
+  "path": ["item", "quantity"],
+  "pointer": "/item/quantity",
+  "meta": {
+    "actual": 150,
+    "field": "quantity",
+    "max": 100
   }
 }
 ```
@@ -292,28 +336,6 @@ Invalid discriminator value:
     "actual": "video"
   }
 }
-```
-
-## Query Parameter Syntax
-
-### Filter Syntax
-
-Filters use nested object syntax:
-
-```http
-GET /posts?filter[status][eq]=published
-GET /posts?filter[created_at][gte]=2024-01-01
-GET /posts?filter[tags][in][]=ruby&filter[tags][in][]=rails
-```
-
-### Sort Syntax
-
-Sort uses bracket notation:
-
-```http
-GET /posts?sort[created_at]=asc
-GET /posts?sort[created_at]=desc
-GET /posts?sort[status]=asc&sort[created_at]=desc
 ```
 
 ## Output Validation

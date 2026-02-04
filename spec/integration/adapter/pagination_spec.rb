@@ -141,7 +141,7 @@ RSpec.describe 'Pagination API', type: :request do
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
       expect(json['issues']).to be_an(Array)
-      expect(json['issues'].first['code']).to eq('value_invalid')
+      expect(json['issues'].first['code']).to eq('number_too_small')
       expect(json['issues'].first['pointer']).to eq('/page/number')
     end
 
@@ -151,7 +151,7 @@ RSpec.describe 'Pagination API', type: :request do
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
       expect(json['issues']).to be_an(Array)
-      expect(json['issues'].first['code']).to eq('value_invalid')
+      expect(json['issues'].first['code']).to eq('number_too_small')
       expect(json['issues'].first['pointer']).to eq('/page/size')
     end
 
@@ -161,7 +161,7 @@ RSpec.describe 'Pagination API', type: :request do
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
       expect(json['issues']).to be_an(Array)
-      expect(json['issues'].first['code']).to eq('value_invalid')
+      expect(json['issues'].first['code']).to eq('number_too_large')
       expect(json['issues'].first['pointer']).to eq('/page/size')
     end
   end

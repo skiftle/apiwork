@@ -19,7 +19,7 @@ RSpec.describe 'Numeric min/max validation' do
       result = definition.validate({ age: 17 })
 
       expect(result[:issues]).not_to be_empty
-      expect(result[:issues].first.code).to eq(:value_invalid)
+      expect(result[:issues].first.code).to eq(:number_too_small)
       expect(result[:issues].first.meta[:min]).to eq(18)
     end
 
