@@ -57,4 +57,4 @@ All generated behavior remains fully customizable. You can override individual a
 
 ## Custom Adapters
 
-For different response formats or query logic, you can create a [custom adapter](./custom-adapters.md). Custom adapters let you change how queries are built and responses are rendered while keeping the representation-driven type system.
+For different response formats or query logic, you can create a [custom adapter](./custom-adapters/introduction.md). Custom adapters let you change how queries are built and responses are rendered while keeping the representation-driven type system.

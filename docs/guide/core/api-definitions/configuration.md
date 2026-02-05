@@ -138,7 +138,7 @@ Apiwork::API.define '/api/v1' do
 end
 ```
 
-See [Custom Adapters](../adapters/custom-adapters.md) for creating your own.
+See [Custom Adapters](../adapters/custom-adapters/introduction.md) for creating your own.
 
 #### See also
 

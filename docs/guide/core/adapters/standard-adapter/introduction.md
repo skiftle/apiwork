@@ -6,7 +6,7 @@ order: 1
 
 The **standard adapter** is the built-in runtime that ships with Apiwork.
 
-For custom response formats or query logic, see [Custom Adapters](../custom-adapters.md).
+For custom response formats or query logic, see [Custom Adapters](../custom-adapters/introduction.md).
 
 ## Generated Types
 
