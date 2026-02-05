@@ -4,20 +4,20 @@ order: 1
 
 # Introduction
 
-An adapter is the engine of an API. It handles both introspection (generating types from representations) and runtime (processing requests through capabilities, serializing, and wrapping responses). Custom adapters inherit from [`Apiwork::Adapter::Base`](/reference/adapter-base).
+Custom adapters give you complete control over how your API processes requests and renders responses. Build adapters for JSON:API, HAL, or entirely custom formats.
 
-The adapter class declaration acts as a manifest that assembles components:
+A custom adapter is a composition of components:
 
 ```ruby
-class MyAdapter < Apiwork::Adapter::Base
-  adapter_name :my
+class JsonApiAdapter < Apiwork::Adapter::Base
+  adapter_name :json_api
 
-  resource_serializer Serializer::Resource::Default
-  error_serializer Serializer::Error::Default
+  resource_serializer Serializer::Resource
+  error_serializer Serializer::Error
 
-  member_wrapper Wrapper::Member::Default
-  collection_wrapper Wrapper::Collection::Default
-  error_wrapper Wrapper::Error::Default
+  member_wrapper Wrapper::Member
+  collection_wrapper Wrapper::Collection
+  error_wrapper Wrapper::Error
 
   capability Capability::Filtering
   capability Capability::Pagination
@@ -26,8 +26,6 @@ end
 
 ## Components
 
-An adapter combines five types of components:
-
 | Component | Purpose |
 |-----------|---------|
 | Resource serializer | Converts records to response data |
@@ -35,38 +33,36 @@ An adapter combines five types of components:
 | Member wrapper | Structures single-record responses |
 | Collection wrapper | Structures multi-record responses |
 | Error wrapper | Structures error responses |
-| Capabilities | Self-contained features (filtering, pagination, etc.) |
+| Capabilities | Features like filtering, pagination, sorting |
 
 ## Two Phases
 
-Adapters operate in two distinct phases:
+### Introspection
 
-### Introspection Phase
+Runs once when the API loads:
 
-Runs once when the API loads. Components register types based on representations:
-
-- **Capabilities** register their types (filter schemas, sort schemas, pagination schemas)
+- **Capabilities** register types (filter schemas, pagination schemas)
 - **Serializers** register resource and error types
 - **Wrappers** define response shapes
 
-### Runtime Phase
+### Runtime
 
-Runs for every request. The adapter processes data through its pipeline:
+Runs for every request:
 
-1. **Transform request** - Capabilities modify incoming data
-2. **Apply capabilities** - Filter, sort, paginate the data
-3. **Serialize** - Convert records to hashes
-4. **Wrap response** - Structure the response body
-5. **Transform response** - Capabilities modify outgoing data
+1. Transform request
+2. Apply capabilities (filter, sort, paginate)
+3. Serialize records
+4. Wrap response
+5. Transform response
 
 ## Adapter DSL
 
 ### adapter_name
 
-The identifier used to reference this adapter. Required for registration with `Apiwork::Adapter.register`. Used as the key when selecting adapters in API definitions (`adapter :my`) and in i18n translation paths (`apiwork.adapters.my.capabilities...`).
+The identifier used to reference this adapter. Required for registration with `Apiwork::Adapter.register`. Used as the key when selecting adapters in API definitions (`adapter :json_api`) and in i18n translation paths (`apiwork.adapters.json_api.capabilities...`).
 
 ```ruby
-adapter_name :my
+adapter_name :json_api
 ```
 
 ### resource_serializer
@@ -74,15 +70,15 @@ adapter_name :my
 The class that converts records and collections to response data. Called with the representation class and returns serialized hashes. Also responsible for registering the resource type at introspection time.
 
 ```ruby
-resource_serializer Serializer::Resource::Default
+resource_serializer Serializer::Resource
 ```
 
 ### error_serializer
 
-The class that converts errors to response data. Called for contract errors (validation), domain errors (business logic), and HTTP errors. Also responsible for registering the error type at introspection time.
+The class that converts [errors](../../errors/introduction.md) to response data. Called for contract errors (validation), domain errors (business logic), and HTTP errors. Also responsible for registering the error type at introspection time.
 
 ```ruby
-error_serializer Serializer::Error::Default
+error_serializer Serializer::Error
 ```
 
 ### member_wrapper
@@ -90,7 +86,7 @@ error_serializer Serializer::Error::Default
 The class that structures single-record responses (show, create, update). Takes serialized data and wraps it in the final response format. Defines the response shape through its `shape` class method.
 
 ```ruby
-member_wrapper Wrapper::Member::Default
+member_wrapper Wrapper::Member
 ```
 
 ### collection_wrapper
@@ -98,7 +94,7 @@ member_wrapper Wrapper::Member::Default
 The class that structures multi-record responses (index, collection actions). Takes serialized data and metadata (pagination, etc.) and wraps them in the final response format.
 
 ```ruby
-collection_wrapper Wrapper::Collection::Default
+collection_wrapper Wrapper::Collection
 ```
 
 ### error_wrapper
@@ -106,7 +102,7 @@ collection_wrapper Wrapper::Collection::Default
 The class that structures error responses. Takes serialized error data and wraps it in the final response format.
 
 ```ruby
-error_wrapper Wrapper::Error::Default
+error_wrapper Wrapper::Error
 ```
 
 ### capability
@@ -117,59 +113,6 @@ Registers a capability. Capabilities contribute to both introspection (registeri
 capability Capability::Filtering
 capability Capability::Pagination
 ```
-
-### skip_capability
-
-Removes an inherited capability by its `capability_name`. Use when subclassing an adapter to disable features.
-
-```ruby
-class MinimalAdapter < Apiwork::Adapter::Standard
-  skip_capability :sorting
-  skip_capability :including
-end
-```
-
-## When to Create a Custom Adapter
-
-Create a custom adapter when you need to:
-
-- Change the response format (JSON:API, HAL, custom structure)
-- Implement different pagination strategies
-- Add custom filtering logic
-- Modify serialization behavior
-- Support different client requirements
-
-Most customizations can be achieved by:
-
-1. Creating custom serializers
-2. Creating custom wrappers
-3. Creating or modifying capabilities
-4. Subclassing the standard adapter and replacing components
-
-## The Standard Adapter
-
-The [standard adapter](../standard-adapter/introduction.md) serves as a reference implementation:
-
-```ruby
-class Standard < Base
-  adapter_name :standard
-
-  resource_serializer Serializer::Resource::Default
-  error_serializer Serializer::Error::Default
-
-  member_wrapper Wrapper::Member::Default
-  collection_wrapper Wrapper::Collection::Default
-  error_wrapper Wrapper::Error::Default
-
-  capability Capability::Filtering
-  capability Capability::Including
-  capability Capability::Pagination
-  capability Capability::Sorting
-  capability Capability::Writing
-end
-```
-
-Study its components to understand how the pieces fit together.
 
 ## Next Steps
 

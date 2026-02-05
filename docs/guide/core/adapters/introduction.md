@@ -4,57 +4,42 @@ order: 1
 
 # Introduction
 
-The **adapter** is the runtime layer that executes your API. It translates between schema definitions and HTTP — handling requests, building queries, and rendering responses.
+The adapter executes your API at runtime. It translates between representations and HTTP — validating requests, building queries, and rendering responses.
 
-The adapter implements your API conventions and enforces consistent behavior across the entire API.
+## What Adapters Do
 
-## Contracts with Representation
+Every request flows through the adapter:
 
-A contract gains a **representation** when you call `representation` with a representation class.
+1. **Validate** — Check request against contract types
+2. **Transform** — Convert input for processing
+3. **Query** — Build and execute database queries
+4. **Serialize** — Convert records to response format
+5. **Wrap** — Structure the final response body
 
-```ruby
-class InvoiceContract < Apiwork::Contract::Base
-  representation InvoiceRepresentation
-end
-```
-
-Contracts with representation unlock capabilities like filtering, sorting, and includes — behaviors that require knowledge of the underlying data structure. Contracts without representations remain valid but operate without these derived behaviors.
+The adapter derives most behavior from your representations. Filterable attributes become filter parameters. Sortable attributes become sort options. Associations become includable relations.
 
 ## Capabilities
 
-Adapters are composed of **capabilities** — modular units that provide specific functionality. The standard adapter includes capabilities for filtering, sorting, pagination, includes, and writing.
-
-Each capability can contribute to three phases:
+Adapters are built from capabilities — modular features like filtering, sorting, pagination. Each capability contributes to three phases:
 
 | Phase | Runs | Purpose |
 |-------|------|---------|
-| **API** | Once per API | Register shared types used across all contracts |
-| **Contract** | Once per contract with representation | Generate contract-specific types |
-| **Computation** | Each request | Transform data at runtime |
+| **API** | Once at boot | Register shared types |
+| **Contract** | Once per representation | Generate representation-specific types |
+| **Runtime** | Each request | Process data |
 
-For example, the Filtering capability:
+## Standard Adapter
 
-- **API phase**: Registers generic filter types (`string_filter`, `date_filter`, `uuid_filter`) — once per API
-- **Contract phase**: Generates a `filter` type from the representation's filterable attributes — once per contract with representation
-- **Computation phase**: Translates filter parameters into database queries — once per request
+Apiwork ships with a complete REST adapter. It provides:
 
-Computations can be scoped to run only for collections or single records. Pagination runs on collections. Writing validation runs on records.
+- [Filtering](./standard-adapter/filtering.md) — `?filter[status][eq]=sent`
+- [Sorting](./standard-adapter/sorting.md) — `?sort[created_at]=desc`
+- [Pagination](./standard-adapter/pagination.md) — offset or cursor
+- [Includes](./standard-adapter/includes.md) — eager load associations
+- [Action Defaults](./standard-adapter/action-defaults.md) — generated CRUD
 
-## The Standard Adapter
-
-Apiwork ships with a complete REST API adapter out of the box. For each resource, it automatically generates the corresponding actions and derives their behavior from the representation.
-
-The standard adapter provides:
-
-- [Action Defaults](./standard-adapter/action-defaults.md) — generated CRUD actions
-- [Filtering](./standard-adapter/filtering.md) — `?filter[field][op]=value`
-- [Sorting](./standard-adapter/sorting.md) — `?sort[field]=asc`
-- [Pagination](./standard-adapter/pagination.md) — offset or cursor-based
-- [Includes](./standard-adapter/includes.md) — eager loading associations
-- [Serialization](./standard-adapter/serialization.md) — response formatting
-
-All generated behavior remains fully customizable. You can override individual actions, replace them entirely, or extend them by merging additional behavior on top.
+For minor changes, [extend the standard adapter](./standard-adapter/extending.md).
 
 ## Custom Adapters
 
-For different response formats or query logic, you can create a [custom adapter](./custom-adapters/introduction.md). Custom adapters let you change how queries are built and responses are rendered while keeping the representation-driven type system.
+For complete control over response format and query logic, build a [custom adapter](./custom-adapters/introduction.md). Custom adapters let you implement JSON:API, HAL, or any format while keeping type-safe contracts.
