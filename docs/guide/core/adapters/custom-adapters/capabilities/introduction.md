@@ -2,7 +2,7 @@
 order: 1
 ---
 
-# Capabilities
+# Introduction
 
 A capability encapsulates a specific feature (filtering, pagination, sorting) with its own configuration, transformers, builders, and operations. While each capability is self-contained, all capabilities operate on the same response data in sequence, so their effects combine. Capabilities inherit from [`Adapter::Capability::Base`](/reference/adapter-capability-base).
 

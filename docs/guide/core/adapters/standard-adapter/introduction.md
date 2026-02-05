@@ -57,3 +57,4 @@ Invalid or unsupported queries fail fast before reaching the database.
 - [Pagination](./pagination.md)
 - [Includes](./includes.md)
 - [Validation](./validation.md)
+- [Extending](./extending.md)
