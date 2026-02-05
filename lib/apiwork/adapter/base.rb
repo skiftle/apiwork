@@ -148,27 +148,19 @@ module Apiwork
 
       def process_collection(collection, representation_class, request, context: {}, meta: {})
         collection, metadata, serialize_options = apply_capabilities(collection, representation_class, request, wrapper_type: :collection)
-
-        serializer = resource_serializer_instance(representation_class)
-        data = serializer.serialize(collection, context:, serialize_options:)
-
-        self.class.collection_wrapper.new(data, metadata, representation_class.root_key, meta).wrap
+        data = self.class.resource_serializer.serialize(representation_class, collection, context:, serialize_options:)
+        self.class.collection_wrapper.wrap(data, metadata, representation_class.root_key, meta)
       end
 
       def process_member(record, representation_class, request, context: {}, meta: {})
         record, metadata, serialize_options = apply_capabilities(record, representation_class, request, wrapper_type: :member)
-
-        serializer = resource_serializer_instance(representation_class)
-        data = serializer.serialize(record, context:, serialize_options:)
-
-        self.class.member_wrapper.new(data, metadata, representation_class.root_key, meta).wrap
+        data = self.class.resource_serializer.serialize(representation_class, record, context:, serialize_options:)
+        self.class.member_wrapper.wrap(data, metadata, representation_class.root_key, meta)
       end
 
       def process_error(error, representation_class, context: {})
-        serializer = error_serializer_instance
-        data = serializer.serialize(error, context:)
-
-        self.class.error_wrapper.new(data).wrap
+        data = self.class.error_serializer.serialize(error, context:)
+        self.class.error_wrapper.wrap(data)
       end
 
       def register_api(api_class)
@@ -208,14 +200,6 @@ module Apiwork
       end
 
       private
-
-      def resource_serializer_instance(representation_class)
-        self.class.resource_serializer.new(representation_class)
-      end
-
-      def error_serializer_instance
-        self.class.error_serializer.new
-      end
 
       def apply_capabilities(data, representation_class, request, wrapper_type:)
         runner = Capability::Runner.new(capabilities, wrapper_type:)

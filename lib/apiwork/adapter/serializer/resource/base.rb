@@ -20,6 +20,10 @@ module Apiwork
         #   end
         class Base
           class << self
+            def serialize(representation_class, resource, context:, serialize_options:)
+              new(representation_class).serialize(resource, context:, serialize_options:)
+            end
+
             # @api public
             # Sets or gets the data type resolver for this serializer.
             #

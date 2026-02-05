@@ -84,10 +84,9 @@ module Apiwork
 
                 or_condition = individual_conditions.reduce(:or) if individual_conditions.any?
 
-                joins_per_filter = params.map do |filter_params|
-                  build_where_conditions(filter_params, representation_class.model_class)[1]
-                end
-                all_joins = joins_per_filter.reduce({}) { |accumulated, joins| accumulated.deep_merge(joins) }
+                all_joins = params
+                  .map { |filter_params| build_where_conditions(filter_params, representation_class.model_class)[1] }
+                  .reduce({}) { |accumulated, joins| accumulated.deep_merge(joins) }
 
                 with_joins_and_distinct(@relation, all_joins) do |scope|
                   or_condition ? scope.where(or_condition) : scope

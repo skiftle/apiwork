@@ -9,6 +9,10 @@ module Apiwork
         attr_reader :data
 
         class << self
+          def wrap(...)
+            new(...).wrap
+          end
+
           def wrapper_type(value = nil)
             @wrapper_type = value if value
             @wrapper_type || (superclass.respond_to?(:wrapper_type) && superclass.wrapper_type)

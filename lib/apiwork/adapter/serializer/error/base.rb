@@ -20,6 +20,10 @@ module Apiwork
         #   end
         class Base
           class << self
+            def serialize(error, context:)
+              new.serialize(error, context:)
+            end
+
             # @api public
             # Sets or gets the data type name for this serializer.
             #
