@@ -14,7 +14,9 @@ module Apiwork
         # @example Custom collection wrapper
         #   class MyCollectionWrapper < Wrapper::Collection::Base
         #     shape do
-        #       array(root_key.plural.to_sym) { reference(data_type) }
+        #       array(root_key.plural.to_sym) do |array|
+        #         array.reference(data_type)
+        #       end
         #       object?(:meta)
         #       merge_shape!(metadata_shapes)
         #     end
