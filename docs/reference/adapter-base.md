@@ -6,23 +6,29 @@ next: false
 
 # Adapter::Base
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L20)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L26)
 
 Base class for adapters.
 
-Subclass to create custom adapters with different response formats.
-Configure with [.representation](#representation) for serialization and document classes for response wrapping.
+The engine of an API. Handles both introspection (generating types from
+representations) and runtime (processing requests through capabilities,
+serializing, and wrapping responses). The class declaration acts as a manifest.
 
-**Example: Custom adapter**
+**Example**
 
 ```ruby
-class BillingAdapter < Apiwork::Adapter::Base
-  adapter_name :billing
+class MyAdapter < Apiwork::Adapter::Base
+  adapter_name :my
 
-  representation BillingRepresentation
-  member_wrapper BillingMemberWrapper
-  collection_wrapper BillingCollectionWrapper
-  error_wrapper BillingErrorWrapper
+  resource_serializer Serializer::Resource::Default
+  error_serializer Serializer::Error::Default
+
+  member_wrapper Wrapper::Member::Default
+  collection_wrapper Wrapper::Collection::Default
+  error_wrapper Wrapper::Error::Default
+
+  capability Capability::Filtering
+  capability Capability::Pagination
 end
 ```
 
@@ -32,15 +38,15 @@ end
 
 `.adapter_name(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L32)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L38)
 
-Sets or gets the adapter name.
+The adapter name.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `value` | `Symbol, String` | adapter name (optional) |
+| `value` | `Symbol, String` |  |
 
 **Returns**
 
@@ -49,16 +55,16 @@ Sets or gets the adapter name.
 **Example**
 
 ```ruby
-adapter_name :billing
+adapter_name :my
 ```
 
 ---
 
 ### .capability
 
-`.capability(capability_class)`
+`.capability(klass)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L49)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L55)
 
 Registers a capability for this adapter.
 
@@ -69,7 +75,7 @@ that handle both introspection and runtime behavior.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `capability_class` | `Class` | a Capability::Base subclass |
+| `klass` | `Class` | a [Capability::Base](adapter-capability-base) subclass |
 
 **Returns**
 
@@ -78,8 +84,8 @@ that handle both introspection and runtime behavior.
 **Example**
 
 ```ruby
-capability Pagination
-capability Filtering
+capability Capability::Filtering
+capability Capability::Pagination
 ```
 
 ---
@@ -88,24 +94,24 @@ capability Filtering
 
 `.collection_wrapper(klass = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L130)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L136)
 
-Sets or gets the collection wrapper class.
+The collection wrapper class.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `klass` | `Class` | a Wrapper::Base subclass (optional) |
+| `klass` | `Class` | a [Wrapper::Collection::Base](adapter-wrapper-collection-base) subclass |
 
 **Returns**
 
-`Class`
+`Class`, `nil`
 
 **Example**
 
 ```ruby
-collection_wrapper CustomCollectionWrapper
+collection_wrapper Wrapper::Collection::Default
 ```
 
 ---
@@ -114,17 +120,17 @@ collection_wrapper CustomCollectionWrapper
 
 `.error_serializer(klass = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L104)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L110)
 
-Sets or gets the error serializer class.
+The error serializer class.
 
-Error serializer handles serialization of errors.
+Handles serialization of errors.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `klass` | `Class` | a Serializer::Error::Base subclass (optional) |
+| `klass` | `Class` | a [Serializer::Error::Base](adapter-serializer-error-base) subclass |
 
 **Returns**
 
@@ -142,24 +148,24 @@ error_serializer Serializer::Error::Default
 
 `.error_wrapper(klass = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L143)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L149)
 
-Sets or gets the error wrapper class.
+The error wrapper class.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `klass` | `Class` | a Wrapper::Base subclass (optional) |
+| `klass` | `Class` | a [Wrapper::Error::Base](adapter-wrapper-error-base) subclass |
 
 **Returns**
 
-`Class`
+`Class`, `nil`
 
 **Example**
 
 ```ruby
-error_wrapper CustomErrorWrapper
+error_wrapper Wrapper::Error::Default
 ```
 
 ---
@@ -168,24 +174,24 @@ error_wrapper CustomErrorWrapper
 
 `.member_wrapper(klass = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L117)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L123)
 
-Sets or gets the record wrapper class.
+The member wrapper class.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `klass` | `Class` | a Wrapper::Base subclass (optional) |
+| `klass` | `Class` | a [Wrapper::Member::Base](adapter-wrapper-member-base) subclass |
 
 **Returns**
 
-`Class`
+`Class`, `nil`
 
 **Example**
 
 ```ruby
-member_wrapper CustomRecordWrapper
+member_wrapper Wrapper::Member::Default
 ```
 
 ---
@@ -246,17 +252,17 @@ end
 
 `.resource_serializer(klass = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L89)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L95)
 
-Sets or gets the resource serializer class.
+The resource serializer class.
 
-Resource serializer handles serialization of records and collections.
+Handles serialization of records and collections.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `klass` | `Class` | a Serializer::Resource::Base subclass (optional) |
+| `klass` | `Class` | a [Serializer::Resource::Base](adapter-serializer-resource-base) subclass |
 
 **Returns**
 
@@ -274,7 +280,7 @@ resource_serializer Serializer::Resource::Default
 
 `.skip_capability(name)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L67)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L73)
 
 Skips an inherited capability by name.
 

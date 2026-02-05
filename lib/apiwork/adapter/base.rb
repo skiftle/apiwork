@@ -5,30 +5,36 @@ module Apiwork
     # @api public
     # Base class for adapters.
     #
-    # Subclass to create custom adapters with different response formats.
-    # Configure with {.representation} for serialization and document classes for response wrapping.
+    # The engine of an API. Handles both introspection (generating types from
+    # representations) and runtime (processing requests through capabilities,
+    # serializing, and wrapping responses). The class declaration acts as a manifest.
     #
-    # @example Custom adapter
-    #   class BillingAdapter < Apiwork::Adapter::Base
-    #     adapter_name :billing
+    # @example
+    #   class MyAdapter < Apiwork::Adapter::Base
+    #     adapter_name :my
     #
-    #     representation BillingRepresentation
-    #     member_wrapper BillingMemberWrapper
-    #     collection_wrapper BillingCollectionWrapper
-    #     error_wrapper BillingErrorWrapper
+    #     resource_serializer Serializer::Resource::Default
+    #     error_serializer Serializer::Error::Default
+    #
+    #     member_wrapper Wrapper::Member::Default
+    #     collection_wrapper Wrapper::Collection::Default
+    #     error_wrapper Wrapper::Error::Default
+    #
+    #     capability Capability::Filtering
+    #     capability Capability::Pagination
     #   end
     class Base
       include Configurable
 
       class << self
         # @api public
-        # Sets or gets the adapter name.
+        # The adapter name.
         #
-        # @param value [Symbol, String] adapter name (optional)
+        # @param value [Symbol, String]
         # @return [Symbol, nil]
         #
         # @example
-        #   adapter_name :billing
+        #   adapter_name :my
         def adapter_name(value = nil)
           @adapter_name = value.to_sym if value
           @adapter_name
@@ -40,20 +46,20 @@ module Apiwork
         # Capabilities are self-contained concerns (pagination, filtering, etc.)
         # that handle both introspection and runtime behavior.
         #
-        # @param capability_class [Class] a Capability::Base subclass
+        # @param klass [Class] a {Capability::Base} subclass
         # @return [void]
         #
         # @example
-        #   capability Pagination
-        #   capability Filtering
-        def capability(capability_class)
+        #   capability Capability::Filtering
+        #   capability Capability::Pagination
+        def capability(klass)
           @capabilities ||= []
-          @capabilities << capability_class
+          @capabilities << klass
 
-          return unless capability_class.options.any?
+          return unless klass.options.any?
 
-          name = capability_class.capability_name
-          options[name] = Configuration::Option.new(name, :hash, children: capability_class.options)
+          name = klass.capability_name
+          options[name] = Configuration::Option.new(name, :hash, children: klass.options)
         end
 
         # @api public
@@ -77,11 +83,11 @@ module Apiwork
         end
 
         # @api public
-        # Sets or gets the resource serializer class.
+        # The resource serializer class.
         #
-        # Resource serializer handles serialization of records and collections.
+        # Handles serialization of records and collections.
         #
-        # @param klass [Class] a Serializer::Resource::Base subclass (optional)
+        # @param klass [Class] a {Serializer::Resource::Base} subclass
         # @return [Class, nil]
         #
         # @example
@@ -92,11 +98,11 @@ module Apiwork
         end
 
         # @api public
-        # Sets or gets the error serializer class.
+        # The error serializer class.
         #
-        # Error serializer handles serialization of errors.
+        # Handles serialization of errors.
         #
-        # @param klass [Class] a Serializer::Error::Base subclass (optional)
+        # @param klass [Class] a {Serializer::Error::Base} subclass
         # @return [Class, nil]
         #
         # @example
@@ -107,39 +113,39 @@ module Apiwork
         end
 
         # @api public
-        # Sets or gets the record wrapper class.
+        # The member wrapper class.
         #
-        # @param klass [Class] a Wrapper::Base subclass (optional)
-        # @return [Class]
+        # @param klass [Class] a {Wrapper::Member::Base} subclass
+        # @return [Class, nil]
         #
         # @example
-        #   member_wrapper CustomRecordWrapper
+        #   member_wrapper Wrapper::Member::Default
         def member_wrapper(klass = nil)
           @member_wrapper = klass if klass
           @member_wrapper || (superclass.respond_to?(:member_wrapper) && superclass.member_wrapper)
         end
 
         # @api public
-        # Sets or gets the collection wrapper class.
+        # The collection wrapper class.
         #
-        # @param klass [Class] a Wrapper::Base subclass (optional)
-        # @return [Class]
+        # @param klass [Class] a {Wrapper::Collection::Base} subclass
+        # @return [Class, nil]
         #
         # @example
-        #   collection_wrapper CustomCollectionWrapper
+        #   collection_wrapper Wrapper::Collection::Default
         def collection_wrapper(klass = nil)
           @collection_wrapper = klass if klass
           @collection_wrapper || (superclass.respond_to?(:collection_wrapper) && superclass.collection_wrapper)
         end
 
         # @api public
-        # Sets or gets the error wrapper class.
+        # The error wrapper class.
         #
-        # @param klass [Class] a Wrapper::Base subclass (optional)
-        # @return [Class]
+        # @param klass [Class] a {Wrapper::Error::Base} subclass
+        # @return [Class, nil]
         #
         # @example
-        #   error_wrapper CustomErrorWrapper
+        #   error_wrapper Wrapper::Error::Default
         def error_wrapper(klass = nil)
           @error_wrapper = klass if klass
           @error_wrapper || (superclass.respond_to?(:error_wrapper) && superclass.error_wrapper)
