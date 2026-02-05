@@ -8,6 +8,14 @@ The **standard adapter** is the built-in runtime that ships with Apiwork.
 
 For custom response formats or query logic, see [Custom Adapters](../custom-adapters/introduction.md).
 
+## Design
+
+The standard adapter follows REST conventions. Index actions filter and paginate. Show actions return single records. Create and update actions persist changes.
+
+Filtering, sorting, and nested writes are handled automatically. The adapter translates query parameters into database operations, including recursive filtering on associations and eager loading. The syntax is inspired by Prisma and maps to typed schemas.
+
+All defaults can be overridden in your application code.
+
 ## Generated Types
 
 When you call `representation`, the standard adapter generates typed definitions from your representation:
