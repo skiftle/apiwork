@@ -69,7 +69,7 @@ that handle both introspection and runtime behavior.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `klass` | `Class` | a Capability::Base subclass |
+| `capability_class` | `Class` | a Capability::Base subclass |
 
 **Returns**
 

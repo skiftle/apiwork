@@ -5,7 +5,10 @@ module Apiwork
     module Wrapper
       class Base
         class_attribute :shape_class
+        class_attribute :wrapper_type
 
+        # @api public
+        # @return [Hash] the serialized resource data
         attr_reader :data
 
         class << self
@@ -13,11 +16,12 @@ module Apiwork
             new(...).wrap
           end
 
-          def wrapper_type(value = nil)
-            @wrapper_type = value if value
-            @wrapper_type || (superclass.respond_to?(:wrapper_type) && superclass.wrapper_type)
-          end
-
+          # @api public
+          # Defines the response shape for contract generation.
+          #
+          # @param klass_or_callable [Class, Proc, nil] a Shape subclass or callable
+          # @yield block that defines the shape using the Shape DSL
+          # @return [Class, nil] the shape class
           def shape(klass_or_callable = nil, &block)
             callable = block || klass_or_callable
 
@@ -50,6 +54,10 @@ module Apiwork
           @data = data
         end
 
+        # @api public
+        # Transforms the data into the final response format.
+        #
+        # @return [Hash] the wrapped response
         def wrap
           raise NotImplementedError
         end

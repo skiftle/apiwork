@@ -31,7 +31,7 @@ end
 
 `.contract_builder(klass = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/serializer/resource/base.rb#L38)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/serializer/resource/base.rb#L42)
 
 Sets or gets the Contract type builder class.
 
@@ -51,7 +51,7 @@ Sets or gets the Contract type builder class.
 
 `.data_type(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/serializer/resource/base.rb#L28)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/serializer/resource/base.rb#L32)
 
 Sets or gets the data type resolver for this serializer.
 
@@ -73,7 +73,7 @@ Sets or gets the data type resolver for this serializer.
 
 `#representation_class`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/serializer/resource/base.rb#L46)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/serializer/resource/base.rb#L50)
 
 **Returns**
 
@@ -85,7 +85,7 @@ Sets or gets the data type resolver for this serializer.
 
 `#serialize(resource, context:, serialize_options:)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/serializer/resource/base.rb#L66)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/serializer/resource/base.rb#L70)
 
 Serializes a resource.
 

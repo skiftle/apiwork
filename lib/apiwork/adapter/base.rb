@@ -40,7 +40,7 @@ module Apiwork
         # Capabilities are self-contained concerns (pagination, filtering, etc.)
         # that handle both introspection and runtime behavior.
         #
-        # @param klass [Class] a Capability::Base subclass
+        # @param capability_class [Class] a Capability::Base subclass
         # @return [void]
         #
         # @example

@@ -4,12 +4,39 @@ module Apiwork
   module Adapter
     module Wrapper
       module Member
+        # @api public
+        # Base class for member response wrappers.
+        #
+        # Member wrappers structure responses for show, create, and update actions
+        # that return a single record. Extend this class to customize how individual
+        # resources are wrapped in your API responses.
+        #
+        # @example Custom member wrapper
+        #   class MyMemberWrapper < Wrapper::Member::Base
+        #     shape do
+        #       reference(root_key.singular.to_sym, to: data_type)
+        #       object?(:meta)
+        #       merge_shape!(metadata_shapes)
+        #     end
+        #
+        #     def wrap
+        #       { root_key.singular.to_sym => data, meta: meta.presence, **metadata }.compact
+        #     end
+        #   end
         class Base < Wrapper::Base
-          wrapper_type :member
+          self.wrapper_type = :member
 
-          attr_reader :meta,
-                      :metadata,
-                      :root_key
+          # @api public
+          # @return [Hash] custom metadata passed from the controller
+          attr_reader :meta
+
+          # @api public
+          # @return [Hash] capability metadata
+          attr_reader :metadata
+
+          # @api public
+          # @return [RootKey] the resource root key for response wrapping
+          attr_reader :root_key
 
           def initialize(data, metadata, root_key, meta)
             super(data)

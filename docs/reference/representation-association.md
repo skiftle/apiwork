@@ -1,5 +1,5 @@
 ---
-order: 69
+order: 75
 prev: false
 next: false
 ---
@@ -28,7 +28,7 @@ association.representation_class # => CustomerRepresentation
 
 `#collection?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L127)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L123)
 
 **Returns**
 
@@ -76,7 +76,7 @@ association.representation_class # => CustomerRepresentation
 
 `#filterable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L102)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L98)
 
 **Returns**
 
@@ -100,7 +100,7 @@ association.representation_class # => CustomerRepresentation
 
 `#model_class`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L51)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L47)
 
 **Returns**
 
@@ -124,7 +124,7 @@ association.representation_class # => CustomerRepresentation
 
 `#nullable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L145)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L141)
 
 **Returns**
 
@@ -148,7 +148,7 @@ association.representation_class # => CustomerRepresentation
 
 `#polymorphic?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L139)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L135)
 
 **Returns**
 
@@ -160,11 +160,16 @@ association.representation_class # => CustomerRepresentation
 
 `#representation_class`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L43)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L160)
+
+Returns the representation class for this association.
+
+Returns the explicitly configured class if set, otherwise infers
+from the association's model class using namespace conventions.
 
 **Returns**
 
-[Representation::Base](representation-base), `nil` — the associated representation class
+`Class`, `nil` — the representation class or nil if not found
 
 ---
 
@@ -172,7 +177,7 @@ association.representation_class # => CustomerRepresentation
 
 `#singular?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L133)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L129)
 
 **Returns**
 
@@ -184,7 +189,7 @@ association.representation_class # => CustomerRepresentation
 
 `#sortable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L108)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L104)
 
 **Returns**
 
@@ -196,7 +201,7 @@ association.representation_class # => CustomerRepresentation
 
 `#type`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L47)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L43)
 
 **Returns**
 
@@ -208,7 +213,7 @@ association.representation_class # => CustomerRepresentation
 
 `#writable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L114)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L110)
 
 **Returns**
 
@@ -220,7 +225,7 @@ association.representation_class # => CustomerRepresentation
 
 `#writable_for?(action)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L121)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L117)
 
 **Parameters**
 

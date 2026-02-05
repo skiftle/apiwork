@@ -1,5 +1,5 @@
 ---
-order: 75
+order: 81
 prev: false
 next: false
 ---
@@ -109,7 +109,7 @@ Transforms only the body.
 **Example**
 
 ```ruby
-request.transform_body { |b| prepare(b) }
+request.transform_body { |body| prepare(body) }
 ```
 
 ---
@@ -129,7 +129,7 @@ Transforms only the query.
 **Example**
 
 ```ruby
-request.transform_query { |q| normalize(q) }
+request.transform_query { |query| normalize(query) }
 ```
 
 ---

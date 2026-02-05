@@ -35,7 +35,7 @@ end
 
 `.api_builder(klass = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/serializer/error/base.rb#L38)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/serializer/error/base.rb#L42)
 
 Sets or gets the API type builder class.
 
@@ -55,7 +55,7 @@ Sets or gets the API type builder class.
 
 `.data_type(name = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/serializer/error/base.rb#L28)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/serializer/error/base.rb#L32)
 
 Sets or gets the data type name for this serializer.
 
