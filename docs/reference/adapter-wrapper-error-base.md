@@ -1,5 +1,5 @@
 ---
-order: 26
+order: 28
 prev: false
 next: false
 ---
@@ -34,7 +34,7 @@ end
 
 `.shape(klass_or_callable = nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/base.rb#L29)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/base.rb#L25)
 
 Defines the response shape for contract generation.
 
@@ -56,7 +56,7 @@ Defines the response shape for contract generation.
 
 `#data`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/base.rb#L11)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/base.rb#L12)
 
 **Returns**
 
@@ -68,7 +68,7 @@ Defines the response shape for contract generation.
 
 `#wrap`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/base.rb#L65)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/base.rb#L61)
 
 Transforms the data into the final response format.
 

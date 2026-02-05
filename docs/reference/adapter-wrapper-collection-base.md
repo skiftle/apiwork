@@ -1,12 +1,12 @@
 ---
-order: 24
+order: 26
 prev: false
 next: false
 ---
 
 # Adapter::Wrapper::Collection::Base
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/collection/base.rb#L26)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/collection/base.rb#L28)
 
 Base class for collection response wrappers.
 
@@ -19,7 +19,9 @@ wrapped in your API responses.
 ```ruby
 class MyCollectionWrapper < Wrapper::Collection::Base
   shape do
-    array(root_key.plural.to_sym) { reference(data_type) }
+    array(root_key.plural.to_sym) do |array|
+      array.reference(data_type)
+    end
     object?(:meta)
     merge_shape!(metadata_shapes)
   end
@@ -36,7 +38,7 @@ end
 
 `.shape(klass_or_callable = nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/base.rb#L29)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/base.rb#L25)
 
 Defines the response shape for contract generation.
 
@@ -58,7 +60,7 @@ Defines the response shape for contract generation.
 
 `#data`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/base.rb#L11)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/base.rb#L12)
 
 **Returns**
 
@@ -70,7 +72,7 @@ Defines the response shape for contract generation.
 
 `#meta`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/collection/base.rb#L31)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/collection/base.rb#L33)
 
 **Returns**
 
@@ -82,7 +84,7 @@ Defines the response shape for contract generation.
 
 `#metadata`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/collection/base.rb#L35)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/collection/base.rb#L37)
 
 **Returns**
 
@@ -94,7 +96,7 @@ Defines the response shape for contract generation.
 
 `#root_key`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/collection/base.rb#L39)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/collection/base.rb#L41)
 
 **Returns**
 
@@ -106,7 +108,7 @@ Defines the response shape for contract generation.
 
 `#wrap`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/base.rb#L65)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/base.rb#L61)
 
 Transforms the data into the final response format.
 

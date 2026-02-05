@@ -4,6 +4,20 @@ module Apiwork
   module Adapter
     module Transformer
       module Response
+        # @api public
+        # Base class for response transformers.
+        #
+        # Response transformers modify responses before they are returned.
+        # Register transformers in capabilities using {Capability::Base.response_transformer}.
+        #
+        # @example Custom response transformer
+        #   class AddTimestamp < Transformer::Response::Base
+        #     def transform
+        #       response.transform do |body|
+        #         body.merge(timestamp: Time.current.iso8601)
+        #       end
+        #     end
+        #   end
         class Base
           attr_reader :response
 
@@ -17,6 +31,10 @@ module Apiwork
             @response = response
           end
 
+          # @api public
+          # Transforms the response.
+          #
+          # @return [Apiwork::Response] the transformed response
           def transform
             raise NotImplementedError
           end
