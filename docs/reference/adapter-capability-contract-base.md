@@ -19,7 +19,7 @@ Use it to generate contract-specific types based on the representation.
 
 `#api_class`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/contract/base.rb#L56)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/contract/base.rb#L57)
 
 **See also**
 
@@ -31,7 +31,7 @@ Use it to generate contract-specific types based on the representation.
 
 `#build`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/contract/base.rb#L78)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/contract/base.rb#L79)
 
 Builds contract-level types.
 
@@ -47,7 +47,7 @@ Override this method to generate types based on the representation.
 
 `#contract_for(representation_class)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/contract/base.rb#L56)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/contract/base.rb#L57)
 
 **See also**
 
@@ -59,7 +59,7 @@ Override this method to generate types based on the representation.
 
 `#enum(name, values:, **options, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/contract/base.rb#L56)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/contract/base.rb#L57)
 
 **See also**
 
@@ -71,7 +71,7 @@ Override this method to generate types based on the representation.
 
 `#enum?(name)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/contract/base.rb#L56)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/contract/base.rb#L57)
 
 **See also**
 
@@ -83,7 +83,7 @@ Override this method to generate types based on the representation.
 
 `#import(type_name, from:)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/contract/base.rb#L56)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/contract/base.rb#L57)
 
 **See also**
 
@@ -95,7 +95,7 @@ Override this method to generate types based on the representation.
 
 `#object(name, **options, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/contract/base.rb#L56)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/contract/base.rb#L57)
 
 **See also**
 
@@ -131,7 +131,7 @@ Override this method to generate types based on the representation.
 
 `#scoped_enum_name(name)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/contract/base.rb#L56)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/contract/base.rb#L57)
 
 **See also**
 
@@ -143,7 +143,7 @@ Override this method to generate types based on the representation.
 
 `#scoped_type_name(name)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/contract/base.rb#L56)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/contract/base.rb#L57)
 
 **See also**
 
@@ -155,7 +155,7 @@ Override this method to generate types based on the representation.
 
 `#type?(name)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/contract/base.rb#L56)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/contract/base.rb#L57)
 
 **See also**
 
@@ -167,7 +167,7 @@ Override this method to generate types based on the representation.
 
 `#union(name, **options, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/contract/base.rb#L56)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/contract/base.rb#L57)
 
 **See also**
 

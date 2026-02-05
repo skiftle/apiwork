@@ -6,7 +6,7 @@ next: false
 
 # Adapter::Builder::API::Base
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/api/base.rb#L22)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/api/base.rb#L24)
 
 Base class for API-phase type builders.
 
@@ -16,11 +16,13 @@ Use it to register shared types used across all contracts.
 **Example**
 
 ```ruby
-class Builder
+module Builder
   class API < Adapter::Builder::API::Base
     def build
-      enum :status, values: %w[active inactive]
-      object(:error) { |object| object.string(:message) }
+      enum(:status, values: %w[active inactive])
+      object(:error) do |object|
+        object.string(:message)
+      end
     end
   end
 end
@@ -32,7 +34,7 @@ end
 
 `#build`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/api/base.rb#L57)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/api/base.rb#L59)
 
 Builds API-level types.
 
@@ -48,7 +50,7 @@ Override this method to register shared types.
 
 `#enum(name, values:, **options, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/api/base.rb#L40)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/api/base.rb#L42)
 
 **See also**
 
@@ -60,7 +62,7 @@ Override this method to register shared types.
 
 `#enum?(name)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/api/base.rb#L40)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/api/base.rb#L42)
 
 **See also**
 
@@ -72,7 +74,7 @@ Override this method to register shared types.
 
 `#object(name, **options, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/api/base.rb#L40)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/api/base.rb#L42)
 
 **See also**
 
@@ -84,7 +86,7 @@ Override this method to register shared types.
 
 `#type?(name)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/api/base.rb#L40)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/api/base.rb#L42)
 
 **See also**
 
@@ -96,7 +98,7 @@ Override this method to register shared types.
 
 `#union(name, **options, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/api/base.rb#L40)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/builder/api/base.rb#L42)
 
 **See also**
 

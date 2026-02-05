@@ -6,7 +6,7 @@ next: false
 
 # Adapter::Transformer::Response::Base
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/transformer/response/base.rb#L21)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/transformer/response/base.rb#L25)
 
 Base class for response transformers.
 
@@ -16,11 +16,15 @@ Register transformers in capabilities using [Capability::Base.response_transform
 **Example: Custom response transformer**
 
 ```ruby
-class AddTimestamp < Transformer::Response::Base
+class MyTransformer < Transformer::Response::Base
   def transform
-    response.transform do |body|
-      body.merge(timestamp: Time.current.iso8601)
-    end
+    response.transform(&method(:process))
+  end
+
+  private
+
+  def process(body)
+    # transform body
   end
 end
 ```
@@ -31,7 +35,7 @@ end
 
 `#transform`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/transformer/response/base.rb#L38)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/transformer/response/base.rb#L42)
 
 Transforms the response.
 

@@ -149,13 +149,13 @@ the `enum:` option.
 **Example**
 
 ```ruby
-enum :status, values: %w[draft sent paid]
+enum(:status, values: %w[draft sent paid])
 ```
 
 **Example: Reference in contract**
 
 ```ruby
-string :status, enum: :status
+string(:status, enum: :status)
 ```
 
 ---
@@ -287,17 +287,17 @@ Scoped types are namespaced to a contract class.
 **Example: Define a reusable type**
 
 ```ruby
-object :item do
-  string :description
-  decimal :amount
+object(:item) do |object|
+  object.string(:description)
+  object.decimal(:amount)
 end
 ```
 
 **Example: Reference in contract**
 
 ```ruby
-array :items do
-  reference :item
+array(:items) do |array|
+  array.reference(:item)
 end
 ```
 
@@ -492,15 +492,15 @@ by a discriminator field.
 **Example**
 
 ```ruby
-union :payment_method, discriminator: :type do
-  variant tag: 'card' do
-    object do
-      string :last_four
+union(:payment_method, discriminator: :type) do
+  variant(tag: 'card') do
+    object do |object|
+      object.string(:last_four)
     end
   end
-  variant tag: 'bank' do
-    object do
-      string :account_number
+  variant(tag: 'bank') do
+    object do |object|
+      object.string(:account_number)
     end
   end
 end

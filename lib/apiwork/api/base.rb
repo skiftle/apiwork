@@ -187,14 +187,14 @@ module Apiwork
         # @see API::Object
         #
         # @example Define a reusable type
-        #   object :item do
-        #     string :description
-        #     decimal :amount
+        #   object(:item) do |object|
+        #     object.string(:description)
+        #     object.decimal(:amount)
         #   end
         #
         # @example Reference in contract
-        #   array :items do
-        #     reference :item
+        #   array(:items) do |array|
+        #     array.reference(:item)
         #   end
         def object(
           name,
@@ -234,10 +234,10 @@ module Apiwork
         # @see Contract::Base
         #
         # @example
-        #   enum :status, values: %w[draft sent paid]
+        #   enum(:status, values: %w[draft sent paid])
         #
         # @example Reference in contract
-        #   string :status, enum: :status
+        #   string(:status, enum: :status)
         def enum(
           name,
           values: nil,
@@ -269,15 +269,15 @@ module Apiwork
         # @param discriminator [Symbol] field name that identifies the variant
         #
         # @example
-        #   union :payment_method, discriminator: :type do
-        #     variant tag: 'card' do
-        #       object do
-        #         string :last_four
+        #   union(:payment_method, discriminator: :type) do
+        #     variant(tag: 'card') do
+        #       object do |object|
+        #         object.string(:last_four)
         #       end
         #     end
-        #     variant tag: 'bank' do
-        #       object do
-        #         string :account_number
+        #     variant(tag: 'bank') do
+        #       object do |object|
+        #         object.string(:account_number)
         #       end
         #     end
         #   end

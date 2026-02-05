@@ -11,11 +11,12 @@ module Apiwork
         # Use it to generate contract-specific types based on the representation.
         #
         # @example
-        #   class Builder
+        #   module Builder
         #     class Contract < Adapter::Builder::Contract::Base
         #       def build
-        #         object(representation_class.root_key.singular) do |object|
-        #           # define resource shape
+        #         object(representation_class.singular_key_name) do |object|
+        #           object.string(:id)
+        #           object.string(:name)
         #         end
         #       end
         #     end

@@ -16,17 +16,17 @@ Register transformers in capabilities using [Capability::Base.request_transforme
 **Example: Custom request transformer**
 
 ```ruby
-class NormalizeParams < Transformer::Request::Base
+class MyTransformer < Transformer::Request::Base
   phase :before
 
   def transform
-    request.with_query(normalized_query)
+    request.transform(&method(:process))
   end
 
   private
 
-  def normalized_query
-    request.query.transform_keys(&:downcase)
+  def process(data)
+    # transform data
   end
 end
 ```

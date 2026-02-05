@@ -11,11 +11,15 @@ module Apiwork
         # Register transformers in capabilities using {Capability::Base.response_transformer}.
         #
         # @example Custom response transformer
-        #   class AddTimestamp < Transformer::Response::Base
+        #   class MyTransformer < Transformer::Response::Base
         #     def transform
-        #       response.transform do |body|
-        #         body.merge(timestamp: Time.current.iso8601)
-        #       end
+        #       response.transform(&method(:process))
+        #     end
+        #
+        #     private
+        #
+        #     def process(body)
+        #       # transform body
         #     end
         #   end
         class Base

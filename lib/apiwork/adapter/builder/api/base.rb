@@ -11,11 +11,13 @@ module Apiwork
         # Use it to register shared types used across all contracts.
         #
         # @example
-        #   class Builder
+        #   module Builder
         #     class API < Adapter::Builder::API::Base
         #       def build
-        #         enum :status, values: %w[active inactive]
-        #         object(:error) { |object| object.string(:message) }
+        #         enum(:status, values: %w[active inactive])
+        #         object(:error) do |object|
+        #           object.string(:message)
+        #         end
         #       end
         #     end
         #   end
