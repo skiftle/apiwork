@@ -8,31 +8,39 @@ module Apiwork
         # Base class for request transformers.
         #
         # Request transformers modify requests before or after validation.
-        # Register transformers in capabilities using {Capability::Base.request_transformer}.
+        # Register transformers in capabilities using {Adapter::Capability::Base.request_transformer}.
         #
-        # @example Custom request transformer
-        #   class MyTransformer < Transformer::Request::Base
+        # @example Strip whitespace from strings
+        #   class MyRequestTransformer < Transformer::Request::Base
         #     phase :before
         #
         #     def transform
-        #       request.transform(&method(:process))
+        #       request.transform { |data| strip_strings(data) }
         #     end
         #
         #     private
         #
-        #     def process(data)
-        #       # transform data
+        #     def strip_strings(value)
+        #       case value
+        #       when String then value.strip
+        #       when Hash then value.transform_values { |v| strip_strings(v) }
+        #       when Array then value.map { |v| strip_strings(v) }
+        #       else value
+        #       end
         #     end
         #   end
+        #
+        # @see Standard::Capability::Filtering::RequestTransformer
+        # @see Standard::Capability::Writing::RequestTransformer
         class Base
           attr_reader :request
 
           class << self
             # @api public
-            # Sets or gets the transformer phase.
+            # Configures when this transformer runs relative to request validation. Defaults to :before.
             #
-            # @param value [Symbol, nil] :before (pre-validation) or :after (post-validation)
-            # @return [Symbol] the phase (defaults to :before)
+            # @param value [Symbol, nil] :before runs on raw input, :after runs on validated data
+            # @return [Symbol] the phase
             def phase(value = nil)
               @phase = value if value
               @phase || :before
@@ -50,7 +58,7 @@ module Apiwork
           # @api public
           # Transforms the request.
           #
-          # @return [Apiwork::Request] the transformed request
+          # @return [Request] the transformed request
           def transform
             raise NotImplementedError
           end

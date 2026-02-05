@@ -8,18 +8,12 @@ module Apiwork
         # Base class for response transformers.
         #
         # Response transformers modify responses before they are returned.
-        # Register transformers in capabilities using {Capability::Base.response_transformer}.
+        # Register transformers in capabilities using {Adapter::Capability::Base.response_transformer}.
         #
-        # @example Custom response transformer
-        #   class MyTransformer < Transformer::Response::Base
+        # @example Add generated_at to response
+        #   class MyResponseTransformer < Transformer::Response::Base
         #     def transform
-        #       response.transform(&method(:process))
-        #     end
-        #
-        #     private
-        #
-        #     def process(body)
-        #       # transform body
+        #       response.transform_body { |body| body.merge(generated_at: Time.zone.now) }
         #     end
         #   end
         class Base
@@ -38,7 +32,7 @@ module Apiwork
           # @api public
           # Transforms the response.
           #
-          # @return [Apiwork::Response] the transformed response
+          # @return [Response] the transformed response
           def transform
             raise NotImplementedError
           end

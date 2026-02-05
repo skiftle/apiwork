@@ -1,32 +1,37 @@
 ---
-order: 24
+order: 25
 prev: false
 next: false
 ---
 
 # Adapter::Transformer::Request::Base
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/transformer/request/base.rb#L27)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/transformer/request/base.rb#L35)
 
 Base class for request transformers.
 
 Request transformers modify requests before or after validation.
-Register transformers in capabilities using [Capability::Base.request_transformer](capability-base#request-transformer).
+Register transformers in capabilities using [Adapter::Capability::Base.request_transformer](adapter-capability-base#request-transformer).
 
-**Example: Custom request transformer**
+**Example: Strip whitespace from strings**
 
 ```ruby
-class MyTransformer < Transformer::Request::Base
+class MyRequestTransformer < Transformer::Request::Base
   phase :before
 
   def transform
-    request.transform(&method(:process))
+    request.transform { |data| strip_strings(data) }
   end
 
   private
 
-  def process(data)
-    # transform data
+  def strip_strings(value)
+    case value
+    when String then value.strip
+    when Hash then value.transform_values { |v| strip_strings(v) }
+    when Array then value.map { |v| strip_strings(v) }
+    else value
+    end
   end
 end
 ```
@@ -37,19 +42,19 @@ end
 
 `.phase(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/transformer/request/base.rb#L36)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/transformer/request/base.rb#L44)
 
-Sets or gets the transformer phase.
+Configures when this transformer runs relative to request validation. Defaults to :before.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `value` | `Symbol, nil` | :before (pre-validation) or :after (post-validation) |
+| `value` | `Symbol, nil` | :before runs on raw input, :after runs on validated data |
 
 **Returns**
 
-`Symbol` — the phase (defaults to :before)
+`Symbol` — the phase
 
 ---
 
@@ -59,12 +64,12 @@ Sets or gets the transformer phase.
 
 `#transform`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/transformer/request/base.rb#L54)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/transformer/request/base.rb#L62)
 
 Transforms the request.
 
 **Returns**
 
-`Apiwork::Request` — the transformed request
+[Request](request) — the transformed request
 
 ---

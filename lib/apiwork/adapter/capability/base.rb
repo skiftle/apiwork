@@ -3,6 +3,28 @@
 module Apiwork
   module Adapter
     module Capability
+      # @api public
+      # Base class for adapter capabilities.
+      #
+      # A capability encapsulates a specific feature (filtering, pagination, sorting)
+      # with its own configuration, transformers, builders, and operations. While each
+      # capability is self-contained, all capabilities operate on the same response data
+      # in sequence, so their effects combine.
+      #
+      # @example Filtering capability
+      #   class Filtering < Adapter::Capability::Base
+      #     capability_name :filtering
+      #
+      #     option :strategy, type: :symbol, default: :simple
+      #
+      #     request_transformer RequestTransformer
+      #     api_builder APIBuilder
+      #     contract_builder ContractBuilder
+      #     operation Operation
+      #   end
+      #
+      # @see Adapter::Base#capability
+      # @see Configurable#option
       class Base
         include Configurable
 
@@ -14,11 +36,24 @@ module Apiwork
         class_attribute :_operation_block
 
         class << self
+          # @api public
+          # Sets or returns the capability name.
+          #
+          # Used for configuration options, translation keys, and {Adapter::Base.skip_capability}.
+          #
+          # @param value [Symbol, nil] the capability name
+          # @return [Symbol, nil] the capability name
           def capability_name(value = nil)
             @capability_name = value.to_sym if value
             @capability_name
           end
 
+          # @api public
+          # Registers a request transformer for this capability.
+          #
+          # @param transformer_class [Class] a {Transformer::Request::Base} subclass
+          # @return [void]
+          # @see Transformer::Request::Base
           def request_transformer(transformer_class)
             @request_transformers ||= []
             @request_transformers << transformer_class
@@ -28,6 +63,12 @@ module Apiwork
             @request_transformers || []
           end
 
+          # @api public
+          # Registers a response transformer for this capability.
+          #
+          # @param transformer_class [Class] a {Transformer::Response::Base} subclass
+          # @return [void]
+          # @see Transformer::Response::Base
           def response_transformer(transformer_class)
             @response_transformers ||= []
             @response_transformers << transformer_class
@@ -37,6 +78,16 @@ module Apiwork
             @response_transformers || []
           end
 
+          # @api public
+          # Registers an API builder for this capability.
+          #
+          # API builders run once per API at initialization time to register
+          # shared types used across all contracts.
+          #
+          # @param klass [Class, nil] a {Builder::API::Base} subclass
+          # @yield block evaluated in {Builder::API::Base} context
+          # @return [void]
+          # @see Builder::API::Base
           def api_builder(klass = nil, &block)
             if klass
               self._api_builder = klass
@@ -45,6 +96,16 @@ module Apiwork
             end
           end
 
+          # @api public
+          # Registers a contract builder for this capability.
+          #
+          # Contract builders run per contract to add capability-specific
+          # parameters and response shapes.
+          #
+          # @param klass [Class, nil] a {Builder::Contract::Base} subclass
+          # @yield block evaluated in {Builder::Contract::Base} context
+          # @return [void]
+          # @see Builder::Contract::Base
           def contract_builder(klass = nil, &block)
             if klass
               self._contract_builder = klass
@@ -53,6 +114,16 @@ module Apiwork
             end
           end
 
+          # @api public
+          # Registers an operation for this capability.
+          #
+          # Operations run at request time to process data based on
+          # request parameters.
+          #
+          # @param klass [Class, nil] an {Operation::Base} subclass
+          # @yield block evaluated in {Operation::Base} context
+          # @return [void]
+          # @see Operation::Base
           def operation(klass = nil, &block)
             if klass
               self._operation_class = klass

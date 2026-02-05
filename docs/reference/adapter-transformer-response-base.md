@@ -1,30 +1,24 @@
 ---
-order: 25
+order: 26
 prev: false
 next: false
 ---
 
 # Adapter::Transformer::Response::Base
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/transformer/response/base.rb#L25)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/transformer/response/base.rb#L19)
 
 Base class for response transformers.
 
 Response transformers modify responses before they are returned.
-Register transformers in capabilities using [Capability::Base.response_transformer](capability-base#response-transformer).
+Register transformers in capabilities using [Adapter::Capability::Base.response_transformer](adapter-capability-base#response-transformer).
 
-**Example: Custom response transformer**
+**Example: Add generated_at to response**
 
 ```ruby
-class MyTransformer < Transformer::Response::Base
+class MyResponseTransformer < Transformer::Response::Base
   def transform
-    response.transform(&method(:process))
-  end
-
-  private
-
-  def process(body)
-    # transform body
+    response.transform_body { |body| body.merge(generated_at: Time.zone.now) }
   end
 end
 ```
@@ -35,12 +29,12 @@ end
 
 `#transform`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/transformer/response/base.rb#L42)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/transformer/response/base.rb#L36)
 
 Transforms the response.
 
 **Returns**
 
-`Apiwork::Response` — the transformed response
+[Response](response) — the transformed response
 
 ---
