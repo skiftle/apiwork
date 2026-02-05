@@ -5,7 +5,7 @@ module Apiwork
     class Standard
       module Capability
         class Writing < Adapter::Capability::Base
-          class RequestTransformer < Adapter::Transformer::Request::Base
+          class RequestTransformer < Adapter::Capability::Transformer::Request::Base
             phase :after
 
             def transform

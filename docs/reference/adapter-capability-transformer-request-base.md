@@ -1,22 +1,22 @@
 ---
-order: 25
+order: 21
 prev: false
 next: false
 ---
 
-# Adapter::Transformer::Request::Base
+# Adapter::Capability::Transformer::Request::Base
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/transformer/request/base.rb#L35)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/transformer/request/base.rb#L36)
 
 Base class for request transformers.
 
 Request transformers modify requests before or after validation.
-Register transformers in capabilities using [Adapter::Capability::Base.request_transformer](adapter-capability-base#request-transformer).
+Register transformers in capabilities using [Capability::Base.request_transformer](adapter-capability-base#request-transformer).
 
 **Example: Strip whitespace from strings**
 
 ```ruby
-class MyRequestTransformer < Transformer::Request::Base
+class MyRequestTransformer < Capability::Transformer::Request::Base
   phase :before
 
   def transform
@@ -42,7 +42,7 @@ end
 
 `.phase(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/transformer/request/base.rb#L44)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/transformer/request/base.rb#L45)
 
 Configures when this transformer runs relative to request validation. Defaults to :before.
 
@@ -64,7 +64,7 @@ Configures when this transformer runs relative to request validation. Defaults t
 
 `#transform`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/transformer/request/base.rb#L62)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/transformer/request/base.rb#L63)
 
 Transforms the request.
 

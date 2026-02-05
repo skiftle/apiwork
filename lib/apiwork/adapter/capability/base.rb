@@ -249,7 +249,7 @@ module Apiwork
         end
 
         def build_translation_context(representation_class)
-          locale_key = representation_class.api_class&.locale_key
+          locale_key = representation_class.api_class.locale_key
 
           {
             locale_key:,

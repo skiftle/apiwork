@@ -5,7 +5,7 @@ module Apiwork
     class Standard
       module Capability
         class Filtering < Adapter::Capability::Base
-          class RequestTransformer < Adapter::Transformer::Request::Base
+          class RequestTransformer < Adapter::Capability::Transformer::Request::Base
             NUMERIC_KEY_PATTERN = /^\d+$/
 
             phase :before

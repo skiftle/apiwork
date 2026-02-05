@@ -199,7 +199,7 @@ Registers a request transformer for this capability.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `transformer_class` | `Class` | a [Transformer::Request::Base](adapter-transformer-request-base) subclass |
+| `transformer_class` | `Class` | a [Transformer::Request::Base](adapter-capability-transformer-request-base) subclass |
 
 **Returns**
 
@@ -207,7 +207,7 @@ Registers a request transformer for this capability.
 
 **See also**
 
-- [Transformer::Request::Base](adapter-transformer-request-base)
+- [Transformer::Request::Base](adapter-capability-transformer-request-base)
 
 ---
 
@@ -223,7 +223,7 @@ Registers a response transformer for this capability.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `transformer_class` | `Class` | a [Transformer::Response::Base](adapter-transformer-response-base) subclass |
+| `transformer_class` | `Class` | a [Transformer::Response::Base](adapter-capability-transformer-response-base) subclass |
 
 **Returns**
 
@@ -231,6 +231,6 @@ Registers a response transformer for this capability.
 
 **See also**
 
-- [Transformer::Response::Base](adapter-transformer-response-base)
+- [Transformer::Response::Base](adapter-capability-transformer-response-base)
 
 ---
