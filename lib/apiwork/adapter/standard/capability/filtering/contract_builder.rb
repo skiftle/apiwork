@@ -18,17 +18,17 @@ module Apiwork
                 type_name = [name, TYPE_NAME].join('_').to_sym
                 next if type?(type_name)
 
-                scoped = scoped_enum_name(name)
+                enum_name = scoped_enum_name(name)
 
                 union(type_name) do |union|
                   union.variant do |element|
-                    element.reference(scoped)
+                    element.reference(enum_name)
                   end
                   union.variant(partial: true) do |element|
                     element.object do |object|
-                      object.reference(:eq, to: scoped)
+                      object.reference(:eq, to: enum_name)
                       object.array(:in) do |array|
-                        array.reference(scoped)
+                        array.reference(enum_name)
                       end
                     end
                   end
@@ -131,17 +131,17 @@ module Apiwork
 
                 enum name, values: allowed_values
 
-                scoped = scoped_enum_name(name)
+                enum_name = scoped_enum_name(name)
 
                 union(type_name) do |union|
                   union.variant do |element|
-                    element.reference(scoped)
+                    element.reference(enum_name)
                   end
                   union.variant(partial: true) do |element|
                     element.object do |object|
-                      object.reference(:eq, to: scoped)
+                      object.reference(:eq, to: enum_name)
                       object.array(:in) do |array|
-                        array.reference(scoped)
+                        array.reference(enum_name)
                       end
                     end
                   end
@@ -163,17 +163,17 @@ module Apiwork
 
                 enum(name, values: inheritance.subclasses.map(&:sti_name))
 
-                scoped = scoped_enum_name(name)
+                enum_name = scoped_enum_name(name)
 
                 union(type_name) do |union|
                   union.variant do |element|
-                    element.reference(scoped)
+                    element.reference(enum_name)
                   end
                   union.variant(partial: true) do |element|
                     element.object do |object|
-                      object.reference(:eq, to: scoped)
+                      object.reference(:eq, to: enum_name)
                       object.array(:in) do |array|
-                        array.reference(scoped)
+                        array.reference(enum_name)
                       end
                     end
                   end

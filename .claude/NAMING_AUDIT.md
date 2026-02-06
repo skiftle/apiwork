@@ -4,202 +4,188 @@ Instructions for reviewing and correcting naming in the codebase.
 
 ---
 
-## Core Rule
+## Core Rules
 
-**Variables should be named after their class.**
+| Do                                                                     | Don't                                                    |
+| ---------------------------------------------------------------------- | -------------------------------------------------------- |
+| Use descriptive, context-bearing names outside their context           | Abbreviations: `cfg`, `opts`, `ctx`                      |
+| Use unabbreviated words: `schema_class` not `cls`                      | Generic words: `data`, `item`, `thing`, `foo`            |
+| `options` is acceptable for hash of optional parameters                |                                                          |
+| Follow adjective-noun order: `paginated_invoices`                      | Type suffixes: `_str`, `_sym`                            |
+| Names should eliminate the need for comments                           | Repeat context: `class_name:` not `resource_class_name:` |
+| Public API: simple names (`Contract` not `ContractDefinition`)         |                                                          |
+| Internal: descriptive names (`ContractDefinition`, `ParamValidator`)   |                                                          |
+| Use `_class` suffix for class references: `def initialize(api_class)`  |                                                          |
+| Full names: `attribute` not `attr` (exception: `param`, `attr_reader`) |                                                          |
+| Method names: nouns for getters, verbs for actions                     |                                                          |
+
+---
+
+## Variable Names Match Class Names
+
+Variables should be named after their class:
 
 ```ruby
 # Good
-type_definition = TypeDefinition.new
-attribute = Attribute.new
-type = Introspection::Type.new
-param = Introspection::Param.build(dump)
+attribute = schema_class.attributes[key]      # Attribute
+association = schema_class.associations[key]  # Association
+type_definition = registry.find(name)         # TypeDefinition
+enum_definition = registry.find(name)         # EnumDefinition
 
-# Bad
-definition = TypeDefinition.new
-attr = Attribute.new
-data = Introspection::Type.new
+# Bad — misleading suffix
+attribute_definition = schema_class.attributes[key]  # Class is Attribute, not AttributeDefinition
+```
+
+**Exception:** When a variable can hold multiple types, use a semantic name:
+
+```ruby
+# shape can be Contract::Object, Contract::Union, or API::Object
+shape = Contract::Object.new
+
+# param_options is a Hash from .params iteration, not a class instance
+shape.params.each do |name, param_options|
+  # ...
+end
 ```
 
 ---
 
-## Exceptions and Special Cases
+## Variable Names from Methods
 
-### Shape types
-
-`Contract::Object`, `Contract::Union`, `API::Object` → use `shape`
+When assigning from a method, the variable name should describe what it IS, not how it was obtained:
 
 ```ruby
-shape = Contract::Object.new
-shape = Union.new(discriminator: :type)
+# Good — it's an enum name, the method tells us it's scoped
+enum_name = scoped_enum_name(name)
+
+# Bad — repeats the qualifier from the method name
+scoped_enum_name = scoped_enum_name(name)
 ```
 
-### Hash from iteration
+Drop qualifiers when the variable is the only one of its kind in scope. Add qualifiers only to distinguish between multiple similar values.
 
-| Source | Variable name |
-|--------|---------------|
-| `.params.each { \|name, ???\| }` | `param_options` |
-| `.variants.each { \|???\| }` | `variant` |
+**Exception:** When the variable matches a keyword argument, keep the name for shorthand syntax:
 
 ```ruby
-type_definition.params.each do |param_name, param_options|
-  # param_options is a Hash, not a Param object
+# OK — data_type: uses shorthand syntax
+data_type = resolve_resource_data_type(representation_class)
+shape_class.apply(body, data_type:)
+```
+
+---
+
+## Context-aware Naming
+
+Inside a context, use short names. Outside, add context:
+
+```ruby
+# Inside Invoice class — short name
+class Invoice
+  def total; end           # Good — context is clear
+  def invoice_total; end   # Bad — repeats context
 end
 
-union.variants.each do |variant|
-  # variant is a Hash with :tag, :type, :shape, etc.
-end
+# Outside Invoice — add context
+invoice_total = invoice.total    # Good — context needed
+total = invoice.total            # Bad — ambiguous
 ```
 
-### ActiveRecord vs Apiwork
-
-| Class | Variable name |
-|-------|---------------|
-| `ActiveRecord::Reflection::AssociationReflection` | `reflection` |
-| `Apiwork::...::Association` | `association` |
+Inside a registry, context is clear:
 
 ```ruby
-reflection = model_class.reflect_on_association(name)
-association = Association.new(name, reflection)
-```
-
-### Context-aware naming
-
-Don't repeat context that's already clear from the class/module name:
-
-```ruby
-# Inside TypeRegistry - context is clear
 class TypeRegistry
   def find(name)
     definition = @store[name]  # Good - we know it's a type definition
   end
 end
 
-# Inside EnumRegistry - context is clear
-class EnumRegistry
-  def find(name)
-    definition = @store[name]  # Good - we know it's an enum definition
-  end
-end
-
-# Outside any registry - context needed
+# Outside — context needed
 type_definition = type_registry.find(name)
 enum_definition = enum_registry.find(name)
 ```
 
-### Symbol collections
+---
 
-Follow the `*_names` pattern for collections of symbols:
+## DSL Setters for Class References
 
-| Contents | Variable name |
-|----------|---------------|
-| Type symbols (`:address`, `:invoice`) | `type_names` |
-| Enum symbols (`:status`, `:currency`) | `enum_names` |
-| Reference symbols | `reference_names` |
+DSL setters skip the `_class` suffix. Getters use it:
 
 ```ruby
-type_names = Set.new
-reference_names = []
+# Setter — no _class suffix
+class InvoiceRepresentation < Representation::Base
+  model Invoice
+end
 
-reference_names.each do |reference_name|
-  type_names << reference_name
+# Getter — uses _class suffix
+representation.model_class
+contract.representation_class
+```
+
+---
+
+## Singleton Class Naming
+
+When there's only one class of a type within a module, skip the qualifier:
+
+```ruby
+# Good — Writing capability has only one request transformer
+module Writing
+  class RequestTransformer < Base; end
+end
+
+# Bad — unnecessary qualifier when there's only one
+module Writing
+  class OpFieldRequestTransformer < Base; end
 end
 ```
 
 ---
 
-## Method Names
+## Special Cases
 
-### Match the parameter
+### Shape types
 
-Method names should describe what they receive:
+`Contract::Object`, `Contract::Union`, `API::Object` → use `shape`
 
-```ruby
-# Good - takes Param, named map_param
-def map_param(param)
-end
+### Hash from iteration
 
-# Bad - takes param but named map_type_definition
-def map_type_definition(param)
-end
-```
+| Source                           | Variable name   |
+| -------------------------------- | --------------- |
+| `.params.each { \|name, ???\| }` | `param_options` |
+| `.variants.each { \|???\| }`     | `variant`       |
 
-### Avoid unnecessary indirection
+### ActiveRecord vs Apiwork
 
-Work with objects directly instead of converting to Hash:
+| Class                                             | Variable name |
+| ------------------------------------------------- | ------------- |
+| `ActiveRecord::Reflection::AssociationReflection` | `reflection`  |
+| `Apiwork::...::Association`                       | `association` |
 
-```ruby
-# Bad - unnecessary conversion
-def process_types(types)
-  types.each_value do |type|
-    process_type_data(type.to_h)
-  end
-end
+### Symbol collections
 
-# Good - use the object's interface
-def process_types(types)
-  types.each_value do |type|
-    process_type(type)
-  end
-end
-```
+| Contents                              | Variable name     |
+| ------------------------------------- | ----------------- |
+| Type symbols (`:address`, `:invoice`) | `type_names`      |
+| Enum symbols (`:status`, `:currency`) | `enum_names`      |
+| Reference symbols                     | `reference_names` |
 
 ---
 
 ## Forbidden Patterns
 
-### Abbreviations
-
-| Forbidden | Correct |
-|-----------|---------|
-| `refs` | `reference_names` |
-| `ref` (in loop) | `reference_name` |
-| `opts` | `options` |
-| `cfg` | `config` |
-| `attr` | `attribute` |
-| `def` | `definition` |
-
-### Generic names
-
-| Forbidden | Replace with |
-|-----------|--------------|
-| `data` | Specific: `type_data`, `param_options` |
-| `item` | Specific: `type`, `param`, `variant` |
-| `definition` (outside context) | Specific: `type_definition`, `enum_definition` |
-
-Note: `definition` is OK inside `TypeRegistry`, `EnumRegistry`, etc. where context is clear.
-
-### `_data` suffix without reason
-
-If you have `type_data` - ask: can I work with `type` directly instead?
-
----
-
-## Search Commands
-
-Find potential issues:
-
-```bash
-# Find generic "definition" variables
-grep -r "definition\s*=" lib/
-
-# Find _data suffix
-grep -r "_data" lib/
-
-# Find abbreviations
-grep -rE "\brefs?\b" lib/
-grep -rE "\bopts?\b" lib/
-
-# Find Hash iteration with bad names
-grep -rE "\.each.*\|.*data\|" lib/
-grep -rE "\.each.*\|.*definition\|" lib/
-```
+| Forbidden       | Correct           |
+| --------------- | ----------------- |
+| `refs`          | `reference_names` |
+| `ref` (in loop) | `reference_name`  |
+| `opts`          | `options`         |
+| `cfg`           | `config`          |
+| `attr`          | `attribute`       |
+| `def`           | `definition`      |
+| `_data` suffix  | Use object directly |
 
 ---
 
 ## Verification
-
-After changes:
 
 ```bash
 bundle exec rspec

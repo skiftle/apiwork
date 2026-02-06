@@ -200,6 +200,28 @@ invoice_total = invoice.total    # Good — context needed
 total = invoice.total            # Bad — ambiguous
 ```
 
+### Variable Names from Methods
+
+When assigning from a method, the variable name should describe what it IS, not how it was obtained:
+
+```ruby
+# Good — it's an enum name, the method tells us it's scoped
+enum_name = scoped_enum_name(name)
+
+# Bad — repeats the qualifier from the method name
+scoped_enum_name = scoped_enum_name(name)
+```
+
+Drop qualifiers when the variable is the only one of its kind in scope. Add qualifiers only to distinguish between multiple similar values.
+
+**Exception:** When the variable matches a keyword argument, keep the name for shorthand syntax:
+
+```ruby
+# OK — data_type: uses shorthand syntax
+data_type = resolve_resource_data_type(representation_class)
+shape_class.apply(body, data_type:)
+```
+
 ### Singleton Class Naming
 
 When there's only one class of a type within a module, skip the qualifier:

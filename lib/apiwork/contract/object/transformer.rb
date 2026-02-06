@@ -119,11 +119,11 @@ module Apiwork
         end
 
         def transform_custom_type_array(value, param_options)
-          resolved_shape = resolve_custom_type_shape(param_options[:of])
-          return nil unless resolved_shape
+          custom_type_shape = resolve_custom_type_shape(param_options[:of])
+          return nil unless custom_type_shape
 
           value.map do |item|
-            item.is_a?(Hash) ? Transformer.new(resolved_shape).transform(item) : item
+            item.is_a?(Hash) ? Transformer.new(custom_type_shape).transform(item) : item
           end
         end
 
