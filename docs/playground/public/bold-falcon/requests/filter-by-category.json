@@ -5,32 +5,27 @@
   },
   "response": {
     "body": {
-      "issues": [
+      "articles": [
         {
-          "code": "field_unknown",
-          "detail": "Unknown field",
-          "meta": {
-            "allowed": [
-              "AND",
-              "OR",
-              "NOT",
-              "title",
-              "status",
-              "view_count",
-              "rating",
-              "published_on"
-            ],
-            "field": "category"
-          },
-          "path": [
-            "filter",
-            "category"
-          ],
-          "pointer": "/filter/category"
+          "id": "440d944f-21d0-5557-98c8-c470ef430b2b",
+          "title": "Tech Article",
+          "body": null,
+          "status": "published",
+          "viewCount": 0,
+          "rating": null,
+          "publishedOn": null,
+          "createdAt": "2024-01-01T12:00:00.000Z",
+          "updatedAt": "2024-01-01T12:00:00.000Z"
         }
       ],
-      "layer": "contract"
+      "pagination": {
+        "items": 1,
+        "total": 1,
+        "current": 1,
+        "next": null,
+        "prev": null
+      }
     },
-    "status": 400
+    "status": 200
   }
 }

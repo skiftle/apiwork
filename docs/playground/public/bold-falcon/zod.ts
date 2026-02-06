@@ -138,6 +138,14 @@ export const ErrorSchema = z.object({
   layer: LayerSchema
 });
 
+export const CategoryFilterSchema: z.ZodType<CategoryFilter> = z.lazy(() => z.object({
+  AND: z.array(CategoryFilterSchema).optional(),
+  NOT: CategoryFilterSchema.optional(),
+  OR: z.array(CategoryFilterSchema).optional(),
+  name: z.union([z.string(), StringFilterSchema]).optional(),
+  slug: z.union([z.string(), StringFilterSchema]).optional()
+}));
+
 export const ArticleCreateSuccessResponseBodySchema = z.object({
   article: ArticleSchema,
   meta: z.record(z.string(), z.unknown()).optional()
@@ -159,18 +167,19 @@ export const ArticleUpdateSuccessResponseBodySchema = z.object({
   meta: z.record(z.string(), z.unknown()).optional()
 });
 
+export const ErrorResponseBodySchema = ErrorSchema;
+
 export const ArticleFilterSchema: z.ZodType<ArticleFilter> = z.lazy(() => z.object({
   AND: z.array(ArticleFilterSchema).optional(),
   NOT: ArticleFilterSchema.optional(),
   OR: z.array(ArticleFilterSchema).optional(),
+  category: CategoryFilterSchema.optional(),
   publishedOn: z.union([z.iso.date(), NullableDateFilterSchema]).optional(),
   rating: z.union([z.number(), NullableDecimalFilterSchema]).optional(),
   status: ArticleStatusFilterSchema.optional(),
   title: z.union([z.string(), StringFilterSchema]).optional(),
   viewCount: z.union([z.number().int(), NullableIntegerFilterSchema]).optional()
 }));
-
-export const ErrorResponseBodySchema = ErrorSchema;
 
 export const ArticlesIndexRequestQuerySchema = z.object({
   filter: z.union([ArticleFilterSchema, z.array(ArticleFilterSchema)]).optional(),
@@ -280,6 +289,7 @@ export interface ArticleFilter {
   AND?: ArticleFilter[];
   NOT?: ArticleFilter;
   OR?: ArticleFilter[];
+  category?: CategoryFilter;
   publishedOn?: NullableDateFilter | string;
   rating?: NullableDecimalFilter | number;
   status?: ArticleStatusFilter;
@@ -414,6 +424,14 @@ export interface Category {
   id: string;
   name: string;
   slug: string;
+}
+
+export interface CategoryFilter {
+  AND?: CategoryFilter[];
+  NOT?: CategoryFilter;
+  OR?: CategoryFilter[];
+  name?: StringFilter | string;
+  slug?: StringFilter | string;
 }
 
 export interface DateFilterBetween {
