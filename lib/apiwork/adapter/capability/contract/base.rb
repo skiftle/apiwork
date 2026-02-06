@@ -18,7 +18,7 @@ module Apiwork
           # @return [Configuration] capability options
           attr_reader :options
 
-          delegate :action, to: :contract_class
+          delegate :action, to: :@contract_class
 
           def initialize(contract_class, representation_class, actions, options)
             super(contract_class, representation_class)

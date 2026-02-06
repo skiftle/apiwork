@@ -44,7 +44,7 @@ module Apiwork
                    :object,
                    :type?,
                    :union,
-                   to: :api_class
+                   to: :@api_class
 
           def initialize(api_class, data_type: nil)
             @api_class = api_class
@@ -59,10 +59,6 @@ module Apiwork
           def build
             raise NotImplementedError
           end
-
-          private
-
-          attr_reader :api_class
         end
       end
     end

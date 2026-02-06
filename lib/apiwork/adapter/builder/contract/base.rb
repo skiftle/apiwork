@@ -64,7 +64,7 @@ module Apiwork
                    :scoped_type_name,
                    :type?,
                    :union,
-                   to: :contract_class
+                   to: :@contract_class
 
           def initialize(contract_class, representation_class)
             @contract_class = contract_class
@@ -79,10 +79,6 @@ module Apiwork
           def build
             raise NotImplementedError
           end
-
-          private
-
-          attr_reader :contract_class
         end
       end
     end

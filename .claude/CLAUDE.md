@@ -633,16 +633,25 @@ class Parser
 end
 ```
 
-**Exception:** `private attr_reader` is allowed when the method is needed as a delegate target:
+**Exception:** When a private attr_reader would ONLY be used as a delegate target, use `to: :@variable` syntax instead:
 
 ```ruby
-# Good — private attr_reader for delegate target
+# Good — delegate directly to instance variable
+class Builder
+  delegate :enum, :object, to: :@api_class
+
+  def initialize(api_class)
+    @api_class = api_class
+  end
+end
+
+# Bad — unnecessary private attr_reader
 class Builder
   delegate :enum, :object, to: :api_class
 
   private
 
-  attr_reader :api_class  # Needed for delegate
+  attr_reader :api_class
 end
 ```
 
