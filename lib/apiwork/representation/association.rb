@@ -156,7 +156,7 @@ module Apiwork
       # Returns the explicitly configured class if set, otherwise infers
       # from the association's model class using namespace conventions.
       #
-      # @return [Representation::Base, nil] the representation class or nil if not found
+      # @return [Class<Representation::Base>, nil] the representation class or nil if not found
       def representation_class
         @representation_class || inferred_representation_class
       end
