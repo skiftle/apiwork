@@ -44,7 +44,6 @@ expose_error :conflict,
 | `detail:` | Custom message (overrides default)   |
 | `path:`   | Location in request body             |
 | `meta:`   | Additional context                   |
-| `i18n:`   | Interpolation values for translation |
 
 ## Error Codes
 
