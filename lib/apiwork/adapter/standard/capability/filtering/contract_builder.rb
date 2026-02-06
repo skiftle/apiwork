@@ -161,9 +161,7 @@ module Apiwork
                 type_name = [name, TYPE_NAME].join('_').to_sym
                 next if type?(type_name)
 
-                allowed_values = inheritance.subclasses.map(&:sti_name)
-
-                enum name, values: allowed_values
+                enum(name, values: inheritance.subclasses.map(&:sti_name))
 
                 scoped = scoped_enum_name(name)
 
