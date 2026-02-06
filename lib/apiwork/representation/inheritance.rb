@@ -14,13 +14,13 @@ module Apiwork
     #   ClientRepresentation.inheritance.resolve(record)  # => PersonClientRepresentation
     class Inheritance
       # @api public
-      # @return [Class] the base representation class for this inheritance chain
+      # @return [Class<Representation::Base>] the base representation class for this inheritance chain
       attr_reader :base_class
 
       # @api public
       # All registered subclass representations.
       #
-      # @return [Array<Class>]
+      # @return [Array<Class<Representation::Base>>]
       attr_reader :subclasses
 
       def initialize(base_class)
@@ -40,7 +40,7 @@ module Apiwork
       # Resolves a record to its subclass representation.
       #
       # @param record [ActiveRecord::Base]
-      # @return [Class, nil]
+      # @return [Class<Representation::Base>, nil]
       def resolve(record)
         type_value = record.public_send(column)
         @subclasses.find { |klass| klass.model_class.sti_name == type_value }

@@ -35,7 +35,7 @@ module Apiwork
       attr_reader :name
 
       # @api public
-      # @return [Array<Class>, nil] polymorphic representation classes
+      # @return [Array<Representation::Base>, nil] polymorphic representation classes
       attr_reader :polymorphic
 
       # @api public
@@ -43,7 +43,7 @@ module Apiwork
       attr_reader :type
 
       # @api public
-      # @return [Class] the owner representation's model class
+      # @return [Class<ActiveRecord::Base>] the owner representation's model class
       attr_reader :model_class
 
       attr_reader :allow_destroy,
@@ -156,7 +156,7 @@ module Apiwork
       # Returns the explicitly configured class if set, otherwise infers
       # from the association's model class using namespace conventions.
       #
-      # @return [Class, nil] the representation class or nil if not found
+      # @return [Representation::Base, nil] the representation class or nil if not found
       def representation_class
         @representation_class || inferred_representation_class
       end

@@ -307,7 +307,7 @@ Tags help organize actions in generated documentation.
 
 **Returns**
 
-`Array`, `nil` — the tags
+`Array<Symbol>`, `nil` — the tags
 
 **Example**
 

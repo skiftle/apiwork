@@ -104,7 +104,7 @@ association.representation_class # => CustomerRepresentation
 
 **Returns**
 
-`Class` — the owner representation's model class
+`Class<ActiveRecord::Base>` — the owner representation's model class
 
 ---
 
@@ -140,7 +140,7 @@ association.representation_class # => CustomerRepresentation
 
 **Returns**
 
-`Array<Class>`, `nil` — polymorphic representation classes
+Array&lt;[Representation::Base](/reference/representation/base)&gt;, `nil` — polymorphic representation classes
 
 ---
 
@@ -169,7 +169,7 @@ from the association's model class using namespace conventions.
 
 **Returns**
 
-`Class`, `nil` — the representation class or nil if not found
+[Representation::Base](/reference/representation/base), `nil` — the representation class or nil if not found
 
 ---
 

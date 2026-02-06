@@ -69,7 +69,7 @@ module Apiwork
       # Tags help organize actions in generated documentation.
       #
       # @param tags [Array<String,Symbol>] tag names
-      # @return [Array, nil] the tags
+      # @return [Array<Symbol>, nil] the tags
       #
       # @example
       #   action :create do

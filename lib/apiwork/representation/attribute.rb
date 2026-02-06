@@ -30,7 +30,7 @@ module Apiwork
       attr_reader :description
 
       # @api public
-      # @return [Array, nil] allowed values
+      # @return [Array<Object>, nil] allowed values
       attr_reader :enum
 
       # @api public

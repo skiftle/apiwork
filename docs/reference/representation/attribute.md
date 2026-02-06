@@ -56,7 +56,7 @@ attribute.filterable? # => true
 
 **Returns**
 
-`Array`, `nil` — allowed values
+`Array<Object>`, `nil` — allowed values
 
 ---
 

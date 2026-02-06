@@ -31,7 +31,7 @@ ClientRepresentation.inheritance.resolve(record)  # => PersonClientRepresentatio
 
 **Returns**
 
-`Class` — the base representation class for this inheritance chain
+Class&lt;[Representation::Base](/reference/representation/base)&gt; — the base representation class for this inheritance chain
 
 ---
 
@@ -93,7 +93,7 @@ Resolves a record to its subclass representation.
 
 **Returns**
 
-`Class`, `nil`
+Class&lt;[Representation::Base](/reference/representation/base)&gt;, `nil`
 
 ---
 
@@ -107,6 +107,6 @@ All registered subclass representations.
 
 **Returns**
 
-`Array<Class>`
+Array&lt;Class&lt;[Representation::Base](/reference/representation/base)&gt;&gt;
 
 ---

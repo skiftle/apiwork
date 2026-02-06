@@ -179,7 +179,7 @@ end
 
 **Returns**
 
-`Array`, `Symbol`, `nil` — enum values (Array) or reference name (Symbol)
+`Array<String>`, `Symbol`, `nil` — enum values (Array) or reference name (Symbol)
 
 ---
 

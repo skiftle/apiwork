@@ -49,7 +49,7 @@ module Apiwork
         end
 
         # @api public
-        # @return [Array, Symbol, nil] enum values (Array) or reference name (Symbol)
+        # @return [Array<Numeric>, Symbol, nil] enum values (Array) or reference name (Symbol)
         # @see #enum?
         def enum
           @dump[:enum]
