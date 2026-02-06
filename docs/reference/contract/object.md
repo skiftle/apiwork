@@ -6,7 +6,7 @@ next: false
 
 # Object
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L23)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L18)
 
 Block context for defining request/response structure.
 

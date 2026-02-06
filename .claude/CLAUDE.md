@@ -27,7 +27,7 @@ cd docs/playground && RAILS_ENV=test rake docs:generate  # generate examples
 lib/apiwork/
 ├── api/          # API definitions, resources, router
 ├── contract/     # Request/response shapes, typed params, validation
-├── schema/       # ActiveRecord mapping, attributes, associations
+├── representation/ # Serialization layer, attributes, associations
 ├── adapter/      # Runtime: filtering, sorting, pagination, includes
 ├── export/       # OpenAPI, TypeScript, Zod generators
 ├── introspection/# Internal API structure representation

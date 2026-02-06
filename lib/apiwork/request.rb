@@ -26,8 +26,8 @@ module Apiwork
     # @api public
     # Creates a new request context.
     #
-    # @param query [Hash] the query parameters
     # @param body [Hash] the body parameters
+    # @param query [Hash] the query parameters
     def initialize(body:, query:)
       @query = query
       @body = body

@@ -29,18 +29,18 @@ module Apiwork
       end
 
       # @api public
-      # Defines a field with explicit type.
+      # Defines a param with explicit type.
       #
       # This is the verbose form. Prefer sugar methods (string, integer, etc.)
-      # for static definitions. Use `param` for dynamic field generation.
+      # for static definitions.
       #
-      # @param name [Symbol] field name
-      # @param type [Symbol, nil] field type
+      # @param name [Symbol] param name
+      # @param type [Symbol, nil] param type
       # @param as [Symbol, nil] target attribute name
       # @param default [Object, nil] default value
       # @param deprecated [Boolean, nil] mark as deprecated
       # @param description [String, nil] documentation description
-      # @param discriminator [Symbol, nil] discriminator field name (unions only)
+      # @param discriminator [Symbol, nil] discriminator param name (unions only)
       # @param enum [Array, Symbol, nil] allowed values or enum reference
       # @param example [Object, nil] example value
       # @param format [Symbol, nil] format hint
@@ -48,7 +48,7 @@ module Apiwork
       # @param min [Integer, nil] minimum value or length
       # @param nullable [Boolean, nil] whether null is allowed
       # @param of [Symbol, Hash, nil] element type (arrays only)
-      # @param optional [Boolean, nil] whether field can be omitted
+      # @param optional [Boolean, nil] whether param can be omitted
       # @param required [Boolean, nil] explicit required flag
       # @param shape [Contract::Object, Contract::Union, nil] pre-built shape
       # @param store [Boolean, nil] whether to persist

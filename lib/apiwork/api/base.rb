@@ -42,10 +42,12 @@ module Apiwork
         end
 
         # @api public
-        # The key format used for request/response transformation.
+        # Gets or sets the key format for request/response transformation.
+        #
+        # Without arguments, returns the current format.
         #
         # @param format [Symbol] :keep, :camel, :underscore, or :kebab
-        # @return [Symbol]
+        # @return [Symbol, nil]
         #
         # @example
         #   key_format :camel
@@ -124,13 +126,15 @@ module Apiwork
         end
 
         # @api public
-        # The adapter.
+        # Gets or configures the adapter.
         #
+        # Without arguments, returns the adapter instance.
+        # With a block, configures the adapter and returns nil.
         # Defaults to `:standard` if no name is given.
         #
         # @param name [Symbol] adapter name
         # @yield optional configuration block
-        # @return [Adapter::Base]
+        # @return [Adapter::Base, nil] adapter instance, or nil when configuring
         # @see Adapter::Base
         #
         # @example Configure default adapter
@@ -334,7 +338,10 @@ module Apiwork
         end
 
         # @api public
-        # API info.
+        # Gets or configures API info.
+        #
+        # Without a block, returns the Info object.
+        # With a block, creates and configures the Info.
         #
         # @yield block evaluated in {Info} context
         # @return [Info, nil]

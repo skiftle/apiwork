@@ -119,7 +119,7 @@ module Apiwork
       #
       # Multiple calls merge error codes (consistent with declaration merging).
       #
-      # @param error_code_keys [Array<Symbol>] error code keys
+      # @param error_code_keys [Symbol] error code keys
       # @raise [ConfigurationError] if error code is not registered
       # @see ErrorCode
       #
