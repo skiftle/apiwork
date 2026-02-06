@@ -240,10 +240,10 @@ module Apiwork
     def find_direct_children(parent_path)
       @modules
         .select { |m| m[:path].start_with?("#{parent_path}::") }
-        .map { |m|
+        .map do |m|
           remaining = m[:path].sub("#{parent_path}::", '')
           remaining.split('::').first
-        }
+        end
         .uniq
         .sort
     end
@@ -263,7 +263,7 @@ module Apiwork
           link = is_folder ? "./#{child_path}/" : "./#{child_path}"
           parts << "- [#{child}](#{link})"
         end
-        parts << ""
+        parts << ''
       end
 
       parts.join("\n")
@@ -434,7 +434,7 @@ module Apiwork
       without_apiwork = resolved.delete_prefix('Apiwork::')
       parts = without_apiwork.split('::')
 
-      return "/reference/" if parts.empty?
+      return '/reference/' if parts.empty?
 
       file_parts = parts.map { |part| dasherize(part) }
       has_children = modules_with_children_for_links.include?(full_path)
@@ -499,7 +499,7 @@ module Apiwork
           link = is_folder ? "./#{child_path}/" : "./#{child_path}"
           parts << "- [#{child}](#{link})"
         end
-        parts << ""
+        parts << ''
       end
 
       if mod[:class_methods].any?
