@@ -149,5 +149,5 @@ export type PostStatus = 'draft' | 'published';
 
 #### See also
 
-- [API::Base reference](../../../reference/api-base.md) — API-level `object`, `union`, and `enum`
-- [Contract::Base reference](../../../reference/contract-base.md) — contract-scoped definitions
+- [API::Base reference](../../../reference/api/base.md) — API-level `object`, `union`, and `enum`
+- [Contract::Base reference](../../../reference/contract/base.md) — contract-scoped definitions

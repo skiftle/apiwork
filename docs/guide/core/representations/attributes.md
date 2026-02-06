@@ -833,7 +833,7 @@ attribute :flexible_data  # stays :unknown
 
 #### See also
 
-- [Representation::Element](/reference/representation-element.md) — block context reference
+- [Representation::Element](/reference/representation/element.md) — block context reference
 
 ---
 

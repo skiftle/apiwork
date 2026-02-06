@@ -254,4 +254,4 @@ Consider caching the response at the HTTP level (Rack middleware, reverse proxy,
 #### See also
 
 - [Custom Exports](./custom-exports.md) — creating your own export formats
-- [Export reference](../../../reference/export.md) — programmatic generation API
+- [Export reference](../../../reference/export/base) — programmatic generation API

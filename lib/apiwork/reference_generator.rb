@@ -187,6 +187,8 @@ module Apiwork
 
     def write_files(modules)
       cleanup_old_files
+      @modules = modules
+      @modules_with_children = build_modules_with_children(modules)
 
       order = 1
       modules.each do |mod|
@@ -196,11 +198,87 @@ module Apiwork
         File.write(filepath, content)
         order += 1
       end
+
+      write_namespace_indexes(modules)
+    end
+
+    def write_namespace_indexes(modules)
+      all_folder_paths = collect_all_folder_paths(modules)
+
+      all_folder_paths.each do |folder_parts|
+        folder_path = File.join(OUTPUT_DIR, *folder_parts.map { |p| dasherize(p) })
+        index_path = File.join(folder_path, 'index.md')
+
+        next if File.exist?(index_path)
+
+        title = folder_parts.last
+        parent_path = "Apiwork::#{folder_parts.join('::')}"
+        children = find_direct_children(parent_path)
+
+        content = render_namespace_index(title, parent_path, children)
+        FileUtils.mkdir_p(folder_path)
+        File.write(index_path, content)
+      end
+    end
+
+    def collect_all_folder_paths(modules)
+      paths = Set.new
+
+      modules.each do |mod|
+        parts = mod[:path].sub('Apiwork::', '').split('::')
+
+        (1...parts.size).each do |i|
+          paths << parts[0...i]
+        end
+
+        paths << parts if @modules_with_children.include?(mod[:path])
+      end
+
+      paths.to_a.sort_by(&:size)
+    end
+
+    def find_direct_children(parent_path)
+      @modules
+        .select { |m| m[:path].start_with?("#{parent_path}::") }
+        .map { |m|
+          remaining = m[:path].sub("#{parent_path}::", '')
+          remaining.split('::').first
+        }
+        .uniq
+        .sort
+    end
+
+    def render_namespace_index(title, parent_path, children)
+      parts = []
+      parts << "---\norder: 1\n---\n"
+      parts << "# #{title}\n"
+
+      if children.any?
+        parts << "## Modules\n"
+        children.each do |child|
+          child_path = dasherize(child)
+          child_full_path = "#{parent_path}::#{child}"
+          is_folder = @modules_with_children.include?(child_full_path) ||
+                      @modules.none? { |m| m[:path] == child_full_path }
+          link = is_folder ? "./#{child_path}/" : "./#{child_path}"
+          parts << "- [#{child}](#{link})"
+        end
+        parts << ""
+      end
+
+      parts.join("\n")
+    end
+
+    def build_modules_with_children(modules)
+      paths = modules.map { |m| m[:path] }.to_set
+      paths.select do |path|
+        paths.any? { |other| other != path && other.start_with?("#{path}::") }
+      end.to_set
     end
 
     def cleanup_old_files
       Dir.glob(File.join(OUTPUT_DIR, '**/*')).each do |entry|
-        next if entry.end_with?('/index.md') || entry == File.join(OUTPUT_DIR, 'index.md')
+        next if entry == File.join(OUTPUT_DIR, 'index.md')
 
         FileUtils.rm_rf(entry)
       end
@@ -208,13 +286,22 @@ module Apiwork
 
     def module_filepath(path)
       parts = path.sub('Apiwork::', '').split('::')
+      return File.join(OUTPUT_DIR, 'index.md') if parts.empty?
+
       file_parts = parts.map { |part| dasherize(part) }
-      filename = file_parts.any? ? "#{file_parts.join('-')}.md" : 'index.md'
-      File.join(OUTPUT_DIR, filename)
+      has_children = @modules_with_children&.include?(path)
+
+      if has_children
+        File.join(OUTPUT_DIR, *file_parts, 'index.md')
+      else
+        folders = file_parts[0..-2]
+        filename = "#{file_parts.last}.md"
+        File.join(OUTPUT_DIR, *folders, filename)
+      end
     end
 
     def display_title(path)
-      path.sub('Apiwork::', '')
+      path.sub('Apiwork::', '').split('::').last
     end
 
     def dasherize(string)
@@ -343,17 +430,31 @@ module Apiwork
 
     def class_to_filepath(class_name)
       resolved = type_path_lookup[class_name] || class_name
+      full_path = "Apiwork::#{resolved.delete_prefix('Apiwork::')}"
       without_apiwork = resolved.delete_prefix('Apiwork::')
+      parts = without_apiwork.split('::')
 
-      if without_apiwork.start_with?('Contract::')
-        normalized = without_apiwork.delete_prefix('Contract::')
-        "contract-#{dasherize(normalized.gsub('::', '-'))}"
-      elsif without_apiwork.start_with?('Introspection::')
-        dasherize(without_apiwork.gsub('::', '-'))
-      elsif without_apiwork.start_with?('Data::')
-        "spec-#{dasherize(without_apiwork.gsub('::', '-'))}"
+      return "/reference/" if parts.empty?
+
+      file_parts = parts.map { |part| dasherize(part) }
+      has_children = modules_with_children_for_links.include?(full_path)
+
+      if has_children
+        "/reference/#{File.join(*file_parts)}/"
       else
-        dasherize(without_apiwork.gsub('::', '-'))
+        folders = file_parts[0..-2]
+        filename = file_parts.last
+        relative_path = folders.any? ? File.join(*folders, filename) : filename
+        "/reference/#{relative_path}"
+      end
+    end
+
+    def modules_with_children_for_links
+      @modules_with_children_for_links ||= begin
+        paths = type_path_lookup.values.map { |p| "Apiwork::#{p}" }.to_set
+        paths.select do |path|
+          paths.any? { |other| other != path && other.start_with?("#{path}::") }
+        end.to_set
       end
     end
 
@@ -385,6 +486,20 @@ module Apiwork
           parts << example[:code]
           parts << "```\n"
         end
+      end
+
+      children = find_direct_children(mod[:path])
+      if children.any?
+        parts << "## Modules\n"
+        children.each do |child|
+          child_path = dasherize(child)
+          child_full_path = "#{mod[:path]}::#{child}"
+          is_folder = @modules_with_children.include?(child_full_path) ||
+                      @modules.none? { |m| m[:path] == child_full_path }
+          link = is_folder ? "./#{child_path}/" : "./#{child_path}"
+          parts << "- [#{child}](#{link})"
+        end
+        parts << ""
       end
 
       if mod[:class_methods].any?

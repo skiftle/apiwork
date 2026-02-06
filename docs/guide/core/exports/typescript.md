@@ -152,4 +152,4 @@ No JSDoc is generated when `description` is missing. Changes to Ruby description
 
 #### See also
 
-- [Export reference](../../../reference/export.md) — programmatic generation API
+- [Export reference](../../../reference/export/base) — programmatic generation API

@@ -4,7 +4,7 @@ order: 3
 
 # Contract Introspection
 
-Returns a single contract's structure as an [Introspection::Contract](../../../reference/introspection-contract.md) object.
+Returns a single contract's structure as an [Introspection::Contract](../../../reference/introspection/contract.md) object.
 
 ```ruby
 contract = InvoiceContract.introspect
@@ -16,9 +16,9 @@ contract = InvoiceContract.introspect
 
 | Method | Returns |
 |--------|---------|
-| `actions` | Hash of [Action](../../../reference/introspection-action.md) objects |
-| `types` | Hash of [Type](../../../reference/introspection-type.md) objects |
-| `enums` | Hash of [Enum](../../../reference/introspection-enum.md) objects |
+| `actions` | Hash of [Action](../../../reference/introspection/action/) objects |
+| `types` | Hash of [Type](../../../reference/introspection/type.md) objects |
+| `enums` | Hash of [Enum](../../../reference/introspection/enum.md) objects |
 
 ---
 
@@ -92,4 +92,4 @@ Results are cached per contract, locale, and expand. In development, Rails reloa
 
 #### See also
 
-- [Introspection::Contract reference](../../../reference/introspection-contract.md) — all introspection methods
+- [Introspection::Contract reference](../../../reference/introspection/contract.md) — all introspection methods

@@ -41,4 +41,4 @@ See [Types](../types/introduction.md) for all available types and modifiers.
 
 #### See also
 
-- [API::Base reference](../../../reference/api-base.md) — `object`, `union`, `enum` methods
+- [API::Base reference](../../../reference/api/base.md) — `object`, `union`, `enum` methods

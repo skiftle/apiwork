@@ -67,4 +67,4 @@ These appear in generated [OpenAPI exports](../exports/openapi.md) as possible r
 
 #### See also
 
-- [API::Base reference](../../../reference/api-base.md) — `info` and `raises` methods
+- [API::Base reference](../../../reference/api/base.md) — `info` and `raises` methods

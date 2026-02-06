@@ -11,6 +11,9 @@ const route = useRoute();
 const expanded = ref<Set<string>>(new Set());
 const initializedFromConfig = ref(false);
 
+// Detect if we're in the reference section
+const isReference = computed(() => route.path.startsWith("/reference"));
+
 // Get the correct sidebar based on current path
 const currentSidebar = computed<SidebarMultiItem>(() => {
   const sidebar = theme.value.sidebar;
@@ -154,6 +157,7 @@ watch(
         :expanded="expanded"
         :build-link="buildLink"
         :is-active="isActive"
+        :is-reference="isReference"
         @toggle="toggleSection"
       />
     </nav>

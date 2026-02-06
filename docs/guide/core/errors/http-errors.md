@@ -88,4 +88,4 @@ Status must be 400-599.
 #### See also
 
 - [Issue reference](../../../reference/issue.md) — issue object structure
-- [ErrorCode reference](../../../reference/error-code.md) — registering custom error codes
+- [ErrorCode reference](../../../reference/error-code/) — registering custom error codes

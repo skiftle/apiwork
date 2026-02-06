@@ -17,7 +17,7 @@ Each wrapper has two responsibilities:
 
 ## Member Wrappers
 
-Member wrappers inherit from [`Adapter::Wrapper::Member::Base`](/reference/adapter-wrapper-member-base):
+Member wrappers inherit from [`Adapter::Wrapper::Member::Base`](/reference/adapter/wrapper/member/base):
 
 ```ruby
 class MyMemberWrapper < Adapter::Wrapper::Member::Base
@@ -48,7 +48,7 @@ end
 
 ## Collection Wrappers
 
-Collection wrappers inherit from [`Adapter::Wrapper::Collection::Base`](/reference/adapter-wrapper-collection-base):
+Collection wrappers inherit from [`Adapter::Wrapper::Collection::Base`](/reference/adapter/wrapper/collection/base):
 
 ```ruby
 class MyCollectionWrapper < Adapter::Wrapper::Collection::Base
@@ -81,7 +81,7 @@ Same as member wrappers, plus:
 
 ## Error Wrappers
 
-Error wrappers inherit from [`Adapter::Wrapper::Error::Base`](/reference/adapter-wrapper-error-base):
+Error wrappers inherit from [`Adapter::Wrapper::Error::Base`](/reference/adapter/wrapper/error/base):
 
 ```ruby
 class MyErrorWrapper < Adapter::Wrapper::Error::Base
@@ -188,7 +188,7 @@ end
 
 #### See also
 
-- [Wrapper::Member::Base reference](/reference/adapter-wrapper-member-base)
-- [Wrapper::Collection::Base reference](/reference/adapter-wrapper-collection-base)
-- [Wrapper::Error::Base reference](/reference/adapter-wrapper-error-base)
+- [Wrapper::Member::Base reference](/reference/adapter/wrapper/member/base)
+- [Wrapper::Collection::Base reference](/reference/adapter/wrapper/collection/base)
+- [Wrapper::Error::Base reference](/reference/adapter/wrapper/error/base)
 - [Operations - metadata_shape](./capabilities/operations.md)

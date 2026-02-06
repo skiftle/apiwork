@@ -100,4 +100,4 @@ Status:
 
 #### See also
 
-- [Contract::Base reference](../../../reference/contract-base.md) — `enum` method
+- [Contract::Base reference](../../../reference/contract/base.md) — `enum` method

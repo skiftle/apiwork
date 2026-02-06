@@ -11,7 +11,7 @@ Transformers modify requests and responses as they flow through the adapter. Cap
 
 ## Request Transformers
 
-Request transformers inherit from [`Adapter::Capability::Transformer::Request::Base`](/reference/adapter-capability-transformer-request-base):
+Request transformers inherit from [`Adapter::Capability::Transformer::Request::Base`](/reference/adapter/capability/transformer/request/base):
 
 ```ruby
 class MyRequestTransformer < Adapter::Capability::Transformer::Request::Base
@@ -78,7 +78,7 @@ end
 
 ## Response Transformers
 
-Response transformers inherit from [`Adapter::Capability::Transformer::Response::Base`](/reference/adapter-capability-transformer-response-base):
+Response transformers inherit from [`Adapter::Capability::Transformer::Response::Base`](/reference/adapter/capability/transformer/response/base):
 
 ```ruby
 class MyResponseTransformer < Adapter::Capability::Transformer::Response::Base
@@ -189,5 +189,5 @@ Converts `{ OP: 'delete', id: 1 }` to `{ id: 1, _destroy: true }` for Rails `acc
 
 #### See also
 
-- [Transformer::Request::Base reference](/reference/adapter-capability-transformer-request-base)
-- [Transformer::Response::Base reference](/reference/adapter-capability-transformer-response-base)
+- [Transformer::Request::Base reference](/reference/adapter/capability/transformer/request/base)
+- [Transformer::Response::Base reference](/reference/adapter/capability/transformer/response/base)

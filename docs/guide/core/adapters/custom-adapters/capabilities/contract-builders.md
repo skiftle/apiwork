@@ -4,7 +4,7 @@ order: 5
 
 # Contract Builders
 
-Contract builders run once per contract-representation pair. They register types specific to that contract and modify [action](../../../contracts/actions.md) definitions. Contract builders inherit from [`Adapter::Capability::Contract::Base`](/reference/adapter-capability-contract-base).
+Contract builders run once per contract-representation pair. They register types specific to that contract and modify [action](../../../contracts/actions.md) definitions. Contract builders inherit from [`Adapter::Capability::Contract::Base`](/reference/adapter/capability/contract/base).
 
 ```ruby
 class ContractBuilder < Adapter::Capability::Contract::Base
@@ -76,7 +76,7 @@ end
 
 ### Scope Queries
 
-The [`scope`](/reference/adapter-capability-contract-scope) attribute provides access to the [representation](../../../representations/introduction.md) and actions:
+The [`scope`](/reference/adapter/capability/contract/scope) attribute provides access to the [representation](../../../representations/introduction.md) and actions:
 
 | Method | Description |
 |--------|-------------|
@@ -187,7 +187,7 @@ end
 
 #### See also
 
-- [Capability::Contract::Base reference](/reference/adapter-capability-contract-base)
-- [Capability::Contract::Scope reference](/reference/adapter-capability-contract-scope)
+- [Capability::Contract::Base reference](/reference/adapter/capability/contract/base)
+- [Capability::Contract::Scope reference](/reference/adapter/capability/contract/scope)
 - [Contract Actions](../../../contracts/actions.md)
 - [Representations](../../../representations/introduction.md)

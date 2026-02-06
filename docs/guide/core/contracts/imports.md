@@ -148,4 +148,4 @@ The circular import check occurs at type resolution time, not at import declarat
 
 #### See also
 
-- [Contract::Base reference](../../../reference/contract-base.md) — `import` method and options
+- [Contract::Base reference](../../../reference/contract/base.md) — `import` method and options

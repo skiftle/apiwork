@@ -464,7 +464,7 @@ If you need filtering or sorting on polymorphic associations, expose the associa
 
 #### See also
 
-- [Representation::Base reference](../../../reference/representation-base.md) — all association options
+- [Representation::Base reference](../../../reference/representation/base.md) — all association options
 
 ---
 

@@ -108,4 +108,4 @@ Define transformers on attributes to customize serialization and deserialization
 
 #### See also
 
-- [Representation::Base reference](../../../reference/representation-base.md) — `serialize` and `deserialize` methods
+- [Representation::Base reference](../../../reference/representation/base.md) — `serialize` and `deserialize` methods

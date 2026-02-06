@@ -92,4 +92,4 @@ end
 
 #### See also
 
-- [Adapter::Base reference](../../../../reference/adapter-base.md) — creating custom adapters
+- [Adapter::Base reference](../../../../reference/adapter/base.md) — creating custom adapters

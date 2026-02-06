@@ -56,7 +56,7 @@ Creates a new response context.
 
 **Returns**
 
-[Response](response) — a new instance of Response
+[Response](/reference/response) — a new instance of Response
 
 ---
 
@@ -70,7 +70,7 @@ Transforms the body parameters.
 
 **Returns**
 
-[Response](response) — new context with transformed body
+[Response](/reference/response) — new context with transformed body
 
 **Example**
 
@@ -90,7 +90,7 @@ Transforms the body parameters.
 
 **Returns**
 
-[Response](response) — new context with transformed body
+[Response](/reference/response) — new context with transformed body
 
 **Example**
 

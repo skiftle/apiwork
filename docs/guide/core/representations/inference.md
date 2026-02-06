@@ -353,4 +353,4 @@ Unlike most attributes where Apiwork infers the type from the database, JSON/JSO
 
 #### See also
 
-- [Representation::Base reference](../../../reference/representation-base.md) — all representation methods and options
+- [Representation::Base reference](../../../reference/representation/base.md) — all representation methods and options

@@ -8,6 +8,7 @@ const props = defineProps<{
   expanded: Set<string>;
   buildLink: (link: string | undefined) => string;
   isActive: (link: string | undefined) => boolean;
+  isReference?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -38,7 +39,7 @@ const hasActiveDescendant = computed(() => {
   return checkItems(props.item.items);
 });
 
-// Icon mapping for top-level sections
+// Icon mapping for top-level sections (guide only, not reference)
 const sectionIcon = computed(() => {
   if (!isTopLevel.value) return null;
   const text = props.item.text?.toLowerCase() || "";
@@ -46,16 +47,7 @@ const sectionIcon = computed(() => {
   if (text.includes("core")) return "cube";
   if (text.includes("example")) return "code";
   if (text.includes("advanced")) return "sparkles";
-  if (text.includes("api")) return "server";
-  if (text.includes("contract")) return "document";
-  if (text.includes("schema")) return "grid";
-  if (text.includes("adapter")) return "plug";
-  if (text.includes("controller")) return "terminal";
-  if (text.includes("introspection")) return "eye";
-  if (text.includes("export")) return "beaker";
-  if (text.includes("config")) return "cog";
-  if (text.includes("error")) return "warning";
-  return "folder";
+  return null;
 });
 
 // Recursively find the first leaf (page without children)
@@ -66,14 +58,18 @@ function findFirstLeafLink(item: SidebarItem): string | undefined {
   return findFirstLeafLink(item.items[0]);
 }
 
-// For nested groups without a link, navigate to first leaf
+// For nested groups without a link, navigate to first leaf (guide only)
 const firstChildLink = computed(() => {
+  if (props.isReference) return undefined;
   if (props.item.link) return undefined;
   if (!props.item.items?.length) return undefined;
 
   const leafLink = findFirstLeafLink(props.item.items[0]);
   return leafLink ? props.buildLink(leafLink) : undefined;
 });
+
+// In reference, top-level items are collapsible
+const isCollapsible = computed(() => !isTopLevel.value || props.isReference);
 
 function toggle() {
   emit("toggle", itemKey.value);
@@ -91,25 +87,25 @@ function onToggle(key: string) {
 </script>
 
 <template>
-  <div class="sidebar-item" :class="{ 'has-children': hasChildren, 'is-top-level': isTopLevel }">
+  <div class="sidebar-item" :class="{ 'has-children': hasChildren, 'is-top-level': isTopLevel, 'has-icon': sectionIcon }">
     <!-- Item with children - collapsible -->
     <template v-if="hasChildren">
       <div
         class="sidebar-toggle"
-        :class="{ 'no-toggle': isTopLevel }"
-        @click="!isTopLevel && toggle()"
-        @keydown.enter.space.prevent="!isTopLevel && toggle()"
-        :tabindex="isTopLevel ? -1 : 0"
-        :role="isTopLevel ? undefined : 'button'"
-        :aria-expanded="isTopLevel ? undefined : isExpanded"
+        :class="{ 'no-toggle': !isCollapsible }"
+        @click="isCollapsible && toggle()"
+        @keydown.enter.space.prevent="isCollapsible && toggle()"
+        :tabindex="isCollapsible ? 0 : -1"
+        :role="isCollapsible ? 'button' : undefined"
+        :aria-expanded="isCollapsible ? isExpanded : undefined"
       >
         <a
           :href="item.link ? fullLink : firstChildLink"
           class="sidebar-link"
-          :class="{ active: isItemActive || hasActiveDescendant, 'sidebar-link-toggle': !item.link && !isTopLevel }"
+          :class="{ active: isItemActive || hasActiveDescendant, 'sidebar-link-toggle': !item.link && isCollapsible }"
           @click.stop="item.link ? expand() : toggle()"
         >
-          <!-- Section icons for top-level -->
+          <!-- Section icons for top-level guide sections -->
           <svg v-if="sectionIcon === 'rocket'" class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
             <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
@@ -128,59 +124,10 @@ function onToggle(key: string) {
           <svg v-else-if="sectionIcon === 'sparkles'" class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/>
           </svg>
-          <svg v-else-if="sectionIcon === 'server'" class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect width="20" height="8" x="2" y="2" rx="2" ry="2"/>
-            <rect width="20" height="8" x="2" y="14" rx="2" ry="2"/>
-            <line x1="6" x2="6.01" y1="6" y2="6"/>
-            <line x1="6" x2="6.01" y1="18" y2="18"/>
-          </svg>
-          <svg v-else-if="sectionIcon === 'document'" class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-            <polyline points="14 2 14 8 20 8"/>
-            <line x1="16" y1="13" x2="8" y2="13"/>
-            <line x1="16" y1="17" x2="8" y2="17"/>
-          </svg>
-          <svg v-else-if="sectionIcon === 'grid'" class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect width="7" height="7" x="3" y="3" rx="1"/>
-            <rect width="7" height="7" x="14" y="3" rx="1"/>
-            <rect width="7" height="7" x="14" y="14" rx="1"/>
-            <rect width="7" height="7" x="3" y="14" rx="1"/>
-          </svg>
-          <svg v-else-if="sectionIcon === 'plug'" class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 22v-5"/>
-            <path d="M9 8V2"/>
-            <path d="M15 8V2"/>
-            <path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8Z"/>
-          </svg>
-          <svg v-else-if="sectionIcon === 'terminal'" class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="4 17 10 11 4 5"/>
-            <line x1="12" x2="20" y1="19" y2="19"/>
-          </svg>
-          <svg v-else-if="sectionIcon === 'eye'" class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
-            <circle cx="12" cy="12" r="3"/>
-          </svg>
-          <svg v-else-if="sectionIcon === 'beaker'" class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4.5 3h15"/>
-            <path d="M6 3v16a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V3"/>
-            <path d="M6 14h12"/>
-          </svg>
-          <svg v-else-if="sectionIcon === 'cog'" class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
-            <circle cx="12" cy="12" r="3"/>
-          </svg>
-          <svg v-else-if="sectionIcon === 'warning'" class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
-            <path d="M12 9v4"/>
-            <path d="M12 17h.01"/>
-          </svg>
-          <svg v-else-if="sectionIcon === 'folder'" class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>
-          </svg>
           {{ item.text }}
         </a>
         <svg
-          v-if="!isTopLevel"
+          v-if="isCollapsible"
           class="sidebar-chevron"
           :class="{ expanded: isExpanded }"
           width="16"
@@ -198,7 +145,7 @@ function onToggle(key: string) {
           />
         </svg>
       </div>
-      <div class="sidebar-children" :class="isTopLevel || isExpanded ? 'expanded' : 'collapsed'">
+      <div class="sidebar-children" :class="!isCollapsible || isExpanded ? 'expanded' : 'collapsed'">
         <SidebarItem
           v-for="child in item.items"
           :key="child.text"
@@ -207,6 +154,7 @@ function onToggle(key: string) {
           :expanded="expanded"
           :build-link="buildLink"
           :is-active="isActive"
+          :is-reference="isReference"
           @toggle="onToggle"
         />
       </div>
@@ -286,8 +234,8 @@ function onToggle(key: string) {
   transition: max-height 250ms cubic-bezier(0.16, 1, 0.3, 1), opacity 200ms ease;
 }
 
-/* Top-level children align with icon text */
-.sidebar-item.is-top-level > .sidebar-children {
+/* Top-level children align with icon text (only when icon present) */
+.sidebar-item.is-top-level.has-icon > .sidebar-children {
   padding-left: calc(16px + var(--space-2));
 }
 

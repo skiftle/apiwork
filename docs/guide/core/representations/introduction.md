@@ -189,4 +189,4 @@ These appear in the generated `invoice` type definition.
 
 #### See also
 
-- [Representation::Base reference](../../../reference/representation-base.md) — all representation methods and options
+- [Representation::Base reference](../../../reference/representation/base.md) — all representation methods and options

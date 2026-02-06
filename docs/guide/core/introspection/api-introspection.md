@@ -4,7 +4,7 @@ order: 2
 
 # API Introspection
 
-Returns the complete API structure as an [Introspection::API](../../../reference/introspection-api.md) object.
+Returns the complete API structure as an [Introspection::API](../../../reference/introspection/api/) object.
 
 ```ruby
 api = Apiwork::API.introspect('/api/v1')
@@ -17,11 +17,11 @@ api = Apiwork::API.introspect('/api/v1')
 | Method | Returns |
 |--------|---------|
 | `path` | API mount path |
-| `info` | [Info](../../../reference/introspection-api-info.md) object |
-| `resources` | Hash of [Resource](../../../reference/introspection-api-resource.md) objects |
-| `types` | Hash of [Type](../../../reference/introspection-type.md) objects |
-| `enums` | Hash of [Enum](../../../reference/introspection-enum.md) objects |
-| `error_codes` | Hash of [ErrorCode](../../../reference/introspection-error-code.md) objects |
+| `info` | [Info](../../../reference/introspection/api/info/) object |
+| `resources` | Hash of [Resource](../../../reference/introspection/api/resource.md) objects |
+| `types` | Hash of [Type](../../../reference/introspection/type.md) objects |
+| `enums` | Hash of [Enum](../../../reference/introspection/enum.md) objects |
+| `error_codes` | Hash of [ErrorCode](../../../reference/introspection/error-code.md) objects |
 | `raises` | Array of API-level error code symbols |
 
 ---
@@ -103,4 +103,4 @@ Results are cached per path and locale. In development, Rails reloading clears c
 
 #### See also
 
-- [Introspection::API reference](../../../reference/introspection-api.md) — all introspection methods
+- [Introspection::API reference](../../../reference/introspection/api/) — all introspection methods

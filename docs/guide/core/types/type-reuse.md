@@ -174,4 +174,4 @@ end
 #### See also
 
 - [Declaration Merging](./declaration-merging.md) — extending existing types with multiple declarations
-- [Contract::Base reference](../../../reference/contract-base.md) — type definition methods
+- [Contract::Base reference](../../../reference/contract/base.md) — type definition methods

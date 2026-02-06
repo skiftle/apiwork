@@ -4,7 +4,7 @@ order: 5
 
 # Operations
 
-Operations run at request time to process data. They filter, sort, paginate, or otherwise transform the data before serialization. Operations inherit from [`Adapter::Capability::Operation::Base`](/reference/adapter-capability-operation-base).
+Operations run at request time to process data. They filter, sort, paginate, or otherwise transform the data before serialization. Operations inherit from [`Adapter::Capability::Operation::Base`](/reference/adapter/capability/operation/base).
 
 ```ruby
 class Operation < Adapter::Capability::Operation::Base
@@ -154,7 +154,7 @@ end
 
 ## MetadataShape Class
 
-For complex shapes, create a separate class inheriting from [`Adapter::Capability::Operation::MetadataShape`](/reference/adapter-capability-operation-metadata-shape):
+For complex shapes, create a separate class inheriting from [`Adapter::Capability::Operation::MetadataShape`](/reference/adapter/capability/operation/metadata-shape):
 
 ```ruby
 class PaginationMetadataShape < Adapter::Capability::Operation::MetadataShape
@@ -172,6 +172,6 @@ The `options` attribute provides access to capability configuration.
 
 #### See also
 
-- [Capability::Operation::Base reference](/reference/adapter-capability-operation-base)
-- [Capability::Operation::MetadataShape reference](/reference/adapter-capability-operation-metadata-shape)
+- [Capability::Operation::Base reference](/reference/adapter/capability/operation/base)
+- [Capability::Operation::MetadataShape reference](/reference/adapter/capability/operation/metadata-shape)
 - [Wrappers](../wrappers.md)

@@ -86,4 +86,4 @@ Each API has its own namespace with controllers, contracts, and representations.
 
 #### See also
 
-- [API::Base reference](../../../reference/api-base.md) — all API definition methods and options
+- [API::Base reference](../../../reference/api/base.md) — all API definition methods and options

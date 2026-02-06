@@ -132,4 +132,4 @@ Structural types (`:array`, `:object`) and special types (`:binary`, `:literal`,
 
 #### See also
 
-- [Contract::Base reference](../../../reference/contract-base.md) — `object`, `union`, and `enum` methods
+- [Contract::Base reference](../../../reference/contract/base.md) — `object`, `union`, and `enum` methods

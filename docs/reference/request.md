@@ -58,7 +58,7 @@ Creates a new request context.
 
 **Returns**
 
-[Request](request) — a new instance of Request
+[Request](/reference/request) — a new instance of Request
 
 ---
 
@@ -84,7 +84,7 @@ Transforms both query and body with the same block.
 
 **Returns**
 
-[Request](request) — new context with transformed data
+[Request](/reference/request) — new context with transformed data
 
 **Example**
 
@@ -104,7 +104,7 @@ Transforms only the body.
 
 **Returns**
 
-[Request](request) — new context with transformed body
+[Request](/reference/request) — new context with transformed body
 
 **Example**
 
@@ -124,7 +124,7 @@ Transforms only the query.
 
 **Returns**
 
-[Request](request) — new context with transformed query
+[Request](/reference/request) — new context with transformed query
 
 **Example**
 

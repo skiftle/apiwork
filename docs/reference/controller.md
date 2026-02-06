@@ -10,7 +10,7 @@ next: false
 
 Mixin for API controllers that provides request validation and response helpers.
 
-Include in controllers to access [#contract](#contract), [#expose](#expose), and [#expose_error](#expose-error).
+Include in controllers to access [#contract](/reference/#contract), [#expose](/reference/#expose), and [#expose_error](/reference/#expose-error).
 Automatically validates requests against the contract before actions run.
 
 **Example: Basic controller**
@@ -102,16 +102,16 @@ end
 The parsed and validated request contract.
 
 The contract contains parsed query parameters and request body,
-with type coercion applied. Access parameters via [Contract::Base#query](contract-base#query)
-and [Contract::Base#body](contract-base#body).
+with type coercion applied. Access parameters via [Contract::Base#query](/reference/contract/base#query)
+and [Contract::Base#body](/reference/contract/base#body).
 
 **Returns**
 
-[Contract::Base](contract-base) — the contract instance
+[Contract::Base](/reference/contract/base) — the contract instance
 
 **See also**
 
-- [Contract::Base](contract-base)
+- [Contract::Base](/reference/contract/base)
 
 **Example: Access parsed parameters**
 
@@ -142,9 +142,9 @@ end
 
 Exposes data as an API response.
 
-When a representation is linked via [Contract::Base.representation](contract-base#representation), data is serialized
+When a representation is linked via [Contract::Base.representation](/reference/contract/base#representation), data is serialized
 through the representation. Otherwise, data is rendered as-is. Key transformation
-is applied according to the API's [API::Base.key_format](api-base#key-format).
+is applied according to the API's [API::Base.key_format](/reference/api/base#key-format).
 
 **Parameters**
 
@@ -156,7 +156,7 @@ is applied according to the API's [API::Base.key_format](api-base#key-format).
 
 **See also**
 
-- [Representation::Base](representation-base)
+- [Representation::Base](/reference/representation/base)
 
 **Example: Expose a single record**
 
@@ -195,7 +195,7 @@ end
 
 Exposes an error response using a registered error code.
 
-Error codes are registered via [ErrorCode.register](introspection-error-code#register).
+Error codes are registered via [ErrorCode.register](/reference/introspection/error-code#register).
 The detail message is looked up from I18n if not provided.
 
 **Parameters**
@@ -209,8 +209,8 @@ The detail message is looked up from I18n if not provided.
 
 **See also**
 
-- [ErrorCode](introspection-error-code)
-- [Issue](issue)
+- [ErrorCode](/reference/introspection/error-code)
+- [Issue](/reference/issue)
 
 **Example: Not found error**
 

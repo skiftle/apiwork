@@ -135,4 +135,4 @@ Request validation is strict: invalid data returns 400 Bad Request. Response che
 
 #### See also
 
-- [Contract::Base reference](../../../reference/contract-base.md) — all contract methods and options
+- [Contract::Base reference](../../../reference/contract/base.md) — all contract methods and options

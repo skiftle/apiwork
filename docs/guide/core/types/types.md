@@ -343,4 +343,4 @@ Example:
 
 #### See also
 
-- [Contract::Object reference](../../../reference/contract-object.md) — all param options
+- [Contract::Object reference](../../../reference/contract/object.md) — all param options

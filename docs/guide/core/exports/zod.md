@@ -104,4 +104,4 @@ Apiwork generates explicit TypeScript interfaces because `z.infer` returns `unkn
 
 #### See also
 
-- [Export reference](../../../reference/export.md) — programmatic generation API
+- [Export reference](../../../reference/export/base) — programmatic generation API

@@ -57,4 +57,4 @@ For standard adapter options like pagination strategies, see [Standard Adapter: 
 
 #### See also
 
-- [Representation::Base reference](../../../reference/representation-base.md) — `root` and `adapter` methods
+- [Representation::Base reference](../../../reference/representation/base.md) — `root` and `adapter` methods

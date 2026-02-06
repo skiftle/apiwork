@@ -79,4 +79,4 @@ See [Exports](../exports/introduction.md) for endpoints, rake tasks, and program
 
 #### See also
 
-- [Export reference](../../../reference/export.md) — programmatic generation API
+- [Export reference](../../../reference/export/base) — programmatic generation API

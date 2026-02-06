@@ -248,4 +248,4 @@ Both posts and articles now have nested comment routes with approve, reject, and
 
 #### See also
 
-- [API::Base reference](../../../reference/api-base.md) — `resources`, `resource`, `concern`, and routing options
+- [API::Base reference](../../../reference/api/base.md) — `resources`, `resource`, `concern`, and routing options

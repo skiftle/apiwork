@@ -4,7 +4,7 @@ order: 4
 
 # API Builders
 
-API builders run once per API at initialization time. They register shared [types](../../../types/introduction.md) used across all contracts. API builders inherit from [`Adapter::Capability::API::Base`](/reference/adapter-capability-api-base).
+API builders run once per API at initialization time. They register shared [types](../../../types/introduction.md) used across all contracts. API builders inherit from [`Adapter::Capability::API::Base`](/reference/adapter/capability/api/base).
 
 ```ruby
 class APIBuilder < Adapter::Capability::API::Base
@@ -57,7 +57,7 @@ end
 
 ### Scope Queries
 
-The [`scope`](/reference/adapter-capability-api-scope) attribute provides access to aggregated data across all representations:
+The [`scope`](/reference/adapter/capability/api/scope) attribute provides access to aggregated data across all representations:
 
 | Method | Description |
 |--------|-------------|
@@ -159,6 +159,6 @@ end
 
 #### See also
 
-- [Capability::API::Base reference](/reference/adapter-capability-api-base)
-- [Capability::API::Scope reference](/reference/adapter-capability-api-scope)
+- [Capability::API::Base reference](/reference/adapter/capability/api/base)
+- [Capability::API::Scope reference](/reference/adapter/capability/api/scope)
 - [Types](../../../types/introduction.md)
