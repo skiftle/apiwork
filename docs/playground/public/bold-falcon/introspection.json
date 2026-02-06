@@ -720,6 +720,16 @@
           },
           "shape": {}
         },
+        "category": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "ref",
+          "ref": "category_filter"
+        },
         "published_on": {
           "default": null,
           "deprecated": false,

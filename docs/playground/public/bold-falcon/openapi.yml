@@ -249,6 +249,8 @@ components:
           items:
             "$ref": "#/components/schemas/articleFilter"
           type: array
+        category:
+          "$ref": "#/components/schemas/categoryFilter"
         publishedOn:
           oneOf:
           - type: string
@@ -408,6 +410,27 @@ components:
       - id
       - name
       - slug
+    categoryFilter:
+      properties:
+        AND:
+          items:
+            "$ref": "#/components/schemas/categoryFilter"
+          type: array
+        NOT:
+          "$ref": "#/components/schemas/categoryFilter"
+        OR:
+          items:
+            "$ref": "#/components/schemas/categoryFilter"
+          type: array
+        name:
+          oneOf:
+          - type: string
+          - "$ref": "#/components/schemas/stringFilter"
+        slug:
+          oneOf:
+          - type: string
+          - "$ref": "#/components/schemas/stringFilter"
+      type: object
     dateFilterBetween:
       properties:
         from:
