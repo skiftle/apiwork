@@ -52,7 +52,7 @@ module Apiwork
         children.any?
       end
 
-      def resolved_default
+      def effective_default
         return default unless nested?
 
         children.transform_values(&:default)

@@ -35,13 +35,13 @@ module Apiwork
           return representation_class.deserialize(value) if representation_class
 
           attribute = resolve_attribute(param_options)
-          transformed_value = attribute ? attribute.decode(value) : value
+          decoded_value = attribute ? attribute.decode(value) : value
 
-          return deserialize_array(transformed_value, param_options) if param_options[:type] == :array && transformed_value.is_a?(Array)
+          return deserialize_array(decoded_value, param_options) if param_options[:type] == :array && decoded_value.is_a?(Array)
 
-          return Deserializer.new(param_options[:shape]).deserialize(transformed_value) if param_options[:shape] && transformed_value.is_a?(Hash)
+          return Deserializer.new(param_options[:shape]).deserialize(decoded_value) if param_options[:shape] && decoded_value.is_a?(Hash)
 
-          transformed_value
+          decoded_value
         end
 
         def deserialize_array(array, param_options)

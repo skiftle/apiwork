@@ -37,8 +37,8 @@ module Apiwork
                 item.is_a?(Hash) ? Transformer.new(param_options[:shape]).transform(item) : item
               end
             elsif param_options[:type] == :array && param_options[:of] && value.is_a?(Array)
-              transformed_array = transform_custom_type_array(value, param_options)
-              transformed[name] = transformed_array if transformed_array
+              result = transform_custom_type_array(value, param_options)
+              transformed[name] = result if result
             end
           end
 

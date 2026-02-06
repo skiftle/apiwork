@@ -58,7 +58,7 @@ module Apiwork
       end
 
       def default_options
-        options.transform_values(&:resolved_default).compact
+        options.transform_values(&:effective_default).compact
       end
     end
   end

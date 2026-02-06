@@ -66,15 +66,13 @@ module Apiwork
         end
 
         def generate(api_path, format: nil, **options)
-          resolved_format = format || :json
+          format ||= :json
 
-          if hash_output? && !supports_format?(resolved_format)
-            raise ArgumentError, "#{export_name} export does not support #{resolved_format} format"
-          end
+          raise ArgumentError, "#{export_name} export does not support #{format} format" if hash_output? && !supports_format?(format)
 
           export = new(api_path, **options)
           content = export.generate
-          export.serialize(content, format: resolved_format)
+          export.serialize(content, format:)
         end
 
         def hash_output?
