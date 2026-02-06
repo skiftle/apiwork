@@ -161,7 +161,6 @@ module Apiwork
 
               [representation_class.root_key.singular, TYPE_NAME].join('_').to_sym
             end
-
           end
         end
       end
