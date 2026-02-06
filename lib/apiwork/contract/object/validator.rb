@@ -211,8 +211,8 @@ module Apiwork
           end
         end
 
-        def validate_shape_object(value, shape_shape, field_path, max_depth, current_depth)
-          validator = Validator.new(shape_shape)
+        def validate_shape_object(value, nested_shape, field_path, max_depth, current_depth)
+          validator = Validator.new(nested_shape)
           shape_result = validator.validate(
             value,
             max_depth:,
