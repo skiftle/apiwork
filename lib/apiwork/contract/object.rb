@@ -5,18 +5,13 @@ module Apiwork
     # @api public
     # Block context for defining request/response structure.
     #
-    # Accessed via `body do`, `query do`, or `object :x do`
-    # inside contract actions. Use type methods to define fields.
+    # Accessed via `body do` and `query do` inside contract actions,
+    # or `object :name do` at contract level to define reusable types.
     #
     # @example Request body
     #   body do
     #     string :title
     #     decimal :amount
-    #   end
-    #
-    # @example Inline nested object
-    #   object :customer do
-    #     string :name
     #   end
     #
     # @see API::Object Block context for reusable types

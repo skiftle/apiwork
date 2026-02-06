@@ -10,8 +10,8 @@ next: false
 
 Block context for defining request/response structure.
 
-Accessed via `body do`, `query do`, or `object :x do`
-inside contract actions. Use type methods to define fields.
+Accessed via `body do` and `query do` inside contract actions,
+or `object :name do` at contract level to define reusable types.
 
 **Example: Request body**
 
@@ -19,14 +19,6 @@ inside contract actions. Use type methods to define fields.
 body do
   string :title
   decimal :amount
-end
-```
-
-**Example: Inline nested object**
-
-```ruby
-object :customer do
-  string :name
 end
 ```
 
