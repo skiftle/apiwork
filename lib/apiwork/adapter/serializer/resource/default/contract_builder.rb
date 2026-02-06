@@ -153,20 +153,20 @@ module Apiwork
             def build_association_type(association, visited: Set.new)
               return build_polymorphic_association_type(association, visited:) if association.polymorphic?
 
-              association_data = resolve_association(association)
-              return nil unless association_data
+              association_info = resolve_association(association)
+              return nil unless association_info
 
-              association_representation_class = association_data[:representation_class]
+              representation_class = association_info[:representation_class]
 
-              return import_association_contract(association_representation_class, visited) if association_data[:sti]
-              return nil if visited.include?(association_representation_class)
+              return import_association_contract(representation_class, visited) if association_info[:sti]
+              return nil if visited.include?(representation_class)
 
-              association_contract = contract_for(association_representation_class)
+              association_contract = contract_for(representation_class)
               return nil unless association_contract
 
-              alias_name = association_representation_class.root_key.singular.to_sym
-              import(association_contract, as: alias_name)
-              alias_name
+              type_name = representation_class.root_key.singular.to_sym
+              import(association_contract, as: type_name)
+              type_name
             end
 
             def build_polymorphic_association_type(association, visited: Set.new)

@@ -63,13 +63,13 @@ module Apiwork
           referenced_types = Set.new
           referenced_enums = Set.new
           dumped_types = {}
-          processed_types = Set.new
+          visited_types = Set.new
 
           collect_references(actions_dump, referenced_types, referenced_enums)
 
-          until (pending_types = referenced_types - processed_types).empty?
+          until (pending_types = referenced_types - visited_types).empty?
             pending_types.each do |type_name|
-              processed_types << type_name
+              visited_types << type_name
 
               type_definition = type_registry[type_name]
               next unless type_definition
@@ -86,10 +86,10 @@ module Apiwork
             result[enum_name] = @type_dump.build_enum(enum_name, enum_definition) if enum_definition
           end
 
-          sorted_types = dumped_types.sort_by { |name, _type| name.to_s }.to_h
-          sorted_enums = dumped_enums.sort_by { |name, _enum| name.to_s }.to_h
+          types = dumped_types.sort_by { |name, _| name.to_s }.to_h
+          enums = dumped_enums.sort_by { |name, _| name.to_s }.to_h
 
-          [sorted_types, sorted_enums]
+          [types, enums]
         end
 
         def collect_references(dump, types, enums)

@@ -42,13 +42,13 @@ module Apiwork
               )
 
               object(type_name) do |object|
-                association_params.each do |param_data|
-                  name = param_data[:name]
-                  include_type = param_data[:include_type]
+                association_params.each do |param_options|
+                  name = param_options[:name]
+                  include_type = param_options[:include_type]
 
-                  case param_data[:param_type]
+                  case param_options[:param_type]
                   when :boolean
-                    object.boolean(name, optional: true) unless param_data[:include_mode] == :always
+                    object.boolean(name, optional: true) unless param_options[:include_mode] == :always
                   when :reference
                     object.reference(name, optional: true, to: include_type)
                   when :union
@@ -93,31 +93,31 @@ module Apiwork
                 }
               end
 
-              association_include_type = resolve_association_include_type(
+              include_type = resolve_association_include_type(
                 nested_representation_class,
                 depth:,
                 visited:,
               )
 
-              if association_include_type.nil?
+              if include_type.nil?
                 {
+                  include_type:,
                   name:,
                   include_mode: association.include,
-                  include_type: nil,
                   param_type: :boolean,
                 }
               elsif association.include == :always
                 {
+                  include_type:,
                   name:,
                   include_mode: association.include,
-                  include_type: association_include_type,
                   param_type: :reference,
                 }
               else
                 {
+                  include_type:,
                   name:,
                   include_mode: association.include,
-                  include_type: association_include_type,
                   param_type: :union,
                 }
               end
