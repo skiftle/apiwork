@@ -150,6 +150,8 @@ module Apiwork
             end
 
             def build_sti_type_filters
+              return if representation_class.subclass?
+
               representation_class.attributes.each do |name, attribute|
                 next unless attribute.filterable?
 

@@ -1,15 +1,5 @@
 {
   "enums": {
-    "car_type": {
-      "deprecated": false,
-      "description": null,
-      "example": null,
-      "values": [
-        "car",
-        "motorcycle",
-        "truck"
-      ]
-    },
     "layer": {
       "deprecated": false,
       "description": null,
@@ -20,16 +10,6 @@
         "domain"
       ]
     },
-    "motorcycle_type": {
-      "deprecated": false,
-      "description": null,
-      "example": null,
-      "values": [
-        "car",
-        "motorcycle",
-        "truck"
-      ]
-    },
     "sort_direction": {
       "deprecated": false,
       "description": null,
@@ -37,16 +17,6 @@
       "values": [
         "asc",
         "desc"
-      ]
-    },
-    "truck_type": {
-      "deprecated": false,
-      "description": null,
-      "example": null,
-      "values": [
-        "car",
-        "motorcycle",
-        "truck"
       ]
     },
     "vehicle_type": {
@@ -802,8 +772,7 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "car_type_filter"
+          "type": "type_filter"
         },
         "year": {
           "default": null,
@@ -863,71 +832,6 @@
       },
       "type": "object",
       "variants": []
-    },
-    "car_type_filter": {
-      "deprecated": false,
-      "description": null,
-      "discriminator": null,
-      "example": null,
-      "extends": [],
-      "shape": {},
-      "type": "union",
-      "variants": [
-        {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "ref",
-          "ref": "car_type"
-        },
-        {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "object",
-          "partial": true,
-          "shape": {
-            "eq": {
-              "default": null,
-              "deprecated": false,
-              "description": null,
-              "example": null,
-              "nullable": false,
-              "optional": false,
-              "type": "ref",
-              "ref": "car_type"
-            },
-            "in": {
-              "default": null,
-              "deprecated": false,
-              "description": null,
-              "example": null,
-              "nullable": false,
-              "optional": false,
-              "type": "array",
-              "max": null,
-              "min": null,
-              "of": {
-                "default": null,
-                "deprecated": null,
-                "description": null,
-                "example": null,
-                "nullable": null,
-                "optional": null,
-                "type": "ref",
-                "ref": "car_type"
-              },
-              "shape": {}
-            }
-          }
-        }
-      ]
     },
     "car_update_payload": {
       "deprecated": false,
@@ -1599,8 +1503,7 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "motorcycle_type_filter"
+          "type": "type_filter"
         },
         "year": {
           "default": null,
@@ -1660,71 +1563,6 @@
       },
       "type": "object",
       "variants": []
-    },
-    "motorcycle_type_filter": {
-      "deprecated": false,
-      "description": null,
-      "discriminator": null,
-      "example": null,
-      "extends": [],
-      "shape": {},
-      "type": "union",
-      "variants": [
-        {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "ref",
-          "ref": "motorcycle_type"
-        },
-        {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "object",
-          "partial": true,
-          "shape": {
-            "eq": {
-              "default": null,
-              "deprecated": false,
-              "description": null,
-              "example": null,
-              "nullable": false,
-              "optional": false,
-              "type": "ref",
-              "ref": "motorcycle_type"
-            },
-            "in": {
-              "default": null,
-              "deprecated": false,
-              "description": null,
-              "example": null,
-              "nullable": false,
-              "optional": false,
-              "type": "array",
-              "max": null,
-              "min": null,
-              "of": {
-                "default": null,
-                "deprecated": null,
-                "description": null,
-                "example": null,
-                "nullable": null,
-                "optional": null,
-                "type": "ref",
-                "ref": "motorcycle_type"
-              },
-              "shape": {}
-            }
-          }
-        }
-      ]
     },
     "motorcycle_update_payload": {
       "deprecated": false,
@@ -2385,8 +2223,7 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "truck_type_filter"
+          "type": "type_filter"
         },
         "year": {
           "default": null,
@@ -2446,71 +2283,6 @@
       },
       "type": "object",
       "variants": []
-    },
-    "truck_type_filter": {
-      "deprecated": false,
-      "description": null,
-      "discriminator": null,
-      "example": null,
-      "extends": [],
-      "shape": {},
-      "type": "union",
-      "variants": [
-        {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "ref",
-          "ref": "truck_type"
-        },
-        {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "object",
-          "partial": true,
-          "shape": {
-            "eq": {
-              "default": null,
-              "deprecated": false,
-              "description": null,
-              "example": null,
-              "nullable": false,
-              "optional": false,
-              "type": "ref",
-              "ref": "truck_type"
-            },
-            "in": {
-              "default": null,
-              "deprecated": false,
-              "description": null,
-              "example": null,
-              "nullable": false,
-              "optional": false,
-              "type": "array",
-              "max": null,
-              "min": null,
-              "of": {
-                "default": null,
-                "deprecated": null,
-                "description": null,
-                "example": null,
-                "nullable": null,
-                "optional": null,
-                "type": "ref",
-                "ref": "truck_type"
-              },
-              "shape": {}
-            }
-          }
-        }
-      ]
     },
     "truck_update_payload": {
       "deprecated": false,
