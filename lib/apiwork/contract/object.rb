@@ -159,27 +159,6 @@ module Apiwork
         )
       end
 
-      # @api public
-      # Shorthand for `object :meta do ... end`.
-      #
-      # Use for response data that doesn't belong to the resource itself.
-      #
-      # @param optional [Boolean] whether meta can be omitted (default: false)
-      # @yield block defining meta params (instance_eval style)
-      # @yieldparam builder [Contract::Object] the builder (yield style)
-      def meta(optional: nil, &block)
-        return unless block
-
-        existing_meta = @params[:meta]
-
-        if existing_meta && existing_meta[:shape]
-          shape = existing_meta[:shape]
-          block.arity.positive? ? yield(shape) : shape.instance_eval(&block)
-        else
-          param :meta, optional:, type: :object, &block
-        end
-      end
-
       def wrapped?
         @wrapped
       end

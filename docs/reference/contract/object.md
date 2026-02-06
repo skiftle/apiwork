@@ -509,24 +509,6 @@ end
 
 ---
 
-### #meta
-
-`#meta(optional: nil, &block)`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L170)
-
-Shorthand for `object :meta do ... end`.
-
-Use for response data that doesn't belong to the resource itself.
-
-**Parameters**
-
-| Name | Type | Description |
-|------|------|-------------|
-| `optional` | `Boolean` | whether meta can be omitted (default: false) |
-
----
-
 ### #number
 
 `#number(name, as: nil, default: nil, deprecated: nil, description: nil, example: nil, max: nil, min: nil, nullable: nil, optional: nil, required: nil, store: nil)`

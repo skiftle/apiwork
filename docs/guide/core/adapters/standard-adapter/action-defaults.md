@@ -239,7 +239,7 @@ To return meta from destroy:
 action :destroy do
   response replace: true do
     body do
-      meta do
+      object :meta do
         datetime :deleted_at
       end
     end
@@ -255,5 +255,5 @@ def destroy
 end
 ```
 
-See [meta](../../contracts/actions.md#meta) and [no_content!](../../contracts/actions.md#no_content) for details.
+See [no_content!](../../contracts/actions.md#no_content) for details.
 

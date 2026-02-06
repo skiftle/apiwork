@@ -83,55 +83,6 @@ action :show do
 end
 ```
 
-### meta
-
-Shorthand for `object :meta do ... end`. Use for response data that doesn't belong to the resource itself:
-
-```ruby
-action :index do
-  response do
-    body do
-      meta do
-        datetime :generated_at
-        string :api_version
-      end
-    end
-  end
-end
-```
-
-For optional meta, pass `optional: true`:
-
-```ruby
-meta optional: true do
-  uuid :request_id
-end
-```
-
-In your controller, pass values via the `meta:` keyword:
-
-```ruby
-def index
-  posts = Post.all
-  expose posts, meta: {
-    generated_at: Time.current,
-    api_version: 'v1'
-  }
-end
-```
-
-Response:
-
-```json
-{
-  "posts": [...],
-  "meta": {
-    "generated_at": "2024-01-15T10:30:00Z",
-    "api_version": "v1"
-  }
-}
-```
-
 ### no_content!
 
 For actions that return HTTP 204 No Content:
