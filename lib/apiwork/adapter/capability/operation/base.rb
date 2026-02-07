@@ -23,7 +23,7 @@ module Apiwork
           attr_reader :request
 
           # @api public
-          # @return [Class] the representation class for this request
+          # @return [Class<Representation::Base>] the representation class for this request
           attr_reader :representation_class
 
           class << self

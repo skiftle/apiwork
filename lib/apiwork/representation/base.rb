@@ -583,7 +583,7 @@ module Apiwork
         # Auto-detected from representation name (InvoiceRepresentation becomes Invoice)
         # or explicitly set via {.model}.
         #
-        # @return [Class] the model class
+        # @return [Class<ActiveRecord::Base>] the model class
         # @see .model
         #
         # @example

@@ -46,7 +46,7 @@ module Apiwork
           end
 
           # @api public
-          # @return [Class] the representation class
+          # @return [Class<Representation::Base>] the representation class
           attr_reader :representation_class
 
           def initialize(representation_class)
