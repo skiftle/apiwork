@@ -17,7 +17,7 @@ module Apiwork
           end
 
           # @api public
-          # The name for this license.
+          # The license name.
           #
           # @return [String, nil]
           def name
@@ -25,7 +25,7 @@ module Apiwork
           end
 
           # @api public
-          # The URL for this license.
+          # The license URL.
           #
           # @return [String, nil]
           def url

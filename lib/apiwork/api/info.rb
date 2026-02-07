@@ -21,7 +21,7 @@ module Apiwork
       end
 
       # @api public
-      # The title for this info.
+      # The API title.
       #
       # @param value [String] the title
       # @return [String, nil]
@@ -36,7 +36,7 @@ module Apiwork
       end
 
       # @api public
-      # The version for this info.
+      # The API version.
       #
       # @param value [String] the version (e.g. '1.0.0')
       # @return [String, nil]
@@ -51,22 +51,22 @@ module Apiwork
       end
 
       # @api public
-      # The terms of service for this info.
+      # The API terms of service.
       #
-      # @param url [String] the terms of service URL
+      # @param value [String] the terms of service URL
       # @return [String, nil]
       #
       # @example
       #   terms_of_service 'https://example.com/terms'
       #   info.terms_of_service  # => "https://example.com/terms"
-      def terms_of_service(url = nil)
-        return @terms_of_service if url.nil?
+      def terms_of_service(value = nil)
+        return @terms_of_service if value.nil?
 
-        @terms_of_service = url
+        @terms_of_service = value
       end
 
       # @api public
-      # The contact for this info.
+      # The API contact.
       #
       # @yield block evaluated in {Contact} context
       # @return [Contact, nil]
@@ -85,7 +85,7 @@ module Apiwork
       end
 
       # @api public
-      # The license for this info.
+      # The API license.
       #
       # @yield block evaluated in {License} context
       # @return [License, nil]
@@ -104,7 +104,7 @@ module Apiwork
       end
 
       # @api public
-      # The server definitions for this info.
+      # The API servers.
       #
       # Can be called multiple times to define multiple servers.
       #
@@ -127,7 +127,7 @@ module Apiwork
       end
 
       # @api public
-      # The summary for this info.
+      # The API summary.
       #
       # @param value [String] the summary
       # @return [String, nil]
@@ -142,7 +142,7 @@ module Apiwork
       end
 
       # @api public
-      # The description for this info.
+      # The API description.
       #
       # @param value [String] the description (supports Markdown)
       # @return [String, nil]
@@ -157,7 +157,7 @@ module Apiwork
       end
 
       # @api public
-      # The tags for this info.
+      # The API tags.
       #
       # @param values [Array<String>] the tags
       # @return [Array<String>]

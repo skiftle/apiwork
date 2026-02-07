@@ -18,7 +18,7 @@ module Apiwork
           end
 
           # @api public
-          # The URL for this server.
+          # The server URL.
           #
           # @return [String, nil]
           def url
@@ -26,7 +26,7 @@ module Apiwork
           end
 
           # @api public
-          # The description for this server.
+          # The server description.
           #
           # @return [String, nil]
           def description

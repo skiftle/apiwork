@@ -14,7 +14,7 @@ module Apiwork
         end
 
         # @api public
-        # The name for this license.
+        # The license name.
         #
         # @param value [String] the license name (e.g. 'MIT', 'Apache 2.0')
         # @return [String, nil]
@@ -29,7 +29,7 @@ module Apiwork
         end
 
         # @api public
-        # The URL for this license.
+        # The license URL.
         #
         # @param value [String] the license URL
         # @return [String, nil]

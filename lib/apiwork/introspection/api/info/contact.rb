@@ -18,7 +18,7 @@ module Apiwork
           end
 
           # @api public
-          # The name for this contact.
+          # The contact name.
           #
           # @return [String, nil]
           def name
@@ -26,7 +26,7 @@ module Apiwork
           end
 
           # @api public
-          # The email for this contact.
+          # The contact email.
           #
           # @return [String, nil]
           def email
@@ -34,7 +34,7 @@ module Apiwork
           end
 
           # @api public
-          # The URL for this contact.
+          # The contact URL.
           #
           # @return [String, nil]
           def url
