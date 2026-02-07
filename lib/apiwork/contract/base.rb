@@ -58,29 +58,32 @@ module Apiwork
       class_attribute :_synthetic, default: false, instance_accessor: false
 
       # @api public
-      # The parsed and validated request.
+      # The request for this contract.
+      #
       # @return [Request]
       attr_reader :request
 
       # @api public
-      # Validation issues (empty if valid).
+      # The issues for this contract.
+      #
       # @return [Array<Issue>]
       attr_reader :issues
 
       # @api public
-      # The current action name.
+      # The action name for this contract.
+      #
       # @return [Symbol]
       attr_reader :action_name
 
       # @api public
-      # Parsed and validated query parameters.
-      # @see Request#query
+      # The query for this contract.
+      #
       # @return [Hash]
       delegate :query, to: :request
 
       # @api public
-      # Parsed and validated body parameters.
-      # @see Request#body
+      # The body for this contract.
+      #
       # @return [Hash]
       delegate :body, to: :request
 
@@ -530,14 +533,16 @@ module Apiwork
       end
 
       # @api public
-      # Returns whether the contract passed validation.
+      # Whether this contract is valid.
+      #
       # @return [Boolean]
       def valid?
         issues.empty?
       end
 
       # @api public
-      # Returns whether the contract has validation issues.
+      # Whether this contract is invalid.
+      #
       # @return [Boolean]
       def invalid?
         issues.any?

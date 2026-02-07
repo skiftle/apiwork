@@ -11,12 +11,14 @@ module Apiwork
         # Use it to generate contract-specific types based on the representation.
         class Base < Builder::Contract::Base
           # @api public
-          # Representation and actions for this contract.
+          # The scope for this contract.
+          #
           # @return [Scope]
           attr_reader :scope
 
           # @api public
-          # Capability options.
+          # The options for this contract.
+          #
           # @return [Configuration]
           attr_reader :options
 

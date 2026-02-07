@@ -8,22 +8,26 @@ module Apiwork
   # coercion, or constraint checks. Access via `contract.issues`.
   class Issue
     # @api public
-    # The error code (e.g., :required, :type_mismatch).
+    # The code for this issue.
+    #
     # @return [Symbol]
     attr_reader :code
 
     # @api public
-    # Human-readable error message.
+    # The detail for this issue.
+    #
     # @return [String]
     attr_reader :detail
 
     # @api public
-    # Additional context about the error.
+    # The meta for this issue.
+    #
     # @return [Hash]
     attr_reader :meta
 
     # @api public
-    # Path to the invalid field.
+    # The path for this issue.
+    #
     # @return [Array<Symbol, Integer>]
     attr_reader :path
 
@@ -57,14 +61,16 @@ module Apiwork
     end
 
     # @api public
-    # Alias for to_h, for JSON serialization.
+    # Converts this issue to a hash for JSON serialization.
+    #
     # @return [Hash]
     def as_json
       to_h
     end
 
     # @api public
-    # Human-readable string representation.
+    # The string representation for this issue.
+    #
     # @return [String]
     def to_s
       "[#{code}]#{path.any? ? " at #{pointer}" : ''} #{detail}"

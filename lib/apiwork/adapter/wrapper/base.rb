@@ -8,7 +8,8 @@ module Apiwork
         class_attribute :wrapper_type
 
         # @api public
-        # The serialized resource data.
+        # The data for this wrapper.
+        #
         # @return [Hash]
         attr_reader :data
 

@@ -11,12 +11,14 @@ module Apiwork
         # across all representations.
         class Base < Builder::API::Base
           # @api public
-          # Aggregated data across all representations.
+          # The scope for this API.
+          #
           # @return [Scope]
           attr_reader :scope
 
           # @api public
-          # Capability options.
+          # The options for this API.
+          #
           # @return [Configuration]
           attr_reader :options
 

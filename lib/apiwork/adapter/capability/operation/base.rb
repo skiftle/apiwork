@@ -11,22 +11,26 @@ module Apiwork
         # Use it to transform data at runtime.
         class Base
           # @api public
-          # The data to transform (record or collection).
+          # The data for this operation.
+          #
           # @return [Object]
           attr_reader :data
 
           # @api public
-          # Capability options.
+          # The options for this operation.
+          #
           # @return [Configuration]
           attr_reader :options
 
           # @api public
-          # The current request.
+          # The request for this operation.
+          #
           # @return [Request]
           attr_reader :request
 
           # @api public
-          # The representation class for this request.
+          # The representation class for this operation.
+          #
           # @return [Class<Representation::Base>]
           attr_reader :representation_class
 
