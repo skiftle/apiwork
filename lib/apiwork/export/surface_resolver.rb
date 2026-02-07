@@ -53,7 +53,7 @@ module Apiwork
       end
 
       def collect_types_from_param(param, type_names)
-        type_names << param.ref if param.ref?
+        type_names << param.reference if param.reference?
 
         param.shape.each_value { |nested| collect_types_from_param(nested, type_names) } if param.object?
 
@@ -101,7 +101,7 @@ module Apiwork
       end
 
       def collect_reference_names_from_param(param, reference_names)
-        reference_names << param.ref if param.ref?
+        reference_names << param.reference if param.reference?
 
         param.shape.each_value { |nested| collect_reference_names_from_param(nested, reference_names) } if param.object?
 
@@ -137,7 +137,7 @@ module Apiwork
       end
 
       def collect_enums_from_param(param, enum_names)
-        enum_names << param.enum if param.enum_ref?
+        enum_names << param.enum if param.enum_reference?
 
         param.shape.each_value { |nested| collect_enums_from_param(nested, enum_names) } if param.object?
 
@@ -166,8 +166,8 @@ module Apiwork
       end
 
       def collect_enums_from_type_param(param, enum_names)
-        enum_names << param.enum if param.enum_ref?
-        enum_names << param.ref if param.ref? && @data.enums.key?(param.ref)
+        enum_names << param.enum if param.enum_reference?
+        enum_names << param.reference if param.reference? && @data.enums.key?(param.reference)
 
         param.shape.each_value { |nested| collect_enums_from_type_param(nested, enum_names) } if param.object?
 

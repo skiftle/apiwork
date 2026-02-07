@@ -95,10 +95,10 @@ module Apiwork
         def collect_references(dump, types, enums)
           case dump
           when Hash
-            types << dump[:ref].to_sym if dump[:type] == :ref && dump[:ref]
+            types << dump[:reference].to_sym if dump[:type] == :reference && dump[:reference]
 
             of_dump = dump[:of]
-            types << of_dump[:ref].to_sym if of_dump.is_a?(Hash) && of_dump[:type] == :ref && of_dump[:ref]
+            types << of_dump[:reference].to_sym if of_dump.is_a?(Hash) && of_dump[:type] == :reference && of_dump[:reference]
 
             enum_value = dump[:enum]
             enums << enum_value if enum_value.is_a?(Symbol)

@@ -166,7 +166,7 @@ module Apiwork
       end
 
       def build_parameter_schema(param)
-        return { '$ref': "#/components/schemas/#{schema_name(param.ref)}" } if param.ref? && type_exists?(param.ref)
+        return { '$ref': "#/components/schemas/#{schema_name(param.reference)}" } if param.reference? && type_exists?(param.reference)
 
         map_param(param)
       end
@@ -325,10 +325,15 @@ module Apiwork
       end
 
       def map_field(param)
-        return apply_nullable({ '$ref': "#/components/schemas/#{schema_name(param.ref)}" }, param.nullable?) if param.ref? && type_exists?(param.ref)
+        if param.reference? && type_exists?(param.reference)
+          return apply_nullable(
+            { '$ref': "#/components/schemas/#{schema_name(param.reference)}" },
+            param.nullable?,
+          )
+        end
 
         if param.scalar? && param.enum?
-          if param.enum_ref? && enum_exists?(param.enum)
+          if param.enum_reference? && enum_exists?(param.enum)
             enum_obj = find_enum(param.enum)
             schema = { enum: enum_obj.values, type: 'string' }
           else
@@ -357,10 +362,10 @@ module Apiwork
           map_union(param)
         elsif param.literal?
           map_literal(param)
-        elsif param.ref? && type_exists?(param.ref)
-          { '$ref': "#/components/schemas/#{schema_name(param.ref)}" }
-        elsif param.ref? && enum_exists?(param.ref)
-          enum_obj = find_enum(param.ref)
+        elsif param.reference? && type_exists?(param.reference)
+          { '$ref': "#/components/schemas/#{schema_name(param.reference)}" }
+        elsif param.reference? && enum_exists?(param.reference)
+          enum_obj = find_enum(param.reference)
           { enum: enum_obj.values, type: 'string' }
         else
           map_primitive(param)
@@ -398,8 +403,8 @@ module Apiwork
 
         return { items: {}, type: 'array' } unless items_param
 
-        items_schema = if items_param.ref? && type_exists?(items_param.ref)
-                         { '$ref': "#/components/schemas/#{schema_name(items_param.ref)}" }
+        items_schema = if items_param.reference? && type_exists?(items_param.reference)
+                         { '$ref': "#/components/schemas/#{schema_name(items_param.reference)}" }
                        else
                          map_param(items_param)
                        end
@@ -440,7 +445,7 @@ module Apiwork
         one_of_schemas = variants.map do |variant|
           base_schema = map_param(variant)
 
-          if variant.tag && !ref_contains_discriminator?(variant, discriminator_field)
+          if variant.tag && !reference_contains_discriminator?(variant, discriminator_field)
             discriminator_key = transform_key(discriminator_field)
             {
               allOf: [
@@ -467,7 +472,10 @@ module Apiwork
           tag = variant.tag
           next unless tag
 
-          mapping[transform_key(tag.to_s)] = "#/components/schemas/#{schema_name(variant.ref)}" if variant.ref? && type_exists?(variant.ref)
+          if variant.reference? && type_exists?(variant.reference)
+            mapping[transform_key(tag.to_s)] =
+              "#/components/schemas/#{schema_name(variant.reference)}"
+          end
         end
 
         result = { oneOf: one_of_schemas }
@@ -581,10 +589,10 @@ module Apiwork
         surface.enums.key?(symbol)
       end
 
-      def ref_contains_discriminator?(variant, discriminator)
-        return false unless variant.ref?
+      def reference_contains_discriminator?(variant, discriminator)
+        return false unless variant.reference?
 
-        referenced_type = surface.types[variant.ref]
+        referenced_type = surface.types[variant.reference]
         return false unless referenced_type
 
         referenced_type.shape.key?(discriminator)

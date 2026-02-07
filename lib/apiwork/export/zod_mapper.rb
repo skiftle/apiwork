@@ -64,7 +64,7 @@ module Apiwork
         variant_schemas = type.variants.map do |variant|
           base_schema = map_param(variant)
 
-          if type.discriminator && variant.tag && !ref_contains_discriminator?(variant, type.discriminator)
+          if type.discriminator && variant.tag && !reference_contains_discriminator?(variant, type.discriminator)
             discriminator_key = @export.transform_key(type.discriminator)
             "#{base_schema}.extend({ #{discriminator_key}: z.literal('#{variant.tag}') })"
           else
@@ -144,8 +144,8 @@ module Apiwork
       end
 
       def map_field(param, force_optional: nil)
-        if param.ref? && type_or_enum_reference?(param.ref)
-          schema_name = pascal_case(param.ref)
+        if param.reference? && type_or_enum_reference?(param.reference)
+          schema_name = pascal_case(param.reference)
           type = "#{schema_name}Schema"
           return apply_modifiers(type, param, force_optional:)
         end
@@ -165,8 +165,8 @@ module Apiwork
           map_union_type(param)
         elsif param.literal?
           map_literal_type(param)
-        elsif param.ref? && type_or_enum_reference?(param.ref)
-          resolve_enum_schema(param) || schema_reference(param.ref)
+        elsif param.reference? && type_or_enum_reference?(param.reference)
+          resolve_enum_schema(param) || schema_reference(param.reference)
         else
           resolve_enum_schema(param) || map_primitive(param)
         end
@@ -282,10 +282,10 @@ module Apiwork
         @export.data.types.key?(symbol) || @export.data.enums.key?(symbol)
       end
 
-      def ref_contains_discriminator?(variant, discriminator)
-        return false unless variant.ref?
+      def reference_contains_discriminator?(variant, discriminator)
+        return false unless variant.reference?
 
-        referenced_type = @export.data.types[variant.ref]
+        referenced_type = @export.data.types[variant.reference]
         return false unless referenced_type
 
         referenced_type.shape.key?(discriminator)
@@ -294,7 +294,7 @@ module Apiwork
       def resolve_enum_schema(param)
         return nil unless param.scalar? && param.enum?
 
-        if param.enum_ref? && @export.data.enums.key?(param.enum)
+        if param.enum_reference? && @export.data.enums.key?(param.enum)
           "#{pascal_case(param.enum)}Schema"
         else
           enum_literal = param.enum.map { |value| "'#{value}'" }.join(', ')

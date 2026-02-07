@@ -36,15 +36,15 @@ module Apiwork
           error_type = @result_wrapper[:error_type]
 
           success_variant = if success_type
-                              { ref: success_type, type: :ref }
+                              { reference: success_type, type: :reference }
                             else
-                              { ref: nil, shape: build_success_params, type: :object }
+                              { reference: nil, shape: build_success_params, type: :object }
                             end
 
           error_variant = if error_type
-                            { ref: error_type, type: :ref }
+                            { reference: error_type, type: :reference }
                           else
-                            { ref: nil, shape: {}, type: :object }
+                            { reference: nil, shape: {}, type: :object }
                           end
 
           {
@@ -67,10 +67,10 @@ module Apiwork
           return build_union_param(options) if options[:type] == :union
           return build_custom_type_param(options) if options[:custom_type]
 
-          ref = resolve_type_ref(options[:type])
+          reference = resolve_type_reference(options[:type])
 
           {
-            ref:,
+            reference:,
             as: options[:as],
             default: options[:default],
             deprecated: options[:deprecated] == true,
@@ -87,7 +87,7 @@ module Apiwork
             partial: options[:partial] == true,
             shape: build_shape(options) || {},
             tag: nil,
-            type: ref ? :ref : (options[:type] || :unknown),
+            type: reference ? :reference : (options[:type] || :unknown),
             value: options[:type] == :literal ? options[:value] : nil,
             variants: [],
           }
@@ -111,7 +111,7 @@ module Apiwork
             of: nil,
             optional: options[:optional] == true,
             partial: false,
-            ref: nil,
+            reference: nil,
             shape: {},
             tag: nil,
             type: :union,
@@ -139,16 +139,16 @@ module Apiwork
             of: nil,
             optional: options[:optional] == true,
             partial: false,
-            ref: custom_type_name,
+            reference: custom_type_name,
             shape: {},
             tag: nil,
-            type: :ref,
+            type: :reference,
             value: nil,
             variants: [],
           }
         end
 
-        def resolve_type_ref(type_value)
+        def resolve_type_reference(type_value)
           return nil unless type_value
           return nil unless registered_type?(type_value)
 
@@ -192,10 +192,10 @@ module Apiwork
           if of_value.is_a?(Hash)
             build_of_from_hash(of_value, shape: options[:shape])
           elsif registered_type?(of_value)
-            ref_name = qualified_name(of_value, @contract_param)
-            { ref: ref_name, shape: {}, type: :ref }
+            reference_name = qualified_name(of_value, @contract_param)
+            { reference: reference_name, shape: {}, type: :reference }
           elsif of_value.is_a?(Symbol) && imported_type?(of_value, @contract_param)
-            { ref: of_value, shape: {}, type: :ref }
+            { reference: of_value, shape: {}, type: :reference }
           else
             build_of_from_symbol(of_value, shape: options[:shape])
           end
@@ -203,23 +203,23 @@ module Apiwork
 
         def build_of_from_hash(of_hash, shape: nil)
           type_value = of_hash[:type]
-          ref = registered_type?(type_value) ? qualified_name(type_value, @contract_param) : nil
+          reference = registered_type?(type_value) ? qualified_name(type_value, @contract_param) : nil
 
           resolved_shape = shape ? build_nested_shape(shape) : {}
 
           {
-            ref:,
+            reference:,
             enum: of_hash[:enum],
             format: of_hash[:format],
             max: of_hash[:max],
             min: of_hash[:min],
             shape: resolved_shape,
-            type: ref ? :ref : type_value,
+            type: reference ? :reference : type_value,
           }
         end
 
         def build_of_from_symbol(type_symbol, shape: nil)
-          result = { ref: nil, type: type_symbol }
+          result = { reference: nil, type: type_symbol }
           if [:object, :array].include?(type_symbol)
             result[:shape] = shape ? build_nested_shape(shape) : {}
           end
@@ -237,11 +237,11 @@ module Apiwork
           variant_type = variant[:custom_type] || variant[:type]
           is_registered = registered_type?(variant_type)
 
-          ref = is_registered ? qualified_name(variant_type, @contract_param) : nil
-          resolved_type = is_registered ? :ref : (variant[:type] || :unknown)
+          reference = is_registered ? qualified_name(variant_type, @contract_param) : nil
+          resolved_type = is_registered ? :reference : (variant[:type] || :unknown)
 
           {
-            ref:,
+            reference:,
             as: nil,
             default: nil,
             deprecated: false,
@@ -285,8 +285,8 @@ module Apiwork
           return nil unless variant[:of]
 
           if registered_type?(variant[:of])
-            ref_name = qualified_name(variant[:of], @contract_param)
-            { ref: ref_name, shape: {}, type: :ref }
+            reference_name = qualified_name(variant[:of], @contract_param)
+            { reference: reference_name, shape: {}, type: :reference }
           else
             build_of_from_symbol(variant[:of])
           end
@@ -341,7 +341,7 @@ module Apiwork
             of: build_api_of(options),
             optional: options[:optional] == true,
             partial: options[:partial] == true,
-            ref: nil,
+            reference: nil,
             shape: options[:shape] ? build_nested_shape(options[:shape]) : {},
             tag: nil,
             type: options[:type] || :unknown,
@@ -360,12 +360,12 @@ module Apiwork
               format: of_value[:format],
               max: of_value[:max],
               min: of_value[:min],
-              ref: nil,
+              reference: nil,
               shape: options[:shape] ? build_nested_shape(options[:shape]) : {},
               type: of_value[:type],
             }
           else
-            { ref: nil, shape: {}, type: of_value }
+            { reference: nil, shape: {}, type: of_value }
           end
         end
 
@@ -385,7 +385,7 @@ module Apiwork
             of: nil,
             optional: false,
             partial: variant[:partial] == true,
-            ref: nil,
+            reference: nil,
             shape: variant[:shape] ? build_nested_shape(variant[:shape]) : {},
             tag: variant[:tag],
             type: variant[:type] || :object,

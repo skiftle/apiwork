@@ -21,7 +21,7 @@ module Apiwork
           when :object then Object.new(dump)
           when :union then Union.new(dump)
           when :literal then Literal.new(dump)
-          when :ref then Ref.new(dump)
+          when :reference then Reference.new(dump)
           else Unknown.new(dump)
           end
         end

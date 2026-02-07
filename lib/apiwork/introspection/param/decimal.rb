@@ -21,7 +21,7 @@ module Apiwork
       # @example Enum
       #   if param.enum?
       #     param.enum      # => [9.99, 19.99, 29.99]
-      #     param.enum_ref? # => false
+      #     param.enum_reference? # => false
       #   end
       class Decimal < Base
         # @api public
@@ -68,7 +68,7 @@ module Apiwork
         # Whether this param is an enum reference.
         #
         # @return [Boolean]
-        def enum_ref?
+        def enum_reference?
           @dump[:enum].is_a?(Symbol)
         end
 

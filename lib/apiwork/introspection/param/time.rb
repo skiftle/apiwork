@@ -17,7 +17,7 @@ module Apiwork
       # @example Enum
       #   if param.enum?
       #     param.enum      # => ["09:00", "17:00"]
-      #     param.enum_ref? # => false
+      #     param.enum_reference? # => false
       #   end
       class Time < Base
         # @api public
@@ -48,7 +48,7 @@ module Apiwork
         # Whether this param is an enum reference.
         #
         # @return [Boolean]
-        def enum_ref?
+        def enum_reference?
           @dump[:enum].is_a?(Symbol)
         end
 

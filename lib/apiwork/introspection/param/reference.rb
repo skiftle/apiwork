@@ -4,31 +4,31 @@ module Apiwork
   module Introspection
     module Param
       # @api public
-      # Ref param representing a reference to a named type.
+      # Reference param representing a reference to a named type.
       #
       # Used when a param references a shared type definition.
       #
       # @example Basic usage
-      #   param.type    # => :ref
-      #   param.ref?    # => true
-      #   param.scalar? # => false
+      #   param.type       # => :reference
+      #   param.reference? # => true
+      #   param.scalar?    # => false
       #
       # @example Reference
-      #   param.ref     # => :address (the referenced type name)
-      class Ref < Base
+      #   param.reference  # => :address (the referenced type name)
+      class Reference < Base
         # @api public
         # The referenced type name for this param.
         #
         # @return [Symbol]
-        def ref
-          @dump[:ref]
+        def reference
+          @dump[:reference]
         end
 
         # @api public
         # Whether this param is a reference.
         #
         # @return [Boolean]
-        def ref?
+        def reference?
           true
         end
 
@@ -38,7 +38,7 @@ module Apiwork
         # @return [Hash]
         def to_h
           result = super
-          result[:ref] = ref
+          result[:reference] = reference
           result
         end
       end

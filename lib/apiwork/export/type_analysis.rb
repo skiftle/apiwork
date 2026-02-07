@@ -112,8 +112,8 @@ module Apiwork
 
           if type_reference.is_a?(Hash)
             type_value = type_reference[:type]
-            type_reference = if [:ref, 'ref'].include?(type_value)
-                               type_reference[:ref]
+            type_reference = if [:reference, 'reference'].include?(type_value)
+                               type_reference[:reference]
                              else
                                type_value
                              end

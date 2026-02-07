@@ -40,8 +40,8 @@ RSpec.describe Apiwork::Export::SurfaceResolver do
     }
   end
 
-  def build_ref_param(type_name)
-    { nullable: false, optional: false, ref: type_name, type: :ref }
+  def build_reference_param(type_name)
+    { nullable: false, optional: false, reference: type_name, type: :reference }
   end
 
   def build_object_type(extends: [], shape: {})
@@ -69,7 +69,7 @@ RSpec.describe Apiwork::Export::SurfaceResolver do
             actions: {
               show: build_action(
                 response: {
-                  body: build_ref_param(:address),
+                  body: build_reference_param(:address),
                   no_content: false,
                 },
               ),
@@ -93,7 +93,7 @@ RSpec.describe Apiwork::Export::SurfaceResolver do
             actions: {
               show: build_action(
                 response: {
-                  body: build_ref_param(:address),
+                  body: build_reference_param(:address),
                   no_content: false,
                 },
               ),
@@ -119,7 +119,7 @@ RSpec.describe Apiwork::Export::SurfaceResolver do
             actions: {
               show: build_action(
                 response: {
-                  body: build_ref_param(:address),
+                  body: build_reference_param(:address),
                   no_content: false,
                 },
               ),
@@ -130,7 +130,7 @@ RSpec.describe Apiwork::Export::SurfaceResolver do
           address: build_object_type(
             shape: {
               city: { type: :string },
-              country: { ref: :country, type: :ref },
+              country: { reference: :country, type: :reference },
             },
           ),
           country: build_object_type(shape: { name: { type: :string } }),
@@ -150,7 +150,7 @@ RSpec.describe Apiwork::Export::SurfaceResolver do
             actions: {
               show: build_action(
                 response: {
-                  body: build_ref_param(:child),
+                  body: build_reference_param(:child),
                   no_content: false,
                 },
               ),
@@ -178,7 +178,7 @@ RSpec.describe Apiwork::Export::SurfaceResolver do
             actions: {
               create: build_action(
                 request: {
-                  body: { invoice: build_ref_param(:invoice_params) },
+                  body: { invoice: build_reference_param(:invoice_params) },
                   query: {},
                 },
               ),
@@ -203,7 +203,7 @@ RSpec.describe Apiwork::Export::SurfaceResolver do
               index: build_action(
                 request: {
                   body: {},
-                  query: { filter: build_ref_param(:filter_options) },
+                  query: { filter: build_reference_param(:filter_options) },
                 },
               ),
             },
@@ -229,7 +229,7 @@ RSpec.describe Apiwork::Export::SurfaceResolver do
                 actions: {
                   show: build_action(
                     response: {
-                      body: build_ref_param(:payment),
+                      body: build_reference_param(:payment),
                       no_content: false,
                     },
                   ),
@@ -260,7 +260,7 @@ RSpec.describe Apiwork::Export::SurfaceResolver do
               index: build_action(
                 response: {
                   body: {
-                    of: build_ref_param(:invoice),
+                    of: build_reference_param(:invoice),
                     shape: {},
                     type: :array,
                   },
@@ -290,8 +290,8 @@ RSpec.describe Apiwork::Export::SurfaceResolver do
                   body: {
                     type: :union,
                     variants: [
-                      build_ref_param(:card_payment),
-                      build_ref_param(:bank_payment),
+                      build_reference_param(:card_payment),
+                      build_reference_param(:bank_payment),
                     ],
                   },
                   no_content: false,
@@ -324,7 +324,7 @@ RSpec.describe Apiwork::Export::SurfaceResolver do
             actions: {
               show: build_action(
                 response: {
-                  body: build_ref_param(:invoice),
+                  body: build_reference_param(:invoice),
                   no_content: false,
                 },
               ),
@@ -383,7 +383,7 @@ RSpec.describe Apiwork::Export::SurfaceResolver do
             actions: {
               show: build_action(
                 response: {
-                  body: build_ref_param(:invoice),
+                  body: build_reference_param(:invoice),
                   no_content: false,
                 },
               ),
@@ -415,7 +415,7 @@ RSpec.describe Apiwork::Export::SurfaceResolver do
             actions: {
               show: build_action(
                 response: {
-                  body: build_ref_param(:invoice),
+                  body: build_reference_param(:invoice),
                   no_content: false,
                 },
               ),
@@ -430,7 +430,7 @@ RSpec.describe Apiwork::Export::SurfaceResolver do
           ),
           invoice: build_object_type(
             shape: {
-              customer: { ref: :customer, type: :ref },
+              customer: { reference: :customer, type: :reference },
             },
           ),
         },

@@ -48,7 +48,7 @@ module Apiwork
         variant_types = type.variants.map do |variant|
           base_type = map_param(variant)
 
-          if type.discriminator && variant.tag && !ref_contains_discriminator?(variant, type.discriminator)
+          if type.discriminator && variant.tag && !reference_contains_discriminator?(variant, type.discriminator)
             discriminator_key = @export.transform_key(type.discriminator)
             "{ #{discriminator_key}: '#{variant.tag}' } & #{base_type}"
           else
@@ -122,10 +122,10 @@ module Apiwork
       end
 
       def map_field(param)
-        base_type = if param.ref? && type_or_enum_reference?(param.ref)
-                      type_reference(param.ref)
+        base_type = if param.reference? && type_or_enum_reference?(param.reference)
+                      type_reference(param.reference)
                     elsif param.scalar? && param.enum?
-                      if param.enum_ref?
+                      if param.enum_reference?
                         pascal_case(param.enum)
                       else
                         param.enum.sort.map { |value| "'#{value}'" }.join(' | ')
@@ -148,8 +148,8 @@ module Apiwork
           map_union_type(param)
         elsif param.literal?
           map_literal_type(param)
-        elsif param.ref? && type_or_enum_reference?(param.ref)
-          type_reference(param.ref)
+        elsif param.reference? && type_or_enum_reference?(param.reference)
+          type_reference(param.reference)
         else
           map_primitive(param)
         end
@@ -247,10 +247,10 @@ module Apiwork
         @export.data.types.key?(symbol) || @export.data.enums.key?(symbol)
       end
 
-      def ref_contains_discriminator?(variant, discriminator)
-        return false unless variant.ref?
+      def reference_contains_discriminator?(variant, discriminator)
+        return false unless variant.reference?
 
-        referenced_type = @export.data.types[variant.ref]
+        referenced_type = @export.data.types[variant.reference]
         return false unless referenced_type
 
         referenced_type.shape.key?(discriminator)

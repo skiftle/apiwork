@@ -3,23 +3,6 @@
 module Apiwork
   module Introspection
     module Param
-      # @api public
-      # Base class for all introspection param types.
-      #
-      # Params represent field definitions with type information, constraints,
-      # and metadata. Each param type (String, Integer, Array, Object, etc.)
-      # extends this base class with type-specific behavior.
-      #
-      # @example Checking param properties
-      #   param.type        # => :string
-      #   param.optional?   # => true
-      #   param.nullable?   # => false
-      #   param.description # => "The user's email address"
-      #
-      # @example Type checking
-      #   param.string?  # => true
-      #   param.integer? # => false
-      #   param.scalar?  # => true
       class Base
         def initialize(dump)
           @dump = dump
@@ -245,7 +228,7 @@ module Apiwork
         # Whether this param is a reference.
         #
         # @return [Boolean]
-        def ref?
+        def reference?
           false
         end
 
@@ -258,10 +241,10 @@ module Apiwork
         end
 
         # @api public
-        # Whether this param is an enum reference.
+        # Whether this param is an enum by reference.
         #
         # @return [Boolean]
-        def enum_ref?
+        def enum_reference?
           false
         end
 

@@ -98,10 +98,10 @@ module Apiwork
         end
 
         def build_param(name, options, scope)
-          ref = resolve_type_ref(options[:type], scope)
+          reference = resolve_type_reference(options[:type], scope)
 
           {
-            ref:,
+            reference:,
             as: options[:as],
             default: options[:default],
             deprecated: options[:deprecated] == true,
@@ -118,18 +118,18 @@ module Apiwork
             partial: options[:partial] == true,
             shape: build_nested_shape(options[:shape]),
             tag: nil,
-            type: ref ? :ref : (options[:type] || :unknown),
+            type: reference ? :reference : (options[:type] || :unknown),
             value: options[:type] == :literal ? options[:value] : nil,
             variants: build_nested_variants(options[:shape]),
           }
         end
 
         def build_variant(variant, scope)
-          ref = resolve_type_ref(variant[:custom_type] || variant[:type], scope)
-          resolved_type = ref ? :ref : (variant[:type] || :unknown)
+          reference = resolve_type_reference(variant[:custom_type] || variant[:type], scope)
+          resolved_type = reference ? :reference : (variant[:type] || :unknown)
 
           {
-            ref:,
+            reference:,
             as: nil,
             default: nil,
             deprecated: false,
@@ -170,7 +170,7 @@ module Apiwork
           shape.variants.map { |variant| build_variant(variant, nil) }
         end
 
-        def resolve_type_ref(type_value, scope)
+        def resolve_type_reference(type_value, scope)
           return nil unless type_value
 
           resolve_scoped_type_name(type_value, scope)
@@ -200,17 +200,17 @@ module Apiwork
               format: of_value[:format],
               max: of_value[:max],
               min: of_value[:min],
-              ref: scoped_name,
+              reference: scoped_name,
               shape: resolved_shape,
-              type: scoped_name ? :ref : type_value,
+              type: scoped_name ? :reference : type_value,
             }
           else
             scoped_name = resolve_scoped_type_name(of_value, scope)
             resolved_shape = shape ? build_nested_shape(shape) : {}
             if scoped_name
-              { ref: scoped_name, shape: {}, type: :ref }
+              { reference: scoped_name, shape: {}, type: :reference }
             else
-              { ref: nil, shape: resolved_shape, type: of_value }
+              { reference: nil, shape: resolved_shape, type: of_value }
             end
           end
         end
@@ -238,16 +238,16 @@ module Apiwork
               format: of_value[:format],
               max: of_value[:max],
               min: of_value[:min],
-              ref: scoped_name,
+              reference: scoped_name,
               shape: {},
-              type: scoped_name ? :ref : type_value,
+              type: scoped_name ? :reference : type_value,
             }
           else
             scoped_name = resolve_scoped_type_name(of_value, scope)
             if scoped_name
-              { ref: scoped_name, shape: {}, type: :ref }
+              { reference: scoped_name, shape: {}, type: :reference }
             else
-              { ref: nil, shape: {}, type: of_value }
+              { reference: nil, shape: {}, type: of_value }
             end
           end
         end
