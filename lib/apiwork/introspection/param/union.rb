@@ -18,25 +18,25 @@ module Apiwork
       #   param.discriminator # => :type or nil
       class Union < Base
         # @api public
-        # @return [Array<Param::Base>] the possible variant types
+        # @return [Array<Param::Base>]
         def variants
           @variants ||= @dump[:variants].map { |dump| Param.build(dump) }
         end
 
         # @api public
-        # @return [Symbol, nil] the discriminator field name for discriminated unions
+        # @return [Symbol, nil]
         def discriminator
           @dump[:discriminator]
         end
 
         # @api public
-        # @return [Boolean] true if this is a union param
+        # @return [Boolean]
         def union?
           true
         end
 
         # @api public
-        # @return [Hash] structured representation
+        # @return [Hash]
         def to_h
           result = super
           result[:discriminator] = discriminator

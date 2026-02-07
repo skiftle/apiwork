@@ -20,13 +20,13 @@ module Apiwork
       end
 
       # @api public
-      # @return [String, nil] error description
+      # @return [String, nil]
       def description
         @dump[:description]
       end
 
       # @api public
-      # @return [Hash] structured representation
+      # @return [Hash]
       def to_h
         {
           description: description,

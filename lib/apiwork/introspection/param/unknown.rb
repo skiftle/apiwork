@@ -14,7 +14,7 @@ module Apiwork
       #   param.scalar?  # => false
       class Unknown < Base
         # @api public
-        # @return [Boolean] true if this is an unknown param
+        # @return [Boolean]
         def unknown?
           true
         end

@@ -23,7 +23,8 @@ module Apiwork
         end
 
         # @api public
-        # Returns true if this response is 204 No Content.
+        # Returns whether this response is 204 No Content.
+        #
         # @return [Boolean]
         def no_content?
           @no_content
@@ -44,6 +45,8 @@ module Apiwork
         #   action :archive do
         #     response { no_content! }
         #   end
+        #
+        # @return [void]
         def no_content!
           @no_content = true
         end

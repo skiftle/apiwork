@@ -29,7 +29,7 @@ module Apiwork
     #   end
     #
     # @param type_name [Symbol] the type to inherit from
-    # @return [Array<Symbol>] the inherited types
+    # @return [Array<Symbol>]
     def extends(type_name = nil)
       @extends << type_name if type_name
       @extends
@@ -46,7 +46,7 @@ module Apiwork
     #   end
     #
     # @param type_name [Symbol] the type to merge from
-    # @return [Array<Symbol>] the merged types
+    # @return [Array<Symbol>]
     def merge!(type_name = nil)
       @merged << type_name if type_name
       @merged

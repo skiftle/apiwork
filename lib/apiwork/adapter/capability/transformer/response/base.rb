@@ -33,7 +33,7 @@ module Apiwork
             # @api public
             # Transforms the response.
             #
-            # @return [Response] the transformed response
+            # @return [Response]
             def transform
               raise NotImplementedError
             end

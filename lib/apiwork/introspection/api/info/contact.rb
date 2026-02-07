@@ -18,25 +18,25 @@ module Apiwork
           end
 
           # @api public
-          # @return [String, nil] contact name
+          # @return [String, nil]
           def name
             @dump[:name]
           end
 
           # @api public
-          # @return [String, nil] contact email
+          # @return [String, nil]
           def email
             @dump[:email]
           end
 
           # @api public
-          # @return [String, nil] contact URL
+          # @return [String, nil]
           def url
             @dump[:url]
           end
 
           # @api public
-          # @return [Hash] structured representation
+          # @return [Hash]
           def to_h
             {
               email: email,

@@ -11,11 +11,11 @@ module Apiwork
         # across all representations.
         class Base < Builder::API::Base
           # @api public
-          # @return [Scope] aggregated data across all representations
+          # @return [Scope]
           attr_reader :scope
 
           # @api public
-          # @return [Configuration] capability options
+          # @return [Configuration]
           attr_reader :options
 
           def initialize(api_class, capability_name: nil, options: nil)
@@ -32,7 +32,7 @@ module Apiwork
           # when building API-level schemas.
           #
           # @param key [Symbol] the configuration key to look up
-          # @return [Set] unique values from all representations
+          # @return [Set]
           #
           # @example Check if any representation uses cursor pagination
           #   if configured(:strategy).include?(:cursor)

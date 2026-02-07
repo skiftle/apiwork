@@ -8,7 +8,7 @@ module Apiwork
         class_attribute :wrapper_type
 
         # @api public
-        # @return [Hash] the serialized resource data
+        # @return [Hash]
         attr_reader :data
 
         class << self
@@ -21,7 +21,7 @@ module Apiwork
           #
           # @param klass_or_callable [Class, Proc, nil] a Shape subclass or callable
           # @yield block that defines the shape using the Shape DSL
-          # @return [Class, nil] the shape class
+          # @return [Class, nil]
           def shape(klass_or_callable = nil, &block)
             callable = block || klass_or_callable
 
@@ -57,7 +57,7 @@ module Apiwork
         # @api public
         # Transforms the data into the final response format.
         #
-        # @return [Hash] the wrapped response
+        # @return [Hash]
         def wrap
           raise NotImplementedError
         end

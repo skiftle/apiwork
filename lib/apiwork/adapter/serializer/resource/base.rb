@@ -25,7 +25,7 @@ module Apiwork
             end
 
             # @api public
-            # Sets or gets the data type resolver for this serializer.
+            # The data type resolver for this serializer.
             #
             # @param block [Proc, nil] block that receives representation_class and returns type name
             # @return [Proc, nil]
@@ -35,7 +35,7 @@ module Apiwork
             end
 
             # @api public
-            # Sets or gets the Contract type builder class.
+            # The Contract type builder class.
             #
             # @param klass [Class, nil] a Builder::Contract::Base subclass
             # @return [Class, nil]
@@ -46,7 +46,7 @@ module Apiwork
           end
 
           # @api public
-          # @return [Class<Representation::Base>] the representation class
+          # @return [Class<Representation::Base>]
           attr_reader :representation_class
 
           def initialize(representation_class)
@@ -66,7 +66,7 @@ module Apiwork
           # @param resource [Object] the resource to serialize
           # @param context [Hash] serialization context
           # @param serialize_options [Hash] options (e.g., include)
-          # @return [Hash] the serialized resource
+          # @return [Hash]
           def serialize(resource, context:, serialize_options:)
             raise NotImplementedError
           end

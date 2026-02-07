@@ -23,7 +23,7 @@ module Apiwork
       # @api public
       # The API title.
       #
-      # @param value [String]
+      # @param value [String] the title
       # @return [String, nil]
       #
       # @example
@@ -38,7 +38,7 @@ module Apiwork
       # @api public
       # The API version.
       #
-      # @param value [String] e.g. '1.0.0'
+      # @param value [String] the version (e.g. '1.0.0')
       # @return [String, nil]
       #
       # @example
@@ -53,7 +53,7 @@ module Apiwork
       # @api public
       # The terms of service URL.
       #
-      # @param url [String]
+      # @param url [String] the terms of service URL
       # @return [String, nil]
       #
       # @example
@@ -129,7 +129,7 @@ module Apiwork
       # @api public
       # A short summary.
       #
-      # @param value [String]
+      # @param value [String] the summary
       # @return [String, nil]
       #
       # @example
@@ -144,7 +144,7 @@ module Apiwork
       # @api public
       # A detailed description.
       #
-      # @param value [String] supports Markdown
+      # @param value [String] the description (supports Markdown)
       # @return [String, nil]
       #
       # @example
@@ -159,7 +159,7 @@ module Apiwork
       # @api public
       # Tags for the API.
       #
-      # @param values [Array<String>]
+      # @param values [Array<String>] the tags
       # @return [Array<String>]
       #
       # @example

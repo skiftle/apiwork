@@ -37,40 +37,40 @@ module Apiwork
         end
 
         # @api public
-        # @return [String, nil] short summary
+        # @return [String, nil]
         def summary
           @dump[:summary]
         end
 
         # @api public
-        # @return [String, nil] terms of service URL
+        # @return [String, nil]
         def terms_of_service
           @dump[:terms_of_service]
         end
 
         # @api public
-        # @return [Info::Contact, nil] contact information
+        # @return [Info::Contact, nil]
         # @see Info::Contact
         def contact
           @contact ||= @dump[:contact] ? Contact.new(@dump[:contact]) : nil
         end
 
         # @api public
-        # @return [Info::License, nil] license information
+        # @return [Info::License, nil]
         # @see Info::License
         def license
           @license ||= @dump[:license] ? License.new(@dump[:license]) : nil
         end
 
         # @api public
-        # @return [Array<Info::Server>] server definitions
+        # @return [Array<Info::Server>]
         # @see Info::Server
         def servers
           @servers ||= @dump[:servers].map { |server| Server.new(server) }
         end
 
         # @api public
-        # @return [Hash] structured representation
+        # @return [Hash]
         def to_h
           {
             contact: contact&.to_h,

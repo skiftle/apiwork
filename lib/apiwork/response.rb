@@ -15,7 +15,7 @@ module Apiwork
   #   response.transform { |data| camelize(data) }
   class Response
     # @api public
-    # @return [Hash] the body parameters
+    # @return [Hash]
     attr_reader :body
 
     # @api public
@@ -30,7 +30,7 @@ module Apiwork
     # Transforms the body parameters.
     #
     # @yield [Hash] the body parameters
-    # @return [Response] the transformed response
+    # @return [Response]
     #
     # @example
     #   response.transform { |data| camelize(data) }
@@ -42,7 +42,7 @@ module Apiwork
     # Transforms the body parameters.
     #
     # @yield [Hash] the body parameters
-    # @return [Response] the transformed response
+    # @return [Response]
     #
     # @example
     #   response.transform_body { |data| camelize(data) }

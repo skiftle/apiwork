@@ -16,11 +16,11 @@ module Apiwork
   #   request.transform { |data| normalize(data) }
   class Request
     # @api public
-    # @return [Hash] the query parameters
+    # @return [Hash]
     attr_reader :query
 
     # @api public
-    # @return [Hash] the body parameters
+    # @return [Hash]
     attr_reader :body
 
     # @api public
@@ -37,7 +37,7 @@ module Apiwork
     # Transforms both query and body with the same block.
     #
     # @yield [Hash] each field (query, then body)
-    # @return [Request] the transformed request
+    # @return [Request]
     #
     # @example
     #   request.transform { |data| normalize(data) }
@@ -49,7 +49,7 @@ module Apiwork
     # Transforms only the query.
     #
     # @yield [Hash] the query parameters
-    # @return [Request] the transformed request
+    # @return [Request]
     #
     # @example
     #   request.transform_query { |query| normalize(query) }
@@ -61,7 +61,7 @@ module Apiwork
     # Transforms only the body.
     #
     # @yield [Hash] the body parameters
-    # @return [Request] the transformed request
+    # @return [Request]
     #
     # @example
     #   request.transform_body { |body| prepare(body) }

@@ -164,7 +164,7 @@ module Apiwork
       # @param param [Symbol] custom ID parameter
       # @param path [String] custom URL segment
       # @yield block for nested resources and custom actions
-      # @return [Hash{Symbol => Resource}] resources hash when called without name
+      # @return [Hash{Symbol => Resource}]
       #
       # @example Basic resource
       #   resources :invoices

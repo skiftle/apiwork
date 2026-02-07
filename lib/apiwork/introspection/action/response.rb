@@ -21,26 +21,26 @@ module Apiwork
         end
 
         # @api public
-        # @return [Param, nil] response body definition
+        # @return [Param, nil]
         # @see Param
         def body
           @body ||= @dump[:body] ? Param.build(@dump[:body]) : nil
         end
 
         # @api public
-        # @return [Boolean] whether this is a no-content response (204)
+        # @return [Boolean]
         def no_content?
           @dump[:no_content]
         end
 
         # @api public
-        # @return [Boolean] whether a body is defined
+        # @return [Boolean]
         def body?
           body.present?
         end
 
         # @api public
-        # @return [Hash] structured representation
+        # @return [Hash]
         def to_h
           { body: body&.to_h, no_content: no_content? }
         end

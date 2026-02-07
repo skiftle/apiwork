@@ -8,7 +8,7 @@ module Apiwork
       #   @api public
       #   Finds an export by name.
       #   @param name [Symbol] the export name
-      #   @return [Class<Export::Base>, nil] the export class
+      #   @return [Class<Export::Base>, nil]
       #   @see .find!
       #   @example
       #     Apiwork::Export.find(:openapi)
@@ -17,7 +17,7 @@ module Apiwork
       #   @api public
       #   Finds an export by name.
       #   @param name [Symbol] the export name
-      #   @return [Class<Export::Base>] the export class
+      #   @return [Class<Export::Base>]
       #   @raise [KeyError] if the export is not found
       #   @see .find
       #   @example
@@ -48,7 +48,7 @@ module Apiwork
       # @param locale [Symbol, nil] locale for translations
       # @param key_format [Symbol, nil] key casing (:camel, :underscore, :kebab, :keep)
       # @param options export-specific keyword arguments
-      # @return [String] the generated export
+      # @return [String]
       # @raise [ConfigurationError] if export is not declared for the API
       # @see Export::Base
       #

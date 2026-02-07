@@ -29,15 +29,15 @@ module Apiwork
           self.wrapper_type = :collection
 
           # @api public
-          # @return [Hash] custom metadata passed from the controller
+          # @return [Hash]
           attr_reader :meta
 
           # @api public
-          # @return [Hash] capability metadata (pagination, etc.)
+          # @return [Hash]
           attr_reader :metadata
 
           # @api public
-          # @return [RootKey] the resource root key for response wrapping
+          # @return [RootKey]
           attr_reader :root_key
 
           def initialize(data, metadata, root_key, meta)

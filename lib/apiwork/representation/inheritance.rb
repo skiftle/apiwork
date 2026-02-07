@@ -14,7 +14,7 @@ module Apiwork
     #   ClientRepresentation.inheritance.resolve(record)  # => PersonClientRepresentation
     class Inheritance
       # @api public
-      # @return [Class<Representation::Base>] the base representation class for this inheritance chain
+      # @return [Class<Representation::Base>]
       attr_reader :base_class
 
       # @api public
@@ -39,7 +39,7 @@ module Apiwork
       # @api public
       # Resolves a record to its subclass representation.
       #
-      # @param record [ActiveRecord::Base]
+      # @param record [ActiveRecord::Base] the record to resolve
       # @return [Class<Representation::Base>, nil]
       def resolve(record)
         type_value = record.public_send(column)
@@ -47,7 +47,7 @@ module Apiwork
       end
 
       # @api public
-      # Whether any subclass has a custom sti_name different from the model.
+      # Returns whether any subclass has a custom sti_name different from the model.
       #
       # @return [Boolean]
       def needs_transform?

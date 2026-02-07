@@ -31,7 +31,7 @@ module Apiwork
       #   @api public
       #   Finds an error code by key.
       #   @param key [Symbol] the error code key
-      #   @return [ErrorCode::Definition, nil] the error code
+      #   @return [ErrorCode::Definition, nil]
       #   @see .find!
       #   @example
       #     Apiwork::ErrorCode.find(:not_found)
@@ -40,7 +40,7 @@ module Apiwork
       #   @api public
       #   Finds an error code by key.
       #   @param key [Symbol] the error code key
-      #   @return [ErrorCode::Definition] the error code
+      #   @return [ErrorCode::Definition]
       #   @raise [KeyError] if the error code is not found
       #   @see .find
       #   @example
@@ -56,7 +56,7 @@ module Apiwork
       #   @param key [Symbol] unique identifier for the error code
       #   @param status [Integer] HTTP status code (must be 400-599)
       #   @param attach_path [Boolean] include request path in error response (default: false)
-      #   @return [ErrorCode::Definition] the registered error code
+      #   @return [ErrorCode::Definition]
       #   @raise [ArgumentError] if status is outside 400-599 range
       #   @see Issue
       #

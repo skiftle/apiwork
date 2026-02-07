@@ -26,199 +26,199 @@ module Apiwork
         end
 
         # @api public
-        # @return [Symbol] the param type (:string, :integer, :array, :object, etc.)
+        # @return [Symbol]
         def type
           @dump[:type]
         end
 
         # @api public
-        # @return [Boolean] true if this field can be null
+        # @return [Boolean]
         def nullable?
           @dump[:nullable]
         end
 
         # @api public
-        # @return [Boolean] true if this field is optional
+        # @return [Boolean]
         def optional?
           @dump[:optional]
         end
 
         # @api public
-        # @return [Boolean] true if this field is deprecated
+        # @return [Boolean]
         def deprecated?
           @dump[:deprecated]
         end
 
         # @api public
-        # @return [String, nil] the field description
+        # @return [String, nil]
         def description
           @dump[:description]
         end
 
         # @api public
-        # @return [Object, nil] the example value
+        # @return [Object, nil]
         def example
           @dump[:example]
         end
 
         # @api public
-        # @return [Object, nil] the default value
+        # @return [Object, nil]
         def default
           @dump[:default]
         end
 
         # @api public
-        # @return [Boolean] true if a default value is defined
+        # @return [Boolean]
         def default?
           @dump.key?(:default)
         end
 
         # @api public
-        # @return [String, nil] the discriminator tag for union variants
+        # @return [String, nil]
         def tag
           @dump[:tag]
         end
 
         # @api public
-        # @return [Boolean] false — override in scalar subclasses
+        # @return [Boolean]
         def scalar?
           false
         end
 
         # @api public
-        # @return [Boolean] false — override in Array
+        # @return [Boolean]
         def array?
           false
         end
 
         # @api public
-        # @return [Boolean] false — override in Object
+        # @return [Boolean]
         def object?
           false
         end
 
         # @api public
-        # @return [Boolean] false — override in Union
+        # @return [Boolean]
         def union?
           false
         end
 
         # @api public
-        # @return [Boolean] false — override in Literal
+        # @return [Boolean]
         def literal?
           false
         end
 
         # @api public
-        # @return [Boolean] false — override in Integer, Number, Decimal
+        # @return [Boolean]
         def numeric?
           false
         end
 
         # @api public
-        # @return [Boolean] false — override in types that support min/max
+        # @return [Boolean]
         def boundable?
           false
         end
 
         # @api public
-        # @return [Boolean] false — override in String
+        # @return [Boolean]
         def string?
           false
         end
 
         # @api public
-        # @return [Boolean] false — override in Integer
+        # @return [Boolean]
         def integer?
           false
         end
 
         # @api public
-        # @return [Boolean] false — override in Number
+        # @return [Boolean]
         def number?
           false
         end
 
         # @api public
-        # @return [Boolean] false — override in Decimal
+        # @return [Boolean]
         def decimal?
           false
         end
 
         # @api public
-        # @return [Boolean] false — override in Boolean
+        # @return [Boolean]
         def boolean?
           false
         end
 
         # @api public
-        # @return [Boolean] false — override in DateTime
+        # @return [Boolean]
         def datetime?
           false
         end
 
         # @api public
-        # @return [Boolean] false — override in Date
+        # @return [Boolean]
         def date?
           false
         end
 
         # @api public
-        # @return [Boolean] false — override in Time
+        # @return [Boolean]
         def time?
           false
         end
 
         # @api public
-        # @return [Boolean] false — override in UUID
+        # @return [Boolean]
         def uuid?
           false
         end
 
         # @api public
-        # @return [Boolean] false — override in Binary
+        # @return [Boolean]
         def binary?
           false
         end
 
         # @api public
-        # @return [Boolean] false — override in Unknown
+        # @return [Boolean]
         def unknown?
           false
         end
 
         # @api public
-        # @return [Boolean] false — override in Ref
+        # @return [Boolean]
         def ref?
           false
         end
 
         # @api public
-        # @return [Boolean] false — override in scalar types with enum constraints
+        # @return [Boolean]
         def enum?
           false
         end
 
         # @api public
-        # @return [Boolean] false — override in scalar types
+        # @return [Boolean]
         def enum_ref?
           false
         end
 
         # @api public
-        # @return [Boolean] false — override in String, Integer
+        # @return [Boolean]
         def formattable?
           false
         end
 
         # @api public
-        # @return [Boolean] false — override in Object
+        # @return [Boolean]
         def partial?
           false
         end
 
         # @api public
-        # @return [Hash] structured representation
+        # @return [Hash]
         def to_h
           {
             default: default,

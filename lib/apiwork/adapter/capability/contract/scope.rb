@@ -11,7 +11,7 @@ module Apiwork
         # Use this to query contract-specific state when building types.
         class Scope
           # @api public
-          # @return [Hash{Symbol => Resource::Action}] actions linked to this contract
+          # @return [Hash{Symbol => Resource::Action}]
           attr_reader :actions
 
           attr_reader :representation_class

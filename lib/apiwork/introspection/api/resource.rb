@@ -24,7 +24,7 @@ module Apiwork
         end
 
         # @api public
-        # @return [String] resource identifier
+        # @return [String]
         def identifier
           @dump[:identifier]
         end
@@ -36,26 +36,26 @@ module Apiwork
         end
 
         # @api public
-        # @return [Array<String>] parent resource identifiers
+        # @return [Array<String>]
         def parent_identifiers
           @dump[:parent_identifiers]
         end
 
         # @api public
-        # @return [Hash{Symbol => Introspection::Action}] actions defined on this resource
+        # @return [Hash{Symbol => Introspection::Action}]
         # @see Introspection::Action
         def actions
           @actions ||= @dump[:actions].transform_values { |dump| Action.new(dump) }
         end
 
         # @api public
-        # @return [Hash{Symbol => Resource}] nested resources
+        # @return [Hash{Symbol => Resource}]
         def resources
           @resources ||= @dump[:resources].transform_values { |dump| Resource.new(dump) }
         end
 
         # @api public
-        # @return [Hash] structured representation
+        # @return [Hash]
         def to_h
           {
             actions: actions.transform_values(&:to_h),

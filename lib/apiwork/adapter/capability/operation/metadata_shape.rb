@@ -23,7 +23,7 @@ module Apiwork
           end
 
           # @api public
-          # @return [Configuration] capability options
+          # @return [Configuration]
           attr_reader :options
 
           # @!method array(name, **options, &block)

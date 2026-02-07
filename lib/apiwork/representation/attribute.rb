@@ -22,43 +22,43 @@ module Apiwork
       }.freeze
 
       # @api public
-      # @return [Boolean] whether this attribute is deprecated
+      # @return [Boolean]
       attr_reader :deprecated
 
       # @api public
-      # @return [String, nil] documentation description
+      # @return [String, nil]
       attr_reader :description
 
       # @api public
-      # @return [Array<Object>, nil] allowed values
+      # @return [Array<Object>, nil]
       attr_reader :enum
 
       # @api public
-      # @return [Object, nil] example value for documentation
+      # @return [Object, nil]
       attr_reader :example
 
       # @api public
-      # @return [Symbol, nil] format hint
+      # @return [Symbol, nil]
       attr_reader :format
 
       # @api public
-      # @return [Integer, nil] maximum value or length
+      # @return [Integer, nil]
       attr_reader :max
 
       # @api public
-      # @return [Integer, nil] minimum value or length
+      # @return [Integer, nil]
       attr_reader :min
 
       # @api public
-      # @return [Symbol] attribute name
+      # @return [Symbol]
       attr_reader :name
 
       # @api public
-      # @return [Symbol, nil] element type for arrays
+      # @return [Symbol, nil]
       attr_reader :of
 
       # @api public
-      # @return [Symbol] data type
+      # @return [Symbol]
       attr_reader :type
 
       attr_reader :element,
@@ -140,25 +140,25 @@ module Apiwork
       end
 
       # @api public
-      # @return [Boolean] whether filtering is enabled
+      # @return [Boolean]
       def filterable?
         @filterable
       end
 
       # @api public
-      # @return [Boolean] whether sorting is enabled
+      # @return [Boolean]
       def sortable?
         @sortable
       end
 
       # @api public
-      # @return [Boolean] whether this attribute can be omitted
+      # @return [Boolean]
       def optional?
         @optional
       end
 
       # @api public
-      # @return [Boolean] whether this attribute can be null
+      # @return [Boolean]
       def nullable?
         return false if @empty
 
@@ -166,14 +166,14 @@ module Apiwork
       end
 
       # @api public
-      # @return [Boolean] whether this attribute is writable
+      # @return [Boolean]
       def writable?
         @writable[:on].any?
       end
 
       # @api public
       # @param action [Symbol] the action to check (:create or :update)
-      # @return [Boolean] whether this attribute is writable for the given action
+      # @return [Boolean]
       def writable_for?(action)
         @writable[:on].include?(action)
       end

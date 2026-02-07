@@ -67,7 +67,7 @@ module Apiwork
     # @api public
     # Converts the configuration to a hash.
     #
-    # @return [Hash] all configuration values as a hash
+    # @return [Hash]
     #
     # @example
     #   config.to_h  # => { pagination: { strategy: :offset, default_size: 20 } }

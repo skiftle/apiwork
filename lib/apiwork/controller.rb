@@ -63,7 +63,7 @@ module Apiwork
     # with type coercion applied. Access parameters via {Contract::Base#query}
     # and {Contract::Base#body}.
     #
-    # @return [Contract::Base] the contract
+    # @return [Contract::Base]
     # @see Contract::Base
     #
     # @example Access parsed parameters
@@ -196,7 +196,7 @@ module Apiwork
     # Override this method to provide context data to your representations.
     # Common uses: current user, permissions, locale, feature flags.
     #
-    # @return [Hash] context data available in representation serialization
+    # @return [Hash]
     #
     # @example Provide current user context
     #   def context

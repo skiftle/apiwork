@@ -15,19 +15,19 @@ module Apiwork
       #   param.value    # => "active" or 42 or true
       class Literal < Base
         # @api public
-        # @return [String, Numeric, Boolean, nil] the literal value
+        # @return [String, Numeric, Boolean, nil]
         def value
           @dump[:value]
         end
 
         # @api public
-        # @return [Boolean] true if this is a literal param
+        # @return [Boolean]
         def literal?
           true
         end
 
         # @api public
-        # @return [Hash] structured representation
+        # @return [Hash]
         def to_h
           result = super
           result[:value] = value

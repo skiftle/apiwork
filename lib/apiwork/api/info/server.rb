@@ -16,7 +16,7 @@ module Apiwork
         # @api public
         # The server URL.
         #
-        # @param value [String]
+        # @param value [String] the server URL
         # @return [String, nil]
         #
         # @example
@@ -31,7 +31,7 @@ module Apiwork
         # @api public
         # The server description.
         #
-        # @param value [String]
+        # @param value [String] the server description
         # @return [String, nil]
         #
         # @example

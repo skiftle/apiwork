@@ -8,7 +8,7 @@ module Apiwork
       #   @api public
       #   Finds an API by its mount path.
       #   @param path [String] the API mount path
-      #   @return [Class<API::Base>, nil] the API class
+      #   @return [Class<API::Base>, nil]
       #   @see .find!
       #   @example
       #     Apiwork::API.find('/api/v1')
@@ -17,7 +17,7 @@ module Apiwork
       #   @api public
       #   Finds an API by its mount path.
       #   @param path [String] the API mount path
-      #   @return [Class<API::Base>] the API class
+      #   @return [Class<API::Base>]
       #   @raise [KeyError] if the API is not found
       #   @see .find
       #   @example
@@ -40,7 +40,7 @@ module Apiwork
       #
       # @param path [String] the mount path for this API (e.g. '/api/v1')
       # @yield block for API definition
-      # @return [API::Base]
+      # @return [Class<API::Base>]
       #
       # @example Basic API
       #   Apiwork::API.define '/api/v1' do
@@ -68,7 +68,7 @@ module Apiwork
       #
       # @param path [String] the API mount path
       # @param locale [Symbol] optional locale for descriptions
-      # @return [Hash] the introspection data
+      # @return [Hash]
       #
       # @example
       #   Apiwork::API.introspect('/api/v1')

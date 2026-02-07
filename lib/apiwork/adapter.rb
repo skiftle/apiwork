@@ -8,7 +8,7 @@ module Apiwork
       #   @api public
       #   Finds an adapter by name.
       #   @param name [Symbol] the adapter name
-      #   @return [Class<Adapter::Base>, nil] the adapter class
+      #   @return [Class<Adapter::Base>, nil]
       #   @see .find!
       #   @example
       #     Apiwork::Adapter.find(:standard)
@@ -17,7 +17,7 @@ module Apiwork
       #   @api public
       #   Finds an adapter by name.
       #   @param name [Symbol] the adapter name
-      #   @return [Class<Adapter::Base>] the adapter class
+      #   @return [Class<Adapter::Base>]
       #   @raise [KeyError] if the adapter is not found
       #   @see .find
       #   @example

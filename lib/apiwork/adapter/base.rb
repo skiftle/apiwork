@@ -30,7 +30,7 @@ module Apiwork
         # @api public
         # The adapter name.
         #
-        # @param value [Symbol, String]
+        # @param value [Symbol, String, nil] the adapter name
         # @return [Symbol, nil]
         #
         # @example
@@ -87,7 +87,7 @@ module Apiwork
         #
         # Handles serialization of records and collections.
         #
-        # @param klass [Class] a {Serializer::Resource::Base} subclass
+        # @param klass [Class, nil] a {Serializer::Resource::Base} subclass
         # @return [Class, nil]
         #
         # @example
@@ -102,7 +102,7 @@ module Apiwork
         #
         # Handles serialization of errors.
         #
-        # @param klass [Class] a {Serializer::Error::Base} subclass
+        # @param klass [Class, nil] a {Serializer::Error::Base} subclass
         # @return [Class, nil]
         #
         # @example
@@ -115,7 +115,7 @@ module Apiwork
         # @api public
         # The member wrapper class.
         #
-        # @param klass [Class] a {Wrapper::Member::Base} subclass
+        # @param klass [Class, nil] a {Wrapper::Member::Base} subclass
         # @return [Class, nil]
         #
         # @example
@@ -128,7 +128,7 @@ module Apiwork
         # @api public
         # The collection wrapper class.
         #
-        # @param klass [Class] a {Wrapper::Collection::Base} subclass
+        # @param klass [Class, nil] a {Wrapper::Collection::Base} subclass
         # @return [Class, nil]
         #
         # @example
@@ -141,7 +141,7 @@ module Apiwork
         # @api public
         # The error wrapper class.
         #
-        # @param klass [Class] a {Wrapper::Error::Base} subclass
+        # @param klass [Class, nil] a {Wrapper::Error::Base} subclass
         # @return [Class, nil]
         #
         # @example

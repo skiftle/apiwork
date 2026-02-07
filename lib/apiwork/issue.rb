@@ -8,19 +8,19 @@ module Apiwork
   # coercion, or constraint checks. Access via `contract.issues`.
   class Issue
     # @api public
-    # @return [Symbol] the error code (e.g., :required, :type_mismatch)
+    # @return [Symbol]
     attr_reader :code
 
     # @api public
-    # @return [String] human-readable error message
+    # @return [String]
     attr_reader :detail
 
     # @api public
-    # @return [Hash] additional context about the error
+    # @return [Hash]
     attr_reader :meta
 
     # @api public
-    # @return [Array<Symbol, Integer>] path to the invalid field
+    # @return [Array<Symbol, Integer>]
     attr_reader :path
 
     def initialize(code, detail, meta: {}, path: [])
@@ -37,7 +37,7 @@ module Apiwork
     end
 
     # @api public
-    # @return [Hash] hash representation with code, detail, path, pointer, meta
+    # @return [Hash]
     def to_h
       {
         code: code,
@@ -49,13 +49,13 @@ module Apiwork
     end
 
     # @api public
-    # @return [Hash] alias for to_h, for JSON serialization
+    # @return [Hash]
     def as_json
       to_h
     end
 
     # @api public
-    # @return [String] human-readable string representation
+    # @return [String]
     def to_s
       "[#{code}]#{path.any? ? " at #{pointer}" : ''} #{detail}"
     end

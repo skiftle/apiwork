@@ -45,15 +45,15 @@ module Apiwork
         end
 
         # @api public
-        # @return [Symbol, nil] the data type name from serializer
+        # @return [Symbol, nil]
         attr_reader :data_type
 
         # @api public
-        # @return [API::Object] aggregated capability shapes to merge
+        # @return [API::Object]
         attr_reader :metadata_shapes
 
         # @api public
-        # @return [RootKey] the root key for the representation
+        # @return [RootKey]
         # @see Representation::RootKey
         attr_reader :root_key
 

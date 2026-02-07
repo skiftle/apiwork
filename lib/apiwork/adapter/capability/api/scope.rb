@@ -51,7 +51,7 @@ module Apiwork
           #
           # @param capability [Symbol] the capability name
           # @param key [Symbol] the configuration key
-          # @return [Set] unique values across all representations
+          # @return [Set]
           def configured(capability, key)
             @representation_registry.options_for(capability, key)
           end

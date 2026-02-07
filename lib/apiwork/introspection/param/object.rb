@@ -18,7 +18,7 @@ module Apiwork
       #   param.partial?  # => true if all fields are optional
       class Object < Base
         # @api public
-        # @return [Hash{Symbol => Param::Base}] nested field definitions
+        # @return [Hash{Symbol => Param::Base}]
         def shape
           return @shape if defined?(@shape)
 
@@ -26,19 +26,19 @@ module Apiwork
         end
 
         # @api public
-        # @return [Boolean] true if this is a partial object (all fields optional)
+        # @return [Boolean]
         def partial?
           @dump[:partial]
         end
 
         # @api public
-        # @return [Boolean] true if this is an object param
+        # @return [Boolean]
         def object?
           true
         end
 
         # @api public
-        # @return [Hash] structured representation
+        # @return [Hash]
         def to_h
           result = super
           result[:partial] = partial?

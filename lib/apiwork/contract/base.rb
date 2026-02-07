@@ -45,7 +45,7 @@ module Apiwork
     # @!method abstract?
     #   @api public
     #   Returns whether this contract is abstract.
-    #   @return [Boolean] true if abstract
+    #   @return [Boolean]
     class Base
       include Abstractable
 
@@ -58,25 +58,25 @@ module Apiwork
       class_attribute :_synthetic, default: false, instance_accessor: false
 
       # @api public
-      # @return [Request] the parsed and validated request
+      # @return [Request]
       attr_reader :request
 
       # @api public
-      # @return [Array<Issue>] validation issues (empty if valid)
+      # @return [Array<Issue>]
       attr_reader :issues
 
       # @api public
-      # @return [Symbol] the current action name
+      # @return [Symbol]
       attr_reader :action_name
 
       # @api public
       # @see Request#query
-      # @return [Hash] parsed and validated query parameters
+      # @return [Hash]
       delegate :query, to: :request
 
       # @api public
       # @see Request#body
-      # @return [Hash] parsed and validated body parameters
+      # @return [Hash]
       delegate :body, to: :request
 
       class << self
@@ -89,7 +89,7 @@ module Apiwork
         #
         # If not set, prefix is derived from representation's root_key or class name.
         #
-        # @param value [Symbol, String] scope prefix
+        # @param value [Symbol, String, nil] the scope prefix
         # @return [String, nil]
         #
         # @example Custom scope prefix
@@ -309,7 +309,7 @@ module Apiwork
         # @param replace [Boolean] replace existing action definition (default: false)
         # @yield block for defining request/response contract (instance_eval style)
         # @yieldparam builder [Contract::Action] the builder (yield style)
-        # @return [Contract::Action] the action definition
+        # @return [Contract::Action]
         # @see Contract::Action
         #
         # @example instance_eval style
@@ -366,7 +366,7 @@ module Apiwork
         #
         # @param locale [Symbol] optional locale for translated descriptions
         # @param expand [Boolean] resolve all referenced types (local, imported, global)
-        # @return [Hash] contract structure with :actions key
+        # @return [Hash]
         #
         # @example
         #   InvoiceContract.introspect
@@ -526,14 +526,14 @@ module Apiwork
 
       # @api public
       # Returns whether the contract passed validation.
-      # @return [Boolean] true if no validation issues
+      # @return [Boolean]
       def valid?
         issues.empty?
       end
 
       # @api public
       # Returns whether the contract has validation issues.
-      # @return [Boolean] true if any validation issues
+      # @return [Boolean]
       def invalid?
         issues.any?
       end

@@ -37,12 +37,12 @@ module Apiwork
 
         class << self
           # @api public
-          # Sets or returns the capability name.
+          # The capability name.
           #
           # Used for configuration options, translation keys, and {Adapter::Base.skip_capability}.
           #
           # @param value [Symbol, nil] the capability name
-          # @return [Symbol, nil] the capability name
+          # @return [Symbol, nil]
           def capability_name(value = nil)
             @capability_name = value.to_sym if value
             @capability_name

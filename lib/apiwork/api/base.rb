@@ -130,7 +130,7 @@ module Apiwork
         #
         # @param name [Symbol, nil] adapter name (default: :standard)
         # @yield optional configuration block
-        # @return [Adapter::Base, nil] the adapter
+        # @return [Adapter::Base, nil]
         # @see Adapter::Base
         #
         # @example Configure default adapter

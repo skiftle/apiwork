@@ -17,19 +17,19 @@ module Apiwork
       #   param.ref     # => :address (the referenced type name)
       class Ref < Base
         # @api public
-        # @return [Symbol] the referenced type name
+        # @return [Symbol]
         def ref
           @dump[:ref]
         end
 
         # @api public
-        # @return [Boolean] true if this is a type reference param
+        # @return [Boolean]
         def ref?
           true
         end
 
         # @api public
-        # @return [Hash] structured representation
+        # @return [Hash]
         def to_h
           result = super
           result[:ref] = ref

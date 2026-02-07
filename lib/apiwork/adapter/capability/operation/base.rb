@@ -11,19 +11,19 @@ module Apiwork
         # Use it to transform data at runtime.
         class Base
           # @api public
-          # @return [Object] the data to transform (relation or record)
+          # @return [Object]
           attr_reader :data
 
           # @api public
-          # @return [Configuration] capability options
+          # @return [Configuration]
           attr_reader :options
 
           # @api public
-          # @return [Request] the current request
+          # @return [Request]
           attr_reader :request
 
           # @api public
-          # @return [Class<Representation::Base>] the representation class for this request
+          # @return [Class<Representation::Base>]
           attr_reader :representation_class
 
           class << self
@@ -31,7 +31,7 @@ module Apiwork
             # Sets the target for this operation.
             #
             # @param value [Symbol, nil] :collection or :member
-            # @return [Symbol, nil] the current target
+            # @return [Symbol, nil]
             def target(value = nil)
               @target = value if value
               @target
@@ -46,7 +46,7 @@ module Apiwork
             #
             # @param klass [Class, nil] a MetadataShape subclass
             # @yield block that defines metadata structure
-            # @return [Class, nil] the metadata shape class
+            # @return [Class, nil]
             #
             # @example With block
             #   metadata_shape do
@@ -92,7 +92,7 @@ module Apiwork
           # Override this method to implement transformation logic.
           # Return nil if no changes are made.
           #
-          # @return [Result, nil] the result or nil for no changes
+          # @return [Result, nil]
           def apply
             raise NotImplementedError
           end
@@ -124,7 +124,7 @@ module Apiwork
           #
           # @param segments [Array<Symbol, String>] key path segments
           # @param default [String, nil] fallback value if no translation found
-          # @return [String, nil] the translated string or default
+          # @return [String, nil]
           #
           # @example
           #   translate(:domain_issues, :invalid, :detail)

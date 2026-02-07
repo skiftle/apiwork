@@ -15,31 +15,31 @@ module Apiwork
       end
 
       # @api public
-      # @return [Array<String>] allowed enum values
+      # @return [Array<String>]
       def values
         @dump[:values]
       end
 
       # @api public
-      # @return [String, nil] enum description
+      # @return [String, nil]
       def description
         @dump[:description]
       end
 
       # @api public
-      # @return [String, nil] example value
+      # @return [String, nil]
       def example
         @dump[:example]
       end
 
       # @api public
-      # @return [Boolean] whether this enum is deprecated
+      # @return [Boolean]
       def deprecated?
         @dump[:deprecated]
       end
 
       # @api public
-      # @return [Hash] structured representation
+      # @return [Hash]
       def to_h
         {
           deprecated: deprecated?,

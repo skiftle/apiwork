@@ -14,11 +14,11 @@ module Apiwork
     #   root_key.plural    # => "invoices"
     class RootKey
       # @api public
-      # @return [String] root key for collections
+      # @return [String]
       attr_reader :plural
 
       # @api public
-      # @return [String] root key for single records
+      # @return [String]
       attr_reader :singular
 
       def initialize(singular, plural = singular.pluralize)

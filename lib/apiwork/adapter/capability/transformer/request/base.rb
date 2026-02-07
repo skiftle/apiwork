@@ -41,7 +41,7 @@ module Apiwork
               # The phase when this transformer runs relative to request validation.
               #
               # @param value [Symbol, nil] :before or :after (default: :before)
-              # @return [Symbol] the phase
+              # @return [Symbol]
               def phase(value = nil)
                 @phase = value if value
                 @phase || :before
@@ -59,7 +59,7 @@ module Apiwork
             # @api public
             # Transforms the request.
             #
-            # @return [Request] the transformed request
+            # @return [Request]
             def transform
               raise NotImplementedError
             end

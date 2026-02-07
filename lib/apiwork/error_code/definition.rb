@@ -10,11 +10,11 @@ module Apiwork
     #
     # @!attribute [r] key
     #   @api public
-    #   @return [Symbol] error code identifier
+    #   @return [Symbol]
     #
     # @!attribute [r] status
     #   @api public
-    #   @return [Integer] HTTP status code
+    #   @return [Integer]
     #
     # @example
     #   error_code = Apiwork::ErrorCode.find!(:not_found)

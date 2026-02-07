@@ -17,19 +17,19 @@ module Apiwork
           end
 
           # @api public
-          # @return [String, nil] license name
+          # @return [String, nil]
           def name
             @dump[:name]
           end
 
           # @api public
-          # @return [String, nil] license URL
+          # @return [String, nil]
           def url
             @dump[:url]
           end
 
           # @api public
-          # @return [Hash] structured representation
+          # @return [Hash]
           def to_h
             {
               name: name,

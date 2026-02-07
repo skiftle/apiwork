@@ -25,68 +25,68 @@ module Apiwork
       #   end
       class Number < Base
         # @api public
-        # @return [Numeric, nil] the minimum value constraint
+        # @return [Numeric, nil]
         def min
           @dump[:min]
         end
 
         # @api public
-        # @return [Numeric, nil] the maximum value constraint
+        # @return [Numeric, nil]
         def max
           @dump[:max]
         end
 
         # @api public
-        # @return [Boolean] true if this is a scalar type
+        # @return [Boolean]
         def scalar?
           true
         end
 
         # @api public
-        # @return [Boolean] true if this param has enum constraints
+        # @return [Boolean]
         def enum?
           @dump[:enum].present?
         end
 
         # @api public
-        # @return [Array<Numeric>, Symbol, nil] enum values (Array) or reference name (Symbol)
+        # @return [Array<Numeric>, Symbol, nil]
         # @see #enum?
         def enum
           @dump[:enum]
         end
 
         # @api public
-        # @return [Boolean] true if enum is a reference to a named enum
+        # @return [Boolean]
         def enum_ref?
           @dump[:enum].is_a?(Symbol)
         end
 
         # @api public
-        # @return [Boolean] true if this is a numeric param
+        # @return [Boolean]
         def numeric?
           true
         end
 
         # @api public
-        # @return [Boolean] true if this param supports min/max constraints
+        # @return [Boolean]
         def boundable?
           true
         end
 
         # @api public
-        # @return [Boolean] true if this is a number param
+        # @return [Boolean]
         def number?
           true
         end
 
         # @api public
-        # @return [Boolean] false — numbers do not support format constraints
+        # @return [Boolean]
         def formattable?
           false
         end
 
         # @api public
-        # @return [Hash] structured representation
+        # @return [Hash]
         def to_h
           result = super
           result[:enum] = enum if enum?

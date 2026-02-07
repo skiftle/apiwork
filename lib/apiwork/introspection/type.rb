@@ -21,74 +21,74 @@ module Apiwork
       end
 
       # @api public
-      # @return [Symbol, nil] type kind (:object or :union)
+      # @return [Symbol, nil]
       def type
         @dump[:type]
       end
 
       # @api public
-      # @return [Boolean] whether this is an object type
+      # @return [Boolean]
       def object?
         type == :object
       end
 
       # @api public
-      # @return [Boolean] whether this is a union type
+      # @return [Boolean]
       def union?
         type == :union
       end
 
       # @api public
-      # @return [Hash{Symbol => Param}] nested fields for object types
+      # @return [Hash{Symbol => Param}]
       # @see Param
       def shape
         @shape ||= @dump[:shape].transform_values { |dump| Param.build(dump) }
       end
 
       # @api public
-      # @return [Array<Param>] variants for union types
+      # @return [Array<Param>]
       def variants
         @variants ||= @dump[:variants].map { |variant| Param.build(variant) }
       end
 
       # @api public
-      # @return [Symbol, nil] discriminator field for discriminated unions
+      # @return [Symbol, nil]
       def discriminator
         @dump[:discriminator]
       end
 
       # @api public
-      # @return [String, nil] type description
+      # @return [String, nil]
       def description
         @dump[:description]
       end
 
       # @api public
-      # @return [Array<Symbol>] types this type extends (allOf pattern)
+      # @return [Array<Symbol>]
       def extends
         @dump[:extends]
       end
 
       # @api public
-      # @return [Boolean] whether this type extends other types
+      # @return [Boolean]
       def extends?
         extends.any?
       end
 
       # @api public
-      # @return [Object, nil] example value
+      # @return [Object, nil]
       def example
         @dump[:example]
       end
 
       # @api public
-      # @return [Boolean] whether this type is deprecated
+      # @return [Boolean]
       def deprecated?
         @dump[:deprecated]
       end
 
       # @api public
-      # @return [Hash] structured representation
+      # @return [Hash]
       def to_h
         {
           deprecated: deprecated?,

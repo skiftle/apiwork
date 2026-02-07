@@ -26,74 +26,74 @@ module Apiwork
       #   end
       class Integer < Base
         # @api public
-        # @return [Numeric, nil] the minimum value constraint
+        # @return [Numeric, nil]
         def min
           @dump[:min]
         end
 
         # @api public
-        # @return [Numeric, nil] the maximum value constraint
+        # @return [Numeric, nil]
         def max
           @dump[:max]
         end
 
         # @api public
-        # @return [Symbol, nil] the format constraint (:int32, :int64)
+        # @return [Symbol, nil]
         def format
           @dump[:format]
         end
 
         # @api public
-        # @return [Boolean] true if this is a scalar type
+        # @return [Boolean]
         def scalar?
           true
         end
 
         # @api public
-        # @return [Boolean] true if this param has enum constraints
+        # @return [Boolean]
         def enum?
           @dump[:enum].present?
         end
 
         # @api public
-        # @return [Array<Integer>, Symbol, nil] enum values (Array) or reference name (Symbol)
+        # @return [Array<Integer>, Symbol, nil]
         # @see #enum?
         def enum
           @dump[:enum]
         end
 
         # @api public
-        # @return [Boolean] true if enum is a reference to a named enum
+        # @return [Boolean]
         def enum_ref?
           @dump[:enum].is_a?(Symbol)
         end
 
         # @api public
-        # @return [Boolean] true if this is a numeric param
+        # @return [Boolean]
         def numeric?
           true
         end
 
         # @api public
-        # @return [Boolean] true if this param supports min/max constraints
+        # @return [Boolean]
         def boundable?
           true
         end
 
         # @api public
-        # @return [Boolean] true if this param supports format constraints
+        # @return [Boolean]
         def formattable?
           true
         end
 
         # @api public
-        # @return [Boolean] true if this is an integer param
+        # @return [Boolean]
         def integer?
           true
         end
 
         # @api public
-        # @return [Hash] structured representation
+        # @return [Hash]
         def to_h
           result = super
           result[:enum] = enum if enum?

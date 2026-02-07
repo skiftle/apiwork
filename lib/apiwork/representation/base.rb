@@ -36,23 +36,23 @@ module Apiwork
     # @!method abstract?
     #   @api public
     #   Returns whether this representation is abstract.
-    #   @return [Boolean] true if abstract
+    #   @return [Boolean]
     class Base
       include Abstractable
 
       # @!method self.attributes
       #   @api public
-      #   @return [Hash{Symbol => Attribute}] defined attributes
+      #   @return [Hash{Symbol => Attribute}]
       class_attribute :attributes, default: {}, instance_accessor: false
 
       # @!method self.associations
       #   @api public
-      #   @return [Hash{Symbol => Association}] defined associations
+      #   @return [Hash{Symbol => Association}]
       class_attribute :associations, default: {}, instance_accessor: false
 
       # @!method self.inheritance
       #   @api public
-      #   @return [Representation::Inheritance, nil] the inheritance configuration for STI base representations
+      #   @return [Representation::Inheritance, nil]
       class_attribute :inheritance, default: nil, instance_accessor: false
       class_attribute :_root, default: nil, instance_accessor: false
       class_attribute :_adapter_config, default: {}, instance_accessor: false
@@ -61,11 +61,11 @@ module Apiwork
       class_attribute :_example, default: nil, instance_accessor: false
 
       # @api public
-      # @return [Hash] custom context passed during serialization
+      # @return [Hash]
       attr_reader :context
 
       # @api public
-      # @return [ActiveRecord::Base] the record being serialized
+      # @return [ActiveRecord::Base]
       attr_reader :record
 
       class << self
@@ -398,13 +398,13 @@ module Apiwork
         end
 
         # @api public
-        # Sets or returns a custom API type name for this representation.
+        # The custom API type name for this representation.
         #
         # When set, this value is used instead of the model's default type names
         # in both STI discriminators and polymorphic type columns.
         #
         # @param value [String, Symbol, nil] the custom type name
-        # @return [String, nil] the custom type name if set
+        # @return [String, nil]
         #
         # @example STI subclass with custom type name
         #   class PersonClientRepresentation < ClientRepresentation
@@ -427,10 +427,9 @@ module Apiwork
         # @api public
         # Returns the API name for this representation in STI contexts.
         #
-        # Returns the custom {#type_name} if set, otherwise falls back to
-        # the model's sti_name.
+        # Uses the custom {#type_name} or falls back to the model's sti_name.
         #
-        # @return [String] the STI name for API use
+        # @return [String]
         # @see #type_name
         def sti_name
           @type_name || model_class.sti_name
@@ -439,10 +438,9 @@ module Apiwork
         # @api public
         # Returns the API name for this representation in polymorphic contexts.
         #
-        # Returns the custom {#type_name} if set, otherwise falls back to
-        # the model's polymorphic_name.
+        # Uses the custom {#type_name} or falls back to the model's polymorphic_name.
         #
-        # @return [String] the polymorphic name for API use
+        # @return [String]
         # @see #type_name
         def polymorphic_name
           @type_name || model_class.polymorphic_name
@@ -457,13 +455,13 @@ module Apiwork
         end
 
         # @api public
-        # Sets or gets a description for this representation.
+        # The description for this representation.
         #
         # Used in generated documentation (OpenAPI, etc.) to describe
         # what this resource represents.
         #
-        # @param value [String] description text (optional)
-        # @return [String, nil] the description
+        # @param value [String, nil] the description text
+        # @return [String, nil]
         #
         # @example
         #   class InvoiceRepresentation < Apiwork::Representation::Base
@@ -481,6 +479,8 @@ module Apiwork
         # Deprecated representations are included in generated documentation
         # with a deprecation notice.
         #
+        # @return [void]
+        #
         # @example
         #   class LegacyOrderRepresentation < Apiwork::Representation::Base
         #     deprecated!
@@ -490,12 +490,12 @@ module Apiwork
         end
 
         # @api public
-        # Sets or gets an example value for this representation.
+        # The example value for this representation.
         #
         # Used in generated documentation to show example responses.
         #
-        # @param value [Hash] example data (optional)
-        # @return [Hash, nil] the example
+        # @param value [Hash, nil] the example data
+        # @return [Hash, nil]
         #
         # @example
         #   class InvoiceRepresentation < Apiwork::Representation::Base
@@ -516,7 +516,7 @@ module Apiwork
         # @param record_or_collection [ActiveRecord::Base, Array<ActiveRecord::Base>] record(s) to serialize
         # @param context [Hash] context data available during serialization
         # @param include [Symbol, Array, Hash] associations to include
-        # @return [Hash, Array<Hash>] serialized data
+        # @return [Hash, Array<Hash>]
         #
         # @example Serialize a single record
         #   InvoiceRepresentation.serialize(invoice)
@@ -542,7 +542,7 @@ module Apiwork
         # webhooks, or any external data.
         #
         # @param hash_or_array [Hash, Array<Hash>] data to deserialize
-        # @return [Hash, Array<Hash>] deserialized data
+        # @return [Hash, Array<Hash>]
         #
         # @example Deserialize request payload
         #   InvoiceRepresentation.deserialize(params[:invoice])
@@ -583,7 +583,7 @@ module Apiwork
         # Auto-detected from representation name (InvoiceRepresentation becomes Invoice)
         # or explicitly set via {.model}.
         #
-        # @return [Class<ActiveRecord::Base>] the model class
+        # @return [Class<ActiveRecord::Base>]
         # @see .model
         #
         # @example

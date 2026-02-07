@@ -19,7 +19,7 @@ Strict order for all `@api public` methods:
 # @param name [Type] description
 # @yield description
 # @yieldparam name [Type] description
-# @return [Type] description
+# @return [Type]
 # @raise [Error] description
 # @see #other_method
 #
@@ -41,14 +41,21 @@ Strict order for all `@api public` methods:
 # The output type for this export.
 ```
 
-### @param/@return — NO period
+### @param — NO period
 
 ```ruby
 # @param name [Symbol] the object name
-# @return [Request] the parsed request
 ```
 
 These are fragments, not sentences. Never end with period.
+
+### @return — NO description
+
+```ruby
+# @return [Request]
+```
+
+Type only. Method description provides context.
 
 **Check:**
 ```bash
@@ -107,36 +114,36 @@ grep -rn "allows you to" lib/
 |---------|------|---------|
 | Method description | Uppercase start, period | "Finds an API by path." |
 | @param description | lowercase, no period | "the mount path" |
-| @return description | lowercase, no period | "the API class" |
+| @return | type only, no description | `[API::Base]` |
 | Class-level docs | Full sentence with period | "Base class for API definitions." |
 
 ---
 
 ## @param Format
 
-```ruby
-# Format
-@param name [Type] the description
+### Description Always Required
 
-# With default — always in @param, never in description
+```ruby
+# ALWAYS include description
+@param name [Symbol] the adapter name
+@param klass [Class] the serializer class
+@param value [String] the configuration value
+
+# With default
 @param replace [Boolean] replace existing (default: false)
-@param name [Symbol, nil] adapter name (default: :standard)
 
 # With enum values
 @param format [Symbol] :keep, :camel, :underscore, or :kebab
-
-# Dynamic/inherited default — brief note in description instead
-# The key format. Inherits from API when not set.
-#
-# @param format [Symbol, nil] :keep, :camel, :underscore, or :kebab
 ```
 
-**Rules:**
-- Lowercase description
-- Static defaults: `(default: X)` in @param line
-- Dynamic defaults: brief note in description, nothing in @param
-- Never "Defaults to X if Y" in description
-- Enum values listed with colons
+**Why?** Same as @return — consistency over "obviousness."
+
+### Rules
+
+- Lowercase description, no period
+- Static defaults: `(default: X)` at end of description
+- Dynamic defaults: brief note in method description instead
+- Enum values: list with colons in description
 - Include `nil` in type if parameter accepts nil
 
 **Check:**
@@ -148,53 +155,34 @@ grep -rn "Defaults to" lib/
 
 ## @return Format
 
+### No Description — Type Only
+
 ```ruby
-# Simple return
-@return [String] the mount path
-
-# Nullable
-@return [Class<API::Base>, nil] the API class or nil if not found
-
-# Boolean predicate
-@return [Boolean] true if abstract
-
-# New instance
-@return [Request] new context with transformed data
+@return [void]
+@return [String]
+@return [Symbol, nil]
+@return [Class<Adapter::Base>]
+@return [Boolean]
 ```
 
-**Patterns:**
-- "the X" for all returns (type annotation shows nullability)
-- "true if X" for booleans
-- "the transformed X" for transform methods
+**Why?** The method description already explains what the method does/returns. The @return tag provides type information only. No redundancy.
 
-**Forbidden:**
+### Forbidden
+
+- Any description after type: `@return [String] the name` — redundant
 - "or nil if not found" — redundant, type shows `nil`
 - "or nil when X" — redundant, type shows `nil`
-- "or nil if not defined" — redundant, type shows `nil`
 
-### Instance vs Class
+### Instance vs Class Types
 
-Instance is default — no suffix needed. Class is unusual — needs suffix.
-
-| Return type | Description |
-|-------------|-------------|
-| `[Request]` | "the request" |
-| `[Class<Request>]` | "the request class" |
+Use `Class<Type>` when returning a class object (not an instance):
 
 ```ruby
-# Bad — redundant "instance"
-@return [Adapter::Base] the adapter instance
+# Instance return
+@return [Adapter::Base]
 
-# Good — instance is default
-@return [Adapter::Base] the adapter
-
-# Good — class needs qualifier
-@return [Class<Adapter::Base>] the adapter class
-```
-
-**Check:**
-```bash
-grep -rn "instance" lib/ | grep "@return"
+# Class return
+@return [Class<Adapter::Base>]
 ```
 
 ---
@@ -434,18 +422,13 @@ grep -rn "Defaults to" lib/
 
 # Punctuation violations
 grep -rn "@param.*\.\$" lib/
-grep -rn "@return.*\.\$" lib/
+
+# @return with description (forbidden)
+grep -rn "@return \[[^]]*\] [a-z]" lib/
 
 # Type violations
 grep -rn "@return \[Class\]" lib/
 grep -rn "@raise \[NotImplementedError\]" lib/
-
-# Redundant nil explanations
-grep -rn "or nil if" lib/
-grep -rn "or nil when" lib/
-
-# Instance suffix (redundant)
-grep -rn "@return.*instance" lib/
 
 # All clean = Exit: 1
 grep -rn "Gets or sets" lib/; echo "Exit: $?"
@@ -470,7 +453,7 @@ grep -rn "Gets or sets" lib/; echo "Exit: $?"
 1. **Tag order:** description → @api public → @param → @yield → @return → @raise → @see → @example
 2. **Description:** starts with verb/noun, ends with period
 3. **@param:** lowercase, no period, includes `nil` if optional
-4. **@return:** lowercase, no period, no "or nil if X"
+4. **@return:** type only, no description
 5. **@see:** present for find/find! pairs and delegates
 6. **@raise:** documented for validation errors
 7. **@yield/@yieldparam:** both present when block has named param

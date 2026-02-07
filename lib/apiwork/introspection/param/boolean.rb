@@ -21,38 +21,38 @@ module Apiwork
       #   end
       class Boolean < Base
         # @api public
-        # @return [Boolean] true if this is a scalar type
+        # @return [Boolean]
         def scalar?
           true
         end
 
         # @api public
-        # @return [Boolean] true if this param has enum constraints
+        # @return [Boolean]
         def enum?
           @dump[:enum].present?
         end
 
         # @api public
-        # @return [Array<Boolean>, Symbol, nil] enum values (Array) or reference name (Symbol)
+        # @return [Array<Boolean>, Symbol, nil]
         # @see #enum?
         def enum
           @dump[:enum]
         end
 
         # @api public
-        # @return [Boolean] true if enum is a reference to a named enum
+        # @return [Boolean]
         def enum_ref?
           @dump[:enum].is_a?(Symbol)
         end
 
         # @api public
-        # @return [Boolean] true if this is a boolean param
+        # @return [Boolean]
         def boolean?
           true
         end
 
         # @api public
-        # @return [Boolean] false — booleans do not support format constraints
+        # @return [Boolean]
         def formattable?
           false
         end

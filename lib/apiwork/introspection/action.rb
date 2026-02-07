@@ -22,7 +22,7 @@ module Apiwork
       end
 
       # @api public
-      # @return [String] full action path (e.g., "/posts/:id", "/posts")
+      # @return [String]
       def path
         @dump[:path]
       end
@@ -34,33 +34,33 @@ module Apiwork
       end
 
       # @api public
-      # @return [Action::Request] request definition
+      # @return [Action::Request]
       # @see Action::Request
       def request
         @request ||= Request.new(@dump[:request])
       end
 
       # @api public
-      # @return [Action::Response] response definition
+      # @return [Action::Response]
       # @see Action::Response
       def response
         @response ||= Response.new(@dump[:response])
       end
 
       # @api public
-      # @return [Array<Symbol>] error codes this action may raise
+      # @return [Array<Symbol>]
       def raises
         @dump[:raises]
       end
 
       # @api public
-      # @return [String, nil] short summary
+      # @return [String, nil]
       def summary
         @dump[:summary]
       end
 
       # @api public
-      # @return [String, nil] full description
+      # @return [String, nil]
       def description
         @dump[:description]
       end
@@ -78,13 +78,13 @@ module Apiwork
       end
 
       # @api public
-      # @return [Boolean] whether this action is deprecated
+      # @return [Boolean]
       def deprecated?
         @dump[:deprecated]
       end
 
       # @api public
-      # @return [Hash] structured representation
+      # @return [Hash]
       def to_h
         {
           deprecated: deprecated?,

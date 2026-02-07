@@ -32,7 +32,7 @@ module Apiwork
       # Used in generated specs as the operation summary.
       #
       # @param value [String] summary text (optional)
-      # @return [String, nil] the summary
+      # @return [String, nil]
       #
       # @example
       #   action :create do
@@ -51,7 +51,7 @@ module Apiwork
       # Supports Markdown formatting.
       #
       # @param value [String] description text (optional)
-      # @return [String, nil] the description
+      # @return [String, nil]
       #
       # @example
       #   action :create do
@@ -69,7 +69,7 @@ module Apiwork
       # Tags help organize actions in generated documentation.
       #
       # @param tags [Array<String,Symbol>] tag names
-      # @return [Array<Symbol>, nil] the tags
+      # @return [Array<Symbol>, nil]
       #
       # @example
       #   action :create do
@@ -99,7 +99,7 @@ module Apiwork
       # Sets a custom operation ID.
       #
       # @param value [String] custom operation ID (optional)
-      # @return [String, nil] the operation ID
+      # @return [String, nil]
       #
       # @example
       #   action :create do
@@ -157,7 +157,7 @@ module Apiwork
       # @param replace [Boolean] replace inherited definition (default: false)
       # @yield block for defining query and body (instance_eval style)
       # @yieldparam builder [Action::Request] the builder (yield style)
-      # @return [Action::Request] the request definition
+      # @return [Action::Request]
       # @see Action::Request
       #
       # @example instance_eval style
@@ -203,7 +203,7 @@ module Apiwork
       # @param replace [Boolean] replace inherited definition (default: false)
       # @yield block for defining body or no_content (instance_eval style)
       # @yieldparam builder [Action::Response] the builder (yield style)
-      # @return [Action::Response] the response definition
+      # @return [Action::Response]
       # @see Action::Response
       #
       # @example instance_eval style

@@ -19,33 +19,33 @@ module Apiwork
         end
 
         # @api public
-        # @return [Hash{Symbol => Param}] query parameters as Param objects
+        # @return [Hash{Symbol => Param}]
         # @see Param
         def query
           @query ||= @dump[:query].transform_values { |dump| Param.build(dump) }
         end
 
         # @api public
-        # @return [Hash{Symbol => Param}] body parameters as Param objects
+        # @return [Hash{Symbol => Param}]
         # @see Param
         def body
           @body ||= @dump[:body].transform_values { |dump| Param.build(dump) }
         end
 
         # @api public
-        # @return [Boolean] whether query parameters are defined
+        # @return [Boolean]
         def query?
           query.any?
         end
 
         # @api public
-        # @return [Boolean] whether body parameters are defined
+        # @return [Boolean]
         def body?
           body.any?
         end
 
         # @api public
-        # @return [Hash] structured representation
+        # @return [Hash]
         def to_h
           {
             body: body.transform_values(&:to_h),

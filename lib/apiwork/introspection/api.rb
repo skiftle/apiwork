@@ -32,42 +32,42 @@ module Apiwork
       end
 
       # @api public
-      # @return [API::Info, nil] the API metadata
+      # @return [API::Info, nil]
       # @see API::Info
       def info
         @info ||= @dump[:info] ? Info.new(@dump[:info]) : nil
       end
 
       # @api public
-      # @return [Hash{Symbol => API::Resource}] top-level resources
+      # @return [Hash{Symbol => API::Resource}]
       # @see API::Resource
       def resources
         @resources ||= @dump[:resources].transform_values { |dump| Resource.new(dump) }
       end
 
       # @api public
-      # @return [Hash{Symbol => Type}] registered custom types
+      # @return [Hash{Symbol => Type}]
       # @see Type
       def types
         @types ||= @dump[:types].transform_values { |dump| Type.new(dump) }
       end
 
       # @api public
-      # @return [Hash{Symbol => Enum}] registered enums
+      # @return [Hash{Symbol => Enum}]
       # @see Enum
       def enums
         @enums ||= @dump[:enums].transform_values { |dump| Enum.new(dump) }
       end
 
       # @api public
-      # @return [Hash{Symbol => ErrorCode}] error code definitions
+      # @return [Hash{Symbol => ErrorCode}]
       # @see ErrorCode
       def error_codes
         @error_codes ||= @dump[:error_codes].transform_values { |dump| ErrorCode.new(dump) }
       end
 
       # @api public
-      # @return [Hash] structured representation
+      # @return [Hash]
       def to_h
         {
           enums: enums.transform_values(&:to_h),

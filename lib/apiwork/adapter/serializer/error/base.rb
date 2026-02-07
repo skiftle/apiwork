@@ -25,7 +25,7 @@ module Apiwork
             end
 
             # @api public
-            # Sets or gets the data type name for this serializer.
+            # The data type name for this serializer.
             #
             # @param name [Symbol, nil] the type name
             # @return [Symbol, nil]
@@ -35,7 +35,7 @@ module Apiwork
             end
 
             # @api public
-            # Sets or gets the API type builder class.
+            # The API type builder class.
             #
             # @param klass [Class, nil] a Builder::API::Base subclass
             # @return [Class, nil]
@@ -57,7 +57,7 @@ module Apiwork
           #
           # @param error [Error] the error to serialize
           # @param context [Hash] serialization context
-          # @return [Hash] the serialized error
+          # @return [Hash]
           def serialize(error, context:)
             raise NotImplementedError
           end

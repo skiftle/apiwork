@@ -21,13 +21,13 @@ module Apiwork
       #   param.boundable? # => true
       class Array < Base
         # @api public
-        # @return [Param::Base, nil] the element type for homogeneous arrays
+        # @return [Param::Base, nil]
         def of
           @of ||= @dump[:of] ? Param.build(@dump[:of]) : nil
         end
 
         # @api public
-        # @return [Hash{Symbol => Param::Base}] nested field definitions for array-of-objects
+        # @return [Hash{Symbol => Param::Base}]
         def shape
           return @shape if defined?(@shape)
 
@@ -35,31 +35,31 @@ module Apiwork
         end
 
         # @api public
-        # @return [Integer, nil] the minimum array length
+        # @return [Integer, nil]
         def min
           @dump[:min]
         end
 
         # @api public
-        # @return [Integer, nil] the maximum array length
+        # @return [Integer, nil]
         def max
           @dump[:max]
         end
 
         # @api public
-        # @return [Boolean] true if this is an array param
+        # @return [Boolean]
         def array?
           true
         end
 
         # @api public
-        # @return [Boolean] true if this param supports min/max constraints
+        # @return [Boolean]
         def boundable?
           true
         end
 
         # @api public
-        # @return [Hash] structured representation
+        # @return [Hash]
         def to_h
           result = super
           result[:max] = max
