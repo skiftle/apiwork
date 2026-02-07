@@ -14,7 +14,7 @@ module Apiwork
       end
 
       # @api public
-      # The HTTP status for this error code.
+      # The status for this error code.
       #
       # @return [Integer]
       def status
