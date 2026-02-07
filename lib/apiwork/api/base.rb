@@ -334,10 +334,7 @@ module Apiwork
         end
 
         # @api public
-        # Gets or configures API info.
-        #
-        # Without a block, returns the Info object.
-        # With a block, creates and configures the Info.
+        # The API info metadata.
         #
         # @yield block evaluated in {Info} context
         # @return [Info, nil]

@@ -30,7 +30,7 @@ module Apiwork
     # Transforms the body parameters.
     #
     # @yield [Hash] the body parameters
-    # @return [Response] new context with transformed body
+    # @return [Response] the transformed response
     #
     # @example
     #   response.transform { |data| camelize(data) }
@@ -42,7 +42,7 @@ module Apiwork
     # Transforms the body parameters.
     #
     # @yield [Hash] the body parameters
-    # @return [Response] new context with transformed body
+    # @return [Response] the transformed response
     #
     # @example
     #   response.transform_body { |data| camelize(data) }

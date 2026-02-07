@@ -37,7 +37,7 @@ module Apiwork
     # Transforms both query and body with the same block.
     #
     # @yield [Hash] each field (query, then body)
-    # @return [Request] new context with transformed data
+    # @return [Request] the transformed request
     #
     # @example
     #   request.transform { |data| normalize(data) }
@@ -49,7 +49,7 @@ module Apiwork
     # Transforms only the query.
     #
     # @yield [Hash] the query parameters
-    # @return [Request] new context with transformed query
+    # @return [Request] the transformed request
     #
     # @example
     #   request.transform_query { |query| normalize(query) }
@@ -61,7 +61,7 @@ module Apiwork
     # Transforms only the body.
     #
     # @yield [Hash] the body parameters
-    # @return [Request] new context with transformed body
+    # @return [Request] the transformed request
     #
     # @example
     #   request.transform_body { |body| prepare(body) }

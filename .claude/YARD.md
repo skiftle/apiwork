@@ -165,7 +165,7 @@ grep -rn "Defaults to" lib/
 **Patterns:**
 - "the X" for all returns (type annotation shows nullability)
 - "true if X" for booleans
-- "new X with..." for factory methods
+- "the transformed X" for transform methods
 
 **Forbidden:**
 - "or nil if not found" — redundant, type shows `nil`
