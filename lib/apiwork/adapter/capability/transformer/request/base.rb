@@ -38,9 +38,9 @@ module Apiwork
 
             class << self
               # @api public
-              # Configures when this transformer runs relative to request validation. Defaults to :before.
+              # The phase when this transformer runs relative to request validation.
               #
-              # @param value [Symbol, nil] :before runs on raw input, :after runs on validated data
+              # @param value [Symbol, nil] :before or :after (default: :before)
               # @return [Symbol] the phase
               def phase(value = nil)
                 @phase = value if value

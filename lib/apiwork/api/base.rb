@@ -124,15 +124,11 @@ module Apiwork
         end
 
         # @api public
-        # Gets or configures the adapter.
+        # The adapter for this API.
         #
-        # Without arguments, returns the adapter instance.
-        # With a block, configures the adapter and returns nil.
-        # Defaults to `:standard` if no name is given.
-        #
-        # @param name [Symbol] adapter name
+        # @param name [Symbol, nil] adapter name (default: :standard)
         # @yield optional configuration block
-        # @return [Adapter::Base, nil] adapter instance, or nil when configuring
+        # @return [Adapter::Base, nil] the adapter instance, or nil when configuring
         # @see Adapter::Base
         #
         # @example Configure default adapter
