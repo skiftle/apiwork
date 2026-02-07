@@ -58,23 +58,28 @@ module Apiwork
       class_attribute :_synthetic, default: false, instance_accessor: false
 
       # @api public
+      # The parsed and validated request.
       # @return [Request]
       attr_reader :request
 
       # @api public
+      # Validation issues (empty if valid).
       # @return [Array<Issue>]
       attr_reader :issues
 
       # @api public
+      # The current action name.
       # @return [Symbol]
       attr_reader :action_name
 
       # @api public
+      # Parsed and validated query parameters.
       # @see Request#query
       # @return [Hash]
       delegate :query, to: :request
 
       # @api public
+      # Parsed and validated body parameters.
       # @see Request#body
       # @return [Hash]
       delegate :body, to: :request

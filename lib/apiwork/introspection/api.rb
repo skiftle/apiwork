@@ -32,6 +32,7 @@ module Apiwork
       end
 
       # @api public
+      # The API metadata.
       # @return [API::Info, nil]
       # @see API::Info
       def info
@@ -39,6 +40,7 @@ module Apiwork
       end
 
       # @api public
+      # Top-level resources.
       # @return [Hash{Symbol => API::Resource}]
       # @see API::Resource
       def resources
@@ -46,6 +48,7 @@ module Apiwork
       end
 
       # @api public
+      # Registered custom types.
       # @return [Hash{Symbol => Type}]
       # @see Type
       def types
@@ -53,6 +56,7 @@ module Apiwork
       end
 
       # @api public
+      # Registered enums.
       # @return [Hash{Symbol => Enum}]
       # @see Enum
       def enums
@@ -60,6 +64,7 @@ module Apiwork
       end
 
       # @api public
+      # Error code definitions.
       # @return [Hash{Symbol => ErrorCode}]
       # @see ErrorCode
       def error_codes
@@ -67,6 +72,7 @@ module Apiwork
       end
 
       # @api public
+      # Structured representation.
       # @return [Hash]
       def to_h
         {

@@ -21,6 +21,7 @@ module Apiwork
         end
 
         # @api public
+        # Response body definition.
         # @return [Param, nil]
         # @see Param
         def body
@@ -28,18 +29,21 @@ module Apiwork
         end
 
         # @api public
+        # Whether this is a no-content response (204).
         # @return [Boolean]
         def no_content?
           @dump[:no_content]
         end
 
         # @api public
+        # Whether a body is defined.
         # @return [Boolean]
         def body?
           body.present?
         end
 
         # @api public
+        # Structured representation.
         # @return [Hash]
         def to_h
           { body: body&.to_h, no_content: no_content? }

@@ -24,6 +24,7 @@ module Apiwork
       end
 
       # @api public
+      # Actions defined on this contract.
       # @return [Hash{Symbol => Introspection::Action}]
       # @see Introspection::Action
       def actions
@@ -31,6 +32,7 @@ module Apiwork
       end
 
       # @api public
+      # Custom types defined or referenced by this contract.
       # @return [Hash{Symbol => Type}]
       # @see Type
       def types
@@ -38,6 +40,7 @@ module Apiwork
       end
 
       # @api public
+      # Enums defined or referenced by this contract.
       # @return [Hash{Symbol => Enum}]
       # @see Enum
       def enums
@@ -45,6 +48,7 @@ module Apiwork
       end
 
       # @api public
+      # Structured representation.
       # @return [Hash]
       def to_h
         {

@@ -19,6 +19,7 @@ module Apiwork
         end
 
         # @api public
+        # Query parameters.
         # @return [Hash{Symbol => Param}]
         # @see Param
         def query
@@ -26,6 +27,7 @@ module Apiwork
         end
 
         # @api public
+        # Body parameters.
         # @return [Hash{Symbol => Param}]
         # @see Param
         def body
@@ -33,18 +35,21 @@ module Apiwork
         end
 
         # @api public
+        # Whether query parameters are defined.
         # @return [Boolean]
         def query?
           query.any?
         end
 
         # @api public
+        # Whether body parameters are defined.
         # @return [Boolean]
         def body?
           body.any?
         end
 
         # @api public
+        # Structured representation.
         # @return [Hash]
         def to_h
           {

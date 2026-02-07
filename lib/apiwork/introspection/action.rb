@@ -22,18 +22,21 @@ module Apiwork
       end
 
       # @api public
+      # Full action path (e.g., "/posts/:id", "/posts").
       # @return [String]
       def path
         @dump[:path]
       end
 
       # @api public
-      # @return [Symbol] HTTP method (:get, :post, :patch, :delete, :put)
+      # HTTP method (:get, :post, :patch, :delete, :put).
+      # @return [Symbol]
       def method
         @dump[:method]
       end
 
       # @api public
+      # Request definition.
       # @return [Action::Request]
       # @see Action::Request
       def request
@@ -41,6 +44,7 @@ module Apiwork
       end
 
       # @api public
+      # Response definition.
       # @return [Action::Response]
       # @see Action::Response
       def response
@@ -48,42 +52,49 @@ module Apiwork
       end
 
       # @api public
+      # Error codes this action may raise.
       # @return [Array<Symbol>]
       def raises
         @dump[:raises]
       end
 
       # @api public
+      # Short summary.
       # @return [String, nil]
       def summary
         @dump[:summary]
       end
 
       # @api public
+      # Full description.
       # @return [String, nil]
       def description
         @dump[:description]
       end
 
       # @api public
-      # @return [Array<String>] OpenAPI tags
+      # OpenAPI tags.
+      # @return [Array<String>]
       def tags
         @dump[:tags]
       end
 
       # @api public
-      # @return [String, nil] OpenAPI operation ID
+      # OpenAPI operation ID.
+      # @return [String, nil]
       def operation_id
         @dump[:operation_id]
       end
 
       # @api public
+      # Whether this action is deprecated.
       # @return [Boolean]
       def deprecated?
         @dump[:deprecated]
       end
 
       # @api public
+      # Structured representation.
       # @return [Hash]
       def to_h
         {
