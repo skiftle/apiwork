@@ -39,8 +39,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": true,
-                "type": "ref",
-                "ref": "contact_page"
+                "type": "reference",
+                "reference": "contact_page"
               }
             }
           },
@@ -62,8 +62,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "contact_index_success_response_body"
+                  "type": "reference",
+                  "reference": "contact_index_success_response_body"
                 },
                 {
                   "default": null,
@@ -72,8 +72,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "error_response_body"
+                  "type": "reference",
+                  "reference": "error_response_body"
                 }
               ]
             },
@@ -111,8 +111,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "contact_show_success_response_body"
+                  "type": "reference",
+                  "reference": "contact_show_success_response_body"
                 },
                 {
                   "default": null,
@@ -121,8 +121,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "error_response_body"
+                  "type": "reference",
+                  "reference": "error_response_body"
                 }
               ]
             },
@@ -149,8 +149,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": false,
-                "type": "ref",
-                "ref": "contact_create_payload"
+                "type": "reference",
+                "reference": "contact_create_payload"
               }
             },
             "query": {}
@@ -173,8 +173,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "contact_create_success_response_body"
+                  "type": "reference",
+                  "reference": "contact_create_success_response_body"
                 },
                 {
                   "default": null,
@@ -183,8 +183,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "error_response_body"
+                  "type": "reference",
+                  "reference": "error_response_body"
                 }
               ]
             },
@@ -211,8 +211,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": false,
-                "type": "ref",
-                "ref": "contact_update_payload"
+                "type": "reference",
+                "reference": "contact_update_payload"
               }
             },
             "query": {}
@@ -235,8 +235,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "contact_update_success_response_body"
+                  "type": "reference",
+                  "reference": "contact_update_success_response_body"
                 },
                 {
                   "default": null,
@@ -245,8 +245,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "error_response_body"
+                  "type": "reference",
+                  "reference": "error_response_body"
                 }
               ]
             },
@@ -433,8 +433,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "contact"
+          "type": "reference",
+          "reference": "contact"
         },
         "meta": {
           "default": null,
@@ -475,8 +475,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "contact"
+            "type": "reference",
+            "reference": "contact"
           },
           "shape": {}
         },
@@ -498,8 +498,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "offset_pagination"
+          "type": "reference",
+          "reference": "offset_pagination"
         }
       },
       "type": "object",
@@ -554,8 +554,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "contact"
+          "type": "reference",
+          "reference": "contact"
         },
         "meta": {
           "default": null,
@@ -645,8 +645,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "contact"
+          "type": "reference",
+          "reference": "contact"
         },
         "meta": {
           "default": null,
@@ -687,8 +687,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "issue"
+            "type": "reference",
+            "reference": "issue"
           },
           "shape": {}
         },
@@ -699,8 +699,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "layer"
+          "type": "reference",
+          "reference": "layer"
         }
       },
       "type": "object",

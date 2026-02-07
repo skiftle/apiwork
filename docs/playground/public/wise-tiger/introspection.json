@@ -89,8 +89,8 @@
                     "example": null,
                     "nullable": false,
                     "optional": false,
-                    "type": "ref",
-                    "ref": "project_filter"
+                    "type": "reference",
+                    "reference": "project_filter"
                   },
                   {
                     "default": null,
@@ -109,8 +109,8 @@
                       "example": null,
                       "nullable": null,
                       "optional": null,
-                      "type": "ref",
-                      "ref": "project_filter"
+                      "type": "reference",
+                      "reference": "project_filter"
                     },
                     "shape": {}
                   }
@@ -123,8 +123,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": true,
-                "type": "ref",
-                "ref": "project_page"
+                "type": "reference",
+                "reference": "project_page"
               },
               "sort": {
                 "default": null,
@@ -143,8 +143,8 @@
                     "example": null,
                     "nullable": false,
                     "optional": false,
-                    "type": "ref",
-                    "ref": "project_sort"
+                    "type": "reference",
+                    "reference": "project_sort"
                   },
                   {
                     "default": null,
@@ -163,8 +163,8 @@
                       "example": null,
                       "nullable": null,
                       "optional": null,
-                      "type": "ref",
-                      "ref": "project_sort"
+                      "type": "reference",
+                      "reference": "project_sort"
                     },
                     "shape": {}
                   }
@@ -190,8 +190,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "project_index_success_response_body"
+                  "type": "reference",
+                  "reference": "project_index_success_response_body"
                 },
                 {
                   "default": null,
@@ -200,8 +200,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "error_response_body"
+                  "type": "reference",
+                  "reference": "error_response_body"
                 }
               ]
             },
@@ -241,8 +241,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "project_show_success_response_body"
+                  "type": "reference",
+                  "reference": "project_show_success_response_body"
                 },
                 {
                   "default": null,
@@ -251,8 +251,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "error_response_body"
+                  "type": "reference",
+                  "reference": "error_response_body"
                 }
               ]
             },
@@ -281,8 +281,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": false,
-                "type": "ref",
-                "ref": "project_create_payload"
+                "type": "reference",
+                "reference": "project_create_payload"
               }
             },
             "query": {}
@@ -305,8 +305,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "project_create_success_response_body"
+                  "type": "reference",
+                  "reference": "project_create_success_response_body"
                 },
                 {
                   "default": null,
@@ -315,8 +315,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "error_response_body"
+                  "type": "reference",
+                  "reference": "error_response_body"
                 }
               ]
             },
@@ -345,8 +345,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": false,
-                "type": "ref",
-                "ref": "project_update_payload"
+                "type": "reference",
+                "reference": "project_update_payload"
               }
             },
             "query": {}
@@ -369,8 +369,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "project_update_success_response_body"
+                  "type": "reference",
+                  "reference": "project_update_success_response_body"
                 },
                 {
                   "default": null,
@@ -379,8 +379,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "error_response_body"
+                  "type": "reference",
+                  "reference": "error_response_body"
                 }
               ]
             },
@@ -451,8 +451,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "issue"
+            "type": "reference",
+            "reference": "issue"
           },
           "shape": {}
         },
@@ -463,8 +463,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "layer"
+          "type": "reference",
+          "reference": "layer"
         }
       },
       "type": "object",
@@ -922,8 +922,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "project"
+          "type": "reference",
+          "reference": "project"
         }
       },
       "type": "object",
@@ -953,8 +953,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "project_filter"
+            "type": "reference",
+            "reference": "project_filter"
           },
           "shape": {}
         },
@@ -965,8 +965,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "project_filter"
+          "type": "reference",
+          "reference": "project_filter"
         },
         "OR": {
           "default": null,
@@ -985,8 +985,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "project_filter"
+            "type": "reference",
+            "reference": "project_filter"
           },
           "shape": {}
         },
@@ -997,8 +997,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "project_priority_filter"
+          "type": "reference",
+          "reference": "project_priority_filter"
         },
         "status": {
           "default": null,
@@ -1007,8 +1007,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "project_status_filter"
+          "type": "reference",
+          "reference": "project_status_filter"
         }
       },
       "type": "object",
@@ -1039,8 +1039,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "offset_pagination"
+          "type": "reference",
+          "reference": "offset_pagination"
         },
         "projects": {
           "default": null,
@@ -1059,8 +1059,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "project"
+            "type": "reference",
+            "reference": "project"
           },
           "shape": {}
         }
@@ -1119,8 +1119,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "project_priority"
+          "type": "reference",
+          "reference": "project_priority"
         },
         {
           "default": null,
@@ -1139,8 +1139,8 @@
               "example": null,
               "nullable": false,
               "optional": false,
-              "type": "ref",
-              "ref": "project_priority"
+              "type": "reference",
+              "reference": "project_priority"
             },
             "in": {
               "default": null,
@@ -1159,8 +1159,8 @@
                 "example": null,
                 "nullable": null,
                 "optional": null,
-                "type": "ref",
-                "ref": "project_priority"
+                "type": "reference",
+                "reference": "project_priority"
               },
               "shape": {}
             }
@@ -1193,8 +1193,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "project"
+          "type": "reference",
+          "reference": "project"
         }
       },
       "type": "object",
@@ -1214,8 +1214,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "sort_direction"
+          "type": "reference",
+          "reference": "sort_direction"
         },
         "deadline": {
           "default": null,
@@ -1224,8 +1224,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "sort_direction"
+          "type": "reference",
+          "reference": "sort_direction"
         }
       },
       "type": "object",
@@ -1247,8 +1247,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "project_status"
+          "type": "reference",
+          "reference": "project_status"
         },
         {
           "default": null,
@@ -1267,8 +1267,8 @@
               "example": null,
               "nullable": false,
               "optional": false,
-              "type": "ref",
-              "ref": "project_status"
+              "type": "reference",
+              "reference": "project_status"
             },
             "in": {
               "default": null,
@@ -1287,8 +1287,8 @@
                 "example": null,
                 "nullable": null,
                 "optional": null,
-                "type": "ref",
-                "ref": "project_status"
+                "type": "reference",
+                "reference": "project_status"
               },
               "shape": {}
             }
@@ -1391,8 +1391,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "project"
+          "type": "reference",
+          "reference": "project"
         }
       },
       "type": "object",

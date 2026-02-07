@@ -68,8 +68,8 @@
                     "example": null,
                     "nullable": false,
                     "optional": false,
-                    "type": "ref",
-                    "ref": "article_filter"
+                    "type": "reference",
+                    "reference": "article_filter"
                   },
                   {
                     "default": null,
@@ -88,8 +88,8 @@
                       "example": null,
                       "nullable": null,
                       "optional": null,
-                      "type": "ref",
-                      "ref": "article_filter"
+                      "type": "reference",
+                      "reference": "article_filter"
                     },
                     "shape": {}
                   }
@@ -102,8 +102,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": true,
-                "type": "ref",
-                "ref": "article_include"
+                "type": "reference",
+                "reference": "article_include"
               },
               "page": {
                 "default": null,
@@ -112,8 +112,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": true,
-                "type": "ref",
-                "ref": "article_page"
+                "type": "reference",
+                "reference": "article_page"
               },
               "sort": {
                 "default": null,
@@ -132,8 +132,8 @@
                     "example": null,
                     "nullable": false,
                     "optional": false,
-                    "type": "ref",
-                    "ref": "article_sort"
+                    "type": "reference",
+                    "reference": "article_sort"
                   },
                   {
                     "default": null,
@@ -152,8 +152,8 @@
                       "example": null,
                       "nullable": null,
                       "optional": null,
-                      "type": "ref",
-                      "ref": "article_sort"
+                      "type": "reference",
+                      "reference": "article_sort"
                     },
                     "shape": {}
                   }
@@ -179,8 +179,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "article_index_success_response_body"
+                  "type": "reference",
+                  "reference": "article_index_success_response_body"
                 },
                 {
                   "default": null,
@@ -189,8 +189,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "error_response_body"
+                  "type": "reference",
+                  "reference": "error_response_body"
                 }
               ]
             },
@@ -216,8 +216,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": true,
-                "type": "ref",
-                "ref": "article_include"
+                "type": "reference",
+                "reference": "article_include"
               }
             }
           },
@@ -239,8 +239,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "article_show_success_response_body"
+                  "type": "reference",
+                  "reference": "article_show_success_response_body"
                 },
                 {
                   "default": null,
@@ -249,8 +249,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "error_response_body"
+                  "type": "reference",
+                  "reference": "error_response_body"
                 }
               ]
             },
@@ -277,8 +277,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": false,
-                "type": "ref",
-                "ref": "article_create_payload"
+                "type": "reference",
+                "reference": "article_create_payload"
               }
             },
             "query": {
@@ -289,8 +289,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": true,
-                "type": "ref",
-                "ref": "article_include"
+                "type": "reference",
+                "reference": "article_include"
               }
             }
           },
@@ -312,8 +312,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "article_create_success_response_body"
+                  "type": "reference",
+                  "reference": "article_create_success_response_body"
                 },
                 {
                   "default": null,
@@ -322,8 +322,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "error_response_body"
+                  "type": "reference",
+                  "reference": "error_response_body"
                 }
               ]
             },
@@ -350,8 +350,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": false,
-                "type": "ref",
-                "ref": "article_update_payload"
+                "type": "reference",
+                "reference": "article_update_payload"
               }
             },
             "query": {
@@ -362,8 +362,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": true,
-                "type": "ref",
-                "ref": "article_include"
+                "type": "reference",
+                "reference": "article_include"
               }
             }
           },
@@ -385,8 +385,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "article_update_success_response_body"
+                  "type": "reference",
+                  "reference": "article_update_success_response_body"
                 },
                 {
                   "default": null,
@@ -395,8 +395,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "error_response_body"
+                  "type": "reference",
+                  "reference": "error_response_body"
                 }
               ]
             },
@@ -422,8 +422,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": true,
-                "type": "ref",
-                "ref": "article_include"
+                "type": "reference",
+                "reference": "article_include"
               }
             }
           },
@@ -476,8 +476,8 @@
           "example": null,
           "nullable": true,
           "optional": true,
-          "type": "ref",
-          "ref": "category"
+          "type": "reference",
+          "reference": "category"
         },
         "created_at": {
           "default": null,
@@ -641,8 +641,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "article"
+          "type": "reference",
+          "reference": "article"
         },
         "meta": {
           "default": null,
@@ -683,8 +683,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "article_filter"
+            "type": "reference",
+            "reference": "article_filter"
           },
           "shape": {}
         },
@@ -695,8 +695,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "article_filter"
+          "type": "reference",
+          "reference": "article_filter"
         },
         "OR": {
           "default": null,
@@ -715,8 +715,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "article_filter"
+            "type": "reference",
+            "reference": "article_filter"
           },
           "shape": {}
         },
@@ -727,8 +727,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "category_filter"
+          "type": "reference",
+          "reference": "category_filter"
         },
         "published_on": {
           "default": null,
@@ -756,8 +756,8 @@
               "example": null,
               "nullable": false,
               "optional": false,
-              "type": "ref",
-              "ref": "nullable_date_filter"
+              "type": "reference",
+              "reference": "nullable_date_filter"
             }
           ]
         },
@@ -789,8 +789,8 @@
               "example": null,
               "nullable": false,
               "optional": false,
-              "type": "ref",
-              "ref": "nullable_decimal_filter"
+              "type": "reference",
+              "reference": "nullable_decimal_filter"
             }
           ]
         },
@@ -801,8 +801,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "article_status_filter"
+          "type": "reference",
+          "reference": "article_status_filter"
         },
         "title": {
           "default": null,
@@ -833,8 +833,8 @@
               "example": null,
               "nullable": false,
               "optional": false,
-              "type": "ref",
-              "ref": "string_filter"
+              "type": "reference",
+              "reference": "string_filter"
             }
           ]
         },
@@ -867,8 +867,8 @@
               "example": null,
               "nullable": false,
               "optional": false,
-              "type": "ref",
-              "ref": "nullable_integer_filter"
+              "type": "reference",
+              "reference": "nullable_integer_filter"
             }
           ]
         }
@@ -920,8 +920,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "article"
+            "type": "reference",
+            "reference": "article"
           },
           "shape": {}
         },
@@ -943,8 +943,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "offset_pagination"
+          "type": "reference",
+          "reference": "offset_pagination"
         }
       },
       "type": "object",
@@ -999,8 +999,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "article"
+          "type": "reference",
+          "reference": "article"
         },
         "meta": {
           "default": null,
@@ -1031,8 +1031,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "sort_direction"
+          "type": "reference",
+          "reference": "sort_direction"
         },
         "published_on": {
           "default": null,
@@ -1041,8 +1041,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "sort_direction"
+          "type": "reference",
+          "reference": "sort_direction"
         },
         "rating": {
           "default": null,
@@ -1051,8 +1051,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "sort_direction"
+          "type": "reference",
+          "reference": "sort_direction"
         },
         "status": {
           "default": null,
@@ -1061,8 +1061,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "sort_direction"
+          "type": "reference",
+          "reference": "sort_direction"
         },
         "view_count": {
           "default": null,
@@ -1071,8 +1071,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "sort_direction"
+          "type": "reference",
+          "reference": "sort_direction"
         }
       },
       "type": "object",
@@ -1094,8 +1094,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "article_status"
+          "type": "reference",
+          "reference": "article_status"
         },
         {
           "default": null,
@@ -1114,8 +1114,8 @@
               "example": null,
               "nullable": false,
               "optional": false,
-              "type": "ref",
-              "ref": "article_status"
+              "type": "reference",
+              "reference": "article_status"
             },
             "in": {
               "default": null,
@@ -1134,8 +1134,8 @@
                 "example": null,
                 "nullable": null,
                 "optional": null,
-                "type": "ref",
-                "ref": "article_status"
+                "type": "reference",
+                "reference": "article_status"
               },
               "shape": {}
             }
@@ -1214,8 +1214,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "article"
+          "type": "reference",
+          "reference": "article"
         },
         "meta": {
           "default": null,
@@ -1313,8 +1313,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "category_filter"
+            "type": "reference",
+            "reference": "category_filter"
           },
           "shape": {}
         },
@@ -1325,8 +1325,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "category_filter"
+          "type": "reference",
+          "reference": "category_filter"
         },
         "OR": {
           "default": null,
@@ -1345,8 +1345,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "category_filter"
+            "type": "reference",
+            "reference": "category_filter"
           },
           "shape": {}
         },
@@ -1379,8 +1379,8 @@
               "example": null,
               "nullable": false,
               "optional": false,
-              "type": "ref",
-              "ref": "string_filter"
+              "type": "reference",
+              "reference": "string_filter"
             }
           ]
         },
@@ -1413,8 +1413,8 @@
               "example": null,
               "nullable": false,
               "optional": false,
-              "type": "ref",
-              "ref": "string_filter"
+              "type": "reference",
+              "reference": "string_filter"
             }
           ]
         }
@@ -1446,8 +1446,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "date_filter_between"
+          "type": "reference",
+          "reference": "date_filter_between"
         },
         "eq": {
           "default": null,
@@ -1562,8 +1562,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "decimal_filter_between"
+          "type": "reference",
+          "reference": "decimal_filter_between"
         },
         "eq": {
           "default": null,
@@ -1704,8 +1704,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "issue"
+            "type": "reference",
+            "reference": "issue"
           },
           "shape": {}
         },
@@ -1716,8 +1716,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "layer"
+          "type": "reference",
+          "reference": "layer"
         }
       },
       "type": "object",
@@ -1749,8 +1749,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "integer_filter_between"
+          "type": "reference",
+          "reference": "integer_filter_between"
         },
         "eq": {
           "default": null,
@@ -1971,8 +1971,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "date_filter_between"
+          "type": "reference",
+          "reference": "date_filter_between"
         },
         "eq": {
           "default": null,
@@ -2067,8 +2067,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "decimal_filter_between"
+          "type": "reference",
+          "reference": "decimal_filter_between"
         },
         "eq": {
           "default": null,
@@ -2175,8 +2175,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "integer_filter_between"
+          "type": "reference",
+          "reference": "integer_filter_between"
         },
         "eq": {
           "default": null,

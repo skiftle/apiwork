@@ -58,8 +58,8 @@
                     "example": null,
                     "nullable": false,
                     "optional": false,
-                    "type": "ref",
-                    "ref": "order_filter"
+                    "type": "reference",
+                    "reference": "order_filter"
                   },
                   {
                     "default": null,
@@ -78,8 +78,8 @@
                       "example": null,
                       "nullable": null,
                       "optional": null,
-                      "type": "ref",
-                      "ref": "order_filter"
+                      "type": "reference",
+                      "reference": "order_filter"
                     },
                     "shape": {}
                   }
@@ -92,8 +92,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": true,
-                "type": "ref",
-                "ref": "order_page"
+                "type": "reference",
+                "reference": "order_page"
               },
               "sort": {
                 "default": null,
@@ -112,8 +112,8 @@
                     "example": null,
                     "nullable": false,
                     "optional": false,
-                    "type": "ref",
-                    "ref": "order_sort"
+                    "type": "reference",
+                    "reference": "order_sort"
                   },
                   {
                     "default": null,
@@ -132,8 +132,8 @@
                       "example": null,
                       "nullable": null,
                       "optional": null,
-                      "type": "ref",
-                      "ref": "order_sort"
+                      "type": "reference",
+                      "reference": "order_sort"
                     },
                     "shape": {}
                   }
@@ -159,8 +159,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "order_index_success_response_body"
+                  "type": "reference",
+                  "reference": "order_index_success_response_body"
                 },
                 {
                   "default": null,
@@ -169,8 +169,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "error_response_body"
+                  "type": "reference",
+                  "reference": "error_response_body"
                 }
               ]
             },
@@ -208,8 +208,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "order_show_success_response_body"
+                  "type": "reference",
+                  "reference": "order_show_success_response_body"
                 },
                 {
                   "default": null,
@@ -218,8 +218,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "error_response_body"
+                  "type": "reference",
+                  "reference": "error_response_body"
                 }
               ]
             },
@@ -246,8 +246,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": false,
-                "type": "ref",
-                "ref": "order_create_payload"
+                "type": "reference",
+                "reference": "order_create_payload"
               }
             },
             "query": {}
@@ -270,8 +270,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "order_create_success_response_body"
+                  "type": "reference",
+                  "reference": "order_create_success_response_body"
                 },
                 {
                   "default": null,
@@ -280,8 +280,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "error_response_body"
+                  "type": "reference",
+                  "reference": "error_response_body"
                 }
               ]
             },
@@ -308,8 +308,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": false,
-                "type": "ref",
-                "ref": "order_update_payload"
+                "type": "reference",
+                "reference": "order_update_payload"
               }
             },
             "query": {}
@@ -332,8 +332,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "order_update_success_response_body"
+                  "type": "reference",
+                  "reference": "order_update_success_response_body"
                 },
                 {
                   "default": null,
@@ -342,8 +342,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "error_response_body"
+                  "type": "reference",
+                  "reference": "error_response_body"
                 }
               ]
             },
@@ -410,8 +410,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "issue"
+            "type": "reference",
+            "reference": "issue"
           },
           "shape": {}
         },
@@ -422,8 +422,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "layer"
+          "type": "reference",
+          "reference": "layer"
         }
       },
       "type": "object",
@@ -744,8 +744,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "line_item_nested_create_payload"
+          "type": "reference",
+          "reference": "line_item_nested_create_payload"
         },
         {
           "default": null,
@@ -754,8 +754,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "line_item_nested_update_payload"
+          "type": "reference",
+          "reference": "line_item_nested_update_payload"
         },
         {
           "default": null,
@@ -764,8 +764,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "line_item_nested_delete_payload"
+          "type": "reference",
+          "reference": "line_item_nested_delete_payload"
         }
       ]
     },
@@ -1091,8 +1091,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "line_item"
+            "type": "reference",
+            "reference": "line_item"
           },
           "shape": {}
         },
@@ -1115,8 +1115,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "shipping_address"
+          "type": "reference",
+          "reference": "shipping_address"
         },
         "status": {
           "default": null,
@@ -1178,8 +1178,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "line_item_nested_payload"
+            "type": "reference",
+            "reference": "line_item_nested_payload"
           },
           "shape": {}
         },
@@ -1202,8 +1202,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "shipping_address_nested_payload"
+          "type": "reference",
+          "reference": "shipping_address_nested_payload"
         }
       },
       "type": "object",
@@ -1234,8 +1234,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "order"
+          "type": "reference",
+          "reference": "order"
         }
       },
       "type": "object",
@@ -1265,8 +1265,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "order_filter"
+            "type": "reference",
+            "reference": "order_filter"
           },
           "shape": {}
         },
@@ -1277,8 +1277,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "order_filter"
+          "type": "reference",
+          "reference": "order_filter"
         },
         "OR": {
           "default": null,
@@ -1297,8 +1297,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "order_filter"
+            "type": "reference",
+            "reference": "order_filter"
           },
           "shape": {}
         },
@@ -1331,8 +1331,8 @@
               "example": null,
               "nullable": false,
               "optional": false,
-              "type": "ref",
-              "ref": "nullable_string_filter"
+              "type": "reference",
+              "reference": "nullable_string_filter"
             }
           ]
         }
@@ -1375,8 +1375,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "order"
+            "type": "reference",
+            "reference": "order"
           },
           "shape": {}
         },
@@ -1387,8 +1387,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "offset_pagination"
+          "type": "reference",
+          "reference": "offset_pagination"
         }
       },
       "type": "object",
@@ -1454,8 +1454,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "order"
+          "type": "reference",
+          "reference": "order"
         }
       },
       "type": "object",
@@ -1475,8 +1475,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "sort_direction"
+          "type": "reference",
+          "reference": "sort_direction"
         },
         "status": {
           "default": null,
@@ -1485,8 +1485,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "sort_direction"
+          "type": "reference",
+          "reference": "sort_direction"
         }
       },
       "type": "object",
@@ -1516,8 +1516,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "line_item_nested_payload"
+            "type": "reference",
+            "reference": "line_item_nested_payload"
           },
           "shape": {}
         },
@@ -1540,8 +1540,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "shipping_address_nested_payload"
+          "type": "reference",
+          "reference": "shipping_address_nested_payload"
         }
       },
       "type": "object",
@@ -1572,8 +1572,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "order"
+          "type": "reference",
+          "reference": "order"
         }
       },
       "type": "object",
@@ -1839,8 +1839,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "shipping_address_nested_create_payload"
+          "type": "reference",
+          "reference": "shipping_address_nested_create_payload"
         },
         {
           "default": null,
@@ -1849,8 +1849,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "shipping_address_nested_update_payload"
+          "type": "reference",
+          "reference": "shipping_address_nested_update_payload"
         },
         {
           "default": null,
@@ -1859,8 +1859,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "shipping_address_nested_delete_payload"
+          "type": "reference",
+          "reference": "shipping_address_nested_delete_payload"
         }
       ]
     },

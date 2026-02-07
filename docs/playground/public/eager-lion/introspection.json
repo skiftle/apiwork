@@ -58,8 +58,8 @@
                     "example": null,
                     "nullable": false,
                     "optional": false,
-                    "type": "ref",
-                    "ref": "invoice_filter"
+                    "type": "reference",
+                    "reference": "invoice_filter"
                   },
                   {
                     "default": null,
@@ -78,8 +78,8 @@
                       "example": null,
                       "nullable": null,
                       "optional": null,
-                      "type": "ref",
-                      "ref": "invoice_filter"
+                      "type": "reference",
+                      "reference": "invoice_filter"
                     },
                     "shape": {}
                   }
@@ -92,8 +92,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": true,
-                "type": "ref",
-                "ref": "invoice_page"
+                "type": "reference",
+                "reference": "invoice_page"
               },
               "sort": {
                 "default": null,
@@ -112,8 +112,8 @@
                     "example": null,
                     "nullable": false,
                     "optional": false,
-                    "type": "ref",
-                    "ref": "invoice_sort"
+                    "type": "reference",
+                    "reference": "invoice_sort"
                   },
                   {
                     "default": null,
@@ -132,8 +132,8 @@
                       "example": null,
                       "nullable": null,
                       "optional": null,
-                      "type": "ref",
-                      "ref": "invoice_sort"
+                      "type": "reference",
+                      "reference": "invoice_sort"
                     },
                     "shape": {}
                   }
@@ -159,8 +159,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "invoice_index_success_response_body"
+                  "type": "reference",
+                  "reference": "invoice_index_success_response_body"
                 },
                 {
                   "default": null,
@@ -169,8 +169,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "error_response_body"
+                  "type": "reference",
+                  "reference": "error_response_body"
                 }
               ]
             },
@@ -208,8 +208,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "invoice_show_success_response_body"
+                  "type": "reference",
+                  "reference": "invoice_show_success_response_body"
                 },
                 {
                   "default": null,
@@ -218,8 +218,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "error_response_body"
+                  "type": "reference",
+                  "reference": "error_response_body"
                 }
               ]
             },
@@ -246,8 +246,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": false,
-                "type": "ref",
-                "ref": "invoice_create_payload"
+                "type": "reference",
+                "reference": "invoice_create_payload"
               }
             },
             "query": {}
@@ -270,8 +270,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "invoice_create_success_response_body"
+                  "type": "reference",
+                  "reference": "invoice_create_success_response_body"
                 },
                 {
                   "default": null,
@@ -280,8 +280,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "error_response_body"
+                  "type": "reference",
+                  "reference": "error_response_body"
                 }
               ]
             },
@@ -308,8 +308,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": false,
-                "type": "ref",
-                "ref": "invoice_update_payload"
+                "type": "reference",
+                "reference": "invoice_update_payload"
               }
             },
             "query": {}
@@ -332,8 +332,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "invoice_update_success_response_body"
+                  "type": "reference",
+                  "reference": "invoice_update_success_response_body"
                 },
                 {
                   "default": null,
@@ -342,8 +342,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "error_response_body"
+                  "type": "reference",
+                  "reference": "error_response_body"
                 }
               ]
             },
@@ -409,8 +409,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "invoice_archive_success_response_body"
+                  "type": "reference",
+                  "reference": "invoice_archive_success_response_body"
                 },
                 {
                   "default": null,
@@ -419,8 +419,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "error_response_body"
+                  "type": "reference",
+                  "reference": "error_response_body"
                 }
               ]
             },
@@ -516,8 +516,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "issue"
+            "type": "reference",
+            "reference": "issue"
           },
           "shape": {}
         },
@@ -528,8 +528,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "layer"
+          "type": "reference",
+          "reference": "layer"
         }
       },
       "type": "object",
@@ -570,8 +570,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "customer"
+          "type": "reference",
+          "reference": "customer"
         },
         "customer_id": {
           "default": null,
@@ -623,8 +623,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "line"
+            "type": "reference",
+            "reference": "line"
           },
           "shape": {}
         },
@@ -691,8 +691,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "invoice"
+          "type": "reference",
+          "reference": "invoice"
         },
         "meta": {
           "default": null,
@@ -754,8 +754,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "line_nested_payload"
+            "type": "reference",
+            "reference": "line_nested_payload"
           },
           "shape": {}
         },
@@ -801,8 +801,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "invoice"
+          "type": "reference",
+          "reference": "invoice"
         },
         "meta": {
           "default": null,
@@ -843,8 +843,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "invoice_filter"
+            "type": "reference",
+            "reference": "invoice_filter"
           },
           "shape": {}
         },
@@ -855,8 +855,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "invoice_filter"
+          "type": "reference",
+          "reference": "invoice_filter"
         },
         "OR": {
           "default": null,
@@ -875,8 +875,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "invoice_filter"
+            "type": "reference",
+            "reference": "invoice_filter"
           },
           "shape": {}
         },
@@ -909,8 +909,8 @@
               "example": null,
               "nullable": false,
               "optional": false,
-              "type": "ref",
-              "ref": "string_filter"
+              "type": "reference",
+              "reference": "string_filter"
             }
           ]
         },
@@ -943,8 +943,8 @@
               "example": null,
               "nullable": false,
               "optional": false,
-              "type": "ref",
-              "ref": "nullable_string_filter"
+              "type": "reference",
+              "reference": "nullable_string_filter"
             }
           ]
         }
@@ -976,8 +976,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "invoice"
+            "type": "reference",
+            "reference": "invoice"
           },
           "shape": {}
         },
@@ -999,8 +999,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "offset_pagination"
+          "type": "reference",
+          "reference": "offset_pagination"
         }
       },
       "type": "object",
@@ -1055,8 +1055,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "invoice"
+          "type": "reference",
+          "reference": "invoice"
         },
         "meta": {
           "default": null,
@@ -1087,8 +1087,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "sort_direction"
+          "type": "reference",
+          "reference": "sort_direction"
         },
         "issued_on": {
           "default": null,
@@ -1097,8 +1097,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "sort_direction"
+          "type": "reference",
+          "reference": "sort_direction"
         },
         "status": {
           "default": null,
@@ -1107,8 +1107,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "sort_direction"
+          "type": "reference",
+          "reference": "sort_direction"
         },
         "updated_at": {
           "default": null,
@@ -1117,8 +1117,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "sort_direction"
+          "type": "reference",
+          "reference": "sort_direction"
         }
       },
       "type": "object",
@@ -1169,8 +1169,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "line_nested_payload"
+            "type": "reference",
+            "reference": "line_nested_payload"
           },
           "shape": {}
         },
@@ -1216,8 +1216,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "invoice"
+          "type": "reference",
+          "reference": "invoice"
         },
         "meta": {
           "default": null,
@@ -1537,8 +1537,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "line_nested_create_payload"
+          "type": "reference",
+          "reference": "line_nested_create_payload"
         },
         {
           "default": null,
@@ -1547,8 +1547,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "line_nested_update_payload"
+          "type": "reference",
+          "reference": "line_nested_update_payload"
         },
         {
           "default": null,
@@ -1557,8 +1557,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "line_nested_delete_payload"
+          "type": "reference",
+          "reference": "line_nested_delete_payload"
         }
       ]
     },
