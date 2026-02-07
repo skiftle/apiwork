@@ -6,6 +6,58 @@ Checklist for auditing YARD documentation in `lib/apiwork/`.
 
 ---
 
+## Tag Order
+
+Strict order for all `@api public` methods:
+
+```ruby
+# Description line (verb or noun phrase).
+#
+# Extended description if needed.
+#
+# @api public
+# @param name [Type] description
+# @yield description
+# @yieldparam name [Type] description
+# @return [Type] description
+# @raise [Error] description
+# @see #other_method
+#
+# @example Title if multiple
+#   code_here
+```
+
+**Order:** description → `@api public` → `@param` → `@yield` → `@yieldparam` → `@return` → `@raise` → `@see` → `@example`
+
+---
+
+## Punctuation
+
+### Method Descriptions — WITH period
+
+```ruby
+# Finds an API by its mount path.
+# Defines a reusable object type.
+# The output type for this export.
+```
+
+### @param/@return — NO period
+
+```ruby
+# @param name [Symbol] the object name
+# @return [Request] the parsed request
+```
+
+These are fragments, not sentences. Never end with period.
+
+**Check:**
+```bash
+grep -rn "@param.*\.$" lib/
+grep -rn "@return.*\.$" lib/
+```
+
+---
+
 ## Style & Tone
 
 ### Description Must Start With
@@ -16,7 +68,7 @@ Checklist for auditing YARD documentation in `lib/apiwork/`.
 | DSL/config | "Defines", "Sets", "Configures" | "Defines a reusable object type." |
 | Getter | "The X." (noun phrase) | "The output type for this export." |
 | Transform | "Transforms" | "Transforms the body parameters." |
-| Predicate | "Returns whether" or "Whether" | "Returns whether this is abstract." |
+| Predicate | "Returns whether" | "Returns whether this is abstract." |
 | Factory | "Creates" | "Creates a new request context." |
 
 ### Forbidden Phrases
@@ -53,10 +105,10 @@ grep -rn "allows you to" lib/
 
 | Element | Case | Example |
 |---------|------|---------|
-| First line (methods) | Uppercase start | "Finds an API by path." |
-| @param description | lowercase | "the mount path" |
-| @return description | lowercase | "the API class or nil" |
-| Class-level docs | Full sentence | "Base class for API definitions." |
+| Method description | Uppercase start, period | "Finds an API by path." |
+| @param description | lowercase, no period | "the mount path" |
+| @return description | lowercase, no period | "the API class" |
+| Class-level docs | Full sentence with period | "Base class for API definitions." |
 
 ---
 
@@ -147,31 +199,147 @@ grep -rn "instance" lib/ | grep "@return"
 
 ---
 
+## @see Rules
+
+### Always Use @see For
+
+1. **find/find! pairs** — always cross-reference:
+```ruby
+# @see .find!
+def find(key)
+
+# @see .find
+def find!(key)
+```
+
+2. **Delegates** — link to source method:
+```ruby
+# @api public
+# @see Request#query
+# @return [Hash] parsed query parameters
+delegate :query, to: :request
+```
+
+3. **Related methods** — when behavior is connected:
+```ruby
+# @see .register
+def find(key)
+```
+
+### Link Syntax
+
+```ruby
+# Instance method in same class
+@see #other_method
+
+# Class method in same class
+@see .other_method
+
+# Method in other class
+@see OtherClass#method
+@see OtherClass.method
+
+# Class reference
+@see OtherClass
+```
+
+**Check:**
+```bash
+# find without @see .find!
+grep -B5 "def find(" lib/ | grep -L "@see .find!"
+```
+
+---
+
+## @raise Rules
+
+### Always Document @raise For
+
+1. **ArgumentError** — when validating input:
+```ruby
+# @raise [ArgumentError] if klass is not a Representation subclass
+def representation(klass)
+```
+
+2. **KeyError** — for find! methods:
+```ruby
+# @raise [KeyError] if not found
+def find!(key)
+```
+
+3. **ConfigurationError** — for invalid configuration:
+```ruby
+# @raise [ConfigurationError] if error code is not registered
+def error(code)
+```
+
+### Never Document @raise For
+
+- `NotImplementedError` in abstract methods (self-evident)
+- Internal errors that users can't trigger
+
+---
+
+## @yield / @yieldparam Rules
+
+### When Block Has Named Parameter — Use Both
+
+```ruby
+# @yield block for configuration
+# @yieldparam config [Configuration] the configuration object
+def configure(&block)
+  config = Configuration.new
+  yield(config) if block
+end
+```
+
+### When Block Uses instance_eval — Only @yield
+
+```ruby
+# @yield block evaluated in resource context
+def resource(name, &block)
+  instance_eval(&block)
+end
+```
+
+### Format
+
+```ruby
+# @yield description of what block does
+# @yieldparam name [Type] description (lowercase, no period)
+```
+
+---
+
 ## @example Format
 
 **Code examples must follow CLAUDE.md style guide.** No exceptions.
 
+### Titles
+
+- **Single example** — title optional
+- **Multiple examples** — title required on each
+
 ```ruby
-# With title
-@example Finding an API
-  Apiwork::API.find('/api/v1')
+# Single — no title needed
+# @example
+#   Apiwork::API.find('/api/v1')
 
-# With output
-@example
-  request.query  # => { page: 1 }
-
-# Multi-step
-@example
-  api = Apiwork::API.define '/api/v1' do
-    resources :users
-  end
-  api.path  # => "/api/v1"
+# Multiple — titles required
+# @example Basic usage
+#   Apiwork::API.find('/api/v1')
+#
+# @example With block
+#   Apiwork::API.define '/api/v1' do
+#     resources :users
+#   end
 ```
 
-**Rules:**
-- Optional title after `@example`
+### Format Rules
+
 - Runnable code (not pseudocode)
 - Output shown with `# =>`
+- Multi-line blocks use proper indentation
 
 ---
 
@@ -262,10 +430,22 @@ attr_reader :cache,
 grep -rn "Gets or sets" lib/
 grep -rn "Without arguments" lib/
 grep -rn "This method" lib/
+grep -rn "Defaults to" lib/
+
+# Punctuation violations
+grep -rn "@param.*\.\$" lib/
+grep -rn "@return.*\.\$" lib/
 
 # Type violations
 grep -rn "@return \[Class\]" lib/
 grep -rn "@raise \[NotImplementedError\]" lib/
+
+# Redundant nil explanations
+grep -rn "or nil if" lib/
+grep -rn "or nil when" lib/
+
+# Instance suffix (redundant)
+grep -rn "@return.*instance" lib/
 
 # All clean = Exit: 1
 grep -rn "Gets or sets" lib/; echo "Exit: $?"
@@ -275,6 +455,8 @@ grep -rn "Gets or sets" lib/; echo "Exit: $?"
 
 ## Audit Checklist
 
+### Directories
+
 - [ ] `lib/apiwork/api/`
 - [ ] `lib/apiwork/adapter/`
 - [ ] `lib/apiwork/contract/`
@@ -282,13 +464,16 @@ grep -rn "Gets or sets" lib/; echo "Exit: $?"
 - [ ] `lib/apiwork/export/`
 - [ ] `lib/apiwork/introspection/`
 - [ ] `lib/apiwork/*.rb`
-- [ ] `docs/guide/`
-- [ ] `docs/reference/`
 
-For each `@api public` method:
-1. Description starts correctly (verb or noun phrase)
-2. No forbidden phrases
-3. Active voice, present tense
-4. @param types match signature
-5. @return type matches actual return
-6. Class references use `Class<Type>`
+### For Each `@api public` Method
+
+1. **Tag order:** description → @api public → @param → @yield → @return → @raise → @see → @example
+2. **Description:** starts with verb/noun, ends with period
+3. **@param:** lowercase, no period, includes `nil` if optional
+4. **@return:** lowercase, no period, no "or nil if X"
+5. **@see:** present for find/find! pairs and delegates
+6. **@raise:** documented for validation errors
+7. **@yield/@yieldparam:** both present when block has named param
+8. **@example:** titles on multiple examples
+9. **Types:** `Class<Type>` for class returns, no bare `[Class]`
+10. **No forbidden phrases**

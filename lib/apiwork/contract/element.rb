@@ -46,6 +46,7 @@ module Apiwork
       # @yield block for defining nested structure (instance_eval style)
       # @yieldparam builder [Contract::Object, Contract::Union, Contract::Element] the builder (yield style)
       # @return [void]
+      # @raise [ArgumentError] if object, array, or union type is missing block or shape
       def of(type, discriminator: nil, enum: nil, format: nil, max: nil, min: nil, shape: nil, value: nil, &block)
         resolved_enum = enum.is_a?(Symbol) ? resolve_enum(enum) : enum
 

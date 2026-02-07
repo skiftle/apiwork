@@ -46,6 +46,7 @@ module Apiwork
         #
         # @param format [Symbol, nil] :keep, :camel, :underscore, or :kebab
         # @return [Symbol, nil]
+        # @raise [ConfigurationError] if format is not a valid option
         #
         # @example
         #   key_format :camel
@@ -64,6 +65,7 @@ module Apiwork
         #
         # @param format [Symbol] :keep, :kebab, :camel, or :underscore
         # @return [Symbol]
+        # @raise [ConfigurationError] if format is not a valid option
         #
         # @example
         #   path_format :kebab

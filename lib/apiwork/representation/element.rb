@@ -93,6 +93,7 @@ module Apiwork
       # @yield block for defining nested structure (instance_eval style)
       # @yieldparam builder [API::Object, API::Union, API::Element] the builder (yield style)
       # @return [void]
+      # @raise [ArgumentError] if object, array, or union type is missing block or shape
       def of(type, discriminator: nil, shape: nil, **_options, &block)
         case type
         when :object
