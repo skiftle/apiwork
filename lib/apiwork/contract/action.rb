@@ -242,11 +242,11 @@ module Apiwork
       end
 
       def resets_request?
-        @reset_request == true
+        @reset_request
       end
 
       def resets_response?
-        @reset_response == true
+        @reset_response
       end
     end
   end
