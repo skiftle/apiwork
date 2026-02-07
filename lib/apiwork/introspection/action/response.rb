@@ -43,7 +43,8 @@ module Apiwork
         end
 
         # @api public
-        # Structured representation.
+        # Converts this response to a hash.
+        #
         # @return [Hash]
         def to_h
           { body: body&.to_h, no_content: no_content? }

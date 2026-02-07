@@ -75,6 +75,7 @@ grep -rn "@return.*\.$" lib/
 | DSL/config | "Defines", "Sets", "Configures" | "Defines a reusable object type." |
 | Getter | "The X." (noun phrase) | "The output type for this export." |
 | Transform | "Transforms" | "Transforms the body parameters." |
+| Conversion (`to_*`) | "Converts" | "Converts this param to a hash." |
 | Predicate (`?` method) | "Whether this X is Y." | "Whether this param is nullable." |
 | Factory | "Creates" | "Creates a new request context." |
 
@@ -317,6 +318,20 @@ delegate :query, to: :request
 # @see .register
 def find(key)
 ```
+
+### Never Use @see For
+
+1. **Getter/predicate pairs** — standard Ruby pattern, no linking needed:
+```ruby
+# Bad — unnecessary linking
+# @see #enum?
+def enum
+
+# Good — no @see
+def enum
+```
+
+The `getter/getter?` pattern is implicit in Ruby. Don't clutter with @see.
 
 ### Link Syntax
 

@@ -26,7 +26,9 @@ module Apiwork
       end
 
       # @api public
-      # @return [String, nil] API mount path (e.g., "/api/v1")
+      # The mount path for this API.
+      #
+      # @return [String, nil]
       def path
         @dump[:path]
       end
@@ -72,7 +74,8 @@ module Apiwork
       end
 
       # @api public
-      # Structured representation.
+      # Converts this API to a hash.
+      #
       # @return [Hash]
       def to_h
         {

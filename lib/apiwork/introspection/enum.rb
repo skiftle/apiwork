@@ -43,7 +43,8 @@ module Apiwork
       end
 
       # @api public
-      # Structured representation.
+      # Converts this enum to a hash.
+      #
       # @return [Hash]
       def to_h
         {

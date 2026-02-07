@@ -14,6 +14,8 @@ module Apiwork
     #   ClientRepresentation.inheritance.resolve(record)  # => PersonClientRepresentation
     class Inheritance
       # @api public
+      # The base representation class for this inheritance.
+      #
       # @return [Class<Representation::Base>]
       attr_reader :base_class
 

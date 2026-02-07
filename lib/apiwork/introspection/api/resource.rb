@@ -24,24 +24,32 @@ module Apiwork
         end
 
         # @api public
+        # The identifier for this resource.
+        #
         # @return [String]
         def identifier
           @dump[:identifier]
         end
 
         # @api public
-        # @return [String] URL path segment
+        # The URL path segment for this resource.
+        #
+        # @return [String]
         def path
           @dump[:path]
         end
 
         # @api public
+        # The parent identifiers for this resource.
+        #
         # @return [Array<String>]
         def parent_identifiers
           @dump[:parent_identifiers]
         end
 
         # @api public
+        # The actions for this resource.
+        #
         # @return [Hash{Symbol => Introspection::Action}]
         # @see Introspection::Action
         def actions
@@ -49,12 +57,16 @@ module Apiwork
         end
 
         # @api public
+        # The nested resources for this resource.
+        #
         # @return [Hash{Symbol => Resource}]
         def resources
           @resources ||= @dump[:resources].transform_values { |dump| Resource.new(dump) }
         end
 
         # @api public
+        # Converts this resource to a hash.
+        #
         # @return [Hash]
         def to_h
           {

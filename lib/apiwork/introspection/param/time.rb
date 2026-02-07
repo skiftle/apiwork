@@ -21,37 +21,48 @@ module Apiwork
       #   end
       class Time < Base
         # @api public
+        # Whether this param is scalar.
+        #
         # @return [Boolean]
         def scalar?
           true
         end
 
         # @api public
+        # Whether this param is an enum.
+        #
         # @return [Boolean]
         def enum?
           @dump[:enum].present?
         end
 
         # @api public
+        # The enum values for this param.
+        #
         # @return [Array<String>, Symbol, nil]
-        # @see #enum?
         def enum
           @dump[:enum]
         end
 
         # @api public
+        # Whether this param is an enum reference.
+        #
         # @return [Boolean]
         def enum_ref?
           @dump[:enum].is_a?(Symbol)
         end
 
         # @api public
+        # Whether this param is a time.
+        #
         # @return [Boolean]
         def time?
           true
         end
 
         # @api public
+        # Whether this param is formattable.
+        #
         # @return [Boolean]
         def formattable?
           false

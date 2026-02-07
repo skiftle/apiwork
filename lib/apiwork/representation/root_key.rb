@@ -14,10 +14,14 @@ module Apiwork
     #   root_key.plural    # => "invoices"
     class RootKey
       # @api public
+      # The plural form for this root key.
+      #
       # @return [String]
       attr_reader :plural
 
       # @api public
+      # The singular form for this root key.
+      #
       # @return [String]
       attr_reader :singular
 

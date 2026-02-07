@@ -25,67 +25,88 @@ module Apiwork
       #   end
       class Decimal < Base
         # @api public
+        # The minimum value for this param.
+        #
         # @return [Numeric, nil]
         def min
           @dump[:min]
         end
 
         # @api public
+        # The maximum value for this param.
+        #
         # @return [Numeric, nil]
         def max
           @dump[:max]
         end
 
         # @api public
+        # Whether this param is scalar.
+        #
         # @return [Boolean]
         def scalar?
           true
         end
 
         # @api public
+        # Whether this param is an enum.
+        #
         # @return [Boolean]
         def enum?
           @dump[:enum].present?
         end
 
         # @api public
+        # The enum values for this param.
+        #
         # @return [Array<Numeric>, Symbol, nil]
-        # @see #enum?
         def enum
           @dump[:enum]
         end
 
         # @api public
+        # Whether this param is an enum reference.
+        #
         # @return [Boolean]
         def enum_ref?
           @dump[:enum].is_a?(Symbol)
         end
 
         # @api public
+        # Whether this param is numeric.
+        #
         # @return [Boolean]
         def numeric?
           true
         end
 
         # @api public
+        # Whether this param is boundable.
+        #
         # @return [Boolean]
         def boundable?
           true
         end
 
         # @api public
+        # Whether this param is a decimal.
+        #
         # @return [Boolean]
         def decimal?
           true
         end
 
         # @api public
+        # Whether this param is formattable.
+        #
         # @return [Boolean]
         def formattable?
           false
         end
 
         # @api public
+        # Converts this param to a hash.
+        #
         # @return [Hash]
         def to_h
           result = super

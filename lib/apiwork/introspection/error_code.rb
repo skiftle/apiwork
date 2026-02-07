@@ -14,7 +14,9 @@ module Apiwork
       end
 
       # @api public
-      # @return [Integer] HTTP status code (e.g., 422, 404)
+      # The HTTP status for this error code.
+      #
+      # @return [Integer]
       def status
         @dump[:status]
       end
@@ -27,7 +29,8 @@ module Apiwork
       end
 
       # @api public
-      # Structured representation.
+      # Converts this error code to a hash.
+      #
       # @return [Hash]
       def to_h
         {

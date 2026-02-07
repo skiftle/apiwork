@@ -61,10 +61,14 @@ module Apiwork
       class_attribute :_example, default: nil, instance_accessor: false
 
       # @api public
+      # The context for this representation.
+      #
       # @return [Hash]
       attr_reader :context
 
       # @api public
+      # The record for this representation.
+      #
       # @return [ActiveRecord::Base]
       attr_reader :record
 

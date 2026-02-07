@@ -18,24 +18,32 @@ module Apiwork
           end
 
           # @api public
+          # The name for this contact.
+          #
           # @return [String, nil]
           def name
             @dump[:name]
           end
 
           # @api public
+          # The email for this contact.
+          #
           # @return [String, nil]
           def email
             @dump[:email]
           end
 
           # @api public
+          # The URL for this contact.
+          #
           # @return [String, nil]
           def url
             @dump[:url]
           end
 
           # @api public
+          # Converts this contact to a hash.
+          #
           # @return [Hash]
           def to_h
             {

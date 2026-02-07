@@ -94,7 +94,8 @@ module Apiwork
       end
 
       # @api public
-      # Structured representation.
+      # Converts this action to a hash.
+      #
       # @return [Hash]
       def to_h
         {

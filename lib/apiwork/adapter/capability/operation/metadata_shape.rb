@@ -23,6 +23,8 @@ module Apiwork
           end
 
           # @api public
+          # The capability options for this metadata shape.
+          #
           # @return [Configuration]
           attr_reader :options
 

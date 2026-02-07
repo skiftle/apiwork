@@ -35,13 +35,16 @@ module Apiwork
     end
 
     # @api public
-    # @return [String] JSON Pointer to the invalid field (e.g., "/user/email")
+    # The JSON pointer for this issue.
+    #
+    # @return [String]
     def pointer
       @pointer ||= JSONPointer.new(*path).to_s
     end
 
     # @api public
-    # Hash representation with code, detail, path, pointer, meta.
+    # Converts this issue to a hash.
+    #
     # @return [Hash]
     def to_h
       {

@@ -230,7 +230,7 @@ module Apiwork
       # Access API data via the {#data} method which provides typed access
       # to types, enums, resources, actions, and other introspection data.
       #
-      # @return [Hash, String] Hash for hash exports, String for string exports
+      # @return [Hash, String]
       # @see Introspection::API
       def generate
         raise NotImplementedError, "#{self.class} must implement #generate"

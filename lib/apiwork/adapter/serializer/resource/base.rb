@@ -46,6 +46,8 @@ module Apiwork
           end
 
           # @api public
+          # The representation class for this serializer.
+          #
           # @return [Class<Representation::Base>]
           attr_reader :representation_class
 

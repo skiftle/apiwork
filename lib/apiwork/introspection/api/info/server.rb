@@ -18,18 +18,24 @@ module Apiwork
           end
 
           # @api public
+          # The URL for this server.
+          #
           # @return [String, nil]
           def url
             @dump[:url]
           end
 
           # @api public
+          # The description for this server.
+          #
           # @return [String, nil]
           def description
             @dump[:description]
           end
 
           # @api public
+          # Converts this server to a hash.
+          #
           # @return [Hash]
           def to_h
             {
