@@ -36,9 +36,9 @@ Defines a nested option.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `name` | `Symbol` |  |
+| `name` | `Symbol` | the option name |
 | `type` | `Symbol` | :symbol, :string, :integer, :boolean, or :hash |
-| `default` | `Object, nil` |  |
-| `enum` | `Array, nil` |  |
+| `default` | `Object, nil` | the default value |
+| `enum` | `Array, nil` | allowed values |
 
 ---

@@ -94,6 +94,14 @@ module Apiwork
       end
 
       # @api public
+      # Whether this action is deprecated.
+      #
+      # @return [Boolean]
+      def deprecated?
+        @deprecated == true
+      end
+
+      # @api public
       # Sets a custom operation ID.
       #
       # @param value [String] custom operation ID (optional)
@@ -234,15 +242,11 @@ module Apiwork
       end
 
       def resets_request?
-        @reset_request
+        @reset_request == true
       end
 
       def resets_response?
-        @reset_response
-      end
-
-      def deprecated?
-        @deprecated == true
+        @reset_response == true
       end
     end
   end

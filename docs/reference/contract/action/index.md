@@ -41,6 +41,20 @@ end
 
 ---
 
+### #deprecated?
+
+`#deprecated?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L100)
+
+Whether this action is deprecated.
+
+**Returns**
+
+`Boolean`
+
+---
+
 ### #description
 
 `#description(value = nil)`
@@ -76,7 +90,7 @@ end
 
 `#operation_id(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L106)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L114)
 
 Sets a custom operation ID.
 
@@ -104,7 +118,7 @@ end
 
 `#raises(*error_code_keys)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L126)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L134)
 
 Declares the raised error codes for this action.
 
@@ -135,7 +149,7 @@ end
 
 `#request(replace: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L177)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L185)
 
 Defines the request structure for this action.
 
@@ -191,7 +205,7 @@ end
 
 `#response(replace: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L224)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L232)
 
 Defines the response structure for this action.
 

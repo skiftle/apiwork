@@ -131,7 +131,6 @@ module Apiwork
         end
       end
 
-      # Override array to use Contract::Element
       def array(name, **options, &block)
         raise ArgumentError, 'array requires a block' unless block
 

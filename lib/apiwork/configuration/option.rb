@@ -39,10 +39,10 @@ module Apiwork
       # @api public
       # Defines a nested option.
       #
-      # @param name [Symbol]
+      # @param name [Symbol] the option name
       # @param type [Symbol] :symbol, :string, :integer, :boolean, or :hash
-      # @param default [Object, nil]
-      # @param enum [Array, nil]
+      # @param default [Object, nil] the default value
+      # @param enum [Array, nil] allowed values
       # @yield block evaluated in {Option} context (for :hash type)
       def option(name, default: nil, enum: nil, type:, &block)
         @children[name] = Option.new(name, type, default:, enum:, &block)
