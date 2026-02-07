@@ -21,22 +21,24 @@ module Apiwork
         end
 
         # @api public
-        # Response body definition.
+        # The body for this response.
+        #
         # @return [Param, nil]
-        # @see Param
         def body
           @body ||= @dump[:body] ? Param.build(@dump[:body]) : nil
         end
 
         # @api public
-        # Whether this is a no-content response (204).
+        # Whether this response has no content.
+        #
         # @return [Boolean]
         def no_content?
           @dump[:no_content]
         end
 
         # @api public
-        # Whether a body is defined.
+        # Whether this response has a body.
+        #
         # @return [Boolean]
         def body?
           body.present?

@@ -48,7 +48,6 @@ module Apiwork
       # The shape for this type.
       #
       # @return [Hash{Symbol => Param}]
-      # @see Param
       def shape
         @shape ||= @dump[:shape].transform_values { |dump| Param.build(dump) }
       end

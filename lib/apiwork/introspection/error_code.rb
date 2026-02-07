@@ -22,7 +22,8 @@ module Apiwork
       end
 
       # @api public
-      # Error description.
+      # The description for this error code.
+      #
       # @return [String, nil]
       def description
         @dump[:description]

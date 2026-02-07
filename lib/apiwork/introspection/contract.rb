@@ -24,25 +24,25 @@ module Apiwork
       end
 
       # @api public
-      # Actions defined on this contract.
+      # The actions for this contract.
+      #
       # @return [Hash{Symbol => Introspection::Action}]
-      # @see Introspection::Action
       def actions
         @actions ||= @dump[:actions].transform_values { |dump| Action.new(dump) }
       end
 
       # @api public
-      # Custom types defined or referenced by this contract.
+      # The types for this contract.
+      #
       # @return [Hash{Symbol => Type}]
-      # @see Type
       def types
         @types ||= @dump[:types].transform_values { |dump| Type.new(dump) }
       end
 
       # @api public
-      # Enums defined or referenced by this contract.
+      # The enums for this contract.
+      #
       # @return [Hash{Symbol => Enum}]
-      # @see Enum
       def enums
         @enums ||= @dump[:enums].transform_values { |dump| Enum.new(dump) }
       end

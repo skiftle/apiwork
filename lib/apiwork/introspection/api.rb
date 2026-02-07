@@ -34,41 +34,41 @@ module Apiwork
       end
 
       # @api public
-      # The API metadata.
+      # The info for this API.
+      #
       # @return [API::Info, nil]
-      # @see API::Info
       def info
         @info ||= @dump[:info] ? Info.new(@dump[:info]) : nil
       end
 
       # @api public
-      # Top-level resources.
+      # The resources for this API.
+      #
       # @return [Hash{Symbol => API::Resource}]
-      # @see API::Resource
       def resources
         @resources ||= @dump[:resources].transform_values { |dump| Resource.new(dump) }
       end
 
       # @api public
-      # Registered custom types.
+      # The types for this API.
+      #
       # @return [Hash{Symbol => Type}]
-      # @see Type
       def types
         @types ||= @dump[:types].transform_values { |dump| Type.new(dump) }
       end
 
       # @api public
-      # Registered enums.
+      # The enums for this API.
+      #
       # @return [Hash{Symbol => Enum}]
-      # @see Enum
       def enums
         @enums ||= @dump[:enums].transform_values { |dump| Enum.new(dump) }
       end
 
       # @api public
-      # Error code definitions.
+      # The error codes for this API.
+      #
       # @return [Hash{Symbol => ErrorCode}]
-      # @see ErrorCode
       def error_codes
         @error_codes ||= @dump[:error_codes].transform_values { |dump| ErrorCode.new(dump) }
       end

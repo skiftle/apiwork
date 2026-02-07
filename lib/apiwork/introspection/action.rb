@@ -22,72 +22,80 @@ module Apiwork
       end
 
       # @api public
-      # Full path (e.g., "/posts/:id", "/posts").
+      # The path for this action.
+      #
       # @return [String]
       def path
         @dump[:path]
       end
 
       # @api public
-      # HTTP method (:get, :post, :patch, :delete, :put).
+      # The method for this action.
+      #
       # @return [Symbol]
       def method
         @dump[:method]
       end
 
       # @api public
-      # Request definition.
+      # The request for this action.
+      #
       # @return [Action::Request]
-      # @see Action::Request
       def request
         @request ||= Request.new(@dump[:request])
       end
 
       # @api public
-      # Response definition.
+      # The response for this action.
+      #
       # @return [Action::Response]
-      # @see Action::Response
       def response
         @response ||= Response.new(@dump[:response])
       end
 
       # @api public
-      # Error codes that may be raised.
+      # The errors for this action.
+      #
       # @return [Array<Symbol>]
       def raises
         @dump[:raises]
       end
 
       # @api public
-      # Short summary.
+      # The summary for this action.
+      #
       # @return [String, nil]
       def summary
         @dump[:summary]
       end
 
       # @api public
-      # Full description.
+      # The description for this action.
+      #
       # @return [String, nil]
       def description
         @dump[:description]
       end
 
       # @api public
-      # OpenAPI tags.
+      # The tags for this action.
+      #
       # @return [Array<String>]
       def tags
         @dump[:tags]
       end
 
       # @api public
-      # OpenAPI operation ID.
+      # The operation ID for this action.
+      #
       # @return [String, nil]
       def operation_id
         @dump[:operation_id]
       end
 
       # @api public
-      # Whether deprecated.
+      # Whether this action is deprecated.
+      #
       # @return [Boolean]
       def deprecated?
         @dump[:deprecated]
