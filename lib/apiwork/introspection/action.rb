@@ -54,7 +54,7 @@ module Apiwork
       end
 
       # @api public
-      # The errors for this action.
+      # The raised error codes for this action.
       #
       # @return [Array<Symbol>]
       def raises
