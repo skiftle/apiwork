@@ -61,7 +61,7 @@ Whether this action is deprecated.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L60)
 
-Sets a detailed description for this action.
+The description for this action.
 
 Used in generated specs as the operation description.
 Supports Markdown formatting.
@@ -92,7 +92,7 @@ end
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L114)
 
-Sets a custom operation ID for this action.
+The operation ID for this action.
 
 **Parameters**
 
@@ -271,7 +271,7 @@ end
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L41)
 
-Sets a short summary for this action.
+The summary for this action.
 
 Used in generated specs as the operation summary.
 
@@ -301,7 +301,7 @@ end
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L78)
 
-Sets tags for grouping this action.
+The tags for this action.
 
 Tags help organize actions in generated documentation.
 
