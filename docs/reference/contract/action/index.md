@@ -23,11 +23,9 @@ Returns [Action::Request](/reference/contract/action/request) via `request` and 
 
 `#deprecated!`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L94)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L92)
 
 Marks this action as deprecated.
-
-Deprecated actions are flagged in generated specs.
 
 **Returns**
 
@@ -62,7 +60,7 @@ Supports Markdown formatting.
 
 **Returns**
 
-`String`, `nil` — the description
+`String`, `nil`
 
 **Example**
 
@@ -78,7 +76,7 @@ end
 
 `#operation_id(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L108)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L106)
 
 Sets a custom operation ID.
 
@@ -90,7 +88,7 @@ Sets a custom operation ID.
 
 **Returns**
 
-`String`, `nil` — the operation ID
+`String`, `nil`
 
 **Example**
 
@@ -106,31 +104,21 @@ end
 
 `#raises(*error_code_keys)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L135)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L126)
 
-Declares error codes this action may return.
-
-Uses built-in error codes (:not_found, :forbidden, etc.) or custom codes
-registered via ErrorCode.register. These appear in generated specs.
-
-Multiple calls merge error codes (consistent with declaration merging).
+Declares the raised error codes for this action.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `error_code_keys` | `Array<Symbol>` | error code keys |
+| `error_code_keys` | `Symbol` | error code keys |
 
-**See also**
-
-- [ErrorCode](/reference/introspection/error-code)
-
-**Example: Merging error codes**
+**Example**
 
 ```ruby
 raises :not_found
 raises :forbidden
-# Result: [:not_found, :forbidden]
 ```
 
 **Example**
@@ -147,7 +135,7 @@ end
 
 `#request(replace: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L186)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L177)
 
 Defines the request structure for this action.
 
@@ -161,7 +149,7 @@ Use the block to define query parameters and request body.
 
 **Returns**
 
-[Action::Request](/reference/contract/action/request) — the request definition
+[Action::Request](/reference/contract/action/request)
 
 **See also**
 
@@ -203,7 +191,7 @@ end
 
 `#response(replace: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L233)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L224)
 
 Defines the response structure for this action.
 
@@ -217,7 +205,7 @@ Use the block to define response body or declare no_content.
 
 **Returns**
 
-[Action::Response](/reference/contract/action/response) — the response definition
+[Action::Response](/reference/contract/action/response)
 
 **See also**
 
@@ -277,7 +265,7 @@ Used in generated specs as the operation summary.
 
 **Returns**
 
-`String`, `nil` — the summary
+`String`, `nil`
 
 **Example**
 
@@ -307,7 +295,7 @@ Tags help organize actions in generated documentation.
 
 **Returns**
 
-`Array<Symbol>`, `nil` — the tags
+`Array<Symbol>`, `nil`
 
 **Example**
 

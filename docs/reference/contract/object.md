@@ -358,7 +358,7 @@ Can be called multiple times to inherit from multiple types.
 
 **Returns**
 
-`Array<Symbol>` — the inherited types
+`Array<Symbol>`
 
 **Example: Single inheritance**
 
@@ -488,7 +488,7 @@ Can be called multiple times to merge from multiple types.
 
 **Returns**
 
-`Array<Symbol>` — the merged types
+`Array<Symbol>`
 
 **Example**
 
@@ -621,24 +621,24 @@ Defines an optional object.
 
 `#param(name, type: nil, as: nil, default: nil, deprecated: nil, description: nil, discriminator: nil, enum: nil, example: nil, format: nil, max: nil, min: nil, nullable: nil, of: nil, optional: nil, required: nil, shape: nil, store: nil, transform: nil, value: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L65)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L60)
 
-Defines a field with explicit type.
+Defines a param with explicit type.
 
 This is the verbose form. Prefer sugar methods (string, integer, etc.)
-for static definitions. Use `param` for dynamic field generation.
+for static definitions.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `name` | `Symbol` | field name |
-| `type` | `Symbol, nil` | field type |
+| `name` | `Symbol` | param name |
+| `type` | `Symbol, nil` | param type |
 | `as` | `Symbol, nil` | target attribute name |
 | `default` | `Object, nil` | default value |
 | `deprecated` | `Boolean, nil` | mark as deprecated |
 | `description` | `String, nil` | documentation description |
-| `discriminator` | `Symbol, nil` | discriminator field name (unions only) |
+| `discriminator` | `Symbol, nil` | discriminator param name (unions only) |
 | `enum` | `Array, Symbol, nil` | allowed values or enum reference |
 | `example` | `Object, nil` | example value |
 | `format` | `Symbol, nil` | format hint |
@@ -646,7 +646,7 @@ for static definitions. Use `param` for dynamic field generation.
 | `min` | `Integer, nil` | minimum value or length |
 | `nullable` | `Boolean, nil` | whether null is allowed |
 | `of` | `Symbol, Hash, nil` | element type (arrays only) |
-| `optional` | `Boolean, nil` | whether field can be omitted |
+| `optional` | `Boolean, nil` | whether param can be omitted |
 | `required` | `Boolean, nil` | explicit required flag |
 | `shape` | `Contract::Object, Contract::Union, nil` | pre-built shape |
 | `store` | `Boolean, nil` | whether to persist |

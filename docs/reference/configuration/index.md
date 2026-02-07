@@ -41,7 +41,7 @@ Accesses nested configuration values by key path.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `keys` | `Array<Symbol>` | one or more keys to traverse |
+| `keys` | `Symbol` | one or more keys to traverse |
 
 **Example**
 
@@ -62,7 +62,7 @@ Converts the configuration to a hash.
 
 **Returns**
 
-`Hash` — all configuration values as a hash
+`Hash`
 
 **Example**
 

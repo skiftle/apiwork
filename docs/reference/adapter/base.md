@@ -46,7 +46,7 @@ The adapter name.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `value` | `Symbol, String` |  |
+| `value` | `Symbol, String, nil` | the adapter name |
 
 **Returns**
 
@@ -75,7 +75,7 @@ that handle both introspection and runtime behavior.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `klass` | `Class` | a [Capability::Base](/reference/adapter/capability/base) subclass |
+| `klass` | `Class<Capability::Base>` | the capability class |
 
 **Returns**
 
@@ -102,11 +102,11 @@ The collection wrapper class.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `klass` | `Class` | a [Wrapper::Collection::Base](/reference/adapter/wrapper/collection/base) subclass |
+| `klass` | `Class<Wrapper::Collection::Base>, nil` | the wrapper class |
 
 **Returns**
 
-`Class`, `nil`
+Class&lt;[Wrapper::Collection::Base](/reference/adapter/wrapper/collection/base)&gt;, `nil`
 
 **Example**
 
@@ -130,11 +130,11 @@ Handles serialization of errors.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `klass` | `Class` | a [Serializer::Error::Base](/reference/adapter/serializer/error/base) subclass |
+| `klass` | `Class<Serializer::Error::Base>, nil` | the serializer class |
 
 **Returns**
 
-`Class`, `nil`
+Class&lt;[Serializer::Error::Base](/reference/adapter/serializer/error/base)&gt;, `nil`
 
 **Example**
 
@@ -156,11 +156,11 @@ The error wrapper class.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `klass` | `Class` | a [Wrapper::Error::Base](/reference/adapter/wrapper/error/base) subclass |
+| `klass` | `Class<Wrapper::Error::Base>, nil` | the wrapper class |
 
 **Returns**
 
-`Class`, `nil`
+Class&lt;[Wrapper::Error::Base](/reference/adapter/wrapper/error/base)&gt;, `nil`
 
 **Example**
 
@@ -182,11 +182,11 @@ The member wrapper class.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `klass` | `Class` | a [Wrapper::Member::Base](/reference/adapter/wrapper/member/base) subclass |
+| `klass` | `Class<Wrapper::Member::Base>, nil` | the wrapper class |
 
 **Returns**
 
-`Class`, `nil`
+Class&lt;[Wrapper::Member::Base](/reference/adapter/wrapper/member/base)&gt;, `nil`
 
 **Example**
 
@@ -262,11 +262,11 @@ Handles serialization of records and collections.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `klass` | `Class` | a [Serializer::Resource::Base](/reference/adapter/serializer/resource/base) subclass |
+| `klass` | `Class<Serializer::Resource::Base>, nil` | the serializer class |
 
 **Returns**
 
-`Class`, `nil`
+Class&lt;[Serializer::Resource::Base](/reference/adapter/serializer/resource/base)&gt;, `nil`
 
 **Example**
 

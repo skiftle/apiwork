@@ -349,7 +349,7 @@ Default actions: :index, :show, :create, :update, :destroy.
 
 **Returns**
 
-Hash{Symbol =&gt; [Resource](/reference/api/resource)} — resources hash when called without name
+Hash{Symbol =&gt; [Resource](/reference/api/resource)}
 
 **Example: Basic resource**
 

@@ -81,9 +81,7 @@ module Apiwork
       end
 
       # @api public
-      # Marks as deprecated.
-      #
-      # Deprecated actions are flagged in generated specs.
+      # Marks this action as deprecated.
       #
       # @return [void]
       #
@@ -112,21 +110,14 @@ module Apiwork
       end
 
       # @api public
-      # Declares error codes that may be returned.
-      #
-      # Uses built-in error codes (:not_found, :forbidden, etc.) or custom codes
-      # registered via ErrorCode.register. These appear in generated specs.
-      #
-      # Multiple calls merge error codes (consistent with declaration merging).
+      # Declares the raised error codes for this action.
       #
       # @param error_code_keys [Symbol] error code keys
       # @raise [ConfigurationError] if error code is not registered
-      # @see ErrorCode
       #
-      # @example Merging error codes
+      # @example
       #   raises :not_found
       #   raises :forbidden
-      #   # Result: [:not_found, :forbidden]
       #
       # @example
       #   action :show do

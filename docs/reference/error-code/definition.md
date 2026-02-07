@@ -6,7 +6,7 @@ next: false
 
 # Definition
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code/definition.rb#L24)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code/definition.rb#L28)
 
 Represents a registered error code.
 
@@ -28,7 +28,7 @@ error_code.attach_path? # => true
 
 `#attach_path?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code/definition.rb#L29)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code/definition.rb#L33)
 
 Whether to include request path in error response.
 
@@ -44,11 +44,7 @@ Whether to include request path in error response.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code/definition.rb#L47)
 
-Returns a localized description for the error code.
-
-Looks up `apiwork.apis.&lt;locale_key&gt;.error_codes.&lt;key&gt;.description`,
-falls back to `apiwork.error_codes.&lt;key&gt;.description`,
-then to titleized key.
+The description for this error code.
 
 **Parameters**
 
@@ -74,11 +70,13 @@ error_code.description(locale_key: 'api/v1') # apiwork.apis.api/v1.error_codes.n
 
 `#key`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code/definition.rb#L24)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code/definition.rb#L28)
+
+The key for this error code.
 
 **Returns**
 
-`Symbol` — error code identifier
+`Symbol`
 
 ---
 
@@ -86,10 +84,12 @@ error_code.description(locale_key: 'api/v1') # apiwork.apis.api/v1.error_codes.n
 
 `#status`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code/definition.rb#L24)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code/definition.rb#L28)
+
+The status for this error code.
 
 **Returns**
 
-`Integer` — HTTP status code
+`Integer`
 
 ---

@@ -1,5 +1,5 @@
 ---
-order: 75
+order: 74
 prev: false
 next: false
 ---
@@ -26,11 +26,13 @@ param.scalar?  # => false
 
 `#array?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L90)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L95)
+
+Whether this param is an array.
 
 **Returns**
 
-`Boolean` — false — override in Array
+`Boolean`
 
 ---
 
@@ -38,11 +40,13 @@ param.scalar?  # => false
 
 `#binary?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L180)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L215)
+
+Whether this param is binary.
 
 **Returns**
 
-`Boolean` — false — override in Binary
+`Boolean`
 
 ---
 
@@ -50,11 +54,13 @@ param.scalar?  # => false
 
 `#boolean?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L150)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L175)
+
+Whether this param is a boolean.
 
 **Returns**
 
-`Boolean` — false — override in Boolean
+`Boolean`
 
 ---
 
@@ -62,11 +68,13 @@ param.scalar?  # => false
 
 `#boundable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L120)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L135)
+
+Whether this param is boundable.
 
 **Returns**
 
-`Boolean` — false — override in types that support min/max
+`Boolean`
 
 ---
 
@@ -74,11 +82,13 @@ param.scalar?  # => false
 
 `#date?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L162)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L191)
+
+Whether this param is a date.
 
 **Returns**
 
-`Boolean` — false — override in Date
+`Boolean`
 
 ---
 
@@ -86,11 +96,13 @@ param.scalar?  # => false
 
 `#datetime?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L156)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L183)
+
+Whether this param is a datetime.
 
 **Returns**
 
-`Boolean` — false — override in DateTime
+`Boolean`
 
 ---
 
@@ -98,11 +110,13 @@ param.scalar?  # => false
 
 `#decimal?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L144)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L167)
+
+Whether this param is a decimal.
 
 **Returns**
 
-`Boolean` — false — override in Decimal
+`Boolean`
 
 ---
 
@@ -110,11 +124,13 @@ param.scalar?  # => false
 
 `#default`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L66)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L63)
+
+The default value for this param.
 
 **Returns**
 
-`Object`, `nil` — the default value
+`Object`, `nil`
 
 ---
 
@@ -122,11 +138,13 @@ param.scalar?  # => false
 
 `#default?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L72)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L71)
+
+Whether this param has a default value.
 
 **Returns**
 
-`Boolean` — true if a default value is defined
+`Boolean`
 
 ---
 
@@ -134,11 +152,13 @@ param.scalar?  # => false
 
 `#deprecated?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L48)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L39)
+
+Whether this param is deprecated.
 
 **Returns**
 
-`Boolean` — true if this field is deprecated
+`Boolean`
 
 ---
 
@@ -146,11 +166,13 @@ param.scalar?  # => false
 
 `#description`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L54)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L47)
+
+The description for this param.
 
 **Returns**
 
-`String`, `nil` — the field description
+`String`, `nil`
 
 ---
 
@@ -158,23 +180,27 @@ param.scalar?  # => false
 
 `#enum?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L198)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L239)
+
+Whether this param is an enum.
 
 **Returns**
 
-`Boolean` — false — override in scalar types with enum constraints
+`Boolean`
 
 ---
 
-### #enum_ref?
+### #enum_reference?
 
-`#enum_ref?`
+`#enum_reference?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L204)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L247)
+
+Whether this param is an enum by reference.
 
 **Returns**
 
-`Boolean` — false — override in scalar types
+`Boolean`
 
 ---
 
@@ -182,11 +208,13 @@ param.scalar?  # => false
 
 `#example`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L60)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L55)
+
+The example value for this param.
 
 **Returns**
 
-`Object`, `nil` — the example value
+`Object`, `nil`
 
 ---
 
@@ -194,11 +222,13 @@ param.scalar?  # => false
 
 `#formattable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L210)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L255)
+
+Whether this param is formattable.
 
 **Returns**
 
-`Boolean` — false — override in String, Integer
+`Boolean`
 
 ---
 
@@ -206,11 +236,13 @@ param.scalar?  # => false
 
 `#integer?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L132)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L151)
+
+Whether this param is an integer.
 
 **Returns**
 
-`Boolean` — false — override in Integer
+`Boolean`
 
 ---
 
@@ -218,11 +250,13 @@ param.scalar?  # => false
 
 `#literal?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L108)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L119)
+
+Whether this param is a literal.
 
 **Returns**
 
-`Boolean` — false — override in Literal
+`Boolean`
 
 ---
 
@@ -230,11 +264,13 @@ param.scalar?  # => false
 
 `#nullable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L36)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L23)
+
+Whether this param is nullable.
 
 **Returns**
 
-`Boolean` — true if this field can be null
+`Boolean`
 
 ---
 
@@ -242,11 +278,13 @@ param.scalar?  # => false
 
 `#number?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L138)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L159)
+
+Whether this param is a number.
 
 **Returns**
 
-`Boolean` — false — override in Number
+`Boolean`
 
 ---
 
@@ -254,11 +292,13 @@ param.scalar?  # => false
 
 `#numeric?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L114)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L127)
+
+Whether this param is numeric.
 
 **Returns**
 
-`Boolean` — false — override in Integer, Number, Decimal
+`Boolean`
 
 ---
 
@@ -266,11 +306,13 @@ param.scalar?  # => false
 
 `#object?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L96)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L103)
+
+Whether this param is an object.
 
 **Returns**
 
-`Boolean` — false — override in Object
+`Boolean`
 
 ---
 
@@ -278,11 +320,13 @@ param.scalar?  # => false
 
 `#optional?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L42)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L31)
+
+Whether this param is optional.
 
 **Returns**
 
-`Boolean` — true if this field is optional
+`Boolean`
 
 ---
 
@@ -290,23 +334,27 @@ param.scalar?  # => false
 
 `#partial?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L216)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L263)
+
+Whether this param is partial.
 
 **Returns**
 
-`Boolean` — false — override in Object
+`Boolean`
 
 ---
 
-### #ref?
+### #reference?
 
-`#ref?`
+`#reference?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L192)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L231)
+
+Whether this param is a reference.
 
 **Returns**
 
-`Boolean` — false — override in Ref
+`Boolean`
 
 ---
 
@@ -314,11 +362,13 @@ param.scalar?  # => false
 
 `#scalar?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L84)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L87)
+
+Whether this param is scalar.
 
 **Returns**
 
-`Boolean` — false — override in scalar subclasses
+`Boolean`
 
 ---
 
@@ -326,11 +376,13 @@ param.scalar?  # => false
 
 `#string?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L126)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L143)
+
+Whether this param is a string.
 
 **Returns**
 
-`Boolean` — false — override in String
+`Boolean`
 
 ---
 
@@ -338,11 +390,13 @@ param.scalar?  # => false
 
 `#tag`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L78)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L79)
+
+The discriminator tag for this param.
 
 **Returns**
 
-`String`, `nil` — the discriminator tag for union variants
+`String`, `nil`
 
 ---
 
@@ -350,11 +404,13 @@ param.scalar?  # => false
 
 `#time?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L168)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L199)
+
+Whether this param is a time.
 
 **Returns**
 
-`Boolean` — false — override in Time
+`Boolean`
 
 ---
 
@@ -362,11 +418,13 @@ param.scalar?  # => false
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L222)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L271)
+
+Converts this param to a hash.
 
 **Returns**
 
-`Hash` — structured representation
+`Hash`
 
 ---
 
@@ -374,11 +432,13 @@ param.scalar?  # => false
 
 `#type`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L30)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L15)
+
+The type for this param.
 
 **Returns**
 
-`Symbol` — the param type (:string, :integer, :array, :object, etc.)
+`Symbol`
 
 ---
 
@@ -386,11 +446,13 @@ param.scalar?  # => false
 
 `#union?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L102)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L111)
+
+Whether this param is a union.
 
 **Returns**
 
-`Boolean` — false — override in Union
+`Boolean`
 
 ---
 
@@ -398,11 +460,13 @@ param.scalar?  # => false
 
 `#unknown?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/unknown.rb#L18)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/unknown.rb#L20)
+
+Whether this param is unknown.
 
 **Returns**
 
-`Boolean` — true if this is an unknown param
+`Boolean`
 
 ---
 
@@ -410,10 +474,12 @@ param.scalar?  # => false
 
 `#uuid?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L174)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L207)
+
+Whether this param is a UUID.
 
 **Returns**
 
-`Boolean` — false — override in UUID
+`Boolean`
 
 ---

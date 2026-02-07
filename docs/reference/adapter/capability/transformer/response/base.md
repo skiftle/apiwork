@@ -35,6 +35,6 @@ Transforms the response.
 
 **Returns**
 
-[Response](/reference/response) — the transformed response
+[Response](/reference/response)
 
 ---

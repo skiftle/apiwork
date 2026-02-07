@@ -38,7 +38,7 @@ types, and configuration.
 
 **Returns**
 
-[API::Base](/reference/api/base)
+Class&lt;[API::Base](/reference/api/base)&gt;
 
 **Example: Basic API**
 
@@ -77,7 +77,7 @@ Finds an API by its mount path.
 
 **Returns**
 
-[API::Base](/reference/api/base), `nil` — the API class or nil if not found
+Class&lt;[API::Base](/reference/api/base)&gt;, `nil`
 
 **Example**
 
@@ -103,7 +103,7 @@ Finds an API by its mount path.
 
 **Returns**
 
-[API::Base](/reference/api/base) — the API class
+Class&lt;[API::Base](/reference/api/base)&gt;
 
 **Example**
 
@@ -119,7 +119,7 @@ Apiwork::API.find!('/api/v1')
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L75)
 
-Returns introspection data for an API.
+The introspection data for an API.
 
 **Parameters**
 
@@ -130,7 +130,7 @@ Returns introspection data for an API.
 
 **Returns**
 
-`Hash` — the introspection data
+`Hash`
 
 **Example**
 

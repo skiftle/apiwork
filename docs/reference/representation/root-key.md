@@ -1,5 +1,5 @@
 ---
-order: 83
+order: 82
 prev: false
 next: false
 ---
@@ -27,11 +27,13 @@ root_key.plural    # => "invoices"
 
 `#plural`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/root_key.rb#L18)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/root_key.rb#L20)
+
+The plural form for this root key.
 
 **Returns**
 
-`String` — root key for collections
+`String`
 
 ---
 
@@ -39,10 +41,12 @@ root_key.plural    # => "invoices"
 
 `#singular`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/root_key.rb#L22)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/root_key.rb#L26)
+
+The singular form for this root key.
 
 **Returns**
 
-`String` — root key for single records
+`String`
 
 ---

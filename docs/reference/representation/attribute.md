@@ -1,5 +1,5 @@
 ---
-order: 79
+order: 78
 prev: false
 next: false
 ---
@@ -24,15 +24,17 @@ attribute.filterable? # => true
 
 ## Instance Methods
 
-### #deprecated
+### #deprecated?
 
-`#deprecated`
+`#deprecated?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L26)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L160)
+
+Whether this attribute is deprecated.
 
 **Returns**
 
-`Boolean` — whether this attribute is deprecated
+`Boolean`
 
 ---
 
@@ -40,11 +42,13 @@ attribute.filterable? # => true
 
 `#description`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L30)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L28)
+
+The description for this attribute.
 
 **Returns**
 
-`String`, `nil` — documentation description
+`String`, `nil`
 
 ---
 
@@ -54,9 +58,11 @@ attribute.filterable? # => true
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L34)
 
+The enum values for this attribute.
+
 **Returns**
 
-`Array<Object>`, `nil` — allowed values
+`Array<Object>`, `nil`
 
 ---
 
@@ -64,11 +70,13 @@ attribute.filterable? # => true
 
 `#example`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L38)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L40)
+
+The example value for this attribute.
 
 **Returns**
 
-`Object`, `nil` — example value for documentation
+`Object`, `nil`
 
 ---
 
@@ -76,11 +84,13 @@ attribute.filterable? # => true
 
 `#filterable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L144)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L168)
+
+Whether this attribute is filterable.
 
 **Returns**
 
-`Boolean` — whether filtering is enabled
+`Boolean`
 
 ---
 
@@ -88,11 +98,13 @@ attribute.filterable? # => true
 
 `#format`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L42)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L46)
+
+The format for this attribute.
 
 **Returns**
 
-`Symbol`, `nil` — format hint
+`Symbol`, `nil`
 
 ---
 
@@ -100,11 +112,13 @@ attribute.filterable? # => true
 
 `#max`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L46)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L52)
+
+The maximum value for this attribute.
 
 **Returns**
 
-`Integer`, `nil` — maximum value or length
+`Integer`, `nil`
 
 ---
 
@@ -112,11 +126,13 @@ attribute.filterable? # => true
 
 `#min`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L50)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L58)
+
+The minimum value for this attribute.
 
 **Returns**
 
-`Integer`, `nil` — minimum value or length
+`Integer`, `nil`
 
 ---
 
@@ -124,11 +140,13 @@ attribute.filterable? # => true
 
 `#name`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L54)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L64)
+
+The name for this attribute.
 
 **Returns**
 
-`Symbol` — attribute name
+`Symbol`
 
 ---
 
@@ -136,11 +154,13 @@ attribute.filterable? # => true
 
 `#nullable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L162)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L192)
+
+Whether this attribute is nullable.
 
 **Returns**
 
-`Boolean` — whether this attribute can be null
+`Boolean`
 
 ---
 
@@ -148,11 +168,13 @@ attribute.filterable? # => true
 
 `#of`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L58)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L70)
+
+The array element type for this attribute.
 
 **Returns**
 
-`Symbol`, `nil` — element type for arrays
+`Symbol`, `nil`
 
 ---
 
@@ -160,11 +182,13 @@ attribute.filterable? # => true
 
 `#optional?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L156)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L184)
+
+Whether this attribute is optional.
 
 **Returns**
 
-`Boolean` — whether this attribute can be omitted
+`Boolean`
 
 ---
 
@@ -172,11 +196,13 @@ attribute.filterable? # => true
 
 `#sortable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L150)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L176)
+
+Whether this attribute is sortable.
 
 **Returns**
 
-`Boolean` — whether sorting is enabled
+`Boolean`
 
 ---
 
@@ -184,11 +210,13 @@ attribute.filterable? # => true
 
 `#type`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L62)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L76)
+
+The type for this attribute.
 
 **Returns**
 
-`Symbol` — data type
+`Symbol`
 
 ---
 
@@ -196,11 +224,13 @@ attribute.filterable? # => true
 
 `#writable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L170)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L202)
+
+Whether this attribute is writable.
 
 **Returns**
 
-`Boolean` — whether this attribute is writable
+`Boolean`
 
 ---
 
@@ -208,7 +238,9 @@ attribute.filterable? # => true
 
 `#writable_for?(action)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L177)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L211)
+
+Whether this attribute is writable for a specific action.
 
 **Parameters**
 
@@ -218,6 +250,6 @@ attribute.filterable? # => true
 
 **Returns**
 
-`Boolean` — whether this attribute is writable for the given action
+`Boolean`
 
 ---

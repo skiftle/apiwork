@@ -1,5 +1,5 @@
 ---
-order: 85
+order: 84
 prev: false
 next: false
 ---
@@ -32,11 +32,13 @@ response.transform { |data| camelize(data) }
 
 `#body`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/response.rb#L19)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/response.rb#L21)
+
+The body parameters for this response.
 
 **Returns**
 
-`Hash` — the body parameters
+`Hash`
 
 ---
 
@@ -44,7 +46,7 @@ response.transform { |data| camelize(data) }
 
 `#initialize(body:)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/response.rb#L25)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/response.rb#L27)
 
 Creates a new response context.
 
@@ -64,13 +66,13 @@ Creates a new response context.
 
 `#transform`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/response.rb#L37)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/response.rb#L39)
 
 Transforms the body parameters.
 
 **Returns**
 
-[Response](/reference/response) — new context with transformed body
+[Response](/reference/response)
 
 **Example**
 
@@ -84,13 +86,13 @@ response.transform { |data| camelize(data) }
 
 `#transform_body`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/response.rb#L49)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/response.rb#L51)
 
 Transforms the body parameters.
 
 **Returns**
 
-[Response](/reference/response) — new context with transformed body
+[Response](/reference/response)
 
 **Example**
 

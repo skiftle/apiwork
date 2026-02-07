@@ -37,17 +37,17 @@ end
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/serializer/error/base.rb#L42)
 
-Sets or gets the API type builder class.
+The API type builder class.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `klass` | `Class, nil` | a Builder::API::Base subclass |
+| `klass` | `Class<Builder::API::Base>, nil` | the builder class |
 
 **Returns**
 
-`Class`, `nil`
+Class&lt;[Builder::API::Base](/reference/adapter/builder/api/base)&gt;, `nil`
 
 ---
 
@@ -57,7 +57,7 @@ Sets or gets the API type builder class.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/serializer/error/base.rb#L32)
 
-Sets or gets the data type name for this serializer.
+The data type name for this serializer.
 
 **Parameters**
 

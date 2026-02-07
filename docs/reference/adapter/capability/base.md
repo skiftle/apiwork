@@ -47,7 +47,7 @@ shared types used across all contracts.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `klass` | `Class, nil` | a [Builder::API::Base](/reference/adapter/builder/api/base) subclass |
+| `klass` | `Class<Builder::API::Base>, nil` | the builder class |
 
 **Returns**
 
@@ -65,7 +65,7 @@ shared types used across all contracts.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/base.rb#L46)
 
-Sets or returns the capability name.
+The capability name.
 
 Used for configuration options, translation keys, and [Adapter::Base.skip_capability](/reference/adapter/base#skip-capability).
 
@@ -77,7 +77,7 @@ Used for configuration options, translation keys, and [Adapter::Base.skip_capabi
 
 **Returns**
 
-`Symbol`, `nil` — the capability name
+`Symbol`, `nil`
 
 ---
 
@@ -96,7 +96,7 @@ parameters and response shapes.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `klass` | `Class, nil` | a [Builder::Contract::Base](/reference/adapter/builder/contract/base) subclass |
+| `klass` | `Class<Builder::Contract::Base>, nil` | the builder class |
 
 **Returns**
 
@@ -123,7 +123,7 @@ request parameters.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `klass` | `Class, nil` | an [Operation::Base](/reference/adapter/capability/operation/base) subclass |
+| `klass` | `Class<Operation::Base>, nil` | the operation class |
 
 **Returns**
 
@@ -199,7 +199,7 @@ Registers a request transformer for this capability.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `transformer_class` | `Class` | a [Transformer::Request::Base](/reference/adapter/capability/transformer/request/base) subclass |
+| `transformer_class` | `Class<Transformer::Request::Base>` | the transformer class |
 
 **Returns**
 
@@ -223,7 +223,7 @@ Registers a response transformer for this capability.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `transformer_class` | `Class` | a [Transformer::Response::Base](/reference/adapter/capability/transformer/response/base) subclass |
+| `transformer_class` | `Class<Transformer::Response::Base>` | the transformer class |
 
 **Returns**
 

@@ -21,7 +21,7 @@ Use this to query API-wide state when building shared types.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/api/scope.rb#L55)
 
-Returns aggregated configuration values for a capability.
+The configured values for a capability.
 
 **Parameters**
 
@@ -32,7 +32,7 @@ Returns aggregated configuration values for a capability.
 
 **Returns**
 
-`Set` — unique values across all representations
+`Set`
 
 ---
 

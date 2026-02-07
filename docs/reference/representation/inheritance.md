@@ -1,5 +1,5 @@
 ---
-order: 82
+order: 81
 prev: false
 next: false
 ---
@@ -27,11 +27,13 @@ ClientRepresentation.inheritance.resolve(record)  # => PersonClientRepresentatio
 
 `#base_class`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L18)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L20)
+
+The base representation class for this inheritance.
 
 **Returns**
 
-Class&lt;[Representation::Base](/reference/representation/base)&gt; — the base representation class for this inheritance chain
+Class&lt;[Representation::Base](/reference/representation/base)&gt;
 
 ---
 
@@ -39,7 +41,7 @@ Class&lt;[Representation::Base](/reference/representation/base)&gt; — the base
 
 `#column`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L35)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L37)
 
 The STI column name from the model.
 
@@ -53,7 +55,7 @@ The STI column name from the model.
 
 `#mapping`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L61)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L63)
 
 Mapping of API names to database type values.
 
@@ -67,9 +69,9 @@ Mapping of API names to database type values.
 
 `#needs_transform?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L53)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L55)
 
-Whether any subclass has a custom sti_name different from the model.
+Whether this inheritance needs transformation.
 
 **Returns**
 
@@ -81,7 +83,7 @@ Whether any subclass has a custom sti_name different from the model.
 
 `#resolve(record)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L44)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L46)
 
 Resolves a record to its subclass representation.
 
@@ -89,7 +91,7 @@ Resolves a record to its subclass representation.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `record` | `ActiveRecord::Base` |  |
+| `record` | `ActiveRecord::Base` | the record to resolve |
 
 **Returns**
 
@@ -101,7 +103,7 @@ Class&lt;[Representation::Base](/reference/representation/base)&gt;, `nil`
 
 `#subclasses`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L24)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L26)
 
 All registered subclass representations.
 

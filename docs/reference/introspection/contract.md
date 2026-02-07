@@ -10,7 +10,7 @@ next: false
 
 Facade for introspected contract data.
 
-Provides access to actions, types, and enums defined on a contract.
+Provides access to actions, types, and enums defined on this contract.
 
 **Example**
 
@@ -33,15 +33,13 @@ end
 
 `#actions`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/contract.rb#L29)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/contract.rb#L30)
+
+The actions for this contract.
 
 **Returns**
 
-Hash{Symbol =&gt; [Introspection::Action](/reference/introspection/action/)} — actions defined on this contract
-
-**See also**
-
-- [Introspection::Action](/reference/introspection/action/)
+Hash{Symbol =&gt; [Introspection::Action](/reference/introspection/action/)}
 
 ---
 
@@ -49,15 +47,13 @@ Hash{Symbol =&gt; [Introspection::Action](/reference/introspection/action/)} —
 
 `#enums`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/contract.rb#L43)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/contract.rb#L46)
+
+The enums for this contract.
 
 **Returns**
 
-Hash{Symbol =&gt; [Enum](/reference/introspection/enum)} — enums defined or referenced by this contract
-
-**See also**
-
-- [Enum](/reference/introspection/enum)
+Hash{Symbol =&gt; [Enum](/reference/introspection/enum)}
 
 ---
 
@@ -65,11 +61,13 @@ Hash{Symbol =&gt; [Enum](/reference/introspection/enum)} — enums defined or re
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/contract.rb#L49)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/contract.rb#L54)
+
+Converts this contract to a hash.
 
 **Returns**
 
-`Hash` — structured representation
+`Hash`
 
 ---
 
@@ -77,14 +75,12 @@ Hash{Symbol =&gt; [Enum](/reference/introspection/enum)} — enums defined or re
 
 `#types`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/contract.rb#L36)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/contract.rb#L38)
+
+The types for this contract.
 
 **Returns**
 
-Hash{Symbol =&gt; [Type](/reference/introspection/type)} — custom types defined or referenced by this contract
-
-**See also**
-
-- [Type](/reference/introspection/type)
+Hash{Symbol =&gt; [Type](/reference/introspection/type)}
 
 ---

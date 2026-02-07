@@ -1,5 +1,5 @@
 ---
-order: 84
+order: 83
 prev: false
 next: false
 ---
@@ -33,11 +33,13 @@ request.transform { |data| normalize(data) }
 
 `#body`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/request.rb#L24)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/request.rb#L28)
+
+The body parameters for this request.
 
 **Returns**
 
-`Hash` — the body parameters
+`Hash`
 
 ---
 
@@ -45,7 +47,7 @@ request.transform { |data| normalize(data) }
 
 `#initialize(body:, query:)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/request.rb#L31)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/request.rb#L35)
 
 Creates a new request context.
 
@@ -53,8 +55,8 @@ Creates a new request context.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `query` | `Hash` | the query parameters |
 | `body` | `Hash` | the body parameters |
+| `query` | `Hash` | the query parameters |
 
 **Returns**
 
@@ -66,11 +68,13 @@ Creates a new request context.
 
 `#query`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/request.rb#L20)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/request.rb#L22)
+
+The query parameters for this request.
 
 **Returns**
 
-`Hash` — the query parameters
+`Hash`
 
 ---
 
@@ -78,13 +82,13 @@ Creates a new request context.
 
 `#transform`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/request.rb#L44)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/request.rb#L48)
 
 Transforms both query and body with the same block.
 
 **Returns**
 
-[Request](/reference/request) — new context with transformed data
+[Request](/reference/request)
 
 **Example**
 
@@ -98,13 +102,13 @@ request.transform { |data| normalize(data) }
 
 `#transform_body`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/request.rb#L68)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/request.rb#L72)
 
 Transforms only the body.
 
 **Returns**
 
-[Request](/reference/request) — new context with transformed body
+[Request](/reference/request)
 
 **Example**
 
@@ -118,13 +122,13 @@ request.transform_body { |body| prepare(body) }
 
 `#transform_query`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/request.rb#L56)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/request.rb#L60)
 
 Transforms only the query.
 
 **Returns**
 
-[Request](/reference/request) — new context with transformed query
+[Request](/reference/request)
 
 **Example**
 

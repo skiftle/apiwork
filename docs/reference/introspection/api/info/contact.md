@@ -25,11 +25,13 @@ contact.url    # => "https://example.com/support"
 
 `#email`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info/contact.rb#L28)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info/contact.rb#L32)
+
+The email for this contact.
 
 **Returns**
 
-`String`, `nil` — contact email
+`String`, `nil`
 
 ---
 
@@ -37,11 +39,13 @@ contact.url    # => "https://example.com/support"
 
 `#name`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info/contact.rb#L22)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info/contact.rb#L24)
+
+The name for this contact.
 
 **Returns**
 
-`String`, `nil` — contact name
+`String`, `nil`
 
 ---
 
@@ -49,11 +53,13 @@ contact.url    # => "https://example.com/support"
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info/contact.rb#L40)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info/contact.rb#L48)
+
+Converts this contact to a hash.
 
 **Returns**
 
-`Hash` — structured representation
+`Hash`
 
 ---
 
@@ -61,10 +67,12 @@ contact.url    # => "https://example.com/support"
 
 `#url`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info/contact.rb#L34)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info/contact.rb#L40)
+
+The URL for this contact.
 
 **Returns**
 
-`String`, `nil` — contact URL
+`String`, `nil`
 
 ---

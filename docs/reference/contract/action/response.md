@@ -6,7 +6,7 @@ next: false
 
 # Response
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action/response.rb#L11)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action/response.rb#L10)
 
 Defines body for a response.
 
@@ -21,8 +21,6 @@ Returns [Contract::Object](/reference/contract/object) via `body`.
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action/response.rb#L74)
 
 Defines the response body for this response.
-
-When using representation, body is auto-generated from representation attributes.
 
 **Returns**
 
@@ -58,12 +56,16 @@ end
 
 `#no_content!`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action/response.rb#L47)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action/response.rb#L49)
 
-Declares this action returns 204 No Content.
+Declares this response as 204 No Content.
 
 Use for actions that don't return a response body,
 like DELETE or actions that only perform side effects.
+
+**Returns**
+
+`void`
 
 **Example**
 
@@ -89,7 +91,7 @@ end
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action/response.rb#L28)
 
-Returns true if this response is 204 No Content.
+Whether this response has no content.
 
 **Returns**
 

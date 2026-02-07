@@ -24,11 +24,13 @@ license.url   # => "https://opensource.org/licenses/MIT"
 
 `#name`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info/license.rb#L21)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info/license.rb#L23)
+
+The name for this license.
 
 **Returns**
 
-`String`, `nil` — license name
+`String`, `nil`
 
 ---
 
@@ -36,11 +38,13 @@ license.url   # => "https://opensource.org/licenses/MIT"
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info/license.rb#L33)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info/license.rb#L39)
+
+Converts this license to a hash.
 
 **Returns**
 
-`Hash` — structured representation
+`Hash`
 
 ---
 
@@ -48,10 +52,12 @@ license.url   # => "https://opensource.org/licenses/MIT"
 
 `#url`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info/license.rb#L27)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info/license.rb#L31)
+
+The URL for this license.
 
 **Returns**
 
-`String`, `nil` — license URL
+`String`, `nil`
 
 ---

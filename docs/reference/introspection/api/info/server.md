@@ -25,11 +25,13 @@ end
 
 `#description`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info/server.rb#L28)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info/server.rb#L32)
+
+The description for this server.
 
 **Returns**
 
-`String`, `nil` — server description
+`String`, `nil`
 
 ---
 
@@ -37,11 +39,13 @@ end
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info/server.rb#L34)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info/server.rb#L40)
+
+Converts this server to a hash.
 
 **Returns**
 
-`Hash` — structured representation
+`Hash`
 
 ---
 
@@ -49,10 +53,12 @@ end
 
 `#url`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info/server.rb#L22)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info/server.rb#L24)
+
+The URL for this server.
 
 **Returns**
 
-`String`, `nil` — server URL
+`String`, `nil`
 
 ---

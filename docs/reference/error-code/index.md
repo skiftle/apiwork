@@ -30,7 +30,7 @@ Finds an error code by key.
 
 **Returns**
 
-[ErrorCode::Definition](/reference/error-code/definition), `nil` — the error code or nil if not found
+[ErrorCode::Definition](/reference/error-code/definition), `nil`
 
 **Example**
 
@@ -56,7 +56,7 @@ Finds an error code by key.
 
 **Returns**
 
-[ErrorCode::Definition](/reference/error-code/definition) — the error code
+[ErrorCode::Definition](/reference/error-code/definition)
 
 **Example**
 
@@ -87,7 +87,7 @@ in controllers. Built-in codes (400-504) are pre-registered.
 
 **Returns**
 
-[ErrorCode::Definition](/reference/error-code/definition) — the registered error code
+[ErrorCode::Definition](/reference/error-code/definition)
 
 **See also**
 
@@ -113,11 +113,13 @@ Apiwork::ErrorCode.register :not_found, status: 404, attach_path: true
 
 `#key`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code/definition.rb#L24)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code/definition.rb#L28)
+
+The key for this error code.
 
 **Returns**
 
-`Symbol` — error code identifier
+`Symbol`
 
 ---
 
@@ -125,10 +127,12 @@ Apiwork::ErrorCode.register :not_found, status: 404, attach_path: true
 
 `#status`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code/definition.rb#L24)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code/definition.rb#L28)
+
+The status for this error code.
 
 **Returns**
 
-`Integer` — HTTP status code
+`Integer`
 
 ---

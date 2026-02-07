@@ -7,7 +7,6 @@ order: 1
 ## Modules
 
 - [Array](./array)
-- [Base](./base)
 - [Binary](./binary)
 - [Boolean](./boolean)
 - [Date](./date)
@@ -17,7 +16,7 @@ order: 1
 - [Literal](./literal)
 - [Number](./number)
 - [Object](./object)
-- [Ref](./ref)
+- [Reference](./reference)
 - [String](./string)
 - [Time](./time)
 - [UUID](./uuid)

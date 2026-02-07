@@ -33,17 +33,17 @@ end
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/serializer/resource/base.rb#L42)
 
-Sets or gets the Contract type builder class.
+The Contract type builder class.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `klass` | `Class, nil` | a Builder::Contract::Base subclass |
+| `klass` | `Class<Builder::Contract::Base>, nil` | the builder class |
 
 **Returns**
 
-`Class`, `nil`
+Class&lt;[Builder::Contract::Base](/reference/adapter/builder/contract/base)&gt;, `nil`
 
 ---
 
@@ -53,7 +53,7 @@ Sets or gets the Contract type builder class.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/serializer/resource/base.rb#L32)
 
-Sets or gets the data type resolver for this serializer.
+The data type resolver for this serializer.
 
 **Parameters**
 
@@ -73,11 +73,13 @@ Sets or gets the data type resolver for this serializer.
 
 `#representation_class`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/serializer/resource/base.rb#L50)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/serializer/resource/base.rb#L52)
+
+The representation class for this serializer.
 
 **Returns**
 
-`Class` — the representation class
+Class&lt;[Representation::Base](/reference/representation/base)&gt;
 
 ---
 
@@ -85,7 +87,7 @@ Sets or gets the data type resolver for this serializer.
 
 `#serialize(resource, context:, serialize_options:)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/serializer/resource/base.rb#L70)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/serializer/resource/base.rb#L72)
 
 Serializes a resource.
 
@@ -99,6 +101,6 @@ Serializes a resource.
 
 **Returns**
 
-`Hash` — the serialized resource
+`Hash`
 
 ---

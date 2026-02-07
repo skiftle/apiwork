@@ -27,11 +27,13 @@ request.query[:page]        # => Param for page param
 
 `#body`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/request.rb#L31)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/request.rb#L33)
+
+The body for this request.
 
 **Returns**
 
-`Hash{Symbol => Param}` — body parameters as Param objects
+`Hash{Symbol => Param}`
 
 ---
 
@@ -39,11 +41,13 @@ request.query[:page]        # => Param for page param
 
 `#body?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/request.rb#L43)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/request.rb#L49)
+
+Whether this request has a body.
 
 **Returns**
 
-`Boolean` — whether body parameters are defined
+`Boolean`
 
 ---
 
@@ -51,11 +55,13 @@ request.query[:page]        # => Param for page param
 
 `#query`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/request.rb#L24)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/request.rb#L25)
+
+The query for this request.
 
 **Returns**
 
-`Hash{Symbol => Param}` — query parameters as Param objects
+`Hash{Symbol => Param}`
 
 ---
 
@@ -63,11 +69,13 @@ request.query[:page]        # => Param for page param
 
 `#query?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/request.rb#L37)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/request.rb#L41)
+
+Whether this request has a query.
 
 **Returns**
 
-`Boolean` — whether query parameters are defined
+`Boolean`
 
 ---
 
@@ -75,10 +83,12 @@ request.query[:page]        # => Param for page param
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/request.rb#L49)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/request.rb#L57)
+
+Converts this request to a hash.
 
 **Returns**
 
-`Hash` — structured representation
+`Hash`
 
 ---

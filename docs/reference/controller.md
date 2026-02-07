@@ -81,7 +81,7 @@ Common uses: current user, permissions, locale, feature flags.
 
 **Returns**
 
-`Hash` — context data available in representation serialization
+`Hash`
 
 **Example: Provide current user context**
 
@@ -107,7 +107,7 @@ and [Contract::Base#body](/reference/contract/base#body).
 
 **Returns**
 
-[Contract::Base](/reference/contract/base) — the contract instance
+[Contract::Base](/reference/contract/base)
 
 **See also**
 

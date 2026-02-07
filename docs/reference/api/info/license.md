@@ -26,7 +26,7 @@ The license name.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `value` | `String` | e.g. 'MIT', 'Apache 2.0' |
+| `value` | `String` | the license name (e.g. 'MIT', 'Apache 2.0') |
 
 **Returns**
 
@@ -53,7 +53,7 @@ The license URL.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `value` | `String` |  |
+| `value` | `String` | the license URL |
 
 **Returns**
 

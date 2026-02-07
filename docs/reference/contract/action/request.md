@@ -8,7 +8,7 @@ next: false
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action/request.rb#L10)
 
-Defines query params and body for a request.
+Defines query and body for a request.
 
 Returns [Contract::Object](/reference/contract/object) via `query` and `body`.
 

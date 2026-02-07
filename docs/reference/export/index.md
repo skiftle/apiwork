@@ -30,7 +30,7 @@ Finds an export by name.
 
 **Returns**
 
-[Export::Base](/reference/export/base), `nil` — the export class or nil if not found
+Class&lt;[Export::Base](/reference/export/base)&gt;, `nil`
 
 **Example**
 
@@ -56,7 +56,7 @@ Finds an export by name.
 
 **Returns**
 
-[Export::Base](/reference/export/base) — the export class
+Class&lt;[Export::Base](/reference/export/base)&gt;
 
 **Example**
 
@@ -87,7 +87,7 @@ Generates an export for an API.
 
 **Returns**
 
-`String` — the generated export
+`String`
 
 **See also**
 
@@ -115,7 +115,7 @@ Registers an export.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `klass` | `Class` | an [Export::Base](/reference/export/base) subclass with export_name set |
+| `klass` | `Class<Export::Base>` | the export class with export_name set |
 
 **See also**
 

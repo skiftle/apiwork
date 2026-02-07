@@ -32,11 +32,13 @@ response.body?        # => false
 
 `#body`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/response.rb#L26)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/response.rb#L27)
+
+The body for this response.
 
 **Returns**
 
-`Param`, `nil` — response body definition
+`Param`, `nil`
 
 ---
 
@@ -44,11 +46,13 @@ response.body?        # => false
 
 `#body?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/response.rb#L38)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/response.rb#L43)
+
+Whether this response has a body.
 
 **Returns**
 
-`Boolean` — whether a body is defined
+`Boolean`
 
 ---
 
@@ -56,11 +60,13 @@ response.body?        # => false
 
 `#no_content?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/response.rb#L32)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/response.rb#L35)
+
+Whether this response has no content.
 
 **Returns**
 
-`Boolean` — whether this is a no-content response (204)
+`Boolean`
 
 ---
 
@@ -68,10 +74,12 @@ response.body?        # => false
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/response.rb#L44)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/response.rb#L51)
+
+Converts this response to a hash.
 
 **Returns**
 
-`Hash` — structured representation
+`Hash`
 
 ---

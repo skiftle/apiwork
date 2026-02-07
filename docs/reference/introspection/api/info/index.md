@@ -33,11 +33,13 @@ info.license&.name    # => "MIT"
 
 `#contact`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info.rb#L54)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info.rb#L66)
+
+The contact for this info.
 
 **Returns**
 
-[Info::Contact](/reference/api/info/contact), `nil` — contact information
+[Info::Contact](/reference/api/info/contact), `nil`
 
 **See also**
 
@@ -49,11 +51,13 @@ info.license&.name    # => "MIT"
 
 `#description`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info.rb#L35)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info.rb#L41)
+
+The description for this info.
 
 **Returns**
 
-`String`, `nil` — API description
+`String`, `nil`
 
 ---
 
@@ -61,11 +65,13 @@ info.license&.name    # => "MIT"
 
 `#license`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info.rb#L61)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info.rb#L75)
+
+The license for this info.
 
 **Returns**
 
-[Info::License](/reference/api/info/license), `nil` — license information
+[Info::License](/reference/api/info/license), `nil`
 
 **See also**
 
@@ -77,11 +83,13 @@ info.license&.name    # => "MIT"
 
 `#servers`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info.rb#L68)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info.rb#L84)
+
+The servers for this info.
 
 **Returns**
 
-Array&lt;[Info::Server](/reference/api/info/server)&gt; — server definitions
+Array&lt;[Info::Server](/reference/api/info/server)&gt;
 
 **See also**
 
@@ -93,11 +101,13 @@ Array&lt;[Info::Server](/reference/api/info/server)&gt; — server definitions
 
 `#summary`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info.rb#L41)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info.rb#L49)
+
+The summary for this info.
 
 **Returns**
 
-`String`, `nil` — short summary
+`String`, `nil`
 
 ---
 
@@ -105,11 +115,13 @@ Array&lt;[Info::Server](/reference/api/info/server)&gt; — server definitions
 
 `#terms_of_service`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info.rb#L47)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info.rb#L57)
+
+The terms of service for this info.
 
 **Returns**
 
-`String`, `nil` — terms of service URL
+`String`, `nil`
 
 ---
 
@@ -117,11 +129,13 @@ Array&lt;[Info::Server](/reference/api/info/server)&gt; — server definitions
 
 `#title`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info.rb#L23)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info.rb#L25)
+
+The title for this info.
 
 **Returns**
 
-`String`, `nil` — API title
+`String`, `nil`
 
 ---
 
@@ -129,11 +143,13 @@ Array&lt;[Info::Server](/reference/api/info/server)&gt; — server definitions
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info.rb#L74)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info.rb#L92)
+
+Converts this info to a hash.
 
 **Returns**
 
-`Hash` — structured representation
+`Hash`
 
 ---
 
@@ -141,10 +157,12 @@ Array&lt;[Info::Server](/reference/api/info/server)&gt; — server definitions
 
 `#version`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info.rb#L29)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info.rb#L33)
+
+The version for this info.
 
 **Returns**
 
-`String`, `nil` — API version
+`String`, `nil`
 
 ---

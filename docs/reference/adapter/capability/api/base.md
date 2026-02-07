@@ -35,12 +35,9 @@ Override this method to register shared types.
 
 `#configured(key)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/api/base.rb#L41)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/api/base.rb#L42)
 
-Returns all unique values for a configuration key across all representations.
-
-Use this to check which options are used by any representation
-when building API-level schemas.
+The configured values for a key.
 
 **Parameters**
 
@@ -50,7 +47,7 @@ when building API-level schemas.
 
 **Returns**
 
-`Set` — unique values from all representations
+`Set`
 
 **Example: Check if any representation uses cursor pagination**
 
@@ -102,11 +99,13 @@ end
 
 `#options`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/api/base.rb#L19)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/api/base.rb#L23)
+
+The options for this API.
 
 **Returns**
 
-[Configuration](/reference/configuration/) — capability options
+[Configuration](/reference/configuration/)
 
 ---
 
@@ -114,11 +113,13 @@ end
 
 `#scope`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/api/base.rb#L15)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/api/base.rb#L17)
+
+The scope for this API.
 
 **Returns**
 
-[Scope](/reference/adapter/capability/api/scope) — aggregated data across all representations
+[Scope](/reference/adapter/capability/api/scope)
 
 ---
 

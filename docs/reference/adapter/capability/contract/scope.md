@@ -10,7 +10,7 @@ next: false
 
 Scope for capability contract builders.
 
-Provides access to the representation and actions linked to this contract.
+Provides access to the representation and actions for this contract.
 Use this to query contract-specific state when building types.
 
 ## Instance Methods
@@ -19,9 +19,9 @@ Use this to query contract-specific state when building types.
 
 `#action?(name)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/contract/scope.rb#L53)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/contract/scope.rb#L55)
 
-Returns whether an action exists.
+Whether the action exists.
 
 **Parameters**
 
@@ -39,11 +39,41 @@ Returns whether an action exists.
 
 `#actions`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/contract/scope.rb#L15)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/contract/scope.rb#L17)
+
+The actions for this scope.
 
 **Returns**
 
-`Hash{Symbol => Resource::Action}` — actions linked to this contract
+`Hash{Symbol => Resource::Action}`
+
+---
+
+### #associations
+
+`#associations`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/contract/scope.rb#L100)
+
+The associations for this scope.
+
+**Returns**
+
+Hash{Symbol =&gt; [Representation::Association](/reference/representation/association)}
+
+---
+
+### #attributes
+
+`#attributes`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/contract/scope.rb#L100)
+
+The attributes for this scope.
+
+**Returns**
+
+Hash{Symbol =&gt; [Representation::Attribute](/reference/representation/attribute)}
 
 ---
 
@@ -51,9 +81,9 @@ Returns whether an action exists.
 
 `#collection_actions`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/contract/scope.rb#L28)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/contract/scope.rb#L30)
 
-Returns actions that operate on collections.
+The collection actions for this scope.
 
 **Returns**
 
@@ -65,9 +95,9 @@ Returns actions that operate on collections.
 
 `#crud_actions`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/contract/scope.rb#L44)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/contract/scope.rb#L46)
 
-Returns CRUD actions only.
+The CRUD actions for this scope.
 
 **Returns**
 
@@ -79,9 +109,9 @@ Returns CRUD actions only.
 
 `#filterable_attributes`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/contract/scope.rb#L61)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/contract/scope.rb#L63)
 
-Returns attributes that are filterable.
+The filterable attributes for this scope.
 
 **Returns**
 
@@ -93,9 +123,9 @@ Array&lt;[Representation::Attribute](/reference/representation/attribute)&gt;
 
 `#member_actions`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/contract/scope.rb#L36)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/contract/scope.rb#L38)
 
-Returns actions that operate on a single resource.
+The member actions for this scope.
 
 **Returns**
 
@@ -103,13 +133,27 @@ Returns actions that operate on a single resource.
 
 ---
 
+### #root_key
+
+`#root_key`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/contract/scope.rb#L100)
+
+The root key for this scope.
+
+**Returns**
+
+[Representation::RootKey](/reference/representation/root-key)
+
+---
+
 ### #sortable_attributes
 
 `#sortable_attributes`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/contract/scope.rb#L69)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/contract/scope.rb#L71)
 
-Returns attributes that are sortable.
+The sortable attributes for this scope.
 
 **Returns**
 
@@ -121,9 +165,9 @@ Array&lt;[Representation::Attribute](/reference/representation/attribute)&gt;
 
 `#writable_attributes`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/contract/scope.rb#L77)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/contract/scope.rb#L79)
 
-Returns attributes that are writable.
+The writable attributes for this scope.
 
 **Returns**
 

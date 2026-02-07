@@ -23,11 +23,13 @@ api.error_codes[:not_found].description # => "Resource not found"
 
 `#description`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/error_code.rb#L24)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/error_code.rb#L28)
+
+The description for this error code.
 
 **Returns**
 
-`String`, `nil` — error description
+`String`, `nil`
 
 ---
 
@@ -35,11 +37,13 @@ api.error_codes[:not_found].description # => "Resource not found"
 
 `#status`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/error_code.rb#L18)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/error_code.rb#L20)
+
+The status for this error code.
 
 **Returns**
 
-`Integer` — HTTP status code (e.g., 422, 404)
+`Integer`
 
 ---
 
@@ -47,10 +51,12 @@ api.error_codes[:not_found].description # => "Resource not found"
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/error_code.rb#L30)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/error_code.rb#L36)
+
+Converts this error code to a hash.
 
 **Returns**
 
-`Hash` — structured representation
+`Hash`
 
 ---

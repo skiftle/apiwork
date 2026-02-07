@@ -36,11 +36,13 @@ end
 
 `#deprecated?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L82)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L100)
+
+Whether this action is deprecated.
 
 **Returns**
 
-`Boolean` — whether this action is deprecated
+`Boolean`
 
 ---
 
@@ -48,11 +50,13 @@ end
 
 `#description`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L64)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L76)
+
+The description for this action.
 
 **Returns**
 
-`String`, `nil` — full description
+`String`, `nil`
 
 ---
 
@@ -60,11 +64,13 @@ end
 
 `#method`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L32)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L36)
+
+The method for this action.
 
 **Returns**
 
-`Symbol` — HTTP method (:get, :post, :patch, :delete, :put)
+`Symbol`
 
 ---
 
@@ -72,11 +78,13 @@ end
 
 `#operation_id`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L76)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L92)
+
+The operation ID for this action.
 
 **Returns**
 
-`String`, `nil` — OpenAPI operation ID
+`String`, `nil`
 
 ---
 
@@ -84,11 +92,13 @@ end
 
 `#path`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L26)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L28)
+
+The path for this action.
 
 **Returns**
 
-`String` — full action path (e.g., "/posts/:id", "/posts")
+`String`
 
 ---
 
@@ -96,11 +106,13 @@ end
 
 `#raises`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L52)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L60)
+
+The raised error codes for this action.
 
 **Returns**
 
-`Array<Symbol>` — error codes this action may raise
+`Array<Symbol>`
 
 ---
 
@@ -108,15 +120,13 @@ end
 
 `#request`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L39)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L44)
+
+The request for this action.
 
 **Returns**
 
-[Action::Request](/reference/contract/action/request) — request definition
-
-**See also**
-
-- [Action::Request](/reference/contract/action/request)
+[Action::Request](/reference/contract/action/request)
 
 ---
 
@@ -124,15 +134,13 @@ end
 
 `#response`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L46)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L52)
+
+The response for this action.
 
 **Returns**
 
-[Action::Response](/reference/contract/action/response) — response definition
-
-**See also**
-
-- [Action::Response](/reference/contract/action/response)
+[Action::Response](/reference/contract/action/response)
 
 ---
 
@@ -140,11 +148,13 @@ end
 
 `#summary`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L58)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L68)
+
+The summary for this action.
 
 **Returns**
 
-`String`, `nil` — short summary
+`String`, `nil`
 
 ---
 
@@ -152,11 +162,13 @@ end
 
 `#tags`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L70)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L84)
+
+The tags for this action.
 
 **Returns**
 
-`Array<String>` — OpenAPI tags
+`Array<String>`
 
 ---
 
@@ -164,10 +176,12 @@ end
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L88)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L108)
+
+Converts this action to a hash.
 
 **Returns**
 
-`Hash` — structured representation
+`Hash`
 
 ---

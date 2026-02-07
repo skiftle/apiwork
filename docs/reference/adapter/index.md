@@ -34,7 +34,7 @@ Finds an adapter by name.
 
 **Returns**
 
-[Adapter::Base](/reference/adapter/base), `nil` — the adapter class or nil if not found
+Class&lt;[Adapter::Base](/reference/adapter/base)&gt;, `nil`
 
 **Example**
 
@@ -60,7 +60,7 @@ Finds an adapter by name.
 
 **Returns**
 
-[Adapter::Base](/reference/adapter/base) — the adapter class
+Class&lt;[Adapter::Base](/reference/adapter/base)&gt;
 
 **Example**
 
@@ -82,7 +82,7 @@ Registers an adapter.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `klass` | `Class` | an [Adapter::Base](/reference/adapter/base) subclass with adapter_name set |
+| `klass` | `Class<Adapter::Base>` | the adapter class with adapter_name set |
 
 **See also**
 

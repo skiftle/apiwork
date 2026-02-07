@@ -24,11 +24,13 @@ api.enums[:status].deprecated?  # => false
 
 `#deprecated?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum.rb#L37)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum.rb#L45)
+
+Whether this enum is deprecated.
 
 **Returns**
 
-`Boolean` — whether this enum is deprecated
+`Boolean`
 
 ---
 
@@ -36,11 +38,13 @@ api.enums[:status].deprecated?  # => false
 
 `#description`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum.rb#L25)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum.rb#L29)
+
+The description for this enum.
 
 **Returns**
 
-`String`, `nil` — enum description
+`String`, `nil`
 
 ---
 
@@ -48,11 +52,13 @@ api.enums[:status].deprecated?  # => false
 
 `#example`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum.rb#L31)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum.rb#L37)
+
+The example for this enum.
 
 **Returns**
 
-`String`, `nil` — example value
+`String`, `nil`
 
 ---
 
@@ -60,11 +66,13 @@ api.enums[:status].deprecated?  # => false
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum.rb#L43)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum.rb#L53)
+
+Converts this enum to a hash.
 
 **Returns**
 
-`Hash` — structured representation
+`Hash`
 
 ---
 
@@ -72,10 +80,12 @@ api.enums[:status].deprecated?  # => false
 
 `#values`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum.rb#L19)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum.rb#L21)
+
+The values for this enum.
 
 **Returns**
 
-`Array<String>` — allowed enum values
+`Array<String>`
 
 ---

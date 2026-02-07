@@ -33,19 +33,17 @@ end
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L155)
 
-The adapter.
-
-Defaults to `:standard` if no name is given.
+The adapter for this API.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `name` | `Symbol` | adapter name |
+| `name` | `Symbol, nil` | adapter name (default: :standard) |
 
 **Returns**
 
-[Adapter::Base](/reference/adapter/base)
+[Adapter::Base](/reference/adapter/base), `nil`
 
 **See also**
 
@@ -137,7 +135,7 @@ the `enum:` option.
 |------|------|-------------|
 | `name` | `Symbol` | enum name for referencing |
 | `values` | `Array<String>` | allowed values |
-| `scope` | `Class` | a [Contract::Base](/reference/contract/base) subclass for scoping (nil for global) |
+| `scope` | `Class<Contract::Base>, nil` | the contract class for scoping (nil for global) |
 | `description` | `String` | documentation description |
 | `example` | `String` | example value for docs |
 | `deprecated` | `Boolean` | mark as deprecated |
@@ -164,7 +162,7 @@ string(:status, enum: :status)
 
 `.export(name, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L102)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L104)
 
 Enables an export for this API.
 
@@ -208,7 +206,7 @@ end
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L349)
 
-API info.
+The API info metadata.
 
 **Returns**
 
@@ -234,19 +232,19 @@ api_class.info.title  # => "My API"
 
 `.key_format(format = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L53)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L54)
 
-The key format used for request/response transformation.
+The key format for request/response transformation.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `format` | `Symbol` | :keep, :camel, :underscore, or :kebab |
+| `format` | `Symbol, nil` | :keep, :camel, :underscore, or :kebab |
 
 **Returns**
 
-`Symbol`
+`Symbol`, `nil`
 
 **Example**
 
@@ -273,12 +271,12 @@ Scoped types are namespaced to a contract class.
 | Name | Type | Description |
 |------|------|-------------|
 | `name` | `Symbol` | type name for referencing |
-| `scope` | `Class` | a [Contract::Base](/reference/contract/base) subclass for scoping (nil for global) |
+| `scope` | `Class<Contract::Base>, nil` | the contract class for scoping (nil for global) |
 | `description` | `String` | documentation description |
 | `example` | `Object` | example value for docs |
 | `format` | `String` | format hint for docs |
 | `deprecated` | `Boolean` | mark as deprecated |
-| `representation_class` | `Class` | a [Representation::Base](/reference/representation/base) subclass for type inference |
+| `representation_class` | `Class<Representation::Base>, nil` | the representation class for type inference |
 
 **See also**
 
@@ -327,7 +325,7 @@ api_class.path  # => "/api/v1"
 
 `.path_format(format = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L71)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L73)
 
 The path format used for URL path segments.
 
@@ -486,7 +484,7 @@ by a discriminator field.
 | Name | Type | Description |
 |------|------|-------------|
 | `name` | `Symbol` | union name for referencing |
-| `scope` | `Class` | a [Contract::Base](/reference/contract/base) subclass for scoping (nil for global) |
+| `scope` | `Class<Contract::Base>, nil` | the contract class for scoping (nil for global) |
 | `discriminator` | `Symbol` | field name that identifies the variant |
 
 **Example**

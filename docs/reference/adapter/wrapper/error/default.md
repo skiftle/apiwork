@@ -35,7 +35,7 @@ end
 
 `.shape(klass_or_callable = nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/base.rb#L25)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/base.rb#L27)
 
 Defines the response shape for contract generation.
 
@@ -43,11 +43,11 @@ Defines the response shape for contract generation.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `klass_or_callable` | `Class, Proc, nil` | a Shape subclass or callable |
+| `klass_or_callable` | `Class<Shape>, Proc, nil` | a Shape subclass or callable |
 
 **Returns**
 
-`Class`, `nil` — the shape class
+Class&lt;[Shape](/reference/adapter/wrapper/shape)&gt;, `nil`
 
 ---
 
@@ -57,10 +57,12 @@ Defines the response shape for contract generation.
 
 `#data`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/base.rb#L12)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/base.rb#L14)
+
+The data for this wrapper.
 
 **Returns**
 
-`Hash` — the serialized resource data
+`Hash`
 
 ---

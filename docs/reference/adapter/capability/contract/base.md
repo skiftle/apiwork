@@ -107,11 +107,13 @@ Override this method to generate types based on the representation.
 
 `#options`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/contract/base.rb#L19)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/contract/base.rb#L23)
+
+The options for this contract.
 
 **Returns**
 
-[Configuration](/reference/configuration/) — capability options
+[Configuration](/reference/configuration/)
 
 ---
 
@@ -119,11 +121,13 @@ Override this method to generate types based on the representation.
 
 `#scope`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/contract/base.rb#L15)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/contract/base.rb#L17)
+
+The scope for this contract.
 
 **Returns**
 
-[Scope](/reference/adapter/capability/api/scope) — representation and actions for this contract
+[Scope](/reference/adapter/capability/api/scope)
 
 ---
 

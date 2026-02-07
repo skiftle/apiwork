@@ -1,5 +1,5 @@
 ---
-order: 77
+order: 76
 prev: false
 next: false
 ---
@@ -19,11 +19,13 @@ coercion, or constraint checks. Access via `contract.issues`.
 
 `#as_json`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L53)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L67)
+
+Converts this issue to a hash for JSON serialization.
 
 **Returns**
 
-`Hash` — alias for to_h, for JSON serialization
+`Hash`
 
 ---
 
@@ -31,11 +33,13 @@ coercion, or constraint checks. Access via `contract.issues`.
 
 `#code`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L12)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L14)
+
+The code for this issue.
 
 **Returns**
 
-`Symbol` — the error code (e.g., :required, :type_mismatch)
+`Symbol`
 
 ---
 
@@ -43,11 +47,13 @@ coercion, or constraint checks. Access via `contract.issues`.
 
 `#detail`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L16)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L20)
+
+The detail for this issue.
 
 **Returns**
 
-`String` — human-readable error message
+`String`
 
 ---
 
@@ -55,11 +61,13 @@ coercion, or constraint checks. Access via `contract.issues`.
 
 `#meta`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L20)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L26)
+
+The meta for this issue.
 
 **Returns**
 
-`Hash` — additional context about the error
+`Hash`
 
 ---
 
@@ -67,11 +75,13 @@ coercion, or constraint checks. Access via `contract.issues`.
 
 `#path`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L24)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L32)
+
+The path for this issue.
 
 **Returns**
 
-`Array<Symbol, Integer>` — path to the invalid field
+`Array<Symbol, Integer>`
 
 ---
 
@@ -79,11 +89,13 @@ coercion, or constraint checks. Access via `contract.issues`.
 
 `#pointer`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L35)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L45)
+
+The JSON pointer for this issue.
 
 **Returns**
 
-`String` — JSON Pointer to the invalid field (e.g., "/user/email")
+`String`
 
 ---
 
@@ -91,11 +103,13 @@ coercion, or constraint checks. Access via `contract.issues`.
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L41)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L53)
+
+Converts this issue to a hash.
 
 **Returns**
 
-`Hash` — hash representation with code, detail, path, pointer, meta
+`Hash`
 
 ---
 
@@ -103,10 +117,12 @@ coercion, or constraint checks. Access via `contract.issues`.
 
 `#to_s`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L59)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L75)
+
+The string representation for this issue.
 
 **Returns**
 
-`String` — human-readable string representation
+`String`
 
 ---

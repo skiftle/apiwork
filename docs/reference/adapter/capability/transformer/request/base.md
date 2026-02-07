@@ -44,17 +44,17 @@ end
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/transformer/request/base.rb#L45)
 
-Configures when this transformer runs relative to request validation. Defaults to :before.
+The phase when this transformer runs relative to request validation.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `value` | `Symbol, nil` | :before runs on raw input, :after runs on validated data |
+| `value` | `Symbol, nil` | :before or :after (default: :before) |
 
 **Returns**
 
-`Symbol` — the phase
+`Symbol`
 
 ---
 
@@ -70,6 +70,6 @@ Transforms the request.
 
 **Returns**
 
-[Request](/reference/request) — the transformed request
+[Request](/reference/request)
 
 ---

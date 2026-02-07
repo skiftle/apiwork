@@ -367,7 +367,7 @@ Can be called multiple times to inherit from multiple types.
 
 **Returns**
 
-`Array<Symbol>` — the inherited types
+`Array<Symbol>`
 
 **Example: Single inheritance**
 
@@ -497,7 +497,7 @@ Can be called multiple times to merge from multiple types.
 
 **Returns**
 
-`Array<Symbol>` — the merged types
+`Array<Symbol>`
 
 **Example**
 

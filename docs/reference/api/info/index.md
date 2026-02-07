@@ -101,7 +101,7 @@ A detailed description.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `value` | `String` | supports Markdown |
+| `value` | `String` | the description (supports Markdown) |
 
 **Returns**
 
@@ -185,7 +185,7 @@ A short summary.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `value` | `String` |  |
+| `value` | `String` | the summary |
 
 **Returns**
 
@@ -212,7 +212,7 @@ Tags for the API.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `values` | `Array<String>` |  |
+| `values` | `Array<String>` | the tags |
 
 **Returns**
 
@@ -239,7 +239,7 @@ The terms of service URL.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `url` | `String` |  |
+| `url` | `String` | the terms of service URL |
 
 **Returns**
 
@@ -266,7 +266,7 @@ The API title.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `value` | `String` |  |
+| `value` | `String` | the title |
 
 **Returns**
 
@@ -293,7 +293,7 @@ The API version.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `value` | `String` | e.g. '1.0.0' |
+| `value` | `String` | the version (e.g. '1.0.0') |
 
 **Returns**
 

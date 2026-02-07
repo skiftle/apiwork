@@ -1,27 +1,27 @@
 ---
-order: 66
+order: 69
 prev: false
 next: false
 ---
 
-# Literal
+# Reference
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/literal.rb#L16)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/reference.rb#L16)
 
-Literal param representing a constant value.
+Reference param representing a reference to a named type.
 
 **Example: Basic usage**
 
 ```ruby
-param.type     # => :literal
-param.literal? # => true
-param.scalar?  # => false
+param.type       # => :reference
+param.reference? # => true
+param.scalar?    # => false
 ```
 
-**Example: Value**
+**Example: Reference**
 
 ```ruby
-param.value    # => "active" or 42 or true
+param.reference  # => :address
 ```
 
 ## Instance Methods
@@ -254,7 +254,7 @@ Whether this param is an integer.
 
 `#literal?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/literal.rb#L29)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L119)
 
 Whether this param is a literal.
 
@@ -348,11 +348,25 @@ Whether this param is partial.
 
 ---
 
+### #reference
+
+`#reference`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/reference.rb#L21)
+
+The referenced type name for this param.
+
+**Returns**
+
+`Symbol`
+
+---
+
 ### #reference?
 
 `#reference?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L231)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/reference.rb#L29)
 
 Whether this param is a reference.
 
@@ -422,7 +436,7 @@ Whether this param is a time.
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/literal.rb#L37)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/reference.rb#L37)
 
 Converts this param to a hash.
 
@@ -485,19 +499,5 @@ Whether this param is a UUID.
 **Returns**
 
 `Boolean`
-
----
-
-### #value
-
-`#value`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/literal.rb#L21)
-
-The value for this param.
-
-**Returns**
-
-`String`, `Numeric`, `Boolean`, `nil`
 
 ---
