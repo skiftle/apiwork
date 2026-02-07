@@ -171,7 +171,7 @@ module Apiwork
 
             def attribute_options(attribute, action_name)
               options = {
-                deprecated: attribute.deprecated,
+                deprecated: attribute.deprecated?,
                 description: attribute.description,
                 example: attribute.example,
                 format: attribute.format,
@@ -228,7 +228,7 @@ module Apiwork
 
               options = {
                 as: [association.name, 'attributes'].join('_').to_sym,
-                deprecated: association.deprecated,
+                deprecated: association.deprecated?,
                 description: association.description,
                 example: association.example,
                 nullable: association.nullable?,

@@ -59,7 +59,7 @@ module Apiwork
                   of_option = attribute.of ? { of: attribute.of } : {}
 
                   param_options = {
-                    deprecated: attribute.deprecated,
+                    deprecated: attribute.deprecated?,
                     description: attribute.description,
                     example: attribute.example,
                     format: attribute.format,
@@ -87,7 +87,7 @@ module Apiwork
                   association_type = association_type_map[name]
 
                   base_options = {
-                    deprecated: association.deprecated,
+                    deprecated: association.deprecated?,
                     description: association.description,
                     example: association.example,
                     nullable: association.nullable?,
