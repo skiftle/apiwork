@@ -51,7 +51,7 @@ Apiwork::Export.register(ProtobufExport)
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L51)
 
-The export name.
+The name for this export.
 
 **Parameters**
 

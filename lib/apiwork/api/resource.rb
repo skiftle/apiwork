@@ -159,7 +159,7 @@ module Apiwork
       # @param contract [String] custom contract path
       # @param controller [String] custom controller path
       # @param defaults [Hash] default route parameters
-      # @param except [Array<Symbol>] CRUD actions to exclude
+      # @param except [Array<Symbol>] actions to exclude
       # @param only [Array<Symbol>] only these CRUD actions
       # @param param [Symbol] custom ID parameter
       # @param path [String] custom URL segment
@@ -219,7 +219,7 @@ module Apiwork
       # @param contract [String] custom contract path
       # @param controller [String] custom controller path
       # @param defaults [Hash] default route parameters
-      # @param except [Array<Symbol>] CRUD actions to exclude
+      # @param except [Array<Symbol>] actions to exclude
       # @param only [Array<Symbol>] only these CRUD actions
       # @param param [Symbol] custom ID parameter
       # @param path [String] custom URL segment

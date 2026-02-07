@@ -59,7 +59,7 @@ metadata_shape PaginationShape
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L43)
 
-Sets the target for this operation.
+The target for this operation.
 
 **Parameters**
 

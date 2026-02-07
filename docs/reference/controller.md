@@ -152,7 +152,7 @@ is applied according to the API's [API::Base.key_format](/reference/api/base#key
 |------|------|-------------|
 | `data` | `Object, Array` | the record(s) to expose |
 | `meta` | `Hash` | metadata to include in response (pagination, etc.) |
-| `status` | `Symbol, Integer` | HTTP status (default: :ok, or :created for create action) |
+| `status` | `Symbol, Integer` | the HTTP status (default: :ok, or :created for create action) |
 
 **See also**
 
@@ -204,7 +204,7 @@ The detail message is looked up from I18n if not provided.
 |------|------|-------------|
 | `code_key` | `Symbol` | registered error code (:not_found, :unauthorized, etc.) |
 | `detail` | `String` | custom error message (optional, uses I18n lookup) |
-| `path` | `Array<String,Symbol>` | JSON path to the error (optional) |
+| `path` | `Array<String,Symbol>` | the JSON path to the error (optional) |
 | `meta` | `Hash` | additional metadata to include (optional) |
 
 **See also**

@@ -97,7 +97,7 @@ module Apiwork
     #
     # @param data [Object, Array] the record(s) to expose
     # @param meta [Hash] metadata to include in response (pagination, etc.)
-    # @param status [Symbol, Integer] HTTP status (default: :ok, or :created for create action)
+    # @param status [Symbol, Integer] the HTTP status (default: :ok, or :created for create action)
     # @see Representation::Base
     #
     # @example Expose a single record
@@ -157,7 +157,7 @@ module Apiwork
     #
     # @param code_key [Symbol] registered error code (:not_found, :unauthorized, etc.)
     # @param detail [String] custom error message (optional, uses I18n lookup)
-    # @param path [Array<String,Symbol>] JSON path to the error (optional)
+    # @param path [Array<String,Symbol>] the JSON path to the error (optional)
     # @param meta [Hash] additional metadata to include (optional)
     # @see ErrorCode
     # @see Issue

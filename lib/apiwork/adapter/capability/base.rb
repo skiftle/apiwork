@@ -37,7 +37,7 @@ module Apiwork
 
         class << self
           # @api public
-          # The capability name.
+          # The name for this capability.
           #
           # Used for configuration options, translation keys, and {Adapter::Base.skip_capability}.
           #

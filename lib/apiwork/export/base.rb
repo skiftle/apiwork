@@ -44,7 +44,7 @@ module Apiwork
         attr_reader :output_type
 
         # @api public
-        # The export name.
+        # The name for this export.
         #
         # @param name [Symbol, nil] the export name to set
         # @return [Symbol, nil]

@@ -305,7 +305,7 @@ Default actions: :show, :create, :update, :destroy.
 | `contract` | `String` | custom contract path |
 | `controller` | `String` | custom controller path |
 | `defaults` | `Hash` | default route parameters |
-| `except` | `Array<Symbol>` | CRUD actions to exclude |
+| `except` | `Array<Symbol>` | actions to exclude |
 | `only` | `Array<Symbol>` | only these CRUD actions |
 | `param` | `Symbol` | custom ID parameter |
 | `path` | `String` | custom URL segment |
@@ -342,7 +342,7 @@ Default actions: :index, :show, :create, :update, :destroy.
 | `contract` | `String` | custom contract path |
 | `controller` | `String` | custom controller path |
 | `defaults` | `Hash` | default route parameters |
-| `except` | `Array<Symbol>` | CRUD actions to exclude |
+| `except` | `Array<Symbol>` | actions to exclude |
 | `only` | `Array<Symbol>` | only these CRUD actions |
 | `param` | `Symbol` | custom ID parameter |
 | `path` | `String` | custom URL segment |

@@ -20,7 +20,7 @@ Used within the `contact` block in [API::Info](/reference/api/info/).
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/contact.rb#L41)
 
-The contact email.
+The email for this contact.
 
 **Parameters**
 
@@ -47,7 +47,7 @@ contact.email  # => "support@example.com"
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/contact.rb#L26)
 
-The contact name.
+The name for this contact.
 
 **Parameters**
 
@@ -74,7 +74,7 @@ contact.name  # => "API Support"
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/contact.rb#L56)
 
-The contact URL.
+The URL for this contact.
 
 **Parameters**
 

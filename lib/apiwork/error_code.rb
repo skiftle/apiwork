@@ -54,7 +54,7 @@ module Apiwork
       #   in controllers. Built-in codes (400-504) are pre-registered.
       #
       #   @param key [Symbol] unique identifier for the error code
-      #   @param status [Integer] HTTP status code (must be 400-599)
+      #   @param status [Integer] the HTTP status code (must be 400-599)
       #   @param attach_path [Boolean] include request path in error response (default: false)
       #   @return [ErrorCode::Definition]
       #   @raise [ArgumentError] if status is outside 400-599 range

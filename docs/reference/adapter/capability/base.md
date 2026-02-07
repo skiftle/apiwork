@@ -65,7 +65,7 @@ shared types used across all contracts.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/base.rb#L46)
 
-The capability name.
+The name for this capability.
 
 Used for configuration options, translation keys, and [Adapter::Base.skip_capability](/reference/adapter/base#skip-capability).
 

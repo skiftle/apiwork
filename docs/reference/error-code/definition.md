@@ -50,7 +50,7 @@ The description for this error code.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `locale_key` | `String, nil` | I18n namespace for API-specific translations |
+| `locale_key` | `String, nil` | the I18n namespace for API-specific translations |
 
 **Returns**
 

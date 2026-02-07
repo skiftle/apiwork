@@ -36,7 +36,7 @@ module Apiwork
 
           class << self
             # @api public
-            # Sets the target for this operation.
+            # The target for this operation.
             #
             # @param value [Symbol, nil] :collection or :member
             # @return [Symbol, nil]
