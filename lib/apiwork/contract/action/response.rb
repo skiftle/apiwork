@@ -35,6 +35,8 @@ module Apiwork
         # Use for actions that don't return a response body,
         # like DELETE or actions that only perform side effects.
         #
+        # @return [void]
+        #
         # @example
         #   action :destroy do
         #     response { no_content! }
@@ -44,8 +46,6 @@ module Apiwork
         #   action :archive do
         #     response { no_content! }
         #   end
-        #
-        # @return [void]
         def no_content!
           @no_content = true
         end

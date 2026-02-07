@@ -75,7 +75,7 @@ end
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L194)
 
-Whether the API is deprecated.
+Whether this API is deprecated.
 
 **Returns**
 

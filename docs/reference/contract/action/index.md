@@ -92,7 +92,7 @@ end
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L114)
 
-Sets a custom operation ID.
+Sets a custom operation ID for this action.
 
 **Parameters**
 
@@ -118,7 +118,7 @@ end
 
 `#raises(*error_code_keys)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L134)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L135)
 
 Declares the raised error codes for this action.
 
@@ -127,6 +127,10 @@ Declares the raised error codes for this action.
 | Name | Type | Description |
 |------|------|-------------|
 | `error_code_keys` | `Symbol` | error code keys |
+
+**Returns**
+
+`void`
 
 **Example**
 
@@ -149,7 +153,7 @@ end
 
 `#request(replace: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L185)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L186)
 
 Defines the request structure for this action.
 
@@ -205,7 +209,7 @@ end
 
 `#response(replace: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L232)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L233)
 
 Defines the response structure for this action.
 

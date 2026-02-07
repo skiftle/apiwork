@@ -27,7 +27,7 @@ module Apiwork
       end
 
       # @api public
-      # Sets a short summary for this action.
+      # The summary for this action.
       #
       # Used in generated specs as the operation summary.
       #
@@ -45,7 +45,7 @@ module Apiwork
       end
 
       # @api public
-      # Sets a detailed description for this action.
+      # The description for this action.
       #
       # Used in generated specs as the operation description.
       # Supports Markdown formatting.
@@ -64,7 +64,7 @@ module Apiwork
       end
 
       # @api public
-      # Sets tags for grouping this action.
+      # The tags for this action.
       #
       # Tags help organize actions in generated documentation.
       #
@@ -102,7 +102,7 @@ module Apiwork
       end
 
       # @api public
-      # Sets a custom operation ID.
+      # The operation ID for this action.
       #
       # @param value [String] custom operation ID (optional)
       # @return [String, nil]
@@ -121,6 +121,7 @@ module Apiwork
       # Declares the raised error codes for this action.
       #
       # @param error_code_keys [Symbol] error code keys
+      # @return [void]
       # @raise [ConfigurationError] if error code is not registered
       #
       # @example

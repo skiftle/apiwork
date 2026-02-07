@@ -185,7 +185,7 @@ module Apiwork
       end
 
       # @api public
-      # Whether the API is deprecated.
+      # Whether this API is deprecated.
       #
       # @return [Boolean]
       #

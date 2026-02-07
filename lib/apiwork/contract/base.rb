@@ -256,6 +256,7 @@ module Apiwork
         #
         # @param contract_class [Class<Contract::Base>] the contract class to import from
         # @param as [Symbol] alias prefix for imported types
+        # @return [void]
         # @raise [ArgumentError] if contract_class is not a Contract subclass
         # @raise [ArgumentError] if as is not a Symbol
         # @see Contract::Base

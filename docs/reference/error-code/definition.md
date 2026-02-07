@@ -30,7 +30,7 @@ error_code.attach_path? # => true
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code/definition.rb#L33)
 
-Whether to include request path in error response.
+Whether this error code attaches the request path.
 
 **Returns**
 

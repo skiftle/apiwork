@@ -90,12 +90,35 @@ When in doubt: read it aloud. If it sounds wrong, it is wrong.
 | Method type | Start with | Example |
 |-------------|------------|---------|
 | Lookup | "Finds" | "Finds an API by its mount path." |
-| DSL/config | "Defines", "Sets", "Configures" | "Defines a reusable object type." |
+| DSL setter-only | "Defines", "Sets", "Configures" | "Defines a reusable object type." |
 | Getter | "The X." (noun phrase) | "The output type for this export." |
+| **Getter/setter combo** | "The X." (noun phrase) | "The summary for this action." |
 | Transform | "Transforms" | "Transforms the body parameters." |
 | Conversion (`to_*`) | "Converts" | "Converts this param to a hash." |
 | Predicate (`?` method) | "Whether this X is Y." | "Whether this param is nullable." |
 | Factory | "Creates" | "Creates a new request context." |
+
+### Getter/Setter Combo Methods
+
+**Critical rule.** Methods that both get AND set a value use the getter pattern:
+
+```ruby
+# Method that gets OR sets based on argument presence
+def summary(value = nil)
+  return @summary if value.nil?
+  @summary = value
+end
+
+# Good — uses getter pattern "The X for this Y."
+# The summary for this action.
+
+# Bad — uses setter pattern (wrong because it also GETS)
+# Sets a short summary for this action.
+```
+
+**Why?** The primary use case is reading the value. The setter behavior is secondary. "Sets..." implies the method ONLY sets, which is misleading.
+
+**How to identify:** If the method has `value = nil` and returns `@variable` when no argument is given, it's a getter/setter combo. Use "The X for this Y."
 
 ### Forbidden Phrases
 
@@ -112,6 +135,7 @@ grep -rn "allows you to" lib/
 | Forbidden | Use instead |
 |-----------|-------------|
 | "Gets or sets the X" | "The X." |
+| "Sets the X" (for getter/setter combo) | "The X." |
 | "Defaults to X if Y" | `(default: X)` in @param |
 | "Without arguments, returns..." | (delete — @return makes it clear) |
 | "With an argument, sets..." | (delete — @param makes it clear) |

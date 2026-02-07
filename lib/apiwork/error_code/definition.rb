@@ -27,7 +27,7 @@ module Apiwork
     #   error_code.attach_path? # => true
     Definition = Struct.new(:key, :status, :attach_path, keyword_init: true) do
       # @api public
-      # Whether to include request path in error response.
+      # Whether this error code attaches the request path.
       #
       # @return [Boolean]
       def attach_path?
