@@ -102,8 +102,20 @@ The [qualifier] [method].
 ## Void Methods
 
 Methods with `@return [void]` require:
-1. Description (what it does)
+1. Description using verb prefix from table below
 2. `@example` (mandatory)
+
+### Verb Prefix by Method Pattern
+
+| Method pattern | Verb | Example |
+|----------------|------|---------|
+| `find*` | "Finds" | "Finds an API by mount path." |
+| `register*` | "Registers" | "Registers an adapter." |
+| `define*`, DSL methods | "Defines" | "Defines a reusable object type." |
+| `transform*` | "Transforms" | "Transforms the request body." |
+| `to_*` | "Converts" | "Converts this param to a hash." |
+| `create*`, `build*` | "Creates" | "Creates a new request context." |
+| `set*`, `configure*` | "Sets" / "Configures" | "Sets the target for this operation." |
 
 ```ruby
 # @api public
@@ -167,6 +179,21 @@ def server(url, &block)
 - "This method..."
 - Passive voice
 - Any phrase not matching the formulas above
+
+---
+
+## Forbidden Phrases (Anywhere)
+
+| Forbidden | Fix |
+|-----------|-----|
+| "Gets or sets the X" | "The X." (getter formula) |
+| "Without arguments, returns..." | delete (redundant with @return) |
+| "With an argument, sets..." | delete (redundant with @param) |
+| "Will return" | "Returns" |
+| "is transformed" | "Transforms" |
+| "allows you to" | delete or rephrase |
+| "powerful", "seamlessly", "simply" | delete |
+| "query params", "body params" | "query", "body" |
 
 ---
 
@@ -240,6 +267,24 @@ Type only. No description.
 - `@return [String] the name` — redundant
 - `@return [Class]` — too vague, use `Class<Type>`
 
+### Type Rules
+
+| Rule | Bad | Good |
+|------|-----|------|
+| Class returns use `Class<Type>` | `@return [Class]` | `@return [Class<Adapter::Base>]` |
+| If signature has `= nil`, include nil | `@param name [Symbol]` | `@param name [Symbol, nil]` |
+| Class params specify type | `@param klass [Class]` | `@param klass [Class<Representation::Base>]` |
+
+When method returns a class (not instance), description says "X class":
+
+```ruby
+# Good — explicit "class"
+# The representation class for this association.
+
+# Bad — ambiguous (could be instance)
+# The representation for this association.
+```
+
 ---
 
 ## @see Rules
@@ -250,6 +295,16 @@ Type only. No description.
 
 **Never use @see for:**
 - Getter/predicate pairs (implicit in Ruby)
+
+### Link Syntax
+
+```ruby
+@see #method           # Instance method, same class
+@see .method           # Class method, same class
+@see OtherClass#method # Instance method, other class
+@see OtherClass.method # Class method, other class
+@see OtherClass        # Class reference
+```
 
 ---
 
@@ -291,16 +346,28 @@ Type only. No description.
 ## Validation
 
 ```bash
-# Check for subjective descriptions (should find none)
+# Forbidden phrases
 grep -rn "It's important" lib/
 grep -rn "This method" lib/
 grep -rn "allows you to" lib/
+grep -rn "Gets or sets" lib/
+grep -rn "Without arguments" lib/
+grep -rn "Will return" lib/
 
-# Check void methods have @example
-# (manual check required)
+# Punctuation violations
+grep -rn "@param.*\.$" lib/
 
-# Check predicates follow formula
+# Type violations
+grep -rn "@return \[Class\]$" lib/
+grep -rn "@param.*\[Class\]" lib/
+
+# @return with description (forbidden)
+grep -rn "@return \[[^]]*\] [a-z]" lib/
+
+# Predicates not following formula
 grep -rn "# Whether" lib/ | grep -v "Whether this"
+
+# Void methods missing @example (manual check required)
 ```
 
 ---
@@ -313,7 +380,11 @@ For each `@api public` method:
 2. [ ] Description follows exact formula (no variations)
 3. [ ] Context from lookup table (no guessing)
 4. [ ] Extra context uses allowed formulas only
-5. [ ] Void methods have @example
+5. [ ] Void methods have verb prefix + @example
 6. [ ] Tag order correct
 7. [ ] @param lowercase, no period
 8. [ ] @return type only, no description
+9. [ ] Class returns use `Class<Type>`, never bare `[Class]`
+10. [ ] If signature has `= nil`, type includes nil
+11. [ ] Class returns described as "X class" (not just "X")
+12. [ ] No forbidden phrases
