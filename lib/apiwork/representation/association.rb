@@ -185,10 +185,7 @@ module Apiwork
       end
 
       # @api public
-      # Returns the representation class for this association.
-      #
-      # Uses the explicitly configured class or infers from the association's
-      # model class using namespace conventions.
+      # The representation class for this association.
       #
       # @return [Class<Representation::Base>, nil]
       def representation_class

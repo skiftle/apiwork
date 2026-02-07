@@ -30,10 +30,7 @@ module Apiwork
           end
 
           # @api public
-          # Returns all unique values for a configuration key across all representations.
-          #
-          # Use this to check which options are used by any representation
-          # when building API-level schemas.
+          # The configured values for a key.
           #
           # @param key [Symbol] the configuration key to look up
           # @return [Set]

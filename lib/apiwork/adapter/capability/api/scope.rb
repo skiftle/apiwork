@@ -47,7 +47,7 @@ module Apiwork
                    to: :@representation_registry
 
           # @api public
-          # Returns aggregated configuration values for a capability.
+          # The configured values for a capability.
           #
           # @param capability [Symbol] the capability name
           # @param key [Symbol] the configuration key

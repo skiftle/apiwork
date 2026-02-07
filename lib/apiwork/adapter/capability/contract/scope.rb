@@ -24,7 +24,7 @@ module Apiwork
           end
 
           # @api public
-          # Returns actions that operate on collections.
+          # The collection actions for this scope.
           #
           # @return [Hash{Symbol => Resource::Action}]
           def collection_actions
@@ -32,7 +32,7 @@ module Apiwork
           end
 
           # @api public
-          # Returns actions that operate on a single resource.
+          # The member actions for this scope.
           #
           # @return [Hash{Symbol => Resource::Action}]
           def member_actions
@@ -40,7 +40,7 @@ module Apiwork
           end
 
           # @api public
-          # Returns CRUD actions only.
+          # The CRUD actions for this scope.
           #
           # @return [Hash{Symbol => Resource::Action}]
           def crud_actions
@@ -48,7 +48,7 @@ module Apiwork
           end
 
           # @api public
-          # Returns whether an action exists.
+          # Whether an action exists.
           #
           # @param name [Symbol] the action name
           # @return [Boolean]
@@ -57,7 +57,7 @@ module Apiwork
           end
 
           # @api public
-          # Returns attributes that are filterable.
+          # The filterable attributes for this scope.
           #
           # @return [Array<Representation::Attribute>]
           def filterable_attributes
@@ -65,7 +65,7 @@ module Apiwork
           end
 
           # @api public
-          # Returns attributes that are sortable.
+          # The sortable attributes for this scope.
           #
           # @return [Array<Representation::Attribute>]
           def sortable_attributes
@@ -73,7 +73,7 @@ module Apiwork
           end
 
           # @api public
-          # Returns attributes that are writable.
+          # The writable attributes for this scope.
           #
           # @return [Array<Representation::Attribute>]
           def writable_attributes

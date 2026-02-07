@@ -367,10 +367,7 @@ module Apiwork
         end
 
         # @api public
-        # Returns introspection data for this contract.
-        #
-        # Includes all actions with their request/response definitions.
-        # Useful for generating documentation or client code.
+        # The introspection data for this contract.
         #
         # @param locale [Symbol] optional locale for translated descriptions
         # @param expand [Boolean] resolve all referenced types (local, imported, global)

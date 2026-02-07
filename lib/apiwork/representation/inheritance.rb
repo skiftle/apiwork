@@ -49,7 +49,7 @@ module Apiwork
       end
 
       # @api public
-      # Returns whether any subclass has a custom sti_name different from the model.
+      # Whether this inheritance needs transform.
       #
       # @return [Boolean]
       def needs_transform?

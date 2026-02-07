@@ -35,11 +35,7 @@ module Apiwork
       end
 
       # @api public
-      # Returns a localized description for the error code.
-      #
-      # Looks up `apiwork.apis.<locale_key>.error_codes.<key>.description`,
-      # falls back to `apiwork.error_codes.<key>.description`,
-      # then to titleized key.
+      # The description for this error code.
       #
       # @param locale_key [String, nil] I18n namespace for API-specific translations
       # @return [String]

@@ -64,7 +64,7 @@ module Apiwork
       end
 
       # @api public
-      # Returns introspection data for an API.
+      # The introspection data for an API.
       #
       # @param path [String] the API mount path
       # @param locale [Symbol] optional locale for descriptions

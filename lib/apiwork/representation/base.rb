@@ -435,23 +435,17 @@ module Apiwork
         end
 
         # @api public
-        # Returns the API name for this representation in STI contexts.
-        #
-        # Uses the custom {#type_name} or falls back to the model's sti_name.
+        # The STI name for this representation.
         #
         # @return [String]
-        # @see #type_name
         def sti_name
           @type_name || model_class.sti_name
         end
 
         # @api public
-        # Returns the API name for this representation in polymorphic contexts.
-        #
-        # Uses the custom {#type_name} or falls back to the model's polymorphic_name.
+        # The polymorphic name for this representation.
         #
         # @return [String]
-        # @see #type_name
         def polymorphic_name
           @type_name || model_class.polymorphic_name
         end
