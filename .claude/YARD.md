@@ -111,10 +111,39 @@ grep -rn "Defaults to" lib/
 ```
 
 **Patterns:**
-- "the X" for simple returns
-- "X or nil if not found" for nullable
+- "the X" for all returns (type annotation shows nullability)
 - "true if X" for booleans
 - "new X with..." for factory methods
+
+**Forbidden:**
+- "or nil if not found" — redundant, type shows `nil`
+- "or nil when X" — redundant, type shows `nil`
+- "or nil if not defined" — redundant, type shows `nil`
+
+### Instance vs Class
+
+Instance is default — no suffix needed. Class is unusual — needs suffix.
+
+| Return type | Description |
+|-------------|-------------|
+| `[Request]` | "the request" |
+| `[Class<Request>]` | "the request class" |
+
+```ruby
+# Bad — redundant "instance"
+@return [Adapter::Base] the adapter instance
+
+# Good — instance is default
+@return [Adapter::Base] the adapter
+
+# Good — class needs qualifier
+@return [Class<Adapter::Base>] the adapter class
+```
+
+**Check:**
+```bash
+grep -rn "instance" lib/ | grep "@return"
+```
 
 ---
 

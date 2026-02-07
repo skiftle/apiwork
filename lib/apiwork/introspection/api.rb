@@ -32,7 +32,7 @@ module Apiwork
       end
 
       # @api public
-      # @return [API::Info, nil] API metadata, or nil if not defined
+      # @return [API::Info, nil] the API metadata
       # @see API::Info
       def info
         @info ||= @dump[:info] ? Info.new(@dump[:info]) : nil

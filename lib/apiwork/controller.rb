@@ -63,7 +63,7 @@ module Apiwork
     # with type coercion applied. Access parameters via {Contract::Base#query}
     # and {Contract::Base#body}.
     #
-    # @return [Contract::Base] the contract instance
+    # @return [Contract::Base] the contract
     # @see Contract::Base
     #
     # @example Access parsed parameters

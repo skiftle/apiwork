@@ -31,7 +31,7 @@ module Apiwork
       #   @api public
       #   Finds an error code by key.
       #   @param key [Symbol] the error code key
-      #   @return [ErrorCode::Definition, nil] the error code or nil if not found
+      #   @return [ErrorCode::Definition, nil] the error code
       #   @see .find!
       #   @example
       #     Apiwork::ErrorCode.find(:not_found)
