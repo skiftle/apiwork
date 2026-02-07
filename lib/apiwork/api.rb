@@ -8,7 +8,7 @@ module Apiwork
       #   @api public
       #   Finds an API by its mount path.
       #   @param path [String] the API mount path
-      #   @return [API::Base, nil] the API class or nil if not found
+      #   @return [Class<API::Base>, nil] the API class or nil if not found
       #   @see .find!
       #   @example
       #     Apiwork::API.find('/api/v1')
@@ -17,7 +17,7 @@ module Apiwork
       #   @api public
       #   Finds an API by its mount path.
       #   @param path [String] the API mount path
-      #   @return [API::Base] the API class
+      #   @return [Class<API::Base>] the API class
       #   @raise [KeyError] if the API is not found
       #   @see .find
       #   @example

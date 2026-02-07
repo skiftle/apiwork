@@ -35,7 +35,7 @@ module Apiwork
       attr_reader :name
 
       # @api public
-      # @return [Array<Representation::Base>, nil] polymorphic representation classes
+      # @return [Array<Class<Representation::Base>>, nil] polymorphic representation classes
       attr_reader :polymorphic
 
       # @api public

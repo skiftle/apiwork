@@ -8,7 +8,7 @@ module Apiwork
       #   @api public
       #   Finds an export by name.
       #   @param name [Symbol] the export name
-      #   @return [Export::Base, nil] the export class or nil if not found
+      #   @return [Class<Export::Base>, nil] the export class or nil if not found
       #   @see .find!
       #   @example
       #     Apiwork::Export.find(:openapi)
@@ -17,7 +17,7 @@ module Apiwork
       #   @api public
       #   Finds an export by name.
       #   @param name [Symbol] the export name
-      #   @return [Export::Base] the export class
+      #   @return [Class<Export::Base>] the export class
       #   @raise [KeyError] if the export is not found
       #   @see .find
       #   @example
