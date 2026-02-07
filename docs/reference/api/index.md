@@ -34,7 +34,7 @@ types, and configuration.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `path` | `String` | the mount path for this API (e.g. '/api/v1') |
+| `path` | `String` | the API path |
 
 **Returns**
 
@@ -67,17 +67,21 @@ end
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L25)
 
-Finds an API by its mount path.
+Finds an API by path.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `path` | `String` | the API mount path |
+| `path` | `String` | the API path |
 
 **Returns**
 
 Class&lt;[API::Base](/reference/api/base)&gt;, `nil`
+
+**See also**
+
+- [.find!](#find!)
 
 **Example**
 
@@ -93,17 +97,21 @@ Apiwork::API.find('/api/v1')
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L25)
 
-Finds an API by its mount path.
+Finds an API by path.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `path` | `String` | the API mount path |
+| `path` | `String` | the API path |
 
 **Returns**
 
 Class&lt;[API::Base](/reference/api/base)&gt;
+
+**See also**
+
+- [.find](#find)
 
 **Example**
 
@@ -125,12 +133,12 @@ The introspection data for an API.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `path` | `String` | the API mount path |
-| `locale` | `Symbol` | optional locale for descriptions |
+| `path` | `String` | the API path |
+| `locale` | `Symbol, nil` | the locale for descriptions |
 
 **Returns**
 
-`Hash`
+[Introspection::API](/reference/introspection/api/)
 
 **Example**
 

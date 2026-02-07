@@ -32,6 +32,10 @@ Finds an export by name.
 
 Class&lt;[Export::Base](/reference/export/base)&gt;, `nil`
 
+**See also**
+
+- [.find!](#find!)
+
 **Example**
 
 ```ruby
@@ -58,6 +62,10 @@ Finds an export by name.
 
 Class&lt;[Export::Base](/reference/export/base)&gt;
 
+**See also**
+
+- [.find](#find)
+
 **Example**
 
 ```ruby
@@ -79,7 +87,7 @@ Generates an export for an API.
 | Name | Type | Description |
 |------|------|-------------|
 | `export_name` | `Symbol` | the export name (:openapi, :typescript, :zod) |
-| `api_path` | `String` | the API mount path |
+| `api_path` | `String` | the API path |
 | `format` | `Symbol` | output format (:json, :yaml) - hash exports only |
 | `locale` | `Symbol, nil` | locale for translations |
 | `key_format` | `Symbol, nil` | key casing (:camel, :underscore, :kebab, :keep) |

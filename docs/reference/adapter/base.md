@@ -96,7 +96,7 @@ capability Capability::Pagination
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L136)
 
-The collection wrapper class.
+The collection wrapper class for this adapter.
 
 **Parameters**
 
@@ -122,7 +122,7 @@ collection_wrapper Wrapper::Collection::Default
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L110)
 
-The error serializer class.
+The error serializer class for this adapter.
 
 Handles serialization of errors.
 
@@ -150,7 +150,7 @@ error_serializer Serializer::Error::Default
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L149)
 
-The error wrapper class.
+The error wrapper class for this adapter.
 
 **Parameters**
 
@@ -176,7 +176,7 @@ error_wrapper Wrapper::Error::Default
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L123)
 
-The member wrapper class.
+The member wrapper class for this adapter.
 
 **Parameters**
 
@@ -254,7 +254,7 @@ end
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L95)
 
-The resource serializer class.
+The resource serializer class for this adapter.
 
 Handles serialization of records and collections.
 

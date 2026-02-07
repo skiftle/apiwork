@@ -233,7 +233,7 @@ info.tags  # => ["invoices", "payments"]
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L62)
 
-The terms of service URL for this info.
+The terms of service for this info.
 
 **Parameters**
 

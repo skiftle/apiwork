@@ -14,9 +14,9 @@ Used inside attribute blocks to define the shape of JSON/JSONB columns,
 Rails store attributes, or any serialized data structure.
 
 Only complex types are allowed at the top level:
-- [#object](/reference/#object) for key-value structures
-- [#array](/reference/#array) for ordered collections
-- [#union](/reference/#union) for polymorphic structures
+- [#object](#object) for key-value structures
+- [#array](#array) for ordered collections
+- [#union](#union) for polymorphic structures
 
 Inside these blocks, the full type DSL is available including
 nested objects, arrays, primitives, and unions.

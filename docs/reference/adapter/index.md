@@ -36,6 +36,10 @@ Finds an adapter by name.
 
 Class&lt;[Adapter::Base](/reference/adapter/base)&gt;, `nil`
 
+**See also**
+
+- [.find!](#find!)
+
 **Example**
 
 ```ruby
@@ -61,6 +65,10 @@ Finds an adapter by name.
 **Returns**
 
 Class&lt;[Adapter::Base](/reference/adapter/base)&gt;
+
+**See also**
+
+- [.find](#find)
 
 **Example**
 

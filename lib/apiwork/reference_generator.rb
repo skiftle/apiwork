@@ -410,7 +410,11 @@ module Apiwork
     end
 
     def yard_ref_to_path(ref)
-      if ref.include?('#')
+      if ref.start_with?('#')
+        "##{ref[1..].dasherize}"
+      elsif ref.start_with?('.')
+        "##{ref[1..].dasherize}"
+      elsif ref.include?('#')
         class_part, method_part = ref.split('#', 2)
         file_path = class_to_filepath(class_part)
         "#{file_path}##{method_part.dasherize}"
@@ -424,6 +428,8 @@ module Apiwork
     end
 
     def see_ref_linkable?(ref)
+      return true if ref.start_with?('#', '.')
+
       class_part = ref.split(/[#.]/, 2).first
       linkable_type?(class_part)
     end

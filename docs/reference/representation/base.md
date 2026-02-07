@@ -175,7 +175,7 @@ Hash{Symbol =&gt; [Attribute](/reference/representation/attribute)}
 Defines a belongs_to association for serialization and contracts.
 
 Nullability is auto-detected from the foreign key column.
-See [#has_one](/reference/#has-one) for all available options.
+See [#has_one](#has-one) for all available options.
 
 **Parameters**
 
@@ -201,7 +201,7 @@ belongs_to :category, filterable: true
 
 `.deprecated!`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L491)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L497)
 
 Marks this representation as deprecated.
 
@@ -226,7 +226,7 @@ end
 
 `.description(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L473)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L479)
 
 The description for this representation.
 
@@ -256,7 +256,7 @@ end
 
 `.deserialize(hash_or_array)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L555)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L561)
 
 Deserializes using this representation's decode transformers.
 
@@ -292,7 +292,7 @@ InvoiceRepresentation.deserialize(params[:invoices])
 
 `.example(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L507)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L513)
 
 The example value for this representation.
 
@@ -326,7 +326,7 @@ end
 
 Defines a has_many association for serialization and contracts.
 
-See [#has_one](/reference/#has-one) for shared options. Additionally supports:
+See [#has_one](#has-one) for shared options. Additionally supports:
 
 **Parameters**
 
@@ -424,7 +424,7 @@ Sets the model class for this representation.
 By default, the model is auto-detected from the representation name
 (e.g., InvoiceRepresentation becomes Invoice). Use this to override.
 
-To retrieve the model class, use [#model_class](/reference/#model-class) instead.
+To retrieve the model class, use [#model_class](#model-class) instead.
 
 **Parameters**
 
@@ -458,16 +458,20 @@ end
 
 `.model_class`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L594)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L599)
 
 The ActiveRecord model class for this representation.
 
 Auto-detected from representation name (InvoiceRepresentation becomes Invoice)
-or explicitly set via [.model](/reference/#model).
+or explicitly set via [.model](#model).
 
 **Returns**
 
 `Class<ActiveRecord::Base>`
+
+**See also**
+
+- [.model](#model)
 
 **Example**
 
@@ -481,13 +485,19 @@ InvoiceRepresentation.model_class  # => Invoice
 
 `.polymorphic_name`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L449)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L455)
 
 The polymorphic name for this representation.
+
+Uses type_name if set, otherwise the model's polymorphic_name.
 
 **Returns**
 
 `String`
+
+**See also**
+
+- [#type_name](#type-name)
 
 ---
 
@@ -502,7 +512,7 @@ Sets the JSON root key for this representation.
 By default, the root key is auto-detected from the model name
 (e.g., Invoice becomes "invoice"/"invoices"). Use this to override.
 
-To retrieve the root key, use [#root_key](/reference/#root-key) instead.
+To retrieve the root key, use [#root_key](#root-key) instead.
 
 **Parameters**
 
@@ -514,6 +524,10 @@ To retrieve the root key, use [#root_key](/reference/#root-key) instead.
 **Returns**
 
 `void`
+
+**See also**
+
+- [#root_key](#root-key)
 
 **Example: Custom root key**
 
@@ -529,16 +543,19 @@ end
 
 `.root_key`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L575)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L580)
 
-The root key for wrapping JSON responses.
+The root key for this representation.
 
-Auto-detected from model name (Invoice becomes "invoice"/"invoices")
-or explicitly set via [.root](/reference/#root).
+Defaults to model name when not set (Invoice becomes "invoice"/"invoices").
 
 **Returns**
 
 [RootKey](/reference/representation/root-key)
+
+**See also**
+
+- [.root](#root)
 
 **Example**
 
@@ -553,7 +570,7 @@ InvoiceRepresentation.root_key.plural    # => "invoices"
 
 `.serialize(record_or_collection, context: {}, include: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L532)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L538)
 
 Serializes a record or collection using this representation.
 
@@ -596,13 +613,19 @@ InvoiceRepresentation.serialize(Invoice.all)
 
 `.sti_name`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L441)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L444)
 
 The STI name for this representation.
+
+Uses type_name if set, otherwise the model's sti_name.
 
 **Returns**
 
 `String`
+
+**See also**
+
+- [#type_name](#type-name)
 
 ---
 
@@ -610,7 +633,7 @@ The STI name for this representation.
 
 `.subclass?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L457)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L463)
 
 Whether this representation is registered as an STI subclass.
 
@@ -640,6 +663,11 @@ in both STI discriminators and polymorphic type columns.
 **Returns**
 
 `String`, `nil`
+
+**See also**
+
+- [#sti_name](#sti-name)
+- [#polymorphic_name](#polymorphic-name)
 
 **Example: STI subclass with custom type name**
 

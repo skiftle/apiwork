@@ -10,7 +10,7 @@ next: false
 
 Mixin for API controllers that provides request validation and response helpers.
 
-Include in controllers to access [#contract](/reference/#contract), [#expose](/reference/#expose), and [#expose_error](/reference/#expose-error).
+Include in controllers to access [#contract](#contract), [#expose](#expose), and [#expose_error](#expose-error).
 Automatically validates requests against the contract before actions run.
 
 **Example: Basic controller**
@@ -72,12 +72,12 @@ skip_contract_validation!
 
 `#context`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L205)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L212)
 
-The serialization context passed to representations.
+The context for this controller.
 
-Override this method to provide context data to your representations.
-Common uses: current user, permissions, locale, feature flags.
+Passed to representations during serialization. Override to provide
+current user, permissions, locale, or feature flags.
 
 **Returns**
 
@@ -91,19 +91,30 @@ def context
 end
 ```
 
+**Example: Access context in representation**
+
+```ruby
+class InvoiceRepresentation < Apiwork::Representation::Base
+  attribute :editable, type: :boolean
+
+  def editable
+    context[:current_user].admin?
+  end
+end
+```
+
 ---
 
 ### #contract
 
 `#contract`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L81)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L80)
 
-The parsed and validated request contract.
+The contract for this controller.
 
-The contract contains parsed query parameters and request body,
-with type coercion applied. Access parameters via [Contract::Base#query](/reference/contract/base#query)
-and [Contract::Base#body](/reference/contract/base#body).
+Contains parsed query parameters and request body with type coercion applied.
+Access parameters via [Contract::Base#query](/reference/contract/base#query) and [Contract::Base#body](/reference/contract/base#body).
 
 **Returns**
 
@@ -138,7 +149,7 @@ end
 
 `#expose(data, meta: {}, status: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L120)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L119)
 
 Exposes data as an API response.
 
@@ -191,12 +202,11 @@ end
 
 `#expose_error(code_key, detail: nil, path: nil, meta: {})`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L174)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L172)
 
 Exposes an error response using a registered error code.
 
-Error codes are registered via [ErrorCode.register](/reference/introspection/error-code#register).
-The detail message is looked up from I18n if not provided.
+Defaults to I18n lookup when detail is not provided.
 
 **Parameters**
 

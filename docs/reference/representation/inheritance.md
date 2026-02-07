@@ -41,9 +41,11 @@ Class&lt;[Representation::Base](/reference/representation/base)&gt;
 
 `#column`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L37)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L39)
 
-The STI column name from the model.
+The column for this inheritance.
+
+Returns the STI column name from the model.
 
 **Returns**
 
@@ -55,7 +57,7 @@ The STI column name from the model.
 
 `#mapping`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L63)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L67)
 
 Mapping of API names to database type values.
 
@@ -69,9 +71,11 @@ Mapping of API names to database type values.
 
 `#needs_transform?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L55)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L59)
 
 Whether this inheritance needs transformation.
+
+Returns true if any subclass has a custom sti_name different from the model.
 
 **Returns**
 
@@ -83,7 +87,7 @@ Whether this inheritance needs transformation.
 
 `#resolve(record)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L46)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L48)
 
 Resolves a record to its subclass representation.
 

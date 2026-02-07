@@ -10,8 +10,8 @@ next: false
 
 Facade for introspected API data.
 
-Entry point for accessing all API data. Access resources via [#resources](/reference/#resources),
-types via [#types](/reference/#types), enums via [#enums](/reference/#enums).
+Entry point for accessing all API data. Access resources via [#resources](#resources),
+types via [#types](#types), enums via [#enums](#enums).
 
 **Example**
 

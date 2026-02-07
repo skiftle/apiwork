@@ -329,6 +329,7 @@ When method returns a class (not instance), description says "X class":
 **Use @see for:**
 - find/find! pairs (cross-reference)
 - Delegates to `@api public` methods
+- Methods that reference another method in description (e.g., "Uses type_name if set")
 
 **Never use @see for:**
 - Getter/predicate pairs (implicit in Ruby)

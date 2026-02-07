@@ -11,8 +11,8 @@ next: false
 Block context for defining reusable object types.
 
 Accessed via `object :name do` in API or contract definitions.
-Use type methods to define fields: [#string](/reference/#string), [#integer](/reference/#integer), [#decimal](/reference/#decimal),
-[#boolean](/reference/#boolean), [#array](/reference/#array), [#object](/reference/#object), [#union](/reference/#union), [#reference](/reference/#reference).
+Use type methods to define fields: [#string](#string), [#integer](#integer), [#decimal](#decimal),
+[#boolean](#boolean), [#array](#array), [#object](#object), [#union](#union), [#reference](#reference).
 
 **Example: Define a reusable type**
 

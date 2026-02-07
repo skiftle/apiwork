@@ -38,7 +38,7 @@ end
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/serializer/resource/base.rb#L42)
 
-The Contract type builder class.
+The contract builder class for this serializer.
 
 **Parameters**
 

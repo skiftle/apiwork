@@ -10,7 +10,7 @@ next: false
 
 Shape builder for operation metadata.
 
-Provides [#options](/reference/#options) for accessing capability configuration,
+Provides [#options](#options) for accessing capability configuration,
 plus all DSL methods from [API::Object](/reference/api/object) for defining structure.
 Used by operations to define their metadata contribution.
 

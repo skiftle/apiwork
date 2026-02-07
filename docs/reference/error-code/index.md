@@ -32,6 +32,10 @@ Finds an error code by key.
 
 [ErrorCode::Definition](/reference/error-code/definition), `nil`
 
+**See also**
+
+- [.find!](#find!)
+
 **Example**
 
 ```ruby
@@ -57,6 +61,10 @@ Finds an error code by key.
 **Returns**
 
 [ErrorCode::Definition](/reference/error-code/definition)
+
+**See also**
+
+- [.find](#find)
 
 **Example**
 

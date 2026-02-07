@@ -44,7 +44,7 @@ end
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/transformer/request/base.rb#L45)
 
-The phase when this transformer runs relative to request validation.
+The phase for this transformer.
 
 **Parameters**
 

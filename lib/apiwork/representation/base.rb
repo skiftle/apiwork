@@ -437,9 +437,10 @@ module Apiwork
         # @api public
         # The STI name for this representation.
         #
-        # Uses {#type_name} if set, otherwise the model's sti_name.
+        # Uses type_name if set, otherwise the model's sti_name.
         #
         # @return [String]
+        # @see #type_name
         def sti_name
           @type_name || model_class.sti_name
         end
@@ -447,9 +448,10 @@ module Apiwork
         # @api public
         # The polymorphic name for this representation.
         #
-        # Uses {#type_name} if set, otherwise the model's polymorphic_name.
+        # Uses type_name if set, otherwise the model's polymorphic_name.
         #
         # @return [String]
+        # @see #type_name
         def polymorphic_name
           @type_name || model_class.polymorphic_name
         end

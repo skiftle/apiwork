@@ -21,7 +21,7 @@ Use this to query contract-specific state when building types.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/contract/scope.rb#L55)
 
-Whether the action exists.
+Whether this scope has the action.
 
 **Parameters**
 

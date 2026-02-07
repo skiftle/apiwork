@@ -11,8 +11,8 @@ next: false
 Base class for API contracts.
 
 Contracts define request/response structure for a resource.
-Link to a representation with [.representation](/reference/#representation) for automatic serialization.
-Define actions with [.action](/reference/#action) for custom validation and response shapes.
+Link to a representation with [.representation](#representation) for automatic serialization.
+Define actions with [.action](#action) for custom validation and response shapes.
 
 **Example: Basic contract**
 
@@ -193,11 +193,11 @@ string(:status, enum: :status)
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L112)
 
-The scope prefix for contract-scoped types.
+The identifier for this contract.
 
 Types, enums, and unions defined on this contract are namespaced
 with this prefix in introspection output. For example, a type
-`:address` becomes `:invoice_address` when identifier is `:invoice`.
+:address becomes :invoice_address when identifier is :invoice.
 
 If not set, prefix is derived from representation's root_key or class name.
 
@@ -366,7 +366,7 @@ The representation defines the attributes and associations that
 are serialized in responses. Adapters use the representation to
 auto-generate request/response types.
 
-To retrieve the representation class, use [#representation_class](/reference/#representation-class) instead.
+To retrieve the representation class, use [#representation_class](#representation-class) instead.
 
 **Parameters**
 

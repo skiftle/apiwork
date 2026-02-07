@@ -69,12 +69,11 @@ The name for this export.
 
 `.file_extension(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L121)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L120)
 
-The file extension for string exports.
+The file extension for this export.
 
-Only valid for exports with `output :string`. Hash exports derive
-their extension from the format (:json becomes .json, :yaml becomes .yaml).
+Only applies to string exports. Hash exports derive extension from format.
 
 **Parameters**
 
@@ -166,11 +165,11 @@ The output type for this export.
 
 `#data`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L257)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L256)
 
-The API introspection facade.
+The data for this export.
 
-This is the primary interface for accessing introspection data in export generators.
+Primary interface for accessing introspection data in export generators.
 
 **Returns**
 
@@ -186,12 +185,12 @@ This is the primary interface for accessing introspection data in export generat
 
 `#generate`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L235)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L234)
 
 Generates the export output.
 
 Override this method in subclasses to produce the export format.
-Access API data via the [#data](/reference/#data) method which provides typed access
+Access API data via the [#data](#data) method which provides typed access
 to types, enums, resources, actions, and other introspection data.
 
 **Returns**
@@ -208,7 +207,7 @@ to types, enums, resources, actions, and other introspection data.
 
 `#key_format`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L265)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L264)
 
 The key format for this export.
 
@@ -222,7 +221,7 @@ The key format for this export.
 
 `#transform_key(key)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L274)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L273)
 
 Transforms a key according to the configured key format.
 
