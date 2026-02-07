@@ -37,8 +37,8 @@ module Apiwork
             # @api public
             # The API type builder class.
             #
-            # @param klass [Class, nil] a Builder::API::Base subclass
-            # @return [Class, nil]
+            # @param klass [Class<Builder::API::Base>, nil] the builder class
+            # @return [Class<Builder::API::Base>, nil]
             def api_builder(klass = nil)
               @api_builder = klass if klass
               @api_builder

@@ -26,7 +26,7 @@ module Apiwork
       # @!method register(klass)
       #   @api public
       #   Registers an export.
-      #   @param klass [Class] an {Export::Base} subclass with export_name set
+      #   @param klass [Class<Export::Base>] the export class with export_name set
       #   @see Export::Base
       #   @example
       #     Apiwork::Export.register(JSONSchemaExport)

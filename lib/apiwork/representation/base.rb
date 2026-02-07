@@ -77,7 +77,7 @@ module Apiwork
         #
         # To retrieve the model class, use {#model_class} instead.
         #
-        # @param value [Class] the ActiveRecord model class
+        # @param value [Class<ActiveRecord::Base>] the ActiveRecord model class
         # @return [void]
         # @raise [ArgumentError] if value is not a Class
         #

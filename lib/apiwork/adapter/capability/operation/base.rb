@@ -48,9 +48,9 @@ module Apiwork
             # Blocks are evaluated via instance_exec, providing access to
             # type DSL methods and capability options.
             #
-            # @param klass [Class, nil] a MetadataShape subclass
+            # @param klass [Class<MetadataShape>, nil] the metadata shape class
             # @yield block that defines metadata structure
-            # @return [Class, nil]
+            # @return [Class<MetadataShape>, nil]
             #
             # @example With block
             #   metadata_shape do

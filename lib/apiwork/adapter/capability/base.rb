@@ -51,7 +51,7 @@ module Apiwork
           # @api public
           # Registers a request transformer for this capability.
           #
-          # @param transformer_class [Class] a {Transformer::Request::Base} subclass
+          # @param transformer_class [Class<Transformer::Request::Base>] the transformer class
           # @return [void]
           # @see Transformer::Request::Base
           def request_transformer(transformer_class)
@@ -66,7 +66,7 @@ module Apiwork
           # @api public
           # Registers a response transformer for this capability.
           #
-          # @param transformer_class [Class] a {Transformer::Response::Base} subclass
+          # @param transformer_class [Class<Transformer::Response::Base>] the transformer class
           # @return [void]
           # @see Transformer::Response::Base
           def response_transformer(transformer_class)
@@ -84,7 +84,7 @@ module Apiwork
           # API builders run once per API at initialization time to register
           # shared types used across all contracts.
           #
-          # @param klass [Class, nil] a {Builder::API::Base} subclass
+          # @param klass [Class<Builder::API::Base>, nil] the builder class
           # @yield block evaluated in {Builder::API::Base} context
           # @return [void]
           # @see Builder::API::Base
@@ -102,7 +102,7 @@ module Apiwork
           # Contract builders run per contract to add capability-specific
           # parameters and response shapes.
           #
-          # @param klass [Class, nil] a {Builder::Contract::Base} subclass
+          # @param klass [Class<Builder::Contract::Base>, nil] the builder class
           # @yield block evaluated in {Builder::Contract::Base} context
           # @return [void]
           # @see Builder::Contract::Base
@@ -120,7 +120,7 @@ module Apiwork
           # Operations run at request time to process data based on
           # request parameters.
           #
-          # @param klass [Class, nil] an {Operation::Base} subclass
+          # @param klass [Class<Operation::Base>, nil] the operation class
           # @yield block evaluated in {Operation::Base} context
           # @return [void]
           # @see Operation::Base

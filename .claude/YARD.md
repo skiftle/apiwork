@@ -237,7 +237,19 @@ grep -rn "Defaults to" lib/
 
 ### Instance vs Class Types
 
-Use `Class<Type>` when returning a class object (not an instance):
+Use `Class<Type>` when returning or accepting a class object (not an instance).
+
+**Never use bare `[Class]}`.** Always specify the type.
+
+```ruby
+# Bad — too vague
+@param klass [Class]
+@return [Class]
+
+# Good — specific type
+@param klass [Class<Adapter::Base>] the adapter class
+@return [Class<Adapter::Base>]
+```
 
 ```ruby
 # Instance return
@@ -245,6 +257,21 @@ Use `Class<Type>` when returning a class object (not an instance):
 
 # Class return
 @return [Class<Adapter::Base>]
+```
+
+### Method Descriptions for Class Returns
+
+When a method returns a class, say "X class" explicitly:
+
+```ruby
+# Good — explicit "class"
+# The representation class for this association.
+# The adapter class for this API.
+# The Contract type builder class for this serializer.
+
+# Bad — ambiguous
+# The representation for this association.
+# The adapter for this API.
 ```
 
 ---

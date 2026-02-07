@@ -178,12 +178,12 @@ module Apiwork
         # Scoped types are namespaced to a contract class.
         #
         # @param name [Symbol] type name for referencing
-        # @param scope [Class] a {Contract::Base} subclass for scoping (nil for global)
+        # @param scope [Class<Contract::Base>, nil] the contract class for scoping (nil for global)
         # @param description [String] documentation description
         # @param example [Object] example value for docs
         # @param format [String] format hint for docs
         # @param deprecated [Boolean] mark as deprecated
-        # @param representation_class [Class] a {Representation::Base} subclass for type inference
+        # @param representation_class [Class<Representation::Base>, nil] the representation class for type inference
         # @see API::Object
         #
         # @example Define a reusable type
@@ -227,7 +227,7 @@ module Apiwork
         #
         # @param name [Symbol] enum name for referencing
         # @param values [Array<String>] allowed values
-        # @param scope [Class] a {Contract::Base} subclass for scoping (nil for global)
+        # @param scope [Class<Contract::Base>, nil] the contract class for scoping (nil for global)
         # @param description [String] documentation description
         # @param example [String] example value for docs
         # @param deprecated [Boolean] mark as deprecated
@@ -265,7 +265,7 @@ module Apiwork
         # by a discriminator field.
         #
         # @param name [Symbol] union name for referencing
-        # @param scope [Class] a {Contract::Base} subclass for scoping (nil for global)
+        # @param scope [Class<Contract::Base>, nil] the contract class for scoping (nil for global)
         # @param discriminator [Symbol] field name that identifies the variant
         #
         # @example

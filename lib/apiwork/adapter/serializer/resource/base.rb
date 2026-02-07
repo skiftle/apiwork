@@ -37,8 +37,8 @@ module Apiwork
             # @api public
             # The Contract type builder class.
             #
-            # @param klass [Class, nil] a Builder::Contract::Base subclass
-            # @return [Class, nil]
+            # @param klass [Class<Builder::Contract::Base>, nil] the builder class
+            # @return [Class<Builder::Contract::Base>, nil]
             def contract_builder(klass = nil)
               @contract_builder = klass if klass
               @contract_builder

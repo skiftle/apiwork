@@ -46,7 +46,7 @@ module Apiwork
         # Capabilities are self-contained concerns (pagination, filtering, etc.)
         # that handle both introspection and runtime behavior.
         #
-        # @param klass [Class] a {Capability::Base} subclass
+        # @param klass [Class<Capability::Base>] the capability class
         # @return [void]
         #
         # @example
@@ -87,8 +87,8 @@ module Apiwork
         #
         # Handles serialization of records and collections.
         #
-        # @param klass [Class, nil] a {Serializer::Resource::Base} subclass
-        # @return [Class, nil]
+        # @param klass [Class<Serializer::Resource::Base>, nil] the serializer class
+        # @return [Class<Serializer::Resource::Base>, nil]
         #
         # @example
         #   resource_serializer Serializer::Resource::Default
@@ -102,8 +102,8 @@ module Apiwork
         #
         # Handles serialization of errors.
         #
-        # @param klass [Class, nil] a {Serializer::Error::Base} subclass
-        # @return [Class, nil]
+        # @param klass [Class<Serializer::Error::Base>, nil] the serializer class
+        # @return [Class<Serializer::Error::Base>, nil]
         #
         # @example
         #   error_serializer Serializer::Error::Default
@@ -115,8 +115,8 @@ module Apiwork
         # @api public
         # The member wrapper class.
         #
-        # @param klass [Class, nil] a {Wrapper::Member::Base} subclass
-        # @return [Class, nil]
+        # @param klass [Class<Wrapper::Member::Base>, nil] the wrapper class
+        # @return [Class<Wrapper::Member::Base>, nil]
         #
         # @example
         #   member_wrapper Wrapper::Member::Default
@@ -128,8 +128,8 @@ module Apiwork
         # @api public
         # The collection wrapper class.
         #
-        # @param klass [Class, nil] a {Wrapper::Collection::Base} subclass
-        # @return [Class, nil]
+        # @param klass [Class<Wrapper::Collection::Base>, nil] the wrapper class
+        # @return [Class<Wrapper::Collection::Base>, nil]
         #
         # @example
         #   collection_wrapper Wrapper::Collection::Default
@@ -141,8 +141,8 @@ module Apiwork
         # @api public
         # The error wrapper class.
         #
-        # @param klass [Class, nil] a {Wrapper::Error::Base} subclass
-        # @return [Class, nil]
+        # @param klass [Class<Wrapper::Error::Base>, nil] the wrapper class
+        # @return [Class<Wrapper::Error::Base>, nil]
         #
         # @example
         #   error_wrapper Wrapper::Error::Default

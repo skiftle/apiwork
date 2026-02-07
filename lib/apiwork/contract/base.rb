@@ -121,7 +121,7 @@ module Apiwork
         #
         # To retrieve the representation class, use {#representation_class} instead.
         #
-        # @param klass [Class] a {Representation::Base} subclass
+        # @param klass [Class<Representation::Base>] the representation class
         # @return [void]
         # @raise [ArgumentError] if klass is not a Representation subclass
         # @see Representation::Base
@@ -155,7 +155,7 @@ module Apiwork
         # @param example [Object] example value for docs
         # @param format [String] format hint for docs
         # @param deprecated [Boolean] mark as deprecated
-        # @param representation_class [Class] a {Representation::Base} subclass for type inference
+        # @param representation_class [Class<Representation::Base>] the representation class for type inference
         # @see API::Object
         #
         # @example Define a reusable type
@@ -251,7 +251,7 @@ module Apiwork
         # If UserContract defines a type `:address`, importing it as `:user`
         # makes it available as `:user_address`.
         #
-        # @param contract_class [Class] a {Contract::Base} subclass to import from
+        # @param contract_class [Class<Contract::Base>] the contract class to import from
         # @param as [Symbol] alias prefix for imported types
         # @raise [ArgumentError] if contract_class is not a Contract subclass
         # @raise [ArgumentError] if as is not a Symbol
