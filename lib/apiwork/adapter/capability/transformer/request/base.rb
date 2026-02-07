@@ -38,7 +38,7 @@ module Apiwork
 
             class << self
               # @api public
-              # The phase when this transformer runs relative to request validation.
+              # The phase for this transformer.
               #
               # @param value [Symbol, nil] :before or :after (default: :before)
               # @return [Symbol]

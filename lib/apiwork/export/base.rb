@@ -111,10 +111,9 @@ module Apiwork
         end
 
         # @api public
-        # The file extension for string exports.
+        # The file extension for this export.
         #
-        # Only valid for exports with `output :string`. Hash exports derive
-        # their extension from the format (:json becomes .json, :yaml becomes .yaml).
+        # Only applies to string exports. Hash exports derive extension from format.
         #
         # @param value [String, nil] the file extension (e.g., '.ts')
         # @return [String, nil]
@@ -248,9 +247,9 @@ module Apiwork
       end
 
       # @api public
-      # The API introspection facade.
+      # The data for this export.
       #
-      # This is the primary interface for accessing introspection data in export generators.
+      # Primary interface for accessing introspection data in export generators.
       #
       # @return [Introspection::API]
       # @see Introspection::API

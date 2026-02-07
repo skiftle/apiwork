@@ -83,7 +83,7 @@ module Apiwork
         end
 
         # @api public
-        # The resource serializer class.
+        # The resource serializer class for this adapter.
         #
         # Handles serialization of records and collections.
         #
@@ -98,7 +98,7 @@ module Apiwork
         end
 
         # @api public
-        # The error serializer class.
+        # The error serializer class for this adapter.
         #
         # Handles serialization of errors.
         #
@@ -113,7 +113,7 @@ module Apiwork
         end
 
         # @api public
-        # The member wrapper class.
+        # The member wrapper class for this adapter.
         #
         # @param klass [Class<Wrapper::Member::Base>, nil] the wrapper class
         # @return [Class<Wrapper::Member::Base>, nil]
@@ -126,7 +126,7 @@ module Apiwork
         end
 
         # @api public
-        # The collection wrapper class.
+        # The collection wrapper class for this adapter.
         #
         # @param klass [Class<Wrapper::Collection::Base>, nil] the wrapper class
         # @return [Class<Wrapper::Collection::Base>, nil]
@@ -139,7 +139,7 @@ module Apiwork
         end
 
         # @api public
-        # The error wrapper class.
+        # The error wrapper class for this adapter.
         #
         # @param klass [Class<Wrapper::Error::Base>, nil] the wrapper class
         # @return [Class<Wrapper::Error::Base>, nil]

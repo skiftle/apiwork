@@ -89,11 +89,11 @@ module Apiwork
 
       class << self
         # @api public
-        # The scope prefix for contract-scoped types.
+        # The identifier for this contract.
         #
         # Types, enums, and unions defined on this contract are namespaced
         # with this prefix in introspection output. For example, a type
-        # `:address` becomes `:invoice_address` when identifier is `:invoice`.
+        # :address becomes :invoice_address when identifier is :invoice.
         #
         # If not set, prefix is derived from representation's root_key or class name.
         #

@@ -57,11 +57,10 @@ module Apiwork
     end
 
     # @api public
-    # The parsed and validated request contract.
+    # The contract for this controller.
     #
-    # The contract contains parsed query parameters and request body,
-    # with type coercion applied. Access parameters via {Contract::Base#query}
-    # and {Contract::Base#body}.
+    # Contains parsed query parameters and request body with type coercion applied.
+    # Access parameters via {Contract::Base#query} and {Contract::Base#body}.
     #
     # @return [Contract::Base]
     # @see Contract::Base
@@ -152,8 +151,7 @@ module Apiwork
     # @api public
     # Exposes an error response using a registered error code.
     #
-    # Error codes are registered via {ErrorCode.register}.
-    # The detail message is looked up from I18n if not provided.
+    # Defaults to I18n lookup when detail is not provided.
     #
     # @param code_key [Symbol] registered error code (:not_found, :unauthorized, etc.)
     # @param detail [String] custom error message (optional, uses I18n lookup)
@@ -191,16 +189,25 @@ module Apiwork
     end
 
     # @api public
-    # The serialization context passed to representations.
+    # The context for this controller.
     #
-    # Override this method to provide context data to your representations.
-    # Common uses: current user, permissions, locale, feature flags.
+    # Passed to representations during serialization. Override to provide
+    # current user, permissions, locale, or feature flags.
     #
     # @return [Hash]
     #
     # @example Provide current user context
     #   def context
     #     { current_user: current_user }
+    #   end
+    #
+    # @example Access context in representation
+    #   class InvoiceRepresentation < Apiwork::Representation::Base
+    #     attribute :editable, type: :boolean
+    #
+    #     def editable
+    #       context[:current_user].admin?
+    #     end
     #   end
     def context
       {}

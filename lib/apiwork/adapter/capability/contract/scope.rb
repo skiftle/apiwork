@@ -48,7 +48,7 @@ module Apiwork
           end
 
           # @api public
-          # Whether the action exists.
+          # Whether this scope has the action.
           #
           # @param name [Symbol] the action name
           # @return [Boolean]

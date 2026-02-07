@@ -6,8 +6,8 @@ module Apiwork
     class << self
       # @!method find(path)
       #   @api public
-      #   Finds an API by its mount path.
-      #   @param path [String] the API mount path
+      #   Finds an API by path.
+      #   @param path [String] the API path
       #   @return [Class<API::Base>, nil]
       #   @see .find!
       #   @example
@@ -15,8 +15,8 @@ module Apiwork
       #
       # @!method find!(path)
       #   @api public
-      #   Finds an API by its mount path.
-      #   @param path [String] the API mount path
+      #   Finds an API by path.
+      #   @param path [String] the API path
       #   @return [Class<API::Base>]
       #   @raise [KeyError] if the API is not found
       #   @see .find
@@ -38,7 +38,7 @@ module Apiwork
       # The block receives an API recorder for defining resources,
       # types, and configuration.
       #
-      # @param path [String] the mount path for this API (e.g. '/api/v1')
+      # @param path [String] the API path
       # @yield block for API definition
       # @return [Class<API::Base>]
       #
@@ -66,9 +66,9 @@ module Apiwork
       # @api public
       # The introspection data for an API.
       #
-      # @param path [String] the API mount path
-      # @param locale [Symbol] optional locale for descriptions
-      # @return [Hash]
+      # @param path [String] the API path
+      # @param locale [Symbol, nil] the locale for descriptions
+      # @return [Introspection::API]
       #
       # @example
       #   Apiwork::API.introspect('/api/v1')

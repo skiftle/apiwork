@@ -437,6 +437,8 @@ module Apiwork
         # @api public
         # The STI name for this representation.
         #
+        # Uses {#type_name} if set, otherwise the model's sti_name.
+        #
         # @return [String]
         def sti_name
           @type_name || model_class.sti_name
@@ -444,6 +446,8 @@ module Apiwork
 
         # @api public
         # The polymorphic name for this representation.
+        #
+        # Uses {#type_name} if set, otherwise the model's polymorphic_name.
         #
         # @return [String]
         def polymorphic_name
@@ -561,10 +565,9 @@ module Apiwork
         end
 
         # @api public
-        # The root key for wrapping JSON responses.
+        # The root key for this representation.
         #
-        # Auto-detected from model name (Invoice becomes "invoice"/"invoices")
-        # or explicitly set via {.root}.
+        # Defaults to model name when not set (Invoice becomes "invoice"/"invoices").
         #
         # @return [RootKey]
         # @see .root

@@ -31,7 +31,9 @@ module Apiwork
       end
 
       # @api public
-      # The STI column name from the model.
+      # The column for this inheritance.
+      #
+      # Returns the STI column name from the model.
       #
       # @return [Symbol]
       def column
@@ -50,6 +52,8 @@ module Apiwork
 
       # @api public
       # Whether this inheritance needs transformation.
+      #
+      # Returns true if any subclass has a custom sti_name different from the model.
       #
       # @return [Boolean]
       def needs_transform?

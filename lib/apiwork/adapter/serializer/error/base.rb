@@ -35,7 +35,7 @@ module Apiwork
             end
 
             # @api public
-            # The API type builder class.
+            # The API builder class for this serializer.
             #
             # @param klass [Class<Builder::API::Base>, nil] the builder class
             # @return [Class<Builder::API::Base>, nil]

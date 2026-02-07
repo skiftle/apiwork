@@ -22,7 +22,11 @@ Descriptions are generated mechanically based on `@return` type and class contex
 
 **Predicate Formula** (`@return [Boolean]`, method ends with `?`):
 ```
+# Simple predicate (no parameters):
 Whether this [context] is [method_name_without_?].
+
+# Lookup predicate (has parameters):
+Whether this [context] has the [thing].
 ```
 
 **Getter Formula** (all other non-void):
@@ -33,6 +37,9 @@ The [method] for this [context].
 # Helper class:
 The [qualifier] [method].
 ```
+
+**Exception:** If the method name is verb-like (e.g., `extends`), rephrase for natural English:
+- `extends` → "The types this type extends." (not "The extends for this type.")
 
 ### Step 3: Lookup Context
 
@@ -45,8 +52,10 @@ The [qualifier] [method].
 | Attribute | domain | "this attribute" |
 | Capability | domain | "this capability" |
 | Contract | domain | "this contract" |
+| Controller | domain | "this controller" |
 | Enum | domain | "this enum" |
 | Export | domain | "this export" |
+| Inheritance | domain | "this inheritance" |
 | Issue | domain | "this issue" |
 | Operation | domain | "this operation" |
 | Param::* | domain | "this param" |
@@ -54,6 +63,8 @@ The [qualifier] [method].
 | Request | domain | "this request" |
 | Resource | domain | "this resource" |
 | Response | domain | "this response" |
+| Serializer | domain | "this serializer" |
+| Transformer | domain | "this transformer" |
 | Type | domain | "this type" |
 | Wrapper | domain | "this wrapper" |
 | Info | helper | "API" |
@@ -135,7 +146,11 @@ def object(name, &block)
 
 ## Extra Context (Optional Second Paragraph)
 
-After the mechanical description, you MAY add extra context. Each line must follow a formula:
+After the mechanical description, you MAY add extra context.
+
+### Allowed Content
+
+**1. Formula phrases:**
 
 | Type | Formula |
 |------|---------|
@@ -145,6 +160,15 @@ After the mechanical description, you MAY add extra context. Each line must foll
 | When to use | "Use when [scenario]." |
 | When to avoid | "Avoid when [scenario]." |
 | Behavior | "Can be [action]." |
+
+**2. Technical explanations:**
+
+Factual descriptions of what the method does, how it works, or what effects it has.
+
+Rules:
+- Active voice, present tense
+- Verifiable against code
+- No forbidden phrases (see Forbidden Phrases section)
 
 **Examples:**
 
@@ -172,13 +196,26 @@ def param(name, type: nil, ...)
 # @example
 #   server 'https://api.example.com'
 def server(url, &block)
+
+# @api public
+# The identifier for this contract.
+#
+# Types, enums, and unions defined on this contract are namespaced
+# with this prefix in introspection output. For example, a type
+# :address becomes :invoice_address when identifier is :invoice.
+#
+# If not set, prefix is derived from representation's root_key or class name.
+#
+# @param value [Symbol, String, nil] the scope prefix
+# @return [String, nil]
+def identifier(value = nil)
 ```
 
 **Forbidden in extra context:**
 - "It's important to note..."
 - "This method..."
 - Passive voice
-- Any phrase not matching the formulas above
+- Marketing language ("powerful", "seamlessly", "simply")
 
 ---
 

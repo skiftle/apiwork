@@ -25,7 +25,7 @@ module Apiwork
                     :type_registry
 
         # @api public
-        # The API mount path.
+        # The path for this API.
         #
         # @return [String]
         #
@@ -42,7 +42,9 @@ module Apiwork
         end
 
         # @api public
-        # The key format for request/response transformation.
+        # The key format for this API.
+        #
+        # Transforms request and response keys in query and body.
         #
         # @param format [Symbol, nil] :keep, :camel, :underscore, or :kebab
         # @return [Symbol, nil]
@@ -61,7 +63,9 @@ module Apiwork
         end
 
         # @api public
-        # The path format used for URL path segments.
+        # The path format for this API.
+        #
+        # Transforms resource names and action names in URL paths.
         #
         # @param format [Symbol] :keep, :kebab, :camel, or :underscore
         # @return [Symbol]
