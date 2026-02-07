@@ -81,14 +81,20 @@ module Apiwork
 
           # @!method associations
           #   @api public
+          #   The associations for this scope.
+          #
           #   @return [Hash{Symbol => Representation::Association}]
           #
           # @!method attributes
           #   @api public
+          #   The attributes for this scope.
+          #
           #   @return [Hash{Symbol => Representation::Attribute}]
           #
           # @!method root_key
           #   @api public
+          #   The root key for this scope.
+          #
           #   @return [Representation::RootKey]
           delegate :associations,
                    :attributes,

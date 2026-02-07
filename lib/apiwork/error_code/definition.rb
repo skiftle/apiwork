@@ -10,10 +10,14 @@ module Apiwork
     #
     # @!attribute [r] key
     #   @api public
+    #   The key for this error code.
+    #
     #   @return [Symbol]
     #
     # @!attribute [r] status
     #   @api public
+    #   The status for this error code.
+    #
     #   @return [Integer]
     #
     # @example

@@ -42,16 +42,22 @@ module Apiwork
 
       # @!method self.attributes
       #   @api public
+      #   The attributes for this representation.
+      #
       #   @return [Hash{Symbol => Attribute}]
       class_attribute :attributes, default: {}, instance_accessor: false
 
       # @!method self.associations
       #   @api public
+      #   The associations for this representation.
+      #
       #   @return [Hash{Symbol => Association}]
       class_attribute :associations, default: {}, instance_accessor: false
 
       # @!method self.inheritance
       #   @api public
+      #   The inheritance for this representation.
+      #
       #   @return [Representation::Inheritance, nil]
       class_attribute :inheritance, default: nil, instance_accessor: false
       class_attribute :_root, default: nil, instance_accessor: false
