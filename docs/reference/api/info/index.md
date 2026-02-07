@@ -26,7 +26,7 @@ Used within the `info` block in [API::Base](/reference/api/base).
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L80)
 
-The contact for this info.
+The API contact.
 
 **Returns**
 
@@ -95,7 +95,7 @@ info.deprecated?  # => true
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L153)
 
-The description for this info.
+The API description.
 
 **Parameters**
 
@@ -122,7 +122,7 @@ info.description  # => "Full-featured..."
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L99)
 
-The license for this info.
+The API license.
 
 **Returns**
 
@@ -149,7 +149,7 @@ info.license.name  # => "MIT"
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L121)
 
-The server definitions for this info.
+The API servers.
 
 Can be called multiple times to define multiple servers.
 
@@ -179,7 +179,7 @@ info.server  # => [#<Server ...>]
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L138)
 
-The summary for this info.
+The API summary.
 
 **Parameters**
 
@@ -206,7 +206,7 @@ info.summary  # => "Invoice management API"
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L168)
 
-The tags for this info.
+The API tags.
 
 **Parameters**
 
@@ -229,17 +229,17 @@ info.tags  # => ["invoices", "payments"]
 
 ### #terms_of_service
 
-`#terms_of_service(url = nil)`
+`#terms_of_service(value = nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L62)
 
-The terms of service for this info.
+The API terms of service.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `url` | `String` | the terms of service URL |
+| `value` | `String` | the terms of service URL |
 
 **Returns**
 
@@ -260,7 +260,7 @@ info.terms_of_service  # => "https://example.com/terms"
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L32)
 
-The title for this info.
+The API title.
 
 **Parameters**
 
@@ -287,7 +287,7 @@ info.title  # => "Invoice API"
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L47)
 
-The version for this info.
+The API version.
 
 **Parameters**
 

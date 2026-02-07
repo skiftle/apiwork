@@ -26,7 +26,7 @@ license.url   # => "https://opensource.org/licenses/MIT"
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info/license.rb#L23)
 
-The name for this license.
+The license name.
 
 **Returns**
 
@@ -54,7 +54,7 @@ Converts this license to a hash.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info/license.rb#L31)
 
-The URL for this license.
+The license URL.
 
 **Returns**
 

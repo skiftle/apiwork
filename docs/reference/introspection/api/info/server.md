@@ -27,7 +27,7 @@ end
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info/server.rb#L32)
 
-The description for this server.
+The server description.
 
 **Returns**
 
@@ -55,7 +55,7 @@ Converts this server to a hash.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info/server.rb#L24)
 
-The URL for this server.
+The server URL.
 
 **Returns**
 

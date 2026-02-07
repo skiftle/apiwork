@@ -27,7 +27,7 @@ contact.url    # => "https://example.com/support"
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info/contact.rb#L32)
 
-The email for this contact.
+The contact email.
 
 **Returns**
 
@@ -41,7 +41,7 @@ The email for this contact.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info/contact.rb#L24)
 
-The name for this contact.
+The contact name.
 
 **Returns**
 
@@ -69,7 +69,7 @@ Converts this contact to a hash.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info/contact.rb#L40)
 
-The URL for this contact.
+The contact URL.
 
 **Returns**
 

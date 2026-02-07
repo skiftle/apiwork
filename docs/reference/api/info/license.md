@@ -20,7 +20,7 @@ Used within the `license` block in [API::Info](/reference/api/info/).
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/license.rb#L25)
 
-The name for this license.
+The license name.
 
 **Parameters**
 
@@ -47,7 +47,7 @@ license.name  # => "MIT"
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/license.rb#L40)
 
-The URL for this license.
+The license URL.
 
 **Parameters**
 

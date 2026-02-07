@@ -35,7 +35,7 @@ info.license&.name    # => "MIT"
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info.rb#L66)
 
-The contact for this info.
+The API contact.
 
 **Returns**
 
@@ -53,7 +53,7 @@ The contact for this info.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info.rb#L41)
 
-The description for this info.
+The API description.
 
 **Returns**
 
@@ -67,7 +67,7 @@ The description for this info.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info.rb#L75)
 
-The license for this info.
+The API license.
 
 **Returns**
 
@@ -85,7 +85,7 @@ The license for this info.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info.rb#L84)
 
-The servers for this info.
+The API servers.
 
 **Returns**
 
@@ -103,7 +103,7 @@ Array&lt;[Info::Server](/reference/api/info/server)&gt;
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info.rb#L49)
 
-The summary for this info.
+The API summary.
 
 **Returns**
 
@@ -117,7 +117,7 @@ The summary for this info.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info.rb#L57)
 
-The terms of service for this info.
+The API terms of service.
 
 **Returns**
 
@@ -131,7 +131,7 @@ The terms of service for this info.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info.rb#L25)
 
-The title for this info.
+The API title.
 
 **Returns**
 
@@ -159,7 +159,7 @@ Converts this info to a hash.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/info.rb#L33)
 
-The version for this info.
+The API version.
 
 **Returns**
 

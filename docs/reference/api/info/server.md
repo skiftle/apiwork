@@ -20,7 +20,7 @@ Used within the `server` block in [API::Info](/reference/api/info/).
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/server.rb#L40)
 
-The description for this server.
+The server description.
 
 **Parameters**
 
@@ -47,7 +47,7 @@ server.description  # => "Production"
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/server.rb#L25)
 
-The URL for this server.
+The server URL.
 
 **Parameters**
 
