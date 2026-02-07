@@ -75,7 +75,7 @@ grep -rn "@return.*\.$" lib/
 | DSL/config | "Defines", "Sets", "Configures" | "Defines a reusable object type." |
 | Getter | "The X." (noun phrase) | "The output type for this export." |
 | Transform | "Transforms" | "Transforms the body parameters." |
-| Predicate | "Returns whether" | "Returns whether this is abstract." |
+| Predicate (`?` method) | "Whether this X is Y." | "Whether this param is nullable." |
 | Factory | "Creates" | "Creates a new request context." |
 
 ### Forbidden Phrases
@@ -118,7 +118,7 @@ Descriptions must be complete, self-contained sentences. Always include the cont
 | `Association` | "this association" | "The representation class for this association." |
 | `Attribute` | "this attribute" | "Whether this attribute is filterable." |
 | `Export` | "this export" | "The output type for this export." |
-| `Type` | "this type" | "Whether this type supports bounds." |
+| `Type` | "this type" | "Whether this type is boundable." |
 
 ```ruby
 # Good — complete, natural English
@@ -135,6 +135,34 @@ Descriptions must be complete, self-contained sentences. Always include the cont
 ```
 
 **Why?** Documentation is read in isolation (IDE tooltips, YARD HTML). Each description must stand alone.
+
+### Predicate Pattern
+
+All `?` methods use exactly this pattern:
+
+```ruby
+# Whether this [noun] is [adjective].
+```
+
+**Examples:**
+
+```ruby
+# Good — consistent pattern
+# Whether this param is nullable.
+# Whether this param is optional.
+# Whether this param is deprecated.
+# Whether this param is boundable.
+# Whether this param is formattable.
+# Whether this action is deprecated.
+# Whether this enum is deprecated.
+
+# Bad — mixed patterns
+# Whether this param supports bounds.
+# Returns whether nullable.
+# Whether nullable.
+```
+
+**No exceptions.** The adjective comes from the method name (`nullable?` → "nullable").
 
 ### Voice & Tense
 

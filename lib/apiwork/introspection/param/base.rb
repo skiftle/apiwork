@@ -131,7 +131,7 @@ module Apiwork
         end
 
         # @api public
-        # Whether this param supports min/max bounds.
+        # Whether this param is boundable.
         # @return [Boolean]
         def boundable?
           false
@@ -236,7 +236,7 @@ module Apiwork
         end
 
         # @api public
-        # Whether this param supports format constraints.
+        # Whether this param is formattable.
         # @return [Boolean]
         def formattable?
           false
