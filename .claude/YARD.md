@@ -101,33 +101,40 @@ grep -rn "allows you to" lib/
 | "is transformed" | "Transforms" |
 | "allows you to" | (delete or rephrase) |
 | "powerful", "seamlessly", "simply" | (delete) |
-| Repeating class/module context | (omit — context is clear) |
 
-### No Redundant Context
+### Always Include Context
 
-Never repeat context already clear from the class or module name.
+Descriptions must be complete, self-contained sentences. Always include the context noun.
+
+**Rule:** Use the correct noun for what the class represents:
+
+| Class | Context noun | Example |
+|-------|--------------|---------|
+| `Param::*` | "this param" | "Whether this param is nullable." |
+| `Action` | "this action" | "Whether this action is deprecated." |
+| `Enum` | "this enum" | "Whether this enum is deprecated." |
+| `Contract` | "this contract" | "Actions defined on this contract." |
+| `Representation` | "this representation" | "The model class for this representation." |
+| `Association` | "this association" | "The representation class for this association." |
+| `Attribute` | "this attribute" | "Whether this attribute is filterable." |
+| `Export` | "this export" | "The output type for this export." |
+| `Type` | "this type" | "Whether this type supports bounds." |
 
 ```ruby
-# Bad — inside Action class
-# Full action path.
+# Good — complete, natural English
+# Whether this param is nullable.
+# Returns whether this action is deprecated.
+# The model class for this representation.
+# Actions defined on this contract.
 
-# Good — context is clear
-# Full path.
-
-# Bad — inside Representation::Attribute
-# The attribute description.
-
-# Good
-# The description.
-
-# Bad — inside Param::String
-# The string format.
-
-# Good
-# The format.
+# Bad — incomplete fragments
+# Whether nullable.
+# Returns whether deprecated.
+# The model class.
+# Defined actions.
 ```
 
-**Rule:** If the class name contains "Action", "Attribute", "Param", etc., don't repeat it in descriptions.
+**Why?** Documentation is read in isolation (IDE tooltips, YARD HTML). Each description must stand alone.
 
 ### Voice & Tense
 

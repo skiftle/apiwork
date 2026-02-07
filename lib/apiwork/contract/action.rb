@@ -27,7 +27,7 @@ module Apiwork
       end
 
       # @api public
-      # Sets a short summary.
+      # Sets a short summary for this action.
       #
       # Used in generated specs as the operation summary.
       #
@@ -45,7 +45,7 @@ module Apiwork
       end
 
       # @api public
-      # Sets a detailed description.
+      # Sets a detailed description for this action.
       #
       # Used in generated specs as the operation description.
       # Supports Markdown formatting.
@@ -64,7 +64,7 @@ module Apiwork
       end
 
       # @api public
-      # Sets tags for grouping.
+      # Sets tags for grouping this action.
       #
       # Tags help organize actions in generated documentation.
       #
@@ -150,7 +150,7 @@ module Apiwork
       end
 
       # @api public
-      # Defines the request structure.
+      # Defines the request structure for this action.
       #
       # Use the block to define query parameters and request body.
       #
@@ -196,7 +196,7 @@ module Apiwork
       end
 
       # @api public
-      # Defines the response structure.
+      # Defines the response structure for this action.
       #
       # Use the block to define response body or declare no_content.
       #

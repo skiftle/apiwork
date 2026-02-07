@@ -23,7 +23,7 @@ module Apiwork
         end
 
         # @api public
-        # Returns whether 204 No Content.
+        # Returns whether this response is 204 No Content.
         #
         # @return [Boolean]
         def no_content?
@@ -31,7 +31,7 @@ module Apiwork
         end
 
         # @api public
-        # Declares 204 No Content.
+        # Declares this response as 204 No Content.
         #
         # Use for actions that don't return a response body,
         # like DELETE or actions that only perform side effects.
@@ -52,7 +52,7 @@ module Apiwork
         end
 
         # @api public
-        # Defines the response body.
+        # Defines the response body for this response.
         #
         # When using representation, body is auto-generated from representation attributes.
         #

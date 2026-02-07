@@ -5,7 +5,7 @@ module Apiwork
     # @api public
     # Facade for introspected contract data.
     #
-    # Provides access to actions, types, and enums.
+    # Provides access to actions, types, and enums defined on this contract.
     #
     # @example
     #   contract = InvoiceContract.introspect(expand: true)
@@ -24,7 +24,7 @@ module Apiwork
       end
 
       # @api public
-      # Defined actions.
+      # Actions defined on this contract.
       # @return [Hash{Symbol => Introspection::Action}]
       # @see Introspection::Action
       def actions
@@ -32,7 +32,7 @@ module Apiwork
       end
 
       # @api public
-      # Custom types defined or referenced.
+      # Custom types defined or referenced by this contract.
       # @return [Hash{Symbol => Type}]
       # @see Type
       def types
@@ -40,7 +40,7 @@ module Apiwork
       end
 
       # @api public
-      # Enums defined or referenced.
+      # Enums defined or referenced by this contract.
       # @return [Hash{Symbol => Enum}]
       # @see Enum
       def enums

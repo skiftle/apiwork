@@ -25,7 +25,7 @@ module Apiwork
             end
 
             # @api public
-            # The data type name.
+            # The data type name for this serializer.
             #
             # @param name [Symbol, nil] the type name
             # @return [Symbol, nil]

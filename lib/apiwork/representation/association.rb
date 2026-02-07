@@ -151,7 +151,7 @@ module Apiwork
       end
 
       # @api public
-      # Returns the representation class.
+      # Returns the representation class for this association.
       #
       # Uses the explicitly configured class or infers from the association's
       # model class using namespace conventions.

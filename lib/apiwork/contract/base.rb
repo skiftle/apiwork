@@ -31,7 +31,7 @@ module Apiwork
     # @!scope class
     # @!method abstract!
     #   @api public
-    #   Marks as abstract.
+    #   Marks this contract as abstract.
     #
     #   Abstract contracts serve as base classes for other contracts.
     #   Use this when creating application-wide base contracts that define
@@ -44,7 +44,7 @@ module Apiwork
     #
     # @!method abstract?
     #   @api public
-    #   Returns whether abstract.
+    #   Returns whether this contract is abstract.
     #   @return [Boolean]
     class Base
       include Abstractable
@@ -88,7 +88,7 @@ module Apiwork
         # @api public
         # The scope prefix for contract-scoped types.
         #
-        # Types, enums, and unions defined here are namespaced
+        # Types, enums, and unions defined on this contract are namespaced
         # with this prefix in introspection output. For example, a type
         # `:address` becomes `:invoice_address` when identifier is `:invoice`.
         #
@@ -113,7 +113,7 @@ module Apiwork
         end
 
         # @api public
-        # Sets the representation class.
+        # Sets the representation class for this contract.
         #
         # The representation defines the attributes and associations that
         # are serialized in responses. Adapters use the representation to
@@ -144,7 +144,7 @@ module Apiwork
         end
 
         # @api public
-        # Defines a reusable object type.
+        # Defines a reusable object type scoped to this contract.
         #
         # Objects are named parameter structures that can be referenced in
         # param definitions. In introspection output, objects are namespaced
@@ -190,7 +190,7 @@ module Apiwork
         end
 
         # @api public
-        # Defines an enum.
+        # Defines an enum scoped to this contract.
         #
         # Enums define a set of allowed string values. In introspection
         # output, enums are namespaced with the contract's scope prefix.
@@ -218,7 +218,7 @@ module Apiwork
         end
 
         # @api public
-        # Defines a discriminated union type.
+        # Defines a discriminated union type scoped to this contract.
         #
         # A union is a type that can be one of several variants,
         # distinguished by a discriminator field. In introspection
@@ -304,7 +304,7 @@ module Apiwork
         end
 
         # @api public
-        # Defines an action (endpoint).
+        # Defines an action on this contract.
         #
         # Actions describe the request/response contract for a specific
         # controller action. Use the block to define request parameters,
@@ -364,7 +364,7 @@ module Apiwork
         end
 
         # @api public
-        # Returns introspection data.
+        # Returns introspection data for this contract.
         #
         # Includes all actions with their request/response definitions.
         # Useful for generating documentation or client code.

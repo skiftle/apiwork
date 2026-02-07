@@ -54,7 +54,7 @@ module Apiwork
         end
 
         # @api public
-        # The output type.
+        # The output type for this export.
         #
         # @param type [Symbol, nil] :hash for Hash output (json/yaml), :string for String output
         # @return [Symbol, nil]
@@ -259,7 +259,7 @@ module Apiwork
       end
 
       # @api public
-      # The key format.
+      # The key format for this export.
       #
       # @return [Symbol]
       def key_format

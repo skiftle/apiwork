@@ -33,28 +33,28 @@ module Apiwork
         end
 
         # @api public
-        # Whether nullable.
+        # Whether this param is nullable.
         # @return [Boolean]
         def nullable?
           @dump[:nullable]
         end
 
         # @api public
-        # Whether optional.
+        # Whether this param is optional.
         # @return [Boolean]
         def optional?
           @dump[:optional]
         end
 
         # @api public
-        # Whether deprecated.
+        # Whether this param is deprecated.
         # @return [Boolean]
         def deprecated?
           @dump[:deprecated]
         end
 
         # @api public
-        # The description.
+        # The description for this param.
         # @return [String, nil]
         def description
           @dump[:description]
@@ -131,7 +131,7 @@ module Apiwork
         end
 
         # @api public
-        # Whether min/max bounds are supported.
+        # Whether this param supports min/max bounds.
         # @return [Boolean]
         def boundable?
           false
@@ -236,7 +236,7 @@ module Apiwork
         end
 
         # @api public
-        # Whether format constraints are supported.
+        # Whether this param supports format constraints.
         # @return [Boolean]
         def formattable?
           false

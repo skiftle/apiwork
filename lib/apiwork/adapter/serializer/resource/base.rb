@@ -25,7 +25,7 @@ module Apiwork
             end
 
             # @api public
-            # The data type resolver.
+            # The data type resolver for this serializer.
             #
             # @param block [Proc, nil] block that receives representation_class and returns type name
             # @return [Proc, nil]
