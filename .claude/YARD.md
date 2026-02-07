@@ -11,11 +11,11 @@ Checklist for auditing YARD documentation in `lib/apiwork/`.
 Strict order for all `@api public` methods:
 
 ```ruby
+# @api public
 # Description line (verb or noun phrase).
 #
 # Extended description if needed.
 #
-# @api public
 # @param name [Type] description
 # @yield description
 # @yieldparam name [Type] description
@@ -27,7 +27,7 @@ Strict order for all `@api public` methods:
 #   code_here
 ```
 
-**Order:** description → `@api public` → `@param` → `@yield` → `@yieldparam` → `@return` → `@raise` → `@see` → `@example`
+**Order:** `@api public` → description → `@param` → `@yield` → `@yieldparam` → `@return` → `@raise` → `@see` → `@example`
 
 ---
 
@@ -101,6 +101,7 @@ grep -rn "allows you to" lib/
 | "is transformed" | "Transforms" |
 | "allows you to" | (delete or rephrase) |
 | "powerful", "seamlessly", "simply" | (delete) |
+| "query params", "body params" | "query", "body" (containers imply params) |
 
 ### Always Include Context
 
@@ -110,15 +111,18 @@ Descriptions must be complete, self-contained sentences. Always include the cont
 
 | Class | Context noun | Example |
 |-------|--------------|---------|
-| `Param::*` | "this param" | "Whether this param is nullable." |
-| `Action` | "this action" | "Whether this action is deprecated." |
-| `Enum` | "this enum" | "Whether this enum is deprecated." |
-| `Contract` | "this contract" | "Actions defined on this contract." |
-| `Representation` | "this representation" | "The model class for this representation." |
+| `Action` | "this action" | "Sets a short summary for this action." |
+| `API::Base` | "this API" | "The adapter for this API." |
 | `Association` | "this association" | "The representation class for this association." |
-| `Attribute` | "this attribute" | "Whether this attribute is filterable." |
+| `Contract` | "this contract" | "Returns introspection data for this contract." |
+| `Enum` | "this enum" | "Whether this enum is deprecated." |
 | `Export` | "this export" | "The output type for this export." |
-| `Type` | "this type" | "Whether this type is boundable." |
+| `Operation` | "this operation" | "Sets the target for this operation." |
+| `Param::*` | "this param" | "Whether this param is nullable." |
+| `Representation` | "this representation" | "The model class for this representation." |
+| `Response` | "this response" | "Whether this response is 204 No Content." |
+| `Serializer::*` | "this serializer" | "The data type resolver for this serializer." |
+| `Transformer` | "this transformer" | "The phase when this transformer runs." |
 
 ```ruby
 # Good — complete, natural English
@@ -239,7 +243,7 @@ grep -rn "Defaults to" lib/
 
 Use `Class<Type>` when returning or accepting a class object (not an instance).
 
-**Never use bare `[Class]}`.** Always specify the type.
+**Never use bare `[Class]`.** Always specify the type.
 
 ```ruby
 # Bad — too vague
@@ -289,11 +293,22 @@ def find(key)
 def find!(key)
 ```
 
-2. **Delegates** — link to source method:
+2. **Delegates** — behavior depends on source method:
+
+**Source is `@api public`** — use `@see`, no description (avoid duplication):
 ```ruby
 # @api public
 # @see Request#query
-# @return [Hash] parsed query parameters
+# @return [Hash]
+delegate :query, to: :request
+```
+
+**Source is NOT `@api public`** — add description (no public docs to link to):
+```ruby
+# @api public
+# Parsed query parameters from the request.
+#
+# @return [Hash]
 delegate :query, to: :request
 ```
 
@@ -539,11 +554,11 @@ grep -rn "Gets or sets" lib/; echo "Exit: $?"
 
 ### For Each `@api public` Method
 
-1. **Tag order:** description → @api public → @param → @yield → @return → @raise → @see → @example
+1. **Tag order:** @api public → description → @param → @yield → @return → @raise → @see → @example
 2. **Description:** starts with verb/noun, ends with period
 3. **@param:** lowercase, no period, includes `nil` if optional
 4. **@return:** type only, no description
-5. **@see:** present for find/find! pairs and delegates
+5. **@see:** present for find/find! pairs; delegates to `@api public` use @see (no description)
 6. **@raise:** documented for validation errors
 7. **@yield/@yieldparam:** both present when block has named param
 8. **@example:** titles on multiple examples

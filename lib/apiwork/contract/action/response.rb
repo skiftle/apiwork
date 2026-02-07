@@ -3,11 +3,10 @@
 module Apiwork
   module Contract
     class Action
+      # @api public
       # Defines body for a response.
       #
       # Returns {Contract::Object} via `body`.
-      #
-      # @api public
       class Response
         attr_reader :action_name,
                     :contract_class
@@ -53,8 +52,6 @@ module Apiwork
 
         # @api public
         # Defines the response body for this response.
-        #
-        # When using representation, body is auto-generated from representation attributes.
         #
         # @yield block for defining body params (instance_eval style)
         # @yieldparam builder [Contract::Object] the builder (yield style)

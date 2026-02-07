@@ -4,7 +4,7 @@ module Apiwork
   module Contract
     class Action
       # @api public
-      # Defines query params and body for a request.
+      # Defines query and body for a request.
       #
       # Returns {Contract::Object} via `query` and `body`.
       class Request
