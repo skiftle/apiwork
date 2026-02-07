@@ -101,6 +101,33 @@ grep -rn "allows you to" lib/
 | "is transformed" | "Transforms" |
 | "allows you to" | (delete or rephrase) |
 | "powerful", "seamlessly", "simply" | (delete) |
+| Repeating class/module context | (omit — context is clear) |
+
+### No Redundant Context
+
+Never repeat context already clear from the class or module name.
+
+```ruby
+# Bad — inside Action class
+# Full action path.
+
+# Good — context is clear
+# Full path.
+
+# Bad — inside Representation::Attribute
+# The attribute description.
+
+# Good
+# The description.
+
+# Bad — inside Param::String
+# The string format.
+
+# Good
+# The format.
+```
+
+**Rule:** If the class name contains "Action", "Attribute", "Param", etc., don't repeat it in descriptions.
 
 ### Voice & Tense
 

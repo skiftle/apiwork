@@ -27,7 +27,7 @@ module Apiwork
       end
 
       # @api public
-      # Sets a short summary for this action.
+      # Sets a short summary.
       #
       # Used in generated specs as the operation summary.
       #
@@ -45,7 +45,7 @@ module Apiwork
       end
 
       # @api public
-      # Sets a detailed description for this action.
+      # Sets a detailed description.
       #
       # Used in generated specs as the operation description.
       # Supports Markdown formatting.
@@ -64,7 +64,7 @@ module Apiwork
       end
 
       # @api public
-      # Sets tags for grouping this action.
+      # Sets tags for grouping.
       #
       # Tags help organize actions in generated documentation.
       #
@@ -81,7 +81,7 @@ module Apiwork
       end
 
       # @api public
-      # Marks this action as deprecated.
+      # Marks as deprecated.
       #
       # Deprecated actions are flagged in generated specs.
       #
@@ -112,7 +112,7 @@ module Apiwork
       end
 
       # @api public
-      # Declares error codes this action may return.
+      # Declares error codes that may be returned.
       #
       # Uses built-in error codes (:not_found, :forbidden, etc.) or custom codes
       # registered via ErrorCode.register. These appear in generated specs.
@@ -150,7 +150,7 @@ module Apiwork
       end
 
       # @api public
-      # Defines the request structure for this action.
+      # Defines the request structure.
       #
       # Use the block to define query parameters and request body.
       #
@@ -196,7 +196,7 @@ module Apiwork
       end
 
       # @api public
-      # Defines the response structure for this action.
+      # Defines the response structure.
       #
       # Use the block to define response body or declare no_content.
       #

@@ -22,7 +22,7 @@ module Apiwork
     # @!scope class
     # @!method abstract!
     #   @api public
-    #   Marks this representation as abstract.
+    #   Marks as abstract.
     #
     #   Abstract representations don't require a model and serve as base classes
     #   for other representations. Use this when creating application-wide base representations.
@@ -35,7 +35,7 @@ module Apiwork
     #
     # @!method abstract?
     #   @api public
-    #   Returns whether this representation is abstract.
+    #   Returns whether abstract.
     #   @return [Boolean]
     class Base
       include Abstractable
@@ -70,7 +70,7 @@ module Apiwork
 
       class << self
         # @api public
-        # Sets the model class for this representation.
+        # Sets the model class.
         #
         # By default, the model is auto-detected from the representation name
         # (e.g., InvoiceRepresentation becomes Invoice). Use this to override.
@@ -100,7 +100,7 @@ module Apiwork
         end
 
         # @api public
-        # Sets the JSON root key for this representation.
+        # Sets the JSON root key.
         #
         # By default, the root key is auto-detected from the model name
         # (e.g., Invoice becomes "invoice"/"invoices"). Use this to override.
@@ -121,7 +121,7 @@ module Apiwork
         end
 
         # @api public
-        # Configures adapter options for this representation.
+        # Configures adapter options.
         #
         # Use this to override API-level adapter settings for a specific
         # resource. Available options depend on the adapter being used.
@@ -398,7 +398,7 @@ module Apiwork
         end
 
         # @api public
-        # The custom API type name for this representation.
+        # The custom API type name.
         #
         # When set, this value is used instead of the model's default type names
         # in both STI discriminators and polymorphic type columns.
@@ -425,7 +425,7 @@ module Apiwork
         end
 
         # @api public
-        # Returns the API name for this representation in STI contexts.
+        # Returns the API name in STI contexts.
         #
         # Uses the custom {#type_name} or falls back to the model's sti_name.
         #
@@ -436,7 +436,7 @@ module Apiwork
         end
 
         # @api public
-        # Returns the API name for this representation in polymorphic contexts.
+        # Returns the API name in polymorphic contexts.
         #
         # Uses the custom {#type_name} or falls back to the model's polymorphic_name.
         #
@@ -447,7 +447,7 @@ module Apiwork
         end
 
         # @api public
-        # Whether this representation is registered as an STI subclass.
+        # Whether registered as an STI subclass.
         #
         # @return [Boolean]
         def subclass?
@@ -455,10 +455,9 @@ module Apiwork
         end
 
         # @api public
-        # The description for this representation.
+        # The description.
         #
-        # Used in generated documentation (OpenAPI, etc.) to describe
-        # what this resource represents.
+        # Used in generated documentation (OpenAPI, etc.).
         #
         # @param value [String, nil] the description text
         # @return [String, nil]
@@ -474,7 +473,7 @@ module Apiwork
         end
 
         # @api public
-        # Marks this representation as deprecated.
+        # Marks as deprecated.
         #
         # Deprecated representations are included in generated documentation
         # with a deprecation notice.
@@ -490,7 +489,7 @@ module Apiwork
         end
 
         # @api public
-        # The example value for this representation.
+        # The example value.
         #
         # Used in generated documentation to show example responses.
         #
@@ -508,7 +507,7 @@ module Apiwork
         end
 
         # @api public
-        # Serializes a record or a collection of records using this representation.
+        # Serializes a record or collection.
         #
         # Converts records to JSON-ready hashes based on
         # attribute and association definitions.
@@ -535,7 +534,7 @@ module Apiwork
         end
 
         # @api public
-        # Deserializes a hash or an array of hashes using this representation's decode transformers.
+        # Deserializes using decode transformers.
         #
         # Transforms incoming data by applying decode transformers defined
         # on each attribute. Use this for processing request payloads,
@@ -578,7 +577,7 @@ module Apiwork
         end
 
         # @api public
-        # The ActiveRecord model class for this representation.
+        # The ActiveRecord model class.
         #
         # Auto-detected from representation name (InvoiceRepresentation becomes Invoice)
         # or explicitly set via {.model}.

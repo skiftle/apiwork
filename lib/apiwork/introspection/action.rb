@@ -22,7 +22,7 @@ module Apiwork
       end
 
       # @api public
-      # Full action path (e.g., "/posts/:id", "/posts").
+      # Full path (e.g., "/posts/:id", "/posts").
       # @return [String]
       def path
         @dump[:path]
@@ -52,7 +52,7 @@ module Apiwork
       end
 
       # @api public
-      # Error codes this action may raise.
+      # Error codes that may be raised.
       # @return [Array<Symbol>]
       def raises
         @dump[:raises]
@@ -87,7 +87,7 @@ module Apiwork
       end
 
       # @api public
-      # Whether this action is deprecated.
+      # Whether deprecated.
       # @return [Boolean]
       def deprecated?
         @dump[:deprecated]

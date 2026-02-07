@@ -33,28 +33,28 @@ module Apiwork
         end
 
         # @api public
-        # Whether this field can be null.
+        # Whether nullable.
         # @return [Boolean]
         def nullable?
           @dump[:nullable]
         end
 
         # @api public
-        # Whether this field is optional.
+        # Whether optional.
         # @return [Boolean]
         def optional?
           @dump[:optional]
         end
 
         # @api public
-        # Whether this field is deprecated.
+        # Whether deprecated.
         # @return [Boolean]
         def deprecated?
           @dump[:deprecated]
         end
 
         # @api public
-        # The field description.
+        # The description.
         # @return [String, nil]
         def description
           @dump[:description]
@@ -131,7 +131,7 @@ module Apiwork
         end
 
         # @api public
-        # Whether this type supports min/max bounds.
+        # Whether min/max bounds are supported.
         # @return [Boolean]
         def boundable?
           false
@@ -236,7 +236,7 @@ module Apiwork
         end
 
         # @api public
-        # Whether this type supports format constraints.
+        # Whether format constraints are supported.
         # @return [Boolean]
         def formattable?
           false
