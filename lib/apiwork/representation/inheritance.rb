@@ -49,7 +49,7 @@ module Apiwork
       end
 
       # @api public
-      # Whether this inheritance needs transform.
+      # Whether this inheritance needs transformation.
       #
       # @return [Boolean]
       def needs_transform?

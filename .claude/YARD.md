@@ -67,6 +67,24 @@ grep -rn "@return.*\.$" lib/
 
 ## Style & Tone
 
+### Natural English First
+
+**Consistency is mandatory, but never at the expense of natural English.**
+
+When applying patterns mechanically, always verify the result sounds natural. If following the pattern produces awkward phrasing, find a grammatically correct alternative that still fits the pattern structure.
+
+```ruby
+# Bad — mechanical pattern application, unnatural
+# Whether this response is no content.
+# Whether this inheritance needs transform.
+
+# Good — pattern-compliant AND natural English
+# Whether this response has no content.
+# Whether this inheritance needs transformation.
+```
+
+When in doubt: read it aloud. If it sounds wrong, it is wrong.
+
 ### Description Must Start With
 
 | Method type | Start with | Example |
@@ -121,7 +139,7 @@ Descriptions must be complete, self-contained sentences. Always include the cont
 | `Operation` | "this operation" | "Sets the target for this operation." |
 | `Param::*` | "this param" | "Whether this param is nullable." |
 | `Representation` | "this representation" | "The model class for this representation." |
-| `Response` | "this response" | "Whether this response is 204 No Content." |
+| `Response` | "this response" | "Whether this response has no content." |
 | `Serializer::*` | "this serializer" | "The data type resolver for this serializer." |
 | `Transformer` | "this transformer" | "The phase when this transformer runs." |
 

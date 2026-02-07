@@ -22,7 +22,7 @@ module Apiwork
         end
 
         # @api public
-        # Whether this response is no content.
+        # Whether this response has no content.
         #
         # @return [Boolean]
         def no_content?
