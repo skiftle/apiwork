@@ -42,11 +42,9 @@ module Apiwork
         end
 
         # @api public
-        # Gets or sets the key format for request/response transformation.
+        # The key format for request/response transformation.
         #
-        # Without arguments, returns the current format.
-        #
-        # @param format [Symbol] :keep, :camel, :underscore, or :kebab
+        # @param format [Symbol, nil] :keep, :camel, :underscore, or :kebab
         # @return [Symbol, nil]
         #
         # @example

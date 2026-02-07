@@ -81,10 +81,7 @@ module Apiwork
 
       class << self
         # @api public
-        # Gets or sets the scope prefix for contract-scoped types.
-        #
-        # Without arguments, returns the current identifier.
-        # With an argument, sets the identifier.
+        # The scope prefix for contract-scoped types.
         #
         # Types, enums, and unions defined in this contract are namespaced
         # with this prefix in introspection output. For example, a type
