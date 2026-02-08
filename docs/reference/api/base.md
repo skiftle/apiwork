@@ -31,7 +31,7 @@ end
 
 `.adapter(name = nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L159)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L168)
 
 The adapter for this API.
 
@@ -45,11 +45,9 @@ The adapter for this API.
 
 [Adapter::Base](/reference/adapter/base), `nil`
 
-**See also**
+**Yields** [Configuration](/reference/configuration/)
 
-- [Adapter::Base](/reference/adapter/base)
-
-**Example: Configure default adapter**
+**Example: Configure adapter (instance_eval style)**
 
 ```ruby
 adapter do
@@ -59,20 +57,20 @@ adapter do
 end
 ```
 
+**Example: Configure adapter (yield style)**
+
+```ruby
+adapter do |adapter|
+  adapter.pagination do |pagination|
+    pagination.default_size 25
+  end
+end
+```
+
 **Example: Custom adapter**
 
 ```ruby
 adapter :custom
-```
-
-**Example: Custom adapter with configuration**
-
-```ruby
-adapter :custom do
-  pagination do
-    default_size 25
-  end
-end
 ```
 
 **Example: Getting**
@@ -87,7 +85,7 @@ api_class.adapter  # => #<Apiwork::Adapter::Standard:...>
 
 `.concern(name, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L497)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L547)
 
 Defines a reusable concern for resources.
 
@@ -100,20 +98,36 @@ be included in multiple resources via the `concerns` option.
 |------|------|-------------|
 | `name` | `Symbol` | concern name |
 
-**Example: Define and use a concern**
+**Returns**
+
+`void`
+
+**Yields** [Resource](/reference/api/resource)
+
+**Example: instance_eval style**
 
 ```ruby
-Apiwork::API.define '/api/v1' do
-  concern :archivable do
-    member do
-      post :archive
-      post :unarchive
-    end
+concern :archivable do
+  member do
+    post :archive
+    post :unarchive
   end
-
-  resources :posts, concerns: [:archivable]
-  resources :comments, concerns: [:archivable]
 end
+
+resources :posts, concerns: [:archivable]
+```
+
+**Example: yield style**
+
+```ruby
+concern :archivable do |resource|
+  resource.member do |member|
+    member.post :archive
+    member.post :unarchive
+  end
+end
+
+resources :posts, concerns: [:archivable]
 ```
 
 ---
@@ -122,7 +136,7 @@ end
 
 `.enum(name, values: nil, scope: nil, description: nil, example: nil, deprecated: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L245)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L262)
 
 Defines a reusable enumeration type.
 
@@ -162,7 +176,7 @@ string(:status, enum: :status)
 
 `.export(name, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L108)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L115)
 
 Enables an export for this API.
 
@@ -175,19 +189,19 @@ Available exports: :openapi, :typescript, :zod.
 |------|------|-------------|
 | `name` | `Symbol` | export name to enable |
 
-**See also**
+**Returns**
 
-- [Export::Base](/reference/export/base)
+`void`
+
+**Yields** [Configuration](/reference/configuration/)
 
 **Example: Enable OpenAPI export**
 
 ```ruby
-Apiwork::API.define '/api/v1' do
-  export :openapi
-end
+export :openapi
 ```
 
-**Example: With endpoint config**
+**Example: Configuration (instance_eval style)**
 
 ```ruby
 export :typescript do
@@ -198,13 +212,24 @@ export :typescript do
 end
 ```
 
+**Example: Configuration (yield style)**
+
+```ruby
+export :typescript do |export|
+  export.endpoint do |endpoint|
+    endpoint.mode :always
+    endpoint.path '/types.ts'
+  end
+end
+```
+
 ---
 
 ### .info
 
 `.info(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L358)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L392)
 
 The API info metadata.
 
@@ -267,7 +292,7 @@ api_class.key_format  # => :camel
 
 `.object(name, scope: nil, description: nil, example: nil, format: nil, deprecated: false, representation_class: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L203)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L220)
 
 Defines a reusable object type (object shape).
 
@@ -286,11 +311,22 @@ Scoped types are namespaced to a contract class.
 | `deprecated` | `Boolean` | mark as deprecated |
 | `representation_class` | `Class<Representation::Base>, nil` | the representation class for type inference |
 
-**See also**
+**Returns**
 
-- [API::Object](/reference/api/object)
+`void`
 
-**Example: Define a reusable type**
+**Yields** [API::Object](/reference/api/object)
+
+**Example: instance_eval style**
+
+```ruby
+object(:item) do
+  string(:description)
+  decimal(:amount)
+end
+```
+
+**Example: yield style**
 
 ```ruby
 object(:item) do |object|
@@ -302,8 +338,8 @@ end
 **Example: Reference in contract**
 
 ```ruby
-array(:items) do |array|
-  array.reference(:item)
+array(:items) do
+  reference(:item)
 end
 ```
 
@@ -362,7 +398,7 @@ api_class.path_format  # => :kebab
 
 `.raises(*error_code_keys)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L321)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L355)
 
 API-wide error codes.
 
@@ -391,7 +427,7 @@ api_class.raises  # => [:unauthorized, :forbidden, :not_found]
 
 `.resource(name, concerns: nil, constraints: nil, contract: nil, controller: nil, defaults: nil, except: nil, only: nil, param: nil, path: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L448)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L489)
 
 Defines a singular resource (no index action, no :id in URL).
 
@@ -413,16 +449,25 @@ like user profile or application settings.
 | `param` | `Symbol` | custom parameter name for ID |
 | `path` | `String` | custom URL path segment |
 
-**See also**
+**Returns**
 
-- [Contract::Base](/reference/contract/base)
+`void`
 
-**Example**
+**Yields** [Resource](/reference/api/resource)
+
+**Example: instance_eval style**
 
 ```ruby
-Apiwork::API.define '/api/v1' do
-  resource :profile
-  # Routes: GET /profile, PATCH /profile (no index, no :id)
+resource :profile do
+  resources :settings
+end
+```
+
+**Example: yield style**
+
+```ruby
+resource :profile do |resource|
+  resource.resources :settings
 end
 ```
 
@@ -432,7 +477,7 @@ end
 
 `.resources(name, concerns: nil, constraints: nil, contract: nil, controller: nil, defaults: nil, except: nil, only: nil, param: nil, path: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L396)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L432)
 
 Defines a RESTful resource with standard CRUD actions.
 
@@ -455,24 +500,27 @@ Nested resources and custom actions can be defined in the block.
 | `param` | `Symbol` | custom parameter name for ID |
 | `path` | `String` | custom URL path segment |
 
-**See also**
+**Returns**
 
-- [Contract::Base](/reference/contract/base)
+`void`
 
-**Example: Basic resource**
+**Yields** [Resource](/reference/api/resource)
+
+**Example: instance_eval style**
 
 ```ruby
-Apiwork::API.define '/api/v1' do
-  resources :invoices
+resources :invoices do
+  member { post :archive }
+  resources :items
 end
 ```
 
-**Example: With options and nested resources**
+**Example: yield style**
 
 ```ruby
-resources :invoices, only: [:index, :show] do
-  member { post :archive }
-  resources :items
+resources :invoices do |resource|
+  resource.member { |member| member.post :archive }
+  resource.resources :items
 end
 ```
 
@@ -482,7 +530,7 @@ end
 
 `.union(name, discriminator: nil, scope: nil, description: nil, deprecated: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L288)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L322)
 
 Defines a discriminated union type.
 
@@ -497,17 +545,40 @@ by a discriminator field.
 | `scope` | `Class<Contract::Base>, nil` | the contract class for scoping (nil for global) |
 | `discriminator` | `Symbol` | field name that identifies the variant |
 
-**Example**
+**Returns**
+
+`void`
+
+**Yields** [API::Union](/reference/api/union)
+
+**Example: instance_eval style**
 
 ```ruby
 union(:payment_method, discriminator: :type) do
   variant(tag: 'card') do
-    object do |object|
-      object.string(:last_four)
+    object do
+      string(:last_four)
     end
   end
   variant(tag: 'bank') do
-    object do |object|
+    object do
+      string(:account_number)
+    end
+  end
+end
+```
+
+**Example: yield style**
+
+```ruby
+union(:payment_method, discriminator: :type) do |union|
+  union.variant(tag: 'card') do |variant|
+    variant.object do |object|
+      object.string(:last_four)
+    end
+  end
+  union.variant(tag: 'bank') do |variant|
+    variant.object do |object|
       object.string(:account_number)
     end
   end
@@ -520,7 +591,7 @@ end
 
 `.with_options(options = {}, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L518)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L574)
 
 Applies options to all nested resource definitions.
 
@@ -534,14 +605,27 @@ constraints, controller, param, path.
 |------|------|-------------|
 | `options` | `Hash` | options to apply to nested resources |
 
-**Example: Read-only resources**
+**Returns**
+
+`void`
+
+**Yields** [Resource](/reference/api/resource)
+
+**Example: instance_eval style**
 
 ```ruby
-Apiwork::API.define '/api/v1' do
-  with_options only: [:index, :show] do
-    resources :reports
-    resources :analytics
-  end
+with_options only: [:index, :show] do
+  resources :reports
+  resources :analytics
+end
+```
+
+**Example: yield style**
+
+```ruby
+with_options only: [:index, :show] do |resource|
+  resource.resources :reports
+  resource.resources :analytics
 end
 ```
 

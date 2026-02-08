@@ -106,8 +106,8 @@ module Apiwork
         #   end
         #
         # @example Configuration (yield style)
-        #   export :typescript do |config|
-        #     config.endpoint do |endpoint|
+        #   export :typescript do |export|
+        #     export.endpoint do |endpoint|
         #       endpoint.mode :always
         #       endpoint.path '/types.ts'
         #     end
@@ -133,33 +133,35 @@ module Apiwork
             @export_configs[name] = Configuration.new(options)
           end
 
-          @export_configs[name].instance_eval(&block) if block
+          return unless block
+
+          block.arity.positive? ? yield(@export_configs[name]) : @export_configs[name].instance_eval(&block)
         end
 
         # @api public
         # The adapter for this API.
         #
         # @param name [Symbol, nil] adapter name (default: :standard)
-        # @yield optional configuration block
+        # @yield block for adapter configuration
+        # @yieldparam config [Configuration]
         # @return [Adapter::Base, nil]
-        # @see Adapter::Base
         #
-        # @example Configure default adapter
+        # @example Configure adapter (instance_eval style)
         #   adapter do
         #     pagination do
         #       default_size 25
         #     end
         #   end
         #
-        # @example Custom adapter
-        #   adapter :custom
-        #
-        # @example Custom adapter with configuration
-        #   adapter :custom do
-        #     pagination do
-        #       default_size 25
+        # @example Configure adapter (yield style)
+        #   adapter do |adapter|
+        #     adapter.pagination do |pagination|
+        #       pagination.default_size 25
         #     end
         #   end
+        #
+        # @example Custom adapter
+        #   adapter :custom
         #
         # @example Getting
         #   api_class.adapter  # => #<Apiwork::Adapter::Standard:...>
@@ -167,7 +169,7 @@ module Apiwork
           @adapter_name = name if name.is_a?(Symbol)
 
           if block
-            adapter_config.instance_eval(&block)
+            block.arity.positive? ? yield(adapter_config) : adapter_config.instance_eval(&block)
             return
           end
 
@@ -195,17 +197,25 @@ module Apiwork
         # @param format [String] format hint for docs
         # @param deprecated [Boolean] mark as deprecated
         # @param representation_class [Class<Representation::Base>, nil] the representation class for type inference
-        # @see API::Object
+        # @yield block for defining object shape
+        # @yieldparam object [API::Object]
+        # @return [void]
         #
-        # @example Define a reusable type
+        # @example instance_eval style
+        #   object(:item) do
+        #     string(:description)
+        #     decimal(:amount)
+        #   end
+        #
+        # @example yield style
         #   object(:item) do |object|
         #     object.string(:description)
         #     object.decimal(:amount)
         #   end
         #
         # @example Reference in contract
-        #   array(:items) do |array|
-        #     array.reference(:item)
+        #   array(:items) do
+        #     reference(:item)
         #   end
         def object(
           name,
@@ -278,16 +288,33 @@ module Apiwork
         # @param name [Symbol] union name for referencing
         # @param scope [Class<Contract::Base>, nil] the contract class for scoping (nil for global)
         # @param discriminator [Symbol] field name that identifies the variant
+        # @yield block for defining union variants
+        # @yieldparam union [API::Union]
+        # @return [void]
         #
-        # @example
+        # @example instance_eval style
         #   union(:payment_method, discriminator: :type) do
         #     variant(tag: 'card') do
-        #       object do |object|
-        #         object.string(:last_four)
+        #       object do
+        #         string(:last_four)
         #       end
         #     end
         #     variant(tag: 'bank') do
-        #       object do |object|
+        #       object do
+        #         string(:account_number)
+        #       end
+        #     end
+        #   end
+        #
+        # @example yield style
+        #   union(:payment_method, discriminator: :type) do |union|
+        #     union.variant(tag: 'card') do |variant|
+        #       variant.object do |object|
+        #         object.string(:last_four)
+        #       end
+        #     end
+        #     union.variant(tag: 'bank') do |variant|
+        #       variant.object do |object|
         #         object.string(:account_number)
         #       end
         #     end
@@ -388,17 +415,19 @@ module Apiwork
         # @param param [Symbol] custom parameter name for ID
         # @param path [String] custom URL path segment
         # @yield block for nested resources and custom actions
-        # @see Contract::Base
+        # @yieldparam resource [Resource]
+        # @return [void]
         #
-        # @example Basic resource
-        #   Apiwork::API.define '/api/v1' do
-        #     resources :invoices
-        #   end
-        #
-        # @example With options and nested resources
-        #   resources :invoices, only: [:index, :show] do
+        # @example instance_eval style
+        #   resources :invoices do
         #     member { post :archive }
         #     resources :items
+        #   end
+        #
+        # @example yield style
+        #   resources :invoices do |resource|
+        #     resource.member { |member| member.post :archive }
+        #     resource.resources :items
         #   end
         def resources(
           name,
@@ -445,12 +474,17 @@ module Apiwork
         # @param param [Symbol] custom parameter name for ID
         # @param path [String] custom URL path segment
         # @yield block for nested resources and custom actions
-        # @see Contract::Base
+        # @yieldparam resource [Resource]
+        # @return [void]
         #
-        # @example
-        #   Apiwork::API.define '/api/v1' do
-        #     resource :profile
-        #     # Routes: GET /profile, PATCH /profile (no index, no :id)
+        # @example instance_eval style
+        #   resource :profile do
+        #     resources :settings
+        #   end
+        #
+        # @example yield style
+        #   resource :profile do |resource|
+        #     resource.resources :settings
         #   end
         def resource(
           name,
@@ -488,19 +522,28 @@ module Apiwork
         #
         # @param name [Symbol] concern name
         # @yield block defining shared actions/configuration
+        # @yieldparam resource [Resource]
+        # @return [void]
         #
-        # @example Define and use a concern
-        #   Apiwork::API.define '/api/v1' do
-        #     concern :archivable do
-        #       member do
-        #         post :archive
-        #         post :unarchive
-        #       end
+        # @example instance_eval style
+        #   concern :archivable do
+        #     member do
+        #       post :archive
+        #       post :unarchive
         #     end
-        #
-        #     resources :posts, concerns: [:archivable]
-        #     resources :comments, concerns: [:archivable]
         #   end
+        #
+        #   resources :posts, concerns: [:archivable]
+        #
+        # @example yield style
+        #   concern :archivable do |resource|
+        #     resource.member do |member|
+        #       member.post :archive
+        #       member.post :unarchive
+        #     end
+        #   end
+        #
+        #   resources :posts, concerns: [:archivable]
         def concern(name, &block)
           @root_resource.concern(name, &block)
         end
@@ -514,13 +557,19 @@ module Apiwork
         #
         # @param options [Hash] options to apply to nested resources
         # @yield block containing resource definitions
+        # @yieldparam resource [Resource]
+        # @return [void]
         #
-        # @example Read-only resources
-        #   Apiwork::API.define '/api/v1' do
-        #     with_options only: [:index, :show] do
-        #       resources :reports
-        #       resources :analytics
-        #     end
+        # @example instance_eval style
+        #   with_options only: [:index, :show] do
+        #     resources :reports
+        #     resources :analytics
+        #   end
+        #
+        # @example yield style
+        #   with_options only: [:index, :show] do |resource|
+        #     resource.resources :reports
+        #     resource.resources :analytics
         #   end
         def with_options(options = {}, &block)
           @root_resource.with_options(options, &block)

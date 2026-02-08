@@ -38,7 +38,7 @@ end
 
 `#collection(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L317)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L355)
 
 Block for defining collection actions.
 
@@ -48,12 +48,23 @@ Collection routes don't include :id: `/invoices/action`
 
 `void`
 
-**Example**
+**Yields** [Resource](/reference/api/resource)
+
+**Example: instance_eval style**
 
 ```ruby
 collection do
   get :search
   post :bulk_create
+end
+```
+
+**Example: yield style**
+
+```ruby
+collection do |collection|
+  collection.get :search
+  collection.post :bulk_create
 end
 ```
 
@@ -63,7 +74,7 @@ end
 
 `#concern(concern_name, callable = nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L405)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L451)
 
 Defines a reusable concern.
 
@@ -78,11 +89,23 @@ Defines a reusable concern.
 
 `void`
 
-**Example**
+**Yields** [Resource](/reference/api/resource)
+
+**Example: instance_eval style**
 
 ```ruby
 concern :commentable do
   resources :comments
+end
+
+resources :posts, concerns: [:commentable]
+```
+
+**Example: yield style**
+
+```ruby
+concern :commentable do |resource|
+  resource.resources :comments
 end
 
 resources :posts, concerns: [:commentable]
@@ -94,7 +117,7 @@ resources :posts, concerns: [:commentable]
 
 `#concerns(*concern_names, **options)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L421)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L473)
 
 Includes previously defined concerns.
 
@@ -123,7 +146,7 @@ end
 
 `#delete(action_names, on: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L387)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L425)
 
 Defines a DELETE action.
 
@@ -150,7 +173,7 @@ member { delete :archive }
 
 `#get(action_names, on: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L335)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L373)
 
 Defines a GET action.
 
@@ -183,7 +206,7 @@ get :search, on: :collection
 
 `#member(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L298)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L329)
 
 Block for defining member actions (operate on :id).
 
@@ -193,12 +216,23 @@ Member routes include :id in the path: `/invoices/:id/action`
 
 `void`
 
-**Example**
+**Yields** [Resource](/reference/api/resource)
+
+**Example: instance_eval style**
 
 ```ruby
 member do
   post :send
   get :preview
+end
+```
+
+**Example: yield style**
+
+```ruby
+member do |member|
+  member.post :send
+  member.get :preview
 end
 ```
 
@@ -208,7 +242,7 @@ end
 
 `#patch(action_names, on: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L361)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L399)
 
 Defines a PATCH action.
 
@@ -235,7 +269,7 @@ member { patch :mark_paid }
 
 `#post(action_names, on: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L348)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L386)
 
 Defines a POST action.
 
@@ -262,7 +296,7 @@ member { post :send }
 
 `#put(action_names, on: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L374)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L412)
 
 Defines a PUT action.
 
@@ -289,7 +323,7 @@ member { put :replace }
 
 `#resource(resource_name, concerns: nil, constraints: nil, contract: nil, controller: nil, defaults: nil, except: nil, only: nil, param: nil, path: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L231)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L246)
 
 Defines a singular resource (no index, no :id in URL).
 
@@ -314,10 +348,22 @@ Default actions: :show, :create, :update, :destroy.
 
 `void`
 
-**Example**
+**Yields** [Resource](/reference/api/resource)
+
+**Example: instance_eval style**
 
 ```ruby
-resource :profile
+resource :profile do
+  resources :settings
+end
+```
+
+**Example: yield style**
+
+```ruby
+resource :profile do |resource|
+  resource.resources :settings
+end
 ```
 
 ---
@@ -326,7 +372,7 @@ resource :profile
 
 `#resources(resource_name = nil, concerns: nil, constraints: nil, contract: nil, controller: nil, defaults: nil, except: nil, only: nil, param: nil, path: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L176)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L181)
 
 Defines a plural resource with standard CRUD actions.
 
@@ -351,17 +397,23 @@ Default actions: :index, :show, :create, :update, :destroy.
 
 Hash{Symbol =&gt; [Resource](/reference/api/resource)}
 
-**Example: Basic resource**
+**Yields** [Resource](/reference/api/resource)
+
+**Example: instance_eval style**
 
 ```ruby
-resources :invoices
+resources :invoices do
+  member { get :preview }
+  resources :items
+end
 ```
 
-**Example: With options**
+**Example: yield style**
 
 ```ruby
-resources :invoices, only: [:index, :show] do
-  member { get :preview }
+resources :invoices do |resource|
+  resource.member { |member| member.get :preview }
+  resource.resources :items
 end
 ```
 
@@ -371,7 +423,7 @@ end
 
 `#with_options(options = {}, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L276)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L300)
 
 Applies options to all resources defined in the block.
 
@@ -385,12 +437,23 @@ Applies options to all resources defined in the block.
 
 `void`
 
-**Example**
+**Yields** [Resource](/reference/api/resource)
+
+**Example: instance_eval style**
 
 ```ruby
 with_options only: [:index, :show] do
   resources :reports
   resources :analytics
+end
+```
+
+**Example: yield style**
+
+```ruby
+with_options only: [:index, :show] do |resource|
+  resource.resources :reports
+  resource.resources :analytics
 end
 ```
 

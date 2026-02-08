@@ -164,14 +164,19 @@ module Apiwork
       # @param param [Symbol] custom ID parameter
       # @param path [String] custom URL segment
       # @yield block for nested resources and custom actions
+      # @yieldparam resource [Resource]
       # @return [Hash{Symbol => Resource}]
       #
-      # @example Basic resource
-      #   resources :invoices
-      #
-      # @example With options
-      #   resources :invoices, only: [:index, :show] do
+      # @example instance_eval style
+      #   resources :invoices do
       #     member { get :preview }
+      #     resources :items
+      #   end
+      #
+      # @example yield style
+      #   resources :invoices do |resource|
+      #     resource.member { |member| member.get :preview }
+      #     resource.resources :items
       #   end
       def resources(
         resource_name = nil,
@@ -203,7 +208,9 @@ module Apiwork
         @resource_stack.push(resource_name)
 
         self.concerns(*concerns) if concerns
-        instance_eval(&block) if block
+        if block
+          block.arity.positive? ? yield(self) : instance_eval(&block)
+        end
 
         @resource_stack.pop
       end
@@ -224,10 +231,18 @@ module Apiwork
       # @param param [Symbol] custom ID parameter
       # @param path [String] custom URL segment
       # @yield block for nested resources and custom actions
+      # @yieldparam resource [Resource]
       # @return [void]
       #
-      # @example
-      #   resource :profile
+      # @example instance_eval style
+      #   resource :profile do
+      #     resources :settings
+      #   end
+      #
+      # @example yield style
+      #   resource :profile do |resource|
+      #     resource.resources :settings
+      #   end
       def resource(
         resource_name,
         concerns: nil,
@@ -256,7 +271,9 @@ module Apiwork
         @resource_stack.push(resource_name)
 
         self.concerns(*concerns) if concerns
-        instance_eval(&block) if block
+        if block
+          block.arity.positive? ? yield(self) : instance_eval(&block)
+        end
 
         @resource_stack.pop
       end
@@ -266,18 +283,25 @@ module Apiwork
       #
       # @param options [Hash] options to merge into nested resources
       # @yield block with resource definitions
+      # @yieldparam resource [Resource]
       # @return [void]
       #
-      # @example
+      # @example instance_eval style
       #   with_options only: [:index, :show] do
       #     resources :reports
       #     resources :analytics
+      #   end
+      #
+      # @example yield style
+      #   with_options only: [:index, :show] do |resource|
+      #     resource.resources :reports
+      #     resource.resources :analytics
       #   end
       def with_options(options = {}, &block)
         old_options = @current_options
         @current_options = merged_options(options)
 
-        instance_eval(&block)
+        block.arity.positive? ? yield(self) : instance_eval(&block)
 
         @current_options = old_options
       end
@@ -288,16 +312,23 @@ module Apiwork
       # Member routes include :id in the path: `/invoices/:id/action`
       #
       # @yield block with HTTP verb methods
+      # @yieldparam resource [Resource]
       # @return [void]
       #
-      # @example
+      # @example instance_eval style
       #   member do
       #     post :send
       #     get :preview
       #   end
+      #
+      # @example yield style
+      #   member do |member|
+      #     member.post :send
+      #     member.get :preview
+      #   end
       def member(&block)
         @in_member_block = true
-        instance_eval(&block)
+        block.arity.positive? ? yield(self) : instance_eval(&block)
         @in_member_block = false
       end
 
@@ -307,16 +338,23 @@ module Apiwork
       # Collection routes don't include :id: `/invoices/action`
       #
       # @yield block with HTTP verb methods
+      # @yieldparam resource [Resource]
       # @return [void]
       #
-      # @example
+      # @example instance_eval style
       #   collection do
       #     get :search
       #     post :bulk_create
       #   end
+      #
+      # @example yield style
+      #   collection do |collection|
+      #     collection.get :search
+      #     collection.post :bulk_create
+      #   end
       def collection(&block)
         @in_collection_block = true
-        instance_eval(&block)
+        block.arity.positive? ? yield(self) : instance_eval(&block)
         @in_collection_block = false
       end
 
@@ -394,16 +432,30 @@ module Apiwork
       # @param concern_name [Symbol] concern name
       # @param callable [Proc] optional callable instead of block
       # @yield block with resource definitions
+      # @yieldparam resource [Resource]
       # @return [void]
       #
-      # @example
+      # @example instance_eval style
       #   concern :commentable do
       #     resources :comments
       #   end
       #
       #   resources :posts, concerns: [:commentable]
+      #
+      # @example yield style
+      #   concern :commentable do |resource|
+      #     resource.resources :comments
+      #   end
+      #
+      #   resources :posts, concerns: [:commentable]
       def concern(concern_name, callable = nil, &block)
-        callable ||= ->(resource, options) { resource.instance_exec(options, &block) }
+        callable ||= lambda do |resource, options|
+          if block.arity.positive?
+            yield(resource, options)
+          else
+            resource.instance_exec(options, &block)
+          end
+        end
         @concerns[concern_name] = callable
       end
 
