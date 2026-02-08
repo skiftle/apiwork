@@ -91,11 +91,12 @@ module Apiwork
         # @api public
         # The identifier for this contract.
         #
-        # Types, enums, and unions defined on this contract are namespaced
-        # with this prefix in introspection output. For example, a type
-        # :address becomes :invoice_address when identifier is :invoice.
+        # Used to prefix types, enums, and unions in introspection output
+        # (e.g., `:address` becomes `:invoice_address`). Must be unique
+        # within the API.
         #
-        # If not set, prefix is derived from representation's root_key or the contract's class name.
+        # If not set, derived from the contract class name
+        # (e.g., `RecurringInvoiceContract` becomes `recurring_invoice`).
         #
         # @param value [Symbol, String, nil] the scope prefix
         # @return [String, nil]
@@ -107,7 +108,7 @@ module Apiwork
         #     object :address do
         #       string :street
         #     end
-        #     # In introspection: object is named :billing_address
+        #     # In introspection: object is named `:billing_address`
         #   end
         def identifier(value = nil)
           return _identifier if value.nil?
@@ -445,8 +446,6 @@ module Apiwork
 
         def scope_prefix
           return _identifier if _identifier
-          return representation_class.root_key.singular if representation_class
-
           return nil unless name
 
           name
