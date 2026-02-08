@@ -14,19 +14,15 @@ module Apiwork
       end
 
       # @api public
-      # The status for this error code.
-      #
-      # @return [Integer]
-      def status
-        @dump[:status]
-      end
-
-      # @api public
-      # The description for this error code.
-      #
       # @return [String, nil]
       def description
         @dump[:description]
+      end
+
+      # @api public
+      # @return [Integer]
+      def status
+        @dump[:status]
       end
 
       # @api public

@@ -23,8 +23,6 @@ module Apiwork
         end
 
         # @api public
-        # Whether this param is a literal.
-        #
         # @return [Boolean]
         def literal?
           true

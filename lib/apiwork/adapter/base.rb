@@ -28,9 +28,7 @@ module Apiwork
 
       class << self
         # @api public
-        # The name for this adapter.
-        #
-        # @param value [Symbol, String, nil] the adapter name
+        # @param value [Symbol, String, nil]
         # @return [Symbol, nil]
         #
         # @example
@@ -83,11 +81,9 @@ module Apiwork
         end
 
         # @api public
-        # The resource serializer class for this adapter.
+        # Sets the serializer class for records and collections.
         #
-        # Handles serialization of records and collections.
-        #
-        # @param klass [Class<Serializer::Resource::Base>, nil] the serializer class
+        # @param klass [Class<Serializer::Resource::Base>, nil]
         # @return [Class<Serializer::Resource::Base>, nil]
         #
         # @example
@@ -98,11 +94,9 @@ module Apiwork
         end
 
         # @api public
-        # The error serializer class for this adapter.
+        # Sets the serializer class for errors.
         #
-        # Handles serialization of errors.
-        #
-        # @param klass [Class<Serializer::Error::Base>, nil] the serializer class
+        # @param klass [Class<Serializer::Error::Base>, nil]
         # @return [Class<Serializer::Error::Base>, nil]
         #
         # @example
@@ -113,9 +107,9 @@ module Apiwork
         end
 
         # @api public
-        # The member wrapper class for this adapter.
+        # Sets the wrapper class for single-record responses.
         #
-        # @param klass [Class<Wrapper::Member::Base>, nil] the wrapper class
+        # @param klass [Class<Wrapper::Member::Base>, nil]
         # @return [Class<Wrapper::Member::Base>, nil]
         #
         # @example
@@ -126,9 +120,9 @@ module Apiwork
         end
 
         # @api public
-        # The collection wrapper class for this adapter.
+        # Sets the wrapper class for collection responses.
         #
-        # @param klass [Class<Wrapper::Collection::Base>, nil] the wrapper class
+        # @param klass [Class<Wrapper::Collection::Base>, nil]
         # @return [Class<Wrapper::Collection::Base>, nil]
         #
         # @example
@@ -139,9 +133,9 @@ module Apiwork
         end
 
         # @api public
-        # The error wrapper class for this adapter.
+        # Sets the wrapper class for error responses.
         #
-        # @param klass [Class<Wrapper::Error::Base>, nil] the wrapper class
+        # @param klass [Class<Wrapper::Error::Base>, nil]
         # @return [Class<Wrapper::Error::Base>, nil]
         #
         # @example

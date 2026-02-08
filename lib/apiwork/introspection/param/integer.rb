@@ -50,47 +50,37 @@ module Apiwork
         end
 
         # @api public
-        # Whether this param is scalar.
-        #
         # @return [Boolean]
         def scalar?
           true
         end
 
         # @api public
-        # Whether this param is an enum.
-        #
         # @return [Boolean]
         def enum?
           @dump[:enum].present?
         end
 
         # @api public
-        # The enum values for this param.
-        #
         # @return [Array<Integer>, Symbol, nil]
         def enum
           @dump[:enum]
         end
 
         # @api public
-        # Whether this param is an enum reference.
-        #
         # @return [Boolean]
         def enum_reference?
           @dump[:enum].is_a?(Symbol)
         end
 
         # @api public
-        # Whether this param is numeric.
-        #
         # @return [Boolean]
         def numeric?
           true
         end
 
         # @api public
-        # Whether this param is boundable.
+        # Whether this param supports min/max bounds.
         #
         # @return [Boolean]
         def boundable?
@@ -98,7 +88,7 @@ module Apiwork
         end
 
         # @api public
-        # Whether this param is formattable.
+        # Whether this param supports format hints.
         #
         # @return [Boolean]
         def formattable?
@@ -106,8 +96,6 @@ module Apiwork
         end
 
         # @api public
-        # Whether this param is an integer.
-        #
         # @return [Boolean]
         def integer?
           true

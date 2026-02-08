@@ -24,9 +24,7 @@ api.enums[:status].deprecated?  # => false
 
 `#deprecated?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum.rb#L45)
-
-Whether this enum is deprecated.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum.rb#L37)
 
 **Returns**
 
@@ -38,9 +36,7 @@ Whether this enum is deprecated.
 
 `#description`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum.rb#L29)
-
-The description for this enum.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum.rb#L25)
 
 **Returns**
 
@@ -52,9 +48,7 @@ The description for this enum.
 
 `#example`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum.rb#L37)
-
-The example for this enum.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum.rb#L31)
 
 **Returns**
 
@@ -66,7 +60,7 @@ The example for this enum.
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum.rb#L53)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum.rb#L45)
 
 Converts this enum to a hash.
 
@@ -80,9 +74,7 @@ Converts this enum to a hash.
 
 `#values`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum.rb#L21)
-
-The values for this enum.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/enum.rb#L19)
 
 **Returns**
 

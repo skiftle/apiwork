@@ -35,16 +35,12 @@ module Apiwork
         end
 
         # @api public
-        # Whether this request has a query.
-        #
         # @return [Boolean]
         def query?
           query.any?
         end
 
         # @api public
-        # Whether this request has a body.
-        #
         # @return [Boolean]
         def body?
           body.any?

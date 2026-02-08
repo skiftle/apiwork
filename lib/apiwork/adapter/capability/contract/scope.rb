@@ -48,9 +48,7 @@ module Apiwork
           end
 
           # @api public
-          # Whether this scope has the action.
-          #
-          # @param name [Symbol] the action name
+          # @param name [Symbol]
           # @return [Boolean]
           def action?(name)
             actions.key?(name.to_sym)

@@ -34,8 +34,6 @@ module Apiwork
         end
 
         # @api public
-        # Whether this param is a union.
-        #
         # @return [Boolean]
         def union?
           true

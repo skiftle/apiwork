@@ -58,57 +58,46 @@ module Apiwork
       class_attribute :_synthetic, default: false, instance_accessor: false
 
       # @api public
-      # The request for this contract.
-      #
       # @return [Request]
       attr_reader :request
 
       # @api public
-      # The issues for this contract.
-      #
       # @return [Array<Issue>]
       attr_reader :issues
 
       # @api public
-      # The action name for this contract.
-      #
       # @return [Symbol]
       attr_reader :action_name
 
       # @api public
-      # The query for this contract.
-      #
       # @return [Hash]
+      # @see Request#query
       delegate :query, to: :request
 
       # @api public
-      # The body for this contract.
-      #
       # @return [Hash]
+      # @see Request#body
       delegate :body, to: :request
 
       class << self
         # @api public
-        # The identifier for this contract.
+        # Prefixes types, enums, and unions in introspection output.
         #
-        # Used to prefix types, enums, and unions in introspection output
-        # (e.g., `:address` becomes `:invoice_address`). Must be unique
-        # within the API.
+        # Must be unique within the API. Derived from the contract class
+        # name when not set (e.g., `RecurringInvoiceContract` becomes
+        # `recurring_invoice`).
         #
-        # If not set, derived from the contract class name
-        # (e.g., `RecurringInvoiceContract` becomes `recurring_invoice`).
-        #
-        # @param value [Symbol, String, nil] the scope prefix
+        # @param value [Symbol, String, nil]
         # @return [String, nil]
         #
-        # @example Custom scope prefix
+        # @example
         #   class InvoiceContract < Apiwork::Contract::Base
         #     identifier :billing
         #
         #     object :address do
         #       string :street
         #     end
-        #     # In introspection: object is named `:billing_address`
+        #     # In introspection: :address becomes :billing_address
         #   end
         def identifier(value = nil)
           return _identifier if value.nil?
@@ -119,23 +108,17 @@ module Apiwork
         # @api public
         # Sets the representation class for this contract.
         #
-        # The representation defines the attributes and associations that
-        # are serialized in responses. Adapters use the representation to
-        # auto-generate request/response types.
+        # Adapters use the representation to auto-generate request/response
+        # types. Use {.representation_class} to retrieve.
         #
-        # To retrieve the representation class, use {#representation_class} instead.
-        #
-        # @param klass [Class<Representation::Base>] the representation class
+        # @param klass [Class<Representation::Base>]
         # @return [void]
         # @raise [ArgumentError] if klass is not a Representation subclass
-        # @see Representation::Base
+        # @see .representation_class
         #
         # @example
         #   class InvoiceContract < Apiwork::Contract::Base
         #     representation InvoiceRepresentation
-        #
-        #     action :show
-        #     action :create
         #   end
         def representation(klass)
           unless klass.is_a?(Class) && klass < Representation::Base
@@ -150,31 +133,19 @@ module Apiwork
         # @api public
         # Defines a reusable object type scoped to this contract.
         #
-        # Objects are named parameter structures that can be referenced in
-        # param definitions. In introspection output, objects are namespaced
-        # with the contract's scope prefix (e.g., `:order_address`).
-        #
-        # @param name [Symbol] object name
-        # @param description [String] documentation description
-        # @param example [Object] example value for docs
-        # @param format [String] format hint for docs
-        # @param deprecated [Boolean] mark as deprecated
-        # @param representation_class [Class<Representation::Base>] the representation class for type inference
-        # @yield block for defining object shape
+        # @param name [Symbol]
+        # @param description [String, nil]
+        # @param example [Object, nil]
+        # @param format [String, nil]
+        # @param deprecated [Boolean] (default: false)
+        # @param representation_class [Class<Representation::Base>, nil]
         # @yieldparam object [API::Object]
         # @return [void]
-        # @see API::Object
         #
-        # @example instance_eval style
-        #   object(:item) do
-        #     string(:description)
-        #     decimal(:amount)
-        #   end
-        #
-        # @example yield style
-        #   object(:item) do |object|
-        #     object.string(:description)
-        #     object.decimal(:amount)
+        # @example
+        #   object :item do
+        #     string :description
+        #     decimal :amount
         #   end
         def object(
           name,
@@ -200,22 +171,15 @@ module Apiwork
         # @api public
         # Defines an enum scoped to this contract.
         #
-        # Enums define a set of allowed string values. In introspection
-        # output, enums are namespaced with the contract's scope prefix.
-        #
-        # @param name [Symbol] enum name
-        # @param values [Array<String>] allowed string values
-        # @param description [String] documentation description
-        # @param example [String] example value for docs
-        # @param deprecated [Boolean] mark as deprecated
+        # @param name [Symbol]
+        # @param values [Array<String>, nil]
+        # @param description [String, nil]
+        # @param example [String, nil]
+        # @param deprecated [Boolean] (default: false)
         # @return [void]
-        # @see API::Base
         #
         # @example
-        #   enum(:status, values: %w[draft sent paid])
-        #
-        # @example Reference in contract
-        #   string(:status, enum: :status)
+        #   enum :status, values: %w[draft sent paid]
         def enum(
           name,
           values: nil,
@@ -229,30 +193,16 @@ module Apiwork
         # @api public
         # Defines a discriminated union type scoped to this contract.
         #
-        # A union is a type that can be one of several variants,
-        # distinguished by a discriminator field. In introspection
-        # output, unions are namespaced with the contract's scope prefix.
-        #
-        # @param name [Symbol] union name
-        # @param discriminator [Symbol] field that identifies the variant
-        # @yield block for defining union variants
+        # @param name [Symbol]
+        # @param discriminator [Symbol, nil]
         # @yieldparam union [API::Union]
         # @return [void]
         #
-        # @example instance_eval style
-        #   union(:payment_method, discriminator: :type) do
-        #     variant(tag: 'card') do
+        # @example
+        #   union :payment_method, discriminator: :type do
+        #     variant tag: 'card' do
         #       object do
-        #         string(:last_four)
-        #       end
-        #     end
-        #   end
-        #
-        # @example yield style
-        #   union(:payment_method, discriminator: :type) do |union|
-        #     union.variant(tag: 'card') do |variant|
-        #       variant.object do |object|
-        #         object.string(:last_four)
+        #         string :last_four
         #       end
         #     end
         #   end
@@ -264,30 +214,16 @@ module Apiwork
         # Imports types from another contract for reuse.
         #
         # Imported types are accessed with a prefix matching the alias.
-        # If UserContract defines a type `:address`, importing it as `:user`
-        # makes it available as `:user_address`.
         #
-        # @param contract_class [Class<Contract::Base>] the contract class to import from
-        # @param as [Symbol] alias prefix for imported types
+        # @param contract_class [Class<Contract::Base>]
+        # @param as [Symbol] alias prefix
         # @return [void]
         # @raise [ArgumentError] if contract_class is not a Contract subclass
         # @raise [ArgumentError] if as is not a Symbol
-        # @see Contract::Base
         #
-        # @example Import types from another contract
-        #   # UserContract has: object :address, enum :role
-        #   class OrderContract < Apiwork::Contract::Base
-        #     import UserContract, as: :user
-        #
-        #     action :create do
-        #       request do
-        #         body do
-        #           reference :shipping, to: :user_address  # user_ prefix
-        #           string :role, enum: :user_role          # user_ prefix
-        #         end
-        #       end
-        #     end
-        #   end
+        # @example
+        #   import UserContract, as: :user
+        #   # UserContract's :address becomes :user_address
         def import(contract_class, as:)
           unless contract_class.is_a?(Class)
             raise ArgumentError,
@@ -323,44 +259,16 @@ module Apiwork
         # @api public
         # Defines an action on this contract.
         #
-        # Actions describe the request/response contract for a specific
-        # controller action. Use the block to define request parameters,
-        # response format, and documentation.
-        #
-        # @param action_name [Symbol] the controller action name (:index, :show, :create, :update, :destroy, or custom)
-        # @param replace [Boolean] replace existing action definition (default: false)
-        # @yield block for defining request/response contract (instance_eval style)
+        # @param action_name [Symbol] :index, :show, :create, :update, :destroy, or custom
+        # @param replace [Boolean] (default: false)
         # @yieldparam action [Contract::Action]
         # @return [Contract::Action]
         #
-        # @example instance_eval style
-        #   class InvoiceContract < Apiwork::Contract::Base
-        #     action :show do
-        #       request do
-        #         query do
-        #           string? :include
-        #         end
-        #       end
-        #       response do
-        #         body do
-        #           uuid :id
-        #         end
-        #       end
-        #     end
-        #   end
-        #
-        # @example yield style
-        #   class InvoiceContract < Apiwork::Contract::Base
-        #     action :show do |action|
-        #       action.request do |request|
-        #         request.query do |query|
-        #           query.string? :include
-        #         end
-        #       end
-        #       action.response do |response|
-        #         response.body do |body|
-        #           body.uuid :id
-        #         end
+        # @example
+        #   action :show do
+        #     request do
+        #       query do
+        #         string? :include
         #       end
         #     end
         #   end
@@ -380,19 +288,14 @@ module Apiwork
         end
 
         # @api public
-        # The introspection data for this contract.
+        # Returns introspection data for this contract.
         #
-        # @param locale [Symbol] optional locale for translated descriptions
-        # @param expand [Boolean] resolve all referenced types (local, imported, global)
+        # @param locale [Symbol, nil]
+        # @param expand [Boolean] (default: false)
         # @return [Hash]
         #
         # @example
         #   InvoiceContract.introspect
-        #   # => { actions: { create: { request: {...}, response: {...} } } }
-        #
-        # @example With all available types
-        #   InvoiceContract.introspect(expand: true)
-        #   # => { actions: {...}, types: { local: {...}, imported: {...}, global: {...} } }
         def introspect(expand: false, locale: nil)
           api_class.introspect_contract(self, expand:, locale:)
         end
@@ -427,15 +330,8 @@ module Apiwork
         end
 
         # @api public
-        # The representation class for this contract.
-        #
-        # Returns the representation class set via {.representation}.
-        #
         # @return [Class<Representation::Base>, nil]
-        #
-        # @example
-        #   InvoiceContract.representation_class
-        #   # => InvoiceRepresentation
+        # @see .representation
         def representation_class
           _representation_class
         end
@@ -551,16 +447,12 @@ module Apiwork
       end
 
       # @api public
-      # Whether this contract is valid.
-      #
       # @return [Boolean]
       def valid?
         issues.empty?
       end
 
       # @api public
-      # Whether this contract is invalid.
-      #
       # @return [Boolean]
       def invalid?
         issues.any?

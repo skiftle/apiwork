@@ -94,8 +94,6 @@ module Apiwork
       end
 
       # @api public
-      # Whether this action is deprecated.
-      #
       # @return [Boolean]
       def deprecated?
         @deprecated == true

@@ -25,12 +25,7 @@ module Apiwork
                     :type_registry
 
         # @api public
-        # The path for this API.
-        #
         # @return [String]
-        #
-        # @example
-        #   api_class.path  # => "/api/v1"
         attr_reader :path
 
         def locale_key
@@ -42,17 +37,14 @@ module Apiwork
         end
 
         # @api public
-        # The key format for this API.
-        #
-        # Transforms request and response keys in query and body.
+        # Transforms request and response keys.
         #
         # @param format [Symbol, nil] :keep, :camel, :underscore, or :kebab
         # @return [Symbol, nil]
-        # @raise [ConfigurationError] if format is not a valid option
+        # @raise [ConfigurationError] if format is invalid
         #
         # @example
         #   key_format :camel
-        #   api_class.key_format  # => :camel
         def key_format(format = nil)
           return @key_format if format.nil?
 
@@ -63,17 +55,14 @@ module Apiwork
         end
 
         # @api public
-        # The path format for this API.
+        # Transforms resource and action names in URL paths.
         #
-        # Transforms resource names and action names in URL paths.
-        #
-        # @param format [Symbol] :keep, :kebab, :camel, or :underscore
-        # @return [Symbol]
-        # @raise [ConfigurationError] if format is not a valid option
+        # @param format [Symbol, nil] :keep, :kebab, :camel, or :underscore
+        # @return [Symbol, nil]
+        # @raise [ConfigurationError] if format is invalid
         #
         # @example
         #   path_format :kebab
-        #   api_class.path_format  # => :kebab
         def path_format(format = nil)
           return @path_format if format.nil?
 
@@ -86,30 +75,16 @@ module Apiwork
         # @api public
         # Enables an export for this API.
         #
-        # Exports generate client code and documentation from your contracts.
-        # Available exports: :openapi, :typescript, :zod.
-        #
-        # @param name [Symbol] export name to enable
-        # @yield block for export configuration
+        # @param name [Symbol] :openapi, :typescript, or :zod
+        # @yield block evaluated in export context
         # @yieldparam export [Configuration]
         # @return [void]
         #
-        # @example Enable OpenAPI export
+        # @example
         #   export :openapi
-        #
-        # @example Configuration (instance_eval style)
         #   export :typescript do
         #     endpoint do
         #       mode :always
-        #       path '/types.ts'
-        #     end
-        #   end
-        #
-        # @example Configuration (yield style)
-        #   export :typescript do |export|
-        #     export.endpoint do |endpoint|
-        #       endpoint.mode :always
-        #       endpoint.path '/types.ts'
         #     end
         #   end
         def export(name, &block)
@@ -139,32 +114,19 @@ module Apiwork
         end
 
         # @api public
-        # The adapter for this API.
+        # Sets or gets the adapter for this API.
         #
-        # @param name [Symbol, nil] adapter name (default: :standard)
-        # @yield block for adapter configuration
+        # @param name [Symbol, nil]
+        # @yield block evaluated in adapter context
         # @yieldparam adapter [Configuration]
         # @return [Adapter::Base, nil]
         #
-        # @example Configure adapter (instance_eval style)
+        # @example
         #   adapter do
         #     pagination do
         #       default_size 25
         #     end
         #   end
-        #
-        # @example Configure adapter (yield style)
-        #   adapter do |adapter|
-        #     adapter.pagination do |pagination|
-        #       pagination.default_size 25
-        #     end
-        #   end
-        #
-        # @example Custom adapter
-        #   adapter :custom
-        #
-        # @example Getting
-        #   api_class.adapter  # => #<Apiwork::Adapter::Standard:...>
         def adapter(name = nil, &block)
           @adapter_name = name if name.is_a?(Symbol)
 
@@ -185,37 +147,22 @@ module Apiwork
         end
 
         # @api public
-        # Defines a reusable object type (object shape).
+        # Defines a reusable object type.
         #
-        # Object types can be referenced by name in `param` definitions.
-        # Scoped types are namespaced to a contract class.
-        #
-        # @param name [Symbol] type name for referencing
-        # @param scope [Class<Contract::Base>, nil] the contract class for scoping (nil for global)
-        # @param description [String] documentation description
-        # @param example [Object] example value for docs
-        # @param format [String] format hint for docs
-        # @param deprecated [Boolean] mark as deprecated
-        # @param representation_class [Class<Representation::Base>, nil] the representation class for type inference
-        # @yield block for defining object shape
+        # @param name [Symbol]
+        # @param scope [Class<Contract::Base>, nil]
+        # @param description [String, nil]
+        # @param example [Object, nil]
+        # @param format [String, nil]
+        # @param deprecated [Boolean] (default: false)
+        # @param representation_class [Class<Representation::Base>, nil]
         # @yieldparam object [API::Object]
         # @return [void]
         #
-        # @example instance_eval style
-        #   object(:item) do
-        #     string(:description)
-        #     decimal(:amount)
-        #   end
-        #
-        # @example yield style
-        #   object(:item) do |object|
-        #     object.string(:description)
-        #     object.decimal(:amount)
-        #   end
-        #
-        # @example Reference in contract
-        #   array(:items) do
-        #     reference(:item)
+        # @example
+        #   object :item do
+        #     string :description
+        #     decimal :amount
         #   end
         def object(
           name,
@@ -243,22 +190,16 @@ module Apiwork
         # @api public
         # Defines a reusable enumeration type.
         #
-        # Enums can be referenced by name in `param` definitions using
-        # the `enum:` option.
-        #
-        # @param name [Symbol] enum name for referencing
-        # @param values [Array<String>] allowed values
-        # @param scope [Class<Contract::Base>, nil] the contract class for scoping (nil for global)
-        # @param description [String] documentation description
-        # @param example [String] example value for docs
-        # @param deprecated [Boolean] mark as deprecated
-        # @see Contract::Base
+        # @param name [Symbol]
+        # @param values [Array<String>, nil]
+        # @param scope [Class<Contract::Base>, nil]
+        # @param description [String, nil]
+        # @param example [String, nil]
+        # @param deprecated [Boolean] (default: false)
+        # @return [void]
         #
         # @example
-        #   enum(:status, values: %w[draft sent paid])
-        #
-        # @example Reference in contract
-        #   string(:status, enum: :status)
+        #   enum :status, values: %w[draft sent paid]
         def enum(
           name,
           values: nil,
@@ -282,40 +223,19 @@ module Apiwork
         # @api public
         # Defines a discriminated union type.
         #
-        # Unions allow a field to accept one of several shapes, distinguished
-        # by a discriminator field.
-        #
-        # @param name [Symbol] union name for referencing
-        # @param scope [Class<Contract::Base>, nil] the contract class for scoping (nil for global)
-        # @param discriminator [Symbol] field name that identifies the variant
-        # @yield block for defining union variants
+        # @param name [Symbol]
+        # @param discriminator [Symbol, nil]
+        # @param scope [Class<Contract::Base>, nil]
+        # @param description [String, nil]
+        # @param deprecated [Boolean] (default: false)
         # @yieldparam union [API::Union]
         # @return [void]
         #
-        # @example instance_eval style
-        #   union(:payment_method, discriminator: :type) do
-        #     variant(tag: 'card') do
+        # @example
+        #   union :payment_method, discriminator: :type do
+        #     variant tag: 'card' do
         #       object do
-        #         string(:last_four)
-        #       end
-        #     end
-        #     variant(tag: 'bank') do
-        #       object do
-        #         string(:account_number)
-        #       end
-        #     end
-        #   end
-        #
-        # @example yield style
-        #   union(:payment_method, discriminator: :type) do |union|
-        #     union.variant(tag: 'card') do |variant|
-        #       variant.object do |object|
-        #         object.string(:last_four)
-        #       end
-        #     end
-        #     union.variant(tag: 'bank') do |variant|
-        #       variant.object do |object|
-        #         object.string(:account_number)
+        #         string :last_four
         #       end
         #     end
         #   end

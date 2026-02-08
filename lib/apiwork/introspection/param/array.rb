@@ -55,15 +55,13 @@ module Apiwork
         end
 
         # @api public
-        # Whether this param is an array.
-        #
         # @return [Boolean]
         def array?
           true
         end
 
         # @api public
-        # Whether this param is boundable.
+        # Whether this param supports min/max bounds.
         #
         # @return [Boolean]
         def boundable?

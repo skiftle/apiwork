@@ -80,19 +80,11 @@ end
 
 `#deprecated?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L213)
-
-Whether this API is deprecated.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L208)
 
 **Returns**
 
 `Boolean`
-
-**Example**
-
-```ruby
-info.deprecated?  # => true
-```
 
 ---
 

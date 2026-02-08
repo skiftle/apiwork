@@ -26,48 +26,36 @@ module Apiwork
       end
 
       # @api public
-      # The path for this API.
-      #
       # @return [String, nil]
       def path
         @dump[:path]
       end
 
       # @api public
-      # The info for this API.
-      #
       # @return [API::Info, nil]
       def info
         @info ||= @dump[:info] ? Info.new(@dump[:info]) : nil
       end
 
       # @api public
-      # The resources for this API.
-      #
       # @return [Hash{Symbol => API::Resource}]
       def resources
         @resources ||= @dump[:resources].transform_values { |dump| Resource.new(dump) }
       end
 
       # @api public
-      # The types for this API.
-      #
       # @return [Hash{Symbol => Type}]
       def types
         @types ||= @dump[:types].transform_values { |dump| Type.new(dump) }
       end
 
       # @api public
-      # The enums for this API.
-      #
       # @return [Hash{Symbol => Enum}]
       def enums
         @enums ||= @dump[:enums].transform_values { |dump| Enum.new(dump) }
       end
 
       # @api public
-      # The error codes for this API.
-      #
       # @return [Hash{Symbol => ErrorCode}]
       def error_codes
         @error_codes ||= @dump[:error_codes].transform_values { |dump| ErrorCode.new(dump) }

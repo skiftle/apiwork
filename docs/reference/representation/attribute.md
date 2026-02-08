@@ -28,9 +28,7 @@ attribute.filterable? # => true
 
 `#deprecated?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L160)
-
-Whether this attribute is deprecated.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L142)
 
 **Returns**
 
@@ -42,9 +40,7 @@ Whether this attribute is deprecated.
 
 `#description`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L28)
-
-The description for this attribute.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L26)
 
 **Returns**
 
@@ -56,9 +52,7 @@ The description for this attribute.
 
 `#enum`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L34)
-
-The enum values for this attribute.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L30)
 
 **Returns**
 
@@ -70,9 +64,7 @@ The enum values for this attribute.
 
 `#example`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L40)
-
-The example value for this attribute.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L34)
 
 **Returns**
 
@@ -84,9 +76,7 @@ The example value for this attribute.
 
 `#filterable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L168)
-
-Whether this attribute is filterable.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L148)
 
 **Returns**
 
@@ -98,9 +88,7 @@ Whether this attribute is filterable.
 
 `#format`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L46)
-
-The format for this attribute.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L38)
 
 **Returns**
 
@@ -112,9 +100,7 @@ The format for this attribute.
 
 `#max`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L52)
-
-The maximum value for this attribute.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L42)
 
 **Returns**
 
@@ -126,9 +112,7 @@ The maximum value for this attribute.
 
 `#min`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L58)
-
-The minimum value for this attribute.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L46)
 
 **Returns**
 
@@ -140,9 +124,7 @@ The minimum value for this attribute.
 
 `#name`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L64)
-
-The name for this attribute.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L50)
 
 **Returns**
 
@@ -154,9 +136,11 @@ The name for this attribute.
 
 `#nullable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L192)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L170)
 
-Whether this attribute is nullable.
+Whether this attribute accepts null values.
+
+Always false when `empty: true` is set.
 
 **Returns**
 
@@ -168,9 +152,9 @@ Whether this attribute is nullable.
 
 `#of`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L70)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L56)
 
-The array element type for this attribute.
+The element type when [#type](#type) is `:array`.
 
 **Returns**
 
@@ -182,9 +166,7 @@ The array element type for this attribute.
 
 `#optional?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L184)
-
-Whether this attribute is optional.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L160)
 
 **Returns**
 
@@ -196,9 +178,7 @@ Whether this attribute is optional.
 
 `#sortable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L176)
-
-Whether this attribute is sortable.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L154)
 
 **Returns**
 
@@ -210,9 +190,7 @@ Whether this attribute is sortable.
 
 `#type`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L76)
-
-The type for this attribute.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L60)
 
 **Returns**
 
@@ -224,13 +202,17 @@ The type for this attribute.
 
 `#writable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L202)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L181)
 
-Whether this attribute is writable.
+Whether this attribute is writable on create or update.
 
 **Returns**
 
 `Boolean`
+
+**See also**
+
+- [#writable_for?](#writable-for?)
 
 ---
 
@@ -238,7 +220,7 @@ Whether this attribute is writable.
 
 `#writable_for?(action)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L211)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L191)
 
 Whether this attribute is writable for a specific action.
 
@@ -246,10 +228,14 @@ Whether this attribute is writable for a specific action.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `action` | `Symbol` | the action to check (:create or :update) |
+| `action` | `Symbol` | :create or :update |
 
 **Returns**
 
 `Boolean`
+
+**See also**
+
+- [#writable?](#writable?)
 
 ---

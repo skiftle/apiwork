@@ -15,44 +15,34 @@ module Apiwork
     #   association.representation_class # => CustomerRepresentation
     class Association
       # @api public
-      # The description for this association.
-      #
       # @return [String, nil]
       attr_reader :description
 
       # @api public
-      # The example value for this association.
-      #
       # @return [Object, nil]
       attr_reader :example
 
       # @api public
-      # The include behavior for this association.
+      # :always or :optional.
       #
       # @return [Symbol]
       attr_reader :include
 
       # @api public
-      # The name for this association.
-      #
       # @return [Symbol]
       attr_reader :name
 
       # @api public
-      # The polymorphic representation classes for this association.
+      # Representation classes for polymorphic associations.
       #
       # @return [Array<Class<Representation::Base>>, nil]
       attr_reader :polymorphic
 
       # @api public
-      # The type for this association.
-      #
       # @return [Symbol]
       attr_reader :type
 
       # @api public
-      # The model class for this association.
-      #
       # @return [Class<ActiveRecord::Base>]
       attr_reader :model_class
 
@@ -104,33 +94,28 @@ module Apiwork
       end
 
       # @api public
-      # Whether this association is deprecated.
-      #
       # @return [Boolean]
       def deprecated?
         @deprecated
       end
 
       # @api public
-      # Whether this association is filterable.
-      #
       # @return [Boolean]
       def filterable?
         @filterable
       end
 
       # @api public
-      # Whether this association is sortable.
-      #
       # @return [Boolean]
       def sortable?
         @sortable
       end
 
       # @api public
-      # Whether this association is writable.
+      # Whether this association is writable on create or update.
       #
       # @return [Boolean]
+      # @see #writable_for?
       def writable?
         @writable[:on].any?
       end
@@ -138,14 +123,15 @@ module Apiwork
       # @api public
       # Whether this association is writable for a specific action.
       #
-      # @param action [Symbol] the action to check (:create or :update)
+      # @param action [Symbol] :create or :update
       # @return [Boolean]
+      # @see #writable?
       def writable_for?(action)
         @writable[:on].include?(action)
       end
 
       # @api public
-      # Whether this association is a collection.
+      # Whether this association is a `has_many`.
       #
       # @return [Boolean]
       def collection?
@@ -153,7 +139,7 @@ module Apiwork
       end
 
       # @api public
-      # Whether this association is singular.
+      # Whether this association is a `has_one` or `belongs_to`.
       #
       # @return [Boolean]
       def singular?
@@ -161,15 +147,15 @@ module Apiwork
       end
 
       # @api public
-      # Whether this association is polymorphic.
-      #
       # @return [Boolean]
       def polymorphic?
         @polymorphic.present?
       end
 
       # @api public
-      # Whether this association is nullable.
+      # Whether this association accepts null values.
+      #
+      # For `belongs_to`, derived from the foreign key column's nullability.
       #
       # @return [Boolean]
       def nullable?
@@ -185,7 +171,7 @@ module Apiwork
       end
 
       # @api public
-      # The representation class for this association.
+      # Uses explicit `representation:` if set, otherwise inferred from the model.
       #
       # @return [Class<Representation::Base>, nil]
       def representation_class

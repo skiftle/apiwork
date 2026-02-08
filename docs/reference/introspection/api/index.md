@@ -40,9 +40,7 @@ end
 
 `#enums`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L64)
-
-The enums for this API.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L54)
 
 **Returns**
 
@@ -54,9 +52,7 @@ Hash{Symbol =&gt; [Enum](/reference/introspection/enum)}
 
 `#error_codes`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L72)
-
-The error codes for this API.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L60)
 
 **Returns**
 
@@ -68,9 +64,7 @@ Hash{Symbol =&gt; [ErrorCode](/reference/introspection/error-code)}
 
 `#info`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L40)
-
-The info for this API.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L36)
 
 **Returns**
 
@@ -82,9 +76,7 @@ The info for this API.
 
 `#path`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L32)
-
-The path for this API.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L30)
 
 **Returns**
 
@@ -96,9 +88,7 @@ The path for this API.
 
 `#resources`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L48)
-
-The resources for this API.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L42)
 
 **Returns**
 
@@ -110,7 +100,7 @@ Hash{Symbol =&gt; [API::Resource](/reference/api/resource)}
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L80)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L68)
 
 Converts this API to a hash.
 
@@ -124,9 +114,7 @@ Converts this API to a hash.
 
 `#types`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L56)
-
-The types for this API.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L48)
 
 **Returns**
 

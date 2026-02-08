@@ -85,20 +85,16 @@ Returns whether this contract is abstract.
 
 `.action(action_name, replace: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L367)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L275)
 
 Defines an action on this contract.
-
-Actions describe the request/response contract for a specific
-controller action. Use the block to define request parameters,
-response format, and documentation.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `action_name` | `Symbol` | the controller action name (:index, :show, :create, :update, :destroy, or custom) |
-| `replace` | `Boolean` | replace existing action definition (default: false) |
+| `action_name` | `Symbol` | :index, :show, :create, :update, :destroy, or custom |
+| `replace` | `Boolean` | (default: false) |
 
 **Returns**
 
@@ -106,39 +102,13 @@ response format, and documentation.
 
 **Yields** [Contract::Action](/reference/contract/action/)
 
-**Example: instance_eval style**
+**Example**
 
 ```ruby
-class InvoiceContract < Apiwork::Contract::Base
-  action :show do
-    request do
-      query do
-        string? :include
-      end
-    end
-    response do
-      body do
-        uuid :id
-      end
-    end
-  end
-end
-```
-
-**Example: yield style**
-
-```ruby
-class InvoiceContract < Apiwork::Contract::Base
-  action :show do |action|
-    action.request do |request|
-      request.query do |query|
-        query.string? :include
-      end
-    end
-    action.response do |response|
-      response.body do |body|
-        body.uuid :id
-      end
+action :show do
+  request do
+    query do
+      string? :include
     end
   end
 end
@@ -150,41 +120,28 @@ end
 
 `.enum(name, values: nil, description: nil, example: nil, deprecated: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L219)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L183)
 
 Defines an enum scoped to this contract.
-
-Enums define a set of allowed string values. In introspection
-output, enums are namespaced with the contract's scope prefix.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `name` | `Symbol` | enum name |
-| `values` | `Array<String>` | allowed string values |
-| `description` | `String` | documentation description |
-| `example` | `String` | example value for docs |
-| `deprecated` | `Boolean` | mark as deprecated |
+| `name` | `Symbol` |  |
+| `values` | `Array<String>, nil` |  |
+| `description` | `String, nil` |  |
+| `example` | `String, nil` |  |
+| `deprecated` | `Boolean` | (default: false) |
 
 **Returns**
 
 `void`
 
-**See also**
-
-- [API::Base](/reference/api/base)
-
 **Example**
 
 ```ruby
-enum(:status, values: %w[draft sent paid])
-```
-
-**Example: Reference in contract**
-
-```ruby
-string(:status, enum: :status)
+enum :status, values: %w[draft sent paid]
 ```
 
 ---
@@ -193,28 +150,25 @@ string(:status, enum: :status)
 
 `.identifier(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L113)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L102)
 
-The identifier for this contract.
+Prefixes types, enums, and unions in introspection output.
 
-Used to prefix types, enums, and unions in introspection output
-(e.g., `:address` becomes `:invoice_address`). Must be unique
-within the API.
-
-If not set, derived from the contract class name
-(e.g., `RecurringInvoiceContract` becomes `recurring_invoice`).
+Must be unique within the API. Derived from the contract class
+name when not set (e.g., `RecurringInvoiceContract` becomes
+`recurring_invoice`).
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `value` | `Symbol, String, nil` | the scope prefix |
+| `value` | `Symbol, String, nil` |  |
 
 **Returns**
 
 `String`, `nil`
 
-**Example: Custom scope prefix**
+**Example**
 
 ```ruby
 class InvoiceContract < Apiwork::Contract::Base
@@ -223,7 +177,7 @@ class InvoiceContract < Apiwork::Contract::Base
   object :address do
     string :street
   end
-  # In introspection: object is named `:billing_address`
+  # In introspection: :address becomes :billing_address
 end
 ```
 
@@ -233,45 +187,28 @@ end
 
 `.import(contract_class, as:)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L291)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L227)
 
 Imports types from another contract for reuse.
 
 Imported types are accessed with a prefix matching the alias.
-If UserContract defines a type `:address`, importing it as `:user`
-makes it available as `:user_address`.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `contract_class` | `Class<Contract::Base>` | the contract class to import from |
-| `as` | `Symbol` | alias prefix for imported types |
+| `contract_class` | `Class<Contract::Base>` |  |
+| `as` | `Symbol` | alias prefix |
 
 **Returns**
 
 `void`
 
-**See also**
-
-- [Contract::Base](/reference/contract/base)
-
-**Example: Import types from another contract**
+**Example**
 
 ```ruby
-# UserContract has: object :address, enum :role
-class OrderContract < Apiwork::Contract::Base
-  import UserContract, as: :user
-
-  action :create do
-    request do
-      body do
-        reference :shipping, to: :user_address  # user_ prefix
-        string :role, enum: :user_role          # user_ prefix
-      end
-    end
-  end
-end
+import UserContract, as: :user
+# UserContract's :address becomes :user_address
 ```
 
 ---
@@ -280,16 +217,16 @@ end
 
 `.introspect(expand: false, locale: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L396)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L299)
 
-The introspection data for this contract.
+Returns introspection data for this contract.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `locale` | `Symbol` | optional locale for translated descriptions |
-| `expand` | `Boolean` | resolve all referenced types (local, imported, global) |
+| `locale` | `Symbol, nil` |  |
+| `expand` | `Boolean` | (default: false) |
 
 **Returns**
 
@@ -299,14 +236,6 @@ The introspection data for this contract.
 
 ```ruby
 InvoiceContract.introspect
-# => { actions: { create: { request: {...}, response: {...} } } }
-```
-
-**Example: With all available types**
-
-```ruby
-InvoiceContract.introspect(expand: true)
-# => { actions: {...}, types: { local: {...}, imported: {...}, global: {...} } }
 ```
 
 ---
@@ -315,24 +244,20 @@ InvoiceContract.introspect(expand: true)
 
 `.object(name, description: nil, example: nil, format: nil, deprecated: false, representation_class: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L179)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L150)
 
 Defines a reusable object type scoped to this contract.
-
-Objects are named parameter structures that can be referenced in
-param definitions. In introspection output, objects are namespaced
-with the contract's scope prefix (e.g., `:order_address`).
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `name` | `Symbol` | object name |
-| `description` | `String` | documentation description |
-| `example` | `Object` | example value for docs |
-| `format` | `String` | format hint for docs |
-| `deprecated` | `Boolean` | mark as deprecated |
-| `representation_class` | `Class<Representation::Base>` | the representation class for type inference |
+| `name` | `Symbol` |  |
+| `description` | `String, nil` |  |
+| `example` | `Object, nil` |  |
+| `format` | `String, nil` |  |
+| `deprecated` | `Boolean` | (default: false) |
+| `representation_class` | `Class<Representation::Base>, nil` |  |
 
 **Returns**
 
@@ -340,25 +265,12 @@ with the contract's scope prefix (e.g., `:order_address`).
 
 **Yields** [API::Object](/reference/api/object)
 
-**See also**
-
-- [API::Object](/reference/api/object)
-
-**Example: instance_eval style**
+**Example**
 
 ```ruby
-object(:item) do
-  string(:description)
-  decimal(:amount)
-end
-```
-
-**Example: yield style**
-
-```ruby
-object(:item) do |object|
-  object.string(:description)
-  object.decimal(:amount)
+object :item do
+  string :description
+  decimal :amount
 end
 ```
 
@@ -368,21 +280,18 @@ end
 
 `.representation(klass)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L140)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L123)
 
 Sets the representation class for this contract.
 
-The representation defines the attributes and associations that
-are serialized in responses. Adapters use the representation to
-auto-generate request/response types.
-
-To retrieve the representation class, use [#representation_class](#representation-class) instead.
+Adapters use the representation to auto-generate request/response
+types. Use [.representation_class](#representation-class) to retrieve.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `klass` | `Class<Representation::Base>` | the representation class |
+| `klass` | `Class<Representation::Base>` |  |
 
 **Returns**
 
@@ -390,16 +299,13 @@ To retrieve the representation class, use [#representation_class](#representatio
 
 **See also**
 
-- [Representation::Base](/reference/representation/base)
+- [.representation_class](#representation-class)
 
 **Example**
 
 ```ruby
 class InvoiceContract < Apiwork::Contract::Base
   representation InvoiceRepresentation
-
-  action :show
-  action :create
 end
 ```
 
@@ -409,22 +315,15 @@ end
 
 `.representation_class`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L439)
-
-The representation class for this contract.
-
-Returns the representation class set via [.representation](#representation).
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L335)
 
 **Returns**
 
 Class&lt;[Representation::Base](/reference/representation/base)&gt;, `nil`
 
-**Example**
+**See also**
 
-```ruby
-InvoiceContract.representation_class
-# => InvoiceRepresentation
-```
+- [.representation](#representation)
 
 ---
 
@@ -432,20 +331,16 @@ InvoiceContract.representation_class
 
 `.union(name, discriminator: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L259)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L209)
 
 Defines a discriminated union type scoped to this contract.
-
-A union is a type that can be one of several variants,
-distinguished by a discriminator field. In introspection
-output, unions are namespaced with the contract's scope prefix.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `name` | `Symbol` | union name |
-| `discriminator` | `Symbol` | field that identifies the variant |
+| `name` | `Symbol` |  |
+| `discriminator` | `Symbol, nil` |  |
 
 **Returns**
 
@@ -453,25 +348,13 @@ output, unions are namespaced with the contract's scope prefix.
 
 **Yields** [API::Union](/reference/api/union)
 
-**Example: instance_eval style**
+**Example**
 
 ```ruby
-union(:payment_method, discriminator: :type) do
-  variant(tag: 'card') do
+union :payment_method, discriminator: :type do
+  variant tag: 'card' do
     object do
-      string(:last_four)
-    end
-  end
-end
-```
-
-**Example: yield style**
-
-```ruby
-union(:payment_method, discriminator: :type) do |union|
-  union.variant(tag: 'card') do |variant|
-    variant.object do |object|
-      object.string(:last_four)
+      string :last_four
     end
   end
 end
@@ -485,9 +368,7 @@ end
 
 `#action_name`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L76)
-
-The action name for this contract.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L70)
 
 **Returns**
 
@@ -499,13 +380,15 @@ The action name for this contract.
 
 `#body`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L88)
-
-The body for this contract.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L80)
 
 **Returns**
 
 `Hash`
+
+**See also**
+
+- [Request#body](/reference/request#body)
 
 ---
 
@@ -513,9 +396,7 @@ The body for this contract.
 
 `#invalid?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L565)
-
-Whether this contract is invalid.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L457)
 
 **Returns**
 
@@ -527,9 +408,7 @@ Whether this contract is invalid.
 
 `#issues`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L70)
-
-The issues for this contract.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L66)
 
 **Returns**
 
@@ -541,13 +420,15 @@ Array&lt;[Issue](/reference/issue)&gt;
 
 `#query`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L82)
-
-The query for this contract.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L75)
 
 **Returns**
 
 `Hash`
+
+**See also**
+
+- [Request#query](/reference/request#query)
 
 ---
 
@@ -555,9 +436,7 @@ The query for this contract.
 
 `#request`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L64)
-
-The request for this contract.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L62)
 
 **Returns**
 
@@ -569,9 +448,7 @@ The request for this contract.
 
 `#valid?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L557)
-
-Whether this contract is valid.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L451)
 
 **Returns**
 

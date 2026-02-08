@@ -19,7 +19,7 @@ coercion, or constraint checks. Access via `contract.issues`.
 
 `#as_json`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L67)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L59)
 
 Converts this issue to a hash for JSON serialization.
 
@@ -33,9 +33,7 @@ Converts this issue to a hash for JSON serialization.
 
 `#code`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L14)
-
-The code for this issue.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L12)
 
 **Returns**
 
@@ -47,9 +45,7 @@ The code for this issue.
 
 `#detail`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L20)
-
-The detail for this issue.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L16)
 
 **Returns**
 
@@ -61,9 +57,7 @@ The detail for this issue.
 
 `#meta`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L26)
-
-The meta for this issue.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L20)
 
 **Returns**
 
@@ -75,9 +69,7 @@ The meta for this issue.
 
 `#path`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L32)
-
-The path for this issue.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L24)
 
 **Returns**
 
@@ -89,7 +81,7 @@ The path for this issue.
 
 `#pointer`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L45)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L37)
 
 The JSON pointer for this issue.
 
@@ -103,7 +95,7 @@ The JSON pointer for this issue.
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L53)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L45)
 
 Converts this issue to a hash.
 
@@ -117,9 +109,9 @@ Converts this issue to a hash.
 
 `#to_s`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L75)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L67)
 
-The string representation for this issue.
+Converts this issue to a string.
 
 **Returns**
 

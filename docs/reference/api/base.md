@@ -31,15 +31,15 @@ end
 
 `.adapter(name = nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L168)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L130)
 
-The adapter for this API.
+Sets or gets the adapter for this API.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `name` | `Symbol, nil` | adapter name (default: :standard) |
+| `name` | `Symbol, nil` |  |
 
 **Returns**
 
@@ -47,7 +47,7 @@ The adapter for this API.
 
 **Yields** [Configuration](/reference/configuration/)
 
-**Example: Configure adapter (instance_eval style)**
+**Example**
 
 ```ruby
 adapter do
@@ -57,35 +57,13 @@ adapter do
 end
 ```
 
-**Example: Configure adapter (yield style)**
-
-```ruby
-adapter do |adapter|
-  adapter.pagination do |pagination|
-    pagination.default_size 25
-  end
-end
-```
-
-**Example: Custom adapter**
-
-```ruby
-adapter :custom
-```
-
-**Example: Getting**
-
-```ruby
-api_class.adapter  # => #<Apiwork::Adapter::Standard:...>
-```
-
 ---
 
 ### .concern
 
 `.concern(name, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L547)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L467)
 
 Defines a reusable concern for resources.
 
@@ -136,38 +114,29 @@ resources :posts, concerns: [:archivable]
 
 `.enum(name, values: nil, scope: nil, description: nil, example: nil, deprecated: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L262)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L203)
 
 Defines a reusable enumeration type.
-
-Enums can be referenced by name in `param` definitions using
-the `enum:` option.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `name` | `Symbol` | enum name for referencing |
-| `values` | `Array<String>` | allowed values |
-| `scope` | `Class<Contract::Base>, nil` | the contract class for scoping (nil for global) |
-| `description` | `String` | documentation description |
-| `example` | `String` | example value for docs |
-| `deprecated` | `Boolean` | mark as deprecated |
+| `name` | `Symbol` |  |
+| `values` | `Array<String>, nil` |  |
+| `scope` | `Class<Contract::Base>, nil` |  |
+| `description` | `String, nil` |  |
+| `example` | `String, nil` |  |
+| `deprecated` | `Boolean` | (default: false) |
 
-**See also**
+**Returns**
 
-- [Contract::Base](/reference/contract/base)
+`void`
 
 **Example**
 
 ```ruby
-enum(:status, values: %w[draft sent paid])
-```
-
-**Example: Reference in contract**
-
-```ruby
-string(:status, enum: :status)
+enum :status, values: %w[draft sent paid]
 ```
 
 ---
@@ -176,18 +145,15 @@ string(:status, enum: :status)
 
 `.export(name, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L115)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L90)
 
 Enables an export for this API.
-
-Exports generate client code and documentation from your contracts.
-Available exports: :openapi, :typescript, :zod.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `name` | `Symbol` | export name to enable |
+| `name` | `Symbol` | :openapi, :typescript, or :zod |
 
 **Returns**
 
@@ -195,30 +161,13 @@ Available exports: :openapi, :typescript, :zod.
 
 **Yields** [Configuration](/reference/configuration/)
 
-**Example: Enable OpenAPI export**
+**Example**
 
 ```ruby
 export :openapi
-```
-
-**Example: Configuration (instance_eval style)**
-
-```ruby
 export :typescript do
   endpoint do
     mode :always
-    path '/types.ts'
-  end
-end
-```
-
-**Example: Configuration (yield style)**
-
-```ruby
-export :typescript do |export|
-  export.endpoint do |endpoint|
-    endpoint.mode :always
-    endpoint.path '/types.ts'
   end
 end
 ```
@@ -229,7 +178,7 @@ end
 
 `.info(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L392)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L312)
 
 The API info metadata.
 
@@ -263,11 +212,9 @@ end
 
 `.key_format(format = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L56)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L48)
 
-The key format for this API.
-
-Transforms request and response keys in query and body.
+Transforms request and response keys.
 
 **Parameters**
 
@@ -283,7 +230,6 @@ Transforms request and response keys in query and body.
 
 ```ruby
 key_format :camel
-api_class.key_format  # => :camel
 ```
 
 ---
@@ -292,24 +238,21 @@ api_class.key_format  # => :camel
 
 `.object(name, scope: nil, description: nil, example: nil, format: nil, deprecated: false, representation_class: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L220)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L167)
 
-Defines a reusable object type (object shape).
-
-Object types can be referenced by name in `param` definitions.
-Scoped types are namespaced to a contract class.
+Defines a reusable object type.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `name` | `Symbol` | type name for referencing |
-| `scope` | `Class<Contract::Base>, nil` | the contract class for scoping (nil for global) |
-| `description` | `String` | documentation description |
-| `example` | `Object` | example value for docs |
-| `format` | `String` | format hint for docs |
-| `deprecated` | `Boolean` | mark as deprecated |
-| `representation_class` | `Class<Representation::Base>, nil` | the representation class for type inference |
+| `name` | `Symbol` |  |
+| `scope` | `Class<Contract::Base>, nil` |  |
+| `description` | `String, nil` |  |
+| `example` | `Object, nil` |  |
+| `format` | `String, nil` |  |
+| `deprecated` | `Boolean` | (default: false) |
+| `representation_class` | `Class<Representation::Base>, nil` |  |
 
 **Returns**
 
@@ -317,29 +260,12 @@ Scoped types are namespaced to a contract class.
 
 **Yields** [API::Object](/reference/api/object)
 
-**Example: instance_eval style**
+**Example**
 
 ```ruby
-object(:item) do
-  string(:description)
-  decimal(:amount)
-end
-```
-
-**Example: yield style**
-
-```ruby
-object(:item) do |object|
-  object.string(:description)
-  object.decimal(:amount)
-end
-```
-
-**Example: Reference in contract**
-
-```ruby
-array(:items) do
-  reference(:item)
+object :item do
+  string :description
+  decimal :amount
 end
 ```
 
@@ -349,19 +275,11 @@ end
 
 `.path`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L34)
-
-The path for this API.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L29)
 
 **Returns**
 
 `String`
-
-**Example**
-
-```ruby
-api_class.path  # => "/api/v1"
-```
 
 ---
 
@@ -369,27 +287,24 @@ api_class.path  # => "/api/v1"
 
 `.path_format(format = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L77)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L66)
 
-The path format for this API.
-
-Transforms resource names and action names in URL paths.
+Transforms resource and action names in URL paths.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `format` | `Symbol` | :keep, :kebab, :camel, or :underscore |
+| `format` | `Symbol, nil` | :keep, :kebab, :camel, or :underscore |
 
 **Returns**
 
-`Symbol`
+`Symbol`, `nil`
 
 **Example**
 
 ```ruby
 path_format :kebab
-api_class.path_format  # => :kebab
 ```
 
 ---
@@ -398,7 +313,7 @@ api_class.path_format  # => :kebab
 
 `.raises(*error_code_keys)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L355)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L275)
 
 API-wide error codes.
 
@@ -427,7 +342,7 @@ api_class.raises  # => [:unauthorized, :forbidden, :not_found]
 
 `.resource(name, concerns: nil, constraints: nil, contract: nil, controller: nil, defaults: nil, except: nil, only: nil, param: nil, path: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L489)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L409)
 
 Defines a singular resource (no index action, no :id in URL).
 
@@ -477,7 +392,7 @@ end
 
 `.resources(name, concerns: nil, constraints: nil, contract: nil, controller: nil, defaults: nil, except: nil, only: nil, param: nil, path: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L432)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L352)
 
 Defines a RESTful resource with standard CRUD actions.
 
@@ -530,20 +445,19 @@ end
 
 `.union(name, discriminator: nil, scope: nil, description: nil, deprecated: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L322)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L242)
 
 Defines a discriminated union type.
-
-Unions allow a field to accept one of several shapes, distinguished
-by a discriminator field.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `name` | `Symbol` | union name for referencing |
-| `scope` | `Class<Contract::Base>, nil` | the contract class for scoping (nil for global) |
-| `discriminator` | `Symbol` | field name that identifies the variant |
+| `name` | `Symbol` |  |
+| `discriminator` | `Symbol, nil` |  |
+| `scope` | `Class<Contract::Base>, nil` |  |
+| `description` | `String, nil` |  |
+| `deprecated` | `Boolean` | (default: false) |
 
 **Returns**
 
@@ -551,35 +465,13 @@ by a discriminator field.
 
 **Yields** [API::Union](/reference/api/union)
 
-**Example: instance_eval style**
+**Example**
 
 ```ruby
-union(:payment_method, discriminator: :type) do
-  variant(tag: 'card') do
+union :payment_method, discriminator: :type do
+  variant tag: 'card' do
     object do
-      string(:last_four)
-    end
-  end
-  variant(tag: 'bank') do
-    object do
-      string(:account_number)
-    end
-  end
-end
-```
-
-**Example: yield style**
-
-```ruby
-union(:payment_method, discriminator: :type) do |union|
-  union.variant(tag: 'card') do |variant|
-    variant.object do |object|
-      object.string(:last_four)
-    end
-  end
-  union.variant(tag: 'bank') do |variant|
-    variant.object do |object|
-      object.string(:account_number)
+      string :last_four
     end
   end
 end
@@ -591,7 +483,7 @@ end
 
 `.with_options(options = {}, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L574)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L494)
 
 Applies options to all nested resource definitions.
 

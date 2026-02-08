@@ -18,7 +18,7 @@ Returns [Contract::Object](/reference/contract/object) via `body`.
 
 `#body(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action/response.rb#L73)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action/response.rb#L71)
 
 Defines the response body for this response.
 
@@ -54,7 +54,7 @@ end
 
 `#no_content!`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action/response.rb#L49)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action/response.rb#L47)
 
 Declares this response as 204 No Content.
 
@@ -87,9 +87,7 @@ end
 
 `#no_content?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action/response.rb#L28)
-
-Whether this response has no content.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action/response.rb#L26)
 
 **Returns**
 

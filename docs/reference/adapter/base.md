@@ -38,15 +38,13 @@ end
 
 `.adapter_name(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L38)
-
-The name for this adapter.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L36)
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `value` | `Symbol, String, nil` | the adapter name |
+| `value` | `Symbol, String, nil` |  |
 
 **Returns**
 
@@ -64,7 +62,7 @@ adapter_name :my
 
 `.capability(klass)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L55)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L53)
 
 Registers a capability for this adapter.
 
@@ -94,15 +92,15 @@ capability Capability::Pagination
 
 `.collection_wrapper(klass = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L136)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L130)
 
-The collection wrapper class for this adapter.
+Sets the wrapper class for collection responses.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `klass` | `Class<Wrapper::Collection::Base>, nil` | the wrapper class |
+| `klass` | `Class<Wrapper::Collection::Base>, nil` |  |
 
 **Returns**
 
@@ -120,17 +118,15 @@ collection_wrapper Wrapper::Collection::Default
 
 `.error_serializer(klass = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L110)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L104)
 
-The error serializer class for this adapter.
-
-Handles serialization of errors.
+Sets the serializer class for errors.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `klass` | `Class<Serializer::Error::Base>, nil` | the serializer class |
+| `klass` | `Class<Serializer::Error::Base>, nil` |  |
 
 **Returns**
 
@@ -148,15 +144,15 @@ error_serializer Serializer::Error::Default
 
 `.error_wrapper(klass = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L149)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L143)
 
-The error wrapper class for this adapter.
+Sets the wrapper class for error responses.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `klass` | `Class<Wrapper::Error::Base>, nil` | the wrapper class |
+| `klass` | `Class<Wrapper::Error::Base>, nil` |  |
 
 **Returns**
 
@@ -174,15 +170,15 @@ error_wrapper Wrapper::Error::Default
 
 `.member_wrapper(klass = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L123)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L117)
 
-The member wrapper class for this adapter.
+Sets the wrapper class for single-record responses.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `klass` | `Class<Wrapper::Member::Base>, nil` | the wrapper class |
+| `klass` | `Class<Wrapper::Member::Base>, nil` |  |
 
 **Returns**
 
@@ -252,17 +248,15 @@ end
 
 `.resource_serializer(klass = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L95)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L91)
 
-The resource serializer class for this adapter.
-
-Handles serialization of records and collections.
+Sets the serializer class for records and collections.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `klass` | `Class<Serializer::Resource::Base>, nil` | the serializer class |
+| `klass` | `Class<Serializer::Resource::Base>, nil` |  |
 
 **Returns**
 
@@ -280,7 +274,7 @@ resource_serializer Serializer::Resource::Default
 
 `.skip_capability(name)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L73)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L71)
 
 Skips an inherited capability by name.
 

@@ -28,7 +28,7 @@ module Apiwork
         end
 
         # @api public
-        # Whether this param is partial.
+        # Whether this param uses partial serialization.
         #
         # @return [Boolean]
         def partial?
@@ -36,8 +36,6 @@ module Apiwork
         end
 
         # @api public
-        # Whether this param is an object.
-        #
         # @return [Boolean]
         def object?
           true

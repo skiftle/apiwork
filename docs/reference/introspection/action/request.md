@@ -41,9 +41,7 @@ The body for this request.
 
 `#body?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/request.rb#L49)
-
-Whether this request has a body.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/request.rb#L45)
 
 **Returns**
 
@@ -69,9 +67,7 @@ The query for this request.
 
 `#query?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/request.rb#L41)
-
-Whether this request has a query.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/request.rb#L39)
 
 **Returns**
 
@@ -83,7 +79,7 @@ Whether this request has a query.
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/request.rb#L57)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/request.rb#L53)
 
 Converts this request to a hash.
 

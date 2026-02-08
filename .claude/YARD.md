@@ -8,25 +8,231 @@ Checklist for auditing YARD documentation in `lib/apiwork/`.
 
 ## Description Rules
 
-**Principle:** Only describe what the reader cannot already infer from the method name and type.
+**Description only when it adds information beyond the signature.**
 
-### When to Skip
+Signature = method name + parameters + return type. If these say everything, no description.
 
-If the method name + type tells the full story, skip the description.
+### When to Add Description
+
+| Method category | Description needed? |
+|-----------------|---------------------|
+| Simple getter (returns stored value) | NO |
+| Predicate (ends with `?`) | NO — only if logic is non-obvious |
+| Mutator (ends with `!`) | NO — only if effect is non-obvious |
+| Computed getter (has logic/fallbacks) | YES — describe the logic |
+| Void/DSL method | YES + `@example` required |
+| Finder | YES — "Finds X by Y." |
+| Transformer | YES — "Transforms X." |
+| Factory | YES — "Creates X." |
+
+### Step 1: Determine Category
+
+| Signal | Category |
+|--------|----------|
+| Ends with `?` | Predicate |
+| Ends with `!` | Mutator |
+| Has `&block` | DSL/Builder |
+| Starts with `find` | Finder |
+| Starts with `transform`/`normalize` | Transformer |
+| Starts with `build`/`create` | Factory |
+| Starts with `register`/`add` | Registrar |
+| Returns value, has fallback/logic | Computed getter |
+| Returns value, no logic | Simple getter |
+
+### Step 2: Apply Rules by Category
+
+**Predicates (`?` methods):**
+
+Default: NO description. The method name says it all.
 
 ```ruby
-# @api public
-# @return [String, nil]
-def email
+# These need NO description — method name is self-explanatory
+deprecated?  # Is it deprecated?
+nullable?    # Is it nullable?
+optional?    # Is it optional?
+abstract?    # Is it abstract?
+scalar?      # Is it scalar?
+array?       # Is it an array?
+object?      # Is it an object?
+union?       # Is it a union?
+string?      # Is it a string?
+integer?     # Is it an integer?
+```
 
+Add description ONLY when:
+1. Jargon: Term has domain-specific meaning (`writable?`, `boundable?`)
+2. Hidden logic: Method checks multiple conditions
+3. Ambiguity: Name could mean different things
+
+```ruby
+# NEEDS description — "writable" is domain jargon
+# @api public
+# Whether this attribute can be modified on create or update.
+#
+# @return [Boolean]
+def writable?
+
+# NEEDS description — checks multiple conditions
+# @api public
+# Whether this type extends another type and the parent is an object.
+#
+# @return [Boolean]
+def extends?
+```
+
+**Mutators (`!` methods):**
+
+Default: NO description. The method name + return type say it all.
+
+```ruby
+# These need NO description
+# @api public
+# @return [void]
+def deprecated!
+
+# @api public
+# @return [void]
+def abstract!
+
+# @api public
+# @return [void]
+def no_content!
+```
+
+Add description ONLY when the effect is non-obvious:
+```ruby
+# NEEDS description — effect is non-obvious
+# @api public
+# Clears all registered items and resets to initial state.
+#
+# @return [void]
+def reset!
+```
+
+**Computed Getter Formula** (when there's fallback logic):
+```
+Uses {#method} if set, otherwise [fallback].
+Derived from [source].
+```
+
+**Finder Formula**:
+```
+Finds [thing] by [key].
+```
+
+**DSL Formula**:
+```
+Defines [thing].
+```
+
+### Step 3: Lookup Context (when using formula)
+
+| Class | Type | Context/Qualifier |
+|-------|------|-------------------|
+| Action | domain | "this action" |
+| API::Base | domain | "this API" |
+| Adapter | domain | "this adapter" |
+| Association | domain | "this association" |
+| Attribute | domain | "this attribute" |
+| Capability | domain | "this capability" |
+| Contract | domain | "this contract" |
+| Controller | domain | "this controller" |
+| Enum | domain | "this enum" |
+| Export | domain | "this export" |
+| Inheritance | domain | "this inheritance" |
+| Issue | domain | "this issue" |
+| Operation | domain | "this operation" |
+| Param::* | domain | "this param" |
+| Representation | domain | "this representation" |
+| Request | domain | "this request" |
+| Resource | domain | "this resource" |
+| Response | domain | "this response" |
+| Serializer | domain | "this serializer" |
+| Transformer | domain | "this transformer" |
+| Type | domain | "this type" |
+| Wrapper | domain | "this wrapper" |
+| Info | helper | "API" |
+| Contact | helper | "contact" |
+| License | helper | "license" |
+| Server | helper | "server" |
+| Definition | helper | use parent context |
+| Shape | helper | use parent context |
+
+**Class not in table?** Add it before writing YARD.
+
+### Examples
+
+```ruby
+# Simple getter — NO description
+# @api public
+# @return [String]
+attr_reader :name
+
+# Predicate — NO description (method name is self-explanatory)
 # @api public
 # @return [Boolean]
 def deprecated?
+
+# @api public
+# @return [Boolean]
+def nullable?
+
+# @api public
+# @return [Boolean]
+def array?
+
+# Mutator — NO description (effect is obvious)
+# @api public
+# @return [void]
+def deprecated!
+
+# @api public
+# @return [void]
+def abstract!
+
+# Non-obvious predicate — description needed (jargon)
+# @api public
+# Whether this attribute can be modified on create or update.
+#
+# @return [Boolean]
+def writable?
+
+# Non-obvious predicate — description needed (hidden logic)
+# @api public
+# Whether this type extends another type and the parent is an object.
+#
+# @return [Boolean]
+def extends?
+
+# Computed getter — description needed (fallback logic)
+# @api public
+# Uses {#type_name} if set, otherwise the model's `sti_name`.
+#
+# @return [String]
+def sti_name
+
+# Finder — description needed
+# @api public
+# Finds an API by mount path.
+#
+# @param path [String]
+# @return [API::Base, nil]
+def find(path)
+
+# DSL — description + @example needed
+# @api public
+# Defines an action on this contract.
+#
+# @param name [Symbol]
+# @yieldparam action [Action]
+# @return [Action]
+#
+# @example
+#   action :create do |action|
+#     action.request { body { string :title } }
+#   end
+def action(name, &block)
 ```
-
-### When to Write
-
-Write when there is extra information: behavior, domain terms, fallback logic, scope.
 
 ### Style
 
@@ -34,30 +240,6 @@ Write when there is extra information: behavior, domain terms, fallback logic, s
 - Active voice, present tense
 - No filler words ("This method", "allows you to")
 - Describe behavior, not existence
-
-```ruby
-# Good — describes behavior
-# @api public
-# Transforms request and response keys in query and body.
-#
-# @return [Symbol, nil]
-def key_format
-
-# Good — explains fallback
-# @api public
-# Uses type_name if set, otherwise the model's sti_name.
-#
-# @return [String]
-# @see #type_name
-def sti_name
-
-# Good — explains domain term
-# @api public
-# The Single Table Inheritance type name for polymorphic serialization.
-#
-# @return [String]
-def polymorphic_name
-```
 
 ---
 
@@ -197,27 +379,105 @@ Strict order for all `@api public` methods:
 
 ## @param Format
 
+### Signal-Based Rules
+
+Check the method signature for signals. Apply rules mechanically.
+
+| Signal in signature | @param format |
+|---------------------|---------------|
+| `name` (no default) | `@param name [Type]` |
+| `name = value` | `@param name [Type] (default: value)` |
+| `name = nil` | `@param name [Type, nil]` |
+
+### Default Values
+
+**Signal:** `= value` in method signature.
+
 ```ruby
-# Self-evident — skip description
+# Signature: def action(name, replace: false)
+@param name [Symbol]
+@param replace [Boolean] (default: false)
+
+# Signature: def find(key, scope: nil)
+@param key [Symbol]
+@param scope [Symbol, nil]
+
+# Signature: def paginate(limit: 25, offset: 0)
+@param limit [Integer] (default: 25)
+@param offset [Integer] (default: 0)
+```
+
+**Rule:** If signature has `= nil`, type includes `nil` but no `(default: nil)`.
+
+### Enum Values
+
+**Signal:** Known from code inspection (validation, constant, or explicit annotation).
+
+| Count | Format |
+|-------|--------|
+| 2 values | `:a or :b` |
+| 3 values | `:a, :b, or :c` |
+| 4+ values | `see {CONSTANT}` or list if no constant |
+
+```ruby
+# 2 values
+@param direction [Symbol] :asc or :desc
+
+# 3 values
+@param format [Symbol] :json, :xml, or :csv
+
+# 4+ values — reference constant
+@param status [Symbol] see {STATUS_VALUES}
+
+# Enum + default
+@param direction [Symbol] :asc or :desc (default: :asc)
+```
+
+### Constraints
+
+**Signal:** Validation in method body or semantic meaning.
+
+```ruby
+# Positive constraint
+@param limit [Integer] must be positive
+
+# Behavior explanation
+@param fallback [String, nil] used if primary is blank
+```
+
+### Skip Description When
+
+- Parameter name is self-evident: `name`, `id`, `key`, `value`
+- Type annotation is sufficient: `klass [Class<Adapter::Base>]`
+- No default, no enum, no constraint
+
+```ruby
+# Self-evident — no description
 @param name [Symbol]
 @param id [Integer]
 @param klass [Class<Adapter::Base>]
-
-# Constraint — include description
-@param direction [Symbol] :asc or :desc
-@param limit [Integer] must be positive
-
-# Default value — include description
-@param replace [Boolean] (default: false)
-
-# Behavior — include description
-@param fallback [String, nil] used if primary is blank
-
-# Include nil in type if optional
-@param value [String, nil]
 ```
 
-Same principle as method descriptions: only describe when it adds information.
+### Decision Tree
+
+```
+1. Has `= nil` in signature?
+   → Add nil to type: [Type, nil]
+   → No description needed for default
+
+2. Has `= value` (non-nil) in signature?
+   → Add (default: value) at end
+
+3. Has known enum values?
+   → 2-3 values: list inline with "or"
+   → 4+ values: reference constant
+
+4. Has constraint or special behavior?
+   → Add brief description
+
+5. None of above?
+   → Type only, no description
+```
 
 ---
 
@@ -293,13 +553,76 @@ When method returns a class (not instance), description says "X class":
 
 ## @yield / @yieldparam
 
-```ruby
-# Block with named parameter — use both
-# @yield block for configuration
-# @yieldparam config [Configuration] the configuration object
+### Signal-Based Rules
 
-# Block with instance_eval — only @yield
-# @yield block evaluated in resource context
+Check how the block is called in the method body.
+
+| Signal in code | Use |
+|----------------|-----|
+| `yield(object)` or `block.call(object)` | `@yieldparam` only |
+| `instance_eval(&block)` or `instance_exec(&block)` | `@yield` only |
+
+### Yield-style (block receives parameter)
+
+**Signal:** `yield(x)`, `block.call(x)`, `block.arity.positive?`
+
+```ruby
+# Code: yield(action)
+# Use only @yieldparam — @yield is redundant
+
+# @yieldparam action [Action]
+def action(name, &block)
+  action = Action.new(name)
+  yield(action) if block
+end
+```
+
+### instance_eval-style (no parameter)
+
+**Signal:** `instance_eval(&block)`, `instance_exec(&block)`
+
+```ruby
+# Code: instance_eval(&block)
+# Use only @yield — no parameter to document
+
+# @yield block evaluated in action context
+def action(name, &block)
+  action = Action.new(name)
+  action.instance_eval(&block) if block
+end
+```
+
+### Hybrid (supports both)
+
+**Signal:** `block.arity.positive? ? yield(x) : instance_eval(&block)`
+
+```ruby
+# Code checks arity
+# Document both styles
+
+# @yield block evaluated in action context (instance_eval style)
+# @yieldparam action [Action] (yield style)
+def action(name, &block)
+  action = Action.new(name)
+  if block
+    block.arity.positive? ? yield(action) : action.instance_eval(&block)
+  end
+end
+```
+
+### Decision Tree
+
+```
+1. Check method body for block usage
+
+2. Uses yield(x) or block.call(x)?
+   → @yieldparam name [Type] only
+
+3. Uses instance_eval(&block)?
+   → @yield description only
+
+4. Checks arity and supports both?
+   → Both @yield and @yieldparam
 ```
 
 ---
@@ -335,8 +658,9 @@ grep -rn "@param.*\[Class\]" lib/
 # @return with description (forbidden)
 grep -rn "@return \[[^]]*\] [a-z]" lib/
 
-# Predicates not following formula
-grep -rn "# Whether" lib/ | grep -v "Whether this"
+# Predicates with unnecessary descriptions (should be rare)
+# Only predicates with jargon, hidden logic, or ambiguity need descriptions
+grep -rn "# Whether this.*is " lib/
 
 # Void methods missing @example (manual check required)
 ```
@@ -347,13 +671,16 @@ grep -rn "# Whether" lib/ | grep -v "Whether this"
 
 For each `@api public` method:
 
-1. [ ] Description only if it adds info beyond method name + type
-2. [ ] Description uses mechanical pattern (transformation, fallback, etc.)
-3. [ ] No redundant descriptions ("The email." on `def email`)
-4. [ ] Void methods have verb prefix + @example
-5. [ ] Tag order correct
-6. [ ] @param lowercase, no period
-7. [ ] @return type only, no description after type
-8. [ ] Class returns use `Class<Type>`, never bare `[Class]`
-9. [ ] If signature has `= nil`, type includes nil
-10. [ ] No forbidden phrases
+1. [ ] Simple getters: NO description
+2. [ ] Predicates (`?`): NO description — unless jargon, hidden logic, or ambiguous
+3. [ ] Mutators (`!`): NO description — unless effect is non-obvious
+4. [ ] Computed getters: describe the logic/fallback
+5. [ ] Void/DSL methods: verb prefix + `@example`
+6. [ ] Finders: "Finds X by Y."
+7. [ ] @param: signal-based (default, enum, constraint, or skip)
+8. [ ] @return: type only, no description
+9. [ ] @yield/@yieldparam: signal-based (yield vs instance_eval)
+10. [ ] Class returns use `Class<Type>`, never bare `[Class]`
+11. [ ] If signature has `= nil`, type includes nil
+12. [ ] No forbidden phrases
+13. [ ] Tag order correct

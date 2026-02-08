@@ -113,6 +113,8 @@ module Apiwork
       useful_tags = method.docstring.tags.reject do |tag|
         next true if tag.tag_name == 'api'
         next false if tag.tag_name == 'see' && tag.name.present?
+        next false if tag.tag_name == 'return' && tag.types.present?
+        next false if tag.tag_name == 'param' && tag.types.present?
 
         tag.text.to_s.strip.empty?
       end

@@ -46,9 +46,7 @@ The body for this response.
 
 `#body?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/response.rb#L43)
-
-Whether this response has a body.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/response.rb#L39)
 
 **Returns**
 
@@ -60,9 +58,7 @@ Whether this response has a body.
 
 `#no_content?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/response.rb#L35)
-
-Whether this response has no content.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/response.rb#L33)
 
 **Returns**
 
@@ -74,7 +70,7 @@ Whether this response has no content.
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/response.rb#L51)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/response.rb#L47)
 
 Converts this response to a hash.
 

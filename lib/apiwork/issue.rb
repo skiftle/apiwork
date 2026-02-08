@@ -8,26 +8,18 @@ module Apiwork
   # coercion, or constraint checks. Access via `contract.issues`.
   class Issue
     # @api public
-    # The code for this issue.
-    #
     # @return [Symbol]
     attr_reader :code
 
     # @api public
-    # The detail for this issue.
-    #
     # @return [String]
     attr_reader :detail
 
     # @api public
-    # The meta for this issue.
-    #
     # @return [Hash]
     attr_reader :meta
 
     # @api public
-    # The path for this issue.
-    #
     # @return [Array<Symbol, Integer>]
     attr_reader :path
 
@@ -69,7 +61,7 @@ module Apiwork
     end
 
     # @api public
-    # The string representation for this issue.
+    # Converts this issue to a string.
     #
     # @return [String]
     def to_s

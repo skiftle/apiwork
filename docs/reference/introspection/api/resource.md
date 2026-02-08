@@ -32,9 +32,7 @@ end
 
 `#actions`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L55)
-
-The actions for this resource.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L47)
 
 **Returns**
 
@@ -50,9 +48,7 @@ Hash{Symbol =&gt; [Introspection::Action](/reference/introspection/action/)}
 
 `#identifier`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L30)
-
-The identifier for this resource.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L28)
 
 **Returns**
 
@@ -64,9 +60,7 @@ The identifier for this resource.
 
 `#parent_identifiers`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L46)
-
-The parent identifiers for this resource.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L40)
 
 **Returns**
 
@@ -78,9 +72,7 @@ The parent identifiers for this resource.
 
 `#path`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L38)
-
-The URL path segment for this resource.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L34)
 
 **Returns**
 
@@ -92,9 +84,7 @@ The URL path segment for this resource.
 
 `#resources`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L63)
-
-The nested resources for this resource.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L53)
 
 **Returns**
 
@@ -106,7 +96,7 @@ Hash{Symbol =&gt; [Resource](/reference/api/resource)}
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L71)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L61)
 
 Converts this resource to a hash.
 

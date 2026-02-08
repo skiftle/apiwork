@@ -204,12 +204,7 @@ module Apiwork
       end
 
       # @api public
-      # Whether this API is deprecated.
-      #
       # @return [Boolean]
-      #
-      # @example
-      #   info.deprecated?  # => true
       def deprecated?
         @deprecated
       end
