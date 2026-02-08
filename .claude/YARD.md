@@ -409,6 +409,10 @@ Strict order for all `@api public` methods:
 
 ## @param Format
 
+Type + extra info endast. Ingen beskrivning.
+
+**Extra info:** enum values, default values, constraints.
+
 | Signal in signature | Format |
 |---------------------|--------|
 | `name` (no default) | `@param name [Type]` |
@@ -431,34 +435,23 @@ If you don't know the default, don't guess. Just document the type.
 
 ### Enum Values
 
-**Always alphabetical order.** No exceptions.
+**Always alphabetical order.** Always in backticks.
 
 | Count | Format |
 |-------|--------|
-| 2 values | `:a or :b` |
-| 3 values | `:a, :b, or :c` |
+| 2 values | `` `a` or `b` `` |
+| 3 values | `` `a`, `b`, or `c` `` |
 | 4+ values | `see {CONSTANT}` |
 
 ```ruby
-# Bad — arbitrary order
-@param type [Symbol] :string, :integer, or :boolean
+# Symbols
+@param direction [Symbol] `:asc` or `:desc`
 
-# Good — alphabetical
-@param type [Symbol] :boolean, :integer, or :string
+# Strings
+@param format [String] `"json"` or `"xml"`
 
-# Good — alphabetical with default
-@param direction [Symbol] :asc or :desc (default: :asc)
-```
-
-### Skip Description When
-
-- Parameter name is self-evident: `name`, `id`, `key`, `value`
-- Type annotation is sufficient
-
-```ruby
-@param name [Symbol]
-@param id [Integer]
-@param klass [Class<Adapter::Base>]
+# With default
+@param direction [Symbol] `:asc` or `:desc` (default: `:asc`)
 ```
 
 ---
