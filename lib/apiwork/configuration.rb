@@ -37,7 +37,8 @@ module Apiwork
       value = args.first
       if block && option.nested?
         @storage[name] ||= {}
-        Configuration.new(option, @storage[name]).instance_eval(&block)
+        nested = Configuration.new(option, @storage[name])
+        block.arity.positive? ? yield(nested) : nested.instance_eval(&block)
       else
         option.validate!(value)
         @storage[name] = value

@@ -8,10 +8,16 @@ module Apiwork
     # Used inside `option :name, type: :hash do ... end` blocks
     # in {Adapter::Base} and {Export::Base} subclasses.
     #
-    # @example Nested pagination options
+    # @example instance_eval style
     #   option :pagination, type: :hash do
     #     option :strategy, type: :symbol, default: :offset
     #     option :default_size, type: :integer, default: 20
+    #   end
+    #
+    # @example yield style
+    #   option :pagination, type: :hash do |option|
+    #     option.option :strategy, type: :symbol, default: :offset
+    #     option.option :default_size, type: :integer, default: 20
     #   end
     #
     # @see Adapter::Base
@@ -33,7 +39,9 @@ module Apiwork
         @enum = enum
         @children = children || {}
 
-        instance_eval(&block) if block && type == :hash
+        return unless block && type == :hash
+
+        block.arity.positive? ? yield(self) : instance_eval(&block)
       end
 
       # @api public
@@ -43,7 +51,21 @@ module Apiwork
       # @param type [Symbol] :symbol, :string, :integer, :boolean, or :hash
       # @param default [Object, nil] the default value
       # @param enum [Array, nil] allowed values
-      # @yield block evaluated in {Option} context (for :hash type)
+      # @yield block for nested options (type: :hash)
+      # @yieldparam option [Option]
+      # @return [void]
+      #
+      # @example instance_eval style
+      #   option :pagination, type: :hash do
+      #     option :strategy, type: :symbol, default: :offset
+      #     option :default_size, type: :integer, default: 20
+      #   end
+      #
+      # @example yield style
+      #   option :pagination, type: :hash do |option|
+      #     option.option :strategy, type: :symbol, default: :offset
+      #     option.option :default_size, type: :integer, default: 20
+      #   end
       def option(name, default: nil, enum: nil, type:, &block)
         @children[name] = Option.new(name, type, default:, enum:, &block)
       end

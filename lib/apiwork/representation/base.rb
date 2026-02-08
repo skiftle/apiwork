@@ -137,15 +137,22 @@ module Apiwork
         # resource. Available options depend on the adapter being used.
         #
         # @yield block for adapter configuration
-        # @see Adapter::Base
+        # @yieldparam adapter [Configuration]
+        # @return [void]
         #
-        # @example Custom pagination for this resource
-        #   class ActivityRepresentation < Apiwork::Representation::Base
-        #     adapter do
-        #       pagination do
-        #         strategy :cursor
-        #         default_size 50
-        #       end
+        # @example instance_eval style
+        #   adapter do
+        #     pagination do
+        #       strategy :cursor
+        #       default_size 50
+        #     end
+        #   end
+        #
+        # @example yield style
+        #   adapter do |adapter|
+        #     adapter.pagination do |pagination|
+        #       pagination.strategy :cursor
+        #       pagination.default_size 50
         #     end
         #   end
         def adapter(&block)
@@ -153,7 +160,7 @@ module Apiwork
 
           self._adapter_config = _adapter_config.dup
           config = Configuration.new(api_class.adapter_class, _adapter_config)
-          config.instance_eval(&block)
+          block.arity.positive? ? yield(config) : config.instance_eval(&block)
         end
 
         def adapter_config

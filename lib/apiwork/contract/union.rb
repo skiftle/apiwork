@@ -8,7 +8,7 @@ module Apiwork
     # Accessed via `union :name, discriminator: do` inside contract actions.
     # Use {#variant} to define possible types.
     #
-    # @example Discriminated union
+    # @example instance_eval style
     #   union :payment_method, discriminator: :type do
     #     variant tag: 'card' do
     #       object do
@@ -22,10 +22,18 @@ module Apiwork
     #     end
     #   end
     #
-    # @example Simple union
-    #   union :amount do
-    #     variant { integer }
-    #     variant { decimal }
+    # @example yield style
+    #   union :payment_method, discriminator: :type do |union|
+    #     union.variant tag: 'card' do |variant|
+    #       variant.object do |object|
+    #         object.string :last_four
+    #       end
+    #     end
+    #     union.variant tag: 'bank' do |variant|
+    #       variant.object do |object|
+    #         object.string :account_number
+    #       end
+    #     end
     #   end
     #
     # @see API::Union Block context for reusable unions

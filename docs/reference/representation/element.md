@@ -1,5 +1,5 @@
 ---
-order: 80
+order: 82
 prev: false
 next: false
 ---
@@ -92,7 +92,7 @@ end
 
 `#array(shape: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L136)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L160)
 
 Defines an array.
 
@@ -105,6 +105,24 @@ Defines an array.
 **Returns**
 
 `void`
+
+**Yields** [Element](/reference/api/element)
+
+**Example: instance_eval style**
+
+```ruby
+array do
+  string
+end
+```
+
+**Example: yield style**
+
+```ruby
+array do |element|
+  element.string
+end
+```
 
 ---
 
@@ -211,7 +229,7 @@ Defines an integer.
 
 `#literal(value:)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L156)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L199)
 
 Defines a literal value.
 
@@ -252,7 +270,7 @@ Defines a number.
 
 `#object(shape: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L126)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L139)
 
 Defines an object.
 
@@ -265,6 +283,26 @@ Defines an object.
 **Returns**
 
 `void`
+
+**Yields** `Object`
+
+**Example: instance_eval style**
+
+```ruby
+object do
+  string :name
+  integer :count
+end
+```
+
+**Example: yield style**
+
+```ruby
+object do |object|
+  object.string :name
+  object.integer :count
+end
+```
 
 ---
 
@@ -298,7 +336,7 @@ Only complex types (:object, :array, :union) are allowed.
 
 `#reference(type_name, to: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L166)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L209)
 
 Defines a reference to a named type.
 
@@ -356,7 +394,7 @@ Defines a time.
 
 `#union(discriminator: nil, shape: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L147)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L190)
 
 Defines a union.
 
@@ -370,6 +408,32 @@ Defines a union.
 **Returns**
 
 `void`
+
+**Yields** [Union](/reference/api/union)
+
+**Example: instance_eval style**
+
+```ruby
+union discriminator: :type do
+  variant tag: 'card' do
+    object do
+      string :last_four
+    end
+  end
+end
+```
+
+**Example: yield style**
+
+```ruby
+union discriminator: :type do |union|
+  union.variant tag: 'card' do |variant|
+    variant.object do |object|
+      object.string :last_four
+    end
+  end
+end
+```
 
 ---
 

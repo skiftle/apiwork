@@ -15,6 +15,7 @@ next: false
 - [Info](./info/)
 - [Object](./object)
 - [Resource](./resource)
+- [Union](./union)
 
 ## Class Methods
 

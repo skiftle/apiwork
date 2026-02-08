@@ -10,6 +10,30 @@ module Apiwork
       @variants = []
     end
 
+    # @api public
+    # Defines a union variant.
+    #
+    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param description [String, nil] documentation description
+    # @param partial [Boolean, nil] partial type definition
+    # @param tag [String, nil] discriminator tag value (required when union has discriminator)
+    # @yield block defining the variant type
+    # @yieldparam variant [Element]
+    # @return [void]
+    #
+    # @example instance_eval style
+    #   variant tag: 'card' do
+    #     object do
+    #       string :last_four
+    #     end
+    #   end
+    #
+    # @example yield style
+    #   variant tag: 'card' do |variant|
+    #     variant.object do |object|
+    #       object.string :last_four
+    #     end
+    #   end
     def variant(deprecated: nil, description: nil, partial: nil, tag: nil, &block)
       validate_tag!(tag)
       raise ArgumentError, 'variant requires a block' unless block

@@ -91,7 +91,7 @@ module Apiwork
         #
         # @param name [Symbol] export name to enable
         # @yield block for export configuration
-        # @yieldparam config [Configuration]
+        # @yieldparam export [Configuration]
         # @return [void]
         #
         # @example Enable OpenAPI export
@@ -143,7 +143,7 @@ module Apiwork
         #
         # @param name [Symbol, nil] adapter name (default: :standard)
         # @yield block for adapter configuration
-        # @yieldparam config [Configuration]
+        # @yieldparam adapter [Configuration]
         # @return [Adapter::Base, nil]
         #
         # @example Configure adapter (instance_eval style)

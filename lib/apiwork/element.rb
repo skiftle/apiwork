@@ -122,7 +122,20 @@ module Apiwork
     #
     # @param shape [Object, nil] pre-built shape
     # @yield block defining nested structure
+    # @yieldparam object [Object]
     # @return [void]
+    #
+    # @example instance_eval style
+    #   object do
+    #     string :name
+    #     integer :count
+    #   end
+    #
+    # @example yield style
+    #   object do |object|
+    #     object.string :name
+    #     object.integer :count
+    #   end
     def object(shape: nil, &block)
       of(:object, shape:, &block)
     end
@@ -132,7 +145,18 @@ module Apiwork
     #
     # @param shape [Object, nil] pre-built shape
     # @yield block defining element type
+    # @yieldparam element [Element]
     # @return [void]
+    #
+    # @example instance_eval style
+    #   array do
+    #     string
+    #   end
+    #
+    # @example yield style
+    #   array do |element|
+    #     element.string
+    #   end
     def array(shape: nil, &block)
       of(:array, shape:, &block)
     end
@@ -143,7 +167,26 @@ module Apiwork
     # @param discriminator [Symbol, nil] discriminator field name
     # @param shape [Union, nil] pre-built shape
     # @yield block defining union variants
+    # @yieldparam union [Union]
     # @return [void]
+    #
+    # @example instance_eval style
+    #   union discriminator: :type do
+    #     variant tag: 'card' do
+    #       object do
+    #         string :last_four
+    #       end
+    #     end
+    #   end
+    #
+    # @example yield style
+    #   union discriminator: :type do |union|
+    #     union.variant tag: 'card' do |variant|
+    #       variant.object do |object|
+    #         object.string :last_four
+    #       end
+    #     end
+    #   end
     def union(discriminator: nil, shape: nil, &block)
       of(:union, discriminator:, shape:, &block)
     end
