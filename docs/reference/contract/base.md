@@ -197,7 +197,7 @@ Types, enums, and unions defined on this contract are namespaced
 with this prefix in introspection output. For example, a type
 :address becomes :invoice_address when identifier is :invoice.
 
-If not set, prefix is derived from representation's root_key or class name.
+If not set, prefix is derived from representation's root_key or the contract's class name.
 
 **Parameters**
 
@@ -393,6 +393,29 @@ end
 
 ---
 
+### .representation_class
+
+`.representation_class`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L426)
+
+The representation class for this contract.
+
+Returns the representation class set via [.representation](#representation).
+
+**Returns**
+
+Class&lt;[Representation::Base](/reference/representation/base)&gt;, `nil`
+
+**Example**
+
+```ruby
+InvoiceContract.representation_class
+# => InvoiceRepresentation
+```
+
+---
+
 ### .union
 
 `.union(name, discriminator: nil, &block)`
@@ -465,7 +488,7 @@ The body for this contract.
 
 `#invalid?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L544)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L554)
 
 Whether this contract is invalid.
 
@@ -521,7 +544,7 @@ The request for this contract.
 
 `#valid?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L536)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L546)
 
 Whether this contract is valid.
 

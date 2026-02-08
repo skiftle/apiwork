@@ -95,7 +95,7 @@ module Apiwork
         # with this prefix in introspection output. For example, a type
         # :address becomes :invoice_address when identifier is :invoice.
         #
-        # If not set, prefix is derived from representation's root_key or class name.
+        # If not set, prefix is derived from representation's root_key or the contract's class name.
         #
         # @param value [Symbol, String, nil] the scope prefix
         # @return [String, nil]
@@ -413,6 +413,16 @@ module Apiwork
           end
         end
 
+        # @api public
+        # The representation class for this contract.
+        #
+        # Returns the representation class set via {.representation}.
+        #
+        # @return [Class<Representation::Base>, nil]
+        #
+        # @example
+        #   InvoiceContract.representation_class
+        #   # => InvoiceRepresentation
         def representation_class
           _representation_class
         end
