@@ -24,9 +24,9 @@ The license name.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `value` | `String, nil` |  |
+| Name | Type |
+|------|------|
+| `value` | `String, nil` |
 
 **Returns**
 
@@ -51,9 +51,9 @@ The license URL.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `value` | `String, nil` |  |
+| Name | Type |
+|------|------|
+| `value` | `String, nil` |
 
 **Returns**
 

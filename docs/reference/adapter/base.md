@@ -42,9 +42,9 @@ end
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `value` | `Symbol, String, nil` |  |
+| Name | Type |
+|------|------|
+| `value` | `Symbol, String, nil` |
 
 **Returns**
 
@@ -72,7 +72,7 @@ that handle both introspection and runtime behavior.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `klass` | `Class<Capability::Base>` | the capability class |
 
 **Returns**
@@ -98,9 +98,9 @@ Sets the wrapper class for collection responses.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `klass` | `Class<Wrapper::Collection::Base>, nil` |  |
+| Name | Type |
+|------|------|
+| `klass` | `Class<Wrapper::Collection::Base>, nil` |
 
 **Returns**
 
@@ -124,9 +124,9 @@ Sets the serializer class for errors.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `klass` | `Class<Serializer::Error::Base>, nil` |  |
+| Name | Type |
+|------|------|
+| `klass` | `Class<Serializer::Error::Base>, nil` |
 
 **Returns**
 
@@ -150,9 +150,9 @@ Sets the wrapper class for error responses.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `klass` | `Class<Wrapper::Error::Base>, nil` |  |
+| Name | Type |
+|------|------|
+| `klass` | `Class<Wrapper::Error::Base>, nil` |
 
 **Returns**
 
@@ -176,9 +176,9 @@ Sets the wrapper class for single-record responses.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `klass` | `Class<Wrapper::Member::Base>, nil` |  |
+| Name | Type |
+|------|------|
+| `klass` | `Class<Wrapper::Member::Base>, nil` |
 
 **Returns**
 
@@ -206,7 +206,7 @@ call `option` to define child options.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `name` | `Symbol` | option name |
 | `type` | `Symbol` | :symbol, :string, :integer, :boolean, or :hash |
 | `default` | `Object, nil` | default value |
@@ -254,9 +254,9 @@ Sets the serializer class for records and collections.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `klass` | `Class<Serializer::Resource::Base>, nil` |  |
+| Name | Type |
+|------|------|
+| `klass` | `Class<Serializer::Resource::Base>, nil` |
 
 **Returns**
 
@@ -281,7 +281,7 @@ Skips an inherited capability by name.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `name` | `Symbol` | the capability_name to skip |
 
 **Returns**

@@ -43,7 +43,7 @@ The contract builder class for this serializer.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `klass` | `Class<Builder::Contract::Base>, nil` | the builder class |
 
 **Returns**
@@ -63,7 +63,7 @@ The data type resolver for this serializer.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `block` | `Proc, nil` | block that receives representation_class and returns type name |
 
 **Returns**

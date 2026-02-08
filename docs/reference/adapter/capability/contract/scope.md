@@ -23,9 +23,9 @@ Use this to query contract-specific state when building types.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `Symbol` |  |
+| Name | Type |
+|------|------|
+| `name` | `Symbol` |
 
 **Returns**
 

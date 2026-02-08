@@ -25,7 +25,7 @@ Finds an export by name.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `name` | `Symbol` | the export name |
 
 **Returns**
@@ -55,7 +55,7 @@ Finds an export by name.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `name` | `Symbol` | the export name |
 
 **Returns**
@@ -85,7 +85,7 @@ Generates an export for an API.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `export_name` | `Symbol` | the export name (:openapi, :typescript, :zod) |
 | `api_path` | `String` | the API path |
 | `format` | `Symbol` | output format (:json, :yaml) - hash exports only |
@@ -122,7 +122,7 @@ Registers an export.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `klass` | `Class<Export::Base>` | the export class with export_name set |
 
 **See also**

@@ -37,9 +37,9 @@ Sets or gets the adapter for this API.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `Symbol, nil` |  |
+| Name | Type |
+|------|------|
+| `name` | `Symbol, nil` |
 
 **Returns**
 
@@ -73,7 +73,7 @@ be included in multiple resources via the `concerns` option.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `name` | `Symbol` | concern name |
 
 **Returns**
@@ -120,14 +120,14 @@ Defines a reusable enumeration type.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
+| Name | Type | Default |
+|------|------|------|
 | `name` | `Symbol` |  |
 | `values` | `Array<String>, nil` |  |
 | `scope` | `Class<Contract::Base>, nil` |  |
 | `description` | `String, nil` |  |
 | `example` | `String, nil` |  |
-| `deprecated` | `Boolean` | (default: false) |
+| `deprecated` | `Boolean` | `default: false` |
 
 **Returns**
 
@@ -152,7 +152,7 @@ Enables an export for this API.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `name` | `Symbol` | :openapi, :typescript, or :zod |
 
 **Returns**
@@ -219,7 +219,7 @@ Transforms request and response keys.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `format` | `Symbol, nil` | :keep, :camel, :underscore, or :kebab |
 
 **Returns**
@@ -244,14 +244,14 @@ Defines a reusable object type.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
+| Name | Type | Default |
+|------|------|------|
 | `name` | `Symbol` |  |
 | `scope` | `Class<Contract::Base>, nil` |  |
 | `description` | `String, nil` |  |
 | `example` | `Object, nil` |  |
 | `format` | `String, nil` |  |
-| `deprecated` | `Boolean` | (default: false) |
+| `deprecated` | `Boolean` | `default: false` |
 | `representation_class` | `Class<Representation::Base>, nil` |  |
 
 **Returns**
@@ -294,7 +294,7 @@ Transforms resource and action names in URL paths.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `format` | `Symbol, nil` | :keep, :kebab, :camel, or :underscore |
 
 **Returns**
@@ -322,7 +322,7 @@ Included in generated specs (OpenAPI, etc.) as possible error responses.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `error_code_keys` | `Array<Symbol>` | registered error code keys |
 
 **Returns**
@@ -352,7 +352,7 @@ like user profile or application settings.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `name` | `Symbol` | resource name (singular) |
 | `concerns` | `Array<Symbol>` | concerns to include |
 | `constraints` | `Hash, Proc` | route constraints (regex, lambdas) |
@@ -403,7 +403,7 @@ Nested resources and custom actions can be defined in the block.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `name` | `Symbol` | resource name (plural) |
 | `concerns` | `Array<Symbol>` | concerns to include |
 | `constraints` | `Hash, Proc` | route constraints (regex, lambdas) |
@@ -451,13 +451,13 @@ Defines a discriminated union type.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
+| Name | Type | Default |
+|------|------|------|
 | `name` | `Symbol` |  |
 | `discriminator` | `Symbol, nil` |  |
 | `scope` | `Class<Contract::Base>, nil` |  |
 | `description` | `String, nil` |  |
-| `deprecated` | `Boolean` | (default: false) |
+| `deprecated` | `Boolean` | `default: false` |
 
 **Returns**
 
@@ -494,7 +494,7 @@ constraints, controller, param, path.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `options` | `Hash` | options to apply to nested resources |
 
 **Returns**

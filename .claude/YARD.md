@@ -121,7 +121,7 @@ Methods that take `&block`. Check these signals in order:
 |--------|---------|---------|
 | Takes name/key parameter | "Defines a/an [what]..." | `action(name, &block)` → "Defines an action for this contract." |
 | `@return [Array<T>]` or `[Hash]` | "Defines a/an [what]..." | `server(&block)` → "Defines a server for the API." |
-| `@return [void]` | "Defines [what]..." | (sällsynt) |
+| `@return [void]` | "Defines [what]..." | (rare) |
 | `@return [T]` (single object) | "The [what]." | `contact(&block)` → "The API contact." |
 
 ```ruby
@@ -409,50 +409,79 @@ Strict order for all `@api public` methods:
 
 ## @param Format
 
-Type + extra info endast. Ingen beskrivning.
+Type in brackets. Default in parentheses. Values in square brackets. Description last.
 
-**Extra info:** enum values, default values, constraints.
+### Pattern
 
-| Signal in signature | Format |
-|---------------------|--------|
-| `name` (no default) | `@param name [Type]` |
-| `name = value` | `@param name [Type] (default: value)` |
-| `name = nil` | `@param name [Type, nil]` |
-
-### Default Values
-
-**Only document defaults when verified against code.**
-
-```ruby
-# Verified default:
-@param empty [Symbol, nil] :keep or :null (default: :null)
-
-# Unknown default — omit:
-@param empty [Symbol, nil] :keep or :null
+```
+@param name [Type] (default) [:value1, :value2] description
 ```
 
-If you don't know the default, don't guess. Just document the type.
+All parts after `[Type]` are optional:
 
-### Enum Values
+1. `[Type]` — type in brackets (required)
+2. `(default)` — default value in parentheses
+3. `[:values]` — allowed values in square brackets
+4. Description — freeform text
 
-**Always alphabetical order.** Always in backticks.
+### Type Formats
 
-| Count | Format |
-|-------|--------|
-| 2 values | `` `a` or `b` `` |
-| 3 values | `` `a`, `b`, or `c` `` |
-| 4+ values | `see {CONSTANT}` |
+| Scenario | Format |
+|----------|--------|
+| Simple type | `[Symbol]` |
+| Nullable type | `[Symbol, nil]` |
+| Boolean | `[Boolean]` |
+| Nullable boolean | `[Boolean, nil]` |
+| Hash with structure | `[Hash{on: Array<Symbol>}]` |
+| Container type | `[Array<String>]` |
 
+### Examples
+
+**Just type (required param):**
 ```ruby
-# Symbols
-@param direction [Symbol] `:asc` or `:desc`
-
-# Strings
-@param format [String] `"json"` or `"xml"`
-
-# With default
-@param direction [Symbol] `:asc` or `:desc` (default: `:asc`)
+# @param name [Symbol]
 ```
+
+**With default:**
+```ruby
+# @param deprecated [Boolean] (false)
+```
+
+**With values:**
+```ruby
+# @param type [Symbol] [:string, :integer, :boolean]
+```
+
+**With default + values:**
+```ruby
+# @param include [Symbol] (:optional) [:always, :optional]
+```
+
+**With description:**
+```ruby
+# @param optional [Boolean, nil] auto-detected from model
+```
+
+**All parts:**
+```ruby
+# @param format [Symbol] (:json) [:json, :xml] output format
+```
+
+### Generated Output
+
+The reference generator creates a table with dynamic columns:
+
+| Name | Type | Default | Values | Description |
+|------|------|---------|--------|-------------|
+| `name` | `Symbol` | | | |
+| `deprecated` | `Boolean` | `false` | | |
+| `include` | `Symbol` | `:optional` | `:always`, `:optional` | |
+| `optional` | `Boolean, nil` | | | auto-detected from model |
+
+- **Name** + **Type**: always shown
+- **Default**: shown if any param has `(value)`
+- **Values**: shown if any param has `[:values]` (without brackets in output)
+- **Description**: shown if any param has text
 
 ---
 

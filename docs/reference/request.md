@@ -52,7 +52,7 @@ Creates a new request context.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `body` | `Hash` | the body parameters |
 | `query` | `Hash` | the query parameters |
 

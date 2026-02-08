@@ -235,7 +235,7 @@ Class&lt;[Representation::Base](/reference/representation/base)&gt;, `nil`
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `action` | `Symbol` | :create or :update |
 
 **Returns**

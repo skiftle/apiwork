@@ -59,12 +59,12 @@ Defines a union variant.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `deprecated` | `Boolean` | (default: false) |
-| `description` | `String, nil` | documentation description |
-| `partial` | `Boolean` | (default: false) |
-| `tag` | `String, nil` | discriminator tag value (required when union has discriminator) |
+| Name | Type | Default | Description |
+|------|------|------|------|
+| `deprecated` | `Boolean` | `default: false` |  |
+| `description` | `String, nil` |  | documentation description |
+| `partial` | `Boolean` | `default: false` |  |
+| `tag` | `String, nil` |  | discriminator tag value (required when union has discriminator) |
 
 **Returns**
 

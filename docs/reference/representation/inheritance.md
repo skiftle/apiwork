@@ -84,7 +84,7 @@ Resolves a record to its subclass representation.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `record` | `ActiveRecord::Base` | the record to resolve |
 
 **Returns**

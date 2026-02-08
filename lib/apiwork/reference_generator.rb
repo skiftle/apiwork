@@ -157,12 +157,26 @@ module Apiwork
 
     def extract_params(method)
       method.docstring.tags(:param).map do |tag|
+        parsed = parse_param_description(tag.text)
         {
-          description: tag.text,
+          default: parsed[:default],
+          description: parsed[:description],
           name: tag.name,
           types: tag.types || [],
+          values: parsed[:values],
         }
       end
+    end
+
+    def parse_param_description(text)
+      return { default: nil, description: nil, values: nil } if text.blank?
+
+      match = text.match(/\A(?:\(([^)]+)\))?\s*(?:\[([^\]]+)\])?\s*(.*)\z/)
+      {
+        default: match[1],
+        description: match[3].presence,
+        values: match[2]&.split(/,\s*/),
+      }
     end
 
     def extract_return(method)
@@ -548,13 +562,25 @@ module Apiwork
       parts << "#{linkify_yard_refs(method[:docstring])}\n" if method[:docstring].present?
 
       if method[:params].any?
+        has_default = method[:params].any? { |p| p[:default] }
+        has_values = method[:params].any? { |p| p[:values]&.any? }
+        has_desc = method[:params].any? { |p| p[:description] }
+
         parts << "**Parameters**\n"
-        parts << '| Name | Type | Description |'
-        parts << '|------|------|-------------|'
+
+        header = %w[Name Type]
+        header << 'Default' if has_default
+        header << 'Values' if has_values
+        header << 'Description' if has_desc
+        parts << "| #{header.join(' | ')} |"
+        parts << "|#{'------|' * header.size}"
+
         method[:params].each do |param|
-          types = param[:types].join(', ')
-          desc = linkify_yard_refs(param[:description])&.gsub(/\s*\n\s*/, ' ')
-          parts << "| `#{param[:name]}` | `#{types}` | #{desc} |"
+          row = ["`#{param[:name]}`", "`#{param[:types].join(', ')}`"]
+          row << (param[:default] ? "`#{param[:default]}`" : '') if has_default
+          row << (param[:values] ? param[:values].map { |v| "`#{v}`" }.join(', ') : '') if has_values
+          row << (linkify_yard_refs(param[:description])&.gsub(/\s*\n\s*/, ' ') || '') if has_desc
+          parts << "| #{row.join(' | ')} |"
         end
         parts << ''
       end

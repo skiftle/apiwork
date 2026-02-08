@@ -38,7 +38,7 @@ The contract builder class for this serializer.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `klass` | `Class<Builder::Contract::Base>, nil` | the builder class |
 
 **Returns**
@@ -58,7 +58,7 @@ The data type resolver for this serializer.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `block` | `Proc, nil` | block that receives representation_class and returns type name |
 
 **Returns**
@@ -94,7 +94,7 @@ Serializes a resource.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `resource` | `Object` | the resource to serialize |
 | `context` | `Hash` | serialization context |
 | `serialize_options` | `Hash` | options (e.g., include) |

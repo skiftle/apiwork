@@ -91,10 +91,10 @@ Defines an action on this contract.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `action_name` | `Symbol` | :index, :show, :create, :update, :destroy, or custom |
-| `replace` | `Boolean` | (default: false) |
+| Name | Type | Default | Description |
+|------|------|------|------|
+| `action_name` | `Symbol` |  | :index, :show, :create, :update, :destroy, or custom |
+| `replace` | `Boolean` | `default: false` |  |
 
 **Returns**
 
@@ -126,13 +126,13 @@ Defines an enum scoped to this contract.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
+| Name | Type | Default |
+|------|------|------|
 | `name` | `Symbol` |  |
 | `values` | `Array<String>, nil` |  |
 | `description` | `String, nil` |  |
 | `example` | `String, nil` |  |
-| `deprecated` | `Boolean` | (default: false) |
+| `deprecated` | `Boolean` | `default: false` |
 
 **Returns**
 
@@ -160,9 +160,9 @@ name when not set (e.g., `RecurringInvoiceContract` becomes
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `value` | `Symbol, String, nil` |  |
+| Name | Type |
+|------|------|
+| `value` | `Symbol, String, nil` |
 
 **Returns**
 
@@ -196,7 +196,7 @@ Imported types are accessed with a prefix matching the alias.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `contract_class` | `Class<Contract::Base>` |  |
 | `as` | `Symbol` | alias prefix |
 
@@ -223,10 +223,10 @@ Returns introspection data for this contract.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
+| Name | Type | Default |
+|------|------|------|
 | `locale` | `Symbol, nil` |  |
-| `expand` | `Boolean` | (default: false) |
+| `expand` | `Boolean` | `default: false` |
 
 **Returns**
 
@@ -250,13 +250,13 @@ Defines a reusable object type scoped to this contract.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
+| Name | Type | Default |
+|------|------|------|
 | `name` | `Symbol` |  |
 | `description` | `String, nil` |  |
 | `example` | `Object, nil` |  |
 | `format` | `String, nil` |  |
-| `deprecated` | `Boolean` | (default: false) |
+| `deprecated` | `Boolean` | `default: false` |
 | `representation_class` | `Class<Representation::Base>, nil` |  |
 
 **Returns**
@@ -289,9 +289,9 @@ types. Use [.representation_class](#representation-class) to retrieve.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `klass` | `Class<Representation::Base>` |  |
+| Name | Type |
+|------|------|
+| `klass` | `Class<Representation::Base>` |
 
 **Returns**
 
@@ -337,10 +337,10 @@ Defines a discriminated union type scoped to this contract.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `Symbol` |  |
-| `discriminator` | `Symbol, nil` |  |
+| Name | Type |
+|------|------|
+| `name` | `Symbol` |
+| `discriminator` | `Symbol, nil` |
 
 **Returns**
 

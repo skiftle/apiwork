@@ -50,7 +50,7 @@ Defines an array.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `shape` | `Object, nil` | pre-built shape |
 
 **Returns**
@@ -144,7 +144,7 @@ Defines a decimal.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `max` | `Numeric, nil` | maximum value |
 | `min` | `Numeric, nil` | minimum value |
 
@@ -165,7 +165,7 @@ Defines an integer.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `enum` | `Array, Symbol, nil` | allowed values |
 | `max` | `Integer, nil` | maximum value |
 | `min` | `Integer, nil` | minimum value |
@@ -187,7 +187,7 @@ Defines a literal value.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `value` | `Object` | the exact value (required) |
 
 **Returns**
@@ -207,7 +207,7 @@ Defines a number.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `max` | `Numeric, nil` | maximum value |
 | `min` | `Numeric, nil` | minimum value |
 
@@ -228,7 +228,7 @@ Defines an object.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `shape` | `Object, nil` | pre-built shape |
 
 **Returns**
@@ -271,7 +271,7 @@ for static definitions. Use `of` for dynamic element generation.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `type` | `Symbol` | element type (:string, :integer, :object, :array, :union, or custom type reference) |
 | `discriminator` | `Symbol, nil` | discriminator field name (unions only) |
 | `enum` | `Array, nil` | allowed values (strings, integers only) |
@@ -320,7 +320,7 @@ Defines a reference to a named type.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `type_name` | `Symbol` | type name |
 | `to` | `Symbol, nil` | target type name (defaults to type_name) |
 
@@ -341,7 +341,7 @@ Defines a string.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `enum` | `Array, Symbol, nil` | allowed values |
 | `format` | `Symbol, nil` | format hint |
 | `max` | `Integer, nil` | maximum length |
@@ -378,7 +378,7 @@ Defines a union.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `discriminator` | `Symbol, nil` | discriminator field name |
 | `shape` | `Union, nil` | pre-built shape |
 

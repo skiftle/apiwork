@@ -48,7 +48,7 @@ Skips contract validation for specified actions.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `only` | `Array<Symbol>` | skip only for these |
 | `except` | `Array<Symbol>` | skip for all except these |
 
@@ -160,7 +160,7 @@ is applied according to the API's [API::Base.key_format](/reference/api/base#key
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `data` | `Object, Array` | the record(s) to expose |
 | `meta` | `Hash` | metadata to include in response (pagination, etc.) |
 | `status` | `Symbol, Integer` | the HTTP status (default: :ok, or :created for create action) |
@@ -211,7 +211,7 @@ Defaults to I18n lookup when detail is not provided.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `code_key` | `Symbol` | registered error code (:not_found, :unauthorized, etc.) |
 | `detail` | `String` | custom error message (optional, uses I18n lookup) |
 | `path` | `Array<String,Symbol>` | the JSON path to the error (optional) |

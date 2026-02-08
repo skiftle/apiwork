@@ -81,7 +81,7 @@ Defines a reusable concern.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `concern_name` | `Symbol` | concern name |
 | `callable` | `Proc` | optional callable instead of block |
 
@@ -124,7 +124,7 @@ Includes previously defined concerns.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `concern_names` | `Array<Symbol>` | concern names to include |
 | `options` | `Hash` | options passed to the concern |
 
@@ -153,7 +153,7 @@ Defines a DELETE action.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `action_names` | `Symbol, Array<Symbol>` | action name(s) |
 | `on` | `Symbol` | :member or :collection |
 
@@ -180,7 +180,7 @@ Defines a GET action.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `action_names` | `Symbol, Array<Symbol>` | action name(s) |
 | `on` | `Symbol` | :member or :collection |
 
@@ -249,7 +249,7 @@ Defines a PATCH action.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `action_names` | `Symbol, Array<Symbol>` | action name(s) |
 | `on` | `Symbol` | :member or :collection |
 
@@ -276,7 +276,7 @@ Defines a POST action.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `action_names` | `Symbol, Array<Symbol>` | action name(s) |
 | `on` | `Symbol` | :member or :collection |
 
@@ -303,7 +303,7 @@ Defines a PUT action.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `action_names` | `Symbol, Array<Symbol>` | action name(s) |
 | `on` | `Symbol` | :member or :collection |
 
@@ -332,7 +332,7 @@ Default actions: :show, :create, :update, :destroy.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `resource_name` | `Symbol` | resource name (singular) |
 | `concerns` | `Array<Symbol>` | concerns to include |
 | `constraints` | `Hash, Proc` | route constraints |
@@ -381,7 +381,7 @@ Default actions: :index, :show, :create, :update, :destroy.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `resource_name` | `Symbol` | resource name (plural) |
 | `concerns` | `Array<Symbol>` | concerns to include |
 | `constraints` | `Hash, Proc` | route constraints |
@@ -430,7 +430,7 @@ Applies options to all resources defined in the block.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `options` | `Hash` | options to merge into nested resources |
 
 **Returns**

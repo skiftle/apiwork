@@ -45,7 +45,7 @@ Defines an array field with element type.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `name` | `Symbol` | field name |
 | `options` | `Hash` | additional field options |
 
@@ -83,17 +83,17 @@ Defines an optional array.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `Symbol` | the name |
-| `as` | `Symbol, nil` | target attribute name |
-| `default` | `Object, nil` | default value |
-| `deprecated` | `Boolean` | (default: false) |
-| `description` | `String, nil` | documentation description |
-| `nullable` | `Boolean` | (default: false) |
-| `of` | `Symbol, Hash, nil` | element type |
-| `required` | `Boolean` | (default: false) |
-| `store` | `Object, nil` | value to persist (replaces received value) |
+| Name | Type | Default | Description |
+|------|------|------|------|
+| `name` | `Symbol` |  | the name |
+| `as` | `Symbol, nil` |  | target attribute name |
+| `default` | `Object, nil` |  | default value |
+| `deprecated` | `Boolean` | `default: false` |  |
+| `description` | `String, nil` |  | documentation description |
+| `nullable` | `Boolean` | `default: false` |  |
+| `of` | `Symbol, Hash, nil` |  | element type |
+| `required` | `Boolean` | `default: false` |  |
+| `store` | `Object, nil` |  | value to persist (replaces received value) |
 
 **Returns**
 
@@ -111,18 +111,18 @@ Defines a binary.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `Symbol` | the name |
-| `as` | `Symbol, nil` | target attribute name |
-| `default` | `Object, nil` | default value |
-| `deprecated` | `Boolean` | (default: false) |
-| `description` | `String, nil` | documentation description |
-| `example` | `String, nil` | example value |
-| `nullable` | `Boolean` | (default: false) |
-| `optional` | `Boolean` | (default: false) |
-| `required` | `Boolean` | (default: false) |
-| `store` | `Object, nil` | value to persist (replaces received value) |
+| Name | Type | Default | Description |
+|------|------|------|------|
+| `name` | `Symbol` |  | the name |
+| `as` | `Symbol, nil` |  | target attribute name |
+| `default` | `Object, nil` |  | default value |
+| `deprecated` | `Boolean` | `default: false` |  |
+| `description` | `String, nil` |  | documentation description |
+| `example` | `String, nil` |  | example value |
+| `nullable` | `Boolean` | `default: false` |  |
+| `optional` | `Boolean` | `default: false` |  |
+| `required` | `Boolean` | `default: false` |  |
+| `store` | `Object, nil` |  | value to persist (replaces received value) |
 
 **Returns**
 
@@ -140,17 +140,17 @@ Defines an optional binary.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `Symbol` | the name |
-| `as` | `Symbol, nil` | target attribute name |
-| `default` | `Object, nil` | default value |
-| `deprecated` | `Boolean` | (default: false) |
-| `description` | `String, nil` | documentation description |
-| `example` | `String, nil` | example value |
-| `nullable` | `Boolean` | (default: false) |
-| `required` | `Boolean` | (default: false) |
-| `store` | `Object, nil` | value to persist (replaces received value) |
+| Name | Type | Default | Description |
+|------|------|------|------|
+| `name` | `Symbol` |  | the name |
+| `as` | `Symbol, nil` |  | target attribute name |
+| `default` | `Object, nil` |  | default value |
+| `deprecated` | `Boolean` | `default: false` |  |
+| `description` | `String, nil` |  | documentation description |
+| `example` | `String, nil` |  | example value |
+| `nullable` | `Boolean` | `default: false` |  |
+| `required` | `Boolean` | `default: false` |  |
+| `store` | `Object, nil` |  | value to persist (replaces received value) |
 
 **Returns**
 
@@ -168,18 +168,18 @@ Defines a boolean.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `Symbol` | the name |
-| `as` | `Symbol, nil` | target attribute name |
-| `default` | `Object, nil` | default value |
-| `deprecated` | `Boolean` | (default: false) |
-| `description` | `String, nil` | documentation description |
-| `example` | `Boolean, nil` | example value |
-| `nullable` | `Boolean` | (default: false) |
-| `optional` | `Boolean` | (default: false) |
-| `required` | `Boolean` | (default: false) |
-| `store` | `Object, nil` | value to persist (replaces received value) |
+| Name | Type | Default | Description |
+|------|------|------|------|
+| `name` | `Symbol` |  | the name |
+| `as` | `Symbol, nil` |  | target attribute name |
+| `default` | `Object, nil` |  | default value |
+| `deprecated` | `Boolean` | `default: false` |  |
+| `description` | `String, nil` |  | documentation description |
+| `example` | `Boolean, nil` |  | example value |
+| `nullable` | `Boolean` | `default: false` |  |
+| `optional` | `Boolean` | `default: false` |  |
+| `required` | `Boolean` | `default: false` |  |
+| `store` | `Object, nil` |  | value to persist (replaces received value) |
 
 **Returns**
 
@@ -197,17 +197,17 @@ Defines an optional boolean.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `Symbol` | the name |
-| `as` | `Symbol, nil` | target attribute name |
-| `default` | `Object, nil` | default value |
-| `deprecated` | `Boolean` | (default: false) |
-| `description` | `String, nil` | documentation description |
-| `example` | `Boolean, nil` | example value |
-| `nullable` | `Boolean` | (default: false) |
-| `required` | `Boolean` | (default: false) |
-| `store` | `Object, nil` | value to persist (replaces received value) |
+| Name | Type | Default | Description |
+|------|------|------|------|
+| `name` | `Symbol` |  | the name |
+| `as` | `Symbol, nil` |  | target attribute name |
+| `default` | `Object, nil` |  | default value |
+| `deprecated` | `Boolean` | `default: false` |  |
+| `description` | `String, nil` |  | documentation description |
+| `example` | `Boolean, nil` |  | example value |
+| `nullable` | `Boolean` | `default: false` |  |
+| `required` | `Boolean` | `default: false` |  |
+| `store` | `Object, nil` |  | value to persist (replaces received value) |
 
 **Returns**
 
@@ -225,18 +225,18 @@ Defines a date.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `Symbol` | the name |
-| `as` | `Symbol, nil` | target attribute name |
-| `default` | `Object, nil` | default value |
-| `deprecated` | `Boolean` | (default: false) |
-| `description` | `String, nil` | documentation description |
-| `example` | `String, nil` | example value |
-| `nullable` | `Boolean` | (default: false) |
-| `optional` | `Boolean` | (default: false) |
-| `required` | `Boolean` | (default: false) |
-| `store` | `Object, nil` | value to persist (replaces received value) |
+| Name | Type | Default | Description |
+|------|------|------|------|
+| `name` | `Symbol` |  | the name |
+| `as` | `Symbol, nil` |  | target attribute name |
+| `default` | `Object, nil` |  | default value |
+| `deprecated` | `Boolean` | `default: false` |  |
+| `description` | `String, nil` |  | documentation description |
+| `example` | `String, nil` |  | example value |
+| `nullable` | `Boolean` | `default: false` |  |
+| `optional` | `Boolean` | `default: false` |  |
+| `required` | `Boolean` | `default: false` |  |
+| `store` | `Object, nil` |  | value to persist (replaces received value) |
 
 **Returns**
 
@@ -254,17 +254,17 @@ Defines an optional date.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `Symbol` | the name |
-| `as` | `Symbol, nil` | target attribute name |
-| `default` | `Object, nil` | default value |
-| `deprecated` | `Boolean` | (default: false) |
-| `description` | `String, nil` | documentation description |
-| `example` | `String, nil` | example value |
-| `nullable` | `Boolean` | (default: false) |
-| `required` | `Boolean` | (default: false) |
-| `store` | `Object, nil` | value to persist (replaces received value) |
+| Name | Type | Default | Description |
+|------|------|------|------|
+| `name` | `Symbol` |  | the name |
+| `as` | `Symbol, nil` |  | target attribute name |
+| `default` | `Object, nil` |  | default value |
+| `deprecated` | `Boolean` | `default: false` |  |
+| `description` | `String, nil` |  | documentation description |
+| `example` | `String, nil` |  | example value |
+| `nullable` | `Boolean` | `default: false` |  |
+| `required` | `Boolean` | `default: false` |  |
+| `store` | `Object, nil` |  | value to persist (replaces received value) |
 
 **Returns**
 
@@ -282,18 +282,18 @@ Defines a datetime.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `Symbol` | the name |
-| `as` | `Symbol, nil` | target attribute name |
-| `default` | `Object, nil` | default value |
-| `deprecated` | `Boolean` | (default: false) |
-| `description` | `String, nil` | documentation description |
-| `example` | `String, nil` | example value |
-| `nullable` | `Boolean` | (default: false) |
-| `optional` | `Boolean` | (default: false) |
-| `required` | `Boolean` | (default: false) |
-| `store` | `Object, nil` | value to persist (replaces received value) |
+| Name | Type | Default | Description |
+|------|------|------|------|
+| `name` | `Symbol` |  | the name |
+| `as` | `Symbol, nil` |  | target attribute name |
+| `default` | `Object, nil` |  | default value |
+| `deprecated` | `Boolean` | `default: false` |  |
+| `description` | `String, nil` |  | documentation description |
+| `example` | `String, nil` |  | example value |
+| `nullable` | `Boolean` | `default: false` |  |
+| `optional` | `Boolean` | `default: false` |  |
+| `required` | `Boolean` | `default: false` |  |
+| `store` | `Object, nil` |  | value to persist (replaces received value) |
 
 **Returns**
 
@@ -311,17 +311,17 @@ Defines an optional datetime.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `Symbol` | the name |
-| `as` | `Symbol, nil` | target attribute name |
-| `default` | `Object, nil` | default value |
-| `deprecated` | `Boolean` | (default: false) |
-| `description` | `String, nil` | documentation description |
-| `example` | `String, nil` | example value |
-| `nullable` | `Boolean` | (default: false) |
-| `required` | `Boolean` | (default: false) |
-| `store` | `Object, nil` | value to persist (replaces received value) |
+| Name | Type | Default | Description |
+|------|------|------|------|
+| `name` | `Symbol` |  | the name |
+| `as` | `Symbol, nil` |  | target attribute name |
+| `default` | `Object, nil` |  | default value |
+| `deprecated` | `Boolean` | `default: false` |  |
+| `description` | `String, nil` |  | documentation description |
+| `example` | `String, nil` |  | example value |
+| `nullable` | `Boolean` | `default: false` |  |
+| `required` | `Boolean` | `default: false` |  |
+| `store` | `Object, nil` |  | value to persist (replaces received value) |
 
 **Returns**
 
@@ -339,20 +339,20 @@ Defines a decimal.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `Symbol` | the name |
-| `as` | `Symbol, nil` | target attribute name |
-| `default` | `Object, nil` | default value |
-| `deprecated` | `Boolean` | (default: false) |
-| `description` | `String, nil` | documentation description |
-| `example` | `Numeric, nil` | example value |
-| `max` | `Numeric, nil` | maximum value |
-| `min` | `Numeric, nil` | minimum value |
-| `nullable` | `Boolean` | (default: false) |
-| `optional` | `Boolean` | (default: false) |
-| `required` | `Boolean` | (default: false) |
-| `store` | `Object, nil` | value to persist (replaces received value) |
+| Name | Type | Default | Description |
+|------|------|------|------|
+| `name` | `Symbol` |  | the name |
+| `as` | `Symbol, nil` |  | target attribute name |
+| `default` | `Object, nil` |  | default value |
+| `deprecated` | `Boolean` | `default: false` |  |
+| `description` | `String, nil` |  | documentation description |
+| `example` | `Numeric, nil` |  | example value |
+| `max` | `Numeric, nil` |  | maximum value |
+| `min` | `Numeric, nil` |  | minimum value |
+| `nullable` | `Boolean` | `default: false` |  |
+| `optional` | `Boolean` | `default: false` |  |
+| `required` | `Boolean` | `default: false` |  |
+| `store` | `Object, nil` |  | value to persist (replaces received value) |
 
 **Returns**
 
@@ -370,19 +370,19 @@ Defines an optional decimal.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `Symbol` | the name |
-| `as` | `Symbol, nil` | target attribute name |
-| `default` | `Object, nil` | default value |
-| `deprecated` | `Boolean` | (default: false) |
-| `description` | `String, nil` | documentation description |
-| `example` | `Numeric, nil` | example value |
-| `max` | `Numeric, nil` | maximum value |
-| `min` | `Numeric, nil` | minimum value |
-| `nullable` | `Boolean` | (default: false) |
-| `required` | `Boolean` | (default: false) |
-| `store` | `Object, nil` | value to persist (replaces received value) |
+| Name | Type | Default | Description |
+|------|------|------|------|
+| `name` | `Symbol` |  | the name |
+| `as` | `Symbol, nil` |  | target attribute name |
+| `default` | `Object, nil` |  | default value |
+| `deprecated` | `Boolean` | `default: false` |  |
+| `description` | `String, nil` |  | documentation description |
+| `example` | `Numeric, nil` |  | example value |
+| `max` | `Numeric, nil` |  | maximum value |
+| `min` | `Numeric, nil` |  | minimum value |
+| `nullable` | `Boolean` | `default: false` |  |
+| `required` | `Boolean` | `default: false` |  |
+| `store` | `Object, nil` |  | value to persist (replaces received value) |
 
 **Returns**
 
@@ -402,7 +402,7 @@ Can be called multiple times to inherit from multiple types.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `type_name` | `Symbol` | the type to inherit from |
 
 **Returns**
@@ -440,21 +440,21 @@ Defines an integer.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `Symbol` | the name |
-| `as` | `Symbol, nil` | target attribute name |
-| `default` | `Object, nil` | default value |
-| `deprecated` | `Boolean` | (default: false) |
-| `description` | `String, nil` | documentation description |
-| `enum` | `Array, Symbol, nil` | allowed values |
-| `example` | `Integer, nil` | example value |
-| `max` | `Integer, nil` | maximum value |
-| `min` | `Integer, nil` | minimum value |
-| `nullable` | `Boolean` | (default: false) |
-| `optional` | `Boolean` | (default: false) |
-| `required` | `Boolean` | (default: false) |
-| `store` | `Object, nil` | value to persist (replaces received value) |
+| Name | Type | Default | Description |
+|------|------|------|------|
+| `name` | `Symbol` |  | the name |
+| `as` | `Symbol, nil` |  | target attribute name |
+| `default` | `Object, nil` |  | default value |
+| `deprecated` | `Boolean` | `default: false` |  |
+| `description` | `String, nil` |  | documentation description |
+| `enum` | `Array, Symbol, nil` |  | allowed values |
+| `example` | `Integer, nil` |  | example value |
+| `max` | `Integer, nil` |  | maximum value |
+| `min` | `Integer, nil` |  | minimum value |
+| `nullable` | `Boolean` | `default: false` |  |
+| `optional` | `Boolean` | `default: false` |  |
+| `required` | `Boolean` | `default: false` |  |
+| `store` | `Object, nil` |  | value to persist (replaces received value) |
 
 **Returns**
 
@@ -472,20 +472,20 @@ Defines an optional integer.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `Symbol` | the name |
-| `as` | `Symbol, nil` | target attribute name |
-| `default` | `Object, nil` | default value |
-| `deprecated` | `Boolean` | (default: false) |
-| `description` | `String, nil` | documentation description |
-| `enum` | `Array, Symbol, nil` | allowed values |
-| `example` | `Integer, nil` | example value |
-| `max` | `Integer, nil` | maximum value |
-| `min` | `Integer, nil` | minimum value |
-| `nullable` | `Boolean` | (default: false) |
-| `required` | `Boolean` | (default: false) |
-| `store` | `Object, nil` | value to persist (replaces received value) |
+| Name | Type | Default | Description |
+|------|------|------|------|
+| `name` | `Symbol` |  | the name |
+| `as` | `Symbol, nil` |  | target attribute name |
+| `default` | `Object, nil` |  | default value |
+| `deprecated` | `Boolean` | `default: false` |  |
+| `description` | `String, nil` |  | documentation description |
+| `enum` | `Array, Symbol, nil` |  | allowed values |
+| `example` | `Integer, nil` |  | example value |
+| `max` | `Integer, nil` |  | maximum value |
+| `min` | `Integer, nil` |  | minimum value |
+| `nullable` | `Boolean` | `default: false` |  |
+| `required` | `Boolean` | `default: false` |  |
+| `store` | `Object, nil` |  | value to persist (replaces received value) |
 
 **Returns**
 
@@ -503,16 +503,16 @@ Defines a literal value.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `Symbol` | the name |
-| `value` | `Object` | the exact value (required) |
-| `as` | `Symbol, nil` | target attribute name |
-| `default` | `Object, nil` | default value |
-| `deprecated` | `Boolean` | (default: false) |
-| `description` | `String, nil` | documentation description |
-| `optional` | `Boolean` | (default: false) |
-| `store` | `Object, nil` | value to persist (replaces received value) |
+| Name | Type | Default | Description |
+|------|------|------|------|
+| `name` | `Symbol` |  | the name |
+| `value` | `Object` |  | the exact value (required) |
+| `as` | `Symbol, nil` |  | target attribute name |
+| `default` | `Object, nil` |  | default value |
+| `deprecated` | `Boolean` | `default: false` |  |
+| `description` | `String, nil` |  | documentation description |
+| `optional` | `Boolean` | `default: false` |  |
+| `store` | `Object, nil` |  | value to persist (replaces received value) |
 
 **Returns**
 
@@ -532,7 +532,7 @@ Can be called multiple times to merge from multiple types.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `type_name` | `Symbol` | the type to merge from |
 
 **Returns**
@@ -560,20 +560,20 @@ Defines a number.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `Symbol` | the name |
-| `as` | `Symbol, nil` | target attribute name |
-| `default` | `Object, nil` | default value |
-| `deprecated` | `Boolean` | (default: false) |
-| `description` | `String, nil` | documentation description |
-| `example` | `Numeric, nil` | example value |
-| `max` | `Numeric, nil` | maximum value |
-| `min` | `Numeric, nil` | minimum value |
-| `nullable` | `Boolean` | (default: false) |
-| `optional` | `Boolean` | (default: false) |
-| `required` | `Boolean` | (default: false) |
-| `store` | `Object, nil` | value to persist (replaces received value) |
+| Name | Type | Default | Description |
+|------|------|------|------|
+| `name` | `Symbol` |  | the name |
+| `as` | `Symbol, nil` |  | target attribute name |
+| `default` | `Object, nil` |  | default value |
+| `deprecated` | `Boolean` | `default: false` |  |
+| `description` | `String, nil` |  | documentation description |
+| `example` | `Numeric, nil` |  | example value |
+| `max` | `Numeric, nil` |  | maximum value |
+| `min` | `Numeric, nil` |  | minimum value |
+| `nullable` | `Boolean` | `default: false` |  |
+| `optional` | `Boolean` | `default: false` |  |
+| `required` | `Boolean` | `default: false` |  |
+| `store` | `Object, nil` |  | value to persist (replaces received value) |
 
 **Returns**
 
@@ -591,19 +591,19 @@ Defines an optional number.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `Symbol` | the name |
-| `as` | `Symbol, nil` | target attribute name |
-| `default` | `Object, nil` | default value |
-| `deprecated` | `Boolean` | (default: false) |
-| `description` | `String, nil` | documentation description |
-| `example` | `Numeric, nil` | example value |
-| `max` | `Numeric, nil` | maximum value |
-| `min` | `Numeric, nil` | minimum value |
-| `nullable` | `Boolean` | (default: false) |
-| `required` | `Boolean` | (default: false) |
-| `store` | `Object, nil` | value to persist (replaces received value) |
+| Name | Type | Default | Description |
+|------|------|------|------|
+| `name` | `Symbol` |  | the name |
+| `as` | `Symbol, nil` |  | target attribute name |
+| `default` | `Object, nil` |  | default value |
+| `deprecated` | `Boolean` | `default: false` |  |
+| `description` | `String, nil` |  | documentation description |
+| `example` | `Numeric, nil` |  | example value |
+| `max` | `Numeric, nil` |  | maximum value |
+| `min` | `Numeric, nil` |  | minimum value |
+| `nullable` | `Boolean` | `default: false` |  |
+| `required` | `Boolean` | `default: false` |  |
+| `store` | `Object, nil` |  | value to persist (replaces received value) |
 
 **Returns**
 
@@ -621,17 +621,17 @@ Defines an object.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `Symbol` | the name |
-| `as` | `Symbol, nil` | target attribute name |
-| `default` | `Object, nil` | default value |
-| `deprecated` | `Boolean` | (default: false) |
-| `description` | `String, nil` | documentation description |
-| `nullable` | `Boolean` | (default: false) |
-| `optional` | `Boolean` | (default: false) |
-| `required` | `Boolean` | (default: false) |
-| `store` | `Object, nil` | value to persist (replaces received value) |
+| Name | Type | Default | Description |
+|------|------|------|------|
+| `name` | `Symbol` |  | the name |
+| `as` | `Symbol, nil` |  | target attribute name |
+| `default` | `Object, nil` |  | default value |
+| `deprecated` | `Boolean` | `default: false` |  |
+| `description` | `String, nil` |  | documentation description |
+| `nullable` | `Boolean` | `default: false` |  |
+| `optional` | `Boolean` | `default: false` |  |
+| `required` | `Boolean` | `default: false` |  |
+| `store` | `Object, nil` |  | value to persist (replaces received value) |
 
 **Returns**
 
@@ -649,16 +649,16 @@ Defines an optional object.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `Symbol` | the name |
-| `as` | `Symbol, nil` | target attribute name |
-| `default` | `Object, nil` | default value |
-| `deprecated` | `Boolean` | (default: false) |
-| `description` | `String, nil` | documentation description |
-| `nullable` | `Boolean` | (default: false) |
-| `required` | `Boolean` | (default: false) |
-| `store` | `Object, nil` | value to persist (replaces received value) |
+| Name | Type | Default | Description |
+|------|------|------|------|
+| `name` | `Symbol` |  | the name |
+| `as` | `Symbol, nil` |  | target attribute name |
+| `default` | `Object, nil` |  | default value |
+| `deprecated` | `Boolean` | `default: false` |  |
+| `description` | `String, nil` |  | documentation description |
+| `nullable` | `Boolean` | `default: false` |  |
+| `required` | `Boolean` | `default: false` |  |
+| `store` | `Object, nil` |  | value to persist (replaces received value) |
 
 **Returns**
 
@@ -679,28 +679,28 @@ for static definitions. Use `param` for dynamic field generation.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `Symbol` | field name |
-| `type` | `Symbol, nil` | field type |
-| `as` | `Symbol, nil` | target attribute name |
-| `default` | `Object, nil` | default value |
-| `deprecated` | `Boolean` | (default: false) |
-| `description` | `String, nil` | documentation description |
-| `discriminator` | `Symbol, nil` | discriminator field name (unions only) |
-| `enum` | `Array, nil` | allowed values |
-| `example` | `Object, nil` | example value |
-| `format` | `Symbol, nil` | format hint |
-| `max` | `Integer, nil` | maximum value or length |
-| `min` | `Integer, nil` | minimum value or length |
-| `nullable` | `Boolean` | (default: false) |
-| `of` | `Symbol, Hash, nil` | element type (arrays only) |
-| `optional` | `Boolean` | (default: false) |
-| `required` | `Boolean` | (default: false) |
-| `shape` | `API::Object, API::Union, nil` | pre-built shape |
-| `store` | `Boolean, nil` | whether to persist |
-| `transform` | `Proc, nil` | value transformation lambda |
-| `value` | `Object, nil` | literal value |
+| Name | Type | Default | Description |
+|------|------|------|------|
+| `name` | `Symbol` |  | field name |
+| `type` | `Symbol, nil` |  | field type |
+| `as` | `Symbol, nil` |  | target attribute name |
+| `default` | `Object, nil` |  | default value |
+| `deprecated` | `Boolean` | `default: false` |  |
+| `description` | `String, nil` |  | documentation description |
+| `discriminator` | `Symbol, nil` |  | discriminator field name (unions only) |
+| `enum` | `Array, nil` |  | allowed values |
+| `example` | `Object, nil` |  | example value |
+| `format` | `Symbol, nil` |  | format hint |
+| `max` | `Integer, nil` |  | maximum value or length |
+| `min` | `Integer, nil` |  | minimum value or length |
+| `nullable` | `Boolean` | `default: false` |  |
+| `of` | `Symbol, Hash, nil` |  | element type (arrays only) |
+| `optional` | `Boolean` | `default: false` |  |
+| `required` | `Boolean` | `default: false` |  |
+| `shape` | `API::Object, API::Union, nil` |  | pre-built shape |
+| `store` | `Boolean, nil` |  | whether to persist |
+| `transform` | `Proc, nil` |  | value transformation lambda |
+| `value` | `Object, nil` |  | literal value |
 
 **Returns**
 
@@ -738,18 +738,18 @@ Defines a reference to a named type.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `Symbol` | the name |
-| `to` | `Symbol, nil` | target type name (defaults to name) |
-| `as` | `Symbol, nil` | target attribute name |
-| `default` | `Object, nil` | default value |
-| `deprecated` | `Boolean` | (default: false) |
-| `description` | `String, nil` | documentation description |
-| `nullable` | `Boolean` | (default: false) |
-| `optional` | `Boolean` | (default: false) |
-| `required` | `Boolean` | (default: false) |
-| `store` | `Object, nil` | value to persist (replaces received value) |
+| Name | Type | Default | Description |
+|------|------|------|------|
+| `name` | `Symbol` |  | the name |
+| `to` | `Symbol, nil` |  | target type name (defaults to name) |
+| `as` | `Symbol, nil` |  | target attribute name |
+| `default` | `Object, nil` |  | default value |
+| `deprecated` | `Boolean` | `default: false` |  |
+| `description` | `String, nil` |  | documentation description |
+| `nullable` | `Boolean` | `default: false` |  |
+| `optional` | `Boolean` | `default: false` |  |
+| `required` | `Boolean` | `default: false` |  |
+| `store` | `Object, nil` |  | value to persist (replaces received value) |
 
 **Returns**
 
@@ -767,17 +767,17 @@ Defines an optional reference to a named type.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `Symbol` | the name |
-| `to` | `Symbol, nil` | target type name (defaults to name) |
-| `as` | `Symbol, nil` | target attribute name |
-| `default` | `Object, nil` | default value |
-| `deprecated` | `Boolean` | (default: false) |
-| `description` | `String, nil` | documentation description |
-| `nullable` | `Boolean` | (default: false) |
-| `required` | `Boolean` | (default: false) |
-| `store` | `Object, nil` | value to persist (replaces received value) |
+| Name | Type | Default | Description |
+|------|------|------|------|
+| `name` | `Symbol` |  | the name |
+| `to` | `Symbol, nil` |  | target type name (defaults to name) |
+| `as` | `Symbol, nil` |  | target attribute name |
+| `default` | `Object, nil` |  | default value |
+| `deprecated` | `Boolean` | `default: false` |  |
+| `description` | `String, nil` |  | documentation description |
+| `nullable` | `Boolean` | `default: false` |  |
+| `required` | `Boolean` | `default: false` |  |
+| `store` | `Object, nil` |  | value to persist (replaces received value) |
 
 **Returns**
 
@@ -795,22 +795,22 @@ Defines a string.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `Symbol` | the name |
-| `as` | `Symbol, nil` | target attribute name |
-| `default` | `Object, nil` | default value |
-| `deprecated` | `Boolean` | (default: false) |
-| `description` | `String, nil` | documentation description |
-| `enum` | `Array, Symbol, nil` | allowed values |
-| `example` | `String, nil` | example value |
-| `format` | `Symbol, nil` | format hint (:email, :uri, :uuid) |
-| `max` | `Integer, nil` | maximum length |
-| `min` | `Integer, nil` | minimum length |
-| `nullable` | `Boolean` | (default: false) |
-| `optional` | `Boolean` | (default: false) |
-| `required` | `Boolean` | (default: false) |
-| `store` | `Object, nil` | value to persist (replaces received value) |
+| Name | Type | Default | Description |
+|------|------|------|------|
+| `name` | `Symbol` |  | the name |
+| `as` | `Symbol, nil` |  | target attribute name |
+| `default` | `Object, nil` |  | default value |
+| `deprecated` | `Boolean` | `default: false` |  |
+| `description` | `String, nil` |  | documentation description |
+| `enum` | `Array, Symbol, nil` |  | allowed values |
+| `example` | `String, nil` |  | example value |
+| `format` | `Symbol, nil` |  | format hint (:email, :uri, :uuid) |
+| `max` | `Integer, nil` |  | maximum length |
+| `min` | `Integer, nil` |  | minimum length |
+| `nullable` | `Boolean` | `default: false` |  |
+| `optional` | `Boolean` | `default: false` |  |
+| `required` | `Boolean` | `default: false` |  |
+| `store` | `Object, nil` |  | value to persist (replaces received value) |
 
 **Returns**
 
@@ -828,21 +828,21 @@ Defines an optional string.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `Symbol` | the name |
-| `as` | `Symbol, nil` | target attribute name |
-| `default` | `Object, nil` | default value |
-| `deprecated` | `Boolean` | (default: false) |
-| `description` | `String, nil` | documentation description |
-| `enum` | `Array, Symbol, nil` | allowed values |
-| `example` | `String, nil` | example value |
-| `format` | `Symbol, nil` | format hint (:email, :uri, :uuid) |
-| `max` | `Integer, nil` | maximum length |
-| `min` | `Integer, nil` | minimum length |
-| `nullable` | `Boolean` | (default: false) |
-| `required` | `Boolean` | (default: false) |
-| `store` | `Object, nil` | value to persist (replaces received value) |
+| Name | Type | Default | Description |
+|------|------|------|------|
+| `name` | `Symbol` |  | the name |
+| `as` | `Symbol, nil` |  | target attribute name |
+| `default` | `Object, nil` |  | default value |
+| `deprecated` | `Boolean` | `default: false` |  |
+| `description` | `String, nil` |  | documentation description |
+| `enum` | `Array, Symbol, nil` |  | allowed values |
+| `example` | `String, nil` |  | example value |
+| `format` | `Symbol, nil` |  | format hint (:email, :uri, :uuid) |
+| `max` | `Integer, nil` |  | maximum length |
+| `min` | `Integer, nil` |  | minimum length |
+| `nullable` | `Boolean` | `default: false` |  |
+| `required` | `Boolean` | `default: false` |  |
+| `store` | `Object, nil` |  | value to persist (replaces received value) |
 
 **Returns**
 
@@ -860,18 +860,18 @@ Defines a time.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `Symbol` | the name |
-| `as` | `Symbol, nil` | target attribute name |
-| `default` | `Object, nil` | default value |
-| `deprecated` | `Boolean` | (default: false) |
-| `description` | `String, nil` | documentation description |
-| `example` | `String, nil` | example value |
-| `nullable` | `Boolean` | (default: false) |
-| `optional` | `Boolean` | (default: false) |
-| `required` | `Boolean` | (default: false) |
-| `store` | `Object, nil` | value to persist (replaces received value) |
+| Name | Type | Default | Description |
+|------|------|------|------|
+| `name` | `Symbol` |  | the name |
+| `as` | `Symbol, nil` |  | target attribute name |
+| `default` | `Object, nil` |  | default value |
+| `deprecated` | `Boolean` | `default: false` |  |
+| `description` | `String, nil` |  | documentation description |
+| `example` | `String, nil` |  | example value |
+| `nullable` | `Boolean` | `default: false` |  |
+| `optional` | `Boolean` | `default: false` |  |
+| `required` | `Boolean` | `default: false` |  |
+| `store` | `Object, nil` |  | value to persist (replaces received value) |
 
 **Returns**
 
@@ -889,17 +889,17 @@ Defines an optional time.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `Symbol` | the name |
-| `as` | `Symbol, nil` | target attribute name |
-| `default` | `Object, nil` | default value |
-| `deprecated` | `Boolean` | (default: false) |
-| `description` | `String, nil` | documentation description |
-| `example` | `String, nil` | example value |
-| `nullable` | `Boolean` | (default: false) |
-| `required` | `Boolean` | (default: false) |
-| `store` | `Object, nil` | value to persist (replaces received value) |
+| Name | Type | Default | Description |
+|------|------|------|------|
+| `name` | `Symbol` |  | the name |
+| `as` | `Symbol, nil` |  | target attribute name |
+| `default` | `Object, nil` |  | default value |
+| `deprecated` | `Boolean` | `default: false` |  |
+| `description` | `String, nil` |  | documentation description |
+| `example` | `String, nil` |  | example value |
+| `nullable` | `Boolean` | `default: false` |  |
+| `required` | `Boolean` | `default: false` |  |
+| `store` | `Object, nil` |  | value to persist (replaces received value) |
 
 **Returns**
 
@@ -917,18 +917,18 @@ Defines a union.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `Symbol` | the name |
-| `as` | `Symbol, nil` | target attribute name |
-| `default` | `Object, nil` | default value |
-| `deprecated` | `Boolean` | (default: false) |
-| `description` | `String, nil` | documentation description |
-| `discriminator` | `Symbol, nil` | discriminator field name |
-| `nullable` | `Boolean` | (default: false) |
-| `optional` | `Boolean` | (default: false) |
-| `required` | `Boolean` | (default: false) |
-| `store` | `Object, nil` | value to persist (replaces received value) |
+| Name | Type | Default | Description |
+|------|------|------|------|
+| `name` | `Symbol` |  | the name |
+| `as` | `Symbol, nil` |  | target attribute name |
+| `default` | `Object, nil` |  | default value |
+| `deprecated` | `Boolean` | `default: false` |  |
+| `description` | `String, nil` |  | documentation description |
+| `discriminator` | `Symbol, nil` |  | discriminator field name |
+| `nullable` | `Boolean` | `default: false` |  |
+| `optional` | `Boolean` | `default: false` |  |
+| `required` | `Boolean` | `default: false` |  |
+| `store` | `Object, nil` |  | value to persist (replaces received value) |
 
 **Returns**
 
@@ -946,17 +946,17 @@ Defines an optional union.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `Symbol` | the name |
-| `as` | `Symbol, nil` | target attribute name |
-| `default` | `Object, nil` | default value |
-| `deprecated` | `Boolean` | (default: false) |
-| `description` | `String, nil` | documentation description |
-| `discriminator` | `Symbol, nil` | discriminator field name |
-| `nullable` | `Boolean` | (default: false) |
-| `required` | `Boolean` | (default: false) |
-| `store` | `Object, nil` | value to persist (replaces received value) |
+| Name | Type | Default | Description |
+|------|------|------|------|
+| `name` | `Symbol` |  | the name |
+| `as` | `Symbol, nil` |  | target attribute name |
+| `default` | `Object, nil` |  | default value |
+| `deprecated` | `Boolean` | `default: false` |  |
+| `description` | `String, nil` |  | documentation description |
+| `discriminator` | `Symbol, nil` |  | discriminator field name |
+| `nullable` | `Boolean` | `default: false` |  |
+| `required` | `Boolean` | `default: false` |  |
+| `store` | `Object, nil` |  | value to persist (replaces received value) |
 
 **Returns**
 
@@ -974,18 +974,18 @@ Defines a UUID.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `Symbol` | the name |
-| `as` | `Symbol, nil` | target attribute name |
-| `default` | `Object, nil` | default value |
-| `deprecated` | `Boolean` | (default: false) |
-| `description` | `String, nil` | documentation description |
-| `example` | `String, nil` | example value |
-| `nullable` | `Boolean` | (default: false) |
-| `optional` | `Boolean` | (default: false) |
-| `required` | `Boolean` | (default: false) |
-| `store` | `Object, nil` | value to persist (replaces received value) |
+| Name | Type | Default | Description |
+|------|------|------|------|
+| `name` | `Symbol` |  | the name |
+| `as` | `Symbol, nil` |  | target attribute name |
+| `default` | `Object, nil` |  | default value |
+| `deprecated` | `Boolean` | `default: false` |  |
+| `description` | `String, nil` |  | documentation description |
+| `example` | `String, nil` |  | example value |
+| `nullable` | `Boolean` | `default: false` |  |
+| `optional` | `Boolean` | `default: false` |  |
+| `required` | `Boolean` | `default: false` |  |
+| `store` | `Object, nil` |  | value to persist (replaces received value) |
 
 **Returns**
 
@@ -1003,17 +1003,17 @@ Defines an optional UUID.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `Symbol` | the name |
-| `as` | `Symbol, nil` | target attribute name |
-| `default` | `Object, nil` | default value |
-| `deprecated` | `Boolean` | (default: false) |
-| `description` | `String, nil` | documentation description |
-| `example` | `String, nil` | example value |
-| `nullable` | `Boolean` | (default: false) |
-| `required` | `Boolean` | (default: false) |
-| `store` | `Object, nil` | value to persist (replaces received value) |
+| Name | Type | Default | Description |
+|------|------|------|------|
+| `name` | `Symbol` |  | the name |
+| `as` | `Symbol, nil` |  | target attribute name |
+| `default` | `Object, nil` |  | default value |
+| `deprecated` | `Boolean` | `default: false` |  |
+| `description` | `String, nil` |  | documentation description |
+| `example` | `String, nil` |  | example value |
+| `nullable` | `Boolean` | `default: false` |  |
+| `required` | `Boolean` | `default: false` |  |
+| `store` | `Object, nil` |  | value to persist (replaces received value) |
 
 **Returns**
 

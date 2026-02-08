@@ -100,9 +100,9 @@ The API description.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `value` | `String, nil` |  |
+| Name | Type |
+|------|------|
+| `value` | `String, nil` |
 
 **Returns**
 
@@ -197,9 +197,9 @@ The API summary.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `value` | `String, nil` |  |
+| Name | Type |
+|------|------|
+| `value` | `String, nil` |
 
 **Returns**
 
@@ -224,9 +224,9 @@ The API tags.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `values` | `Array<String>` |  |
+| Name | Type |
+|------|------|
+| `values` | `Array<String>` |
 
 **Returns**
 
@@ -251,9 +251,9 @@ The API terms of service.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `value` | `String, nil` |  |
+| Name | Type |
+|------|------|
+| `value` | `String, nil` |
 
 **Returns**
 
@@ -278,9 +278,9 @@ The API title.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `value` | `String, nil` |  |
+| Name | Type |
+|------|------|
+| `value` | `String, nil` |
 
 **Returns**
 
@@ -305,9 +305,9 @@ The API version.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `value` | `String, nil` |  |
+| Name | Type |
+|------|------|
+| `value` | `String, nil` |
 
 **Returns**
 

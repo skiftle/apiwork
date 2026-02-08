@@ -219,7 +219,7 @@ The element type when [#type](#type) is `:array`.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `action` | `Symbol` | :create or :update |
 
 **Returns**

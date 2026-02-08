@@ -44,7 +44,7 @@ Defines a nested option.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `name` | `Symbol` | the option name |
 | `type` | `Symbol` | :symbol, :string, :integer, :boolean, or :hash |
 | `default` | `Object, nil` | the default value |

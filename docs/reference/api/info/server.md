@@ -24,9 +24,9 @@ The server description.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `value` | `String, nil` |  |
+| Name | Type |
+|------|------|
+| `value` | `String, nil` |
 
 **Returns**
 
@@ -51,9 +51,9 @@ The server URL.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `value` | `String, nil` |  |
+| Name | Type |
+|------|------|
+| `value` | `String, nil` |
 
 **Returns**
 

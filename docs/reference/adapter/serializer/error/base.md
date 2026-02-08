@@ -38,7 +38,7 @@ The API builder class for this serializer.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `klass` | `Class<Builder::API::Base>, nil` | the builder class |
 
 **Returns**
@@ -58,7 +58,7 @@ The data type name for this serializer.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `name` | `Symbol, nil` | the type name |
 
 **Returns**
@@ -80,7 +80,7 @@ Serializes an error.
 **Parameters**
 
 | Name | Type | Description |
-|------|------|-------------|
+|------|------|------|
 | `error` | `Error` | the error to serialize |
 | `context` | `Hash` | serialization context |
 

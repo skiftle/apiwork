@@ -122,25 +122,25 @@ Types and nullability are auto-detected from database columns.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `Symbol` |  |
-| `type` | `Symbol, nil` | :string, :integer, :boolean, :datetime, :date, :uuid, :decimal, :number, :object, or :array |
-| `enum` | `Array, nil` |  |
-| `optional` | `Boolean, nil` |  |
-| `nullable` | `Boolean, nil` |  |
-| `filterable` | `Boolean, nil` |  |
-| `sortable` | `Boolean, nil` |  |
-| `writable` | `Boolean, Hash, nil` |  |
-| `encode` | `Proc, nil` |  |
-| `decode` | `Proc, nil` |  |
-| `empty` | `Symbol, nil` | :null or :keep |
-| `min` | `Integer, nil` |  |
-| `max` | `Integer, nil` |  |
-| `description` | `String, nil` |  |
-| `example` | `Object, nil` |  |
-| `format` | `Symbol, nil` |  |
-| `deprecated` | `Boolean` | (default: false) |
+| Name | Type | Default | Description |
+|------|------|------|------|
+| `name` | `Symbol` |  |  |
+| `type` | `Symbol, nil` |  | :string, :integer, :boolean, :datetime, :date, :uuid, :decimal, :number, :object, or :array |
+| `enum` | `Array, nil` |  |  |
+| `optional` | `Boolean, nil` |  |  |
+| `nullable` | `Boolean, nil` |  |  |
+| `filterable` | `Boolean, nil` |  |  |
+| `sortable` | `Boolean, nil` |  |  |
+| `writable` | `Boolean, Hash, nil` |  |  |
+| `encode` | `Proc, nil` |  |  |
+| `decode` | `Proc, nil` |  |  |
+| `empty` | `Symbol, nil` |  | :null or :keep |
+| `min` | `Integer, nil` |  |  |
+| `max` | `Integer, nil` |  |  |
+| `description` | `String, nil` |  |  |
+| `example` | `Object, nil` |  |  |
+| `format` | `Symbol, nil` |  |  |
+| `deprecated` | `Boolean` | `default: false` |  |
 
 **Returns**
 
@@ -182,9 +182,9 @@ Nullability is auto-detected from the foreign key column.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `Symbol` |  |
+| Name | Type |
+|------|------|
+| `name` | `Symbol` |
 
 **See also**
 
@@ -228,9 +228,9 @@ Sets or gets the description for generated documentation.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `value` | `String, nil` |  |
+| Name | Type |
+|------|------|
+| `value` | `String, nil` |
 
 **Returns**
 
@@ -254,9 +254,9 @@ Deserializes using this representation's decode transformers.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `hash_or_array` | `Hash, Array<Hash>` |  |
+| Name | Type |
+|------|------|
+| `hash_or_array` | `Hash, Array<Hash>` |
 
 **Returns**
 
@@ -280,9 +280,9 @@ Sets or gets the example value for generated documentation.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `value` | `Hash, nil` |  |
+| Name | Type |
+|------|------|
+| `value` | `Hash, nil` |
 
 **Returns**
 
@@ -306,21 +306,21 @@ Defines a has_many association for serialization.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `Symbol` |  |
-| `allow_destroy` | `Boolean` | (default: false) |
-| `representation` | `Class<Representation::Base>, nil` |  |
-| `polymorphic` | `Array, Hash, nil` |  |
-| `include` | `Symbol` | :always or :optional (default: :optional) |
-| `writable` | `Boolean, Hash` | (default: false) |
-| `filterable` | `Boolean` | (default: false) |
-| `sortable` | `Boolean` | (default: false) |
-| `nullable` | `Boolean, nil` |  |
-| `optional` | `Boolean, nil` |  |
-| `description` | `String, nil` |  |
-| `example` | `Object, nil` |  |
-| `deprecated` | `Boolean` | (default: false) |
+| Name | Type | Default | Description |
+|------|------|------|------|
+| `name` | `Symbol` |  |  |
+| `allow_destroy` | `Boolean` | `default: false` |  |
+| `representation` | `Class<Representation::Base>, nil` |  |  |
+| `polymorphic` | `Array, Hash, nil` |  |  |
+| `include` | `Symbol` |  | :always or :optional (default: :optional) |
+| `writable` | `Boolean, Hash` | `default: false` |  |
+| `filterable` | `Boolean` | `default: false` |  |
+| `sortable` | `Boolean` | `default: false` |  |
+| `nullable` | `Boolean, nil` |  |  |
+| `optional` | `Boolean, nil` |  |  |
+| `description` | `String, nil` |  |  |
+| `example` | `Object, nil` |  |  |
+| `deprecated` | `Boolean` | `default: false` |  |
 
 **See also**
 
@@ -345,20 +345,20 @@ Defines a has_one association for serialization.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `Symbol` |  |
-| `representation` | `Class<Representation::Base>, nil` |  |
-| `polymorphic` | `Array, Hash, nil` |  |
-| `include` | `Symbol` | :always or :optional (default: :optional) |
-| `writable` | `Boolean, Hash` | (default: false) |
-| `filterable` | `Boolean` | (default: false) |
-| `sortable` | `Boolean` | (default: false) |
-| `nullable` | `Boolean, nil` |  |
-| `optional` | `Boolean, nil` |  |
-| `description` | `String, nil` |  |
-| `example` | `Object, nil` |  |
-| `deprecated` | `Boolean` | (default: false) |
+| Name | Type | Default | Description |
+|------|------|------|------|
+| `name` | `Symbol` |  |  |
+| `representation` | `Class<Representation::Base>, nil` |  |  |
+| `polymorphic` | `Array, Hash, nil` |  |  |
+| `include` | `Symbol` |  | :always or :optional (default: :optional) |
+| `writable` | `Boolean, Hash` | `default: false` |  |
+| `filterable` | `Boolean` | `default: false` |  |
+| `sortable` | `Boolean` | `default: false` |  |
+| `nullable` | `Boolean, nil` |  |  |
+| `optional` | `Boolean, nil` |  |  |
+| `description` | `String, nil` |  |  |
+| `example` | `Object, nil` |  |  |
+| `deprecated` | `Boolean` | `default: false` |  |
 
 **Example**
 
@@ -394,9 +394,9 @@ Auto-detected from representation name when not set. Use
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `value` | `Class<ActiveRecord::Base>` |  |
+| Name | Type |
+|------|------|
+| `value` | `Class<ActiveRecord::Base>` |
 
 **Returns**
 
@@ -458,10 +458,10 @@ Auto-detected from model name when not set. Use [.root_key](#root-key) to retrie
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
+| Name | Type | Default |
+|------|------|------|
 | `singular` | `String, Symbol` |  |
-| `plural` | `String, Symbol` | (default: singular.pluralize) |
+| `plural` | `String, Symbol` | `default: singular.pluralize` |
 
 **Returns**
 
@@ -507,10 +507,10 @@ Serializes a record or collection to JSON-ready hashes.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
+| Name | Type | Default |
+|------|------|------|
 | `record_or_collection` | `ActiveRecord::Base, Array<ActiveRecord::Base>` |  |
-| `context` | `Hash` | (default: {}) |
+| `context` | `Hash` | `default: {}` |
 | `include` | `Symbol, Array, Hash, nil` |  |
 
 **Returns**
@@ -562,9 +562,9 @@ Overrides the model's default type name for STI and polymorphic types.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `value` | `String, Symbol, nil` |  |
+| Name | Type |
+|------|------|
+| `value` | `String, Symbol, nil` |
 
 **Returns**
 
