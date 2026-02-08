@@ -6,14 +6,14 @@ next: false
 
 # Element
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L26)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L28)
 
 Block context for defining a single type expression.
 
 Used inside `array do` and `variant do` blocks where
 exactly one element type must be defined.
 
-**Example: Array of integers**
+**Example: instance_eval style**
 
 ```ruby
 array :ids do
@@ -21,18 +21,20 @@ array :ids do
 end
 ```
 
-**Example: Array of references**
+**Example: yield style**
 
 ```ruby
-array :items do
-  reference :item
+array :ids do |element|
+  element.integer
 end
 ```
 
-**Example: Variant with enum reference**
+**Example: Array of references**
 
 ```ruby
-variant { string enum: :status }
+array :items do |element|
+  element.reference :item
+end
 ```
 
 ## Instance Methods
@@ -259,7 +261,7 @@ end
 
 `#of(type, discriminator: nil, enum: nil, format: nil, max: nil, min: nil, shape: nil, value: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L66)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L68)
 
 Defines the element type.
 

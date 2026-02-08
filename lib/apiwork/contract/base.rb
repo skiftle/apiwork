@@ -159,17 +159,21 @@ module Apiwork
         # @param format [String] format hint for docs
         # @param deprecated [Boolean] mark as deprecated
         # @param representation_class [Class<Representation::Base>] the representation class for type inference
+        # @yield block for defining object shape
+        # @yieldparam object [API::Object]
+        # @return [void]
         # @see API::Object
         #
-        # @example Define a reusable type
+        # @example instance_eval style
+        #   object(:item) do
+        #     string(:description)
+        #     decimal(:amount)
+        #   end
+        #
+        # @example yield style
         #   object(:item) do |object|
         #     object.string(:description)
         #     object.decimal(:amount)
-        #   end
-        #
-        # @example Reference in contract
-        #   array(:items) do |array|
-        #     array.reference(:item)
         #   end
         def object(
           name,
@@ -203,6 +207,7 @@ module Apiwork
         # @param description [String] documentation description
         # @param example [String] example value for docs
         # @param deprecated [Boolean] mark as deprecated
+        # @return [void]
         # @see API::Base
         #
         # @example
@@ -229,17 +234,24 @@ module Apiwork
         #
         # @param name [Symbol] union name
         # @param discriminator [Symbol] field that identifies the variant
+        # @yield block for defining union variants
+        # @yieldparam union [API::Union]
+        # @return [void]
         #
-        # @example
+        # @example instance_eval style
         #   union(:payment_method, discriminator: :type) do
         #     variant(tag: 'card') do
-        #       object do |object|
-        #         object.string(:last_four)
+        #       object do
+        #         string(:last_four)
         #       end
         #     end
-        #     variant(tag: 'bank') do
-        #       object do |object|
-        #         object.string(:account_number)
+        #   end
+        #
+        # @example yield style
+        #   union(:payment_method, discriminator: :type) do |union|
+        #     union.variant(tag: 'card') do |variant|
+        #       variant.object do |object|
+        #         object.string(:last_four)
         #       end
         #     end
         #   end

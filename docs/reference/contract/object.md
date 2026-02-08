@@ -6,14 +6,14 @@ next: false
 
 # Object
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L18)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L24)
 
 Block context for defining request/response structure.
 
 Accessed via `body do` and `query do` inside contract actions,
 or `object :name do` at contract level to define reusable types.
 
-**Example: Request body**
+**Example: instance_eval style**
 
 ```ruby
 body do
@@ -22,7 +22,55 @@ body do
 end
 ```
 
+**Example: yield style**
+
+```ruby
+body do |body|
+  body.string :title
+  body.decimal :amount
+end
+```
+
 ## Instance Methods
+
+### #array
+
+`#array(name, **options, &block)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L170)
+
+Defines an array param with element type.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `name` | `Symbol` | param name |
+| `options` | `Hash` | additional param options |
+
+**Returns**
+
+`void`
+
+**Yields** [Contract::Element](/reference/contract/element)
+
+**Example: instance_eval style**
+
+```ruby
+array :tags do
+  string
+end
+```
+
+**Example: yield style**
+
+```ruby
+array :tags do |element|
+  element.string
+end
+```
+
+---
 
 ### #array?
 
@@ -621,7 +669,7 @@ Defines an optional object.
 
 `#param(name, type: nil, as: nil, default: nil, deprecated: nil, description: nil, discriminator: nil, enum: nil, example: nil, format: nil, max: nil, min: nil, nullable: nil, of: nil, optional: nil, required: nil, shape: nil, store: nil, transform: nil, value: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L60)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L78)
 
 Defines a param with explicit type.
 
@@ -658,6 +706,24 @@ for static definitions.
 `void`
 
 **Yields** [Contract::Object](/reference/contract/object), [Contract::Union](/reference/contract/union), [Contract::Element](/reference/contract/element)
+
+**Example: Object with block (instance_eval style)**
+
+```ruby
+param :address, type: :object do
+  string :street
+  string :city
+end
+```
+
+**Example: Object with block (yield style)**
+
+```ruby
+param :address, type: :object do |address|
+  address.string :street
+  address.string :city
+end
+```
 
 ---
 

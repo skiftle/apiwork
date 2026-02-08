@@ -85,7 +85,7 @@ Returns whether this contract is abstract.
 
 `.action(action_name, replace: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L354)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L366)
 
 Defines an action on this contract.
 
@@ -150,7 +150,7 @@ end
 
 `.enum(name, values: nil, description: nil, example: nil, deprecated: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L213)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L218)
 
 Defines an enum scoped to this contract.
 
@@ -166,6 +166,10 @@ output, enums are namespaced with the contract's scope prefix.
 | `description` | `String` | documentation description |
 | `example` | `String` | example value for docs |
 | `deprecated` | `Boolean` | mark as deprecated |
+
+**Returns**
+
+`void`
 
 **See also**
 
@@ -228,7 +232,7 @@ end
 
 `.import(contract_class, as:)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L278)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L290)
 
 Imports types from another contract for reuse.
 
@@ -275,7 +279,7 @@ end
 
 `.introspect(expand: false, locale: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L383)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L395)
 
 The introspection data for this contract.
 
@@ -310,7 +314,7 @@ InvoiceContract.introspect(expand: true)
 
 `.object(name, description: nil, example: nil, format: nil, deprecated: false, representation_class: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L174)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L178)
 
 Defines a reusable object type scoped to this contract.
 
@@ -329,24 +333,31 @@ with the contract's scope prefix (e.g., `:order_address`).
 | `deprecated` | `Boolean` | mark as deprecated |
 | `representation_class` | `Class<Representation::Base>` | the representation class for type inference |
 
+**Returns**
+
+`void`
+
+**Yields** [API::Object](/reference/api/object)
+
 **See also**
 
 - [API::Object](/reference/api/object)
 
-**Example: Define a reusable type**
+**Example: instance_eval style**
+
+```ruby
+object(:item) do
+  string(:description)
+  decimal(:amount)
+end
+```
+
+**Example: yield style**
 
 ```ruby
 object(:item) do |object|
   object.string(:description)
   object.decimal(:amount)
-end
-```
-
-**Example: Reference in contract**
-
-```ruby
-array(:items) do |array|
-  array.reference(:item)
 end
 ```
 
@@ -397,7 +408,7 @@ end
 
 `.representation_class`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L426)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L438)
 
 The representation class for this contract.
 
@@ -420,7 +431,7 @@ InvoiceContract.representation_class
 
 `.union(name, discriminator: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L246)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L258)
 
 Defines a discriminated union type scoped to this contract.
 
@@ -435,18 +446,31 @@ output, unions are namespaced with the contract's scope prefix.
 | `name` | `Symbol` | union name |
 | `discriminator` | `Symbol` | field that identifies the variant |
 
-**Example**
+**Returns**
+
+`void`
+
+**Yields** [API::Union](/reference/api/union)
+
+**Example: instance_eval style**
 
 ```ruby
 union(:payment_method, discriminator: :type) do
   variant(tag: 'card') do
-    object do |object|
-      object.string(:last_four)
+    object do
+      string(:last_four)
     end
   end
-  variant(tag: 'bank') do
-    object do |object|
-      object.string(:account_number)
+end
+```
+
+**Example: yield style**
+
+```ruby
+union(:payment_method, discriminator: :type) do |union|
+  union.variant(tag: 'card') do |variant|
+    variant.object do |object|
+      object.string(:last_four)
     end
   end
 end
@@ -488,7 +512,7 @@ The body for this contract.
 
 `#invalid?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L554)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L566)
 
 Whether this contract is invalid.
 
@@ -544,7 +568,7 @@ The request for this contract.
 
 `#valid?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L546)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L558)
 
 Whether this contract is valid.
 

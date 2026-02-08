@@ -8,10 +8,16 @@ module Apiwork
     # Accessed via `body do` and `query do` inside contract actions,
     # or `object :name do` at contract level to define reusable types.
     #
-    # @example Request body
+    # @example instance_eval style
     #   body do
     #     string :title
     #     decimal :amount
+    #   end
+    #
+    # @example yield style
+    #   body do |body|
+    #     body.string :title
+    #     body.decimal :amount
     #   end
     #
     # @see API::Object Block context for reusable types
@@ -54,9 +60,21 @@ module Apiwork
       # @param store [Boolean, nil] whether to persist
       # @param transform [Proc, nil] value transformation lambda
       # @param value [Object, nil] literal value
-      # @yield block for nested structure (instance_eval style)
+      # @yield block for nested structure
       # @yieldparam shape [Contract::Object, Contract::Union, Contract::Element]
       # @return [void]
+      #
+      # @example Object with block (instance_eval style)
+      #   param :address, type: :object do
+      #     string :street
+      #     string :city
+      #   end
+      #
+      # @example Object with block (yield style)
+      #   param :address, type: :object do |address|
+      #     address.string :street
+      #     address.string :city
+      #   end
       def param(
         name,
         type: nil,
@@ -131,6 +149,24 @@ module Apiwork
         end
       end
 
+      # @api public
+      # Defines an array param with element type.
+      #
+      # @param name [Symbol] param name
+      # @param options [Hash] additional param options
+      # @yield block for defining element type
+      # @yieldparam element [Contract::Element]
+      # @return [void]
+      #
+      # @example instance_eval style
+      #   array :tags do
+      #     string
+      #   end
+      #
+      # @example yield style
+      #   array :tags do |element|
+      #     element.string
+      #   end
       def array(name, **options, &block)
         raise ArgumentError, 'array requires a block' unless block
 

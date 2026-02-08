@@ -6,7 +6,7 @@ next: false
 
 # Object
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L25)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L26)
 
 Block context for defining reusable object types.
 
@@ -14,7 +14,7 @@ Accessed via `object :name do` in API or contract definitions.
 Use type methods to define fields: [#string](#string), [#integer](#integer), [#decimal](#decimal),
 [#boolean](#boolean), [#array](#array), [#object](#object), [#union](#union), [#reference](#reference).
 
-**Example: Define a reusable type**
+**Example: instance_eval style**
 
 ```ruby
 object :item do
@@ -23,15 +23,55 @@ object :item do
 end
 ```
 
-**Example: Reference in contract**
+**Example: yield style**
 
 ```ruby
-array :items do
-  reference :item
+object :item do |object|
+  object.string :description
+  object.decimal :amount
 end
 ```
 
 ## Instance Methods
+
+### #array
+
+`#array(name, **options, &block)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L149)
+
+Defines an array field with element type.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `name` | `Symbol` | field name |
+| `options` | `Hash` | additional field options |
+
+**Returns**
+
+`void`
+
+**Yields** [API::Element](/reference/api/element)
+
+**Example: instance_eval style**
+
+```ruby
+array :tags do
+  string
+end
+```
+
+**Example: yield style**
+
+```ruby
+array :tags do |element|
+  element.string
+end
+```
+
+---
 
 ### #array?
 
@@ -630,7 +670,7 @@ Defines an optional object.
 
 `#param(name, type: nil, as: nil, default: nil, deprecated: nil, description: nil, discriminator: nil, enum: nil, example: nil, format: nil, max: nil, min: nil, nullable: nil, of: nil, optional: nil, required: nil, shape: nil, store: nil, transform: nil, value: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L55)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L68)
 
 Defines a field with explicit type.
 
@@ -667,6 +707,24 @@ for static definitions. Use `param` for dynamic field generation.
 `void`
 
 **Yields** [API::Object](/reference/api/object), [API::Union](/reference/api/union), [API::Element](/reference/api/element)
+
+**Example: Object with block (instance_eval style)**
+
+```ruby
+param :metadata, type: :object do
+  string :key
+  string :value
+end
+```
+
+**Example: Object with block (yield style)**
+
+```ruby
+param :metadata, type: :object do |metadata|
+  metadata.string :key
+  metadata.string :value
+end
+```
 
 ---
 

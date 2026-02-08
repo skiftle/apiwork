@@ -9,15 +9,16 @@ module Apiwork
     # Use type methods to define fields: {#string}, {#integer}, {#decimal},
     # {#boolean}, {#array}, {#object}, {#union}, {#reference}.
     #
-    # @example Define a reusable type
+    # @example instance_eval style
     #   object :item do
     #     string :description
     #     decimal :amount
     #   end
     #
-    # @example Reference in contract
-    #   array :items do
-    #     reference :item
+    # @example yield style
+    #   object :item do |object|
+    #     object.string :description
+    #     object.decimal :amount
     #   end
     #
     # @see Contract::Object Block context for inline objects
@@ -49,9 +50,21 @@ module Apiwork
       # @param store [Boolean, nil] whether to persist
       # @param transform [Proc, nil] value transformation lambda
       # @param value [Object, nil] literal value
-      # @yield block for nested structure (instance_eval style)
+      # @yield block for nested structure
       # @yieldparam shape [API::Object, API::Union, API::Element]
       # @return [void]
+      #
+      # @example Object with block (instance_eval style)
+      #   param :metadata, type: :object do
+      #     string :key
+      #     string :value
+      #   end
+      #
+      # @example Object with block (yield style)
+      #   param :metadata, type: :object do |metadata|
+      #     metadata.string :key
+      #     metadata.string :value
+      #   end
       def param(
         name,
         type: nil,
@@ -115,7 +128,24 @@ module Apiwork
         )
       end
 
-      # Override array to handle element creation with of: hash
+      # @api public
+      # Defines an array field with element type.
+      #
+      # @param name [Symbol] field name
+      # @param options [Hash] additional field options
+      # @yield block for defining element type
+      # @yieldparam element [API::Element]
+      # @return [void]
+      #
+      # @example instance_eval style
+      #   array :tags do
+      #     string
+      #   end
+      #
+      # @example yield style
+      #   array :tags do |element|
+      #     element.string
+      #   end
       def array(name, **options, &block)
         raise ArgumentError, 'array requires a block' unless block
 

@@ -8,18 +8,20 @@ module Apiwork
     # Used inside `array do` and `variant do` blocks where
     # exactly one element type must be defined.
     #
-    # @example Array of integers
+    # @example instance_eval style
     #   array :ids do
     #     integer
     #   end
     #
-    # @example Array of references
-    #   array :items do
-    #     reference :item
+    # @example yield style
+    #   array :ids do |element|
+    #     element.integer
     #   end
     #
-    # @example Variant with enum reference
-    #   variant { string enum: :status }
+    # @example Array of references
+    #   array :items do |element|
+    #     element.reference :item
+    #   end
     #
     # @see Contract::Object Block context for object fields
     # @see Contract::Union Block context for union variants

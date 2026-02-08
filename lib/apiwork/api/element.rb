@@ -8,18 +8,20 @@ module Apiwork
     # Used inside `array do` and `variant do` blocks where
     # exactly one element type must be defined.
     #
-    # @example Array of integers
+    # @example instance_eval style
     #   array :ids do
     #     integer
     #   end
     #
-    # @example Array of references
-    #   array :items do
-    #     reference :item
+    # @example yield style
+    #   array :ids do |element|
+    #     element.integer
     #   end
     #
-    # @example Variant with options
-    #   variant { string enum: %w[pending active] }
+    # @example Array of references
+    #   array :items do |element|
+    #     element.reference :item
+    #   end
     #
     # @see API::Object Block context for object fields
     # @see API::Union Block context for union variants
@@ -38,9 +40,23 @@ module Apiwork
       # @param min [Integer, nil] minimum value or length
       # @param shape [API::Object, API::Union, nil] pre-built shape
       # @param value [Object, nil] literal value (literals only)
-      # @yield block for defining nested structure (instance_eval style)
+      # @yield block for defining nested structure
       # @yieldparam shape [API::Object, API::Union, API::Element]
       # @return [void]
+      #
+      # @example instance_eval style
+      #   array :tags do
+      #     of :object do
+      #       string :name
+      #     end
+      #   end
+      #
+      # @example yield style
+      #   array :tags do |element|
+      #     element.of :object do |object|
+      #       object.string :name
+      #     end
+      #   end
       def of(type, discriminator: nil, enum: nil, format: nil, max: nil, min: nil, shape: nil, value: nil, &block)
         case type
         when :string, :integer, :decimal, :boolean, :number, :datetime, :date, :uuid, :time, :binary
