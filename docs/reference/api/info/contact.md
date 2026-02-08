@@ -26,7 +26,7 @@ The contact email.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `value` | `String` | the contact email |
+| `value` | `String, nil` |  |
 
 **Returns**
 
@@ -53,7 +53,7 @@ The contact name.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `value` | `String` | the contact name |
+| `value` | `String, nil` |  |
 
 **Returns**
 
@@ -80,7 +80,7 @@ The contact URL.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `value` | `String` | the contact URL |
+| `value` | `String, nil` |  |
 
 **Returns**
 

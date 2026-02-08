@@ -44,7 +44,7 @@ module Apiwork
       # @param type [Symbol, nil] param type
       # @param as [Symbol, nil] target attribute name
       # @param default [Object, nil] default value
-      # @param deprecated [Boolean, nil] mark as deprecated
+      # @param deprecated [Boolean] (default: false)
       # @param description [String, nil] documentation description
       # @param discriminator [Symbol, nil] discriminator param name (unions only)
       # @param enum [Array, Symbol, nil] allowed values or enum reference
@@ -52,10 +52,10 @@ module Apiwork
       # @param format [Symbol, nil] format hint
       # @param max [Integer, nil] maximum value or length
       # @param min [Integer, nil] minimum value or length
-      # @param nullable [Boolean, nil] whether null is allowed
+      # @param nullable [Boolean] (default: false)
       # @param of [Symbol, Hash, nil] element type (arrays only)
-      # @param optional [Boolean, nil] whether param can be omitted
-      # @param required [Boolean, nil] explicit required flag
+      # @param optional [Boolean] (default: false)
+      # @param required [Boolean] (default: false)
       # @param shape [Contract::Object, Contract::Union, nil] pre-built shape
       # @param store [Boolean, nil] whether to persist
       # @param transform [Proc, nil] value transformation lambda
@@ -80,7 +80,7 @@ module Apiwork
         type: nil,
         as: nil,
         default: nil,
-        deprecated: nil,
+        deprecated: false,
         description: nil,
         discriminator: nil,
         enum: nil,
@@ -88,10 +88,10 @@ module Apiwork
         format: nil,
         max: nil,
         min: nil,
-        nullable: nil,
+        nullable: false,
         of: nil,
-        optional: nil,
-        required: nil,
+        optional: false,
+        required: false,
         shape: nil,
         store: nil,
         transform: nil,

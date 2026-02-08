@@ -68,32 +68,32 @@ module Apiwork
     # @param name [Symbol] the name
     # @param as [Symbol, nil] target attribute name
     # @param default [Object, nil] default value
-    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param deprecated [Boolean] (default: false)
     # @param description [String, nil] documentation description
     # @param enum [Array, Symbol, nil] allowed values
     # @param example [String, nil] example value
     # @param format [Symbol, nil] format hint (:email, :uri, :uuid)
     # @param max [Integer, nil] maximum length
     # @param min [Integer, nil] minimum length
-    # @param nullable [Boolean, nil] whether null is allowed
-    # @param optional [Boolean, nil] whether it can be omitted
-    # @param required [Boolean, nil] explicit required flag
+    # @param nullable [Boolean] (default: false)
+    # @param optional [Boolean] (default: false)
+    # @param required [Boolean] (default: false)
     # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def string(
       name,
       as: nil,
       default: nil,
-      deprecated: nil,
+      deprecated: false,
       description: nil,
       enum: nil,
       example: nil,
       format: nil,
       max: nil,
       min: nil,
-      nullable: nil,
-      optional: nil,
-      required: nil,
+      nullable: false,
+      optional: false,
+      required: false,
       store: nil
     )
       param(
@@ -121,30 +121,30 @@ module Apiwork
     # @param name [Symbol] the name
     # @param as [Symbol, nil] target attribute name
     # @param default [Object, nil] default value
-    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param deprecated [Boolean] (default: false)
     # @param description [String, nil] documentation description
     # @param enum [Array, Symbol, nil] allowed values
     # @param example [String, nil] example value
     # @param format [Symbol, nil] format hint (:email, :uri, :uuid)
     # @param max [Integer, nil] maximum length
     # @param min [Integer, nil] minimum length
-    # @param nullable [Boolean, nil] whether null is allowed
-    # @param required [Boolean, nil] explicit required flag
+    # @param nullable [Boolean] (default: false)
+    # @param required [Boolean] (default: false)
     # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def string?(
       name,
       as: nil,
       default: nil,
-      deprecated: nil,
+      deprecated: false,
       description: nil,
       enum: nil,
       example: nil,
       format: nil,
       max: nil,
       min: nil,
-      nullable: nil,
-      required: nil,
+      nullable: false,
+      required: false,
       store: nil
     )
       param(
@@ -172,30 +172,30 @@ module Apiwork
     # @param name [Symbol] the name
     # @param as [Symbol, nil] target attribute name
     # @param default [Object, nil] default value
-    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param deprecated [Boolean] (default: false)
     # @param description [String, nil] documentation description
     # @param enum [Array, Symbol, nil] allowed values
     # @param example [Integer, nil] example value
     # @param max [Integer, nil] maximum value
     # @param min [Integer, nil] minimum value
-    # @param nullable [Boolean, nil] whether null is allowed
-    # @param optional [Boolean, nil] whether it can be omitted
-    # @param required [Boolean, nil] explicit required flag
+    # @param nullable [Boolean] (default: false)
+    # @param optional [Boolean] (default: false)
+    # @param required [Boolean] (default: false)
     # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def integer(
       name,
       as: nil,
       default: nil,
-      deprecated: nil,
+      deprecated: false,
       description: nil,
       enum: nil,
       example: nil,
       max: nil,
       min: nil,
-      nullable: nil,
-      optional: nil,
-      required: nil,
+      nullable: false,
+      optional: false,
+      required: false,
       store: nil
     )
       param(
@@ -222,28 +222,28 @@ module Apiwork
     # @param name [Symbol] the name
     # @param as [Symbol, nil] target attribute name
     # @param default [Object, nil] default value
-    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param deprecated [Boolean] (default: false)
     # @param description [String, nil] documentation description
     # @param enum [Array, Symbol, nil] allowed values
     # @param example [Integer, nil] example value
     # @param max [Integer, nil] maximum value
     # @param min [Integer, nil] minimum value
-    # @param nullable [Boolean, nil] whether null is allowed
-    # @param required [Boolean, nil] explicit required flag
+    # @param nullable [Boolean] (default: false)
+    # @param required [Boolean] (default: false)
     # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def integer?(
       name,
       as: nil,
       default: nil,
-      deprecated: nil,
+      deprecated: false,
       description: nil,
       enum: nil,
       example: nil,
       max: nil,
       min: nil,
-      nullable: nil,
-      required: nil,
+      nullable: false,
+      required: false,
       store: nil
     )
       param(
@@ -270,28 +270,28 @@ module Apiwork
     # @param name [Symbol] the name
     # @param as [Symbol, nil] target attribute name
     # @param default [Object, nil] default value
-    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param deprecated [Boolean] (default: false)
     # @param description [String, nil] documentation description
     # @param example [Numeric, nil] example value
     # @param max [Numeric, nil] maximum value
     # @param min [Numeric, nil] minimum value
-    # @param nullable [Boolean, nil] whether null is allowed
-    # @param optional [Boolean, nil] whether it can be omitted
-    # @param required [Boolean, nil] explicit required flag
+    # @param nullable [Boolean] (default: false)
+    # @param optional [Boolean] (default: false)
+    # @param required [Boolean] (default: false)
     # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def decimal(
       name,
       as: nil,
       default: nil,
-      deprecated: nil,
+      deprecated: false,
       description: nil,
       example: nil,
       max: nil,
       min: nil,
-      nullable: nil,
-      optional: nil,
-      required: nil,
+      nullable: false,
+      optional: false,
+      required: false,
       store: nil
     )
       param(
@@ -317,26 +317,26 @@ module Apiwork
     # @param name [Symbol] the name
     # @param as [Symbol, nil] target attribute name
     # @param default [Object, nil] default value
-    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param deprecated [Boolean] (default: false)
     # @param description [String, nil] documentation description
     # @param example [Numeric, nil] example value
     # @param max [Numeric, nil] maximum value
     # @param min [Numeric, nil] minimum value
-    # @param nullable [Boolean, nil] whether null is allowed
-    # @param required [Boolean, nil] explicit required flag
+    # @param nullable [Boolean] (default: false)
+    # @param required [Boolean] (default: false)
     # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def decimal?(
       name,
       as: nil,
       default: nil,
-      deprecated: nil,
+      deprecated: false,
       description: nil,
       example: nil,
       max: nil,
       min: nil,
-      nullable: nil,
-      required: nil,
+      nullable: false,
+      required: false,
       store: nil
     )
       param(
@@ -362,28 +362,28 @@ module Apiwork
     # @param name [Symbol] the name
     # @param as [Symbol, nil] target attribute name
     # @param default [Object, nil] default value
-    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param deprecated [Boolean] (default: false)
     # @param description [String, nil] documentation description
     # @param example [Numeric, nil] example value
     # @param max [Numeric, nil] maximum value
     # @param min [Numeric, nil] minimum value
-    # @param nullable [Boolean, nil] whether null is allowed
-    # @param optional [Boolean, nil] whether it can be omitted
-    # @param required [Boolean, nil] explicit required flag
+    # @param nullable [Boolean] (default: false)
+    # @param optional [Boolean] (default: false)
+    # @param required [Boolean] (default: false)
     # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def number(
       name,
       as: nil,
       default: nil,
-      deprecated: nil,
+      deprecated: false,
       description: nil,
       example: nil,
       max: nil,
       min: nil,
-      nullable: nil,
-      optional: nil,
-      required: nil,
+      nullable: false,
+      optional: false,
+      required: false,
       store: nil
     )
       param(
@@ -409,26 +409,26 @@ module Apiwork
     # @param name [Symbol] the name
     # @param as [Symbol, nil] target attribute name
     # @param default [Object, nil] default value
-    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param deprecated [Boolean] (default: false)
     # @param description [String, nil] documentation description
     # @param example [Numeric, nil] example value
     # @param max [Numeric, nil] maximum value
     # @param min [Numeric, nil] minimum value
-    # @param nullable [Boolean, nil] whether null is allowed
-    # @param required [Boolean, nil] explicit required flag
+    # @param nullable [Boolean] (default: false)
+    # @param required [Boolean] (default: false)
     # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def number?(
       name,
       as: nil,
       default: nil,
-      deprecated: nil,
+      deprecated: false,
       description: nil,
       example: nil,
       max: nil,
       min: nil,
-      nullable: nil,
-      required: nil,
+      nullable: false,
+      required: false,
       store: nil
     )
       param(
@@ -454,24 +454,24 @@ module Apiwork
     # @param name [Symbol] the name
     # @param as [Symbol, nil] target attribute name
     # @param default [Object, nil] default value
-    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param deprecated [Boolean] (default: false)
     # @param description [String, nil] documentation description
     # @param example [Boolean, nil] example value
-    # @param nullable [Boolean, nil] whether null is allowed
-    # @param optional [Boolean, nil] whether it can be omitted
-    # @param required [Boolean, nil] explicit required flag
+    # @param nullable [Boolean] (default: false)
+    # @param optional [Boolean] (default: false)
+    # @param required [Boolean] (default: false)
     # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def boolean(
       name,
       as: nil,
       default: nil,
-      deprecated: nil,
+      deprecated: false,
       description: nil,
       example: nil,
-      nullable: nil,
-      optional: nil,
-      required: nil,
+      nullable: false,
+      optional: false,
+      required: false,
       store: nil
     )
       param(
@@ -495,22 +495,22 @@ module Apiwork
     # @param name [Symbol] the name
     # @param as [Symbol, nil] target attribute name
     # @param default [Object, nil] default value
-    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param deprecated [Boolean] (default: false)
     # @param description [String, nil] documentation description
     # @param example [Boolean, nil] example value
-    # @param nullable [Boolean, nil] whether null is allowed
-    # @param required [Boolean, nil] explicit required flag
+    # @param nullable [Boolean] (default: false)
+    # @param required [Boolean] (default: false)
     # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def boolean?(
       name,
       as: nil,
       default: nil,
-      deprecated: nil,
+      deprecated: false,
       description: nil,
       example: nil,
-      nullable: nil,
-      required: nil,
+      nullable: false,
+      required: false,
       store: nil
     )
       param(
@@ -534,24 +534,24 @@ module Apiwork
     # @param name [Symbol] the name
     # @param as [Symbol, nil] target attribute name
     # @param default [Object, nil] default value
-    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param deprecated [Boolean] (default: false)
     # @param description [String, nil] documentation description
     # @param example [String, nil] example value
-    # @param nullable [Boolean, nil] whether null is allowed
-    # @param optional [Boolean, nil] whether it can be omitted
-    # @param required [Boolean, nil] explicit required flag
+    # @param nullable [Boolean] (default: false)
+    # @param optional [Boolean] (default: false)
+    # @param required [Boolean] (default: false)
     # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def datetime(
       name,
       as: nil,
       default: nil,
-      deprecated: nil,
+      deprecated: false,
       description: nil,
       example: nil,
-      nullable: nil,
-      optional: nil,
-      required: nil,
+      nullable: false,
+      optional: false,
+      required: false,
       store: nil
     )
       param(
@@ -575,22 +575,22 @@ module Apiwork
     # @param name [Symbol] the name
     # @param as [Symbol, nil] target attribute name
     # @param default [Object, nil] default value
-    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param deprecated [Boolean] (default: false)
     # @param description [String, nil] documentation description
     # @param example [String, nil] example value
-    # @param nullable [Boolean, nil] whether null is allowed
-    # @param required [Boolean, nil] explicit required flag
+    # @param nullable [Boolean] (default: false)
+    # @param required [Boolean] (default: false)
     # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def datetime?(
       name,
       as: nil,
       default: nil,
-      deprecated: nil,
+      deprecated: false,
       description: nil,
       example: nil,
-      nullable: nil,
-      required: nil,
+      nullable: false,
+      required: false,
       store: nil
     )
       param(
@@ -614,24 +614,24 @@ module Apiwork
     # @param name [Symbol] the name
     # @param as [Symbol, nil] target attribute name
     # @param default [Object, nil] default value
-    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param deprecated [Boolean] (default: false)
     # @param description [String, nil] documentation description
     # @param example [String, nil] example value
-    # @param nullable [Boolean, nil] whether null is allowed
-    # @param optional [Boolean, nil] whether it can be omitted
-    # @param required [Boolean, nil] explicit required flag
+    # @param nullable [Boolean] (default: false)
+    # @param optional [Boolean] (default: false)
+    # @param required [Boolean] (default: false)
     # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def date(
       name,
       as: nil,
       default: nil,
-      deprecated: nil,
+      deprecated: false,
       description: nil,
       example: nil,
-      nullable: nil,
-      optional: nil,
-      required: nil,
+      nullable: false,
+      optional: false,
+      required: false,
       store: nil
     )
       param(
@@ -655,22 +655,22 @@ module Apiwork
     # @param name [Symbol] the name
     # @param as [Symbol, nil] target attribute name
     # @param default [Object, nil] default value
-    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param deprecated [Boolean] (default: false)
     # @param description [String, nil] documentation description
     # @param example [String, nil] example value
-    # @param nullable [Boolean, nil] whether null is allowed
-    # @param required [Boolean, nil] explicit required flag
+    # @param nullable [Boolean] (default: false)
+    # @param required [Boolean] (default: false)
     # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def date?(
       name,
       as: nil,
       default: nil,
-      deprecated: nil,
+      deprecated: false,
       description: nil,
       example: nil,
-      nullable: nil,
-      required: nil,
+      nullable: false,
+      required: false,
       store: nil
     )
       param(
@@ -694,24 +694,24 @@ module Apiwork
     # @param name [Symbol] the name
     # @param as [Symbol, nil] target attribute name
     # @param default [Object, nil] default value
-    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param deprecated [Boolean] (default: false)
     # @param description [String, nil] documentation description
     # @param example [String, nil] example value
-    # @param nullable [Boolean, nil] whether null is allowed
-    # @param optional [Boolean, nil] whether it can be omitted
-    # @param required [Boolean, nil] explicit required flag
+    # @param nullable [Boolean] (default: false)
+    # @param optional [Boolean] (default: false)
+    # @param required [Boolean] (default: false)
     # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def uuid(
       name,
       as: nil,
       default: nil,
-      deprecated: nil,
+      deprecated: false,
       description: nil,
       example: nil,
-      nullable: nil,
-      optional: nil,
-      required: nil,
+      nullable: false,
+      optional: false,
+      required: false,
       store: nil
     )
       param(
@@ -735,22 +735,22 @@ module Apiwork
     # @param name [Symbol] the name
     # @param as [Symbol, nil] target attribute name
     # @param default [Object, nil] default value
-    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param deprecated [Boolean] (default: false)
     # @param description [String, nil] documentation description
     # @param example [String, nil] example value
-    # @param nullable [Boolean, nil] whether null is allowed
-    # @param required [Boolean, nil] explicit required flag
+    # @param nullable [Boolean] (default: false)
+    # @param required [Boolean] (default: false)
     # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def uuid?(
       name,
       as: nil,
       default: nil,
-      deprecated: nil,
+      deprecated: false,
       description: nil,
       example: nil,
-      nullable: nil,
-      required: nil,
+      nullable: false,
+      required: false,
       store: nil
     )
       param(
@@ -774,24 +774,24 @@ module Apiwork
     # @param name [Symbol] the name
     # @param as [Symbol, nil] target attribute name
     # @param default [Object, nil] default value
-    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param deprecated [Boolean] (default: false)
     # @param description [String, nil] documentation description
     # @param example [String, nil] example value
-    # @param nullable [Boolean, nil] whether null is allowed
-    # @param optional [Boolean, nil] whether it can be omitted
-    # @param required [Boolean, nil] explicit required flag
+    # @param nullable [Boolean] (default: false)
+    # @param optional [Boolean] (default: false)
+    # @param required [Boolean] (default: false)
     # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def time(
       name,
       as: nil,
       default: nil,
-      deprecated: nil,
+      deprecated: false,
       description: nil,
       example: nil,
-      nullable: nil,
-      optional: nil,
-      required: nil,
+      nullable: false,
+      optional: false,
+      required: false,
       store: nil
     )
       param(
@@ -815,22 +815,22 @@ module Apiwork
     # @param name [Symbol] the name
     # @param as [Symbol, nil] target attribute name
     # @param default [Object, nil] default value
-    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param deprecated [Boolean] (default: false)
     # @param description [String, nil] documentation description
     # @param example [String, nil] example value
-    # @param nullable [Boolean, nil] whether null is allowed
-    # @param required [Boolean, nil] explicit required flag
+    # @param nullable [Boolean] (default: false)
+    # @param required [Boolean] (default: false)
     # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def time?(
       name,
       as: nil,
       default: nil,
-      deprecated: nil,
+      deprecated: false,
       description: nil,
       example: nil,
-      nullable: nil,
-      required: nil,
+      nullable: false,
+      required: false,
       store: nil
     )
       param(
@@ -854,24 +854,24 @@ module Apiwork
     # @param name [Symbol] the name
     # @param as [Symbol, nil] target attribute name
     # @param default [Object, nil] default value
-    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param deprecated [Boolean] (default: false)
     # @param description [String, nil] documentation description
     # @param example [String, nil] example value
-    # @param nullable [Boolean, nil] whether null is allowed
-    # @param optional [Boolean, nil] whether it can be omitted
-    # @param required [Boolean, nil] explicit required flag
+    # @param nullable [Boolean] (default: false)
+    # @param optional [Boolean] (default: false)
+    # @param required [Boolean] (default: false)
     # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def binary(
       name,
       as: nil,
       default: nil,
-      deprecated: nil,
+      deprecated: false,
       description: nil,
       example: nil,
-      nullable: nil,
-      optional: nil,
-      required: nil,
+      nullable: false,
+      optional: false,
+      required: false,
       store: nil
     )
       param(
@@ -895,22 +895,22 @@ module Apiwork
     # @param name [Symbol] the name
     # @param as [Symbol, nil] target attribute name
     # @param default [Object, nil] default value
-    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param deprecated [Boolean] (default: false)
     # @param description [String, nil] documentation description
     # @param example [String, nil] example value
-    # @param nullable [Boolean, nil] whether null is allowed
-    # @param required [Boolean, nil] explicit required flag
+    # @param nullable [Boolean] (default: false)
+    # @param required [Boolean] (default: false)
     # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def binary?(
       name,
       as: nil,
       default: nil,
-      deprecated: nil,
+      deprecated: false,
       description: nil,
       example: nil,
-      nullable: nil,
-      required: nil,
+      nullable: false,
+      required: false,
       store: nil
     )
       param(
@@ -934,11 +934,11 @@ module Apiwork
     # @param name [Symbol] the name
     # @param as [Symbol, nil] target attribute name
     # @param default [Object, nil] default value
-    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param deprecated [Boolean] (default: false)
     # @param description [String, nil] documentation description
-    # @param nullable [Boolean, nil] whether null is allowed
-    # @param optional [Boolean, nil] whether it can be omitted
-    # @param required [Boolean, nil] explicit required flag
+    # @param nullable [Boolean] (default: false)
+    # @param optional [Boolean] (default: false)
+    # @param required [Boolean] (default: false)
     # @param store [Object, nil] value to persist (replaces received value)
     # @yield block defining nested structure
     # @return [void]
@@ -946,11 +946,11 @@ module Apiwork
       name,
       as: nil,
       default: nil,
-      deprecated: nil,
+      deprecated: false,
       description: nil,
-      nullable: nil,
-      optional: nil,
-      required: nil,
+      nullable: false,
+      optional: false,
+      required: false,
       store: nil,
       &block
     )
@@ -975,10 +975,10 @@ module Apiwork
     # @param name [Symbol] the name
     # @param as [Symbol, nil] target attribute name
     # @param default [Object, nil] default value
-    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param deprecated [Boolean] (default: false)
     # @param description [String, nil] documentation description
-    # @param nullable [Boolean, nil] whether null is allowed
-    # @param required [Boolean, nil] explicit required flag
+    # @param nullable [Boolean] (default: false)
+    # @param required [Boolean] (default: false)
     # @param store [Object, nil] value to persist (replaces received value)
     # @yield block defining nested structure
     # @return [void]
@@ -986,10 +986,10 @@ module Apiwork
       name,
       as: nil,
       default: nil,
-      deprecated: nil,
+      deprecated: false,
       description: nil,
-      nullable: nil,
-      required: nil,
+      nullable: false,
+      required: false,
       store: nil,
       &block
     )
@@ -1014,12 +1014,12 @@ module Apiwork
     # @param name [Symbol] the name
     # @param as [Symbol, nil] target attribute name
     # @param default [Object, nil] default value
-    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param deprecated [Boolean] (default: false)
     # @param description [String, nil] documentation description
-    # @param nullable [Boolean, nil] whether null is allowed
+    # @param nullable [Boolean] (default: false)
     # @param of [Symbol, Hash, nil] element type
-    # @param optional [Boolean, nil] whether it can be omitted
-    # @param required [Boolean, nil] explicit required flag
+    # @param optional [Boolean] (default: false)
+    # @param required [Boolean] (default: false)
     # @param store [Object, nil] value to persist (replaces received value)
     # @yield block defining element type
     # @return [void]
@@ -1027,12 +1027,12 @@ module Apiwork
       name,
       as: nil,
       default: nil,
-      deprecated: nil,
+      deprecated: false,
       description: nil,
-      nullable: nil,
+      nullable: false,
       of: nil,
-      optional: nil,
-      required: nil,
+      optional: false,
+      required: false,
       store: nil,
       &block
     )
@@ -1058,11 +1058,11 @@ module Apiwork
     # @param name [Symbol] the name
     # @param as [Symbol, nil] target attribute name
     # @param default [Object, nil] default value
-    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param deprecated [Boolean] (default: false)
     # @param description [String, nil] documentation description
-    # @param nullable [Boolean, nil] whether null is allowed
+    # @param nullable [Boolean] (default: false)
     # @param of [Symbol, Hash, nil] element type
-    # @param required [Boolean, nil] explicit required flag
+    # @param required [Boolean] (default: false)
     # @param store [Object, nil] value to persist (replaces received value)
     # @yield block defining element type
     # @return [void]
@@ -1070,11 +1070,11 @@ module Apiwork
       name,
       as: nil,
       default: nil,
-      deprecated: nil,
+      deprecated: false,
       description: nil,
-      nullable: nil,
+      nullable: false,
       of: nil,
-      required: nil,
+      required: false,
       store: nil,
       &block
     )
@@ -1100,12 +1100,12 @@ module Apiwork
     # @param name [Symbol] the name
     # @param as [Symbol, nil] target attribute name
     # @param default [Object, nil] default value
-    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param deprecated [Boolean] (default: false)
     # @param description [String, nil] documentation description
     # @param discriminator [Symbol, nil] discriminator field name
-    # @param nullable [Boolean, nil] whether null is allowed
-    # @param optional [Boolean, nil] whether it can be omitted
-    # @param required [Boolean, nil] explicit required flag
+    # @param nullable [Boolean] (default: false)
+    # @param optional [Boolean] (default: false)
+    # @param required [Boolean] (default: false)
     # @param store [Object, nil] value to persist (replaces received value)
     # @yield block defining union variants
     # @return [void]
@@ -1113,12 +1113,12 @@ module Apiwork
       name,
       as: nil,
       default: nil,
-      deprecated: nil,
+      deprecated: false,
       description: nil,
       discriminator: nil,
-      nullable: nil,
-      optional: nil,
-      required: nil,
+      nullable: false,
+      optional: false,
+      required: false,
       store: nil,
       &block
     )
@@ -1144,11 +1144,11 @@ module Apiwork
     # @param name [Symbol] the name
     # @param as [Symbol, nil] target attribute name
     # @param default [Object, nil] default value
-    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param deprecated [Boolean] (default: false)
     # @param description [String, nil] documentation description
     # @param discriminator [Symbol, nil] discriminator field name
-    # @param nullable [Boolean, nil] whether null is allowed
-    # @param required [Boolean, nil] explicit required flag
+    # @param nullable [Boolean] (default: false)
+    # @param required [Boolean] (default: false)
     # @param store [Object, nil] value to persist (replaces received value)
     # @yield block defining union variants
     # @return [void]
@@ -1156,11 +1156,11 @@ module Apiwork
       name,
       as: nil,
       default: nil,
-      deprecated: nil,
+      deprecated: false,
       description: nil,
       discriminator: nil,
-      nullable: nil,
-      required: nil,
+      nullable: false,
+      required: false,
       store: nil,
       &block
     )
@@ -1187,9 +1187,9 @@ module Apiwork
     # @param value [Object] the exact value (required)
     # @param as [Symbol, nil] target attribute name
     # @param default [Object, nil] default value
-    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param deprecated [Boolean] (default: false)
     # @param description [String, nil] documentation description
-    # @param optional [Boolean, nil] whether it can be omitted
+    # @param optional [Boolean] (default: false)
     # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def literal(
@@ -1197,9 +1197,9 @@ module Apiwork
       value:,
       as: nil,
       default: nil,
-      deprecated: nil,
+      deprecated: false,
       description: nil,
-      optional: nil,
+      optional: false,
       store: nil
     )
       param(
@@ -1222,11 +1222,11 @@ module Apiwork
     # @param to [Symbol, nil] target type name (defaults to name)
     # @param as [Symbol, nil] target attribute name
     # @param default [Object, nil] default value
-    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param deprecated [Boolean] (default: false)
     # @param description [String, nil] documentation description
-    # @param nullable [Boolean, nil] whether null is allowed
-    # @param optional [Boolean, nil] whether it can be omitted
-    # @param required [Boolean, nil] explicit required flag
+    # @param nullable [Boolean] (default: false)
+    # @param optional [Boolean] (default: false)
+    # @param required [Boolean] (default: false)
     # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def reference(
@@ -1234,11 +1234,11 @@ module Apiwork
       to: nil,
       as: nil,
       default: nil,
-      deprecated: nil,
+      deprecated: false,
       description: nil,
-      nullable: nil,
-      optional: nil,
-      required: nil,
+      nullable: false,
+      optional: false,
+      required: false,
       store: nil
     )
       param(
@@ -1262,10 +1262,10 @@ module Apiwork
     # @param to [Symbol, nil] target type name (defaults to name)
     # @param as [Symbol, nil] target attribute name
     # @param default [Object, nil] default value
-    # @param deprecated [Boolean, nil] mark as deprecated
+    # @param deprecated [Boolean] (default: false)
     # @param description [String, nil] documentation description
-    # @param nullable [Boolean, nil] whether null is allowed
-    # @param required [Boolean, nil] explicit required flag
+    # @param nullable [Boolean] (default: false)
+    # @param required [Boolean] (default: false)
     # @param store [Object, nil] value to persist (replaces received value)
     # @return [void]
     def reference?(
@@ -1273,10 +1273,10 @@ module Apiwork
       to: nil,
       as: nil,
       default: nil,
-      deprecated: nil,
+      deprecated: false,
       description: nil,
-      nullable: nil,
-      required: nil,
+      nullable: false,
+      required: false,
       store: nil
     )
       param(

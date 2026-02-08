@@ -80,7 +80,9 @@ end
 
 `#deprecated?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L208)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L210)
+
+Whether the API is deprecated.
 
 **Returns**
 
@@ -100,7 +102,7 @@ The API description.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `value` | `String` | the description (supports Markdown) |
+| `value` | `String, nil` |  |
 
 **Returns**
 
@@ -155,9 +157,9 @@ end
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L140)
 
-The API servers.
+Defines a server for the API.
 
-Can be called multiple times to define multiple servers.
+Can be called multiple times.
 
 **Returns**
 
@@ -197,7 +199,7 @@ The API summary.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `value` | `String` | the summary |
+| `value` | `String, nil` |  |
 
 **Returns**
 
@@ -224,7 +226,7 @@ The API tags.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `values` | `Array<String>` | the tags |
+| `values` | `Array<String>` |  |
 
 **Returns**
 
@@ -251,7 +253,7 @@ The API terms of service.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `value` | `String` | the terms of service URL |
+| `value` | `String, nil` |  |
 
 **Returns**
 
@@ -278,7 +280,7 @@ The API title.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `value` | `String` | the title |
+| `value` | `String, nil` |  |
 
 **Returns**
 
@@ -305,7 +307,7 @@ The API version.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `value` | `String` | the version (e.g. '1.0.0') |
+| `value` | `String, nil` |  |
 
 **Returns**
 
