@@ -68,8 +68,8 @@
                     "example": null,
                     "nullable": false,
                     "optional": false,
-                    "type": "ref",
-                    "ref": "vehicle_filter"
+                    "type": "reference",
+                    "reference": "vehicle_filter"
                   },
                   {
                     "default": null,
@@ -88,8 +88,8 @@
                       "example": null,
                       "nullable": null,
                       "optional": null,
-                      "type": "ref",
-                      "ref": "vehicle_filter"
+                      "type": "reference",
+                      "reference": "vehicle_filter"
                     },
                     "shape": {}
                   }
@@ -102,8 +102,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": true,
-                "type": "ref",
-                "ref": "vehicle_page"
+                "type": "reference",
+                "reference": "vehicle_page"
               },
               "sort": {
                 "default": null,
@@ -122,8 +122,8 @@
                     "example": null,
                     "nullable": false,
                     "optional": false,
-                    "type": "ref",
-                    "ref": "vehicle_sort"
+                    "type": "reference",
+                    "reference": "vehicle_sort"
                   },
                   {
                     "default": null,
@@ -142,8 +142,8 @@
                       "example": null,
                       "nullable": null,
                       "optional": null,
-                      "type": "ref",
-                      "ref": "vehicle_sort"
+                      "type": "reference",
+                      "reference": "vehicle_sort"
                     },
                     "shape": {}
                   }
@@ -169,8 +169,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "vehicle_index_success_response_body"
+                  "type": "reference",
+                  "reference": "vehicle_index_success_response_body"
                 },
                 {
                   "default": null,
@@ -179,8 +179,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "error_response_body"
+                  "type": "reference",
+                  "reference": "error_response_body"
                 }
               ]
             },
@@ -218,8 +218,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "vehicle_show_success_response_body"
+                  "type": "reference",
+                  "reference": "vehicle_show_success_response_body"
                 },
                 {
                   "default": null,
@@ -228,8 +228,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "error_response_body"
+                  "type": "reference",
+                  "reference": "error_response_body"
                 }
               ]
             },
@@ -266,8 +266,8 @@
                     "example": null,
                     "nullable": false,
                     "optional": false,
-                    "type": "ref",
-                    "ref": "car_create_payload"
+                    "type": "reference",
+                    "reference": "car_create_payload"
                   },
                   {
                     "default": null,
@@ -276,8 +276,8 @@
                     "example": null,
                     "nullable": false,
                     "optional": false,
-                    "type": "ref",
-                    "ref": "motorcycle_create_payload"
+                    "type": "reference",
+                    "reference": "motorcycle_create_payload"
                   },
                   {
                     "default": null,
@@ -286,8 +286,8 @@
                     "example": null,
                     "nullable": false,
                     "optional": false,
-                    "type": "ref",
-                    "ref": "truck_create_payload"
+                    "type": "reference",
+                    "reference": "truck_create_payload"
                   }
                 ]
               }
@@ -312,8 +312,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "vehicle_create_success_response_body"
+                  "type": "reference",
+                  "reference": "vehicle_create_success_response_body"
                 },
                 {
                   "default": null,
@@ -322,8 +322,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "error_response_body"
+                  "type": "reference",
+                  "reference": "error_response_body"
                 }
               ]
             },
@@ -360,8 +360,8 @@
                     "example": null,
                     "nullable": false,
                     "optional": false,
-                    "type": "ref",
-                    "ref": "car_update_payload"
+                    "type": "reference",
+                    "reference": "car_update_payload"
                   },
                   {
                     "default": null,
@@ -370,8 +370,8 @@
                     "example": null,
                     "nullable": false,
                     "optional": false,
-                    "type": "ref",
-                    "ref": "motorcycle_update_payload"
+                    "type": "reference",
+                    "reference": "motorcycle_update_payload"
                   },
                   {
                     "default": null,
@@ -380,8 +380,8 @@
                     "example": null,
                     "nullable": false,
                     "optional": false,
-                    "type": "ref",
-                    "ref": "truck_update_payload"
+                    "type": "reference",
+                    "reference": "truck_update_payload"
                   }
                 ]
               }
@@ -406,8 +406,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "vehicle_update_success_response_body"
+                  "type": "reference",
+                  "reference": "vehicle_update_success_response_body"
                 },
                 {
                   "default": null,
@@ -416,8 +416,8 @@
                   "example": null,
                   "nullable": null,
                   "optional": null,
-                  "type": "ref",
-                  "ref": "error_response_body"
+                  "type": "reference",
+                  "reference": "error_response_body"
                 }
               ]
             },
@@ -660,8 +660,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "car_filter"
+            "type": "reference",
+            "reference": "car_filter"
           },
           "shape": {}
         },
@@ -672,8 +672,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "car_filter"
+          "type": "reference",
+          "reference": "car_filter"
         },
         "OR": {
           "default": null,
@@ -692,8 +692,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "car_filter"
+            "type": "reference",
+            "reference": "car_filter"
           },
           "shape": {}
         },
@@ -726,8 +726,8 @@
               "example": null,
               "nullable": false,
               "optional": false,
-              "type": "ref",
-              "ref": "string_filter"
+              "type": "reference",
+              "reference": "string_filter"
             }
           ]
         },
@@ -760,8 +760,8 @@
               "example": null,
               "nullable": false,
               "optional": false,
-              "type": "ref",
-              "ref": "string_filter"
+              "type": "reference",
+              "reference": "string_filter"
             }
           ]
         },
@@ -803,8 +803,8 @@
               "example": null,
               "nullable": false,
               "optional": false,
-              "type": "ref",
-              "ref": "nullable_integer_filter"
+              "type": "reference",
+              "reference": "nullable_integer_filter"
             }
           ]
         }
@@ -826,8 +826,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "sort_direction"
+          "type": "reference",
+          "reference": "sort_direction"
         }
       },
       "type": "object",
@@ -938,8 +938,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "issue"
+            "type": "reference",
+            "reference": "issue"
           },
           "shape": {}
         },
@@ -950,8 +950,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "layer"
+          "type": "reference",
+          "reference": "layer"
         }
       },
       "type": "object",
@@ -983,8 +983,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "integer_filter_between"
+          "type": "reference",
+          "reference": "integer_filter_between"
         },
         "eq": {
           "default": null,
@@ -1391,8 +1391,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "motorcycle_filter"
+            "type": "reference",
+            "reference": "motorcycle_filter"
           },
           "shape": {}
         },
@@ -1403,8 +1403,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "motorcycle_filter"
+          "type": "reference",
+          "reference": "motorcycle_filter"
         },
         "OR": {
           "default": null,
@@ -1423,8 +1423,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "motorcycle_filter"
+            "type": "reference",
+            "reference": "motorcycle_filter"
           },
           "shape": {}
         },
@@ -1457,8 +1457,8 @@
               "example": null,
               "nullable": false,
               "optional": false,
-              "type": "ref",
-              "ref": "string_filter"
+              "type": "reference",
+              "reference": "string_filter"
             }
           ]
         },
@@ -1491,8 +1491,8 @@
               "example": null,
               "nullable": false,
               "optional": false,
-              "type": "ref",
-              "ref": "string_filter"
+              "type": "reference",
+              "reference": "string_filter"
             }
           ]
         },
@@ -1534,8 +1534,8 @@
               "example": null,
               "nullable": false,
               "optional": false,
-              "type": "ref",
-              "ref": "nullable_integer_filter"
+              "type": "reference",
+              "reference": "nullable_integer_filter"
             }
           ]
         }
@@ -1557,8 +1557,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "sort_direction"
+          "type": "reference",
+          "reference": "sort_direction"
         }
       },
       "type": "object",
@@ -1659,8 +1659,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "integer_filter_between"
+          "type": "reference",
+          "reference": "integer_filter_between"
         },
         "eq": {
           "default": null,
@@ -2111,8 +2111,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "truck_filter"
+            "type": "reference",
+            "reference": "truck_filter"
           },
           "shape": {}
         },
@@ -2123,8 +2123,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "truck_filter"
+          "type": "reference",
+          "reference": "truck_filter"
         },
         "OR": {
           "default": null,
@@ -2143,8 +2143,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "truck_filter"
+            "type": "reference",
+            "reference": "truck_filter"
           },
           "shape": {}
         },
@@ -2177,8 +2177,8 @@
               "example": null,
               "nullable": false,
               "optional": false,
-              "type": "ref",
-              "ref": "string_filter"
+              "type": "reference",
+              "reference": "string_filter"
             }
           ]
         },
@@ -2211,8 +2211,8 @@
               "example": null,
               "nullable": false,
               "optional": false,
-              "type": "ref",
-              "ref": "string_filter"
+              "type": "reference",
+              "reference": "string_filter"
             }
           ]
         },
@@ -2254,8 +2254,8 @@
               "example": null,
               "nullable": false,
               "optional": false,
-              "type": "ref",
-              "ref": "nullable_integer_filter"
+              "type": "reference",
+              "reference": "nullable_integer_filter"
             }
           ]
         }
@@ -2277,8 +2277,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "sort_direction"
+          "type": "reference",
+          "reference": "sort_direction"
         }
       },
       "type": "object",
@@ -2380,8 +2380,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "car"
+          "type": "reference",
+          "reference": "car"
         },
         {
           "default": null,
@@ -2390,8 +2390,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "motorcycle"
+          "type": "reference",
+          "reference": "motorcycle"
         },
         {
           "default": null,
@@ -2400,8 +2400,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "truck"
+          "type": "reference",
+          "reference": "truck"
         }
       ]
     },
@@ -2421,8 +2421,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "car_create_payload"
+          "type": "reference",
+          "reference": "car_create_payload"
         },
         {
           "default": null,
@@ -2431,8 +2431,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "motorcycle_create_payload"
+          "type": "reference",
+          "reference": "motorcycle_create_payload"
         },
         {
           "default": null,
@@ -2441,8 +2441,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "truck_create_payload"
+          "type": "reference",
+          "reference": "truck_create_payload"
         }
       ]
     },
@@ -2471,8 +2471,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "vehicle"
+          "type": "reference",
+          "reference": "vehicle"
         }
       },
       "type": "object",
@@ -2502,8 +2502,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "vehicle_filter"
+            "type": "reference",
+            "reference": "vehicle_filter"
           },
           "shape": {}
         },
@@ -2514,8 +2514,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "vehicle_filter"
+          "type": "reference",
+          "reference": "vehicle_filter"
         },
         "OR": {
           "default": null,
@@ -2534,8 +2534,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "vehicle_filter"
+            "type": "reference",
+            "reference": "vehicle_filter"
           },
           "shape": {}
         },
@@ -2568,8 +2568,8 @@
               "example": null,
               "nullable": false,
               "optional": false,
-              "type": "ref",
-              "ref": "string_filter"
+              "type": "reference",
+              "reference": "string_filter"
             }
           ]
         },
@@ -2602,8 +2602,8 @@
               "example": null,
               "nullable": false,
               "optional": false,
-              "type": "ref",
-              "ref": "string_filter"
+              "type": "reference",
+              "reference": "string_filter"
             }
           ]
         },
@@ -2614,8 +2614,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "vehicle_type_filter"
+          "type": "reference",
+          "reference": "vehicle_type_filter"
         },
         "year": {
           "default": null,
@@ -2646,8 +2646,8 @@
               "example": null,
               "nullable": false,
               "optional": false,
-              "type": "ref",
-              "ref": "nullable_integer_filter"
+              "type": "reference",
+              "reference": "nullable_integer_filter"
             }
           ]
         }
@@ -2680,8 +2680,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "offset_pagination"
+          "type": "reference",
+          "reference": "offset_pagination"
         },
         "vehicles": {
           "default": null,
@@ -2700,8 +2700,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "vehicle"
+            "type": "reference",
+            "reference": "vehicle"
           },
           "shape": {}
         }
@@ -2769,8 +2769,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "vehicle"
+          "type": "reference",
+          "reference": "vehicle"
         }
       },
       "type": "object",
@@ -2790,8 +2790,8 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "ref",
-          "ref": "sort_direction"
+          "type": "reference",
+          "reference": "sort_direction"
         }
       },
       "type": "object",
@@ -2813,8 +2813,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "vehicle_type"
+          "type": "reference",
+          "reference": "vehicle_type"
         },
         {
           "default": null,
@@ -2833,8 +2833,8 @@
               "example": null,
               "nullable": false,
               "optional": false,
-              "type": "ref",
-              "ref": "vehicle_type"
+              "type": "reference",
+              "reference": "vehicle_type"
             },
             "in": {
               "default": null,
@@ -2853,8 +2853,8 @@
                 "example": null,
                 "nullable": null,
                 "optional": null,
-                "type": "ref",
-                "ref": "vehicle_type"
+                "type": "reference",
+                "reference": "vehicle_type"
               },
               "shape": {}
             }
@@ -2878,8 +2878,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "car_update_payload"
+          "type": "reference",
+          "reference": "car_update_payload"
         },
         {
           "default": null,
@@ -2888,8 +2888,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "motorcycle_update_payload"
+          "type": "reference",
+          "reference": "motorcycle_update_payload"
         },
         {
           "default": null,
@@ -2898,8 +2898,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "truck_update_payload"
+          "type": "reference",
+          "reference": "truck_update_payload"
         }
       ]
     },
@@ -2928,8 +2928,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "vehicle"
+          "type": "reference",
+          "reference": "vehicle"
         }
       },
       "type": "object",

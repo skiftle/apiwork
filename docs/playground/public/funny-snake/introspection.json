@@ -56,8 +56,8 @@
                     "example": null,
                     "nullable": null,
                     "optional": null,
-                    "type": "ref",
-                    "ref": "invoice"
+                    "type": "reference",
+                    "reference": "invoice"
                   },
                   "shape": {}
                 }
@@ -97,8 +97,8 @@
                   "example": null,
                   "nullable": false,
                   "optional": false,
-                  "type": "ref",
-                  "ref": "invoice"
+                  "type": "reference",
+                  "reference": "invoice"
                 }
               }
             },
@@ -123,8 +123,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": false,
-                "type": "ref",
-                "ref": "invoice_payload"
+                "type": "reference",
+                "reference": "invoice_payload"
               }
             },
             "query": {}
@@ -147,8 +147,8 @@
                   "example": null,
                   "nullable": false,
                   "optional": false,
-                  "type": "ref",
-                  "ref": "invoice"
+                  "type": "reference",
+                  "reference": "invoice"
                 }
               }
             },
@@ -173,8 +173,8 @@
                 "example": null,
                 "nullable": false,
                 "optional": false,
-                "type": "ref",
-                "ref": "invoice_payload"
+                "type": "reference",
+                "reference": "invoice_payload"
               }
             },
             "query": {}
@@ -197,8 +197,8 @@
                   "example": null,
                   "nullable": false,
                   "optional": false,
-                  "type": "ref",
-                  "ref": "invoice"
+                  "type": "reference",
+                  "reference": "invoice"
                 }
               }
             },
@@ -265,8 +265,8 @@
             "example": null,
             "nullable": null,
             "optional": null,
-            "type": "ref",
-            "ref": "issue"
+            "type": "reference",
+            "reference": "issue"
           },
           "shape": {}
         },
@@ -277,8 +277,8 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "ref",
-          "ref": "layer"
+          "type": "reference",
+          "reference": "layer"
         }
       },
       "type": "object",
