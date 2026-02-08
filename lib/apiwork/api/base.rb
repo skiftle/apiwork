@@ -25,7 +25,7 @@ module Apiwork
                     :type_registry
 
         # @api public
-        # The mount path for this API.
+        # The path for this API.
         #
         # @return [String]
         attr_reader :path
@@ -294,7 +294,7 @@ module Apiwork
         end
 
         # @api public
-        # The API info metadata.
+        # The info for this API.
         #
         # @yield block for defining API info
         # @yieldparam info [Info]

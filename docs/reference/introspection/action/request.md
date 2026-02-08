@@ -29,7 +29,7 @@ request.query[:page]        # => Param for page param
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/request.rb#L33)
 
-The body parameters for this request.
+The body for this request.
 
 **Returns**
 
@@ -57,7 +57,7 @@ Whether this request has a body.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/request.rb#L25)
 
-The query parameters for this request.
+The query for this request.
 
 **Returns**
 

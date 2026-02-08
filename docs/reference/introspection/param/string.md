@@ -311,7 +311,7 @@ Whether this param is a literal.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L47)
 
-The maximum length for this param.
+The maximum for this param.
 
 **Returns**
 
@@ -325,7 +325,7 @@ The maximum length for this param.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/string.rb#L39)
 
-The minimum length for this param.
+The minimum for this param.
 
 **Returns**
 

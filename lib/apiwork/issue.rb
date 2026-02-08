@@ -8,13 +8,13 @@ module Apiwork
   # coercion, or constraint checks. Access via `contract.issues`.
   class Issue
     # @api public
-    # The error code for this issue.
+    # The code for this issue.
     #
     # @return [Symbol]
     attr_reader :code
 
     # @api public
-    # The error message for this issue.
+    # The detail for this issue.
     #
     # @return [String]
     attr_reader :detail
@@ -26,7 +26,7 @@ module Apiwork
     attr_reader :meta
 
     # @api public
-    # The path to the invalid field.
+    # The path for this issue.
     #
     # @return [Array<Symbol, Integer>]
     attr_reader :path
@@ -39,7 +39,7 @@ module Apiwork
     end
 
     # @api public
-    # The JSON pointer for this issue.
+    # The pointer for this issue.
     #
     # @return [String]
     def pointer

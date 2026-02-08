@@ -43,7 +43,7 @@ Class&lt;[Representation::Base](/reference/representation/base)&gt;
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L37)
 
-The inheritance column for this inheritance.
+The column for this inheritance.
 
 **Returns**
 
@@ -105,7 +105,7 @@ Class&lt;[Representation::Base](/reference/representation/base)&gt;, `nil`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L26)
 
-The registered subclass representations.
+The subclasses for this inheritance.
 
 **Returns**
 

@@ -58,7 +58,7 @@ The description for this attribute.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L34)
 
-The allowed values for this attribute.
+The enum for this attribute.
 
 **Returns**
 
@@ -72,7 +72,7 @@ The allowed values for this attribute.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L40)
 
-The example value for this attribute.
+The example for this attribute.
 
 **Returns**
 
@@ -114,7 +114,7 @@ The format for this attribute.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L52)
 
-The maximum value or length for this attribute.
+The maximum for this attribute.
 
 **Returns**
 
@@ -128,7 +128,7 @@ The maximum value or length for this attribute.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L58)
 
-The minimum value or length for this attribute.
+The minimum for this attribute.
 
 **Returns**
 
@@ -170,7 +170,7 @@ Whether this attribute is nullable.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L70)
 
-The element type when [#type](#type) is `:array`.
+The of for this attribute.
 
 **Returns**
 

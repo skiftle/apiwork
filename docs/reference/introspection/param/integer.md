@@ -312,7 +312,7 @@ Whether this param is a literal.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L40)
 
-The maximum value for this param.
+The maximum for this param.
 
 **Returns**
 
@@ -326,7 +326,7 @@ The maximum value for this param.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L32)
 
-The minimum value for this param.
+The minimum for this param.
 
 **Returns**
 

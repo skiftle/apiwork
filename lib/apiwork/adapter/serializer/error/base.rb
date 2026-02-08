@@ -25,7 +25,7 @@ module Apiwork
             end
 
             # @api public
-            # The data type name for this serializer.
+            # The data type for this serializer.
             #
             # @param name [Symbol, nil] the type name
             # @return [Symbol, nil]
@@ -35,7 +35,7 @@ module Apiwork
             end
 
             # @api public
-            # The API builder class for this serializer.
+            # The API builder for this serializer.
             #
             # @param klass [Class<Builder::API::Base>, nil] the builder class
             # @return [Class<Builder::API::Base>, nil]

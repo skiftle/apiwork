@@ -30,7 +30,7 @@ module Apiwork
       end
 
       # @api public
-      # The HTTP method for this action.
+      # The method for this action.
       #
       # @return [Symbol]
       def method
@@ -54,7 +54,7 @@ module Apiwork
       end
 
       # @api public
-      # The error codes for this action.
+      # The raises for this action.
       #
       # @return [Array<Symbol>]
       def raises

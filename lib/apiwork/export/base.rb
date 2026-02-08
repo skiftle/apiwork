@@ -54,7 +54,7 @@ module Apiwork
         end
 
         # @api public
-        # The output type for this export.
+        # The output for this export.
         #
         # @param type [Symbol, nil] :hash for Hash output (json/yaml), :string for String output
         # @return [Symbol, nil]

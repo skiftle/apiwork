@@ -25,7 +25,7 @@ module Apiwork
             end
 
             # @api public
-            # The data type resolver for this serializer.
+            # The data type for this serializer.
             #
             # @param block [Proc, nil] block that receives representation_class and returns type name
             # @return [Proc, nil]
@@ -35,7 +35,7 @@ module Apiwork
             end
 
             # @api public
-            # The contract builder class for this serializer.
+            # The contract builder for this serializer.
             #
             # @param klass [Class<Builder::Contract::Base>, nil] the builder class
             # @return [Class<Builder::Contract::Base>, nil]

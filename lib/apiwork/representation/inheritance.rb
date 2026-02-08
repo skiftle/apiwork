@@ -20,7 +20,7 @@ module Apiwork
       attr_reader :base_class
 
       # @api public
-      # The registered subclass representations.
+      # The subclasses for this inheritance.
       #
       # @return [Array<Class<Representation::Base>>]
       attr_reader :subclasses
@@ -31,7 +31,7 @@ module Apiwork
       end
 
       # @api public
-      # The inheritance column for this inheritance.
+      # The column for this inheritance.
       #
       # @return [Symbol]
       def column

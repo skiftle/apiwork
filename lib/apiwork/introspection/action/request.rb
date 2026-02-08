@@ -19,7 +19,7 @@ module Apiwork
         end
 
         # @api public
-        # The query parameters for this request.
+        # The query for this request.
         #
         # @return [Hash{Symbol => Param}]
         def query
@@ -27,7 +27,7 @@ module Apiwork
         end
 
         # @api public
-        # The body parameters for this request.
+        # The body for this request.
         #
         # @return [Hash{Symbol => Param}]
         def body

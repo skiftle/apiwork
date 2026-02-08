@@ -21,7 +21,7 @@ module Apiwork
       end
 
       # @api public
-      # The primitive type for this type.
+      # The type for this type.
       #
       # @return [Symbol, nil]
       def type
@@ -77,7 +77,7 @@ module Apiwork
       end
 
       # @api public
-      # The parent types for this type.
+      # The extends for this type.
       #
       # @return [Array<Symbol>]
       def extends

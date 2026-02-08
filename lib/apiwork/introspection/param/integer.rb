@@ -26,7 +26,7 @@ module Apiwork
       #   end
       class Integer < Base
         # @api public
-        # The minimum value for this param.
+        # The minimum for this param.
         #
         # @return [Numeric, nil]
         def min
@@ -34,7 +34,7 @@ module Apiwork
         end
 
         # @api public
-        # The maximum value for this param.
+        # The maximum for this param.
         #
         # @return [Numeric, nil]
         def max

@@ -28,13 +28,13 @@ module Apiwork
       attr_reader :description
 
       # @api public
-      # The allowed values for this attribute.
+      # The enum for this attribute.
       #
       # @return [Array<Object>, nil]
       attr_reader :enum
 
       # @api public
-      # The example value for this attribute.
+      # The example for this attribute.
       #
       # @return [Object, nil]
       attr_reader :example
@@ -64,7 +64,7 @@ module Apiwork
       attr_reader :name
 
       # @api public
-      # The element type when {#type} is `:array`.
+      # The of for this attribute.
       #
       # @return [Symbol, nil]
       attr_reader :of

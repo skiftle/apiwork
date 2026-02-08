@@ -35,7 +35,7 @@ Converts this issue to a hash for JSON serialization.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L14)
 
-The error code for this issue.
+The code for this issue.
 
 **Returns**
 
@@ -49,7 +49,7 @@ The error code for this issue.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L20)
 
-The error message for this issue.
+The detail for this issue.
 
 **Returns**
 
@@ -77,7 +77,7 @@ The metadata for this issue.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L32)
 
-The path to the invalid field.
+The path for this issue.
 
 **Returns**
 
@@ -91,7 +91,7 @@ The path to the invalid field.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L45)
 
-The JSON pointer for this issue.
+The pointer for this issue.
 
 **Returns**
 

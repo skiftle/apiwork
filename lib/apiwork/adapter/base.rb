@@ -28,7 +28,7 @@ module Apiwork
 
       class << self
         # @api public
-        # The registered name for this adapter.
+        # The adapter name for this adapter.
         #
         # @param value [Symbol, String, nil]
         # @return [Symbol, nil]

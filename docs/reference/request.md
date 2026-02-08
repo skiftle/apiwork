@@ -35,7 +35,7 @@ request.transform { |data| normalize(data) }
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/request.rb#L28)
 
-The body parameters for this request.
+The body for this request.
 
 **Returns**
 
@@ -70,7 +70,7 @@ Creates a new request context.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/request.rb#L22)
 
-The query parameters for this request.
+The query for this request.
 
 **Returns**
 

@@ -58,13 +58,13 @@ module Apiwork
       class_attribute :_synthetic, default: false, instance_accessor: false
 
       # @api public
-      # The parsed request for this contract.
+      # The request for this contract.
       #
       # @return [Request]
       attr_reader :request
 
       # @api public
-      # The validation issues for this contract.
+      # The issues for this contract.
       #
       # @return [Array<Issue>]
       attr_reader :issues
@@ -76,14 +76,14 @@ module Apiwork
       attr_reader :action_name
 
       # @api public
-      # The query parameters for this contract.
+      # The query for this contract.
       #
       # @return [Hash]
       # @see Request#query
       delegate :query, to: :request
 
       # @api public
-      # The body parameters for this contract.
+      # The body for this contract.
       #
       # @return [Hash]
       # @see Request#body

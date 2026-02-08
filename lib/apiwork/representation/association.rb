@@ -21,13 +21,13 @@ module Apiwork
       attr_reader :description
 
       # @api public
-      # The example value for this association.
+      # The example for this association.
       #
       # @return [Object, nil]
       attr_reader :example
 
       # @api public
-      # The include mode for this association.
+      # The include for this association.
       #
       # :always or :optional.
       #
@@ -41,7 +41,7 @@ module Apiwork
       attr_reader :name
 
       # @api public
-      # The representation classes for polymorphic associations.
+      # The polymorphic for this association.
       #
       # @return [Array<Class<Representation::Base>>, nil]
       attr_reader :polymorphic

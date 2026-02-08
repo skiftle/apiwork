@@ -180,7 +180,7 @@ end
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L314)
 
-The API info metadata.
+The info for this API.
 
 **Returns**
 
@@ -277,7 +277,7 @@ end
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L31)
 
-The mount path for this API.
+The path for this API.
 
 **Returns**
 

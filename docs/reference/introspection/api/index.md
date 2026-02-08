@@ -84,7 +84,7 @@ The info for this API.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L32)
 
-The mount path for this API.
+The path for this API.
 
 **Returns**
 

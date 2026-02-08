@@ -66,7 +66,7 @@ The description for this action.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L36)
 
-The HTTP method for this action.
+The method for this action.
 
 **Returns**
 
@@ -108,7 +108,7 @@ The path for this action.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L60)
 
-The error codes for this action.
+The raises for this action.
 
 **Returns**
 

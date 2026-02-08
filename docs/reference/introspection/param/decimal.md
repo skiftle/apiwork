@@ -297,7 +297,7 @@ Whether this param is a literal.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/decimal.rb#L39)
 
-The maximum value for this param.
+The maximum for this param.
 
 **Returns**
 
@@ -311,7 +311,7 @@ The maximum value for this param.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/decimal.rb#L31)
 
-The minimum value for this param.
+The minimum for this param.
 
 **Returns**
 

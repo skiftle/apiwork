@@ -26,7 +26,7 @@ module Apiwork
       end
 
       # @api public
-      # The mount path for this API.
+      # The path for this API.
       #
       # @return [String, nil]
       def path

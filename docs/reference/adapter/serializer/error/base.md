@@ -33,7 +33,7 @@ end
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/serializer/error/base.rb#L42)
 
-The API builder class for this serializer.
+The API builder for this serializer.
 
 **Parameters**
 
@@ -53,7 +53,7 @@ Class&lt;[Builder::API::Base](/reference/adapter/builder/api/base)&gt;, `nil`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/serializer/error/base.rb#L32)
 
-The data type name for this serializer.
+The data type for this serializer.
 
 **Parameters**
 

@@ -40,7 +40,7 @@ end
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L38)
 
-The registered name for this adapter.
+The adapter name for this adapter.
 
 **Parameters**
 

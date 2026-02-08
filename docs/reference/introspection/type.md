@@ -91,7 +91,7 @@ The example for this type.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L83)
 
-The parent types for this type.
+The extends for this type.
 
 **Returns**
 
@@ -161,7 +161,7 @@ Converts this type to a hash.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L27)
 
-The primitive type for this type.
+The type for this type.
 
 **Returns**
 

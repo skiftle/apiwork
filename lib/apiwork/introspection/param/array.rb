@@ -21,7 +21,7 @@ module Apiwork
       #   param.boundable? # => true
       class Array < Base
         # @api public
-        # The element type for this param.
+        # The of for this param.
         #
         # @return [Param::Base, nil]
         def of
@@ -39,7 +39,7 @@ module Apiwork
         end
 
         # @api public
-        # The minimum length for this param.
+        # The minimum for this param.
         #
         # @return [Integer, nil]
         def min
@@ -47,7 +47,7 @@ module Apiwork
         end
 
         # @api public
-        # The maximum length for this param.
+        # The maximum for this param.
         #
         # @return [Integer, nil]
         def max

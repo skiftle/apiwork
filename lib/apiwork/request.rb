@@ -16,13 +16,13 @@ module Apiwork
   #   request.transform { |data| normalize(data) }
   class Request
     # @api public
-    # The query parameters for this request.
+    # The query for this request.
     #
     # @return [Hash]
     attr_reader :query
 
     # @api public
-    # The body parameters for this request.
+    # The body for this request.
     #
     # @return [Hash]
     attr_reader :body

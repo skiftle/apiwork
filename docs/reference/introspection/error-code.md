@@ -39,7 +39,7 @@ The description for this error code.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/error_code.rb#L28)
 
-The HTTP status for this error code.
+The status for this error code.
 
 **Returns**
 

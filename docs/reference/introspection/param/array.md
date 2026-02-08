@@ -279,7 +279,7 @@ Whether this param is a literal.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L53)
 
-The maximum length for this param.
+The maximum for this param.
 
 **Returns**
 
@@ -293,7 +293,7 @@ The maximum length for this param.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L45)
 
-The minimum length for this param.
+The minimum for this param.
 
 **Returns**
 
@@ -363,7 +363,7 @@ Whether this param is an object.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/array.rb#L27)
 
-The element type for this param.
+The of for this param.
 
 **Returns**
 

@@ -72,7 +72,7 @@ The description for this association.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L27)
 
-The example value for this association.
+The example for this association.
 
 **Returns**
 
@@ -100,7 +100,7 @@ Whether this association is filterable.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L35)
 
-The include mode for this association.
+The include for this association.
 
 :always or :optional.
 
@@ -158,7 +158,7 @@ Whether this association is nullable.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L47)
 
-The representation classes for polymorphic associations.
+The polymorphic for this association.
 
 **Returns**
 

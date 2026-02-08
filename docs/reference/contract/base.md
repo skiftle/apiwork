@@ -386,7 +386,7 @@ The action name for this contract.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L90)
 
-The body parameters for this contract.
+The body for this contract.
 
 **Returns**
 
@@ -418,7 +418,7 @@ Whether this contract is invalid.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L70)
 
-The validation issues for this contract.
+The issues for this contract.
 
 **Returns**
 
@@ -432,7 +432,7 @@ Array&lt;[Issue](/reference/issue)&gt;
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L83)
 
-The query parameters for this contract.
+The query for this contract.
 
 **Returns**
 
@@ -450,7 +450,7 @@ The query parameters for this contract.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L64)
 
-The parsed request for this contract.
+The request for this contract.
 
 **Returns**
 
