@@ -10,7 +10,12 @@ Rules for YARD documentation in `lib/apiwork/`.
 
 Descriptions are mechanical. Category + formula + glossary = description.
 
-No subjective decisions. No "is this obvious enough?" questions.
+**Quality check for every description:**
+
+1. Apply formula mechanically
+2. Grammatically correct?
+3. Factually correct?
+4. If no → adjust until both are satisfied
 
 ---
 
@@ -56,7 +61,7 @@ No subjective decisions. No "is this obvious enough?" questions.
 
 | Category | Formula | Example |
 |----------|---------|---------|
-| Simple getter | "The [what] for [context]." | "The format for this param." |
+| Simple getter | See Context-Based Formula | "The API title." / "The format for this param." |
 | Predicate | "Whether [context] [glossary term]." | "Whether this param is boundable." |
 | Mutator | "Marks [context] as [state]." | "Marks this contract as abstract." |
 | Finder | "Finds [what] by [key]." | "Finds an API by mount path." |
@@ -65,35 +70,83 @@ No subjective decisions. No "is this obvious enough?" questions.
 | Transformer | "Transforms [what]." | "Transforms request keys." |
 | Factory | "Creates [what]." | "Creates a new request context." |
 | Registrar | "Registers [what]." | "Registers an adapter." |
-| DSL/Builder | "Defines [what]." | "Defines an action on this contract." |
+| DSL/Builder | See DSL/Builder Rules | "Defines an action..." / "The API contact." |
 | Computed getter | "Uses {#method} if set, otherwise [fallback]." | "Uses {#type_name} if set, otherwise the model's `sti_name`." |
 
 **Note:** `[context]` already includes "this" or "the" from Context Table.
 
 ### The [what] Rule
 
-The `[what]` is always the method name, literally. Trust the class context.
+The `[what]` is the method name. Apply these transformations:
+
+| Transformation | Example |
+|----------------|---------|
+| Underscores → spaces | `terms_of_service` → "terms of service" |
+| Add clarifying context when needed | `status` → "HTTP status" (in ErrorCode) |
+
+### Context-Based Formula
+
+| Context starts with | Formula | Example |
+|---------------------|---------|---------|
+| "the" | "The [context without 'the'] [what]." | "The API title." |
+| "this" | "The [what] for [context]." | "The format for this param." |
 
 ```ruby
-# String class — min means length
+# Info class — context is "the API"
 # @api public
-# The min for this param.
-def min
+# The API title.
+def title
 
-# Integer class — min means value
+# Info class — underscore method
 # @api public
-# The min for this param.
-def min
+# The API terms of service.
+def terms_of_service
 
-# ErrorCode class — status means HTTP status
+# Param class — context is "this param"
 # @api public
-# The status for this error code.
+# The format for this param.
+def format
+
+# ErrorCode class — add clarifying context
+# @api public
+# The HTTP status for this error code.
 def status
 ```
 
-Same description, different classes. The class provides meaning.
+### DSL/Builder Rules
 
-**No expansions. No exceptions. No judgment calls.**
+Methods that take `&block`. Check these signals in order:
+
+| Signal | Formula | Example |
+|--------|---------|---------|
+| Takes name/key parameter | "Defines a/an [what]..." | `action(name, &block)` → "Defines an action for this contract." |
+| `@return [Array<T>]` or `[Hash]` | "Defines a/an [what]..." | `server(&block)` → "Defines a server for the API." |
+| `@return [void]` | "Defines [what]..." | (sällsynt) |
+| `@return [T]` (single object) | "The [what]." | `contact(&block)` → "The API contact." |
+
+```ruby
+# Takes name parameter — defines one of many named items
+# @api public
+# Defines an action for this contract.
+def action(name, &block)
+
+# Adds to collection — defines one of many
+# @api public
+# Defines a server for the API.
+#
+# Can be called multiple times.
+def server(&block)
+
+# Returns single object — getter/builder hybrid
+# @api public
+# The API contact.
+def contact(&block)
+
+# Returns single object — getter/builder hybrid
+# @api public
+# The request for this action.
+def request(&block)
+```
 
 ---
 
