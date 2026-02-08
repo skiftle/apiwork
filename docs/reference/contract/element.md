@@ -221,7 +221,7 @@ Defines an object.
 
 `#of(type, discriminator: nil, enum: nil, format: nil, max: nil, min: nil, shape: nil, value: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L50)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L66)
 
 Defines the element type.
 
@@ -244,6 +244,30 @@ for static definitions. Use `of` for dynamic element generation.
 **Returns**
 
 `void`
+
+**Yields** [Contract::Object](/reference/contract/object), [Contract::Union](/reference/contract/union), [Contract::Element](/reference/contract/element)
+
+**Example: instance_eval style**
+
+```ruby
+array :tags do
+  of :object do
+    string :name
+    string :color
+  end
+end
+```
+
+**Example: yield style**
+
+```ruby
+array :tags do |element|
+  element.of :object do |object|
+    object.string :name
+    object.string :color
+  end
+end
+```
 
 ---
 

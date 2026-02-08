@@ -245,6 +245,8 @@ for static definitions. Use `of` for dynamic element generation.
 
 `void`
 
+**Yields** [API::Object](/reference/api/object), [API::Union](/reference/api/union), [API::Element](/reference/api/element)
+
 ---
 
 ### #reference

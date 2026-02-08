@@ -91,7 +91,7 @@ module Apiwork
       # @param discriminator [Symbol, nil] discriminator field name (unions only)
       # @param shape [API::Object, API::Union, nil] pre-built shape
       # @yield block for defining nested structure (instance_eval style)
-      # @yieldparam builder [API::Object, API::Union, API::Element] the builder (yield style)
+      # @yieldparam shape [API::Object, API::Union, API::Element]
       # @return [void]
       # @raise [ArgumentError] if object, array, or union type is missing block or shape
       def of(type, discriminator: nil, shape: nil, **_options, &block)

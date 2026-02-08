@@ -657,6 +657,8 @@ for static definitions.
 
 `void`
 
+**Yields** [Contract::Object](/reference/contract/object), [Contract::Union](/reference/contract/union), [Contract::Element](/reference/contract/element)
+
 ---
 
 ### #reference

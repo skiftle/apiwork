@@ -24,9 +24,8 @@ module Apiwork
         # Query parameters are parsed from the URL query string.
         #
         # @yield block for defining query params (instance_eval style)
-        # @yieldparam builder [Contract::Object] the builder (yield style)
+        # @yieldparam query [Contract::Object]
         # @return [Contract::Object]
-        # @see Contract::Object
         #
         # @example instance_eval style
         #   query do
@@ -53,9 +52,8 @@ module Apiwork
         # Body is parsed from the JSON request body.
         #
         # @yield block for defining body params (instance_eval style)
-        # @yieldparam builder [Contract::Object] the builder (yield style)
+        # @yieldparam body [Contract::Object]
         # @return [Contract::Object]
-        # @see Contract::Object
         #
         # @example instance_eval style
         #   body do

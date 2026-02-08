@@ -39,7 +39,7 @@ module Apiwork
       # @param shape [API::Object, API::Union, nil] pre-built shape
       # @param value [Object, nil] literal value (literals only)
       # @yield block for defining nested structure (instance_eval style)
-      # @yieldparam builder [API::Object, API::Union, API::Element] the builder (yield style)
+      # @yieldparam shape [API::Object, API::Union, API::Element]
       # @return [void]
       def of(type, discriminator: nil, enum: nil, format: nil, max: nil, min: nil, shape: nil, value: nil, &block)
         case type

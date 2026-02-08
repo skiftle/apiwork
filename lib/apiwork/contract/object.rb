@@ -55,7 +55,7 @@ module Apiwork
       # @param transform [Proc, nil] value transformation lambda
       # @param value [Object, nil] literal value
       # @yield block for nested structure (instance_eval style)
-      # @yieldparam builder [Contract::Object, Contract::Union, Contract::Element] the builder (yield style)
+      # @yieldparam shape [Contract::Object, Contract::Union, Contract::Element]
       # @return [void]
       def param(
         name,

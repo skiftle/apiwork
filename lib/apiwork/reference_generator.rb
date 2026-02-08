@@ -131,6 +131,7 @@ module Apiwork
         see: extract_see(method),
         signature: build_signature(method),
         summary: method.docstring.summary,
+        yieldparams: extract_yieldparams(method),
       }
     end
 
@@ -183,6 +184,12 @@ module Apiwork
 
     def extract_see(method)
       method.docstring.tags(:see).map(&:name)
+    end
+
+    def extract_yieldparams(method)
+      method.docstring.tags(:yieldparam).map do |tag|
+        { name: tag.name, types: tag.types || [] }
+      end
     end
 
     def write_files(modules)
@@ -555,6 +562,12 @@ module Apiwork
         description = linkify_yard_refs(method[:returns][:description])
         parts << "**Returns**\n"
         parts << (description.blank? ? "#{types}\n" : "#{types} — #{description}\n")
+      end
+
+      if method[:yieldparams].any?
+        types = method[:yieldparams].flat_map { |p| p[:types] }.uniq
+        linked = types.map { |t| linkify_type(t) }.join(', ')
+        parts << "**Yields** #{linked}\n"
       end
 
       if method[:see].any?

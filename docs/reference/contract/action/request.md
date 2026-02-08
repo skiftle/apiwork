@@ -18,7 +18,7 @@ Returns [Contract::Object](/reference/contract/object) via `query` and `body`.
 
 `#body(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action/request.rb#L71)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action/request.rb#L69)
 
 Defines the request body for this request.
 
@@ -28,9 +28,7 @@ Body is parsed from the JSON request body.
 
 [Contract::Object](/reference/contract/object)
 
-**See also**
-
-- [Contract::Object](/reference/contract/object)
+**Yields** [Contract::Object](/reference/contract/object)
 
 **Example: instance_eval style**
 
@@ -56,7 +54,7 @@ end
 
 `#query(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action/request.rb#L42)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action/request.rb#L41)
 
 Defines query parameters for this request.
 
@@ -66,9 +64,7 @@ Query parameters are parsed from the URL query string.
 
 [Contract::Object](/reference/contract/object)
 
-**See also**
-
-- [Contract::Object](/reference/contract/object)
+**Yields** [Contract::Object](/reference/contract/object)
 
 **Example: instance_eval style**
 

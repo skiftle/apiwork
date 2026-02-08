@@ -666,6 +666,8 @@ for static definitions. Use `param` for dynamic field generation.
 
 `void`
 
+**Yields** [API::Object](/reference/api/object), [API::Union](/reference/api/union), [API::Element](/reference/api/element)
+
 ---
 
 ### #reference

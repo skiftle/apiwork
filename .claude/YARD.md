@@ -198,19 +198,26 @@ Strict order for all `@api public` methods:
 ## @param Format
 
 ```ruby
-# Always include description
-@param name [Symbol] the adapter name
-@param klass [Class<Adapter::Base>] the adapter class
+# Self-evident — skip description
+@param name [Symbol]
+@param id [Integer]
+@param klass [Class<Adapter::Base>]
 
-# With default
-@param replace [Boolean] replace existing (default: false)
+# Constraint — include description
+@param direction [Symbol] :asc or :desc
+@param limit [Integer] must be positive
 
-# With enum values
-@param format [Symbol] :keep, :camel, :underscore, or :kebab
+# Default value — include description
+@param replace [Boolean] (default: false)
 
-# Include nil if optional
-@param value [String, nil] the value
+# Behavior — include description
+@param fallback [String, nil] used if primary is blank
+
+# Include nil in type if optional
+@param value [String, nil]
 ```
+
+Same principle as method descriptions: only describe when it adds information.
 
 ---
 

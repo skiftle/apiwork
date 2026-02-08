@@ -153,7 +153,7 @@ end
 
 `#request(replace: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L186)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L185)
 
 Defines the request structure for this action.
 
@@ -169,9 +169,7 @@ Use the block to define query parameters and request body.
 
 [Action::Request](/reference/contract/action/request)
 
-**See also**
-
-- [Action::Request](/reference/contract/action/request)
+**Yields** [Action::Request](/reference/contract/action/request)
 
 **Example: instance_eval style**
 
@@ -209,7 +207,7 @@ end
 
 `#response(replace: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L233)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L231)
 
 Defines the response structure for this action.
 
@@ -225,9 +223,7 @@ Use the block to define response body or declare no_content.
 
 [Action::Response](/reference/contract/action/response)
 
-**See also**
-
-- [Action::Response](/reference/contract/action/response)
+**Yields** [Action::Response](/reference/contract/action/response)
 
 **Example: instance_eval style**
 

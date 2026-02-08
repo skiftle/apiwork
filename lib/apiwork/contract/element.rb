@@ -44,9 +44,25 @@ module Apiwork
       # @param shape [Contract::Object, Contract::Union, nil] pre-built shape
       # @param value [Object, nil] literal value (literals only)
       # @yield block for defining nested structure (instance_eval style)
-      # @yieldparam builder [Contract::Object, Contract::Union, Contract::Element] the builder (yield style)
+      # @yieldparam shape [Contract::Object, Contract::Union, Contract::Element]
       # @return [void]
       # @raise [ArgumentError] if object, array, or union type is missing block or shape
+      #
+      # @example instance_eval style
+      #   array :tags do
+      #     of :object do
+      #       string :name
+      #       string :color
+      #     end
+      #   end
+      #
+      # @example yield style
+      #   array :tags do |element|
+      #     element.of :object do |object|
+      #       object.string :name
+      #       object.string :color
+      #     end
+      #   end
       def of(type, discriminator: nil, enum: nil, format: nil, max: nil, min: nil, shape: nil, value: nil, &block)
         resolved_enum = enum.is_a?(Symbol) ? resolve_enum(enum) : enum
 

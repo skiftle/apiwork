@@ -50,7 +50,7 @@ module Apiwork
       # @param transform [Proc, nil] value transformation lambda
       # @param value [Object, nil] literal value
       # @yield block for nested structure (instance_eval style)
-      # @yieldparam builder [API::Object, API::Union, API::Element] the builder (yield style)
+      # @yieldparam shape [API::Object, API::Union, API::Element]
       # @return [void]
       def param(
         name,

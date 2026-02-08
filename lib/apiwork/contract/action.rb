@@ -156,9 +156,8 @@ module Apiwork
       #
       # @param replace [Boolean] replace inherited definition (default: false)
       # @yield block for defining query and body (instance_eval style)
-      # @yieldparam builder [Action::Request] the builder (yield style)
+      # @yieldparam request [Action::Request]
       # @return [Action::Request]
-      # @see Action::Request
       #
       # @example instance_eval style
       #   action :create do
@@ -202,9 +201,8 @@ module Apiwork
       #
       # @param replace [Boolean] replace inherited definition (default: false)
       # @yield block for defining body or no_content (instance_eval style)
-      # @yieldparam builder [Action::Response] the builder (yield style)
+      # @yieldparam response [Action::Response]
       # @return [Action::Response]
-      # @see Action::Response
       #
       # @example instance_eval style
       #   action :show do

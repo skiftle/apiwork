@@ -317,9 +317,8 @@ module Apiwork
         # @param action_name [Symbol] the controller action name (:index, :show, :create, :update, :destroy, or custom)
         # @param replace [Boolean] replace existing action definition (default: false)
         # @yield block for defining request/response contract (instance_eval style)
-        # @yieldparam builder [Contract::Action] the builder (yield style)
+        # @yieldparam action [Contract::Action]
         # @return [Contract::Action]
-        # @see Contract::Action
         #
         # @example instance_eval style
         #   class InvoiceContract < Apiwork::Contract::Base

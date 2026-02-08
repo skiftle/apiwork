@@ -18,7 +18,7 @@ Returns [Contract::Object](/reference/contract/object) via `body`.
 
 `#body(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action/response.rb#L74)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action/response.rb#L73)
 
 Defines the response body for this response.
 
@@ -26,9 +26,7 @@ Defines the response body for this response.
 
 [Contract::Object](/reference/contract/object)
 
-**See also**
-
-- [Contract::Object](/reference/contract/object)
+**Yields** [Contract::Object](/reference/contract/object)
 
 **Example: instance_eval style**
 

@@ -54,9 +54,8 @@ module Apiwork
         # Defines the response body for this response.
         #
         # @yield block for defining body params (instance_eval style)
-        # @yieldparam builder [Contract::Object] the builder (yield style)
+        # @yieldparam body [Contract::Object]
         # @return [Contract::Object]
-        # @see Contract::Object
         #
         # @example instance_eval style
         #   body do
