@@ -24,7 +24,7 @@ Used within the `info` block in [API::Base](/reference/api/base).
 
 `#contact(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L80)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L86)
 
 The API contact.
 
@@ -32,17 +32,24 @@ The API contact.
 
 [Contact](/reference/api/info/contact), `nil`
 
-**See also**
+**Yields** [Contact](/reference/api/info/contact)
 
-- [API::Info::Contact](/reference/api/info/contact)
-
-**Example**
+**Example: instance_eval style**
 
 ```ruby
 contact do
   name 'Support'
+  email 'support@example.com'
 end
-info.contact.name  # => "Support"
+```
+
+**Example: yield style**
+
+```ruby
+contact do |contact|
+  contact.name 'Support'
+  contact.email 'support@example.com'
+end
 ```
 
 ---
@@ -51,7 +58,7 @@ info.contact.name  # => "Support"
 
 `#deprecated!`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L183)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L202)
 
 Marks the API as deprecated.
 
@@ -73,7 +80,7 @@ end
 
 `#deprecated?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L194)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L213)
 
 Whether this API is deprecated.
 
@@ -93,7 +100,7 @@ info.deprecated?  # => true
 
 `#description(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L153)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L172)
 
 The API description.
 
@@ -120,7 +127,7 @@ info.description  # => "Full-featured..."
 
 `#license(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L99)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L112)
 
 The API license.
 
@@ -128,17 +135,24 @@ The API license.
 
 [License](/reference/api/info/license), `nil`
 
-**See also**
+**Yields** [License](/reference/api/info/license)
 
-- [API::Info::License](/reference/api/info/license)
-
-**Example**
+**Example: instance_eval style**
 
 ```ruby
 license do
   name 'MIT'
+  url 'https://opensource.org/licenses/MIT'
 end
-info.license.name  # => "MIT"
+```
+
+**Example: yield style**
+
+```ruby
+license do |license|
+  license.name 'MIT'
+  license.url 'https://opensource.org/licenses/MIT'
+end
 ```
 
 ---
@@ -147,7 +161,7 @@ info.license.name  # => "MIT"
 
 `#server(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L121)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L140)
 
 The API servers.
 
@@ -157,18 +171,24 @@ Can be called multiple times to define multiple servers.
 
 Array&lt;[Server](/reference/api/info/server)&gt;
 
-**See also**
+**Yields** [Server](/reference/api/info/server)
 
-- [API::Info::Server](/reference/api/info/server)
-
-**Example**
+**Example: instance_eval style**
 
 ```ruby
 server do
   url 'https://api.example.com'
   description 'Production'
 end
-info.server  # => [#<Server ...>]
+```
+
+**Example: yield style**
+
+```ruby
+server do |server|
+  server.url 'https://api.example.com'
+  server.description 'Production'
+end
 ```
 
 ---
@@ -177,7 +197,7 @@ info.server  # => [#<Server ...>]
 
 `#summary(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L138)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L157)
 
 The API summary.
 
@@ -204,7 +224,7 @@ info.summary  # => "Invoice management API"
 
 `#tags(*values)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L168)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L187)
 
 The API tags.
 

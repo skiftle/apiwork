@@ -106,7 +106,7 @@ module Apiwork
 
         if block
           element = Element.new
-          element.instance_eval(&block)
+          block.arity.positive? ? yield(element) : element.instance_eval(&block)
           element.validate!
           @element = element
           type = element.type

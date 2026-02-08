@@ -90,19 +90,26 @@ module Apiwork
         # Available exports: :openapi, :typescript, :zod.
         #
         # @param name [Symbol] export name to enable
-        # @yield optional configuration block
-        # @see Export::Base
+        # @yield block for export configuration
+        # @yieldparam config [Configuration]
+        # @return [void]
         #
         # @example Enable OpenAPI export
-        #   Apiwork::API.define '/api/v1' do
-        #     export :openapi
-        #   end
+        #   export :openapi
         #
-        # @example With endpoint config
+        # @example Configuration (instance_eval style)
         #   export :typescript do
         #     endpoint do
         #       mode :always
         #       path '/types.ts'
+        #     end
+        #   end
+        #
+        # @example Configuration (yield style)
+        #   export :typescript do |config|
+        #     config.endpoint do |endpoint|
+        #       endpoint.mode :always
+        #       endpoint.path '/types.ts'
         #     end
         #   end
         def export(name, &block)
@@ -340,21 +347,27 @@ module Apiwork
         # @api public
         # The API info metadata.
         #
-        # @yield block evaluated in {Info} context
+        # @yield block for defining API info
+        # @yieldparam info [Info]
         # @return [Info, nil]
-        # @see API::Info
         #
-        # @example
+        # @example instance_eval style
         #   info do
         #     title 'My API'
         #     version '1.0.0'
         #   end
-        #   api_class.info.title  # => "My API"
+        #
+        # @example yield style
+        #   info do |info|
+        #     info.title 'My API'
+        #     info.version '1.0.0'
+        #   end
         def info(&block)
           return @info unless block
 
           @info = Info.new
-          @info.instance_eval(&block)
+          block.arity.positive? ? yield(@info) : @info.instance_eval(&block)
+          @info
         end
 
         # @api public

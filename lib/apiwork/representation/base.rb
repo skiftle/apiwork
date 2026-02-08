@@ -186,6 +186,10 @@ module Apiwork
         # @option options [Symbol] :format format hint (:email, :url, :uuid, etc.)
         # @option options [Boolean] :deprecated mark as deprecated
         #
+        # @yield block for defining object/array shape
+        # @yieldparam element [Representation::Element]
+        # @return [void]
+        #
         # @example Basic attribute
         #   attribute :title
         #   attribute :price, type: :decimal, min: 0
@@ -195,6 +199,22 @@ module Apiwork
         #
         # @example Writable only on create
         #   attribute :email, writable: { on: [:create] }
+        #
+        # @example Object attribute (instance_eval style)
+        #   attribute :settings do
+        #     object do
+        #       string :theme
+        #       string :language
+        #     end
+        #   end
+        #
+        # @example Object attribute (yield style)
+        #   attribute :settings do |element|
+        #     element.object do |object|
+        #       object.string :theme
+        #       object.string :language
+        #     end
+        #   end
         def attribute(
           name,
           decode: nil,

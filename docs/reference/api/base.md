@@ -87,7 +87,7 @@ api_class.adapter  # => #<Apiwork::Adapter::Standard:...>
 
 `.concern(name, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L491)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L497)
 
 Defines a reusable concern for resources.
 
@@ -204,7 +204,7 @@ end
 
 `.info(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L353)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L358)
 
 The API info metadata.
 
@@ -212,18 +212,24 @@ The API info metadata.
 
 [Info](/reference/api/info/), `nil`
 
-**See also**
+**Yields** [Info](/reference/api/info/)
 
-- [API::Info](/reference/api/info/)
-
-**Example**
+**Example: instance_eval style**
 
 ```ruby
 info do
   title 'My API'
   version '1.0.0'
 end
-api_class.info.title  # => "My API"
+```
+
+**Example: yield style**
+
+```ruby
+info do |info|
+  info.title 'My API'
+  info.version '1.0.0'
+end
 ```
 
 ---
@@ -385,7 +391,7 @@ api_class.raises  # => [:unauthorized, :forbidden, :not_found]
 
 `.resource(name, concerns: nil, constraints: nil, contract: nil, controller: nil, defaults: nil, except: nil, only: nil, param: nil, path: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L442)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L448)
 
 Defines a singular resource (no index action, no :id in URL).
 
@@ -426,7 +432,7 @@ end
 
 `.resources(name, concerns: nil, constraints: nil, contract: nil, controller: nil, defaults: nil, except: nil, only: nil, param: nil, path: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L390)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L396)
 
 Defines a RESTful resource with standard CRUD actions.
 
@@ -514,7 +520,7 @@ end
 
 `.with_options(options = {}, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L512)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L518)
 
 Applies options to all nested resource definitions.
 

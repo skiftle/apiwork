@@ -68,39 +68,53 @@ module Apiwork
       # @api public
       # The API contact.
       #
-      # @yield block evaluated in {Contact} context
+      # @yield block for defining contact info
+      # @yieldparam contact [Contact]
       # @return [Contact, nil]
-      # @see API::Info::Contact
       #
-      # @example
+      # @example instance_eval style
       #   contact do
       #     name 'Support'
+      #     email 'support@example.com'
       #   end
-      #   info.contact.name  # => "Support"
+      #
+      # @example yield style
+      #   contact do |contact|
+      #     contact.name 'Support'
+      #     contact.email 'support@example.com'
+      #   end
       def contact(&block)
         return @contact unless block
 
         @contact = Contact.new
-        @contact.instance_eval(&block)
+        block.arity.positive? ? yield(@contact) : @contact.instance_eval(&block)
+        @contact
       end
 
       # @api public
       # The API license.
       #
-      # @yield block evaluated in {License} context
+      # @yield block for defining license info
+      # @yieldparam license [License]
       # @return [License, nil]
-      # @see API::Info::License
       #
-      # @example
+      # @example instance_eval style
       #   license do
       #     name 'MIT'
+      #     url 'https://opensource.org/licenses/MIT'
       #   end
-      #   info.license.name  # => "MIT"
+      #
+      # @example yield style
+      #   license do |license|
+      #     license.name 'MIT'
+      #     license.url 'https://opensource.org/licenses/MIT'
+      #   end
       def license(&block)
         return @license unless block
 
         @license = License.new
-        @license.instance_eval(&block)
+        block.arity.positive? ? yield(@license) : @license.instance_eval(&block)
+        @license
       end
 
       # @api public
@@ -108,21 +122,26 @@ module Apiwork
       #
       # Can be called multiple times to define multiple servers.
       #
-      # @yield block evaluated in {Server} context
+      # @yield block for defining server info
+      # @yieldparam server [Server]
       # @return [Array<Server>]
-      # @see API::Info::Server
       #
-      # @example
+      # @example instance_eval style
       #   server do
       #     url 'https://api.example.com'
       #     description 'Production'
       #   end
-      #   info.server  # => [#<Server ...>]
+      #
+      # @example yield style
+      #   server do |server|
+      #     server.url 'https://api.example.com'
+      #     server.description 'Production'
+      #   end
       def server(&block)
         return @servers unless block
 
         server = Server.new
-        server.instance_eval(&block)
+        block.arity.positive? ? yield(server) : server.instance_eval(&block)
         @servers << server
       end
 
