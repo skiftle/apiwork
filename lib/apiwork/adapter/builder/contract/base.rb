@@ -14,7 +14,7 @@ module Apiwork
         #   module Builder
         #     class Contract < Adapter::Builder::Contract::Base
         #       def build
-        #         object(representation_class.singular_key_name) do |object|
+        #         object(representation_class.root_key.singular.to_sym) do |object|
         #           object.string(:id)
         #           object.string(:name)
         #         end

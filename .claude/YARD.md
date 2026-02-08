@@ -6,106 +6,57 @@ Checklist for auditing YARD documentation in `lib/apiwork/`.
 
 ---
 
-## Mechanical Description Rules
+## Description Rules
 
-Descriptions are generated mechanically based on `@return` type and class context. No creativity allowed.
+**Principle:** Only describe what the reader cannot already infer from the method name and type.
 
-### Step 1: Check @return Type
+### When to Skip
 
-| @return | Rule |
-|---------|------|
-| `[void]` | Description + `@example` required (see Void Methods) |
-| `[Boolean]` + method ends with `?` | Use Predicate Formula |
-| Anything else | Use Getter Formula |
-
-### Step 2: Apply Formula
-
-**Predicate Formula** (`@return [Boolean]`, method ends with `?`):
-```
-# Simple predicate (no parameters):
-Whether this [context] is [method_name_without_?].
-
-# Lookup predicate (has parameters):
-Whether this [context] has the [thing].
-```
-
-**Getter Formula** (all other non-void):
-```
-# Domain class:
-The [method] for this [context].
-
-# Helper class:
-The [qualifier] [method].
-```
-
-**Exception:** If the method name is verb-like (e.g., `extends`), rephrase for natural English:
-- `extends` → "The types this type extends." (not "The extends for this type.")
-
-### Step 3: Lookup Context
-
-| Class | Type | Context/Qualifier |
-|-------|------|-------------------|
-| Action | domain | "this action" |
-| API::Base | domain | "this API" |
-| Adapter | domain | "this adapter" |
-| Association | domain | "this association" |
-| Attribute | domain | "this attribute" |
-| Capability | domain | "this capability" |
-| Contract | domain | "this contract" |
-| Controller | domain | "this controller" |
-| Enum | domain | "this enum" |
-| Export | domain | "this export" |
-| Inheritance | domain | "this inheritance" |
-| Issue | domain | "this issue" |
-| Operation | domain | "this operation" |
-| Param::* | domain | "this param" |
-| Representation | domain | "this representation" |
-| Request | domain | "this request" |
-| Resource | domain | "this resource" |
-| Response | domain | "this response" |
-| Serializer | domain | "this serializer" |
-| Transformer | domain | "this transformer" |
-| Type | domain | "this type" |
-| Wrapper | domain | "this wrapper" |
-| Info | helper | "API" |
-| Contact | helper | "contact" |
-| License | helper | "license" |
-| Server | helper | "server" |
-| Definition | helper | use parent context |
-| Shape | helper | use parent context |
-
-**Class not in table?** Add it before writing YARD.
-
-### Examples
+If the method name + type tells the full story, skip the description.
 
 ```ruby
-# Predicate in Action class
-# method: deprecated?
+# @api public
+# @return [String, nil]
+def email
+
+# @api public
 # @return [Boolean]
-# Formula: Whether this [action] is [deprecated].
-# Result:
-# Whether this action is deprecated.
+def deprecated?
+```
 
-# Getter in Action class
-# method: summary
-# @return [String, nil]
-# Formula: The [summary] for this [action].
-# Result:
-# The summary for this action.
+### When to Write
 
-# Getter in Contact class (helper)
-# method: name
-# @return [String, nil]
-# Formula: The [contact] [name].
-# Result:
-# The contact name.
+Write when there is extra information: behavior, domain terms, fallback logic, scope.
 
-# Getter in Info class (helper)
-# method: title
-# @return [String, nil]
-# Formula: The [API] [title].
-# Result:
-# The API title.
+### Style
+
+- Direct and factual
+- Active voice, present tense
+- No filler words ("This method", "allows you to")
+- Describe behavior, not existence
+
+```ruby
+# Good — describes behavior
+# @api public
+# Transforms request and response keys in query and body.
+#
+# @return [Symbol, nil]
+def key_format
+
+# Good — explains fallback
+# @api public
+# Uses type_name if set, otherwise the model's sti_name.
+#
+# @return [String]
+# @see #type_name
+def sti_name
+
+# Good — explains domain term
+# @api public
+# The Single Table Inheritance type name for polymorphic serialization.
+#
+# @return [String]
+def polymorphic_name
 ```
 
 ---
@@ -144,39 +95,27 @@ def object(name, &block)
 
 ---
 
-## Extra Context (Optional Second Paragraph)
+## Additional Context (Optional Second Paragraph)
 
-After the mechanical description, you MAY add extra context.
+After the description, you MAY add additional context when needed.
 
-### Allowed Content
+### Allowed Phrases
 
-**1. Formula phrases:**
-
-| Type | Formula |
+| Type | Pattern |
 |------|---------|
 | Preference | "Prefer [alternative]." |
-| Default behavior | "Defaults to [value] when [condition]." |
+| Default | "Defaults to [value] when [condition]." |
 | Constraint | "Must be [requirement]." / "Cannot be [X]." |
-| When to use | "Use when [scenario]." |
-| When to avoid | "Avoid when [scenario]." |
-| Behavior | "Can be [action]." |
+| Usage | "Use when [scenario]." / "Avoid when [scenario]." |
+| Behavior | "Can be [action]." / "Called multiple times to [effect]." |
 
-**2. Technical explanations:**
-
-Factual descriptions of what the method does, how it works, or what effects it has.
-
-Rules:
-- Active voice, present tense
-- Verifiable against code
-- No forbidden phrases (see Forbidden Phrases section)
-
-**Examples:**
+### Examples
 
 ```ruby
 # @api public
 # Defines a param with explicit type.
 #
-# Prefer sugar methods (string, integer, etc.) for static definitions.
+# Prefer sugar methods (string, integer, etc.) for cleaner syntax.
 #
 # @param name [Symbol] the param name
 # @return [void]
@@ -186,32 +125,19 @@ Rules:
 def param(name, type: nil, ...)
 
 # @api public
-# Defines a server for this API.
+# Scopes types, enums, and unions defined on this contract.
 #
-# Can be called multiple times to define multiple servers.
-#
-# @param url [String] the server URL
-# @return [void]
-#
-# @example
-#   server 'https://api.example.com'
-def server(url, &block)
-
-# @api public
-# The identifier for this contract.
-#
-# Types, enums, and unions defined on this contract are namespaced
-# with this prefix in introspection output. For example, a type
-# :address becomes :invoice_address when identifier is :invoice.
-#
-# If not set, prefix is derived from representation's root_key or class name.
+# For example, a type :address becomes :invoice_address when
+# identifier is :invoice. Derived from representation's root_key
+# if not set.
 #
 # @param value [Symbol, String, nil] the scope prefix
 # @return [String, nil]
 def identifier(value = nil)
 ```
 
-**Forbidden in extra context:**
+### Forbidden
+
 - "It's important to note..."
 - "This method..."
 - Passive voice
@@ -414,15 +340,13 @@ grep -rn "# Whether" lib/ | grep -v "Whether this"
 
 For each `@api public` method:
 
-1. [ ] @return type determines which formula to use
-2. [ ] Description follows exact formula (no variations)
-3. [ ] Context from lookup table (no guessing)
-4. [ ] Extra context uses allowed formulas only
-5. [ ] Void methods have verb prefix + @example
-6. [ ] Tag order correct
-7. [ ] @param lowercase, no period
-8. [ ] @return type only, no description
-9. [ ] Class returns use `Class<Type>`, never bare `[Class]`
-10. [ ] If signature has `= nil`, type includes nil
-11. [ ] Class returns described as "X class" (not just "X")
-12. [ ] No forbidden phrases
+1. [ ] Description only if it adds info beyond method name + type
+2. [ ] Description uses mechanical pattern (transformation, fallback, etc.)
+3. [ ] No redundant descriptions ("The email." on `def email`)
+4. [ ] Void methods have verb prefix + @example
+5. [ ] Tag order correct
+6. [ ] @param lowercase, no period
+7. [ ] @return type only, no description after type
+8. [ ] Class returns use `Class<Type>`, never bare `[Class]`
+9. [ ] If signature has `= nil`, type includes nil
+10. [ ] No forbidden phrases

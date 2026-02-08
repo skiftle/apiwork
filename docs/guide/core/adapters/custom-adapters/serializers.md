@@ -15,7 +15,7 @@ Resource serializers inherit from [`Adapter::Serializer::Resource::Base`](/refer
 
 ```ruby
 class MyResourceSerializer < Adapter::Serializer::Resource::Base
-  data_type { |representation_class| representation_class.singular_key_name }
+  data_type { |representation_class| representation_class.root_key.singular.to_sym }
   contract_builder ContractBuilder
 
   def serialize(resource, context:, serialize_options:)
@@ -31,7 +31,7 @@ end
 A block that receives the representation class and returns the type name used in responses. This type name is referenced by wrappers when building response shapes.
 
 ```ruby
-data_type { |representation_class| representation_class.singular_key_name }
+data_type { |representation_class| representation_class.root_key.singular.to_sym }
 ```
 
 #### contract_builder
@@ -113,7 +113,7 @@ Resource serializers typically register the resource type via a contract builder
 ```ruby
 class ContractBuilder < Adapter::Builder::Contract::Base
   def build
-    object(representation_class.singular_key_name) do |object|
+    object(representation_class.root_key.singular.to_sym) do |object|
       representation_class.attributes.each_value do |attribute|
         object.public_send(attribute.type, attribute.name)
       end
