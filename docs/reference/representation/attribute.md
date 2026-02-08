@@ -136,11 +136,7 @@ attribute.filterable? # => true
 
 `#nullable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L170)
-
-Whether this attribute accepts null values.
-
-Always false when `empty: true` is set.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L166)
 
 **Returns**
 
@@ -202,9 +198,7 @@ The element type when [#type](#type) is `:array`.
 
 `#writable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L181)
-
-Whether this attribute is writable on create or update.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L175)
 
 **Returns**
 
@@ -220,9 +214,7 @@ Whether this attribute is writable on create or update.
 
 `#writable_for?(action)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L191)
-
-Whether this attribute is writable for a specific action.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L183)
 
 **Parameters**
 

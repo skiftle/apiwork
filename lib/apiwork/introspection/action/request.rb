@@ -19,16 +19,12 @@ module Apiwork
         end
 
         # @api public
-        # The query for this request.
-        #
         # @return [Hash{Symbol => Param}]
         def query
           @query ||= @dump[:query].transform_values { |dump| Param.build(dump) }
         end
 
         # @api public
-        # The body for this request.
-        #
         # @return [Hash{Symbol => Param}]
         def body
           @body ||= @dump[:body].transform_values { |dump| Param.build(dump) }

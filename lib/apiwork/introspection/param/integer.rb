@@ -26,24 +26,18 @@ module Apiwork
       #   end
       class Integer < Base
         # @api public
-        # The minimum value for this param.
-        #
         # @return [Numeric, nil]
         def min
           @dump[:min]
         end
 
         # @api public
-        # The maximum value for this param.
-        #
         # @return [Numeric, nil]
         def max
           @dump[:max]
         end
 
         # @api public
-        # The format for this param.
-        #
         # @return [Symbol, nil]
         def format
           @dump[:format]
@@ -80,16 +74,12 @@ module Apiwork
         end
 
         # @api public
-        # Whether this param supports min/max bounds.
-        #
         # @return [Boolean]
         def boundable?
           true
         end
 
         # @api public
-        # Whether this param supports format hints.
-        #
         # @return [Boolean]
         def formattable?
           true

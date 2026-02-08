@@ -44,7 +44,7 @@ end
 
 `#array?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L75)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L73)
 
 **Returns**
 
@@ -56,7 +56,7 @@ end
 
 `#binary?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L167)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L163)
 
 **Returns**
 
@@ -68,7 +68,7 @@ end
 
 `#boolean?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L137)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L133)
 
 **Returns**
 
@@ -80,9 +80,7 @@ end
 
 `#boundable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L86)
-
-Whether this param supports min/max bounds.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L78)
 
 **Returns**
 
@@ -94,7 +92,7 @@ Whether this param supports min/max bounds.
 
 `#date?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L149)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L145)
 
 **Returns**
 
@@ -106,7 +104,7 @@ Whether this param supports min/max bounds.
 
 `#datetime?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L143)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L139)
 
 **Returns**
 
@@ -118,7 +116,7 @@ Whether this param supports min/max bounds.
 
 `#decimal?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L131)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L127)
 
 **Returns**
 
@@ -142,9 +140,7 @@ Whether this param supports min/max bounds.
 
 `#default?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L57)
-
-Whether a default value is present in the schema.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L55)
 
 **Returns**
 
@@ -180,7 +176,7 @@ Whether a default value is present in the schema.
 
 `#enum`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L66)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L60)
 
 **Returns**
 
@@ -192,7 +188,7 @@ Whether a default value is present in the schema.
 
 `#enum?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L60)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L54)
 
 **Returns**
 
@@ -204,7 +200,7 @@ Whether a default value is present in the schema.
 
 `#enum_reference?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L72)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L66)
 
 **Returns**
 
@@ -228,9 +224,7 @@ Whether a default value is present in the schema.
 
 `#format`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L48)
-
-The format for this param.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L42)
 
 **Returns**
 
@@ -242,9 +236,7 @@ The format for this param.
 
 `#formattable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L94)
-
-Whether this param supports format hints.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L84)
 
 **Returns**
 
@@ -256,7 +248,7 @@ Whether this param supports format hints.
 
 `#integer?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L100)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L90)
 
 **Returns**
 
@@ -268,7 +260,7 @@ Whether this param supports format hints.
 
 `#literal?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L93)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L91)
 
 **Returns**
 
@@ -280,9 +272,7 @@ Whether this param supports format hints.
 
 `#max`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L40)
-
-The maximum value for this param.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L36)
 
 **Returns**
 
@@ -294,9 +284,7 @@ The maximum value for this param.
 
 `#min`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L32)
-
-The minimum value for this param.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L30)
 
 **Returns**
 
@@ -320,7 +308,7 @@ The minimum value for this param.
 
 `#number?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L125)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L121)
 
 **Returns**
 
@@ -332,7 +320,7 @@ The minimum value for this param.
 
 `#numeric?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L78)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L72)
 
 **Returns**
 
@@ -344,7 +332,7 @@ The minimum value for this param.
 
 `#object?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L81)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L79)
 
 **Returns**
 
@@ -368,9 +356,7 @@ The minimum value for this param.
 
 `#partial?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L209)
-
-Whether this param uses partial serialization.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L199)
 
 **Returns**
 
@@ -382,7 +368,7 @@ Whether this param uses partial serialization.
 
 `#reference?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L179)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L175)
 
 **Returns**
 
@@ -394,7 +380,7 @@ Whether this param uses partial serialization.
 
 `#scalar?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L54)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L48)
 
 **Returns**
 
@@ -406,7 +392,7 @@ Whether this param uses partial serialization.
 
 `#string?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L113)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L109)
 
 **Returns**
 
@@ -418,7 +404,7 @@ Whether this param uses partial serialization.
 
 `#tag`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L63)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L61)
 
 **Returns**
 
@@ -430,7 +416,7 @@ Whether this param uses partial serialization.
 
 `#time?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L155)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L151)
 
 **Returns**
 
@@ -442,7 +428,7 @@ Whether this param uses partial serialization.
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L108)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/integer.rb#L98)
 
 Converts this param to a hash.
 
@@ -468,7 +454,7 @@ Converts this param to a hash.
 
 `#union?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L87)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L85)
 
 **Returns**
 
@@ -480,7 +466,7 @@ Converts this param to a hash.
 
 `#unknown?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L173)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L169)
 
 **Returns**
 
@@ -492,7 +478,7 @@ Converts this param to a hash.
 
 `#uuid?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L161)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/param/base.rb#L157)
 
 **Returns**
 

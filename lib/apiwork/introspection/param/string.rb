@@ -25,24 +25,18 @@ module Apiwork
       #   end
       class String < Base
         # @api public
-        # The format for this param.
-        #
         # @return [Symbol, nil]
         def format
           @dump[:format]
         end
 
         # @api public
-        # The minimum length for this param.
-        #
         # @return [Integer, nil]
         def min
           @dump[:min]
         end
 
         # @api public
-        # The maximum length for this param.
-        #
         # @return [Integer, nil]
         def max
           @dump[:max]
@@ -73,16 +67,12 @@ module Apiwork
         end
 
         # @api public
-        # Whether this param supports min/max bounds.
-        #
         # @return [Boolean]
         def boundable?
           true
         end
 
         # @api public
-        # Whether this param supports format hints.
-        #
         # @return [Boolean]
         def formattable?
           true

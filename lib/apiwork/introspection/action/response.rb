@@ -21,8 +21,6 @@ module Apiwork
         end
 
         # @api public
-        # The body for this response.
-        #
         # @return [Param, nil]
         def body
           @body ||= @dump[:body] ? Param.build(@dump[:body]) : nil

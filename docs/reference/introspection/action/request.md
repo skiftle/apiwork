@@ -27,9 +27,7 @@ request.query[:page]        # => Param for page param
 
 `#body`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/request.rb#L33)
-
-The body for this request.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/request.rb#L29)
 
 **Returns**
 
@@ -41,7 +39,7 @@ The body for this request.
 
 `#body?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/request.rb#L45)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/request.rb#L41)
 
 **Returns**
 
@@ -53,9 +51,7 @@ The body for this request.
 
 `#query`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/request.rb#L25)
-
-The query for this request.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/request.rb#L23)
 
 **Returns**
 
@@ -67,7 +63,7 @@ The query for this request.
 
 `#query?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/request.rb#L39)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/request.rb#L35)
 
 **Returns**
 
@@ -79,7 +75,7 @@ The query for this request.
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/request.rb#L53)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/request.rb#L49)
 
 Converts this request to a hash.
 

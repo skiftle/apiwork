@@ -28,9 +28,7 @@ error_code.attach_path? # => true
 
 `#attach_path?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code/definition.rb#L33)
-
-Whether this error code attaches the request path.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code/definition.rb#L31)
 
 **Returns**
 
@@ -42,7 +40,7 @@ Whether this error code attaches the request path.
 
 `#description(locale_key: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code/definition.rb#L47)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code/definition.rb#L45)
 
 The description for this error code.
 

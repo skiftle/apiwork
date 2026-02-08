@@ -21,16 +21,12 @@ module Apiwork
       #   param.boundable? # => true
       class Array < Base
         # @api public
-        # The element type for this param.
-        #
         # @return [Param::Base, nil]
         def of
           @of ||= @dump[:of] ? Param.build(@dump[:of]) : nil
         end
 
         # @api public
-        # The shape for this param.
-        #
         # @return [Hash{Symbol => Param::Base}]
         def shape
           return @shape if defined?(@shape)
@@ -39,16 +35,12 @@ module Apiwork
         end
 
         # @api public
-        # The minimum length for this param.
-        #
         # @return [Integer, nil]
         def min
           @dump[:min]
         end
 
         # @api public
-        # The maximum length for this param.
-        #
         # @return [Integer, nil]
         def max
           @dump[:max]
@@ -61,8 +53,6 @@ module Apiwork
         end
 
         # @api public
-        # Whether this param supports min/max bounds.
-        #
         # @return [Boolean]
         def boundable?
           true

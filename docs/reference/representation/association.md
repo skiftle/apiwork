@@ -28,9 +28,7 @@ association.representation_class # => CustomerRepresentation
 
 `#collection?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L137)
-
-Whether this association is a `has_many`.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L131)
 
 **Returns**
 
@@ -128,11 +126,7 @@ Whether this association is a `has_many`.
 
 `#nullable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L161)
-
-Whether this association accepts null values.
-
-For `belongs_to`, derived from the foreign key column's nullability.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L149)
 
 **Returns**
 
@@ -158,7 +152,7 @@ Array&lt;Class&lt;[Representation::Base](/reference/representation/base)&gt;&gt;
 
 `#polymorphic?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L151)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L143)
 
 **Returns**
 
@@ -170,7 +164,7 @@ Array&lt;Class&lt;[Representation::Base](/reference/representation/base)&gt;&gt;
 
 `#representation_class`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L177)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L165)
 
 Uses explicit `representation:` if set, otherwise inferred from the model.
 
@@ -184,9 +178,7 @@ Class&lt;[Representation::Base](/reference/representation/base)&gt;, `nil`
 
 `#singular?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L145)
-
-Whether this association is a `has_one` or `belongs_to`.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L137)
 
 **Returns**
 
@@ -222,9 +214,7 @@ Whether this association is a `has_one` or `belongs_to`.
 
 `#writable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L119)
-
-Whether this association is writable on create or update.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L117)
 
 **Returns**
 
@@ -240,9 +230,7 @@ Whether this association is writable on create or update.
 
 `#writable_for?(action)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L129)
-
-Whether this association is writable for a specific action.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L125)
 
 **Parameters**
 

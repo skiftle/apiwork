@@ -27,9 +27,7 @@ ClientRepresentation.inheritance.resolve(record)  # => PersonClientRepresentatio
 
 `#base_class`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L20)
-
-The base representation class for this inheritance.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L18)
 
 **Returns**
 
@@ -41,11 +39,7 @@ Class&lt;[Representation::Base](/reference/representation/base)&gt;
 
 `#column`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L39)
-
-The column for this inheritance.
-
-Returns the STI column name from the model.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L33)
 
 **Returns**
 
@@ -57,7 +51,7 @@ Returns the STI column name from the model.
 
 `#mapping`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L67)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L57)
 
 Mapping of API names to database type values.
 
@@ -71,11 +65,7 @@ Mapping of API names to database type values.
 
 `#needs_transform?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L59)
-
-Whether this inheritance needs transformation.
-
-Returns true if any subclass has a custom sti_name different from the model.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L49)
 
 **Returns**
 
@@ -87,7 +77,7 @@ Returns true if any subclass has a custom sti_name different from the model.
 
 `#resolve(record)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L48)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L42)
 
 Resolves a record to its subclass representation.
 
@@ -107,7 +97,7 @@ Class&lt;[Representation::Base](/reference/representation/base)&gt;, `nil`
 
 `#subclasses`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L26)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L24)
 
 All registered subclass representations.
 

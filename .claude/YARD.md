@@ -17,8 +17,8 @@ Signature = method name + parameters + return type. If these say everything, no 
 | Method category | Description needed? |
 |-----------------|---------------------|
 | Simple getter (returns stored value) | NO |
-| Predicate (ends with `?`) | NO — only if logic is non-obvious |
-| Mutator (ends with `!`) | NO — only if effect is non-obvious |
+| Predicate (ends with `?`) | NO |
+| Mutator (ends with `!`) | NO |
 | Computed getter (has logic/fallbacks) | YES — describe the logic |
 | Void/DSL method | YES + `@example` required |
 | Finder | YES — "Finds X by Y." |
@@ -43,49 +43,29 @@ Signature = method name + parameters + return type. If these say everything, no 
 
 **Predicates (`?` methods):**
 
-Default: NO description. The method name says it all.
+NO description. Ever. The method name is the documentation.
 
 ```ruby
-# These need NO description — method name is self-explanatory
-deprecated?  # Is it deprecated?
-nullable?    # Is it nullable?
-optional?    # Is it optional?
-abstract?    # Is it abstract?
-scalar?      # Is it scalar?
-array?       # Is it an array?
-object?      # Is it an object?
-union?       # Is it a union?
-string?      # Is it a string?
-integer?     # Is it an integer?
-```
-
-Add description ONLY when:
-1. Jargon: Term has domain-specific meaning (`writable?`, `boundable?`)
-2. Hidden logic: Method checks multiple conditions
-3. Ambiguity: Name could mean different things
-
-```ruby
-# NEEDS description — "writable" is domain jargon
 # @api public
-# Whether this attribute can be modified on create or update.
-#
+# @return [Boolean]
+def deprecated?
+
+# @api public
 # @return [Boolean]
 def writable?
 
-# NEEDS description — checks multiple conditions
 # @api public
-# Whether this type extends another type and the parent is an object.
-#
 # @return [Boolean]
-def extends?
+def boundable?
 ```
+
+Domain knowledge is expected. If the caller doesn't understand what `boundable?` means, they can read the class examples or the code.
 
 **Mutators (`!` methods):**
 
-Default: NO description. The method name + return type say it all.
+NO description. The method name + return type say it all.
 
 ```ruby
-# These need NO description
 # @api public
 # @return [void]
 def deprecated!
@@ -93,20 +73,6 @@ def deprecated!
 # @api public
 # @return [void]
 def abstract!
-
-# @api public
-# @return [void]
-def no_content!
-```
-
-Add description ONLY when the effect is non-obvious:
-```ruby
-# NEEDS description — effect is non-obvious
-# @api public
-# Clears all registered items and resets to initial state.
-#
-# @return [void]
-def reset!
 ```
 
 **Computed Getter Formula** (when there's fallback logic):
@@ -168,20 +134,20 @@ Defines [thing].
 # @return [String]
 attr_reader :name
 
-# Predicate — NO description (method name is self-explanatory)
+# Predicate — NO description
 # @api public
 # @return [Boolean]
 def deprecated?
 
 # @api public
 # @return [Boolean]
-def nullable?
+def writable?
 
 # @api public
 # @return [Boolean]
-def array?
+def boundable?
 
-# Mutator — NO description (effect is obvious)
+# Mutator — NO description
 # @api public
 # @return [void]
 def deprecated!
@@ -189,20 +155,6 @@ def deprecated!
 # @api public
 # @return [void]
 def abstract!
-
-# Non-obvious predicate — description needed (jargon)
-# @api public
-# Whether this attribute can be modified on create or update.
-#
-# @return [Boolean]
-def writable?
-
-# Non-obvious predicate — description needed (hidden logic)
-# @api public
-# Whether this type extends another type and the parent is an object.
-#
-# @return [Boolean]
-def extends?
 
 # Computed getter — description needed (fallback logic)
 # @api public
@@ -672,8 +624,8 @@ grep -rn "# Whether this.*is " lib/
 For each `@api public` method:
 
 1. [ ] Simple getters: NO description
-2. [ ] Predicates (`?`): NO description — unless jargon, hidden logic, or ambiguous
-3. [ ] Mutators (`!`): NO description — unless effect is non-obvious
+2. [ ] Predicates (`?`): NO description
+3. [ ] Mutators (`!`): NO description
 4. [ ] Computed getters: describe the logic/fallback
 5. [ ] Void/DSL methods: verb prefix + `@example`
 6. [ ] Finders: "Finds X by Y."

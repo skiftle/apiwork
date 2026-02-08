@@ -15,8 +15,6 @@ module Apiwork
       #   param.reference  # => :address
       class Reference < Base
         # @api public
-        # The referenced type name for this param.
-        #
         # @return [Symbol]
         def reference
           @dump[:reference]

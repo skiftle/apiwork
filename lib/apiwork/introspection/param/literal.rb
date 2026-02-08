@@ -15,8 +15,6 @@ module Apiwork
       #   param.value    # => "active" or 42 or true
       class Literal < Base
         # @api public
-        # The value for this param.
-        #
         # @return [String, Numeric, Boolean, nil]
         def value
           @dump[:value]

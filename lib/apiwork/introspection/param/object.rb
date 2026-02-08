@@ -18,8 +18,6 @@ module Apiwork
       #   param.partial?  # => true if all fields are optional
       class Object < Base
         # @api public
-        # The shape for this param.
-        #
         # @return [Hash{Symbol => Param::Base}]
         def shape
           return @shape if defined?(@shape)
@@ -28,8 +26,6 @@ module Apiwork
         end
 
         # @api public
-        # Whether this param uses partial serialization.
-        #
         # @return [Boolean]
         def partial?
           @dump[:partial]

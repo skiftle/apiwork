@@ -18,16 +18,12 @@ module Apiwork
       #   param.discriminator # => :type or nil
       class Union < Base
         # @api public
-        # The variants for this param.
-        #
         # @return [Array<Param::Base>]
         def variants
           @variants ||= @dump[:variants].map { |dump| Param.build(dump) }
         end
 
         # @api public
-        # The discriminator for this param.
-        #
         # @return [Symbol, nil]
         def discriminator
           @dump[:discriminator]

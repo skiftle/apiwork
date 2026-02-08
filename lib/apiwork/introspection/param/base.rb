@@ -51,8 +51,6 @@ module Apiwork
         end
 
         # @api public
-        # Whether a default value is present in the schema.
-        #
         # @return [Boolean]
         def default?
           @dump.key?(:default)
@@ -101,8 +99,6 @@ module Apiwork
         end
 
         # @api public
-        # Whether this param supports min/max bounds.
-        #
         # @return [Boolean]
         def boundable?
           false
@@ -187,24 +183,18 @@ module Apiwork
         end
 
         # @api public
-        # Whether this param references a named enum type.
-        #
         # @return [Boolean]
         def enum_reference?
           false
         end
 
         # @api public
-        # Whether this param supports format hints.
-        #
         # @return [Boolean]
         def formattable?
           false
         end
 
         # @api public
-        # Whether this param uses partial serialization.
-        #
         # @return [Boolean]
         def partial?
           false

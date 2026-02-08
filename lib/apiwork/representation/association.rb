@@ -112,8 +112,6 @@ module Apiwork
       end
 
       # @api public
-      # Whether this association is writable on create or update.
-      #
       # @return [Boolean]
       # @see #writable_for?
       def writable?
@@ -121,8 +119,6 @@ module Apiwork
       end
 
       # @api public
-      # Whether this association is writable for a specific action.
-      #
       # @param action [Symbol] :create or :update
       # @return [Boolean]
       # @see #writable?
@@ -131,16 +127,12 @@ module Apiwork
       end
 
       # @api public
-      # Whether this association is a `has_many`.
-      #
       # @return [Boolean]
       def collection?
         @type == :has_many
       end
 
       # @api public
-      # Whether this association is a `has_one` or `belongs_to`.
-      #
       # @return [Boolean]
       def singular?
         %i[has_one belongs_to].include?(@type)
@@ -153,10 +145,6 @@ module Apiwork
       end
 
       # @api public
-      # Whether this association accepts null values.
-      #
-      # For `belongs_to`, derived from the foreign key column's nullability.
-      #
       # @return [Boolean]
       def nullable?
         return @nullable unless @nullable.nil?

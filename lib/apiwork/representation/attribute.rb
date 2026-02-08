@@ -162,10 +162,6 @@ module Apiwork
       end
 
       # @api public
-      # Whether this attribute accepts null values.
-      #
-      # Always false when `empty: true` is set.
-      #
       # @return [Boolean]
       def nullable?
         return false if @empty
@@ -174,8 +170,6 @@ module Apiwork
       end
 
       # @api public
-      # Whether this attribute is writable on create or update.
-      #
       # @return [Boolean]
       # @see #writable_for?
       def writable?
@@ -183,8 +177,6 @@ module Apiwork
       end
 
       # @api public
-      # Whether this attribute is writable for a specific action.
-      #
       # @param action [Symbol] :create or :update
       # @return [Boolean]
       # @see #writable?

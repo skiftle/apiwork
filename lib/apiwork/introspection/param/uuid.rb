@@ -51,8 +51,6 @@ module Apiwork
         end
 
         # @api public
-        # Whether this param supports format hints.
-        #
         # @return [Boolean]
         def formattable?
           false
