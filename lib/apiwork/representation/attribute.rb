@@ -22,30 +22,44 @@ module Apiwork
       }.freeze
 
       # @api public
+      # The description for this attribute.
+      #
       # @return [String, nil]
       attr_reader :description
 
       # @api public
+      # The allowed values for this attribute.
+      #
       # @return [Array<Object>, nil]
       attr_reader :enum
 
       # @api public
+      # The example value for this attribute.
+      #
       # @return [Object, nil]
       attr_reader :example
 
       # @api public
+      # The format for this attribute.
+      #
       # @return [Symbol, nil]
       attr_reader :format
 
       # @api public
+      # The maximum for this attribute.
+      #
       # @return [Integer, nil]
       attr_reader :max
 
       # @api public
+      # The minimum for this attribute.
+      #
       # @return [Integer, nil]
       attr_reader :min
 
       # @api public
+      # The name for this attribute.
+      #
       # @return [Symbol]
       attr_reader :name
 
@@ -56,6 +70,8 @@ module Apiwork
       attr_reader :of
 
       # @api public
+      # The type for this attribute.
+      #
       # @return [Symbol]
       attr_reader :type
 
@@ -138,30 +154,40 @@ module Apiwork
       end
 
       # @api public
+      # Whether this attribute is deprecated.
+      #
       # @return [Boolean]
       def deprecated?
         @deprecated
       end
 
       # @api public
+      # Whether this attribute is filterable.
+      #
       # @return [Boolean]
       def filterable?
         @filterable
       end
 
       # @api public
+      # Whether this attribute is sortable.
+      #
       # @return [Boolean]
       def sortable?
         @sortable
       end
 
       # @api public
+      # Whether this attribute is optional.
+      #
       # @return [Boolean]
       def optional?
         @optional
       end
 
       # @api public
+      # Whether this attribute is nullable.
+      #
       # @return [Boolean]
       def nullable?
         return false if @empty
@@ -170,6 +196,8 @@ module Apiwork
       end
 
       # @api public
+      # Whether this attribute is writable.
+      #
       # @return [Boolean]
       # @see #writable_for?
       def writable?
@@ -177,6 +205,8 @@ module Apiwork
       end
 
       # @api public
+      # Whether this attribute is writable for the given action.
+      #
       # @param action [Symbol] :create or :update
       # @return [Boolean]
       # @see #writable?

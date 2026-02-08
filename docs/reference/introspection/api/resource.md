@@ -32,7 +32,9 @@ end
 
 `#actions`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L47)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L55)
+
+The actions for this resource.
 
 **Returns**
 
@@ -48,7 +50,9 @@ Hash{Symbol =&gt; [Introspection::Action](/reference/introspection/action/)}
 
 `#identifier`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L28)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L30)
+
+The identifier for this resource.
 
 **Returns**
 
@@ -60,7 +64,9 @@ Hash{Symbol =&gt; [Introspection::Action](/reference/introspection/action/)}
 
 `#parent_identifiers`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L40)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L46)
+
+The parent identifiers for this resource.
 
 **Returns**
 
@@ -72,7 +78,9 @@ Hash{Symbol =&gt; [Introspection::Action](/reference/introspection/action/)}
 
 `#path`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L34)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L38)
+
+The path for this resource.
 
 **Returns**
 
@@ -84,7 +92,9 @@ Hash{Symbol =&gt; [Introspection::Action](/reference/introspection/action/)}
 
 `#resources`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L53)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L63)
+
+The nested resources for this resource.
 
 **Returns**
 
@@ -96,7 +106,7 @@ Hash{Symbol =&gt; [Resource](/reference/api/resource)}
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L61)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api/resource.rb#L71)
 
 Converts this resource to a hash.
 

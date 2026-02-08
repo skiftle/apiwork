@@ -15,24 +15,32 @@ module Apiwork
       end
 
       # @api public
+      # The values for this enum.
+      #
       # @return [Array<String>]
       def values
         @dump[:values]
       end
 
       # @api public
+      # The description for this enum.
+      #
       # @return [String, nil]
       def description
         @dump[:description]
       end
 
       # @api public
+      # The example for this enum.
+      #
       # @return [String, nil]
       def example
         @dump[:example]
       end
 
       # @api public
+      # Whether this enum is deprecated.
+      #
       # @return [Boolean]
       def deprecated?
         @dump[:deprecated]

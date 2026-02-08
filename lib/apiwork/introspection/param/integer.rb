@@ -26,66 +26,88 @@ module Apiwork
       #   end
       class Integer < Base
         # @api public
+        # The minimum value for this param.
+        #
         # @return [Numeric, nil]
         def min
           @dump[:min]
         end
 
         # @api public
+        # The maximum value for this param.
+        #
         # @return [Numeric, nil]
         def max
           @dump[:max]
         end
 
         # @api public
+        # The format for this param.
+        #
         # @return [Symbol, nil]
         def format
           @dump[:format]
         end
 
         # @api public
+        # Whether this param is scalar.
+        #
         # @return [Boolean]
         def scalar?
           true
         end
 
         # @api public
+        # Whether this param has an enum.
+        #
         # @return [Boolean]
         def enum?
           @dump[:enum].present?
         end
 
         # @api public
+        # The enum for this param.
+        #
         # @return [Array<Integer>, Symbol, nil]
         def enum
           @dump[:enum]
         end
 
         # @api public
+        # Whether this param is an enum reference.
+        #
         # @return [Boolean]
         def enum_reference?
           @dump[:enum].is_a?(Symbol)
         end
 
         # @api public
+        # Whether this param is numeric.
+        #
         # @return [Boolean]
         def numeric?
           true
         end
 
         # @api public
+        # Whether this param is boundable.
+        #
         # @return [Boolean]
         def boundable?
           true
         end
 
         # @api public
+        # Whether this param is formattable.
+        #
         # @return [Boolean]
         def formattable?
           true
         end
 
         # @api public
+        # Whether this param is an integer.
+        #
         # @return [Boolean]
         def integer?
           true

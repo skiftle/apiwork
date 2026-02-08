@@ -2,6 +2,7 @@
 
 module Apiwork
   # @api public
+  # Namespace for API definitions and the API registry.
   module API
     class << self
       # @!method find(path)

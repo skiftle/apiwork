@@ -48,6 +48,8 @@ module Apiwork
           end
 
           # @api public
+          # Whether this scope includes the given action.
+          #
           # @param name [Symbol]
           # @return [Boolean]
           def action?(name)

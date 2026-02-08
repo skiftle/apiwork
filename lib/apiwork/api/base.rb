@@ -25,6 +25,8 @@ module Apiwork
                     :type_registry
 
         # @api public
+        # The mount path for this API.
+        #
         # @return [String]
         attr_reader :path
 

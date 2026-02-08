@@ -19,24 +19,32 @@ module Apiwork
         end
 
         # @api public
+        # The query parameters for this request.
+        #
         # @return [Hash{Symbol => Param}]
         def query
           @query ||= @dump[:query].transform_values { |dump| Param.build(dump) }
         end
 
         # @api public
+        # The body parameters for this request.
+        #
         # @return [Hash{Symbol => Param}]
         def body
           @body ||= @dump[:body].transform_values { |dump| Param.build(dump) }
         end
 
         # @api public
+        # Whether this request has query parameters.
+        #
         # @return [Boolean]
         def query?
           query.any?
         end
 
         # @api public
+        # Whether this request has a body.
+        #
         # @return [Boolean]
         def body?
           body.any?

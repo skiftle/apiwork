@@ -33,7 +33,9 @@ api.types[:payment_method].discriminator # => :type
 
 `#deprecated?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L85)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L107)
+
+Whether this type is deprecated.
 
 **Returns**
 
@@ -45,7 +47,9 @@ api.types[:payment_method].discriminator # => :type
 
 `#description`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L61)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L75)
+
+The description for this type.
 
 **Returns**
 
@@ -57,7 +61,9 @@ api.types[:payment_method].discriminator # => :type
 
 `#discriminator`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L55)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L67)
+
+The discriminator for this type.
 
 **Returns**
 
@@ -69,7 +75,9 @@ api.types[:payment_method].discriminator # => :type
 
 `#example`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L79)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L99)
+
+The example for this type.
 
 **Returns**
 
@@ -81,7 +89,9 @@ api.types[:payment_method].discriminator # => :type
 
 `#extends`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L67)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L83)
+
+The parent types for this type.
 
 **Returns**
 
@@ -93,7 +103,9 @@ api.types[:payment_method].discriminator # => :type
 
 `#extends?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L73)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L91)
+
+Whether this type extends other types.
 
 **Returns**
 
@@ -105,7 +117,9 @@ api.types[:payment_method].discriminator # => :type
 
 `#object?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L31)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L35)
+
+Whether this type is an object.
 
 **Returns**
 
@@ -117,7 +131,9 @@ api.types[:payment_method].discriminator # => :type
 
 `#shape`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L43)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L51)
+
+The shape for this type.
 
 **Returns**
 
@@ -129,7 +145,7 @@ api.types[:payment_method].discriminator # => :type
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L93)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L115)
 
 Converts this type to a hash.
 
@@ -143,7 +159,9 @@ Converts this type to a hash.
 
 `#type`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L25)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L27)
+
+The primitive type for this type.
 
 **Returns**
 
@@ -155,7 +173,9 @@ Converts this type to a hash.
 
 `#union?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L37)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L43)
+
+Whether this type is a union.
 
 **Returns**
 
@@ -167,7 +187,9 @@ Converts this type to a hash.
 
 `#variants`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L49)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type.rb#L59)
+
+The variants for this type.
 
 **Returns**
 

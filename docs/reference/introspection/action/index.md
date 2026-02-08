@@ -36,7 +36,9 @@ end
 
 `#deprecated?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L80)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L100)
+
+Whether this action is deprecated.
 
 **Returns**
 
@@ -48,7 +50,9 @@ end
 
 `#description`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L62)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L76)
+
+The description for this action.
 
 **Returns**
 
@@ -60,7 +64,9 @@ end
 
 `#method`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L32)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L36)
+
+The HTTP method for this action.
 
 **Returns**
 
@@ -72,7 +78,9 @@ end
 
 `#operation_id`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L74)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L92)
+
+The operation ID for this action.
 
 **Returns**
 
@@ -84,7 +92,9 @@ end
 
 `#path`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L26)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L28)
+
+The path for this action.
 
 **Returns**
 
@@ -96,7 +106,9 @@ end
 
 `#raises`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L50)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L60)
+
+The error codes for this action.
 
 **Returns**
 
@@ -108,7 +120,9 @@ end
 
 `#request`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L38)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L44)
+
+The request for this action.
 
 **Returns**
 
@@ -120,7 +134,9 @@ end
 
 `#response`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L44)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L52)
+
+The response for this action.
 
 **Returns**
 
@@ -132,7 +148,9 @@ end
 
 `#summary`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L56)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L68)
+
+The summary for this action.
 
 **Returns**
 
@@ -144,7 +162,9 @@ end
 
 `#tags`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L68)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L84)
+
+The tags for this action.
 
 **Returns**
 
@@ -156,7 +176,7 @@ end
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L88)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action.rb#L108)
 
 Converts this action to a hash.
 

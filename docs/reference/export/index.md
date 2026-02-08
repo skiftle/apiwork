@@ -6,7 +6,9 @@ next: false
 
 # Export
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export.rb#L5)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export.rb#L6)
+
+Namespace for export generators and the export registry.
 
 ## Modules
 
@@ -18,7 +20,7 @@ next: false
 
 `.find(name)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export.rb#L33)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export.rb#L34)
 
 Finds an export by name.
 
@@ -48,7 +50,7 @@ Apiwork::Export.find(:openapi)
 
 `.find!(name)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export.rb#L33)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export.rb#L34)
 
 Finds an export by name.
 
@@ -78,7 +80,7 @@ Apiwork::Export.find!(:openapi)
 
 `.generate(export_name, api_path, format: nil, key_format: nil, locale: nil, **options)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export.rb#L59)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export.rb#L60)
 
 Generates an export for an API.
 
@@ -115,7 +117,7 @@ Apiwork::Export.generate(:typescript, '/api/v1', key_format: :camel)
 
 `.register(klass)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export.rb#L33)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export.rb#L34)
 
 Registers an export.
 

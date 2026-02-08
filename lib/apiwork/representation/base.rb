@@ -42,16 +42,22 @@ module Apiwork
 
       # @!method self.attributes
       #   @api public
+      #   The attributes for this representation.
+      #
       #   @return [Hash{Symbol => Attribute}]
       class_attribute :attributes, default: {}, instance_accessor: false
 
       # @!method self.associations
       #   @api public
+      #   The associations for this representation.
+      #
       #   @return [Hash{Symbol => Association}]
       class_attribute :associations, default: {}, instance_accessor: false
 
       # @!method self.inheritance
       #   @api public
+      #   The inheritance configuration for this representation.
+      #
       #   @return [Representation::Inheritance, nil]
       class_attribute :inheritance, default: nil, instance_accessor: false
       class_attribute :_root, default: nil, instance_accessor: false
@@ -61,10 +67,14 @@ module Apiwork
       class_attribute :_example, default: nil, instance_accessor: false
 
       # @api public
+      # The context for this representation.
+      #
       # @return [Hash]
       attr_reader :context
 
       # @api public
+      # The record for this representation.
+      #
       # @return [ActiveRecord::Base]
       attr_reader :record
 
@@ -395,6 +405,8 @@ module Apiwork
         end
 
         # @api public
+        # Whether this representation is an STI subclass.
+        #
         # @return [Boolean]
         def subclass?
           superclass.respond_to?(:inheritance) && superclass.inheritance&.subclass?(self)

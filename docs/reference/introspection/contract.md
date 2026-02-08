@@ -33,7 +33,9 @@ end
 
 `#actions`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/contract.rb#L28)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/contract.rb#L30)
+
+The actions for this contract.
 
 **Returns**
 
@@ -45,7 +47,9 @@ Hash{Symbol =&gt; [Introspection::Action](/reference/introspection/action/)}
 
 `#enums`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/contract.rb#L40)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/contract.rb#L46)
+
+The enums for this contract.
 
 **Returns**
 
@@ -57,7 +61,7 @@ Hash{Symbol =&gt; [Enum](/reference/introspection/enum)}
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/contract.rb#L48)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/contract.rb#L54)
 
 Converts this contract to a hash.
 
@@ -71,7 +75,9 @@ Converts this contract to a hash.
 
 `#types`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/contract.rb#L34)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/contract.rb#L38)
+
+The types for this contract.
 
 **Returns**
 

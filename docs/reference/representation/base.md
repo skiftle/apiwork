@@ -73,7 +73,7 @@ Returns whether this representation is abstract.
 
 `.adapter(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L125)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L135)
 
 Configures adapter options for this representation.
 
@@ -102,7 +102,9 @@ end
 
 `.associations`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L51)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L55)
+
+The associations for this representation.
 
 **Returns**
 
@@ -114,7 +116,7 @@ Hash{Symbol =&gt; [Association](/reference/representation/association)}
 
 `.attribute(name, decode: nil, deprecated: false, description: nil, empty: nil, encode: nil, enum: nil, example: nil, filterable: nil, format: nil, max: nil, min: nil, nullable: nil, optional: nil, sortable: nil, type: nil, writable: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L166)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L176)
 
 Defines an attribute for serialization.
 
@@ -162,7 +164,9 @@ attribute :status, filterable: true, sortable: true
 
 `.attributes`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L46)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L48)
+
+The attributes for this representation.
 
 **Returns**
 
@@ -174,7 +178,7 @@ Hash{Symbol =&gt; [Attribute](/reference/representation/attribute)}
 
 `.belongs_to(name, deprecated: false, description: nil, example: nil, filterable: false, include: :optional, nullable: nil, optional: nil, polymorphic: nil, representation: nil, sortable: false, writable: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L331)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L341)
 
 Defines a belongs_to association for serialization.
 
@@ -202,7 +206,7 @@ belongs_to :customer
 
 `.deprecated!`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L424)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L436)
 
 Marks this representation as deprecated.
 
@@ -222,7 +226,7 @@ deprecated!
 
 `.description(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L411)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L423)
 
 Sets or gets the description for generated documentation.
 
@@ -248,7 +252,7 @@ description 'A customer invoice'
 
 `.deserialize(hash_or_array)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L469)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L481)
 
 Deserializes using this representation's decode transformers.
 
@@ -274,7 +278,7 @@ InvoiceRepresentation.deserialize(params[:invoice])
 
 `.example(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L436)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L448)
 
 Sets or gets the example value for generated documentation.
 
@@ -300,7 +304,7 @@ example id: 1, total: 99.00, status: 'paid'
 
 `.has_many(name, allow_destroy: false, deprecated: false, description: nil, example: nil, filterable: false, include: :optional, nullable: nil, optional: nil, polymorphic: nil, representation: nil, sortable: false, writable: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L285)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L295)
 
 Defines a has_many association for serialization.
 
@@ -339,7 +343,7 @@ has_many :tags, include: :always
 
 `.has_one(name, deprecated: false, description: nil, example: nil, filterable: false, include: :optional, nullable: nil, optional: nil, polymorphic: nil, representation: nil, sortable: false, writable: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L230)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L240)
 
 Defines a has_one association for serialization.
 
@@ -373,7 +377,9 @@ has_one :author, representation: UserRepresentation
 
 `.inheritance`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L56)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L62)
+
+The inheritance configuration for this representation.
 
 **Returns**
 
@@ -385,7 +391,7 @@ has_one :author, representation: UserRepresentation
 
 `.model(value)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L85)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L95)
 
 Sets the model class for this representation.
 
@@ -418,7 +424,7 @@ model Invoice
 
 `.model_class`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L495)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L507)
 
 Auto-detected from representation name or set via [.model](#model).
 
@@ -436,7 +442,7 @@ Auto-detected from representation name or set via [.model](#model).
 
 `.polymorphic_name`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L393)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L403)
 
 Uses [.type_name](#type-name) if set, otherwise the model's `polymorphic_name`.
 
@@ -450,7 +456,7 @@ Uses [.type_name](#type-name) if set, otherwise the model's `polymorphic_name`.
 
 `.root(singular, plural = singular.to_s.pluralize)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L106)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L116)
 
 Sets the JSON root key for this representation.
 
@@ -483,7 +489,7 @@ root :bill, :bills
 
 `.root_key`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L482)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L494)
 
 Derived from model name when [.root](#root) is not set.
 
@@ -501,7 +507,7 @@ Derived from model name when [.root](#root) is not set.
 
 `.serialize(record_or_collection, context: {}, include: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L453)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L465)
 
 Serializes a record or collection to JSON-ready hashes.
 
@@ -530,7 +536,7 @@ InvoiceRepresentation.serialize(invoice, include: [:customer])
 
 `.sti_name`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L385)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L395)
 
 Uses [.type_name](#type-name) if set, otherwise the model's `sti_name`.
 
@@ -544,7 +550,9 @@ Uses [.type_name](#type-name) if set, otherwise the model's `sti_name`.
 
 `.subclass?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L399)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L411)
+
+Whether this representation is an STI subclass.
 
 **Returns**
 
@@ -556,7 +564,7 @@ Uses [.type_name](#type-name) if set, otherwise the model's `sti_name`.
 
 `.type_name(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L375)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L385)
 
 Overrides the model's default type name for STI and polymorphic types.
 
@@ -589,7 +597,9 @@ type_name :person
 
 `#context`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L65)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L73)
+
+The context for this representation.
 
 **Returns**
 
@@ -601,7 +611,9 @@ type_name :person
 
 `#record`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L69)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L79)
+
+The record for this representation.
 
 **Returns**
 

@@ -85,7 +85,7 @@ Returns whether this contract is abstract.
 
 `.action(action_name, replace: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L275)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L285)
 
 Defines an action on this contract.
 
@@ -120,7 +120,7 @@ end
 
 `.enum(name, values: nil, description: nil, example: nil, deprecated: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L183)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L193)
 
 Defines an enum scoped to this contract.
 
@@ -150,7 +150,7 @@ enum :status, values: %w[draft sent paid]
 
 `.identifier(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L102)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L112)
 
 Prefixes types, enums, and unions in introspection output.
 
@@ -187,7 +187,7 @@ end
 
 `.import(contract_class, as:)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L227)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L237)
 
 Imports types from another contract for reuse.
 
@@ -217,7 +217,7 @@ import UserContract, as: :user
 
 `.introspect(expand: false, locale: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L299)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L309)
 
 Returns introspection data for this contract.
 
@@ -244,7 +244,7 @@ InvoiceContract.introspect
 
 `.object(name, description: nil, example: nil, format: nil, deprecated: false, representation_class: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L150)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L160)
 
 Defines a reusable object type scoped to this contract.
 
@@ -280,7 +280,7 @@ end
 
 `.representation(klass)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L123)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L133)
 
 Sets the representation class for this contract.
 
@@ -315,7 +315,9 @@ end
 
 `.representation_class`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L335)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L347)
+
+The representation class for this contract.
 
 **Returns**
 
@@ -331,7 +333,7 @@ Class&lt;[Representation::Base](/reference/representation/base)&gt;, `nil`
 
 `.union(name, discriminator: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L209)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L219)
 
 Defines a discriminated union type scoped to this contract.
 
@@ -368,7 +370,9 @@ end
 
 `#action_name`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L70)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L76)
+
+The action name for this contract.
 
 **Returns**
 
@@ -380,7 +384,9 @@ end
 
 `#body`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L80)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L90)
+
+The body parameters for this contract.
 
 **Returns**
 
@@ -396,7 +402,9 @@ end
 
 `#invalid?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L457)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L473)
+
+Whether this contract is invalid.
 
 **Returns**
 
@@ -408,7 +416,9 @@ end
 
 `#issues`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L66)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L70)
+
+The validation issues for this contract.
 
 **Returns**
 
@@ -420,7 +430,9 @@ Array&lt;[Issue](/reference/issue)&gt;
 
 `#query`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L75)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L83)
+
+The query parameters for this contract.
 
 **Returns**
 
@@ -436,7 +448,9 @@ Array&lt;[Issue](/reference/issue)&gt;
 
 `#request`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L62)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L64)
+
+The parsed request for this contract.
 
 **Returns**
 
@@ -448,7 +462,9 @@ Array&lt;[Issue](/reference/issue)&gt;
 
 `#valid?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L451)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L465)
+
+Whether this contract is valid.
 
 **Returns**
 

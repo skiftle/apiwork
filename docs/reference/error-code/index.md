@@ -6,7 +6,9 @@ next: false
 
 # ErrorCode
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code.rb#L5)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code.rb#L6)
+
+Namespace for error codes and the error code registry.
 
 ## Modules
 
@@ -18,7 +20,7 @@ next: false
 
 `.find(key)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code.rb#L68)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code.rb#L69)
 
 Finds an error code by key.
 
@@ -48,7 +50,7 @@ Apiwork::ErrorCode.find(:not_found)
 
 `.find!(key)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code.rb#L68)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code.rb#L69)
 
 Finds an error code by key.
 
@@ -78,7 +80,7 @@ Apiwork::ErrorCode.find!(:not_found)
 
 `.register(key, attach_path: false, status:)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code.rb#L68)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code.rb#L69)
 
 Registers a custom error code for use in API responses.
 

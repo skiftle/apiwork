@@ -14,11 +14,13 @@ module Apiwork
     #   ClientRepresentation.inheritance.resolve(record)  # => PersonClientRepresentation
     class Inheritance
       # @api public
+      # The base class for this inheritance.
+      #
       # @return [Class<Representation::Base>]
       attr_reader :base_class
 
       # @api public
-      # All registered subclass representations.
+      # The registered subclass representations.
       #
       # @return [Array<Class<Representation::Base>>]
       attr_reader :subclasses
@@ -29,6 +31,8 @@ module Apiwork
       end
 
       # @api public
+      # The inheritance column for this inheritance.
+      #
       # @return [Symbol]
       def column
         @base_class.model_class.inheritance_column.to_sym
@@ -45,6 +49,8 @@ module Apiwork
       end
 
       # @api public
+      # Whether this inheritance needs type transformation.
+      #
       # @return [Boolean]
       def needs_transform?
         @subclasses.any? { |klass| klass.sti_name != klass.model_class.sti_name }

@@ -2,11 +2,10 @@
 
 module Apiwork
   module Contract
+    # @api public
     # Defines request/response structure for an action.
     #
     # Returns {Action::Request} via `request` and {Action::Response} via `response`.
-    #
-    # @api public
     class Action
       attr_reader :contract_class,
                   :name
@@ -94,6 +93,8 @@ module Apiwork
       end
 
       # @api public
+      # Whether this action is deprecated.
+      #
       # @return [Boolean]
       def deprecated?
         @deprecated == true

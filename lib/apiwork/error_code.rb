@@ -2,6 +2,7 @@
 
 module Apiwork
   # @api public
+  # Namespace for error codes and the error code registry.
   module ErrorCode
     DEFAULTS = {
       bad_gateway: { status: 502 },

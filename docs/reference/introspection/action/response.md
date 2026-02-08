@@ -32,7 +32,9 @@ response.body?        # => false
 
 `#body`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/response.rb#L25)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/response.rb#L27)
+
+The body for this response.
 
 **Returns**
 
@@ -44,7 +46,9 @@ response.body?        # => false
 
 `#body?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/response.rb#L37)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/response.rb#L43)
+
+Whether this response has a body.
 
 **Returns**
 
@@ -56,7 +60,9 @@ response.body?        # => false
 
 `#no_content?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/response.rb#L31)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/response.rb#L35)
+
+Whether this response has no content.
 
 **Returns**
 
@@ -68,7 +74,7 @@ response.body?        # => false
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/response.rb#L45)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/action/response.rb#L51)
 
 Converts this response to a hash.
 

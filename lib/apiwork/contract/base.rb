@@ -58,23 +58,33 @@ module Apiwork
       class_attribute :_synthetic, default: false, instance_accessor: false
 
       # @api public
+      # The parsed request for this contract.
+      #
       # @return [Request]
       attr_reader :request
 
       # @api public
+      # The validation issues for this contract.
+      #
       # @return [Array<Issue>]
       attr_reader :issues
 
       # @api public
+      # The action name for this contract.
+      #
       # @return [Symbol]
       attr_reader :action_name
 
       # @api public
+      # The query parameters for this contract.
+      #
       # @return [Hash]
       # @see Request#query
       delegate :query, to: :request
 
       # @api public
+      # The body parameters for this contract.
+      #
       # @return [Hash]
       # @see Request#body
       delegate :body, to: :request
@@ -330,6 +340,8 @@ module Apiwork
         end
 
         # @api public
+        # The representation class for this contract.
+        #
         # @return [Class<Representation::Base>, nil]
         # @see .representation
         def representation_class
@@ -447,12 +459,16 @@ module Apiwork
       end
 
       # @api public
+      # Whether this contract is valid.
+      #
       # @return [Boolean]
       def valid?
         issues.empty?
       end
 
       # @api public
+      # Whether this contract is invalid.
+      #
       # @return [Boolean]
       def invalid?
         issues.any?

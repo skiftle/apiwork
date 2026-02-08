@@ -19,7 +19,7 @@ coercion, or constraint checks. Access via `contract.issues`.
 
 `#as_json`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L59)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L67)
 
 Converts this issue to a hash for JSON serialization.
 
@@ -33,7 +33,9 @@ Converts this issue to a hash for JSON serialization.
 
 `#code`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L12)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L14)
+
+The error code for this issue.
 
 **Returns**
 
@@ -45,7 +47,9 @@ Converts this issue to a hash for JSON serialization.
 
 `#detail`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L16)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L20)
+
+The error message for this issue.
 
 **Returns**
 
@@ -57,7 +61,9 @@ Converts this issue to a hash for JSON serialization.
 
 `#meta`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L20)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L26)
+
+The metadata for this issue.
 
 **Returns**
 
@@ -69,7 +75,9 @@ Converts this issue to a hash for JSON serialization.
 
 `#path`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L24)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L32)
+
+The path to the invalid field.
 
 **Returns**
 
@@ -81,7 +89,7 @@ Converts this issue to a hash for JSON serialization.
 
 `#pointer`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L37)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L45)
 
 The JSON pointer for this issue.
 
@@ -95,7 +103,7 @@ The JSON pointer for this issue.
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L45)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L53)
 
 Converts this issue to a hash.
 
@@ -109,7 +117,7 @@ Converts this issue to a hash.
 
 `#to_s`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L67)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L75)
 
 Converts this issue to a string.
 

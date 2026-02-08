@@ -8,18 +8,26 @@ module Apiwork
   # coercion, or constraint checks. Access via `contract.issues`.
   class Issue
     # @api public
+    # The error code for this issue.
+    #
     # @return [Symbol]
     attr_reader :code
 
     # @api public
+    # The error message for this issue.
+    #
     # @return [String]
     attr_reader :detail
 
     # @api public
+    # The metadata for this issue.
+    #
     # @return [Hash]
     attr_reader :meta
 
     # @api public
+    # The path to the invalid field.
+    #
     # @return [Array<Symbol, Integer>]
     attr_reader :path
 

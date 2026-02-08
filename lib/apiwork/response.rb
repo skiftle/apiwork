@@ -15,6 +15,8 @@ module Apiwork
   #   response.transform { |data| camelize(data) }
   class Response
     # @api public
+    # The body for this response.
+    #
     # @return [Hash]
     attr_reader :body
 

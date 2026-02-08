@@ -21,36 +21,48 @@ module Apiwork
       #   end
       class DateTime < Base
         # @api public
+        # Whether this param is scalar.
+        #
         # @return [Boolean]
         def scalar?
           true
         end
 
         # @api public
+        # Whether this param has an enum.
+        #
         # @return [Boolean]
         def enum?
           @dump[:enum].present?
         end
 
         # @api public
+        # The enum for this param.
+        #
         # @return [Array<String>, Symbol, nil]
         def enum
           @dump[:enum]
         end
 
         # @api public
+        # Whether this param is an enum reference.
+        #
         # @return [Boolean]
         def enum_reference?
           @dump[:enum].is_a?(Symbol)
         end
 
         # @api public
+        # Whether this param is a datetime.
+        #
         # @return [Boolean]
         def datetime?
           true
         end
 
         # @api public
+        # Whether this param is formattable.
+        #
         # @return [Boolean]
         def formattable?
           false

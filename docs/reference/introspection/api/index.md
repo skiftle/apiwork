@@ -40,7 +40,9 @@ end
 
 `#enums`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L54)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L64)
+
+The enums for this API.
 
 **Returns**
 
@@ -52,7 +54,9 @@ Hash{Symbol =&gt; [Enum](/reference/introspection/enum)}
 
 `#error_codes`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L60)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L72)
+
+The error codes for this API.
 
 **Returns**
 
@@ -64,7 +68,9 @@ Hash{Symbol =&gt; [ErrorCode](/reference/introspection/error-code)}
 
 `#info`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L36)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L40)
+
+The info for this API.
 
 **Returns**
 
@@ -76,7 +82,9 @@ Hash{Symbol =&gt; [ErrorCode](/reference/introspection/error-code)}
 
 `#path`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L30)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L32)
+
+The mount path for this API.
 
 **Returns**
 
@@ -88,7 +96,9 @@ Hash{Symbol =&gt; [ErrorCode](/reference/introspection/error-code)}
 
 `#resources`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L42)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L48)
+
+The resources for this API.
 
 **Returns**
 
@@ -100,7 +110,7 @@ Hash{Symbol =&gt; [API::Resource](/reference/api/resource)}
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L68)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L80)
 
 Converts this API to a hash.
 
@@ -114,7 +124,9 @@ Converts this API to a hash.
 
 `#types`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L48)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L56)
+
+The types for this API.
 
 **Returns**
 

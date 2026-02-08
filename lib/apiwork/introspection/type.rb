@@ -21,66 +21,88 @@ module Apiwork
       end
 
       # @api public
+      # The primitive type for this type.
+      #
       # @return [Symbol, nil]
       def type
         @dump[:type]
       end
 
       # @api public
+      # Whether this type is an object.
+      #
       # @return [Boolean]
       def object?
         type == :object
       end
 
       # @api public
+      # Whether this type is a union.
+      #
       # @return [Boolean]
       def union?
         type == :union
       end
 
       # @api public
+      # The shape for this type.
+      #
       # @return [Hash{Symbol => Param}]
       def shape
         @shape ||= @dump[:shape].transform_values { |dump| Param.build(dump) }
       end
 
       # @api public
+      # The variants for this type.
+      #
       # @return [Array<Param>]
       def variants
         @variants ||= @dump[:variants].map { |variant| Param.build(variant) }
       end
 
       # @api public
+      # The discriminator for this type.
+      #
       # @return [Symbol, nil]
       def discriminator
         @dump[:discriminator]
       end
 
       # @api public
+      # The description for this type.
+      #
       # @return [String, nil]
       def description
         @dump[:description]
       end
 
       # @api public
+      # The parent types for this type.
+      #
       # @return [Array<Symbol>]
       def extends
         @dump[:extends]
       end
 
       # @api public
+      # Whether this type extends other types.
+      #
       # @return [Boolean]
       def extends?
         extends.any?
       end
 
       # @api public
+      # The example for this type.
+      #
       # @return [Object, nil]
       def example
         @dump[:example]
       end
 
       # @api public
+      # Whether this type is deprecated.
+      #
       # @return [Boolean]
       def deprecated?
         @dump[:deprecated]

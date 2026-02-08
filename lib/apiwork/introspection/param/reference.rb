@@ -15,12 +15,16 @@ module Apiwork
       #   param.reference  # => :address
       class Reference < Base
         # @api public
+        # The reference for this param.
+        #
         # @return [Symbol]
         def reference
           @dump[:reference]
         end
 
         # @api public
+        # Whether this param is a reference.
+        #
         # @return [Boolean]
         def reference?
           true

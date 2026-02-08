@@ -6,7 +6,7 @@ next: false
 
 # Action
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L10)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L9)
 
 Defines request/response structure for an action.
 
@@ -23,7 +23,7 @@ Returns [Action::Request](/reference/contract/action/request) via `request` and 
 
 `#deprecated!`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L92)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L91)
 
 Marks this action as deprecated.
 
@@ -45,7 +45,9 @@ end
 
 `#deprecated?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L98)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L99)
+
+Whether this action is deprecated.
 
 **Returns**
 
@@ -57,7 +59,7 @@ end
 
 `#description(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L60)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L59)
 
 The description for this action.
 
@@ -88,7 +90,7 @@ end
 
 `#operation_id(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L112)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L113)
 
 The operation ID for this action.
 
@@ -116,7 +118,7 @@ end
 
 `#raises(*error_code_keys)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L133)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L134)
 
 Declares the raised error codes for this action.
 
@@ -151,7 +153,7 @@ end
 
 `#request(replace: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L183)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L184)
 
 Defines the request structure for this action.
 
@@ -205,7 +207,7 @@ end
 
 `#response(replace: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L229)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L230)
 
 Defines the response structure for this action.
 
@@ -263,7 +265,7 @@ end
 
 `#summary(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L41)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L40)
 
 The summary for this action.
 
@@ -293,7 +295,7 @@ end
 
 `#tags(*tags)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L78)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L77)
 
 The tags for this action.
 
