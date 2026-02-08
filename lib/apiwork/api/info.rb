@@ -23,7 +23,7 @@ module Apiwork
       # @api public
       # The API title.
       #
-      # @param value [String] the title
+      # @param value [String, nil]
       # @return [String, nil]
       #
       # @example
@@ -38,7 +38,7 @@ module Apiwork
       # @api public
       # The API version.
       #
-      # @param value [String] the version (e.g. '1.0.0')
+      # @param value [String, nil]
       # @return [String, nil]
       #
       # @example
@@ -53,7 +53,7 @@ module Apiwork
       # @api public
       # The API terms of service.
       #
-      # @param value [String] the terms of service URL
+      # @param value [String, nil]
       # @return [String, nil]
       #
       # @example
@@ -118,9 +118,9 @@ module Apiwork
       end
 
       # @api public
-      # The API servers.
+      # Defines a server for the API.
       #
-      # Can be called multiple times to define multiple servers.
+      # Can be called multiple times.
       #
       # @yield block for defining server info
       # @yieldparam server [Server]
@@ -148,7 +148,7 @@ module Apiwork
       # @api public
       # The API summary.
       #
-      # @param value [String] the summary
+      # @param value [String, nil]
       # @return [String, nil]
       #
       # @example
@@ -163,7 +163,7 @@ module Apiwork
       # @api public
       # The API description.
       #
-      # @param value [String] the description (supports Markdown)
+      # @param value [String, nil]
       # @return [String, nil]
       #
       # @example
@@ -178,7 +178,7 @@ module Apiwork
       # @api public
       # The API tags.
       #
-      # @param values [Array<String>] the tags
+      # @param values [Array<String>]
       # @return [Array<String>]
       #
       # @example
@@ -204,6 +204,8 @@ module Apiwork
       end
 
       # @api public
+      # Whether the API is deprecated.
+      #
       # @return [Boolean]
       def deprecated?
         @deprecated
