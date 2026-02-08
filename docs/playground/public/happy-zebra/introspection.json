@@ -1021,41 +1021,6 @@
       "type": "object",
       "variants": []
     },
-    "comment_create_payload": {
-      "deprecated": false,
-      "description": null,
-      "discriminator": null,
-      "example": null,
-      "extends": [],
-      "shape": {
-        "author": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "body": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        }
-      },
-      "type": "object",
-      "variants": []
-    },
     "comment_create_success_response_body": {
       "deprecated": false,
       "description": null,
@@ -1142,194 +1107,6 @@
       "type": "object",
       "variants": []
     },
-    "comment_nested_create_payload": {
-      "deprecated": false,
-      "description": null,
-      "discriminator": null,
-      "example": null,
-      "extends": [],
-      "shape": {
-        "OP": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "literal",
-          "value": "create"
-        },
-        "author": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "body": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "id": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        }
-      },
-      "type": "object",
-      "variants": []
-    },
-    "comment_nested_delete_payload": {
-      "deprecated": false,
-      "description": null,
-      "discriminator": null,
-      "example": null,
-      "extends": [],
-      "shape": {
-        "OP": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "literal",
-          "value": "delete"
-        },
-        "id": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        }
-      },
-      "type": "object",
-      "variants": []
-    },
-    "comment_nested_payload": {
-      "deprecated": false,
-      "description": null,
-      "discriminator": "OP",
-      "example": null,
-      "extends": [],
-      "shape": {},
-      "type": "union",
-      "variants": [
-        {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "reference",
-          "reference": "comment_nested_create_payload"
-        },
-        {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "reference",
-          "reference": "comment_nested_update_payload"
-        },
-        {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "reference",
-          "reference": "comment_nested_delete_payload"
-        }
-      ]
-    },
-    "comment_nested_update_payload": {
-      "deprecated": false,
-      "description": null,
-      "discriminator": null,
-      "example": null,
-      "extends": [],
-      "shape": {
-        "OP": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "literal",
-          "value": "update"
-        },
-        "author": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "body": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "id": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        }
-      },
-      "type": "object",
-      "variants": []
-    },
     "comment_page": {
       "deprecated": false,
       "description": null,
@@ -1397,41 +1174,6 @@
       "type": "object",
       "variants": []
     },
-    "comment_update_payload": {
-      "deprecated": false,
-      "description": null,
-      "discriminator": null,
-      "example": null,
-      "extends": [],
-      "shape": {
-        "author": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "body": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        }
-      },
-      "type": "object",
-      "variants": []
-    },
     "comment_update_success_response_body": {
       "deprecated": false,
       "description": null,
@@ -1459,6 +1201,41 @@
           "type": "object",
           "partial": false,
           "shape": {}
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "create_payload": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {
+        "bio": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": true,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "website": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": true,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
         }
       },
       "type": "object",
@@ -1516,6 +1293,26 @@
         "error"
       ],
       "shape": {},
+      "type": "object",
+      "variants": []
+    },
+    "include": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {
+        "user": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "boolean"
+        }
+      },
       "type": "object",
       "variants": []
     },
@@ -1592,6 +1389,194 @@
           "example": null,
           "nullable": false,
           "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "nested_create_payload": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {
+        "OP": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "literal",
+          "value": "create"
+        },
+        "bio": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": true,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "id": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "website": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": true,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "nested_delete_payload": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {
+        "OP": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "literal",
+          "value": "delete"
+        },
+        "id": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "nested_payload": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": "OP",
+      "example": null,
+      "extends": [],
+      "shape": {},
+      "type": "union",
+      "variants": [
+        {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "reference",
+          "reference": "nested_create_payload"
+        },
+        {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "reference",
+          "reference": "nested_update_payload"
+        },
+        {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "reference",
+          "reference": "nested_delete_payload"
+        }
+      ]
+    },
+    "nested_update_payload": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {
+        "OP": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "literal",
+          "value": "update"
+        },
+        "bio": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": true,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "id": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "website": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": true,
+          "optional": true,
           "type": "string",
           "format": null,
           "max": null,
@@ -1729,51 +1714,6 @@
       "type": "object",
       "variants": []
     },
-    "post_create_payload": {
-      "deprecated": false,
-      "description": null,
-      "discriminator": null,
-      "example": null,
-      "extends": [],
-      "shape": {
-        "comments": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "array",
-          "max": null,
-          "min": null,
-          "of": {
-            "default": null,
-            "deprecated": null,
-            "description": null,
-            "example": null,
-            "nullable": null,
-            "optional": null,
-            "type": "reference",
-            "reference": "comment_nested_payload"
-          },
-          "shape": {}
-        },
-        "title": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        }
-      },
-      "type": "object",
-      "variants": []
-    },
     "post_create_success_response_body": {
       "deprecated": false,
       "description": null,
@@ -1860,214 +1800,6 @@
       "type": "object",
       "variants": []
     },
-    "post_nested_create_payload": {
-      "deprecated": false,
-      "description": null,
-      "discriminator": null,
-      "example": null,
-      "extends": [],
-      "shape": {
-        "OP": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "literal",
-          "value": "create"
-        },
-        "comments": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "array",
-          "max": null,
-          "min": null,
-          "of": {
-            "default": null,
-            "deprecated": null,
-            "description": null,
-            "example": null,
-            "nullable": null,
-            "optional": null,
-            "type": "reference",
-            "reference": "comment_nested_payload"
-          },
-          "shape": {}
-        },
-        "id": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "title": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        }
-      },
-      "type": "object",
-      "variants": []
-    },
-    "post_nested_delete_payload": {
-      "deprecated": false,
-      "description": null,
-      "discriminator": null,
-      "example": null,
-      "extends": [],
-      "shape": {
-        "OP": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "literal",
-          "value": "delete"
-        },
-        "id": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        }
-      },
-      "type": "object",
-      "variants": []
-    },
-    "post_nested_payload": {
-      "deprecated": false,
-      "description": null,
-      "discriminator": "OP",
-      "example": null,
-      "extends": [],
-      "shape": {},
-      "type": "union",
-      "variants": [
-        {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "reference",
-          "reference": "post_nested_create_payload"
-        },
-        {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "reference",
-          "reference": "post_nested_update_payload"
-        },
-        {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "reference",
-          "reference": "post_nested_delete_payload"
-        }
-      ]
-    },
-    "post_nested_update_payload": {
-      "deprecated": false,
-      "description": null,
-      "discriminator": null,
-      "example": null,
-      "extends": [],
-      "shape": {
-        "OP": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "literal",
-          "value": "update"
-        },
-        "comments": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "array",
-          "max": null,
-          "min": null,
-          "of": {
-            "default": null,
-            "deprecated": null,
-            "description": null,
-            "example": null,
-            "nullable": null,
-            "optional": null,
-            "type": "reference",
-            "reference": "comment_nested_payload"
-          },
-          "shape": {}
-        },
-        "id": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "title": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        }
-      },
-      "type": "object",
-      "variants": []
-    },
     "post_page": {
       "deprecated": false,
       "description": null,
@@ -2130,51 +1862,6 @@
           "optional": false,
           "type": "reference",
           "reference": "post"
-        }
-      },
-      "type": "object",
-      "variants": []
-    },
-    "post_update_payload": {
-      "deprecated": false,
-      "description": null,
-      "discriminator": null,
-      "example": null,
-      "extends": [],
-      "shape": {
-        "comments": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "array",
-          "max": null,
-          "min": null,
-          "of": {
-            "default": null,
-            "deprecated": null,
-            "description": null,
-            "example": null,
-            "nullable": null,
-            "optional": null,
-            "type": "reference",
-            "reference": "comment_nested_payload"
-          },
-          "shape": {}
-        },
-        "title": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
         }
       },
       "type": "object",
@@ -2287,250 +1974,7 @@
       "type": "object",
       "variants": []
     },
-    "profile_create_payload": {
-      "deprecated": false,
-      "description": null,
-      "discriminator": null,
-      "example": null,
-      "extends": [],
-      "shape": {
-        "bio": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": true,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "website": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": true,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        }
-      },
-      "type": "object",
-      "variants": []
-    },
-    "profile_include": {
-      "deprecated": false,
-      "description": null,
-      "discriminator": null,
-      "example": null,
-      "extends": [],
-      "shape": {
-        "user": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "boolean"
-        }
-      },
-      "type": "object",
-      "variants": []
-    },
-    "profile_nested_create_payload": {
-      "deprecated": false,
-      "description": null,
-      "discriminator": null,
-      "example": null,
-      "extends": [],
-      "shape": {
-        "OP": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "literal",
-          "value": "create"
-        },
-        "bio": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": true,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "id": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "website": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": true,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        }
-      },
-      "type": "object",
-      "variants": []
-    },
-    "profile_nested_delete_payload": {
-      "deprecated": false,
-      "description": null,
-      "discriminator": null,
-      "example": null,
-      "extends": [],
-      "shape": {
-        "OP": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "literal",
-          "value": "delete"
-        },
-        "id": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        }
-      },
-      "type": "object",
-      "variants": []
-    },
-    "profile_nested_payload": {
-      "deprecated": false,
-      "description": null,
-      "discriminator": "OP",
-      "example": null,
-      "extends": [],
-      "shape": {},
-      "type": "union",
-      "variants": [
-        {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "reference",
-          "reference": "profile_nested_create_payload"
-        },
-        {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "reference",
-          "reference": "profile_nested_update_payload"
-        },
-        {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "reference",
-          "reference": "profile_nested_delete_payload"
-        }
-      ]
-    },
-    "profile_nested_update_payload": {
-      "deprecated": false,
-      "description": null,
-      "discriminator": null,
-      "example": null,
-      "extends": [],
-      "shape": {
-        "OP": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "literal",
-          "value": "update"
-        },
-        "bio": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": true,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "id": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "website": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": true,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        }
-      },
-      "type": "object",
-      "variants": []
-    },
-    "profile_sort": {
+    "sort": {
       "deprecated": false,
       "description": null,
       "discriminator": null,
@@ -2556,41 +2000,6 @@
           "optional": true,
           "type": "reference",
           "reference": "sort_direction"
-        }
-      },
-      "type": "object",
-      "variants": []
-    },
-    "profile_update_payload": {
-      "deprecated": false,
-      "description": null,
-      "discriminator": null,
-      "example": null,
-      "extends": [],
-      "shape": {
-        "bio": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": true,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "website": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": true,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
         }
       },
       "type": "object",
@@ -2669,6 +2078,41 @@
           "description": null,
           "example": null,
           "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "update_payload": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {
+        "bio": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": true,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "website": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": true,
           "optional": true,
           "type": "string",
           "format": null,
@@ -2759,73 +2203,6 @@
           "nullable": false,
           "optional": false,
           "type": "datetime"
-        },
-        "username": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        }
-      },
-      "type": "object",
-      "variants": []
-    },
-    "user_create_payload": {
-      "deprecated": false,
-      "description": null,
-      "discriminator": null,
-      "example": null,
-      "extends": [],
-      "shape": {
-        "email": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "posts": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "array",
-          "max": null,
-          "min": null,
-          "of": {
-            "default": null,
-            "deprecated": null,
-            "description": null,
-            "example": null,
-            "nullable": null,
-            "optional": null,
-            "type": "reference",
-            "reference": "post_nested_payload"
-          },
-          "shape": {}
-        },
-        "profile": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "reference",
-          "reference": "profile_nested_payload"
         },
         "username": {
           "default": null,
@@ -3015,6 +2392,15 @@
       "example": null,
       "extends": [],
       "shape": {
+        "posts": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "post_include"
+        },
         "profile": {
           "default": null,
           "deprecated": false,
@@ -3022,8 +2408,7 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "reference",
-          "reference": "profile_include"
+          "type": "profile_include"
         }
       },
       "type": "object",
@@ -3176,73 +2561,6 @@
           "optional": true,
           "type": "reference",
           "reference": "sort_direction"
-        }
-      },
-      "type": "object",
-      "variants": []
-    },
-    "user_update_payload": {
-      "deprecated": false,
-      "description": null,
-      "discriminator": null,
-      "example": null,
-      "extends": [],
-      "shape": {
-        "email": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "posts": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "array",
-          "max": null,
-          "min": null,
-          "of": {
-            "default": null,
-            "deprecated": null,
-            "description": null,
-            "example": null,
-            "nullable": null,
-            "optional": null,
-            "type": "reference",
-            "reference": "post_nested_payload"
-          },
-          "shape": {}
-        },
-        "profile": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "reference",
-          "reference": "profile_nested_payload"
-        },
-        "username": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
         }
       },
       "type": "object",

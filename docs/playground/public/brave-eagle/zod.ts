@@ -31,14 +31,6 @@ export const OffsetPaginationSchema = z.object({
   total: z.number().int()
 });
 
-export const TaskCreatePayloadSchema = z.object({
-  description: z.string().nullable().optional(),
-  dueDate: z.iso.datetime().nullable().optional(),
-  priority: TaskPrioritySchema.nullable().optional(),
-  status: TaskStatusSchema.nullable().optional(),
-  title: z.string()
-});
-
 export const TaskIncludeSchema = z.object({
   assignee: z.boolean().optional(),
   comments: z.boolean().optional()
@@ -63,14 +55,6 @@ export const TaskStatusFilterSchema = z.union([
   TaskStatusSchema,
   z.object({ eq: TaskStatusSchema, in: z.array(TaskStatusSchema) }).partial()
 ]);
-
-export const TaskUpdatePayloadSchema = z.object({
-  description: z.string().nullable().optional(),
-  dueDate: z.iso.datetime().nullable().optional(),
-  priority: TaskPrioritySchema.nullable().optional(),
-  status: TaskStatusSchema.nullable().optional(),
-  title: z.string().optional()
-});
 
 export const UserSchema = z.object({
   email: z.email(),
@@ -169,7 +153,7 @@ export const TasksCreateRequestQuerySchema = z.object({
 });
 
 export const TasksCreateRequestBodySchema = z.object({
-  task: TaskCreatePayloadSchema
+  task: z.unknown()
 });
 
 export const TasksCreateRequestSchema = z.object({
@@ -188,7 +172,7 @@ export const TasksUpdateRequestQuerySchema = z.object({
 });
 
 export const TasksUpdateRequestBodySchema = z.object({
-  task: TaskUpdatePayloadSchema
+  task: z.unknown()
 });
 
 export const TasksUpdateRequestSchema = z.object({
@@ -317,35 +301,6 @@ export interface TaskArchiveSuccessResponseBody {
   task: Task;
 }
 
-/** A task representing work to be completed */
-export interface TaskCreatePayload {
-  /**
-   * Detailed description of what needs to be done
-   * @example "Add OAuth2 login support for Google and GitHub providers"
-   */
-  description?: null | string;
-  /**
-   * Target date for task completion
-   * @example "2024-02-01T00:00:00Z"
-   */
-  dueDate?: null | string;
-  /**
-   * Priority level for task ordering
-   * @example "high"
-   */
-  priority?: TaskPriority | null;
-  /**
-   * Current status of the task
-   * @example "pending"
-   */
-  status?: TaskStatus | null;
-  /**
-   * Short title describing the task
-   * @example "Implement user authentication"
-   */
-  title: string;
-}
-
 export interface TaskCreateSuccessResponseBody {
   meta?: Record<string, unknown>;
   task: Task;
@@ -393,35 +348,6 @@ export type TaskStatus = 'archived' | 'completed' | 'in_progress' | 'pending';
 
 export type TaskStatusFilter = TaskStatus | { eq?: TaskStatus; in?: TaskStatus[] };
 
-/** A task representing work to be completed */
-export interface TaskUpdatePayload {
-  /**
-   * Detailed description of what needs to be done
-   * @example "Add OAuth2 login support for Google and GitHub providers"
-   */
-  description?: null | string;
-  /**
-   * Target date for task completion
-   * @example "2024-02-01T00:00:00Z"
-   */
-  dueDate?: null | string;
-  /**
-   * Priority level for task ordering
-   * @example "high"
-   */
-  priority?: TaskPriority | null;
-  /**
-   * Current status of the task
-   * @example "pending"
-   */
-  status?: TaskStatus | null;
-  /**
-   * Short title describing the task
-   * @example "Implement user authentication"
-   */
-  title?: string;
-}
-
 export interface TaskUpdateSuccessResponseBody {
   meta?: Record<string, unknown>;
   task: Task;
@@ -447,7 +373,7 @@ export interface TasksCreateRequest {
 }
 
 export interface TasksCreateRequestBody {
-  task: TaskCreatePayload;
+  task: unknown;
 }
 
 export interface TasksCreateRequestQuery {
@@ -507,7 +433,7 @@ export interface TasksUpdateRequest {
 }
 
 export interface TasksUpdateRequestBody {
-  task: TaskUpdatePayload;
+  task: unknown;
 }
 
 export interface TasksUpdateRequestQuery {

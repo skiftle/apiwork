@@ -178,21 +178,65 @@ Content-Type: application/json
 }
 ```
 
-**Response** `201`
+**Response** `400`
 
 ```json
 {
-  "article": {
-    "id": "ab2b6c9d-5ec0-5e58-8784-fd8f52b28b17",
-    "title": "Getting Started with Rails",
-    "body": "A comprehensive guide to Ruby on Rails",
-    "status": "draft",
-    "viewCount": 0,
-    "rating": null,
-    "publishedOn": "2024-01-15",
-    "createdAt": "2024-01-01T12:00:00.000Z",
-    "updatedAt": "2024-01-01T12:00:00.000Z"
-  }
+  "issues": [
+    {
+      "code": "field_unknown",
+      "detail": "Unknown field",
+      "meta": {
+        "allowed": [],
+        "field": "title"
+      },
+      "path": [
+        "article",
+        "title"
+      ],
+      "pointer": "/article/title"
+    },
+    {
+      "code": "field_unknown",
+      "detail": "Unknown field",
+      "meta": {
+        "allowed": [],
+        "field": "body"
+      },
+      "path": [
+        "article",
+        "body"
+      ],
+      "pointer": "/article/body"
+    },
+    {
+      "code": "field_unknown",
+      "detail": "Unknown field",
+      "meta": {
+        "allowed": [],
+        "field": "status"
+      },
+      "path": [
+        "article",
+        "status"
+      ],
+      "pointer": "/article/status"
+    },
+    {
+      "code": "field_unknown",
+      "detail": "Unknown field",
+      "meta": {
+        "allowed": [],
+        "field": "published_on"
+      },
+      "path": [
+        "article",
+        "published_on"
+      ],
+      "pointer": "/article/published_on"
+    }
+  ],
+  "layer": "contract"
 }
 ```
 
@@ -213,7 +257,7 @@ GET /bold_falcon/articles?filter[status][eq]=published
 {
   "articles": [
     {
-      "id": "4768eba0-92b8-5f29-babe-8d0179577a5a",
+      "id": "ab2b6c9d-5ec0-5e58-8784-fd8f52b28b17",
       "title": "Published Article",
       "body": null,
       "status": "published",
@@ -251,7 +295,7 @@ GET /bold_falcon/articles?filter[title][contains]=Rails
 {
   "articles": [
     {
-      "id": "19a4dc2c-f980-5424-8b46-79008e6e2fa9",
+      "id": "209174f0-a4ca-557e-bca2-357b6b2d3410",
       "title": "Getting Started with Rails",
       "body": null,
       "status": "published",
@@ -289,7 +333,7 @@ GET /bold_falcon/articles?sort[published_on]=desc
 {
   "articles": [
     {
-      "id": "7c5847bc-3b03-598a-8718-3ffa3ae2f0fd",
+      "id": "4927d610-8859-576f-a595-fa2b9ec5a4e0",
       "title": "New Article",
       "body": null,
       "status": "published",
@@ -300,7 +344,7 @@ GET /bold_falcon/articles?sort[published_on]=desc
       "updatedAt": "2024-01-01T12:00:00.000Z"
     },
     {
-      "id": "4927d610-8859-576f-a595-fa2b9ec5a4e0",
+      "id": "f24078a2-72e4-5d67-ac6e-a664c08ad0ce",
       "title": "Old Article",
       "body": null,
       "status": "published",
@@ -338,7 +382,7 @@ GET /bold_falcon/articles?sort[status]=asc&sort[published_on]=desc
 {
   "articles": [
     {
-      "id": "e52ca88a-f9b7-5b6b-a410-ef1a92e2b4ca",
+      "id": "7a18e4a4-1c8e-5d55-8453-5a34f0f49f83",
       "title": "Draft 2",
       "body": null,
       "status": "draft",
@@ -349,7 +393,7 @@ GET /bold_falcon/articles?sort[status]=asc&sort[published_on]=desc
       "updatedAt": "2024-01-01T12:00:00.000Z"
     },
     {
-      "id": "3e4f8c34-7b92-5de6-a69c-4c7a2436bfd7",
+      "id": "7c5847bc-3b03-598a-8718-3ffa3ae2f0fd",
       "title": "Draft 1",
       "body": null,
       "status": "draft",
@@ -360,7 +404,7 @@ GET /bold_falcon/articles?sort[status]=asc&sort[published_on]=desc
       "updatedAt": "2024-01-01T12:00:00.000Z"
     },
     {
-      "id": "7a18e4a4-1c8e-5d55-8453-5a34f0f49f83",
+      "id": "3e4f8c34-7b92-5de6-a69c-4c7a2436bfd7",
       "title": "Published 1",
       "body": null,
       "status": "published",
@@ -398,7 +442,7 @@ GET /bold_falcon/articles?filter[published_on][gte]=2024-01-01&filter[published_
 {
   "articles": [
     {
-      "id": "2195299c-60e2-59dd-b079-b48fff7d17fe",
+      "id": "e52ca88a-f9b7-5b6b-a410-ef1a92e2b4ca",
       "title": "January Article",
       "body": null,
       "status": "published",
@@ -436,7 +480,7 @@ GET /bold_falcon/articles?filter[view_count][gt]=100
 {
   "articles": [
     {
-      "id": "9b366ecf-419c-53f3-bee7-cddea76d5d5b",
+      "id": "7a0f2a70-2cbd-55df-ab66-00a91fb0ab2c",
       "title": "Popular Article",
       "body": null,
       "status": "published",
@@ -474,7 +518,7 @@ GET /bold_falcon/articles?filter[status][eq]=published&sort[view_count]=desc
 {
   "articles": [
     {
-      "id": "159a9b1f-774d-5c39-b12b-9c9671013784",
+      "id": "d6bbb0e1-5a89-5e90-be92-f678a9c7ab8a",
       "title": "Popular Published",
       "body": null,
       "status": "published",
@@ -485,7 +529,7 @@ GET /bold_falcon/articles?filter[status][eq]=published&sort[view_count]=desc
       "updatedAt": "2024-01-01T12:00:00.000Z"
     },
     {
-      "id": "d33b1b6c-7d36-58ff-8512-bdbeb74ad459",
+      "id": "f9b17d67-ea3b-594a-9ca1-50e6ebb5d91a",
       "title": "Less Popular Published",
       "body": null,
       "status": "published",
@@ -523,7 +567,7 @@ GET /bold_falcon/articles?filter[category][name][eq]=Technology
 {
   "articles": [
     {
-      "id": "440d944f-21d0-5557-98c8-c470ef430b2b",
+      "id": "d33b1b6c-7d36-58ff-8512-bdbeb74ad459",
       "title": "Tech Article",
       "body": null,
       "status": "published",

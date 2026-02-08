@@ -22,29 +22,6 @@ export interface LineItem {
   unitPrice: null | number;
 }
 
-export interface LineItemNestedCreatePayload {
-  OP?: 'create';
-  id?: string;
-  productName: string;
-  quantity?: null | number;
-  unitPrice?: null | number;
-}
-
-export interface LineItemNestedDeletePayload {
-  OP?: 'delete';
-  id: string;
-}
-
-export type LineItemNestedPayload = LineItemNestedCreatePayload | LineItemNestedUpdatePayload | LineItemNestedDeletePayload;
-
-export interface LineItemNestedUpdatePayload {
-  OP?: 'update';
-  id?: string;
-  productName?: string;
-  quantity?: null | number;
-  unitPrice?: null | number;
-}
-
 export interface NullableStringFilter {
   contains?: string;
   endsWith?: string;
@@ -74,9 +51,9 @@ export interface Order {
 }
 
 export interface OrderCreatePayload {
-  lineItems?: LineItemNestedPayload[];
+  lineItems?: unknown[];
   orderNumber: string;
-  shippingAddress?: ShippingAddressNestedPayload;
+  shippingAddress?: unknown;
 }
 
 export interface OrderCreateSuccessResponseBody {
@@ -113,9 +90,9 @@ export interface OrderSort {
 }
 
 export interface OrderUpdatePayload {
-  lineItems?: LineItemNestedPayload[];
+  lineItems?: unknown[];
   orderNumber?: string;
-  shippingAddress?: ShippingAddressNestedPayload;
+  shippingAddress?: unknown;
 }
 
 export interface OrderUpdateSuccessResponseBody {
@@ -181,31 +158,6 @@ export interface ShippingAddress {
   id: string;
   postalCode: string;
   street: string;
-}
-
-export interface ShippingAddressNestedCreatePayload {
-  OP?: 'create';
-  city: string;
-  country: string;
-  id?: string;
-  postalCode: string;
-  street: string;
-}
-
-export interface ShippingAddressNestedDeletePayload {
-  OP?: 'delete';
-  id: string;
-}
-
-export type ShippingAddressNestedPayload = ShippingAddressNestedCreatePayload | ShippingAddressNestedUpdatePayload | ShippingAddressNestedDeletePayload;
-
-export interface ShippingAddressNestedUpdatePayload {
-  OP?: 'update';
-  city?: string;
-  country?: string;
-  id?: string;
-  postalCode?: string;
-  street?: string;
 }
 
 export type SortDirection = 'asc' | 'desc';

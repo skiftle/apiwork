@@ -9,6 +9,14 @@ export const CustomerSchema = z.object({
   name: z.string()
 });
 
+export const InvoiceCreatePayloadSchema = z.object({
+  customerId: z.string(),
+  issuedOn: z.iso.date().nullable().optional(),
+  lines: z.array(z.unknown()).optional(),
+  notes: z.string().nullable().optional(),
+  number: z.string()
+});
+
 export const InvoicePageSchema = z.object({
   number: z.number().int().min(1).optional(),
   size: z.number().int().min(1).max(100).optional()
@@ -19,6 +27,14 @@ export const InvoiceSortSchema = z.object({
   issuedOn: SortDirectionSchema.optional(),
   status: SortDirectionSchema.optional(),
   updatedAt: SortDirectionSchema.optional()
+});
+
+export const InvoiceUpdatePayloadSchema = z.object({
+  customerId: z.string().optional(),
+  issuedOn: z.iso.date().nullable().optional(),
+  lines: z.array(z.unknown()).optional(),
+  notes: z.string().nullable().optional(),
+  number: z.string().optional()
 });
 
 export const IssueSchema = z.object({
@@ -34,27 +50,6 @@ export const LineSchema = z.object({
   id: z.string(),
   price: z.number().nullable(),
   quantity: z.number().int().nullable()
-});
-
-export const LineNestedCreatePayloadSchema = z.object({
-  OP: z.literal('create').optional(),
-  description: z.string().nullable().optional(),
-  id: z.string().optional(),
-  price: z.number().nullable().optional(),
-  quantity: z.number().int().nullable().optional()
-});
-
-export const LineNestedDeletePayloadSchema = z.object({
-  OP: z.literal('delete').optional(),
-  id: z.string()
-});
-
-export const LineNestedUpdatePayloadSchema = z.object({
-  OP: z.literal('update').optional(),
-  description: z.string().nullable().optional(),
-  id: z.string().optional(),
-  price: z.number().nullable().optional(),
-  quantity: z.number().int().nullable().optional()
 });
 
 export const NullableStringFilterSchema = z.object({
@@ -100,12 +95,6 @@ export const InvoiceSchema = z.object({
   updatedAt: z.iso.datetime()
 });
 
-export const LineNestedPayloadSchema = z.discriminatedUnion('OP', [
-  LineNestedCreatePayloadSchema,
-  LineNestedUpdatePayloadSchema,
-  LineNestedDeletePayloadSchema
-]);
-
 export const InvoiceFilterSchema: z.ZodType<InvoiceFilter> = z.lazy(() => z.object({
   AND: z.array(InvoiceFilterSchema).optional(),
   NOT: InvoiceFilterSchema.optional(),
@@ -140,22 +129,6 @@ export const InvoiceShowSuccessResponseBodySchema = z.object({
 export const InvoiceUpdateSuccessResponseBodySchema = z.object({
   invoice: InvoiceSchema,
   meta: z.record(z.string(), z.unknown()).optional()
-});
-
-export const InvoiceCreatePayloadSchema = z.object({
-  customerId: z.string(),
-  issuedOn: z.iso.date().nullable().optional(),
-  lines: z.array(LineNestedPayloadSchema).optional(),
-  notes: z.string().nullable().optional(),
-  number: z.string()
-});
-
-export const InvoiceUpdatePayloadSchema = z.object({
-  customerId: z.string().optional(),
-  issuedOn: z.iso.date().nullable().optional(),
-  lines: z.array(LineNestedPayloadSchema).optional(),
-  notes: z.string().nullable().optional(),
-  number: z.string().optional()
 });
 
 export const InvoicesIndexRequestQuerySchema = z.object({
@@ -249,7 +222,7 @@ export interface InvoiceArchiveSuccessResponseBody {
 export interface InvoiceCreatePayload {
   customerId: string;
   issuedOn?: null | string;
-  lines?: LineNestedPayload[];
+  lines?: unknown[];
   notes?: null | string;
   number: string;
 }
@@ -293,7 +266,7 @@ export interface InvoiceSort {
 export interface InvoiceUpdatePayload {
   customerId?: string;
   issuedOn?: null | string;
-  lines?: LineNestedPayload[];
+  lines?: unknown[];
   notes?: null | string;
   number?: string;
 }
@@ -376,29 +349,6 @@ export interface Line {
   id: string;
   price: null | number;
   quantity: null | number;
-}
-
-export interface LineNestedCreatePayload {
-  OP?: 'create';
-  description?: null | string;
-  id?: string;
-  price?: null | number;
-  quantity?: null | number;
-}
-
-export interface LineNestedDeletePayload {
-  OP?: 'delete';
-  id: string;
-}
-
-export type LineNestedPayload = LineNestedCreatePayload | LineNestedUpdatePayload | LineNestedDeletePayload;
-
-export interface LineNestedUpdatePayload {
-  OP?: 'update';
-  description?: null | string;
-  id?: string;
-  price?: null | number;
-  quantity?: null | number;
 }
 
 export interface NullableStringFilter {

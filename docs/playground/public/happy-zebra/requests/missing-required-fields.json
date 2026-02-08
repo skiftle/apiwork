@@ -13,11 +13,14 @@
     "body": {
       "issues": [
         {
-          "code": "field_missing",
-          "detail": "Required",
+          "code": "field_unknown",
+          "detail": "Unknown field",
           "meta": {
-            "field": "email",
-            "type": "string"
+            "allowed": [
+              "bio",
+              "website"
+            ],
+            "field": "email"
           },
           "path": [
             "user",
@@ -26,11 +29,14 @@
           "pointer": "/user/email"
         },
         {
-          "code": "field_missing",
-          "detail": "Required",
+          "code": "field_unknown",
+          "detail": "Unknown field",
           "meta": {
-            "field": "username",
-            "type": "string"
+            "allowed": [
+              "bio",
+              "website"
+            ],
+            "field": "username"
           },
           "path": [
             "user",

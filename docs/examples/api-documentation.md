@@ -202,13 +202,72 @@ Content-Type: application/json
       "code": "field_unknown",
       "detail": "Unknown field",
       "meta": {
-        "allowed": [
-          "title",
-          "description",
-          "status",
-          "priority",
-          "due_date"
-        ],
+        "allowed": [],
+        "field": "title"
+      },
+      "path": [
+        "task",
+        "title"
+      ],
+      "pointer": "/task/title"
+    },
+    {
+      "code": "field_unknown",
+      "detail": "Unknown field",
+      "meta": {
+        "allowed": [],
+        "field": "description"
+      },
+      "path": [
+        "task",
+        "description"
+      ],
+      "pointer": "/task/description"
+    },
+    {
+      "code": "field_unknown",
+      "detail": "Unknown field",
+      "meta": {
+        "allowed": [],
+        "field": "status"
+      },
+      "path": [
+        "task",
+        "status"
+      ],
+      "pointer": "/task/status"
+    },
+    {
+      "code": "field_unknown",
+      "detail": "Unknown field",
+      "meta": {
+        "allowed": [],
+        "field": "priority"
+      },
+      "path": [
+        "task",
+        "priority"
+      ],
+      "pointer": "/task/priority"
+    },
+    {
+      "code": "field_unknown",
+      "detail": "Unknown field",
+      "meta": {
+        "allowed": [],
+        "field": "due_date"
+      },
+      "path": [
+        "task",
+        "due_date"
+      ],
+      "pointer": "/task/due_date"
+    },
+    {
+      "code": "field_unknown",
+      "detail": "Unknown field",
+      "meta": {
+        "allowed": [],
         "field": "assignee_id"
       },
       "path": [

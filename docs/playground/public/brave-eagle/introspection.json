@@ -610,73 +610,13 @@
       "type": "object",
       "variants": []
     },
-    "comment_create_payload": {
+    "create_payload": {
       "deprecated": false,
-      "description": "A comment on a task",
+      "description": "A user who can be assigned to tasks",
       "discriminator": null,
       "example": null,
       "extends": [],
-      "shape": {
-        "author_name": {
-          "default": null,
-          "deprecated": false,
-          "description": "Name of the person who wrote the comment",
-          "example": "John Doe",
-          "nullable": true,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "body": {
-          "default": null,
-          "deprecated": false,
-          "description": "Comment content",
-          "example": "This looks good, ready for review.",
-          "nullable": false,
-          "optional": false,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        }
-      },
-      "type": "object",
-      "variants": []
-    },
-    "comment_update_payload": {
-      "deprecated": false,
-      "description": "A comment on a task",
-      "discriminator": null,
-      "example": null,
-      "extends": [],
-      "shape": {
-        "author_name": {
-          "default": null,
-          "deprecated": false,
-          "description": "Name of the person who wrote the comment",
-          "example": "John Doe",
-          "nullable": true,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "body": {
-          "default": null,
-          "deprecated": false,
-          "description": "Comment content",
-          "example": "This looks good, ready for review.",
-          "nullable": false,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        }
-      },
+      "shape": {},
       "type": "object",
       "variants": []
     },
@@ -1236,76 +1176,6 @@
       "type": "object",
       "variants": []
     },
-    "task_create_payload": {
-      "deprecated": false,
-      "description": "A task representing work to be completed",
-      "discriminator": null,
-      "example": null,
-      "extends": [],
-      "shape": {
-        "description": {
-          "default": null,
-          "deprecated": false,
-          "description": "Detailed description of what needs to be done",
-          "example": "Add OAuth2 login support for Google and GitHub providers",
-          "nullable": true,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "due_date": {
-          "default": null,
-          "deprecated": false,
-          "description": "Target date for task completion",
-          "example": "2024-02-01T00:00:00Z",
-          "nullable": true,
-          "optional": true,
-          "type": "datetime"
-        },
-        "priority": {
-          "default": null,
-          "deprecated": false,
-          "description": "Priority level for task ordering",
-          "example": "high",
-          "nullable": true,
-          "optional": true,
-          "type": "string",
-          "enum": "task_priority",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "status": {
-          "default": null,
-          "deprecated": false,
-          "description": "Current status of the task",
-          "example": "pending",
-          "nullable": true,
-          "optional": true,
-          "type": "string",
-          "enum": "task_status",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "title": {
-          "default": null,
-          "deprecated": false,
-          "description": "Short title describing the task",
-          "example": "Implement user authentication",
-          "nullable": false,
-          "optional": false,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        }
-      },
-      "type": "object",
-      "variants": []
-    },
     "task_create_success_response_body": {
       "deprecated": false,
       "description": null,
@@ -1734,76 +1604,6 @@
         }
       ]
     },
-    "task_update_payload": {
-      "deprecated": false,
-      "description": "A task representing work to be completed",
-      "discriminator": null,
-      "example": null,
-      "extends": [],
-      "shape": {
-        "description": {
-          "default": null,
-          "deprecated": false,
-          "description": "Detailed description of what needs to be done",
-          "example": "Add OAuth2 login support for Google and GitHub providers",
-          "nullable": true,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "due_date": {
-          "default": null,
-          "deprecated": false,
-          "description": "Target date for task completion",
-          "example": "2024-02-01T00:00:00Z",
-          "nullable": true,
-          "optional": true,
-          "type": "datetime"
-        },
-        "priority": {
-          "default": null,
-          "deprecated": false,
-          "description": "Priority level for task ordering",
-          "example": "high",
-          "nullable": true,
-          "optional": true,
-          "type": "string",
-          "enum": "task_priority",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "status": {
-          "default": null,
-          "deprecated": false,
-          "description": "Current status of the task",
-          "example": "pending",
-          "nullable": true,
-          "optional": true,
-          "type": "string",
-          "enum": "task_status",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "title": {
-          "default": null,
-          "deprecated": false,
-          "description": "Short title describing the task",
-          "example": "Implement user authentication",
-          "nullable": false,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        }
-      },
-      "type": "object",
-      "variants": []
-    },
     "task_update_success_response_body": {
       "deprecated": false,
       "description": null,
@@ -1833,6 +1633,16 @@
           "reference": "task"
         }
       },
+      "type": "object",
+      "variants": []
+    },
+    "update_payload": {
+      "deprecated": false,
+      "description": "A user who can be assigned to tasks",
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {},
       "type": "object",
       "variants": []
     },
@@ -1880,26 +1690,6 @@
           "min": null
         }
       },
-      "type": "object",
-      "variants": []
-    },
-    "user_create_payload": {
-      "deprecated": false,
-      "description": "A user who can be assigned to tasks",
-      "discriminator": null,
-      "example": null,
-      "extends": [],
-      "shape": {},
-      "type": "object",
-      "variants": []
-    },
-    "user_update_payload": {
-      "deprecated": false,
-      "description": "A user who can be assigned to tasks",
-      "discriminator": null,
-      "example": null,
-      "extends": [],
-      "shape": {},
       "type": "object",
       "variants": []
     }

@@ -13,18 +13,40 @@
     "body": {
       "issues": [
         {
-          "code": "invalid",
-          "detail": "Invalid",
-          "meta": {},
+          "code": "field_unknown",
+          "detail": "Unknown field",
+          "meta": {
+            "allowed": [
+              "bio",
+              "website"
+            ],
+            "field": "email"
+          },
           "path": [
             "user",
             "email"
           ],
           "pointer": "/user/email"
+        },
+        {
+          "code": "field_unknown",
+          "detail": "Unknown field",
+          "meta": {
+            "allowed": [
+              "bio",
+              "website"
+            ],
+            "field": "username"
+          },
+          "path": [
+            "user",
+            "username"
+          ],
+          "pointer": "/user/username"
         }
       ],
-      "layer": "domain"
+      "layer": "contract"
     },
-    "status": 422
+    "status": 400
   }
 }

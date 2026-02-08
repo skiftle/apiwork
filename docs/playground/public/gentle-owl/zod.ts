@@ -54,19 +54,34 @@ export const OffsetPaginationSchema = z.object({
   total: z.number().int()
 });
 
-export const CommentFilterSchema: z.ZodType<CommentFilter> = z.lazy(() => z.object({
-  AND: z.array(CommentFilterSchema).optional(),
-  NOT: CommentFilterSchema.optional(),
-  OR: z.array(CommentFilterSchema).optional(),
-  commentableType: CommentCommentableTypeFilterSchema.optional()
-}));
+export const StringFilterSchema = z.object({
+  contains: z.string().optional(),
+  endsWith: z.string().optional(),
+  eq: z.string().optional(),
+  in: z.array(z.string()).optional(),
+  startsWith: z.string().optional()
+});
 
 export const ErrorSchema = z.object({
   issues: z.array(IssueSchema),
   layer: LayerSchema
 });
 
+export const FilterSchema: z.ZodType<Filter> = z.lazy(() => z.object({
+  AND: z.array(FilterSchema).optional(),
+  NOT: FilterSchema.optional(),
+  OR: z.array(FilterSchema).optional(),
+  title: z.union([z.string(), StringFilterSchema]).optional()
+}));
+
 export const ErrorResponseBodySchema = ErrorSchema;
+
+export const CommentFilterSchema = z.object({
+  AND: z.array(FilterSchema).optional(),
+  NOT: FilterSchema.optional(),
+  OR: z.array(FilterSchema).optional(),
+  commentableType: CommentCommentableTypeFilterSchema.optional()
+});
 
 export const CommentSchema = z.object({
   authorName: z.string().nullable(),
@@ -240,9 +255,9 @@ export interface CommentCreateSuccessResponseBody {
 }
 
 export interface CommentFilter {
-  AND?: CommentFilter[];
-  NOT?: CommentFilter;
-  OR?: CommentFilter[];
+  AND?: Filter[];
+  NOT?: Filter;
+  OR?: Filter[];
   commentableType?: CommentCommentableTypeFilter;
 }
 
@@ -368,6 +383,13 @@ export interface Error {
 
 export type ErrorResponseBody = Error;
 
+export interface Filter {
+  AND?: Filter[];
+  NOT?: Filter;
+  OR?: Filter[];
+  title?: StringFilter | string;
+}
+
 export interface Image {
   comments?: Comment[];
   createdAt: string;
@@ -405,6 +427,14 @@ export interface Post {
 }
 
 export type SortDirection = 'asc' | 'desc';
+
+export interface StringFilter {
+  contains?: string;
+  endsWith?: string;
+  eq?: string;
+  in?: string[];
+  startsWith?: string;
+}
 
 export interface Video {
   comments?: Comment[];

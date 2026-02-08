@@ -185,65 +185,6 @@ components:
       - productName
       - quantity
       - unitPrice
-    lineItemNestedCreatePayload:
-      properties:
-        OP:
-          const: create
-          type: string
-        id:
-          type: string
-        productName:
-          type: string
-        quantity:
-          type:
-          - integer
-          - 'null'
-        unitPrice:
-          type:
-          - number
-          - 'null'
-      type: object
-      required:
-      - productName
-    lineItemNestedDeletePayload:
-      properties:
-        OP:
-          const: delete
-          type: string
-        id:
-          type: string
-      type: object
-      required:
-      - id
-    lineItemNestedPayload:
-      oneOf:
-      - "$ref": "#/components/schemas/lineItemNestedCreatePayload"
-      - "$ref": "#/components/schemas/lineItemNestedUpdatePayload"
-      - "$ref": "#/components/schemas/lineItemNestedDeletePayload"
-      discriminator:
-        mapping:
-          create: "#/components/schemas/lineItemNestedCreatePayload"
-          update: "#/components/schemas/lineItemNestedUpdatePayload"
-          delete: "#/components/schemas/lineItemNestedDeletePayload"
-        propertyName: OP
-    lineItemNestedUpdatePayload:
-      properties:
-        OP:
-          const: update
-          type: string
-        id:
-          type: string
-        productName:
-          type: string
-        quantity:
-          type:
-          - integer
-          - 'null'
-        unitPrice:
-          type:
-          - number
-          - 'null'
-      type: object
     nullableStringFilter:
       properties:
         contains:
@@ -321,13 +262,11 @@ components:
     orderCreatePayload:
       properties:
         lineItems:
-          items:
-            "$ref": "#/components/schemas/lineItemNestedPayload"
+          items: {}
           type: array
         orderNumber:
           type: string
-        shippingAddress:
-          "$ref": "#/components/schemas/shippingAddressNestedPayload"
+        shippingAddress: {}
       type: object
       required:
       - orderNumber
@@ -409,13 +348,11 @@ components:
     orderUpdatePayload:
       properties:
         lineItems:
-          items:
-            "$ref": "#/components/schemas/lineItemNestedPayload"
+          items: {}
           type: array
         orderNumber:
           type: string
-        shippingAddress:
-          "$ref": "#/components/schemas/shippingAddressNestedPayload"
+        shippingAddress: {}
       type: object
     orderUpdateSuccessResponseBody:
       properties:
@@ -446,61 +383,3 @@ components:
       - id
       - postalCode
       - street
-    shippingAddressNestedCreatePayload:
-      properties:
-        OP:
-          const: create
-          type: string
-        city:
-          type: string
-        country:
-          type: string
-        id:
-          type: string
-        postalCode:
-          type: string
-        street:
-          type: string
-      type: object
-      required:
-      - city
-      - country
-      - postalCode
-      - street
-    shippingAddressNestedDeletePayload:
-      properties:
-        OP:
-          const: delete
-          type: string
-        id:
-          type: string
-      type: object
-      required:
-      - id
-    shippingAddressNestedPayload:
-      oneOf:
-      - "$ref": "#/components/schemas/shippingAddressNestedCreatePayload"
-      - "$ref": "#/components/schemas/shippingAddressNestedUpdatePayload"
-      - "$ref": "#/components/schemas/shippingAddressNestedDeletePayload"
-      discriminator:
-        mapping:
-          create: "#/components/schemas/shippingAddressNestedCreatePayload"
-          update: "#/components/schemas/shippingAddressNestedUpdatePayload"
-          delete: "#/components/schemas/shippingAddressNestedDeletePayload"
-        propertyName: OP
-    shippingAddressNestedUpdatePayload:
-      properties:
-        OP:
-          const: update
-          type: string
-        city:
-          type: string
-        country:
-          type: string
-        id:
-          type: string
-        postalCode:
-          type: string
-        street:
-          type: string
-      type: object
