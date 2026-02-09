@@ -143,7 +143,7 @@ Types and nullability are auto-detected from database columns.
 | `max` | `Integer`, `nil` | `nil` |  |
 | `description` | `String`, `nil` | `nil` |  |
 | `example` | `Object`, `nil` | `nil` |  |
-| `format` | `Symbol`, `nil` | `nil` |  |
+| `format` | `Symbol<:float, :double, :int32, :int64, :email, :uuid, :url, :date, :datetime, :ipv4, :ipv6, :password, :hostname>`, `nil` | `nil` | type-dependent |
 | `deprecated` | `Boolean` | `false` |  |
 
 </div>

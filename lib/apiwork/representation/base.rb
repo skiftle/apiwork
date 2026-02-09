@@ -165,7 +165,7 @@ module Apiwork
         # @param max [Integer, nil] (nil)
         # @param description [String, nil] (nil)
         # @param example [Object, nil] (nil)
-        # @param format [Symbol, nil] (nil)
+        # @param format [Symbol, nil] (nil) [:float, :double, :int32, :int64, :email, :uuid, :url, :date, :datetime, :ipv4, :ipv6, :password, :hostname] type-dependent
         # @param deprecated [Boolean] (false)
         # @yieldparam element [Representation::Element]
         # @return [void]
