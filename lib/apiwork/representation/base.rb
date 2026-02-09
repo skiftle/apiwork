@@ -155,9 +155,9 @@ module Apiwork
         # @param enum [Array, nil] (nil) auto-detected from Rails enum definition
         # @param optional [Boolean, nil] (nil) auto-detected from NULL constraint or column default
         # @param nullable [Boolean, nil] (nil) auto-detected from NULL constraint
-        # @param filterable [Boolean, nil] (nil)
-        # @param sortable [Boolean, nil] (nil)
-        # @param writable [Boolean, Hash, nil] (nil) [Hash: on: :create | :update]
+        # @param filterable [Boolean] (false)
+        # @param sortable [Boolean] (false)
+        # @param writable [Boolean, Hash] (false) [Hash: on: :create | :update]
         # @param encode [Proc, nil] (nil)
         # @param decode [Proc, nil] (nil)
         # @param empty [Boolean, nil] (nil)
@@ -183,15 +183,15 @@ module Apiwork
           encode: nil,
           enum: nil,
           example: nil,
-          filterable: nil,
+          filterable: false,
           format: nil,
           max: nil,
           min: nil,
           nullable: nil,
           optional: nil,
-          sortable: nil,
+          sortable: false,
           type: nil,
-          writable: nil,
+          writable: false,
           &block
         )
           self.attributes = attributes.merge(
@@ -226,7 +226,7 @@ module Apiwork
         # @param representation [Class<Representation::Base>, nil] (nil) auto-detected from association name
         # @param polymorphic [Array, Hash, nil] (nil)
         # @param include [Symbol] (:optional) [:always, :optional]
-        # @param writable [Boolean, Hash] (false) [Hash: on: :create | :update]
+        # @param writable [Boolean, Hash] (false) [Hash: on: :create | :update] model must declare accepts_nested_attributes_for
         # @param filterable [Boolean] (false)
         # @param sortable [Boolean] (false)
         # @param nullable [Boolean, nil] (nil)
@@ -281,7 +281,7 @@ module Apiwork
         # @param representation [Class<Representation::Base>, nil] (nil) auto-detected from association name
         # @param polymorphic [Array, Hash, nil] (nil)
         # @param include [Symbol] (:optional) [:always, :optional]
-        # @param writable [Boolean, Hash] (false) [Hash: on: :create | :update]
+        # @param writable [Boolean, Hash] (false) [Hash: on: :create | :update] model must declare accepts_nested_attributes_for
         # @param filterable [Boolean] (false)
         # @param sortable [Boolean] (false)
         # @param nullable [Boolean, nil] (nil)
@@ -340,7 +340,7 @@ module Apiwork
         # @param representation [Class<Representation::Base>, nil] (nil) auto-detected from association name
         # @param polymorphic [Array, Hash, nil] (nil)
         # @param include [Symbol] (:optional) [:always, :optional]
-        # @param writable [Boolean, Hash] (false) [Hash: on: :create | :update]
+        # @param writable [Boolean, Hash] (false) [Hash: on: :create | :update] model must declare accepts_nested_attributes_for
         # @param filterable [Boolean] (false)
         # @param sortable [Boolean] (false)
         # @param nullable [Boolean, nil] (nil) auto-detected from foreign key column

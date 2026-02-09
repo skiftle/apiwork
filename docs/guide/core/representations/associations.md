@@ -206,7 +206,7 @@ has_many :comments, representation: CommentRepresentation, writable: true
 
 ### Rails Requirement
 
-Your model must accept nested attributes:
+Your model must declare `accepts_nested_attributes_for` on the association:
 
 ```ruby
 class Post < ApplicationRecord
@@ -214,6 +214,10 @@ class Post < ApplicationRecord
   accepts_nested_attributes_for :comments, allow_destroy: true
 end
 ```
+
+::: info
+Without `accepts_nested_attributes_for`, Rails silently ignores nested attributes. The API accepts the payload but nothing is saved.
+:::
 
 ### Context-Specific Writing
 

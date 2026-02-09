@@ -97,7 +97,7 @@ module Apiwork
         optional: nil,
         sortable: false,
         type: nil,
-        writable: nil,
+        writable: false,
         &block
       )
         @name = name

@@ -114,7 +114,7 @@ Hash{Symbol =&gt; [Association](/reference/representation/association)}
 
 ### .attribute
 
-`.attribute(name, decode: nil, deprecated: false, description: nil, empty: nil, encode: nil, enum: nil, example: nil, filterable: nil, format: nil, max: nil, min: nil, nullable: nil, optional: nil, sortable: nil, type: nil, writable: nil, &block)`
+`.attribute(name, decode: nil, deprecated: false, description: nil, empty: nil, encode: nil, enum: nil, example: nil, filterable: false, format: nil, max: nil, min: nil, nullable: nil, optional: nil, sortable: false, type: nil, writable: false, &block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L177)
 
@@ -133,9 +133,9 @@ Types and nullability are auto-detected from database columns.
 | `enum` | `Array`, `nil` | `nil` | auto-detected from Rails enum definition |
 | `optional` | `Boolean`, `nil` | `nil` | auto-detected from NULL constraint or column default |
 | `nullable` | `Boolean`, `nil` | `nil` | auto-detected from NULL constraint |
-| `filterable` | `Boolean`, `nil` | `nil` |  |
-| `sortable` | `Boolean`, `nil` | `nil` |  |
-| `writable` | `Boolean`, `Hash<on: :create \| :update>`, `nil` | `nil` |  |
+| `filterable` | `Boolean` | `false` |  |
+| `sortable` | `Boolean` | `false` |  |
+| `writable` | `Boolean`, `Hash<on: :create \| :update>` | `false` |  |
 | `encode` | `Proc`, `nil` | `nil` |  |
 | `decode` | `Proc`, `nil` | `nil` |  |
 | `empty` | `Boolean`, `nil` | `nil` |  |
@@ -198,7 +198,7 @@ Nullability is auto-detected from the foreign key column.
 | `representation` | `Class<Representation::Base>`, `nil` | `nil` | auto-detected from association name |
 | `polymorphic` | `Array`, `Hash`, `nil` | `nil` |  |
 | `include` | `Symbol<:always, :optional>` | `:optional` |  |
-| `writable` | `Boolean`, `Hash<on: :create \| :update>` | `false` |  |
+| `writable` | `Boolean`, `Hash<on: :create \| :update>` | `false` | model must declare accepts_nested_attributes_for |
 | `filterable` | `Boolean` | `false` |  |
 | `sortable` | `Boolean` | `false` |  |
 | `nullable` | `Boolean`, `nil` | `nil` | auto-detected from foreign key column |
@@ -354,7 +354,7 @@ Defines a has_many association for serialization.
 | `representation` | `Class<Representation::Base>`, `nil` | `nil` | auto-detected from association name |
 | `polymorphic` | `Array`, `Hash`, `nil` | `nil` |  |
 | `include` | `Symbol<:always, :optional>` | `:optional` |  |
-| `writable` | `Boolean`, `Hash<on: :create \| :update>` | `false` |  |
+| `writable` | `Boolean`, `Hash<on: :create \| :update>` | `false` | model must declare accepts_nested_attributes_for |
 | `filterable` | `Boolean` | `false` |  |
 | `sortable` | `Boolean` | `false` |  |
 | `nullable` | `Boolean`, `nil` | `nil` |  |
@@ -400,7 +400,7 @@ Defines a has_one association for serialization.
 | `representation` | `Class<Representation::Base>`, `nil` | `nil` | auto-detected from association name |
 | `polymorphic` | `Array`, `Hash`, `nil` | `nil` |  |
 | `include` | `Symbol<:always, :optional>` | `:optional` |  |
-| `writable` | `Boolean`, `Hash<on: :create \| :update>` | `false` |  |
+| `writable` | `Boolean`, `Hash<on: :create \| :update>` | `false` | model must declare accepts_nested_attributes_for |
 | `filterable` | `Boolean` | `false` |  |
 | `sortable` | `Boolean` | `false` |  |
 | `nullable` | `Boolean`, `nil` | `nil` |  |
