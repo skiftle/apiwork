@@ -63,7 +63,7 @@ The detail for this issue.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L26)
 
-The metadata for this issue.
+The meta for this issue.
 
 **Returns**
 

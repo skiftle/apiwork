@@ -20,7 +20,7 @@ module Apiwork
     attr_reader :detail
 
     # @api public
-    # The metadata for this issue.
+    # The meta for this issue.
     #
     # @return [Hash]
     attr_reader :meta

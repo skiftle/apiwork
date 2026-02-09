@@ -19,7 +19,7 @@ module Apiwork
         end
 
         # @api public
-        # The title for this info.
+        # The API title.
         #
         # @return [String, nil]
         def title
@@ -27,7 +27,7 @@ module Apiwork
         end
 
         # @api public
-        # The version for this info.
+        # The API version.
         #
         # @return [String, nil]
         def version
@@ -35,7 +35,7 @@ module Apiwork
         end
 
         # @api public
-        # The description for this info.
+        # The API description.
         #
         # @return [String, nil]
         def description
@@ -43,7 +43,7 @@ module Apiwork
         end
 
         # @api public
-        # The summary for this info.
+        # The API summary.
         #
         # @return [String, nil]
         def summary
@@ -51,7 +51,7 @@ module Apiwork
         end
 
         # @api public
-        # The terms of service for this info.
+        # The API terms of service.
         #
         # @return [String, nil]
         def terms_of_service
@@ -59,7 +59,7 @@ module Apiwork
         end
 
         # @api public
-        # The contact for this info.
+        # The API contact.
         #
         # @return [Info::Contact, nil]
         # @see Info::Contact
@@ -68,7 +68,7 @@ module Apiwork
         end
 
         # @api public
-        # The license for this info.
+        # The API license.
         #
         # @return [Info::License, nil]
         # @see Info::License
@@ -77,7 +77,7 @@ module Apiwork
         end
 
         # @api public
-        # The servers for this info.
+        # The API servers.
         #
         # @return [Array<Info::Server>]
         # @see Info::Server
@@ -86,7 +86,7 @@ module Apiwork
         end
 
         # @api public
-        # Converts this info to a hash.
+        # Converts the API info to a hash.
         #
         # @return [Hash]
         def to_h

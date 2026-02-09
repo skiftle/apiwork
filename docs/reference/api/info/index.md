@@ -26,7 +26,7 @@ Used within the `info` block in [API::Base](/reference/api/base).
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L86)
 
-The contact for this info.
+The API contact.
 
 **Returns**
 
@@ -96,7 +96,7 @@ Whether the API is deprecated.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L172)
 
-The description for this info.
+The API description.
 
 **Parameters**
 
@@ -123,7 +123,7 @@ info.description  # => "Full-featured..."
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L112)
 
-The license for this info.
+The API license.
 
 **Returns**
 
@@ -193,7 +193,7 @@ end
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L157)
 
-The summary for this info.
+The API summary.
 
 **Parameters**
 
@@ -220,7 +220,7 @@ info.summary  # => "Invoice management API"
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L187)
 
-The tags for this info.
+The API tags.
 
 **Parameters**
 
@@ -247,7 +247,7 @@ info.tags  # => ["invoices", "payments"]
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L62)
 
-The terms of service for this info.
+The API terms of service.
 
 **Parameters**
 
@@ -274,7 +274,7 @@ info.terms_of_service  # => "https://example.com/terms"
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L32)
 
-The title for this info.
+The API title.
 
 **Parameters**
 
@@ -301,7 +301,7 @@ info.title  # => "Invoice API"
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L47)
 
-The version for this info.
+The API version.
 
 **Parameters**
 

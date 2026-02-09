@@ -21,7 +21,7 @@ module Apiwork
       end
 
       # @api public
-      # The title for this info.
+      # The API title.
       #
       # @param value [String, nil]
       # @return [String, nil]
@@ -36,7 +36,7 @@ module Apiwork
       end
 
       # @api public
-      # The version for this info.
+      # The API version.
       #
       # @param value [String, nil]
       # @return [String, nil]
@@ -51,7 +51,7 @@ module Apiwork
       end
 
       # @api public
-      # The terms of service for this info.
+      # The API terms of service.
       #
       # @param value [String, nil]
       # @return [String, nil]
@@ -66,7 +66,7 @@ module Apiwork
       end
 
       # @api public
-      # The contact for this info.
+      # The API contact.
       #
       # @yield block for defining contact info
       # @yieldparam contact [Contact]
@@ -92,7 +92,7 @@ module Apiwork
       end
 
       # @api public
-      # The license for this info.
+      # The API license.
       #
       # @yield block for defining license info
       # @yieldparam license [License]
@@ -146,7 +146,7 @@ module Apiwork
       end
 
       # @api public
-      # The summary for this info.
+      # The API summary.
       #
       # @param value [String, nil]
       # @return [String, nil]
@@ -161,7 +161,7 @@ module Apiwork
       end
 
       # @api public
-      # The description for this info.
+      # The API description.
       #
       # @param value [String, nil]
       # @return [String, nil]
@@ -176,7 +176,7 @@ module Apiwork
       end
 
       # @api public
-      # The tags for this info.
+      # The API tags.
       #
       # @param values [Array<String>]
       # @return [Array<String>]
