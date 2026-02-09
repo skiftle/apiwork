@@ -128,21 +128,21 @@ Defines an attribute for this representation.
 |------|------|---------|-------------|
 | **`name`** | `Symbol` |  | The attribute name. |
 | `type` | `Symbol<:array, :binary, :boolean, :date, :datetime, :decimal, :integer, :number, :object, :string, :time, :unknown, :uuid>`, `nil` | `nil` | The type. If `nil` and name maps to a database column, auto-detected from column type. |
-| `enum` | `Array`, `nil` | `nil` | The allowed values. If nil, auto-detected from Rails enum definition. |
-| `optional` | `Boolean`, `nil` | `nil` | Whether the attribute is optional for writes. If nil, auto-detected from column default or NULL constraint. |
-| `nullable` | `Boolean`, `nil` | `nil` | Whether the value can be null. If nil, auto-detected from column NULL constraint. |
+| `enum` | `Array`, `nil` | `nil` | The allowed values. If `nil`, auto-detected from Rails enum definition. |
+| `optional` | `Boolean`, `nil` | `nil` | Whether the attribute is optional for writes. If `nil`, auto-detected from column default or NULL constraint. |
+| `nullable` | `Boolean`, `nil` | `nil` | Whether the value can be `null`. If `nil`, auto-detected from column NULL constraint. |
 | `filterable` | `Boolean` | `false` | Whether the attribute is filterable. |
 | `sortable` | `Boolean` | `false` | Whether the attribute is sortable. |
 | `writable` | `Boolean`, `Hash<on: :create \| :update>` | `false` | Whether the attribute is writable. |
 | `encode` | `Proc`, `nil` | `nil` | Transform for serialization. |
 | `decode` | `Proc`, `nil` | `nil` | Transform for deserialization. |
-| `empty` | `Boolean`, `nil` | `nil` | Whether to use empty string instead of null. Serializes nil as "" and deserializes "" as nil. |
+| `empty` | `Boolean`, `nil` | `nil` | Whether to use empty string instead of `null`. Serializes `nil` as `""` and deserializes `""` as `nil`. |
 | `min` | `Integer`, `nil` | `nil` | The minimum value or length. |
 | `max` | `Integer`, `nil` | `nil` | The maximum value or length. |
 | `description` | `String`, `nil` | `nil` | The description for documentation. |
 | `example` | `Object`, `nil` | `nil` | An example value for documentation. |
 | `format` | `Symbol<:date, :datetime, :double, :email, :float, :hostname, :int32, :int64, :ipv4, :ipv6, :password, :url, :uuid>`, `nil` | `nil` | The format hint for validation. |
-| `deprecated` | `Boolean` | `false` | Whether the attribute is deprecated. |
+| `deprecated` | `Boolean` | `false` | Whether deprecated. |
 
 </div>
 
@@ -197,10 +197,10 @@ Defines a belongs_to association for this representation.
 | `writable` | `Boolean`, `Hash<on: :create \| :update>` | `false` | Whether the association is writable. |
 | `filterable` | `Boolean` | `false` | Whether the association is filterable. |
 | `sortable` | `Boolean` | `false` | Whether the association is sortable. |
-| `nullable` | `Boolean`, `nil` | `nil` | Whether the value can be null. If nil, auto-detected from foreign key column. |
+| `nullable` | `Boolean`, `nil` | `nil` | Whether the value can be `null`. If `nil`, auto-detected from foreign key column. |
 | `description` | `String`, `nil` | `nil` | The description for documentation. |
 | `example` | `Object`, `nil` | `nil` | An example value for documentation. |
-| `deprecated` | `Boolean` | `false` | Whether the association is deprecated. |
+| `deprecated` | `Boolean` | `false` | Whether deprecated. |
 
 </div>
 
@@ -369,10 +369,10 @@ Defines a has_many association for this representation.
 | `writable` | `Boolean`, `Hash<on: :create \| :update>` | `false` | Whether the association is writable. |
 | `filterable` | `Boolean` | `false` | Whether the association is filterable. |
 | `sortable` | `Boolean` | `false` | Whether the association is sortable. |
-| `nullable` | `Boolean`, `nil` | `nil` | Whether the value can be null. |
+| `nullable` | `Boolean`, `nil` | `nil` | Whether the value can be `null`. |
 | `description` | `String`, `nil` | `nil` | The description for documentation. |
 | `example` | `Object`, `nil` | `nil` | An example value for documentation. |
-| `deprecated` | `Boolean` | `false` | Whether the association is deprecated. |
+| `deprecated` | `Boolean` | `false` | Whether deprecated. |
 
 </div>
 
@@ -424,10 +424,10 @@ Defines a has_one association for this representation.
 | `writable` | `Boolean`, `Hash<on: :create \| :update>` | `false` | Whether the association is writable. |
 | `filterable` | `Boolean` | `false` | Whether the association is filterable. |
 | `sortable` | `Boolean` | `false` | Whether the association is sortable. |
-| `nullable` | `Boolean`, `nil` | `nil` | Whether the value can be null. |
+| `nullable` | `Boolean`, `nil` | `nil` | Whether the value can be `null`. |
 | `description` | `String`, `nil` | `nil` | The description for documentation. |
 | `example` | `Object`, `nil` | `nil` | An example value for documentation. |
-| `deprecated` | `Boolean` | `false` | Whether the association is deprecated. |
+| `deprecated` | `Boolean` | `false` | Whether deprecated. |
 
 </div>
 

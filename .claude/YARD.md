@@ -394,6 +394,8 @@ Description always on a separate line:
 | Value (auto-detect) | "The [thing]. If \`nil\`, auto-detected from [source]." | "The type. If \`nil\` and name maps to a database column, auto-detected from column type." |
 | Value (conditional) | "The [thing]. If \`nil\` and [condition], auto-detected from [source]." | "The type. If \`nil\` and name maps to a database column, auto-detected from column type." |
 | Function | "Transform for [purpose]." | "Transform for serialization." |
+| Metadata | "The [thing] for documentation." | "The description for documentation." |
+| Metadata (deprecated) | "Whether deprecated." | "Whether deprecated." |
 
 ### Rules
 

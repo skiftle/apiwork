@@ -152,11 +152,11 @@ module Apiwork
         # @param type [Symbol, nil] (nil) [:array, :binary, :boolean, :date, :datetime, :decimal, :integer, :number, :object, :string, :time, :unknown, :uuid]
         #   The type. If `nil` and name maps to a database column, auto-detected from column type.
         # @param enum [Array, nil] (nil)
-        #   The allowed values. If nil, auto-detected from Rails enum definition.
+        #   The allowed values. If `nil`, auto-detected from Rails enum definition.
         # @param optional [Boolean, nil] (nil)
-        #   Whether the attribute is optional for writes. If nil, auto-detected from column default or NULL constraint.
+        #   Whether the attribute is optional for writes. If `nil`, auto-detected from column default or NULL constraint.
         # @param nullable [Boolean, nil] (nil)
-        #   Whether the value can be null. If nil, auto-detected from column NULL constraint.
+        #   Whether the value can be `null`. If `nil`, auto-detected from column NULL constraint.
         # @param filterable [Boolean] (false)
         #   Whether the attribute is filterable.
         # @param sortable [Boolean] (false)
@@ -168,7 +168,7 @@ module Apiwork
         # @param decode [Proc, nil] (nil)
         #   Transform for deserialization.
         # @param empty [Boolean, nil] (nil)
-        #   Whether to use empty string instead of null. Serializes nil as "" and deserializes "" as nil.
+        #   Whether to use empty string instead of `null`. Serializes `nil` as `""` and deserializes `""` as `nil`.
         # @param min [Integer, nil] (nil)
         #   The minimum value or length.
         # @param max [Integer, nil] (nil)
@@ -180,7 +180,7 @@ module Apiwork
         # @param format [Symbol, nil] (nil) [:date, :datetime, :double, :email, :float, :hostname, :int32, :int64, :ipv4, :ipv6, :password, :url, :uuid]
         #   The format hint for validation.
         # @param deprecated [Boolean] (false)
-        #   Whether the attribute is deprecated.
+        #   Whether deprecated.
         # @yieldparam element [Representation::Element]
         # @return [void]
         #
@@ -249,13 +249,13 @@ module Apiwork
         # @param sortable [Boolean] (false)
         #   Whether the association is sortable.
         # @param nullable [Boolean, nil] (nil)
-        #   Whether the value can be null.
+        #   Whether the value can be `null`.
         # @param description [String, nil] (nil)
         #   The description for documentation.
         # @param example [Object, nil] (nil)
         #   An example value for documentation.
         # @param deprecated [Boolean] (false)
-        #   Whether the association is deprecated.
+        #   Whether deprecated.
         # @return [void]
         #
         # @example Basic
@@ -314,13 +314,13 @@ module Apiwork
         # @param sortable [Boolean] (false)
         #   Whether the association is sortable.
         # @param nullable [Boolean, nil] (nil)
-        #   Whether the value can be null.
+        #   Whether the value can be `null`.
         # @param description [String, nil] (nil)
         #   The description for documentation.
         # @param example [Object, nil] (nil)
         #   An example value for documentation.
         # @param deprecated [Boolean] (false)
-        #   Whether the association is deprecated.
+        #   Whether deprecated.
         # @return [void]
         # @see #has_one
         #
@@ -382,13 +382,13 @@ module Apiwork
         # @param sortable [Boolean] (false)
         #   Whether the association is sortable.
         # @param nullable [Boolean, nil] (nil)
-        #   Whether the value can be null. If nil, auto-detected from foreign key column.
+        #   Whether the value can be `null`. If `nil`, auto-detected from foreign key column.
         # @param description [String, nil] (nil)
         #   The description for documentation.
         # @param example [Object, nil] (nil)
         #   An example value for documentation.
         # @param deprecated [Boolean] (false)
-        #   Whether the association is deprecated.
+        #   Whether deprecated.
         # @return [void]
         # @see #has_one
         #
