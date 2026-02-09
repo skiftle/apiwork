@@ -362,7 +362,7 @@ module Apiwork
       # Defines a GET action.
       #
       # @param action_names [Symbol, Array<Symbol>] action name(s)
-      # @param on [Symbol] :member or :collection
+      # @param on [Symbol, nil] (nil) [:member, :collection]
       # @return [void]
       #
       # @example Inside member block
@@ -378,7 +378,7 @@ module Apiwork
       # Defines a POST action.
       #
       # @param action_names [Symbol, Array<Symbol>] action name(s)
-      # @param on [Symbol] :member or :collection
+      # @param on [Symbol, nil] (nil) [:member, :collection]
       # @return [void]
       #
       # @example
@@ -391,7 +391,7 @@ module Apiwork
       # Defines a PATCH action.
       #
       # @param action_names [Symbol, Array<Symbol>] action name(s)
-      # @param on [Symbol] :member or :collection
+      # @param on [Symbol, nil] (nil) [:member, :collection]
       # @return [void]
       #
       # @example
@@ -404,7 +404,7 @@ module Apiwork
       # Defines a PUT action.
       #
       # @param action_names [Symbol, Array<Symbol>] action name(s)
-      # @param on [Symbol] :member or :collection
+      # @param on [Symbol, nil] (nil) [:member, :collection]
       # @return [void]
       #
       # @example
@@ -417,7 +417,7 @@ module Apiwork
       # Defines a DELETE action.
       #
       # @param action_names [Symbol, Array<Symbol>] action name(s)
-      # @param on [Symbol] :member or :collection
+      # @param on [Symbol, nil] (nil) [:member, :collection]
       # @return [void]
       #
       # @example

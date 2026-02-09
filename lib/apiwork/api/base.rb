@@ -77,7 +77,7 @@ module Apiwork
         # @api public
         # Enables an export for this API.
         #
-        # @param name [Symbol] :openapi, :typescript, or :zod
+        # @param name [Symbol] registered export name (built-in: :openapi, :typescript, :zod)
         # @yield block evaluated in export context
         # @yieldparam export [Configuration]
         # @return [void]

@@ -169,7 +169,7 @@ call `option` to define child options.
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | option name |
-| `type` | `Symbol` |  | :symbol, :string, :integer, :boolean, or :hash |
+| `type` | `Symbol<:symbol, :string, :integer, :boolean, :hash>` |  |  |
 | `default` | `Object`, `nil` | `nil` | default value |
 | `enum` | `Array`, `nil` | `nil` | allowed values |
 

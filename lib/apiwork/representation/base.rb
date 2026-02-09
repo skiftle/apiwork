@@ -150,7 +150,8 @@ module Apiwork
         # Types and nullability are auto-detected from database columns.
         #
         # @param name [Symbol]
-        # @param type [Symbol, nil] (nil) [:string, :integer, :boolean, :datetime, :date, :uuid, :decimal, :number, :object, :array] auto-detected from column type
+        # @param type [Symbol, nil] (nil) [:string, :integer, :boolean, :datetime, :date, :uuid, :decimal, :number, :object, :array]
+        #   auto-detected from column type
         # @param enum [Array, nil] (nil) auto-detected from Rails enum definition
         # @param optional [Boolean, nil] (nil) auto-detected from NULL constraint or column default
         # @param nullable [Boolean, nil] (nil) auto-detected from NULL constraint

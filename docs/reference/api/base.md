@@ -167,7 +167,7 @@ Enables an export for this API.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  | :openapi, :typescript, or :zod |
+| `name` | `Symbol` |  | registered export name (built-in: :openapi, :typescript, :zod) |
 
 </div>
 

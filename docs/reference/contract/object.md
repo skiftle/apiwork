@@ -901,7 +901,7 @@ Defines a string.
 | `description` | `String`, `nil` | `nil` | documentation description |
 | `enum` | `Array`, `Symbol`, `nil` | `nil` | allowed values |
 | `example` | `String`, `nil` | `nil` | example value |
-| `format` | `Symbol`, `nil` | `nil` | format hint (:email, :uri, :uuid) |
+| `format` | `Symbol<:email, :uri, :uuid>`, `nil` | `nil` | format hint |
 | `max` | `Integer`, `nil` | `nil` | maximum length |
 | `min` | `Integer`, `nil` | `nil` | minimum length |
 | `nullable` | `Boolean` | `false` |  |
@@ -938,7 +938,7 @@ Defines an optional string.
 | `description` | `String`, `nil` | `nil` | documentation description |
 | `enum` | `Array`, `Symbol`, `nil` | `nil` | allowed values |
 | `example` | `String`, `nil` | `nil` | example value |
-| `format` | `Symbol`, `nil` | `nil` | format hint (:email, :uri, :uuid) |
+| `format` | `Symbol<:email, :uri, :uuid>`, `nil` | `nil` | format hint |
 | `max` | `Integer`, `nil` | `nil` | maximum length |
 | `min` | `Integer`, `nil` | `nil` | minimum length |
 | `nullable` | `Boolean` | `false` |  |

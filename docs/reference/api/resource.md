@@ -165,7 +165,7 @@ Defines a DELETE action.
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `action_names` | `Symbol`, `Array<Symbol>` |  | action name(s) |
-| `on` | `Symbol` |  | :member or :collection |
+| `on` | `Symbol<:member, :collection>`, `nil` | `nil` |  |
 
 </div>
 
@@ -196,7 +196,7 @@ Defines a GET action.
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `action_names` | `Symbol`, `Array<Symbol>` |  | action name(s) |
-| `on` | `Symbol` |  | :member or :collection |
+| `on` | `Symbol<:member, :collection>`, `nil` | `nil` |  |
 
 </div>
 
@@ -269,7 +269,7 @@ Defines a PATCH action.
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `action_names` | `Symbol`, `Array<Symbol>` |  | action name(s) |
-| `on` | `Symbol` |  | :member or :collection |
+| `on` | `Symbol<:member, :collection>`, `nil` | `nil` |  |
 
 </div>
 
@@ -300,7 +300,7 @@ Defines a POST action.
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `action_names` | `Symbol`, `Array<Symbol>` |  | action name(s) |
-| `on` | `Symbol` |  | :member or :collection |
+| `on` | `Symbol<:member, :collection>`, `nil` | `nil` |  |
 
 </div>
 
@@ -331,7 +331,7 @@ Defines a PUT action.
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `action_names` | `Symbol`, `Array<Symbol>` |  | action name(s) |
-| `on` | `Symbol` |  | :member or :collection |
+| `on` | `Symbol<:member, :collection>`, `nil` | `nil` |  |
 
 </div>
 

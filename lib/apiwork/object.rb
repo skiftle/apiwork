@@ -72,7 +72,7 @@ module Apiwork
     # @param description [String, nil] (nil) documentation description
     # @param enum [Array, Symbol, nil] (nil) allowed values
     # @param example [String, nil] (nil) example value
-    # @param format [Symbol, nil] (nil) format hint (:email, :uri, :uuid)
+    # @param format [Symbol, nil] (nil) [:email, :uri, :uuid] format hint
     # @param max [Integer, nil] (nil) maximum length
     # @param min [Integer, nil] (nil) minimum length
     # @param nullable [Boolean] (false)
@@ -125,7 +125,7 @@ module Apiwork
     # @param description [String, nil] (nil) documentation description
     # @param enum [Array, Symbol, nil] (nil) allowed values
     # @param example [String, nil] (nil) example value
-    # @param format [Symbol, nil] (nil) format hint (:email, :uri, :uuid)
+    # @param format [Symbol, nil] (nil) [:email, :uri, :uuid] format hint
     # @param max [Integer, nil] (nil) maximum length
     # @param min [Integer, nil] (nil) minimum length
     # @param nullable [Boolean] (false)

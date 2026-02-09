@@ -48,7 +48,7 @@ module Apiwork
       # Defines a nested option.
       #
       # @param name [Symbol] the option name
-      # @param type [Symbol] :symbol, :string, :integer, :boolean, or :hash
+      # @param type [Symbol] [:symbol, :string, :integer, :boolean, :hash]
       # @param default [Object, nil] (nil) the default value
       # @param enum [Array, nil] (nil) allowed values
       # @yield block for nested options (type: :hash)

@@ -43,9 +43,9 @@ module Apiwork
       # @api public
       # Generates an export for an API.
       #
-      # @param export_name [Symbol] the export name (:openapi, :typescript, :zod)
+      # @param export_name [Symbol] registered export name (built-in: :openapi, :typescript, :zod)
       # @param api_path [String] the API path
-      # @param format [Symbol] output format (:json, :yaml) - hash exports only
+      # @param format [Symbol, nil] (nil) [:json, :yaml] hash exports only
       # @param locale [Symbol, nil] (nil) locale for translations
       # @param key_format [Symbol, nil] (nil) [:camel, :underscore, :kebab, :keep]
       # @param options export-specific keyword arguments
