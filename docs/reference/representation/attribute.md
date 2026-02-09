@@ -248,9 +248,9 @@ Whether this attribute is writable for the given action.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `action` | `Symbol` | :create or :update |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `action` | `Symbol` |  | :create or :update |
 
 **Returns**
 

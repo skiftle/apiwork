@@ -45,9 +45,9 @@ shared types used across all contracts.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `klass` | `Class<Builder::API::Base>, nil` | the builder class |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `klass` | `Class<Builder::API::Base>`, `nil` |  | the builder class |
 
 **Returns**
 
@@ -71,9 +71,9 @@ Used for configuration options, translation keys, and [Adapter::Base.skip_capabi
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `value` | `Symbol, nil` | the capability name |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `Symbol`, `nil` |  | the capability name |
 
 **Returns**
 
@@ -94,9 +94,9 @@ parameters and response shapes.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `klass` | `Class<Builder::Contract::Base>, nil` | the builder class |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `klass` | `Class<Builder::Contract::Base>`, `nil` |  | the builder class |
 
 **Returns**
 
@@ -121,9 +121,9 @@ request parameters.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `klass` | `Class<Operation::Base>, nil` | the operation class |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `klass` | `Class<Operation::Base>`, `nil` |  | the operation class |
 
 **Returns**
 
@@ -148,12 +148,12 @@ call `option` to define child options.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `name` | `Symbol` | option name |
-| `type` | `Symbol` | :symbol, :string, :integer, :boolean, or :hash |
-| `default` | `Object, nil` | default value |
-| `enum` | `Array, nil` | allowed values |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `name` | `Symbol` |  | option name |
+| `type` | `Symbol` |  | :symbol, :string, :integer, :boolean, or :hash |
+| `default` | `Object`, `nil` |  | default value |
+| `enum` | `Array`, `nil` |  | allowed values |
 
 **Returns**
 
@@ -197,9 +197,9 @@ Registers a request transformer for this capability.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `transformer_class` | `Class<Transformer::Request::Base>` | the transformer class |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `transformer_class` | `Class<Transformer::Request::Base>` |  | the transformer class |
 
 **Returns**
 
@@ -221,9 +221,9 @@ Registers a response transformer for this capability.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `transformer_class` | `Class<Transformer::Response::Base>` | the transformer class |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `transformer_class` | `Class<Transformer::Response::Base>` |  | the transformer class |
 
 **Returns**
 

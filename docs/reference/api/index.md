@@ -35,9 +35,9 @@ types, and configuration.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `path` | `String` | the API path |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `path` | `String` |  | the API path |
 
 **Returns**
 
@@ -74,9 +74,9 @@ Finds an API by path.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `path` | `String` | the API path |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `path` | `String` |  | the API path |
 
 **Returns**
 
@@ -104,9 +104,9 @@ Finds an API by path.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `path` | `String` | the API path |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `path` | `String` |  | the API path |
 
 **Returns**
 
@@ -134,10 +134,10 @@ The introspection data for an API.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `path` | `String` | the API path |
-| `locale` | `Symbol, nil` | the locale for descriptions |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `path` | `String` |  | the API path |
+| `locale` | `Symbol`, `nil` |  | the locale for descriptions |
 
 **Returns**
 

@@ -164,18 +164,35 @@ module Apiwork
           name: tag.name,
           types: tag.types || [],
           values: parsed[:values],
+          values_type: parsed[:values_type],
         }
       end
     end
 
-    def parse_param_description(text)
-      return { default: nil, description: nil, values: nil } if text.blank?
+    def format_param_type(param)
+      replace_type = param[:values_type] || 'Symbol'
 
-      match = text.match(/\A(?:\(([^)]+)\))?\s*(?:\[([^\]]+)\])?\s*(.*)\z/)
+      types = param[:types].map do |t|
+        if param[:values]&.any? && t == replace_type
+          values = param[:values].join(', ')
+          "`#{t}<#{values}>`"
+        else
+          "`#{t}`"
+        end
+      end
+
+      types.join(', ')
+    end
+
+    def parse_param_description(text)
+      return { default: nil, description: nil, values: nil, values_type: nil } if text.blank?
+
+      match = text.match(/\A(?:\(([^)]+)\))?\s*(?:\[(?:(\w+):\s*)?([^\]]+)\])?\s*(.*)\z/)
       {
         default: match[1],
-        description: match[3].presence,
-        values: match[2]&.split(/,\s*/),
+        description: match[4].presence,
+        values: match[3]&.split(/,\s*/),
+        values_type: match[2],
       }
     end
 
@@ -562,24 +579,18 @@ module Apiwork
       parts << "#{linkify_yard_refs(method[:docstring])}\n" if method[:docstring].present?
 
       if method[:params].any?
-        has_default = method[:params].any? { |p| p[:default] }
-        has_values = method[:params].any? { |p| p[:values]&.any? }
-        has_desc = method[:params].any? { |p| p[:description] }
-
         parts << "**Parameters**\n"
 
-        header = %w[Name Type]
-        header << 'Default' if has_default
-        header << 'Values' if has_values
-        header << 'Description' if has_desc
-        parts << "| #{header.join(' | ')} |"
-        parts << "|#{'------|' * header.size}"
+        parts << '| Name | Type | Default | Description |'
+        parts << '|------|------|---------|-------------|'
 
         method[:params].each do |param|
-          row = ["`#{param[:name]}`", "`#{param[:types].join(', ')}`"]
-          row << (param[:default] ? "`#{param[:default]}`" : '') if has_default
-          row << (param[:values] ? param[:values].map { |v| "`#{v}`" }.join(', ') : '') if has_values
-          row << (linkify_yard_refs(param[:description])&.gsub(/\s*\n\s*/, ' ') || '') if has_desc
+          row = [
+            "`#{param[:name]}`",
+            format_param_type(param),
+            param[:default] ? "`#{param[:default]}`" : '',
+            linkify_yard_refs(param[:description])&.gsub(/\s*\n\s*/, ' ') || '',
+          ]
           parts << "| #{row.join(' | ')} |"
         end
         parts << ''

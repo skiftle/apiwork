@@ -53,10 +53,10 @@ Creates a new request context.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `body` | `Hash` | the body parameters |
-| `query` | `Hash` | the query parameters |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `body` | `Hash` |  | the body parameters |
+| `query` | `Hash` |  | the query parameters |
 
 **Returns**
 

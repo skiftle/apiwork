@@ -25,10 +25,10 @@ The configured values for a capability.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `capability` | `Symbol` | the capability name |
-| `key` | `Symbol` | the configuration key |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `capability` | `Symbol` |  | the capability name |
+| `key` | `Symbol` |  | the configuration key |
 
 **Returns**
 

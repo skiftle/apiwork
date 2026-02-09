@@ -52,9 +52,9 @@ Creates a new response context.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `body` | `Hash` | the body parameters |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `body` | `Hash` |  | the body parameters |
 
 **Returns**
 

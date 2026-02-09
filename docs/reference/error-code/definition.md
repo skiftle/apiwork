@@ -48,9 +48,9 @@ The description for this error code.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `locale_key` | `String, nil` | the I18n namespace for API-specific translations |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `locale_key` | `String`, `nil` |  | the I18n namespace for API-specific translations |
 
 **Returns**
 

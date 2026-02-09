@@ -80,10 +80,10 @@ Defines a reusable concern.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `concern_name` | `Symbol` | concern name |
-| `callable` | `Proc` | optional callable instead of block |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `concern_name` | `Symbol` |  | concern name |
+| `callable` | `Proc` |  | optional callable instead of block |
 
 **Returns**
 
@@ -123,10 +123,10 @@ Includes previously defined concerns.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `concern_names` | `Array<Symbol>` | concern names to include |
-| `options` | `Hash` | options passed to the concern |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `concern_names` | `Array<Symbol>` |  | concern names to include |
+| `options` | `Hash` |  | options passed to the concern |
 
 **Returns**
 
@@ -152,10 +152,10 @@ Defines a DELETE action.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `action_names` | `Symbol, Array<Symbol>` | action name(s) |
-| `on` | `Symbol` | :member or :collection |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `action_names` | `Symbol`, `Array<Symbol>` |  | action name(s) |
+| `on` | `Symbol` |  | :member or :collection |
 
 **Returns**
 
@@ -179,10 +179,10 @@ Defines a GET action.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `action_names` | `Symbol, Array<Symbol>` | action name(s) |
-| `on` | `Symbol` | :member or :collection |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `action_names` | `Symbol`, `Array<Symbol>` |  | action name(s) |
+| `on` | `Symbol` |  | :member or :collection |
 
 **Returns**
 
@@ -248,10 +248,10 @@ Defines a PATCH action.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `action_names` | `Symbol, Array<Symbol>` | action name(s) |
-| `on` | `Symbol` | :member or :collection |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `action_names` | `Symbol`, `Array<Symbol>` |  | action name(s) |
+| `on` | `Symbol` |  | :member or :collection |
 
 **Returns**
 
@@ -275,10 +275,10 @@ Defines a POST action.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `action_names` | `Symbol, Array<Symbol>` | action name(s) |
-| `on` | `Symbol` | :member or :collection |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `action_names` | `Symbol`, `Array<Symbol>` |  | action name(s) |
+| `on` | `Symbol` |  | :member or :collection |
 
 **Returns**
 
@@ -302,10 +302,10 @@ Defines a PUT action.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `action_names` | `Symbol, Array<Symbol>` | action name(s) |
-| `on` | `Symbol` | :member or :collection |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `action_names` | `Symbol`, `Array<Symbol>` |  | action name(s) |
+| `on` | `Symbol` |  | :member or :collection |
 
 **Returns**
 
@@ -331,18 +331,18 @@ Default actions: :show, :create, :update, :destroy.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `resource_name` | `Symbol` | resource name (singular) |
-| `concerns` | `Array<Symbol>` | concerns to include |
-| `constraints` | `Hash, Proc` | route constraints |
-| `contract` | `String` | custom contract path |
-| `controller` | `String` | custom controller path |
-| `defaults` | `Hash` | default route parameters |
-| `except` | `Array<Symbol>` | actions to exclude |
-| `only` | `Array<Symbol>` | only these CRUD actions |
-| `param` | `Symbol` | custom ID parameter |
-| `path` | `String` | custom URL segment |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `resource_name` | `Symbol` |  | resource name (singular) |
+| `concerns` | `Array<Symbol>` |  | concerns to include |
+| `constraints` | `Hash`, `Proc` |  | route constraints |
+| `contract` | `String` |  | custom contract path |
+| `controller` | `String` |  | custom controller path |
+| `defaults` | `Hash` |  | default route parameters |
+| `except` | `Array<Symbol>` |  | actions to exclude |
+| `only` | `Array<Symbol>` |  | only these CRUD actions |
+| `param` | `Symbol` |  | custom ID parameter |
+| `path` | `String` |  | custom URL segment |
 
 **Returns**
 
@@ -380,18 +380,18 @@ Default actions: :index, :show, :create, :update, :destroy.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `resource_name` | `Symbol` | resource name (plural) |
-| `concerns` | `Array<Symbol>` | concerns to include |
-| `constraints` | `Hash, Proc` | route constraints |
-| `contract` | `String` | custom contract path |
-| `controller` | `String` | custom controller path |
-| `defaults` | `Hash` | default route parameters |
-| `except` | `Array<Symbol>` | actions to exclude |
-| `only` | `Array<Symbol>` | only these CRUD actions |
-| `param` | `Symbol` | custom ID parameter |
-| `path` | `String` | custom URL segment |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `resource_name` | `Symbol` |  | resource name (plural) |
+| `concerns` | `Array<Symbol>` |  | concerns to include |
+| `constraints` | `Hash`, `Proc` |  | route constraints |
+| `contract` | `String` |  | custom contract path |
+| `controller` | `String` |  | custom controller path |
+| `defaults` | `Hash` |  | default route parameters |
+| `except` | `Array<Symbol>` |  | actions to exclude |
+| `only` | `Array<Symbol>` |  | only these CRUD actions |
+| `param` | `Symbol` |  | custom ID parameter |
+| `path` | `String` |  | custom URL segment |
 
 **Returns**
 
@@ -429,9 +429,9 @@ Applies options to all resources defined in the block.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `options` | `Hash` | options to merge into nested resources |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `options` | `Hash` |  | options to merge into nested resources |
 
 **Returns**
 

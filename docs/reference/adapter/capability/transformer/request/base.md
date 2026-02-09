@@ -48,9 +48,9 @@ The phase for this transformer.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `value` | `Symbol, nil` | :before or :after (default: :before) |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `Symbol`, `nil` |  | :before or :after (default: :before) |
 
 **Returns**
 

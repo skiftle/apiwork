@@ -26,9 +26,9 @@ Finds an export by name.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `name` | `Symbol` | the export name |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `name` | `Symbol` |  | the export name |
 
 **Returns**
 
@@ -56,9 +56,9 @@ Finds an export by name.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `name` | `Symbol` | the export name |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `name` | `Symbol` |  | the export name |
 
 **Returns**
 
@@ -86,14 +86,14 @@ Generates an export for an API.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `export_name` | `Symbol` | the export name (:openapi, :typescript, :zod) |
-| `api_path` | `String` | the API path |
-| `format` | `Symbol` | output format (:json, :yaml) - hash exports only |
-| `locale` | `Symbol, nil` | locale for translations |
-| `key_format` | `Symbol, nil` | key casing (:camel, :underscore, :kebab, :keep) |
-| `options` | `` | export-specific keyword arguments |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `export_name` | `Symbol` |  | the export name (:openapi, :typescript, :zod) |
+| `api_path` | `String` |  | the API path |
+| `format` | `Symbol` |  | output format (:json, :yaml) - hash exports only |
+| `locale` | `Symbol`, `nil` |  | locale for translations |
+| `key_format` | `Symbol`, `nil` |  | key casing (:camel, :underscore, :kebab, :keep) |
+| `options` |  |  | export-specific keyword arguments |
 
 **Returns**
 
@@ -123,9 +123,9 @@ Registers an export.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `klass` | `Class<Export::Base>` | the export class with export_name set |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `klass` | `Class<Export::Base>` |  | the export class with export_name set |
 
 **See also**
 

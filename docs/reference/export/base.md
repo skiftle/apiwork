@@ -55,9 +55,9 @@ The name for this export.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `name` | `Symbol, nil` | the export name to set |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `name` | `Symbol`, `nil` |  | the export name to set |
 
 **Returns**
 
@@ -77,9 +77,9 @@ Only applies to string exports. Hash exports derive extension from format.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `value` | `String, nil` | the file extension (e.g., '.ts') |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `String`, `nil` |  | the file extension (e.g., '.ts') |
 
 **Returns**
 
@@ -100,12 +100,12 @@ call `option` to define child options.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `name` | `Symbol` | option name |
-| `type` | `Symbol` | :symbol, :string, :integer, :boolean, or :hash |
-| `default` | `Object, nil` | default value |
-| `enum` | `Array, nil` | allowed values |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `name` | `Symbol` |  | option name |
+| `type` | `Symbol` |  | :symbol, :string, :integer, :boolean, or :hash |
+| `default` | `Object`, `nil` |  | default value |
+| `enum` | `Array`, `nil` |  | allowed values |
 
 **Returns**
 
@@ -149,9 +149,9 @@ The output for this export.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `type` | `Symbol, nil` | :hash for Hash output (json/yaml), :string for String output |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `type` | `Symbol`, `nil` |  | :hash for Hash output (json/yaml), :string for String output |
 
 **Returns**
 
@@ -227,9 +227,9 @@ Transforms a key according to the configured key format.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `key` | `String, Symbol` | the key to transform |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `key` | `String`, `Symbol` |  | the key to transform |
 
 **Returns**
 

@@ -25,9 +25,9 @@ Whether this scope includes the given action.
 
 **Parameters**
 
-| Name | Type |
-|------|------|
-| `name` | `Symbol` |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `name` | `Symbol` |  |  |
 
 **Returns**
 

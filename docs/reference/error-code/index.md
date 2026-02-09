@@ -26,9 +26,9 @@ Finds an error code by key.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `key` | `Symbol` | the error code key |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `key` | `Symbol` |  | the error code key |
 
 **Returns**
 
@@ -56,9 +56,9 @@ Finds an error code by key.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `key` | `Symbol` | the error code key |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `key` | `Symbol` |  | the error code key |
 
 **Returns**
 
@@ -89,11 +89,11 @@ in controllers. Built-in codes (400-504) are pre-registered.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `key` | `Symbol` | unique identifier for the error code |
-| `status` | `Integer` | the HTTP status code (must be 400-599) |
-| `attach_path` | `Boolean` | include request path in error response (default: false) |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `key` | `Symbol` |  | unique identifier for the error code |
+| `status` | `Integer` |  | the HTTP status code (must be 400-599) |
+| `attach_path` | `Boolean` |  | include request path in error response (default: false) |
 
 **Returns**
 

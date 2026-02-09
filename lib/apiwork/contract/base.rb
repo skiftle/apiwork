@@ -144,11 +144,11 @@ module Apiwork
         # Defines a reusable object type scoped to this contract.
         #
         # @param name [Symbol]
-        # @param description [String, nil]
-        # @param example [Object, nil]
-        # @param format [String, nil]
-        # @param deprecated [Boolean] (default: false)
-        # @param representation_class [Class<Representation::Base>, nil]
+        # @param description [String, nil] (nil)
+        # @param example [Object, nil] (nil)
+        # @param format [String, nil] (nil)
+        # @param deprecated [Boolean] (false)
+        # @param representation_class [Class<Representation::Base>, nil] (nil)
         # @yieldparam object [API::Object]
         # @return [void]
         #
@@ -182,10 +182,10 @@ module Apiwork
         # Defines an enum scoped to this contract.
         #
         # @param name [Symbol]
-        # @param values [Array<String>, nil]
-        # @param description [String, nil]
-        # @param example [String, nil]
-        # @param deprecated [Boolean] (default: false)
+        # @param values [Array<String>, nil] (nil)
+        # @param description [String, nil] (nil)
+        # @param example [String, nil] (nil)
+        # @param deprecated [Boolean] (false)
         # @return [void]
         #
         # @example
@@ -204,7 +204,7 @@ module Apiwork
         # Defines a discriminated union type scoped to this contract.
         #
         # @param name [Symbol]
-        # @param discriminator [Symbol, nil]
+        # @param discriminator [Symbol, nil] (nil)
         # @yieldparam union [API::Union]
         # @return [void]
         #
@@ -270,7 +270,7 @@ module Apiwork
         # Defines an action on this contract.
         #
         # @param action_name [Symbol] :index, :show, :create, :update, :destroy, or custom
-        # @param replace [Boolean] (default: false)
+        # @param replace [Boolean] (false)
         # @yieldparam action [Contract::Action]
         # @return [Contract::Action]
         #
@@ -300,8 +300,8 @@ module Apiwork
         # @api public
         # Returns introspection data for this contract.
         #
-        # @param locale [Symbol, nil]
-        # @param expand [Boolean] (default: false)
+        # @param locale [Symbol, nil] (nil)
+        # @param expand [Boolean] (false)
         # @return [Hash]
         #
         # @example

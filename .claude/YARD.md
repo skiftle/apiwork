@@ -8,14 +8,14 @@ Rules for YARD documentation in `lib/apiwork/`.
 
 ## Core Principle
 
-Descriptions are mechanical. Category + formula + glossary = description.
+Descriptions are mechanical. Category + formula + tables = description.
 
-**Quality check for every description:**
+**Process:**
 
-1. Apply formula mechanically
-2. Grammatically correct?
-3. Factually correct?
-4. If no → adjust until both are satisfied
+1. Categorize the method
+2. Look up Qualifier Table (if applicable)
+3. Apply Acronym Table
+4. Apply formula
 
 ---
 
@@ -24,367 +24,234 @@ Descriptions are mechanical. Category + formula + glossary = description.
 ### Decision Tree
 
 ```
-1. Ends with `?`
-   → Predicate
-
-2. Ends with `!`
-   → Mutator
-
-3. Takes `&block`
-   → DSL/Builder
-
-4. Starts with `find`
-   → Finder
-
-5. Starts with `transform`/`normalize`
-   → Transformer
-
-6. Starts with `to_`
-   → Converter
-
-7. Starts with `build`/`create`
-   → Factory
-
-8. Starts with `register`/`add`
-   → Registrar
-
-9. Returns value, has fallback/computation
-   → Computed getter
-
-10. Returns value, no logic
-    → Simple getter
+1. Ends with `?`           → Predicate
+2. Ends with `!`           → Mutator
+3. Takes `&block`          → DSL/Builder
+4. Starts with `find`      → Finder
+5. Starts with `to_`       → Converter
+6. Otherwise               → Getter
 ```
 
 ---
 
 ## Formulas by Category
 
-| Category | Formula | Example |
-|----------|---------|---------|
-| Simple getter | See Context-Based Formula | "The API title." / "The format for this param." |
-| Predicate | "Whether [context] [glossary term]." | "Whether this param is boundable." |
-| Mutator | "Marks [context] as [state]." | "Marks this contract as abstract." |
-| Finder | "Finds [what] by [key]." | "Finds an API by mount path." |
-| Finder (bang) | "Finds [what] by [key]." + `@raise` | Same + `@raise [KeyError]` |
-| Converter | "Converts [context] to [format]." | "Converts this param to a hash." |
-| Transformer | "Transforms [what]." | "Transforms request keys." |
-| Factory | "Creates [what]." | "Creates a new request context." |
-| Registrar | "Registers [what]." | "Registers an adapter." |
-| DSL/Builder | See DSL/Builder Rules | "Defines an action..." / "The API contact." |
-| Computed getter | "Uses {#method} if set, otherwise [fallback]." | "Uses {#type_name} if set, otherwise the model's `sti_name`." |
+| Category | Formula |
+|----------|---------|
+| Getter (Helper class) | "The [class] [method]." |
+| Getter (Domain class) | "The [method] for this [class]." |
+| Predicate (Helper class) | "Whether the [class] [predicate]." |
+| Predicate (Domain class) | "Whether this [class] [predicate]." |
+| Converter | "Converts this [class] to a [format]." |
+| Mutator | "Marks this [class] as [state]." |
+| Finder | "Finds [what] by [key]." |
+| Finder (bang) | "Finds [what] by [key]." + `@raise` |
+| DSL/Builder (single return) | "The [context] [method]." |
+| DSL/Builder (collection) | "Defines a [method] for [context]." |
+| DSL/Builder (with name param) | "Defines a [method] for [context]." |
 
-**Note:** `[context]` already includes "this" or "the" from Context Table.
+---
 
-### The [what] Rule
+## Class Categories
 
-The `[what]` is the method name. Apply these transformations:
+### Helper Classes
 
-| Transformation | Example |
-|----------------|---------|
-| Underscores → spaces | `terms_of_service` → "terms of service" |
-| Add clarifying context when needed | `status` → "HTTP status" (in ErrorCode) |
+Use "the [class]" pattern.
 
-### Context-Based Formula
+| Class | Display Name |
+|-------|--------------|
+| Info | "API" |
+| Contact | "contact" |
+| License | "license" |
+| Server | "server" |
+| RootKey | "root key" |
 
-| Context starts with | Formula | Example |
-|---------------------|---------|---------|
-| "the" | "The [context without 'the'] [what]." | "The API title." |
-| "this" | "The [what] for [context]." | "The format for this param." |
+### Domain Classes
 
-```ruby
-# Info class — context is "the API"
-# @api public
-# The API title.
-def title
+Use "this [class]" pattern.
 
-# Info class — underscore method
-# @api public
-# The API terms of service.
-def terms_of_service
+| Class | Display Name |
+|-------|--------------|
+| Action | "action" |
+| API::Base | "API" |
+| Adapter | "adapter" |
+| Association | "association" |
+| Attribute | "attribute" |
+| Capability | "capability" |
+| Contract | "contract" |
+| Controller | "controller" |
+| Enum | "enum" |
+| ErrorCode | "error code" |
+| Export | "export" |
+| Inheritance | "inheritance" |
+| Issue | "issue" |
+| Operation | "operation" |
+| Param::* | "param" |
+| Representation | "representation" |
+| Request | "request" |
+| Resource | "resource" |
+| Response | "response" |
+| Serializer | "serializer" |
+| Transformer | "transformer" |
+| Type | "type" |
+| Wrapper | "wrapper" |
 
-# Param class — context is "this param"
-# @api public
-# The format for this param.
-def format
+**Class not in table?** Add it before writing YARD.
 
-# ErrorCode class — add clarifying context
-# @api public
-# The HTTP status for this error code.
-def status
+---
+
+## Qualifier Table
+
+Methods that need semantic context beyond the class name.
+
+| Method | Qualifier |
+|--------|-----------|
+| status | HTTP |
+| method | HTTP |
+
+**Algorithm:**
+
+1. Look up method in Qualifier Table
+2. If found, prepend qualifier to method name
+3. `status` → "HTTP status"
+4. `method` → "HTTP method"
+
+---
+
+## Acronym Table
+
+Always uppercase these terms.
+
+```
+ID, API, URL, URI, HTTP, UUID, JSON, XML, HTML, SQL, CRUD, REST, YAML
 ```
 
-### DSL/Builder Rules
+**Algorithm:**
 
-Methods that take `&block`. Check these signals in order:
+1. After applying formula, scan for these words (case-insensitive)
+2. Replace with uppercase version
+3. `url` → "URL", `id` → "ID", `api` → "API"
 
-| Signal | Formula | Example |
-|--------|---------|---------|
-| Takes name/key parameter | "Defines a/an [what]..." | `action(name, &block)` → "Defines an action for this contract." |
-| `@return [Array<T>]` or `[Hash]` | "Defines a/an [what]..." | `server(&block)` → "Defines a server for the API." |
-| `@return [void]` | "Defines [what]..." | (rare) |
-| `@return [T]` (single object) | "The [what]." | `contact(&block)` → "The API contact." |
+---
+
+## Complete Algorithm
+
+```
+1. Categorize method (Decision Tree)
+2. Determine class category (Helper or Domain)
+3. Look up Qualifier Table → prepend if found
+4. Transform method name: underscores → spaces
+5. Apply formula for category
+6. Apply Acronym Table to result
+```
+
+### Example: ErrorCode#status
+
+```
+1. Category: Getter (no ?, !, &block, find, to_)
+2. Class: ErrorCode → Domain → "this error code"
+3. Qualifier: status → "HTTP status"
+4. Transform: status → "status" (no underscores)
+5. Formula: "The [method] for this [class]."
+         → "The HTTP status for this error code."
+6. Acronyms: HTTP already uppercase ✓
+```
+
+### Example: License#url
+
+```
+1. Category: Getter
+2. Class: License → Helper → "license"
+3. Qualifier: url → not in table
+4. Transform: url → "url"
+5. Formula: "The [class] [method]."
+         → "The license url."
+6. Acronyms: url → URL
+         → "The license URL."
+```
+
+### Example: Attribute#terms_of_service
+
+```
+1. Category: Getter
+2. Class: Attribute → Domain → "this attribute"
+3. Qualifier: terms_of_service → not in table
+4. Transform: terms_of_service → "terms of service"
+5. Formula: "The [method] for this [class]."
+         → "The terms of service for this attribute."
+6. Acronyms: none
+```
+
+### Example: Info#title
+
+```
+1. Category: Getter
+2. Class: Info → Helper → "API" (special display name)
+3. Qualifier: title → not in table
+4. Transform: title → "title"
+5. Formula: "The [class] [method]."
+         → "The API title."
+6. Acronyms: API already uppercase ✓
+```
+
+---
+
+## DSL/Builder Rules
+
+Methods that take `&block`. Check return type:
+
+| Return Type | Formula |
+|-------------|---------|
+| Single object `[T]` | "The [context] [method]." |
+| Collection `[Array<T>]` | "Defines a [method] for [context]." |
+| Has name/key param | "Defines a [method] for [context]." |
 
 ```ruby
-# Takes name parameter — defines one of many named items
+# Returns single object
 # @api public
-# Defines an action for this contract.
-def action(name, &block)
+# The API contact.
+def contact(&block)
 
-# Adds to collection — defines one of many
+# Returns collection
 # @api public
 # Defines a server for the API.
 #
 # Can be called multiple times.
 def server(&block)
 
-# Returns single object — getter/builder hybrid
+# Has name parameter
 # @api public
-# The API contact.
-def contact(&block)
-
-# Returns single object — getter/builder hybrid
-# @api public
-# The request for this action.
-def request(&block)
+# Defines an action for this contract.
+def action(name, &block)
 ```
 
 ---
 
-## Context Table
+## Predicate Rules
 
-The context is inserted directly into formulas. Include "this" or "the" in the value.
-
-### Domain Classes (use "this")
-
-| Class | Context |
-|-------|---------|
-| Action | "this action" |
-| API::Base | "this API" |
-| Adapter | "this adapter" |
-| Association | "this association" |
-| Attribute | "this attribute" |
-| Capability | "this capability" |
-| Contract | "this contract" |
-| Controller | "this controller" |
-| Enum | "this enum" |
-| ErrorCode | "this error code" |
-| Export | "this export" |
-| Inheritance | "this inheritance" |
-| Issue | "this issue" |
-| Operation | "this operation" |
-| Param::* | "this param" |
-| Representation | "this representation" |
-| Request | "this request" |
-| Resource | "this resource" |
-| Response | "this response" |
-| Serializer | "this serializer" |
-| Transformer | "this transformer" |
-| Type | "this type" |
-| Wrapper | "this wrapper" |
-
-### Helper Classes (use "the")
-
-| Class | Context |
-|-------|---------|
-| Info | "the API" |
-| Contact | "the contact" |
-| License | "the license" |
-| Server | "the server" |
-| RootKey | "the root key" |
-
-### Nested Classes
-
-| Class | Context |
-|-------|---------|
-| Definition | use parent context |
-| Shape | use parent context |
-
-**Class not in table?** Add it before writing YARD.
-
----
-
-## Domain Glossary
-
-Use these exact phrases in predicate descriptions:
-
-| Term | Meaning | Used in |
-|------|---------|---------|
-| `is abstract` | has no concrete implementation | contracts |
-| `is boundable` | supports min/max constraints | params |
-| `is deprecated` | scheduled for removal | all |
-| `is filterable` | can be used in filter queries | attributes |
-| `is formattable` | supports format hints (email, uri, etc.) | params |
-| `is nullable` | accepts null values | params |
-| `is optional` | not required in requests | params |
-| `is partial` | uses partial serialization | associations |
-| `is readable` | exposed in responses | attributes |
-| `is scalar` | a single value (not array/object) | params |
-| `is sortable` | can be used in sort queries | attributes |
-| `is writable` | can be modified on create or update | attributes |
-| `has a default` | has a default value | params |
-| `has an enum` | has enumerated values | params |
-| `has an example` | has an example value | params |
-| `is a collection` | a has_many association | associations |
-| `is singular` | a has_one or belongs_to association | associations |
-| `is an enum reference` | references an enum defined elsewhere | params |
-| `is numeric` | represents numerical values | params |
-| `is a literal` | a fixed/constant value | params |
-| `is a reference` | references another type | params |
-| `needs transform` | requires value transformation | inheritance |
-
-### Type Predicates
-
-For type-checking predicates (`string?`, `integer?`, `array?`, etc.):
-
-| Method | Description |
-|--------|-------------|
-| `string?` | "Whether this param is a string." |
-| `integer?` | "Whether this param is an integer." |
-| `number?` | "Whether this param is a number." |
-| `decimal?` | "Whether this param is a decimal." |
-| `boolean?` | "Whether this param is a boolean." |
-| `array?` | "Whether this param is an array." |
-| `object?` | "Whether this param is an object." |
-| `union?` | "Whether this param is a union." |
-| `date?` | "Whether this param is a date." |
-| `datetime?` | "Whether this param is a datetime." |
-| `time?` | "Whether this param is a time." |
-| `uuid?` | "Whether this param is a UUID." |
-| `binary?` | "Whether this param is binary data." |
-| `unknown?` | "Whether this param is of unknown type." |
-
----
-
-## Examples
-
-### Simple Getter
-
-```ruby
-# @api public
-# The format for this param.
-#
-# @return [Symbol, nil]
-def format
-
-# @api public
-# The name of the API.
-#
-# @return [String]
-def name
-
-# @api public
-# The singular form of the root key.
-#
-# @return [String]
-def singular
-```
-
-### Predicate (Glossary Term)
-
-```ruby
-# @api public
-# Whether this param is boundable.
-#
-# @return [Boolean]
-def boundable?
-```
-
-### Predicate (Type Check)
+| Pattern | Description |
+|---------|-------------|
+| Type check (`string?`, `integer?`) | "Whether this [class] is a [type]." |
+| State check (`deprecated?`, `abstract?`) | "Whether this [class] is [state]." |
+| Capability check (`boundable?`, `filterable?`) | "Whether this [class] is [capability]." |
 
 ```ruby
 # @api public
 # Whether this param is a string.
-#
-# @return [Boolean]
 def string?
-```
 
-### Predicate (Info class - uses "the")
-
-```ruby
 # @api public
-# Whether the API is deprecated.
-#
-# @return [Boolean]
-def deprecated?
-```
+# Whether this contract is abstract.
+def abstract?
 
-### Mutator
-
-```ruby
 # @api public
-# Marks this contract as abstract.
-#
-# @return [void]
-def abstract!
-```
-
-### Finder
-
-```ruby
-# @api public
-# Finds an API by mount path.
-#
-# @param path [String]
-# @return [API::Base, nil]
-def find(path)
-```
-
-### Finder (Bang)
-
-```ruby
-# @api public
-# Finds an API by mount path.
-#
-# @param path [String]
-# @return [API::Base]
-# @raise [KeyError] if not found
-# @see .find
-def find!(path)
-```
-
-### Converter
-
-```ruby
-# @api public
-# Converts this param to a hash.
-#
-# @return [Hash]
-def to_h
-```
-
-### DSL/Builder
-
-```ruby
-# @api public
-# Defines an action on this contract.
-#
-# @param name [Symbol]
-# @yieldparam action [Action]
-# @return [Action]
-#
-# @example
-#   action :create do |action|
-#     action.request { body { string :title } }
-#   end
-def action(name, &block)
-```
-
-### Computed Getter
-
-```ruby
-# @api public
-# Uses {#type_name} if set, otherwise the model's `sti_name`.
-#
-# @return [String]
-def sti_name
+# Whether this param is boundable.
+def boundable?
 ```
 
 ---
 
 ## Tag Order
-
-Strict order for all `@api public` methods:
 
 ```ruby
 # @api public
@@ -409,79 +276,62 @@ Strict order for all `@api public` methods:
 
 ## @param Format
 
-Type in brackets. Default in parentheses. Values in square brackets. Description last.
-
-### Pattern
-
 ```
-@param name [Type] (default) [:value1, :value2] description
+@param name [Type] (default) [:values] description
+@param name [Type] (default) [TargetType: :values] description
 ```
 
-All parts after `[Type]` are optional:
+All parts after `[Type]` are optional.
 
-1. `[Type]` — type in brackets (required)
-2. `(default)` — default value in parentheses
-3. `[:values]` — allowed values in square brackets
-4. Description — freeform text
+| Part | Format |
+|------|--------|
+| Type | `[Symbol]`, `[String, nil]`, `[Array<String>]` |
+| Default | `(nil)`, `(false)`, `(:optional)` |
+| Values | `[:json, :xml]` or `[Symbol: :json, :xml]` |
+| Description | freeform text |
 
-### Type Formats
+### Default Value Rules
 
-| Scenario | Format |
-|----------|--------|
-| Simple type | `[Symbol]` |
-| Nullable type | `[Symbol, nil]` |
-| Boolean | `[Boolean]` |
-| Nullable boolean | `[Boolean, nil]` |
-| Hash with structure | `[Hash{on: Array<Symbol>}]` |
-| Container type | `[Array<String>]` |
+| Code | YARD |
+|------|------|
+| `def foo(bar)` | `@param bar [String]` |
+| `def foo(bar = nil)` | `@param bar [String, nil] (nil)` |
+| `def foo(bar = :json)` | `@param bar [Symbol] (:json)` |
+| `def foo(bar = false)` | `@param bar [Boolean] (false)` |
+| `def foo(bar: nil)` | `@param bar [String, nil] (nil)` |
+| `def foo(bar: :optional)` | `@param bar [Symbol] (:optional)` |
 
-### Examples
+**Always show the default value explicitly, including `(nil)`.**
 
-**Just type (required param):**
+### Values Syntax
+
+Values constrain a type to specific allowed values.
+
+**Simple (replaces Symbol by default):**
 ```ruby
-# @param name [Symbol]
+@param format [Symbol] [:json, :xml]
 ```
 
-**With default:**
+**Explicit target type (when multiple types):**
 ```ruby
-# @param deprecated [Boolean] (false)
+@param input [String, Symbol] [Symbol: :json, :xml]
 ```
 
-**With values:**
-```ruby
-# @param type [Symbol] [:string, :integer, :boolean]
-```
+The target type must match one of the declared types in `[Type]`.
 
-**With default + values:**
-```ruby
-# @param include [Symbol] (:optional) [:always, :optional]
-```
+### Rendered Table
 
-**With description:**
-```ruby
-# @param optional [Boolean, nil] auto-detected from model
-```
+Values appear in the Type column as `Type<values>`:
 
-**All parts:**
-```ruby
-# @param format [Symbol] (:json) [:json, :xml] output format
-```
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `format` | `Symbol<:json, :xml>` | `:json` | output format |
+| `format` | `Symbol<:json, :xml>`, `nil` | `:json` | |
+| `input` | `String`, `Symbol<:json, :xml>` | | format or string |
+| `value` | `String`, `nil` | `nil` | |
+| `name` | `Symbol` | | |
 
-### Generated Output
-
-The reference generator creates a table with dynamic columns:
-
-| Name | Type | Default | Values | Description |
-|------|------|---------|--------|-------------|
-| `name` | `Symbol` | | | |
-| `deprecated` | `Boolean` | `false` | | |
-| `include` | `Symbol` | `:optional` | `:always`, `:optional` | |
-| `optional` | `Boolean, nil` | | | auto-detected from model |
-
-- **Name** + **Type**: always shown
-- **Default**: shown if any param has `(value)`
-- **Values**: shown if any param has `[:values]` (without brackets in output)
-- **Description**: shown if any param has text
+**Table always shows 4 columns:** Name, Type, Default, Description
 
 ---
 
@@ -493,16 +343,9 @@ Type only. No description.
 @return [void]
 @return [String]
 @return [Symbol, nil]
-@return [Class<Adapter::Base>]
 @return [Boolean]
+@return [Class<Adapter::Base>]
 ```
-
-### Type Rules
-
-| Rule | Bad | Good |
-|------|-----|------|
-| Class returns use `Class<Type>` | `@return [Class]` | `@return [Class<Adapter::Base>]` |
-| Include nil if can return nil | `@return [String]` | `@return [String, nil]` |
 
 ---
 
@@ -516,25 +359,9 @@ Type only. No description.
 
 ---
 
-## @see Rules
-
-**Use @see for:**
-- find/find! pairs
-- Delegates to `@api public` methods
-- Methods that reference another method in description
-
-**Format:**
-```ruby
-@see #instance_method
-@see .class_method
-@see OtherClass#method
-```
-
----
-
 ## @example Rules
 
-- DSL/void methods: `@example` is mandatory
+- Required for: `&block` methods, mutators
 - Code must be runnable
 - Output shown with `# =>`
 - Use domain terms: invoice, customer, item
@@ -542,37 +369,25 @@ Type only. No description.
 
 ---
 
-## Punctuation
-
-| Element | Rule |
-|---------|------|
-| Description | Uppercase start, period |
-| @param | lowercase, no period |
-| @return | type only, no description |
-
----
-
 ## Audit Checklist
 
 For each `@api public` method:
 
-1. [ ] Has a description (no exceptions)
-2. [ ] Description matches formula for its category
-3. [ ] Uses glossary term for predicates
-4. [ ] @param: signal-based format
-5. [ ] @return: type only
-6. [ ] @yield/@yieldparam: signal-based
-7. [ ] DSL/void methods have @example
+1. [ ] Has description
+2. [ ] Correct category applied
+3. [ ] Qualifier Table checked
+4. [ ] Acronyms uppercase
+5. [ ] @param format correct
+6. [ ] @return type only (no description)
+7. [ ] @example for &block/mutator methods
 8. [ ] Tag order correct
-9. [ ] Class returns use `Class<Type>`
-10. [ ] Nil included in type if can return nil
 
 ---
 
 ## Verification
 
 ```bash
-bundle exec rake apiwork:docs:reference
+cd docs/playground && bundle exec rake apiwork:docs:reference
 ```
 
 Review generated documentation for consistency.

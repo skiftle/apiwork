@@ -68,9 +68,9 @@ Supports Markdown formatting.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `value` | `String` | description text (optional) |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `String` |  | description text (optional) |
 
 **Returns**
 
@@ -96,9 +96,9 @@ The operation ID for this action.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `value` | `String` | custom operation ID (optional) |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `String` |  | custom operation ID (optional) |
 
 **Returns**
 
@@ -124,9 +124,9 @@ Declares the raised error codes for this action.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `error_code_keys` | `Symbol` | error code keys |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `error_code_keys` | `Symbol` |  | error code keys |
 
 **Returns**
 
@@ -161,9 +161,9 @@ Use the block to define query parameters and request body.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `replace` | `Boolean` | replace inherited definition (default: false) |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `replace` | `Boolean` |  | replace inherited definition (default: false) |
 
 **Returns**
 
@@ -215,9 +215,9 @@ Use the block to define response body or declare no_content.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `replace` | `Boolean` | replace inherited definition (default: false) |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `replace` | `Boolean` |  | replace inherited definition (default: false) |
 
 **Returns**
 
@@ -273,9 +273,9 @@ Used in generated specs as the operation summary.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `value` | `String` | summary text (optional) |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `String` |  | summary text (optional) |
 
 **Returns**
 
@@ -303,9 +303,9 @@ Tags help organize actions in generated documentation.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `tags` | `Array<String,Symbol>` | tag names |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `tags` | `Array<String,Symbol>` |  | tag names |
 
 **Returns**
 

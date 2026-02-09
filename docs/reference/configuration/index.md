@@ -39,9 +39,9 @@ Accesses nested configuration values by key path.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `keys` | `Symbol` | one or more keys to traverse |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `keys` | `Symbol` |  | one or more keys to traverse |
 
 **Example**
 

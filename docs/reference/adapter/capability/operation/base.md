@@ -29,9 +29,9 @@ type DSL methods and capability options.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `klass` | `Class<MetadataShape>, nil` | the metadata shape class |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `klass` | `Class<MetadataShape>`, `nil` |  | the metadata shape class |
 
 **Returns**
 
@@ -63,9 +63,9 @@ The target for this operation.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `value` | `Symbol, nil` | :collection or :member |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `Symbol`, `nil` |  | :collection or :member |
 
 **Returns**
 
@@ -158,12 +158,12 @@ Creates a result object.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `data` | `Object, nil` | transformed data |
-| `metadata` | `Hash, nil` | metadata to add to response |
-| `includes` | `Array, nil` | associations to preload |
-| `serialize_options` | `Hash, nil` | options for serialization |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `data` | `Object`, `nil` |  | transformed data |
+| `metadata` | `Hash`, `nil` |  | metadata to add to response |
+| `includes` | `Array`, `nil` |  | associations to preload |
+| `serialize_options` | `Hash`, `nil` |  | options for serialization |
 
 **Returns**
 
@@ -186,10 +186,10 @@ Lookup order:
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `segments` | `Array<Symbol, String>` | key path segments |
-| `default` | `String, nil` | fallback value if no translation found |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `segments` | `Array<Symbol, String>` |  | key path segments |
+| `default` | `String`, `nil` |  | fallback value if no translation found |
 
 **Returns**
 

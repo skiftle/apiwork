@@ -30,9 +30,9 @@ Finds an adapter by name.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `name` | `Symbol` | the adapter name |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `name` | `Symbol` |  | the adapter name |
 
 **Returns**
 
@@ -60,9 +60,9 @@ Finds an adapter by name.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `name` | `Symbol` | the adapter name |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `name` | `Symbol` |  | the adapter name |
 
 **Returns**
 
@@ -90,9 +90,9 @@ Registers an adapter.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `klass` | `Class<Adapter::Base>` | the adapter class with adapter_name set |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `klass` | `Class<Adapter::Base>` |  | the adapter class with adapter_name set |
 
 **See also**
 

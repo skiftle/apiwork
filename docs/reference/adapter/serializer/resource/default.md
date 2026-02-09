@@ -42,9 +42,9 @@ The contract builder for this serializer.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `klass` | `Class<Builder::Contract::Base>, nil` | the builder class |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `klass` | `Class<Builder::Contract::Base>`, `nil` |  | the builder class |
 
 **Returns**
 
@@ -62,9 +62,9 @@ The data type for this serializer.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `block` | `Proc, nil` | block that receives representation_class and returns type name |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `block` | `Proc`, `nil` |  | block that receives representation_class and returns type name |
 
 **Returns**
 

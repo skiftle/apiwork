@@ -60,11 +60,11 @@ Defines a union variant.
 **Parameters**
 
 | Name | Type | Default | Description |
-|------|------|------|------|
+|------|------|---------|-------------|
 | `deprecated` | `Boolean` | `default: false` |  |
-| `description` | `String, nil` |  | documentation description |
+| `description` | `String`, `nil` |  | documentation description |
 | `partial` | `Boolean` | `default: false` |  |
-| `tag` | `String, nil` |  | discriminator tag value (required when union has discriminator) |
+| `tag` | `String`, `nil` |  | discriminator tag value (required when union has discriminator) |
 
 **Returns**
 

@@ -41,9 +41,9 @@ The configured values for a key.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|------|
-| `key` | `Symbol` | the configuration key to look up |
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `key` | `Symbol` |  | the configuration key to look up |
 
 **Returns**
 
