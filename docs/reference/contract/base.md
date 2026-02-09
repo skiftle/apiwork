@@ -91,10 +91,14 @@ Defines an action on this contract.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `action_name` | `Symbol` |  | :index, :show, :create, :update, :destroy, or custom |
 | `replace` | `Boolean` | `false` |  |
+
+</div>
 
 **Returns**
 
@@ -126,6 +130,8 @@ Defines an enum scoped to this contract.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  |  |
@@ -133,6 +139,8 @@ Defines an enum scoped to this contract.
 | `description` | `String`, `nil` | `nil` |  |
 | `example` | `String`, `nil` | `nil` |  |
 | `deprecated` | `Boolean` | `false` |  |
+
+</div>
 
 **Returns**
 
@@ -160,9 +168,13 @@ name when not set (e.g., `RecurringInvoiceContract` becomes
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `value` | `Symbol`, `String`, `nil` | `nil` |  |
+
+</div>
 
 **Returns**
 
@@ -195,10 +207,14 @@ Imported types are accessed with a prefix matching the alias.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `contract_class` | `Class<Contract::Base>` |  |  |
 | `as` | `Symbol` |  | alias prefix |
+
+</div>
 
 **Returns**
 
@@ -223,10 +239,14 @@ Returns introspection data for this contract.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `locale` | `Symbol`, `nil` | `nil` |  |
 | `expand` | `Boolean` | `false` |  |
+
+</div>
 
 **Returns**
 
@@ -250,6 +270,8 @@ Defines a reusable object type scoped to this contract.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  |  |
@@ -258,6 +280,8 @@ Defines a reusable object type scoped to this contract.
 | `format` | `String`, `nil` | `nil` |  |
 | `deprecated` | `Boolean` | `false` |  |
 | `representation_class` | `Class<Representation::Base>`, `nil` | `nil` |  |
+
+</div>
 
 **Returns**
 
@@ -289,9 +313,13 @@ types. Use [.representation_class](#representation-class) to retrieve.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `klass` | `Class<Representation::Base>` |  |  |
+
+</div>
 
 **Returns**
 
@@ -339,10 +367,14 @@ Defines a discriminated union type scoped to this contract.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  |  |
 | `discriminator` | `Symbol`, `nil` | `nil` |  |
+
+</div>
 
 **Returns**
 

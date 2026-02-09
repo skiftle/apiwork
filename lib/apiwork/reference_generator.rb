@@ -581,6 +581,8 @@ module Apiwork
       if method[:params].any?
         parts << "**Parameters**\n"
 
+        parts << '<div class="params-table">'
+        parts << ''
         parts << '| Name | Type | Default | Description |'
         parts << '|------|------|---------|-------------|'
 
@@ -593,6 +595,8 @@ module Apiwork
           ]
           parts << "| #{row.join(' | ')} |"
         end
+        parts << ''
+        parts << '</div>'
         parts << ''
       end
 

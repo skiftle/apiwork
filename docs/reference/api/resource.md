@@ -80,10 +80,14 @@ Defines a reusable concern.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `concern_name` | `Symbol` |  | concern name |
 | `callable` | `Proc` |  | optional callable instead of block |
+
+</div>
 
 **Returns**
 
@@ -123,10 +127,14 @@ Includes previously defined concerns.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `concern_names` | `Array<Symbol>` |  | concern names to include |
 | `options` | `Hash` | `{}` | options passed to the concern |
+
+</div>
 
 **Returns**
 
@@ -152,10 +160,14 @@ Defines a DELETE action.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `action_names` | `Symbol`, `Array<Symbol>` |  | action name(s) |
 | `on` | `Symbol` |  | :member or :collection |
+
+</div>
 
 **Returns**
 
@@ -179,10 +191,14 @@ Defines a GET action.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `action_names` | `Symbol`, `Array<Symbol>` |  | action name(s) |
 | `on` | `Symbol` |  | :member or :collection |
+
+</div>
 
 **Returns**
 
@@ -248,10 +264,14 @@ Defines a PATCH action.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `action_names` | `Symbol`, `Array<Symbol>` |  | action name(s) |
 | `on` | `Symbol` |  | :member or :collection |
+
+</div>
 
 **Returns**
 
@@ -275,10 +295,14 @@ Defines a POST action.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `action_names` | `Symbol`, `Array<Symbol>` |  | action name(s) |
 | `on` | `Symbol` |  | :member or :collection |
+
+</div>
 
 **Returns**
 
@@ -302,10 +326,14 @@ Defines a PUT action.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `action_names` | `Symbol`, `Array<Symbol>` |  | action name(s) |
 | `on` | `Symbol` |  | :member or :collection |
+
+</div>
 
 **Returns**
 
@@ -331,6 +359,8 @@ Default actions: :show, :create, :update, :destroy.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `resource_name` | `Symbol` |  | resource name (singular) |
@@ -343,6 +373,8 @@ Default actions: :show, :create, :update, :destroy.
 | `only` | `Array<Symbol>`, `nil` | `nil` | only these CRUD actions |
 | `param` | `Symbol`, `nil` | `nil` | custom ID parameter |
 | `path` | `String`, `nil` | `nil` | custom URL segment |
+
+</div>
 
 **Returns**
 
@@ -380,6 +412,8 @@ Default actions: :index, :show, :create, :update, :destroy.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `resource_name` | `Symbol` |  | resource name (plural) |
@@ -392,6 +426,8 @@ Default actions: :index, :show, :create, :update, :destroy.
 | `only` | `Array<Symbol>`, `nil` | `nil` | only these CRUD actions |
 | `param` | `Symbol`, `nil` | `nil` | custom ID parameter |
 | `path` | `String`, `nil` | `nil` | custom URL segment |
+
+</div>
 
 **Returns**
 
@@ -429,9 +465,13 @@ Applies options to all resources defined in the block.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `options` | `Hash` | `{}` | options to merge into nested resources |
+
+</div>
 
 **Returns**
 

@@ -177,6 +177,32 @@ table {
   font-size: var(--font-size-sm);
 }
 
+/* Parameter tables in reference docs */
+.params-table {
+  table-layout: fixed;
+}
+
+.params-table th:first-child,
+.params-table td:first-child {
+  width: 12%;
+}
+
+.params-table th:nth-child(2),
+.params-table td:nth-child(2) {
+  width: 25%;
+  word-break: break-word;
+}
+
+.params-table th:nth-child(3),
+.params-table td:nth-child(3) {
+  width: 10%;
+}
+
+.params-table th:nth-child(4),
+.params-table td:nth-child(4) {
+  width: 53%;
+}
+
 th {
   background: var(--color-bg-muted);
   font-weight: 600;

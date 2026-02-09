@@ -48,9 +48,13 @@ The phase for this transformer.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `value` | `Symbol<:before, :after>`, `nil` | `nil` | defaults to :before when not set |
+
+</div>
 
 **Returns**
 

@@ -43,10 +43,14 @@ Defines an array param with element type.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | param name |
 | `options` | `Hash` | `{}` | additional param options |
+
+</div>
 
 **Returns**
 
@@ -82,6 +86,8 @@ Defines an optional array.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | the name |
@@ -93,6 +99,8 @@ Defines an optional array.
 | `of` | `Symbol`, `Hash`, `nil` | `nil` | element type |
 | `required` | `Boolean` | `false` |  |
 | `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+
+</div>
 
 **Returns**
 
@@ -110,6 +118,8 @@ Defines a binary.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | the name |
@@ -122,6 +132,8 @@ Defines a binary.
 | `optional` | `Boolean` | `false` |  |
 | `required` | `Boolean` | `false` |  |
 | `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+
+</div>
 
 **Returns**
 
@@ -139,6 +151,8 @@ Defines an optional binary.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | the name |
@@ -150,6 +164,8 @@ Defines an optional binary.
 | `nullable` | `Boolean` | `false` |  |
 | `required` | `Boolean` | `false` |  |
 | `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+
+</div>
 
 **Returns**
 
@@ -167,6 +183,8 @@ Defines a boolean.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | the name |
@@ -179,6 +197,8 @@ Defines a boolean.
 | `optional` | `Boolean` | `false` |  |
 | `required` | `Boolean` | `false` |  |
 | `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+
+</div>
 
 **Returns**
 
@@ -196,6 +216,8 @@ Defines an optional boolean.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | the name |
@@ -207,6 +229,8 @@ Defines an optional boolean.
 | `nullable` | `Boolean` | `false` |  |
 | `required` | `Boolean` | `false` |  |
 | `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+
+</div>
 
 **Returns**
 
@@ -224,6 +248,8 @@ Defines a date.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | the name |
@@ -236,6 +262,8 @@ Defines a date.
 | `optional` | `Boolean` | `false` |  |
 | `required` | `Boolean` | `false` |  |
 | `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+
+</div>
 
 **Returns**
 
@@ -253,6 +281,8 @@ Defines an optional date.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | the name |
@@ -264,6 +294,8 @@ Defines an optional date.
 | `nullable` | `Boolean` | `false` |  |
 | `required` | `Boolean` | `false` |  |
 | `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+
+</div>
 
 **Returns**
 
@@ -281,6 +313,8 @@ Defines a datetime.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | the name |
@@ -293,6 +327,8 @@ Defines a datetime.
 | `optional` | `Boolean` | `false` |  |
 | `required` | `Boolean` | `false` |  |
 | `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+
+</div>
 
 **Returns**
 
@@ -310,6 +346,8 @@ Defines an optional datetime.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | the name |
@@ -321,6 +359,8 @@ Defines an optional datetime.
 | `nullable` | `Boolean` | `false` |  |
 | `required` | `Boolean` | `false` |  |
 | `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+
+</div>
 
 **Returns**
 
@@ -338,6 +378,8 @@ Defines a decimal.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | the name |
@@ -352,6 +394,8 @@ Defines a decimal.
 | `optional` | `Boolean` | `false` |  |
 | `required` | `Boolean` | `false` |  |
 | `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+
+</div>
 
 **Returns**
 
@@ -369,6 +413,8 @@ Defines an optional decimal.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | the name |
@@ -382,6 +428,8 @@ Defines an optional decimal.
 | `nullable` | `Boolean` | `false` |  |
 | `required` | `Boolean` | `false` |  |
 | `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+
+</div>
 
 **Returns**
 
@@ -400,9 +448,13 @@ Can be called multiple times to inherit from multiple types.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `type_name` | `Symbol` |  | the type to inherit from |
+
+</div>
 
 **Returns**
 
@@ -439,6 +491,8 @@ Defines an integer.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | the name |
@@ -454,6 +508,8 @@ Defines an integer.
 | `optional` | `Boolean` | `false` |  |
 | `required` | `Boolean` | `false` |  |
 | `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+
+</div>
 
 **Returns**
 
@@ -471,6 +527,8 @@ Defines an optional integer.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | the name |
@@ -485,6 +543,8 @@ Defines an optional integer.
 | `nullable` | `Boolean` | `false` |  |
 | `required` | `Boolean` | `false` |  |
 | `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+
+</div>
 
 **Returns**
 
@@ -502,6 +562,8 @@ Defines a literal value.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | the name |
@@ -512,6 +574,8 @@ Defines a literal value.
 | `description` | `String`, `nil` | `nil` | documentation description |
 | `optional` | `Boolean` | `false` |  |
 | `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+
+</div>
 
 **Returns**
 
@@ -530,9 +594,13 @@ Can be called multiple times to merge from multiple types.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `type_name` | `Symbol` |  | the type to merge from |
+
+</div>
 
 **Returns**
 
@@ -559,6 +627,8 @@ Defines a number.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | the name |
@@ -573,6 +643,8 @@ Defines a number.
 | `optional` | `Boolean` | `false` |  |
 | `required` | `Boolean` | `false` |  |
 | `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+
+</div>
 
 **Returns**
 
@@ -590,6 +662,8 @@ Defines an optional number.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | the name |
@@ -603,6 +677,8 @@ Defines an optional number.
 | `nullable` | `Boolean` | `false` |  |
 | `required` | `Boolean` | `false` |  |
 | `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+
+</div>
 
 **Returns**
 
@@ -620,6 +696,8 @@ Defines an object.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | the name |
@@ -631,6 +709,8 @@ Defines an object.
 | `optional` | `Boolean` | `false` |  |
 | `required` | `Boolean` | `false` |  |
 | `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+
+</div>
 
 **Returns**
 
@@ -648,6 +728,8 @@ Defines an optional object.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | the name |
@@ -658,6 +740,8 @@ Defines an optional object.
 | `nullable` | `Boolean` | `false` |  |
 | `required` | `Boolean` | `false` |  |
 | `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+
+</div>
 
 **Returns**
 
@@ -677,6 +761,8 @@ This is the verbose form. Prefer sugar methods (string, integer, etc.)
 for static definitions.
 
 **Parameters**
+
+<div class="params-table">
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
@@ -700,6 +786,8 @@ for static definitions.
 | `store` | `Boolean`, `nil` | `nil` | whether to persist |
 | `transform` | `Proc`, `nil` | `nil` | value transformation lambda |
 | `value` | `Object`, `nil` | `nil` | literal value |
+
+</div>
 
 **Returns**
 
@@ -737,6 +825,8 @@ Defines a reference to a named type.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | the name |
@@ -749,6 +839,8 @@ Defines a reference to a named type.
 | `optional` | `Boolean` | `false` |  |
 | `required` | `Boolean` | `false` |  |
 | `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+
+</div>
 
 **Returns**
 
@@ -766,6 +858,8 @@ Defines an optional reference to a named type.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | the name |
@@ -777,6 +871,8 @@ Defines an optional reference to a named type.
 | `nullable` | `Boolean` | `false` |  |
 | `required` | `Boolean` | `false` |  |
 | `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+
+</div>
 
 **Returns**
 
@@ -794,6 +890,8 @@ Defines a string.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | the name |
@@ -810,6 +908,8 @@ Defines a string.
 | `optional` | `Boolean` | `false` |  |
 | `required` | `Boolean` | `false` |  |
 | `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+
+</div>
 
 **Returns**
 
@@ -827,6 +927,8 @@ Defines an optional string.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | the name |
@@ -842,6 +944,8 @@ Defines an optional string.
 | `nullable` | `Boolean` | `false` |  |
 | `required` | `Boolean` | `false` |  |
 | `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+
+</div>
 
 **Returns**
 
@@ -859,6 +963,8 @@ Defines a time.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | the name |
@@ -871,6 +977,8 @@ Defines a time.
 | `optional` | `Boolean` | `false` |  |
 | `required` | `Boolean` | `false` |  |
 | `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+
+</div>
 
 **Returns**
 
@@ -888,6 +996,8 @@ Defines an optional time.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | the name |
@@ -899,6 +1009,8 @@ Defines an optional time.
 | `nullable` | `Boolean` | `false` |  |
 | `required` | `Boolean` | `false` |  |
 | `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+
+</div>
 
 **Returns**
 
@@ -916,6 +1028,8 @@ Defines a union.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | the name |
@@ -928,6 +1042,8 @@ Defines a union.
 | `optional` | `Boolean` | `false` |  |
 | `required` | `Boolean` | `false` |  |
 | `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+
+</div>
 
 **Returns**
 
@@ -945,6 +1061,8 @@ Defines an optional union.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | the name |
@@ -956,6 +1074,8 @@ Defines an optional union.
 | `nullable` | `Boolean` | `false` |  |
 | `required` | `Boolean` | `false` |  |
 | `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+
+</div>
 
 **Returns**
 
@@ -973,6 +1093,8 @@ Defines a UUID.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | the name |
@@ -985,6 +1107,8 @@ Defines a UUID.
 | `optional` | `Boolean` | `false` |  |
 | `required` | `Boolean` | `false` |  |
 | `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+
+</div>
 
 **Returns**
 
@@ -1002,6 +1126,8 @@ Defines an optional UUID.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | the name |
@@ -1013,6 +1139,8 @@ Defines an optional UUID.
 | `nullable` | `Boolean` | `false` |  |
 | `required` | `Boolean` | `false` |  |
 | `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+
+</div>
 
 **Returns**
 

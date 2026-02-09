@@ -39,9 +39,13 @@ Accesses nested configuration values by key path.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `keys` | `Symbol` |  | one or more keys to traverse |
+
+</div>
 
 **Example**
 

@@ -89,9 +89,13 @@ Resolves a record to its subclass representation.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `record` | `ActiveRecord::Base` |  | the record to resolve |
+
+</div>
 
 **Returns**
 

@@ -37,9 +37,13 @@ Sets or gets the adapter for this API.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol`, `nil` | `nil` |  |
+
+</div>
 
 **Returns**
 
@@ -72,9 +76,13 @@ be included in multiple resources via the `concerns` option.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | concern name |
+
+</div>
 
 **Returns**
 
@@ -120,6 +128,8 @@ Defines a reusable enumeration type.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  |  |
@@ -128,6 +138,8 @@ Defines a reusable enumeration type.
 | `description` | `String`, `nil` | `nil` |  |
 | `example` | `String`, `nil` | `nil` |  |
 | `deprecated` | `Boolean` | `false` |  |
+
+</div>
 
 **Returns**
 
@@ -151,9 +163,13 @@ Enables an export for this API.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | :openapi, :typescript, or :zod |
+
+</div>
 
 **Returns**
 
@@ -218,9 +234,13 @@ Transforms request and response keys.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `format` | `Symbol<:keep, :camel, :underscore, :kebab>`, `nil` | `nil` |  |
+
+</div>
 
 **Returns**
 
@@ -244,6 +264,8 @@ Defines a reusable object type.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  |  |
@@ -253,6 +275,8 @@ Defines a reusable object type.
 | `format` | `String`, `nil` | `nil` |  |
 | `deprecated` | `Boolean` | `false` |  |
 | `representation_class` | `Class<Representation::Base>`, `nil` | `nil` |  |
+
+</div>
 
 **Returns**
 
@@ -295,9 +319,13 @@ Transforms resource and action names in URL paths.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `format` | `Symbol<:keep, :kebab, :camel, :underscore>`, `nil` | `nil` |  |
+
+</div>
 
 **Returns**
 
@@ -323,9 +351,13 @@ Included in generated specs (OpenAPI, etc.) as possible error responses.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `error_code_keys` | `Array<Symbol>` |  | registered error code keys |
+
+</div>
 
 **Returns**
 
@@ -353,6 +385,8 @@ like user profile or application settings.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | resource name (singular) |
@@ -365,6 +399,8 @@ like user profile or application settings.
 | `only` | `Array<Symbol>`, `nil` | `nil` | limit to specific CRUD actions |
 | `param` | `Symbol`, `nil` | `nil` | custom parameter name for ID |
 | `path` | `String`, `nil` | `nil` | custom URL path segment |
+
+</div>
 
 **Returns**
 
@@ -404,6 +440,8 @@ Nested resources and custom actions can be defined in the block.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | resource name (plural) |
@@ -416,6 +454,8 @@ Nested resources and custom actions can be defined in the block.
 | `only` | `Array<Symbol>`, `nil` | `nil` | limit to specific CRUD actions |
 | `param` | `Symbol`, `nil` | `nil` | custom parameter name for ID |
 | `path` | `String`, `nil` | `nil` | custom URL path segment |
+
+</div>
 
 **Returns**
 
@@ -453,6 +493,8 @@ Defines a discriminated union type.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  |  |
@@ -460,6 +502,8 @@ Defines a discriminated union type.
 | `scope` | `Class<Contract::Base>`, `nil` | `nil` |  |
 | `description` | `String`, `nil` | `nil` |  |
 | `deprecated` | `Boolean` | `false` |  |
+
+</div>
 
 **Returns**
 
@@ -495,9 +539,13 @@ constraints, controller, param, path.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `options` | `Hash`, `nil` | `nil` | options to apply to nested resources |
+
+</div>
 
 **Returns**
 

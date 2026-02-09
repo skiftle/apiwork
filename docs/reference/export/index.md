@@ -26,9 +26,13 @@ Finds an export by name.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | the export name |
+
+</div>
 
 **Returns**
 
@@ -56,9 +60,13 @@ Finds an export by name.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | the export name |
+
+</div>
 
 **Returns**
 
@@ -86,6 +94,8 @@ Generates an export for an API.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `export_name` | `Symbol` |  | the export name (:openapi, :typescript, :zod) |
@@ -94,6 +104,8 @@ Generates an export for an API.
 | `locale` | `Symbol`, `nil` | `nil` | locale for translations |
 | `key_format` | `Symbol<:camel, :underscore, :kebab, :keep>`, `nil` | `nil` |  |
 | `options` |  |  | export-specific keyword arguments |
+
+</div>
 
 **Returns**
 
@@ -123,9 +135,13 @@ Registers an export.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `klass` | `Class<Export::Base>` |  | the export class with export_name set |
+
+</div>
 
 **See also**
 

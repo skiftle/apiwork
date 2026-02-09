@@ -100,9 +100,13 @@ The API description.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `value` | `String`, `nil` | `nil` |  |
+
+</div>
 
 **Returns**
 
@@ -197,9 +201,13 @@ The API summary.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `value` | `String`, `nil` | `nil` |  |
+
+</div>
 
 **Returns**
 
@@ -224,9 +232,13 @@ The API tags.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `values` | `Array<String>` |  |  |
+
+</div>
 
 **Returns**
 
@@ -251,9 +263,13 @@ The API terms of service.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `value` | `String`, `nil` | `nil` |  |
+
+</div>
 
 **Returns**
 
@@ -278,9 +294,13 @@ The API title.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `value` | `String`, `nil` | `nil` |  |
+
+</div>
 
 **Returns**
 
@@ -305,9 +325,13 @@ The API version.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `value` | `String`, `nil` | `nil` |  |
+
+</div>
 
 **Returns**
 

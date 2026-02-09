@@ -52,9 +52,13 @@ Creates a new response context.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `body` | `Hash` |  | the body parameters |
+
+</div>
 
 **Returns**
 

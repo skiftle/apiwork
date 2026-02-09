@@ -25,9 +25,13 @@ Whether this scope includes the given action.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  |  |
+
+</div>
 
 **Returns**
 

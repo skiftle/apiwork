@@ -59,12 +59,16 @@ Defines a union variant.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `deprecated` | `Boolean` | `false` |  |
 | `description` | `String`, `nil` | `nil` | documentation description |
 | `partial` | `Boolean` | `false` |  |
 | `tag` | `String`, `nil` | `nil` | discriminator tag value (required when union has discriminator) |
+
+</div>
 
 **Returns**
 

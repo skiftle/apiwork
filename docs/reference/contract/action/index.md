@@ -68,9 +68,13 @@ Supports Markdown formatting.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `value` | `String`, `nil` | `nil` | description text |
+
+</div>
 
 **Returns**
 
@@ -96,9 +100,13 @@ The operation ID for this action.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `value` | `String`, `nil` | `nil` | custom operation ID |
+
+</div>
 
 **Returns**
 
@@ -124,9 +132,13 @@ Declares the raised error codes for this action.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `error_code_keys` | `Symbol` |  | error code keys |
+
+</div>
 
 **Returns**
 
@@ -161,9 +173,13 @@ Use the block to define query parameters and request body.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `replace` | `Boolean` | `false` | replace inherited definition |
+
+</div>
 
 **Returns**
 
@@ -215,9 +231,13 @@ Use the block to define response body or declare no_content.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `replace` | `Boolean` | `false` | replace inherited definition |
+
+</div>
 
 **Returns**
 
@@ -273,9 +293,13 @@ Used in generated specs as the operation summary.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `value` | `String`, `nil` | `nil` | summary text |
+
+</div>
 
 **Returns**
 
@@ -303,9 +327,13 @@ Tags help organize actions in generated documentation.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `tags` | `Array<String,Symbol>` |  | tag names |
+
+</div>
 
 **Returns**
 

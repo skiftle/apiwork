@@ -25,10 +25,14 @@ The configured values for a capability.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `capability` | `Symbol` |  | the capability name |
 | `key` | `Symbol` |  | the configuration key |
+
+</div>
 
 **Returns**
 

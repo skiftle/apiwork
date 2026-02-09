@@ -24,9 +24,13 @@ The license name.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `value` | `String`, `nil` | `nil` |  |
+
+</div>
 
 **Returns**
 
@@ -51,9 +55,13 @@ The license URL.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `value` | `String`, `nil` | `nil` |  |
+
+</div>
 
 **Returns**
 

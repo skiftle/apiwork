@@ -48,9 +48,13 @@ The description for this error code.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `locale_key` | `String`, `nil` | `nil` | the I18n namespace for API-specific translations |
+
+</div>
 
 **Returns**
 

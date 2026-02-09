@@ -53,10 +53,14 @@ Creates a new request context.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `body` | `Hash` |  | the body parameters |
 | `query` | `Hash` |  | the query parameters |
+
+</div>
 
 **Returns**
 

@@ -98,9 +98,13 @@ Defines an array.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `shape` | `Object`, `nil` | `nil` | pre-built shape |
+
+</div>
 
 **Returns**
 
@@ -192,10 +196,14 @@ Defines a decimal.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `max` | `Numeric`, `nil` | `nil` | maximum value |
 | `min` | `Numeric`, `nil` | `nil` | minimum value |
+
+</div>
 
 **Returns**
 
@@ -213,11 +221,15 @@ Defines an integer.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `enum` | `Array`, `Symbol`, `nil` | `nil` | allowed values |
 | `max` | `Integer`, `nil` | `nil` | maximum value |
 | `min` | `Integer`, `nil` | `nil` | minimum value |
+
+</div>
 
 **Returns**
 
@@ -235,9 +247,13 @@ Defines a literal value.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `value` | `Object` |  | the exact value (required) |
+
+</div>
 
 **Returns**
 
@@ -255,10 +271,14 @@ Defines a number.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `max` | `Numeric`, `nil` | `nil` | maximum value |
 | `min` | `Numeric`, `nil` | `nil` | minimum value |
+
+</div>
 
 **Returns**
 
@@ -276,9 +296,13 @@ Defines an object.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `shape` | `Object`, `nil` | `nil` | pre-built shape |
+
+</div>
 
 **Returns**
 
@@ -318,11 +342,15 @@ Only complex types (:object, :array, :union) are allowed.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `type` | `Symbol` |  | element type (:object, :array, :union) |
+| `type` | `Symbol<:object, :array, :union>` |  | element type |
 | `discriminator` | `Symbol`, `nil` | `nil` | discriminator field name (unions only) |
 | `shape` | `API::Object`, `API::Union`, `nil` | `nil` | pre-built shape |
+
+</div>
 
 **Returns**
 
@@ -342,10 +370,14 @@ Defines a reference to a named type.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `type_name` | `Symbol` |  | type name |
 | `to` | `Symbol`, `nil` | `nil` | target type name (defaults to type_name) |
+
+</div>
 
 **Returns**
 
@@ -363,12 +395,16 @@ Defines a string.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `enum` | `Array`, `Symbol`, `nil` | `nil` | allowed values |
 | `format` | `Symbol`, `nil` | `nil` | format hint |
 | `max` | `Integer`, `nil` | `nil` | maximum length |
 | `min` | `Integer`, `nil` | `nil` | minimum length |
+
+</div>
 
 **Returns**
 
@@ -400,10 +436,14 @@ Defines a union.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `discriminator` | `Symbol`, `nil` | `nil` | discriminator field name |
 | `shape` | `Union`, `nil` | `nil` | pre-built shape |
+
+</div>
 
 **Returns**
 

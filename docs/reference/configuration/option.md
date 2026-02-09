@@ -43,12 +43,16 @@ Defines a nested option.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | the option name |
 | `type` | `Symbol` |  | :symbol, :string, :integer, :boolean, or :hash |
 | `default` | `Object`, `nil` | `nil` | the default value |
 | `enum` | `Array`, `nil` | `nil` | allowed values |
+
+</div>
 
 **Returns**
 

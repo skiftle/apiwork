@@ -37,9 +37,13 @@ The contract builder for this serializer.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `klass` | `Class<Builder::Contract::Base>`, `nil` | `nil` | the builder class |
+
+</div>
 
 **Returns**
 
@@ -57,9 +61,13 @@ The data type for this serializer.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `block` | `Proc`, `nil` | `nil` | block that receives representation_class and returns type name |
+
+</div>
 
 **Returns**
 
@@ -93,11 +101,15 @@ Serializes a resource.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `resource` | `Object` |  | the resource to serialize |
 | `context` | `Hash` |  | serialization context |
 | `serialize_options` | `Hash` |  | options (e.g., include) |
+
+</div>
 
 **Returns**
 

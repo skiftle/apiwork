@@ -30,9 +30,13 @@ Finds an adapter by name.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | the adapter name |
+
+</div>
 
 **Returns**
 
@@ -60,9 +64,13 @@ Finds an adapter by name.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | the adapter name |
+
+</div>
 
 **Returns**
 
@@ -90,9 +98,13 @@ Registers an adapter.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `klass` | `Class<Adapter::Base>` |  | the adapter class with adapter_name set |
+
+</div>
 
 **See also**
 

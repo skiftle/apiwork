@@ -264,9 +264,13 @@ Whether this association is writable for the given action.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `action` | `Symbol` |  | :create or :update |
+
+</div>
 
 **Returns**
 

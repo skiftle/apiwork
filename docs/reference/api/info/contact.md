@@ -24,9 +24,13 @@ The contact email.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `value` | `String`, `nil` | `nil` |  |
+
+</div>
 
 **Returns**
 
@@ -51,9 +55,13 @@ The contact name.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `value` | `String`, `nil` | `nil` |  |
+
+</div>
 
 **Returns**
 
@@ -78,9 +86,13 @@ The contact URL.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `value` | `String`, `nil` | `nil` |  |
+
+</div>
 
 **Returns**
 

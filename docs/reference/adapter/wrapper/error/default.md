@@ -41,9 +41,13 @@ Defines the response shape for contract generation.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `klass_or_callable` | `Class<Shape>`, `Proc`, `nil` | `nil` | a Shape subclass or callable |
+
+</div>
 
 **Returns**
 

@@ -26,9 +26,13 @@ Finds an error code by key.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `key` | `Symbol` |  | the error code key |
+
+</div>
 
 **Returns**
 
@@ -56,9 +60,13 @@ Finds an error code by key.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `key` | `Symbol` |  | the error code key |
+
+</div>
 
 **Returns**
 
@@ -89,11 +97,15 @@ in controllers. Built-in codes (400-504) are pre-registered.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `key` | `Symbol` |  | unique identifier for the error code |
 | `status` | `Integer` |  | the HTTP status code (must be 400-599) |
 | `attach_path` | `Boolean` | `false` | include request path in error response |
+
+</div>
 
 **Returns**
 

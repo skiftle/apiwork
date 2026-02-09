@@ -150,16 +150,16 @@ module Apiwork
         # Types and nullability are auto-detected from database columns.
         #
         # @param name [Symbol]
-        # @param type [Symbol, nil] (nil) :string, :integer, :boolean, :datetime, :date, :uuid, :decimal, :number, :object, or :array
-        # @param enum [Array, nil] (nil)
-        # @param optional [Boolean, nil] (nil)
-        # @param nullable [Boolean, nil] (nil)
+        # @param type [Symbol, nil] (nil) [:string, :integer, :boolean, :datetime, :date, :uuid, :decimal, :number, :object, :array] auto-detected from column type
+        # @param enum [Array, nil] (nil) auto-detected from Rails enum definition
+        # @param optional [Boolean, nil] (nil) auto-detected from NULL constraint or column default
+        # @param nullable [Boolean, nil] (nil) auto-detected from NULL constraint
         # @param filterable [Boolean, nil] (nil)
         # @param sortable [Boolean, nil] (nil)
         # @param writable [Boolean, Hash, nil] (nil)
         # @param encode [Proc, nil] (nil)
         # @param decode [Proc, nil] (nil)
-        # @param empty [Symbol, nil] (nil) :null or :keep
+        # @param empty [Symbol, nil] (nil) [:null, :keep]
         # @param min [Integer, nil] (nil)
         # @param max [Integer, nil] (nil)
         # @param description [String, nil] (nil)
@@ -222,9 +222,9 @@ module Apiwork
         # Defines a has_one association for serialization.
         #
         # @param name [Symbol]
-        # @param representation [Class<Representation::Base>, nil] (nil)
+        # @param representation [Class<Representation::Base>, nil] (nil) auto-detected from association name
         # @param polymorphic [Array, Hash, nil] (nil)
-        # @param include [Symbol] (:optional) :always or :optional
+        # @param include [Symbol] (:optional) [:always, :optional]
         # @param writable [Boolean, Hash] (false)
         # @param filterable [Boolean] (false)
         # @param sortable [Boolean] (false)
@@ -233,6 +233,7 @@ module Apiwork
         # @param description [String, nil] (nil)
         # @param example [Object, nil] (nil)
         # @param deprecated [Boolean] (false)
+        # @return [void]
         #
         # @example
         #   has_one :profile
@@ -275,10 +276,10 @@ module Apiwork
         # Defines a has_many association for serialization.
         #
         # @param name [Symbol]
-        # @param allow_destroy [Boolean] (false)
-        # @param representation [Class<Representation::Base>, nil] (nil)
+        # @param allow_destroy [Boolean] (false) auto-detected from nested_attributes_options
+        # @param representation [Class<Representation::Base>, nil] (nil) auto-detected from association name
         # @param polymorphic [Array, Hash, nil] (nil)
-        # @param include [Symbol] (:optional) :always or :optional
+        # @param include [Symbol] (:optional) [:always, :optional]
         # @param writable [Boolean, Hash] (false)
         # @param filterable [Boolean] (false)
         # @param sortable [Boolean] (false)
@@ -287,6 +288,7 @@ module Apiwork
         # @param description [String, nil] (nil)
         # @param example [Object, nil] (nil)
         # @param deprecated [Boolean] (false)
+        # @return [void]
         # @see #has_one
         #
         # @example
@@ -334,6 +336,18 @@ module Apiwork
         # Nullability is auto-detected from the foreign key column.
         #
         # @param name [Symbol]
+        # @param representation [Class<Representation::Base>, nil] (nil) auto-detected from association name
+        # @param polymorphic [Array, Hash, nil] (nil)
+        # @param include [Symbol] (:optional) [:always, :optional]
+        # @param writable [Boolean, Hash] (false)
+        # @param filterable [Boolean] (false)
+        # @param sortable [Boolean] (false)
+        # @param nullable [Boolean, nil] (nil) auto-detected from foreign key column
+        # @param optional [Boolean, nil] (nil)
+        # @param description [String, nil] (nil)
+        # @param example [Object, nil] (nil)
+        # @param deprecated [Boolean] (false)
+        # @return [void]
         # @see #has_one
         #
         # @example
@@ -413,7 +427,7 @@ module Apiwork
         end
 
         # @api public
-        # Sets or gets the description for generated documentation.
+        # The description for this representation.
         #
         # @param value [String, nil] (nil)
         # @return [String, nil]
@@ -438,7 +452,7 @@ module Apiwork
         end
 
         # @api public
-        # Sets or gets the example value for generated documentation.
+        # The example value for this representation.
         #
         # @param value [Hash, nil] (nil)
         # @return [Hash, nil]

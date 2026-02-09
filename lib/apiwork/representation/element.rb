@@ -87,7 +87,7 @@ module Apiwork
       #
       # Only complex types (:object, :array, :union) are allowed.
       #
-      # @param type [Symbol] element type (:object, :array, :union)
+      # @param type [Symbol] [:object, :array, :union] element type
       # @param discriminator [Symbol, nil] (nil) discriminator field name (unions only)
       # @param shape [API::Object, API::Union, nil] (nil) pre-built shape
       # @yield block for defining nested structure (instance_eval style)

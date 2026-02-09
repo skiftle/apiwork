@@ -44,9 +44,13 @@ The adapter name for this adapter.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `value` | `Symbol`, `String`, `nil` | `nil` |  |
+
+</div>
 
 **Returns**
 
@@ -73,9 +77,13 @@ that handle both introspection and runtime behavior.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `klass` | `Class<Capability::Base>` |  | the capability class |
+
+</div>
 
 **Returns**
 
@@ -100,9 +108,13 @@ Sets the wrapper class for collection responses.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `klass` | `Class<Wrapper::Collection::Base>`, `nil` | `nil` |  |
+
+</div>
 
 **Returns**
 
@@ -126,9 +138,13 @@ Sets the serializer class for errors.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `klass` | `Class<Serializer::Error::Base>`, `nil` | `nil` |  |
+
+</div>
 
 **Returns**
 
@@ -152,9 +168,13 @@ Sets the wrapper class for error responses.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `klass` | `Class<Wrapper::Error::Base>`, `nil` | `nil` |  |
+
+</div>
 
 **Returns**
 
@@ -178,9 +198,13 @@ Sets the wrapper class for single-record responses.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `klass` | `Class<Wrapper::Member::Base>`, `nil` | `nil` |  |
+
+</div>
 
 **Returns**
 
@@ -207,12 +231,16 @@ call `option` to define child options.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | option name |
 | `type` | `Symbol` |  | :symbol, :string, :integer, :boolean, or :hash |
 | `default` | `Object`, `nil` | `nil` | default value |
 | `enum` | `Array`, `nil` | `nil` | allowed values |
+
+</div>
 
 **Returns**
 
@@ -256,9 +284,13 @@ Sets the serializer class for records and collections.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `klass` | `Class<Serializer::Resource::Base>`, `nil` | `nil` |  |
+
+</div>
 
 **Returns**
 
@@ -282,9 +314,13 @@ Skips an inherited capability by name.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | the capability_name to skip |
+
+</div>
 
 **Returns**
 

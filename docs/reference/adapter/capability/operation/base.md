@@ -29,9 +29,13 @@ type DSL methods and capability options.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `klass` | `Class<MetadataShape>`, `nil` | `nil` | the metadata shape class |
+
+</div>
 
 **Returns**
 
@@ -63,9 +67,13 @@ The target for this operation.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `value` | `Symbol`, `nil` | `nil` | :collection or :member |
+
+</div>
 
 **Returns**
 
@@ -158,12 +166,16 @@ Creates a result object.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `data` | `Object`, `nil` | `nil` | transformed data |
 | `metadata` | `Hash`, `nil` | `nil` | metadata to add to response |
 | `includes` | `Array`, `nil` | `nil` | associations to preload |
 | `serialize_options` | `Hash`, `nil` | `nil` | options for serialization |
+
+</div>
 
 **Returns**
 
@@ -186,10 +198,14 @@ Lookup order:
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `segments` | `Array<Symbol, String>` |  | key path segments |
 | `default` | `String`, `nil` | `nil` | fallback value if no translation found |
+
+</div>
 
 **Returns**
 

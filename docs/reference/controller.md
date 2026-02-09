@@ -47,10 +47,14 @@ Skips contract validation for specified actions.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `only` | `Array<Symbol>` |  | skip only for these |
 | `except` | `Array<Symbol>` |  | skip for all except these |
+
+</div>
 
 **Example: Skip for specific actions**
 
@@ -159,11 +163,15 @@ is applied according to the API's [API::Base.key_format](/reference/api/base#key
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `data` | `Object`, `Array` |  | the record(s) to expose |
 | `meta` | `Hash` | `{}` | metadata to include in response (pagination, etc.) |
 | `status` | `Symbol`, `Integer`, `nil` | `nil` | the HTTP status (:ok, or :created for create action) |
+
+</div>
 
 **See also**
 
@@ -210,12 +218,16 @@ Defaults to I18n lookup when detail is not provided.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `code_key` | `Symbol` |  | registered error code (:not_found, :unauthorized, etc.) |
 | `detail` | `String`, `nil` | `nil` | custom error message (uses I18n lookup if nil) |
 | `path` | `Array<String, Symbol>`, `nil` | `nil` | the JSON path to the error |
 | `meta` | `Hash` | `{}` | additional metadata to include |
+
+</div>
 
 **See also**
 

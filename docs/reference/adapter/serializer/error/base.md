@@ -37,9 +37,13 @@ The API builder for this serializer.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `klass` | `Class<Builder::API::Base>`, `nil` | `nil` | the builder class |
+
+</div>
 
 **Returns**
 
@@ -57,9 +61,13 @@ The data type for this serializer.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol`, `nil` | `nil` | the type name |
+
+</div>
 
 **Returns**
 
@@ -79,10 +87,14 @@ Serializes an error.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `error` | `Error` |  | the error to serialize |
 | `context` | `Hash` |  | serialization context |
+
+</div>
 
 **Returns**
 

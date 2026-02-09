@@ -41,9 +41,13 @@ The configured values for a key.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `key` | `Symbol` |  | the configuration key to look up |
+
+</div>
 
 **Returns**
 

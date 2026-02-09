@@ -55,9 +55,13 @@ The name for this export.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol`, `nil` | `nil` | the export name to set |
+
+</div>
 
 **Returns**
 
@@ -77,9 +81,13 @@ Only applies to string exports. Hash exports derive extension from format.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `value` | `String`, `nil` | `nil` | the file extension (e.g., '.ts') |
+
+</div>
 
 **Returns**
 
@@ -100,12 +108,16 @@ call `option` to define child options.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | option name |
 | `type` | `Symbol` |  | :symbol, :string, :integer, :boolean, or :hash |
 | `default` | `Object`, `nil` | `nil` | default value |
 | `enum` | `Array`, `nil` | `nil` | allowed values |
+
+</div>
 
 **Returns**
 
@@ -149,9 +161,13 @@ The output for this export.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `type` | `Symbol<:hash, :string>`, `nil` | `nil` | :hash for Hash output (json/yaml), :string for String output |
+
+</div>
 
 **Returns**
 
@@ -227,9 +243,13 @@ Transforms a key according to the configured key format.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `key` | `String`, `Symbol` |  | the key to transform |
+
+</div>
 
 **Returns**
 

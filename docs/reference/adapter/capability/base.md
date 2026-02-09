@@ -45,9 +45,13 @@ shared types used across all contracts.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `klass` | `Class<Builder::API::Base>`, `nil` | `nil` | the builder class |
+
+</div>
 
 **Returns**
 
@@ -71,9 +75,13 @@ Used for configuration options, translation keys, and [Adapter::Base.skip_capabi
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `value` | `Symbol`, `nil` | `nil` | the capability name |
+
+</div>
 
 **Returns**
 
@@ -94,9 +102,13 @@ parameters and response shapes.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `klass` | `Class<Builder::Contract::Base>`, `nil` | `nil` | the builder class |
+
+</div>
 
 **Returns**
 
@@ -121,9 +133,13 @@ request parameters.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `klass` | `Class<Operation::Base>`, `nil` | `nil` | the operation class |
+
+</div>
 
 **Returns**
 
@@ -148,12 +164,16 @@ call `option` to define child options.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | option name |
 | `type` | `Symbol` |  | :symbol, :string, :integer, :boolean, or :hash |
 | `default` | `Object`, `nil` | `nil` | default value |
 | `enum` | `Array`, `nil` | `nil` | allowed values |
+
+</div>
 
 **Returns**
 
@@ -197,9 +217,13 @@ Registers a request transformer for this capability.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `transformer_class` | `Class<Transformer::Request::Base>` |  | the transformer class |
+
+</div>
 
 **Returns**
 
@@ -221,9 +245,13 @@ Registers a response transformer for this capability.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `transformer_class` | `Class<Transformer::Response::Base>` |  | the transformer class |
+
+</div>
 
 **Returns**
 

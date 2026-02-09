@@ -35,9 +35,13 @@ types, and configuration.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `path` | `String` |  | the API path |
+
+</div>
 
 **Returns**
 
@@ -74,9 +78,13 @@ Finds an API by path.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `path` | `String` |  | the API path |
+
+</div>
 
 **Returns**
 
@@ -104,9 +112,13 @@ Finds an API by path.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `path` | `String` |  | the API path |
+
+</div>
 
 **Returns**
 
@@ -134,10 +146,14 @@ The introspection data for an API.
 
 **Parameters**
 
+<div class="params-table">
+
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `path` | `String` |  | the API path |
 | `locale` | `Symbol`, `nil` | `nil` | the locale for descriptions |
+
+</div>
 
 **Returns**
 
