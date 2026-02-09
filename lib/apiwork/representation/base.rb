@@ -145,14 +145,12 @@ module Apiwork
         end
 
         # @api public
-        # Defines an attribute for serialization.
-        #
-        # Types and nullability are auto-detected from database columns.
+        # Defines an attribute for this representation.
         #
         # @param name [Symbol]
         #   The attribute name.
-        # @param type [Symbol, nil] (nil) [:string, :integer, :boolean, :datetime, :date, :uuid, :decimal, :number, :object, :array]
-        #   The type. If nil and name maps to a database column, auto-detected from column type.
+        # @param type [Symbol, nil] (nil) [:array, :binary, :boolean, :date, :datetime, :decimal, :integer, :number, :object, :string, :time, :unknown, :uuid]
+        #   The type. If `nil` and name maps to a database column, auto-detected from column type.
         # @param enum [Array, nil] (nil)
         #   The allowed values. If nil, auto-detected from Rails enum definition.
         # @param optional [Boolean, nil] (nil)
@@ -179,7 +177,7 @@ module Apiwork
         #   The description for documentation.
         # @param example [Object, nil] (nil)
         #   An example value for documentation.
-        # @param format [Symbol, nil] (nil) [:float, :double, :int32, :int64, :email, :uuid, :url, :date, :datetime, :ipv4, :ipv6, :password, :hostname]
+        # @param format [Symbol, nil] (nil) [:date, :datetime, :double, :email, :float, :hostname, :int32, :int64, :ipv4, :ipv6, :password, :url, :uuid]
         #   The format hint for validation.
         # @param deprecated [Boolean] (false)
         #   Whether the attribute is deprecated.
@@ -236,7 +234,7 @@ module Apiwork
         end
 
         # @api public
-        # Defines a has_one association for serialization.
+        # Defines a has_one association for this representation.
         #
         # @param name [Symbol]
         #   The association name.
@@ -299,7 +297,7 @@ module Apiwork
         end
 
         # @api public
-        # Defines a has_many association for serialization.
+        # Defines a has_many association for this representation.
         #
         # @param name [Symbol]
         #   The association name.
@@ -367,9 +365,7 @@ module Apiwork
         end
 
         # @api public
-        # Defines a belongs_to association for serialization.
-        #
-        # Nullability is auto-detected from the foreign key column.
+        # Defines a belongs_to association for this representation.
         #
         # @param name [Symbol]
         #   The association name.

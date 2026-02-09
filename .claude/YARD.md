@@ -319,6 +319,20 @@ Values constrain a type to specific allowed values.
 
 The target type must match one of the declared types in `[Type]`.
 
+### Values Order
+
+**Values must be in alphabetical order. No exceptions.**
+
+```ruby
+# Good
+[:always, :optional]
+[:array, :binary, :boolean, :date, :datetime, :decimal, :integer, :number, :object, :string, :time, :unknown, :uuid]
+
+# Bad
+[:optional, :always]
+[:string, :integer, :boolean]
+```
+
 ### Rendered Table
 
 Values appear in the Type column as `Type<values>`:
