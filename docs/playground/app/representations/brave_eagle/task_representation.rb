@@ -35,7 +35,7 @@ module BraveEagle
 
     attribute :updated_at, description: 'Timestamp of last modification'
 
-    belongs_to :assignee, description: 'User responsible for completing this task', optional: true, representation: BraveEagle::UserRepresentation
+    belongs_to :assignee, description: 'User responsible for completing this task', nullable: true, representation: BraveEagle::UserRepresentation
 
     has_many :comments, description: 'Discussion comments on this task', representation: BraveEagle::CommentRepresentation
   end

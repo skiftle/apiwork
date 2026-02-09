@@ -199,7 +199,7 @@ has_many :recent_posts, representation: PostRepresentation
 
 ### Nullable Detection
 
-For `belongs_to` associations, nullable is detected from the foreign key column:
+For `belongs_to`, nullable is detected from the foreign key column:
 
 ```ruby
 # Database: author_id INTEGER NOT NULL, reviewer_id INTEGER NULL
@@ -207,6 +207,12 @@ class PostRepresentation < Apiwork::Representation::Base
   belongs_to :author    # nullable: false (FK is NOT NULL)
   belongs_to :reviewer  # nullable: true (FK allows NULL)
 end
+```
+
+For `has_one` and `has_many`, nullable defaults to `false`. Override if needed:
+
+```ruby
+has_one :profile, nullable: true
 ```
 
 Override:

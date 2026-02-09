@@ -72,7 +72,6 @@ module Apiwork
         filterable: false,
         include: :optional,
         nullable: nil,
-        optional: nil,
         polymorphic: nil,
         representation: nil,
         sortable: false,
@@ -91,7 +90,7 @@ module Apiwork
         @include = include
         @writable = normalize_writable(writable)
         @allow_destroy = allow_destroy
-        @nullable = nullable.nil? ? optional : nullable
+        @nullable = nullable
         @description = description
         @example = example
         @deprecated = deprecated
@@ -178,14 +177,19 @@ module Apiwork
       # @return [Boolean]
       def nullable?
         return @nullable unless @nullable.nil?
-        return false unless @type == :belongs_to
-        return false unless @model_class
 
-        foreign_key = detect_foreign_key
-        column = column_for(foreign_key)
-        return false unless column
+        case @type
+        when :belongs_to
+          return false unless @model_class
 
-        column.null
+          foreign_key = detect_foreign_key
+          column = column_for(foreign_key)
+          return false unless column
+
+          column.null
+        when :has_one, :has_many
+          false
+        end
       end
 
       # @api public

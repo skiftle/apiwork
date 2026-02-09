@@ -229,8 +229,7 @@ module Apiwork
         # @param writable [Boolean, Hash] (false) [Hash: on: :create | :update] model must declare accepts_nested_attributes_for
         # @param filterable [Boolean] (false)
         # @param sortable [Boolean] (false)
-        # @param nullable [Boolean, nil] (nil)
-        # @param optional [Boolean, nil] (nil)
+        # @param nullable [Boolean, nil] (nil) defaults to false
         # @param description [String, nil] (nil)
         # @param example [Object, nil] (nil)
         # @param deprecated [Boolean] (false)
@@ -247,7 +246,6 @@ module Apiwork
           filterable: false,
           include: :optional,
           nullable: nil,
-          optional: nil,
           polymorphic: nil,
           representation: nil,
           sortable: false,
@@ -264,7 +262,6 @@ module Apiwork
               filterable:,
               include:,
               nullable:,
-              optional:,
               polymorphic:,
               representation:,
               sortable:,
@@ -284,8 +281,7 @@ module Apiwork
         # @param writable [Boolean, Hash] (false) [Hash: on: :create | :update] model must declare accepts_nested_attributes_for
         # @param filterable [Boolean] (false)
         # @param sortable [Boolean] (false)
-        # @param nullable [Boolean, nil] (nil)
-        # @param optional [Boolean, nil] (nil)
+        # @param nullable [Boolean, nil] (nil) defaults to false
         # @param description [String, nil] (nil)
         # @param example [Object, nil] (nil)
         # @param deprecated [Boolean] (false)
@@ -304,7 +300,6 @@ module Apiwork
           filterable: false,
           include: :optional,
           nullable: nil,
-          optional: nil,
           polymorphic: nil,
           representation: nil,
           sortable: false,
@@ -322,7 +317,6 @@ module Apiwork
               filterable:,
               include:,
               nullable:,
-              optional:,
               polymorphic:,
               representation:,
               sortable:,
@@ -344,7 +338,6 @@ module Apiwork
         # @param filterable [Boolean] (false)
         # @param sortable [Boolean] (false)
         # @param nullable [Boolean, nil] (nil) auto-detected from foreign key column
-        # @param optional [Boolean, nil] (nil)
         # @param description [String, nil] (nil)
         # @param example [Object, nil] (nil)
         # @param deprecated [Boolean] (false)
@@ -361,7 +354,6 @@ module Apiwork
           filterable: false,
           include: :optional,
           nullable: nil,
-          optional: nil,
           polymorphic: nil,
           representation: nil,
           sortable: false,
@@ -378,7 +370,6 @@ module Apiwork
               filterable:,
               include:,
               nullable:,
-              optional:,
               polymorphic:,
               representation:,
               sortable:,
