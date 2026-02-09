@@ -335,6 +335,71 @@ Values appear in the Type column as `Type<values>`:
 
 ---
 
+## @param Descriptions
+
+**Every parameter gets a description. No exceptions.**
+
+### Structure
+
+Description always on a separate line:
+
+```ruby
+# @param name [Type] (default) [values]
+#   Description sentence.
+```
+
+- **Line 1:** Name, type, default, values (metadata)
+- **Line 2+:** Description (semantik)
+
+### Examples
+
+```ruby
+# @param name [Symbol]
+#   The attribute name.
+
+# @param filterable [Boolean] (false)
+#   Whether the attribute is filterable.
+
+# @param nullable [Boolean, nil] (nil)
+#   Whether the value can be null. If nil, auto-detected from column NULL constraint.
+
+# @param type [Symbol, nil] (nil) [:string, :integer, :boolean, :datetime, :date, :uuid, :decimal, :number, :object, :array]
+#   The type. If nil and name maps to a database column, auto-detected from column type.
+
+# @param include [Symbol] (:optional) [:always, :optional]
+#   The inclusion strategy.
+```
+
+### Patterns
+
+| Category | Pattern | Example |
+|----------|---------|---------|
+| Boolean flag | "Whether the [element] is [adjective]." | "Whether the attribute is filterable." |
+| Boolean (auto-detect) | "Whether [subject]. If nil, auto-detected from [source]." | "Whether the value can be null. If nil, auto-detected from column NULL constraint." |
+| Value | "The [thing]." | "The description." |
+| Value (auto-detect) | "The [thing]. If nil, auto-detected from [source]." | "The type. If nil and name maps to a database column, auto-detected from column type." |
+| Value (conditional) | "The [thing]. If nil and [condition], auto-detected from [source]." | "The type. If nil and name maps to a database column, auto-detected from column type." |
+| Function | "Transform for [purpose]." | "Transform for serialization." |
+
+### Rules
+
+- Capital letter at start of description
+- Period at end of description
+- Use "auto-detected" not "automatically detected"
+- Use "If nil" not "When nil"
+- Present tense only
+- Omit redundant context: "The type." not "The type of the attribute."
+
+### Verification
+
+**Before writing any parameter description, verify its actual behavior in the code.**
+
+1. Read the implementation
+2. Check for auto-detection logic, validation, and special cases
+3. Document what the code actually does
+
+---
+
 ## @return Format
 
 Type only. No description.

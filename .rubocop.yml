@@ -53,6 +53,8 @@ Apiwork/SortMethodDefinition:
 
 Layout/LineLength:
   Max: 150
+  AllowedPatterns:
+    - '^\s*#'
 
 Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented

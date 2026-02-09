@@ -150,23 +150,39 @@ module Apiwork
         # Types and nullability are auto-detected from database columns.
         #
         # @param name [Symbol]
+        #   The attribute name.
         # @param type [Symbol, nil] (nil) [:string, :integer, :boolean, :datetime, :date, :uuid, :decimal, :number, :object, :array]
-        #   auto-detected from column type
-        # @param enum [Array, nil] (nil) auto-detected from Rails enum definition
-        # @param optional [Boolean, nil] (nil) auto-detected from NULL constraint or column default
-        # @param nullable [Boolean, nil] (nil) auto-detected from NULL constraint
+        #   The type. If nil and name maps to a database column, auto-detected from column type.
+        # @param enum [Array, nil] (nil)
+        #   The allowed values. If nil, auto-detected from Rails enum definition.
+        # @param optional [Boolean, nil] (nil)
+        #   Whether the attribute is optional for writes. If nil, auto-detected from column default or NULL constraint.
+        # @param nullable [Boolean, nil] (nil)
+        #   Whether the value can be null. If nil, auto-detected from column NULL constraint.
         # @param filterable [Boolean] (false)
+        #   Whether the attribute is filterable.
         # @param sortable [Boolean] (false)
+        #   Whether the attribute is sortable.
         # @param writable [Boolean, Hash] (false) [Hash: on: :create | :update]
+        #   Whether the attribute is writable.
         # @param encode [Proc, nil] (nil)
+        #   Transform for serialization.
         # @param decode [Proc, nil] (nil)
+        #   Transform for deserialization.
         # @param empty [Boolean, nil] (nil)
+        #   Whether to use empty string instead of null. Serializes nil as "" and deserializes "" as nil.
         # @param min [Integer, nil] (nil)
+        #   The minimum value or length.
         # @param max [Integer, nil] (nil)
+        #   The maximum value or length.
         # @param description [String, nil] (nil)
+        #   The description for documentation.
         # @param example [Object, nil] (nil)
-        # @param format [Symbol, nil] (nil) [:float, :double, :int32, :int64, :email, :uuid, :url, :date, :datetime, :ipv4, :ipv6, :password, :hostname] type-dependent
+        #   An example value for documentation.
+        # @param format [Symbol, nil] (nil) [:float, :double, :int32, :int64, :email, :uuid, :url, :date, :datetime, :ipv4, :ipv6, :password, :hostname]
+        #   The format hint for validation.
         # @param deprecated [Boolean] (false)
+        #   Whether the attribute is deprecated.
         # @yieldparam element [Representation::Element]
         # @return [void]
         #
@@ -223,16 +239,27 @@ module Apiwork
         # Defines a has_one association for serialization.
         #
         # @param name [Symbol]
-        # @param representation [Class<Representation::Base>, nil] (nil) auto-detected from association name
+        #   The association name.
+        # @param representation [Class<Representation::Base>, nil] (nil)
+        #   The representation class. If nil, auto-detected from association.
         # @param polymorphic [Array, Hash, nil] (nil)
+        #   The polymorphic representation classes.
         # @param include [Symbol] (:optional) [:always, :optional]
-        # @param writable [Boolean, Hash] (false) [Hash: on: :create | :update] model must declare accepts_nested_attributes_for
+        #   The inclusion strategy.
+        # @param writable [Boolean, Hash] (false) [Hash: on: :create | :update]
+        #   Whether the association is writable.
         # @param filterable [Boolean] (false)
+        #   Whether the association is filterable.
         # @param sortable [Boolean] (false)
-        # @param nullable [Boolean, nil] (nil) defaults to false
+        #   Whether the association is sortable.
+        # @param nullable [Boolean, nil] (nil)
+        #   Whether the value can be null.
         # @param description [String, nil] (nil)
+        #   The description for documentation.
         # @param example [Object, nil] (nil)
+        #   An example value for documentation.
         # @param deprecated [Boolean] (false)
+        #   Whether the association is deprecated.
         # @return [void]
         #
         # @example
@@ -274,17 +301,29 @@ module Apiwork
         # Defines a has_many association for serialization.
         #
         # @param name [Symbol]
-        # @param allow_destroy [Boolean] (false) auto-detected from nested_attributes_options
-        # @param representation [Class<Representation::Base>, nil] (nil) auto-detected from association name
+        #   The association name.
+        # @param allow_destroy [Boolean] (false)
+        #   Whether nested records can be destroyed. Auto-detected from model nested_attributes_options.
+        # @param representation [Class<Representation::Base>, nil] (nil)
+        #   The representation class. If nil, auto-detected from association.
         # @param polymorphic [Array, Hash, nil] (nil)
+        #   The polymorphic representation classes.
         # @param include [Symbol] (:optional) [:always, :optional]
-        # @param writable [Boolean, Hash] (false) [Hash: on: :create | :update] model must declare accepts_nested_attributes_for
+        #   The inclusion strategy.
+        # @param writable [Boolean, Hash] (false) [Hash: on: :create | :update]
+        #   Whether the association is writable.
         # @param filterable [Boolean] (false)
+        #   Whether the association is filterable.
         # @param sortable [Boolean] (false)
-        # @param nullable [Boolean, nil] (nil) defaults to false
+        #   Whether the association is sortable.
+        # @param nullable [Boolean, nil] (nil)
+        #   Whether the value can be null.
         # @param description [String, nil] (nil)
+        #   The description for documentation.
         # @param example [Object, nil] (nil)
+        #   An example value for documentation.
         # @param deprecated [Boolean] (false)
+        #   Whether the association is deprecated.
         # @return [void]
         # @see #has_one
         #
@@ -331,16 +370,27 @@ module Apiwork
         # Nullability is auto-detected from the foreign key column.
         #
         # @param name [Symbol]
-        # @param representation [Class<Representation::Base>, nil] (nil) auto-detected from association name
+        #   The association name.
+        # @param representation [Class<Representation::Base>, nil] (nil)
+        #   The representation class. If nil, auto-detected from association.
         # @param polymorphic [Array, Hash, nil] (nil)
+        #   The polymorphic representation classes.
         # @param include [Symbol] (:optional) [:always, :optional]
-        # @param writable [Boolean, Hash] (false) [Hash: on: :create | :update] model must declare accepts_nested_attributes_for
+        #   The inclusion strategy.
+        # @param writable [Boolean, Hash] (false) [Hash: on: :create | :update]
+        #   Whether the association is writable.
         # @param filterable [Boolean] (false)
+        #   Whether the association is filterable.
         # @param sortable [Boolean] (false)
-        # @param nullable [Boolean, nil] (nil) auto-detected from foreign key column
+        #   Whether the association is sortable.
+        # @param nullable [Boolean, nil] (nil)
+        #   Whether the value can be null. If nil, auto-detected from foreign key column.
         # @param description [String, nil] (nil)
+        #   The description for documentation.
         # @param example [Object, nil] (nil)
+        #   An example value for documentation.
         # @param deprecated [Boolean] (false)
+        #   Whether the association is deprecated.
         # @return [void]
         # @see #has_one
         #

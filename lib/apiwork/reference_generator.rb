@@ -187,7 +187,7 @@ module Apiwork
     def parse_param_description(text)
       return { default: nil, description: nil, values: nil, values_type: nil } if text.blank?
 
-      match = text.match(/\A(?:\(([^)]+)\))?\s*(?:\[(?:(\w+):\s*)?([^\]]+)\])?\s*(.*)\z/)
+      match = text.match(/\A(?:\(([^)]+)\))?\s*(?:\[(?:(\w+):\s*)?([^\]]+)\])?\s*(.*)\z/m)
       {
         default: match[1],
         description: match[4].presence,
