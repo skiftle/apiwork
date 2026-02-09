@@ -107,7 +107,7 @@ module Apiwork
         # Auto-detected from model name when not set. Use {.root_key} to retrieve.
         #
         # @param singular [String, Symbol]
-        # @param plural [String, Symbol] (default: singular.pluralize)
+        # @param plural [String, Symbol] (singular.pluralize)
         # @return [void]
         # @see .root_key
         #

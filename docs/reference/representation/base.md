@@ -467,7 +467,7 @@ Auto-detected from model name when not set. Use [.root_key](#root-key) to retrie
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `singular` | `String`, `Symbol` |  |  |
-| `plural` | `String`, `Symbol` | `default: singular.pluralize` |  |
+| `plural` | `String`, `Symbol` | `singular.pluralize` |  |
 
 **Returns**
 

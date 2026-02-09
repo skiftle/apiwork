@@ -126,7 +126,7 @@ Includes previously defined concerns.
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `concern_names` | `Array<Symbol>` |  | concern names to include |
-| `options` | `Hash` |  | options passed to the concern |
+| `options` | `Hash` | `{}` | options passed to the concern |
 
 **Returns**
 
@@ -334,15 +334,15 @@ Default actions: :show, :create, :update, :destroy.
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `resource_name` | `Symbol` |  | resource name (singular) |
-| `concerns` | `Array<Symbol>` |  | concerns to include |
-| `constraints` | `Hash`, `Proc` |  | route constraints |
-| `contract` | `String` |  | custom contract path |
-| `controller` | `String` |  | custom controller path |
-| `defaults` | `Hash` |  | default route parameters |
-| `except` | `Array<Symbol>` |  | actions to exclude |
-| `only` | `Array<Symbol>` |  | only these CRUD actions |
-| `param` | `Symbol` |  | custom ID parameter |
-| `path` | `String` |  | custom URL segment |
+| `concerns` | `Array<Symbol>`, `nil` | `nil` | concerns to include |
+| `constraints` | `Hash`, `Proc`, `nil` | `nil` | route constraints |
+| `contract` | `String`, `nil` | `nil` | custom contract path |
+| `controller` | `String`, `nil` | `nil` | custom controller path |
+| `defaults` | `Hash`, `nil` | `nil` | default route parameters |
+| `except` | `Array<Symbol>`, `nil` | `nil` | actions to exclude |
+| `only` | `Array<Symbol>`, `nil` | `nil` | only these CRUD actions |
+| `param` | `Symbol`, `nil` | `nil` | custom ID parameter |
+| `path` | `String`, `nil` | `nil` | custom URL segment |
 
 **Returns**
 
@@ -383,15 +383,15 @@ Default actions: :index, :show, :create, :update, :destroy.
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `resource_name` | `Symbol` |  | resource name (plural) |
-| `concerns` | `Array<Symbol>` |  | concerns to include |
-| `constraints` | `Hash`, `Proc` |  | route constraints |
-| `contract` | `String` |  | custom contract path |
-| `controller` | `String` |  | custom controller path |
-| `defaults` | `Hash` |  | default route parameters |
-| `except` | `Array<Symbol>` |  | actions to exclude |
-| `only` | `Array<Symbol>` |  | only these CRUD actions |
-| `param` | `Symbol` |  | custom ID parameter |
-| `path` | `String` |  | custom URL segment |
+| `concerns` | `Array<Symbol>`, `nil` | `nil` | concerns to include |
+| `constraints` | `Hash`, `Proc`, `nil` | `nil` | route constraints |
+| `contract` | `String`, `nil` | `nil` | custom contract path |
+| `controller` | `String`, `nil` | `nil` | custom controller path |
+| `defaults` | `Hash`, `nil` | `nil` | default route parameters |
+| `except` | `Array<Symbol>`, `nil` | `nil` | actions to exclude |
+| `only` | `Array<Symbol>`, `nil` | `nil` | only these CRUD actions |
+| `param` | `Symbol`, `nil` | `nil` | custom ID parameter |
+| `path` | `String`, `nil` | `nil` | custom URL segment |
 
 **Returns**
 
@@ -431,7 +431,7 @@ Applies options to all resources defined in the block.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `options` | `Hash` |  | options to merge into nested resources |
+| `options` | `Hash` | `{}` | options to merge into nested resources |
 
 **Returns**
 

@@ -47,7 +47,7 @@ Defines an array field with element type.
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | field name |
-| `options` | `Hash` |  | additional field options |
+| `options` | `Hash` | `{}` | additional field options |
 
 **Returns**
 

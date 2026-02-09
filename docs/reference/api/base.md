@@ -356,15 +356,15 @@ like user profile or application settings.
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | resource name (singular) |
-| `concerns` | `Array<Symbol>` |  | concerns to include |
-| `constraints` | `Hash`, `Proc` |  | route constraints (regex, lambdas) |
-| `contract` | `String` |  | custom contract path |
-| `controller` | `String` |  | custom controller path |
-| `defaults` | `Hash` |  | default parameters for routes |
-| `except` | `Array<Symbol>` |  | exclude specific CRUD actions |
-| `only` | `Array<Symbol>` |  | limit to specific CRUD actions |
-| `param` | `Symbol` |  | custom parameter name for ID |
-| `path` | `String` |  | custom URL path segment |
+| `concerns` | `Array<Symbol>`, `nil` | `nil` | concerns to include |
+| `constraints` | `Hash`, `Proc`, `nil` | `nil` | route constraints (regex, lambdas) |
+| `contract` | `String`, `nil` | `nil` | custom contract path |
+| `controller` | `String`, `nil` | `nil` | custom controller path |
+| `defaults` | `Hash`, `nil` | `nil` | default parameters for routes |
+| `except` | `Array<Symbol>`, `nil` | `nil` | exclude specific CRUD actions |
+| `only` | `Array<Symbol>`, `nil` | `nil` | limit to specific CRUD actions |
+| `param` | `Symbol`, `nil` | `nil` | custom parameter name for ID |
+| `path` | `String`, `nil` | `nil` | custom URL path segment |
 
 **Returns**
 
@@ -407,15 +407,15 @@ Nested resources and custom actions can be defined in the block.
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | resource name (plural) |
-| `concerns` | `Array<Symbol>` |  | concerns to include |
-| `constraints` | `Hash`, `Proc` |  | route constraints (regex, lambdas) |
-| `contract` | `String` |  | custom contract path |
-| `controller` | `String` |  | custom controller path |
-| `defaults` | `Hash` |  | default parameters for routes |
-| `except` | `Array<Symbol>` |  | exclude specific CRUD actions |
-| `only` | `Array<Symbol>` |  | limit to specific CRUD actions |
-| `param` | `Symbol` |  | custom parameter name for ID |
-| `path` | `String` |  | custom URL path segment |
+| `concerns` | `Array<Symbol>`, `nil` | `nil` | concerns to include |
+| `constraints` | `Hash`, `Proc`, `nil` | `nil` | route constraints (regex, lambdas) |
+| `contract` | `String`, `nil` | `nil` | custom contract path |
+| `controller` | `String`, `nil` | `nil` | custom controller path |
+| `defaults` | `Hash`, `nil` | `nil` | default parameters for routes |
+| `except` | `Array<Symbol>`, `nil` | `nil` | exclude specific CRUD actions |
+| `only` | `Array<Symbol>`, `nil` | `nil` | limit to specific CRUD actions |
+| `param` | `Symbol`, `nil` | `nil` | custom parameter name for ID |
+| `path` | `String`, `nil` | `nil` | custom URL path segment |
 
 **Returns**
 
@@ -497,7 +497,7 @@ constraints, controller, param, path.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `options` | `Hash` |  | options to apply to nested resources |
+| `options` | `Hash`, `nil` | `nil` | options to apply to nested resources |
 
 **Returns**
 

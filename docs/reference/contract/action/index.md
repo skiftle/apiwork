@@ -70,7 +70,7 @@ Supports Markdown formatting.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `String` |  | description text (optional) |
+| `value` | `String`, `nil` | `nil` | description text |
 
 **Returns**
 
@@ -98,7 +98,7 @@ The operation ID for this action.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `String` |  | custom operation ID (optional) |
+| `value` | `String`, `nil` | `nil` | custom operation ID |
 
 **Returns**
 
@@ -163,7 +163,7 @@ Use the block to define query parameters and request body.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `replace` | `Boolean` |  | replace inherited definition (default: false) |
+| `replace` | `Boolean` | `false` | replace inherited definition |
 
 **Returns**
 
@@ -217,7 +217,7 @@ Use the block to define response body or declare no_content.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `replace` | `Boolean` |  | replace inherited definition (default: false) |
+| `replace` | `Boolean` | `false` | replace inherited definition |
 
 **Returns**
 
@@ -275,7 +275,7 @@ Used in generated specs as the operation summary.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `String` |  | summary text (optional) |
+| `value` | `String`, `nil` | `nil` | summary text |
 
 **Returns**
 

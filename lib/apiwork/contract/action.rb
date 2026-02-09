@@ -30,7 +30,7 @@ module Apiwork
       #
       # Used in generated specs as the operation summary.
       #
-      # @param value [String] summary text (optional)
+      # @param value [String, nil] (nil) summary text
       # @return [String, nil]
       #
       # @example
@@ -49,7 +49,7 @@ module Apiwork
       # Used in generated specs as the operation description.
       # Supports Markdown formatting.
       #
-      # @param value [String] description text (optional)
+      # @param value [String, nil] (nil) description text
       # @return [String, nil]
       #
       # @example
@@ -103,7 +103,7 @@ module Apiwork
       # @api public
       # The operation ID for this action.
       #
-      # @param value [String] custom operation ID (optional)
+      # @param value [String, nil] (nil) custom operation ID
       # @return [String, nil]
       #
       # @example
@@ -153,7 +153,7 @@ module Apiwork
       #
       # Use the block to define query parameters and request body.
       #
-      # @param replace [Boolean] replace inherited definition (default: false)
+      # @param replace [Boolean] (false) replace inherited definition
       # @yield block for defining query and body (instance_eval style)
       # @yieldparam request [Action::Request]
       # @return [Action::Request]
@@ -198,7 +198,7 @@ module Apiwork
       #
       # Use the block to define response body or declare no_content.
       #
-      # @param replace [Boolean] replace inherited definition (default: false)
+      # @param replace [Boolean] (false) replace inherited definition
       # @yield block for defining body or no_content (instance_eval style)
       # @yieldparam response [Action::Response]
       # @return [Action::Response]

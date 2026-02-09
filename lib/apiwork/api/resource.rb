@@ -154,15 +154,15 @@ module Apiwork
       # Default actions: :index, :show, :create, :update, :destroy.
       #
       # @param resource_name [Symbol] resource name (plural)
-      # @param concerns [Array<Symbol>] concerns to include
-      # @param constraints [Hash, Proc] route constraints
-      # @param contract [String] custom contract path
-      # @param controller [String] custom controller path
-      # @param defaults [Hash] default route parameters
-      # @param except [Array<Symbol>] actions to exclude
-      # @param only [Array<Symbol>] only these CRUD actions
-      # @param param [Symbol] custom ID parameter
-      # @param path [String] custom URL segment
+      # @param concerns [Array<Symbol>, nil] (nil) concerns to include
+      # @param constraints [Hash, Proc, nil] (nil) route constraints
+      # @param contract [String, nil] (nil) custom contract path
+      # @param controller [String, nil] (nil) custom controller path
+      # @param defaults [Hash, nil] (nil) default route parameters
+      # @param except [Array<Symbol>, nil] (nil) actions to exclude
+      # @param only [Array<Symbol>, nil] (nil) only these CRUD actions
+      # @param param [Symbol, nil] (nil) custom ID parameter
+      # @param path [String, nil] (nil) custom URL segment
       # @yield block for nested resources and custom actions
       # @yieldparam resource [Resource]
       # @return [Hash{Symbol => Resource}]
@@ -221,15 +221,15 @@ module Apiwork
       # Default actions: :show, :create, :update, :destroy.
       #
       # @param resource_name [Symbol] resource name (singular)
-      # @param concerns [Array<Symbol>] concerns to include
-      # @param constraints [Hash, Proc] route constraints
-      # @param contract [String] custom contract path
-      # @param controller [String] custom controller path
-      # @param defaults [Hash] default route parameters
-      # @param except [Array<Symbol>] actions to exclude
-      # @param only [Array<Symbol>] only these CRUD actions
-      # @param param [Symbol] custom ID parameter
-      # @param path [String] custom URL segment
+      # @param concerns [Array<Symbol>, nil] (nil) concerns to include
+      # @param constraints [Hash, Proc, nil] (nil) route constraints
+      # @param contract [String, nil] (nil) custom contract path
+      # @param controller [String, nil] (nil) custom controller path
+      # @param defaults [Hash, nil] (nil) default route parameters
+      # @param except [Array<Symbol>, nil] (nil) actions to exclude
+      # @param only [Array<Symbol>, nil] (nil) only these CRUD actions
+      # @param param [Symbol, nil] (nil) custom ID parameter
+      # @param path [String, nil] (nil) custom URL segment
       # @yield block for nested resources and custom actions
       # @yieldparam resource [Resource]
       # @return [void]
@@ -281,7 +281,7 @@ module Apiwork
       # @api public
       # Applies options to all resources defined in the block.
       #
-      # @param options [Hash] options to merge into nested resources
+      # @param options [Hash] ({}) options to merge into nested resources
       # @yield block with resource definitions
       # @yieldparam resource [Resource]
       # @return [void]
@@ -463,7 +463,7 @@ module Apiwork
       # Includes previously defined concerns.
       #
       # @param concern_names [Array<Symbol>] concern names to include
-      # @param options [Hash] options passed to the concern
+      # @param options [Hash] ({}) options passed to the concern
       # @return [void]
       #
       # @example

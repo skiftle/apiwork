@@ -132,7 +132,7 @@ module Apiwork
       # Defines an array field with element type.
       #
       # @param name [Symbol] field name
-      # @param options [Hash] additional field options
+      # @param options [Hash] ({}) additional field options
       # @yield block for defining element type
       # @yieldparam element [API::Element]
       # @return [void]

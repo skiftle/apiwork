@@ -95,8 +95,8 @@ module Apiwork
     # is applied according to the API's {API::Base.key_format}.
     #
     # @param data [Object, Array] the record(s) to expose
-    # @param meta [Hash] metadata to include in response (pagination, etc.)
-    # @param status [Symbol, Integer] the HTTP status (default: :ok, or :created for create action)
+    # @param meta [Hash] ({}) metadata to include in response (pagination, etc.)
+    # @param status [Symbol, Integer, nil] (nil) the HTTP status (:ok, or :created for create action)
     # @see Representation::Base
     #
     # @example Expose a single record
@@ -154,9 +154,9 @@ module Apiwork
     # Defaults to I18n lookup when detail is not provided.
     #
     # @param code_key [Symbol] registered error code (:not_found, :unauthorized, etc.)
-    # @param detail [String] custom error message (optional, uses I18n lookup)
-    # @param path [Array<String,Symbol>] the JSON path to the error (optional)
-    # @param meta [Hash] additional metadata to include (optional)
+    # @param detail [String, nil] (nil) custom error message (uses I18n lookup if nil)
+    # @param path [Array<String, Symbol>, nil] (nil) the JSON path to the error
+    # @param meta [Hash] ({}) additional metadata to include
     # @see ErrorCode
     # @see Issue
     #

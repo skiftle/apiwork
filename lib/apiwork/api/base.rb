@@ -327,15 +327,15 @@ module Apiwork
         # Nested resources and custom actions can be defined in the block.
         #
         # @param name [Symbol] resource name (plural)
-        # @param concerns [Array<Symbol>] concerns to include
-        # @param constraints [Hash, Proc] route constraints (regex, lambdas)
-        # @param contract [String] custom contract path
-        # @param controller [String] custom controller path
-        # @param defaults [Hash] default parameters for routes
-        # @param except [Array<Symbol>] exclude specific CRUD actions
-        # @param only [Array<Symbol>] limit to specific CRUD actions
-        # @param param [Symbol] custom parameter name for ID
-        # @param path [String] custom URL path segment
+        # @param concerns [Array<Symbol>, nil] (nil) concerns to include
+        # @param constraints [Hash, Proc, nil] (nil) route constraints (regex, lambdas)
+        # @param contract [String, nil] (nil) custom contract path
+        # @param controller [String, nil] (nil) custom controller path
+        # @param defaults [Hash, nil] (nil) default parameters for routes
+        # @param except [Array<Symbol>, nil] (nil) exclude specific CRUD actions
+        # @param only [Array<Symbol>, nil] (nil) limit to specific CRUD actions
+        # @param param [Symbol, nil] (nil) custom parameter name for ID
+        # @param path [String, nil] (nil) custom URL path segment
         # @yield block for nested resources and custom actions
         # @yieldparam resource [Resource]
         # @return [void]
@@ -386,15 +386,15 @@ module Apiwork
         # like user profile or application settings.
         #
         # @param name [Symbol] resource name (singular)
-        # @param concerns [Array<Symbol>] concerns to include
-        # @param constraints [Hash, Proc] route constraints (regex, lambdas)
-        # @param contract [String] custom contract path
-        # @param controller [String] custom controller path
-        # @param defaults [Hash] default parameters for routes
-        # @param except [Array<Symbol>] exclude specific CRUD actions
-        # @param only [Array<Symbol>] limit to specific CRUD actions
-        # @param param [Symbol] custom parameter name for ID
-        # @param path [String] custom URL path segment
+        # @param concerns [Array<Symbol>, nil] (nil) concerns to include
+        # @param constraints [Hash, Proc, nil] (nil) route constraints (regex, lambdas)
+        # @param contract [String, nil] (nil) custom contract path
+        # @param controller [String, nil] (nil) custom controller path
+        # @param defaults [Hash, nil] (nil) default parameters for routes
+        # @param except [Array<Symbol>, nil] (nil) exclude specific CRUD actions
+        # @param only [Array<Symbol>, nil] (nil) limit to specific CRUD actions
+        # @param param [Symbol, nil] (nil) custom parameter name for ID
+        # @param path [String, nil] (nil) custom URL path segment
         # @yield block for nested resources and custom actions
         # @yieldparam resource [Resource]
         # @return [void]
@@ -477,7 +477,7 @@ module Apiwork
         # Accepts the same options as {#resources}: only, except, defaults,
         # constraints, controller, param, path.
         #
-        # @param options [Hash] options to apply to nested resources
+        # @param options [Hash, nil] (nil) options to apply to nested resources
         # @yield block containing resource definitions
         # @yieldparam resource [Resource]
         # @return [void]

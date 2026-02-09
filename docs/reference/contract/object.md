@@ -46,7 +46,7 @@ Defines an array param with element type.
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | param name |
-| `options` | `Hash` |  | additional param options |
+| `options` | `Hash` | `{}` | additional param options |
 
 **Returns**
 

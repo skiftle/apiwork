@@ -93,7 +93,7 @@ in controllers. Built-in codes (400-504) are pre-registered.
 |------|------|---------|-------------|
 | `key` | `Symbol` |  | unique identifier for the error code |
 | `status` | `Integer` |  | the HTTP status code (must be 400-599) |
-| `attach_path` | `Boolean` |  | include request path in error response (default: false) |
+| `attach_path` | `Boolean` | `false` | include request path in error response |
 
 **Returns**
 

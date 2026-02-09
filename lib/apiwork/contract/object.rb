@@ -153,7 +153,7 @@ module Apiwork
       # Defines an array param with element type.
       #
       # @param name [Symbol] param name
-      # @param options [Hash] additional param options
+      # @param options [Hash] ({}) additional param options
       # @yield block for defining element type
       # @yieldparam element [Contract::Element]
       # @return [void]
