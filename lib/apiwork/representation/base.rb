@@ -3,20 +3,25 @@
 module Apiwork
   module Representation
     # @api public
-    # Base class for resource representations.
+    # Base class for representations.
     #
-    # Representations define attributes and associations for serialization.
-    # Types and nullability are auto-detected from the model's database columns.
+    # Defines how an ActiveRecord model is represented in the API. Drives contracts
+    # and runtime behavior. Sensible defaults are auto-detected from database columns
+    # but can be overridden.
     #
     # @example Basic representation
     #   class InvoiceRepresentation < Apiwork::Representation::Base
     #     attribute :id
     #     attribute :title
-    #     attribute :amount, type: :decimal
     #     attribute :status, filterable: true, sortable: true
     #
     #     belongs_to :customer
-    #     has_many :line_items
+    #     has_many :items
+    #   end
+    #
+    # @example Contract
+    #   class InvoiceContract < Apiwork::Contract::Base
+    #     representation InvoiceRepresentation
     #   end
     #
     # @!scope class
@@ -35,7 +40,7 @@ module Apiwork
     #
     # @!method abstract?
     #   @api public
-    #   Returns whether this representation is abstract.
+    #   Whether this representation is abstract.
     #   @return [Boolean]
     class Base
       include Abstractable
@@ -57,6 +62,8 @@ module Apiwork
       # @!method self.inheritance
       #   @api public
       #   The inheritance configuration for this representation.
+      #
+      #   Auto-configured when the model uses STI and representation classes mirror the model hierarchy.
       #
       #   @return [Representation::Inheritance, nil]
       class_attribute :inheritance, default: nil, instance_accessor: false
@@ -86,6 +93,7 @@ module Apiwork
         # {.model_class} to retrieve.
         #
         # @param value [Class<ActiveRecord::Base>]
+        #   The model class.
         # @return [void]
         # @raise [ArgumentError] if value is not a Class
         # @see .model_class
@@ -107,7 +115,9 @@ module Apiwork
         # Auto-detected from model name when not set. Use {.root_key} to retrieve.
         #
         # @param singular [String, Symbol]
+        #   The singular root key.
         # @param plural [String, Symbol] (singular.pluralize)
+        #   The plural root key.
         # @return [void]
         # @see .root_key
         #
@@ -120,7 +130,7 @@ module Apiwork
         # @api public
         # Configures adapter options for this representation.
         #
-        # Overrides API-level adapter settings.
+        # Overrides API-level options.
         #
         # @yieldparam adapter [Configuration]
         # @return [void]
@@ -174,13 +184,13 @@ module Apiwork
         # @param max [Integer, nil] (nil)
         #   The maximum. For `:array`: size. For `:decimal`, `:integer`, `:number`: value. For `:string`: length.
         # @param description [String, nil] (nil)
-        #   The description for documentation.
+        #   The description. Metadata included in exports.
         # @param example [Object, nil] (nil)
-        #   An example value for documentation.
+        #   The example. Metadata included in exports.
         # @param format [Symbol, nil] (nil) [:date, :datetime, :double, :email, :float, :hostname, :int32, :int64, :ipv4, :ipv6, :password, :url, :uuid]
         #   The format hint. Valid formats by type: `:decimal`/`:number` (`:double`, `:float`), `:integer` (`:int32`, `:int64`), `:string` (`:date`, `:datetime`, `:email`, `:hostname`, `:ipv4`, `:ipv6`, `:password`, `:url`, `:uuid`).
         # @param deprecated [Boolean] (false)
-        #   Whether deprecated.
+        #   Whether deprecated. Metadata included in exports.
         # @yieldparam element [Representation::Element]
         # @return [void]
         #
@@ -251,11 +261,11 @@ module Apiwork
         # @param nullable [Boolean, nil] (nil)
         #   Whether the value can be `null`.
         # @param description [String, nil] (nil)
-        #   The description for documentation.
+        #   The description. Metadata included in exports.
         # @param example [Object, nil] (nil)
-        #   An example value for documentation.
+        #   The example. Metadata included in exports.
         # @param deprecated [Boolean] (false)
-        #   Whether deprecated.
+        #   Whether deprecated. Metadata included in exports.
         # @return [void]
         #
         # @example Basic
@@ -316,11 +326,11 @@ module Apiwork
         # @param nullable [Boolean, nil] (nil)
         #   Whether the value can be `null`.
         # @param description [String, nil] (nil)
-        #   The description for documentation.
+        #   The description. Metadata included in exports.
         # @param example [Object, nil] (nil)
-        #   An example value for documentation.
+        #   The example. Metadata included in exports.
         # @param deprecated [Boolean] (false)
-        #   Whether deprecated.
+        #   Whether deprecated. Metadata included in exports.
         # @return [void]
         # @see #has_one
         #
@@ -384,11 +394,11 @@ module Apiwork
         # @param nullable [Boolean, nil] (nil)
         #   Whether the value can be `null`. If `nil`, auto-detected from foreign key column.
         # @param description [String, nil] (nil)
-        #   The description for documentation.
+        #   The description. Metadata included in exports.
         # @param example [Object, nil] (nil)
-        #   An example value for documentation.
+        #   The example. Metadata included in exports.
         # @param deprecated [Boolean] (false)
-        #   Whether deprecated.
+        #   Whether deprecated. Metadata included in exports.
         # @return [void]
         # @see #has_one
         #
@@ -439,6 +449,7 @@ module Apiwork
         # Overrides the model's default type name for STI and polymorphic types.
         #
         # @param value [String, Symbol, nil] (nil)
+        #   The type name override.
         # @return [String, nil]
         # @see .sti_name
         # @see .polymorphic_name
@@ -452,6 +463,8 @@ module Apiwork
         end
 
         # @api public
+        # The STI name for this representation.
+        #
         # Uses {.type_name} if set, otherwise the model's `sti_name`.
         #
         # @return [String]
@@ -460,6 +473,8 @@ module Apiwork
         end
 
         # @api public
+        # The polymorphic name for this representation.
+        #
         # Uses {.type_name} if set, otherwise the model's `polymorphic_name`.
         #
         # @return [String]
@@ -478,7 +493,10 @@ module Apiwork
         # @api public
         # The description for this representation.
         #
+        # Metadata included in exports.
+        #
         # @param value [String, nil] (nil)
+        #   The description.
         # @return [String, nil]
         #
         # @example
@@ -492,6 +510,8 @@ module Apiwork
         # @api public
         # Marks this representation as deprecated.
         #
+        # Metadata included in exports.
+        #
         # @return [void]
         #
         # @example
@@ -503,7 +523,10 @@ module Apiwork
         # @api public
         # The example value for this representation.
         #
+        # Metadata included in exports.
+        #
         # @param value [Hash, nil] (nil)
+        #   The example.
         # @return [Hash, nil]
         #
         # @example
@@ -518,13 +541,28 @@ module Apiwork
         # Serializes a record or collection to JSON-ready hashes.
         #
         # @param record_or_collection [ActiveRecord::Base, Array<ActiveRecord::Base>]
+        #   The record or collection to serialize.
         # @param context [Hash] ({})
+        #   The serialization context.
         # @param include [Symbol, Array, Hash, nil] (nil)
+        #   The associations to include.
         # @return [Hash, Array<Hash>]
         #
-        # @example
+        # @example Basic
         #   InvoiceRepresentation.serialize(invoice)
-        #   InvoiceRepresentation.serialize(invoice, include: [:customer])
+        #   # => { id: 1, total: 99.00, status: 'paid' }
+        #
+        # @example Collection
+        #   InvoiceRepresentation.serialize(invoices)
+        #   # => [{ id: 1, ... }, { id: 2, ... }]
+        #
+        # @example With associations
+        #   InvoiceRepresentation.serialize(invoice, include: [:customer, :items])
+        #   # => { id: 1, ..., customer: { id: 1, name: 'Acme' }, items: [...] }
+        #
+        # @example Nested associations
+        #   InvoiceRepresentation.serialize(invoice, include: { customer: [:address] })
+        #   # => { id: 1, ..., customer: { id: 1, name: 'Acme', address: { ... } } }
         def serialize(record_or_collection, context: {}, include: nil)
           if record_or_collection.is_a?(Enumerable)
             record_or_collection.map { |record| serialize_record(record, context:, include:) }
@@ -537,6 +575,7 @@ module Apiwork
         # Deserializes using this representation's decode transformers.
         #
         # @param hash_or_array [Hash, Array<Hash>]
+        #   The hash or array of hashes to deserialize.
         # @return [Hash, Array<Hash>]
         #
         # @example
@@ -550,6 +589,8 @@ module Apiwork
         end
 
         # @api public
+        # The root key for this representation.
+        #
         # Derived from model name when {.root} is not set.
         #
         # @return [RootKey]
@@ -563,6 +604,8 @@ module Apiwork
         end
 
         # @api public
+        # The model class for this representation.
+        #
         # Auto-detected from representation name or set via {.model}.
         #
         # @return [Class<ActiveRecord::Base>]

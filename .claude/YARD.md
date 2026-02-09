@@ -26,11 +26,15 @@ Descriptions are mechanical. Category + formula + tables = description.
 ```
 1. Ends with `?`           → Predicate
 2. Ends with `!`           → Mutator
-3. Takes `&block`          → DSL/Builder
+3. Takes `&block`          → DSL/Builder OR Configuration
 4. Starts with `find`      → Finder
 5. Starts with `to_`       → Converter
 6. Otherwise               → Getter
 ```
+
+**DSL/Builder vs Configuration:**
+- DSL/Builder: Defines/creates something (attribute, action, type)
+- Configuration: Sets behavior/options (adapter, pagination)
 
 ---
 
@@ -49,6 +53,7 @@ Descriptions are mechanical. Category + formula + tables = description.
 | DSL/Builder (single return) | "The [context] [method]." |
 | DSL/Builder (collection) | "Defines a [method] for [context]." |
 | DSL/Builder (with name param) | "Defines a [method] for [context]." |
+| Configuration | "Configures [what] for this [class]." |
 
 ---
 
@@ -394,8 +399,32 @@ Description always on a separate line:
 | Value (auto-detect) | "The [thing]. If \`nil\`, auto-detected from [source]." | "The type. If \`nil\` and name maps to a database column, auto-detected from column type." |
 | Value (conditional) | "The [thing]. If \`nil\` and [condition], auto-detected from [source]." | "The type. If \`nil\` and name maps to a database column, auto-detected from column type." |
 | Function | "Transform for [purpose]." | "Transform for serialization." |
-| Metadata | "The [thing] for documentation." | "The description for documentation." |
-| Metadata (deprecated) | "Whether deprecated." | "Whether deprecated." |
+
+### Metadata
+
+Parameters and methods that exist purely for exports, not runtime behavior.
+
+**Metadata parameters** on DSL methods (`attribute`, `has_one`, `has_many`, `belongs_to`):
+
+| Parameter | Description |
+|-----------|-------------|
+| `description` | "The description. Metadata included in exports." |
+| `example` | "The example. Metadata included in exports." |
+| `deprecated` | "Whether deprecated. Metadata included in exports." |
+
+**Metadata methods** (standalone setters like `description(value)`, `example(value)`):
+
+Standard formula + "Metadata included in exports."
+
+```ruby
+# @api public
+# The description for this representation.
+#
+# Metadata included in exports.
+#
+# @param value [String, nil] (nil)
+#   The description.
+```
 
 ### Type-dependent Parameters
 
