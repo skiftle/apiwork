@@ -154,9 +154,9 @@ module Apiwork
         # @param enum [Array, nil] (nil)
         #   The allowed values. If `nil`, auto-detected from Rails enum definition.
         # @param optional [Boolean, nil] (nil)
-        #   Whether the attribute is optional for writes. If `nil`, auto-detected from column default or NULL constraint.
+        #   Whether the attribute is optional for writes. If `nil` and name maps to a database column, auto-detected from column default or NULL constraint.
         # @param nullable [Boolean, nil] (nil)
-        #   Whether the value can be `null`. If `nil`, auto-detected from column NULL constraint.
+        #   Whether the value can be `null`. If `nil` and name maps to a database column, auto-detected from column NULL constraint.
         # @param filterable [Boolean] (false)
         #   Whether the attribute is filterable.
         # @param sortable [Boolean] (false)
@@ -168,17 +168,17 @@ module Apiwork
         # @param decode [Proc, nil] (nil)
         #   Transform for deserialization.
         # @param empty [Boolean, nil] (nil)
-        #   Whether to use empty string instead of `null`. Serializes `nil` as `""` and deserializes `""` as `nil`.
+        #   Whether to use empty string instead of `null`. Serializes `nil` as `""` and deserializes `""` as `nil`. Only valid for `:string` type.
         # @param min [Integer, nil] (nil)
-        #   The minimum value or length.
+        #   The minimum. For `:array`: size. For `:decimal`, `:integer`, `:number`: value. For `:string`: length.
         # @param max [Integer, nil] (nil)
-        #   The maximum value or length.
+        #   The maximum. For `:array`: size. For `:decimal`, `:integer`, `:number`: value. For `:string`: length.
         # @param description [String, nil] (nil)
         #   The description for documentation.
         # @param example [Object, nil] (nil)
         #   An example value for documentation.
         # @param format [Symbol, nil] (nil) [:date, :datetime, :double, :email, :float, :hostname, :int32, :int64, :ipv4, :ipv6, :password, :url, :uuid]
-        #   The format hint for validation.
+        #   The format hint. Valid formats by type: `:decimal`/`:number` (`:double`, `:float`), `:integer` (`:int32`, `:int64`), `:string` (`:date`, `:datetime`, `:email`, `:hostname`, `:ipv4`, `:ipv6`, `:password`, `:url`, `:uuid`).
         # @param deprecated [Boolean] (false)
         #   Whether deprecated.
         # @yieldparam element [Representation::Element]

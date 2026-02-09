@@ -397,6 +397,24 @@ Description always on a separate line:
 | Metadata | "The [thing] for documentation." | "The description for documentation." |
 | Metadata (deprecated) | "Whether deprecated." | "Whether deprecated." |
 
+### Type-dependent Parameters
+
+Parameters whose behavior or validity depends on type.
+
+| Scenario | Pattern | Example |
+|----------|---------|---------|
+| Only valid for one type | "... Only valid for `:type`." | "Only valid for `:string` type." |
+| Different behavior per type | "For `:type`: [behavior]." | "For `:array`: size. For `:string`: length." |
+| Valid values vary by type | "Valid [thing] by type: `:type` (`:values`), ..." | "Valid formats by type: `:integer` (`:int32`, `:int64`), `:string` (`:email`, `:uuid`)." |
+
+**Rules:**
+
+- List ALL applicable types
+- Types in alphabetical order (`:array` before `:string`)
+- Values within each type in alphabetical order
+- Use backticks for type symbols
+- Keep compact: "For `:string`: length." not "For `:string` type, this represents the length."
+
 ### Rules
 
 - Capital letter at start of description

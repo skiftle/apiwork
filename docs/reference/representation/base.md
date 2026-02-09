@@ -129,19 +129,19 @@ Defines an attribute for this representation.
 | **`name`** | `Symbol` |  | The attribute name. |
 | `type` | `Symbol<:array, :binary, :boolean, :date, :datetime, :decimal, :integer, :number, :object, :string, :time, :unknown, :uuid>`, `nil` | `nil` | The type. If `nil` and name maps to a database column, auto-detected from column type. |
 | `enum` | `Array`, `nil` | `nil` | The allowed values. If `nil`, auto-detected from Rails enum definition. |
-| `optional` | `Boolean`, `nil` | `nil` | Whether the attribute is optional for writes. If `nil`, auto-detected from column default or NULL constraint. |
-| `nullable` | `Boolean`, `nil` | `nil` | Whether the value can be `null`. If `nil`, auto-detected from column NULL constraint. |
+| `optional` | `Boolean`, `nil` | `nil` | Whether the attribute is optional for writes. If `nil` and name maps to a database column, auto-detected from column default or NULL constraint. |
+| `nullable` | `Boolean`, `nil` | `nil` | Whether the value can be `null`. If `nil` and name maps to a database column, auto-detected from column NULL constraint. |
 | `filterable` | `Boolean` | `false` | Whether the attribute is filterable. |
 | `sortable` | `Boolean` | `false` | Whether the attribute is sortable. |
 | `writable` | `Boolean`, `Hash<on: :create \| :update>` | `false` | Whether the attribute is writable. |
 | `encode` | `Proc`, `nil` | `nil` | Transform for serialization. |
 | `decode` | `Proc`, `nil` | `nil` | Transform for deserialization. |
-| `empty` | `Boolean`, `nil` | `nil` | Whether to use empty string instead of `null`. Serializes `nil` as `""` and deserializes `""` as `nil`. |
-| `min` | `Integer`, `nil` | `nil` | The minimum value or length. |
-| `max` | `Integer`, `nil` | `nil` | The maximum value or length. |
+| `empty` | `Boolean`, `nil` | `nil` | Whether to use empty string instead of `null`. Serializes `nil` as `""` and deserializes `""` as `nil`. Only valid for `:string` type. |
+| `min` | `Integer`, `nil` | `nil` | The minimum. For `:array`: size. For `:decimal`, `:integer`, `:number`: value. For `:string`: length. |
+| `max` | `Integer`, `nil` | `nil` | The maximum. For `:array`: size. For `:decimal`, `:integer`, `:number`: value. For `:string`: length. |
 | `description` | `String`, `nil` | `nil` | The description for documentation. |
 | `example` | `Object`, `nil` | `nil` | An example value for documentation. |
-| `format` | `Symbol<:date, :datetime, :double, :email, :float, :hostname, :int32, :int64, :ipv4, :ipv6, :password, :url, :uuid>`, `nil` | `nil` | The format hint for validation. |
+| `format` | `Symbol<:date, :datetime, :double, :email, :float, :hostname, :int32, :int64, :ipv4, :ipv6, :password, :url, :uuid>`, `nil` | `nil` | The format hint. Valid formats by type: `:decimal`/`:number` (`:double`, `:float`), `:integer` (`:int32`, `:int64`), `:string` (`:date`, `:datetime`, `:email`, `:hostname`, `:ipv4`, `:ipv6`, `:password`, `:url`, `:uuid`). |
 | `deprecated` | `Boolean` | `false` | Whether deprecated. |
 
 </div>
