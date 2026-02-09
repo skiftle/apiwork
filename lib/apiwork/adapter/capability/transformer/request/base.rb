@@ -40,7 +40,7 @@ module Apiwork
               # @api public
               # The phase for this transformer.
               #
-              # @param value [Symbol, nil] :before or :after (default: :before)
+              # @param value [Symbol, nil] (nil) [:before, :after] defaults to :before when not set
               # @return [Symbol]
               def phase(value = nil)
                 @phase = value if value

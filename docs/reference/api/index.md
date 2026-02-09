@@ -137,7 +137,7 @@ The introspection data for an API.
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `path` | `String` |  | the API path |
-| `locale` | `Symbol`, `nil` |  | the locale for descriptions |
+| `locale` | `Symbol`, `nil` | `nil` | the locale for descriptions |
 
 **Returns**
 

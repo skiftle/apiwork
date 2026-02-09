@@ -41,25 +41,25 @@ module Apiwork
       # for static definitions.
       #
       # @param name [Symbol] param name
-      # @param type [Symbol, nil] param type
-      # @param as [Symbol, nil] target attribute name
-      # @param default [Object, nil] default value
-      # @param deprecated [Boolean] (default: false)
-      # @param description [String, nil] documentation description
-      # @param discriminator [Symbol, nil] discriminator param name (unions only)
-      # @param enum [Array, Symbol, nil] allowed values or enum reference
-      # @param example [Object, nil] example value
-      # @param format [Symbol, nil] format hint
-      # @param max [Integer, nil] maximum value or length
-      # @param min [Integer, nil] minimum value or length
-      # @param nullable [Boolean] (default: false)
-      # @param of [Symbol, Hash, nil] element type (arrays only)
-      # @param optional [Boolean] (default: false)
-      # @param required [Boolean] (default: false)
-      # @param shape [Contract::Object, Contract::Union, nil] pre-built shape
-      # @param store [Boolean, nil] whether to persist
-      # @param transform [Proc, nil] value transformation lambda
-      # @param value [Object, nil] literal value
+      # @param type [Symbol, nil] (nil) param type
+      # @param as [Symbol, nil] (nil) target attribute name
+      # @param default [Object, nil] (nil) default value
+      # @param deprecated [Boolean] (false)
+      # @param description [String, nil] (nil) documentation description
+      # @param discriminator [Symbol, nil] (nil) discriminator param name (unions only)
+      # @param enum [Array, Symbol, nil] (nil) allowed values or enum reference
+      # @param example [Object, nil] (nil) example value
+      # @param format [Symbol, nil] (nil) format hint
+      # @param max [Integer, nil] (nil) maximum value or length
+      # @param min [Integer, nil] (nil) minimum value or length
+      # @param nullable [Boolean] (false)
+      # @param of [Symbol, Hash, nil] (nil) element type (arrays only)
+      # @param optional [Boolean] (false)
+      # @param required [Boolean] (false)
+      # @param shape [Contract::Object, Contract::Union, nil] (nil) pre-built shape
+      # @param store [Boolean, nil] (nil) whether to persist
+      # @param transform [Proc, nil] (nil) value transformation lambda
+      # @param value [Object, nil] (nil) literal value
       # @yield block for nested structure
       # @yieldparam shape [Contract::Object, Contract::Union, Contract::Element]
       # @return [void]

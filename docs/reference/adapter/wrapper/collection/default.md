@@ -47,7 +47,7 @@ Defines the response shape for contract generation.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `klass_or_callable` | `Class<Shape>`, `Proc`, `nil` |  | a Shape subclass or callable |
+| `klass_or_callable` | `Class<Shape>`, `Proc`, `nil` | `nil` | a Shape subclass or callable |
 
 **Returns**
 

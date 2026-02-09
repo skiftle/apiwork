@@ -150,22 +150,22 @@ module Apiwork
         # Types and nullability are auto-detected from database columns.
         #
         # @param name [Symbol]
-        # @param type [Symbol, nil] :string, :integer, :boolean, :datetime, :date, :uuid, :decimal, :number, :object, or :array
-        # @param enum [Array, nil]
-        # @param optional [Boolean, nil]
-        # @param nullable [Boolean, nil]
-        # @param filterable [Boolean, nil]
-        # @param sortable [Boolean, nil]
-        # @param writable [Boolean, Hash, nil]
-        # @param encode [Proc, nil]
-        # @param decode [Proc, nil]
-        # @param empty [Symbol, nil] :null or :keep
-        # @param min [Integer, nil]
-        # @param max [Integer, nil]
-        # @param description [String, nil]
-        # @param example [Object, nil]
-        # @param format [Symbol, nil]
-        # @param deprecated [Boolean] (default: false)
+        # @param type [Symbol, nil] (nil) :string, :integer, :boolean, :datetime, :date, :uuid, :decimal, :number, :object, or :array
+        # @param enum [Array, nil] (nil)
+        # @param optional [Boolean, nil] (nil)
+        # @param nullable [Boolean, nil] (nil)
+        # @param filterable [Boolean, nil] (nil)
+        # @param sortable [Boolean, nil] (nil)
+        # @param writable [Boolean, Hash, nil] (nil)
+        # @param encode [Proc, nil] (nil)
+        # @param decode [Proc, nil] (nil)
+        # @param empty [Symbol, nil] (nil) :null or :keep
+        # @param min [Integer, nil] (nil)
+        # @param max [Integer, nil] (nil)
+        # @param description [String, nil] (nil)
+        # @param example [Object, nil] (nil)
+        # @param format [Symbol, nil] (nil)
+        # @param deprecated [Boolean] (false)
         # @yieldparam element [Representation::Element]
         # @return [void]
         #
@@ -222,17 +222,17 @@ module Apiwork
         # Defines a has_one association for serialization.
         #
         # @param name [Symbol]
-        # @param representation [Class<Representation::Base>, nil]
-        # @param polymorphic [Array, Hash, nil]
-        # @param include [Symbol] :always or :optional (default: :optional)
-        # @param writable [Boolean, Hash] (default: false)
-        # @param filterable [Boolean] (default: false)
-        # @param sortable [Boolean] (default: false)
-        # @param nullable [Boolean, nil]
-        # @param optional [Boolean, nil]
-        # @param description [String, nil]
-        # @param example [Object, nil]
-        # @param deprecated [Boolean] (default: false)
+        # @param representation [Class<Representation::Base>, nil] (nil)
+        # @param polymorphic [Array, Hash, nil] (nil)
+        # @param include [Symbol] (:optional) :always or :optional
+        # @param writable [Boolean, Hash] (false)
+        # @param filterable [Boolean] (false)
+        # @param sortable [Boolean] (false)
+        # @param nullable [Boolean, nil] (nil)
+        # @param optional [Boolean, nil] (nil)
+        # @param description [String, nil] (nil)
+        # @param example [Object, nil] (nil)
+        # @param deprecated [Boolean] (false)
         #
         # @example
         #   has_one :profile
@@ -275,18 +275,18 @@ module Apiwork
         # Defines a has_many association for serialization.
         #
         # @param name [Symbol]
-        # @param allow_destroy [Boolean] (default: false)
-        # @param representation [Class<Representation::Base>, nil]
-        # @param polymorphic [Array, Hash, nil]
-        # @param include [Symbol] :always or :optional (default: :optional)
-        # @param writable [Boolean, Hash] (default: false)
-        # @param filterable [Boolean] (default: false)
-        # @param sortable [Boolean] (default: false)
-        # @param nullable [Boolean, nil]
-        # @param optional [Boolean, nil]
-        # @param description [String, nil]
-        # @param example [Object, nil]
-        # @param deprecated [Boolean] (default: false)
+        # @param allow_destroy [Boolean] (false)
+        # @param representation [Class<Representation::Base>, nil] (nil)
+        # @param polymorphic [Array, Hash, nil] (nil)
+        # @param include [Symbol] (:optional) :always or :optional
+        # @param writable [Boolean, Hash] (false)
+        # @param filterable [Boolean] (false)
+        # @param sortable [Boolean] (false)
+        # @param nullable [Boolean, nil] (nil)
+        # @param optional [Boolean, nil] (nil)
+        # @param description [String, nil] (nil)
+        # @param example [Object, nil] (nil)
+        # @param deprecated [Boolean] (false)
         # @see #has_one
         #
         # @example
@@ -375,7 +375,7 @@ module Apiwork
         # @api public
         # Overrides the model's default type name for STI and polymorphic types.
         #
-        # @param value [String, Symbol, nil]
+        # @param value [String, Symbol, nil] (nil)
         # @return [String, nil]
         # @see .sti_name
         # @see .polymorphic_name
@@ -415,7 +415,7 @@ module Apiwork
         # @api public
         # Sets or gets the description for generated documentation.
         #
-        # @param value [String, nil]
+        # @param value [String, nil] (nil)
         # @return [String, nil]
         #
         # @example
@@ -440,7 +440,7 @@ module Apiwork
         # @api public
         # Sets or gets the example value for generated documentation.
         #
-        # @param value [Hash, nil]
+        # @param value [Hash, nil] (nil)
         # @return [Hash, nil]
         #
         # @example
@@ -455,8 +455,8 @@ module Apiwork
         # Serializes a record or collection to JSON-ready hashes.
         #
         # @param record_or_collection [ActiveRecord::Base, Array<ActiveRecord::Base>]
-        # @param context [Hash] (default: {})
-        # @param include [Symbol, Array, Hash, nil]
+        # @param context [Hash] ({})
+        # @param include [Symbol, Array, Hash, nil] (nil)
         # @return [Hash, Array<Hash>]
         #
         # @example

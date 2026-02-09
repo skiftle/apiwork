@@ -39,7 +39,7 @@ Sets or gets the adapter for this API.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol`, `nil` |  |  |
+| `name` | `Symbol`, `nil` | `nil` |  |
 
 **Returns**
 
@@ -123,11 +123,11 @@ Defines a reusable enumeration type.
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  |  |
-| `values` | `Array<String>`, `nil` |  |  |
-| `scope` | `Class<Contract::Base>`, `nil` |  |  |
-| `description` | `String`, `nil` |  |  |
-| `example` | `String`, `nil` |  |  |
-| `deprecated` | `Boolean` | `default: false` |  |
+| `values` | `Array<String>`, `nil` | `nil` |  |
+| `scope` | `Class<Contract::Base>`, `nil` | `nil` |  |
+| `description` | `String`, `nil` | `nil` |  |
+| `example` | `String`, `nil` | `nil` |  |
+| `deprecated` | `Boolean` | `false` |  |
 
 **Returns**
 
@@ -220,7 +220,7 @@ Transforms request and response keys.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `format` | `Symbol`, `nil` |  | :keep, :camel, :underscore, or :kebab |
+| `format` | `Symbol<:keep, :camel, :underscore, :kebab>`, `nil` | `nil` |  |
 
 **Returns**
 
@@ -247,12 +247,12 @@ Defines a reusable object type.
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  |  |
-| `scope` | `Class<Contract::Base>`, `nil` |  |  |
-| `description` | `String`, `nil` |  |  |
-| `example` | `Object`, `nil` |  |  |
-| `format` | `String`, `nil` |  |  |
-| `deprecated` | `Boolean` | `default: false` |  |
-| `representation_class` | `Class<Representation::Base>`, `nil` |  |  |
+| `scope` | `Class<Contract::Base>`, `nil` | `nil` |  |
+| `description` | `String`, `nil` | `nil` |  |
+| `example` | `Object`, `nil` | `nil` |  |
+| `format` | `String`, `nil` | `nil` |  |
+| `deprecated` | `Boolean` | `false` |  |
+| `representation_class` | `Class<Representation::Base>`, `nil` | `nil` |  |
 
 **Returns**
 
@@ -297,7 +297,7 @@ Transforms resource and action names in URL paths.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `format` | `Symbol`, `nil` |  | :keep, :kebab, :camel, or :underscore |
+| `format` | `Symbol<:keep, :kebab, :camel, :underscore>`, `nil` | `nil` |  |
 
 **Returns**
 
@@ -456,10 +456,10 @@ Defines a discriminated union type.
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `name` | `Symbol` |  |  |
-| `discriminator` | `Symbol`, `nil` |  |  |
-| `scope` | `Class<Contract::Base>`, `nil` |  |  |
-| `description` | `String`, `nil` |  |  |
-| `deprecated` | `Boolean` | `default: false` |  |
+| `discriminator` | `Symbol`, `nil` | `nil` |  |
+| `scope` | `Class<Contract::Base>`, `nil` | `nil` |  |
+| `description` | `String`, `nil` | `nil` |  |
+| `deprecated` | `Boolean` | `false` |  |
 
 **Returns**
 

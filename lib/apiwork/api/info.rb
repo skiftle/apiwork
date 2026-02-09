@@ -23,7 +23,7 @@ module Apiwork
       # @api public
       # The API title.
       #
-      # @param value [String, nil]
+      # @param value [String, nil] (nil)
       # @return [String, nil]
       #
       # @example
@@ -38,7 +38,7 @@ module Apiwork
       # @api public
       # The API version.
       #
-      # @param value [String, nil]
+      # @param value [String, nil] (nil)
       # @return [String, nil]
       #
       # @example
@@ -53,7 +53,7 @@ module Apiwork
       # @api public
       # The API terms of service.
       #
-      # @param value [String, nil]
+      # @param value [String, nil] (nil)
       # @return [String, nil]
       #
       # @example
@@ -148,7 +148,7 @@ module Apiwork
       # @api public
       # The API summary.
       #
-      # @param value [String, nil]
+      # @param value [String, nil] (nil)
       # @return [String, nil]
       #
       # @example
@@ -163,7 +163,7 @@ module Apiwork
       # @api public
       # The API description.
       #
-      # @param value [String, nil]
+      # @param value [String, nil] (nil)
       # @return [String, nil]
       #
       # @example

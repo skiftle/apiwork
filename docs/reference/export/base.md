@@ -57,7 +57,7 @@ The name for this export.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol`, `nil` |  | the export name to set |
+| `name` | `Symbol`, `nil` | `nil` | the export name to set |
 
 **Returns**
 
@@ -79,7 +79,7 @@ Only applies to string exports. Hash exports derive extension from format.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `String`, `nil` |  | the file extension (e.g., '.ts') |
+| `value` | `String`, `nil` | `nil` | the file extension (e.g., '.ts') |
 
 **Returns**
 
@@ -104,8 +104,8 @@ call `option` to define child options.
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | option name |
 | `type` | `Symbol` |  | :symbol, :string, :integer, :boolean, or :hash |
-| `default` | `Object`, `nil` |  | default value |
-| `enum` | `Array`, `nil` |  | allowed values |
+| `default` | `Object`, `nil` | `nil` | default value |
+| `enum` | `Array`, `nil` | `nil` | allowed values |
 
 **Returns**
 
@@ -151,7 +151,7 @@ The output for this export.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `type` | `Symbol`, `nil` |  | :hash for Hash output (json/yaml), :string for String output |
+| `type` | `Symbol<:hash, :string>`, `nil` | `nil` | :hash for Hash output (json/yaml), :string for String output |
 
 **Returns**
 

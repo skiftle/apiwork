@@ -13,10 +13,10 @@ module Apiwork
     # @api public
     # Defines a union variant.
     #
-    # @param deprecated [Boolean] (default: false)
-    # @param description [String, nil] documentation description
-    # @param partial [Boolean] (default: false)
-    # @param tag [String, nil] discriminator tag value (required when union has discriminator)
+    # @param deprecated [Boolean] (false)
+    # @param description [String, nil] (nil) documentation description
+    # @param partial [Boolean] (false)
+    # @param tag [String, nil] (nil) discriminator tag value (required when union has discriminator)
     # @yield block defining the variant type
     # @yieldparam variant [Element]
     # @return [void]

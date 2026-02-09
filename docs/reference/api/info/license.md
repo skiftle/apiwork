@@ -26,7 +26,7 @@ The license name.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `String`, `nil` |  |  |
+| `value` | `String`, `nil` | `nil` |  |
 
 **Returns**
 
@@ -53,7 +53,7 @@ The license URL.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `String`, `nil` |  |  |
+| `value` | `String`, `nil` | `nil` |  |
 
 **Returns**
 

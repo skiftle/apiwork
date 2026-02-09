@@ -47,8 +47,8 @@ Defines a nested option.
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | the option name |
 | `type` | `Symbol` |  | :symbol, :string, :integer, :boolean, or :hash |
-| `default` | `Object`, `nil` |  | the default value |
-| `enum` | `Array`, `nil` |  | allowed values |
+| `default` | `Object`, `nil` | `nil` | the default value |
+| `enum` | `Array`, `nil` | `nil` | allowed values |
 
 **Returns**
 

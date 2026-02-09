@@ -28,8 +28,8 @@ module Apiwork
     #
     #   @param name [Symbol] option name
     #   @param type [Symbol] :symbol, :string, :integer, :boolean, or :hash
-    #   @param default [Object, nil] default value
-    #   @param enum [Array, nil] allowed values
+    #   @param default [Object, nil] (nil) default value
+    #   @param enum [Array, nil] (nil) allowed values
     #   @yield block evaluated in {Configuration::Option} context (for :hash type)
     #   @return [void]
     #   @see Configuration::Option

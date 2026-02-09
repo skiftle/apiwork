@@ -100,7 +100,7 @@ Defines an array.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `shape` | `Object`, `nil` |  | pre-built shape |
+| `shape` | `Object`, `nil` | `nil` | pre-built shape |
 
 **Returns**
 
@@ -194,8 +194,8 @@ Defines a decimal.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `max` | `Numeric`, `nil` |  | maximum value |
-| `min` | `Numeric`, `nil` |  | minimum value |
+| `max` | `Numeric`, `nil` | `nil` | maximum value |
+| `min` | `Numeric`, `nil` | `nil` | minimum value |
 
 **Returns**
 
@@ -215,9 +215,9 @@ Defines an integer.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `enum` | `Array`, `Symbol`, `nil` |  | allowed values |
-| `max` | `Integer`, `nil` |  | maximum value |
-| `min` | `Integer`, `nil` |  | minimum value |
+| `enum` | `Array`, `Symbol`, `nil` | `nil` | allowed values |
+| `max` | `Integer`, `nil` | `nil` | maximum value |
+| `min` | `Integer`, `nil` | `nil` | minimum value |
 
 **Returns**
 
@@ -257,8 +257,8 @@ Defines a number.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `max` | `Numeric`, `nil` |  | maximum value |
-| `min` | `Numeric`, `nil` |  | minimum value |
+| `max` | `Numeric`, `nil` | `nil` | maximum value |
+| `min` | `Numeric`, `nil` | `nil` | minimum value |
 
 **Returns**
 
@@ -278,7 +278,7 @@ Defines an object.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `shape` | `Object`, `nil` |  | pre-built shape |
+| `shape` | `Object`, `nil` | `nil` | pre-built shape |
 
 **Returns**
 
@@ -321,8 +321,8 @@ Only complex types (:object, :array, :union) are allowed.
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `type` | `Symbol` |  | element type (:object, :array, :union) |
-| `discriminator` | `Symbol`, `nil` |  | discriminator field name (unions only) |
-| `shape` | `API::Object`, `API::Union`, `nil` |  | pre-built shape |
+| `discriminator` | `Symbol`, `nil` | `nil` | discriminator field name (unions only) |
+| `shape` | `API::Object`, `API::Union`, `nil` | `nil` | pre-built shape |
 
 **Returns**
 
@@ -345,7 +345,7 @@ Defines a reference to a named type.
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `type_name` | `Symbol` |  | type name |
-| `to` | `Symbol`, `nil` |  | target type name (defaults to type_name) |
+| `to` | `Symbol`, `nil` | `nil` | target type name (defaults to type_name) |
 
 **Returns**
 
@@ -365,10 +365,10 @@ Defines a string.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `enum` | `Array`, `Symbol`, `nil` |  | allowed values |
-| `format` | `Symbol`, `nil` |  | format hint |
-| `max` | `Integer`, `nil` |  | maximum length |
-| `min` | `Integer`, `nil` |  | minimum length |
+| `enum` | `Array`, `Symbol`, `nil` | `nil` | allowed values |
+| `format` | `Symbol`, `nil` | `nil` | format hint |
+| `max` | `Integer`, `nil` | `nil` | maximum length |
+| `min` | `Integer`, `nil` | `nil` | minimum length |
 
 **Returns**
 
@@ -402,8 +402,8 @@ Defines a union.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `discriminator` | `Symbol`, `nil` |  | discriminator field name |
-| `shape` | `Union`, `nil` |  | pre-built shape |
+| `discriminator` | `Symbol`, `nil` | `nil` | discriminator field name |
+| `shape` | `Union`, `nil` | `nil` | pre-built shape |
 
 **Returns**
 

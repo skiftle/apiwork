@@ -38,7 +38,7 @@ module Apiwork
             # @api public
             # The target for this operation.
             #
-            # @param value [Symbol, nil] :collection or :member
+            # @param value [Symbol, nil] (nil) :collection or :member
             # @return [Symbol, nil]
             def target(value = nil)
               @target = value if value
@@ -52,7 +52,7 @@ module Apiwork
             # Blocks are evaluated via instance_exec, providing access to
             # type DSL methods and capability options.
             #
-            # @param klass [Class<MetadataShape>, nil] the metadata shape class
+            # @param klass [Class<MetadataShape>, nil] (nil) the metadata shape class
             # @yield block that defines metadata structure
             # @return [Class<MetadataShape>, nil]
             #
@@ -108,10 +108,10 @@ module Apiwork
           # @api public
           # Creates a result object.
           #
-          # @param data [Object, nil] transformed data
-          # @param metadata [Hash, nil] metadata to add to response
-          # @param includes [Array, nil] associations to preload
-          # @param serialize_options [Hash, nil] options for serialization
+          # @param data [Object, nil] (nil) transformed data
+          # @param metadata [Hash, nil] (nil) metadata to add to response
+          # @param includes [Array, nil] (nil) associations to preload
+          # @param serialize_options [Hash, nil] (nil) options for serialization
           # @return [Result]
           def result(data: nil, includes: nil, metadata: nil, serialize_options: nil)
             Result.new(
@@ -131,7 +131,7 @@ module Apiwork
           # 3. Provided default
           #
           # @param segments [Array<Symbol, String>] key path segments
-          # @param default [String, nil] fallback value if no translation found
+          # @param default [String, nil] (nil) fallback value if no translation found
           # @return [String, nil]
           #
           # @example

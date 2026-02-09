@@ -27,7 +27,7 @@ module Apiwork
             # @api public
             # The data type for this serializer.
             #
-            # @param name [Symbol, nil] the type name
+            # @param name [Symbol, nil] (nil) the type name
             # @return [Symbol, nil]
             def data_type(name = nil)
               @data_type = name if name
@@ -37,7 +37,7 @@ module Apiwork
             # @api public
             # The API builder for this serializer.
             #
-            # @param klass [Class<Builder::API::Base>, nil] the builder class
+            # @param klass [Class<Builder::API::Base>, nil] (nil) the builder class
             # @return [Class<Builder::API::Base>, nil]
             def api_builder(klass = nil)
               @api_builder = klass if klass

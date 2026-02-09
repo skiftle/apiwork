@@ -16,7 +16,7 @@ module Apiwork
         # @api public
         # The license name.
         #
-        # @param value [String, nil]
+        # @param value [String, nil] (nil)
         # @return [String, nil]
         #
         # @example
@@ -31,7 +31,7 @@ module Apiwork
         # @api public
         # The license URL.
         #
-        # @param value [String, nil]
+        # @param value [String, nil] (nil)
         # @return [String, nil]
         #
         # @example

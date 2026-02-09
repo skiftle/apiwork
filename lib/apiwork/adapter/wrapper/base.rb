@@ -21,7 +21,7 @@ module Apiwork
           # @api public
           # Defines the response shape for contract generation.
           #
-          # @param klass_or_callable [Class<Shape>, Proc, nil] a Shape subclass or callable
+          # @param klass_or_callable [Class<Shape>, Proc, nil] (nil) a Shape subclass or callable
           # @yield block that defines the shape using the Shape DSL
           # @return [Class<Shape>, nil]
           def shape(klass_or_callable = nil, &block)

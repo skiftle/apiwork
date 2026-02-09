@@ -49,8 +49,8 @@ module Apiwork
       #
       # @param name [Symbol] the option name
       # @param type [Symbol] :symbol, :string, :integer, :boolean, or :hash
-      # @param default [Object, nil] the default value
-      # @param enum [Array, nil] allowed values
+      # @param default [Object, nil] (nil) the default value
+      # @param enum [Array, nil] (nil) allowed values
       # @yield block for nested options (type: :hash)
       # @yieldparam option [Option]
       # @return [void]

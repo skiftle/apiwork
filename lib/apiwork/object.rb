@@ -66,19 +66,19 @@ module Apiwork
     # Defines a string.
     #
     # @param name [Symbol] the name
-    # @param as [Symbol, nil] target attribute name
-    # @param default [Object, nil] default value
-    # @param deprecated [Boolean] (default: false)
-    # @param description [String, nil] documentation description
-    # @param enum [Array, Symbol, nil] allowed values
-    # @param example [String, nil] example value
-    # @param format [Symbol, nil] format hint (:email, :uri, :uuid)
-    # @param max [Integer, nil] maximum length
-    # @param min [Integer, nil] minimum length
-    # @param nullable [Boolean] (default: false)
-    # @param optional [Boolean] (default: false)
-    # @param required [Boolean] (default: false)
-    # @param store [Object, nil] value to persist (replaces received value)
+    # @param as [Symbol, nil] (nil) target attribute name
+    # @param default [Object, nil] (nil) default value
+    # @param deprecated [Boolean] (false)
+    # @param description [String, nil] (nil) documentation description
+    # @param enum [Array, Symbol, nil] (nil) allowed values
+    # @param example [String, nil] (nil) example value
+    # @param format [Symbol, nil] (nil) format hint (:email, :uri, :uuid)
+    # @param max [Integer, nil] (nil) maximum length
+    # @param min [Integer, nil] (nil) minimum length
+    # @param nullable [Boolean] (false)
+    # @param optional [Boolean] (false)
+    # @param required [Boolean] (false)
+    # @param store [Object, nil] (nil) value to persist (replaces received value)
     # @return [void]
     def string(
       name,
@@ -119,18 +119,18 @@ module Apiwork
     # Defines an optional string.
     #
     # @param name [Symbol] the name
-    # @param as [Symbol, nil] target attribute name
-    # @param default [Object, nil] default value
-    # @param deprecated [Boolean] (default: false)
-    # @param description [String, nil] documentation description
-    # @param enum [Array, Symbol, nil] allowed values
-    # @param example [String, nil] example value
-    # @param format [Symbol, nil] format hint (:email, :uri, :uuid)
-    # @param max [Integer, nil] maximum length
-    # @param min [Integer, nil] minimum length
-    # @param nullable [Boolean] (default: false)
-    # @param required [Boolean] (default: false)
-    # @param store [Object, nil] value to persist (replaces received value)
+    # @param as [Symbol, nil] (nil) target attribute name
+    # @param default [Object, nil] (nil) default value
+    # @param deprecated [Boolean] (false)
+    # @param description [String, nil] (nil) documentation description
+    # @param enum [Array, Symbol, nil] (nil) allowed values
+    # @param example [String, nil] (nil) example value
+    # @param format [Symbol, nil] (nil) format hint (:email, :uri, :uuid)
+    # @param max [Integer, nil] (nil) maximum length
+    # @param min [Integer, nil] (nil) minimum length
+    # @param nullable [Boolean] (false)
+    # @param required [Boolean] (false)
+    # @param store [Object, nil] (nil) value to persist (replaces received value)
     # @return [void]
     def string?(
       name,
@@ -170,18 +170,18 @@ module Apiwork
     # Defines an integer.
     #
     # @param name [Symbol] the name
-    # @param as [Symbol, nil] target attribute name
-    # @param default [Object, nil] default value
-    # @param deprecated [Boolean] (default: false)
-    # @param description [String, nil] documentation description
-    # @param enum [Array, Symbol, nil] allowed values
-    # @param example [Integer, nil] example value
-    # @param max [Integer, nil] maximum value
-    # @param min [Integer, nil] minimum value
-    # @param nullable [Boolean] (default: false)
-    # @param optional [Boolean] (default: false)
-    # @param required [Boolean] (default: false)
-    # @param store [Object, nil] value to persist (replaces received value)
+    # @param as [Symbol, nil] (nil) target attribute name
+    # @param default [Object, nil] (nil) default value
+    # @param deprecated [Boolean] (false)
+    # @param description [String, nil] (nil) documentation description
+    # @param enum [Array, Symbol, nil] (nil) allowed values
+    # @param example [Integer, nil] (nil) example value
+    # @param max [Integer, nil] (nil) maximum value
+    # @param min [Integer, nil] (nil) minimum value
+    # @param nullable [Boolean] (false)
+    # @param optional [Boolean] (false)
+    # @param required [Boolean] (false)
+    # @param store [Object, nil] (nil) value to persist (replaces received value)
     # @return [void]
     def integer(
       name,
@@ -220,17 +220,17 @@ module Apiwork
     # Defines an optional integer.
     #
     # @param name [Symbol] the name
-    # @param as [Symbol, nil] target attribute name
-    # @param default [Object, nil] default value
-    # @param deprecated [Boolean] (default: false)
-    # @param description [String, nil] documentation description
-    # @param enum [Array, Symbol, nil] allowed values
-    # @param example [Integer, nil] example value
-    # @param max [Integer, nil] maximum value
-    # @param min [Integer, nil] minimum value
-    # @param nullable [Boolean] (default: false)
-    # @param required [Boolean] (default: false)
-    # @param store [Object, nil] value to persist (replaces received value)
+    # @param as [Symbol, nil] (nil) target attribute name
+    # @param default [Object, nil] (nil) default value
+    # @param deprecated [Boolean] (false)
+    # @param description [String, nil] (nil) documentation description
+    # @param enum [Array, Symbol, nil] (nil) allowed values
+    # @param example [Integer, nil] (nil) example value
+    # @param max [Integer, nil] (nil) maximum value
+    # @param min [Integer, nil] (nil) minimum value
+    # @param nullable [Boolean] (false)
+    # @param required [Boolean] (false)
+    # @param store [Object, nil] (nil) value to persist (replaces received value)
     # @return [void]
     def integer?(
       name,
@@ -268,17 +268,17 @@ module Apiwork
     # Defines a decimal.
     #
     # @param name [Symbol] the name
-    # @param as [Symbol, nil] target attribute name
-    # @param default [Object, nil] default value
-    # @param deprecated [Boolean] (default: false)
-    # @param description [String, nil] documentation description
-    # @param example [Numeric, nil] example value
-    # @param max [Numeric, nil] maximum value
-    # @param min [Numeric, nil] minimum value
-    # @param nullable [Boolean] (default: false)
-    # @param optional [Boolean] (default: false)
-    # @param required [Boolean] (default: false)
-    # @param store [Object, nil] value to persist (replaces received value)
+    # @param as [Symbol, nil] (nil) target attribute name
+    # @param default [Object, nil] (nil) default value
+    # @param deprecated [Boolean] (false)
+    # @param description [String, nil] (nil) documentation description
+    # @param example [Numeric, nil] (nil) example value
+    # @param max [Numeric, nil] (nil) maximum value
+    # @param min [Numeric, nil] (nil) minimum value
+    # @param nullable [Boolean] (false)
+    # @param optional [Boolean] (false)
+    # @param required [Boolean] (false)
+    # @param store [Object, nil] (nil) value to persist (replaces received value)
     # @return [void]
     def decimal(
       name,
@@ -315,16 +315,16 @@ module Apiwork
     # Defines an optional decimal.
     #
     # @param name [Symbol] the name
-    # @param as [Symbol, nil] target attribute name
-    # @param default [Object, nil] default value
-    # @param deprecated [Boolean] (default: false)
-    # @param description [String, nil] documentation description
-    # @param example [Numeric, nil] example value
-    # @param max [Numeric, nil] maximum value
-    # @param min [Numeric, nil] minimum value
-    # @param nullable [Boolean] (default: false)
-    # @param required [Boolean] (default: false)
-    # @param store [Object, nil] value to persist (replaces received value)
+    # @param as [Symbol, nil] (nil) target attribute name
+    # @param default [Object, nil] (nil) default value
+    # @param deprecated [Boolean] (false)
+    # @param description [String, nil] (nil) documentation description
+    # @param example [Numeric, nil] (nil) example value
+    # @param max [Numeric, nil] (nil) maximum value
+    # @param min [Numeric, nil] (nil) minimum value
+    # @param nullable [Boolean] (false)
+    # @param required [Boolean] (false)
+    # @param store [Object, nil] (nil) value to persist (replaces received value)
     # @return [void]
     def decimal?(
       name,
@@ -360,17 +360,17 @@ module Apiwork
     # Defines a number.
     #
     # @param name [Symbol] the name
-    # @param as [Symbol, nil] target attribute name
-    # @param default [Object, nil] default value
-    # @param deprecated [Boolean] (default: false)
-    # @param description [String, nil] documentation description
-    # @param example [Numeric, nil] example value
-    # @param max [Numeric, nil] maximum value
-    # @param min [Numeric, nil] minimum value
-    # @param nullable [Boolean] (default: false)
-    # @param optional [Boolean] (default: false)
-    # @param required [Boolean] (default: false)
-    # @param store [Object, nil] value to persist (replaces received value)
+    # @param as [Symbol, nil] (nil) target attribute name
+    # @param default [Object, nil] (nil) default value
+    # @param deprecated [Boolean] (false)
+    # @param description [String, nil] (nil) documentation description
+    # @param example [Numeric, nil] (nil) example value
+    # @param max [Numeric, nil] (nil) maximum value
+    # @param min [Numeric, nil] (nil) minimum value
+    # @param nullable [Boolean] (false)
+    # @param optional [Boolean] (false)
+    # @param required [Boolean] (false)
+    # @param store [Object, nil] (nil) value to persist (replaces received value)
     # @return [void]
     def number(
       name,
@@ -407,16 +407,16 @@ module Apiwork
     # Defines an optional number.
     #
     # @param name [Symbol] the name
-    # @param as [Symbol, nil] target attribute name
-    # @param default [Object, nil] default value
-    # @param deprecated [Boolean] (default: false)
-    # @param description [String, nil] documentation description
-    # @param example [Numeric, nil] example value
-    # @param max [Numeric, nil] maximum value
-    # @param min [Numeric, nil] minimum value
-    # @param nullable [Boolean] (default: false)
-    # @param required [Boolean] (default: false)
-    # @param store [Object, nil] value to persist (replaces received value)
+    # @param as [Symbol, nil] (nil) target attribute name
+    # @param default [Object, nil] (nil) default value
+    # @param deprecated [Boolean] (false)
+    # @param description [String, nil] (nil) documentation description
+    # @param example [Numeric, nil] (nil) example value
+    # @param max [Numeric, nil] (nil) maximum value
+    # @param min [Numeric, nil] (nil) minimum value
+    # @param nullable [Boolean] (false)
+    # @param required [Boolean] (false)
+    # @param store [Object, nil] (nil) value to persist (replaces received value)
     # @return [void]
     def number?(
       name,
@@ -452,15 +452,15 @@ module Apiwork
     # Defines a boolean.
     #
     # @param name [Symbol] the name
-    # @param as [Symbol, nil] target attribute name
-    # @param default [Object, nil] default value
-    # @param deprecated [Boolean] (default: false)
-    # @param description [String, nil] documentation description
-    # @param example [Boolean, nil] example value
-    # @param nullable [Boolean] (default: false)
-    # @param optional [Boolean] (default: false)
-    # @param required [Boolean] (default: false)
-    # @param store [Object, nil] value to persist (replaces received value)
+    # @param as [Symbol, nil] (nil) target attribute name
+    # @param default [Object, nil] (nil) default value
+    # @param deprecated [Boolean] (false)
+    # @param description [String, nil] (nil) documentation description
+    # @param example [Boolean, nil] (nil) example value
+    # @param nullable [Boolean] (false)
+    # @param optional [Boolean] (false)
+    # @param required [Boolean] (false)
+    # @param store [Object, nil] (nil) value to persist (replaces received value)
     # @return [void]
     def boolean(
       name,
@@ -493,14 +493,14 @@ module Apiwork
     # Defines an optional boolean.
     #
     # @param name [Symbol] the name
-    # @param as [Symbol, nil] target attribute name
-    # @param default [Object, nil] default value
-    # @param deprecated [Boolean] (default: false)
-    # @param description [String, nil] documentation description
-    # @param example [Boolean, nil] example value
-    # @param nullable [Boolean] (default: false)
-    # @param required [Boolean] (default: false)
-    # @param store [Object, nil] value to persist (replaces received value)
+    # @param as [Symbol, nil] (nil) target attribute name
+    # @param default [Object, nil] (nil) default value
+    # @param deprecated [Boolean] (false)
+    # @param description [String, nil] (nil) documentation description
+    # @param example [Boolean, nil] (nil) example value
+    # @param nullable [Boolean] (false)
+    # @param required [Boolean] (false)
+    # @param store [Object, nil] (nil) value to persist (replaces received value)
     # @return [void]
     def boolean?(
       name,
@@ -532,15 +532,15 @@ module Apiwork
     # Defines a datetime.
     #
     # @param name [Symbol] the name
-    # @param as [Symbol, nil] target attribute name
-    # @param default [Object, nil] default value
-    # @param deprecated [Boolean] (default: false)
-    # @param description [String, nil] documentation description
-    # @param example [String, nil] example value
-    # @param nullable [Boolean] (default: false)
-    # @param optional [Boolean] (default: false)
-    # @param required [Boolean] (default: false)
-    # @param store [Object, nil] value to persist (replaces received value)
+    # @param as [Symbol, nil] (nil) target attribute name
+    # @param default [Object, nil] (nil) default value
+    # @param deprecated [Boolean] (false)
+    # @param description [String, nil] (nil) documentation description
+    # @param example [String, nil] (nil) example value
+    # @param nullable [Boolean] (false)
+    # @param optional [Boolean] (false)
+    # @param required [Boolean] (false)
+    # @param store [Object, nil] (nil) value to persist (replaces received value)
     # @return [void]
     def datetime(
       name,
@@ -573,14 +573,14 @@ module Apiwork
     # Defines an optional datetime.
     #
     # @param name [Symbol] the name
-    # @param as [Symbol, nil] target attribute name
-    # @param default [Object, nil] default value
-    # @param deprecated [Boolean] (default: false)
-    # @param description [String, nil] documentation description
-    # @param example [String, nil] example value
-    # @param nullable [Boolean] (default: false)
-    # @param required [Boolean] (default: false)
-    # @param store [Object, nil] value to persist (replaces received value)
+    # @param as [Symbol, nil] (nil) target attribute name
+    # @param default [Object, nil] (nil) default value
+    # @param deprecated [Boolean] (false)
+    # @param description [String, nil] (nil) documentation description
+    # @param example [String, nil] (nil) example value
+    # @param nullable [Boolean] (false)
+    # @param required [Boolean] (false)
+    # @param store [Object, nil] (nil) value to persist (replaces received value)
     # @return [void]
     def datetime?(
       name,
@@ -612,15 +612,15 @@ module Apiwork
     # Defines a date.
     #
     # @param name [Symbol] the name
-    # @param as [Symbol, nil] target attribute name
-    # @param default [Object, nil] default value
-    # @param deprecated [Boolean] (default: false)
-    # @param description [String, nil] documentation description
-    # @param example [String, nil] example value
-    # @param nullable [Boolean] (default: false)
-    # @param optional [Boolean] (default: false)
-    # @param required [Boolean] (default: false)
-    # @param store [Object, nil] value to persist (replaces received value)
+    # @param as [Symbol, nil] (nil) target attribute name
+    # @param default [Object, nil] (nil) default value
+    # @param deprecated [Boolean] (false)
+    # @param description [String, nil] (nil) documentation description
+    # @param example [String, nil] (nil) example value
+    # @param nullable [Boolean] (false)
+    # @param optional [Boolean] (false)
+    # @param required [Boolean] (false)
+    # @param store [Object, nil] (nil) value to persist (replaces received value)
     # @return [void]
     def date(
       name,
@@ -653,14 +653,14 @@ module Apiwork
     # Defines an optional date.
     #
     # @param name [Symbol] the name
-    # @param as [Symbol, nil] target attribute name
-    # @param default [Object, nil] default value
-    # @param deprecated [Boolean] (default: false)
-    # @param description [String, nil] documentation description
-    # @param example [String, nil] example value
-    # @param nullable [Boolean] (default: false)
-    # @param required [Boolean] (default: false)
-    # @param store [Object, nil] value to persist (replaces received value)
+    # @param as [Symbol, nil] (nil) target attribute name
+    # @param default [Object, nil] (nil) default value
+    # @param deprecated [Boolean] (false)
+    # @param description [String, nil] (nil) documentation description
+    # @param example [String, nil] (nil) example value
+    # @param nullable [Boolean] (false)
+    # @param required [Boolean] (false)
+    # @param store [Object, nil] (nil) value to persist (replaces received value)
     # @return [void]
     def date?(
       name,
@@ -692,15 +692,15 @@ module Apiwork
     # Defines a UUID.
     #
     # @param name [Symbol] the name
-    # @param as [Symbol, nil] target attribute name
-    # @param default [Object, nil] default value
-    # @param deprecated [Boolean] (default: false)
-    # @param description [String, nil] documentation description
-    # @param example [String, nil] example value
-    # @param nullable [Boolean] (default: false)
-    # @param optional [Boolean] (default: false)
-    # @param required [Boolean] (default: false)
-    # @param store [Object, nil] value to persist (replaces received value)
+    # @param as [Symbol, nil] (nil) target attribute name
+    # @param default [Object, nil] (nil) default value
+    # @param deprecated [Boolean] (false)
+    # @param description [String, nil] (nil) documentation description
+    # @param example [String, nil] (nil) example value
+    # @param nullable [Boolean] (false)
+    # @param optional [Boolean] (false)
+    # @param required [Boolean] (false)
+    # @param store [Object, nil] (nil) value to persist (replaces received value)
     # @return [void]
     def uuid(
       name,
@@ -733,14 +733,14 @@ module Apiwork
     # Defines an optional UUID.
     #
     # @param name [Symbol] the name
-    # @param as [Symbol, nil] target attribute name
-    # @param default [Object, nil] default value
-    # @param deprecated [Boolean] (default: false)
-    # @param description [String, nil] documentation description
-    # @param example [String, nil] example value
-    # @param nullable [Boolean] (default: false)
-    # @param required [Boolean] (default: false)
-    # @param store [Object, nil] value to persist (replaces received value)
+    # @param as [Symbol, nil] (nil) target attribute name
+    # @param default [Object, nil] (nil) default value
+    # @param deprecated [Boolean] (false)
+    # @param description [String, nil] (nil) documentation description
+    # @param example [String, nil] (nil) example value
+    # @param nullable [Boolean] (false)
+    # @param required [Boolean] (false)
+    # @param store [Object, nil] (nil) value to persist (replaces received value)
     # @return [void]
     def uuid?(
       name,
@@ -772,15 +772,15 @@ module Apiwork
     # Defines a time.
     #
     # @param name [Symbol] the name
-    # @param as [Symbol, nil] target attribute name
-    # @param default [Object, nil] default value
-    # @param deprecated [Boolean] (default: false)
-    # @param description [String, nil] documentation description
-    # @param example [String, nil] example value
-    # @param nullable [Boolean] (default: false)
-    # @param optional [Boolean] (default: false)
-    # @param required [Boolean] (default: false)
-    # @param store [Object, nil] value to persist (replaces received value)
+    # @param as [Symbol, nil] (nil) target attribute name
+    # @param default [Object, nil] (nil) default value
+    # @param deprecated [Boolean] (false)
+    # @param description [String, nil] (nil) documentation description
+    # @param example [String, nil] (nil) example value
+    # @param nullable [Boolean] (false)
+    # @param optional [Boolean] (false)
+    # @param required [Boolean] (false)
+    # @param store [Object, nil] (nil) value to persist (replaces received value)
     # @return [void]
     def time(
       name,
@@ -813,14 +813,14 @@ module Apiwork
     # Defines an optional time.
     #
     # @param name [Symbol] the name
-    # @param as [Symbol, nil] target attribute name
-    # @param default [Object, nil] default value
-    # @param deprecated [Boolean] (default: false)
-    # @param description [String, nil] documentation description
-    # @param example [String, nil] example value
-    # @param nullable [Boolean] (default: false)
-    # @param required [Boolean] (default: false)
-    # @param store [Object, nil] value to persist (replaces received value)
+    # @param as [Symbol, nil] (nil) target attribute name
+    # @param default [Object, nil] (nil) default value
+    # @param deprecated [Boolean] (false)
+    # @param description [String, nil] (nil) documentation description
+    # @param example [String, nil] (nil) example value
+    # @param nullable [Boolean] (false)
+    # @param required [Boolean] (false)
+    # @param store [Object, nil] (nil) value to persist (replaces received value)
     # @return [void]
     def time?(
       name,
@@ -852,15 +852,15 @@ module Apiwork
     # Defines a binary.
     #
     # @param name [Symbol] the name
-    # @param as [Symbol, nil] target attribute name
-    # @param default [Object, nil] default value
-    # @param deprecated [Boolean] (default: false)
-    # @param description [String, nil] documentation description
-    # @param example [String, nil] example value
-    # @param nullable [Boolean] (default: false)
-    # @param optional [Boolean] (default: false)
-    # @param required [Boolean] (default: false)
-    # @param store [Object, nil] value to persist (replaces received value)
+    # @param as [Symbol, nil] (nil) target attribute name
+    # @param default [Object, nil] (nil) default value
+    # @param deprecated [Boolean] (false)
+    # @param description [String, nil] (nil) documentation description
+    # @param example [String, nil] (nil) example value
+    # @param nullable [Boolean] (false)
+    # @param optional [Boolean] (false)
+    # @param required [Boolean] (false)
+    # @param store [Object, nil] (nil) value to persist (replaces received value)
     # @return [void]
     def binary(
       name,
@@ -893,14 +893,14 @@ module Apiwork
     # Defines an optional binary.
     #
     # @param name [Symbol] the name
-    # @param as [Symbol, nil] target attribute name
-    # @param default [Object, nil] default value
-    # @param deprecated [Boolean] (default: false)
-    # @param description [String, nil] documentation description
-    # @param example [String, nil] example value
-    # @param nullable [Boolean] (default: false)
-    # @param required [Boolean] (default: false)
-    # @param store [Object, nil] value to persist (replaces received value)
+    # @param as [Symbol, nil] (nil) target attribute name
+    # @param default [Object, nil] (nil) default value
+    # @param deprecated [Boolean] (false)
+    # @param description [String, nil] (nil) documentation description
+    # @param example [String, nil] (nil) example value
+    # @param nullable [Boolean] (false)
+    # @param required [Boolean] (false)
+    # @param store [Object, nil] (nil) value to persist (replaces received value)
     # @return [void]
     def binary?(
       name,
@@ -932,14 +932,14 @@ module Apiwork
     # Defines an object.
     #
     # @param name [Symbol] the name
-    # @param as [Symbol, nil] target attribute name
-    # @param default [Object, nil] default value
-    # @param deprecated [Boolean] (default: false)
-    # @param description [String, nil] documentation description
-    # @param nullable [Boolean] (default: false)
-    # @param optional [Boolean] (default: false)
-    # @param required [Boolean] (default: false)
-    # @param store [Object, nil] value to persist (replaces received value)
+    # @param as [Symbol, nil] (nil) target attribute name
+    # @param default [Object, nil] (nil) default value
+    # @param deprecated [Boolean] (false)
+    # @param description [String, nil] (nil) documentation description
+    # @param nullable [Boolean] (false)
+    # @param optional [Boolean] (false)
+    # @param required [Boolean] (false)
+    # @param store [Object, nil] (nil) value to persist (replaces received value)
     # @yield block defining nested structure
     # @return [void]
     def object(
@@ -973,13 +973,13 @@ module Apiwork
     # Defines an optional object.
     #
     # @param name [Symbol] the name
-    # @param as [Symbol, nil] target attribute name
-    # @param default [Object, nil] default value
-    # @param deprecated [Boolean] (default: false)
-    # @param description [String, nil] documentation description
-    # @param nullable [Boolean] (default: false)
-    # @param required [Boolean] (default: false)
-    # @param store [Object, nil] value to persist (replaces received value)
+    # @param as [Symbol, nil] (nil) target attribute name
+    # @param default [Object, nil] (nil) default value
+    # @param deprecated [Boolean] (false)
+    # @param description [String, nil] (nil) documentation description
+    # @param nullable [Boolean] (false)
+    # @param required [Boolean] (false)
+    # @param store [Object, nil] (nil) value to persist (replaces received value)
     # @yield block defining nested structure
     # @return [void]
     def object?(
@@ -1012,15 +1012,15 @@ module Apiwork
     # Defines an array.
     #
     # @param name [Symbol] the name
-    # @param as [Symbol, nil] target attribute name
-    # @param default [Object, nil] default value
-    # @param deprecated [Boolean] (default: false)
-    # @param description [String, nil] documentation description
-    # @param nullable [Boolean] (default: false)
-    # @param of [Symbol, Hash, nil] element type
-    # @param optional [Boolean] (default: false)
-    # @param required [Boolean] (default: false)
-    # @param store [Object, nil] value to persist (replaces received value)
+    # @param as [Symbol, nil] (nil) target attribute name
+    # @param default [Object, nil] (nil) default value
+    # @param deprecated [Boolean] (false)
+    # @param description [String, nil] (nil) documentation description
+    # @param nullable [Boolean] (false)
+    # @param of [Symbol, Hash, nil] (nil) element type
+    # @param optional [Boolean] (false)
+    # @param required [Boolean] (false)
+    # @param store [Object, nil] (nil) value to persist (replaces received value)
     # @yield block defining element type
     # @return [void]
     def array(
@@ -1056,14 +1056,14 @@ module Apiwork
     # Defines an optional array.
     #
     # @param name [Symbol] the name
-    # @param as [Symbol, nil] target attribute name
-    # @param default [Object, nil] default value
-    # @param deprecated [Boolean] (default: false)
-    # @param description [String, nil] documentation description
-    # @param nullable [Boolean] (default: false)
-    # @param of [Symbol, Hash, nil] element type
-    # @param required [Boolean] (default: false)
-    # @param store [Object, nil] value to persist (replaces received value)
+    # @param as [Symbol, nil] (nil) target attribute name
+    # @param default [Object, nil] (nil) default value
+    # @param deprecated [Boolean] (false)
+    # @param description [String, nil] (nil) documentation description
+    # @param nullable [Boolean] (false)
+    # @param of [Symbol, Hash, nil] (nil) element type
+    # @param required [Boolean] (false)
+    # @param store [Object, nil] (nil) value to persist (replaces received value)
     # @yield block defining element type
     # @return [void]
     def array?(
@@ -1098,15 +1098,15 @@ module Apiwork
     # Defines a union.
     #
     # @param name [Symbol] the name
-    # @param as [Symbol, nil] target attribute name
-    # @param default [Object, nil] default value
-    # @param deprecated [Boolean] (default: false)
-    # @param description [String, nil] documentation description
-    # @param discriminator [Symbol, nil] discriminator field name
-    # @param nullable [Boolean] (default: false)
-    # @param optional [Boolean] (default: false)
-    # @param required [Boolean] (default: false)
-    # @param store [Object, nil] value to persist (replaces received value)
+    # @param as [Symbol, nil] (nil) target attribute name
+    # @param default [Object, nil] (nil) default value
+    # @param deprecated [Boolean] (false)
+    # @param description [String, nil] (nil) documentation description
+    # @param discriminator [Symbol, nil] (nil) discriminator field name
+    # @param nullable [Boolean] (false)
+    # @param optional [Boolean] (false)
+    # @param required [Boolean] (false)
+    # @param store [Object, nil] (nil) value to persist (replaces received value)
     # @yield block defining union variants
     # @return [void]
     def union(
@@ -1142,14 +1142,14 @@ module Apiwork
     # Defines an optional union.
     #
     # @param name [Symbol] the name
-    # @param as [Symbol, nil] target attribute name
-    # @param default [Object, nil] default value
-    # @param deprecated [Boolean] (default: false)
-    # @param description [String, nil] documentation description
-    # @param discriminator [Symbol, nil] discriminator field name
-    # @param nullable [Boolean] (default: false)
-    # @param required [Boolean] (default: false)
-    # @param store [Object, nil] value to persist (replaces received value)
+    # @param as [Symbol, nil] (nil) target attribute name
+    # @param default [Object, nil] (nil) default value
+    # @param deprecated [Boolean] (false)
+    # @param description [String, nil] (nil) documentation description
+    # @param discriminator [Symbol, nil] (nil) discriminator field name
+    # @param nullable [Boolean] (false)
+    # @param required [Boolean] (false)
+    # @param store [Object, nil] (nil) value to persist (replaces received value)
     # @yield block defining union variants
     # @return [void]
     def union?(
@@ -1185,12 +1185,12 @@ module Apiwork
     #
     # @param name [Symbol] the name
     # @param value [Object] the exact value (required)
-    # @param as [Symbol, nil] target attribute name
-    # @param default [Object, nil] default value
-    # @param deprecated [Boolean] (default: false)
-    # @param description [String, nil] documentation description
-    # @param optional [Boolean] (default: false)
-    # @param store [Object, nil] value to persist (replaces received value)
+    # @param as [Symbol, nil] (nil) target attribute name
+    # @param default [Object, nil] (nil) default value
+    # @param deprecated [Boolean] (false)
+    # @param description [String, nil] (nil) documentation description
+    # @param optional [Boolean] (false)
+    # @param store [Object, nil] (nil) value to persist (replaces received value)
     # @return [void]
     def literal(
       name,
@@ -1219,15 +1219,15 @@ module Apiwork
     # Defines a reference to a named type.
     #
     # @param name [Symbol] the name
-    # @param to [Symbol, nil] target type name (defaults to name)
-    # @param as [Symbol, nil] target attribute name
-    # @param default [Object, nil] default value
-    # @param deprecated [Boolean] (default: false)
-    # @param description [String, nil] documentation description
-    # @param nullable [Boolean] (default: false)
-    # @param optional [Boolean] (default: false)
-    # @param required [Boolean] (default: false)
-    # @param store [Object, nil] value to persist (replaces received value)
+    # @param to [Symbol, nil] (nil) target type name (defaults to name)
+    # @param as [Symbol, nil] (nil) target attribute name
+    # @param default [Object, nil] (nil) default value
+    # @param deprecated [Boolean] (false)
+    # @param description [String, nil] (nil) documentation description
+    # @param nullable [Boolean] (false)
+    # @param optional [Boolean] (false)
+    # @param required [Boolean] (false)
+    # @param store [Object, nil] (nil) value to persist (replaces received value)
     # @return [void]
     def reference(
       name,
@@ -1259,14 +1259,14 @@ module Apiwork
     # Defines an optional reference to a named type.
     #
     # @param name [Symbol] the name
-    # @param to [Symbol, nil] target type name (defaults to name)
-    # @param as [Symbol, nil] target attribute name
-    # @param default [Object, nil] default value
-    # @param deprecated [Boolean] (default: false)
-    # @param description [String, nil] documentation description
-    # @param nullable [Boolean] (default: false)
-    # @param required [Boolean] (default: false)
-    # @param store [Object, nil] value to persist (replaces received value)
+    # @param to [Symbol, nil] (nil) target type name (defaults to name)
+    # @param as [Symbol, nil] (nil) target attribute name
+    # @param default [Object, nil] (nil) default value
+    # @param deprecated [Boolean] (false)
+    # @param description [String, nil] (nil) documentation description
+    # @param nullable [Boolean] (false)
+    # @param required [Boolean] (false)
+    # @param store [Object, nil] (nil) value to persist (replaces received value)
     # @return [void]
     def reference?(
       name,

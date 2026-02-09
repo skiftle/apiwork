@@ -43,7 +43,7 @@ The API builder for this serializer.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `klass` | `Class<Builder::API::Base>`, `nil` |  | the builder class |
+| `klass` | `Class<Builder::API::Base>`, `nil` | `nil` | the builder class |
 
 **Returns**
 
@@ -63,7 +63,7 @@ The data type for this serializer.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol`, `nil` |  | the type name |
+| `name` | `Symbol`, `nil` | `nil` | the type name |
 
 **Returns**
 

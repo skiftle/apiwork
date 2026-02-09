@@ -41,7 +41,7 @@ module Apiwork
         # @api public
         # Transforms request and response keys.
         #
-        # @param format [Symbol, nil] :keep, :camel, :underscore, or :kebab
+        # @param format [Symbol, nil] (nil) [:keep, :camel, :underscore, :kebab]
         # @return [Symbol, nil]
         # @raise [ConfigurationError] if format is invalid
         #
@@ -59,7 +59,7 @@ module Apiwork
         # @api public
         # Transforms resource and action names in URL paths.
         #
-        # @param format [Symbol, nil] :keep, :kebab, :camel, or :underscore
+        # @param format [Symbol, nil] (nil) [:keep, :kebab, :camel, :underscore]
         # @return [Symbol, nil]
         # @raise [ConfigurationError] if format is invalid
         #
@@ -118,7 +118,7 @@ module Apiwork
         # @api public
         # Sets or gets the adapter for this API.
         #
-        # @param name [Symbol, nil]
+        # @param name [Symbol, nil] (nil)
         # @yield block evaluated in adapter context
         # @yieldparam adapter [Configuration]
         # @return [Adapter::Base, nil]
@@ -152,12 +152,12 @@ module Apiwork
         # Defines a reusable object type.
         #
         # @param name [Symbol]
-        # @param scope [Class<Contract::Base>, nil]
-        # @param description [String, nil]
-        # @param example [Object, nil]
-        # @param format [String, nil]
-        # @param deprecated [Boolean] (default: false)
-        # @param representation_class [Class<Representation::Base>, nil]
+        # @param scope [Class<Contract::Base>, nil] (nil)
+        # @param description [String, nil] (nil)
+        # @param example [Object, nil] (nil)
+        # @param format [String, nil] (nil)
+        # @param deprecated [Boolean] (false)
+        # @param representation_class [Class<Representation::Base>, nil] (nil)
         # @yieldparam object [API::Object]
         # @return [void]
         #
@@ -193,11 +193,11 @@ module Apiwork
         # Defines a reusable enumeration type.
         #
         # @param name [Symbol]
-        # @param values [Array<String>, nil]
-        # @param scope [Class<Contract::Base>, nil]
-        # @param description [String, nil]
-        # @param example [String, nil]
-        # @param deprecated [Boolean] (default: false)
+        # @param values [Array<String>, nil] (nil)
+        # @param scope [Class<Contract::Base>, nil] (nil)
+        # @param description [String, nil] (nil)
+        # @param example [String, nil] (nil)
+        # @param deprecated [Boolean] (false)
         # @return [void]
         #
         # @example
@@ -226,10 +226,10 @@ module Apiwork
         # Defines a discriminated union type.
         #
         # @param name [Symbol]
-        # @param discriminator [Symbol, nil]
-        # @param scope [Class<Contract::Base>, nil]
-        # @param description [String, nil]
-        # @param deprecated [Boolean] (default: false)
+        # @param discriminator [Symbol, nil] (nil)
+        # @param scope [Class<Contract::Base>, nil] (nil)
+        # @param description [String, nil] (nil)
+        # @param deprecated [Boolean] (false)
         # @yieldparam union [API::Union]
         # @return [void]
         #

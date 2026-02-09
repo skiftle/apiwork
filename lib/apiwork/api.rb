@@ -68,7 +68,7 @@ module Apiwork
       # The introspection data for an API.
       #
       # @param path [String] the API path
-      # @param locale [Symbol, nil] the locale for descriptions
+      # @param locale [Symbol, nil] (nil) the locale for descriptions
       # @return [Introspection::API]
       #
       # @example

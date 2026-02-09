@@ -377,10 +377,53 @@ For each `@api public` method:
 2. [ ] Correct category applied
 3. [ ] Qualifier Table checked
 4. [ ] Acronyms uppercase
-5. [ ] @param format correct
+5. [ ] @param matches signature (see below)
 6. [ ] @return type only (no description)
 7. [ ] @example for &block/mutator methods
 8. [ ] Tag order correct
+
+---
+
+## @param Signature Verification
+
+**Every @param must match the method signature exactly.**
+
+### Algorithm
+
+For each parameter in the method signature:
+
+1. **Required positional** (`name`) → `@param name [Type]` (no default)
+2. **Optional positional** (`name = value`) → `@param name [Type] (value)`
+3. **Required keyword** (`name:`) → `@param name [Type]` (no default)
+4. **Optional keyword** (`name: value`) → `@param name [Type] (value)`
+
+### Examples
+
+```ruby
+# Signature
+def foo(required, optional = nil, keyword:, keyword_opt: false)
+
+# YARD
+# @param required [String]
+# @param optional [String, nil] (nil)
+# @param keyword [Symbol]
+# @param keyword_opt [Boolean] (false)
+```
+
+### Common Mistakes
+
+| Signature | Wrong | Correct |
+|-----------|-------|---------|
+| `name = nil` | `@param name [String, nil]` | `@param name [String, nil] (nil)` |
+| `name = false` | `@param name [Boolean]` | `@param name [Boolean] (false)` |
+| `name:` (required) | `@param name [Symbol] (nil)` | `@param name [Symbol]` |
+
+### Verification Command
+
+```bash
+# Find @param with nil type but missing (nil) default
+grep -rn '@param.*\[.*nil\]' lib/apiwork/ --include="*.rb" | grep -v '(nil)'
+```
 
 ---
 

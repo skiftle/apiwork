@@ -29,10 +29,10 @@ module Apiwork
     # @api public
     # Defines a string.
     #
-    # @param enum [Array, Symbol, nil] allowed values
-    # @param format [Symbol, nil] format hint
-    # @param max [Integer, nil] maximum length
-    # @param min [Integer, nil] minimum length
+    # @param enum [Array, Symbol, nil] (nil) allowed values
+    # @param format [Symbol, nil] (nil) format hint
+    # @param max [Integer, nil] (nil) maximum length
+    # @param min [Integer, nil] (nil) minimum length
     # @return [void]
     def string(enum: nil, format: nil, max: nil, min: nil)
       of(:string, enum:, format:, max:, min:)
@@ -41,9 +41,9 @@ module Apiwork
     # @api public
     # Defines an integer.
     #
-    # @param enum [Array, Symbol, nil] allowed values
-    # @param max [Integer, nil] maximum value
-    # @param min [Integer, nil] minimum value
+    # @param enum [Array, Symbol, nil] (nil) allowed values
+    # @param max [Integer, nil] (nil) maximum value
+    # @param min [Integer, nil] (nil) minimum value
     # @return [void]
     def integer(enum: nil, max: nil, min: nil)
       of(:integer, enum:, max:, min:)
@@ -52,8 +52,8 @@ module Apiwork
     # @api public
     # Defines a decimal.
     #
-    # @param max [Numeric, nil] maximum value
-    # @param min [Numeric, nil] minimum value
+    # @param max [Numeric, nil] (nil) maximum value
+    # @param min [Numeric, nil] (nil) minimum value
     # @return [void]
     def decimal(max: nil, min: nil)
       of(:decimal, max:, min:)
@@ -62,8 +62,8 @@ module Apiwork
     # @api public
     # Defines a number.
     #
-    # @param max [Numeric, nil] maximum value
-    # @param min [Numeric, nil] minimum value
+    # @param max [Numeric, nil] (nil) maximum value
+    # @param min [Numeric, nil] (nil) minimum value
     # @return [void]
     def number(max: nil, min: nil)
       of(:number, max:, min:)
@@ -120,7 +120,7 @@ module Apiwork
     # @api public
     # Defines an object.
     #
-    # @param shape [Object, nil] pre-built shape
+    # @param shape [Object, nil] (nil) pre-built shape
     # @yield block defining nested structure
     # @yieldparam object [Object]
     # @return [void]
@@ -143,7 +143,7 @@ module Apiwork
     # @api public
     # Defines an array.
     #
-    # @param shape [Object, nil] pre-built shape
+    # @param shape [Object, nil] (nil) pre-built shape
     # @yield block defining element type
     # @yieldparam element [Element]
     # @return [void]
@@ -164,8 +164,8 @@ module Apiwork
     # @api public
     # Defines a union.
     #
-    # @param discriminator [Symbol, nil] discriminator field name
-    # @param shape [Union, nil] pre-built shape
+    # @param discriminator [Symbol, nil] (nil) discriminator field name
+    # @param shape [Union, nil] (nil) pre-built shape
     # @yield block defining union variants
     # @yieldparam union [Union]
     # @return [void]
@@ -204,7 +204,7 @@ module Apiwork
     # Defines a reference to a named type.
     #
     # @param type_name [Symbol] type name
-    # @param to [Symbol, nil] target type name (defaults to type_name)
+    # @param to [Symbol, nil] (nil) target type name (defaults to type_name)
     # @return [void]
     def reference(type_name, to: nil)
       of(to || type_name)

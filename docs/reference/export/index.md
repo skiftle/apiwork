@@ -91,8 +91,8 @@ Generates an export for an API.
 | `export_name` | `Symbol` |  | the export name (:openapi, :typescript, :zod) |
 | `api_path` | `String` |  | the API path |
 | `format` | `Symbol` |  | output format (:json, :yaml) - hash exports only |
-| `locale` | `Symbol`, `nil` |  | locale for translations |
-| `key_format` | `Symbol`, `nil` |  | key casing (:camel, :underscore, :kebab, :keep) |
+| `locale` | `Symbol`, `nil` | `nil` | locale for translations |
+| `key_format` | `Symbol<:camel, :underscore, :kebab, :keep>`, `nil` | `nil` |  |
 | `options` |  |  | export-specific keyword arguments |
 
 **Returns**

@@ -102,7 +102,7 @@ The API description.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `String`, `nil` |  |  |
+| `value` | `String`, `nil` | `nil` |  |
 
 **Returns**
 
@@ -199,7 +199,7 @@ The API summary.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `String`, `nil` |  |  |
+| `value` | `String`, `nil` | `nil` |  |
 
 **Returns**
 
@@ -253,7 +253,7 @@ The API terms of service.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `String`, `nil` |  |  |
+| `value` | `String`, `nil` | `nil` |  |
 
 **Returns**
 
@@ -280,7 +280,7 @@ The API title.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `String`, `nil` |  |  |
+| `value` | `String`, `nil` | `nil` |  |
 
 **Returns**
 
@@ -307,7 +307,7 @@ The API version.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `String`, `nil` |  |  |
+| `value` | `String`, `nil` | `nil` |  |
 
 **Returns**
 

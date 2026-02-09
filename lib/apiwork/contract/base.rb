@@ -97,7 +97,7 @@ module Apiwork
         # name when not set (e.g., `RecurringInvoiceContract` becomes
         # `recurring_invoice`).
         #
-        # @param value [Symbol, String, nil]
+        # @param value [Symbol, String, nil] (nil)
         # @return [String, nil]
         #
         # @example

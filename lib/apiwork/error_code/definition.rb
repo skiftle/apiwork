@@ -37,7 +37,7 @@ module Apiwork
       # @api public
       # The description for this error code.
       #
-      # @param locale_key [String, nil] the I18n namespace for API-specific translations
+      # @param locale_key [String, nil] (nil) the I18n namespace for API-specific translations
       # @return [String]
       #
       # @example

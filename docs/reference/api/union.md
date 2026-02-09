@@ -61,10 +61,10 @@ Defines a union variant.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `deprecated` | `Boolean` | `default: false` |  |
-| `description` | `String`, `nil` |  | documentation description |
-| `partial` | `Boolean` | `default: false` |  |
-| `tag` | `String`, `nil` |  | discriminator tag value (required when union has discriminator) |
+| `deprecated` | `Boolean` | `false` |  |
+| `description` | `String`, `nil` | `nil` | documentation description |
+| `partial` | `Boolean` | `false` |  |
+| `tag` | `String`, `nil` | `nil` | discriminator tag value (required when union has discriminator) |
 
 **Returns**
 

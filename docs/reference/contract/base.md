@@ -162,7 +162,7 @@ name when not set (e.g., `RecurringInvoiceContract` becomes
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `Symbol`, `String`, `nil` |  |  |
+| `value` | `Symbol`, `String`, `nil` | `nil` |  |
 
 **Returns**
 

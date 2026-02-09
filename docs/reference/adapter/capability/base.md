@@ -47,7 +47,7 @@ shared types used across all contracts.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `klass` | `Class<Builder::API::Base>`, `nil` |  | the builder class |
+| `klass` | `Class<Builder::API::Base>`, `nil` | `nil` | the builder class |
 
 **Returns**
 
@@ -73,7 +73,7 @@ Used for configuration options, translation keys, and [Adapter::Base.skip_capabi
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `Symbol`, `nil` |  | the capability name |
+| `value` | `Symbol`, `nil` | `nil` | the capability name |
 
 **Returns**
 
@@ -96,7 +96,7 @@ parameters and response shapes.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `klass` | `Class<Builder::Contract::Base>`, `nil` |  | the builder class |
+| `klass` | `Class<Builder::Contract::Base>`, `nil` | `nil` | the builder class |
 
 **Returns**
 
@@ -123,7 +123,7 @@ request parameters.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `klass` | `Class<Operation::Base>`, `nil` |  | the operation class |
+| `klass` | `Class<Operation::Base>`, `nil` | `nil` | the operation class |
 
 **Returns**
 
@@ -152,8 +152,8 @@ call `option` to define child options.
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | option name |
 | `type` | `Symbol` |  | :symbol, :string, :integer, :boolean, or :hash |
-| `default` | `Object`, `nil` |  | default value |
-| `enum` | `Array`, `nil` |  | allowed values |
+| `default` | `Object`, `nil` | `nil` | default value |
+| `enum` | `Array`, `nil` | `nil` | allowed values |
 
 **Returns**
 

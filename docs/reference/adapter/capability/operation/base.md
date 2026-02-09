@@ -31,7 +31,7 @@ type DSL methods and capability options.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `klass` | `Class<MetadataShape>`, `nil` |  | the metadata shape class |
+| `klass` | `Class<MetadataShape>`, `nil` | `nil` | the metadata shape class |
 
 **Returns**
 
@@ -65,7 +65,7 @@ The target for this operation.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `Symbol`, `nil` |  | :collection or :member |
+| `value` | `Symbol`, `nil` | `nil` | :collection or :member |
 
 **Returns**
 
@@ -160,10 +160,10 @@ Creates a result object.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `data` | `Object`, `nil` |  | transformed data |
-| `metadata` | `Hash`, `nil` |  | metadata to add to response |
-| `includes` | `Array`, `nil` |  | associations to preload |
-| `serialize_options` | `Hash`, `nil` |  | options for serialization |
+| `data` | `Object`, `nil` | `nil` | transformed data |
+| `metadata` | `Hash`, `nil` | `nil` | metadata to add to response |
+| `includes` | `Array`, `nil` | `nil` | associations to preload |
+| `serialize_options` | `Hash`, `nil` | `nil` | options for serialization |
 
 **Returns**
 
@@ -189,7 +189,7 @@ Lookup order:
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `segments` | `Array<Symbol, String>` |  | key path segments |
-| `default` | `String`, `nil` |  | fallback value if no translation found |
+| `default` | `String`, `nil` | `nil` | fallback value if no translation found |
 
 **Returns**
 

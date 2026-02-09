@@ -26,7 +26,7 @@ The server description.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `String`, `nil` |  |  |
+| `value` | `String`, `nil` | `nil` |  |
 
 **Returns**
 
@@ -53,7 +53,7 @@ The server URL.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `String`, `nil` |  |  |
+| `value` | `String`, `nil` | `nil` |  |
 
 **Returns**
 

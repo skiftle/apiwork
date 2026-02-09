@@ -38,13 +38,13 @@ module Apiwork
       # for static definitions. Use `of` for dynamic element generation.
       #
       # @param type [Symbol] element type (:string, :integer, :object, :array, :union, or custom type reference)
-      # @param discriminator [Symbol, nil] discriminator field name (unions only)
-      # @param enum [Array, Symbol, nil] allowed values or enum reference (strings, integers only)
-      # @param format [Symbol, nil] format hint (strings only)
-      # @param max [Integer, nil] maximum value or length
-      # @param min [Integer, nil] minimum value or length
-      # @param shape [Contract::Object, Contract::Union, nil] pre-built shape
-      # @param value [Object, nil] literal value (literals only)
+      # @param discriminator [Symbol, nil] (nil) discriminator field name (unions only)
+      # @param enum [Array, Symbol, nil] (nil) allowed values or enum reference (strings, integers only)
+      # @param format [Symbol, nil] (nil) format hint (strings only)
+      # @param max [Integer, nil] (nil) maximum value or length
+      # @param min [Integer, nil] (nil) minimum value or length
+      # @param shape [Contract::Object, Contract::Union, nil] (nil) pre-built shape
+      # @param value [Object, nil] (nil) literal value (literals only)
       # @yield block for defining nested structure (instance_eval style)
       # @yieldparam shape [Contract::Object, Contract::Union, Contract::Element]
       # @return [void]

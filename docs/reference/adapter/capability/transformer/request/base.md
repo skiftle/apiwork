@@ -50,7 +50,7 @@ The phase for this transformer.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `Symbol`, `nil` |  | :before or :after (default: :before) |
+| `value` | `Symbol<:before, :after>`, `nil` | `nil` | defaults to :before when not set |
 
 **Returns**
 

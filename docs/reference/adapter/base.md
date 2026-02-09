@@ -46,7 +46,7 @@ The adapter name for this adapter.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `Symbol`, `String`, `nil` |  |  |
+| `value` | `Symbol`, `String`, `nil` | `nil` |  |
 
 **Returns**
 
@@ -102,7 +102,7 @@ Sets the wrapper class for collection responses.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `klass` | `Class<Wrapper::Collection::Base>`, `nil` |  |  |
+| `klass` | `Class<Wrapper::Collection::Base>`, `nil` | `nil` |  |
 
 **Returns**
 
@@ -128,7 +128,7 @@ Sets the serializer class for errors.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `klass` | `Class<Serializer::Error::Base>`, `nil` |  |  |
+| `klass` | `Class<Serializer::Error::Base>`, `nil` | `nil` |  |
 
 **Returns**
 
@@ -154,7 +154,7 @@ Sets the wrapper class for error responses.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `klass` | `Class<Wrapper::Error::Base>`, `nil` |  |  |
+| `klass` | `Class<Wrapper::Error::Base>`, `nil` | `nil` |  |
 
 **Returns**
 
@@ -180,7 +180,7 @@ Sets the wrapper class for single-record responses.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `klass` | `Class<Wrapper::Member::Base>`, `nil` |  |  |
+| `klass` | `Class<Wrapper::Member::Base>`, `nil` | `nil` |  |
 
 **Returns**
 
@@ -211,8 +211,8 @@ call `option` to define child options.
 |------|------|---------|-------------|
 | `name` | `Symbol` |  | option name |
 | `type` | `Symbol` |  | :symbol, :string, :integer, :boolean, or :hash |
-| `default` | `Object`, `nil` |  | default value |
-| `enum` | `Array`, `nil` |  | allowed values |
+| `default` | `Object`, `nil` | `nil` | default value |
+| `enum` | `Array`, `nil` | `nil` | allowed values |
 
 **Returns**
 
@@ -258,7 +258,7 @@ Sets the serializer class for records and collections.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `klass` | `Class<Serializer::Resource::Base>`, `nil` |  |  |
+| `klass` | `Class<Serializer::Resource::Base>`, `nil` | `nil` |  |
 
 **Returns**
 
