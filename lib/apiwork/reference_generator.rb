@@ -174,7 +174,7 @@ module Apiwork
 
       types = param[:types].map do |t|
         if param[:values]&.any? && t == replace_type
-          values = param[:values].join(', ')
+          values = param[:values].join(', ').gsub('|', '\|')
           "`#{t}<#{values}>`"
         else
           "`#{t}`"

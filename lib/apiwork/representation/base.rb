@@ -157,7 +157,7 @@ module Apiwork
         # @param nullable [Boolean, nil] (nil) auto-detected from NULL constraint
         # @param filterable [Boolean, nil] (nil)
         # @param sortable [Boolean, nil] (nil)
-        # @param writable [Boolean, Hash, nil] (nil)
+        # @param writable [Boolean, Hash, nil] (nil) [Hash: on: :create | :update]
         # @param encode [Proc, nil] (nil)
         # @param decode [Proc, nil] (nil)
         # @param empty [Boolean, nil] (nil)
@@ -226,7 +226,7 @@ module Apiwork
         # @param representation [Class<Representation::Base>, nil] (nil) auto-detected from association name
         # @param polymorphic [Array, Hash, nil] (nil)
         # @param include [Symbol] (:optional) [:always, :optional]
-        # @param writable [Boolean, Hash] (false)
+        # @param writable [Boolean, Hash] (false) [Hash: on: :create | :update]
         # @param filterable [Boolean] (false)
         # @param sortable [Boolean] (false)
         # @param nullable [Boolean, nil] (nil)
@@ -281,7 +281,7 @@ module Apiwork
         # @param representation [Class<Representation::Base>, nil] (nil) auto-detected from association name
         # @param polymorphic [Array, Hash, nil] (nil)
         # @param include [Symbol] (:optional) [:always, :optional]
-        # @param writable [Boolean, Hash] (false)
+        # @param writable [Boolean, Hash] (false) [Hash: on: :create | :update]
         # @param filterable [Boolean] (false)
         # @param sortable [Boolean] (false)
         # @param nullable [Boolean, nil] (nil)
@@ -340,7 +340,7 @@ module Apiwork
         # @param representation [Class<Representation::Base>, nil] (nil) auto-detected from association name
         # @param polymorphic [Array, Hash, nil] (nil)
         # @param include [Symbol] (:optional) [:always, :optional]
-        # @param writable [Boolean, Hash] (false)
+        # @param writable [Boolean, Hash] (false) [Hash: on: :create | :update]
         # @param filterable [Boolean] (false)
         # @param sortable [Boolean] (false)
         # @param nullable [Boolean, nil] (nil) auto-detected from foreign key column

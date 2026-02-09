@@ -135,7 +135,7 @@ Types and nullability are auto-detected from database columns.
 | `nullable` | `Boolean`, `nil` | `nil` | auto-detected from NULL constraint |
 | `filterable` | `Boolean`, `nil` | `nil` |  |
 | `sortable` | `Boolean`, `nil` | `nil` |  |
-| `writable` | `Boolean`, `Hash`, `nil` | `nil` |  |
+| `writable` | `Boolean`, `Hash<on: :create \| :update>`, `nil` | `nil` |  |
 | `encode` | `Proc`, `nil` | `nil` |  |
 | `decode` | `Proc`, `nil` | `nil` |  |
 | `empty` | `Boolean`, `nil` | `nil` |  |
@@ -198,7 +198,7 @@ Nullability is auto-detected from the foreign key column.
 | `representation` | `Class<Representation::Base>`, `nil` | `nil` | auto-detected from association name |
 | `polymorphic` | `Array`, `Hash`, `nil` | `nil` |  |
 | `include` | `Symbol<:always, :optional>` | `:optional` |  |
-| `writable` | `Boolean`, `Hash` | `false` |  |
+| `writable` | `Boolean`, `Hash<on: :create \| :update>` | `false` |  |
 | `filterable` | `Boolean` | `false` |  |
 | `sortable` | `Boolean` | `false` |  |
 | `nullable` | `Boolean`, `nil` | `nil` | auto-detected from foreign key column |
@@ -354,7 +354,7 @@ Defines a has_many association for serialization.
 | `representation` | `Class<Representation::Base>`, `nil` | `nil` | auto-detected from association name |
 | `polymorphic` | `Array`, `Hash`, `nil` | `nil` |  |
 | `include` | `Symbol<:always, :optional>` | `:optional` |  |
-| `writable` | `Boolean`, `Hash` | `false` |  |
+| `writable` | `Boolean`, `Hash<on: :create \| :update>` | `false` |  |
 | `filterable` | `Boolean` | `false` |  |
 | `sortable` | `Boolean` | `false` |  |
 | `nullable` | `Boolean`, `nil` | `nil` |  |
@@ -400,7 +400,7 @@ Defines a has_one association for serialization.
 | `representation` | `Class<Representation::Base>`, `nil` | `nil` | auto-detected from association name |
 | `polymorphic` | `Array`, `Hash`, `nil` | `nil` |  |
 | `include` | `Symbol<:always, :optional>` | `:optional` |  |
-| `writable` | `Boolean`, `Hash` | `false` |  |
+| `writable` | `Boolean`, `Hash<on: :create \| :update>` | `false` |  |
 | `filterable` | `Boolean` | `false` |  |
 | `sortable` | `Boolean` | `false` |  |
 | `nullable` | `Boolean`, `nil` | `nil` |  |
