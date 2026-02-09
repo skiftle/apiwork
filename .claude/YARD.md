@@ -361,10 +361,10 @@ Description always on a separate line:
 #   Whether the attribute is filterable.
 
 # @param nullable [Boolean, nil] (nil)
-#   Whether the value can be null. If nil, auto-detected from column NULL constraint.
+#   Whether the value can be `null`. If `nil`, auto-detected from column NULL constraint.
 
 # @param type [Symbol, nil] (nil) [:string, :integer, :boolean, :datetime, :date, :uuid, :decimal, :number, :object, :array]
-#   The type. If nil and name maps to a database column, auto-detected from column type.
+#   The type. If `nil` and name maps to a database column, auto-detected from column type.
 
 # @param include [Symbol] (:optional) [:always, :optional]
 #   The inclusion strategy.
@@ -375,10 +375,10 @@ Description always on a separate line:
 | Category | Pattern | Example |
 |----------|---------|---------|
 | Boolean flag | "Whether the [element] is [adjective]." | "Whether the attribute is filterable." |
-| Boolean (auto-detect) | "Whether [subject]. If nil, auto-detected from [source]." | "Whether the value can be null. If nil, auto-detected from column NULL constraint." |
+| Boolean (auto-detect) | "Whether [subject]. If \`nil\`, auto-detected from [source]." | "Whether the value can be null. If \`nil\`, auto-detected from column NULL constraint." |
 | Value | "The [thing]." | "The description." |
-| Value (auto-detect) | "The [thing]. If nil, auto-detected from [source]." | "The type. If nil and name maps to a database column, auto-detected from column type." |
-| Value (conditional) | "The [thing]. If nil and [condition], auto-detected from [source]." | "The type. If nil and name maps to a database column, auto-detected from column type." |
+| Value (auto-detect) | "The [thing]. If \`nil\`, auto-detected from [source]." | "The type. If \`nil\` and name maps to a database column, auto-detected from column type." |
+| Value (conditional) | "The [thing]. If \`nil\` and [condition], auto-detected from [source]." | "The type. If \`nil\` and name maps to a database column, auto-detected from column type." |
 | Function | "Transform for [purpose]." | "Transform for serialization." |
 
 ### Rules
@@ -386,9 +386,10 @@ Description always on a separate line:
 - Capital letter at start of description
 - Period at end of description
 - Use "auto-detected" not "automatically detected"
-- Use "If nil" not "When nil"
+- Use "If `nil`" not "When nil"
 - Present tense only
 - Omit redundant context: "The type." not "The type of the attribute."
+- Use backticks for code elements: `nil`, `true`, `false`, class names (`Customer`), symbols (`:always`)
 
 ### Verification
 
@@ -429,8 +430,11 @@ Type only. No description.
 - Required for: `&block` methods, mutators
 - Code must be runnable
 - Output shown with `# =>`
-- Use domain terms: invoice, customer, item
 - Never: foo, bar, baz, test, example
+
+### Domain Terms
+
+Use terms from CLAUDE.md canonical test world (billing: invoice, customer, item, payment; content: post, comment, author).
 
 ---
 

@@ -241,9 +241,7 @@ module Apiwork
         # @param name [Symbol]
         #   The association name.
         # @param representation [Class<Representation::Base>, nil] (nil)
-        #   The representation class. If nil, auto-detected from association.
-        # @param polymorphic [Array, Hash, nil] (nil)
-        #   The polymorphic representation classes.
+        #   The representation class. If `nil`, inferred from the associated model in the same namespace (e.g., `CustomerRepresentation` for `Customer`).
         # @param include [Symbol] (:optional) [:always, :optional]
         #   The inclusion strategy.
         # @param writable [Boolean, Hash] (false) [Hash: on: :create | :update]
@@ -273,7 +271,6 @@ module Apiwork
           filterable: false,
           include: :optional,
           nullable: nil,
-          polymorphic: nil,
           representation: nil,
           sortable: false,
           writable: false
@@ -289,7 +286,6 @@ module Apiwork
               filterable:,
               include:,
               nullable:,
-              polymorphic:,
               representation:,
               sortable:,
               writable:,
@@ -305,9 +301,7 @@ module Apiwork
         # @param allow_destroy [Boolean] (false)
         #   Whether nested records can be destroyed. Auto-detected from model nested_attributes_options.
         # @param representation [Class<Representation::Base>, nil] (nil)
-        #   The representation class. If nil, auto-detected from association.
-        # @param polymorphic [Array, Hash, nil] (nil)
-        #   The polymorphic representation classes.
+        #   The representation class. If `nil`, inferred from the associated model in the same namespace (e.g., `CustomerRepresentation` for `Customer`).
         # @param include [Symbol] (:optional) [:always, :optional]
         #   The inclusion strategy.
         # @param writable [Boolean, Hash] (false) [Hash: on: :create | :update]
@@ -339,7 +333,6 @@ module Apiwork
           filterable: false,
           include: :optional,
           nullable: nil,
-          polymorphic: nil,
           representation: nil,
           sortable: false,
           writable: false
@@ -356,7 +349,6 @@ module Apiwork
               filterable:,
               include:,
               nullable:,
-              polymorphic:,
               representation:,
               sortable:,
               writable:,
@@ -372,9 +364,9 @@ module Apiwork
         # @param name [Symbol]
         #   The association name.
         # @param representation [Class<Representation::Base>, nil] (nil)
-        #   The representation class. If nil, auto-detected from association.
-        # @param polymorphic [Array, Hash, nil] (nil)
-        #   The polymorphic representation classes.
+        #   The representation class. If `nil`, inferred from the associated model in the same namespace (e.g., `CustomerRepresentation` for `Customer`).
+        # @param polymorphic [Array<Class<Representation::Base>>, nil] (nil)
+        #   The allowed representation classes for polymorphic associations.
         # @param include [Symbol] (:optional) [:always, :optional]
         #   The inclusion strategy.
         # @param writable [Boolean, Hash] (false) [Hash: on: :create | :update]
@@ -396,6 +388,7 @@ module Apiwork
         #
         # @example
         #   belongs_to :customer
+        #   belongs_to :commentable, polymorphic: [PostRepresentation, CustomerRepresentation]
         def belongs_to(
           name,
           deprecated: false,
