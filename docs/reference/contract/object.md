@@ -47,7 +47,7 @@ Defines an array param with element type.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  | param name |
+| **`name`** | `Symbol` |  | param name |
 | `options` | `Hash` | `{}` | additional param options |
 
 </div>
@@ -90,7 +90,7 @@ Defines an optional array.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  | the name |
+| **`name`** | `Symbol` |  | the name |
 | `as` | `Symbol`, `nil` | `nil` | target attribute name |
 | `default` | `Object`, `nil` | `nil` | default value |
 | `deprecated` | `Boolean` | `false` |  |
@@ -122,7 +122,7 @@ Defines a binary.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  | the name |
+| **`name`** | `Symbol` |  | the name |
 | `as` | `Symbol`, `nil` | `nil` | target attribute name |
 | `default` | `Object`, `nil` | `nil` | default value |
 | `deprecated` | `Boolean` | `false` |  |
@@ -155,7 +155,7 @@ Defines an optional binary.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  | the name |
+| **`name`** | `Symbol` |  | the name |
 | `as` | `Symbol`, `nil` | `nil` | target attribute name |
 | `default` | `Object`, `nil` | `nil` | default value |
 | `deprecated` | `Boolean` | `false` |  |
@@ -187,7 +187,7 @@ Defines a boolean.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  | the name |
+| **`name`** | `Symbol` |  | the name |
 | `as` | `Symbol`, `nil` | `nil` | target attribute name |
 | `default` | `Object`, `nil` | `nil` | default value |
 | `deprecated` | `Boolean` | `false` |  |
@@ -220,7 +220,7 @@ Defines an optional boolean.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  | the name |
+| **`name`** | `Symbol` |  | the name |
 | `as` | `Symbol`, `nil` | `nil` | target attribute name |
 | `default` | `Object`, `nil` | `nil` | default value |
 | `deprecated` | `Boolean` | `false` |  |
@@ -252,7 +252,7 @@ Defines a date.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  | the name |
+| **`name`** | `Symbol` |  | the name |
 | `as` | `Symbol`, `nil` | `nil` | target attribute name |
 | `default` | `Object`, `nil` | `nil` | default value |
 | `deprecated` | `Boolean` | `false` |  |
@@ -285,7 +285,7 @@ Defines an optional date.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  | the name |
+| **`name`** | `Symbol` |  | the name |
 | `as` | `Symbol`, `nil` | `nil` | target attribute name |
 | `default` | `Object`, `nil` | `nil` | default value |
 | `deprecated` | `Boolean` | `false` |  |
@@ -317,7 +317,7 @@ Defines a datetime.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  | the name |
+| **`name`** | `Symbol` |  | the name |
 | `as` | `Symbol`, `nil` | `nil` | target attribute name |
 | `default` | `Object`, `nil` | `nil` | default value |
 | `deprecated` | `Boolean` | `false` |  |
@@ -350,7 +350,7 @@ Defines an optional datetime.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  | the name |
+| **`name`** | `Symbol` |  | the name |
 | `as` | `Symbol`, `nil` | `nil` | target attribute name |
 | `default` | `Object`, `nil` | `nil` | default value |
 | `deprecated` | `Boolean` | `false` |  |
@@ -382,7 +382,7 @@ Defines a decimal.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  | the name |
+| **`name`** | `Symbol` |  | the name |
 | `as` | `Symbol`, `nil` | `nil` | target attribute name |
 | `default` | `Object`, `nil` | `nil` | default value |
 | `deprecated` | `Boolean` | `false` |  |
@@ -417,7 +417,7 @@ Defines an optional decimal.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  | the name |
+| **`name`** | `Symbol` |  | the name |
 | `as` | `Symbol`, `nil` | `nil` | target attribute name |
 | `default` | `Object`, `nil` | `nil` | default value |
 | `deprecated` | `Boolean` | `false` |  |
@@ -452,7 +452,7 @@ Can be called multiple times to inherit from multiple types.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `type_name` | `Symbol` |  | the type to inherit from |
+| **`type_name`** | `Symbol` |  | the type to inherit from |
 
 </div>
 
@@ -495,7 +495,7 @@ Defines an integer.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  | the name |
+| **`name`** | `Symbol` |  | the name |
 | `as` | `Symbol`, `nil` | `nil` | target attribute name |
 | `default` | `Object`, `nil` | `nil` | default value |
 | `deprecated` | `Boolean` | `false` |  |
@@ -531,7 +531,7 @@ Defines an optional integer.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  | the name |
+| **`name`** | `Symbol` |  | the name |
 | `as` | `Symbol`, `nil` | `nil` | target attribute name |
 | `default` | `Object`, `nil` | `nil` | default value |
 | `deprecated` | `Boolean` | `false` |  |
@@ -566,8 +566,8 @@ Defines a literal value.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  | the name |
-| `value` | `Object` |  | the exact value (required) |
+| **`name`** | `Symbol` |  | the name |
+| **`value`** | `Object` |  | the exact value (required) |
 | `as` | `Symbol`, `nil` | `nil` | target attribute name |
 | `default` | `Object`, `nil` | `nil` | default value |
 | `deprecated` | `Boolean` | `false` |  |
@@ -598,7 +598,7 @@ Can be called multiple times to merge from multiple types.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `type_name` | `Symbol` |  | the type to merge from |
+| **`type_name`** | `Symbol` |  | the type to merge from |
 
 </div>
 
@@ -631,7 +631,7 @@ Defines a number.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  | the name |
+| **`name`** | `Symbol` |  | the name |
 | `as` | `Symbol`, `nil` | `nil` | target attribute name |
 | `default` | `Object`, `nil` | `nil` | default value |
 | `deprecated` | `Boolean` | `false` |  |
@@ -666,7 +666,7 @@ Defines an optional number.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  | the name |
+| **`name`** | `Symbol` |  | the name |
 | `as` | `Symbol`, `nil` | `nil` | target attribute name |
 | `default` | `Object`, `nil` | `nil` | default value |
 | `deprecated` | `Boolean` | `false` |  |
@@ -700,7 +700,7 @@ Defines an object.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  | the name |
+| **`name`** | `Symbol` |  | the name |
 | `as` | `Symbol`, `nil` | `nil` | target attribute name |
 | `default` | `Object`, `nil` | `nil` | default value |
 | `deprecated` | `Boolean` | `false` |  |
@@ -732,7 +732,7 @@ Defines an optional object.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  | the name |
+| **`name`** | `Symbol` |  | the name |
 | `as` | `Symbol`, `nil` | `nil` | target attribute name |
 | `default` | `Object`, `nil` | `nil` | default value |
 | `deprecated` | `Boolean` | `false` |  |
@@ -766,7 +766,7 @@ for static definitions.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  | param name |
+| **`name`** | `Symbol` |  | param name |
 | `type` | `Symbol`, `nil` | `nil` | param type |
 | `as` | `Symbol`, `nil` | `nil` | target attribute name |
 | `default` | `Object`, `nil` | `nil` | default value |
@@ -829,7 +829,7 @@ Defines a reference to a named type.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  | the name |
+| **`name`** | `Symbol` |  | the name |
 | `to` | `Symbol`, `nil` | `nil` | target type name (defaults to name) |
 | `as` | `Symbol`, `nil` | `nil` | target attribute name |
 | `default` | `Object`, `nil` | `nil` | default value |
@@ -862,7 +862,7 @@ Defines an optional reference to a named type.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  | the name |
+| **`name`** | `Symbol` |  | the name |
 | `to` | `Symbol`, `nil` | `nil` | target type name (defaults to name) |
 | `as` | `Symbol`, `nil` | `nil` | target attribute name |
 | `default` | `Object`, `nil` | `nil` | default value |
@@ -894,7 +894,7 @@ Defines a string.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  | the name |
+| **`name`** | `Symbol` |  | the name |
 | `as` | `Symbol`, `nil` | `nil` | target attribute name |
 | `default` | `Object`, `nil` | `nil` | default value |
 | `deprecated` | `Boolean` | `false` |  |
@@ -931,7 +931,7 @@ Defines an optional string.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  | the name |
+| **`name`** | `Symbol` |  | the name |
 | `as` | `Symbol`, `nil` | `nil` | target attribute name |
 | `default` | `Object`, `nil` | `nil` | default value |
 | `deprecated` | `Boolean` | `false` |  |
@@ -967,7 +967,7 @@ Defines a time.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  | the name |
+| **`name`** | `Symbol` |  | the name |
 | `as` | `Symbol`, `nil` | `nil` | target attribute name |
 | `default` | `Object`, `nil` | `nil` | default value |
 | `deprecated` | `Boolean` | `false` |  |
@@ -1000,7 +1000,7 @@ Defines an optional time.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  | the name |
+| **`name`** | `Symbol` |  | the name |
 | `as` | `Symbol`, `nil` | `nil` | target attribute name |
 | `default` | `Object`, `nil` | `nil` | default value |
 | `deprecated` | `Boolean` | `false` |  |
@@ -1032,7 +1032,7 @@ Defines a union.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  | the name |
+| **`name`** | `Symbol` |  | the name |
 | `as` | `Symbol`, `nil` | `nil` | target attribute name |
 | `default` | `Object`, `nil` | `nil` | default value |
 | `deprecated` | `Boolean` | `false` |  |
@@ -1065,7 +1065,7 @@ Defines an optional union.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  | the name |
+| **`name`** | `Symbol` |  | the name |
 | `as` | `Symbol`, `nil` | `nil` | target attribute name |
 | `default` | `Object`, `nil` | `nil` | default value |
 | `deprecated` | `Boolean` | `false` |  |
@@ -1097,7 +1097,7 @@ Defines a UUID.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  | the name |
+| **`name`** | `Symbol` |  | the name |
 | `as` | `Symbol`, `nil` | `nil` | target attribute name |
 | `default` | `Object`, `nil` | `nil` | default value |
 | `deprecated` | `Boolean` | `false` |  |
@@ -1130,7 +1130,7 @@ Defines an optional UUID.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  | the name |
+| **`name`** | `Symbol` |  | the name |
 | `as` | `Symbol`, `nil` | `nil` | target attribute name |
 | `default` | `Object`, `nil` | `nil` | default value |
 | `deprecated` | `Boolean` | `false` |  |

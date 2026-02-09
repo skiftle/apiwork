@@ -105,9 +105,9 @@ Serializes a resource.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `resource` | `Object` |  | the resource to serialize |
-| `context` | `Hash` |  | serialization context |
-| `serialize_options` | `Hash` |  | options (e.g., include) |
+| **`resource`** | `Object` |  | the resource to serialize |
+| **`context`** | `Hash` |  | serialization context |
+| **`serialize_options`** | `Hash` |  | options (e.g., include) |
 
 </div>
 

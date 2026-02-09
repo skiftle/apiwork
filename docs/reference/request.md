@@ -57,8 +57,8 @@ Creates a new request context.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `body` | `Hash` |  | the body parameters |
-| `query` | `Hash` |  | the query parameters |
+| **`body`** | `Hash` |  | the body parameters |
+| **`query`** | `Hash` |  | the query parameters |
 
 </div>
 

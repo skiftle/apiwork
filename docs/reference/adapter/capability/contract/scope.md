@@ -29,7 +29,7 @@ Whether this scope includes the given action.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  |  |
+| **`name`** | `Symbol` |  |  |
 
 </div>
 

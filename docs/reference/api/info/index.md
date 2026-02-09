@@ -236,7 +236,7 @@ The API tags.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `values` | `Array<String>` |  |  |
+| **`values`** | `Array<String>` |  |  |
 
 </div>
 

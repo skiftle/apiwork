@@ -128,7 +128,7 @@ Types and nullability are auto-detected from database columns.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  |  |
+| **`name`** | `Symbol` |  |  |
 | `type` | `Symbol<:string, :integer, :boolean, :datetime, :date, :uuid, :decimal, :number, :object, :array>`, `nil` | `nil` | auto-detected from column type |
 | `enum` | `Array`, `nil` | `nil` | auto-detected from Rails enum definition |
 | `optional` | `Boolean`, `nil` | `nil` | auto-detected from NULL constraint or column default |
@@ -138,7 +138,7 @@ Types and nullability are auto-detected from database columns.
 | `writable` | `Boolean`, `Hash`, `nil` | `nil` |  |
 | `encode` | `Proc`, `nil` | `nil` |  |
 | `decode` | `Proc`, `nil` | `nil` |  |
-| `empty` | `Symbol<:null, :keep>`, `nil` | `nil` |  |
+| `empty` | `Boolean`, `nil` | `nil` |  |
 | `min` | `Integer`, `nil` | `nil` |  |
 | `max` | `Integer`, `nil` | `nil` |  |
 | `description` | `String`, `nil` | `nil` |  |
@@ -194,7 +194,7 @@ Nullability is auto-detected from the foreign key column.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  |  |
+| **`name`** | `Symbol` |  |  |
 | `representation` | `Class<Representation::Base>`, `nil` | `nil` | auto-detected from association name |
 | `polymorphic` | `Array`, `Hash`, `nil` | `nil` |  |
 | `include` | `Symbol<:always, :optional>` | `:optional` |  |
@@ -289,7 +289,7 @@ Deserializes using this representation's decode transformers.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `hash_or_array` | `Hash`, `Array<Hash>` |  |  |
+| **`hash_or_array`** | `Hash`, `Array<Hash>` |  |  |
 
 </div>
 
@@ -349,7 +349,7 @@ Defines a has_many association for serialization.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  |  |
+| **`name`** | `Symbol` |  |  |
 | `allow_destroy` | `Boolean` | `false` | auto-detected from nested_attributes_options |
 | `representation` | `Class<Representation::Base>`, `nil` | `nil` | auto-detected from association name |
 | `polymorphic` | `Array`, `Hash`, `nil` | `nil` |  |
@@ -396,7 +396,7 @@ Defines a has_one association for serialization.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  |  |
+| **`name`** | `Symbol` |  |  |
 | `representation` | `Class<Representation::Base>`, `nil` | `nil` | auto-detected from association name |
 | `polymorphic` | `Array`, `Hash`, `nil` | `nil` |  |
 | `include` | `Symbol<:always, :optional>` | `:optional` |  |
@@ -455,7 +455,7 @@ Auto-detected from representation name when not set. Use
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `Class<ActiveRecord::Base>` |  |  |
+| **`value`** | `Class<ActiveRecord::Base>` |  |  |
 
 </div>
 
@@ -523,7 +523,7 @@ Auto-detected from model name when not set. Use [.root_key](#root-key) to retrie
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `singular` | `String`, `Symbol` |  |  |
+| **`singular`** | `String`, `Symbol` |  |  |
 | `plural` | `String`, `Symbol` | `singular.pluralize` |  |
 
 </div>
@@ -576,7 +576,7 @@ Serializes a record or collection to JSON-ready hashes.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `record_or_collection` | `ActiveRecord::Base`, `Array<ActiveRecord::Base>` |  |  |
+| **`record_or_collection`** | `ActiveRecord::Base`, `Array<ActiveRecord::Base>` |  |  |
 | `context` | `Hash` | `{}` |  |
 | `include` | `Symbol`, `Array`, `Hash`, `nil` | `nil` |  |
 

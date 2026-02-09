@@ -160,7 +160,7 @@ module Apiwork
         # @param writable [Boolean, Hash, nil] (nil)
         # @param encode [Proc, nil] (nil)
         # @param decode [Proc, nil] (nil)
-        # @param empty [Symbol, nil] (nil) [:null, :keep]
+        # @param empty [Boolean, nil] (nil)
         # @param min [Integer, nil] (nil)
         # @param max [Integer, nil] (nil)
         # @param description [String, nil] (nil)

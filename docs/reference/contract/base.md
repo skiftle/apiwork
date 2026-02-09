@@ -95,7 +95,7 @@ Defines an action on this contract.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `action_name` | `Symbol` |  | :index, :show, :create, :update, :destroy, or custom |
+| **`action_name`** | `Symbol` |  | :index, :show, :create, :update, :destroy, or custom |
 | `replace` | `Boolean` | `false` |  |
 
 </div>
@@ -134,7 +134,7 @@ Defines an enum scoped to this contract.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  |  |
+| **`name`** | `Symbol` |  |  |
 | `values` | `Array<String>`, `nil` | `nil` |  |
 | `description` | `String`, `nil` | `nil` |  |
 | `example` | `String`, `nil` | `nil` |  |
@@ -211,8 +211,8 @@ Imported types are accessed with a prefix matching the alias.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `contract_class` | `Class<Contract::Base>` |  |  |
-| `as` | `Symbol` |  | alias prefix |
+| **`contract_class`** | `Class<Contract::Base>` |  |  |
+| **`as`** | `Symbol` |  | alias prefix |
 
 </div>
 
@@ -274,7 +274,7 @@ Defines a reusable object type scoped to this contract.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  |  |
+| **`name`** | `Symbol` |  |  |
 | `description` | `String`, `nil` | `nil` |  |
 | `example` | `Object`, `nil` | `nil` |  |
 | `format` | `String`, `nil` | `nil` |  |
@@ -317,7 +317,7 @@ types. Use [.representation_class](#representation-class) to retrieve.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `klass` | `Class<Representation::Base>` |  |  |
+| **`klass`** | `Class<Representation::Base>` |  |  |
 
 </div>
 
@@ -371,7 +371,7 @@ Defines a discriminated union type scoped to this contract.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  |  |
+| **`name`** | `Symbol` |  |  |
 | `discriminator` | `Symbol`, `nil` | `nil` |  |
 
 </div>

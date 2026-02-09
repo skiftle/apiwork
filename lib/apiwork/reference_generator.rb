@@ -587,8 +587,9 @@ module Apiwork
         parts << '|------|------|---------|-------------|'
 
         method[:params].each do |param|
+          name_cell = param[:default] ? "`#{param[:name]}`" : "**`#{param[:name]}`**"
           row = [
-            "`#{param[:name]}`",
+            name_cell,
             format_param_type(param),
             param[:default] ? "`#{param[:default]}`" : '',
             linkify_yard_refs(param[:description])&.gsub(/\s*\n\s*/, ' ') || '',

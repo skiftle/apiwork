@@ -202,7 +202,7 @@ Defines a literal value.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `Object` |  | the exact value (required) |
+| **`value`** | `Object` |  | the exact value (required) |
 
 </div>
 
@@ -298,7 +298,7 @@ for static definitions. Use `of` for dynamic element generation.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `type` | `Symbol` |  | element type (:string, :integer, :object, :array, :union, or custom type reference) |
+| **`type`** | `Symbol` |  | element type (:string, :integer, :object, :array, :union, or custom type reference) |
 | `discriminator` | `Symbol`, `nil` | `nil` | discriminator field name (unions only) |
 | `enum` | `Array`, `nil` | `nil` | allowed values (strings, integers only) |
 | `format` | `Symbol`, `nil` | `nil` | format hint (strings only) |
@@ -351,7 +351,7 @@ Defines a reference to a named type.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `type_name` | `Symbol` |  | type name |
+| **`type_name`** | `Symbol` |  | type name |
 | `to` | `Symbol`, `nil` | `nil` | target type name (defaults to type_name) |
 
 </div>

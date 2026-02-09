@@ -251,7 +251,7 @@ Defines a literal value.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `Object` |  | the exact value (required) |
+| **`value`** | `Object` |  | the exact value (required) |
 
 </div>
 
@@ -346,7 +346,7 @@ Only complex types (:object, :array, :union) are allowed.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `type` | `Symbol<:object, :array, :union>` |  | element type |
+| **`type`** | `Symbol<:object, :array, :union>` |  | element type |
 | `discriminator` | `Symbol`, `nil` | `nil` | discriminator field name (unions only) |
 | `shape` | `API::Object`, `API::Union`, `nil` | `nil` | pre-built shape |
 
@@ -374,7 +374,7 @@ Defines a reference to a named type.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `type_name` | `Symbol` |  | type name |
+| **`type_name`** | `Symbol` |  | type name |
 | `to` | `Symbol`, `nil` | `nil` | target type name (defaults to type_name) |
 
 </div>

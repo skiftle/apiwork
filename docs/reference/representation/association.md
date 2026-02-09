@@ -268,7 +268,7 @@ Whether this association is writable for the given action.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `action` | `Symbol` |  | :create or :update |
+| **`action`** | `Symbol` |  | :create or :update |
 
 </div>
 

@@ -43,7 +43,7 @@ Accesses nested configuration values by key path.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `keys` | `Symbol` |  | one or more keys to traverse |
+| **`keys`** | `Symbol` |  | one or more keys to traverse |
 
 </div>
 

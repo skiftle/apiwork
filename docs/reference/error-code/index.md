@@ -30,7 +30,7 @@ Finds an error code by key.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `key` | `Symbol` |  | the error code key |
+| **`key`** | `Symbol` |  | the error code key |
 
 </div>
 
@@ -64,7 +64,7 @@ Finds an error code by key.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `key` | `Symbol` |  | the error code key |
+| **`key`** | `Symbol` |  | the error code key |
 
 </div>
 
@@ -101,8 +101,8 @@ in controllers. Built-in codes (400-504) are pre-registered.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `key` | `Symbol` |  | unique identifier for the error code |
-| `status` | `Integer` |  | the HTTP status code (must be 400-599) |
+| **`key`** | `Symbol` |  | unique identifier for the error code |
+| **`status`** | `Integer` |  | the HTTP status code (must be 400-599) |
 | `attach_path` | `Boolean` | `false` | include request path in error response |
 
 </div>

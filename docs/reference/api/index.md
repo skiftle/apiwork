@@ -39,7 +39,7 @@ types, and configuration.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `path` | `String` |  | the API path |
+| **`path`** | `String` |  | the API path |
 
 </div>
 
@@ -82,7 +82,7 @@ Finds an API by path.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `path` | `String` |  | the API path |
+| **`path`** | `String` |  | the API path |
 
 </div>
 
@@ -116,7 +116,7 @@ Finds an API by path.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `path` | `String` |  | the API path |
+| **`path`** | `String` |  | the API path |
 
 </div>
 
@@ -150,7 +150,7 @@ The introspection data for an API.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `path` | `String` |  | the API path |
+| **`path`** | `String` |  | the API path |
 | `locale` | `Symbol`, `nil` | `nil` | the locale for descriptions |
 
 </div>

@@ -93,7 +93,7 @@ Resolves a record to its subclass representation.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `record` | `ActiveRecord::Base` |  | the record to resolve |
+| **`record`** | `ActiveRecord::Base` |  | the record to resolve |
 
 </div>
 

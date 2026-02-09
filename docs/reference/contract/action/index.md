@@ -136,7 +136,7 @@ Declares the raised error codes for this action.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `error_code_keys` | `Symbol` |  | error code keys |
+| **`error_code_keys`** | `Symbol` |  | error code keys |
 
 </div>
 
@@ -331,7 +331,7 @@ Tags help organize actions in generated documentation.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `tags` | `Array<String,Symbol>` |  | tag names |
+| **`tags`** | `Array<String,Symbol>` |  | tag names |
 
 </div>
 

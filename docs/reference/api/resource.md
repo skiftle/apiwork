@@ -84,8 +84,8 @@ Defines a reusable concern.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `concern_name` | `Symbol` |  | concern name |
-| `callable` | `Proc` |  | optional callable instead of block |
+| **`concern_name`** | `Symbol` |  | concern name |
+| **`callable`** | `Proc` |  | optional callable instead of block |
 
 </div>
 
@@ -131,7 +131,7 @@ Includes previously defined concerns.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `concern_names` | `Array<Symbol>` |  | concern names to include |
+| **`concern_names`** | `Array<Symbol>` |  | concern names to include |
 | `options` | `Hash` | `{}` | options passed to the concern |
 
 </div>
@@ -164,7 +164,7 @@ Defines a DELETE action.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `action_names` | `Symbol`, `Array<Symbol>` |  | action name(s) |
+| **`action_names`** | `Symbol`, `Array<Symbol>` |  | action name(s) |
 | `on` | `Symbol<:member, :collection>`, `nil` | `nil` |  |
 
 </div>
@@ -195,7 +195,7 @@ Defines a GET action.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `action_names` | `Symbol`, `Array<Symbol>` |  | action name(s) |
+| **`action_names`** | `Symbol`, `Array<Symbol>` |  | action name(s) |
 | `on` | `Symbol<:member, :collection>`, `nil` | `nil` |  |
 
 </div>
@@ -268,7 +268,7 @@ Defines a PATCH action.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `action_names` | `Symbol`, `Array<Symbol>` |  | action name(s) |
+| **`action_names`** | `Symbol`, `Array<Symbol>` |  | action name(s) |
 | `on` | `Symbol<:member, :collection>`, `nil` | `nil` |  |
 
 </div>
@@ -299,7 +299,7 @@ Defines a POST action.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `action_names` | `Symbol`, `Array<Symbol>` |  | action name(s) |
+| **`action_names`** | `Symbol`, `Array<Symbol>` |  | action name(s) |
 | `on` | `Symbol<:member, :collection>`, `nil` | `nil` |  |
 
 </div>
@@ -330,7 +330,7 @@ Defines a PUT action.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `action_names` | `Symbol`, `Array<Symbol>` |  | action name(s) |
+| **`action_names`** | `Symbol`, `Array<Symbol>` |  | action name(s) |
 | `on` | `Symbol<:member, :collection>`, `nil` | `nil` |  |
 
 </div>
@@ -363,7 +363,7 @@ Default actions: :show, :create, :update, :destroy.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `resource_name` | `Symbol` |  | resource name (singular) |
+| **`resource_name`** | `Symbol` |  | resource name (singular) |
 | `concerns` | `Array<Symbol>`, `nil` | `nil` | concerns to include |
 | `constraints` | `Hash`, `Proc`, `nil` | `nil` | route constraints |
 | `contract` | `String`, `nil` | `nil` | custom contract path |
@@ -416,7 +416,7 @@ Default actions: :index, :show, :create, :update, :destroy.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `resource_name` | `Symbol` |  | resource name (plural) |
+| **`resource_name`** | `Symbol` |  | resource name (plural) |
 | `concerns` | `Array<Symbol>`, `nil` | `nil` | concerns to include |
 | `constraints` | `Hash`, `Proc`, `nil` | `nil` | route constraints |
 | `contract` | `String`, `nil` | `nil` | custom contract path |

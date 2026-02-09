@@ -168,8 +168,8 @@ call `option` to define child options.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  | option name |
-| `type` | `Symbol<:symbol, :string, :integer, :boolean, :hash>` |  |  |
+| **`name`** | `Symbol` |  | option name |
+| **`type`** | `Symbol<:symbol, :string, :integer, :boolean, :hash>` |  |  |
 | `default` | `Object`, `nil` | `nil` | default value |
 | `enum` | `Array`, `nil` | `nil` | allowed values |
 
@@ -221,7 +221,7 @@ Registers a request transformer for this capability.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `transformer_class` | `Class<Transformer::Request::Base>` |  | the transformer class |
+| **`transformer_class`** | `Class<Transformer::Request::Base>` |  | the transformer class |
 
 </div>
 
@@ -249,7 +249,7 @@ Registers a response transformer for this capability.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `transformer_class` | `Class<Transformer::Response::Base>` |  | the transformer class |
+| **`transformer_class`** | `Class<Transformer::Response::Base>` |  | the transformer class |
 
 </div>
 

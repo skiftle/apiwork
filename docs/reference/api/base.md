@@ -80,7 +80,7 @@ be included in multiple resources via the `concerns` option.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  | concern name |
+| **`name`** | `Symbol` |  | concern name |
 
 </div>
 
@@ -132,7 +132,7 @@ Defines a reusable enumeration type.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  |  |
+| **`name`** | `Symbol` |  |  |
 | `values` | `Array<String>`, `nil` | `nil` |  |
 | `scope` | `Class<Contract::Base>`, `nil` | `nil` |  |
 | `description` | `String`, `nil` | `nil` |  |
@@ -167,7 +167,7 @@ Enables an export for this API.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  | registered export name (built-in: :openapi, :typescript, :zod) |
+| **`name`** | `Symbol` |  | registered export name (built-in: :openapi, :typescript, :zod) |
 
 </div>
 
@@ -268,7 +268,7 @@ Defines a reusable object type.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  |  |
+| **`name`** | `Symbol` |  |  |
 | `scope` | `Class<Contract::Base>`, `nil` | `nil` |  |
 | `description` | `String`, `nil` | `nil` |  |
 | `example` | `Object`, `nil` | `nil` |  |
@@ -355,7 +355,7 @@ Included in generated specs (OpenAPI, etc.) as possible error responses.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `error_code_keys` | `Array<Symbol>` |  | registered error code keys |
+| **`error_code_keys`** | `Array<Symbol>` |  | registered error code keys |
 
 </div>
 
@@ -389,7 +389,7 @@ like user profile or application settings.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  | resource name (singular) |
+| **`name`** | `Symbol` |  | resource name (singular) |
 | `concerns` | `Array<Symbol>`, `nil` | `nil` | concerns to include |
 | `constraints` | `Hash`, `Proc`, `nil` | `nil` | route constraints (regex, lambdas) |
 | `contract` | `String`, `nil` | `nil` | custom contract path |
@@ -444,7 +444,7 @@ Nested resources and custom actions can be defined in the block.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  | resource name (plural) |
+| **`name`** | `Symbol` |  | resource name (plural) |
 | `concerns` | `Array<Symbol>`, `nil` | `nil` | concerns to include |
 | `constraints` | `Hash`, `Proc`, `nil` | `nil` | route constraints (regex, lambdas) |
 | `contract` | `String`, `nil` | `nil` | custom contract path |
@@ -497,7 +497,7 @@ Defines a discriminated union type.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  |  |
+| **`name`** | `Symbol` |  |  |
 | `discriminator` | `Symbol`, `nil` | `nil` |  |
 | `scope` | `Class<Contract::Base>`, `nil` | `nil` |  |
 | `description` | `String`, `nil` | `nil` |  |

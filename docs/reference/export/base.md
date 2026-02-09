@@ -112,8 +112,8 @@ call `option` to define child options.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  | option name |
-| `type` | `Symbol<:symbol, :string, :integer, :boolean, :hash>` |  |  |
+| **`name`** | `Symbol` |  | option name |
+| **`type`** | `Symbol<:symbol, :string, :integer, :boolean, :hash>` |  |  |
 | `default` | `Object`, `nil` | `nil` | default value |
 | `enum` | `Array`, `nil` | `nil` | allowed values |
 
@@ -247,7 +247,7 @@ Transforms a key according to the configured key format.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `key` | `String`, `Symbol` |  | the key to transform |
+| **`key`** | `String`, `Symbol` |  | the key to transform |
 
 </div>
 

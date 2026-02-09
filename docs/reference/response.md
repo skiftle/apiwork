@@ -56,7 +56,7 @@ Creates a new response context.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `body` | `Hash` |  | the body parameters |
+| **`body`** | `Hash` |  | the body parameters |
 
 </div>
 

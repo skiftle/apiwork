@@ -34,7 +34,7 @@ Finds an adapter by name.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  | the adapter name |
+| **`name`** | `Symbol` |  | the adapter name |
 
 </div>
 
@@ -68,7 +68,7 @@ Finds an adapter by name.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  | the adapter name |
+| **`name`** | `Symbol` |  | the adapter name |
 
 </div>
 
@@ -102,7 +102,7 @@ Registers an adapter.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `klass` | `Class<Adapter::Base>` |  | the adapter class with adapter_name set |
+| **`klass`** | `Class<Adapter::Base>` |  | the adapter class with adapter_name set |
 
 </div>
 

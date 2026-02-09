@@ -29,8 +29,8 @@ The configured values for a capability.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `capability` | `Symbol` |  | the capability name |
-| `key` | `Symbol` |  | the configuration key |
+| **`capability`** | `Symbol` |  | the capability name |
+| **`key`** | `Symbol` |  | the configuration key |
 
 </div>
 

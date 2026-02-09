@@ -91,8 +91,8 @@ Serializes an error.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `error` | `Error` |  | the error to serialize |
-| `context` | `Hash` |  | serialization context |
+| **`error`** | `Error` |  | the error to serialize |
+| **`context`** | `Hash` |  | serialization context |
 
 </div>
 

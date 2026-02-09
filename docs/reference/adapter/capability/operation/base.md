@@ -202,7 +202,7 @@ Lookup order:
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `segments` | `Array<Symbol, String>` |  | key path segments |
+| **`segments`** | `Array<Symbol, String>` |  | key path segments |
 | `default` | `String`, `nil` | `nil` | fallback value if no translation found |
 
 </div>

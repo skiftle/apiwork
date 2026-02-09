@@ -81,7 +81,7 @@ that handle both introspection and runtime behavior.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `klass` | `Class<Capability::Base>` |  | the capability class |
+| **`klass`** | `Class<Capability::Base>` |  | the capability class |
 
 </div>
 
@@ -235,8 +235,8 @@ call `option` to define child options.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  | option name |
-| `type` | `Symbol<:symbol, :string, :integer, :boolean, :hash>` |  |  |
+| **`name`** | `Symbol` |  | option name |
+| **`type`** | `Symbol<:symbol, :string, :integer, :boolean, :hash>` |  |  |
 | `default` | `Object`, `nil` | `nil` | default value |
 | `enum` | `Array`, `nil` | `nil` | allowed values |
 
@@ -318,7 +318,7 @@ Skips an inherited capability by name.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol` |  | the capability_name to skip |
+| **`name`** | `Symbol` |  | the capability_name to skip |
 
 </div>
 
