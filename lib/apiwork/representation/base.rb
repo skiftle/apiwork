@@ -260,9 +260,14 @@ module Apiwork
         #   Whether the association is deprecated.
         # @return [void]
         #
-        # @example
+        # @example Basic
         #   has_one :profile
-        #   has_one :author, representation: UserRepresentation
+        #
+        # @example Explicit representation
+        #   has_one :author, representation: AuthorRepresentation
+        #
+        # @example Always included
+        #   has_one :customer, include: :always
         def has_one(
           name,
           deprecated: false,
@@ -321,9 +326,14 @@ module Apiwork
         # @return [void]
         # @see #has_one
         #
-        # @example
-        #   has_many :line_items
-        #   has_many :tags, include: :always
+        # @example Basic
+        #   has_many :items
+        #
+        # @example Explicit representation
+        #   has_many :comments, representation: CommentRepresentation
+        #
+        # @example Always included
+        #   has_many :items, include: :always
         def has_many(
           name,
           allow_destroy: false,
@@ -386,8 +396,16 @@ module Apiwork
         # @return [void]
         # @see #has_one
         #
-        # @example
+        # @example Basic
         #   belongs_to :customer
+        #
+        # @example Explicit representation
+        #   belongs_to :author, representation: AuthorRepresentation
+        #
+        # @example Always included
+        #   belongs_to :customer, include: :always
+        #
+        # @example Polymorphic
         #   belongs_to :commentable, polymorphic: [PostRepresentation, CustomerRepresentation]
         def belongs_to(
           name,
