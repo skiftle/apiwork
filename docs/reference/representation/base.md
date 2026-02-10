@@ -81,7 +81,7 @@ Whether this representation is abstract.
 
 `.adapter(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L145)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L169)
 
 Configures adapter options for this representation.
 
@@ -124,7 +124,7 @@ Hash{Symbol =&gt; [Association](/reference/representation/association)}
 
 `.attribute(name, decode: nil, deprecated: false, description: nil, empty: nil, encode: nil, enum: nil, example: nil, filterable: false, format: nil, max: nil, min: nil, nullable: nil, optional: nil, preload: nil, sortable: false, type: nil, writable: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L217)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L252)
 
 Defines an attribute for this representation.
 
@@ -135,22 +135,22 @@ Defines an attribute for this representation.
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | **`name`** | `Symbol` |  | The attribute name. |
-| `type` | `Symbol<:array, :binary, :boolean, :date, :datetime, :decimal, :integer, :number, :object, :string, :time, :unknown, :uuid>`, `nil` | `nil` | The type. If `nil` and name maps to a database column, auto-detected from column type. |
+| `type` | `Symbol<:array, :binary, :boolean, :date, :datetime, :decimal, :integer, :number, :object, :string, :time, :unknown, :uuid>`, `nil` | `nil` | The type. If `nil` and name maps to a database column, auto-detected from column type. Defaults to `:unknown` for json/jsonb columns and when no column exists (custom attributes). Use an explicit type or block in those cases. |
 | `enum` | `Array`, `nil` | `nil` | The allowed values. If `nil`, auto-detected from Rails enum definition. |
 | `optional` | `Boolean`, `nil` | `nil` | Whether the attribute is optional for writes. If `nil` and name maps to a database column, auto-detected from column default or NULL constraint. |
 | `nullable` | `Boolean`, `nil` | `nil` | Whether the value can be `null`. If `nil` and name maps to a database column, auto-detected from column NULL constraint. |
-| `preload` | `Symbol`, `Array`, `Hash`, `nil` | `nil` | Associations to preload for this attribute. Use when custom methods depend on associations. |
+| `preload` | `Symbol`, `Array`, `Hash`, `nil` | `nil` | Associations to preload for this attribute. Use when custom attributes depend on associations. |
 | `filterable` | `Boolean` | `false` | Whether the attribute is filterable. |
 | `sortable` | `Boolean` | `false` | Whether the attribute is sortable. |
 | `writable` | `Boolean`, `Hash<on: :create \| :update>` | `false` | Whether the attribute is writable. |
-| `encode` | `Proc`, `nil` | `nil` | Transform for serialization. |
-| `decode` | `Proc`, `nil` | `nil` | Transform for deserialization. |
+| `encode` | `Proc`, `nil` | `nil` | Transform for response output (database to API). Must preserve the attribute type. |
+| `decode` | `Proc`, `nil` | `nil` | Transform for request input (API to database). Must preserve the attribute type. |
 | `empty` | `Boolean`, `nil` | `nil` | Whether to use empty string instead of `null`. Serializes `nil` as `""` and deserializes `""` as `nil`. Only valid for `:string` type. |
 | `min` | `Integer`, `nil` | `nil` | The minimum. For `:array`: size. For `:decimal`, `:integer`, `:number`: value. For `:string`: length. |
 | `max` | `Integer`, `nil` | `nil` | The maximum. For `:array`: size. For `:decimal`, `:integer`, `:number`: value. For `:string`: length. |
 | `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
 | `example` | `Object`, `nil` | `nil` | The example. Metadata included in exports. |
-| `format` | `Symbol<:date, :datetime, :double, :email, :float, :hostname, :int32, :int64, :ipv4, :ipv6, :password, :url, :uuid>`, `nil` | `nil` | The format hint. Valid formats by type: `:decimal`/`:number` (`:double`, `:float`), `:integer` (`:int32`, `:int64`), `:string` (`:date`, `:datetime`, `:email`, `:hostname`, `:ipv4`, `:ipv6`, `:password`, `:url`, `:uuid`). |
+| `format` | `Symbol<:date, :datetime, :double, :email, :float, :hostname, :int32, :int64, :ipv4, :ipv6, :password, :url, :uuid>`, `nil` | `nil` | Format hint for exports. Does not change the type, but exports may add validation or documentation based on it. Valid formats by type: `:decimal`/`:number` (`:double`, `:float`), `:integer` (`:int32`, `:int64`), `:string` (`:date`, `:datetime`, `:email`, `:hostname`, `:ipv4`, `:ipv6`, `:password`, `:url`, `:uuid`). |
 | `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
 
 </div>
@@ -169,7 +169,7 @@ attribute :price, type: :decimal, min: 0
 attribute :status, filterable: true, sortable: true
 ```
 
-**Example: Custom method with preload**
+**Example: Custom attribute with preload**
 
 ```ruby
 attribute :total, type: :decimal, preload: :items
@@ -187,6 +187,23 @@ attribute :total_with_tax, type: :decimal, preload: { items: :tax_rate }
 def total_with_tax
   record.items.sum { |item| item.amount * (1 + item.tax_rate.rate) }
 end
+```
+
+**Example: Inline type for JSON column**
+
+```ruby
+attribute :settings do
+  object do
+    string :theme
+    boolean :notifications
+  end
+end
+```
+
+**Example: Encode/decode transforms**
+
+```ruby
+attribute :status, encode: ->(value) { value.upcase }, decode: ->(value) { value.downcase }
 ```
 
 ---
@@ -209,7 +226,7 @@ Hash{Symbol =&gt; [Attribute](/reference/representation/attribute)}
 
 `.belongs_to(name, deprecated: false, description: nil, example: nil, filterable: false, include: :optional, nullable: nil, polymorphic: nil, representation: nil, sortable: false, writable: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L455)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L490)
 
 Defines a belongs_to association for this representation.
 
@@ -226,7 +243,7 @@ Defines a belongs_to association for this representation.
 | `writable` | `Boolean`, `Hash<on: :create \| :update>` | `false` | Whether the association is writable. |
 | `filterable` | `Boolean` | `false` | Whether the association is filterable. |
 | `sortable` | `Boolean` | `false` | Whether the association is sortable. |
-| `nullable` | `Boolean`, `nil` | `nil` | Whether the value can be `null`. If `nil`, auto-detected from foreign key column. |
+| `nullable` | `Boolean`, `nil` | `nil` | Whether the value can be `null`. If `nil`, auto-detected from foreign key column NULL constraint. |
 | `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
 | `example` | `Object`, `nil` | `nil` | The example. Metadata included in exports. |
 | `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
@@ -265,7 +282,7 @@ belongs_to :customer, include: :always
 belongs_to :commentable, polymorphic: [PostRepresentation, CustomerRepresentation]
 ```
 
-**Example: Custom method**
+**Example: Custom association**
 
 ```ruby
 belongs_to :customer
@@ -281,7 +298,7 @@ end
 
 `.deprecated!`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L558)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L593)
 
 Marks this representation as deprecated.
 
@@ -303,7 +320,7 @@ deprecated!
 
 `.description(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L543)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L578)
 
 The description for this representation.
 
@@ -335,7 +352,7 @@ description 'A customer invoice'
 
 `.deserialize(hash_or_array)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L622)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L657)
 
 Deserializes using this representation's decode transformers.
 
@@ -365,7 +382,7 @@ InvoiceRepresentation.deserialize(params[:invoice])
 
 `.example(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L573)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L608)
 
 The example value for this representation.
 
@@ -397,7 +414,7 @@ example id: 1, total: 99.00, status: 'paid'
 
 `.has_many(name, allow_destroy: false, deprecated: false, description: nil, example: nil, filterable: false, include: :optional, nullable: nil, representation: nil, sortable: false, writable: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L377)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L412)
 
 Defines a has_many association for this representation.
 
@@ -447,7 +464,7 @@ has_many :comments, representation: CommentRepresentation
 has_many :items, include: :always
 ```
 
-**Example: Custom method**
+**Example: Custom association**
 
 ```ruby
 has_many :items
@@ -463,7 +480,7 @@ end
 
 `.has_one(name, deprecated: false, description: nil, example: nil, filterable: false, include: :optional, nullable: nil, representation: nil, sortable: false, writable: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L304)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L339)
 
 Defines a has_one association for this representation.
 
@@ -508,7 +525,7 @@ has_one :author, representation: AuthorRepresentation
 has_one :customer, include: :always
 ```
 
-**Example: Custom method**
+**Example: Custom association**
 
 ```ruby
 has_one :profile
@@ -540,7 +557,7 @@ Auto-configured when the model uses STI and representation classes mirror the mo
 
 `.model(value)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L103)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L127)
 
 Sets the model class for this representation.
 
@@ -577,7 +594,7 @@ model Invoice
 
 `.model_class`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L652)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L687)
 
 The model class for this representation.
 
@@ -597,7 +614,7 @@ Auto-detected from representation name or set via [.model](#model).
 
 `.polymorphic_name`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L520)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L555)
 
 The polymorphic name for this representation.
 
@@ -613,7 +630,7 @@ Uses [.type_name](#type-name) if set, otherwise the model's `polymorphic_name`.
 
 `.root(singular, plural = singular.to_s.pluralize)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L126)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L150)
 
 Sets the JSON root key for this representation.
 
@@ -650,7 +667,7 @@ root :bill, :bills
 
 `.root_key`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L637)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L672)
 
 The root key for this representation.
 
@@ -670,7 +687,7 @@ Derived from model name when [.root](#root) is not set.
 
 `.serialize(record_or_collection, context: {}, include: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L605)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L640)
 
 Serializes a record or collection to JSON-ready hashes.
 
@@ -724,7 +741,7 @@ InvoiceRepresentation.serialize(invoice, include: { customer: [:address] })
 
 `.sti_name`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L510)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L545)
 
 The STI name for this representation.
 
@@ -740,7 +757,7 @@ Uses [.type_name](#type-name) if set, otherwise the model's `sti_name`.
 
 `.subclass?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L528)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L563)
 
 Whether this representation is an STI subclass.
 
@@ -754,7 +771,7 @@ Whether this representation is an STI subclass.
 
 `.type_name(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L498)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L533)
 
 Overrides the model's default type name for STI and polymorphic types.
 
@@ -791,13 +808,34 @@ type_name :person
 
 `#context`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L80)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L95)
 
-The context for this representation.
+The serialization context.
+
+Passed from controller or directly to [.serialize](#serialize). Use for data
+that isn't on the record, like current user or permissions.
 
 **Returns**
 
 `Hash`
+
+**Example: Override in controller**
+
+```ruby
+def context
+  { current_user: current_user }
+end
+```
+
+**Example: Access in custom attribute**
+
+```ruby
+attribute :editable, type: :boolean
+
+def editable
+  context[:current_user]&.admin?
+end
+```
 
 ---
 
@@ -805,12 +843,24 @@ The context for this representation.
 
 `#record`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L86)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L110)
 
 The record for this representation.
+
+Available in custom attributes and associations.
 
 **Returns**
 
 `ActiveRecord::Base`
+
+**Example: Custom attribute**
+
+```ruby
+attribute :full_name, type: :string
+
+def full_name
+  "#{record.first_name} #{record.last_name}"
+end
+```
 
 ---

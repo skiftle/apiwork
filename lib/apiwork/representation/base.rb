@@ -74,15 +74,39 @@ module Apiwork
       class_attribute :_example, default: nil, instance_accessor: false
 
       # @api public
-      # The context for this representation.
+      # The serialization context.
+      #
+      # Passed from controller or directly to {.serialize}. Use for data
+      # that isn't on the record, like current user or permissions.
       #
       # @return [Hash]
+      #
+      # @example Override in controller
+      #   def context
+      #     { current_user: current_user }
+      #   end
+      #
+      # @example Access in custom attribute
+      #   attribute :editable, type: :boolean
+      #
+      #   def editable
+      #     context[:current_user]&.admin?
+      #   end
       attr_reader :context
 
       # @api public
       # The record for this representation.
       #
+      # Available in custom attributes and associations.
+      #
       # @return [ActiveRecord::Base]
+      #
+      # @example Custom attribute
+      #   attribute :full_name, type: :string
+      #
+      #   def full_name
+      #     "#{record.first_name} #{record.last_name}"
+      #   end
       attr_reader :record
 
       class << self
@@ -160,7 +184,7 @@ module Apiwork
         # @param name [Symbol]
         #   The attribute name.
         # @param type [Symbol, nil] (nil) [:array, :binary, :boolean, :date, :datetime, :decimal, :integer, :number, :object, :string, :time, :unknown, :uuid]
-        #   The type. If `nil` and name maps to a database column, auto-detected from column type.
+        #   The type. If `nil` and name maps to a database column, auto-detected from column type. Defaults to `:unknown` for json/jsonb columns and when no column exists (custom attributes). Use an explicit type or block in those cases.
         # @param enum [Array, nil] (nil)
         #   The allowed values. If `nil`, auto-detected from Rails enum definition.
         # @param optional [Boolean, nil] (nil)
@@ -168,7 +192,7 @@ module Apiwork
         # @param nullable [Boolean, nil] (nil)
         #   Whether the value can be `null`. If `nil` and name maps to a database column, auto-detected from column NULL constraint.
         # @param preload [Symbol, Array, Hash, nil] (nil)
-        #   Associations to preload for this attribute. Use when custom methods depend on associations.
+        #   Associations to preload for this attribute. Use when custom attributes depend on associations.
         # @param filterable [Boolean] (false)
         #   Whether the attribute is filterable.
         # @param sortable [Boolean] (false)
@@ -176,9 +200,9 @@ module Apiwork
         # @param writable [Boolean, Hash] (false) [Hash: on: :create | :update]
         #   Whether the attribute is writable.
         # @param encode [Proc, nil] (nil)
-        #   Transform for serialization.
+        #   Transform for response output (database to API). Must preserve the attribute type.
         # @param decode [Proc, nil] (nil)
-        #   Transform for deserialization.
+        #   Transform for request input (API to database). Must preserve the attribute type.
         # @param empty [Boolean, nil] (nil)
         #   Whether to use empty string instead of `null`. Serializes `nil` as `""` and deserializes `""` as `nil`. Only valid for `:string` type.
         # @param min [Integer, nil] (nil)
@@ -190,7 +214,7 @@ module Apiwork
         # @param example [Object, nil] (nil)
         #   The example. Metadata included in exports.
         # @param format [Symbol, nil] (nil) [:date, :datetime, :double, :email, :float, :hostname, :int32, :int64, :ipv4, :ipv6, :password, :url, :uuid]
-        #   The format hint. Valid formats by type: `:decimal`/`:number` (`:double`, `:float`), `:integer` (`:int32`, `:int64`), `:string` (`:date`, `:datetime`, `:email`, `:hostname`, `:ipv4`, `:ipv6`, `:password`, `:url`, `:uuid`).
+        #   Format hint for exports. Does not change the type, but exports may add validation or documentation based on it. Valid formats by type: `:decimal`/`:number` (`:double`, `:float`), `:integer` (`:int32`, `:int64`), `:string` (`:date`, `:datetime`, `:email`, `:hostname`, `:ipv4`, `:ipv6`, `:password`, `:url`, `:uuid`).
         # @param deprecated [Boolean] (false)
         #   Whether deprecated. Metadata included in exports.
         # @yieldparam element [Representation::Element]
@@ -201,7 +225,7 @@ module Apiwork
         #   attribute :price, type: :decimal, min: 0
         #   attribute :status, filterable: true, sortable: true
         #
-        # @example Custom method with preload
+        # @example Custom attribute with preload
         #   attribute :total, type: :decimal, preload: :items
         #
         #   def total
@@ -214,6 +238,17 @@ module Apiwork
         #   def total_with_tax
         #     record.items.sum { |item| item.amount * (1 + item.tax_rate.rate) }
         #   end
+        #
+        # @example Inline type for JSON column
+        #   attribute :settings do
+        #     object do
+        #       string :theme
+        #       boolean :notifications
+        #     end
+        #   end
+        #
+        # @example Encode/decode transforms
+        #   attribute :status, encode: ->(value) { value.upcase }, decode: ->(value) { value.downcase }
         def attribute(
           name,
           decode: nil,
@@ -295,7 +330,7 @@ module Apiwork
         # @example Always included
         #   has_one :customer, include: :always
         #
-        # @example Custom method
+        # @example Custom association
         #   has_one :profile
         #
         #   def profile
@@ -368,7 +403,7 @@ module Apiwork
         # @example Always included
         #   has_many :items, include: :always
         #
-        # @example Custom method
+        # @example Custom association
         #   has_many :items
         #
         #   def items
@@ -424,7 +459,7 @@ module Apiwork
         # @param sortable [Boolean] (false)
         #   Whether the association is sortable.
         # @param nullable [Boolean, nil] (nil)
-        #   Whether the value can be `null`. If `nil`, auto-detected from foreign key column.
+        #   Whether the value can be `null`. If `nil`, auto-detected from foreign key column NULL constraint.
         # @param description [String, nil] (nil)
         #   The description. Metadata included in exports.
         # @param example [Object, nil] (nil)
@@ -446,7 +481,7 @@ module Apiwork
         # @example Polymorphic
         #   belongs_to :commentable, polymorphic: [PostRepresentation, CustomerRepresentation]
         #
-        # @example Custom method
+        # @example Custom association
         #   belongs_to :customer
         #
         #   def customer

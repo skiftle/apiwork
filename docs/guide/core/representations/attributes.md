@@ -91,7 +91,7 @@ Nested blocks inherit and merge options. In the example above:
 `with_options` is provided by [ActiveSupport](https://api.rubyonrails.org/classes/Object.html#method-i-with_options) and works with any method that accepts keyword arguments.
 :::
 
-## Computed Attributes
+## Custom Attributes
 
 Attributes don't need to map to model columns. Define a method with the same name:
 
@@ -108,12 +108,12 @@ end
 The `record` method returns the current record.
 
 ::: warning Explicit Type Required
-Computed attributes require an explicit `type`. There's no model column to infer from.
+Custom attributes require an explicit `type`. There's no model column to infer from.
 :::
 
 ### Preloading Associations
 
-Computed attributes that access associations cause N+1 queries:
+Custom attributes that access associations cause N+1 queries:
 
 ```ruby
 class PostRepresentation < Apiwork::Representation::Base
@@ -150,7 +150,7 @@ preload: [:comments, :author]
 preload: { comments: :author }
 ```
 
-The adapter merges attribute preloads with includes from other sources. The [standard adapter](../adapters/standard-adapter/introduction.md) combines preloads with includes from sideloading, filtering, and sorting into a single optimized query.
+Apiwork combines preloads with other includes (such as sideloaded associations) into a single query.
 
 ---
 
