@@ -85,7 +85,7 @@ Whether this contract is abstract.
 
 `.action(name, replace: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L423)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L439)
 
 Defines or extends an action on this contract.
 
@@ -164,7 +164,7 @@ end
 
 `.enum(name, deprecated: false, description: nil, example: nil, values: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L255)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L271)
 
 Defines or extends an enum for this contract.
 
@@ -221,7 +221,7 @@ end
 
 `.identifier(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L113)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L129)
 
 Prefixes types, enums, and unions in introspection output.
 
@@ -262,7 +262,7 @@ end
 
 `.import(klass, as:)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L341)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L357)
 
 Imports types from another contract for reuse.
 
@@ -296,7 +296,7 @@ import UserContract, as: :user
 
 `.introspect(expand: false, locale: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L449)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L465)
 
 Returns introspection data for this contract.
 
@@ -327,7 +327,7 @@ InvoiceContract.introspect
 
 `.object(name, deprecated: false, description: nil, example: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L201)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L217)
 
 Defines or extends an object type for this contract.
 
@@ -406,7 +406,7 @@ end
 
 `.representation(klass)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L134)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L150)
 
 Configures the representation class for this contract.
 
@@ -441,7 +441,7 @@ end
 
 `.representation_class`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L487)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L503)
 
 The representation class for this contract.
 
@@ -459,7 +459,7 @@ Class&lt;[Representation::Base](/reference/representation/base)&gt;, `nil`
 
 `.union(name, deprecated: false, description: nil, discriminator: nil, example: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L306)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L322)
 
 Defines or extends a discriminated union for this contract.
 
@@ -534,17 +534,25 @@ The action name for this contract.
 
 `#body`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L90)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L106)
 
 The body for this contract.
+
+Use this in controller actions to access validated request data.
+Contains type-coerced values matching your contract definition.
+Invalid requests are rejected before the action runs.
 
 **Returns**
 
 `Hash`
 
-**See also**
+**Example**
 
-- [Request#body](/reference/request#body)
+```ruby
+def create
+  Invoice.create!(contract.body[:invoice])
+end
+```
 
 ---
 
@@ -552,7 +560,7 @@ The body for this contract.
 
 `#invalid?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L613)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L629)
 
 Whether this contract is invalid.
 
@@ -580,17 +588,25 @@ Array&lt;[Issue](/reference/issue)&gt;
 
 `#query`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L83)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L91)
 
 The query for this contract.
+
+Use this in controller actions to access validated request data.
+Contains type-coerced values matching your contract definition.
+Invalid requests are rejected before the action runs.
 
 **Returns**
 
 `Hash`
 
-**See also**
+**Example**
 
-- [Request#query](/reference/request#query)
+```ruby
+def index
+  Invoice.where(status: contract.query[:status])
+end
+```
 
 ---
 
@@ -612,7 +628,7 @@ The request for this contract.
 
 `#valid?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L605)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L621)
 
 Whether this contract is valid.
 

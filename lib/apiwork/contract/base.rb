@@ -78,15 +78,31 @@ module Apiwork
       # @api public
       # The query for this contract.
       #
+      # Use this in controller actions to access validated request data.
+      # Contains type-coerced values matching your contract definition.
+      # Invalid requests are rejected before the action runs.
+      #
       # @return [Hash]
-      # @see Request#query
+      #
+      # @example
+      #   def index
+      #     Invoice.where(status: contract.query[:status])
+      #   end
       delegate :query, to: :request
 
       # @api public
       # The body for this contract.
       #
+      # Use this in controller actions to access validated request data.
+      # Contains type-coerced values matching your contract definition.
+      # Invalid requests are rejected before the action runs.
+      #
       # @return [Hash]
-      # @see Request#body
+      #
+      # @example
+      #   def create
+      #     Invoice.create!(contract.body[:invoice])
+      #   end
       delegate :body, to: :request
 
       class << self
