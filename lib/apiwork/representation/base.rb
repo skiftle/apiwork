@@ -518,10 +518,12 @@ module Apiwork
         end
 
         # @api public
-        # Overrides the model's default type name for STI and polymorphic types.
+        # The type name for this representation.
+        #
+        # Overrides the model's default for STI and polymorphic types.
         #
         # @param value [String, Symbol, nil] (nil)
-        #   The type name override.
+        #   The type name.
         # @return [String, nil]
         # @see .sti_name
         # @see .polymorphic_name
@@ -666,7 +668,6 @@ module Apiwork
         # Derived from model name when {.root} is not set.
         #
         # @return [RootKey]
-        # @see .root
         def root_key
           if _root
             RootKey.new(_root[:singular], _root[:plural])
@@ -681,7 +682,6 @@ module Apiwork
         # Auto-detected from representation name or set via {.model}.
         #
         # @return [Class<ActiveRecord::Base>]
-        # @see .model
         def model_class
           ensure_auto_detection_complete
           ensure_sti_auto_configuration_complete

@@ -575,6 +575,25 @@ def foo(required, optional = nil, keyword:, keyword_opt: false)
 | `name = false` | `@param name [Boolean]` | `@param name [Boolean] (false)` |
 | `name:` (required) | `@param name [Symbol] (nil)` | `@param name [Symbol]` |
 
+### Order
+
+**@param tags must appear in the same order as the method signature.**
+
+```ruby
+# Signature
+def foo(first, second, third: nil)
+
+# Good — same order
+# @param first [String]
+# @param second [Integer]
+# @param third [Boolean, nil] (nil)
+
+# Bad — wrong order
+# @param second [Integer]
+# @param first [String]
+# @param third [Boolean, nil] (nil)
+```
+
 ### Verification Command
 
 ```bash
