@@ -194,10 +194,17 @@ module Apiwork
         # @yieldparam element [Representation::Element]
         # @return [void]
         #
-        # @example
+        # @example Basic
         #   attribute :title
         #   attribute :price, type: :decimal, min: 0
         #   attribute :status, filterable: true, sortable: true
+        #
+        # @example Custom method
+        #   attribute :total, type: :decimal
+        #
+        #   def total
+        #     record.items.sum(:amount)
+        #   end
         def attribute(
           name,
           decode: nil,
@@ -276,6 +283,13 @@ module Apiwork
         #
         # @example Always included
         #   has_one :customer, include: :always
+        #
+        # @example Custom method
+        #   has_one :profile
+        #
+        #   def profile
+        #     record.profile || record.build_profile
+        #   end
         def has_one(
           name,
           deprecated: false,
@@ -342,6 +356,13 @@ module Apiwork
         #
         # @example Always included
         #   has_many :items, include: :always
+        #
+        # @example Custom method
+        #   has_many :items
+        #
+        #   def items
+        #     record.items.limit(5)
+        #   end
         def has_many(
           name,
           allow_destroy: false,
@@ -413,6 +434,13 @@ module Apiwork
         #
         # @example Polymorphic
         #   belongs_to :commentable, polymorphic: [PostRepresentation, CustomerRepresentation]
+        #
+        # @example Custom method
+        #   belongs_to :customer
+        #
+        #   def customer
+        #     record.customer || Customer.default
+        #   end
         def belongs_to(
           name,
           deprecated: false,
@@ -833,7 +861,7 @@ module Apiwork
       end
 
       def serialize_association(name, association)
-        target = record.public_send(name)
+        target = respond_to?(name) ? public_send(name) : record.public_send(name)
         return nil if target.nil?
 
         representation_class = association.representation_class
