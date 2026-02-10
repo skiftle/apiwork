@@ -5,9 +5,8 @@ module Apiwork
     # @api public
     # Base class for representations.
     #
-    # Defines how an ActiveRecord model is represented in the API. Drives contracts
-    # and runtime behavior. Sensible defaults are auto-detected from database columns
-    # but can be overridden.
+    # Defines how an ActiveRecord model is represented in the API. Drives contracts and runtime behavior.
+    # Sensible defaults are auto-detected from database columns but can be overridden.
     #
     # @example Basic representation
     #   class InvoiceRepresentation < Apiwork::Representation::Base
@@ -29,9 +28,8 @@ module Apiwork
     #   @api public
     #   Marks this representation as abstract.
     #
-    #   Abstract representations don't require a model and serve as base classes
-    #   for other representations. Use this when creating application-wide base representations.
-    #   Subclasses automatically become non-abstract.
+    #   Abstract representations don't require a model and serve as base classes for other representations.
+    #   Use this when creating application-wide base representations. Subclasses automatically become non-abstract.
     #   @return [void]
     #   @example Application base representation
     #     class ApplicationRepresentation < Apiwork::Representation::Base
@@ -67,6 +65,7 @@ module Apiwork
       #
       #   @return [Representation::Inheritance, nil]
       class_attribute :inheritance, default: nil, instance_accessor: false
+
       class_attribute :_root, default: nil, instance_accessor: false
       class_attribute :_adapter_config, default: {}, instance_accessor: false
       class_attribute :_description, default: nil, instance_accessor: false
@@ -76,8 +75,8 @@ module Apiwork
       # @api public
       # The serialization context.
       #
-      # Passed from controller or directly to {.serialize}. Use for data
-      # that isn't on the record, like current user or permissions.
+      # Passed from controller or directly to {.serialize}. Use for data that isn't on the record, like
+      # current user or permissions.
       #
       # @return [Hash]
       #
@@ -113,8 +112,7 @@ module Apiwork
         # @api public
         # Configures the model class for this representation.
         #
-        # Auto-detected from representation name when not set. Use
-        # {.model_class} to retrieve.
+        # Auto-detected from representation name when not set. Use {.model_class} to retrieve.
         #
         # @param value [Class<ActiveRecord::Base>]
         #   The model class.
@@ -181,40 +179,46 @@ module Apiwork
         #
         # @param name [Symbol]
         #   The attribute name.
-        # @param type [Symbol, nil] (nil) [:array, :binary, :boolean, :date, :datetime, :decimal, :integer, :number, :object, :string, :time, :unknown, :uuid]
-        #   The type. If `nil` and name maps to a database column, auto-detected from column type. Defaults to `:unknown` for json/jsonb columns and when no column exists (custom attributes). Use an explicit type or block in those cases.
-        # @param enum [Array, nil] (nil)
-        #   The allowed values. If `nil`, auto-detected from Rails enum definition.
-        # @param optional [Boolean, nil] (nil)
-        #   Whether the attribute is optional for writes. If `nil` and name maps to a database column, auto-detected from column default or NULL constraint.
-        # @param nullable [Boolean, nil] (nil)
-        #   Whether the value can be `null`. If `nil` and name maps to a database column, auto-detected from column NULL constraint.
-        # @param preload [Symbol, Array, Hash, nil] (nil)
-        #   Associations to preload for this attribute. Use when custom attributes depend on associations.
-        # @param filterable [Boolean] (false)
-        #   Whether the attribute is filterable.
-        # @param sortable [Boolean] (false)
-        #   Whether the attribute is sortable.
-        # @param writable [Boolean, Hash] (false) [Hash: on: :create | :update]
-        #   Whether the attribute is writable.
-        # @param encode [Proc, nil] (nil)
-        #   Transform for response output (database to API). Must preserve the attribute type.
         # @param decode [Proc, nil] (nil)
         #   Transform for request input (API to database). Must preserve the attribute type.
-        # @param empty [Boolean, nil] (nil)
-        #   Whether to use empty string instead of `null`. Serializes `nil` as `""` and deserializes `""` as `nil`. Only valid for `:string` type.
-        # @param min [Integer, nil] (nil)
-        #   The minimum. For `:array`: size. For `:decimal`, `:integer`, `:number`: value. For `:string`: length.
-        # @param max [Integer, nil] (nil)
-        #   The maximum. For `:array`: size. For `:decimal`, `:integer`, `:number`: value. For `:string`: length.
-        # @param description [String, nil] (nil)
-        #   The description. Metadata included in exports.
-        # @param example [Object, nil] (nil)
-        #   The example. Metadata included in exports.
-        # @param format [Symbol, nil] (nil) [:date, :datetime, :double, :email, :float, :hostname, :int32, :int64, :ipv4, :ipv6, :password, :url, :uuid]
-        #   Format hint for exports. Does not change the type, but exports may add validation or documentation based on it. Valid formats by type: `:decimal`/`:number` (`:double`, `:float`), `:integer` (`:int32`, `:int64`), `:string` (`:date`, `:datetime`, `:email`, `:hostname`, `:ipv4`, `:ipv6`, `:password`, `:url`, `:uuid`).
         # @param deprecated [Boolean] (false)
         #   Whether deprecated. Metadata included in exports.
+        # @param description [String, nil] (nil)
+        #   The description. Metadata included in exports.
+        # @param empty [Boolean, nil] (nil)
+        #   Whether to use empty string instead of `null`. Serializes `nil` as `""` and deserializes `""` as `nil`. Only valid for `:string` type.
+        # @param encode [Proc, nil] (nil)
+        #   Transform for response output (database to API). Must preserve the attribute type.
+        # @param enum [Array, nil] (nil)
+        #   The allowed values. If `nil`, auto-detected from Rails enum definition.
+        # @param example [Object, nil] (nil)
+        #   The example. Metadata included in exports.
+        # @param filterable [Boolean] (false)
+        #   Whether the attribute is filterable.
+        # @param format [Symbol, nil] (nil) [:date, :datetime, :double, :email, :float, :hostname, :int32, :int64, :ipv4, :ipv6, :password, :url, :uuid]
+        #   Format hint for exports. Does not change the type, but exports may add validation or
+        #   documentation based on it. Valid formats by type: `:decimal`/`:number` (`:double`, `:float`),
+        #   `:integer` (`:int32`, `:int64`), `:string` (`:date`, `:datetime`, `:email`, `:hostname`,
+        #   `:ipv4`, `:ipv6`, `:password`, `:url`, `:uuid`).
+        # @param max [Integer, nil] (nil)
+        #   The maximum. For `:array`: size. For `:decimal`, `:integer`, `:number`: value. For `:string`: length.
+        # @param min [Integer, nil] (nil)
+        #   The minimum. For `:array`: size. For `:decimal`, `:integer`, `:number`: value. For `:string`: length.
+        # @param nullable [Boolean, nil] (nil)
+        #   Whether the value can be `null`. If `nil` and name maps to a database column, auto-detected from column NULL constraint.
+        # @param optional [Boolean, nil] (nil)
+        #   Whether the attribute is optional for writes. If `nil` and name maps to a database column,
+        #   auto-detected from column default or NULL constraint.
+        # @param preload [Symbol, Array, Hash, nil] (nil)
+        #   Associations to preload for this attribute. Use when custom attributes depend on associations.
+        # @param sortable [Boolean] (false)
+        #   Whether the attribute is sortable.
+        # @param type [Symbol, nil] (nil) [:array, :binary, :boolean, :date, :datetime, :decimal, :integer, :number, :object, :string, :time, :unknown, :uuid]
+        #   The type. If `nil` and name maps to a database column, auto-detected from column type.
+        #   Defaults to `:unknown` for json/jsonb columns and when no column exists (custom attributes).
+        #   Use an explicit type or block in those cases.
+        # @param writable [Boolean, Hash] (false) [Hash: on: :create | :update]
+        #   Whether the attribute is writable.
         # @yieldparam element [Representation::Element]
         # @return [void]
         #
@@ -299,24 +303,25 @@ module Apiwork
         #
         # @param name [Symbol]
         #   The association name.
-        # @param representation [Class<Representation::Base>, nil] (nil)
-        #   The representation class. If `nil`, inferred from the associated model in the same namespace (e.g., `CustomerRepresentation` for `Customer`).
-        # @param include [Symbol] (:optional) [:always, :optional]
-        #   The inclusion strategy.
-        # @param writable [Boolean, Hash] (false) [Hash: on: :create | :update]
-        #   Whether the association is writable.
-        # @param filterable [Boolean] (false)
-        #   Whether the association is filterable.
-        # @param sortable [Boolean] (false)
-        #   Whether the association is sortable.
-        # @param nullable [Boolean, nil] (nil)
-        #   Whether the value can be `null`.
+        # @param deprecated [Boolean] (false)
+        #   Whether deprecated. Metadata included in exports.
         # @param description [String, nil] (nil)
         #   The description. Metadata included in exports.
         # @param example [Object, nil] (nil)
         #   The example. Metadata included in exports.
-        # @param deprecated [Boolean] (false)
-        #   Whether deprecated. Metadata included in exports.
+        # @param filterable [Boolean] (false)
+        #   Whether the association is filterable.
+        # @param include [Symbol] (:optional) [:always, :optional]
+        #   The inclusion strategy.
+        # @param nullable [Boolean, nil] (nil)
+        #   Whether the value can be `null`.
+        # @param representation [Class<Representation::Base>, nil] (nil)
+        #   The representation class. If `nil`, inferred from the associated model in the same
+        #   namespace (e.g., `CustomerRepresentation` for `Customer`).
+        # @param sortable [Boolean] (false)
+        #   Whether the association is sortable.
+        # @param writable [Boolean, Hash] (false) [Hash: on: :create | :update]
+        #   Whether the association is writable.
         # @return [void]
         #
         # @example Basic
@@ -371,24 +376,25 @@ module Apiwork
         #   The association name.
         # @param allow_destroy [Boolean] (false)
         #   Whether nested records can be destroyed. Auto-detected from model nested_attributes_options.
-        # @param representation [Class<Representation::Base>, nil] (nil)
-        #   The representation class. If `nil`, inferred from the associated model in the same namespace (e.g., `CustomerRepresentation` for `Customer`).
-        # @param include [Symbol] (:optional) [:always, :optional]
-        #   The inclusion strategy.
-        # @param writable [Boolean, Hash] (false) [Hash: on: :create | :update]
-        #   Whether the association is writable.
-        # @param filterable [Boolean] (false)
-        #   Whether the association is filterable.
-        # @param sortable [Boolean] (false)
-        #   Whether the association is sortable.
-        # @param nullable [Boolean, nil] (nil)
-        #   Whether the value can be `null`.
+        # @param deprecated [Boolean] (false)
+        #   Whether deprecated. Metadata included in exports.
         # @param description [String, nil] (nil)
         #   The description. Metadata included in exports.
         # @param example [Object, nil] (nil)
         #   The example. Metadata included in exports.
-        # @param deprecated [Boolean] (false)
-        #   Whether deprecated. Metadata included in exports.
+        # @param filterable [Boolean] (false)
+        #   Whether the association is filterable.
+        # @param include [Symbol] (:optional) [:always, :optional]
+        #   The inclusion strategy.
+        # @param nullable [Boolean, nil] (nil)
+        #   Whether the value can be `null`.
+        # @param representation [Class<Representation::Base>, nil] (nil)
+        #   The representation class. If `nil`, inferred from the associated model in the same
+        #   namespace (e.g., `CustomerRepresentation` for `Customer`).
+        # @param sortable [Boolean] (false)
+        #   Whether the association is sortable.
+        # @param writable [Boolean, Hash] (false) [Hash: on: :create | :update]
+        #   Whether the association is writable.
         # @return [void]
         # @see #has_one
         #
@@ -444,26 +450,27 @@ module Apiwork
         #
         # @param name [Symbol]
         #   The association name.
-        # @param representation [Class<Representation::Base>, nil] (nil)
-        #   The representation class. If `nil`, inferred from the associated model in the same namespace (e.g., `CustomerRepresentation` for `Customer`).
-        # @param polymorphic [Array<Class<Representation::Base>>, nil] (nil)
-        #   The allowed representation classes for polymorphic associations.
-        # @param include [Symbol] (:optional) [:always, :optional]
-        #   The inclusion strategy.
-        # @param writable [Boolean, Hash] (false) [Hash: on: :create | :update]
-        #   Whether the association is writable.
-        # @param filterable [Boolean] (false)
-        #   Whether the association is filterable.
-        # @param sortable [Boolean] (false)
-        #   Whether the association is sortable.
-        # @param nullable [Boolean, nil] (nil)
-        #   Whether the value can be `null`. If `nil`, auto-detected from foreign key column NULL constraint.
+        # @param deprecated [Boolean] (false)
+        #   Whether deprecated. Metadata included in exports.
         # @param description [String, nil] (nil)
         #   The description. Metadata included in exports.
         # @param example [Object, nil] (nil)
         #   The example. Metadata included in exports.
-        # @param deprecated [Boolean] (false)
-        #   Whether deprecated. Metadata included in exports.
+        # @param filterable [Boolean] (false)
+        #   Whether the association is filterable.
+        # @param include [Symbol] (:optional) [:always, :optional]
+        #   The inclusion strategy.
+        # @param nullable [Boolean, nil] (nil)
+        #   Whether the value can be `null`. If `nil`, auto-detected from foreign key column NULL constraint.
+        # @param polymorphic [Array<Class<Representation::Base>>, nil] (nil)
+        #   The allowed representation classes for polymorphic associations.
+        # @param representation [Class<Representation::Base>, nil] (nil)
+        #   The representation class. If `nil`, inferred from the associated model in the same
+        #   namespace (e.g., `CustomerRepresentation` for `Customer`).
+        # @param sortable [Boolean] (false)
+        #   Whether the association is sortable.
+        # @param writable [Boolean, Hash] (false) [Hash: on: :create | :update]
+        #   Whether the association is writable.
         # @return [void]
         # @see #has_one
         #

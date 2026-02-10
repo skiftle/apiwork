@@ -378,6 +378,34 @@ Values appear in the Type column as `Type<values>`:
 
 ---
 
+## Line Length
+
+**Description text: 150 characters per line. Value lists: no limit.**
+
+Fill description lines to 150 characters. Don't leave short lines when content could fit on fewer lines.
+
+```ruby
+# Good — fills to 150 characters
+# @param format [Symbol, nil] (nil) [:date, :datetime, :email, :uuid]
+#   Format hint for exports. Does not change the type, but exports may add validation or documentation
+#   based on it.
+
+# Bad — lines too short, wastes vertical space
+# @param format [Symbol, nil] (nil) [:date, :datetime, :email, :uuid]
+#   Format hint for exports. Does not change the type,
+#   but exports may add validation or documentation based on it.
+
+# Good — long value list is OK (no limit)
+# @param type [Symbol, nil] (nil) [:array, :binary, :boolean, :date, :datetime, :decimal, :integer, :number, :object, :string]
+#   The type.
+
+# Bad — description exceeds 150 characters on single line
+# @param format [Symbol, nil] (nil)
+#   Format hint for exports. Does not change the type, but exports may add validation or documentation based on it. Valid formats by type: ...
+```
+
+---
+
 ## @param Descriptions
 
 **Every parameter gets a description. No exceptions.**
