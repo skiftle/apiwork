@@ -251,6 +251,19 @@ module Apiwork
         #
         # @example Encode/decode transforms
         #   attribute :status, encode: ->(value) { value.upcase }, decode: ->(value) { value.downcase }
+        #
+        # @example Writable only on create
+        #   attribute :slug, writable: { on: :create }
+        #
+        # @example Explicit enum values
+        #   attribute :priority, enum: [:low, :medium, :high]
+        #
+        # @example Multiple preloads
+        #   attribute :summary, type: :string, preload: [:items, :customer]
+        #
+        #   def summary
+        #     "#{record.customer.name}: #{record.items.count} items"
+        #   end
         def attribute(
           name,
           decode: nil,
@@ -704,6 +717,10 @@ module Apiwork
           API.find("/#{namespace.underscore.tr('::', '/')}")
         end
 
+        # @api public
+        # Whether this representation is deprecated.
+        #
+        # @return [Boolean]
         def deprecated?
           _deprecated
         end
