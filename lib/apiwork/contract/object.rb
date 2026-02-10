@@ -40,26 +40,46 @@ module Apiwork
       # This is the verbose form. Prefer sugar methods (string, integer, etc.)
       # for static definitions.
       #
-      # @param name [Symbol] param name
-      # @param type [Symbol, nil] (nil) param type
-      # @param as [Symbol, nil] (nil) target attribute name
-      # @param default [Object, nil] (nil) default value
+      # @param name [Symbol]
+      #   The param name.
+      # @param type [Symbol, nil] (nil)
+      #   The param type.
+      # @param as [Symbol, nil] (nil)
+      #   The target attribute name.
+      # @param default [Object, nil] (nil)
+      #   The default value.
       # @param deprecated [Boolean] (false)
-      # @param description [String, nil] (nil) documentation description
-      # @param discriminator [Symbol, nil] (nil) discriminator param name (unions only)
-      # @param enum [Array, Symbol, nil] (nil) allowed values or enum reference
-      # @param example [Object, nil] (nil) example value
-      # @param format [Symbol, nil] (nil) format hint
-      # @param max [Integer, nil] (nil) maximum value or length
-      # @param min [Integer, nil] (nil) minimum value or length
+      #   Whether deprecated. Metadata included in exports.
+      # @param description [String, nil] (nil)
+      #   The description. Metadata included in exports.
+      # @param discriminator [Symbol, nil] (nil)
+      #   The discriminator param name. Unions only.
+      # @param enum [Array, Symbol, nil] (nil)
+      #   The allowed values or enum reference.
+      # @param example [Object, nil] (nil)
+      #   The example value. Metadata included in exports.
+      # @param format [Symbol, nil] (nil) [:email, :uri, :uuid]
+      #   Format hint for exports. Does not change the type, but exports may add validation or documentation based on it.
+      # @param max [Integer, nil] (nil)
+      #   The maximum value or length.
+      # @param min [Integer, nil] (nil)
+      #   The minimum value or length.
       # @param nullable [Boolean] (false)
-      # @param of [Symbol, Hash, nil] (nil) element type (arrays only)
+      #   Whether the value can be `null`.
+      # @param of [Symbol, Hash, nil] (nil)
+      #   The element type. Arrays only.
       # @param optional [Boolean] (false)
+      #   Whether the param is optional.
       # @param required [Boolean] (false)
-      # @param shape [Contract::Object, Contract::Union, nil] (nil) pre-built shape
-      # @param store [Boolean, nil] (nil) whether to persist
-      # @param transform [Proc, nil] (nil) value transformation lambda
-      # @param value [Object, nil] (nil) literal value
+      #   Whether the param is required.
+      # @param shape [Contract::Object, Contract::Union, nil] (nil)
+      #   The pre-built shape.
+      # @param store [Boolean, nil] (nil)
+      #   Whether to persist.
+      # @param transform [Proc, nil] (nil)
+      #   The value transformation lambda.
+      # @param value [Object, nil] (nil)
+      #   The literal value.
       # @yield block for nested structure
       # @yieldparam shape [Contract::Object, Contract::Union, Contract::Element]
       # @return [void]
@@ -152,8 +172,10 @@ module Apiwork
       # @api public
       # Defines an array param with element type.
       #
-      # @param name [Symbol] param name
-      # @param options [Hash] ({}) additional param options
+      # @param name [Symbol]
+      #   The param name.
+      # @param options [Hash] ({})
+      #   Additional param options.
       # @yield block for defining element type
       # @yieldparam element [Contract::Element]
       # @return [void]

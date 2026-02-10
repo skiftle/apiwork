@@ -37,7 +37,7 @@ end
 
 `#array(name, **options, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L170)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L192)
 
 Defines an array param with element type.
 
@@ -47,8 +47,8 @@ Defines an array param with element type.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | param name |
-| `options` | `Hash` | `{}` | additional param options |
+| **`name`** | `Symbol` |  | The param name. |
+| `options` | `Hash` | `{}` | Additional param options. |
 
 </div>
 
@@ -80,7 +80,7 @@ end
 
 `#array?(name, as: nil, default: nil, deprecated: false, description: nil, nullable: false, of: nil, required: false, store: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1069)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1425)
 
 Defines an optional array.
 
@@ -90,15 +90,15 @@ Defines an optional array.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | the name |
-| `as` | `Symbol`, `nil` | `nil` | target attribute name |
-| `default` | `Object`, `nil` | `nil` | default value |
-| `deprecated` | `Boolean` | `false` |  |
-| `description` | `String`, `nil` | `nil` | documentation description |
-| `nullable` | `Boolean` | `false` |  |
-| `of` | `Symbol`, `Hash`, `nil` | `nil` | element type |
-| `required` | `Boolean` | `false` |  |
-| `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+| **`name`** | `Symbol` |  | The name. |
+| `as` | `Symbol`, `nil` | `nil` | The target attribute name. |
+| `default` | `Object`, `nil` | `nil` | The default value. |
+| `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
+| `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
+| `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
+| `of` | `Symbol`, `Hash`, `nil` | `nil` | The element type. Arrays only. |
+| `required` | `Boolean` | `false` | Whether the param is required. |
+| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -106,13 +106,21 @@ Defines an optional array.
 
 `void`
 
+**Example: Optional array of labels**
+
+```ruby
+array? :labels do
+  string
+end
+```
+
 ---
 
 ### #binary
 
 `#binary(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, nullable: false, optional: false, required: false, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L865)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1142)
 
 Defines a binary.
 
@@ -122,16 +130,16 @@ Defines a binary.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | the name |
-| `as` | `Symbol`, `nil` | `nil` | target attribute name |
-| `default` | `Object`, `nil` | `nil` | default value |
-| `deprecated` | `Boolean` | `false` |  |
-| `description` | `String`, `nil` | `nil` | documentation description |
-| `example` | `String`, `nil` | `nil` | example value |
-| `nullable` | `Boolean` | `false` |  |
-| `optional` | `Boolean` | `false` |  |
-| `required` | `Boolean` | `false` |  |
-| `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+| **`name`** | `Symbol` |  | The name. |
+| `as` | `Symbol`, `nil` | `nil` | The target attribute name. |
+| `default` | `Object`, `nil` | `nil` | The default value. |
+| `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
+| `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
+| `example` | `String`, `nil` | `nil` | The example value. Metadata included in exports. |
+| `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
+| `optional` | `Boolean` | `false` | Whether the param is optional. |
+| `required` | `Boolean` | `false` | Whether the param is required. |
+| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -139,13 +147,19 @@ Defines a binary.
 
 `void`
 
+**Example: File content**
+
+```ruby
+binary :content
+```
+
 ---
 
 ### #binary?
 
 `#binary?(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, nullable: false, required: false, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L905)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1194)
 
 Defines an optional binary.
 
@@ -155,15 +169,15 @@ Defines an optional binary.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | the name |
-| `as` | `Symbol`, `nil` | `nil` | target attribute name |
-| `default` | `Object`, `nil` | `nil` | default value |
-| `deprecated` | `Boolean` | `false` |  |
-| `description` | `String`, `nil` | `nil` | documentation description |
-| `example` | `String`, `nil` | `nil` | example value |
-| `nullable` | `Boolean` | `false` |  |
-| `required` | `Boolean` | `false` |  |
-| `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+| **`name`** | `Symbol` |  | The name. |
+| `as` | `Symbol`, `nil` | `nil` | The target attribute name. |
+| `default` | `Object`, `nil` | `nil` | The default value. |
+| `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
+| `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
+| `example` | `String`, `nil` | `nil` | The example value. Metadata included in exports. |
+| `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
+| `required` | `Boolean` | `false` | Whether the param is required. |
+| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -171,13 +185,19 @@ Defines an optional binary.
 
 `void`
 
+**Example: Optional attachment**
+
+```ruby
+binary? :attachment
+```
+
 ---
 
 ### #boolean
 
 `#boolean(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, nullable: false, optional: false, required: false, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L465)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L617)
 
 Defines a boolean.
 
@@ -187,16 +207,16 @@ Defines a boolean.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | the name |
-| `as` | `Symbol`, `nil` | `nil` | target attribute name |
-| `default` | `Object`, `nil` | `nil` | default value |
-| `deprecated` | `Boolean` | `false` |  |
-| `description` | `String`, `nil` | `nil` | documentation description |
-| `example` | `Boolean`, `nil` | `nil` | example value |
-| `nullable` | `Boolean` | `false` |  |
-| `optional` | `Boolean` | `false` |  |
-| `required` | `Boolean` | `false` |  |
-| `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+| **`name`** | `Symbol` |  | The name. |
+| `as` | `Symbol`, `nil` | `nil` | The target attribute name. |
+| `default` | `Object`, `nil` | `nil` | The default value. |
+| `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
+| `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
+| `example` | `Boolean`, `nil` | `nil` | The example value. Metadata included in exports. |
+| `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
+| `optional` | `Boolean` | `false` | Whether the param is optional. |
+| `required` | `Boolean` | `false` | Whether the param is required. |
+| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -204,13 +224,25 @@ Defines a boolean.
 
 `void`
 
+**Example: Active flag**
+
+```ruby
+boolean :active
+```
+
+**Example: With default**
+
+```ruby
+boolean :published, default: false
+```
+
 ---
 
 ### #boolean?
 
 `#boolean?(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, nullable: false, required: false, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L505)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L669)
 
 Defines an optional boolean.
 
@@ -220,15 +252,15 @@ Defines an optional boolean.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | the name |
-| `as` | `Symbol`, `nil` | `nil` | target attribute name |
-| `default` | `Object`, `nil` | `nil` | default value |
-| `deprecated` | `Boolean` | `false` |  |
-| `description` | `String`, `nil` | `nil` | documentation description |
-| `example` | `Boolean`, `nil` | `nil` | example value |
-| `nullable` | `Boolean` | `false` |  |
-| `required` | `Boolean` | `false` |  |
-| `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+| **`name`** | `Symbol` |  | The name. |
+| `as` | `Symbol`, `nil` | `nil` | The target attribute name. |
+| `default` | `Object`, `nil` | `nil` | The default value. |
+| `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
+| `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
+| `example` | `Boolean`, `nil` | `nil` | The example value. Metadata included in exports. |
+| `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
+| `required` | `Boolean` | `false` | Whether the param is required. |
+| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -236,13 +268,19 @@ Defines an optional boolean.
 
 `void`
 
+**Example: Optional notification flag**
+
+```ruby
+boolean? :notify, default: true
+```
+
 ---
 
 ### #date
 
 `#date(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, nullable: false, optional: false, required: false, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L625)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L827)
 
 Defines a date.
 
@@ -252,16 +290,16 @@ Defines a date.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | the name |
-| `as` | `Symbol`, `nil` | `nil` | target attribute name |
-| `default` | `Object`, `nil` | `nil` | default value |
-| `deprecated` | `Boolean` | `false` |  |
-| `description` | `String`, `nil` | `nil` | documentation description |
-| `example` | `String`, `nil` | `nil` | example value |
-| `nullable` | `Boolean` | `false` |  |
-| `optional` | `Boolean` | `false` |  |
-| `required` | `Boolean` | `false` |  |
-| `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+| **`name`** | `Symbol` |  | The name. |
+| `as` | `Symbol`, `nil` | `nil` | The target attribute name. |
+| `default` | `Object`, `nil` | `nil` | The default value. |
+| `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
+| `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
+| `example` | `String`, `nil` | `nil` | The example value. Metadata included in exports. |
+| `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
+| `optional` | `Boolean` | `false` | Whether the param is optional. |
+| `required` | `Boolean` | `false` | Whether the param is required. |
+| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -269,13 +307,19 @@ Defines a date.
 
 `void`
 
+**Example: Birth date**
+
+```ruby
+date :birth_date
+```
+
 ---
 
 ### #date?
 
 `#date?(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, nullable: false, required: false, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L665)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L879)
 
 Defines an optional date.
 
@@ -285,15 +329,15 @@ Defines an optional date.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | the name |
-| `as` | `Symbol`, `nil` | `nil` | target attribute name |
-| `default` | `Object`, `nil` | `nil` | default value |
-| `deprecated` | `Boolean` | `false` |  |
-| `description` | `String`, `nil` | `nil` | documentation description |
-| `example` | `String`, `nil` | `nil` | example value |
-| `nullable` | `Boolean` | `false` |  |
-| `required` | `Boolean` | `false` |  |
-| `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+| **`name`** | `Symbol` |  | The name. |
+| `as` | `Symbol`, `nil` | `nil` | The target attribute name. |
+| `default` | `Object`, `nil` | `nil` | The default value. |
+| `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
+| `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
+| `example` | `String`, `nil` | `nil` | The example value. Metadata included in exports. |
+| `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
+| `required` | `Boolean` | `false` | Whether the param is required. |
+| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -301,13 +345,19 @@ Defines an optional date.
 
 `void`
 
+**Example: Optional expiry date**
+
+```ruby
+date? :expires_on
+```
+
 ---
 
 ### #datetime
 
 `#datetime(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, nullable: false, optional: false, required: false, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L545)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L722)
 
 Defines a datetime.
 
@@ -317,16 +367,16 @@ Defines a datetime.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | the name |
-| `as` | `Symbol`, `nil` | `nil` | target attribute name |
-| `default` | `Object`, `nil` | `nil` | default value |
-| `deprecated` | `Boolean` | `false` |  |
-| `description` | `String`, `nil` | `nil` | documentation description |
-| `example` | `String`, `nil` | `nil` | example value |
-| `nullable` | `Boolean` | `false` |  |
-| `optional` | `Boolean` | `false` |  |
-| `required` | `Boolean` | `false` |  |
-| `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+| **`name`** | `Symbol` |  | The name. |
+| `as` | `Symbol`, `nil` | `nil` | The target attribute name. |
+| `default` | `Object`, `nil` | `nil` | The default value. |
+| `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
+| `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
+| `example` | `String`, `nil` | `nil` | The example value. Metadata included in exports. |
+| `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
+| `optional` | `Boolean` | `false` | Whether the param is optional. |
+| `required` | `Boolean` | `false` | Whether the param is required. |
+| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -334,13 +384,19 @@ Defines a datetime.
 
 `void`
 
+**Example: Timestamp**
+
+```ruby
+datetime :created_at
+```
+
 ---
 
 ### #datetime?
 
 `#datetime?(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, nullable: false, required: false, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L585)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L774)
 
 Defines an optional datetime.
 
@@ -350,15 +406,15 @@ Defines an optional datetime.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | the name |
-| `as` | `Symbol`, `nil` | `nil` | target attribute name |
-| `default` | `Object`, `nil` | `nil` | default value |
-| `deprecated` | `Boolean` | `false` |  |
-| `description` | `String`, `nil` | `nil` | documentation description |
-| `example` | `String`, `nil` | `nil` | example value |
-| `nullable` | `Boolean` | `false` |  |
-| `required` | `Boolean` | `false` |  |
-| `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+| **`name`** | `Symbol` |  | The name. |
+| `as` | `Symbol`, `nil` | `nil` | The target attribute name. |
+| `default` | `Object`, `nil` | `nil` | The default value. |
+| `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
+| `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
+| `example` | `String`, `nil` | `nil` | The example value. Metadata included in exports. |
+| `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
+| `required` | `Boolean` | `false` | Whether the param is required. |
+| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -366,13 +422,19 @@ Defines an optional datetime.
 
 `void`
 
+**Example: Optional deletion timestamp**
+
+```ruby
+datetime? :deleted_at
+```
+
 ---
 
 ### #decimal
 
 `#decimal(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, max: nil, min: nil, nullable: false, optional: false, required: false, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L283)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L376)
 
 Defines a decimal.
 
@@ -382,18 +444,18 @@ Defines a decimal.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | the name |
-| `as` | `Symbol`, `nil` | `nil` | target attribute name |
-| `default` | `Object`, `nil` | `nil` | default value |
-| `deprecated` | `Boolean` | `false` |  |
-| `description` | `String`, `nil` | `nil` | documentation description |
-| `example` | `Numeric`, `nil` | `nil` | example value |
-| `max` | `Numeric`, `nil` | `nil` | maximum value |
-| `min` | `Numeric`, `nil` | `nil` | minimum value |
-| `nullable` | `Boolean` | `false` |  |
-| `optional` | `Boolean` | `false` |  |
-| `required` | `Boolean` | `false` |  |
-| `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+| **`name`** | `Symbol` |  | The name. |
+| `as` | `Symbol`, `nil` | `nil` | The target attribute name. |
+| `default` | `Object`, `nil` | `nil` | The default value. |
+| `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
+| `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
+| `example` | `Numeric`, `nil` | `nil` | The example value. Metadata included in exports. |
+| `max` | `Numeric`, `nil` | `nil` | The maximum value. |
+| `min` | `Numeric`, `nil` | `nil` | The minimum value. |
+| `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
+| `optional` | `Boolean` | `false` | Whether the param is optional. |
+| `required` | `Boolean` | `false` | Whether the param is required. |
+| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -401,13 +463,25 @@ Defines a decimal.
 
 `void`
 
+**Example: Price with minimum**
+
+```ruby
+decimal :amount, min: 0
+```
+
+**Example: Percentage with range**
+
+```ruby
+decimal :discount, min: 0, max: 100
+```
+
 ---
 
 ### #decimal?
 
 `#decimal?(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, max: nil, min: nil, nullable: false, required: false, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L329)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L436)
 
 Defines an optional decimal.
 
@@ -417,17 +491,17 @@ Defines an optional decimal.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | the name |
-| `as` | `Symbol`, `nil` | `nil` | target attribute name |
-| `default` | `Object`, `nil` | `nil` | default value |
-| `deprecated` | `Boolean` | `false` |  |
-| `description` | `String`, `nil` | `nil` | documentation description |
-| `example` | `Numeric`, `nil` | `nil` | example value |
-| `max` | `Numeric`, `nil` | `nil` | maximum value |
-| `min` | `Numeric`, `nil` | `nil` | minimum value |
-| `nullable` | `Boolean` | `false` |  |
-| `required` | `Boolean` | `false` |  |
-| `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+| **`name`** | `Symbol` |  | The name. |
+| `as` | `Symbol`, `nil` | `nil` | The target attribute name. |
+| `default` | `Object`, `nil` | `nil` | The default value. |
+| `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
+| `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
+| `example` | `Numeric`, `nil` | `nil` | The example value. Metadata included in exports. |
+| `max` | `Numeric`, `nil` | `nil` | The maximum value. |
+| `min` | `Numeric`, `nil` | `nil` | The minimum value. |
+| `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
+| `required` | `Boolean` | `false` | Whether the param is required. |
+| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -435,13 +509,19 @@ Defines an optional decimal.
 
 `void`
 
+**Example: Optional tax rate**
+
+```ruby
+decimal? :tax_rate, min: 0, max: 1
+```
+
 ---
 
 ### #extends
 
 `#extends(type_name = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L33)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L34)
 
 Inherits all properties from another type.
 Can be called multiple times to inherit from multiple types.
@@ -452,7 +532,7 @@ Can be called multiple times to inherit from multiple types.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`type_name`** | `Symbol` |  | the type to inherit from |
+| **`type_name`** | `Symbol` |  | The type to inherit from. |
 
 </div>
 
@@ -485,7 +565,7 @@ end
 
 `#integer(name, as: nil, default: nil, deprecated: false, description: nil, enum: nil, example: nil, max: nil, min: nil, nullable: false, optional: false, required: false, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L186)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L246)
 
 Defines an integer.
 
@@ -495,19 +575,19 @@ Defines an integer.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | the name |
-| `as` | `Symbol`, `nil` | `nil` | target attribute name |
-| `default` | `Object`, `nil` | `nil` | default value |
-| `deprecated` | `Boolean` | `false` |  |
-| `description` | `String`, `nil` | `nil` | documentation description |
-| `enum` | `Array`, `Symbol`, `nil` | `nil` | allowed values |
-| `example` | `Integer`, `nil` | `nil` | example value |
-| `max` | `Integer`, `nil` | `nil` | maximum value |
-| `min` | `Integer`, `nil` | `nil` | minimum value |
-| `nullable` | `Boolean` | `false` |  |
-| `optional` | `Boolean` | `false` |  |
-| `required` | `Boolean` | `false` |  |
-| `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+| **`name`** | `Symbol` |  | The name. |
+| `as` | `Symbol`, `nil` | `nil` | The target attribute name. |
+| `default` | `Object`, `nil` | `nil` | The default value. |
+| `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
+| `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
+| `enum` | `Array`, `Symbol`, `nil` | `nil` | The allowed values. |
+| `example` | `Integer`, `nil` | `nil` | The example value. Metadata included in exports. |
+| `max` | `Integer`, `nil` | `nil` | The maximum value. |
+| `min` | `Integer`, `nil` | `nil` | The minimum value. |
+| `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
+| `optional` | `Boolean` | `false` | Whether the param is optional. |
+| `required` | `Boolean` | `false` | Whether the param is required. |
+| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -515,13 +595,25 @@ Defines an integer.
 
 `void`
 
+**Example: Basic integer**
+
+```ruby
+integer :quantity
+```
+
+**Example: With range constraints**
+
+```ruby
+integer :age, min: 0, max: 150
+```
+
 ---
 
 ### #integer?
 
 `#integer?(name, as: nil, default: nil, deprecated: false, description: nil, enum: nil, example: nil, max: nil, min: nil, nullable: false, required: false, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L235)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L310)
 
 Defines an optional integer.
 
@@ -531,18 +623,18 @@ Defines an optional integer.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | the name |
-| `as` | `Symbol`, `nil` | `nil` | target attribute name |
-| `default` | `Object`, `nil` | `nil` | default value |
-| `deprecated` | `Boolean` | `false` |  |
-| `description` | `String`, `nil` | `nil` | documentation description |
-| `enum` | `Array`, `Symbol`, `nil` | `nil` | allowed values |
-| `example` | `Integer`, `nil` | `nil` | example value |
-| `max` | `Integer`, `nil` | `nil` | maximum value |
-| `min` | `Integer`, `nil` | `nil` | minimum value |
-| `nullable` | `Boolean` | `false` |  |
-| `required` | `Boolean` | `false` |  |
-| `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+| **`name`** | `Symbol` |  | The name. |
+| `as` | `Symbol`, `nil` | `nil` | The target attribute name. |
+| `default` | `Object`, `nil` | `nil` | The default value. |
+| `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
+| `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
+| `enum` | `Array`, `Symbol`, `nil` | `nil` | The allowed values. |
+| `example` | `Integer`, `nil` | `nil` | The example value. Metadata included in exports. |
+| `max` | `Integer`, `nil` | `nil` | The maximum value. |
+| `min` | `Integer`, `nil` | `nil` | The minimum value. |
+| `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
+| `required` | `Boolean` | `false` | Whether the param is required. |
+| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -550,13 +642,19 @@ Defines an optional integer.
 
 `void`
 
+**Example: Optional page number**
+
+```ruby
+integer? :page, min: 1, default: 1
+```
+
 ---
 
 ### #literal
 
 `#literal(name, value:, as: nil, default: nil, deprecated: false, description: nil, optional: false, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1195)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1609)
 
 Defines a literal value.
 
@@ -566,14 +664,14 @@ Defines a literal value.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | the name |
-| **`value`** | `Object` |  | the exact value (required) |
-| `as` | `Symbol`, `nil` | `nil` | target attribute name |
-| `default` | `Object`, `nil` | `nil` | default value |
-| `deprecated` | `Boolean` | `false` |  |
-| `description` | `String`, `nil` | `nil` | documentation description |
-| `optional` | `Boolean` | `false` |  |
-| `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+| **`name`** | `Symbol` |  | The name. |
+| **`value`** | `Object` |  | The exact value. |
+| `as` | `Symbol`, `nil` | `nil` | The target attribute name. |
+| `default` | `Object`, `nil` | `nil` | The default value. |
+| `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
+| `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
+| `optional` | `Boolean` | `false` | Whether the param is optional. |
+| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -581,13 +679,19 @@ Defines a literal value.
 
 `void`
 
+**Example: Fixed version number**
+
+```ruby
+literal :version, value: '1.0'
+```
+
 ---
 
 ### #merge!
 
 `#merge!(type_name = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L50)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L52)
 
 Includes all properties from another type.
 Can be called multiple times to merge from multiple types.
@@ -598,7 +702,7 @@ Can be called multiple times to merge from multiple types.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`type_name`** | `Symbol` |  | the type to merge from |
+| **`type_name`** | `Symbol` |  | The type to merge from. |
 
 </div>
 
@@ -621,7 +725,7 @@ end
 
 `#number(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, max: nil, min: nil, nullable: false, optional: false, required: false, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L375)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L497)
 
 Defines a number.
 
@@ -631,18 +735,18 @@ Defines a number.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | the name |
-| `as` | `Symbol`, `nil` | `nil` | target attribute name |
-| `default` | `Object`, `nil` | `nil` | default value |
-| `deprecated` | `Boolean` | `false` |  |
-| `description` | `String`, `nil` | `nil` | documentation description |
-| `example` | `Numeric`, `nil` | `nil` | example value |
-| `max` | `Numeric`, `nil` | `nil` | maximum value |
-| `min` | `Numeric`, `nil` | `nil` | minimum value |
-| `nullable` | `Boolean` | `false` |  |
-| `optional` | `Boolean` | `false` |  |
-| `required` | `Boolean` | `false` |  |
-| `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+| **`name`** | `Symbol` |  | The name. |
+| `as` | `Symbol`, `nil` | `nil` | The target attribute name. |
+| `default` | `Object`, `nil` | `nil` | The default value. |
+| `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
+| `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
+| `example` | `Numeric`, `nil` | `nil` | The example value. Metadata included in exports. |
+| `max` | `Numeric`, `nil` | `nil` | The maximum value. |
+| `min` | `Numeric`, `nil` | `nil` | The minimum value. |
+| `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
+| `optional` | `Boolean` | `false` | Whether the param is optional. |
+| `required` | `Boolean` | `false` | Whether the param is required. |
+| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -650,13 +754,19 @@ Defines a number.
 
 `void`
 
+**Example: Coordinate value**
+
+```ruby
+number :latitude, min: -90, max: 90
+```
+
 ---
 
 ### #number?
 
 `#number?(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, max: nil, min: nil, nullable: false, required: false, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L421)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L557)
 
 Defines an optional number.
 
@@ -666,17 +776,17 @@ Defines an optional number.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | the name |
-| `as` | `Symbol`, `nil` | `nil` | target attribute name |
-| `default` | `Object`, `nil` | `nil` | default value |
-| `deprecated` | `Boolean` | `false` |  |
-| `description` | `String`, `nil` | `nil` | documentation description |
-| `example` | `Numeric`, `nil` | `nil` | example value |
-| `max` | `Numeric`, `nil` | `nil` | maximum value |
-| `min` | `Numeric`, `nil` | `nil` | minimum value |
-| `nullable` | `Boolean` | `false` |  |
-| `required` | `Boolean` | `false` |  |
-| `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+| **`name`** | `Symbol` |  | The name. |
+| `as` | `Symbol`, `nil` | `nil` | The target attribute name. |
+| `default` | `Object`, `nil` | `nil` | The default value. |
+| `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
+| `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
+| `example` | `Numeric`, `nil` | `nil` | The example value. Metadata included in exports. |
+| `max` | `Numeric`, `nil` | `nil` | The maximum value. |
+| `min` | `Numeric`, `nil` | `nil` | The minimum value. |
+| `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
+| `required` | `Boolean` | `false` | Whether the param is required. |
+| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -684,13 +794,19 @@ Defines an optional number.
 
 `void`
 
+**Example: Optional score**
+
+```ruby
+number? :score, min: 0, max: 100
+```
+
 ---
 
 ### #object
 
 `#object(name, as: nil, default: nil, deprecated: false, description: nil, nullable: false, optional: false, required: false, store: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L945)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1250)
 
 Defines an object.
 
@@ -700,15 +816,15 @@ Defines an object.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | the name |
-| `as` | `Symbol`, `nil` | `nil` | target attribute name |
-| `default` | `Object`, `nil` | `nil` | default value |
-| `deprecated` | `Boolean` | `false` |  |
-| `description` | `String`, `nil` | `nil` | documentation description |
-| `nullable` | `Boolean` | `false` |  |
-| `optional` | `Boolean` | `false` |  |
-| `required` | `Boolean` | `false` |  |
-| `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+| **`name`** | `Symbol` |  | The name. |
+| `as` | `Symbol`, `nil` | `nil` | The target attribute name. |
+| `default` | `Object`, `nil` | `nil` | The default value. |
+| `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
+| `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
+| `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
+| `optional` | `Boolean` | `false` | Whether the param is optional. |
+| `required` | `Boolean` | `false` | Whether the param is required. |
+| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -716,13 +832,23 @@ Defines an object.
 
 `void`
 
+**Example: Nested address object**
+
+```ruby
+object :address do
+  string :street
+  string :city
+  string :country
+end
+```
+
 ---
 
 ### #object?
 
 `#object?(name, as: nil, default: nil, deprecated: false, description: nil, nullable: false, required: false, store: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L985)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1304)
 
 Defines an optional object.
 
@@ -732,14 +858,14 @@ Defines an optional object.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | the name |
-| `as` | `Symbol`, `nil` | `nil` | target attribute name |
-| `default` | `Object`, `nil` | `nil` | default value |
-| `deprecated` | `Boolean` | `false` |  |
-| `description` | `String`, `nil` | `nil` | documentation description |
-| `nullable` | `Boolean` | `false` |  |
-| `required` | `Boolean` | `false` |  |
-| `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+| **`name`** | `Symbol` |  | The name. |
+| `as` | `Symbol`, `nil` | `nil` | The target attribute name. |
+| `default` | `Object`, `nil` | `nil` | The default value. |
+| `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
+| `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
+| `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
+| `required` | `Boolean` | `false` | Whether the param is required. |
+| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -747,13 +873,22 @@ Defines an optional object.
 
 `void`
 
+**Example: Optional metadata**
+
+```ruby
+object? :metadata do
+  string :key
+  string :value
+end
+```
+
 ---
 
 ### #param
 
 `#param(name, type: nil, as: nil, default: nil, deprecated: false, description: nil, discriminator: nil, enum: nil, example: nil, format: nil, max: nil, min: nil, nullable: false, of: nil, optional: false, required: false, shape: nil, store: nil, transform: nil, value: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L78)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L98)
 
 Defines a param with explicit type.
 
@@ -766,26 +901,26 @@ for static definitions.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | param name |
-| `type` | `Symbol`, `nil` | `nil` | param type |
-| `as` | `Symbol`, `nil` | `nil` | target attribute name |
-| `default` | `Object`, `nil` | `nil` | default value |
-| `deprecated` | `Boolean` | `false` |  |
-| `description` | `String`, `nil` | `nil` | documentation description |
-| `discriminator` | `Symbol`, `nil` | `nil` | discriminator param name (unions only) |
-| `enum` | `Array`, `Symbol`, `nil` | `nil` | allowed values or enum reference |
-| `example` | `Object`, `nil` | `nil` | example value |
-| `format` | `Symbol`, `nil` | `nil` | format hint |
-| `max` | `Integer`, `nil` | `nil` | maximum value or length |
-| `min` | `Integer`, `nil` | `nil` | minimum value or length |
-| `nullable` | `Boolean` | `false` |  |
-| `of` | `Symbol`, `Hash`, `nil` | `nil` | element type (arrays only) |
-| `optional` | `Boolean` | `false` |  |
-| `required` | `Boolean` | `false` |  |
-| `shape` | `Contract::Object`, `Contract::Union`, `nil` | `nil` | pre-built shape |
-| `store` | `Boolean`, `nil` | `nil` | whether to persist |
-| `transform` | `Proc`, `nil` | `nil` | value transformation lambda |
-| `value` | `Object`, `nil` | `nil` | literal value |
+| **`name`** | `Symbol` |  | The param name. |
+| `type` | `Symbol`, `nil` | `nil` | The param type. |
+| `as` | `Symbol`, `nil` | `nil` | The target attribute name. |
+| `default` | `Object`, `nil` | `nil` | The default value. |
+| `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
+| `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
+| `discriminator` | `Symbol`, `nil` | `nil` | The discriminator param name. Unions only. |
+| `enum` | `Array`, `Symbol`, `nil` | `nil` | The allowed values or enum reference. |
+| `example` | `Object`, `nil` | `nil` | The example value. Metadata included in exports. |
+| `format` | `Symbol<:email, :uri, :uuid>`, `nil` | `nil` | Format hint for exports. Does not change the type, but exports may add validation or documentation based on it. |
+| `max` | `Integer`, `nil` | `nil` | The maximum value or length. |
+| `min` | `Integer`, `nil` | `nil` | The minimum value or length. |
+| `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
+| `of` | `Symbol`, `Hash`, `nil` | `nil` | The element type. Arrays only. |
+| `optional` | `Boolean` | `false` | Whether the param is optional. |
+| `required` | `Boolean` | `false` | Whether the param is required. |
+| `shape` | `Contract::Object`, `Contract::Union`, `nil` | `nil` | The pre-built shape. |
+| `store` | `Boolean`, `nil` | `nil` | Whether to persist. |
+| `transform` | `Proc`, `nil` | `nil` | The value transformation lambda. |
+| `value` | `Object`, `nil` | `nil` | The literal value. |
 
 </div>
 
@@ -819,7 +954,7 @@ end
 
 `#reference(name, to: nil, as: nil, default: nil, deprecated: false, description: nil, nullable: false, optional: false, required: false, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1232)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1662)
 
 Defines a reference to a named type.
 
@@ -829,16 +964,16 @@ Defines a reference to a named type.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | the name |
-| `to` | `Symbol`, `nil` | `nil` | target type name (defaults to name) |
-| `as` | `Symbol`, `nil` | `nil` | target attribute name |
-| `default` | `Object`, `nil` | `nil` | default value |
-| `deprecated` | `Boolean` | `false` |  |
-| `description` | `String`, `nil` | `nil` | documentation description |
-| `nullable` | `Boolean` | `false` |  |
-| `optional` | `Boolean` | `false` |  |
-| `required` | `Boolean` | `false` |  |
-| `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+| **`name`** | `Symbol` |  | The name. |
+| `to` | `Symbol`, `nil` | `nil` | The target type name. Defaults to name. |
+| `as` | `Symbol`, `nil` | `nil` | The target attribute name. |
+| `default` | `Object`, `nil` | `nil` | The default value. |
+| `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
+| `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
+| `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
+| `optional` | `Boolean` | `false` | Whether the param is optional. |
+| `required` | `Boolean` | `false` | Whether the param is required. |
+| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -846,13 +981,25 @@ Defines a reference to a named type.
 
 `void`
 
+**Example: Reference to customer type**
+
+```ruby
+reference :customer
+```
+
+**Example: Reference with different field name**
+
+```ruby
+reference :billing_address, to: :address
+```
+
 ---
 
 ### #reference?
 
 `#reference?(name, to: nil, as: nil, default: nil, deprecated: false, description: nil, nullable: false, required: false, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1271)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1713)
 
 Defines an optional reference to a named type.
 
@@ -862,15 +1009,15 @@ Defines an optional reference to a named type.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | the name |
-| `to` | `Symbol`, `nil` | `nil` | target type name (defaults to name) |
-| `as` | `Symbol`, `nil` | `nil` | target attribute name |
-| `default` | `Object`, `nil` | `nil` | default value |
-| `deprecated` | `Boolean` | `false` |  |
-| `description` | `String`, `nil` | `nil` | documentation description |
-| `nullable` | `Boolean` | `false` |  |
-| `required` | `Boolean` | `false` |  |
-| `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+| **`name`** | `Symbol` |  | The name. |
+| `to` | `Symbol`, `nil` | `nil` | The target type name. Defaults to name. |
+| `as` | `Symbol`, `nil` | `nil` | The target attribute name. |
+| `default` | `Object`, `nil` | `nil` | The default value. |
+| `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
+| `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
+| `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
+| `required` | `Boolean` | `false` | Whether the param is required. |
+| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -878,13 +1025,19 @@ Defines an optional reference to a named type.
 
 `void`
 
+**Example: Optional shipping address**
+
+```ruby
+reference? :shipping_address, to: :address
+```
+
 ---
 
 ### #string
 
 `#string(name, as: nil, default: nil, deprecated: false, description: nil, enum: nil, example: nil, format: nil, max: nil, min: nil, nullable: false, optional: false, required: false, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L83)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L108)
 
 Defines a string.
 
@@ -894,20 +1047,20 @@ Defines a string.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | the name |
-| `as` | `Symbol`, `nil` | `nil` | target attribute name |
-| `default` | `Object`, `nil` | `nil` | default value |
-| `deprecated` | `Boolean` | `false` |  |
-| `description` | `String`, `nil` | `nil` | documentation description |
-| `enum` | `Array`, `Symbol`, `nil` | `nil` | allowed values |
-| `example` | `String`, `nil` | `nil` | example value |
-| `format` | `Symbol<:email, :uri, :uuid>`, `nil` | `nil` | format hint |
-| `max` | `Integer`, `nil` | `nil` | maximum length |
-| `min` | `Integer`, `nil` | `nil` | minimum length |
-| `nullable` | `Boolean` | `false` |  |
-| `optional` | `Boolean` | `false` |  |
-| `required` | `Boolean` | `false` |  |
-| `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+| **`name`** | `Symbol` |  | The name. |
+| `as` | `Symbol`, `nil` | `nil` | The target attribute name. |
+| `default` | `Object`, `nil` | `nil` | The default value. |
+| `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
+| `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
+| `enum` | `Array`, `Symbol`, `nil` | `nil` | The allowed values. |
+| `example` | `String`, `nil` | `nil` | The example value. Metadata included in exports. |
+| `format` | `Symbol<:email, :uri, :uuid>`, `nil` | `nil` | Format hint for exports. Does not change the type, but exports may add validation or documentation based on it. |
+| `max` | `Integer`, `nil` | `nil` | The maximum length. |
+| `min` | `Integer`, `nil` | `nil` | The minimum length. |
+| `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
+| `optional` | `Boolean` | `false` | Whether the param is optional. |
+| `required` | `Boolean` | `false` | Whether the param is required. |
+| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -915,13 +1068,31 @@ Defines a string.
 
 `void`
 
+**Example: Basic string**
+
+```ruby
+string :name
+```
+
+**Example: With format validation**
+
+```ruby
+string :email, format: :email
+```
+
+**Example: With length constraints**
+
+```ruby
+string :title, min: 1, max: 100
+```
+
 ---
 
 ### #string?
 
 `#string?(name, as: nil, default: nil, deprecated: false, description: nil, enum: nil, example: nil, format: nil, max: nil, min: nil, nullable: false, required: false, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L135)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L176)
 
 Defines an optional string.
 
@@ -931,19 +1102,19 @@ Defines an optional string.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | the name |
-| `as` | `Symbol`, `nil` | `nil` | target attribute name |
-| `default` | `Object`, `nil` | `nil` | default value |
-| `deprecated` | `Boolean` | `false` |  |
-| `description` | `String`, `nil` | `nil` | documentation description |
-| `enum` | `Array`, `Symbol`, `nil` | `nil` | allowed values |
-| `example` | `String`, `nil` | `nil` | example value |
-| `format` | `Symbol<:email, :uri, :uuid>`, `nil` | `nil` | format hint |
-| `max` | `Integer`, `nil` | `nil` | maximum length |
-| `min` | `Integer`, `nil` | `nil` | minimum length |
-| `nullable` | `Boolean` | `false` |  |
-| `required` | `Boolean` | `false` |  |
-| `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+| **`name`** | `Symbol` |  | The name. |
+| `as` | `Symbol`, `nil` | `nil` | The target attribute name. |
+| `default` | `Object`, `nil` | `nil` | The default value. |
+| `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
+| `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
+| `enum` | `Array`, `Symbol`, `nil` | `nil` | The allowed values. |
+| `example` | `String`, `nil` | `nil` | The example value. Metadata included in exports. |
+| `format` | `Symbol<:email, :uri, :uuid>`, `nil` | `nil` | Format hint for exports. Does not change the type, but exports may add validation or documentation based on it. |
+| `max` | `Integer`, `nil` | `nil` | The maximum length. |
+| `min` | `Integer`, `nil` | `nil` | The minimum length. |
+| `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
+| `required` | `Boolean` | `false` | Whether the param is required. |
+| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -951,13 +1122,19 @@ Defines an optional string.
 
 `void`
 
+**Example: Optional string with default**
+
+```ruby
+string? :nickname, default: 'Anonymous'
+```
+
 ---
 
 ### #time
 
 `#time(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, nullable: false, optional: false, required: false, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L785)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1037)
 
 Defines a time.
 
@@ -967,16 +1144,16 @@ Defines a time.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | the name |
-| `as` | `Symbol`, `nil` | `nil` | target attribute name |
-| `default` | `Object`, `nil` | `nil` | default value |
-| `deprecated` | `Boolean` | `false` |  |
-| `description` | `String`, `nil` | `nil` | documentation description |
-| `example` | `String`, `nil` | `nil` | example value |
-| `nullable` | `Boolean` | `false` |  |
-| `optional` | `Boolean` | `false` |  |
-| `required` | `Boolean` | `false` |  |
-| `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+| **`name`** | `Symbol` |  | The name. |
+| `as` | `Symbol`, `nil` | `nil` | The target attribute name. |
+| `default` | `Object`, `nil` | `nil` | The default value. |
+| `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
+| `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
+| `example` | `String`, `nil` | `nil` | The example value. Metadata included in exports. |
+| `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
+| `optional` | `Boolean` | `false` | Whether the param is optional. |
+| `required` | `Boolean` | `false` | Whether the param is required. |
+| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -984,13 +1161,19 @@ Defines a time.
 
 `void`
 
+**Example: Opening time**
+
+```ruby
+time :opens_at
+```
+
 ---
 
 ### #time?
 
 `#time?(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, nullable: false, required: false, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L825)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1089)
 
 Defines an optional time.
 
@@ -1000,15 +1183,15 @@ Defines an optional time.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | the name |
-| `as` | `Symbol`, `nil` | `nil` | target attribute name |
-| `default` | `Object`, `nil` | `nil` | default value |
-| `deprecated` | `Boolean` | `false` |  |
-| `description` | `String`, `nil` | `nil` | documentation description |
-| `example` | `String`, `nil` | `nil` | example value |
-| `nullable` | `Boolean` | `false` |  |
-| `required` | `Boolean` | `false` |  |
-| `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+| **`name`** | `Symbol` |  | The name. |
+| `as` | `Symbol`, `nil` | `nil` | The target attribute name. |
+| `default` | `Object`, `nil` | `nil` | The default value. |
+| `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
+| `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
+| `example` | `String`, `nil` | `nil` | The example value. Metadata included in exports. |
+| `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
+| `required` | `Boolean` | `false` | Whether the param is required. |
+| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -1016,13 +1199,19 @@ Defines an optional time.
 
 `void`
 
+**Example: Optional closing time**
+
+```ruby
+time? :closes_at
+```
+
 ---
 
 ### #union
 
 `#union(name, as: nil, default: nil, deprecated: false, description: nil, discriminator: nil, nullable: false, optional: false, required: false, store: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1112)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1492)
 
 Defines a union.
 
@@ -1032,16 +1221,16 @@ Defines a union.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | the name |
-| `as` | `Symbol`, `nil` | `nil` | target attribute name |
-| `default` | `Object`, `nil` | `nil` | default value |
-| `deprecated` | `Boolean` | `false` |  |
-| `description` | `String`, `nil` | `nil` | documentation description |
-| `discriminator` | `Symbol`, `nil` | `nil` | discriminator field name |
-| `nullable` | `Boolean` | `false` |  |
-| `optional` | `Boolean` | `false` |  |
-| `required` | `Boolean` | `false` |  |
-| `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+| **`name`** | `Symbol` |  | The name. |
+| `as` | `Symbol`, `nil` | `nil` | The target attribute name. |
+| `default` | `Object`, `nil` | `nil` | The default value. |
+| `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
+| `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
+| `discriminator` | `Symbol`, `nil` | `nil` | The discriminator field name. Unions only. |
+| `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
+| `optional` | `Boolean` | `false` | Whether the param is optional. |
+| `required` | `Boolean` | `false` | Whether the param is required. |
+| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -1049,13 +1238,30 @@ Defines a union.
 
 `void`
 
+**Example: Payment method union**
+
+```ruby
+union :payment_method, discriminator: :type do
+  variant tag: 'card' do
+    object do
+      string :last_four
+    end
+  end
+  variant tag: 'bank' do
+    object do
+      string :account_number
+    end
+  end
+end
+```
+
 ---
 
 ### #union?
 
 `#union?(name, as: nil, default: nil, deprecated: false, description: nil, discriminator: nil, nullable: false, required: false, store: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1155)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1558)
 
 Defines an optional union.
 
@@ -1065,15 +1271,15 @@ Defines an optional union.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | the name |
-| `as` | `Symbol`, `nil` | `nil` | target attribute name |
-| `default` | `Object`, `nil` | `nil` | default value |
-| `deprecated` | `Boolean` | `false` |  |
-| `description` | `String`, `nil` | `nil` | documentation description |
-| `discriminator` | `Symbol`, `nil` | `nil` | discriminator field name |
-| `nullable` | `Boolean` | `false` |  |
-| `required` | `Boolean` | `false` |  |
-| `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+| **`name`** | `Symbol` |  | The name. |
+| `as` | `Symbol`, `nil` | `nil` | The target attribute name. |
+| `default` | `Object`, `nil` | `nil` | The default value. |
+| `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
+| `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
+| `discriminator` | `Symbol`, `nil` | `nil` | The discriminator field name. Unions only. |
+| `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
+| `required` | `Boolean` | `false` | Whether the param is required. |
+| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -1081,13 +1287,30 @@ Defines an optional union.
 
 `void`
 
+**Example: Optional notification preference**
+
+```ruby
+union? :notification, discriminator: :type do
+  variant tag: 'email' do
+    object do
+      string :address
+    end
+  end
+  variant tag: 'sms' do
+    object do
+      string :phone
+    end
+  end
+end
+```
+
 ---
 
 ### #uuid
 
 `#uuid(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, nullable: false, optional: false, required: false, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L705)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L932)
 
 Defines a UUID.
 
@@ -1097,16 +1320,16 @@ Defines a UUID.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | the name |
-| `as` | `Symbol`, `nil` | `nil` | target attribute name |
-| `default` | `Object`, `nil` | `nil` | default value |
-| `deprecated` | `Boolean` | `false` |  |
-| `description` | `String`, `nil` | `nil` | documentation description |
-| `example` | `String`, `nil` | `nil` | example value |
-| `nullable` | `Boolean` | `false` |  |
-| `optional` | `Boolean` | `false` |  |
-| `required` | `Boolean` | `false` |  |
-| `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+| **`name`** | `Symbol` |  | The name. |
+| `as` | `Symbol`, `nil` | `nil` | The target attribute name. |
+| `default` | `Object`, `nil` | `nil` | The default value. |
+| `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
+| `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
+| `example` | `String`, `nil` | `nil` | The example value. Metadata included in exports. |
+| `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
+| `optional` | `Boolean` | `false` | Whether the param is optional. |
+| `required` | `Boolean` | `false` | Whether the param is required. |
+| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -1114,13 +1337,19 @@ Defines a UUID.
 
 `void`
 
+**Example: Primary key**
+
+```ruby
+uuid :id
+```
+
 ---
 
 ### #uuid?
 
 `#uuid?(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, nullable: false, required: false, store: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L745)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L984)
 
 Defines an optional UUID.
 
@@ -1130,20 +1359,26 @@ Defines an optional UUID.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | the name |
-| `as` | `Symbol`, `nil` | `nil` | target attribute name |
-| `default` | `Object`, `nil` | `nil` | default value |
-| `deprecated` | `Boolean` | `false` |  |
-| `description` | `String`, `nil` | `nil` | documentation description |
-| `example` | `String`, `nil` | `nil` | example value |
-| `nullable` | `Boolean` | `false` |  |
-| `required` | `Boolean` | `false` |  |
-| `store` | `Object`, `nil` | `nil` | value to persist (replaces received value) |
+| **`name`** | `Symbol` |  | The name. |
+| `as` | `Symbol`, `nil` | `nil` | The target attribute name. |
+| `default` | `Object`, `nil` | `nil` | The default value. |
+| `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
+| `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
+| `example` | `String`, `nil` | `nil` | The example value. Metadata included in exports. |
+| `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
+| `required` | `Boolean` | `false` | Whether the param is required. |
+| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
 **Returns**
 
 `void`
+
+**Example: Optional parent reference**
+
+```ruby
+uuid? :parent_id
+```
 
 ---
