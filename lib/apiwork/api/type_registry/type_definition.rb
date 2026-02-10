@@ -8,7 +8,6 @@ module Apiwork
                     :description,
                     :discriminator,
                     :example,
-                    :format,
                     :kind,
                     :name,
                     :scope
@@ -21,8 +20,7 @@ module Apiwork
           deprecated: false,
           description: nil,
           discriminator: nil,
-          example: nil,
-          format: nil
+          example: nil
         )
           @name = name
           @kind = kind
@@ -32,7 +30,6 @@ module Apiwork
           @description = description
           @discriminator = discriminator
           @example = example
-          @format = format
           @shape = nil
         end
 
@@ -61,7 +58,7 @@ module Apiwork
           shape.variants if union?
         end
 
-        def merge(block:, deprecated:, description:, example:, format:)
+        def merge(block:, deprecated:, description:, example:)
           TypeDefinition.new(
             @name,
             block: merge_blocks(@block, block),
@@ -69,7 +66,6 @@ module Apiwork
             description: description || @description,
             discriminator: @discriminator,
             example: example || @example,
-            format: format || @format,
             kind: @kind,
             scope: @scope,
           )

@@ -256,7 +256,7 @@ key_format :camel
 
 ### .object
 
-`.object(name, scope: nil, description: nil, example: nil, format: nil, deprecated: false, representation_class: nil, &block)`
+`.object(name, deprecated: false, description: nil, example: nil, scope: nil, &block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L169)
 
@@ -268,13 +268,11 @@ Defines a reusable object type.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  |  |
-| `scope` | `Class<Contract::Base>`, `nil` | `nil` |  |
-| `description` | `String`, `nil` | `nil` |  |
-| `example` | `Object`, `nil` | `nil` |  |
-| `format` | `String`, `nil` | `nil` |  |
-| `deprecated` | `Boolean` | `false` |  |
-| `representation_class` | `Class<Representation::Base>`, `nil` | `nil` |  |
+| **`name`** | `Symbol` |  | The object name. |
+| `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
+| `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
+| `example` | `Object`, `nil` | `nil` | The example. Metadata included in exports. |
+| `scope` | `Class<Contract::Base>`, `nil` | `nil` | The contract scope for type prefixing. |
 
 </div>
 

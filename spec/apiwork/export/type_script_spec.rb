@@ -395,7 +395,7 @@ RSpec.describe Apiwork::Export::TypeScript do
 
     it 'generates correct output for type with all metadata fields' do
       api_class, contract_class = create_test_api_with_contract('/api/ts_full_metadata') do
-        object :full_meta, deprecated: false, description: 'desc', example: { x: 1 }, format: 'fmt' do
+        object :full_meta, deprecated: false, description: 'desc', example: { x: 1 } do
           integer :x
         end
 

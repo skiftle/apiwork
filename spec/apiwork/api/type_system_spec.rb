@@ -29,18 +29,6 @@ RSpec.describe 'TypeSystem Metadata' do
       expect(types[:address]).to include(example: { city: 'NYC', street: '123 Main St' })
     end
 
-    it 'stores and serializes type with format' do
-      api = Apiwork::API.define '/api/test' do
-        object :email_field, format: 'email' do
-          string :value
-        end
-      end
-
-      types = Apiwork::Introspection::Dump::Type.new(api).types
-
-      expect(types[:email_field]).to include(format: 'email')
-    end
-
     it 'stores and serializes type with deprecated: true' do
       api = Apiwork::API.define '/api/test' do
         object :legacy_response, deprecated: true do
@@ -70,8 +58,7 @@ RSpec.describe 'TypeSystem Metadata' do
         object :payment_info,
                deprecated: true,
                description: 'Payment information structure',
-               example: { amount: 100, currency: 'USD' },
-               format: 'payment' do
+               example: { amount: 100, currency: 'USD' } do
           integer :amount
           string :currency
         end
@@ -83,7 +70,6 @@ RSpec.describe 'TypeSystem Metadata' do
         deprecated: true,
         description: 'Payment information structure',
         example: { amount: 100, currency: 'USD' },
-        format: 'payment',
       )
     end
 
@@ -368,17 +354,5 @@ RSpec.describe 'TypeSystem Metadata' do
       expect(enums[:status][:example]).to eq('pending')
     end
 
-    it 'handles format on non-string type gracefully' do
-      api = Apiwork::API.define '/api/test' do
-        object :weird_format, format: 'email' do
-          integer :count
-        end
-      end
-
-      types = Apiwork::Introspection::Dump::Type.new(api).types
-
-      # Format should be stored regardless of field types
-      expect(types[:weird_format][:format]).to eq('email')
-    end
   end
 end

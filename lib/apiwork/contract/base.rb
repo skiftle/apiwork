@@ -148,15 +148,13 @@ module Apiwork
         # the name is prefixed with {.identifier} (e.g., `:item` becomes `:billing_item`).
         #
         # @param name [Symbol]
-        #   The type name.
+        #   The object name.
         # @param deprecated [Boolean] (false)
         #   Whether deprecated. Metadata included in exports.
         # @param description [String, nil] (nil)
         #   The description. Metadata included in exports.
         # @param example [Object, nil] (nil)
         #   The example. Metadata included in exports.
-        # @param format [String, nil] (nil)
-        #   The format. Metadata included in exports.
         # @yieldparam object [API::Object]
         # @return [void]
         #
@@ -205,7 +203,6 @@ module Apiwork
           deprecated: false,
           description: nil,
           example: nil,
-          format: nil,
           &block
         )
           api_class.object(
@@ -213,7 +210,6 @@ module Apiwork
             deprecated:,
             description:,
             example:,
-            format:,
             scope: self,
             &block
           )

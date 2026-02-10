@@ -97,18 +97,6 @@ RSpec.describe 'API TypeSystem Builder' do
       expect(types[:example_type]).to include(example: { field: 'value' })
     end
 
-    it 'allows defining type with format' do
-      api = Apiwork::API.define '/api/test' do
-        object :formatted_type, format: 'email' do
-          string :email
-        end
-      end
-
-      types = Apiwork::Introspection::Dump::Type.new(api).types
-
-      expect(types[:formatted_type]).to include(format: 'email')
-    end
-
     it 'allows defining type with deprecated: true' do
       api = Apiwork::API.define '/api/test' do
         object :legacy_type, deprecated: true do
@@ -123,7 +111,7 @@ RSpec.describe 'API TypeSystem Builder' do
 
     it 'allows defining type with all metadata fields' do
       api = Apiwork::API.define '/api/test' do
-        object :full_metadata_type, deprecated: true, description: 'Comprehensive metadata', example: { data: 'example' }, format: 'custom' do
+        object :full_metadata_type, deprecated: true, description: 'Comprehensive metadata', example: { data: 'example' } do
           string :data
         end
       end
@@ -134,7 +122,6 @@ RSpec.describe 'API TypeSystem Builder' do
         deprecated: true,
         description: 'Comprehensive metadata',
         example: { data: 'example' },
-        format: 'custom',
       )
     end
 

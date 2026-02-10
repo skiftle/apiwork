@@ -171,7 +171,6 @@ module Apiwork
           deprecated: false,
           description: nil,
           example: nil,
-          format: nil,
           scope: nil,
           &block
         )
@@ -180,7 +179,6 @@ module Apiwork
             deprecated:,
             description:,
             example:,
-            format:,
             scope:,
             kind: :object,
             &block

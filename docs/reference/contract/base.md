@@ -325,7 +325,7 @@ InvoiceContract.introspect
 
 ### .object
 
-`.object(name, description: nil, example: nil, format: nil, deprecated: false, representation_class: nil, &block)`
+`.object(name, deprecated: false, description: nil, example: nil, &block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L203)
 
@@ -340,11 +340,10 @@ the name is prefixed with [.identifier](#identifier) (e.g., `:item` becomes `:bi
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | The type name. |
+| **`name`** | `Symbol` |  | The object name. |
 | `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
 | `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
 | `example` | `Object`, `nil` | `nil` | The example. Metadata included in exports. |
-| `format` | `String`, `nil` | `nil` | The format. Metadata included in exports. |
 
 </div>
 

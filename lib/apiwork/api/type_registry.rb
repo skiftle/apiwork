@@ -15,14 +15,13 @@ module Apiwork
         description: nil,
         discriminator: nil,
         example: nil,
-        format: nil,
         &block
       )
         key = scoped_name(scope, name)
 
         if @store.key?(key)
           validate_kind_consistency!(key, kind)
-          merge(key, block:, deprecated:, description:, example:, format:)
+          merge(key, block:, deprecated:, description:, example:)
         else
           @store[key] = TypeDefinition.new(
             key,
@@ -31,7 +30,6 @@ module Apiwork
             description:,
             discriminator:,
             example:,
-            format:,
             kind:,
             scope:,
           )
@@ -85,14 +83,13 @@ module Apiwork
               "Cannot redefine :#{key} as #{new_kind}, already defined as #{existing.kind}"
       end
 
-      def merge(key, block:, deprecated:, description:, example:, format:)
+      def merge(key, block:, deprecated:, description:, example:)
         existing = @store[key]
         @store[key] = existing.merge(
           block:,
           deprecated:,
           description:,
           example:,
-          format:,
         )
       end
     end

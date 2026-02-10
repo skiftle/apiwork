@@ -75,8 +75,7 @@ RSpec.describe 'Type merging' do
           object :address,
                  deprecated: false,
                  description: 'First desc',
-                 example: { old: true },
-                 format: 'old-format' do
+                 example: { old: true } do
             string :street
           end
 
@@ -90,7 +89,6 @@ RSpec.describe 'Type merging' do
         expect(definition.deprecated?).to be(true)
         expect(definition.description).to eq('First desc')
         expect(definition.example).to eq({ new: true })
-        expect(definition.format).to eq('old-format')
       end
 
       it 'preserves kind and raises on mismatch' do
