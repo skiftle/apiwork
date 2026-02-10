@@ -85,7 +85,7 @@ Whether this contract is abstract.
 
 `.action(name, replace: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L315)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L408)
 
 Defines or extends an action on this contract.
 
@@ -108,15 +108,53 @@ Multiple calls with the same name merge definitions (declaration merging).
 
 **Yields** [Contract::Action](/reference/contract/action/)
 
-**Example**
+**Example: Query parameters**
 
 ```ruby
-action :show do
+action :index do
   request do
     query do
-      string? :include
+      string? :search
+      integer? :page
     end
   end
+end
+```
+
+**Example: Request body with custom type**
+
+```ruby
+action :create do
+  request do
+    body do
+      reference :invoice, to: :invoice_payload
+    end
+  end
+  response do
+    body do
+      reference :invoice
+    end
+  end
+end
+```
+
+**Example: Override auto-generated action**
+
+```ruby
+action :destroy, replace: true do
+  response do
+    body do
+      reference :invoice
+    end
+  end
+end
+```
+
+**Example: No content response**
+
+```ruby
+action :destroy do
+  response { no_content! }
 end
 ```
 
@@ -126,7 +164,7 @@ end
 
 `.enum(name, deprecated: false, description: nil, example: nil, values: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L211)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L261)
 
 Defines or extends an enum for this contract.
 
@@ -151,10 +189,30 @@ the name is prefixed with [.identifier](#identifier) (e.g., `:status` becomes `:
 
 `void`
 
-**Example**
+**Example: Define and reference**
 
 ```ruby
 enum :status, values: %w[draft sent paid]
+
+action :update do
+  request do
+    body do
+      string :status, enum: :status
+    end
+  end
+end
+```
+
+**Example: Inline values (without separate definition)**
+
+```ruby
+action :index do
+  request do
+    query do
+      string? :priority, enum: %w[low medium high]
+    end
+  end
+end
 ```
 
 ---
@@ -204,7 +262,7 @@ end
 
 `.import(contract_class, as:)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L262)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L326)
 
 Imports types from another contract for reuse.
 
@@ -238,7 +296,7 @@ import UserContract, as: :user
 
 `.introspect(expand: false, locale: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L341)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L434)
 
 Returns introspection data for this contract.
 
@@ -255,7 +313,7 @@ Returns introspection data for this contract.
 
 **Returns**
 
-`Hash`
+[Introspection::Contract](/reference/introspection/contract)
 
 **Example**
 
@@ -269,7 +327,7 @@ InvoiceContract.introspect
 
 `.object(name, description: nil, example: nil, format: nil, deprecated: false, representation_class: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L170)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L203)
 
 Defines or extends an object type for this contract.
 
@@ -287,7 +345,6 @@ the name is prefixed with [.identifier](#identifier) (e.g., `:item` becomes `:bi
 | `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
 | `example` | `Object`, `nil` | `nil` | The example. Metadata included in exports. |
 | `format` | `String`, `nil` | `nil` | The format. Metadata included in exports. |
-| `representation_class` | `Class<Representation::Base>`, `nil` | `nil` | The representation class for auto-generating fields. |
 
 </div>
 
@@ -297,12 +354,50 @@ the name is prefixed with [.identifier](#identifier) (e.g., `:item` becomes `:bi
 
 **Yields** [API::Object](/reference/api/object)
 
-**Example**
+**Example: Define and reference**
 
 ```ruby
 object :item do
   string :description
   decimal :amount
+end
+
+action :create do
+  request do
+    body do
+      array :items do
+        reference :item
+      end
+    end
+  end
+end
+```
+
+**Example: Different shapes for request and response**
+
+```ruby
+object :invoice do
+  uuid :id
+  string :number
+  string :status
+end
+
+object :invoice_payload do
+  string :number
+  string :status
+end
+
+action :create do
+  request do
+    body do
+      reference :invoice, to: :invoice_payload
+    end
+  end
+  response do
+    body do
+      reference :invoice
+    end
+  end
 end
 ```
 
@@ -347,7 +442,7 @@ end
 
 `.representation_class`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L379)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L472)
 
 The representation class for this contract.
 
@@ -365,7 +460,7 @@ Class&lt;[Representation::Base](/reference/representation/base)&gt;, `nil`
 
 `.union(name, discriminator: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L242)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L306)
 
 Defines or extends a discriminated union for this contract.
 
@@ -389,13 +484,27 @@ the name is prefixed with [.identifier](#identifier) (e.g., `:payment_method` be
 
 **Yields** [API::Union](/reference/api/union)
 
-**Example**
+**Example: Define and reference**
 
 ```ruby
 union :payment_method, discriminator: :type do
   variant tag: 'card' do
     object do
       string :last_four
+    end
+  end
+  variant tag: 'bank_transfer' do
+    object do
+      string :bank_name
+      string :account_number
+    end
+  end
+end
+
+action :create do
+  request do
+    body do
+      reference :payment_method
     end
   end
 end
@@ -441,7 +550,7 @@ The body for this contract.
 
 `#invalid?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L505)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L598)
 
 Whether this contract is invalid.
 
@@ -501,7 +610,7 @@ The request for this contract.
 
 `#valid?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L497)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L590)
 
 Whether this contract is valid.
 

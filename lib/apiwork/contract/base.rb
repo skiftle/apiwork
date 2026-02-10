@@ -157,23 +157,55 @@ module Apiwork
         #   The example. Metadata included in exports.
         # @param format [String, nil] (nil)
         #   The format. Metadata included in exports.
-        # @param representation_class [Class<Representation::Base>, nil] (nil)
-        #   The representation class for auto-generating fields.
         # @yieldparam object [API::Object]
         # @return [void]
         #
-        # @example
+        # @example Define and reference
         #   object :item do
         #     string :description
         #     decimal :amount
         #   end
+        #
+        #   action :create do
+        #     request do
+        #       body do
+        #         array :items do
+        #           reference :item
+        #         end
+        #       end
+        #     end
+        #   end
+        #
+        # @example Different shapes for request and response
+        #   object :invoice do
+        #     uuid :id
+        #     string :number
+        #     string :status
+        #   end
+        #
+        #   object :invoice_payload do
+        #     string :number
+        #     string :status
+        #   end
+        #
+        #   action :create do
+        #     request do
+        #       body do
+        #         reference :invoice, to: :invoice_payload
+        #       end
+        #     end
+        #     response do
+        #       body do
+        #         reference :invoice
+        #       end
+        #     end
+        #   end
         def object(
           name,
+          deprecated: false,
           description: nil,
           example: nil,
           format: nil,
-          deprecated: false,
-          representation_class: nil,
           &block
         )
           api_class.object(
@@ -182,7 +214,6 @@ module Apiwork
             description:,
             example:,
             format:,
-            representation_class:,
             scope: self,
             &block
           )
@@ -206,8 +237,25 @@ module Apiwork
         #   The allowed values.
         # @return [void]
         #
-        # @example
+        # @example Define and reference
         #   enum :status, values: %w[draft sent paid]
+        #
+        #   action :update do
+        #     request do
+        #       body do
+        #         string :status, enum: :status
+        #       end
+        #     end
+        #   end
+        #
+        # @example Inline values (without separate definition)
+        #   action :index do
+        #     request do
+        #       query do
+        #         string? :priority, enum: %w[low medium high]
+        #       end
+        #     end
+        #   end
         def enum(
           name,
           deprecated: false,
@@ -231,11 +279,25 @@ module Apiwork
         # @yieldparam union [API::Union]
         # @return [void]
         #
-        # @example
+        # @example Define and reference
         #   union :payment_method, discriminator: :type do
         #     variant tag: 'card' do
         #       object do
         #         string :last_four
+        #       end
+        #     end
+        #     variant tag: 'bank_transfer' do
+        #       object do
+        #         string :bank_name
+        #         string :account_number
+        #       end
+        #     end
+        #   end
+        #
+        #   action :create do
+        #     request do
+        #       body do
+        #         reference :payment_method
         #       end
         #     end
         #   end
@@ -304,13 +366,42 @@ module Apiwork
         # @yieldparam action [Contract::Action]
         # @return [Contract::Action]
         #
-        # @example
-        #   action :show do
+        # @example Query parameters
+        #   action :index do
         #     request do
         #       query do
-        #         string? :include
+        #         string? :search
+        #         integer? :page
         #       end
         #     end
+        #   end
+        #
+        # @example Request body with custom type
+        #   action :create do
+        #     request do
+        #       body do
+        #         reference :invoice, to: :invoice_payload
+        #       end
+        #     end
+        #     response do
+        #       body do
+        #         reference :invoice
+        #       end
+        #     end
+        #   end
+        #
+        # @example Override auto-generated action
+        #   action :destroy, replace: true do
+        #     response do
+        #       body do
+        #         reference :invoice
+        #       end
+        #     end
+        #   end
+        #
+        # @example No content response
+        #   action :destroy do
+        #     response { no_content! }
         #   end
         def action(name, replace: false, &block)
           name = name.to_sym
@@ -334,7 +425,7 @@ module Apiwork
         #   Whether to expand all types inline.
         # @param locale [Symbol, nil] (nil)
         #   The locale for translations.
-        # @return [Hash]
+        # @return [Introspection::Contract]
         #
         # @example
         #   InvoiceContract.introspect
