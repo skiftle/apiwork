@@ -260,7 +260,7 @@ end
 
 ### .import
 
-`.import(contract_class, as:)`
+`.import(klass, as:)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L341)
 
@@ -274,7 +274,7 @@ Imported types are accessed with a prefix matching the alias.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`contract_class`** | `Class<Contract::Base>` |  | The contract class to import types from. |
+| **`klass`** | `Class<Contract::Base>` |  | The contract class to import types from. |
 | **`as`** | `Symbol` |  | The alias prefix. |
 
 </div>

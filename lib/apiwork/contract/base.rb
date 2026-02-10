@@ -327,28 +327,28 @@ module Apiwork
         #
         # Imported types are accessed with a prefix matching the alias.
         #
-        # @param contract_class [Class<Contract::Base>]
+        # @param klass [Class<Contract::Base>]
         #   The contract class to import types from.
         # @param as [Symbol]
         #   The alias prefix.
         # @return [void]
-        # @raise [ArgumentError] if contract_class is not a Contract subclass
+        # @raise [ArgumentError] if klass is not a Contract subclass
         # @raise [ArgumentError] if as is not a Symbol
         #
         # @example
         #   import UserContract, as: :user
         #   # UserContract's :address becomes :user_address
-        def import(contract_class, as:)
-          unless contract_class.is_a?(Class)
+        def import(klass, as:)
+          unless klass.is_a?(Class)
             raise ArgumentError,
-                  "import must be a Class constant, got #{contract_class.class}. " \
+                  "import must be a Class constant, got #{klass.class}. " \
                                                    "Use: import UserContract, as: :user (not 'UserContract' or :user_contract)"
           end
 
-          unless contract_class < Contract::Base
+          unless klass < Contract::Base
             raise ArgumentError,
                   'import must be a Contract class (subclass of Apiwork::Contract::Base), ' \
-                                                   "got #{contract_class}"
+                                                   "got #{klass}"
           end
 
           unless as.is_a?(Symbol)
@@ -357,16 +357,16 @@ module Apiwork
                                                    'Use: import UserContract, as: :user'
           end
 
-          imports[as] = contract_class
+          imports[as] = klass
 
-          return if contract_class._building
-          return unless contract_class.representation? && contract_class.api_class
+          return if klass._building
+          return unless klass.representation? && klass.api_class
 
-          contract_class._building = true
+          klass._building = true
           begin
-            contract_class.api_class.ensure_contract_built!(contract_class)
+            klass.api_class.ensure_contract_built!(klass)
           ensure
-            contract_class._building = false
+            klass._building = false
           end
         end
 
