@@ -168,12 +168,11 @@ module Apiwork
         #   end
         def object(
           name,
-          scope: nil,
+          deprecated: false,
           description: nil,
           example: nil,
           format: nil,
-          deprecated: false,
-          representation_class: nil,
+          scope: nil,
           &block
         )
           type_registry.register(
@@ -182,7 +181,6 @@ module Apiwork
             description:,
             example:,
             format:,
-            representation_class:,
             scope:,
             kind: :object,
             &block

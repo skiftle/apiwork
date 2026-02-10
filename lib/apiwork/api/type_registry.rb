@@ -16,7 +16,6 @@ module Apiwork
         discriminator: nil,
         example: nil,
         format: nil,
-        representation_class: nil,
         &block
       )
         key = scoped_name(scope, name)
@@ -34,7 +33,6 @@ module Apiwork
             example:,
             format:,
             kind:,
-            representation_class:,
             scope:,
           )
         end
@@ -59,10 +57,6 @@ module Apiwork
       def find(name, scope: nil)
         definition = scope ? @store[scoped_name(scope, name)] : nil
         definition || @store[name]
-      end
-
-      def representation_class(name, scope: nil)
-        find(name, scope:)&.representation_class
       end
 
       def scoped_name(scope, name)

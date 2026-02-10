@@ -48,7 +48,11 @@ module Apiwork
                 association_type_map[name] = build_association_type(association)
               end
 
-              object(type_name, representation_class: representation_class) do |object|
+              object(
+                type_name,
+                description: representation_class.description,
+                example: representation_class.example,
+              ) do |object|
                 if representation_class.subclass?
                   discriminator_name = representation_class.superclass.inheritance.column
                   object.literal(discriminator_name, value: representation_class.sti_name)

@@ -31,9 +31,6 @@ module Apiwork
         attr_reader :shape
 
         def deserialize_value(value, param_options)
-          representation_class = resolve_representation_class(param_options)
-          return representation_class.deserialize(value) if representation_class
-
           attribute = resolve_attribute(param_options)
           decoded_value = attribute ? attribute.decode(value) : value
 
@@ -62,13 +59,6 @@ module Apiwork
           return nil unless representation_class
 
           representation_class.attributes[param_name]
-        end
-
-        def resolve_representation_class(param_options)
-          type_name = param_options[:type]
-          return nil unless type_name.is_a?(Symbol)
-
-          shape.contract_class.api_class.type_registry.representation_class(type_name, scope: shape.contract_class)
         end
       end
     end

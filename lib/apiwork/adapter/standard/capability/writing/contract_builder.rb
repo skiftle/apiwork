@@ -55,7 +55,7 @@ module Apiwork
               type_name = [action_name, 'payload'].join('_').to_sym
               return if type?(type_name)
 
-              object(type_name, representation_class: representation_class) do |object|
+              object(type_name) do |object|
                 if representation_class.subclass?
                   parent_inheritance = representation_class.superclass.inheritance
 
