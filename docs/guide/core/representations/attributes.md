@@ -46,6 +46,7 @@ Types, nullability, and enums are detected from your database and models.
 | `writable` | `bool` / `hash` | `false` | Allow in create/update requests |
 | `filterable` | `bool` | `false` | Mark as filterable (adapter-dependent) |
 | `sortable` | `bool` | `false` | Mark as sortable (adapter-dependent) |
+| `preload` | `symbol` / `array` / `hash` | `nil` | Associations to eager load |
 | `encode` | `callable` | `nil` | Transform on response |
 | `decode` | `callable` | `nil` | Transform on request |
 | `empty` | `bool` | `false` | Convert nil to empty string |
@@ -109,6 +110,47 @@ The `record` method returns the current record.
 ::: warning Explicit Type Required
 Computed attributes require an explicit `type`. There's no model column to infer from.
 :::
+
+### Preloading Associations
+
+Computed attributes that access associations cause N+1 queries:
+
+```ruby
+class PostRepresentation < Apiwork::Representation::Base
+  attribute :comment_count, type: :integer
+
+  def comment_count
+    record.comments.size  # N+1: one query per post
+  end
+end
+```
+
+Use `preload:` to eager load associations:
+
+```ruby
+class PostRepresentation < Apiwork::Representation::Base
+  attribute :comment_count, type: :integer, preload: :comments
+
+  def comment_count
+    record.comments.size  # Comments already loaded
+  end
+end
+```
+
+The format matches Rails `includes`:
+
+```ruby
+# Single association
+preload: :comments
+
+# Multiple associations
+preload: [:comments, :author]
+
+# Nested associations
+preload: { comments: :author }
+```
+
+The adapter merges attribute preloads with includes from other sources. The [standard adapter](../adapters/standard-adapter/introduction.md) combines preloads with includes from sideloading, filtering, and sorting into a single optimized query.
 
 ---
 

@@ -28,7 +28,7 @@ attribute.filterable? # => true
 
 `#deprecated?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L160)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L168)
 
 Whether this attribute is deprecated.
 
@@ -84,7 +84,7 @@ The example for this attribute.
 
 `#filterable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L168)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L176)
 
 Whether this attribute is filterable.
 
@@ -154,7 +154,7 @@ The name for this attribute.
 
 `#nullable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L192)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L200)
 
 Whether this attribute is nullable.
 
@@ -182,7 +182,7 @@ The of for this attribute.
 
 `#optional?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L184)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L192)
 
 Whether this attribute is optional.
 
@@ -192,11 +192,25 @@ Whether this attribute is optional.
 
 ---
 
+### #preload
+
+`#preload`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L76)
+
+The preload for this attribute.
+
+**Returns**
+
+`Symbol`, `Array`, `Hash`, `nil`
+
+---
+
 ### #sortable?
 
 `#sortable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L176)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L184)
 
 Whether this attribute is sortable.
 
@@ -210,7 +224,7 @@ Whether this attribute is sortable.
 
 `#type`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L76)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L82)
 
 The type for this attribute.
 
@@ -224,7 +238,7 @@ The type for this attribute.
 
 `#writable?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L203)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L211)
 
 Whether this attribute is writable.
 
@@ -242,7 +256,7 @@ Whether this attribute is writable.
 
 `#writable_for?(action)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L213)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L221)
 
 Whether this attribute is writable for the given action.
 

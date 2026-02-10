@@ -10,19 +10,11 @@ module Apiwork
         end
 
         def run(data, representation_class, request)
-          return [data, {}, {}] if @capabilities.empty?
-
-          run_pipeline(@capabilities, data, representation_class, request)
-        end
-
-        private
-
-        def run_pipeline(capabilities, collection, representation_class, request)
           metadata = {}
           serialize_options = {}
           includes = []
 
-          data = capabilities.reduce(collection) do |current, capability|
+          result_data = @capabilities.reduce(data) do |current, capability|
             result = capability.apply(current, representation_class, request, wrapper_type: @wrapper_type)
             next current unless result
 
@@ -32,10 +24,13 @@ module Apiwork
             result.data || current
           end
 
-          preloaded = preload_associations(data, normalize_includes(includes))
+          includes.concat(representation_class.preloads)
+          preloaded = preload_associations(result_data, normalize_includes(includes))
 
           [preloaded, metadata, serialize_options]
         end
+
+        private
 
         def normalize_includes(includes)
           includes.flatten.compact

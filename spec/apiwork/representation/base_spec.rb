@@ -495,4 +495,66 @@ RSpec.describe Apiwork::Representation::Base do
       expect(definition.of).to eq(:string)
     end
   end
+
+  describe 'preload option' do
+    describe 'Attribute#preload' do
+      it 'stores simple preload' do
+        representation_class = Class.new(described_class) do
+          abstract!
+          attribute :total, preload: :items, type: :decimal
+        end
+
+        expect(representation_class.attributes[:total].preload).to eq(:items)
+      end
+
+      it 'stores array preload' do
+        representation_class = Class.new(described_class) do
+          abstract!
+          attribute :total, preload: [:items, :customer], type: :decimal
+        end
+
+        expect(representation_class.attributes[:total].preload).to eq([:items, :customer])
+      end
+
+      it 'stores nested preload' do
+        representation_class = Class.new(described_class) do
+          abstract!
+          attribute :total, preload: { items: :tax_rates }, type: :decimal
+        end
+
+        expect(representation_class.attributes[:total].preload).to eq({ items: :tax_rates })
+      end
+
+      it 'defaults to nil' do
+        representation_class = Class.new(described_class) do
+          abstract!
+          attribute :name, type: :string
+        end
+
+        expect(representation_class.attributes[:name].preload).to be_nil
+      end
+    end
+
+    describe '.preloads' do
+      it 'collects preloads from all attributes' do
+        representation_class = Class.new(described_class) do
+          abstract!
+          attribute :name, type: :string
+          attribute :total, preload: :items, type: :decimal
+          attribute :tax, preload: { items: :tax_rates }, type: :decimal
+        end
+
+        expect(representation_class.preloads).to contain_exactly(:items, { items: :tax_rates })
+      end
+
+      it 'returns empty array when no preloads' do
+        representation_class = Class.new(described_class) do
+          abstract!
+          attribute :name, type: :string
+        end
+
+        expect(representation_class.preloads).to eq([])
+      end
+    end
+  end
 end

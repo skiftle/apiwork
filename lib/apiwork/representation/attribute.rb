@@ -70,6 +70,12 @@ module Apiwork
       attr_reader :of
 
       # @api public
+      # The preload for this attribute.
+      #
+      # @return [Symbol, Array, Hash, nil]
+      attr_reader :preload
+
+      # @api public
       # The type for this attribute.
       #
       # @return [Symbol]
@@ -95,6 +101,7 @@ module Apiwork
         min: nil,
         nullable: nil,
         optional: nil,
+        preload: nil,
         sortable: false,
         type: nil,
         writable: false,
@@ -132,6 +139,7 @@ module Apiwork
         nullable = false if nullable.nil?
 
         @filterable = filterable
+        @preload = preload
         @sortable = sortable
         @writable = normalize_writable(writable)
         @encode = encode

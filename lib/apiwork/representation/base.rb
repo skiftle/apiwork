@@ -167,6 +167,8 @@ module Apiwork
         #   Whether the attribute is optional for writes. If `nil` and name maps to a database column, auto-detected from column default or NULL constraint.
         # @param nullable [Boolean, nil] (nil)
         #   Whether the value can be `null`. If `nil` and name maps to a database column, auto-detected from column NULL constraint.
+        # @param preload [Symbol, Array, Hash, nil] (nil)
+        #   Associations to preload for this attribute. Use when custom methods depend on associations.
         # @param filterable [Boolean] (false)
         #   Whether the attribute is filterable.
         # @param sortable [Boolean] (false)
@@ -199,11 +201,18 @@ module Apiwork
         #   attribute :price, type: :decimal, min: 0
         #   attribute :status, filterable: true, sortable: true
         #
-        # @example Custom method
-        #   attribute :total, type: :decimal
+        # @example Custom method with preload
+        #   attribute :total, type: :decimal, preload: :items
         #
         #   def total
         #     record.items.sum(:amount)
+        #   end
+        #
+        # @example Nested preload
+        #   attribute :total_with_tax, type: :decimal, preload: { items: :tax_rate }
+        #
+        #   def total_with_tax
+        #     record.items.sum { |item| item.amount * (1 + item.tax_rate.rate) }
         #   end
         def attribute(
           name,
@@ -220,6 +229,7 @@ module Apiwork
           min: nil,
           nullable: nil,
           optional: nil,
+          preload: nil,
           sortable: false,
           type: nil,
           writable: false,
@@ -242,6 +252,7 @@ module Apiwork
               min:,
               nullable:,
               optional:,
+              preload:,
               sortable:,
               type:,
               writable:,
@@ -655,6 +666,10 @@ module Apiwork
 
         def deprecated?
           _deprecated
+        end
+
+        def preloads
+          attributes.values.filter_map(&:preload)
         end
 
         def polymorphic_association_for_type_column(column_name)
