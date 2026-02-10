@@ -111,7 +111,7 @@ module Apiwork
 
       class << self
         # @api public
-        # Sets the model class for this representation.
+        # Configures the model class for this representation.
         #
         # Auto-detected from representation name when not set. Use
         # {.model_class} to retrieve.
@@ -120,7 +120,6 @@ module Apiwork
         #   The model class.
         # @return [void]
         # @raise [ArgumentError] if value is not a Class
-        # @see .model_class
         #
         # @example
         #   model Invoice
@@ -134,7 +133,7 @@ module Apiwork
         end
 
         # @api public
-        # Sets the JSON root key for this representation.
+        # Configures the JSON root key for this representation.
         #
         # Auto-detected from model name when not set. Use {.root_key} to retrieve.
         #
@@ -143,7 +142,6 @@ module Apiwork
         # @param plural [String, Symbol] (singular.pluralize)
         #   The plural root key.
         # @return [void]
-        # @see .root_key
         #
         # @example
         #   root :bill, :bills

@@ -277,6 +277,30 @@ def boundable?
 
 **Order:** `@api public` → description → `@param` → `@yield` → `@yieldparam` → `@return` → `@raise` → `@see` → `@example`
 
+### @see Rules
+
+- Prefer inline linking `{.method}` in description over `@see` tag
+- Only use `@see` when the related method is NOT mentioned in description
+- Never duplicate: if `{.method}` appears in description, don't add `@see .method`
+
+```ruby
+# Good — inline link, no @see needed
+# Uses {.type_name} if set, otherwise the model's `sti_name`.
+def sti_name
+
+# Good — @see for related method not in description
+# The root key for this representation.
+#
+# @see .root
+def root_key
+
+# Bad — redundant @see
+# Uses {.type_name} if set, otherwise the model's `sti_name`.
+#
+# @see .type_name  # Don't — already linked above
+def sti_name
+```
+
 ---
 
 ## @param Format
@@ -453,6 +477,7 @@ Parameters whose behavior or validity depends on type.
 - Present tense only
 - Omit redundant context: "The type." not "The type of the attribute."
 - Use backticks for code elements: `nil`, `true`, `false`, class names (`Customer`), symbols (`:always`)
+- Never use "gets", "sets", or "gets or sets" in descriptions — use the formula patterns instead
 
 ### Verification
 
