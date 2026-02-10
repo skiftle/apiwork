@@ -153,8 +153,22 @@ module Apiwork
       #
       # @param name [Symbol]
       #   The field name.
-      # @param options [Hash] ({})
-      #   Additional field options.
+      # @param as [Symbol, nil] (nil)
+      #   The target attribute name.
+      # @param default [Object, nil] (nil)
+      #   The default value.
+      # @param deprecated [Boolean] (false)
+      #   Whether deprecated. Metadata included in exports.
+      # @param description [String, nil] (nil)
+      #   The description. Metadata included in exports.
+      # @param nullable [Boolean] (false)
+      #   Whether the value can be `null`.
+      # @param optional [Boolean] (false)
+      #   Whether the param is optional.
+      # @param required [Boolean] (false)
+      #   Whether the param is required.
+      # @param store [Object, nil] (nil)
+      #   The value to persist. Replaces received value.
       # @yield block for defining element type
       # @yieldparam element [API::Element]
       # @return [void]
@@ -168,7 +182,18 @@ module Apiwork
       #   array :tags do |element|
       #     element.string
       #   end
-      def array(name, **options, &block)
+      def array(
+        name,
+        as: nil,
+        default: nil,
+        deprecated: false,
+        description: nil,
+        nullable: false,
+        optional: false,
+        required: false,
+        store: nil,
+        &block
+      )
         raise ArgumentError, 'array requires a block' unless block
 
         element = Element.new
@@ -177,6 +202,14 @@ module Apiwork
 
         param(
           name,
+          as:,
+          default:,
+          deprecated:,
+          description:,
+          nullable:,
+          optional:,
+          required:,
+          store:,
           of: {
             enum: element.enum,
             format: element.format,
@@ -186,7 +219,6 @@ module Apiwork
           }.compact,
           shape: element.shape,
           type: :array,
-          **options,
         )
       end
 

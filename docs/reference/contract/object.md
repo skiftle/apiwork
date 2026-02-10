@@ -35,9 +35,9 @@ end
 
 ### #array
 
-`#array(name, **options, &block)`
+`#array(name, as: nil, default: nil, deprecated: false, description: nil, nullable: false, optional: false, required: false, store: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L192)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L206)
 
 Defines an array param with element type.
 
@@ -48,7 +48,14 @@ Defines an array param with element type.
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | **`name`** | `Symbol` |  | The param name. |
-| `options` | `Hash` | `{}` | Additional param options. |
+| `as` | `Symbol`, `nil` | `nil` | The target attribute name. |
+| `default` | `Object`, `nil` | `nil` | The default value. |
+| `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
+| `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
+| `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
+| `optional` | `Boolean` | `false` | Whether the param is optional. |
+| `required` | `Boolean` | `false` | Whether the param is required. |
+| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
