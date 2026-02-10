@@ -83,11 +83,13 @@ Whether this contract is abstract.
 
 ### .action
 
-`.action(action_name, replace: false, &block)`
+`.action(name, replace: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L303)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L315)
 
-Defines an action on this contract.
+Defines or extends an action on this contract.
+
+Multiple calls with the same name merge definitions (declaration merging).
 
 **Parameters**
 
@@ -95,8 +97,8 @@ Defines an action on this contract.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`action_name`** | `Symbol` |  | The action name. Standard actions: `:index`, `:show`, `:create`, `:update`, `:destroy`. |
-| `replace` | `Boolean` | `false` | Whether to replace an existing action definition. |
+| **`name`** | `Symbol` |  | The action name. Standard actions: `:index`, `:show`, `:create`, `:update`, `:destroy`. |
+| `replace` | `Boolean` | `false` | Whether to discard any existing definition and start fresh. Use when overriding auto-generated actions from representation. |
 
 </div>
 
@@ -124,9 +126,12 @@ end
 
 `.enum(name, deprecated: false, description: nil, example: nil, values: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L205)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L211)
 
-Defines an enum scoped to this contract.
+Defines or extends an enum for this contract.
+
+Multiple calls with the same name merge values (declaration merging). In introspection,
+the name is prefixed with [.identifier](#identifier) (e.g., `:status` becomes `:billing_status`).
 
 **Parameters**
 
@@ -199,7 +204,7 @@ end
 
 `.import(contract_class, as:)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L253)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L262)
 
 Imports types from another contract for reuse.
 
@@ -233,7 +238,7 @@ import UserContract, as: :user
 
 `.introspect(expand: false, locale: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L329)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L341)
 
 Returns introspection data for this contract.
 
@@ -264,9 +269,12 @@ InvoiceContract.introspect
 
 `.object(name, description: nil, example: nil, format: nil, deprecated: false, representation_class: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L167)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L170)
 
-Defines a reusable object type scoped to this contract.
+Defines or extends an object type for this contract.
+
+Multiple calls with the same name merge fields (declaration merging). In introspection,
+the name is prefixed with [.identifier](#identifier) (e.g., `:item` becomes `:billing_item`).
 
 **Parameters**
 
@@ -339,7 +347,7 @@ end
 
 `.representation_class`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L367)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L379)
 
 The representation class for this contract.
 
@@ -357,9 +365,12 @@ Class&lt;[Representation::Base](/reference/representation/base)&gt;, `nil`
 
 `.union(name, discriminator: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L233)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L242)
 
-Defines a discriminated union type scoped to this contract.
+Defines or extends a discriminated union for this contract.
+
+Multiple calls with the same name merge variants (declaration merging). In introspection,
+the name is prefixed with [.identifier](#identifier) (e.g., `:payment_method` becomes `:billing_payment_method`).
 
 **Parameters**
 
@@ -430,7 +441,7 @@ The body for this contract.
 
 `#invalid?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L493)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L505)
 
 Whether this contract is invalid.
 
@@ -490,7 +501,7 @@ The request for this contract.
 
 `#valid?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L485)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L497)
 
 Whether this contract is valid.
 

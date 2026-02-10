@@ -142,7 +142,10 @@ module Apiwork
         end
 
         # @api public
-        # Defines a reusable object type scoped to this contract.
+        # Defines or extends an object type for this contract.
+        #
+        # Multiple calls with the same name merge fields (declaration merging). In introspection,
+        # the name is prefixed with {.identifier} (e.g., `:item` becomes `:billing_item`).
         #
         # @param name [Symbol]
         #   The type name.
@@ -186,7 +189,10 @@ module Apiwork
         end
 
         # @api public
-        # Defines an enum scoped to this contract.
+        # Defines or extends an enum for this contract.
+        #
+        # Multiple calls with the same name merge values (declaration merging). In introspection,
+        # the name is prefixed with {.identifier} (e.g., `:status` becomes `:billing_status`).
         #
         # @param name [Symbol]
         #   The enum name.
@@ -213,7 +219,10 @@ module Apiwork
         end
 
         # @api public
-        # Defines a discriminated union type scoped to this contract.
+        # Defines or extends a discriminated union for this contract.
+        #
+        # Multiple calls with the same name merge variants (declaration merging). In introspection,
+        # the name is prefixed with {.identifier} (e.g., `:payment_method` becomes `:billing_payment_method`).
         #
         # @param name [Symbol]
         #   The union name.
@@ -283,12 +292,15 @@ module Apiwork
         end
 
         # @api public
-        # Defines an action on this contract.
+        # Defines or extends an action on this contract.
         #
-        # @param action_name [Symbol]
+        # Multiple calls with the same name merge definitions (declaration merging).
+        #
+        # @param name [Symbol]
         #   The action name. Standard actions: `:index`, `:show`, `:create`, `:update`, `:destroy`.
         # @param replace [Boolean] (false)
-        #   Whether to replace an existing action definition.
+        #   Whether to discard any existing definition and start fresh. Use when overriding
+        #   auto-generated actions from representation.
         # @yieldparam action [Contract::Action]
         # @return [Contract::Action]
         #
@@ -300,19 +312,19 @@ module Apiwork
         #       end
         #     end
         #   end
-        def action(action_name, replace: false, &block)
-          action_name = action_name.to_sym
+        def action(name, replace: false, &block)
+          name = name.to_sym
 
           action = if replace
-                     Action.new(self, action_name, replace: true)
+                     Action.new(self, name, replace: true)
                    else
-                     actions[action_name] ||= Action.new(self, action_name)
+                     actions[name] ||= Action.new(self, name)
                    end
 
           if block_given?
             block.arity.positive? ? yield(action) : action.instance_eval(&block)
           end
-          actions[action_name] = action
+          actions[name] = action
         end
 
         # @api public
