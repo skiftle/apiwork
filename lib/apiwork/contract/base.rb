@@ -44,7 +44,7 @@ module Apiwork
     #
     # @!method abstract?
     #   @api public
-    #   Returns whether this contract is abstract.
+    #   Whether this contract is abstract.
     #   @return [Boolean]
     class Base
       include Abstractable
@@ -98,6 +98,7 @@ module Apiwork
         # `recurring_invoice`).
         #
         # @param value [Symbol, String, nil] (nil)
+        #   The identifier prefix.
         # @return [String, nil]
         #
         # @example
@@ -116,15 +117,15 @@ module Apiwork
         end
 
         # @api public
-        # Sets the representation class for this contract.
+        # Configures the representation class for this contract.
         #
         # Adapters use the representation to auto-generate request/response
         # types. Use {.representation_class} to retrieve.
         #
         # @param klass [Class<Representation::Base>]
+        #   The representation class.
         # @return [void]
         # @raise [ArgumentError] if klass is not a Representation subclass
-        # @see .representation_class
         #
         # @example
         #   class InvoiceContract < Apiwork::Contract::Base
@@ -144,11 +145,17 @@ module Apiwork
         # Defines a reusable object type scoped to this contract.
         #
         # @param name [Symbol]
-        # @param description [String, nil] (nil)
-        # @param example [Object, nil] (nil)
-        # @param format [String, nil] (nil)
+        #   The type name.
         # @param deprecated [Boolean] (false)
+        #   Whether deprecated. Metadata included in exports.
+        # @param description [String, nil] (nil)
+        #   The description. Metadata included in exports.
+        # @param example [Object, nil] (nil)
+        #   The example. Metadata included in exports.
+        # @param format [String, nil] (nil)
+        #   The format. Metadata included in exports.
         # @param representation_class [Class<Representation::Base>, nil] (nil)
+        #   The representation class for auto-generating fields.
         # @yieldparam object [API::Object]
         # @return [void]
         #
@@ -182,20 +189,25 @@ module Apiwork
         # Defines an enum scoped to this contract.
         #
         # @param name [Symbol]
-        # @param values [Array<String>, nil] (nil)
-        # @param description [String, nil] (nil)
-        # @param example [String, nil] (nil)
+        #   The enum name.
         # @param deprecated [Boolean] (false)
+        #   Whether deprecated. Metadata included in exports.
+        # @param description [String, nil] (nil)
+        #   The description. Metadata included in exports.
+        # @param example [String, nil] (nil)
+        #   The example. Metadata included in exports.
+        # @param values [Array<String>, nil] (nil)
+        #   The allowed values.
         # @return [void]
         #
         # @example
         #   enum :status, values: %w[draft sent paid]
         def enum(
           name,
-          values: nil,
+          deprecated: false,
           description: nil,
           example: nil,
-          deprecated: false
+          values: nil
         )
           api_class.enum(name, deprecated:, description:, example:, values:, scope: self)
         end
@@ -204,7 +216,9 @@ module Apiwork
         # Defines a discriminated union type scoped to this contract.
         #
         # @param name [Symbol]
+        #   The union name.
         # @param discriminator [Symbol, nil] (nil)
+        #   The discriminator field name.
         # @yieldparam union [API::Union]
         # @return [void]
         #
@@ -226,7 +240,9 @@ module Apiwork
         # Imported types are accessed with a prefix matching the alias.
         #
         # @param contract_class [Class<Contract::Base>]
-        # @param as [Symbol] alias prefix
+        #   The contract class to import types from.
+        # @param as [Symbol]
+        #   The alias prefix.
         # @return [void]
         # @raise [ArgumentError] if contract_class is not a Contract subclass
         # @raise [ArgumentError] if as is not a Symbol
@@ -269,8 +285,10 @@ module Apiwork
         # @api public
         # Defines an action on this contract.
         #
-        # @param action_name [Symbol] :index, :show, :create, :update, :destroy, or custom
+        # @param action_name [Symbol]
+        #   The action name. Standard actions: `:index`, `:show`, `:create`, `:update`, `:destroy`.
         # @param replace [Boolean] (false)
+        #   Whether to replace an existing action definition.
         # @yieldparam action [Contract::Action]
         # @return [Contract::Action]
         #
@@ -300,8 +318,10 @@ module Apiwork
         # @api public
         # Returns introspection data for this contract.
         #
-        # @param locale [Symbol, nil] (nil)
         # @param expand [Boolean] (false)
+        #   Whether to expand all types inline.
+        # @param locale [Symbol, nil] (nil)
+        #   The locale for translations.
         # @return [Hash]
         #
         # @example

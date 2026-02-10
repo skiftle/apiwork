@@ -6,7 +6,8 @@ module Apiwork
     # Base class for representations.
     #
     # Defines how an ActiveRecord model is represented in the API. Drives contracts and runtime behavior.
-    # Sensible defaults are auto-detected from database columns but can be overridden.
+    # Sensible defaults are auto-detected from database columns but can be overridden. Supports STI and
+    # polymorphic associations.
     #
     # @example Basic representation
     #   class InvoiceRepresentation < Apiwork::Representation::Base
@@ -218,7 +219,8 @@ module Apiwork
         #   Defaults to `:unknown` for json/jsonb columns and when no column exists (custom attributes).
         #   Use an explicit type or block in those cases.
         # @param writable [Boolean, Hash] (false) [Hash: on: :create | :update]
-        #   Whether the attribute is writable.
+        #   Whether the attribute is writable. Use `{ on: :create }` for immutable fields or
+        #   `{ on: :update }` for fields that can only be changed after creation.
         # @yieldparam element [Representation::Element]
         # @return [void]
         #
@@ -325,7 +327,7 @@ module Apiwork
         # @param filterable [Boolean] (false)
         #   Whether the association is filterable.
         # @param include [Symbol] (:optional) [:always, :optional]
-        #   The inclusion strategy.
+        #   The inclusion strategy. `:always` includes automatically but has circular reference protection.
         # @param nullable [Boolean, nil] (nil)
         #   Whether the value can be `null`.
         # @param representation [Class<Representation::Base>, nil] (nil)
@@ -334,7 +336,8 @@ module Apiwork
         # @param sortable [Boolean] (false)
         #   Whether the association is sortable.
         # @param writable [Boolean, Hash] (false) [Hash: on: :create | :update]
-        #   Whether the association is writable.
+        #   Whether the association is writable. Use `{ on: :create }` for immutable associations or
+        #   `{ on: :update }` for associations that can only be changed after creation.
         # @return [void]
         #
         # @example Basic
@@ -398,7 +401,7 @@ module Apiwork
         # @param filterable [Boolean] (false)
         #   Whether the association is filterable.
         # @param include [Symbol] (:optional) [:always, :optional]
-        #   The inclusion strategy.
+        #   The inclusion strategy. `:always` includes automatically but has circular reference protection.
         # @param nullable [Boolean, nil] (nil)
         #   Whether the value can be `null`.
         # @param representation [Class<Representation::Base>, nil] (nil)
@@ -407,7 +410,8 @@ module Apiwork
         # @param sortable [Boolean] (false)
         #   Whether the association is sortable.
         # @param writable [Boolean, Hash] (false) [Hash: on: :create | :update]
-        #   Whether the association is writable.
+        #   Whether the association is writable. Use `{ on: :create }` for immutable associations or
+        #   `{ on: :update }` for associations that can only be changed after creation.
         # @return [void]
         # @see #has_one
         #
@@ -472,7 +476,7 @@ module Apiwork
         # @param filterable [Boolean] (false)
         #   Whether the association is filterable.
         # @param include [Symbol] (:optional) [:always, :optional]
-        #   The inclusion strategy.
+        #   The inclusion strategy. `:always` includes automatically but has circular reference protection.
         # @param nullable [Boolean, nil] (nil)
         #   Whether the value can be `null`. If `nil`, auto-detected from foreign key column NULL constraint.
         # @param polymorphic [Array<Class<Representation::Base>>, nil] (nil)
@@ -483,7 +487,8 @@ module Apiwork
         # @param sortable [Boolean] (false)
         #   Whether the association is sortable.
         # @param writable [Boolean, Hash] (false) [Hash: on: :create | :update]
-        #   Whether the association is writable.
+        #   Whether the association is writable. Use `{ on: :create }` for immutable associations or
+        #   `{ on: :update }` for associations that can only be changed after creation.
         # @return [void]
         # @see #has_one
         #

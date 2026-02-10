@@ -73,7 +73,7 @@ end
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L49)
 
-Returns whether this contract is abstract.
+Whether this contract is abstract.
 
 **Returns**
 
@@ -85,7 +85,7 @@ Returns whether this contract is abstract.
 
 `.action(action_name, replace: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L285)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L303)
 
 Defines an action on this contract.
 
@@ -95,8 +95,8 @@ Defines an action on this contract.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`action_name`** | `Symbol` |  | :index, :show, :create, :update, :destroy, or custom |
-| `replace` | `Boolean` | `false` |  |
+| **`action_name`** | `Symbol` |  | The action name. Standard actions: `:index`, `:show`, `:create`, `:update`, `:destroy`. |
+| `replace` | `Boolean` | `false` | Whether to replace an existing action definition. |
 
 </div>
 
@@ -122,9 +122,9 @@ end
 
 ### .enum
 
-`.enum(name, values: nil, description: nil, example: nil, deprecated: false)`
+`.enum(name, deprecated: false, description: nil, example: nil, values: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L193)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L205)
 
 Defines an enum scoped to this contract.
 
@@ -134,11 +134,11 @@ Defines an enum scoped to this contract.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  |  |
-| `values` | `Array<String>`, `nil` | `nil` |  |
-| `description` | `String`, `nil` | `nil` |  |
-| `example` | `String`, `nil` | `nil` |  |
-| `deprecated` | `Boolean` | `false` |  |
+| **`name`** | `Symbol` |  | The enum name. |
+| `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
+| `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
+| `example` | `String`, `nil` | `nil` | The example. Metadata included in exports. |
+| `values` | `Array<String>`, `nil` | `nil` | The allowed values. |
 
 </div>
 
@@ -158,7 +158,7 @@ enum :status, values: %w[draft sent paid]
 
 `.identifier(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L112)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L113)
 
 Prefixes types, enums, and unions in introspection output.
 
@@ -172,7 +172,7 @@ name when not set (e.g., `RecurringInvoiceContract` becomes
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `Symbol`, `String`, `nil` | `nil` |  |
+| `value` | `Symbol`, `String`, `nil` | `nil` | The identifier prefix. |
 
 </div>
 
@@ -199,7 +199,7 @@ end
 
 `.import(contract_class, as:)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L237)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L253)
 
 Imports types from another contract for reuse.
 
@@ -211,8 +211,8 @@ Imported types are accessed with a prefix matching the alias.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`contract_class`** | `Class<Contract::Base>` |  |  |
-| **`as`** | `Symbol` |  | alias prefix |
+| **`contract_class`** | `Class<Contract::Base>` |  | The contract class to import types from. |
+| **`as`** | `Symbol` |  | The alias prefix. |
 
 </div>
 
@@ -233,7 +233,7 @@ import UserContract, as: :user
 
 `.introspect(expand: false, locale: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L309)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L329)
 
 Returns introspection data for this contract.
 
@@ -243,8 +243,8 @@ Returns introspection data for this contract.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `locale` | `Symbol`, `nil` | `nil` |  |
-| `expand` | `Boolean` | `false` |  |
+| `expand` | `Boolean` | `false` | Whether to expand all types inline. |
+| `locale` | `Symbol`, `nil` | `nil` | The locale for translations. |
 
 </div>
 
@@ -264,7 +264,7 @@ InvoiceContract.introspect
 
 `.object(name, description: nil, example: nil, format: nil, deprecated: false, representation_class: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L160)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L167)
 
 Defines a reusable object type scoped to this contract.
 
@@ -274,12 +274,12 @@ Defines a reusable object type scoped to this contract.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  |  |
-| `description` | `String`, `nil` | `nil` |  |
-| `example` | `Object`, `nil` | `nil` |  |
-| `format` | `String`, `nil` | `nil` |  |
-| `deprecated` | `Boolean` | `false` |  |
-| `representation_class` | `Class<Representation::Base>`, `nil` | `nil` |  |
+| **`name`** | `Symbol` |  | The type name. |
+| `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
+| `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
+| `example` | `Object`, `nil` | `nil` | The example. Metadata included in exports. |
+| `format` | `String`, `nil` | `nil` | The format. Metadata included in exports. |
+| `representation_class` | `Class<Representation::Base>`, `nil` | `nil` | The representation class for auto-generating fields. |
 
 </div>
 
@@ -304,9 +304,9 @@ end
 
 `.representation(klass)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L133)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L134)
 
-Sets the representation class for this contract.
+Configures the representation class for this contract.
 
 Adapters use the representation to auto-generate request/response
 types. Use [.representation_class](#representation-class) to retrieve.
@@ -317,17 +317,13 @@ types. Use [.representation_class](#representation-class) to retrieve.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`klass`** | `Class<Representation::Base>` |  |  |
+| **`klass`** | `Class<Representation::Base>` |  | The representation class. |
 
 </div>
 
 **Returns**
 
 `void`
-
-**See also**
-
-- [.representation_class](#representation-class)
 
 **Example**
 
@@ -343,7 +339,7 @@ end
 
 `.representation_class`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L347)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L367)
 
 The representation class for this contract.
 
@@ -361,7 +357,7 @@ Class&lt;[Representation::Base](/reference/representation/base)&gt;, `nil`
 
 `.union(name, discriminator: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L219)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L233)
 
 Defines a discriminated union type scoped to this contract.
 
@@ -371,8 +367,8 @@ Defines a discriminated union type scoped to this contract.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  |  |
-| `discriminator` | `Symbol`, `nil` | `nil` |  |
+| **`name`** | `Symbol` |  | The union name. |
+| `discriminator` | `Symbol`, `nil` | `nil` | The discriminator field name. |
 
 </div>
 
@@ -434,7 +430,7 @@ The body for this contract.
 
 `#invalid?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L473)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L493)
 
 Whether this contract is invalid.
 
@@ -494,7 +490,7 @@ The request for this contract.
 
 `#valid?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L465)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L485)
 
 Whether this contract is valid.
 
