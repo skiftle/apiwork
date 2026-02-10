@@ -502,12 +502,18 @@ module Apiwork
 
         def scope_prefix
           return _identifier if _identifier
-          return nil unless name
 
-          name
-            .demodulize
-            .delete_suffix('Contract')
-            .underscore
+          if name
+            name
+              .demodulize
+              .delete_suffix('Contract')
+              .underscore
+          elsif representation_class
+            representation_class.name
+              .demodulize
+              .delete_suffix('Representation')
+              .underscore
+          end
         end
 
         def resolve_custom_type(type_name, visited: Set.new)
