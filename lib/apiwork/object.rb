@@ -93,8 +93,6 @@ module Apiwork
     #   Whether the param is optional.
     # @param required [Boolean] (false)
     #   Whether the param is required.
-    # @param store [Object, nil] (nil)
-    #   The value to persist. Replaces received value.
     # @return [void]
     #
     # @example Basic string
@@ -118,8 +116,7 @@ module Apiwork
       min: nil,
       nullable: false,
       optional: false,
-      required: false,
-      store: nil
+      required: false
     )
       param(
         name,
@@ -135,7 +132,6 @@ module Apiwork
         nullable:,
         optional:,
         required:,
-        store:,
         type: :string,
       )
     end
@@ -167,8 +163,6 @@ module Apiwork
     #   Whether the value can be `null`.
     # @param required [Boolean] (false)
     #   Whether the param is required.
-    # @param store [Object, nil] (nil)
-    #   The value to persist. Replaces received value.
     # @return [void]
     #
     # @example Optional string with default
@@ -185,8 +179,7 @@ module Apiwork
       max: nil,
       min: nil,
       nullable: false,
-      required: false,
-      store: nil
+      required: false
     )
       param(
         name,
@@ -201,7 +194,6 @@ module Apiwork
         min:,
         nullable:,
         required:,
-        store:,
         optional: true,
         type: :string,
       )
@@ -234,8 +226,6 @@ module Apiwork
     #   Whether the param is optional.
     # @param required [Boolean] (false)
     #   Whether the param is required.
-    # @param store [Object, nil] (nil)
-    #   The value to persist. Replaces received value.
     # @return [void]
     #
     # @example Basic integer
@@ -255,8 +245,7 @@ module Apiwork
       min: nil,
       nullable: false,
       optional: false,
-      required: false,
-      store: nil
+      required: false
     )
       param(
         name,
@@ -271,7 +260,6 @@ module Apiwork
         nullable:,
         optional:,
         required:,
-        store:,
         type: :integer,
       )
     end
@@ -301,8 +289,6 @@ module Apiwork
     #   Whether the value can be `null`.
     # @param required [Boolean] (false)
     #   Whether the param is required.
-    # @param store [Object, nil] (nil)
-    #   The value to persist. Replaces received value.
     # @return [void]
     #
     # @example Optional page number
@@ -318,8 +304,7 @@ module Apiwork
       max: nil,
       min: nil,
       nullable: false,
-      required: false,
-      store: nil
+      required: false
     )
       param(
         name,
@@ -333,7 +318,6 @@ module Apiwork
         min:,
         nullable:,
         required:,
-        store:,
         optional: true,
         type: :integer,
       )
@@ -364,8 +348,6 @@ module Apiwork
     #   Whether the param is optional.
     # @param required [Boolean] (false)
     #   Whether the param is required.
-    # @param store [Object, nil] (nil)
-    #   The value to persist. Replaces received value.
     # @return [void]
     #
     # @example Price with minimum
@@ -384,8 +366,7 @@ module Apiwork
       min: nil,
       nullable: false,
       optional: false,
-      required: false,
-      store: nil
+      required: false
     )
       param(
         name,
@@ -399,7 +380,6 @@ module Apiwork
         nullable:,
         optional:,
         required:,
-        store:,
         type: :decimal,
       )
     end
@@ -427,8 +407,6 @@ module Apiwork
     #   Whether the value can be `null`.
     # @param required [Boolean] (false)
     #   Whether the param is required.
-    # @param store [Object, nil] (nil)
-    #   The value to persist. Replaces received value.
     # @return [void]
     #
     # @example Optional tax rate
@@ -443,8 +421,7 @@ module Apiwork
       max: nil,
       min: nil,
       nullable: false,
-      required: false,
-      store: nil
+      required: false
     )
       param(
         name,
@@ -457,7 +434,6 @@ module Apiwork
         min:,
         nullable:,
         required:,
-        store:,
         optional: true,
         type: :decimal,
       )
@@ -488,8 +464,6 @@ module Apiwork
     #   Whether the param is optional.
     # @param required [Boolean] (false)
     #   Whether the param is required.
-    # @param store [Object, nil] (nil)
-    #   The value to persist. Replaces received value.
     # @return [void]
     #
     # @example Coordinate value
@@ -505,8 +479,7 @@ module Apiwork
       min: nil,
       nullable: false,
       optional: false,
-      required: false,
-      store: nil
+      required: false
     )
       param(
         name,
@@ -520,7 +493,6 @@ module Apiwork
         nullable:,
         optional:,
         required:,
-        store:,
         type: :number,
       )
     end
@@ -548,8 +520,6 @@ module Apiwork
     #   Whether the value can be `null`.
     # @param required [Boolean] (false)
     #   Whether the param is required.
-    # @param store [Object, nil] (nil)
-    #   The value to persist. Replaces received value.
     # @return [void]
     #
     # @example Optional score
@@ -564,8 +534,7 @@ module Apiwork
       max: nil,
       min: nil,
       nullable: false,
-      required: false,
-      store: nil
+      required: false
     )
       param(
         name,
@@ -578,7 +547,6 @@ module Apiwork
         min:,
         nullable:,
         required:,
-        store:,
         optional: true,
         type: :number,
       )
@@ -605,8 +573,6 @@ module Apiwork
     #   Whether the param is optional.
     # @param required [Boolean] (false)
     #   Whether the param is required.
-    # @param store [Object, nil] (nil)
-    #   The value to persist. Replaces received value.
     # @return [void]
     #
     # @example Active flag
@@ -623,8 +589,7 @@ module Apiwork
       example: nil,
       nullable: false,
       optional: false,
-      required: false,
-      store: nil
+      required: false
     )
       param(
         name,
@@ -636,7 +601,6 @@ module Apiwork
         nullable:,
         optional:,
         required:,
-        store:,
         type: :boolean,
       )
     end
@@ -660,8 +624,6 @@ module Apiwork
     #   Whether the value can be `null`.
     # @param required [Boolean] (false)
     #   Whether the param is required.
-    # @param store [Object, nil] (nil)
-    #   The value to persist. Replaces received value.
     # @return [void]
     #
     # @example Optional notification flag
@@ -674,8 +636,7 @@ module Apiwork
       description: nil,
       example: nil,
       nullable: false,
-      required: false,
-      store: nil
+      required: false
     )
       param(
         name,
@@ -686,7 +647,6 @@ module Apiwork
         example:,
         nullable:,
         required:,
-        store:,
         optional: true,
         type: :boolean,
       )
@@ -713,8 +673,6 @@ module Apiwork
     #   Whether the param is optional.
     # @param required [Boolean] (false)
     #   Whether the param is required.
-    # @param store [Object, nil] (nil)
-    #   The value to persist. Replaces received value.
     # @return [void]
     #
     # @example Timestamp
@@ -728,8 +686,7 @@ module Apiwork
       example: nil,
       nullable: false,
       optional: false,
-      required: false,
-      store: nil
+      required: false
     )
       param(
         name,
@@ -741,7 +698,6 @@ module Apiwork
         nullable:,
         optional:,
         required:,
-        store:,
         type: :datetime,
       )
     end
@@ -765,8 +721,6 @@ module Apiwork
     #   Whether the value can be `null`.
     # @param required [Boolean] (false)
     #   Whether the param is required.
-    # @param store [Object, nil] (nil)
-    #   The value to persist. Replaces received value.
     # @return [void]
     #
     # @example Optional deletion timestamp
@@ -779,8 +733,7 @@ module Apiwork
       description: nil,
       example: nil,
       nullable: false,
-      required: false,
-      store: nil
+      required: false
     )
       param(
         name,
@@ -791,7 +744,6 @@ module Apiwork
         example:,
         nullable:,
         required:,
-        store:,
         optional: true,
         type: :datetime,
       )
@@ -818,8 +770,6 @@ module Apiwork
     #   Whether the param is optional.
     # @param required [Boolean] (false)
     #   Whether the param is required.
-    # @param store [Object, nil] (nil)
-    #   The value to persist. Replaces received value.
     # @return [void]
     #
     # @example Birth date
@@ -833,8 +783,7 @@ module Apiwork
       example: nil,
       nullable: false,
       optional: false,
-      required: false,
-      store: nil
+      required: false
     )
       param(
         name,
@@ -846,7 +795,6 @@ module Apiwork
         nullable:,
         optional:,
         required:,
-        store:,
         type: :date,
       )
     end
@@ -870,8 +818,6 @@ module Apiwork
     #   Whether the value can be `null`.
     # @param required [Boolean] (false)
     #   Whether the param is required.
-    # @param store [Object, nil] (nil)
-    #   The value to persist. Replaces received value.
     # @return [void]
     #
     # @example Optional expiry date
@@ -884,8 +830,7 @@ module Apiwork
       description: nil,
       example: nil,
       nullable: false,
-      required: false,
-      store: nil
+      required: false
     )
       param(
         name,
@@ -896,7 +841,6 @@ module Apiwork
         example:,
         nullable:,
         required:,
-        store:,
         optional: true,
         type: :date,
       )
@@ -923,8 +867,6 @@ module Apiwork
     #   Whether the param is optional.
     # @param required [Boolean] (false)
     #   Whether the param is required.
-    # @param store [Object, nil] (nil)
-    #   The value to persist. Replaces received value.
     # @return [void]
     #
     # @example Primary key
@@ -938,8 +880,7 @@ module Apiwork
       example: nil,
       nullable: false,
       optional: false,
-      required: false,
-      store: nil
+      required: false
     )
       param(
         name,
@@ -951,7 +892,6 @@ module Apiwork
         nullable:,
         optional:,
         required:,
-        store:,
         type: :uuid,
       )
     end
@@ -975,8 +915,6 @@ module Apiwork
     #   Whether the value can be `null`.
     # @param required [Boolean] (false)
     #   Whether the param is required.
-    # @param store [Object, nil] (nil)
-    #   The value to persist. Replaces received value.
     # @return [void]
     #
     # @example Optional parent reference
@@ -989,8 +927,7 @@ module Apiwork
       description: nil,
       example: nil,
       nullable: false,
-      required: false,
-      store: nil
+      required: false
     )
       param(
         name,
@@ -1001,7 +938,6 @@ module Apiwork
         example:,
         nullable:,
         required:,
-        store:,
         optional: true,
         type: :uuid,
       )
@@ -1028,8 +964,6 @@ module Apiwork
     #   Whether the param is optional.
     # @param required [Boolean] (false)
     #   Whether the param is required.
-    # @param store [Object, nil] (nil)
-    #   The value to persist. Replaces received value.
     # @return [void]
     #
     # @example Opening time
@@ -1043,8 +977,7 @@ module Apiwork
       example: nil,
       nullable: false,
       optional: false,
-      required: false,
-      store: nil
+      required: false
     )
       param(
         name,
@@ -1056,7 +989,6 @@ module Apiwork
         nullable:,
         optional:,
         required:,
-        store:,
         type: :time,
       )
     end
@@ -1080,8 +1012,6 @@ module Apiwork
     #   Whether the value can be `null`.
     # @param required [Boolean] (false)
     #   Whether the param is required.
-    # @param store [Object, nil] (nil)
-    #   The value to persist. Replaces received value.
     # @return [void]
     #
     # @example Optional closing time
@@ -1094,8 +1024,7 @@ module Apiwork
       description: nil,
       example: nil,
       nullable: false,
-      required: false,
-      store: nil
+      required: false
     )
       param(
         name,
@@ -1106,7 +1035,6 @@ module Apiwork
         example:,
         nullable:,
         required:,
-        store:,
         optional: true,
         type: :time,
       )
@@ -1133,8 +1061,6 @@ module Apiwork
     #   Whether the param is optional.
     # @param required [Boolean] (false)
     #   Whether the param is required.
-    # @param store [Object, nil] (nil)
-    #   The value to persist. Replaces received value.
     # @return [void]
     #
     # @example File content
@@ -1148,8 +1074,7 @@ module Apiwork
       example: nil,
       nullable: false,
       optional: false,
-      required: false,
-      store: nil
+      required: false
     )
       param(
         name,
@@ -1161,7 +1086,6 @@ module Apiwork
         nullable:,
         optional:,
         required:,
-        store:,
         type: :binary,
       )
     end
@@ -1185,8 +1109,6 @@ module Apiwork
     #   Whether the value can be `null`.
     # @param required [Boolean] (false)
     #   Whether the param is required.
-    # @param store [Object, nil] (nil)
-    #   The value to persist. Replaces received value.
     # @return [void]
     #
     # @example Optional attachment
@@ -1199,8 +1121,7 @@ module Apiwork
       description: nil,
       example: nil,
       nullable: false,
-      required: false,
-      store: nil
+      required: false
     )
       param(
         name,
@@ -1211,7 +1132,6 @@ module Apiwork
         example:,
         nullable:,
         required:,
-        store:,
         optional: true,
         type: :binary,
       )
@@ -1236,8 +1156,6 @@ module Apiwork
     #   Whether the param is optional.
     # @param required [Boolean] (false)
     #   Whether the param is required.
-    # @param store [Object, nil] (nil)
-    #   The value to persist. Replaces received value.
     # @yield block defining nested structure
     # @return [void]
     #
@@ -1256,7 +1174,6 @@ module Apiwork
       nullable: false,
       optional: false,
       required: false,
-      store: nil,
       &block
     )
       param(
@@ -1268,7 +1185,6 @@ module Apiwork
         nullable:,
         optional:,
         required:,
-        store:,
         type: :object,
         &block
       )
@@ -1291,8 +1207,6 @@ module Apiwork
     #   Whether the value can be `null`.
     # @param required [Boolean] (false)
     #   Whether the param is required.
-    # @param store [Object, nil] (nil)
-    #   The value to persist. Replaces received value.
     # @yield block defining nested structure
     # @return [void]
     #
@@ -1309,7 +1223,6 @@ module Apiwork
       description: nil,
       nullable: false,
       required: false,
-      store: nil,
       &block
     )
       param(
@@ -1320,7 +1233,6 @@ module Apiwork
         description:,
         nullable:,
         required:,
-        store:,
         optional: true,
         type: :object,
         &block
@@ -1348,8 +1260,6 @@ module Apiwork
     #   Whether the param is optional.
     # @param required [Boolean] (false)
     #   Whether the param is required.
-    # @param store [Object, nil] (nil)
-    #   The value to persist. Replaces received value.
     # @yield block defining element type
     # @return [void]
     #
@@ -1375,7 +1285,6 @@ module Apiwork
       of: nil,
       optional: false,
       required: false,
-      store: nil,
       &block
     )
       param(
@@ -1388,7 +1297,6 @@ module Apiwork
         of:,
         optional:,
         required:,
-        store:,
         type: :array,
         &block
       )
@@ -1413,8 +1321,6 @@ module Apiwork
     #   The element type. Arrays only.
     # @param required [Boolean] (false)
     #   Whether the param is required.
-    # @param store [Object, nil] (nil)
-    #   The value to persist. Replaces received value.
     # @yield block defining element type
     # @return [void]
     #
@@ -1431,7 +1337,6 @@ module Apiwork
       nullable: false,
       of: nil,
       required: false,
-      store: nil,
       &block
     )
       param(
@@ -1443,7 +1348,6 @@ module Apiwork
         nullable:,
         of:,
         required:,
-        store:,
         optional: true,
         type: :array,
         &block
@@ -1471,8 +1375,6 @@ module Apiwork
     #   Whether the param is optional.
     # @param required [Boolean] (false)
     #   Whether the param is required.
-    # @param store [Object, nil] (nil)
-    #   The value to persist. Replaces received value.
     # @yield block defining union variants
     # @return [void]
     #
@@ -1499,7 +1401,6 @@ module Apiwork
       nullable: false,
       optional: false,
       required: false,
-      store: nil,
       &block
     )
       param(
@@ -1512,7 +1413,6 @@ module Apiwork
         nullable:,
         optional:,
         required:,
-        store:,
         type: :union,
         &block
       )
@@ -1537,8 +1437,6 @@ module Apiwork
     #   Whether the value can be `null`.
     # @param required [Boolean] (false)
     #   Whether the param is required.
-    # @param store [Object, nil] (nil)
-    #   The value to persist. Replaces received value.
     # @yield block defining union variants
     # @return [void]
     #
@@ -1564,7 +1462,6 @@ module Apiwork
       discriminator: nil,
       nullable: false,
       required: false,
-      store: nil,
       &block
     )
       param(
@@ -1576,7 +1473,6 @@ module Apiwork
         discriminator:,
         nullable:,
         required:,
-        store:,
         optional: true,
         type: :union,
         &block
@@ -1600,8 +1496,6 @@ module Apiwork
     #   The description. Metadata included in exports.
     # @param optional [Boolean] (false)
     #   Whether the param is optional.
-    # @param store [Object, nil] (nil)
-    #   The value to persist. Replaces received value.
     # @return [void]
     #
     # @example Fixed version number
@@ -1613,8 +1507,7 @@ module Apiwork
       default: nil,
       deprecated: false,
       description: nil,
-      optional: false,
-      store: nil
+      optional: false
     )
       param(
         name,
@@ -1623,7 +1516,6 @@ module Apiwork
         deprecated:,
         description:,
         optional:,
-        store:,
         value:,
         type: :literal,
       )
@@ -1650,8 +1542,6 @@ module Apiwork
     #   Whether the param is optional.
     # @param required [Boolean] (false)
     #   Whether the param is required.
-    # @param store [Object, nil] (nil)
-    #   The value to persist. Replaces received value.
     # @return [void]
     #
     # @example Reference to customer type
@@ -1668,8 +1558,7 @@ module Apiwork
       description: nil,
       nullable: false,
       optional: false,
-      required: false,
-      store: nil
+      required: false
     )
       param(
         name,
@@ -1680,7 +1569,6 @@ module Apiwork
         nullable:,
         optional:,
         required:,
-        store:,
         type: to || name,
       )
     end
@@ -1704,8 +1592,6 @@ module Apiwork
     #   Whether the value can be `null`.
     # @param required [Boolean] (false)
     #   Whether the param is required.
-    # @param store [Object, nil] (nil)
-    #   The value to persist. Replaces received value.
     # @return [void]
     #
     # @example Optional shipping address
@@ -1718,8 +1604,7 @@ module Apiwork
       deprecated: false,
       description: nil,
       nullable: false,
-      required: false,
-      store: nil
+      required: false
     )
       param(
         name,
@@ -1729,7 +1614,6 @@ module Apiwork
         description:,
         nullable:,
         required:,
-        store:,
         optional: true,
         type: to || name,
       )

@@ -35,9 +35,9 @@ end
 
 ### #array
 
-`#array(name, as: nil, default: nil, deprecated: false, description: nil, nullable: false, optional: false, required: false, store: nil, &block)`
+`#array(name, as: nil, default: nil, deprecated: false, description: nil, nullable: false, optional: false, required: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L206)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L200)
 
 Defines an array param with element type.
 
@@ -55,7 +55,6 @@ Defines an array param with element type.
 | `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
 | `optional` | `Boolean` | `false` | Whether the param is optional. |
 | `required` | `Boolean` | `false` | Whether the param is required. |
-| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -85,9 +84,9 @@ end
 
 ### #array?
 
-`#array?(name, as: nil, default: nil, deprecated: false, description: nil, nullable: false, of: nil, required: false, store: nil, &block)`
+`#array?(name, as: nil, default: nil, deprecated: false, description: nil, nullable: false, of: nil, required: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1425)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1331)
 
 Defines an optional array.
 
@@ -105,7 +104,6 @@ Defines an optional array.
 | `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
 | `of` | `Symbol`, `Hash`, `nil` | `nil` | The element type. Arrays only. |
 | `required` | `Boolean` | `false` | Whether the param is required. |
-| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -125,9 +123,9 @@ end
 
 ### #binary
 
-`#binary(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, nullable: false, optional: false, required: false, store: nil)`
+`#binary(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, nullable: false, optional: false, required: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1142)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1068)
 
 Defines a binary.
 
@@ -146,7 +144,6 @@ Defines a binary.
 | `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
 | `optional` | `Boolean` | `false` | Whether the param is optional. |
 | `required` | `Boolean` | `false` | Whether the param is required. |
-| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -164,9 +161,9 @@ binary :content
 
 ### #binary?
 
-`#binary?(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, nullable: false, required: false, store: nil)`
+`#binary?(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, nullable: false, required: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1194)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1116)
 
 Defines an optional binary.
 
@@ -184,7 +181,6 @@ Defines an optional binary.
 | `example` | `String`, `nil` | `nil` | The example value. Metadata included in exports. |
 | `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
 | `required` | `Boolean` | `false` | Whether the param is required. |
-| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -202,9 +198,9 @@ binary? :attachment
 
 ### #boolean
 
-`#boolean(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, nullable: false, optional: false, required: false, store: nil)`
+`#boolean(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, nullable: false, optional: false, required: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L617)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L583)
 
 Defines a boolean.
 
@@ -223,7 +219,6 @@ Defines a boolean.
 | `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
 | `optional` | `Boolean` | `false` | Whether the param is optional. |
 | `required` | `Boolean` | `false` | Whether the param is required. |
-| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -247,9 +242,9 @@ boolean :published, default: false
 
 ### #boolean?
 
-`#boolean?(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, nullable: false, required: false, store: nil)`
+`#boolean?(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, nullable: false, required: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L669)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L631)
 
 Defines an optional boolean.
 
@@ -267,7 +262,6 @@ Defines an optional boolean.
 | `example` | `Boolean`, `nil` | `nil` | The example value. Metadata included in exports. |
 | `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
 | `required` | `Boolean` | `false` | Whether the param is required. |
-| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -285,9 +279,9 @@ boolean? :notify, default: true
 
 ### #date
 
-`#date(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, nullable: false, optional: false, required: false, store: nil)`
+`#date(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, nullable: false, optional: false, required: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L827)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L777)
 
 Defines a date.
 
@@ -306,7 +300,6 @@ Defines a date.
 | `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
 | `optional` | `Boolean` | `false` | Whether the param is optional. |
 | `required` | `Boolean` | `false` | Whether the param is required. |
-| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -324,9 +317,9 @@ date :birth_date
 
 ### #date?
 
-`#date?(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, nullable: false, required: false, store: nil)`
+`#date?(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, nullable: false, required: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L879)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L825)
 
 Defines an optional date.
 
@@ -344,7 +337,6 @@ Defines an optional date.
 | `example` | `String`, `nil` | `nil` | The example value. Metadata included in exports. |
 | `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
 | `required` | `Boolean` | `false` | Whether the param is required. |
-| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -362,9 +354,9 @@ date? :expires_on
 
 ### #datetime
 
-`#datetime(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, nullable: false, optional: false, required: false, store: nil)`
+`#datetime(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, nullable: false, optional: false, required: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L722)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L680)
 
 Defines a datetime.
 
@@ -383,7 +375,6 @@ Defines a datetime.
 | `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
 | `optional` | `Boolean` | `false` | Whether the param is optional. |
 | `required` | `Boolean` | `false` | Whether the param is required. |
-| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -401,9 +392,9 @@ datetime :created_at
 
 ### #datetime?
 
-`#datetime?(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, nullable: false, required: false, store: nil)`
+`#datetime?(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, nullable: false, required: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L774)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L728)
 
 Defines an optional datetime.
 
@@ -421,7 +412,6 @@ Defines an optional datetime.
 | `example` | `String`, `nil` | `nil` | The example value. Metadata included in exports. |
 | `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
 | `required` | `Boolean` | `false` | Whether the param is required. |
-| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -439,9 +429,9 @@ datetime? :deleted_at
 
 ### #decimal
 
-`#decimal(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, max: nil, min: nil, nullable: false, optional: false, required: false, store: nil)`
+`#decimal(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, max: nil, min: nil, nullable: false, optional: false, required: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L376)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L358)
 
 Defines a decimal.
 
@@ -462,7 +452,6 @@ Defines a decimal.
 | `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
 | `optional` | `Boolean` | `false` | Whether the param is optional. |
 | `required` | `Boolean` | `false` | Whether the param is required. |
-| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -486,9 +475,9 @@ decimal :discount, min: 0, max: 100
 
 ### #decimal?
 
-`#decimal?(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, max: nil, min: nil, nullable: false, required: false, store: nil)`
+`#decimal?(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, max: nil, min: nil, nullable: false, required: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L436)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L414)
 
 Defines an optional decimal.
 
@@ -508,7 +497,6 @@ Defines an optional decimal.
 | `min` | `Numeric`, `nil` | `nil` | The minimum value. |
 | `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
 | `required` | `Boolean` | `false` | Whether the param is required. |
-| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -570,9 +558,9 @@ end
 
 ### #integer
 
-`#integer(name, as: nil, default: nil, deprecated: false, description: nil, enum: nil, example: nil, max: nil, min: nil, nullable: false, optional: false, required: false, store: nil)`
+`#integer(name, as: nil, default: nil, deprecated: false, description: nil, enum: nil, example: nil, max: nil, min: nil, nullable: false, optional: false, required: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L246)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L236)
 
 Defines an integer.
 
@@ -594,7 +582,6 @@ Defines an integer.
 | `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
 | `optional` | `Boolean` | `false` | Whether the param is optional. |
 | `required` | `Boolean` | `false` | Whether the param is required. |
-| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -618,9 +605,9 @@ integer :age, min: 0, max: 150
 
 ### #integer?
 
-`#integer?(name, as: nil, default: nil, deprecated: false, description: nil, enum: nil, example: nil, max: nil, min: nil, nullable: false, required: false, store: nil)`
+`#integer?(name, as: nil, default: nil, deprecated: false, description: nil, enum: nil, example: nil, max: nil, min: nil, nullable: false, required: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L310)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L296)
 
 Defines an optional integer.
 
@@ -641,7 +628,6 @@ Defines an optional integer.
 | `min` | `Integer`, `nil` | `nil` | The minimum value. |
 | `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
 | `required` | `Boolean` | `false` | Whether the param is required. |
-| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -659,9 +645,9 @@ integer? :page, min: 1, default: 1
 
 ### #literal
 
-`#literal(name, value:, as: nil, default: nil, deprecated: false, description: nil, optional: false, store: nil)`
+`#literal(name, value:, as: nil, default: nil, deprecated: false, description: nil, optional: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1609)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1503)
 
 Defines a literal value.
 
@@ -678,7 +664,6 @@ Defines a literal value.
 | `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
 | `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
 | `optional` | `Boolean` | `false` | Whether the param is optional. |
-| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -730,9 +715,9 @@ end
 
 ### #number
 
-`#number(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, max: nil, min: nil, nullable: false, optional: false, required: false, store: nil)`
+`#number(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, max: nil, min: nil, nullable: false, optional: false, required: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L497)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L471)
 
 Defines a number.
 
@@ -753,7 +738,6 @@ Defines a number.
 | `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
 | `optional` | `Boolean` | `false` | Whether the param is optional. |
 | `required` | `Boolean` | `false` | Whether the param is required. |
-| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -771,9 +755,9 @@ number :latitude, min: -90, max: 90
 
 ### #number?
 
-`#number?(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, max: nil, min: nil, nullable: false, required: false, store: nil)`
+`#number?(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, max: nil, min: nil, nullable: false, required: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L557)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L527)
 
 Defines an optional number.
 
@@ -793,7 +777,6 @@ Defines an optional number.
 | `min` | `Numeric`, `nil` | `nil` | The minimum value. |
 | `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
 | `required` | `Boolean` | `false` | Whether the param is required. |
-| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -811,9 +794,9 @@ number? :score, min: 0, max: 100
 
 ### #object
 
-`#object(name, as: nil, default: nil, deprecated: false, description: nil, nullable: false, optional: false, required: false, store: nil, &block)`
+`#object(name, as: nil, default: nil, deprecated: false, description: nil, nullable: false, optional: false, required: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1250)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1168)
 
 Defines an object.
 
@@ -831,7 +814,6 @@ Defines an object.
 | `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
 | `optional` | `Boolean` | `false` | Whether the param is optional. |
 | `required` | `Boolean` | `false` | Whether the param is required. |
-| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -853,9 +835,9 @@ end
 
 ### #object?
 
-`#object?(name, as: nil, default: nil, deprecated: false, description: nil, nullable: false, required: false, store: nil, &block)`
+`#object?(name, as: nil, default: nil, deprecated: false, description: nil, nullable: false, required: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1304)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1218)
 
 Defines an optional object.
 
@@ -872,7 +854,6 @@ Defines an optional object.
 | `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
 | `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
 | `required` | `Boolean` | `false` | Whether the param is required. |
-| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -893,9 +874,9 @@ end
 
 ### #param
 
-`#param(name, type: nil, as: nil, default: nil, deprecated: false, description: nil, discriminator: nil, enum: nil, example: nil, format: nil, max: nil, min: nil, nullable: false, of: nil, optional: false, required: false, shape: nil, store: nil, transform: nil, value: nil, &block)`
+`#param(name, type: nil, as: nil, default: nil, deprecated: false, description: nil, discriminator: nil, enum: nil, example: nil, format: nil, max: nil, min: nil, nullable: false, of: nil, optional: false, required: false, shape: nil, transform: nil, value: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L98)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L96)
 
 Defines a param with explicit type.
 
@@ -925,7 +906,6 @@ for static definitions.
 | `optional` | `Boolean` | `false` | Whether the param is optional. |
 | `required` | `Boolean` | `false` | Whether the param is required. |
 | `shape` | `Contract::Object`, `Contract::Union`, `nil` | `nil` | The pre-built shape. |
-| `store` | `Boolean`, `nil` | `nil` | Whether to persist. |
 | `transform` | `Proc`, `nil` | `nil` | The value transformation lambda. |
 | `value` | `Object`, `nil` | `nil` | The literal value. |
 
@@ -959,9 +939,9 @@ end
 
 ### #reference
 
-`#reference(name, to: nil, as: nil, default: nil, deprecated: false, description: nil, nullable: false, optional: false, required: false, store: nil)`
+`#reference(name, to: nil, as: nil, default: nil, deprecated: false, description: nil, nullable: false, optional: false, required: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1662)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1552)
 
 Defines a reference to a named type.
 
@@ -980,7 +960,6 @@ Defines a reference to a named type.
 | `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
 | `optional` | `Boolean` | `false` | Whether the param is optional. |
 | `required` | `Boolean` | `false` | Whether the param is required. |
-| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -1004,9 +983,9 @@ reference :billing_address, to: :address
 
 ### #reference?
 
-`#reference?(name, to: nil, as: nil, default: nil, deprecated: false, description: nil, nullable: false, required: false, store: nil)`
+`#reference?(name, to: nil, as: nil, default: nil, deprecated: false, description: nil, nullable: false, required: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1713)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1599)
 
 Defines an optional reference to a named type.
 
@@ -1024,7 +1003,6 @@ Defines an optional reference to a named type.
 | `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
 | `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
 | `required` | `Boolean` | `false` | Whether the param is required. |
-| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -1042,9 +1020,9 @@ reference? :shipping_address, to: :address
 
 ### #string
 
-`#string(name, as: nil, default: nil, deprecated: false, description: nil, enum: nil, example: nil, format: nil, max: nil, min: nil, nullable: false, optional: false, required: false, store: nil)`
+`#string(name, as: nil, default: nil, deprecated: false, description: nil, enum: nil, example: nil, format: nil, max: nil, min: nil, nullable: false, optional: false, required: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L108)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L106)
 
 Defines a string.
 
@@ -1067,7 +1045,6 @@ Defines a string.
 | `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
 | `optional` | `Boolean` | `false` | Whether the param is optional. |
 | `required` | `Boolean` | `false` | Whether the param is required. |
-| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -1097,9 +1074,9 @@ string :title, min: 1, max: 100
 
 ### #string?
 
-`#string?(name, as: nil, default: nil, deprecated: false, description: nil, enum: nil, example: nil, format: nil, max: nil, min: nil, nullable: false, required: false, store: nil)`
+`#string?(name, as: nil, default: nil, deprecated: false, description: nil, enum: nil, example: nil, format: nil, max: nil, min: nil, nullable: false, required: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L176)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L170)
 
 Defines an optional string.
 
@@ -1121,7 +1098,6 @@ Defines an optional string.
 | `min` | `Integer`, `nil` | `nil` | The minimum length. |
 | `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
 | `required` | `Boolean` | `false` | Whether the param is required. |
-| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -1139,9 +1115,9 @@ string? :nickname, default: 'Anonymous'
 
 ### #time
 
-`#time(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, nullable: false, optional: false, required: false, store: nil)`
+`#time(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, nullable: false, optional: false, required: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1037)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L971)
 
 Defines a time.
 
@@ -1160,7 +1136,6 @@ Defines a time.
 | `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
 | `optional` | `Boolean` | `false` | Whether the param is optional. |
 | `required` | `Boolean` | `false` | Whether the param is required. |
-| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -1178,9 +1153,9 @@ time :opens_at
 
 ### #time?
 
-`#time?(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, nullable: false, required: false, store: nil)`
+`#time?(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, nullable: false, required: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1089)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1019)
 
 Defines an optional time.
 
@@ -1198,7 +1173,6 @@ Defines an optional time.
 | `example` | `String`, `nil` | `nil` | The example value. Metadata included in exports. |
 | `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
 | `required` | `Boolean` | `false` | Whether the param is required. |
-| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -1216,9 +1190,9 @@ time? :closes_at
 
 ### #union
 
-`#union(name, as: nil, default: nil, deprecated: false, description: nil, discriminator: nil, nullable: false, optional: false, required: false, store: nil, &block)`
+`#union(name, as: nil, default: nil, deprecated: false, description: nil, discriminator: nil, nullable: false, optional: false, required: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1492)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1394)
 
 Defines a union.
 
@@ -1237,7 +1211,6 @@ Defines a union.
 | `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
 | `optional` | `Boolean` | `false` | Whether the param is optional. |
 | `required` | `Boolean` | `false` | Whether the param is required. |
-| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -1266,9 +1239,9 @@ end
 
 ### #union?
 
-`#union?(name, as: nil, default: nil, deprecated: false, description: nil, discriminator: nil, nullable: false, required: false, store: nil, &block)`
+`#union?(name, as: nil, default: nil, deprecated: false, description: nil, discriminator: nil, nullable: false, required: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1558)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L1456)
 
 Defines an optional union.
 
@@ -1286,7 +1259,6 @@ Defines an optional union.
 | `discriminator` | `Symbol`, `nil` | `nil` | The discriminator field name. Unions only. |
 | `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
 | `required` | `Boolean` | `false` | Whether the param is required. |
-| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -1315,9 +1287,9 @@ end
 
 ### #uuid
 
-`#uuid(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, nullable: false, optional: false, required: false, store: nil)`
+`#uuid(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, nullable: false, optional: false, required: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L932)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L874)
 
 Defines a UUID.
 
@@ -1336,7 +1308,6 @@ Defines a UUID.
 | `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
 | `optional` | `Boolean` | `false` | Whether the param is optional. |
 | `required` | `Boolean` | `false` | Whether the param is required. |
-| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 
@@ -1354,9 +1325,9 @@ uuid :id
 
 ### #uuid?
 
-`#uuid?(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, nullable: false, required: false, store: nil)`
+`#uuid?(name, as: nil, default: nil, deprecated: false, description: nil, example: nil, nullable: false, required: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L984)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L922)
 
 Defines an optional UUID.
 
@@ -1374,7 +1345,6 @@ Defines an optional UUID.
 | `example` | `String`, `nil` | `nil` | The example value. Metadata included in exports. |
 | `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
 | `required` | `Boolean` | `false` | Whether the param is required. |
-| `store` | `Object`, `nil` | `nil` | The value to persist. Replaces received value. |
 
 </div>
 

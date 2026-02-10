@@ -64,8 +64,6 @@ module Apiwork
       #   Whether the param is required.
       # @param shape [API::Object, API::Union, nil] (nil)
       #   The pre-built shape.
-      # @param store [Boolean, nil] (nil)
-      #   Whether to persist.
       # @param transform [Proc, nil] (nil)
       #   The value transformation lambda.
       # @param value [Object, nil] (nil)
@@ -103,7 +101,6 @@ module Apiwork
         optional: false,
         required: false,
         shape: nil,
-        store: nil,
         transform: nil,
         value: nil,
         &block
@@ -138,7 +135,6 @@ module Apiwork
             nullable:,
             optional:,
             required:,
-            store:,
             transform:,
             type:,
             value:,
@@ -167,8 +163,6 @@ module Apiwork
       #   Whether the param is optional.
       # @param required [Boolean] (false)
       #   Whether the param is required.
-      # @param store [Object, nil] (nil)
-      #   The value to persist. Replaces received value.
       # @yield block for defining element type
       # @yieldparam element [API::Element]
       # @return [void]
@@ -191,7 +185,6 @@ module Apiwork
         nullable: false,
         optional: false,
         required: false,
-        store: nil,
         &block
       )
         raise ArgumentError, 'array requires a block' unless block
@@ -209,7 +202,6 @@ module Apiwork
           nullable:,
           optional:,
           required:,
-          store:,
           of: {
             enum: element.enum,
             format: element.format,

@@ -74,8 +74,6 @@ module Apiwork
       #   Whether the param is required.
       # @param shape [Contract::Object, Contract::Union, nil] (nil)
       #   The pre-built shape.
-      # @param store [Boolean, nil] (nil)
-      #   Whether to persist.
       # @param transform [Proc, nil] (nil)
       #   The value transformation lambda.
       # @param value [Object, nil] (nil)
@@ -113,7 +111,6 @@ module Apiwork
         optional: false,
         required: false,
         shape: nil,
-        store: nil,
         transform: nil,
         value: nil,
         &block
@@ -127,7 +124,6 @@ module Apiwork
           min:,
           nullable:,
           required:,
-          store:,
           transform:,
         }
 
@@ -140,7 +136,7 @@ module Apiwork
 
         case type
         when :literal
-          define_literal_param(name, as:, default:, deprecated:, description:, optional:, store:, value:)
+          define_literal_param(name, as:, default:, deprecated:, description:, optional:, value:)
         when :union
           define_union_param(
             name,
@@ -188,8 +184,6 @@ module Apiwork
       #   Whether the param is optional.
       # @param required [Boolean] (false)
       #   Whether the param is required.
-      # @param store [Object, nil] (nil)
-      #   The value to persist. Replaces received value.
       # @yield block for defining element type
       # @yieldparam element [Contract::Element]
       # @return [void]
@@ -212,7 +206,6 @@ module Apiwork
         nullable: false,
         optional: false,
         required: false,
-        store: nil,
         &block
       )
         raise ArgumentError, 'array requires a block' unless block
@@ -230,7 +223,6 @@ module Apiwork
           nullable:,
           optional:,
           required:,
-          store:,
           of: {
             enum: element.enum,
             format: element.format,
@@ -328,7 +320,7 @@ module Apiwork
         end
       end
 
-      def define_literal_param(name, as:, default:, deprecated:, description:, optional:, store:, value:)
+      def define_literal_param(name, as:, default:, deprecated:, description:, optional:, value:)
         raise ArgumentError, 'Literal type requires a value parameter' if value.nil?
 
         @params[name] = (@params[name] || {}).merge(
@@ -339,7 +331,6 @@ module Apiwork
             description:,
             name:,
             optional:,
-            store:,
             value:,
             type: :literal,
           }.compact,

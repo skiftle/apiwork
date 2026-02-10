@@ -62,7 +62,6 @@ module Apiwork
                   object.literal(
                     parent_inheritance.column,
                     optional: action_name == :update,
-                    store: parent_inheritance.needs_transform? ? representation_class.model_class.sti_name : nil,
                     value: representation_class.sti_name,
                   )
                 end

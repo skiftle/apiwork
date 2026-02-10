@@ -49,8 +49,8 @@ module Apiwork
 
         def apply_sti_transforms(params)
           shape.params.each do |name, param_options|
-            if param_options[:store] && params.key?(name)
-              params[name] = param_options[:store]
+            if param_options[:type] == :literal && params.key?(name)
+              apply_sti_literal_transform(params, name)
             elsif param_options[:transform] && params.key?(name)
               params[name] = param_options[:transform].call(params[name])
             end
@@ -71,6 +71,30 @@ module Apiwork
         private
 
         attr_reader :shape
+
+        def apply_sti_literal_transform(params, name)
+          inheritance = resolve_inheritance
+          return unless inheritance&.needs_transform?
+          return unless inheritance.column == name
+
+          api_value = params[name]
+          db_value = inheritance.mapping[api_value]
+          params[name] = db_value if db_value
+        end
+
+        def resolve_inheritance
+          contract_class = shape.contract_class
+          return nil unless contract_class
+
+          representation_class = contract_class.representation_class
+          return nil unless representation_class
+
+          if representation_class.subclass?
+            representation_class.superclass.inheritance
+          elsif representation_class.inheritance
+            representation_class.inheritance
+          end
+        end
 
         def apply_sti_transform_to_union(value, union)
           discriminator = union.discriminator
