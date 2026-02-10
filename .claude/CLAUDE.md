@@ -1261,9 +1261,9 @@ If your fix depends on a specific feature, capability, or configuration existing
 Only for `@api public` methods.
 
 ```ruby
+# @api public
 # Finds a record by ID.
 #
-# @api public
 # @param id [Integer] the record ID
 # @return [Record, nil]
 # @see #find_all

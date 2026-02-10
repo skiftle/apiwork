@@ -3,21 +3,14 @@
 module Apiwork
   module Contract
     # @api public
-    # Base class for API contracts.
+    # Base class for contracts.
     #
-    # Contracts define request/response structure for a resource.
-    # Link to a representation with {.representation} for automatic serialization.
-    # Define actions with {.action} for custom validation and response shapes.
+    # Validates requests and defines response shapes. Drives type generation and
+    # request parsing. Types are defined manually per action or auto-generated
+    # from a linked representation.
     #
-    # @example Basic contract
+    # @example Manual contract
     #   class InvoiceContract < Apiwork::Contract::Base
-    #     representation InvoiceRepresentation
-    #   end
-    #
-    # @example With custom actions
-    #   class InvoiceContract < Apiwork::Contract::Base
-    #     representation InvoiceRepresentation
-    #
     #     action :create do
     #       request do
     #         body do
@@ -26,6 +19,11 @@ module Apiwork
     #         end
     #       end
     #     end
+    #   end
+    #
+    # @example With representation
+    #   class InvoiceContract < Apiwork::Contract::Base
+    #     representation InvoiceRepresentation
     #   end
     #
     # @!scope class
@@ -58,52 +56,46 @@ module Apiwork
       class_attribute :_synthetic, default: false, instance_accessor: false
 
       # @api public
-      # The request for this contract.
-      #
-      # @return [Request]
-      attr_reader :request
-
-      # @api public
       # The issues for this contract.
       #
       # @return [Array<Issue>]
       attr_reader :issues
 
-      # @api public
-      # The action name for this contract.
-      #
-      # @return [Symbol]
-      attr_reader :action_name
+      attr_reader :action_name,
+                  :request
 
-      # @api public
-      # The query for this contract.
+      # @!method body
+      #   @api public
+      #   The body for this contract.
       #
-      # Use this in controller actions to access validated request data.
-      # Contains type-coerced values matching your contract definition.
-      # Invalid requests are rejected before the action runs.
+      #   Use this in controller actions to access validated request data.
+      #   Contains type-coerced values matching your contract definition.
+      #   Invalid requests are rejected before the action runs.
       #
-      # @return [Hash]
+      #   @return [Hash]
       #
-      # @example
-      #   def index
-      #     Invoice.where(status: contract.query[:status])
-      #   end
-      delegate :query, to: :request
-
-      # @api public
-      # The body for this contract.
+      #   @example
+      #     def create
+      #       Invoice.create!(contract.body[:invoice])
+      #     end
       #
-      # Use this in controller actions to access validated request data.
-      # Contains type-coerced values matching your contract definition.
-      # Invalid requests are rejected before the action runs.
+      # @!method query
+      #   @api public
+      #   The query for this contract.
       #
-      # @return [Hash]
+      #   Use this in controller actions to access validated request data.
+      #   Contains type-coerced values matching your contract definition.
+      #   Invalid requests are rejected before the action runs.
       #
-      # @example
-      #   def create
-      #     Invoice.create!(contract.body[:invoice])
-      #   end
-      delegate :body, to: :request
+      #   @return [Hash]
+      #
+      #   @example
+      #     def index
+      #       Invoice.where(status: contract.query[:status])
+      #     end
+      delegate :body,
+               :query,
+               to: :request
 
       class << self
         # @api public
@@ -392,7 +384,7 @@ module Apiwork
         # Multiple calls with the same name merge definitions (declaration merging).
         #
         # @param name [Symbol]
-        #   The action name. Standard actions: `:index`, `:show`, `:create`, `:update`, `:destroy`.
+        #   The action name. Matches your controller action.
         # @param replace [Boolean] (false)
         #   Whether to discard any existing definition and start fresh. Use when overriding
         #   auto-generated actions from representation.
