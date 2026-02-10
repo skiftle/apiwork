@@ -270,8 +270,14 @@ module Apiwork
         #
         # @param name [Symbol]
         #   The union name.
+        # @param deprecated [Boolean] (false)
+        #   Whether deprecated. Metadata included in exports.
+        # @param description [String, nil] (nil)
+        #   The description. Metadata included in exports.
         # @param discriminator [Symbol, nil] (nil)
         #   The discriminator field name.
+        # @param example [Object, nil] (nil)
+        #   The example. Metadata included in exports.
         # @yieldparam union [API::Union]
         # @return [void]
         #
@@ -297,8 +303,23 @@ module Apiwork
         #       end
         #     end
         #   end
-        def union(name, discriminator: nil, &block)
-          api_class.union(name, discriminator:, scope: self, &block)
+        def union(
+          name,
+          deprecated: false,
+          description: nil,
+          discriminator: nil,
+          example: nil,
+          &block
+        )
+          api_class.union(
+            name,
+            deprecated:,
+            description:,
+            discriminator:,
+            example:,
+            scope: self,
+            &block
+          )
         end
 
         # @api public

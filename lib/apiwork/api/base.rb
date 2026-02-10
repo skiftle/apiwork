@@ -152,12 +152,15 @@ module Apiwork
         # Defines a reusable object type.
         #
         # @param name [Symbol]
-        # @param scope [Class<Contract::Base>, nil] (nil)
-        # @param description [String, nil] (nil)
-        # @param example [Object, nil] (nil)
-        # @param format [String, nil] (nil)
+        #   The object name.
         # @param deprecated [Boolean] (false)
-        # @param representation_class [Class<Representation::Base>, nil] (nil)
+        #   Whether deprecated. Metadata included in exports.
+        # @param description [String, nil] (nil)
+        #   The description. Metadata included in exports.
+        # @param example [Object, nil] (nil)
+        #   The example. Metadata included in exports.
+        # @param scope [Class<Contract::Base>, nil] (nil)
+        #   The contract scope for type prefixing.
         # @yieldparam object [API::Object]
         # @return [void]
         #
@@ -222,10 +225,17 @@ module Apiwork
         # Defines a discriminated union type.
         #
         # @param name [Symbol]
-        # @param discriminator [Symbol, nil] (nil)
-        # @param scope [Class<Contract::Base>, nil] (nil)
-        # @param description [String, nil] (nil)
+        #   The union name.
         # @param deprecated [Boolean] (false)
+        #   Whether deprecated. Metadata included in exports.
+        # @param description [String, nil] (nil)
+        #   The description. Metadata included in exports.
+        # @param discriminator [Symbol, nil] (nil)
+        #   The discriminator field name.
+        # @param example [Object, nil] (nil)
+        #   The example. Metadata included in exports.
+        # @param scope [Class<Contract::Base>, nil] (nil)
+        #   The contract scope for type prefixing.
         # @yieldparam union [API::Union]
         # @return [void]
         #
@@ -239,10 +249,11 @@ module Apiwork
         #   end
         def union(
           name,
-          discriminator: nil,
-          scope: nil,
-          description: nil,
           deprecated: false,
+          description: nil,
+          discriminator: nil,
+          example: nil,
+          scope: nil,
           &block
         )
           raise ArgumentError, 'Union requires a block' unless block_given?
@@ -252,6 +263,7 @@ module Apiwork
             deprecated:,
             description:,
             discriminator:,
+            example:,
             scope:,
             kind: :union,
             &block

@@ -85,7 +85,7 @@ Whether this contract is abstract.
 
 `.action(name, replace: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L408)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L423)
 
 Defines or extends an action on this contract.
 
@@ -164,7 +164,7 @@ end
 
 `.enum(name, deprecated: false, description: nil, example: nil, values: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L261)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L255)
 
 Defines or extends an enum for this contract.
 
@@ -262,7 +262,7 @@ end
 
 `.import(contract_class, as:)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L326)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L341)
 
 Imports types from another contract for reuse.
 
@@ -296,7 +296,7 @@ import UserContract, as: :user
 
 `.introspect(expand: false, locale: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L434)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L449)
 
 Returns introspection data for this contract.
 
@@ -327,7 +327,7 @@ InvoiceContract.introspect
 
 `.object(name, deprecated: false, description: nil, example: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L203)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L201)
 
 Defines or extends an object type for this contract.
 
@@ -441,7 +441,7 @@ end
 
 `.representation_class`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L472)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L487)
 
 The representation class for this contract.
 
@@ -457,7 +457,7 @@ Class&lt;[Representation::Base](/reference/representation/base)&gt;, `nil`
 
 ### .union
 
-`.union(name, discriminator: nil, &block)`
+`.union(name, deprecated: false, description: nil, discriminator: nil, example: nil, &block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L306)
 
@@ -473,7 +473,10 @@ the name is prefixed with [.identifier](#identifier) (e.g., `:payment_method` be
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | **`name`** | `Symbol` |  | The union name. |
+| `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
+| `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
 | `discriminator` | `Symbol`, `nil` | `nil` | The discriminator field name. |
+| `example` | `Object`, `nil` | `nil` | The example. Metadata included in exports. |
 
 </div>
 
@@ -549,7 +552,7 @@ The body for this contract.
 
 `#invalid?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L598)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L613)
 
 Whether this contract is invalid.
 
@@ -609,7 +612,7 @@ The request for this contract.
 
 `#valid?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L590)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L605)
 
 Whether this contract is valid.
 
