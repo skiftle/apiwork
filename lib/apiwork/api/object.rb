@@ -6,7 +6,7 @@ module Apiwork
     # Block context for defining reusable object types.
     #
     # Accessed via `object :name do` in API or contract definitions.
-    # Use type methods to define fields: {#string}, {#integer}, {#decimal},
+    # Use type methods to define params: {#string}, {#integer}, {#decimal},
     # {#boolean}, {#array}, {#object}, {#union}, {#reference}.
     #
     # @example instance_eval style
@@ -25,15 +25,15 @@ module Apiwork
     # @see API::Element Block context for array/variant elements
     class Object < Apiwork::Object
       # @api public
-      # Defines a field with explicit type.
+      # Defines a param with explicit type.
       #
       # This is the verbose form. Prefer sugar methods (string, integer, etc.)
-      # for static definitions. Use `param` for dynamic field generation.
+      # for static definitions. Use `param` for dynamic param generation.
       #
       # @param name [Symbol]
-      #   The field name.
+      #   The param name.
       # @param type [Symbol, nil] (nil) [:array, :binary, :boolean, :date, :datetime, :decimal, :integer, :literal, :number, :object, :string, :time, :union, :uuid]
-      #   The field type.
+      #   The param type.
       # @param as [Symbol, nil] (nil)
       #   The target attribute name.
       # @param default [Object, nil] (nil)
@@ -71,9 +71,9 @@ module Apiwork
       # @yieldparam shape [API::Object, API::Union, API::Element]
       # @return [void]
       #
-      # @example Dynamic field generation
-      #   field_type = :string
-      #   param :title, type: field_type
+      # @example Dynamic param generation
+      #   param_type = :string
+      #   param :title, type: param_type
       #
       # @example Object with block
       #   param :metadata, type: :object do
@@ -140,10 +140,10 @@ module Apiwork
       end
 
       # @api public
-      # Defines an array field with element type.
+      # Defines an array param with element type.
       #
       # @param name [Symbol]
-      #   The field name.
+      #   The param name.
       # @param as [Symbol, nil] (nil)
       #   The target attribute name.
       # @param default [Object, nil] (nil)

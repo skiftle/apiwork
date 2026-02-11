@@ -81,9 +81,9 @@ module Apiwork
       # @yieldparam shape [Contract::Object, Contract::Union, Contract::Element]
       # @return [void]
       #
-      # @example Dynamic field generation
-      #   field_type = :string
-      #   param :title, type: field_type
+      # @example Dynamic param generation
+      #   param_type = :string
+      #   param :title, type: param_type
       #
       # @example Object with block
       #   param :address, type: :object do

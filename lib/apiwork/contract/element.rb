@@ -23,7 +23,7 @@ module Apiwork
     #     element.reference :item
     #   end
     #
-    # @see Contract::Object Block context for object fields
+    # @see Contract::Object Block context for object params
     # @see Contract::Union Block context for union variants
     class Element < Apiwork::Element
       def initialize(contract_class)

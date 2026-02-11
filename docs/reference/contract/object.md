@@ -916,11 +916,11 @@ for static definitions.
 
 **Yields** [Contract::Object](/reference/contract/object), [Contract::Union](/reference/contract/union), [Contract::Element](/reference/contract/element)
 
-**Example: Dynamic field generation**
+**Example: Dynamic param generation**
 
 ```ruby
-field_type = :string
-param :title, type: field_type
+param_type = :string
+param :title, type: param_type
 ```
 
 **Example: Object with block**
@@ -970,7 +970,7 @@ Defines a reference to a named type.
 reference :customer
 ```
 
-**Example: Reference with different field name**
+**Example: Reference with different param name**
 
 ```ruby
 reference :billing_address, to: :address

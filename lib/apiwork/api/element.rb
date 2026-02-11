@@ -23,7 +23,7 @@ module Apiwork
     #     element.reference :item
     #   end
     #
-    # @see API::Object Block context for object fields
+    # @see API::Object Block context for object params
     # @see API::Union Block context for union variants
     class Element < Apiwork::Element
       # @api public

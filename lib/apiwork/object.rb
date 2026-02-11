@@ -1549,7 +1549,7 @@ module Apiwork
     # @example Reference to customer type
     #   reference :customer
     #
-    # @example Reference with different field name
+    # @example Reference with different param name
     #   reference :billing_address, to: :address
     def reference(
       name,

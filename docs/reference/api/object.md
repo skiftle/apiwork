@@ -11,7 +11,7 @@ next: false
 Block context for defining reusable object types.
 
 Accessed via `object :name do` in API or contract definitions.
-Use type methods to define fields: [#string](#string), [#integer](#integer), [#decimal](#decimal),
+Use type methods to define params: [#string](#string), [#integer](#integer), [#decimal](#decimal),
 [#boolean](#boolean), [#array](#array), [#object](#object), [#union](#union), [#reference](#reference).
 
 **Example: instance_eval style**
@@ -40,7 +40,7 @@ end
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L174)
 
-Defines an array field with element type.
+Defines an array param with element type.
 
 **Parameters**
 
@@ -48,7 +48,7 @@ Defines an array field with element type.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | The field name. |
+| **`name`** | `Symbol` |  | The param name. |
 | `as` | `Symbol`, `nil` | `nil` | The target attribute name. |
 | `default` | `Object`, `nil` | `nil` | The default value. |
 | `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
@@ -879,10 +879,10 @@ end
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L83)
 
-Defines a field with explicit type.
+Defines a param with explicit type.
 
 This is the verbose form. Prefer sugar methods (string, integer, etc.)
-for static definitions. Use `param` for dynamic field generation.
+for static definitions. Use `param` for dynamic param generation.
 
 **Parameters**
 
@@ -890,8 +890,8 @@ for static definitions. Use `param` for dynamic field generation.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | The field name. |
-| `type` | `Symbol<:array, :binary, :boolean, :date, :datetime, :decimal, :integer, :literal, :number, :object, :string, :time, :union, :uuid>`, `nil` | `nil` | The field type. |
+| **`name`** | `Symbol` |  | The param name. |
+| `type` | `Symbol<:array, :binary, :boolean, :date, :datetime, :decimal, :integer, :literal, :number, :object, :string, :time, :union, :uuid>`, `nil` | `nil` | The param type. |
 | `as` | `Symbol`, `nil` | `nil` | The target attribute name. |
 | `default` | `Object`, `nil` | `nil` | The default value. |
 | `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
@@ -917,11 +917,11 @@ for static definitions. Use `param` for dynamic field generation.
 
 **Yields** [API::Object](/reference/api/object), [API::Union](/reference/api/union), [API::Element](/reference/api/element)
 
-**Example: Dynamic field generation**
+**Example: Dynamic param generation**
 
 ```ruby
-field_type = :string
-param :title, type: field_type
+param_type = :string
+param :title, type: param_type
 ```
 
 **Example: Object with block**
@@ -971,7 +971,7 @@ Defines a reference to a named type.
 reference :customer
 ```
 
-**Example: Reference with different field name**
+**Example: Reference with different param name**
 
 ```ruby
 reference :billing_address, to: :address
