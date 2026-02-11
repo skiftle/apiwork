@@ -98,22 +98,6 @@ module Apiwork
 
         attr_writer :building
 
-        def actions
-          @actions ||= {}
-        end
-
-        def imports
-          @imports ||= {}
-        end
-
-        def building?
-          @building
-        end
-
-        def synthetic_contracts
-          @synthetic_contracts ||= {}
-        end
-
         # @api public
         # Prefixes types, enums, and unions in introspection output.
         #
@@ -472,6 +456,22 @@ module Apiwork
         #   InvoiceContract.introspect
         def introspect(expand: false, locale: nil)
           api_class.introspect_contract(self, expand:, locale:)
+        end
+
+        def actions
+          @actions ||= {}
+        end
+
+        def imports
+          @imports ||= {}
+        end
+
+        def building?
+          @building
+        end
+
+        def synthetic_contracts
+          @synthetic_contracts ||= {}
         end
 
         def synthetic?
