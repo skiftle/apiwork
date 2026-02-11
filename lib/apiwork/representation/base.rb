@@ -645,8 +645,8 @@ module Apiwork
         # Applies attribute encoders, maps STI and polymorphic type names,
         # and recursively serializes nested associations.
         #
-        # @param record_or_collection [ActiveRecord::Base, Array<ActiveRecord::Base>]
-        #   The record or collection to serialize.
+        # @param resource [ActiveRecord::Base, Array<ActiveRecord::Base>]
+        #   The resource to serialize.
         # @param context [Hash] ({})
         #   The serialization context.
         # @param include [Symbol, Array, Hash, nil] (nil)
@@ -668,11 +668,11 @@ module Apiwork
         # @example Nested associations
         #   InvoiceRepresentation.serialize(invoice, include: { customer: [:address] })
         #   # => { id: 1, ..., customer: { id: 1, name: 'Acme', address: { ... } } }
-        def serialize(record_or_collection, context: {}, include: nil)
-          if record_or_collection.is_a?(Enumerable)
-            record_or_collection.map { |record| serialize_record(record, context:, include:) }
+        def serialize(resource, context: {}, include: nil)
+          if resource.is_a?(Enumerable)
+            resource.map { |record| serialize_record(record, context:, include:) }
           else
-            serialize_record(record_or_collection, context:, include:)
+            serialize_record(resource, context:, include:)
           end
         end
 
@@ -682,17 +682,17 @@ module Apiwork
         # Applies attribute decoders, maps STI and polymorphic type names,
         # and recursively deserializes nested associations.
         #
-        # @param hash_or_array [Hash, Array<Hash>]
-        #   The hash or array of hashes to deserialize.
+        # @param payload [Hash, Array<Hash>]
+        #   The payload to deserialize.
         # @return [Hash, Array<Hash>]
         #
         # @example
         #   InvoiceRepresentation.deserialize(params[:invoice])
-        def deserialize(hash_or_array)
-          if hash_or_array.is_a?(Array)
-            hash_or_array.map { |hash| deserialize_hash(hash) }
+        def deserialize(payload)
+          if payload.is_a?(Array)
+            payload.map { |hash| deserialize_hash(hash) }
           else
-            deserialize_hash(hash_or_array)
+            deserialize_hash(payload)
           end
         end
 

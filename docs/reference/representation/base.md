@@ -389,7 +389,7 @@ description 'A customer invoice'
 
 ### .deserialize
 
-`.deserialize(hash_or_array)`
+`.deserialize(payload)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L691)
 
@@ -404,7 +404,7 @@ and recursively deserializes nested associations.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`hash_or_array`** | `Hash`, `Array<Hash>` |  | The hash or array of hashes to deserialize. |
+| **`payload`** | `Hash`, `Array<Hash>` |  | The payload to deserialize. |
 
 </div>
 
@@ -715,7 +715,7 @@ Derived from model name when [.root](#root) is not set.
 
 ### .serialize
 
-`.serialize(record_or_collection, context: {}, include: nil)`
+`.serialize(resource, context: {}, include: nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L671)
 
@@ -730,7 +730,7 @@ and recursively serializes nested associations.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`record_or_collection`** | `ActiveRecord::Base`, `Array<ActiveRecord::Base>` |  | The record or collection to serialize. |
+| **`resource`** | `ActiveRecord::Base`, `Array<ActiveRecord::Base>` |  | The resource to serialize. |
 | `context` | `Hash` | `{}` | The serialization context. |
 | `include` | `Symbol`, `Array`, `Hash`, `nil` | `nil` | The associations to include. |
 
