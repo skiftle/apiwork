@@ -973,11 +973,22 @@ if order.total.positive?
 
 | Do                                                       | Don't                                              |
 | -------------------------------------------------------- | -------------------------------------------------- |
+| Required arguments are positional                        | Required arguments as keyword (see exception below) |
 | Keyword arguments for all optionals: `def foo(bar: nil)` | `arg = nil` as positional (exception: DSL setters) |
 | Defaults in signature, not computed later                | Options hashes                                     |
 | Multiline signatures at 4+ keywords                      | Magic defaults computed inside method              |
 | Explicit keyword names: `scope: scope` not `scope:`      |                                                    |
 | Order: positional, then keyword, then splat              |                                                    |
+
+**Exception:** Required keyword arguments are allowed when they add semantic clarity at the call site:
+
+```ruby
+# Good — `as:` clarifies meaning at call site
+import CoolContract, as: :cool
+
+# Bad — positional `as` is ambiguous
+import CoolContract, :cool
+```
 
 ```ruby
 # 4+ keywords: multiline, defaults in signature

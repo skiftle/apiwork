@@ -60,7 +60,7 @@ RSpec.describe 'Synthetic contracts' do
   end
 
   after do
-    Apiwork::Contract::Base._synthetic_contracts.clear
+    Apiwork::Contract::Base.synthetic_contracts.clear
   end
 
   describe '.contract_for' do
@@ -72,7 +72,7 @@ RSpec.describe 'Synthetic contracts' do
 
       it 'does not create synthetic contract' do
         Apiwork::Contract::Base.contract_for(WithContractRepresentation)
-        expect(Apiwork::Contract::Base._synthetic_contracts).to be_empty
+        expect(Apiwork::Contract::Base.synthetic_contracts).to be_empty
       end
     end
 

@@ -47,21 +47,6 @@ module Apiwork
     class Base
       include Abstractable
 
-      # @!method representation_class
-      #   @!scope class
-      #   @api public
-      #   The representation class for this contract.
-      #   @return [Class<Representation::Base>, nil]
-      #   @see .representation
-      class_attribute :representation_class, instance_accessor: false
-
-      class_attribute :actions, instance_accessor: false
-      class_attribute :imports, instance_accessor: false
-
-      class_attribute :_building, default: false, instance_accessor: false
-      class_attribute :_synthetic_contracts, default: {}, instance_accessor: false
-      class_attribute :_synthetic, default: false, instance_accessor: false
-
       # @api public
       # The issues for this contract.
       #
@@ -105,6 +90,31 @@ module Apiwork
                to: :request
 
       class << self
+        # @api public
+        # The representation class for this contract.
+        #
+        # @return [Class<Representation::Base>, nil]
+        # @see .representation
+        attr_reader :representation_class
+
+        def actions
+          @actions ||= {}
+        end
+
+        def imports
+          @imports ||= {}
+        end
+
+        def building?
+          @building
+        end
+
+        attr_writer :building
+
+        def synthetic_contracts
+          @synthetic_contracts ||= {}
+        end
+
         # @api public
         # Prefixes types, enums, and unions in introspection output.
         #
@@ -153,7 +163,7 @@ module Apiwork
                   "got #{klass.inspect}"
           end
 
-          self.representation_class = klass
+          @representation_class = klass
         end
 
         # @api public
@@ -374,14 +384,14 @@ module Apiwork
 
           imports[as] = klass
 
-          return if klass._building
+          return if klass.building?
           return unless klass.representation? && klass.api_class
 
-          klass._building = true
+          klass.building = true
           begin
             klass.api_class.ensure_contract_built!(klass)
           ensure
-            klass._building = false
+            klass.building = false
           end
         end
 
@@ -466,13 +476,7 @@ module Apiwork
         end
 
         def synthetic?
-          _synthetic
-        end
-
-        def inherited(subclass)
-          super
-          subclass.actions = {}
-          subclass.imports = {}
+          @synthetic == true
         end
 
         def contract_for(representation_class)
@@ -483,13 +487,14 @@ module Apiwork
 
           return contract_class if contract_class.is_a?(Class) && contract_class < Contract::Base
 
-          _synthetic_contracts[representation_class] ||= build_synthetic_contract(representation_class, api_class)
+          synthetic_contracts[representation_class] ||= build_synthetic_contract(representation_class, api_class)
         end
 
         def build_synthetic_contract(representation_class, api_class)
+          klass = representation_class
           Class.new(Contract::Base) do
-            self._synthetic = true
-            self.representation_class = representation_class
+            @synthetic = true
+            @representation_class = klass
             @api_class = api_class
           end
         end
