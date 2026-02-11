@@ -120,7 +120,6 @@ module Apiwork
     # @api public
     # Defines an object.
     #
-    # @param shape [Object, nil] (nil) pre-built shape
     # @yield block defining nested structure
     # @yieldparam object [Object]
     # @return [void]
@@ -136,14 +135,13 @@ module Apiwork
     #     object.string :name
     #     object.integer :count
     #   end
-    def object(shape: nil, &block)
-      of(:object, shape:, &block)
+    def object(&block)
+      of(:object, &block)
     end
 
     # @api public
     # Defines an array.
     #
-    # @param shape [Object, nil] (nil) pre-built shape
     # @yield block defining element type
     # @yieldparam element [Element]
     # @return [void]
@@ -157,15 +155,14 @@ module Apiwork
     #   array do |element|
     #     element.string
     #   end
-    def array(shape: nil, &block)
-      of(:array, shape:, &block)
+    def array(&block)
+      of(:array, &block)
     end
 
     # @api public
     # Defines a union.
     #
     # @param discriminator [Symbol, nil] (nil) discriminator field name
-    # @param shape [Union, nil] (nil) pre-built shape
     # @yield block defining union variants
     # @yieldparam union [Union]
     # @return [void]
@@ -187,8 +184,8 @@ module Apiwork
     #       end
     #     end
     #   end
-    def union(discriminator: nil, shape: nil, &block)
-      of(:union, discriminator:, shape:, &block)
+    def union(discriminator: nil, &block)
+      of(:union, discriminator:, &block)
     end
 
     # @api public
@@ -203,11 +200,10 @@ module Apiwork
     # @api public
     # Defines a reference to a named type.
     #
-    # @param type_name [Symbol] type name
-    # @param to [Symbol, nil] (nil) target type name (defaults to type_name)
+    # @param type_name [Symbol] The type to reference.
     # @return [void]
-    def reference(type_name, to: nil)
-      of(to || type_name)
+    def reference(type_name)
+      of(type_name)
     end
 
     def of_type

@@ -90,21 +90,11 @@ end
 
 ### #array
 
-`#array(shape: nil, &block)`
+`#array(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L160)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L158)
 
 Defines an array.
-
-**Parameters**
-
-<div class="params-table">
-
-| Name | Type | Default | Description |
-|------|------|---------|-------------|
-| `shape` | `Object`, `nil` | `nil` | pre-built shape |
-
-</div>
 
 **Returns**
 
@@ -241,7 +231,7 @@ Defines an integer.
 
 `#literal(value:)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L199)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L196)
 
 Defines a literal value.
 
@@ -288,21 +278,11 @@ Defines a number.
 
 ### #object
 
-`#object(shape: nil, &block)`
+`#object(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L139)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L138)
 
 Defines an object.
-
-**Parameters**
-
-<div class="params-table">
-
-| Name | Type | Default | Description |
-|------|------|---------|-------------|
-| `shape` | `Object`, `nil` | `nil` | pre-built shape |
-
-</div>
 
 **Returns**
 
@@ -332,9 +312,9 @@ end
 
 ### #of
 
-`#of(type, discriminator: nil, shape: nil, **_options, &block)`
+`#of(type, discriminator: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/element.rb#L97)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/element.rb#L96)
 
 Defines the element type.
 
@@ -348,7 +328,6 @@ Only complex types (:object, :array, :union) are allowed.
 |------|------|---------|-------------|
 | **`type`** | `Symbol<:object, :array, :union>` |  | element type |
 | `discriminator` | `Symbol`, `nil` | `nil` | discriminator field name (unions only) |
-| `shape` | `API::Object`, `API::Union`, `nil` | `nil` | pre-built shape |
 
 </div>
 
@@ -362,9 +341,9 @@ Only complex types (:object, :array, :union) are allowed.
 
 ### #reference
 
-`#reference(type_name, to: nil)`
+`#reference(type_name)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L209)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L205)
 
 Defines a reference to a named type.
 
@@ -374,8 +353,7 @@ Defines a reference to a named type.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`type_name`** | `Symbol` |  | type name |
-| `to` | `Symbol`, `nil` | `nil` | target type name (defaults to type_name) |
+| **`type_name`** | `Symbol` |  | The type to reference. |
 
 </div>
 
@@ -428,9 +406,9 @@ Defines a time.
 
 ### #union
 
-`#union(discriminator: nil, shape: nil, &block)`
+`#union(discriminator: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L190)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L187)
 
 Defines a union.
 
@@ -441,7 +419,6 @@ Defines a union.
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `discriminator` | `Symbol`, `nil` | `nil` | discriminator field name |
-| `shape` | `Union`, `nil` | `nil` | pre-built shape |
 
 </div>
 

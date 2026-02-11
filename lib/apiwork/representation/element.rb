@@ -89,59 +89,39 @@ module Apiwork
       #
       # @param type [Symbol] [:object, :array, :union] element type
       # @param discriminator [Symbol, nil] (nil) discriminator field name (unions only)
-      # @param shape [API::Object, API::Union, nil] (nil) pre-built shape
       # @yield block for defining nested structure (instance_eval style)
       # @yieldparam shape [API::Object, API::Union, API::Element]
       # @return [void]
-      # @raise [ArgumentError] if object, array, or union type is missing block or shape
-      def of(type, discriminator: nil, shape: nil, **_options, &block)
+      # @raise [ArgumentError] if object, array, or union type is missing block
+      def of(type, discriminator: nil, &block)
         case type
         when :object
-          if shape
-            @type = :object
-            @shape = shape
-            @defined = true
-          elsif block
-            builder = API::Object.new
-            block.arity.positive? ? yield(builder) : builder.instance_eval(&block)
-            @type = :object
-            @shape = builder
-            @defined = true
-          else
-            raise ArgumentError, 'object requires a block or shape'
-          end
+          raise ArgumentError, 'object requires a block' unless block
+
+          builder = API::Object.new
+          block.arity.positive? ? yield(builder) : builder.instance_eval(&block)
+          @type = :object
+          @shape = builder
+          @defined = true
         when :array
-          if shape
-            @type = :array
-            @shape = shape
-            @defined = true
-          elsif block
-            inner = API::Element.new
-            block.arity.positive? ? yield(inner) : inner.instance_eval(&block)
-            inner.validate!
-            @type = :array
-            @of = inner.of_type
-            @shape = inner.shape
-            @defined = true
-          else
-            raise ArgumentError, 'array requires a block or shape'
-          end
+          raise ArgumentError, 'array requires a block' unless block
+
+          inner = API::Element.new
+          block.arity.positive? ? yield(inner) : inner.instance_eval(&block)
+          inner.validate!
+          @type = :array
+          @of = inner.of_type
+          @shape = inner.shape
+          @defined = true
         when :union
-          if shape
-            @type = :union
-            @shape = shape
-            @discriminator = discriminator
-            @defined = true
-          elsif block
-            builder = API::Union.new(discriminator:)
-            block.arity.positive? ? yield(builder) : builder.instance_eval(&block)
-            @type = :union
-            @shape = builder
-            @discriminator = discriminator
-            @defined = true
-          else
-            raise ArgumentError, 'union requires a block or shape'
-          end
+          raise ArgumentError, 'union requires a block' unless block
+
+          builder = API::Union.new(discriminator:)
+          block.arity.positive? ? yield(builder) : builder.instance_eval(&block)
+          @type = :union
+          @shape = builder
+          @discriminator = discriminator
+          @defined = true
         else
           raise ArgumentError, "Representation::Element only supports :object, :array, :union - got #{type.inspect}"
         end
