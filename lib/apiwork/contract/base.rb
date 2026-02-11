@@ -58,7 +58,6 @@ module Apiwork
       class_attribute :actions, instance_accessor: false
       class_attribute :imports, instance_accessor: false
 
-      class_attribute :_identifier, instance_accessor: false
       class_attribute :_building, default: false, instance_accessor: false
       class_attribute :_synthetic_contracts, default: {}, instance_accessor: false
       class_attribute :_synthetic, default: false, instance_accessor: false
@@ -127,9 +126,9 @@ module Apiwork
         #     # In introspection: :address becomes :billing_address
         #   end
         def identifier(value = nil)
-          return _identifier if value.nil?
+          return @identifier if value.nil?
 
-          self._identifier = value.to_s
+          @identifier = value.to_s
         end
 
         # @api public
@@ -500,7 +499,7 @@ module Apiwork
         end
 
         def scope_prefix
-          return _identifier if _identifier
+          return @identifier if @identifier
 
           if name
             name

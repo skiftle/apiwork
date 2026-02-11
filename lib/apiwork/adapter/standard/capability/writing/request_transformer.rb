@@ -9,15 +9,15 @@ module Apiwork
             phase :after
 
             def transform
-              request.transform_body(&method(:process))
+              request.transform_body(&method(:transform_value))
             end
 
             private
 
-            def process(value)
+            def transform_value(value)
               case value
-              when Hash then apply(value.transform_values(&method(:process)))
-              when Array then value.map(&method(:process))
+              when Hash then apply(value.transform_values(&method(:transform_value)))
+              when Array then value.map(&method(:transform_value))
               else value
               end
             end

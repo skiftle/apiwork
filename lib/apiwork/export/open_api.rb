@@ -111,7 +111,7 @@ module Apiwork
           operation[:parameters] = path_params
         end
 
-        operation[:responses] = build_responses(action_name, action.response, action.raises)
+        operation[:responses] = build_responses(action_name, action.response, raises: action.raises)
 
         operation.compact
       end
@@ -197,7 +197,7 @@ module Apiwork
         result
       end
 
-      def build_responses(action_name, response, raises = [])
+      def build_responses(action_name, response, raises: [])
         responses = {}
 
         if response&.no_content?
@@ -594,10 +594,10 @@ module Apiwork
         referenced_type.shape.key?(discriminator)
       end
 
-      def traverse_resources(resources = data.resources, &block)
+      def traverse_resources(resources: data.resources, &block)
         resources.each_value do |resource|
           yield(resource)
-          traverse_resources(resource.resources, &block) if resource.resources.any?
+          traverse_resources(resources: resource.resources, &block) if resource.resources.any?
         end
       end
     end

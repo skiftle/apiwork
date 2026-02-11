@@ -323,12 +323,12 @@ module Apiwork
         end
 
         def validate_array_item_with_type(item, index, param_options, item_path, current_depth, max_depth)
-          contract_class_for_custom_type = @shape.contract_class
-          type_definition = contract_class_for_custom_type.resolve_custom_type(param_options[:of])
+          contract_class = @shape.contract_class
+          type_definition = contract_class.resolve_custom_type(param_options[:of])
 
           if type_definition
             return validate_array_item_with_type_definition(
-              item, index, type_definition, item_path, contract_class_for_custom_type, param_options[:of], current_depth, max_depth
+              item, index, type_definition, item_path, contract_class, param_options[:of], current_depth, max_depth
             )
           end
 
@@ -360,10 +360,10 @@ module Apiwork
         end
 
         def validate_array_item_with_object_type(item, type_definition, item_path, contract_class, current_depth, max_depth)
-          custom_param = Object.new(contract_class, action_name: @shape.action_name)
-          custom_param.copy_type_definition_params(type_definition, custom_param)
+          type_shape = Object.new(contract_class, action_name: @shape.action_name)
+          type_shape.copy_type_definition_params(type_definition, type_shape)
 
-          validator = Validator.new(custom_param)
+          validator = Validator.new(type_shape)
           shape_result = validator.validate(item, max_depth:, current_depth: current_depth + 1, path: item_path)
 
           shape_result[:issues].any? ? { issues: shape_result[:issues], value: nil } : { issues: [], value: shape_result[:params] }
@@ -375,10 +375,10 @@ module Apiwork
           type_definition = @shape.contract_class&.resolve_custom_type(type_name)
           return nil unless type_definition&.object?
 
-          temp_param = Object.new(@shape.contract_class, action_name: @shape.action_name)
-          temp_param.copy_type_definition_params(type_definition, temp_param)
+          type_shape = Object.new(@shape.contract_class, action_name: @shape.action_name)
+          type_shape.copy_type_definition_params(type_definition, type_shape)
 
-          Validator.new(temp_param).validate(value, max_depth:, current_depth: current_depth + 1, path: field_path)
+          Validator.new(type_shape).validate(value, max_depth:, current_depth: current_depth + 1, path: field_path)
         rescue NameError, ArgumentError
           nil
         end
@@ -553,12 +553,12 @@ module Apiwork
 
           type_definition = @shape.contract_class.resolve_custom_type(variant_type)
           if type_definition
-            custom_param = Object.new(
+            type_shape = Object.new(
               @shape.contract_class,
               action_name: @shape.action_name,
             )
-            custom_param.copy_type_definition_params(type_definition, custom_param)
-            custom_param.params.delete(discriminator) if discriminator
+            type_shape.copy_type_definition_params(type_definition, type_shape)
+            type_shape.params.delete(discriminator) if discriminator
 
             unless value.is_a?(Hash)
               type_error = Issue.new(
@@ -574,7 +574,7 @@ module Apiwork
               return [type_error, nil]
             end
 
-            validator = Validator.new(custom_param)
+            validator = Validator.new(type_shape)
             result = validator.validate(
               value,
               max_depth:,
@@ -683,10 +683,10 @@ module Apiwork
               variant_type_definition = contract_class.resolve_custom_type(variant_type)
 
               if variant_type_definition&.object?
-                custom_param = Object.new(contract_class, action_name: @shape.action_name)
-                custom_param.copy_type_definition_params(variant_type_definition, custom_param)
+                type_shape = Object.new(contract_class, action_name: @shape.action_name)
+                type_shape.copy_type_definition_params(variant_type_definition, type_shape)
 
-                validator = Validator.new(custom_param)
+                validator = Validator.new(type_shape)
                 result = validator.validate(item, max_depth:, current_depth: current_depth + 1, path: item_path)
 
                 return [result[:issues].first, nil] if result[:issues].any?
@@ -705,11 +705,11 @@ module Apiwork
 
             next unless variant_type_definition&.object?
 
-            custom_param = Object.new(contract_class, action_name: @shape.action_name)
-            custom_param.copy_type_definition_params(variant_type_definition, custom_param)
-            custom_param.params.delete(discriminator) if discriminator
+            type_shape = Object.new(contract_class, action_name: @shape.action_name)
+            type_shape.copy_type_definition_params(variant_type_definition, type_shape)
+            type_shape.params.delete(discriminator) if discriminator
 
-            validator = Validator.new(custom_param)
+            validator = Validator.new(type_shape)
             result = validator.validate(item, max_depth:, current_depth: current_depth + 1, path: item_path)
 
             return [nil, result[:params]] if result[:issues].empty?

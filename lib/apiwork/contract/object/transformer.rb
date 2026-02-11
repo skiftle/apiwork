@@ -66,7 +66,7 @@ module Apiwork
           scope_contract_class = type_definition.scope || contract_class
 
           if type_definition.object?
-            build_temp_shape(type_definition, scope_contract_class)
+            build_type_shape(type_definition, scope_contract_class)
           elsif type_definition.union?
             first_variant = type_definition.variants.first
             return nil unless first_variant
@@ -75,14 +75,14 @@ module Apiwork
             return nil unless variant_type_definition&.object?
 
             variant_contract_class = variant_type_definition.scope || scope_contract_class
-            build_temp_shape(variant_type_definition, variant_contract_class)
+            build_type_shape(variant_type_definition, variant_contract_class)
           end
         end
 
-        def build_temp_shape(type_definition, contract_class)
-          temp_shape = Object.new(contract_class, action_name: shape.action_name)
-          temp_shape.copy_type_definition_params(type_definition, temp_shape)
-          temp_shape
+        def build_type_shape(type_definition, contract_class)
+          type_shape = Object.new(contract_class, action_name: shape.action_name)
+          type_shape.copy_type_definition_params(type_definition, type_shape)
+          type_shape
         end
       end
     end

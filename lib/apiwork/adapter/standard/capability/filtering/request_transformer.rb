@@ -11,15 +11,15 @@ module Apiwork
             phase :before
 
             def transform
-              request.transform(&method(:process))
+              request.transform(&method(:transform_value))
             end
 
             private
 
-            def process(value)
+            def transform_value(value)
               case value
               when Hash then apply(value)
-              when Array then value.map(&method(:process))
+              when Array then value.map(&method(:transform_value))
               else value
               end
             end
@@ -27,11 +27,11 @@ module Apiwork
             def apply(hash)
               return to_array(hash) if indexed_hash?(hash)
 
-              hash.transform_values(&method(:process))
+              hash.transform_values(&method(:transform_value))
             end
 
             def to_array(hash)
-              hash.keys.sort_by { |key| key.to_s.to_i }.map { |key| process(hash[key]) }
+              hash.keys.sort_by { |key| key.to_s.to_i }.map { |key| transform_value(hash[key]) }
             end
 
             def indexed_hash?(hash)

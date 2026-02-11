@@ -83,10 +83,10 @@ module Apiwork
         @mapper ||= TypeScriptMapper.new(self)
       end
 
-      def traverse_resources(resources = data.resources, &block)
+      def traverse_resources(resources: data.resources, &block)
         resources.each_value do |resource|
           yield(resource)
-          traverse_resources(resource.resources, &block) if resource.resources.any?
+          traverse_resources(resources: resource.resources, &block) if resource.resources.any?
         end
       end
     end
