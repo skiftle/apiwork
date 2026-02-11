@@ -83,7 +83,7 @@ Whether this contract is abstract.
 
 `.action(name, replace: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L431)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L437)
 
 Defines or extends an action on this contract.
 
@@ -162,12 +162,14 @@ end
 
 `.enum(name, deprecated: false, description: nil, example: nil, values: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L263)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L267)
 
 Defines or extends an enum for this contract.
 
-Multiple calls with the same name merge values (declaration merging). In introspection,
-the name is prefixed with [.identifier](#identifier) (e.g., `:status` becomes `:billing_status`).
+Subclasses inherit parent enums. In introspection, enums are prefixed with the
+contract's [.identifier](#identifier) (e.g., `:status` in `InvoiceContract` becomes `:invoice_status`).
+
+Multiple calls with the same name merge values (declaration merging).
 
 **Parameters**
 
@@ -260,7 +262,7 @@ end
 
 `.import(klass, as:)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L349)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L355)
 
 Imports types from another contract for reuse.
 
@@ -294,7 +296,7 @@ import UserContract, as: :user
 
 `.introspect(expand: false, locale: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L457)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L463)
 
 Returns introspection data for this contract.
 
@@ -325,12 +327,14 @@ InvoiceContract.introspect
 
 `.object(name, deprecated: false, description: nil, example: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L209)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L211)
 
 Defines or extends an object type for this contract.
 
-Multiple calls with the same name merge fields (declaration merging). In introspection,
-the name is prefixed with [.identifier](#identifier) (e.g., `:item` becomes `:billing_item`).
+Subclasses inherit parent types. In introspection, types are prefixed with the
+contract's [.identifier](#identifier) (e.g., `:item` in `InvoiceContract` becomes `:invoice_item`).
+
+Multiple calls with the same name merge fields (declaration merging).
 
 **Parameters**
 
@@ -457,12 +461,14 @@ Class&lt;[Representation::Base](/reference/representation/base)&gt;, `nil`
 
 `.union(name, deprecated: false, description: nil, discriminator: nil, example: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L314)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L320)
 
 Defines or extends a discriminated union for this contract.
 
-Multiple calls with the same name merge variants (declaration merging). In introspection,
-the name is prefixed with [.identifier](#identifier) (e.g., `:payment_method` becomes `:billing_payment_method`).
+Subclasses inherit parent unions. In introspection, unions are prefixed with the
+contract's [.identifier](#identifier) (e.g., `:payment_method` in `InvoiceContract` becomes `:invoice_payment_method`).
+
+Multiple calls with the same name merge variants (declaration merging).
 
 **Parameters**
 
@@ -544,7 +550,7 @@ end
 
 `#invalid?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L629)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L655)
 
 Whether this contract is invalid.
 
@@ -598,7 +604,7 @@ end
 
 `#valid?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L621)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L647)
 
 Whether this contract is valid.
 

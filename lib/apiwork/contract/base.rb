@@ -152,8 +152,10 @@ module Apiwork
         # @api public
         # Defines or extends an object type for this contract.
         #
-        # Multiple calls with the same name merge fields (declaration merging). In introspection,
-        # the name is prefixed with {.identifier} (e.g., `:item` becomes `:billing_item`).
+        # Subclasses inherit parent types. In introspection, types are prefixed with the
+        # contract's {.identifier} (e.g., `:item` in `InvoiceContract` becomes `:invoice_item`).
+        #
+        # Multiple calls with the same name merge fields (declaration merging).
         #
         # @param name [Symbol]
         #   The object name.
@@ -226,8 +228,10 @@ module Apiwork
         # @api public
         # Defines or extends an enum for this contract.
         #
-        # Multiple calls with the same name merge values (declaration merging). In introspection,
-        # the name is prefixed with {.identifier} (e.g., `:status` becomes `:billing_status`).
+        # Subclasses inherit parent enums. In introspection, enums are prefixed with the
+        # contract's {.identifier} (e.g., `:status` in `InvoiceContract` becomes `:invoice_status`).
+        #
+        # Multiple calls with the same name merge values (declaration merging).
         #
         # @param name [Symbol]
         #   The enum name.
@@ -273,8 +277,10 @@ module Apiwork
         # @api public
         # Defines or extends a discriminated union for this contract.
         #
-        # Multiple calls with the same name merge variants (declaration merging). In introspection,
-        # the name is prefixed with {.identifier} (e.g., `:payment_method` becomes `:billing_payment_method`).
+        # Subclasses inherit parent unions. In introspection, unions are prefixed with the
+        # contract's {.identifier} (e.g., `:payment_method` in `InvoiceContract` becomes `:invoice_payment_method`).
+        #
+        # Multiple calls with the same name merge variants (declaration merging).
         #
         # @param name [Symbol]
         #   The union name.
@@ -524,7 +530,10 @@ module Apiwork
           result = api_class.type_definition(type_name, scope: self)
           return result if result
 
-          resolve_imported_type(type_name, visited: visited.dup.add(self))
+          result = resolve_imported_type(type_name, visited: visited.dup.add(self))
+          return result if result
+
+          resolve_parent_type(type_name, visited: visited.dup.add(self))
         end
 
         def action_for(action_name)
@@ -562,7 +571,10 @@ module Apiwork
           result = api_class.enum_values(enum_name, scope: self)
           return result if result
 
-          resolve_imported_enum_values(enum_name, visited: visited.dup.add(self))
+          result = resolve_imported_enum_values(enum_name, visited: visited.dup.add(self))
+          return result if result
+
+          resolve_parent_enum_values(enum_name, visited: visited.dup.add(self))
         end
 
         def scoped_type_name(name)
@@ -590,6 +602,13 @@ module Apiwork
           nil
         end
 
+        def resolve_parent_type(type_name, visited:)
+          parent = superclass
+          return nil unless parent < Contract::Base
+
+          parent.resolve_custom_type(type_name, visited:)
+        end
+
         def resolve_imported_enum_values(enum_name, visited:)
           enum_string = enum_name.to_s
 
@@ -603,6 +622,13 @@ module Apiwork
           end
 
           nil
+        end
+
+        def resolve_parent_enum_values(enum_name, visited:)
+          parent = superclass
+          return nil unless parent < Contract::Base
+
+          parent.enum_values(enum_name, visited:)
         end
       end
 
