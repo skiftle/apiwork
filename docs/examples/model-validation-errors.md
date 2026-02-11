@@ -157,25 +157,61 @@ Content-Type: application/json
 }
 ```
 
-**Response** `201`
+**Response** `400`
 
 ```json
 {
-  "user": {
-    "id": "571466c2-02cb-52cb-a9d1-7bd5f8e21034",
-    "createdAt": "2024-01-01T12:00:00.000Z",
-    "updatedAt": "2024-01-01T12:00:00.000Z",
-    "email": "john@example.com",
-    "username": "johndoe",
-    "profile": {
-      "id": "c8f3124b-cf0c-55c4-b8e7-106c58c6a686",
-      "createdAt": "2024-01-01T12:00:00.000Z",
-      "updatedAt": "2024-01-01T12:00:00.000Z",
-      "bio": "Software developer",
-      "website": "https://example.com"
+  "issues": [
+    {
+      "code": "field_unknown",
+      "detail": "Unknown field",
+      "meta": {
+        "allowed": [
+          "bio",
+          "website"
+        ],
+        "field": "email"
+      },
+      "path": [
+        "user",
+        "email"
+      ],
+      "pointer": "/user/email"
     },
-    "posts": []
-  }
+    {
+      "code": "field_unknown",
+      "detail": "Unknown field",
+      "meta": {
+        "allowed": [
+          "bio",
+          "website"
+        ],
+        "field": "username"
+      },
+      "path": [
+        "user",
+        "username"
+      ],
+      "pointer": "/user/username"
+    },
+    {
+      "code": "field_unknown",
+      "detail": "Unknown field",
+      "meta": {
+        "allowed": [
+          "bio",
+          "website"
+        ],
+        "field": "profile"
+      },
+      "path": [
+        "user",
+        "profile"
+      ],
+      "pointer": "/user/profile"
+    }
+  ],
+  "layer": "contract"
 }
 ```
 
@@ -198,23 +234,45 @@ Content-Type: application/json
 }
 ```
 
-**Response** `422`
+**Response** `400`
 
 ```json
 {
   "issues": [
     {
-      "code": "invalid",
-      "detail": "Invalid",
-      "meta": {},
+      "code": "field_unknown",
+      "detail": "Unknown field",
+      "meta": {
+        "allowed": [
+          "bio",
+          "website"
+        ],
+        "field": "email"
+      },
       "path": [
         "user",
         "email"
       ],
       "pointer": "/user/email"
+    },
+    {
+      "code": "field_unknown",
+      "detail": "Unknown field",
+      "meta": {
+        "allowed": [
+          "bio",
+          "website"
+        ],
+        "field": "username"
+      },
+      "path": [
+        "user",
+        "username"
+      ],
+      "pointer": "/user/username"
     }
   ],
-  "layer": "domain"
+  "layer": "contract"
 }
 ```
 
@@ -243,11 +301,14 @@ Content-Type: application/json
 {
   "issues": [
     {
-      "code": "field_missing",
-      "detail": "Required",
+      "code": "field_unknown",
+      "detail": "Unknown field",
       "meta": {
-        "field": "email",
-        "type": "string"
+        "allowed": [
+          "bio",
+          "website"
+        ],
+        "field": "email"
       },
       "path": [
         "user",
@@ -256,11 +317,14 @@ Content-Type: application/json
       "pointer": "/user/email"
     },
     {
-      "code": "field_missing",
-      "detail": "Required",
+      "code": "field_unknown",
+      "detail": "Unknown field",
       "meta": {
-        "field": "username",
-        "type": "string"
+        "allowed": [
+          "bio",
+          "website"
+        ],
+        "field": "username"
       },
       "path": [
         "user",
@@ -296,37 +360,61 @@ Content-Type: application/json
 }
 ```
 
-**Response** `422`
+**Response** `400`
 
 ```json
 {
   "issues": [
     {
-      "code": "max",
-      "detail": "Too long",
+      "code": "field_unknown",
+      "detail": "Unknown field",
       "meta": {
-        "max": 500
+        "allowed": [
+          "bio",
+          "website"
+        ],
+        "field": "email"
       },
       "path": [
         "user",
-        "profile",
-        "bio"
+        "email"
       ],
-      "pointer": "/user/profile/bio"
+      "pointer": "/user/email"
     },
     {
-      "code": "invalid",
-      "detail": "Invalid",
-      "meta": {},
+      "code": "field_unknown",
+      "detail": "Unknown field",
+      "meta": {
+        "allowed": [
+          "bio",
+          "website"
+        ],
+        "field": "username"
+      },
       "path": [
         "user",
-        "profile",
-        "website"
+        "username"
       ],
-      "pointer": "/user/profile/website"
+      "pointer": "/user/username"
+    },
+    {
+      "code": "field_unknown",
+      "detail": "Unknown field",
+      "meta": {
+        "allowed": [
+          "bio",
+          "website"
+        ],
+        "field": "profile"
+      },
+      "path": [
+        "user",
+        "profile"
+      ],
+      "pointer": "/user/profile"
     }
   ],
-  "layer": "domain"
+  "layer": "contract"
 }
 ```
 
@@ -364,36 +452,61 @@ Content-Type: application/json
 }
 ```
 
-**Response** `201`
+**Response** `400`
 
 ```json
 {
-  "user": {
-    "id": "4448fe72-0e01-5b7d-962d-1a20ce251a01",
-    "createdAt": "2024-01-01T12:00:00.000Z",
-    "updatedAt": "2024-01-01T12:00:00.000Z",
-    "email": "deep@example.com",
-    "username": "deepuser",
-    "profile": null,
-    "posts": [
-      {
-        "id": "f79aecb1-8fa0-5c07-8478-508eb2320f28",
-        "title": "My First Post",
-        "comments": [
-          {
-            "id": "59e8d0c6-28d3-518c-a286-d8e2dd65062a",
-            "body": "Great post!",
-            "author": "Jane"
-          },
-          {
-            "id": "f3484847-e838-513d-8b33-1dd8a97dcb44",
-            "body": "Thanks for sharing",
-            "author": "Bob"
-          }
-        ]
-      }
-    ]
-  }
+  "issues": [
+    {
+      "code": "field_unknown",
+      "detail": "Unknown field",
+      "meta": {
+        "allowed": [
+          "bio",
+          "website"
+        ],
+        "field": "email"
+      },
+      "path": [
+        "user",
+        "email"
+      ],
+      "pointer": "/user/email"
+    },
+    {
+      "code": "field_unknown",
+      "detail": "Unknown field",
+      "meta": {
+        "allowed": [
+          "bio",
+          "website"
+        ],
+        "field": "username"
+      },
+      "path": [
+        "user",
+        "username"
+      ],
+      "pointer": "/user/username"
+    },
+    {
+      "code": "field_unknown",
+      "detail": "Unknown field",
+      "meta": {
+        "allowed": [
+          "bio",
+          "website"
+        ],
+        "field": "posts"
+      },
+      "path": [
+        "user",
+        "posts"
+      ],
+      "pointer": "/user/posts"
+    }
+  ],
+  "layer": "contract"
 }
 ```
 
@@ -427,57 +540,61 @@ Content-Type: application/json
 }
 ```
 
-**Response** `422`
+**Response** `400`
 
 ```json
 {
   "issues": [
     {
-      "code": "min",
-      "detail": "Too short",
+      "code": "field_unknown",
+      "detail": "Unknown field",
       "meta": {
-        "min": 1
+        "allowed": [
+          "bio",
+          "website"
+        ],
+        "field": "email"
       },
       "path": [
         "user",
-        "posts",
-        "0",
-        "comments",
-        "0",
-        "body"
+        "email"
       ],
-      "pointer": "/user/posts/0/comments/0/body"
+      "pointer": "/user/email"
     },
     {
-      "code": "required",
-      "detail": "Required",
-      "meta": {},
+      "code": "field_unknown",
+      "detail": "Unknown field",
+      "meta": {
+        "allowed": [
+          "bio",
+          "website"
+        ],
+        "field": "username"
+      },
       "path": [
         "user",
-        "posts",
-        "0",
-        "comments",
-        "0",
-        "body"
+        "username"
       ],
-      "pointer": "/user/posts/0/comments/0/body"
+      "pointer": "/user/username"
     },
     {
-      "code": "required",
-      "detail": "Required",
-      "meta": {},
+      "code": "field_unknown",
+      "detail": "Unknown field",
+      "meta": {
+        "allowed": [
+          "bio",
+          "website"
+        ],
+        "field": "posts"
+      },
       "path": [
         "user",
-        "posts",
-        "0",
-        "comments",
-        "0",
-        "author"
+        "posts"
       ],
-      "pointer": "/user/posts/0/comments/0/author"
+      "pointer": "/user/posts"
     }
   ],
-  "layer": "domain"
+  "layer": "contract"
 }
 ```
 

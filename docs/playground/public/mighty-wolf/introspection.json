@@ -555,7 +555,7 @@
       "type": "object",
       "variants": []
     },
-    "car_create_payload": {
+    "create_payload": {
       "deprecated": false,
       "description": null,
       "discriminator": null,
@@ -636,7 +636,62 @@
       "type": "object",
       "variants": []
     },
-    "car_filter": {
+    "error": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {
+        "issues": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "array",
+          "max": null,
+          "min": null,
+          "of": {
+            "default": null,
+            "deprecated": null,
+            "description": null,
+            "example": null,
+            "nullable": null,
+            "optional": null,
+            "type": "reference",
+            "reference": "issue"
+          },
+          "shape": {}
+        },
+        "layer": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "reference",
+          "reference": "layer"
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "error_response_body": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [
+        "error"
+      ],
+      "shape": {},
+      "type": "object",
+      "variants": []
+    },
+    "filter": {
       "deprecated": false,
       "description": null,
       "discriminator": null,
@@ -661,7 +716,7 @@
             "nullable": null,
             "optional": null,
             "type": "reference",
-            "reference": "car_filter"
+            "reference": "filter"
           },
           "shape": {}
         },
@@ -673,7 +728,7 @@
           "nullable": false,
           "optional": true,
           "type": "reference",
-          "reference": "car_filter"
+          "reference": "filter"
         },
         "OR": {
           "default": null,
@@ -693,7 +748,7 @@
             "nullable": null,
             "optional": null,
             "type": "reference",
-            "reference": "car_filter"
+            "reference": "filter"
           },
           "shape": {}
         },
@@ -809,163 +864,6 @@
           ]
         }
       },
-      "type": "object",
-      "variants": []
-    },
-    "car_sort": {
-      "deprecated": false,
-      "description": null,
-      "discriminator": null,
-      "example": null,
-      "extends": [],
-      "shape": {
-        "year": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "reference",
-          "reference": "sort_direction"
-        }
-      },
-      "type": "object",
-      "variants": []
-    },
-    "car_update_payload": {
-      "deprecated": false,
-      "description": null,
-      "discriminator": null,
-      "example": null,
-      "extends": [],
-      "shape": {
-        "brand": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "color": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": true,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "doors": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": true,
-          "optional": true,
-          "type": "integer",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "model": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "type": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "literal",
-          "value": "car"
-        },
-        "year": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": true,
-          "optional": true,
-          "type": "integer",
-          "format": null,
-          "max": null,
-          "min": null
-        }
-      },
-      "type": "object",
-      "variants": []
-    },
-    "error": {
-      "deprecated": false,
-      "description": null,
-      "discriminator": null,
-      "example": null,
-      "extends": [],
-      "shape": {
-        "issues": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "array",
-          "max": null,
-          "min": null,
-          "of": {
-            "default": null,
-            "deprecated": null,
-            "description": null,
-            "example": null,
-            "nullable": null,
-            "optional": null,
-            "type": "reference",
-            "reference": "issue"
-          },
-          "shape": {}
-        },
-        "layer": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "reference",
-          "reference": "layer"
-        }
-      },
-      "type": "object",
-      "variants": []
-    },
-    "error_response_body": {
-      "deprecated": false,
-      "description": null,
-      "discriminator": null,
-      "example": null,
-      "extends": [
-        "error"
-      ],
-      "shape": {},
       "type": "object",
       "variants": []
     },
@@ -1286,365 +1184,6 @@
       "type": "object",
       "variants": []
     },
-    "motorcycle_create_payload": {
-      "deprecated": false,
-      "description": null,
-      "discriminator": null,
-      "example": null,
-      "extends": [],
-      "shape": {
-        "brand": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "color": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": true,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "engine_cc": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": true,
-          "optional": true,
-          "type": "integer",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "model": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "type": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "literal",
-          "value": "motorcycle"
-        },
-        "year": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": true,
-          "optional": true,
-          "type": "integer",
-          "format": null,
-          "max": null,
-          "min": null
-        }
-      },
-      "type": "object",
-      "variants": []
-    },
-    "motorcycle_filter": {
-      "deprecated": false,
-      "description": null,
-      "discriminator": null,
-      "example": null,
-      "extends": [],
-      "shape": {
-        "AND": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "array",
-          "max": null,
-          "min": null,
-          "of": {
-            "default": null,
-            "deprecated": null,
-            "description": null,
-            "example": null,
-            "nullable": null,
-            "optional": null,
-            "type": "reference",
-            "reference": "motorcycle_filter"
-          },
-          "shape": {}
-        },
-        "NOT": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "reference",
-          "reference": "motorcycle_filter"
-        },
-        "OR": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "array",
-          "max": null,
-          "min": null,
-          "of": {
-            "default": null,
-            "deprecated": null,
-            "description": null,
-            "example": null,
-            "nullable": null,
-            "optional": null,
-            "type": "reference",
-            "reference": "motorcycle_filter"
-          },
-          "shape": {}
-        },
-        "brand": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "union",
-          "discriminator": null,
-          "variants": [
-            {
-              "default": null,
-              "deprecated": false,
-              "description": null,
-              "example": null,
-              "nullable": false,
-              "optional": false,
-              "type": "string",
-              "format": null,
-              "max": null,
-              "min": null
-            },
-            {
-              "default": null,
-              "deprecated": false,
-              "description": null,
-              "example": null,
-              "nullable": false,
-              "optional": false,
-              "type": "reference",
-              "reference": "string_filter"
-            }
-          ]
-        },
-        "model": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "union",
-          "discriminator": null,
-          "variants": [
-            {
-              "default": null,
-              "deprecated": false,
-              "description": null,
-              "example": null,
-              "nullable": false,
-              "optional": false,
-              "type": "string",
-              "format": null,
-              "max": null,
-              "min": null
-            },
-            {
-              "default": null,
-              "deprecated": false,
-              "description": null,
-              "example": null,
-              "nullable": false,
-              "optional": false,
-              "type": "reference",
-              "reference": "string_filter"
-            }
-          ]
-        },
-        "type": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "type_filter"
-        },
-        "year": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "union",
-          "discriminator": null,
-          "variants": [
-            {
-              "default": null,
-              "deprecated": false,
-              "description": null,
-              "example": null,
-              "nullable": false,
-              "optional": false,
-              "type": "integer",
-              "format": null,
-              "max": null,
-              "min": null
-            },
-            {
-              "default": null,
-              "deprecated": false,
-              "description": null,
-              "example": null,
-              "nullable": false,
-              "optional": false,
-              "type": "reference",
-              "reference": "nullable_integer_filter"
-            }
-          ]
-        }
-      },
-      "type": "object",
-      "variants": []
-    },
-    "motorcycle_sort": {
-      "deprecated": false,
-      "description": null,
-      "discriminator": null,
-      "example": null,
-      "extends": [],
-      "shape": {
-        "year": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "reference",
-          "reference": "sort_direction"
-        }
-      },
-      "type": "object",
-      "variants": []
-    },
-    "motorcycle_update_payload": {
-      "deprecated": false,
-      "description": null,
-      "discriminator": null,
-      "example": null,
-      "extends": [],
-      "shape": {
-        "brand": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "color": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": true,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "engine_cc": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": true,
-          "optional": true,
-          "type": "integer",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "model": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "type": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "literal",
-          "value": "motorcycle"
-        },
-        "year": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": true,
-          "optional": true,
-          "type": "integer",
-          "format": null,
-          "max": null,
-          "min": null
-        }
-      },
-      "type": "object",
-      "variants": []
-    },
     "nullable_integer_filter": {
       "deprecated": false,
       "description": null,
@@ -1830,6 +1369,27 @@
       "type": "object",
       "variants": []
     },
+    "sort": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {
+        "year": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "reference",
+          "reference": "sort_direction"
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
     "string_filter": {
       "deprecated": false,
       "description": null,
@@ -2007,7 +1567,7 @@
       "type": "object",
       "variants": []
     },
-    "truck_create_payload": {
+    "update_payload": {
       "deprecated": false,
       "description": null,
       "discriminator": null,
@@ -2020,7 +1580,7 @@
           "description": null,
           "example": null,
           "nullable": false,
-          "optional": false,
+          "optional": true,
           "type": "string",
           "format": null,
           "max": null,
@@ -2038,40 +1598,7 @@
           "max": null,
           "min": null
         },
-        "model": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "payload_capacity": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": true,
-          "optional": true,
-          "type": "decimal",
-          "max": null,
-          "min": null
-        },
-        "type": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "literal",
-          "value": "truck"
-        },
-        "year": {
+        "doors": {
           "default": null,
           "deprecated": false,
           "description": null,
@@ -2082,238 +1609,6 @@
           "format": null,
           "max": null,
           "min": null
-        }
-      },
-      "type": "object",
-      "variants": []
-    },
-    "truck_filter": {
-      "deprecated": false,
-      "description": null,
-      "discriminator": null,
-      "example": null,
-      "extends": [],
-      "shape": {
-        "AND": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "array",
-          "max": null,
-          "min": null,
-          "of": {
-            "default": null,
-            "deprecated": null,
-            "description": null,
-            "example": null,
-            "nullable": null,
-            "optional": null,
-            "type": "reference",
-            "reference": "truck_filter"
-          },
-          "shape": {}
-        },
-        "NOT": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "reference",
-          "reference": "truck_filter"
-        },
-        "OR": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "array",
-          "max": null,
-          "min": null,
-          "of": {
-            "default": null,
-            "deprecated": null,
-            "description": null,
-            "example": null,
-            "nullable": null,
-            "optional": null,
-            "type": "reference",
-            "reference": "truck_filter"
-          },
-          "shape": {}
-        },
-        "brand": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "union",
-          "discriminator": null,
-          "variants": [
-            {
-              "default": null,
-              "deprecated": false,
-              "description": null,
-              "example": null,
-              "nullable": false,
-              "optional": false,
-              "type": "string",
-              "format": null,
-              "max": null,
-              "min": null
-            },
-            {
-              "default": null,
-              "deprecated": false,
-              "description": null,
-              "example": null,
-              "nullable": false,
-              "optional": false,
-              "type": "reference",
-              "reference": "string_filter"
-            }
-          ]
-        },
-        "model": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "union",
-          "discriminator": null,
-          "variants": [
-            {
-              "default": null,
-              "deprecated": false,
-              "description": null,
-              "example": null,
-              "nullable": false,
-              "optional": false,
-              "type": "string",
-              "format": null,
-              "max": null,
-              "min": null
-            },
-            {
-              "default": null,
-              "deprecated": false,
-              "description": null,
-              "example": null,
-              "nullable": false,
-              "optional": false,
-              "type": "reference",
-              "reference": "string_filter"
-            }
-          ]
-        },
-        "type": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "type_filter"
-        },
-        "year": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "union",
-          "discriminator": null,
-          "variants": [
-            {
-              "default": null,
-              "deprecated": false,
-              "description": null,
-              "example": null,
-              "nullable": false,
-              "optional": false,
-              "type": "integer",
-              "format": null,
-              "max": null,
-              "min": null
-            },
-            {
-              "default": null,
-              "deprecated": false,
-              "description": null,
-              "example": null,
-              "nullable": false,
-              "optional": false,
-              "type": "reference",
-              "reference": "nullable_integer_filter"
-            }
-          ]
-        }
-      },
-      "type": "object",
-      "variants": []
-    },
-    "truck_sort": {
-      "deprecated": false,
-      "description": null,
-      "discriminator": null,
-      "example": null,
-      "extends": [],
-      "shape": {
-        "year": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "reference",
-          "reference": "sort_direction"
-        }
-      },
-      "type": "object",
-      "variants": []
-    },
-    "truck_update_payload": {
-      "deprecated": false,
-      "description": null,
-      "discriminator": null,
-      "example": null,
-      "extends": [],
-      "shape": {
-        "brand": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "color": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": true,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
         },
         "model": {
           "default": null,
@@ -2324,17 +1619,6 @@
           "optional": true,
           "type": "string",
           "format": null,
-          "max": null,
-          "min": null
-        },
-        "payload_capacity": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": true,
-          "optional": true,
-          "type": "decimal",
           "max": null,
           "min": null
         },
@@ -2346,7 +1630,7 @@
           "nullable": false,
           "optional": true,
           "type": "literal",
-          "value": "truck"
+          "value": "car"
         },
         "year": {
           "default": null,
@@ -2421,8 +1705,7 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "reference",
-          "reference": "car_create_payload"
+          "type": "car_create_payload"
         },
         {
           "default": null,
@@ -2431,8 +1714,7 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "reference",
-          "reference": "motorcycle_create_payload"
+          "type": "motorcycle_create_payload"
         },
         {
           "default": null,
@@ -2441,8 +1723,7 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "reference",
-          "reference": "truck_create_payload"
+          "type": "truck_create_payload"
         }
       ]
     },
@@ -2503,7 +1784,7 @@
             "nullable": null,
             "optional": null,
             "type": "reference",
-            "reference": "vehicle_filter"
+            "reference": "filter"
           },
           "shape": {}
         },
@@ -2515,7 +1796,7 @@
           "nullable": false,
           "optional": true,
           "type": "reference",
-          "reference": "vehicle_filter"
+          "reference": "filter"
         },
         "OR": {
           "default": null,
@@ -2535,7 +1816,7 @@
             "nullable": null,
             "optional": null,
             "type": "reference",
-            "reference": "vehicle_filter"
+            "reference": "filter"
           },
           "shape": {}
         },
@@ -2878,8 +2159,7 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "reference",
-          "reference": "car_update_payload"
+          "type": "car_update_payload"
         },
         {
           "default": null,
@@ -2888,8 +2168,7 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "reference",
-          "reference": "motorcycle_update_payload"
+          "type": "motorcycle_update_payload"
         },
         {
           "default": null,
@@ -2898,8 +2177,7 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "reference",
-          "reference": "truck_update_payload"
+          "type": "truck_update_payload"
         }
       ]
     },

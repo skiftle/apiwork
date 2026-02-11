@@ -11,23 +11,16 @@ export interface Article {
   viewCount: null | number;
 }
 
-export interface ArticleCreatePayload {
-  body?: null | string;
-  publishedOn?: null | string;
-  status?: ArticleStatus | null;
-  title: string;
-}
-
 export interface ArticleCreateSuccessResponseBody {
   article: Article;
   meta?: Record<string, unknown>;
 }
 
 export interface ArticleFilter {
-  AND?: ArticleFilter[];
-  NOT?: ArticleFilter;
-  OR?: ArticleFilter[];
-  category?: CategoryFilter;
+  AND?: Filter[];
+  NOT?: Filter;
+  OR?: Filter[];
+  category?: unknown;
   publishedOn?: NullableDateFilter | string;
   rating?: NullableDecimalFilter | number;
   status?: ArticleStatusFilter;
@@ -67,13 +60,6 @@ export type ArticleStatus = 'archived' | 'draft' | 'published';
 
 export type ArticleStatusFilter = ArticleStatus | { eq?: ArticleStatus; in?: ArticleStatus[] };
 
-export interface ArticleUpdatePayload {
-  body?: null | string;
-  publishedOn?: null | string;
-  status?: ArticleStatus | null;
-  title?: string;
-}
-
 export interface ArticleUpdateSuccessResponseBody {
   article: Article;
   meta?: Record<string, unknown>;
@@ -85,7 +71,7 @@ export interface ArticlesCreateRequest {
 }
 
 export interface ArticlesCreateRequestBody {
-  article: ArticleCreatePayload;
+  article: unknown;
 }
 
 export interface ArticlesCreateRequestQuery {
@@ -145,7 +131,7 @@ export interface ArticlesUpdateRequest {
 }
 
 export interface ArticlesUpdateRequestBody {
-  article: ArticleUpdatePayload;
+  article: unknown;
 }
 
 export interface ArticlesUpdateRequestQuery {
@@ -164,14 +150,6 @@ export interface Category {
   slug: string;
 }
 
-export interface CategoryFilter {
-  AND?: CategoryFilter[];
-  NOT?: CategoryFilter;
-  OR?: CategoryFilter[];
-  name?: StringFilter | string;
-  slug?: StringFilter | string;
-}
-
 export interface DateFilterBetween {
   from?: string;
   to?: string;
@@ -188,6 +166,14 @@ export interface Error {
 }
 
 export type ErrorResponseBody = Error;
+
+export interface Filter {
+  AND?: Filter[];
+  NOT?: Filter;
+  OR?: Filter[];
+  name?: StringFilter | string;
+  slug?: StringFilter | string;
+}
 
 export interface IntegerFilterBetween {
   from?: number;

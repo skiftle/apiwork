@@ -6,13 +6,6 @@ export const LayerSchema = z.enum(['contract', 'domain', 'http']);
 
 export const SortDirectionSchema = z.enum(['asc', 'desc']);
 
-export const ArticleCreatePayloadSchema = z.object({
-  body: z.string().nullable().optional(),
-  publishedOn: z.iso.date().nullable().optional(),
-  status: ArticleStatusSchema.nullable().optional(),
-  title: z.string()
-});
-
 export const ArticleIncludeSchema = z.object({
   category: z.boolean().optional()
 });
@@ -34,13 +27,6 @@ export const ArticleStatusFilterSchema = z.union([
   ArticleStatusSchema,
   z.object({ eq: ArticleStatusSchema, in: z.array(ArticleStatusSchema) }).partial()
 ]);
-
-export const ArticleUpdatePayloadSchema = z.object({
-  body: z.string().nullable().optional(),
-  publishedOn: z.iso.date().nullable().optional(),
-  status: ArticleStatusSchema.nullable().optional(),
-  title: z.string().optional()
-});
 
 export const CategorySchema = z.object({
   id: z.string(),
@@ -138,10 +124,10 @@ export const ErrorSchema = z.object({
   layer: LayerSchema
 });
 
-export const CategoryFilterSchema: z.ZodType<CategoryFilter> = z.lazy(() => z.object({
-  AND: z.array(CategoryFilterSchema).optional(),
-  NOT: CategoryFilterSchema.optional(),
-  OR: z.array(CategoryFilterSchema).optional(),
+export const FilterSchema: z.ZodType<Filter> = z.lazy(() => z.object({
+  AND: z.array(FilterSchema).optional(),
+  NOT: FilterSchema.optional(),
+  OR: z.array(FilterSchema).optional(),
   name: z.union([z.string(), StringFilterSchema]).optional(),
   slug: z.union([z.string(), StringFilterSchema]).optional()
 }));
@@ -169,17 +155,17 @@ export const ArticleUpdateSuccessResponseBodySchema = z.object({
 
 export const ErrorResponseBodySchema = ErrorSchema;
 
-export const ArticleFilterSchema: z.ZodType<ArticleFilter> = z.lazy(() => z.object({
-  AND: z.array(ArticleFilterSchema).optional(),
-  NOT: ArticleFilterSchema.optional(),
-  OR: z.array(ArticleFilterSchema).optional(),
-  category: CategoryFilterSchema.optional(),
+export const ArticleFilterSchema = z.object({
+  AND: z.array(FilterSchema).optional(),
+  NOT: FilterSchema.optional(),
+  OR: z.array(FilterSchema).optional(),
+  category: z.unknown().optional(),
   publishedOn: z.union([z.iso.date(), NullableDateFilterSchema]).optional(),
   rating: z.union([z.number(), NullableDecimalFilterSchema]).optional(),
   status: ArticleStatusFilterSchema.optional(),
   title: z.union([z.string(), StringFilterSchema]).optional(),
   viewCount: z.union([z.number().int(), NullableIntegerFilterSchema]).optional()
-}));
+});
 
 export const ArticlesIndexRequestQuerySchema = z.object({
   filter: z.union([ArticleFilterSchema, z.array(ArticleFilterSchema)]).optional(),
@@ -217,7 +203,7 @@ export const ArticlesCreateRequestQuerySchema = z.object({
 });
 
 export const ArticlesCreateRequestBodySchema = z.object({
-  article: ArticleCreatePayloadSchema
+  article: z.unknown()
 });
 
 export const ArticlesCreateRequestSchema = z.object({
@@ -236,7 +222,7 @@ export const ArticlesUpdateRequestQuerySchema = z.object({
 });
 
 export const ArticlesUpdateRequestBodySchema = z.object({
-  article: ArticleUpdatePayloadSchema
+  article: z.unknown()
 });
 
 export const ArticlesUpdateRequestSchema = z.object({
@@ -273,23 +259,16 @@ export interface Article {
   viewCount: null | number;
 }
 
-export interface ArticleCreatePayload {
-  body?: null | string;
-  publishedOn?: null | string;
-  status?: ArticleStatus | null;
-  title: string;
-}
-
 export interface ArticleCreateSuccessResponseBody {
   article: Article;
   meta?: Record<string, unknown>;
 }
 
 export interface ArticleFilter {
-  AND?: ArticleFilter[];
-  NOT?: ArticleFilter;
-  OR?: ArticleFilter[];
-  category?: CategoryFilter;
+  AND?: Filter[];
+  NOT?: Filter;
+  OR?: Filter[];
+  category?: unknown;
   publishedOn?: NullableDateFilter | string;
   rating?: NullableDecimalFilter | number;
   status?: ArticleStatusFilter;
@@ -329,13 +308,6 @@ export type ArticleStatus = 'archived' | 'draft' | 'published';
 
 export type ArticleStatusFilter = ArticleStatus | { eq?: ArticleStatus; in?: ArticleStatus[] };
 
-export interface ArticleUpdatePayload {
-  body?: null | string;
-  publishedOn?: null | string;
-  status?: ArticleStatus | null;
-  title?: string;
-}
-
 export interface ArticleUpdateSuccessResponseBody {
   article: Article;
   meta?: Record<string, unknown>;
@@ -347,7 +319,7 @@ export interface ArticlesCreateRequest {
 }
 
 export interface ArticlesCreateRequestBody {
-  article: ArticleCreatePayload;
+  article: unknown;
 }
 
 export interface ArticlesCreateRequestQuery {
@@ -407,7 +379,7 @@ export interface ArticlesUpdateRequest {
 }
 
 export interface ArticlesUpdateRequestBody {
-  article: ArticleUpdatePayload;
+  article: unknown;
 }
 
 export interface ArticlesUpdateRequestQuery {
@@ -426,14 +398,6 @@ export interface Category {
   slug: string;
 }
 
-export interface CategoryFilter {
-  AND?: CategoryFilter[];
-  NOT?: CategoryFilter;
-  OR?: CategoryFilter[];
-  name?: StringFilter | string;
-  slug?: StringFilter | string;
-}
-
 export interface DateFilterBetween {
   from?: string;
   to?: string;
@@ -450,6 +414,14 @@ export interface Error {
 }
 
 export type ErrorResponseBody = Error;
+
+export interface Filter {
+  AND?: Filter[];
+  NOT?: Filter;
+  OR?: Filter[];
+  name?: StringFilter | string;
+  slug?: StringFilter | string;
+}
 
 export interface IntegerFilterBetween {
   from?: number;

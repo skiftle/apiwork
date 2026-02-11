@@ -15,13 +15,13 @@
   "response": {
     "body": {
       "vehicle": {
-        "type": "motorcycle",
-        "id": "5f50c425-905a-59fb-aed6-64946b81714e",
+        "type": "car",
+        "id": "c325d8ae-b611-5fb6-b350-d3416209d5b3",
         "brand": "Harley-Davidson",
         "model": "Street Glide",
         "year": 2023,
         "color": "black",
-        "engineCc": null
+        "doors": null
       }
     },
     "status": 201

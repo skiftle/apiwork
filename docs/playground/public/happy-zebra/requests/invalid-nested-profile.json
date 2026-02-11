@@ -17,32 +17,56 @@
     "body": {
       "issues": [
         {
-          "code": "max",
-          "detail": "Too long",
+          "code": "field_unknown",
+          "detail": "Unknown field",
           "meta": {
-            "max": 500
+            "allowed": [
+              "bio",
+              "website"
+            ],
+            "field": "email"
           },
           "path": [
             "user",
-            "profile",
-            "bio"
+            "email"
           ],
-          "pointer": "/user/profile/bio"
+          "pointer": "/user/email"
         },
         {
-          "code": "invalid",
-          "detail": "Invalid",
-          "meta": {},
+          "code": "field_unknown",
+          "detail": "Unknown field",
+          "meta": {
+            "allowed": [
+              "bio",
+              "website"
+            ],
+            "field": "username"
+          },
           "path": [
             "user",
-            "profile",
-            "website"
+            "username"
           ],
-          "pointer": "/user/profile/website"
+          "pointer": "/user/username"
+        },
+        {
+          "code": "field_unknown",
+          "detail": "Unknown field",
+          "meta": {
+            "allowed": [
+              "bio",
+              "website"
+            ],
+            "field": "profile"
+          },
+          "path": [
+            "user",
+            "profile"
+          ],
+          "pointer": "/user/profile"
         }
       ],
-      "layer": "domain"
+      "layer": "contract"
     },
-    "status": 422
+    "status": 400
   }
 }

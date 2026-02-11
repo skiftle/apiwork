@@ -56,8 +56,7 @@ paths:
           application/json:
             schema:
               properties:
-                user:
-                  "$ref": "#/components/schemas/userCreatePayload"
+                user: {}
               type: object
               required:
               - user
@@ -114,8 +113,7 @@ paths:
           application/json:
             schema:
               properties:
-                user:
-                  "$ref": "#/components/schemas/userUpdatePayload"
+                user: {}
               type: object
               required:
               - user
@@ -172,8 +170,7 @@ paths:
           application/json:
             schema:
               properties:
-                post:
-                  "$ref": "#/components/schemas/postCreatePayload"
+                post: {}
               type: object
               required:
               - post
@@ -220,8 +217,7 @@ paths:
           application/json:
             schema:
               properties:
-                post:
-                  "$ref": "#/components/schemas/postUpdatePayload"
+                post: {}
               type: object
               required:
               - post
@@ -273,8 +269,7 @@ paths:
           application/json:
             schema:
               properties:
-                comment:
-                  "$ref": "#/components/schemas/commentCreatePayload"
+                comment: {}
               type: object
               required:
               - comment
@@ -321,8 +316,7 @@ paths:
           application/json:
             schema:
               properties:
-                comment:
-                  "$ref": "#/components/schemas/commentUpdatePayload"
+                comment: {}
               type: object
               required:
               - comment
@@ -366,16 +360,6 @@ components:
       - author
       - body
       - id
-    commentCreatePayload:
-      properties:
-        author:
-          type: string
-        body:
-          type: string
-      type: object
-      required:
-      - author
-      - body
     commentCreateSuccessResponseBody:
       properties:
         comment:
@@ -401,54 +385,6 @@ components:
       required:
       - comments
       - pagination
-    commentNestedCreatePayload:
-      properties:
-        OP:
-          const: create
-          type: string
-        author:
-          type: string
-        body:
-          type: string
-        id:
-          type: string
-      type: object
-      required:
-      - author
-      - body
-    commentNestedDeletePayload:
-      properties:
-        OP:
-          const: delete
-          type: string
-        id:
-          type: string
-      type: object
-      required:
-      - id
-    commentNestedPayload:
-      oneOf:
-      - "$ref": "#/components/schemas/commentNestedCreatePayload"
-      - "$ref": "#/components/schemas/commentNestedUpdatePayload"
-      - "$ref": "#/components/schemas/commentNestedDeletePayload"
-      discriminator:
-        mapping:
-          create: "#/components/schemas/commentNestedCreatePayload"
-          update: "#/components/schemas/commentNestedUpdatePayload"
-          delete: "#/components/schemas/commentNestedDeletePayload"
-        propertyName: OP
-    commentNestedUpdatePayload:
-      properties:
-        OP:
-          const: update
-          type: string
-        author:
-          type: string
-        body:
-          type: string
-        id:
-          type: string
-      type: object
     commentPage:
       properties:
         number:
@@ -469,13 +405,6 @@ components:
       type: object
       required:
       - comment
-    commentUpdatePayload:
-      properties:
-        author:
-          type: string
-        body:
-          type: string
-      type: object
     commentUpdateSuccessResponseBody:
       properties:
         comment:
@@ -562,17 +491,6 @@ components:
       - comments
       - id
       - title
-    postCreatePayload:
-      properties:
-        comments:
-          items:
-            "$ref": "#/components/schemas/commentNestedPayload"
-          type: array
-        title:
-          type: string
-      type: object
-      required:
-      - title
     postCreateSuccessResponseBody:
       properties:
         meta:
@@ -598,57 +516,6 @@ components:
       required:
       - pagination
       - posts
-    postNestedCreatePayload:
-      properties:
-        OP:
-          const: create
-          type: string
-        comments:
-          items:
-            "$ref": "#/components/schemas/commentNestedPayload"
-          type: array
-        id:
-          type: string
-        title:
-          type: string
-      type: object
-      required:
-      - title
-    postNestedDeletePayload:
-      properties:
-        OP:
-          const: delete
-          type: string
-        id:
-          type: string
-      type: object
-      required:
-      - id
-    postNestedPayload:
-      oneOf:
-      - "$ref": "#/components/schemas/postNestedCreatePayload"
-      - "$ref": "#/components/schemas/postNestedUpdatePayload"
-      - "$ref": "#/components/schemas/postNestedDeletePayload"
-      discriminator:
-        mapping:
-          create: "#/components/schemas/postNestedCreatePayload"
-          update: "#/components/schemas/postNestedUpdatePayload"
-          delete: "#/components/schemas/postNestedDeletePayload"
-        propertyName: OP
-    postNestedUpdatePayload:
-      properties:
-        OP:
-          const: update
-          type: string
-        comments:
-          items:
-            "$ref": "#/components/schemas/commentNestedPayload"
-          type: array
-        id:
-          type: string
-        title:
-          type: string
-      type: object
     postPage:
       properties:
         number:
@@ -669,15 +536,6 @@ components:
       type: object
       required:
       - post
-    postUpdatePayload:
-      properties:
-        comments:
-          items:
-            "$ref": "#/components/schemas/commentNestedPayload"
-          type: array
-        title:
-          type: string
-      type: object
     postUpdateSuccessResponseBody:
       properties:
         meta:
@@ -715,64 +573,6 @@ components:
       - id
       - updatedAt
       - website
-    profileInclude:
-      properties:
-        user:
-          type: boolean
-      type: object
-    profileNestedCreatePayload:
-      properties:
-        OP:
-          const: create
-          type: string
-        bio:
-          type:
-          - string
-          - 'null'
-        id:
-          type: string
-        website:
-          type:
-          - string
-          - 'null'
-      type: object
-    profileNestedDeletePayload:
-      properties:
-        OP:
-          const: delete
-          type: string
-        id:
-          type: string
-      type: object
-      required:
-      - id
-    profileNestedPayload:
-      oneOf:
-      - "$ref": "#/components/schemas/profileNestedCreatePayload"
-      - "$ref": "#/components/schemas/profileNestedUpdatePayload"
-      - "$ref": "#/components/schemas/profileNestedDeletePayload"
-      discriminator:
-        mapping:
-          create: "#/components/schemas/profileNestedCreatePayload"
-          update: "#/components/schemas/profileNestedUpdatePayload"
-          delete: "#/components/schemas/profileNestedDeletePayload"
-        propertyName: OP
-    profileNestedUpdatePayload:
-      properties:
-        OP:
-          const: update
-          type: string
-        bio:
-          type:
-          - string
-          - 'null'
-        id:
-          type: string
-        website:
-          type:
-          - string
-          - 'null'
-      type: object
     stringFilter:
       properties:
         contains:
@@ -817,22 +617,6 @@ components:
       - profile
       - updatedAt
       - username
-    userCreatePayload:
-      properties:
-        email:
-          type: string
-        posts:
-          items:
-            "$ref": "#/components/schemas/postNestedPayload"
-          type: array
-        profile:
-          "$ref": "#/components/schemas/profileNestedPayload"
-        username:
-          type: string
-      type: object
-      required:
-      - email
-      - username
     userCreateSuccessResponseBody:
       properties:
         meta:
@@ -866,8 +650,8 @@ components:
       type: object
     userInclude:
       properties:
-        profile:
-          "$ref": "#/components/schemas/profileInclude"
+        posts: {}
+        profile: {}
       type: object
     userIndexSuccessResponseBody:
       properties:
@@ -915,19 +699,6 @@ components:
           enum:
           - asc
           - desc
-          type: string
-      type: object
-    userUpdatePayload:
-      properties:
-        email:
-          type: string
-        posts:
-          items:
-            "$ref": "#/components/schemas/postNestedPayload"
-          type: array
-        profile:
-          "$ref": "#/components/schemas/profileNestedPayload"
-        username:
           type: string
       type: object
     userUpdateSuccessResponseBody:

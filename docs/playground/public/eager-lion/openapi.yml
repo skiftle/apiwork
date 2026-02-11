@@ -240,8 +240,7 @@ components:
           - 'null'
           format: date
         lines:
-          items:
-            "$ref": "#/components/schemas/lineNestedPayload"
+          items: {}
           type: array
         notes:
           type:
@@ -352,8 +351,7 @@ components:
           - 'null'
           format: date
         lines:
-          items:
-            "$ref": "#/components/schemas/lineNestedPayload"
+          items: {}
           type: array
         notes:
           type:
@@ -416,67 +414,6 @@ components:
       - id
       - price
       - quantity
-    lineNestedCreatePayload:
-      properties:
-        OP:
-          const: create
-          type: string
-        description:
-          type:
-          - string
-          - 'null'
-        id:
-          type: string
-        price:
-          type:
-          - number
-          - 'null'
-        quantity:
-          type:
-          - integer
-          - 'null'
-      type: object
-    lineNestedDeletePayload:
-      properties:
-        OP:
-          const: delete
-          type: string
-        id:
-          type: string
-      type: object
-      required:
-      - id
-    lineNestedPayload:
-      oneOf:
-      - "$ref": "#/components/schemas/lineNestedCreatePayload"
-      - "$ref": "#/components/schemas/lineNestedUpdatePayload"
-      - "$ref": "#/components/schemas/lineNestedDeletePayload"
-      discriminator:
-        mapping:
-          create: "#/components/schemas/lineNestedCreatePayload"
-          update: "#/components/schemas/lineNestedUpdatePayload"
-          delete: "#/components/schemas/lineNestedDeletePayload"
-        propertyName: OP
-    lineNestedUpdatePayload:
-      properties:
-        OP:
-          const: update
-          type: string
-        description:
-          type:
-          - string
-          - 'null'
-        id:
-          type: string
-        price:
-          type:
-          - number
-          - 'null'
-        quantity:
-          type:
-          - integer
-          - 'null'
-      type: object
     nullableStringFilter:
       properties:
         contains:

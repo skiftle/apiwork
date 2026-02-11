@@ -89,35 +89,6 @@ export interface TaskArchiveSuccessResponseBody {
   task: Task;
 }
 
-/** A task representing work to be completed */
-export interface TaskCreatePayload {
-  /**
-   * Detailed description of what needs to be done
-   * @example "Add OAuth2 login support for Google and GitHub providers"
-   */
-  description?: null | string;
-  /**
-   * Target date for task completion
-   * @example "2024-02-01T00:00:00Z"
-   */
-  dueDate?: null | string;
-  /**
-   * Priority level for task ordering
-   * @example "high"
-   */
-  priority?: TaskPriority | null;
-  /**
-   * Current status of the task
-   * @example "pending"
-   */
-  status?: TaskStatus | null;
-  /**
-   * Short title describing the task
-   * @example "Implement user authentication"
-   */
-  title: string;
-}
-
 export interface TaskCreateSuccessResponseBody {
   meta?: Record<string, unknown>;
   task: Task;
@@ -165,35 +136,6 @@ export type TaskStatus = 'archived' | 'completed' | 'in_progress' | 'pending';
 
 export type TaskStatusFilter = TaskStatus | { eq?: TaskStatus; in?: TaskStatus[] };
 
-/** A task representing work to be completed */
-export interface TaskUpdatePayload {
-  /**
-   * Detailed description of what needs to be done
-   * @example "Add OAuth2 login support for Google and GitHub providers"
-   */
-  description?: null | string;
-  /**
-   * Target date for task completion
-   * @example "2024-02-01T00:00:00Z"
-   */
-  dueDate?: null | string;
-  /**
-   * Priority level for task ordering
-   * @example "high"
-   */
-  priority?: TaskPriority | null;
-  /**
-   * Current status of the task
-   * @example "pending"
-   */
-  status?: TaskStatus | null;
-  /**
-   * Short title describing the task
-   * @example "Implement user authentication"
-   */
-  title?: string;
-}
-
 export interface TaskUpdateSuccessResponseBody {
   meta?: Record<string, unknown>;
   task: Task;
@@ -219,7 +161,7 @@ export interface TasksCreateRequest {
 }
 
 export interface TasksCreateRequestBody {
-  task: TaskCreatePayload;
+  task: unknown;
 }
 
 export interface TasksCreateRequestQuery {
@@ -279,7 +221,7 @@ export interface TasksUpdateRequest {
 }
 
 export interface TasksUpdateRequestBody {
-  task: TaskUpdatePayload;
+  task: unknown;
 }
 
 export interface TasksUpdateRequestQuery {

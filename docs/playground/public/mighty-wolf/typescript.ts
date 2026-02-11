@@ -8,30 +8,22 @@ export interface Car {
   year: null | number;
 }
 
-export interface CarCreatePayload {
-  brand: string;
-  color?: null | string;
-  doors?: null | number;
-  model: string;
-  type: 'car';
-  year?: null | number;
-}
-
-export interface CarUpdatePayload {
-  brand?: string;
-  color?: null | string;
-  doors?: null | number;
-  model?: string;
-  type?: 'car';
-  year?: null | number;
-}
-
 export interface Error {
   issues: Issue[];
   layer: Layer;
 }
 
 export type ErrorResponseBody = Error;
+
+export interface Filter {
+  AND?: Filter[];
+  NOT?: Filter;
+  OR?: Filter[];
+  brand?: StringFilter | string;
+  model?: StringFilter | string;
+  type?: unknown;
+  year?: NullableIntegerFilter | number;
+}
 
 export interface IntegerFilterBetween {
   from?: number;
@@ -56,24 +48,6 @@ export interface Motorcycle {
   model: string;
   type: string;
   year: null | number;
-}
-
-export interface MotorcycleCreatePayload {
-  brand: string;
-  color?: null | string;
-  engineCc?: null | number;
-  model: string;
-  type: 'motorcycle';
-  year?: null | number;
-}
-
-export interface MotorcycleUpdatePayload {
-  brand?: string;
-  color?: null | string;
-  engineCc?: null | number;
-  model?: string;
-  type?: 'motorcycle';
-  year?: null | number;
 }
 
 export interface NullableIntegerFilter {
@@ -115,24 +89,6 @@ export interface Truck {
   year: null | number;
 }
 
-export interface TruckCreatePayload {
-  brand: string;
-  color?: null | string;
-  model: string;
-  payloadCapacity?: null | number;
-  type: 'truck';
-  year?: null | number;
-}
-
-export interface TruckUpdatePayload {
-  brand?: string;
-  color?: null | string;
-  model?: string;
-  payloadCapacity?: null | number;
-  type?: 'truck';
-  year?: null | number;
-}
-
 export type Vehicle = Car | Motorcycle | Truck;
 
 export interface VehicleCreateSuccessResponseBody {
@@ -141,9 +97,9 @@ export interface VehicleCreateSuccessResponseBody {
 }
 
 export interface VehicleFilter {
-  AND?: VehicleFilter[];
-  NOT?: VehicleFilter;
-  OR?: VehicleFilter[];
+  AND?: Filter[];
+  NOT?: Filter;
+  OR?: Filter[];
   brand?: StringFilter | string;
   model?: StringFilter | string;
   type?: VehicleTypeFilter;
@@ -184,7 +140,7 @@ export interface VehiclesCreateRequest {
 }
 
 export interface VehiclesCreateRequestBody {
-  vehicle: CarCreatePayload | MotorcycleCreatePayload | TruckCreatePayload;
+  vehicle: unknown | unknown | unknown;
 }
 
 export interface VehiclesCreateResponse {
@@ -222,7 +178,7 @@ export interface VehiclesUpdateRequest {
 }
 
 export interface VehiclesUpdateRequestBody {
-  vehicle: CarUpdatePayload | MotorcycleUpdatePayload | TruckUpdatePayload;
+  vehicle: unknown | unknown | unknown;
 }
 
 export interface VehiclesUpdateResponse {

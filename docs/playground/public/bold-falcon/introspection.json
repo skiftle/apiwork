@@ -570,63 +570,6 @@
       "type": "object",
       "variants": []
     },
-    "article_create_payload": {
-      "deprecated": false,
-      "description": null,
-      "discriminator": null,
-      "example": null,
-      "extends": [],
-      "shape": {
-        "body": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": true,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "published_on": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": true,
-          "optional": true,
-          "type": "date"
-        },
-        "status": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": true,
-          "optional": true,
-          "type": "string",
-          "enum": "article_status",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "title": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        }
-      },
-      "type": "object",
-      "variants": []
-    },
     "article_create_success_response_body": {
       "deprecated": false,
       "description": null,
@@ -684,7 +627,7 @@
             "nullable": null,
             "optional": null,
             "type": "reference",
-            "reference": "article_filter"
+            "reference": "filter"
           },
           "shape": {}
         },
@@ -696,7 +639,7 @@
           "nullable": false,
           "optional": true,
           "type": "reference",
-          "reference": "article_filter"
+          "reference": "filter"
         },
         "OR": {
           "default": null,
@@ -716,7 +659,7 @@
             "nullable": null,
             "optional": null,
             "type": "reference",
-            "reference": "article_filter"
+            "reference": "filter"
           },
           "shape": {}
         },
@@ -727,8 +670,7 @@
           "example": null,
           "nullable": false,
           "optional": true,
-          "type": "reference",
-          "reference": "category_filter"
+          "type": "category_filter"
         },
         "published_on": {
           "default": null,
@@ -1143,63 +1085,6 @@
         }
       ]
     },
-    "article_update_payload": {
-      "deprecated": false,
-      "description": null,
-      "discriminator": null,
-      "example": null,
-      "extends": [],
-      "shape": {
-        "body": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": true,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "published_on": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": true,
-          "optional": true,
-          "type": "date"
-        },
-        "status": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": true,
-          "optional": true,
-          "type": "string",
-          "enum": "article_status",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "title": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        }
-      },
-      "type": "object",
-      "variants": []
-    },
     "article_update_success_response_body": {
       "deprecated": false,
       "description": null,
@@ -1279,150 +1164,7 @@
       "type": "object",
       "variants": []
     },
-    "category_create_payload": {
-      "deprecated": false,
-      "description": null,
-      "discriminator": null,
-      "example": null,
-      "extends": [],
-      "shape": {},
-      "type": "object",
-      "variants": []
-    },
-    "category_filter": {
-      "deprecated": false,
-      "description": null,
-      "discriminator": null,
-      "example": null,
-      "extends": [],
-      "shape": {
-        "AND": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "array",
-          "max": null,
-          "min": null,
-          "of": {
-            "default": null,
-            "deprecated": null,
-            "description": null,
-            "example": null,
-            "nullable": null,
-            "optional": null,
-            "type": "reference",
-            "reference": "category_filter"
-          },
-          "shape": {}
-        },
-        "NOT": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "reference",
-          "reference": "category_filter"
-        },
-        "OR": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "array",
-          "max": null,
-          "min": null,
-          "of": {
-            "default": null,
-            "deprecated": null,
-            "description": null,
-            "example": null,
-            "nullable": null,
-            "optional": null,
-            "type": "reference",
-            "reference": "category_filter"
-          },
-          "shape": {}
-        },
-        "name": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "union",
-          "discriminator": null,
-          "variants": [
-            {
-              "default": null,
-              "deprecated": false,
-              "description": null,
-              "example": null,
-              "nullable": false,
-              "optional": false,
-              "type": "string",
-              "format": null,
-              "max": null,
-              "min": null
-            },
-            {
-              "default": null,
-              "deprecated": false,
-              "description": null,
-              "example": null,
-              "nullable": false,
-              "optional": false,
-              "type": "reference",
-              "reference": "string_filter"
-            }
-          ]
-        },
-        "slug": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "union",
-          "discriminator": null,
-          "variants": [
-            {
-              "default": null,
-              "deprecated": false,
-              "description": null,
-              "example": null,
-              "nullable": false,
-              "optional": false,
-              "type": "string",
-              "format": null,
-              "max": null,
-              "min": null
-            },
-            {
-              "default": null,
-              "deprecated": false,
-              "description": null,
-              "example": null,
-              "nullable": false,
-              "optional": false,
-              "type": "reference",
-              "reference": "string_filter"
-            }
-          ]
-        }
-      },
-      "type": "object",
-      "variants": []
-    },
-    "category_update_payload": {
+    "create_payload": {
       "deprecated": false,
       "description": null,
       "discriminator": null,
@@ -1732,6 +1474,139 @@
         "error"
       ],
       "shape": {},
+      "type": "object",
+      "variants": []
+    },
+    "filter": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {
+        "AND": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "array",
+          "max": null,
+          "min": null,
+          "of": {
+            "default": null,
+            "deprecated": null,
+            "description": null,
+            "example": null,
+            "nullable": null,
+            "optional": null,
+            "type": "reference",
+            "reference": "filter"
+          },
+          "shape": {}
+        },
+        "NOT": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "reference",
+          "reference": "filter"
+        },
+        "OR": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "array",
+          "max": null,
+          "min": null,
+          "of": {
+            "default": null,
+            "deprecated": null,
+            "description": null,
+            "example": null,
+            "nullable": null,
+            "optional": null,
+            "type": "reference",
+            "reference": "filter"
+          },
+          "shape": {}
+        },
+        "name": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "union",
+          "discriminator": null,
+          "variants": [
+            {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "string",
+              "format": null,
+              "max": null,
+              "min": null
+            },
+            {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "reference",
+              "reference": "string_filter"
+            }
+          ]
+        },
+        "slug": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "union",
+          "discriminator": null,
+          "variants": [
+            {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "string",
+              "format": null,
+              "max": null,
+              "min": null
+            },
+            {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "reference",
+              "reference": "string_filter"
+            }
+          ]
+        }
+      },
       "type": "object",
       "variants": []
     },
@@ -2518,6 +2393,16 @@
           "min": null
         }
       },
+      "type": "object",
+      "variants": []
+    },
+    "update_payload": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {},
       "type": "object",
       "variants": []
     }

@@ -15,13 +15,13 @@
   "response": {
     "body": {
       "vehicle": {
-        "type": "truck",
-        "id": "bc709869-2a84-54ce-8bad-69ffeb2112d5",
+        "type": "car",
+        "id": "c2e11a1c-b90a-5941-8855-0b2dfb350dde",
         "brand": "Ford",
         "model": "F-150",
         "year": 2024,
         "color": "blue",
-        "payloadCapacity": null
+        "doors": null
       }
     },
     "status": 201
