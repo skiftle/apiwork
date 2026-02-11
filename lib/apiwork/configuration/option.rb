@@ -8,6 +8,10 @@ module Apiwork
     # Used inside `option :name, type: :hash do ... end` blocks
     # in {Adapter::Base} and {Export::Base} subclasses.
     #
+    # @see Adapter::Base
+    # @see Export::Base
+    # @see Configuration
+    #
     # @example instance_eval style
     #   option :pagination, type: :hash do
     #     option :strategy, type: :symbol, default: :offset
@@ -19,10 +23,6 @@ module Apiwork
     #     option.option :strategy, type: :symbol, default: :offset
     #     option.option :default_size, type: :integer, default: 20
     #   end
-    #
-    # @see Adapter::Base
-    # @see Export::Base
-    # @see Configuration
     class Option
       include Validatable
 

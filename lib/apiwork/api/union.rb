@@ -8,6 +8,9 @@ module Apiwork
     # Accessed via `union :name do` in API or contract definitions.
     # Use {#variant} to define possible types.
     #
+    # @see API::Element Block context for variant types
+    # @see Contract::Union Block context for inline unions
+    #
     # @example instance_eval style
     #   union :payment_method, discriminator: :type do
     #     variant tag: 'card' do
@@ -35,9 +38,6 @@ module Apiwork
     #       end
     #     end
     #   end
-    #
-    # @see Contract::Union Block context for inline unions
-    # @see API::Element Block context for variant types
     class Union < Apiwork::Union
       private
 

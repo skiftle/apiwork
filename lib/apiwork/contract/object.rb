@@ -8,6 +8,8 @@ module Apiwork
     # Accessed via `body do` and `query do` inside contract actions,
     # or `object :name do` at contract level to define reusable types.
     #
+    # @see API::Object Block context for reusable types
+    #
     # @example instance_eval style
     #   body do
     #     string :title
@@ -19,8 +21,6 @@ module Apiwork
     #     body.string :title
     #     body.decimal :amount
     #   end
-    #
-    # @see API::Object Block context for reusable types
     class Object < Apiwork::Object
       attr_reader :action_name,
                   :contract_class,

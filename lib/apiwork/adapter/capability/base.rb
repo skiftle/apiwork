@@ -11,6 +11,9 @@ module Apiwork
       # capability is self-contained, all capabilities operate on the same response data
       # in sequence, so their effects combine.
       #
+      # @see Adapter::Base#capability
+      # @see Configurable#option
+      #
       # @example Filtering capability
       #   class Filtering < Adapter::Capability::Base
       #     capability_name :filtering
@@ -22,9 +25,6 @@ module Apiwork
       #     contract_builder ContractBuilder
       #     operation Operation
       #   end
-      #
-      # @see Adapter::Base#capability
-      # @see Configurable#option
       class Base
         include Configurable
 

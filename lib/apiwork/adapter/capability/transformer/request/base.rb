@@ -11,6 +11,9 @@ module Apiwork
           # Request transformers modify requests before or after validation.
           # Register transformers in capabilities using {Capability::Base.request_transformer}.
           #
+          # @see Standard::Capability::Filtering::RequestTransformer
+          # @see Standard::Capability::Writing::RequestTransformer
+          #
           # @example Strip whitespace from strings
           #   class MyRequestTransformer < Capability::Transformer::Request::Base
           #     phase :before
@@ -30,9 +33,6 @@ module Apiwork
           #       end
           #     end
           #   end
-          #
-          # @see Standard::Capability::Filtering::RequestTransformer
-          # @see Standard::Capability::Writing::RequestTransformer
           class Base
             attr_reader :request
 

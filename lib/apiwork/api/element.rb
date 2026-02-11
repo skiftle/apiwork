@@ -8,6 +8,9 @@ module Apiwork
     # Used inside `array do` and `variant do` blocks where
     # exactly one element type must be defined.
     #
+    # @see API::Object Block context for object params
+    # @see API::Union Block context for union variants
+    #
     # @example instance_eval style
     #   array :ids do
     #     integer
@@ -22,9 +25,6 @@ module Apiwork
     #   array :items do |element|
     #     element.reference :item
     #   end
-    #
-    # @see API::Object Block context for object params
-    # @see API::Union Block context for union variants
     class Element < Apiwork::Element
       # @api public
       # Defines the element type.

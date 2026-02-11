@@ -9,6 +9,9 @@ module Apiwork
     # Use type methods to define params: {#string}, {#integer}, {#decimal},
     # {#boolean}, {#array}, {#object}, {#union}, {#reference}.
     #
+    # @see API::Element Block context for array/variant elements
+    # @see Contract::Object Block context for inline objects
+    #
     # @example instance_eval style
     #   object :item do
     #     string :description
@@ -20,9 +23,6 @@ module Apiwork
     #     object.string :description
     #     object.decimal :amount
     #   end
-    #
-    # @see Contract::Object Block context for inline objects
-    # @see API::Element Block context for array/variant elements
     class Object < Apiwork::Object
       # @api public
       # Defines a param with explicit type.

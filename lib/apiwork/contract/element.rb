@@ -8,6 +8,9 @@ module Apiwork
     # Used inside `array do` and `variant do` blocks where
     # exactly one element type must be defined.
     #
+    # @see Contract::Object Block context for object params
+    # @see Contract::Union Block context for union variants
+    #
     # @example instance_eval style
     #   array :ids do
     #     integer
@@ -22,9 +25,6 @@ module Apiwork
     #   array :items do |element|
     #     element.reference :item
     #   end
-    #
-    # @see Contract::Object Block context for object params
-    # @see Contract::Union Block context for union variants
     class Element < Apiwork::Element
       def initialize(contract_class)
         super()

@@ -16,6 +16,10 @@ module Apiwork
     # Inside these blocks, the full type DSL is available including
     # nested objects, arrays, primitives, and unions.
     #
+    # @see API::Element Block context for array elements
+    # @see API::Object Block context for object fields
+    # @see API::Union Block context for union variants
+    #
     # @example Object structure
     #   attribute :settings do
     #     object do
@@ -68,10 +72,6 @@ module Apiwork
     #       end
     #     end
     #   end
-    #
-    # @see API::Object Block context for object fields
-    # @see API::Element Block context for array elements
-    # @see API::Union Block context for union variants
     class Element < Apiwork::Element
       # Representation::Element uses different of_type semantics - returns the array inner type.
       def of_type
