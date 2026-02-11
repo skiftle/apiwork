@@ -8,7 +8,7 @@ module Apiwork
       Class.new do
         include Configurable
 
-        self.options = extends.options.dup if extends.respond_to?(:options)
+        self.options = extends.options.dup if extends
 
         class_eval(&block) if block
       end

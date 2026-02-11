@@ -176,7 +176,7 @@ module Apiwork
           return nil unless options[:enum]
 
           if options[:enum].is_a?(Symbol)
-            scope = scope_for_enum(@contract_param, options[:enum])
+            scope = @contract_param.contract_class
             api_class = @contract_param.contract_class.api_class
             api_class.scoped_enum_name(scope, options[:enum])
           else
@@ -268,7 +268,7 @@ module Apiwork
           return nil unless variant[:enum]
 
           if variant[:enum].is_a?(Symbol)
-            scope = scope_for_enum(@contract_param, variant[:enum])
+            scope = @contract_param.contract_class
             api_class = @contract_param.contract_class.api_class
             api_class.scoped_enum_name(scope, variant[:enum])
           else
@@ -439,10 +439,6 @@ module Apiwork
           api_class.translate(:representations, representation_name, :associations, association_name, :description)
         end
 
-        def scope_for_enum(contract_param, _enum_name)
-          contract_param.contract_class
-        end
-
         def qualified_name(type_name, contract_param)
           return type_name if global_type?(type_name, contract_param)
           return type_name if global_enum?(type_name, contract_param)
@@ -454,8 +450,6 @@ module Apiwork
         end
 
         def global_type?(type_name, contract_param)
-          return false unless contract_param.contract_class.respond_to?(:api_class)
-
           api_class = contract_param.contract_class.api_class
           return false unless api_class
 
@@ -466,8 +460,6 @@ module Apiwork
         end
 
         def global_enum?(enum_name, contract_param)
-          return false unless contract_param.contract_class.respond_to?(:api_class)
-
           api_class = contract_param.contract_class.api_class
           return false unless api_class
 
@@ -478,8 +470,6 @@ module Apiwork
         end
 
         def imported_type?(type_name, contract_param)
-          return false unless contract_param.contract_class.respond_to?(:imports)
-
           import_prefixes = import_prefix_cache(contract_param.contract_class)
 
           return true if import_prefixes[:direct].include?(type_name)
