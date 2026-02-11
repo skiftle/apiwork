@@ -215,7 +215,8 @@ module Apiwork
       # @api public
       # Whether this attribute is writable for the given action.
       #
-      # @param action [Symbol] :create or :update
+      # @param action [Symbol] [:create, :update]
+      #   The action.
       # @return [Boolean]
       # @see #writable?
       def writable_for?(action)

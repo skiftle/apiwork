@@ -27,9 +27,7 @@ module Apiwork
       attr_reader :example
 
       # @api public
-      # The include for this association.
-      #
-      # :always or :optional.
+      # The inclusion strategy for this association.
       #
       # @return [Symbol]
       attr_reader :include
@@ -41,7 +39,7 @@ module Apiwork
       attr_reader :name
 
       # @api public
-      # The polymorphic for this association.
+      # The polymorphic representations for this association.
       #
       # @return [Array<Class<Representation::Base>>, nil]
       attr_reader :polymorphic
@@ -140,7 +138,8 @@ module Apiwork
       # @api public
       # Whether this association is writable for the given action.
       #
-      # @param action [Symbol] :create or :update
+      # @param action [Symbol] [:create, :update]
+      #   The action.
       # @return [Boolean]
       # @see #writable?
       def writable_for?(action)

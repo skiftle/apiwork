@@ -256,7 +256,7 @@ Whether this attribute is writable.
 
 `#writable_for?(action)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L221)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L222)
 
 Whether this attribute is writable for the given action.
 
@@ -266,7 +266,7 @@ Whether this attribute is writable for the given action.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`action`** | `Symbol` |  | :create or :update |
+| **`action`** | `Symbol<:create, :update>` |  | The action. |
 
 </div>
 
