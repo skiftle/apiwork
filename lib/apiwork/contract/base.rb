@@ -47,10 +47,18 @@ module Apiwork
     class Base
       include Abstractable
 
+      # @!method representation_class
+      #   @!scope class
+      #   @api public
+      #   The representation class for this contract.
+      #   @return [Class<Representation::Base>, nil]
+      #   @see .representation
+      class_attribute :representation_class, instance_accessor: false
+
       class_attribute :actions, instance_accessor: false
       class_attribute :imports, instance_accessor: false
+
       class_attribute :_identifier, instance_accessor: false
-      class_attribute :_representation_class, instance_accessor: false
       class_attribute :_building, default: false, instance_accessor: false
       class_attribute :_synthetic_contracts, default: {}, instance_accessor: false
       class_attribute :_synthetic, default: false, instance_accessor: false
@@ -146,7 +154,7 @@ module Apiwork
                   "got #{klass.inspect}"
           end
 
-          self._representation_class = klass
+          self.representation_class = klass
         end
 
         # @api public
@@ -482,22 +490,13 @@ module Apiwork
         def build_synthetic_contract(representation_class, api_class)
           Class.new(Contract::Base) do
             self._synthetic = true
-            self._representation_class = representation_class
+            self.representation_class = representation_class
             @api_class = api_class
           end
         end
 
-        # @api public
-        # The representation class for this contract.
-        #
-        # @return [Class<Representation::Base>, nil]
-        # @see .representation
-        def representation_class
-          _representation_class
-        end
-
         def representation?
-          _representation_class.present?
+          representation_class.present?
         end
 
         def scope_prefix

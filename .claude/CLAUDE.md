@@ -892,7 +892,7 @@ class RecordLoader
 end
 ```
 
-Forbidden: `.run`, `.execute`, `.perform`, `.process`, `.call`
+Forbidden: `.execute`, `.perform`, `.process`, `.call`
 
 ### Bang Methods
 
