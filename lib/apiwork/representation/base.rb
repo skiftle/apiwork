@@ -73,41 +73,43 @@ module Apiwork
       class_attribute :_deprecated, default: false, instance_accessor: false
       class_attribute :_example, default: nil, instance_accessor: false
 
-      # @api public
-      # The serialization context.
+      # @!method context
+      #   @api public
+      #   The serialization context.
       #
-      # Passed from controller or directly to {.serialize}. Use for data that isn't on the record, like
-      # current user or permissions.
+      #   Passed from controller or directly to {.serialize}. Use for data that isn't on the record, like
+      #   current user or permissions.
       #
-      # @return [Hash]
+      #   @return [Hash]
       #
-      # @example Override in controller
-      #   def context
-      #     { current_user: current_user }
-      #   end
+      #   @example Override in controller
+      #     def context
+      #       { current_user: current_user }
+      #     end
       #
-      # @example Access in custom attribute
-      #   attribute :editable, type: :boolean
+      #   @example Access in custom attribute
+      #     attribute :editable, type: :boolean
       #
-      #   def editable
-      #     context[:current_user]&.admin?
-      #   end
-      attr_reader :context
-
-      # @api public
-      # The record for this representation.
+      #     def editable
+      #       context[:current_user]&.admin?
+      #     end
       #
-      # Available in custom attributes and associations.
+      # @!method record
+      #   @api public
+      #   The record for this representation.
       #
-      # @return [ActiveRecord::Base]
+      #   Available in custom attributes and associations.
       #
-      # @example Custom attribute
-      #   attribute :full_name, type: :string
+      #   @return [ActiveRecord::Base]
       #
-      #   def full_name
-      #     "#{record.first_name} #{record.last_name}"
-      #   end
-      attr_reader :record
+      #   @example Custom attribute
+      #     attribute :full_name, type: :string
+      #
+      #     def full_name
+      #       "#{record.first_name} #{record.last_name}"
+      #     end
+      attr_reader :context,
+                  :record
 
       class << self
         # @api public
@@ -169,10 +171,6 @@ module Apiwork
           self._adapter_config = _adapter_config.dup
           config = Configuration.new(api_class.adapter_class, _adapter_config)
           block.arity.positive? ? yield(config) : config.instance_eval(&block)
-        end
-
-        def adapter_config
-          @adapter_config ||= api_class.adapter_config.merge(_adapter_config)
         end
 
         # @api public
@@ -713,6 +711,18 @@ module Apiwork
           @model_class
         end
 
+        # @api public
+        # Whether this representation is deprecated.
+        #
+        # @return [Boolean]
+        def deprecated?
+          _deprecated
+        end
+
+        def adapter_config
+          @adapter_config ||= api_class.adapter_config.merge(_adapter_config)
+        end
+
         def api_class
           return nil unless name
 
@@ -720,14 +730,6 @@ module Apiwork
           return nil if namespace.blank?
 
           API.find("/#{namespace.underscore.tr('::', '/')}")
-        end
-
-        # @api public
-        # Whether this representation is deprecated.
-        #
-        # @return [Boolean]
-        def deprecated?
-          _deprecated
         end
 
         def preloads
