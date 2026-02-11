@@ -37,13 +37,20 @@ module Apiwork
       # This is the verbose form. Prefer sugar methods (string, integer, etc.)
       # for static definitions. Use `of` for dynamic element generation.
       #
-      # @param type [Symbol] element type (:string, :integer, :object, :array, :union, or custom type reference)
-      # @param discriminator [Symbol, nil] (nil) discriminator field name (unions only)
-      # @param enum [Array, Symbol, nil] (nil) allowed values or enum reference (strings, integers only)
-      # @param format [Symbol, nil] (nil) format hint (strings only)
-      # @param max [Integer, nil] (nil) maximum value or length
-      # @param min [Integer, nil] (nil) minimum value or length
-      # @param value [Object, nil] (nil) literal value (literals only)
+      # @param type [Symbol] [:array, :binary, :boolean, :date, :datetime, :decimal, :integer, :literal, :number, :object, :string, :time, :union, :uuid]
+      #   The element type. Custom type references are also allowed.
+      # @param discriminator [Symbol, nil] (nil)
+      #   The discriminator field name. Unions only.
+      # @param enum [Array, Symbol, nil] (nil)
+      #   The allowed values or enum reference. Strings and integers only.
+      # @param format [Symbol, nil] (nil) [:email, :uri, :uuid]
+      #   Format hint for exports. Strings only.
+      # @param max [Integer, nil] (nil)
+      #   The maximum value or length.
+      # @param min [Integer, nil] (nil)
+      #   The minimum value or length.
+      # @param value [Object, nil] (nil)
+      #   The literal value. Literals only.
       # @yield block for defining nested structure (instance_eval style)
       # @yieldparam shape [Contract::Object, Contract::Union, Contract::Element]
       # @return [void]

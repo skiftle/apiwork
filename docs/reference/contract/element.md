@@ -43,7 +43,7 @@ end
 
 `#array(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L158)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L247)
 
 Defines an array.
 
@@ -56,16 +56,20 @@ Defines an array.
 **Example: instance_eval style**
 
 ```ruby
-array do
-  string
+array :matrix do
+  array do
+    integer
+  end
 end
 ```
 
 **Example: yield style**
 
 ```ruby
-array do |element|
-  element.string
+array :matrix do |element|
+  element.array do |inner|
+    inner.integer
+  end
 end
 ```
 
@@ -75,7 +79,7 @@ end
 
 `#binary`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L116)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L197)
 
 Defines a binary.
 
@@ -83,13 +87,21 @@ Defines a binary.
 
 `void`
 
+**Example**
+
+```ruby
+array :blobs do
+  binary
+end
+```
+
 ---
 
 ### #boolean
 
 `#boolean`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L76)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L132)
 
 Defines a boolean.
 
@@ -97,13 +109,21 @@ Defines a boolean.
 
 `void`
 
+**Example**
+
+```ruby
+array :flags do
+  boolean
+end
+```
+
 ---
 
 ### #date
 
 `#date`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L92)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L158)
 
 Defines a date.
 
@@ -111,13 +131,21 @@ Defines a date.
 
 `void`
 
+**Example**
+
+```ruby
+array :dates do
+  date
+end
+```
+
 ---
 
 ### #datetime
 
 `#datetime`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L84)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L145)
 
 Defines a datetime.
 
@@ -125,13 +153,21 @@ Defines a datetime.
 
 `void`
 
+**Example**
+
+```ruby
+array :timestamps do
+  datetime
+end
+```
+
 ---
 
 ### #decimal
 
 `#decimal(max: nil, min: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L58)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L97)
 
 Defines a decimal.
 
@@ -141,8 +177,8 @@ Defines a decimal.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `max` | `Numeric`, `nil` | `nil` | maximum value |
-| `min` | `Numeric`, `nil` | `nil` | minimum value |
+| `max` | `Numeric`, `nil` | `nil` | The maximum value. |
+| `min` | `Numeric`, `nil` | `nil` | The minimum value. |
 
 </div>
 
@@ -150,13 +186,29 @@ Defines a decimal.
 
 `void`
 
+**Example: Basic decimal**
+
+```ruby
+array :amounts do
+  decimal
+end
+```
+
+**Example: With range constraints**
+
+```ruby
+array :prices do
+  decimal min: 0
+end
+```
+
 ---
 
 ### #integer
 
 `#integer(enum: nil, max: nil, min: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L48)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L75)
 
 Defines an integer.
 
@@ -166,9 +218,9 @@ Defines an integer.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `enum` | `Array`, `Symbol`, `nil` | `nil` | allowed values |
-| `max` | `Integer`, `nil` | `nil` | maximum value |
-| `min` | `Integer`, `nil` | `nil` | minimum value |
+| `enum` | `Array`, `Symbol`, `nil` | `nil` | The allowed values. |
+| `max` | `Integer`, `nil` | `nil` | The maximum value. |
+| `min` | `Integer`, `nil` | `nil` | The minimum value. |
 
 </div>
 
@@ -176,13 +228,29 @@ Defines an integer.
 
 `void`
 
+**Example: Basic integer**
+
+```ruby
+array :counts do
+  integer
+end
+```
+
+**Example: With range constraints**
+
+```ruby
+array :scores do
+  integer min: 0, max: 100
+end
+```
+
 ---
 
 ### #literal
 
 `#literal(value:)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L196)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L296)
 
 Defines a literal value.
 
@@ -192,7 +260,7 @@ Defines a literal value.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`value`** | `Object` |  | the exact value (required) |
+| **`value`** | `Object` |  | The literal value. |
 
 </div>
 
@@ -200,13 +268,21 @@ Defines a literal value.
 
 `void`
 
+**Example**
+
+```ruby
+variant tag: 'card' do
+  literal value: 'card'
+end
+```
+
 ---
 
 ### #number
 
 `#number(max: nil, min: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L68)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L119)
 
 Defines a number.
 
@@ -216,8 +292,8 @@ Defines a number.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `max` | `Numeric`, `nil` | `nil` | maximum value |
-| `min` | `Numeric`, `nil` | `nil` | minimum value |
+| `max` | `Numeric`, `nil` | `nil` | The maximum value. |
+| `min` | `Numeric`, `nil` | `nil` | The minimum value. |
 
 </div>
 
@@ -225,13 +301,29 @@ Defines a number.
 
 `void`
 
+**Example: Basic number**
+
+```ruby
+array :coordinates do
+  number
+end
+```
+
+**Example: With range constraints**
+
+```ruby
+array :latitudes do
+  number min: -90, max: 90
+end
+```
+
 ---
 
 ### #object
 
 `#object(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L138)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L223)
 
 Defines an object.
 
@@ -244,18 +336,22 @@ Defines an object.
 **Example: instance_eval style**
 
 ```ruby
-object do
-  string :name
-  integer :count
+array :items do
+  object do
+    string :name
+    decimal :price
+  end
 end
 ```
 
 **Example: yield style**
 
 ```ruby
-object do |object|
-  object.string :name
-  object.integer :count
+array :items do |element|
+  element.object do |object|
+    object.string :name
+    object.decimal :price
+  end
 end
 ```
 
@@ -265,7 +361,7 @@ end
 
 `#of(type, discriminator: nil, enum: nil, format: nil, max: nil, min: nil, value: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L67)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/element.rb#L74)
 
 Defines the element type.
 
@@ -278,13 +374,13 @@ for static definitions. Use `of` for dynamic element generation.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`type`** | `Symbol` |  | element type (:string, :integer, :object, :array, :union, or custom type reference) |
-| `discriminator` | `Symbol`, `nil` | `nil` | discriminator field name (unions only) |
-| `enum` | `Array`, `Symbol`, `nil` | `nil` | allowed values or enum reference (strings, integers only) |
-| `format` | `Symbol`, `nil` | `nil` | format hint (strings only) |
-| `max` | `Integer`, `nil` | `nil` | maximum value or length |
-| `min` | `Integer`, `nil` | `nil` | minimum value or length |
-| `value` | `Object`, `nil` | `nil` | literal value (literals only) |
+| **`type`** | `Symbol<:array, :binary, :boolean, :date, :datetime, :decimal, :integer, :literal, :number, :object, :string, :time, :union, :uuid>` |  | The element type. Custom type references are also allowed. |
+| `discriminator` | `Symbol`, `nil` | `nil` | The discriminator field name. Unions only. |
+| `enum` | `Array`, `Symbol`, `nil` | `nil` | The allowed values or enum reference. Strings and integers only. |
+| `format` | `Symbol<:email, :uri, :uuid>`, `nil` | `nil` | Format hint for exports. Strings only. |
+| `max` | `Integer`, `nil` | `nil` | The maximum value or length. |
+| `min` | `Integer`, `nil` | `nil` | The minimum value or length. |
+| `value` | `Object`, `nil` | `nil` | The literal value. Literals only. |
 
 </div>
 
@@ -322,7 +418,7 @@ end
 
 `#reference(type_name)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L205)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L311)
 
 Defines a reference to a named type.
 
@@ -340,13 +436,21 @@ Defines a reference to a named type.
 
 `void`
 
+**Example**
+
+```ruby
+array :items do
+  reference :item
+end
+```
+
 ---
 
 ### #string
 
 `#string(enum: nil, format: nil, max: nil, min: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L37)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L51)
 
 Defines a string.
 
@@ -356,10 +460,10 @@ Defines a string.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `enum` | `Array`, `Symbol`, `nil` | `nil` | allowed values |
-| `format` | `Symbol`, `nil` | `nil` | format hint |
-| `max` | `Integer`, `nil` | `nil` | maximum length |
-| `min` | `Integer`, `nil` | `nil` | minimum length |
+| `enum` | `Array`, `Symbol`, `nil` | `nil` | The allowed values. |
+| `format` | `Symbol<:email, :uri, :uuid>`, `nil` | `nil` | Format hint for exports. Does not change the type, but exports may add validation or documentation based on it. |
+| `max` | `Integer`, `nil` | `nil` | The maximum length. |
+| `min` | `Integer`, `nil` | `nil` | The minimum length. |
 
 </div>
 
@@ -367,13 +471,29 @@ Defines a string.
 
 `void`
 
+**Example: Basic string**
+
+```ruby
+array :tags do
+  string
+end
+```
+
+**Example: With length constraints**
+
+```ruby
+array :tags do
+  string min: 1, max: 50
+end
+```
+
 ---
 
 ### #time
 
 `#time`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L108)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L184)
 
 Defines a time.
 
@@ -381,13 +501,21 @@ Defines a time.
 
 `void`
 
+**Example**
+
+```ruby
+array :times do
+  time
+end
+```
+
 ---
 
 ### #union
 
 `#union(discriminator: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L187)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L281)
 
 Defines a union.
 
@@ -397,7 +525,7 @@ Defines a union.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `discriminator` | `Symbol`, `nil` | `nil` | discriminator field name |
+| `discriminator` | `Symbol`, `nil` | `nil` | The discriminator field name. |
 
 </div>
 
@@ -410,10 +538,12 @@ Defines a union.
 **Example: instance_eval style**
 
 ```ruby
-union discriminator: :type do
-  variant tag: 'card' do
-    object do
-      string :last_four
+array :payments do
+  union discriminator: :type do
+    variant tag: 'card' do
+      object do
+        string :last_four
+      end
     end
   end
 end
@@ -422,10 +552,12 @@ end
 **Example: yield style**
 
 ```ruby
-union discriminator: :type do |union|
-  union.variant tag: 'card' do |variant|
-    variant.object do |object|
-      object.string :last_four
+array :payments do |element|
+  element.union discriminator: :type do |union|
+    union.variant tag: 'card' do |variant|
+      variant.object do |object|
+        object.string :last_four
+      end
     end
   end
 end
@@ -437,12 +569,20 @@ end
 
 `#uuid`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L100)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L171)
 
 Defines a UUID.
 
 **Returns**
 
 `void`
+
+**Example**
+
+```ruby
+array :ids do
+  uuid
+end
+```
 
 ---
