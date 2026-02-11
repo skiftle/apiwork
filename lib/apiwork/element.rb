@@ -33,6 +33,7 @@ module Apiwork
     #   The allowed values.
     # @param format [Symbol, nil] (nil) [:date, :datetime, :email, :hostname, :ipv4, :ipv6, :password, :url, :uuid]
     #   Format hint for exports. Does not change the type, but exports may add validation or documentation based on it.
+    #   Valid formats by type: `:string`.
     # @param max [Integer, nil] (nil)
     #   The maximum length.
     # @param min [Integer, nil] (nil)

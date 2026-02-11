@@ -53,7 +53,7 @@ end
 
 `#variant(deprecated: false, description: nil, partial: false, tag: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/union.rb#L37)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/union.rb#L41)
 
 Defines a union variant.
 
@@ -63,10 +63,10 @@ Defines a union variant.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `deprecated` | `Boolean` | `false` |  |
-| `description` | `String`, `nil` | `nil` | documentation description |
-| `partial` | `Boolean` | `false` |  |
-| `tag` | `String`, `nil` | `nil` | discriminator tag value (required when union has discriminator) |
+| `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
+| `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
+| `partial` | `Boolean` | `false` | Whether partial. Partial variants include only the specified fields. |
+| `tag` | `String`, `nil` | `nil` | The discriminator tag value. Required when union has a discriminator. |
 
 </div>
 

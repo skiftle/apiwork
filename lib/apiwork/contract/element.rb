@@ -44,11 +44,12 @@ module Apiwork
       # @param enum [Array, Symbol, nil] (nil)
       #   The allowed values or enum reference. Strings and integers only.
       # @param format [Symbol, nil] (nil) [:date, :datetime, :email, :hostname, :ipv4, :ipv6, :password, :url, :uuid]
-      #   Format hint for exports. Strings only.
+      #   Format hint for exports. Does not change the type, but exports may add validation or documentation based on it.
+      #   Valid formats by type: `:string`.
       # @param max [Integer, nil] (nil)
-      #   The maximum value or length.
+      #   The maximum. For `:decimal`, `:integer`, `:number`: value. For `:string`: length.
       # @param min [Integer, nil] (nil)
-      #   The minimum value or length.
+      #   The minimum. For `:decimal`, `:integer`, `:number`: value. For `:string`: length.
       # @param value [Object, nil] (nil)
       #   The literal value. Literals only.
       # @yield block for defining nested structure (instance_eval style)
@@ -56,19 +57,17 @@ module Apiwork
       # @return [void]
       # @raise [ArgumentError] if object, array, or union type is missing block
       #
-      # @example instance_eval style
+      # @example Dynamic element type
+      #   element_type = :string
+      #   array :values do
+      #     of element_type
+      #   end
+      #
+      # @example Object with block
       #   array :tags do
       #     of :object do
       #       string :name
       #       string :color
-      #     end
-      #   end
-      #
-      # @example yield style
-      #   array :tags do |element|
-      #     element.of :object do |object|
-      #       object.string :name
-      #       object.string :color
       #     end
       #   end
       def of(type, discriminator: nil, enum: nil, format: nil, max: nil, min: nil, value: nil, &block)

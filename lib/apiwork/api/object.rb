@@ -50,7 +50,7 @@ module Apiwork
       #   The example value. Metadata included in exports.
       # @param format [Symbol, nil] (nil) [:date, :datetime, :email, :hostname, :ipv4, :ipv6, :password, :url, :uuid]
       #   Format hint for exports. Does not change the type, but exports may add validation or documentation based on it.
-      #   Strings only.
+      #   Valid formats by type: `:string`.
       # @param max [Integer, nil] (nil)
       #   The maximum. For `:array`: size. For `:decimal`, `:integer`, `:number`: value. For `:string`: length.
       # @param min [Integer, nil] (nil)
@@ -71,16 +71,14 @@ module Apiwork
       # @yieldparam shape [API::Object, API::Union, API::Element]
       # @return [void]
       #
-      # @example Object with block (instance_eval style)
+      # @example Dynamic field generation
+      #   field_type = :string
+      #   param :title, type: field_type
+      #
+      # @example Object with block
       #   param :metadata, type: :object do
       #     string :key
       #     string :value
-      #   end
-      #
-      # @example Object with block (yield style)
-      #   param :metadata, type: :object do |metadata|
-      #     metadata.string :key
-      #     metadata.string :value
       #   end
       def param(
         name,

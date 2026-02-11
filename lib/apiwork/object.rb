@@ -83,6 +83,7 @@ module Apiwork
     #   The example value. Metadata included in exports.
     # @param format [Symbol, nil] (nil) [:date, :datetime, :email, :hostname, :ipv4, :ipv6, :password, :url, :uuid]
     #   Format hint for exports. Does not change the type, but exports may add validation or documentation based on it.
+    #   Valid formats by type: `:string`.
     # @param max [Integer, nil] (nil)
     #   The maximum length.
     # @param min [Integer, nil] (nil)
@@ -155,6 +156,7 @@ module Apiwork
     #   The example value. Metadata included in exports.
     # @param format [Symbol, nil] (nil) [:date, :datetime, :email, :hostname, :ipv4, :ipv6, :password, :url, :uuid]
     #   Format hint for exports. Does not change the type, but exports may add validation or documentation based on it.
+    #   Valid formats by type: `:string`.
     # @param max [Integer, nil] (nil)
     #   The maximum length.
     # @param min [Integer, nil] (nil)

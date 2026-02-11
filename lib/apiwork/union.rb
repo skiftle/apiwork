@@ -14,9 +14,13 @@ module Apiwork
     # Defines a union variant.
     #
     # @param deprecated [Boolean] (false)
-    # @param description [String, nil] (nil) documentation description
+    #   Whether deprecated. Metadata included in exports.
+    # @param description [String, nil] (nil)
+    #   The description. Metadata included in exports.
     # @param partial [Boolean] (false)
-    # @param tag [String, nil] (nil) discriminator tag value (required when union has discriminator)
+    #   Whether partial. Partial variants include only the specified fields.
+    # @param tag [String, nil] (nil)
+    #   The discriminator tag value. Required when union has a discriminator.
     # @yield block defining the variant type
     # @yieldparam variant [Element]
     # @return [void]
