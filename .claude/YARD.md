@@ -36,6 +36,89 @@ end
 
 ---
 
+## Class Description Categories
+
+Class descriptions are mechanical. Identify the category, apply the formula.
+
+### Decision Tree
+
+```
+1. Name is `Base`                    → Base class
+2. Name is `*Definition`             → Definition
+3. Name is `*Builder`                → Builder
+4. Name is `*Operation`              → Operation
+5. In introspection/param/           → Param wrapper
+6. In introspection/                 → Introspection
+7. In wrapper/, not Base             → Wrapper
+8. In serializer/, not Base          → Serializer
+9. Object/Element/Union in DSL       → Block recorder
+```
+
+### Formulas
+
+| Category | Formula | Example |
+|----------|---------|---------|
+| Base class | "Base class for [domain]." | "Base class for contracts." |
+| Block recorder | "Block context for [what]." | "Block context for defining request/response structure." |
+| Definition | "Represents a registered [item]." | "Represents a registered error code." |
+| Introspection | "Wraps [item] definitions [context]." | "Wraps action definitions within a resource." |
+| Param wrapper | "[Type] param representing [what]." | "String param representing text values." |
+| Builder (Base) | "Base class for [phase] type builders." | "Base class for Contract-phase type builders." |
+| Operation (Base) | "Base class for capability [phase]." | "Base class for capability Operation phase." |
+| Wrapper (Default) | "Default [scope] response wrapper." | "Default member response wrapper." |
+| Serializer (Default) | "Default [type] serializer." | "Default resource serializer." |
+
+### Examples
+
+```ruby
+# Base class
+# @api public
+# Base class for contracts.
+class Contract::Base
+
+# Block recorder
+# @api public
+# Block context for defining request/response structure.
+class Contract::Object
+
+# Definition
+# @api public
+# Represents a registered error code.
+class ErrorCode::Definition
+
+# Introspection
+# @api public
+# Wraps action definitions within a resource.
+class Introspection::Action
+
+# Param wrapper
+# @api public
+# String param representing text values.
+class Introspection::Param::String
+
+# Builder (Base)
+# @api public
+# Base class for Contract-phase type builders.
+class Adapter::Builder::Contract::Base
+
+# Operation (Base)
+# @api public
+# Base class for capability Operation phase.
+class Adapter::Capability::Operation::Base
+
+# Wrapper (Default)
+# @api public
+# Default member response wrapper.
+class Adapter::Wrapper::Member::Default
+
+# Serializer (Default)
+# @api public
+# Default resource serializer.
+class Adapter::Serializer::Resource::Default
+```
+
+---
+
 ## Core Principle
 
 Descriptions are mechanical. Category + formula + tables = description.

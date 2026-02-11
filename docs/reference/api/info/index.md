@@ -8,7 +8,7 @@ next: false
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L9)
 
-API info block.
+Block context for defining API metadata.
 
 Used within the `info` block in [API::Base](/reference/api/base).
 

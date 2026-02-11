@@ -3,7 +3,7 @@
 module Apiwork
   module API
     # @api public
-    # API info block.
+    # Block context for defining API metadata.
     #
     # Used within the `info` block in {API::Base}.
     class Info

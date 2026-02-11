@@ -3,7 +3,7 @@
 module Apiwork
   module API
     # @api public
-    # DSL context for defining API resources and routes.
+    # Block context for defining API resources and routes.
     #
     # Resource provides the DSL available inside `resources` and `resource`
     # blocks. Methods include nested resources, custom actions, and concerns.

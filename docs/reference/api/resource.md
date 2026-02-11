@@ -8,7 +8,7 @@ next: false
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L26)
 
-DSL context for defining API resources and routes.
+Block context for defining API resources and routes.
 
 Resource provides the DSL available inside `resources` and `resource`
 blocks. Methods include nested resources, custom actions, and concerns.
