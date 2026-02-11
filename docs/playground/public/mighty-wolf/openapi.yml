@@ -47,34 +47,14 @@ paths:
               properties:
                 vehicle:
                   oneOf:
-                  - allOf:
-                    - {}
-                    - properties:
-                        type:
-                          const: car
-                          type: string
-                      required:
-                      - type
-                      type: object
-                  - allOf:
-                    - {}
-                    - properties:
-                        type:
-                          const: motorcycle
-                          type: string
-                      required:
-                      - type
-                      type: object
-                  - allOf:
-                    - {}
-                    - properties:
-                        type:
-                          const: truck
-                          type: string
-                      required:
-                      - type
-                      type: object
+                  - "$ref": "#/components/schemas/carCreatePayload"
+                  - "$ref": "#/components/schemas/motorcycleCreatePayload"
+                  - "$ref": "#/components/schemas/truckCreatePayload"
                   discriminator:
+                    mapping:
+                      car: "#/components/schemas/carCreatePayload"
+                      motorcycle: "#/components/schemas/motorcycleCreatePayload"
+                      truck: "#/components/schemas/truckCreatePayload"
                     propertyName: type
               type: object
               required:
@@ -124,34 +104,14 @@ paths:
               properties:
                 vehicle:
                   oneOf:
-                  - allOf:
-                    - {}
-                    - properties:
-                        type:
-                          const: car
-                          type: string
-                      required:
-                      - type
-                      type: object
-                  - allOf:
-                    - {}
-                    - properties:
-                        type:
-                          const: motorcycle
-                          type: string
-                      required:
-                      - type
-                      type: object
-                  - allOf:
-                    - {}
-                    - properties:
-                        type:
-                          const: truck
-                          type: string
-                      required:
-                      - type
-                      type: object
+                  - "$ref": "#/components/schemas/carUpdatePayload"
+                  - "$ref": "#/components/schemas/motorcycleUpdatePayload"
+                  - "$ref": "#/components/schemas/truckUpdatePayload"
                   discriminator:
+                    mapping:
+                      car: "#/components/schemas/carUpdatePayload"
+                      motorcycle: "#/components/schemas/motorcycleUpdatePayload"
+                      truck: "#/components/schemas/truckUpdatePayload"
                     propertyName: type
               type: object
               required:
@@ -214,6 +174,54 @@ components:
       - model
       - type
       - year
+    carCreatePayload:
+      properties:
+        brand:
+          type: string
+        color:
+          type:
+          - string
+          - 'null'
+        doors:
+          type:
+          - integer
+          - 'null'
+        model:
+          type: string
+        type:
+          const: car
+          type: string
+        year:
+          type:
+          - integer
+          - 'null'
+      type: object
+      required:
+      - brand
+      - model
+      - type
+    carUpdatePayload:
+      properties:
+        brand:
+          type: string
+        color:
+          type:
+          - string
+          - 'null'
+        doors:
+          type:
+          - integer
+          - 'null'
+        model:
+          type: string
+        type:
+          const: car
+          type: string
+        year:
+          type:
+          - integer
+          - 'null'
+      type: object
     error:
       properties:
         issues:
@@ -232,32 +240,6 @@ components:
       - layer
     errorResponseBody:
       "$ref": "#/components/schemas/error"
-    filter:
-      properties:
-        AND:
-          items:
-            "$ref": "#/components/schemas/filter"
-          type: array
-        NOT:
-          "$ref": "#/components/schemas/filter"
-        OR:
-          items:
-            "$ref": "#/components/schemas/filter"
-          type: array
-        brand:
-          oneOf:
-          - type: string
-          - "$ref": "#/components/schemas/stringFilter"
-        model:
-          oneOf:
-          - type: string
-          - "$ref": "#/components/schemas/stringFilter"
-        type: {}
-        year:
-          oneOf:
-          - type: integer
-          - "$ref": "#/components/schemas/nullableIntegerFilter"
-      type: object
     integerFilterBetween:
       properties:
         from:
@@ -318,6 +300,54 @@ components:
       - model
       - type
       - year
+    motorcycleCreatePayload:
+      properties:
+        brand:
+          type: string
+        color:
+          type:
+          - string
+          - 'null'
+        engineCc:
+          type:
+          - integer
+          - 'null'
+        model:
+          type: string
+        type:
+          const: motorcycle
+          type: string
+        year:
+          type:
+          - integer
+          - 'null'
+      type: object
+      required:
+      - brand
+      - model
+      - type
+    motorcycleUpdatePayload:
+      properties:
+        brand:
+          type: string
+        color:
+          type:
+          - string
+          - 'null'
+        engineCc:
+          type:
+          - integer
+          - 'null'
+        model:
+          type: string
+        type:
+          const: motorcycle
+          type: string
+        year:
+          type:
+          - integer
+          - 'null'
+      type: object
     nullableIntegerFilter:
       properties:
         between:
@@ -406,6 +436,54 @@ components:
       - payloadCapacity
       - type
       - year
+    truckCreatePayload:
+      properties:
+        brand:
+          type: string
+        color:
+          type:
+          - string
+          - 'null'
+        model:
+          type: string
+        payloadCapacity:
+          type:
+          - number
+          - 'null'
+        type:
+          const: truck
+          type: string
+        year:
+          type:
+          - integer
+          - 'null'
+      type: object
+      required:
+      - brand
+      - model
+      - type
+    truckUpdatePayload:
+      properties:
+        brand:
+          type: string
+        color:
+          type:
+          - string
+          - 'null'
+        model:
+          type: string
+        payloadCapacity:
+          type:
+          - number
+          - 'null'
+        type:
+          const: truck
+          type: string
+        year:
+          type:
+          - integer
+          - 'null'
+      type: object
     vehicle:
       oneOf:
       - "$ref": "#/components/schemas/car"
@@ -431,13 +509,13 @@ components:
       properties:
         AND:
           items:
-            "$ref": "#/components/schemas/filter"
+            "$ref": "#/components/schemas/vehicleFilter"
           type: array
         NOT:
-          "$ref": "#/components/schemas/filter"
+          "$ref": "#/components/schemas/vehicleFilter"
         OR:
           items:
-            "$ref": "#/components/schemas/filter"
+            "$ref": "#/components/schemas/vehicleFilter"
           type: array
         brand:
           oneOf:

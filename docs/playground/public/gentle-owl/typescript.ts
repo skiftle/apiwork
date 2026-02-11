@@ -27,9 +27,9 @@ export interface CommentCreateSuccessResponseBody {
 }
 
 export interface CommentFilter {
-  AND?: Filter[];
-  NOT?: Filter;
-  OR?: Filter[];
+  AND?: CommentFilter[];
+  NOT?: CommentFilter;
+  OR?: CommentFilter[];
   commentableType?: CommentCommentableTypeFilter;
 }
 
@@ -155,13 +155,6 @@ export interface Error {
 
 export type ErrorResponseBody = Error;
 
-export interface Filter {
-  AND?: Filter[];
-  NOT?: Filter;
-  OR?: Filter[];
-  title?: StringFilter | string;
-}
-
 export interface Image {
   comments?: Comment[];
   createdAt: string;
@@ -199,14 +192,6 @@ export interface Post {
 }
 
 export type SortDirection = 'asc' | 'desc';
-
-export interface StringFilter {
-  contains?: string;
-  endsWith?: string;
-  eq?: string;
-  in?: string[];
-  startsWith?: string;
-}
 
 export interface Video {
   comments?: Comment[];

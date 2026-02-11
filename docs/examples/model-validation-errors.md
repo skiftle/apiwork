@@ -157,61 +157,25 @@ Content-Type: application/json
 }
 ```
 
-**Response** `400`
+**Response** `201`
 
 ```json
 {
-  "issues": [
-    {
-      "code": "field_unknown",
-      "detail": "Unknown field",
-      "meta": {
-        "allowed": [
-          "bio",
-          "website"
-        ],
-        "field": "email"
-      },
-      "path": [
-        "user",
-        "email"
-      ],
-      "pointer": "/user/email"
+  "user": {
+    "id": "571466c2-02cb-52cb-a9d1-7bd5f8e21034",
+    "createdAt": "2024-01-01T12:00:00.000Z",
+    "updatedAt": "2024-01-01T12:00:00.000Z",
+    "email": "john@example.com",
+    "username": "johndoe",
+    "profile": {
+      "id": "c8f3124b-cf0c-55c4-b8e7-106c58c6a686",
+      "createdAt": "2024-01-01T12:00:00.000Z",
+      "updatedAt": "2024-01-01T12:00:00.000Z",
+      "bio": "Software developer",
+      "website": "https://example.com"
     },
-    {
-      "code": "field_unknown",
-      "detail": "Unknown field",
-      "meta": {
-        "allowed": [
-          "bio",
-          "website"
-        ],
-        "field": "username"
-      },
-      "path": [
-        "user",
-        "username"
-      ],
-      "pointer": "/user/username"
-    },
-    {
-      "code": "field_unknown",
-      "detail": "Unknown field",
-      "meta": {
-        "allowed": [
-          "bio",
-          "website"
-        ],
-        "field": "profile"
-      },
-      "path": [
-        "user",
-        "profile"
-      ],
-      "pointer": "/user/profile"
-    }
-  ],
-  "layer": "contract"
+    "posts": []
+  }
 }
 ```
 
@@ -234,45 +198,23 @@ Content-Type: application/json
 }
 ```
 
-**Response** `400`
+**Response** `422`
 
 ```json
 {
   "issues": [
     {
-      "code": "field_unknown",
-      "detail": "Unknown field",
-      "meta": {
-        "allowed": [
-          "bio",
-          "website"
-        ],
-        "field": "email"
-      },
+      "code": "invalid",
+      "detail": "Invalid",
+      "meta": {},
       "path": [
         "user",
         "email"
       ],
       "pointer": "/user/email"
-    },
-    {
-      "code": "field_unknown",
-      "detail": "Unknown field",
-      "meta": {
-        "allowed": [
-          "bio",
-          "website"
-        ],
-        "field": "username"
-      },
-      "path": [
-        "user",
-        "username"
-      ],
-      "pointer": "/user/username"
     }
   ],
-  "layer": "contract"
+  "layer": "domain"
 }
 ```
 
@@ -301,14 +243,11 @@ Content-Type: application/json
 {
   "issues": [
     {
-      "code": "field_unknown",
-      "detail": "Unknown field",
+      "code": "field_missing",
+      "detail": "Required",
       "meta": {
-        "allowed": [
-          "bio",
-          "website"
-        ],
-        "field": "email"
+        "field": "email",
+        "type": "string"
       },
       "path": [
         "user",
@@ -317,14 +256,11 @@ Content-Type: application/json
       "pointer": "/user/email"
     },
     {
-      "code": "field_unknown",
-      "detail": "Unknown field",
+      "code": "field_missing",
+      "detail": "Required",
       "meta": {
-        "allowed": [
-          "bio",
-          "website"
-        ],
-        "field": "username"
+        "field": "username",
+        "type": "string"
       },
       "path": [
         "user",
@@ -360,61 +296,37 @@ Content-Type: application/json
 }
 ```
 
-**Response** `400`
+**Response** `422`
 
 ```json
 {
   "issues": [
     {
-      "code": "field_unknown",
-      "detail": "Unknown field",
+      "code": "max",
+      "detail": "Too long",
       "meta": {
-        "allowed": [
-          "bio",
-          "website"
-        ],
-        "field": "email"
+        "max": 500
       },
       "path": [
         "user",
-        "email"
+        "profile",
+        "bio"
       ],
-      "pointer": "/user/email"
+      "pointer": "/user/profile/bio"
     },
     {
-      "code": "field_unknown",
-      "detail": "Unknown field",
-      "meta": {
-        "allowed": [
-          "bio",
-          "website"
-        ],
-        "field": "username"
-      },
+      "code": "invalid",
+      "detail": "Invalid",
+      "meta": {},
       "path": [
         "user",
-        "username"
+        "profile",
+        "website"
       ],
-      "pointer": "/user/username"
-    },
-    {
-      "code": "field_unknown",
-      "detail": "Unknown field",
-      "meta": {
-        "allowed": [
-          "bio",
-          "website"
-        ],
-        "field": "profile"
-      },
-      "path": [
-        "user",
-        "profile"
-      ],
-      "pointer": "/user/profile"
+      "pointer": "/user/profile/website"
     }
   ],
-  "layer": "contract"
+  "layer": "domain"
 }
 ```
 
@@ -452,61 +364,36 @@ Content-Type: application/json
 }
 ```
 
-**Response** `400`
+**Response** `201`
 
 ```json
 {
-  "issues": [
-    {
-      "code": "field_unknown",
-      "detail": "Unknown field",
-      "meta": {
-        "allowed": [
-          "bio",
-          "website"
-        ],
-        "field": "email"
-      },
-      "path": [
-        "user",
-        "email"
-      ],
-      "pointer": "/user/email"
-    },
-    {
-      "code": "field_unknown",
-      "detail": "Unknown field",
-      "meta": {
-        "allowed": [
-          "bio",
-          "website"
-        ],
-        "field": "username"
-      },
-      "path": [
-        "user",
-        "username"
-      ],
-      "pointer": "/user/username"
-    },
-    {
-      "code": "field_unknown",
-      "detail": "Unknown field",
-      "meta": {
-        "allowed": [
-          "bio",
-          "website"
-        ],
-        "field": "posts"
-      },
-      "path": [
-        "user",
-        "posts"
-      ],
-      "pointer": "/user/posts"
-    }
-  ],
-  "layer": "contract"
+  "user": {
+    "id": "4448fe72-0e01-5b7d-962d-1a20ce251a01",
+    "createdAt": "2024-01-01T12:00:00.000Z",
+    "updatedAt": "2024-01-01T12:00:00.000Z",
+    "email": "deep@example.com",
+    "username": "deepuser",
+    "profile": null,
+    "posts": [
+      {
+        "id": "f79aecb1-8fa0-5c07-8478-508eb2320f28",
+        "title": "My First Post",
+        "comments": [
+          {
+            "id": "59e8d0c6-28d3-518c-a286-d8e2dd65062a",
+            "body": "Great post!",
+            "author": "Jane"
+          },
+          {
+            "id": "f3484847-e838-513d-8b33-1dd8a97dcb44",
+            "body": "Thanks for sharing",
+            "author": "Bob"
+          }
+        ]
+      }
+    ]
+  }
 }
 ```
 
@@ -540,61 +427,57 @@ Content-Type: application/json
 }
 ```
 
-**Response** `400`
+**Response** `422`
 
 ```json
 {
   "issues": [
     {
-      "code": "field_unknown",
-      "detail": "Unknown field",
+      "code": "min",
+      "detail": "Too short",
       "meta": {
-        "allowed": [
-          "bio",
-          "website"
-        ],
-        "field": "email"
+        "min": 1
       },
       "path": [
         "user",
-        "email"
+        "posts",
+        "0",
+        "comments",
+        "0",
+        "body"
       ],
-      "pointer": "/user/email"
+      "pointer": "/user/posts/0/comments/0/body"
     },
     {
-      "code": "field_unknown",
-      "detail": "Unknown field",
-      "meta": {
-        "allowed": [
-          "bio",
-          "website"
-        ],
-        "field": "username"
-      },
+      "code": "required",
+      "detail": "Required",
+      "meta": {},
       "path": [
         "user",
-        "username"
+        "posts",
+        "0",
+        "comments",
+        "0",
+        "body"
       ],
-      "pointer": "/user/username"
+      "pointer": "/user/posts/0/comments/0/body"
     },
     {
-      "code": "field_unknown",
-      "detail": "Unknown field",
-      "meta": {
-        "allowed": [
-          "bio",
-          "website"
-        ],
-        "field": "posts"
-      },
+      "code": "required",
+      "detail": "Required",
+      "meta": {},
       "path": [
         "user",
-        "posts"
+        "posts",
+        "0",
+        "comments",
+        "0",
+        "author"
       ],
-      "pointer": "/user/posts"
+      "pointer": "/user/posts/0/comments/0/author"
     }
   ],
-  "layer": "contract"
+  "layer": "domain"
 }
 ```
 

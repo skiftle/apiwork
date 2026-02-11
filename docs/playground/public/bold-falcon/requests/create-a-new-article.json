@@ -13,62 +13,18 @@
   },
   "response": {
     "body": {
-      "issues": [
-        {
-          "code": "field_unknown",
-          "detail": "Unknown field",
-          "meta": {
-            "allowed": [],
-            "field": "title"
-          },
-          "path": [
-            "article",
-            "title"
-          ],
-          "pointer": "/article/title"
-        },
-        {
-          "code": "field_unknown",
-          "detail": "Unknown field",
-          "meta": {
-            "allowed": [],
-            "field": "body"
-          },
-          "path": [
-            "article",
-            "body"
-          ],
-          "pointer": "/article/body"
-        },
-        {
-          "code": "field_unknown",
-          "detail": "Unknown field",
-          "meta": {
-            "allowed": [],
-            "field": "status"
-          },
-          "path": [
-            "article",
-            "status"
-          ],
-          "pointer": "/article/status"
-        },
-        {
-          "code": "field_unknown",
-          "detail": "Unknown field",
-          "meta": {
-            "allowed": [],
-            "field": "published_on"
-          },
-          "path": [
-            "article",
-            "published_on"
-          ],
-          "pointer": "/article/published_on"
-        }
-      ],
-      "layer": "contract"
+      "article": {
+        "id": "ab2b6c9d-5ec0-5e58-8784-fd8f52b28b17",
+        "title": "Getting Started with Rails",
+        "body": "A comprehensive guide to Ruby on Rails",
+        "status": "draft",
+        "viewCount": 0,
+        "rating": null,
+        "publishedOn": "2024-01-15",
+        "createdAt": "2024-01-01T12:00:00.000Z",
+        "updatedAt": "2024-01-01T12:00:00.000Z"
+      }
     },
-    "status": 400
+    "status": 201
   }
 }

@@ -4,6 +4,11 @@ export interface Comment {
   id: string;
 }
 
+export interface CommentCreatePayload {
+  author: string;
+  body: string;
+}
+
 export interface CommentCreateSuccessResponseBody {
   comment: Comment;
   meta?: Record<string, unknown>;
@@ -13,6 +18,27 @@ export interface CommentIndexSuccessResponseBody {
   comments: Comment[];
   meta?: Record<string, unknown>;
   pagination: OffsetPagination;
+}
+
+export interface CommentNestedCreatePayload {
+  OP?: 'create';
+  author: string;
+  body: string;
+  id?: string;
+}
+
+export interface CommentNestedDeletePayload {
+  OP?: 'delete';
+  id: string;
+}
+
+export type CommentNestedPayload = CommentNestedCreatePayload | CommentNestedUpdatePayload | CommentNestedDeletePayload;
+
+export interface CommentNestedUpdatePayload {
+  OP?: 'update';
+  author?: string;
+  body?: string;
+  id?: string;
 }
 
 export interface CommentPage {
@@ -25,6 +51,11 @@ export interface CommentShowSuccessResponseBody {
   meta?: Record<string, unknown>;
 }
 
+export interface CommentUpdatePayload {
+  author?: string;
+  body?: string;
+}
+
 export interface CommentUpdateSuccessResponseBody {
   comment: Comment;
   meta?: Record<string, unknown>;
@@ -35,7 +66,7 @@ export interface CommentsCreateRequest {
 }
 
 export interface CommentsCreateRequestBody {
-  comment: unknown;
+  comment: CommentCreatePayload;
 }
 
 export interface CommentsCreateResponse {
@@ -71,7 +102,7 @@ export interface CommentsUpdateRequest {
 }
 
 export interface CommentsUpdateRequestBody {
-  comment: unknown;
+  comment: CommentUpdatePayload;
 }
 
 export interface CommentsUpdateResponse {
@@ -111,6 +142,11 @@ export interface Post {
   title: string;
 }
 
+export interface PostCreatePayload {
+  comments?: CommentNestedPayload[];
+  title: string;
+}
+
 export interface PostCreateSuccessResponseBody {
   meta?: Record<string, unknown>;
   post: Post;
@@ -120,6 +156,27 @@ export interface PostIndexSuccessResponseBody {
   meta?: Record<string, unknown>;
   pagination: OffsetPagination;
   posts: Post[];
+}
+
+export interface PostNestedCreatePayload {
+  OP?: 'create';
+  comments?: CommentNestedPayload[];
+  id?: string;
+  title: string;
+}
+
+export interface PostNestedDeletePayload {
+  OP?: 'delete';
+  id: string;
+}
+
+export type PostNestedPayload = PostNestedCreatePayload | PostNestedUpdatePayload | PostNestedDeletePayload;
+
+export interface PostNestedUpdatePayload {
+  OP?: 'update';
+  comments?: CommentNestedPayload[];
+  id?: string;
+  title?: string;
 }
 
 export interface PostPage {
@@ -132,6 +189,11 @@ export interface PostShowSuccessResponseBody {
   post: Post;
 }
 
+export interface PostUpdatePayload {
+  comments?: CommentNestedPayload[];
+  title?: string;
+}
+
 export interface PostUpdateSuccessResponseBody {
   meta?: Record<string, unknown>;
   post: Post;
@@ -142,7 +204,7 @@ export interface PostsCreateRequest {
 }
 
 export interface PostsCreateRequestBody {
-  post: unknown;
+  post: PostCreatePayload;
 }
 
 export interface PostsCreateResponse {
@@ -178,7 +240,7 @@ export interface PostsUpdateRequest {
 }
 
 export interface PostsUpdateRequestBody {
-  post: unknown;
+  post: PostUpdatePayload;
 }
 
 export interface PostsUpdateResponse {
@@ -194,6 +256,31 @@ export interface Profile {
   updatedAt: string;
   user?: User;
   website: null | string;
+}
+
+export interface ProfileInclude {
+  user?: boolean;
+}
+
+export interface ProfileNestedCreatePayload {
+  OP?: 'create';
+  bio?: null | string;
+  id?: string;
+  website?: null | string;
+}
+
+export interface ProfileNestedDeletePayload {
+  OP?: 'delete';
+  id: string;
+}
+
+export type ProfileNestedPayload = ProfileNestedCreatePayload | ProfileNestedUpdatePayload | ProfileNestedDeletePayload;
+
+export interface ProfileNestedUpdatePayload {
+  OP?: 'update';
+  bio?: null | string;
+  id?: string;
+  website?: null | string;
 }
 
 export type SortDirection = 'asc' | 'desc';
@@ -216,6 +303,13 @@ export interface User {
   username: string;
 }
 
+export interface UserCreatePayload {
+  email: string;
+  posts?: PostNestedPayload[];
+  profile?: ProfileNestedPayload;
+  username: string;
+}
+
 export interface UserCreateSuccessResponseBody {
   meta?: Record<string, unknown>;
   user: User;
@@ -230,8 +324,7 @@ export interface UserFilter {
 }
 
 export interface UserInclude {
-  posts?: unknown;
-  profile?: unknown;
+  profile?: ProfileInclude;
 }
 
 export interface UserIndexSuccessResponseBody {
@@ -255,6 +348,13 @@ export interface UserSort {
   updatedAt?: SortDirection;
 }
 
+export interface UserUpdatePayload {
+  email?: string;
+  posts?: PostNestedPayload[];
+  profile?: ProfileNestedPayload;
+  username?: string;
+}
+
 export interface UserUpdateSuccessResponseBody {
   meta?: Record<string, unknown>;
   user: User;
@@ -266,7 +366,7 @@ export interface UsersCreateRequest {
 }
 
 export interface UsersCreateRequestBody {
-  user: unknown;
+  user: UserCreatePayload;
 }
 
 export interface UsersCreateRequestQuery {
@@ -326,7 +426,7 @@ export interface UsersUpdateRequest {
 }
 
 export interface UsersUpdateRequestBody {
-  user: unknown;
+  user: UserUpdatePayload;
 }
 
 export interface UsersUpdateRequestQuery {

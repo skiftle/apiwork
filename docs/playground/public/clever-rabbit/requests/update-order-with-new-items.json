@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "PATCH",
-    "path": "/clever_rabbit/orders/3870eeb2-49db-5e22-857a-ca2bcd2e4612",
+    "path": "/clever_rabbit/orders/099aec9e-6aec-5782-9315-9bc452881440",
     "body": {
       "order": {
         "order_number": "ORD-001",
@@ -18,7 +18,7 @@
   "response": {
     "body": {
       "order": {
-        "id": "3870eeb2-49db-5e22-857a-ca2bcd2e4612",
+        "id": "099aec9e-6aec-5782-9315-9bc452881440",
         "orderNumber": "ORD-001",
         "status": "pending",
         "total": null,
@@ -26,7 +26,7 @@
         "updatedAt": "2024-01-01T12:00:00.000Z",
         "lineItems": [
           {
-            "id": "ad73acbb-0926-5060-9b75-5888bde61fc7",
+            "id": "855dd577-4696-5477-8c71-4e8debd866be",
             "productName": "New Item",
             "quantity": 3,
             "unitPrice": "19.99"

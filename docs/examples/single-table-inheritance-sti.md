@@ -229,13 +229,13 @@ Content-Type: application/json
 ```json
 {
   "vehicle": {
-    "type": "car",
-    "id": "c325d8ae-b611-5fb6-b350-d3416209d5b3",
+    "type": "motorcycle",
+    "id": "5f50c425-905a-59fb-aed6-64946b81714e",
     "brand": "Harley-Davidson",
     "model": "Street Glide",
     "year": 2023,
     "color": "black",
-    "doors": null
+    "engineCc": null
   }
 }
 ```
@@ -267,13 +267,13 @@ Content-Type: application/json
 ```json
 {
   "vehicle": {
-    "type": "car",
-    "id": "c2e11a1c-b90a-5941-8855-0b2dfb350dde",
+    "type": "truck",
+    "id": "bc709869-2a84-54ce-8bad-69ffeb2112d5",
     "brand": "Ford",
     "model": "F-150",
     "year": 2024,
     "color": "blue",
-    "doors": null
+    "payloadCapacity": null
   }
 }
 ```
@@ -296,7 +296,7 @@ GET /mighty_wolf/vehicles?filter[type][eq]=car
   "vehicles": [
     {
       "type": "car",
-      "id": "9d825841-4a00-5ca1-b6b5-d36772ffeb56",
+      "id": "c325d8ae-b611-5fb6-b350-d3416209d5b3",
       "brand": "Volvo",
       "model": "EX30",
       "year": null,

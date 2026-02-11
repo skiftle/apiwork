@@ -212,32 +212,39 @@ Content-Type: application/json
 }
 ```
 
-**Response** `400`
+**Response** `201`
 
 ```json
 {
-  "issues": [
-    {
-      "code": "field_unknown",
-      "detail": "Unknown field",
-      "meta": {
-        "allowed": [
-          "id",
-          "product_name",
-          "quantity",
-          "unit_price"
-        ],
-        "field": "street"
+  "order": {
+    "id": "3870eeb2-49db-5e22-857a-ca2bcd2e4612",
+    "orderNumber": "ORD-001",
+    "status": "pending",
+    "total": null,
+    "createdAt": "2024-01-01T12:00:00.000Z",
+    "updatedAt": "2024-01-01T12:00:00.000Z",
+    "lineItems": [
+      {
+        "id": "ad73acbb-0926-5060-9b75-5888bde61fc7",
+        "productName": "Widget",
+        "quantity": 2,
+        "unitPrice": "29.99"
       },
-      "path": [
-        "order",
-        "shipping_address",
-        "street"
-      ],
-      "pointer": "/order/shipping_address/street"
+      {
+        "id": "987c1624-9b7b-5467-910c-4dc0035b91ee",
+        "productName": "Gadget",
+        "quantity": 1,
+        "unitPrice": "49.99"
+      }
+    ],
+    "shippingAddress": {
+      "id": "3cb3bbd4-ed44-5c37-a3bf-f77ea95a7e5a",
+      "street": "123 Main St",
+      "city": "Springfield",
+      "postalCode": "12345",
+      "country": "USA"
     }
-  ],
-  "layer": "contract"
+  }
 }
 ```
 
@@ -249,7 +256,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-PATCH /clever_rabbit/orders/3870eeb2-49db-5e22-857a-ca2bcd2e4612
+PATCH /clever_rabbit/orders/099aec9e-6aec-5782-9315-9bc452881440
 Content-Type: application/json
 
 {
@@ -271,7 +278,7 @@ Content-Type: application/json
 ```json
 {
   "order": {
-    "id": "3870eeb2-49db-5e22-857a-ca2bcd2e4612",
+    "id": "099aec9e-6aec-5782-9315-9bc452881440",
     "orderNumber": "ORD-001",
     "status": "pending",
     "total": null,
@@ -279,7 +286,7 @@ Content-Type: application/json
     "updatedAt": "2024-01-01T12:00:00.000Z",
     "lineItems": [
       {
-        "id": "ad73acbb-0926-5060-9b75-5888bde61fc7",
+        "id": "855dd577-4696-5477-8c71-4e8debd866be",
         "productName": "New Item",
         "quantity": 3,
         "unitPrice": "19.99"
@@ -298,7 +305,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-DELETE /clever_rabbit/orders/099aec9e-6aec-5782-9315-9bc452881440
+DELETE /clever_rabbit/orders/d7b4402f-dd0a-5398-982d-dacd5b07955c
 ```
 
 **Response** `204`
@@ -312,14 +319,14 @@ DELETE /clever_rabbit/orders/099aec9e-6aec-5782-9315-9bc452881440
 **Request**
 
 ```http
-PATCH /clever_rabbit/orders/d7b4402f-dd0a-5398-982d-dacd5b07955c
+PATCH /clever_rabbit/orders/26e15ccf-de43-5826-a54e-fcd80f398f17
 Content-Type: application/json
 
 {
   "order": {
     "line_items": [
       {
-        "id": "855dd577-4696-5477-8c71-4e8debd866be",
+        "id": "5f3ed1ba-29ae-52cc-a142-856d80fd8e3b",
         "_op": "delete"
       }
     ]
