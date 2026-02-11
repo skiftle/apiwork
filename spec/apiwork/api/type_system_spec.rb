@@ -353,6 +353,5 @@ RSpec.describe 'TypeSystem Metadata' do
       # Example should still be stored even if it's not in the values
       expect(enums[:status][:example]).to eq('pending')
     end
-
   end
 end
