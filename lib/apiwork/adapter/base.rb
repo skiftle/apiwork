@@ -31,6 +31,7 @@ module Apiwork
         # The adapter name for this adapter.
         #
         # @param value [Symbol, String, nil] (nil)
+        #   The adapter name.
         # @return [Symbol, nil]
         #
         # @example
@@ -88,6 +89,7 @@ module Apiwork
         # Sets the serializer class for records and collections.
         #
         # @param klass [Class<Serializer::Resource::Base>, nil] (nil)
+        #   The serializer class.
         # @return [Class<Serializer::Resource::Base>, nil]
         #
         # @example
@@ -101,6 +103,7 @@ module Apiwork
         # Sets the serializer class for errors.
         #
         # @param klass [Class<Serializer::Error::Base>, nil] (nil)
+        #   The serializer class.
         # @return [Class<Serializer::Error::Base>, nil]
         #
         # @example
@@ -114,6 +117,7 @@ module Apiwork
         # Sets the wrapper class for single-record responses.
         #
         # @param klass [Class<Wrapper::Member::Base>, nil] (nil)
+        #   The wrapper class.
         # @return [Class<Wrapper::Member::Base>, nil]
         #
         # @example
@@ -127,6 +131,7 @@ module Apiwork
         # Sets the wrapper class for collection responses.
         #
         # @param klass [Class<Wrapper::Collection::Base>, nil] (nil)
+        #   The wrapper class.
         # @return [Class<Wrapper::Collection::Base>, nil]
         #
         # @example
@@ -140,6 +145,7 @@ module Apiwork
         # Sets the wrapper class for error responses.
         #
         # @param klass [Class<Wrapper::Error::Base>, nil] (nil)
+        #   The wrapper class.
         # @return [Class<Wrapper::Error::Base>, nil]
         #
         # @example

@@ -41,7 +41,8 @@ module Apiwork
         # @api public
         # Transforms request and response keys.
         #
-        # @param format [Symbol, nil] (nil) [:keep, :camel, :underscore, :kebab]
+        # @param format [Symbol, nil] (nil) [:camel, :kebab, :keep, :underscore]
+        #   The format.
         # @return [Symbol, nil]
         # @raise [ConfigurationError] if format is invalid
         #
@@ -59,7 +60,8 @@ module Apiwork
         # @api public
         # Transforms resource and action names in URL paths.
         #
-        # @param format [Symbol, nil] (nil) [:keep, :kebab, :camel, :underscore]
+        # @param format [Symbol, nil] (nil) [:camel, :kebab, :keep, :underscore]
+        #   The format.
         # @return [Symbol, nil]
         # @raise [ConfigurationError] if format is invalid
         #
@@ -120,6 +122,7 @@ module Apiwork
         # Sets or gets the adapter for this API.
         #
         # @param name [Symbol, nil] (nil)
+        #   The registered adapter name.
         # @yield block evaluated in adapter context
         # @yieldparam adapter [Configuration]
         # @return [Adapter::Base, nil]
@@ -193,11 +196,17 @@ module Apiwork
         # Defines a reusable enumeration type.
         #
         # @param name [Symbol]
+        #   The enum name.
         # @param values [Array<String>, nil] (nil)
+        #   The allowed values.
         # @param scope [Class<Contract::Base>, nil] (nil)
+        #   The contract scope for type prefixing.
         # @param description [String, nil] (nil)
+        #   The description. Metadata included in exports.
         # @param example [String, nil] (nil)
+        #   The example. Metadata included in exports.
         # @param deprecated [Boolean] (false)
+        #   Whether deprecated. Metadata included in exports.
         # @return [void]
         #
         # @example

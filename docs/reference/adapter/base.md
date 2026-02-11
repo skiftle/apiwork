@@ -38,7 +38,7 @@ end
 
 `.adapter_name(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L38)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L39)
 
 The adapter name for this adapter.
 
@@ -48,7 +48,7 @@ The adapter name for this adapter.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `Symbol`, `String`, `nil` | `nil` |  |
+| `value` | `Symbol`, `String`, `nil` | `nil` | The adapter name. |
 
 </div>
 
@@ -68,7 +68,7 @@ adapter_name :my
 
 `.capability(klass)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L56)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L57)
 
 Registers a capability for this adapter.
 
@@ -102,7 +102,7 @@ capability Capability::Pagination
 
 `.collection_wrapper(klass = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L134)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L139)
 
 Sets the wrapper class for collection responses.
 
@@ -112,7 +112,7 @@ Sets the wrapper class for collection responses.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `klass` | `Class<Wrapper::Collection::Base>`, `nil` | `nil` |  |
+| `klass` | `Class<Wrapper::Collection::Base>`, `nil` | `nil` | The wrapper class. |
 
 </div>
 
@@ -132,7 +132,7 @@ collection_wrapper Wrapper::Collection::Default
 
 `.error_serializer(klass = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L108)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L111)
 
 Sets the serializer class for errors.
 
@@ -142,7 +142,7 @@ Sets the serializer class for errors.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `klass` | `Class<Serializer::Error::Base>`, `nil` | `nil` |  |
+| `klass` | `Class<Serializer::Error::Base>`, `nil` | `nil` | The serializer class. |
 
 </div>
 
@@ -162,7 +162,7 @@ error_serializer Serializer::Error::Default
 
 `.error_wrapper(klass = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L147)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L153)
 
 Sets the wrapper class for error responses.
 
@@ -172,7 +172,7 @@ Sets the wrapper class for error responses.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `klass` | `Class<Wrapper::Error::Base>`, `nil` | `nil` |  |
+| `klass` | `Class<Wrapper::Error::Base>`, `nil` | `nil` | The wrapper class. |
 
 </div>
 
@@ -192,7 +192,7 @@ error_wrapper Wrapper::Error::Default
 
 `.member_wrapper(klass = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L121)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L125)
 
 Sets the wrapper class for single-record responses.
 
@@ -202,7 +202,7 @@ Sets the wrapper class for single-record responses.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `klass` | `Class<Wrapper::Member::Base>`, `nil` | `nil` |  |
+| `klass` | `Class<Wrapper::Member::Base>`, `nil` | `nil` | The wrapper class. |
 
 </div>
 
@@ -278,7 +278,7 @@ end
 
 `.resource_serializer(klass = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L95)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L97)
 
 Sets the serializer class for records and collections.
 
@@ -288,7 +288,7 @@ Sets the serializer class for records and collections.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `klass` | `Class<Serializer::Resource::Base>`, `nil` | `nil` |  |
+| `klass` | `Class<Serializer::Resource::Base>`, `nil` | `nil` | The serializer class. |
 
 </div>
 
@@ -308,7 +308,7 @@ resource_serializer Serializer::Resource::Default
 
 `.skip_capability(name)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L75)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L76)
 
 Skips an inherited capability by name.
 

@@ -31,7 +31,7 @@ end
 
 `.adapter(name = nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L133)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L136)
 
 Sets or gets the adapter for this API.
 
@@ -41,7 +41,7 @@ Sets or gets the adapter for this API.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol`, `nil` | `nil` |  |
+| `name` | `Symbol`, `nil` | `nil` | The registered adapter name. |
 
 </div>
 
@@ -67,7 +67,7 @@ end
 
 `.concern(name, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L500)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L509)
 
 Defines a reusable concern for resources.
 
@@ -122,7 +122,7 @@ resources :posts, concerns: [:archivable]
 
 `.enum(name, values: nil, scope: nil, description: nil, example: nil, deprecated: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L205)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L214)
 
 Defines a reusable enumeration type.
 
@@ -132,12 +132,12 @@ Defines a reusable enumeration type.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  |  |
-| `values` | `Array<String>`, `nil` | `nil` |  |
-| `scope` | `Class<Contract::Base>`, `nil` | `nil` |  |
-| `description` | `String`, `nil` | `nil` |  |
-| `example` | `String`, `nil` | `nil` |  |
-| `deprecated` | `Boolean` | `false` |  |
+| **`name`** | `Symbol` |  | The enum name. |
+| `values` | `Array<String>`, `nil` | `nil` | The allowed values. |
+| `scope` | `Class<Contract::Base>`, `nil` | `nil` | The contract scope for type prefixing. |
+| `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
+| `example` | `String`, `nil` | `nil` | The example. Metadata included in exports. |
+| `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
 
 </div>
 
@@ -157,7 +157,7 @@ enum :status, values: %w[draft sent paid]
 
 `.export(name, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L93)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L95)
 
 Enables an export for this API.
 
@@ -194,7 +194,7 @@ end
 
 `.info(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L324)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L333)
 
 The info for this API.
 
@@ -228,7 +228,7 @@ end
 
 `.key_format(format = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L50)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L51)
 
 Transforms request and response keys.
 
@@ -238,7 +238,7 @@ Transforms request and response keys.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `format` | `Symbol<:keep, :camel, :underscore, :kebab>`, `nil` | `nil` |  |
+| `format` | `Symbol<:camel, :kebab, :keep, :underscore>`, `nil` | `nil` | The format. |
 
 </div>
 
@@ -258,7 +258,7 @@ key_format :camel
 
 `.object(name, deprecated: false, description: nil, example: nil, scope: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L173)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L176)
 
 Defines a reusable object type.
 
@@ -311,7 +311,7 @@ The path for this API.
 
 `.path_format(format = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L68)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L70)
 
 Transforms resource and action names in URL paths.
 
@@ -321,7 +321,7 @@ Transforms resource and action names in URL paths.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `format` | `Symbol<:keep, :kebab, :camel, :underscore>`, `nil` | `nil` |  |
+| `format` | `Symbol<:camel, :kebab, :keep, :underscore>`, `nil` | `nil` | The format. |
 
 </div>
 
@@ -341,7 +341,7 @@ path_format :kebab
 
 `.raises(*error_code_keys)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L287)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L296)
 
 API-wide error codes.
 
@@ -374,7 +374,7 @@ api_class.raises  # => [:unauthorized, :forbidden, :not_found]
 
 `.resource(name, concerns: nil, constraints: nil, contract: nil, controller: nil, defaults: nil, except: nil, only: nil, param: nil, path: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L441)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L450)
 
 Defines a singular resource (no index action, no :id in URL).
 
@@ -428,7 +428,7 @@ end
 
 `.resources(name, concerns: nil, constraints: nil, contract: nil, controller: nil, defaults: nil, except: nil, only: nil, param: nil, path: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L374)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L383)
 
 Defines a RESTful resource with standard CRUD actions.
 
@@ -485,7 +485,7 @@ end
 
 `.union(name, deprecated: false, description: nil, discriminator: nil, example: nil, scope: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L251)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L260)
 
 Defines a discriminated union type.
 
@@ -528,7 +528,7 @@ end
 
 `.with_options(options = {}, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L528)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L537)
 
 Applies options to all nested resource definitions.
 

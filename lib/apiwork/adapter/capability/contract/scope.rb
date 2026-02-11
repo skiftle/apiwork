@@ -51,6 +51,7 @@ module Apiwork
           # Whether this scope includes the given action.
           #
           # @param name [Symbol]
+          #   The action name.
           # @return [Boolean]
           def action?(name)
             actions.key?(name.to_sym)
