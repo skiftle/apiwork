@@ -28,10 +28,6 @@ module Apiwork
           deserialized
         end
 
-        def has_union_params?
-          shape.params.any? { |_, options| options[:union] }
-        end
-
         private
 
         attr_reader :shape
@@ -49,8 +45,8 @@ module Apiwork
         end
 
         def deserialize_shape(hash, nested_shape)
-          representation_class = nested_shape.contract_class&.representation_class
-          return representation_class.deserialize(hash) if representation_class && !Deserializer.new(nested_shape).has_union_params?
+          representation_class = nested_shape.contract_class.representation_class
+          return representation_class.deserialize(hash) if representation_class && nested_shape.params.none? { |_, options| options[:union] }
 
           Deserializer.new(nested_shape).deserialize(hash)
         end

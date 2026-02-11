@@ -166,7 +166,7 @@ module Apiwork
       end
 
       def build_parameter_schema(param)
-        return { '$ref': "#/components/schemas/#{schema_name(param.reference)}" } if param.reference? && type_exists?(param.reference)
+        return { '$ref': "#/components/schemas/#{transform_key(param.reference)}" } if param.reference? && type_exists?(param.reference)
 
         map_param(param)
       end
@@ -267,7 +267,7 @@ module Apiwork
                 properties: {
                   issues: {
                     items: {
-                      '$ref': "#/components/schemas/#{schema_name(:error)}",
+                      '$ref': "#/components/schemas/#{transform_key(:error)}",
                     },
                     type: 'array',
                   },
@@ -299,7 +299,7 @@ module Apiwork
         schemas = {}
 
         surface.types.each do |name, type|
-          component_name = schema_name(name)
+          component_name = transform_key(name)
 
           schemas[component_name] = if type.union?
                                       map_union(type)
@@ -314,7 +314,7 @@ module Apiwork
       end
 
       def map_object_with_extends(type)
-        refs = type.extends.map { |base_type| { '$ref': "#/components/schemas/#{schema_name(base_type)}" } }
+        refs = type.extends.map { |base_type| { '$ref': "#/components/schemas/#{transform_key(base_type)}" } }
         object_schema = map_object(type)
 
         if object_schema[:properties].empty?
@@ -327,14 +327,14 @@ module Apiwork
       def map_field(param)
         if param.reference? && type_exists?(param.reference)
           return apply_nullable(
-            { '$ref': "#/components/schemas/#{schema_name(param.reference)}" },
+            { '$ref': "#/components/schemas/#{transform_key(param.reference)}" },
             param.nullable?,
           )
         end
 
         if param.scalar? && param.enum?
           if param.enum_reference? && enum_exists?(param.enum)
-            enum_obj = find_enum(param.enum)
+            enum_obj = surface.enums[param.enum]
             schema = { enum: enum_obj.values, type: 'string' }
           else
             schema = { enum: param.enum, type: 'string' }
@@ -363,9 +363,9 @@ module Apiwork
         elsif param.literal?
           map_literal(param)
         elsif param.reference? && type_exists?(param.reference)
-          { '$ref': "#/components/schemas/#{schema_name(param.reference)}" }
+          { '$ref': "#/components/schemas/#{transform_key(param.reference)}" }
         elsif param.reference? && enum_exists?(param.reference)
-          enum_obj = find_enum(param.reference)
+          enum_obj = surface.enums[param.reference]
           { enum: enum_obj.values, type: 'string' }
         else
           map_primitive(param)
@@ -404,7 +404,7 @@ module Apiwork
         return { items: {}, type: 'array' } unless items_param
 
         items_schema = if items_param.reference? && type_exists?(items_param.reference)
-                         { '$ref': "#/components/schemas/#{schema_name(items_param.reference)}" }
+                         { '$ref': "#/components/schemas/#{transform_key(items_param.reference)}" }
                        else
                          map_param(items_param)
                        end
@@ -474,7 +474,7 @@ module Apiwork
 
           if variant.reference? && type_exists?(variant.reference)
             mapping[transform_key(tag.to_s)] =
-              "#/components/schemas/#{schema_name(variant.reference)}"
+              "#/components/schemas/#{transform_key(variant.reference)}"
           end
         end
 
@@ -573,10 +573,6 @@ module Apiwork
         end
       end
 
-      def schema_name(name)
-        transform_key(name)
-      end
-
       def type_exists?(symbol)
         return false unless symbol
 
@@ -596,10 +592,6 @@ module Apiwork
         return false unless referenced_type
 
         referenced_type.shape.key?(discriminator)
-      end
-
-      def find_enum(symbol)
-        surface.enums[symbol]
       end
 
       def traverse_resources(resources = data.resources, &block)

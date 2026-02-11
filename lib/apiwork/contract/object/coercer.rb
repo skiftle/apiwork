@@ -89,7 +89,7 @@ module Apiwork
           return coerce_array(value, param_options) if type == :array && value.is_a?(Array)
           return Coercer.new(param_options[:shape]).coerce(value) if param_options[:shape] && value.is_a?(Hash)
 
-          if value.is_a?(Hash) && type && !primitive?(type)
+          if value.is_a?(Hash) && type && !PRIMITIVES.key?(type)
             custom_shape = resolve_custom_shape(type)
             return Coercer.new(custom_shape).coerce(value) if custom_shape
           end
@@ -101,12 +101,12 @@ module Apiwork
         def coerce_array(array, param_options)
           custom_shape = nil
 
-          custom_shape = resolve_custom_shape(param_options[:of]) if param_options[:of] && !primitive?(param_options[:of])
+          custom_shape = resolve_custom_shape(param_options[:of]) if param_options[:of] && !PRIMITIVES.key?(param_options[:of])
 
           array.map do |item|
             if param_options[:shape] && item.is_a?(Hash)
               Coercer.new(param_options[:shape]).coerce(item)
-            elsif param_options[:of] && primitive?(param_options[:of])
+            elsif param_options[:of] && PRIMITIVES.key?(param_options[:of])
               coerced = coerce_primitive(item, param_options[:of])
               coerced.nil? ? item : coerced
             elsif custom_shape && item.is_a?(Hash)
@@ -172,10 +172,6 @@ module Apiwork
           rescue ArgumentError, TypeError
             nil
           end
-        end
-
-        def primitive?(type)
-          PRIMITIVES.key?(type)
         end
 
         def resolve_custom_shape(type_name)
