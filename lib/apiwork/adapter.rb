@@ -2,7 +2,6 @@
 
 module Apiwork
   # @api public
-  # Namespace for adapters and the adapter registry.
   module Adapter
     class << self
       # @!method find(name)

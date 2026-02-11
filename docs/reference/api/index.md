@@ -6,9 +6,7 @@ next: false
 
 # API
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L6)
-
-Namespace for API definitions and the API registry.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L5)
 
 ## Modules
 
@@ -25,7 +23,7 @@ Namespace for API definitions and the API registry.
 
 `.define(path, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L61)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L60)
 
 Defines a new API at the given path.
 
@@ -72,7 +70,7 @@ end
 
 `.find(path)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L28)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L27)
 
 Finds an API by path.
 
@@ -106,7 +104,7 @@ Apiwork::API.find('/api/v1')
 
 `.find!(path)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L28)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L27)
 
 Finds an API by path.
 
@@ -140,7 +138,7 @@ Apiwork::API.find!('/api/v1')
 
 `.introspect(path, locale: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L81)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L80)
 
 The introspection data for an API.
 

@@ -1,90 +1,14 @@
 ---
-order: 83
+order: 45
 prev: false
 next: false
 ---
 
 # Element
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/element.rb#L75)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L6)
 
-Block context for defining JSON blob structure in representation attributes.
-
-Used inside attribute blocks to define the shape of JSON/JSONB columns,
-Rails store attributes, or any serialized data structure.
-
-Only complex types are allowed at the top level:
-- [#object](#object) for key-value structures
-- [#array](#array) for ordered collections
-- [#union](#union) for polymorphic structures
-
-Inside these blocks, the full type DSL is available including
-nested objects, arrays, primitives, and unions.
-
-**Example: Object structure**
-
-```ruby
-attribute :settings do
-  object do
-    string :theme
-    boolean :notifications
-    integer :max_items, min: 1, max: 100
-  end
-end
-```
-
-**Example: Array of objects**
-
-```ruby
-attribute :addresses do
-  array do
-    object do
-      string :street
-      string :city
-      string :zip
-      boolean :primary
-    end
-  end
-end
-```
-
-**Example: Nested structures**
-
-```ruby
-attribute :config do
-  object do
-    string :name
-    array :tags do
-      string
-    end
-    object :metadata do
-      datetime :created_at
-      datetime :updated_at
-    end
-  end
-end
-```
-
-**Example: Union for polymorphic data**
-
-```ruby
-attribute :payment_details do
-  union discriminator: :type do
-    variant tag: 'card' do
-      object do
-        string :last_four
-        string :brand
-      end
-    end
-    variant tag: 'bank' do
-      object do
-        string :account_number
-        string :routing_number
-      end
-    end
-  end
-end
-```
+Defines the type of elements in an array.
 
 ## Instance Methods
 
@@ -487,35 +411,6 @@ array :items do |element|
   end
 end
 ```
-
----
-
-### #of
-
-`#of(type, discriminator: nil, &block)`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/element.rb#L98)
-
-Defines the element type.
-
-Only complex types (:object, :array, :union) are allowed.
-
-**Parameters**
-
-<div class="params-table">
-
-| Name | Type | Default | Description |
-|------|------|---------|-------------|
-| **`type`** | `Symbol<:array, :object, :union>` |  | The element type. |
-| `discriminator` | `Symbol`, `nil` | `nil` | The discriminator field name. Unions only. |
-
-</div>
-
-**Returns**
-
-`void`
-
-**Yields** [API::Object](/reference/api/object), [API::Union](/reference/api/union), [API::Element](/reference/api/element)
 
 ---
 

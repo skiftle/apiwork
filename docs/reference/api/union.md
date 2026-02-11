@@ -74,7 +74,7 @@ Defines a union variant.
 
 `void`
 
-**Yields** [Element](/reference/api/element)
+**Yields** [Element](/reference/element)
 
 **Example: instance_eval style**
 

@@ -4,6 +4,36 @@ Rules for YARD documentation in `lib/apiwork/`.
 
 **Every `@api public` method has a description. No exceptions.**
 
+**Never add new `@api public` tags.** These tags are added manually. Only document existing `@api public` methods.
+
+---
+
+## Module vs Class Documentation
+
+| Type | YARD | Description |
+|------|------|-------------|
+| Module | `# @api public` | No description |
+| Class | `# @api public` + description | Required |
+
+**Modules** are namespaces. They get `@api public` (for YARD visibility) but no description line.
+
+**Classes** contain logic. They get `@api public` followed by a description on the next line.
+
+```ruby
+# Module — @api public only
+# @api public
+module Adapter
+  # ...
+end
+
+# Class — @api public with description
+# @api public
+# Base class for adapters.
+class Base
+  # ...
+end
+```
+
 ---
 
 ## Core Principle

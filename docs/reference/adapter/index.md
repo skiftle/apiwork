@@ -6,9 +6,7 @@ next: false
 
 # Adapter
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter.rb#L6)
-
-Namespace for adapters and the adapter registry.
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter.rb#L5)
 
 ## Modules
 
@@ -24,7 +22,7 @@ Namespace for adapters and the adapter registry.
 
 `.find(name)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter.rb#L37)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter.rb#L36)
 
 Finds an adapter by name.
 
@@ -58,7 +56,7 @@ Apiwork::Adapter.find(:standard)
 
 `.find!(name)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter.rb#L37)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter.rb#L36)
 
 Finds an adapter by name.
 
@@ -92,7 +90,7 @@ Apiwork::Adapter.find!(:standard)
 
 `.register(klass)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter.rb#L37)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter.rb#L36)
 
 Registers an adapter.
 

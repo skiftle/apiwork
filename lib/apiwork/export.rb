@@ -2,7 +2,6 @@
 
 module Apiwork
   # @api public
-  # Namespace for export generators and the export registry.
   module Export
     class << self
       # @!method find(name)
