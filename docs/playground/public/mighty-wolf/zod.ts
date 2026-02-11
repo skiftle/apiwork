@@ -6,16 +6,6 @@ export const SortDirectionSchema = z.enum(['asc', 'desc']);
 
 export const VehicleTypeSchema = z.enum(['car', 'motorcycle', 'truck']);
 
-export const VehicleFilterSchema: z.ZodType<VehicleFilter> = z.lazy(() => z.object({
-  AND: z.array(VehicleFilterSchema).optional(),
-  NOT: VehicleFilterSchema.optional(),
-  OR: z.array(VehicleFilterSchema).optional(),
-  brand: z.union([z.string(), StringFilterSchema]).optional(),
-  model: z.union([z.string(), StringFilterSchema]).optional(),
-  type: VehicleTypeFilterSchema.optional(),
-  year: z.union([z.number().int(), NullableIntegerFilterSchema]).optional()
-}));
-
 export const CarSchema = z.object({
   brand: z.string(),
   color: z.string().nullable(),
@@ -143,11 +133,6 @@ export const VehicleTypeFilterSchema = z.union([
   z.object({ eq: VehicleTypeSchema, in: z.array(VehicleTypeSchema) }).partial()
 ]);
 
-export const ErrorSchema = z.object({
-  issues: z.array(IssueSchema),
-  layer: LayerSchema
-});
-
 export const NullableIntegerFilterSchema = z.object({
   between: IntegerFilterBetweenSchema.optional(),
   eq: z.number().int().optional(),
@@ -159,11 +144,26 @@ export const NullableIntegerFilterSchema = z.object({
   null: z.boolean().optional()
 });
 
+export const ErrorSchema = z.object({
+  issues: z.array(IssueSchema),
+  layer: LayerSchema
+});
+
 export const VehicleSchema = z.discriminatedUnion('type', [
   CarSchema,
   MotorcycleSchema,
   TruckSchema
 ]);
+
+export const VehicleFilterSchema: z.ZodType<VehicleFilter> = z.lazy(() => z.object({
+  AND: z.array(VehicleFilterSchema).optional(),
+  NOT: VehicleFilterSchema.optional(),
+  OR: z.array(VehicleFilterSchema).optional(),
+  brand: z.union([z.string(), StringFilterSchema]).optional(),
+  model: z.union([z.string(), StringFilterSchema]).optional(),
+  type: VehicleTypeFilterSchema.optional(),
+  year: z.union([z.number().int(), NullableIntegerFilterSchema]).optional()
+}));
 
 export const ErrorResponseBodySchema = ErrorSchema;
 

@@ -4,13 +4,6 @@ export const LayerSchema = z.enum(['contract', 'domain', 'http']);
 
 export const SortDirectionSchema = z.enum(['asc', 'desc']);
 
-export const OrderFilterSchema: z.ZodType<OrderFilter> = z.lazy(() => z.object({
-  AND: z.array(OrderFilterSchema).optional(),
-  NOT: OrderFilterSchema.optional(),
-  OR: z.array(OrderFilterSchema).optional(),
-  status: z.union([z.string(), NullableStringFilterSchema]).optional()
-}));
-
 export const IssueSchema = z.object({
   code: z.string(),
   detail: z.string(),
@@ -116,6 +109,13 @@ export const LineItemNestedPayloadSchema = z.discriminatedUnion('OP', [
   LineItemNestedDeletePayloadSchema
 ]);
 
+export const OrderFilterSchema: z.ZodType<OrderFilter> = z.lazy(() => z.object({
+  AND: z.array(OrderFilterSchema).optional(),
+  NOT: OrderFilterSchema.optional(),
+  OR: z.array(OrderFilterSchema).optional(),
+  status: z.union([z.string(), NullableStringFilterSchema]).optional()
+}));
+
 export const OrderSchema = z.object({
   createdAt: z.iso.datetime(),
   id: z.string(),
@@ -135,12 +135,6 @@ export const ShippingAddressNestedPayloadSchema = z.discriminatedUnion('OP', [
 
 export const ErrorResponseBodySchema = ErrorSchema;
 
-export const OrderCreatePayloadSchema = z.object({
-  lineItems: z.array(LineItemNestedPayloadSchema).optional(),
-  orderNumber: z.string(),
-  shippingAddress: ShippingAddressNestedPayloadSchema.optional()
-});
-
 export const OrderCreateSuccessResponseBodySchema = z.object({
   meta: z.record(z.string(), z.unknown()).optional(),
   order: OrderSchema
@@ -157,15 +151,21 @@ export const OrderShowSuccessResponseBodySchema = z.object({
   order: OrderSchema
 });
 
+export const OrderUpdateSuccessResponseBodySchema = z.object({
+  meta: z.record(z.string(), z.unknown()).optional(),
+  order: OrderSchema
+});
+
+export const OrderCreatePayloadSchema = z.object({
+  lineItems: z.array(LineItemNestedPayloadSchema).optional(),
+  orderNumber: z.string(),
+  shippingAddress: ShippingAddressNestedPayloadSchema.optional()
+});
+
 export const OrderUpdatePayloadSchema = z.object({
   lineItems: z.array(LineItemNestedPayloadSchema).optional(),
   orderNumber: z.string().optional(),
   shippingAddress: ShippingAddressNestedPayloadSchema.optional()
-});
-
-export const OrderUpdateSuccessResponseBodySchema = z.object({
-  meta: z.record(z.string(), z.unknown()).optional(),
-  order: OrderSchema
 });
 
 export const OrdersIndexRequestQuerySchema = z.object({

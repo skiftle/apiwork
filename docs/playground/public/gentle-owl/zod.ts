@@ -6,23 +6,6 @@ export const LayerSchema = z.enum(['contract', 'domain', 'http']);
 
 export const SortDirectionSchema = z.enum(['asc', 'desc']);
 
-export const CommentSchema: z.ZodType<Comment> = z.lazy(() => z.object({
-  authorName: z.string().nullable(),
-  body: z.string(),
-  commentable: CommentCommentableSchema.optional(),
-  commentableId: z.string(),
-  commentableType: z.string(),
-  createdAt: z.iso.datetime(),
-  id: z.string()
-}));
-
-export const CommentFilterSchema: z.ZodType<CommentFilter> = z.lazy(() => z.object({
-  AND: z.array(CommentFilterSchema).optional(),
-  NOT: CommentFilterSchema.optional(),
-  OR: z.array(CommentFilterSchema).optional(),
-  commentableType: CommentCommentableTypeFilterSchema.optional()
-}));
-
 export const CommentCommentableTypeFilterSchema = z.union([
   CommentCommentableTypeSchema,
   z.object({ eq: CommentCommentableTypeSchema, in: z.array(CommentCommentableTypeSchema) }).partial()
@@ -35,11 +18,6 @@ export const CommentCreatePayloadSchema = z.object({
   commentableType: z.enum(['post', 'video', 'image'])
 });
 
-export const CommentCreateSuccessResponseBodySchema = z.object({
-  comment: CommentSchema,
-  meta: z.record(z.string(), z.unknown()).optional()
-});
-
 export const CommentIncludeSchema = z.object({
   commentable: z.boolean().optional()
 });
@@ -47,11 +25,6 @@ export const CommentIncludeSchema = z.object({
 export const CommentPageSchema = z.object({
   number: z.number().int().min(1).optional(),
   size: z.number().int().min(1).max(100).optional()
-});
-
-export const CommentShowSuccessResponseBodySchema = z.object({
-  comment: CommentSchema,
-  meta: z.record(z.string(), z.unknown()).optional()
 });
 
 export const CommentSortSchema = z.object({
@@ -63,21 +36,6 @@ export const CommentUpdatePayloadSchema = z.object({
   body: z.string().optional(),
   commentableId: z.string().optional(),
   commentableType: z.enum(['post', 'video', 'image']).optional()
-});
-
-export const CommentUpdateSuccessResponseBodySchema = z.object({
-  comment: CommentSchema,
-  meta: z.record(z.string(), z.unknown()).optional()
-});
-
-export const ImageSchema = z.object({
-  comments: z.array(CommentSchema).optional(),
-  createdAt: z.iso.datetime(),
-  height: z.number().int().nullable(),
-  id: z.string(),
-  title: z.string(),
-  url: z.string(),
-  width: z.number().int().nullable()
 });
 
 export const IssueSchema = z.object({
@@ -96,6 +54,67 @@ export const OffsetPaginationSchema = z.object({
   total: z.number().int()
 });
 
+export const CommentFilterSchema: z.ZodType<CommentFilter> = z.lazy(() => z.object({
+  AND: z.array(CommentFilterSchema).optional(),
+  NOT: CommentFilterSchema.optional(),
+  OR: z.array(CommentFilterSchema).optional(),
+  commentableType: CommentCommentableTypeFilterSchema.optional()
+}));
+
+export const ErrorSchema = z.object({
+  issues: z.array(IssueSchema),
+  layer: LayerSchema
+});
+
+export const ErrorResponseBodySchema = ErrorSchema;
+
+export const CommentSchema = z.object({
+  authorName: z.string().nullable(),
+  body: z.string(),
+  commentable: CommentCommentableSchema.optional(),
+  commentableId: z.string(),
+  commentableType: z.string(),
+  createdAt: z.iso.datetime(),
+  id: z.string()
+});
+
+export const CommentCommentableSchema = z.discriminatedUnion('commentableType', [
+  PostSchema.extend({ commentableType: z.literal('post') }),
+  VideoSchema.extend({ commentableType: z.literal('video') }),
+  ImageSchema.extend({ commentableType: z.literal('image') })
+]);
+
+export const CommentCreateSuccessResponseBodySchema = z.object({
+  comment: CommentSchema,
+  meta: z.record(z.string(), z.unknown()).optional()
+});
+
+export const CommentIndexSuccessResponseBodySchema = z.object({
+  comments: z.array(CommentSchema),
+  meta: z.record(z.string(), z.unknown()).optional(),
+  pagination: OffsetPaginationSchema
+});
+
+export const CommentShowSuccessResponseBodySchema = z.object({
+  comment: CommentSchema,
+  meta: z.record(z.string(), z.unknown()).optional()
+});
+
+export const CommentUpdateSuccessResponseBodySchema = z.object({
+  comment: CommentSchema,
+  meta: z.record(z.string(), z.unknown()).optional()
+});
+
+export const ImageSchema = z.object({
+  comments: z.array(CommentSchema).optional(),
+  createdAt: z.iso.datetime(),
+  height: z.number().int().nullable(),
+  id: z.string(),
+  title: z.string(),
+  url: z.string(),
+  width: z.number().int().nullable()
+});
+
 export const PostSchema = z.object({
   body: z.string().nullable(),
   comments: z.array(CommentSchema).optional(),
@@ -112,25 +131,6 @@ export const VideoSchema = z.object({
   title: z.string(),
   url: z.string()
 });
-
-export const CommentCommentableSchema = z.discriminatedUnion('commentableType', [
-  PostSchema.extend({ commentableType: z.literal('post') }),
-  VideoSchema.extend({ commentableType: z.literal('video') }),
-  ImageSchema.extend({ commentableType: z.literal('image') })
-]);
-
-export const CommentIndexSuccessResponseBodySchema = z.object({
-  comments: z.array(CommentSchema),
-  meta: z.record(z.string(), z.unknown()).optional(),
-  pagination: OffsetPaginationSchema
-});
-
-export const ErrorSchema = z.object({
-  issues: z.array(IssueSchema),
-  layer: LayerSchema
-});
-
-export const ErrorResponseBodySchema = ErrorSchema;
 
 export const CommentsIndexRequestQuerySchema = z.object({
   filter: z.union([CommentFilterSchema, z.array(CommentFilterSchema)]).optional(),

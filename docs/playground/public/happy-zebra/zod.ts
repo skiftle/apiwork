@@ -4,23 +4,6 @@ export const LayerSchema = z.enum(['contract', 'domain', 'http']);
 
 export const SortDirectionSchema = z.enum(['asc', 'desc']);
 
-export const ProfileSchema: z.ZodType<Profile> = z.lazy(() => z.object({
-  bio: z.string().nullable(),
-  createdAt: z.iso.datetime(),
-  id: z.string(),
-  updatedAt: z.iso.datetime(),
-  user: UserSchema.optional(),
-  website: z.string().nullable()
-}));
-
-export const UserFilterSchema: z.ZodType<UserFilter> = z.lazy(() => z.object({
-  AND: z.array(UserFilterSchema).optional(),
-  NOT: UserFilterSchema.optional(),
-  OR: z.array(UserFilterSchema).optional(),
-  email: z.union([z.string(), StringFilterSchema]).optional(),
-  username: z.union([z.string(), StringFilterSchema]).optional()
-}));
-
 export const CommentSchema = z.object({
   author: z.string(),
   body: z.string(),
@@ -133,18 +116,6 @@ export const CommentCreateSuccessResponseBodySchema = z.object({
   meta: z.record(z.string(), z.unknown()).optional()
 });
 
-export const CommentIndexSuccessResponseBodySchema = z.object({
-  comments: z.array(CommentSchema),
-  meta: z.record(z.string(), z.unknown()).optional(),
-  pagination: OffsetPaginationSchema
-});
-
-export const CommentNestedPayloadSchema = z.discriminatedUnion('OP', [
-  CommentNestedCreatePayloadSchema,
-  CommentNestedUpdatePayloadSchema,
-  CommentNestedDeletePayloadSchema
-]);
-
 export const CommentShowSuccessResponseBodySchema = z.object({
   comment: CommentSchema,
   meta: z.record(z.string(), z.unknown()).optional()
@@ -155,15 +126,31 @@ export const CommentUpdateSuccessResponseBodySchema = z.object({
   meta: z.record(z.string(), z.unknown()).optional()
 });
 
+export const PostSchema = z.object({
+  comments: z.array(CommentSchema),
+  id: z.string(),
+  title: z.string()
+});
+
+export const CommentNestedPayloadSchema = z.discriminatedUnion('OP', [
+  CommentNestedCreatePayloadSchema,
+  CommentNestedUpdatePayloadSchema,
+  CommentNestedDeletePayloadSchema
+]);
+
 export const ErrorSchema = z.object({
   issues: z.array(IssueSchema),
   layer: LayerSchema
 });
 
-export const PostSchema = z.object({
+export const CommentIndexSuccessResponseBodySchema = z.object({
   comments: z.array(CommentSchema),
-  id: z.string(),
-  title: z.string()
+  meta: z.record(z.string(), z.unknown()).optional(),
+  pagination: OffsetPaginationSchema
+});
+
+export const UserIncludeSchema = z.object({
+  profile: ProfileIncludeSchema.optional()
 });
 
 export const ProfileNestedPayloadSchema = z.discriminatedUnion('OP', [
@@ -172,16 +159,13 @@ export const ProfileNestedPayloadSchema = z.discriminatedUnion('OP', [
   ProfileNestedDeletePayloadSchema
 ]);
 
-export const UserIncludeSchema = z.object({
-  profile: ProfileIncludeSchema.optional()
-});
-
-export const ErrorResponseBodySchema = ErrorSchema;
-
-export const PostCreatePayloadSchema = z.object({
-  comments: z.array(CommentNestedPayloadSchema).optional(),
-  title: z.string()
-});
+export const UserFilterSchema: z.ZodType<UserFilter> = z.lazy(() => z.object({
+  AND: z.array(UserFilterSchema).optional(),
+  NOT: UserFilterSchema.optional(),
+  OR: z.array(UserFilterSchema).optional(),
+  email: z.union([z.string(), StringFilterSchema]).optional(),
+  username: z.union([z.string(), StringFilterSchema]).optional()
+}));
 
 export const PostCreateSuccessResponseBodySchema = z.object({
   meta: z.record(z.string(), z.unknown()).optional(),
@@ -192,6 +176,21 @@ export const PostIndexSuccessResponseBodySchema = z.object({
   meta: z.record(z.string(), z.unknown()).optional(),
   pagination: OffsetPaginationSchema,
   posts: z.array(PostSchema)
+});
+
+export const PostShowSuccessResponseBodySchema = z.object({
+  meta: z.record(z.string(), z.unknown()).optional(),
+  post: PostSchema
+});
+
+export const PostUpdateSuccessResponseBodySchema = z.object({
+  meta: z.record(z.string(), z.unknown()).optional(),
+  post: PostSchema
+});
+
+export const PostCreatePayloadSchema = z.object({
+  comments: z.array(CommentNestedPayloadSchema).optional(),
+  title: z.string()
 });
 
 export const PostNestedCreatePayloadSchema = z.object({
@@ -208,19 +207,40 @@ export const PostNestedUpdatePayloadSchema = z.object({
   title: z.string().optional()
 });
 
-export const PostShowSuccessResponseBodySchema = z.object({
-  meta: z.record(z.string(), z.unknown()).optional(),
-  post: PostSchema
-});
-
 export const PostUpdatePayloadSchema = z.object({
   comments: z.array(CommentNestedPayloadSchema).optional(),
   title: z.string().optional()
 });
 
-export const PostUpdateSuccessResponseBodySchema = z.object({
-  meta: z.record(z.string(), z.unknown()).optional(),
-  post: PostSchema
+export const ErrorResponseBodySchema = ErrorSchema;
+
+export const PostNestedPayloadSchema = z.discriminatedUnion('OP', [
+  PostNestedCreatePayloadSchema,
+  PostNestedUpdatePayloadSchema,
+  PostNestedDeletePayloadSchema
+]);
+
+export const UserCreatePayloadSchema = z.object({
+  email: z.string(),
+  posts: z.array(PostNestedPayloadSchema).optional(),
+  profile: ProfileNestedPayloadSchema.optional(),
+  username: z.string()
+});
+
+export const UserUpdatePayloadSchema = z.object({
+  email: z.string().optional(),
+  posts: z.array(PostNestedPayloadSchema).optional(),
+  profile: ProfileNestedPayloadSchema.optional(),
+  username: z.string().optional()
+});
+
+export const ProfileSchema = z.object({
+  bio: z.string().nullable(),
+  createdAt: z.iso.datetime(),
+  id: z.string(),
+  updatedAt: z.iso.datetime(),
+  user: UserSchema.optional(),
+  website: z.string().nullable()
 });
 
 export const UserSchema = z.object({
@@ -232,12 +252,6 @@ export const UserSchema = z.object({
   updatedAt: z.iso.datetime(),
   username: z.string()
 });
-
-export const PostNestedPayloadSchema = z.discriminatedUnion('OP', [
-  PostNestedCreatePayloadSchema,
-  PostNestedUpdatePayloadSchema,
-  PostNestedDeletePayloadSchema
-]);
 
 export const UserCreateSuccessResponseBodySchema = z.object({
   meta: z.record(z.string(), z.unknown()).optional(),
@@ -258,20 +272,6 @@ export const UserShowSuccessResponseBodySchema = z.object({
 export const UserUpdateSuccessResponseBodySchema = z.object({
   meta: z.record(z.string(), z.unknown()).optional(),
   user: UserSchema
-});
-
-export const UserCreatePayloadSchema = z.object({
-  email: z.string(),
-  posts: z.array(PostNestedPayloadSchema).optional(),
-  profile: ProfileNestedPayloadSchema.optional(),
-  username: z.string()
-});
-
-export const UserUpdatePayloadSchema = z.object({
-  email: z.string().optional(),
-  posts: z.array(PostNestedPayloadSchema).optional(),
-  profile: ProfileNestedPayloadSchema.optional(),
-  username: z.string().optional()
 });
 
 export const UsersIndexRequestQuerySchema = z.object({
