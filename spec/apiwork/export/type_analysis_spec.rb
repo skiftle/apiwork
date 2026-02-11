@@ -42,7 +42,7 @@ RSpec.describe Apiwork::Export::TypeAnalysis do
       expect(sorted_names.index(:b)).to be < sorted_names.index(:a)
     end
 
-    it 'handles self-referencing types (skips self-references)' do
+    it 'handles self-referencing types' do
       types = {
         node: { shape: { children: { of: :node, type: :array } }, type: :object },
       }
@@ -53,7 +53,7 @@ RSpec.describe Apiwork::Export::TypeAnalysis do
       expect(sorted_names).to eq([:node])
     end
 
-    it 'handles circular references by including unsorted types at end' do
+    it 'handles circular references' do
       types = {
         a: { shape: { b_ref: { type: :b } }, type: :object },
         b: { shape: { a_ref: { type: :a } }, type: :object },
@@ -189,61 +189,6 @@ RSpec.describe Apiwork::Export::TypeAnalysis do
     end
   end
 
-  describe '.circular_reference?' do
-    it 'returns true for self-referencing types' do
-      definition = {
-        shape: {
-          children: { of: :node, type: :array },
-        },
-        type: :object,
-      }
-
-      result = described_class.circular_reference?(:node, definition)
-
-      expect(result).to be true
-    end
-
-    it 'returns false for types without self-reference' do
-      definition = {
-        shape: {
-          address: { type: :address },
-          name: { type: :string },
-        },
-        type: :object,
-      }
-
-      result = described_class.circular_reference?(:user, definition)
-
-      expect(result).to be false
-    end
-
-    it 'detects reference via array of custom type' do
-      definition = {
-        shape: {
-          items: { of: :tree, type: :array },
-        },
-        type: :object,
-      }
-
-      result = described_class.circular_reference?(:tree, definition)
-
-      expect(result).to be true
-    end
-
-    it 'detects reference via direct type reference' do
-      definition = {
-        shape: {
-          parent: { type: :category },
-        },
-        type: :object,
-      }
-
-      result = described_class.circular_reference?(:category, definition)
-
-      expect(result).to be true
-    end
-  end
-
   describe '.cycle_breaking_types' do
     it 'returns empty set when no cycles exist' do
       types = {
@@ -324,77 +269,6 @@ RSpec.describe Apiwork::Export::TypeAnalysis do
           expect(dep_index).to be < index, "#{type_name} should come after #{dep}"
         end
       end
-    end
-  end
-
-  describe '.types_in_cycles' do
-    it 'returns empty set when no cycles exist' do
-      types = {
-        address: { shape: { city: { type: :string } }, type: :object },
-        user: { shape: { address: { type: :address }, name: { type: :string } }, type: :object },
-      }
-
-      result = described_class.types_in_cycles(types)
-
-      expect(result).to be_empty
-    end
-
-    it 'detects direct mutual recursion (A -> B -> A)' do
-      types = {
-        a: { shape: { b_ref: { type: :b } }, type: :object },
-        b: { shape: { a_ref: { type: :a } }, type: :object },
-      }
-
-      result = described_class.types_in_cycles(types)
-
-      expect(result).to contain_exactly(:a, :b)
-    end
-
-    it 'detects self-referencing types' do
-      types = {
-        node: { shape: { children: { of: :node, type: :array } }, type: :object },
-      }
-
-      result = described_class.types_in_cycles(types)
-
-      expect(result).to contain_exactly(:node)
-    end
-
-    it 'detects indirect cycles through multiple types (A -> B -> C -> A)' do
-      types = {
-        a: { shape: { b_ref: { type: :b } }, type: :object },
-        b: { shape: { c_ref: { type: :c } }, type: :object },
-        c: { shape: { a_ref: { type: :a } }, type: :object },
-      }
-
-      result = described_class.types_in_cycles(types)
-
-      expect(result).to contain_exactly(:a, :b, :c)
-    end
-
-    it 'detects cycles through union variants' do
-      types = {
-        comment: { shape: { commentable: { type: :commentable } }, type: :object },
-        commentable: { type: :union, variants: [{ type: :post }] },
-        post: { shape: { comments: { of: :comment, type: :array } }, type: :object },
-      }
-
-      result = described_class.types_in_cycles(types)
-
-      expect(result).to contain_exactly(:comment, :commentable, :post)
-    end
-
-    it 'excludes types not part of any cycle' do
-      types = {
-        a: { shape: { b_ref: { type: :b } }, type: :object },
-        b: { shape: { a_ref: { type: :a } }, type: :object },
-        standalone: { shape: { value: { type: :string } }, type: :object },
-      }
-
-      result = described_class.types_in_cycles(types)
-
-      expect(result).to contain_exactly(:a, :b)
-      expect(result).not_to include(:standalone)
     end
   end
 
