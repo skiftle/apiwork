@@ -482,7 +482,7 @@ Defines a string.
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `enum` | `Array`, `Symbol`, `nil` | `nil` | The allowed values. |
-| `format` | `Symbol<:email, :uri, :uuid>`, `nil` | `nil` | Format hint for exports. Does not change the type, but exports may add validation or documentation based on it. |
+| `format` | `Symbol<:date, :datetime, :email, :hostname, :ipv4, :ipv6, :password, :url, :uuid>`, `nil` | `nil` | Format hint for exports. Does not change the type, but exports may add validation or documentation based on it. |
 | `max` | `Integer`, `nil` | `nil` | The maximum length. |
 | `min` | `Integer`, `nil` | `nil` | The minimum length. |
 

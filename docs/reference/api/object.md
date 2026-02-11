@@ -38,7 +38,7 @@ end
 
 `#array(name, as: nil, default: nil, deprecated: false, description: nil, nullable: false, optional: false, required: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L175)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L176)
 
 Defines an array field with element type.
 
@@ -877,7 +877,7 @@ end
 
 `#param(name, type: nil, as: nil, default: nil, deprecated: false, description: nil, discriminator: nil, enum: nil, example: nil, format: nil, max: nil, min: nil, nullable: false, of: nil, optional: false, required: false, shape: nil, value: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L84)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L85)
 
 Defines a field with explicit type.
 
@@ -891,7 +891,7 @@ for static definitions. Use `param` for dynamic field generation.
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | **`name`** | `Symbol` |  | The field name. |
-| `type` | `Symbol`, `nil` | `nil` | The field type. |
+| `type` | `Symbol<:array, :binary, :boolean, :date, :datetime, :decimal, :integer, :literal, :number, :object, :string, :time, :union, :uuid>`, `nil` | `nil` | The field type. |
 | `as` | `Symbol`, `nil` | `nil` | The target attribute name. |
 | `default` | `Object`, `nil` | `nil` | The default value. |
 | `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
@@ -899,9 +899,9 @@ for static definitions. Use `param` for dynamic field generation.
 | `discriminator` | `Symbol`, `nil` | `nil` | The discriminator field name. Unions only. |
 | `enum` | `Array`, `nil` | `nil` | The allowed values. |
 | `example` | `Object`, `nil` | `nil` | The example value. Metadata included in exports. |
-| `format` | `Symbol<:email, :uri, :uuid>`, `nil` | `nil` | Format hint for exports. Does not change the type, but exports may add validation or documentation based on it. |
-| `max` | `Integer`, `nil` | `nil` | The maximum value or length. |
-| `min` | `Integer`, `nil` | `nil` | The minimum value or length. |
+| `format` | `Symbol<:date, :datetime, :email, :hostname, :ipv4, :ipv6, :password, :url, :uuid>`, `nil` | `nil` | Format hint for exports. Does not change the type, but exports may add validation or documentation based on it. Strings only. |
+| `max` | `Integer`, `nil` | `nil` | The maximum. For `:array`: size. For `:decimal`, `:integer`, `:number`: value. For `:string`: length. |
+| `min` | `Integer`, `nil` | `nil` | The minimum. For `:array`: size. For `:decimal`, `:integer`, `:number`: value. For `:string`: length. |
 | `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
 | `of` | `Symbol`, `Hash`, `nil` | `nil` | The element type. Arrays only. |
 | `optional` | `Boolean` | `false` | Whether the param is optional. |
@@ -1039,7 +1039,7 @@ Defines a string.
 | `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
 | `enum` | `Array`, `Symbol`, `nil` | `nil` | The allowed values. |
 | `example` | `String`, `nil` | `nil` | The example value. Metadata included in exports. |
-| `format` | `Symbol<:email, :uri, :uuid>`, `nil` | `nil` | Format hint for exports. Does not change the type, but exports may add validation or documentation based on it. |
+| `format` | `Symbol<:date, :datetime, :email, :hostname, :ipv4, :ipv6, :password, :url, :uuid>`, `nil` | `nil` | Format hint for exports. Does not change the type, but exports may add validation or documentation based on it. |
 | `max` | `Integer`, `nil` | `nil` | The maximum length. |
 | `min` | `Integer`, `nil` | `nil` | The minimum length. |
 | `nullable` | `Boolean` | `false` | Whether the value can be `null`. |
@@ -1093,7 +1093,7 @@ Defines an optional string.
 | `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
 | `enum` | `Array`, `Symbol`, `nil` | `nil` | The allowed values. |
 | `example` | `String`, `nil` | `nil` | The example value. Metadata included in exports. |
-| `format` | `Symbol<:email, :uri, :uuid>`, `nil` | `nil` | Format hint for exports. Does not change the type, but exports may add validation or documentation based on it. |
+| `format` | `Symbol<:date, :datetime, :email, :hostname, :ipv4, :ipv6, :password, :url, :uuid>`, `nil` | `nil` | Format hint for exports. Does not change the type, but exports may add validation or documentation based on it. |
 | `max` | `Integer`, `nil` | `nil` | The maximum length. |
 | `min` | `Integer`, `nil` | `nil` | The minimum length. |
 | `nullable` | `Boolean` | `false` | Whether the value can be `null`. |

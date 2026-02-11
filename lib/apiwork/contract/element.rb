@@ -43,7 +43,7 @@ module Apiwork
       #   The discriminator field name. Unions only.
       # @param enum [Array, Symbol, nil] (nil)
       #   The allowed values or enum reference. Strings and integers only.
-      # @param format [Symbol, nil] (nil) [:email, :uri, :uuid]
+      # @param format [Symbol, nil] (nil) [:date, :datetime, :email, :hostname, :ipv4, :ipv6, :password, :url, :uuid]
       #   Format hint for exports. Strings only.
       # @param max [Integer, nil] (nil)
       #   The maximum value or length.

@@ -42,7 +42,7 @@ module Apiwork
       #
       # @param name [Symbol]
       #   The param name.
-      # @param type [Symbol, nil] (nil)
+      # @param type [Symbol, nil] (nil) [:array, :binary, :boolean, :date, :datetime, :decimal, :integer, :literal, :number, :object, :string, :time, :union, :uuid]
       #   The param type.
       # @param as [Symbol, nil] (nil)
       #   The target attribute name.
@@ -58,12 +58,13 @@ module Apiwork
       #   The allowed values or enum reference.
       # @param example [Object, nil] (nil)
       #   The example value. Metadata included in exports.
-      # @param format [Symbol, nil] (nil) [:email, :uri, :uuid]
+      # @param format [Symbol, nil] (nil) [:date, :datetime, :email, :hostname, :ipv4, :ipv6, :password, :url, :uuid]
       #   Format hint for exports. Does not change the type, but exports may add validation or documentation based on it.
+      #   Strings only.
       # @param max [Integer, nil] (nil)
-      #   The maximum value or length.
+      #   The maximum. For `:array`: size. For `:decimal`, `:integer`, `:number`: value. For `:string`: length.
       # @param min [Integer, nil] (nil)
-      #   The minimum value or length.
+      #   The minimum. For `:array`: size. For `:decimal`, `:integer`, `:number`: value. For `:string`: length.
       # @param nullable [Boolean] (false)
       #   Whether the value can be `null`.
       # @param of [Symbol, Hash, nil] (nil)
