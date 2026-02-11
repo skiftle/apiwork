@@ -37,7 +37,7 @@ end
 
 `#array(name, as: nil, default: nil, deprecated: false, description: nil, nullable: false, optional: false, required: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L200)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L196)
 
 Defines an array param with element type.
 
@@ -874,9 +874,9 @@ end
 
 ### #param
 
-`#param(name, type: nil, as: nil, default: nil, deprecated: false, description: nil, discriminator: nil, enum: nil, example: nil, format: nil, max: nil, min: nil, nullable: false, of: nil, optional: false, required: false, shape: nil, transform: nil, value: nil, &block)`
+`#param(name, type: nil, as: nil, default: nil, deprecated: false, description: nil, discriminator: nil, enum: nil, example: nil, format: nil, max: nil, min: nil, nullable: false, of: nil, optional: false, required: false, shape: nil, value: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L96)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/object.rb#L94)
 
 Defines a param with explicit type.
 
@@ -906,7 +906,6 @@ for static definitions.
 | `optional` | `Boolean` | `false` | Whether the param is optional. |
 | `required` | `Boolean` | `false` | Whether the param is required. |
 | `shape` | `Contract::Object`, `Contract::Union`, `nil` | `nil` | The pre-built shape. |
-| `transform` | `Proc`, `nil` | `nil` | The value transformation lambda. |
 | `value` | `Object`, `nil` | `nil` | The literal value. |
 
 </div>

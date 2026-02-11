@@ -38,7 +38,7 @@ end
 
 `#array(name, as: nil, default: nil, deprecated: false, description: nil, nullable: false, optional: false, required: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L179)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L177)
 
 Defines an array field with element type.
 
@@ -875,7 +875,7 @@ end
 
 ### #param
 
-`#param(name, type: nil, as: nil, default: nil, deprecated: false, description: nil, discriminator: nil, enum: nil, example: nil, format: nil, max: nil, min: nil, nullable: false, of: nil, optional: false, required: false, shape: nil, transform: nil, value: nil, &block)`
+`#param(name, type: nil, as: nil, default: nil, deprecated: false, description: nil, discriminator: nil, enum: nil, example: nil, format: nil, max: nil, min: nil, nullable: false, of: nil, optional: false, required: false, shape: nil, value: nil, &block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L86)
 

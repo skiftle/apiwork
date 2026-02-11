@@ -14,20 +14,10 @@ export const ActivityCreatePayloadSchema = z.object({
   occurredAt: z.iso.datetime().nullable().optional()
 });
 
-export const ActivityCreateSuccessResponseBodySchema = z.object({
-  activity: ActivitySchema,
-  meta: z.record(z.string(), z.unknown()).optional()
-});
-
 export const ActivityPageSchema = z.object({
   after: z.string().optional(),
   before: z.string().optional(),
   size: z.number().int().min(1).max(100).optional()
-});
-
-export const ActivityShowSuccessResponseBodySchema = z.object({
-  activity: ActivitySchema,
-  meta: z.record(z.string(), z.unknown()).optional()
 });
 
 export const ActivityUpdatePayloadSchema = z.object({
@@ -35,20 +25,9 @@ export const ActivityUpdatePayloadSchema = z.object({
   occurredAt: z.iso.datetime().nullable().optional()
 });
 
-export const ActivityUpdateSuccessResponseBodySchema = z.object({
-  activity: ActivitySchema,
-  meta: z.record(z.string(), z.unknown()).optional()
-});
-
 export const CursorPaginationSchema = z.object({
   next: z.string().nullable().optional(),
   prev: z.string().nullable().optional()
-});
-
-export const ActivityIndexSuccessResponseBodySchema = z.object({
-  activities: z.array(ActivitySchema),
-  meta: z.record(z.string(), z.unknown()).optional(),
-  pagination: CursorPaginationSchema
 });
 
 export const IssueSchema = z.object({
@@ -57,6 +36,27 @@ export const IssueSchema = z.object({
   meta: z.record(z.string(), z.unknown()),
   path: z.array(z.string()),
   pointer: z.string()
+});
+
+export const ActivityCreateSuccessResponseBodySchema = z.object({
+  activity: ActivitySchema,
+  meta: z.record(z.string(), z.unknown()).optional()
+});
+
+export const ActivityIndexSuccessResponseBodySchema = z.object({
+  activities: z.array(ActivitySchema),
+  meta: z.record(z.string(), z.unknown()).optional(),
+  pagination: CursorPaginationSchema
+});
+
+export const ActivityShowSuccessResponseBodySchema = z.object({
+  activity: ActivitySchema,
+  meta: z.record(z.string(), z.unknown()).optional()
+});
+
+export const ActivityUpdateSuccessResponseBodySchema = z.object({
+  activity: ActivitySchema,
+  meta: z.record(z.string(), z.unknown()).optional()
 });
 
 export const ErrorSchema = z.object({

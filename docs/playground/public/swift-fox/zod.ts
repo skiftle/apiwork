@@ -17,19 +17,9 @@ export const ContactCreatePayloadSchema = z.object({
   phone: z.string().optional()
 });
 
-export const ContactCreateSuccessResponseBodySchema = z.object({
-  contact: ContactSchema,
-  meta: z.record(z.string(), z.unknown()).optional()
-});
-
 export const ContactPageSchema = z.object({
   number: z.number().int().min(1).optional(),
   size: z.number().int().min(1).max(100).optional()
-});
-
-export const ContactShowSuccessResponseBodySchema = z.object({
-  contact: ContactSchema,
-  meta: z.record(z.string(), z.unknown()).optional()
 });
 
 export const ContactUpdatePayloadSchema = z.object({
@@ -37,11 +27,6 @@ export const ContactUpdatePayloadSchema = z.object({
   name: z.string().optional(),
   notes: z.string().optional(),
   phone: z.string().optional()
-});
-
-export const ContactUpdateSuccessResponseBodySchema = z.object({
-  contact: ContactSchema,
-  meta: z.record(z.string(), z.unknown()).optional()
 });
 
 export const IssueSchema = z.object({
@@ -52,13 +37,6 @@ export const IssueSchema = z.object({
   pointer: z.string()
 });
 
-export const ErrorSchema = z.object({
-  issues: z.array(IssueSchema),
-  layer: LayerSchema
-});
-
-export const ErrorResponseBodySchema = ErrorSchema;
-
 export const OffsetPaginationSchema = z.object({
   current: z.number().int(),
   items: z.number().int(),
@@ -67,11 +45,33 @@ export const OffsetPaginationSchema = z.object({
   total: z.number().int()
 });
 
+export const ContactCreateSuccessResponseBodySchema = z.object({
+  contact: ContactSchema,
+  meta: z.record(z.string(), z.unknown()).optional()
+});
+
 export const ContactIndexSuccessResponseBodySchema = z.object({
   contacts: z.array(ContactSchema),
   meta: z.record(z.string(), z.unknown()).optional(),
   pagination: OffsetPaginationSchema
 });
+
+export const ContactShowSuccessResponseBodySchema = z.object({
+  contact: ContactSchema,
+  meta: z.record(z.string(), z.unknown()).optional()
+});
+
+export const ContactUpdateSuccessResponseBodySchema = z.object({
+  contact: ContactSchema,
+  meta: z.record(z.string(), z.unknown()).optional()
+});
+
+export const ErrorSchema = z.object({
+  issues: z.array(IssueSchema),
+  layer: LayerSchema
+});
+
+export const ErrorResponseBodySchema = ErrorSchema;
 
 export const ContactsIndexRequestQuerySchema = z.object({
   page: ContactPageSchema.optional()

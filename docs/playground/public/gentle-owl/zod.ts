@@ -88,25 +88,12 @@ export const IssueSchema = z.object({
   pointer: z.string()
 });
 
-export const ErrorSchema = z.object({
-  issues: z.array(IssueSchema),
-  layer: LayerSchema
-});
-
-export const ErrorResponseBodySchema = ErrorSchema;
-
 export const OffsetPaginationSchema = z.object({
   current: z.number().int(),
   items: z.number().int(),
   next: z.number().int().nullable().optional(),
   prev: z.number().int().nullable().optional(),
   total: z.number().int()
-});
-
-export const CommentIndexSuccessResponseBodySchema = z.object({
-  comments: z.array(CommentSchema),
-  meta: z.record(z.string(), z.unknown()).optional(),
-  pagination: OffsetPaginationSchema
 });
 
 export const PostSchema = z.object({
@@ -131,6 +118,19 @@ export const CommentCommentableSchema = z.discriminatedUnion('commentableType', 
   VideoSchema.extend({ commentableType: z.literal('video') }),
   ImageSchema.extend({ commentableType: z.literal('image') })
 ]);
+
+export const CommentIndexSuccessResponseBodySchema = z.object({
+  comments: z.array(CommentSchema),
+  meta: z.record(z.string(), z.unknown()).optional(),
+  pagination: OffsetPaginationSchema
+});
+
+export const ErrorSchema = z.object({
+  issues: z.array(IssueSchema),
+  layer: LayerSchema
+});
+
+export const ErrorResponseBodySchema = ErrorSchema;
 
 export const CommentsIndexRequestQuerySchema = z.object({
   filter: z.union([CommentFilterSchema, z.array(CommentFilterSchema)]).optional(),

@@ -10,13 +10,6 @@ export const IssueSchema = z.object({
   pointer: z.string()
 });
 
-export const ErrorSchema = z.object({
-  issues: z.array(IssueSchema),
-  layer: LayerSchema
-});
-
-export const ErrorResponseBodySchema = ErrorSchema;
-
 export const OffsetPaginationSchema = z.object({
   current: z.number().int(),
   items: z.number().int(),
@@ -48,25 +41,9 @@ export const ProfileCreatePayloadSchema = z.object({
   tags: z.array(z.string())
 });
 
-export const ProfileCreateSuccessResponseBodySchema = z.object({
-  meta: z.record(z.string(), z.unknown()).optional(),
-  profile: ProfileSchema
-});
-
-export const ProfileIndexSuccessResponseBodySchema = z.object({
-  meta: z.record(z.string(), z.unknown()).optional(),
-  pagination: OffsetPaginationSchema,
-  profiles: z.array(ProfileSchema)
-});
-
 export const ProfilePageSchema = z.object({
   number: z.number().int().min(1).optional(),
   size: z.number().int().min(1).max(100).optional()
-});
-
-export const ProfileShowSuccessResponseBodySchema = z.object({
-  meta: z.record(z.string(), z.unknown()).optional(),
-  profile: ProfileSchema
 });
 
 export const ProfileUpdatePayloadSchema = z.object({
@@ -79,10 +56,33 @@ export const ProfileUpdatePayloadSchema = z.object({
   tags: z.array(z.string()).optional()
 });
 
+export const ErrorSchema = z.object({
+  issues: z.array(IssueSchema),
+  layer: LayerSchema
+});
+
+export const ProfileCreateSuccessResponseBodySchema = z.object({
+  meta: z.record(z.string(), z.unknown()).optional(),
+  profile: ProfileSchema
+});
+
+export const ProfileIndexSuccessResponseBodySchema = z.object({
+  meta: z.record(z.string(), z.unknown()).optional(),
+  pagination: OffsetPaginationSchema,
+  profiles: z.array(ProfileSchema)
+});
+
+export const ProfileShowSuccessResponseBodySchema = z.object({
+  meta: z.record(z.string(), z.unknown()).optional(),
+  profile: ProfileSchema
+});
+
 export const ProfileUpdateSuccessResponseBodySchema = z.object({
   meta: z.record(z.string(), z.unknown()).optional(),
   profile: ProfileSchema
 });
+
+export const ErrorResponseBodySchema = ErrorSchema;
 
 export const ProfilesIndexRequestQuerySchema = z.object({
   page: ProfilePageSchema.optional()

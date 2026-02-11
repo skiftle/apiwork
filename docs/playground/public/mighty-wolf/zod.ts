@@ -57,13 +57,6 @@ export const IssueSchema = z.object({
   pointer: z.string()
 });
 
-export const ErrorSchema = z.object({
-  issues: z.array(IssueSchema),
-  layer: LayerSchema
-});
-
-export const ErrorResponseBodySchema = ErrorSchema;
-
 export const MotorcycleSchema = z.object({
   brand: z.string(),
   color: z.string().nullable(),
@@ -90,17 +83,6 @@ export const MotorcycleUpdatePayloadSchema = z.object({
   model: z.string().optional(),
   type: z.literal('motorcycle').optional(),
   year: z.number().int().nullable().optional()
-});
-
-export const NullableIntegerFilterSchema = z.object({
-  between: IntegerFilterBetweenSchema.optional(),
-  eq: z.number().int().optional(),
-  gt: z.number().int().optional(),
-  gte: z.number().int().optional(),
-  in: z.array(z.number().int()).optional(),
-  lt: z.number().int().optional(),
-  lte: z.number().int().optional(),
-  null: z.boolean().optional()
 });
 
 export const OffsetPaginationSchema = z.object({
@@ -147,11 +129,43 @@ export const TruckUpdatePayloadSchema = z.object({
   year: z.number().int().nullable().optional()
 });
 
+export const VehiclePageSchema = z.object({
+  number: z.number().int().min(1).optional(),
+  size: z.number().int().min(1).max(100).optional()
+});
+
+export const VehicleSortSchema = z.object({
+  year: SortDirectionSchema.optional()
+});
+
+export const VehicleTypeFilterSchema = z.union([
+  VehicleTypeSchema,
+  z.object({ eq: VehicleTypeSchema, in: z.array(VehicleTypeSchema) }).partial()
+]);
+
+export const ErrorSchema = z.object({
+  issues: z.array(IssueSchema),
+  layer: LayerSchema
+});
+
+export const NullableIntegerFilterSchema = z.object({
+  between: IntegerFilterBetweenSchema.optional(),
+  eq: z.number().int().optional(),
+  gt: z.number().int().optional(),
+  gte: z.number().int().optional(),
+  in: z.array(z.number().int()).optional(),
+  lt: z.number().int().optional(),
+  lte: z.number().int().optional(),
+  null: z.boolean().optional()
+});
+
 export const VehicleSchema = z.discriminatedUnion('type', [
   CarSchema,
   MotorcycleSchema,
   TruckSchema
 ]);
+
+export const ErrorResponseBodySchema = ErrorSchema;
 
 export const VehicleCreateSuccessResponseBodySchema = z.object({
   meta: z.record(z.string(), z.unknown()).optional(),
@@ -164,24 +178,10 @@ export const VehicleIndexSuccessResponseBodySchema = z.object({
   vehicles: z.array(VehicleSchema)
 });
 
-export const VehiclePageSchema = z.object({
-  number: z.number().int().min(1).optional(),
-  size: z.number().int().min(1).max(100).optional()
-});
-
 export const VehicleShowSuccessResponseBodySchema = z.object({
   meta: z.record(z.string(), z.unknown()).optional(),
   vehicle: VehicleSchema
 });
-
-export const VehicleSortSchema = z.object({
-  year: SortDirectionSchema.optional()
-});
-
-export const VehicleTypeFilterSchema = z.union([
-  VehicleTypeSchema,
-  z.object({ eq: VehicleTypeSchema, in: z.array(VehicleTypeSchema) }).partial()
-]);
 
 export const VehicleUpdateSuccessResponseBodySchema = z.object({
   meta: z.record(z.string(), z.unknown()).optional(),

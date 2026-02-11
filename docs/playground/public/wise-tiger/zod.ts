@@ -24,13 +24,6 @@ export const IssueSchema = z.object({
   pointer: z.string()
 });
 
-export const ErrorSchema = z.object({
-  issues: z.array(IssueSchema),
-  layer: LayerSchema
-});
-
-export const ErrorResponseBodySchema = ErrorSchema;
-
 export const OffsetPaginationSchema = z.object({
   current: z.number().int(),
   items: z.number().int(),
@@ -58,17 +51,6 @@ export const ProjectCreatePayloadSchema = z.object({
   status: ProjectStatusSchema.nullable().optional()
 });
 
-export const ProjectCreateSuccessResponseBodySchema = z.object({
-  meta: z.record(z.string(), z.unknown()).optional(),
-  project: ProjectSchema
-});
-
-export const ProjectIndexSuccessResponseBodySchema = z.object({
-  meta: z.record(z.string(), z.unknown()).optional(),
-  pagination: OffsetPaginationSchema,
-  projects: z.array(ProjectSchema)
-});
-
 export const ProjectPageSchema = z.object({
   number: z.number().int().min(1).optional(),
   size: z.number().int().min(1).max(100).optional()
@@ -78,11 +60,6 @@ export const ProjectPriorityFilterSchema = z.union([
   ProjectPrioritySchema,
   z.object({ eq: ProjectPrioritySchema, in: z.array(ProjectPrioritySchema) }).partial()
 ]);
-
-export const ProjectShowSuccessResponseBodySchema = z.object({
-  meta: z.record(z.string(), z.unknown()).optional(),
-  project: ProjectSchema
-});
 
 export const ProjectSortSchema = z.object({
   createdAt: SortDirectionSchema.optional(),
@@ -102,10 +79,33 @@ export const ProjectUpdatePayloadSchema = z.object({
   status: ProjectStatusSchema.nullable().optional()
 });
 
+export const ErrorSchema = z.object({
+  issues: z.array(IssueSchema),
+  layer: LayerSchema
+});
+
+export const ProjectCreateSuccessResponseBodySchema = z.object({
+  meta: z.record(z.string(), z.unknown()).optional(),
+  project: ProjectSchema
+});
+
+export const ProjectIndexSuccessResponseBodySchema = z.object({
+  meta: z.record(z.string(), z.unknown()).optional(),
+  pagination: OffsetPaginationSchema,
+  projects: z.array(ProjectSchema)
+});
+
+export const ProjectShowSuccessResponseBodySchema = z.object({
+  meta: z.record(z.string(), z.unknown()).optional(),
+  project: ProjectSchema
+});
+
 export const ProjectUpdateSuccessResponseBodySchema = z.object({
   meta: z.record(z.string(), z.unknown()).optional(),
   project: ProjectSchema
 });
+
+export const ErrorResponseBodySchema = ErrorSchema;
 
 export const ProjectsIndexRequestQuerySchema = z.object({
   filter: z.union([ProjectFilterSchema, z.array(ProjectFilterSchema)]).optional(),

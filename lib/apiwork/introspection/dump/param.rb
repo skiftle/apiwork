@@ -268,14 +268,9 @@ module Apiwork
           return nil unless variant[:enum]
 
           if variant[:enum].is_a?(Symbol)
-            if @contract_param.contract_class.respond_to?(:representation_class) &&
-               @contract_param.contract_class.representation_class
-              scope = scope_for_enum(@contract_param, variant[:enum])
-              api_class = @contract_param.contract_class.api_class
-              api_class.scoped_enum_name(scope, variant[:enum])
-            else
-              variant[:enum]
-            end
+            scope = scope_for_enum(@contract_param, variant[:enum])
+            api_class = @contract_param.contract_class.api_class
+            api_class.scoped_enum_name(scope, variant[:enum])
           else
             variant[:enum]
           end
@@ -408,7 +403,7 @@ module Apiwork
           param_name = options[:name]
           return nil unless param_name
 
-          representation_class = resolve_representation_class
+          representation_class = @contract_param.contract_class.representation_class
           return nil unless representation_class
 
           if (attribute = representation_class.attributes[param_name])
@@ -420,13 +415,6 @@ module Apiwork
             description = i18n_association_description(association)
             return description if description
           end
-
-          nil
-        end
-
-        def resolve_representation_class
-          contract_class = @contract_param.contract_class
-          return contract_class.representation_class if contract_class.respond_to?(:representation_class) && contract_class.representation_class
 
           nil
         end
