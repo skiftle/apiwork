@@ -63,15 +63,12 @@ module Apiwork
       #   The inheritance configuration for this representation.
       #
       #   Auto-configured when the model uses STI and representation classes mirror the model hierarchy.
+      #   Subclasses share the parent's inheritance configuration.
       #
       #   @return [Representation::Inheritance, nil]
       class_attribute :inheritance, default: nil, instance_accessor: false
 
-      class_attribute :_root, default: nil, instance_accessor: false
       class_attribute :_adapter_config, default: {}, instance_accessor: false
-      class_attribute :_description, default: nil, instance_accessor: false
-      class_attribute :_deprecated, default: false, instance_accessor: false
-      class_attribute :_example, default: nil, instance_accessor: false
 
       # @!method context
       #   @api public
@@ -147,13 +144,13 @@ module Apiwork
         # @example
         #   root :bill, :bills
         def root(singular, plural = singular.to_s.pluralize)
-          self._root = { plural: plural.to_s, singular: singular.to_s }
+          @root = { plural: plural.to_s, singular: singular.to_s }
         end
 
         # @api public
         # Configures adapter options for this representation.
         #
-        # Overrides API-level options.
+        # Overrides API-level options. Subclasses inherit parent adapter options.
         #
         # @yieldparam adapter [Configuration]
         # @return [void]
@@ -175,6 +172,8 @@ module Apiwork
 
         # @api public
         # Defines an attribute for this representation.
+        #
+        # Subclasses inherit parent attributes.
         #
         # @param name [Symbol]
         #   The attribute name.
@@ -314,6 +313,8 @@ module Apiwork
         # @api public
         # Defines a has_one association for this representation.
         #
+        # Subclasses inherit parent associations.
+        #
         # @param name [Symbol]
         #   The association name.
         # @param deprecated [Boolean] (false)
@@ -385,6 +386,8 @@ module Apiwork
 
         # @api public
         # Defines a has_many association for this representation.
+        #
+        # Subclasses inherit parent associations.
         #
         # @param name [Symbol]
         #   The association name.
@@ -462,6 +465,8 @@ module Apiwork
 
         # @api public
         # Defines a belongs_to association for this representation.
+        #
+        # Subclasses inherit parent associations.
         #
         # @param name [Symbol]
         #   The association name.
@@ -599,9 +604,9 @@ module Apiwork
         # @example
         #   description 'A customer invoice'
         def description(value = nil)
-          return _description if value.nil?
+          return @description if value.nil?
 
-          self._description = value
+          @description = value
         end
 
         # @api public
@@ -614,7 +619,7 @@ module Apiwork
         # @example
         #   deprecated!
         def deprecated!
-          self._deprecated = true
+          @deprecated = true
         end
 
         # @api public
@@ -629,13 +634,16 @@ module Apiwork
         # @example
         #   example id: 1, total: 99.00, status: 'paid'
         def example(value = nil)
-          return _example if value.nil?
+          return @example if value.nil?
 
-          self._example = value
+          @example = value
         end
 
         # @api public
-        # Serializes a record or collection to JSON-ready hashes.
+        # Transforms a record or an array of records to hashes.
+        #
+        # Applies attribute encoders, maps STI and polymorphic type names,
+        # and recursively serializes nested associations.
         #
         # @param record_or_collection [ActiveRecord::Base, Array<ActiveRecord::Base>]
         #   The record or collection to serialize.
@@ -669,7 +677,10 @@ module Apiwork
         end
 
         # @api public
-        # Deserializes using this representation's decode transformers.
+        # Transforms a hash or an array of hashes for records.
+        #
+        # Applies attribute decoders, maps STI and polymorphic type names,
+        # and recursively deserializes nested associations.
         #
         # @param hash_or_array [Hash, Array<Hash>]
         #   The hash or array of hashes to deserialize.
@@ -692,8 +703,8 @@ module Apiwork
         #
         # @return [RootKey]
         def root_key
-          if _root
-            RootKey.new(_root[:singular], _root[:plural])
+          if @root
+            RootKey.new(@root[:singular], @root[:plural])
           else
             RootKey.new(model_class.model_name.element)
           end
@@ -716,7 +727,7 @@ module Apiwork
         #
         # @return [Boolean]
         def deprecated?
-          _deprecated
+          @deprecated == true
         end
 
         def adapter_config

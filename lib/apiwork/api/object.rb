@@ -64,8 +64,6 @@ module Apiwork
       #   Whether the param is required.
       # @param shape [API::Object, API::Union, nil] (nil)
       #   The pre-built shape.
-      # @param transform [Proc, nil] (nil)
-      #   The value transformation lambda.
       # @param value [Object, nil] (nil)
       #   The literal value.
       # @yield block for nested structure

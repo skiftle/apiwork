@@ -38,7 +38,7 @@ end
 
 `#array(name, as: nil, default: nil, deprecated: false, description: nil, nullable: false, optional: false, required: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L177)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L175)
 
 Defines an array field with element type.
 
@@ -877,7 +877,7 @@ end
 
 `#param(name, type: nil, as: nil, default: nil, deprecated: false, description: nil, discriminator: nil, enum: nil, example: nil, format: nil, max: nil, min: nil, nullable: false, of: nil, optional: false, required: false, shape: nil, value: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L86)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L84)
 
 Defines a field with explicit type.
 
@@ -907,7 +907,6 @@ for static definitions. Use `param` for dynamic field generation.
 | `optional` | `Boolean` | `false` | Whether the param is optional. |
 | `required` | `Boolean` | `false` | Whether the param is required. |
 | `shape` | `API::Object`, `API::Union`, `nil` | `nil` | The pre-built shape. |
-| `transform` | `Proc`, `nil` | `nil` | The value transformation lambda. |
 | `value` | `Object`, `nil` | `nil` | The literal value. |
 
 </div>
