@@ -24,7 +24,7 @@ Used within the `info` block in [API::Base](/reference/api/base).
 
 `#contact(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L86)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L89)
 
 The API contact.
 
@@ -58,7 +58,7 @@ end
 
 `#deprecated!`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L202)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L208)
 
 Marks the API as deprecated.
 
@@ -80,7 +80,7 @@ end
 
 `#deprecated?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L210)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L216)
 
 Whether the API is deprecated.
 
@@ -94,7 +94,7 @@ Whether the API is deprecated.
 
 `#description(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L172)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L177)
 
 The API description.
 
@@ -104,7 +104,7 @@ The API description.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `String`, `nil` | `nil` |  |
+| `value` | `String`, `nil` | `nil` | The description. |
 
 </div>
 
@@ -125,7 +125,7 @@ info.description  # => "Full-featured..."
 
 `#license(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L112)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L115)
 
 The API license.
 
@@ -159,7 +159,7 @@ end
 
 `#server(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L140)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L143)
 
 Defines a server for the API.
 
@@ -195,7 +195,7 @@ end
 
 `#summary(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L157)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L161)
 
 The API summary.
 
@@ -205,7 +205,7 @@ The API summary.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `String`, `nil` | `nil` |  |
+| `value` | `String`, `nil` | `nil` | The summary. |
 
 </div>
 
@@ -226,7 +226,7 @@ info.summary  # => "Invoice management API"
 
 `#tags(*values)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L187)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L193)
 
 The API tags.
 
@@ -236,7 +236,7 @@ The API tags.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`values`** | `Array<String>` |  |  |
+| **`values`** | `Array<String>` |  | The tags. |
 
 </div>
 
@@ -257,7 +257,7 @@ info.tags  # => ["invoices", "payments"]
 
 `#terms_of_service(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L62)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L65)
 
 The API terms of service.
 
@@ -267,7 +267,7 @@ The API terms of service.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `String`, `nil` | `nil` |  |
+| `value` | `String`, `nil` | `nil` | The URL to terms of service. |
 
 </div>
 
@@ -288,7 +288,7 @@ info.terms_of_service  # => "https://example.com/terms"
 
 `#title(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L32)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L33)
 
 The API title.
 
@@ -298,7 +298,7 @@ The API title.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `String`, `nil` | `nil` |  |
+| `value` | `String`, `nil` | `nil` | The title. |
 
 </div>
 
@@ -319,7 +319,7 @@ info.title  # => "Invoice API"
 
 `#version(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L47)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info.rb#L49)
 
 The API version.
 
@@ -329,7 +329,7 @@ The API version.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `String`, `nil` | `nil` |  |
+| `value` | `String`, `nil` | `nil` | The version. |
 
 </div>
 

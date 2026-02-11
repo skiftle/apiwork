@@ -18,7 +18,7 @@ Used within the `server` block in [API::Info](/reference/api/info/).
 
 `#description(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/server.rb#L40)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/server.rb#L42)
 
 The server description.
 
@@ -28,7 +28,7 @@ The server description.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `String`, `nil` | `nil` |  |
+| `value` | `String`, `nil` | `nil` | The description. |
 
 </div>
 
@@ -49,7 +49,7 @@ server.description  # => "Production"
 
 `#url(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/server.rb#L25)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/server.rb#L26)
 
 The server URL.
 
@@ -59,7 +59,7 @@ The server URL.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `String`, `nil` | `nil` |  |
+| `value` | `String`, `nil` | `nil` | The URL. |
 
 </div>
 

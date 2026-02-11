@@ -24,6 +24,7 @@ module Apiwork
       # The API title.
       #
       # @param value [String, nil] (nil)
+      #   The title.
       # @return [String, nil]
       #
       # @example
@@ -39,6 +40,7 @@ module Apiwork
       # The API version.
       #
       # @param value [String, nil] (nil)
+      #   The version.
       # @return [String, nil]
       #
       # @example
@@ -54,6 +56,7 @@ module Apiwork
       # The API terms of service.
       #
       # @param value [String, nil] (nil)
+      #   The URL to terms of service.
       # @return [String, nil]
       #
       # @example
@@ -149,6 +152,7 @@ module Apiwork
       # The API summary.
       #
       # @param value [String, nil] (nil)
+      #   The summary.
       # @return [String, nil]
       #
       # @example
@@ -164,6 +168,7 @@ module Apiwork
       # The API description.
       #
       # @param value [String, nil] (nil)
+      #   The description.
       # @return [String, nil]
       #
       # @example
@@ -179,6 +184,7 @@ module Apiwork
       # The API tags.
       #
       # @param values [Array<String>]
+      #   The tags.
       # @return [Array<String>]
       #
       # @example

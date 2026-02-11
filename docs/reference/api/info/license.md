@@ -18,7 +18,7 @@ Used within the `license` block in [API::Info](/reference/api/info/).
 
 `#name(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/license.rb#L25)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/license.rb#L26)
 
 The license name.
 
@@ -28,7 +28,7 @@ The license name.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `String`, `nil` | `nil` |  |
+| `value` | `String`, `nil` | `nil` | The name. |
 
 </div>
 
@@ -49,7 +49,7 @@ license.name  # => "MIT"
 
 `#url(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/license.rb#L40)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/license.rb#L42)
 
 The license URL.
 
@@ -59,7 +59,7 @@ The license URL.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `String`, `nil` | `nil` |  |
+| `value` | `String`, `nil` | `nil` | The URL. |
 
 </div>
 

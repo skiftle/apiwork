@@ -17,6 +17,7 @@ module Apiwork
         # The license name.
         #
         # @param value [String, nil] (nil)
+        #   The name.
         # @return [String, nil]
         #
         # @example
@@ -32,6 +33,7 @@ module Apiwork
         # The license URL.
         #
         # @param value [String, nil] (nil)
+        #   The URL.
         # @return [String, nil]
         #
         # @example

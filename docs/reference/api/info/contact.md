@@ -18,7 +18,7 @@ Used within the `contact` block in [API::Info](/reference/api/info/).
 
 `#email(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/contact.rb#L41)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/contact.rb#L43)
 
 The contact email.
 
@@ -28,7 +28,7 @@ The contact email.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `String`, `nil` | `nil` |  |
+| `value` | `String`, `nil` | `nil` | The email. |
 
 </div>
 
@@ -49,7 +49,7 @@ contact.email  # => "support@example.com"
 
 `#name(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/contact.rb#L26)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/contact.rb#L27)
 
 The contact name.
 
@@ -59,7 +59,7 @@ The contact name.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `String`, `nil` | `nil` |  |
+| `value` | `String`, `nil` | `nil` | The name. |
 
 </div>
 
@@ -80,7 +80,7 @@ contact.name  # => "API Support"
 
 `#url(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/contact.rb#L56)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/contact.rb#L59)
 
 The contact URL.
 
@@ -90,7 +90,7 @@ The contact URL.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `String`, `nil` | `nil` |  |
+| `value` | `String`, `nil` | `nil` | The URL. |
 
 </div>
 
