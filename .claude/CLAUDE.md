@@ -742,38 +742,45 @@ Mandatory order for classes and modules:
 
 **Within every section:** `@api public` methods appear first, then semi-public.
 
-**All `attr_*` must be grouped together at the top.** Never scatter attr declarations throughout the file.
+**All `attr_*` and `delegate` must be grouped together at the top.** Never scatter declarations throughout the file. This applies everywhere: at class level, inside `class << self`, and after `private`.
 
-This applies to:
-- `attr_reader` / `attr_accessor` declarations
-- Methods inside `class << self`
-- Instance methods
+**Multi-item declarations:** Use one item per line with trailing commas:
+
+```ruby
+# Multiple attrs — one per line
+attr_reader :cache,
+            :options,
+            :registry
+
+# Multiple delegates — one per line
+delegate :find,
+         :create,
+         :update,
+         to: :repository
+```
 
 ```ruby
 class Schema
-  # === attr_reader: @api public first ===
-  # @api public
-  # @return [Symbol]
-  attr_reader :name
-
-  attr_reader :internal_cache  # Semi-public — after @api public
+  # === Class level: ONE attr_reader with all items ===
+  # @!method name
+  #   @api public
+  #   @return [Symbol]
+  attr_reader :name,
+              :internal_cache
 
   class << self
-    # === class << self: @api public first ===
+    # === Inside class << self: same rules ===
+    # @!method model_class
+    #   @api public
+    #   @return [Class]
+    attr_reader :model_class,
+                :cache,
+                :registry
 
-    # @api public
-    # @return [Class]
-    def model(value = nil)
-      # ...
-    end
+    attr_writer :building
 
     # @api public
     def attribute(name, **options)
-      # ...
-    end
-
-    # Semi-public — after all @api public methods
-    def model_class
       # ...
     end
 
@@ -789,11 +796,14 @@ class Schema
     # ...
   end
 
-  def internal_method  # Semi-public — after @api public
+  def internal_method
     # ...
   end
 
   private
+
+  attr_reader :buffer,
+              :state
 
   def validate!
     # ...
@@ -1290,23 +1300,16 @@ No `@api public` = internal = no YARD comments.
 
 ### Declarations
 
-`@api public` declarations: one per line with YARD. Otherwise: group.
+**All `attr_reader`/`attr_accessor`/`attr_writer` in ONE declaration per section.** Use `@!method` to document `@api public` items:
 
 ```ruby
-# === @api public — one per line ===
-
-# @api public
-# @return [Hash] the context
-attr_reader :context
-
-# @api public
-# @return [Symbol] the type name
-delegate :type, to: :api_class
-
-# === Internal — group, one per line ===
-attr_reader :cache,
-            :options,
-            :registry
+# @!method context
+#   @api public
+#   The context hash.
+#   @return [Hash]
+attr_reader :context,
+            :cache,
+            :options
 
 delegate :internal_lookup,
          :internal_state,
@@ -1314,7 +1317,6 @@ delegate :internal_lookup,
 
 private
 
-# === Private — group, one per line ===
 attr_reader :buffer,
             :state
 ```

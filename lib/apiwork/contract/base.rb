@@ -47,13 +47,12 @@ module Apiwork
     class Base
       include Abstractable
 
-      # @api public
-      # The issues for this contract.
-      #
-      # @return [Array<Issue>]
-      attr_reader :issues
-
+      # @!method issues
+      #   @api public
+      #   The issues for this contract.
+      #   @return [Array<Issue>]
       attr_reader :action_name,
+                  :issues,
                   :request
 
       # @!method body
@@ -97,6 +96,8 @@ module Apiwork
         # @see .representation
         attr_reader :representation_class
 
+        attr_writer :building
+
         def actions
           @actions ||= {}
         end
@@ -108,8 +109,6 @@ module Apiwork
         def building?
           @building
         end
-
-        attr_writer :building
 
         def synthetic_contracts
           @synthetic_contracts ||= {}
