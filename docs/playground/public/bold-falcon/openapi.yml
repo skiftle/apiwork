@@ -56,7 +56,8 @@ paths:
           application/json:
             schema:
               properties:
-                article: {}
+                article:
+                  "$ref": "#/components/schemas/articleCreatePayload"
               type: object
               required:
               - article
@@ -113,7 +114,8 @@ paths:
           application/json:
             schema:
               properties:
-                article: {}
+                article:
+                  "$ref": "#/components/schemas/articleUpdatePayload"
               type: object
               required:
               - article
@@ -201,6 +203,30 @@ components:
       - title
       - updatedAt
       - viewCount
+    articleCreatePayload:
+      properties:
+        body:
+          type:
+          - string
+          - 'null'
+        publishedOn:
+          type:
+          - string
+          - 'null'
+          format: date
+        status:
+          enum:
+          - archived
+          - draft
+          - published
+          type:
+          - string
+          - 'null'
+        title:
+          type: string
+      type: object
+      required:
+      - title
     articleCreateSuccessResponseBody:
       properties:
         article:
@@ -215,15 +241,16 @@ components:
       properties:
         AND:
           items:
-            "$ref": "#/components/schemas/filter"
+            "$ref": "#/components/schemas/articleFilter"
           type: array
         NOT:
-          "$ref": "#/components/schemas/filter"
+          "$ref": "#/components/schemas/articleFilter"
         OR:
           items:
-            "$ref": "#/components/schemas/filter"
+            "$ref": "#/components/schemas/articleFilter"
           type: array
-        category: {}
+        category:
+          "$ref": "#/components/schemas/categoryFilter"
         publishedOn:
           oneOf:
           - type: string
@@ -338,6 +365,28 @@ components:
         required:
         - eq
         - in
+    articleUpdatePayload:
+      properties:
+        body:
+          type:
+          - string
+          - 'null'
+        publishedOn:
+          type:
+          - string
+          - 'null'
+          format: date
+        status:
+          enum:
+          - archived
+          - draft
+          - published
+          type:
+          - string
+          - 'null'
+        title:
+          type: string
+      type: object
     articleUpdateSuccessResponseBody:
       properties:
         article:
@@ -361,6 +410,27 @@ components:
       - id
       - name
       - slug
+    categoryFilter:
+      properties:
+        AND:
+          items:
+            "$ref": "#/components/schemas/categoryFilter"
+          type: array
+        NOT:
+          "$ref": "#/components/schemas/categoryFilter"
+        OR:
+          items:
+            "$ref": "#/components/schemas/categoryFilter"
+          type: array
+        name:
+          oneOf:
+          - type: string
+          - "$ref": "#/components/schemas/stringFilter"
+        slug:
+          oneOf:
+          - type: string
+          - "$ref": "#/components/schemas/stringFilter"
+      type: object
     dateFilterBetween:
       properties:
         from:
@@ -395,27 +465,6 @@ components:
       - layer
     errorResponseBody:
       "$ref": "#/components/schemas/error"
-    filter:
-      properties:
-        AND:
-          items:
-            "$ref": "#/components/schemas/filter"
-          type: array
-        NOT:
-          "$ref": "#/components/schemas/filter"
-        OR:
-          items:
-            "$ref": "#/components/schemas/filter"
-          type: array
-        name:
-          oneOf:
-          - type: string
-          - "$ref": "#/components/schemas/stringFilter"
-        slug:
-          oneOf:
-          - type: string
-          - "$ref": "#/components/schemas/stringFilter"
-      type: object
     integerFilterBetween:
       properties:
         from:

@@ -274,13 +274,13 @@ components:
       properties:
         AND:
           items:
-            "$ref": "#/components/schemas/filter"
+            "$ref": "#/components/schemas/commentFilter"
           type: array
         NOT:
-          "$ref": "#/components/schemas/filter"
+          "$ref": "#/components/schemas/commentFilter"
         OR:
           items:
-            "$ref": "#/components/schemas/filter"
+            "$ref": "#/components/schemas/commentFilter"
           type: array
         commentableType:
           "$ref": "#/components/schemas/commentCommentableTypeFilter"
@@ -378,23 +378,6 @@ components:
       - layer
     errorResponseBody:
       "$ref": "#/components/schemas/error"
-    filter:
-      properties:
-        AND:
-          items:
-            "$ref": "#/components/schemas/filter"
-          type: array
-        NOT:
-          "$ref": "#/components/schemas/filter"
-        OR:
-          items:
-            "$ref": "#/components/schemas/filter"
-          type: array
-        title:
-          oneOf:
-          - type: string
-          - "$ref": "#/components/schemas/stringFilter"
-      type: object
     image:
       properties:
         comments:
@@ -492,21 +475,6 @@ components:
       - createdAt
       - id
       - title
-    stringFilter:
-      properties:
-        contains:
-          type: string
-        endsWith:
-          type: string
-        eq:
-          type: string
-        in:
-          items:
-            type: string
-          type: array
-        startsWith:
-          type: string
-      type: object
     video:
       properties:
         comments:

@@ -206,20 +206,9 @@ module Apiwork
               association = representation_class.polymorphic_association_for_type_column(attribute.name)
               return nil unless association
 
-              type_mapping = {}
-              allowed_values = []
+              allowed_values = association.polymorphic.map(&:polymorphic_name)
 
-              association.polymorphic.each do |poly_representation_class|
-                api_value = poly_representation_class.polymorphic_name
-                rails_type = poly_representation_class.model_class.polymorphic_name
-                type_mapping[api_value] = rails_type
-                allowed_values << api_value
-              end
-
-              {
-                enum: allowed_values,
-                transform: ->(value) { type_mapping[value] || value },
-              }
+              { enum: allowed_values }
             end
 
             def association_options(association)

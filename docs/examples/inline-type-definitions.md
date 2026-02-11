@@ -108,12 +108,48 @@ Content-Type: application/json
 }
 ```
 
-**Response** `500`
+**Response** `201`
 
 ```json
 {
-  "status": 500,
-  "error": "Internal Server Error"
+  "profile": {
+    "id": "696f7bb0-6a34-5c02-b53f-46e76dd02494",
+    "name": "Alice",
+    "email": "alice@example.com",
+    "settings": {
+      "theme": "dark",
+      "notifications": true,
+      "language": "en"
+    },
+    "tags": [
+      "developer",
+      "typescript"
+    ],
+    "addresses": [
+      {
+        "street": "123 Main St",
+        "city": "Stockholm",
+        "zip": "12345",
+        "primary": true
+      }
+    ],
+    "preferences": {
+      "ui": {
+        "theme": "compact",
+        "sidebarCollapsed": false
+      },
+      "notifications": {
+        "email": true,
+        "push": false
+      }
+    },
+    "metadata": {
+      "source": "api",
+      "version": 2
+    },
+    "createdAt": "2024-01-01T12:00:00.000Z",
+    "updatedAt": "2024-01-01T12:00:00.000Z"
+  }
 }
 ```
 
@@ -125,7 +161,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-PATCH /curious_cat/profiles/696f7bb0-6a34-5c02-b53f-46e76dd02494
+PATCH /curious_cat/profiles/6f45e345-dbd9-543b-bfd8-0f430bd8299f
 Content-Type: application/json
 
 {
@@ -168,12 +204,49 @@ Content-Type: application/json
 }
 ```
 
-**Response** `500`
+**Response** `200`
 
 ```json
 {
-  "status": 500,
-  "error": "Internal Server Error"
+  "profile": {
+    "id": "6f45e345-dbd9-543b-bfd8-0f430bd8299f",
+    "name": "Alice",
+    "email": "alice@example.com",
+    "settings": {
+      "theme": "light",
+      "notifications": false,
+      "language": "sv"
+    },
+    "tags": [
+      "developer",
+      "ruby",
+      "rails"
+    ],
+    "addresses": [
+      {
+        "street": "123 Main St",
+        "city": "Stockholm",
+        "zip": "12345",
+        "primary": true
+      }
+    ],
+    "preferences": {
+      "ui": {
+        "theme": "compact",
+        "sidebarCollapsed": false
+      },
+      "notifications": {
+        "email": true,
+        "push": false
+      }
+    },
+    "metadata": {
+      "source": "api",
+      "version": 3
+    },
+    "createdAt": "2024-01-01T12:00:00.000Z",
+    "updatedAt": "2024-01-01T12:00:00.000Z"
+  }
 }
 ```
 

@@ -73,7 +73,8 @@ paths:
           application/json:
             schema:
               properties:
-                task: {}
+                task:
+                  "$ref": "#/components/schemas/taskCreatePayload"
               type: object
               required:
               - task
@@ -138,7 +139,8 @@ paths:
           application/json:
             schema:
               properties:
-                task: {}
+                task:
+                  "$ref": "#/components/schemas/taskUpdatePayload"
               type: object
               required:
               - task
@@ -384,6 +386,47 @@ components:
       type: object
       required:
       - task
+    taskCreatePayload:
+      properties:
+        description:
+          type:
+          - string
+          - 'null'
+          description: Detailed description of what needs to be done
+          example: Add OAuth2 login support for Google and GitHub providers
+        dueDate:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Target date for task completion
+          example: '2024-02-01T00:00:00Z'
+        priority:
+          enum:
+          - low
+          - medium
+          - high
+          - critical
+          type:
+          - string
+          - 'null'
+        status:
+          enum:
+          - pending
+          - in_progress
+          - completed
+          - archived
+          type:
+          - string
+          - 'null'
+        title:
+          type: string
+          description: Short title describing the task
+          example: Implement user authentication
+      type: object
+      description: A task representing work to be completed
+      required:
+      - title
     taskCreateSuccessResponseBody:
       properties:
         meta:
@@ -524,6 +567,45 @@ components:
         required:
         - eq
         - in
+    taskUpdatePayload:
+      properties:
+        description:
+          type:
+          - string
+          - 'null'
+          description: Detailed description of what needs to be done
+          example: Add OAuth2 login support for Google and GitHub providers
+        dueDate:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Target date for task completion
+          example: '2024-02-01T00:00:00Z'
+        priority:
+          enum:
+          - low
+          - medium
+          - high
+          - critical
+          type:
+          - string
+          - 'null'
+        status:
+          enum:
+          - pending
+          - in_progress
+          - completed
+          - archived
+          type:
+          - string
+          - 'null'
+        title:
+          type: string
+          description: Short title describing the task
+          example: Implement user authentication
+      type: object
+      description: A task representing work to be completed
     taskUpdateSuccessResponseBody:
       properties:
         meta:

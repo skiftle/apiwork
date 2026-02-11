@@ -74,8 +74,6 @@ module Apiwork
       #   Whether the param is required.
       # @param shape [Contract::Object, Contract::Union, nil] (nil)
       #   The pre-built shape.
-      # @param transform [Proc, nil] (nil)
-      #   The value transformation lambda.
       # @param value [Object, nil] (nil)
       #   The literal value.
       # @yield block for nested structure
@@ -111,7 +109,6 @@ module Apiwork
         optional: false,
         required: false,
         shape: nil,
-        transform: nil,
         value: nil,
         &block
       )
@@ -124,7 +121,6 @@ module Apiwork
           min:,
           nullable:,
           required:,
-          transform:,
         }
 
         raise ArgumentError, 'discriminator can only be used with type: :union' if discriminator && type != :union

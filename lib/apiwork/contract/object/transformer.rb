@@ -42,105 +42,12 @@ module Apiwork
             end
           end
 
-          apply_sti_transforms(transformed)
-
           transformed
-        end
-
-        def apply_sti_transforms(params)
-          shape.params.each do |name, param_options|
-            if param_options[:type] == :literal && params.key?(name)
-              apply_sti_literal_transform(params, name)
-            elsif param_options[:transform] && params.key?(name)
-              params[name] = param_options[:transform].call(params[name])
-            end
-
-            value = params[name]
-            next unless value.is_a?(Hash)
-
-            if param_options[:shape]
-              Transformer.new(param_options[:shape]).apply_sti_transforms(value)
-            elsif param_options[:union]
-              apply_sti_transform_to_union(value, param_options[:union])
-            elsif param_options[:type].is_a?(Symbol)
-              apply_sti_transform_to_custom_type(value, param_options[:type])
-            end
-          end
         end
 
         private
 
         attr_reader :shape
-
-        def apply_sti_literal_transform(params, name)
-          inheritance = resolve_inheritance
-          return unless inheritance&.needs_transform?
-          return unless inheritance.column == name
-
-          api_value = params[name]
-          db_value = inheritance.mapping[api_value]
-          params[name] = db_value if db_value
-        end
-
-        def resolve_inheritance
-          contract_class = shape.contract_class
-          return nil unless contract_class
-
-          representation_class = contract_class.representation_class
-          return nil unless representation_class
-
-          if representation_class.subclass?
-            representation_class.superclass.inheritance
-          elsif representation_class.inheritance
-            representation_class.inheritance
-          end
-        end
-
-        def apply_sti_transform_to_union(value, union)
-          discriminator = union.discriminator
-          return unless discriminator && value.key?(discriminator)
-
-          tag = value[discriminator]
-          variant = union.variants.find do |variant|
-            variant[:tag].to_s == tag.to_s
-          end
-          return unless variant
-
-          apply_sti_transform_to_custom_type(value, variant[:type])
-        end
-
-        def apply_sti_transform_to_custom_type(value, type_name)
-          contract_class = shape.contract_class
-          type_definition = contract_class.resolve_custom_type(type_name)
-
-          if type_definition
-            temp_shape = build_temp_shape(type_definition, contract_class)
-            Transformer.new(temp_shape).apply_sti_transforms(value)
-          else
-            apply_sti_transform_to_registered_union(value, type_name)
-          end
-        end
-
-        def apply_sti_transform_to_registered_union(value, type_name)
-          contract_class = shape.contract_class
-          api_class = contract_class.api_class
-
-          scoped_name = api_class.scoped_type_name(contract_class, type_name)
-          type_definition = api_class.type_registry[scoped_name] || api_class.type_registry[type_name]
-          return unless type_definition
-
-          payload = type_definition.payload
-          return unless payload && payload[:type] == :union
-
-          discriminator = payload[:discriminator]
-          return unless discriminator && value.key?(discriminator)
-
-          tag = value[discriminator]
-          variant = payload[:variants]&.find { |variant| variant[:tag].to_s == tag.to_s }
-          return unless variant
-
-          apply_sti_transform_to_custom_type(value, variant[:type])
-        end
 
         def transform_custom_type_array(value, param_options)
           custom_type_shape = resolve_custom_type_shape(param_options[:of])

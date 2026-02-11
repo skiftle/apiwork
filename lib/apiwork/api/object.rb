@@ -101,7 +101,6 @@ module Apiwork
         optional: false,
         required: false,
         shape: nil,
-        transform: nil,
         value: nil,
         &block
       )
@@ -135,7 +134,6 @@ module Apiwork
             nullable:,
             optional:,
             required:,
-            transform:,
             type:,
             value:,
             of: resolved_of,

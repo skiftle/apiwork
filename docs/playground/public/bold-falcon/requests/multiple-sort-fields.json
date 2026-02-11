@@ -7,7 +7,7 @@
     "body": {
       "articles": [
         {
-          "id": "7a18e4a4-1c8e-5d55-8453-5a34f0f49f83",
+          "id": "e52ca88a-f9b7-5b6b-a410-ef1a92e2b4ca",
           "title": "Draft 2",
           "body": null,
           "status": "draft",
@@ -18,7 +18,7 @@
           "updatedAt": "2024-01-01T12:00:00.000Z"
         },
         {
-          "id": "7c5847bc-3b03-598a-8718-3ffa3ae2f0fd",
+          "id": "3e4f8c34-7b92-5de6-a69c-4c7a2436bfd7",
           "title": "Draft 1",
           "body": null,
           "status": "draft",
@@ -29,7 +29,7 @@
           "updatedAt": "2024-01-01T12:00:00.000Z"
         },
         {
-          "id": "3e4f8c34-7b92-5de6-a69c-4c7a2436bfd7",
+          "id": "7a18e4a4-1c8e-5d55-8453-5a34f0f49f83",
           "title": "Published 1",
           "body": null,
           "status": "published",

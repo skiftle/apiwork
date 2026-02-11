@@ -31,7 +31,7 @@ export interface InvoiceArchiveSuccessResponseBody {
 export interface InvoiceCreatePayload {
   customerId: string;
   issuedOn?: null | string;
-  lines?: unknown[];
+  lines?: LineNestedPayload[];
   notes?: null | string;
   number: string;
 }
@@ -75,7 +75,7 @@ export interface InvoiceSort {
 export interface InvoiceUpdatePayload {
   customerId?: string;
   issuedOn?: null | string;
-  lines?: unknown[];
+  lines?: LineNestedPayload[];
   notes?: null | string;
   number?: string;
 }
@@ -158,6 +158,29 @@ export interface Line {
   id: string;
   price: null | number;
   quantity: null | number;
+}
+
+export interface LineNestedCreatePayload {
+  OP?: 'create';
+  description?: null | string;
+  id?: string;
+  price?: null | number;
+  quantity?: null | number;
+}
+
+export interface LineNestedDeletePayload {
+  OP?: 'delete';
+  id: string;
+}
+
+export type LineNestedPayload = LineNestedCreatePayload | LineNestedUpdatePayload | LineNestedDeletePayload;
+
+export interface LineNestedUpdatePayload {
+  OP?: 'update';
+  description?: null | string;
+  id?: string;
+  price?: null | number;
+  quantity?: null | number;
 }
 
 export interface NullableStringFilter {

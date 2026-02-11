@@ -756,6 +756,8 @@ module Apiwork
 
           result = hash.dup
 
+          transform_type_columns(result)
+
           attributes.each do |name, attribute|
             next unless result.key?(name)
 
@@ -779,6 +781,42 @@ module Apiwork
           end
 
           result
+        end
+
+        def transform_type_columns(hash)
+          transform_sti_type(hash)
+          transform_polymorphic_types(hash)
+        end
+
+        def transform_sti_type(hash)
+          inheritance_config = subclass? ? superclass.inheritance : inheritance
+          return unless inheritance_config&.needs_transform?
+
+          column = inheritance_config.column
+          return unless hash.key?(column)
+
+          api_value = hash[column]
+          db_value = inheritance_config.mapping[api_value]
+          hash[column] = db_value if db_value
+        end
+
+        def transform_polymorphic_types(hash)
+          attributes.each_key do |name|
+            next unless hash.key?(name)
+
+            association = polymorphic_association_for_type_column(name)
+            next unless association
+
+            api_value = hash[name]
+            next unless api_value.is_a?(String)
+
+            poly_representation = association.polymorphic.find do |rep|
+              rep.polymorphic_name == api_value
+            end
+            next unless poly_representation
+
+            hash[name] = poly_representation.model_class.polymorphic_name
+          end
         end
 
         def serialize_record(record, context: {}, include: nil)
