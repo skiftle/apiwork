@@ -31,7 +31,7 @@ end
 
 `.adapter(name = nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L132)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L133)
 
 Sets or gets the adapter for this API.
 
@@ -67,7 +67,7 @@ end
 
 `.concern(name, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L477)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L500)
 
 Defines a reusable concern for resources.
 
@@ -80,7 +80,7 @@ be included in multiple resources via the `concerns` option.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | concern name |
+| **`name`** | `Symbol` |  | The concern name. |
 
 </div>
 
@@ -122,7 +122,7 @@ resources :posts, concerns: [:archivable]
 
 `.enum(name, values: nil, scope: nil, description: nil, example: nil, deprecated: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L204)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L205)
 
 Defines a reusable enumeration type.
 
@@ -157,7 +157,7 @@ enum :status, values: %w[draft sent paid]
 
 `.export(name, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L92)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L93)
 
 Enables an export for this API.
 
@@ -167,7 +167,7 @@ Enables an export for this API.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | registered export name (built-in: :openapi, :typescript, :zod) |
+| **`name`** | `Symbol` |  | The registered export name. Built-in: :openapi, :typescript, :zod. |
 
 </div>
 
@@ -194,7 +194,7 @@ end
 
 `.info(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L322)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L324)
 
 The info for this API.
 
@@ -258,7 +258,7 @@ key_format :camel
 
 `.object(name, deprecated: false, description: nil, example: nil, scope: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L172)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L173)
 
 Defines a reusable object type.
 
@@ -341,7 +341,7 @@ path_format :kebab
 
 `.raises(*error_code_keys)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L285)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L287)
 
 API-wide error codes.
 
@@ -353,7 +353,7 @@ Included in generated specs (OpenAPI, etc.) as possible error responses.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`error_code_keys`** | `Array<Symbol>` |  | registered error code keys |
+| **`error_code_keys`** | `Array<Symbol>` |  | The registered error code keys. |
 
 </div>
 
@@ -374,7 +374,7 @@ api_class.raises  # => [:unauthorized, :forbidden, :not_found]
 
 `.resource(name, concerns: nil, constraints: nil, contract: nil, controller: nil, defaults: nil, except: nil, only: nil, param: nil, path: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L419)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L441)
 
 Defines a singular resource (no index action, no :id in URL).
 
@@ -387,16 +387,16 @@ like user profile or application settings.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | resource name (singular) |
-| `concerns` | `Array<Symbol>`, `nil` | `nil` | concerns to include |
-| `constraints` | `Hash`, `Proc`, `nil` | `nil` | route constraints (regex, lambdas) |
-| `contract` | `String`, `nil` | `nil` | custom contract path |
-| `controller` | `String`, `nil` | `nil` | custom controller path |
-| `defaults` | `Hash`, `nil` | `nil` | default parameters for routes |
-| `except` | `Array<Symbol>`, `nil` | `nil` | exclude specific CRUD actions |
-| `only` | `Array<Symbol>`, `nil` | `nil` | limit to specific CRUD actions |
-| `param` | `Symbol`, `nil` | `nil` | custom parameter name for ID |
-| `path` | `String`, `nil` | `nil` | custom URL path segment |
+| **`name`** | `Symbol` |  | The resource name (singular). |
+| `concerns` | `Array<Symbol>`, `nil` | `nil` | The concerns to include. |
+| `constraints` | `Hash`, `Proc`, `nil` | `nil` | The route constraints (regex, lambdas). |
+| `contract` | `String`, `nil` | `nil` | The custom contract path. |
+| `controller` | `String`, `nil` | `nil` | The custom controller path. |
+| `defaults` | `Hash`, `nil` | `nil` | The default parameters for routes. |
+| `except` | `Array<Symbol>`, `nil` | `nil` | The CRUD actions to exclude. |
+| `only` | `Array<Symbol>`, `nil` | `nil` | The CRUD actions to include. |
+| `param` | `Symbol`, `nil` | `nil` | The custom parameter name for ID. |
+| `path` | `String`, `nil` | `nil` | The custom URL path segment. |
 
 </div>
 
@@ -428,7 +428,7 @@ end
 
 `.resources(name, concerns: nil, constraints: nil, contract: nil, controller: nil, defaults: nil, except: nil, only: nil, param: nil, path: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L362)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L374)
 
 Defines a RESTful resource with standard CRUD actions.
 
@@ -442,16 +442,16 @@ Nested resources and custom actions can be defined in the block.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | resource name (plural) |
-| `concerns` | `Array<Symbol>`, `nil` | `nil` | concerns to include |
-| `constraints` | `Hash`, `Proc`, `nil` | `nil` | route constraints (regex, lambdas) |
-| `contract` | `String`, `nil` | `nil` | custom contract path |
-| `controller` | `String`, `nil` | `nil` | custom controller path |
-| `defaults` | `Hash`, `nil` | `nil` | default parameters for routes |
-| `except` | `Array<Symbol>`, `nil` | `nil` | exclude specific CRUD actions |
-| `only` | `Array<Symbol>`, `nil` | `nil` | limit to specific CRUD actions |
-| `param` | `Symbol`, `nil` | `nil` | custom parameter name for ID |
-| `path` | `String`, `nil` | `nil` | custom URL path segment |
+| **`name`** | `Symbol` |  | The resource name (plural). |
+| `concerns` | `Array<Symbol>`, `nil` | `nil` | The concerns to include. |
+| `constraints` | `Hash`, `Proc`, `nil` | `nil` | The route constraints (regex, lambdas). |
+| `contract` | `String`, `nil` | `nil` | The custom contract path. |
+| `controller` | `String`, `nil` | `nil` | The custom controller path. |
+| `defaults` | `Hash`, `nil` | `nil` | The default parameters for routes. |
+| `except` | `Array<Symbol>`, `nil` | `nil` | The CRUD actions to exclude. |
+| `only` | `Array<Symbol>`, `nil` | `nil` | The CRUD actions to include. |
+| `param` | `Symbol`, `nil` | `nil` | The custom parameter name for ID. |
+| `path` | `String`, `nil` | `nil` | The custom URL path segment. |
 
 </div>
 
@@ -485,7 +485,7 @@ end
 
 `.union(name, deprecated: false, description: nil, discriminator: nil, example: nil, scope: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L250)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L251)
 
 Defines a discriminated union type.
 
@@ -528,7 +528,7 @@ end
 
 `.with_options(options = {}, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L504)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L528)
 
 Applies options to all nested resource definitions.
 
@@ -542,7 +542,7 @@ constraints, controller, param, path.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `options` | `Hash`, `nil` | `nil` | options to apply to nested resources |
+| `options` | `Hash`, `nil` | `nil` | The options to apply to nested resources. |
 
 </div>
 

@@ -20,7 +20,7 @@ Namespace for error codes and the error code registry.
 
 `.find(key)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code.rb#L69)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code.rb#L74)
 
 Finds an error code by key.
 
@@ -30,7 +30,7 @@ Finds an error code by key.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`key`** | `Symbol` |  | the error code key |
+| **`key`** | `Symbol` |  | The error code key. |
 
 </div>
 
@@ -54,7 +54,7 @@ Apiwork::ErrorCode.find(:not_found)
 
 `.find!(key)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code.rb#L69)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code.rb#L74)
 
 Finds an error code by key.
 
@@ -64,7 +64,7 @@ Finds an error code by key.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`key`** | `Symbol` |  | the error code key |
+| **`key`** | `Symbol` |  | The error code key. |
 
 </div>
 
@@ -88,7 +88,7 @@ Apiwork::ErrorCode.find!(:not_found)
 
 `.register(key, attach_path: false, status:)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code.rb#L69)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code.rb#L74)
 
 Registers a custom error code for use in API responses.
 
@@ -101,9 +101,9 @@ in controllers. Built-in codes (400-504) are pre-registered.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`key`** | `Symbol` |  | unique identifier for the error code |
-| **`status`** | `Integer` |  | the HTTP status code (must be 400-599) |
-| `attach_path` | `Boolean` | `false` | include request path in error response |
+| **`key`** | `Symbol` |  | The unique identifier for the error code. |
+| `attach_path` | `Boolean` | `false` | Include request path in error response. |
+| **`status`** | `Integer` |  | The HTTP status code (must be 400-599). |
 
 </div>
 

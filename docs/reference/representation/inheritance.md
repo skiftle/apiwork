@@ -55,7 +55,7 @@ The column for this inheritance.
 
 `#mapping`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L63)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L64)
 
 Mapping of API names to database type values.
 
@@ -69,7 +69,7 @@ Mapping of API names to database type values.
 
 `#needs_transform?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L55)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L56)
 
 Whether this inheritance needs type transformation.
 
@@ -83,7 +83,7 @@ Whether this inheritance needs type transformation.
 
 `#resolve(record)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L46)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L47)
 
 Resolves a record to its subclass representation.
 
@@ -93,7 +93,7 @@ Resolves a record to its subclass representation.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`record`** | `ActiveRecord::Base` |  | the record to resolve |
+| **`record`** | `ActiveRecord::Base` |  | The record to resolve. |
 
 </div>
 

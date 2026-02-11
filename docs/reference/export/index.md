@@ -20,7 +20,7 @@ Namespace for export generators and the export registry.
 
 `.find(name)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export.rb#L34)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export.rb#L37)
 
 Finds an export by name.
 
@@ -30,7 +30,7 @@ Finds an export by name.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | the export name |
+| **`name`** | `Symbol` |  | The export name. |
 
 </div>
 
@@ -54,7 +54,7 @@ Apiwork::Export.find(:openapi)
 
 `.find!(name)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export.rb#L34)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export.rb#L37)
 
 Finds an export by name.
 
@@ -64,7 +64,7 @@ Finds an export by name.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | the export name |
+| **`name`** | `Symbol` |  | The export name. |
 
 </div>
 
@@ -88,7 +88,7 @@ Apiwork::Export.find!(:openapi)
 
 `.generate(export_name, api_path, format: nil, key_format: nil, locale: nil, **options)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export.rb#L60)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export.rb#L69)
 
 Generates an export for an API.
 
@@ -98,12 +98,12 @@ Generates an export for an API.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`export_name`** | `Symbol` |  | registered export name (built-in: :openapi, :typescript, :zod) |
-| **`api_path`** | `String` |  | the API path |
-| `format` | `Symbol<:json, :yaml>`, `nil` | `nil` | hash exports only |
-| `locale` | `Symbol`, `nil` | `nil` | locale for translations |
-| `key_format` | `Symbol<:camel, :underscore, :kebab, :keep>`, `nil` | `nil` |  |
-| **`options`** |  |  | export-specific keyword arguments |
+| **`export_name`** | `Symbol` |  | The registered export name. Built-in: `:openapi`, `:typescript`, `:zod`. |
+| **`api_path`** | `String` |  | The API path. |
+| `format` | `Symbol<:json, :yaml>`, `nil` | `nil` | The output format. Hash exports only. |
+| `locale` | `Symbol`, `nil` | `nil` | The locale for translations. |
+| `key_format` | `Symbol<:camel, :kebab, :keep, :underscore>`, `nil` | `nil` | The key format. |
+| **`options`** |  |  | Export-specific keyword arguments. |
 
 </div>
 
@@ -129,7 +129,7 @@ Apiwork::Export.generate(:typescript, '/api/v1', key_format: :camel)
 
 `.register(klass)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export.rb#L34)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export.rb#L37)
 
 Registers an export.
 
@@ -139,7 +139,7 @@ Registers an export.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`klass`** | `Class<Export::Base>` |  | the export class with export_name set |
+| **`klass`** | `Class<Export::Base>` |  | The export class with export_name set. |
 
 </div>
 

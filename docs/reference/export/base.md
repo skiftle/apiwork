@@ -49,7 +49,7 @@ Apiwork::Export.register(ProtobufExport)
 
 `.export_name(name = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L51)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L52)
 
 The name for this export.
 
@@ -59,7 +59,7 @@ The name for this export.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol`, `nil` | `nil` | the export name to set |
+| `name` | `Symbol`, `nil` | `nil` | The export name. |
 
 </div>
 
@@ -73,7 +73,7 @@ The name for this export.
 
 `.file_extension(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L120)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L123)
 
 The file extension for this export.
 
@@ -85,7 +85,7 @@ Only applies to string exports. Hash exports derive extension from format.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `String`, `nil` | `nil` | the file extension (e.g., '.ts') |
+| `value` | `String`, `nil` | `nil` | The file extension (e.g., '.ts'). |
 
 </div>
 
@@ -99,7 +99,7 @@ Only applies to string exports. Hash exports derive extension from format.
 
 `.option(name, type:, default: nil, enum: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/configurable.rb#L50)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/configurable.rb#L54)
 
 Defines a configuration option.
 
@@ -112,10 +112,10 @@ call `option` to define child options.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | option name |
-| **`type`** | `Symbol<:symbol, :string, :integer, :boolean, :hash>` |  |  |
-| `default` | `Object`, `nil` | `nil` | default value |
-| `enum` | `Array`, `nil` | `nil` | allowed values |
+| **`name`** | `Symbol` |  | The option name. |
+| **`type`** | `Symbol<:boolean, :hash, :integer, :string, :symbol>` |  | The option type. |
+| `default` | `Object`, `nil` | `nil` | The default value. |
+| `enum` | `Array`, `nil` | `nil` | The allowed values. |
 
 </div>
 
@@ -155,7 +155,7 @@ end
 
 `.output(type = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L61)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L63)
 
 The output for this export.
 
@@ -165,7 +165,7 @@ The output for this export.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `type` | `Symbol<:hash, :string>`, `nil` | `nil` | :hash for Hash output (json/yaml), :string for String output |
+| `type` | `Symbol<:hash, :string>`, `nil` | `nil` | The output type. :hash for Hash output (json/yaml), :string for String output. |
 
 </div>
 
@@ -181,7 +181,7 @@ The output for this export.
 
 `#data`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L256)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L259)
 
 The data for this export.
 
@@ -201,7 +201,7 @@ Primary interface for accessing introspection data in export generators.
 
 `#generate`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L234)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L237)
 
 Generates the export output.
 
@@ -223,7 +223,7 @@ to types, enums, resources, actions, and other introspection data.
 
 `#key_format`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L264)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L267)
 
 The key format for this export.
 
@@ -237,7 +237,7 @@ The key format for this export.
 
 `#transform_key(key)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L273)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L277)
 
 Transforms a key according to the configured key format.
 
@@ -247,7 +247,7 @@ Transforms a key according to the configured key format.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`key`** | `String`, `Symbol` |  | the key to transform |
+| **`key`** | `String`, `Symbol` |  | The key to transform. |
 
 </div>
 

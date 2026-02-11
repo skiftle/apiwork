@@ -49,8 +49,10 @@ module Apiwork
           # @api public
           # The configured values for a capability.
           #
-          # @param capability [Symbol] the capability name
-          # @param key [Symbol] the configuration key
+          # @param capability [Symbol]
+          #   The capability name.
+          # @param key [Symbol]
+          #   The configuration key.
           # @return [Set]
           def configured(capability, key)
             @representation_registry.options_for(capability, key)

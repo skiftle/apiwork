@@ -32,7 +32,8 @@ module Apiwork
           # @api public
           # The configured values for a key.
           #
-          # @param key [Symbol] the configuration key to look up
+          # @param key [Symbol]
+          #   The configuration key.
           # @return [Set]
           #
           # @example Check if any representation uses cursor pagination

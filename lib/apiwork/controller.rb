@@ -21,8 +21,8 @@ module Apiwork
   #     end
   #
   #     def create
-  #       invoice = Invoice.create!(contract.body)
-  #       expose invoice, status: :created
+  #       invoice = Invoice.create(contract.body[:invoice])
+  #       expose invoice
   #     end
   #   end
   module Controller
@@ -42,8 +42,10 @@ module Apiwork
     #   @api public
     #   Skips contract validation for specified actions.
     #
-    #   @param only [Array<Symbol>] skip only for these
-    #   @param except [Array<Symbol>] skip for all except these
+    #   @param except [Array<Symbol>]
+    #     Skip for all except these actions.
+    #   @param only [Array<Symbol>]
+    #     Skip only for these actions.
     #
     #   @example Skip for specific actions
     #     skip_contract_validation! only: [:ping, :status]
@@ -94,9 +96,12 @@ module Apiwork
     # through the representation. Otherwise, data is rendered as-is. Key transformation
     # is applied according to the API's {API::Base.key_format}.
     #
-    # @param data [Object, Array] the record(s) to expose
-    # @param meta [Hash] ({}) metadata to include in response (pagination, etc.)
-    # @param status [Symbol, Integer, nil] (nil) the HTTP status (:ok, or :created for create action)
+    # @param data [Object, Array]
+    #   The record(s) to expose.
+    # @param meta [Hash] ({})
+    #   The metadata to include in response (pagination, etc.).
+    # @param status [Symbol, Integer, nil] (nil)
+    #   The HTTP status (:ok, or :created for create action).
     # @see Representation::Base
     #
     # @example Expose a single record
@@ -113,7 +118,7 @@ module Apiwork
     #
     # @example Custom status
     #   def create
-    #     invoice = Invoice.create!(contract.body)
+    #     invoice = Invoice.create(contract.body[:invoice])
     #     expose invoice, status: :created
     #   end
     def expose(data, meta: {}, status: nil)
@@ -153,10 +158,14 @@ module Apiwork
     #
     # Defaults to I18n lookup when detail is not provided.
     #
-    # @param code_key [Symbol] registered error code (:not_found, :unauthorized, etc.)
-    # @param detail [String, nil] (nil) custom error message (uses I18n lookup if nil)
-    # @param path [Array<String, Symbol>, nil] (nil) the JSON path to the error
-    # @param meta [Hash] ({}) additional metadata to include
+    # @param code_key [Symbol]
+    #   The registered error code (:not_found, :unauthorized, etc.).
+    # @param detail [String, nil] (nil)
+    #   The custom error message (uses I18n lookup if nil).
+    # @param meta [Hash] ({})
+    #   The additional metadata to include.
+    # @param path [Array<String, Symbol>, nil] (nil)
+    #   The JSON path to the error.
     # @see ErrorCode
     # @see Issue
     #

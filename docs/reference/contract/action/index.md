@@ -23,7 +23,7 @@ Returns [Action::Request](/reference/contract/action/request) via `request` and 
 
 `#deprecated!`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L91)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L94)
 
 Marks this action as deprecated.
 
@@ -45,7 +45,7 @@ end
 
 `#deprecated?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L99)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L102)
 
 Whether this action is deprecated.
 
@@ -59,7 +59,7 @@ Whether this action is deprecated.
 
 `#description(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L59)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L61)
 
 The description for this action.
 
@@ -72,7 +72,7 @@ Supports Markdown formatting.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `String`, `nil` | `nil` | description text |
+| `value` | `String`, `nil` | `nil` | The description. |
 
 </div>
 
@@ -94,7 +94,7 @@ end
 
 `#operation_id(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L113)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L117)
 
 The operation ID for this action.
 
@@ -104,7 +104,7 @@ The operation ID for this action.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `String`, `nil` | `nil` | custom operation ID |
+| `value` | `String`, `nil` | `nil` | The operation ID. |
 
 </div>
 
@@ -126,7 +126,7 @@ end
 
 `#raises(*error_code_keys)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L134)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L139)
 
 Declares the raised error codes for this action.
 
@@ -136,7 +136,7 @@ Declares the raised error codes for this action.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`error_code_keys`** | `Symbol` |  | error code keys |
+| **`error_code_keys`** | `Symbol` |  | The error code keys. |
 
 </div>
 
@@ -165,7 +165,7 @@ end
 
 `#request(replace: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L184)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L190)
 
 Defines the request structure for this action.
 
@@ -177,7 +177,7 @@ Use the block to define query parameters and request body.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `replace` | `Boolean` | `false` | replace inherited definition |
+| `replace` | `Boolean` | `false` | Whether to replace inherited definition. |
 
 </div>
 
@@ -223,7 +223,7 @@ end
 
 `#response(replace: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L230)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L237)
 
 Defines the response structure for this action.
 
@@ -235,7 +235,7 @@ Use the block to define response body or declare no_content.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `replace` | `Boolean` | `false` | replace inherited definition |
+| `replace` | `Boolean` | `false` | Whether to replace inherited definition. |
 
 </div>
 
@@ -285,7 +285,7 @@ end
 
 `#summary(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L40)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L41)
 
 The summary for this action.
 
@@ -297,7 +297,7 @@ Used in generated specs as the operation summary.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `String`, `nil` | `nil` | summary text |
+| `value` | `String`, `nil` | `nil` | The summary. |
 
 </div>
 
@@ -319,7 +319,7 @@ end
 
 `#tags(*tags)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L77)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action.rb#L80)
 
 The tags for this action.
 
@@ -331,7 +331,7 @@ Tags help organize actions in generated documentation.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`tags`** | `Array<String,Symbol>` |  | tag names |
+| **`tags`** | `Array<String, Symbol>` |  | The tag names. |
 
 </div>
 

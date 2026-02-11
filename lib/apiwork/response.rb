@@ -23,7 +23,8 @@ module Apiwork
     # @api public
     # Creates a new response context.
     #
-    # @param body [Hash] the body parameters
+    # @param body [Hash]
+    #   The body parameters.
     def initialize(body:)
       @body = body
     end

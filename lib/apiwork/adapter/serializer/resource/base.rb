@@ -27,7 +27,8 @@ module Apiwork
             # @api public
             # The data type for this serializer.
             #
-            # @param block [Proc, nil] (nil) block that receives representation_class and returns type name
+            # @param block [Proc, nil] (nil)
+            #   Block that receives representation_class and returns type name.
             # @return [Proc, nil]
             def data_type(&block)
               @data_type = block if block
@@ -37,7 +38,8 @@ module Apiwork
             # @api public
             # The contract builder for this serializer.
             #
-            # @param klass [Class<Builder::Contract::Base>, nil] (nil) the builder class
+            # @param klass [Class<Builder::Contract::Base>, nil] (nil)
+            #   The builder class.
             # @return [Class<Builder::Contract::Base>, nil]
             def contract_builder(klass = nil)
               @contract_builder = klass if klass
@@ -65,9 +67,12 @@ module Apiwork
           # @api public
           # Serializes a resource.
           #
-          # @param resource [Object] the resource to serialize
-          # @param context [Hash] serialization context
-          # @param serialize_options [Hash] options (e.g., include)
+          # @param resource [Object]
+          #   The resource to serialize.
+          # @param context [Hash]
+          #   The serialization context.
+          # @param serialize_options [Hash]
+          #   The options (e.g., include).
           # @return [Hash]
           def serialize(resource, context:, serialize_options:)
             raise NotImplementedError

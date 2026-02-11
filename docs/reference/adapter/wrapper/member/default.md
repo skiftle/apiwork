@@ -35,7 +35,7 @@ end
 
 `.shape(klass_or_callable = nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/base.rb#L27)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/base.rb#L28)
 
 Defines the response shape for contract generation.
 
@@ -45,7 +45,7 @@ Defines the response shape for contract generation.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `klass_or_callable` | `Class<Shape>`, `Proc`, `nil` | `nil` | a Shape subclass or callable |
+| `klass_or_callable` | `Class<Shape>`, `Proc`, `nil` | `nil` | A [Shape](/reference/adapter/wrapper/shape) subclass or callable. |
 
 </div>
 

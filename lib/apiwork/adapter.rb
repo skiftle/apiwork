@@ -8,7 +8,8 @@ module Apiwork
       # @!method find(name)
       #   @api public
       #   Finds an adapter by name.
-      #   @param name [Symbol] the adapter name
+      #   @param name [Symbol]
+      #     The adapter name.
       #   @return [Class<Adapter::Base>, nil]
       #   @see .find!
       #   @example
@@ -17,7 +18,8 @@ module Apiwork
       # @!method find!(name)
       #   @api public
       #   Finds an adapter by name.
-      #   @param name [Symbol] the adapter name
+      #   @param name [Symbol]
+      #     The adapter name.
       #   @return [Class<Adapter::Base>]
       #   @raise [KeyError] if the adapter is not found
       #   @see .find
@@ -27,7 +29,8 @@ module Apiwork
       # @!method register(klass)
       #   @api public
       #   Registers an adapter.
-      #   @param klass [Class<Adapter::Base>] the adapter class with adapter_name set
+      #   @param klass [Class<Adapter::Base>]
+      #     The adapter class with adapter_name set.
       #   @see Adapter::Base
       #   @example
       #     Apiwork::Adapter.register(JSONAPIAdapter)

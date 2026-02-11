@@ -38,7 +38,7 @@ end
 
 `#collection(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L355)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L376)
 
 Block for defining collection actions.
 
@@ -74,7 +74,7 @@ end
 
 `#concern(concern_name, callable = nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L451)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L484)
 
 Defines a reusable concern.
 
@@ -84,8 +84,8 @@ Defines a reusable concern.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`concern_name`** | `Symbol` |  | concern name |
-| **`callable`** | `Proc` |  | optional callable instead of block |
+| **`concern_name`** | `Symbol` |  | The concern name. |
+| **`callable`** | `Proc` |  | Optional callable instead of block. |
 
 </div>
 
@@ -121,7 +121,7 @@ resources :posts, concerns: [:commentable]
 
 `#concerns(*concern_names, **options)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L473)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L508)
 
 Includes previously defined concerns.
 
@@ -131,8 +131,8 @@ Includes previously defined concerns.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`concern_names`** | `Array<Symbol>` |  | concern names to include |
-| `options` | `Hash` | `{}` | options passed to the concern |
+| **`concern_names`** | `Array<Symbol>` |  | The concern names to include. |
+| `options` | `Hash` | `{}` | The options passed to the concern. |
 
 </div>
 
@@ -154,7 +154,7 @@ end
 
 `#delete(action_names, on: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L425)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L456)
 
 Defines a DELETE action.
 
@@ -164,8 +164,8 @@ Defines a DELETE action.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`action_names`** | `Symbol`, `Array<Symbol>` |  | action name(s) |
-| `on` | `Symbol<:member, :collection>`, `nil` | `nil` |  |
+| **`action_names`** | `Symbol`, `Array<Symbol>` |  | The action name(s). |
+| `on` | `Symbol<:collection, :member>`, `nil` | `nil` | The scope. |
 
 </div>
 
@@ -185,7 +185,7 @@ member { delete :archive }
 
 `#get(action_names, on: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L373)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L396)
 
 Defines a GET action.
 
@@ -195,8 +195,8 @@ Defines a GET action.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`action_names`** | `Symbol`, `Array<Symbol>` |  | action name(s) |
-| `on` | `Symbol<:member, :collection>`, `nil` | `nil` |  |
+| **`action_names`** | `Symbol`, `Array<Symbol>` |  | The action name(s). |
+| `on` | `Symbol<:collection, :member>`, `nil` | `nil` | The scope. |
 
 </div>
 
@@ -222,7 +222,7 @@ get :search, on: :collection
 
 `#member(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L329)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L350)
 
 Block for defining member actions (operate on :id).
 
@@ -258,7 +258,7 @@ end
 
 `#patch(action_names, on: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L399)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L426)
 
 Defines a PATCH action.
 
@@ -268,8 +268,8 @@ Defines a PATCH action.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`action_names`** | `Symbol`, `Array<Symbol>` |  | action name(s) |
-| `on` | `Symbol<:member, :collection>`, `nil` | `nil` |  |
+| **`action_names`** | `Symbol`, `Array<Symbol>` |  | The action name(s). |
+| `on` | `Symbol<:collection, :member>`, `nil` | `nil` | The scope. |
 
 </div>
 
@@ -289,7 +289,7 @@ member { patch :mark_paid }
 
 `#post(action_names, on: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L386)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L411)
 
 Defines a POST action.
 
@@ -299,8 +299,8 @@ Defines a POST action.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`action_names`** | `Symbol`, `Array<Symbol>` |  | action name(s) |
-| `on` | `Symbol<:member, :collection>`, `nil` | `nil` |  |
+| **`action_names`** | `Symbol`, `Array<Symbol>` |  | The action name(s). |
+| `on` | `Symbol<:collection, :member>`, `nil` | `nil` | The scope. |
 
 </div>
 
@@ -320,7 +320,7 @@ member { post :send }
 
 `#put(action_names, on: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L412)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L441)
 
 Defines a PUT action.
 
@@ -330,8 +330,8 @@ Defines a PUT action.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`action_names`** | `Symbol`, `Array<Symbol>` |  | action name(s) |
-| `on` | `Symbol<:member, :collection>`, `nil` | `nil` |  |
+| **`action_names`** | `Symbol`, `Array<Symbol>` |  | The action name(s). |
+| `on` | `Symbol<:collection, :member>`, `nil` | `nil` | The scope. |
 
 </div>
 
@@ -351,7 +351,7 @@ member { put :replace }
 
 `#resource(resource_name, concerns: nil, constraints: nil, contract: nil, controller: nil, defaults: nil, except: nil, only: nil, param: nil, path: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L246)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L266)
 
 Defines a singular resource (no index, no :id in URL).
 
@@ -363,16 +363,16 @@ Default actions: :show, :create, :update, :destroy.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`resource_name`** | `Symbol` |  | resource name (singular) |
-| `concerns` | `Array<Symbol>`, `nil` | `nil` | concerns to include |
-| `constraints` | `Hash`, `Proc`, `nil` | `nil` | route constraints |
-| `contract` | `String`, `nil` | `nil` | custom contract path |
-| `controller` | `String`, `nil` | `nil` | custom controller path |
-| `defaults` | `Hash`, `nil` | `nil` | default route parameters |
-| `except` | `Array<Symbol>`, `nil` | `nil` | actions to exclude |
-| `only` | `Array<Symbol>`, `nil` | `nil` | only these CRUD actions |
-| `param` | `Symbol`, `nil` | `nil` | custom ID parameter |
-| `path` | `String`, `nil` | `nil` | custom URL segment |
+| **`resource_name`** | `Symbol` |  | The resource name (singular). |
+| `concerns` | `Array<Symbol>`, `nil` | `nil` | The concerns to include. |
+| `constraints` | `Hash`, `Proc`, `nil` | `nil` | The route constraints. |
+| `contract` | `String`, `nil` | `nil` | The custom contract path. |
+| `controller` | `String`, `nil` | `nil` | The custom controller path. |
+| `defaults` | `Hash`, `nil` | `nil` | The default route parameters. |
+| `except` | `Array<Symbol>`, `nil` | `nil` | The actions to exclude. |
+| `only` | `Array<Symbol>`, `nil` | `nil` | The CRUD actions to include. |
+| `param` | `Symbol`, `nil` | `nil` | The custom ID parameter. |
+| `path` | `String`, `nil` | `nil` | The custom URL segment. |
 
 </div>
 
@@ -404,7 +404,7 @@ end
 
 `#resources(resource_name = nil, concerns: nil, constraints: nil, contract: nil, controller: nil, defaults: nil, except: nil, only: nil, param: nil, path: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L181)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L191)
 
 Defines a plural resource with standard CRUD actions.
 
@@ -416,16 +416,16 @@ Default actions: :index, :show, :create, :update, :destroy.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`resource_name`** | `Symbol` |  | resource name (plural) |
-| `concerns` | `Array<Symbol>`, `nil` | `nil` | concerns to include |
-| `constraints` | `Hash`, `Proc`, `nil` | `nil` | route constraints |
-| `contract` | `String`, `nil` | `nil` | custom contract path |
-| `controller` | `String`, `nil` | `nil` | custom controller path |
-| `defaults` | `Hash`, `nil` | `nil` | default route parameters |
-| `except` | `Array<Symbol>`, `nil` | `nil` | actions to exclude |
-| `only` | `Array<Symbol>`, `nil` | `nil` | only these CRUD actions |
-| `param` | `Symbol`, `nil` | `nil` | custom ID parameter |
-| `path` | `String`, `nil` | `nil` | custom URL segment |
+| **`resource_name`** | `Symbol` |  | The resource name (plural). |
+| `concerns` | `Array<Symbol>`, `nil` | `nil` | The concerns to include. |
+| `constraints` | `Hash`, `Proc`, `nil` | `nil` | The route constraints. |
+| `contract` | `String`, `nil` | `nil` | The custom contract path. |
+| `controller` | `String`, `nil` | `nil` | The custom controller path. |
+| `defaults` | `Hash`, `nil` | `nil` | The default route parameters. |
+| `except` | `Array<Symbol>`, `nil` | `nil` | The actions to exclude. |
+| `only` | `Array<Symbol>`, `nil` | `nil` | The CRUD actions to include. |
+| `param` | `Symbol`, `nil` | `nil` | The custom ID parameter. |
+| `path` | `String`, `nil` | `nil` | The custom URL segment. |
 
 </div>
 
@@ -459,7 +459,7 @@ end
 
 `#with_options(options = {}, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L300)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/resource.rb#L321)
 
 Applies options to all resources defined in the block.
 
@@ -469,7 +469,7 @@ Applies options to all resources defined in the block.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `options` | `Hash` | `{}` | options to merge into nested resources |
+| `options` | `Hash` | `{}` | The options to merge into nested resources. |
 
 </div>
 

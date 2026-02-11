@@ -31,7 +31,7 @@ end
 
 `.contract_builder(klass = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/serializer/resource/base.rb#L42)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/serializer/resource/base.rb#L44)
 
 The contract builder for this serializer.
 
@@ -41,7 +41,7 @@ The contract builder for this serializer.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `klass` | `Class<Builder::Contract::Base>`, `nil` | `nil` | the builder class |
+| `klass` | `Class<Builder::Contract::Base>`, `nil` | `nil` | The builder class. |
 
 </div>
 
@@ -55,7 +55,7 @@ Class&lt;[Builder::Contract::Base](/reference/adapter/builder/contract/base)&gt;
 
 `.data_type(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/serializer/resource/base.rb#L32)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/serializer/resource/base.rb#L33)
 
 The data type for this serializer.
 
@@ -65,7 +65,7 @@ The data type for this serializer.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `block` | `Proc`, `nil` | `nil` | block that receives representation_class and returns type name |
+| `block` | `Proc`, `nil` | `nil` | Block that receives representation_class and returns type name. |
 
 </div>
 
@@ -81,7 +81,7 @@ The data type for this serializer.
 
 `#representation_class`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/serializer/resource/base.rb#L52)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/serializer/resource/base.rb#L54)
 
 The representation class for this serializer.
 
@@ -95,7 +95,7 @@ Class&lt;[Representation::Base](/reference/representation/base)&gt;
 
 `#serialize(resource, context:, serialize_options:)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/serializer/resource/base.rb#L72)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/serializer/resource/base.rb#L77)
 
 Serializes a resource.
 
@@ -105,9 +105,9 @@ Serializes a resource.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`resource`** | `Object` |  | the resource to serialize |
-| **`context`** | `Hash` |  | serialization context |
-| **`serialize_options`** | `Hash` |  | options (e.g., include) |
+| **`resource`** | `Object` |  | The resource to serialize. |
+| **`context`** | `Hash` |  | The serialization context. |
+| **`serialize_options`** | `Hash` |  | The options (e.g., include). |
 
 </div>
 

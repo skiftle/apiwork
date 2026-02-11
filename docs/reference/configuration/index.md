@@ -33,7 +33,7 @@ config.dig(:pagination, :default_size)  # => 20
 
 `#dig(*keys)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/configuration.rb#L64)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/configuration.rb#L65)
 
 Accesses nested configuration values by key path.
 
@@ -43,7 +43,7 @@ Accesses nested configuration values by key path.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`keys`** | `Symbol` |  | one or more keys to traverse |
+| **`keys`** | `Symbol` |  | One or more keys to traverse. |
 
 </div>
 
@@ -60,7 +60,7 @@ config.dig(:pagination, :strategy)  # => :offset
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/configuration.rb#L75)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/configuration.rb#L76)
 
 Converts the configuration to a hash.
 

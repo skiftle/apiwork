@@ -68,7 +68,7 @@ adapter_name :my
 
 `.capability(klass)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L55)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L56)
 
 Registers a capability for this adapter.
 
@@ -81,7 +81,7 @@ that handle both introspection and runtime behavior.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`klass`** | `Class<Capability::Base>` |  | the capability class |
+| **`klass`** | `Class<Capability::Base>` |  | The capability class. |
 
 </div>
 
@@ -102,7 +102,7 @@ capability Capability::Pagination
 
 `.collection_wrapper(klass = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L132)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L134)
 
 Sets the wrapper class for collection responses.
 
@@ -132,7 +132,7 @@ collection_wrapper Wrapper::Collection::Default
 
 `.error_serializer(klass = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L106)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L108)
 
 Sets the serializer class for errors.
 
@@ -162,7 +162,7 @@ error_serializer Serializer::Error::Default
 
 `.error_wrapper(klass = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L145)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L147)
 
 Sets the wrapper class for error responses.
 
@@ -192,7 +192,7 @@ error_wrapper Wrapper::Error::Default
 
 `.member_wrapper(klass = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L119)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L121)
 
 Sets the wrapper class for single-record responses.
 
@@ -222,7 +222,7 @@ member_wrapper Wrapper::Member::Default
 
 `.option(name, type:, default: nil, enum: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/configurable.rb#L50)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/configurable.rb#L54)
 
 Defines a configuration option.
 
@@ -235,10 +235,10 @@ call `option` to define child options.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | option name |
-| **`type`** | `Symbol<:symbol, :string, :integer, :boolean, :hash>` |  |  |
-| `default` | `Object`, `nil` | `nil` | default value |
-| `enum` | `Array`, `nil` | `nil` | allowed values |
+| **`name`** | `Symbol` |  | The option name. |
+| **`type`** | `Symbol<:boolean, :hash, :integer, :string, :symbol>` |  | The option type. |
+| `default` | `Object`, `nil` | `nil` | The default value. |
+| `enum` | `Array`, `nil` | `nil` | The allowed values. |
 
 </div>
 
@@ -278,7 +278,7 @@ end
 
 `.resource_serializer(klass = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L93)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L95)
 
 Sets the serializer class for records and collections.
 
@@ -308,7 +308,7 @@ resource_serializer Serializer::Resource::Default
 
 `.skip_capability(name)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L73)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L75)
 
 Skips an inherited capability by name.
 
@@ -318,7 +318,7 @@ Skips an inherited capability by name.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | the capability_name to skip |
+| **`name`** | `Symbol` |  | The capability name to skip. |
 
 </div>
 

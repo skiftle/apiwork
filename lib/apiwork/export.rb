@@ -8,7 +8,8 @@ module Apiwork
       # @!method find(name)
       #   @api public
       #   Finds an export by name.
-      #   @param name [Symbol] the export name
+      #   @param name [Symbol]
+      #     The export name.
       #   @return [Class<Export::Base>, nil]
       #   @see .find!
       #   @example
@@ -17,7 +18,8 @@ module Apiwork
       # @!method find!(name)
       #   @api public
       #   Finds an export by name.
-      #   @param name [Symbol] the export name
+      #   @param name [Symbol]
+      #     The export name.
       #   @return [Class<Export::Base>]
       #   @raise [KeyError] if the export is not found
       #   @see .find
@@ -27,7 +29,8 @@ module Apiwork
       # @!method register(klass)
       #   @api public
       #   Registers an export.
-      #   @param klass [Class<Export::Base>] the export class with export_name set
+      #   @param klass [Class<Export::Base>]
+      #     The export class with export_name set.
       #   @see Export::Base
       #   @example
       #     Apiwork::Export.register(JSONSchemaExport)
@@ -43,12 +46,18 @@ module Apiwork
       # @api public
       # Generates an export for an API.
       #
-      # @param export_name [Symbol] registered export name (built-in: :openapi, :typescript, :zod)
-      # @param api_path [String] the API path
-      # @param format [Symbol, nil] (nil) [:json, :yaml] hash exports only
-      # @param locale [Symbol, nil] (nil) locale for translations
-      # @param key_format [Symbol, nil] (nil) [:camel, :underscore, :kebab, :keep]
-      # @param options export-specific keyword arguments
+      # @param export_name [Symbol]
+      #   The registered export name. Built-in: `:openapi`, `:typescript`, `:zod`.
+      # @param api_path [String]
+      #   The API path.
+      # @param format [Symbol, nil] (nil) [:json, :yaml]
+      #   The output format. Hash exports only.
+      # @param locale [Symbol, nil] (nil)
+      #   The locale for translations.
+      # @param key_format [Symbol, nil] (nil) [:camel, :kebab, :keep, :underscore]
+      #   The key format.
+      # @param options
+      #   Export-specific keyword arguments.
       # @return [String]
       # @raise [ConfigurationError] if export is not declared for the API
       # @see Export::Base

@@ -35,7 +35,7 @@ Override this method to register shared types.
 
 `#configured(key)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/api/base.rb#L42)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/api/base.rb#L43)
 
 The configured values for a key.
 
@@ -45,7 +45,7 @@ The configured values for a key.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`key`** | `Symbol` |  | the configuration key to look up |
+| **`key`** | `Symbol` |  | The configuration key. |
 
 </div>
 

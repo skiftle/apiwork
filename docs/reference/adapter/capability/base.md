@@ -36,7 +36,7 @@ end
 
 `.api_builder(klass = nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/base.rb#L91)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/base.rb#L95)
 
 Registers an API builder for this capability.
 
@@ -49,7 +49,7 @@ shared types used across all contracts.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `klass` | `Class<Builder::API::Base>`, `nil` | `nil` | the builder class |
+| `klass` | `Class<Builder::API::Base>`, `nil` | `nil` | The builder class. |
 
 </div>
 
@@ -67,7 +67,7 @@ shared types used across all contracts.
 
 `.capability_name(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/base.rb#L46)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/base.rb#L47)
 
 The name for this capability.
 
@@ -79,7 +79,7 @@ Used for configuration options, translation keys, and [Adapter::Base.skip_capabi
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `Symbol`, `nil` | `nil` | the capability name |
+| `value` | `Symbol`, `nil` | `nil` | The capability name. |
 
 </div>
 
@@ -93,7 +93,7 @@ Used for configuration options, translation keys, and [Adapter::Base.skip_capabi
 
 `.contract_builder(klass = nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/base.rb#L109)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/base.rb#L114)
 
 Registers a contract builder for this capability.
 
@@ -106,7 +106,7 @@ parameters and response shapes.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `klass` | `Class<Builder::Contract::Base>`, `nil` | `nil` | the builder class |
+| `klass` | `Class<Builder::Contract::Base>`, `nil` | `nil` | The builder class. |
 
 </div>
 
@@ -124,7 +124,7 @@ parameters and response shapes.
 
 `.operation(klass = nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/base.rb#L127)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/base.rb#L133)
 
 Registers an operation for this capability.
 
@@ -137,7 +137,7 @@ request parameters.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `klass` | `Class<Operation::Base>`, `nil` | `nil` | the operation class |
+| `klass` | `Class<Operation::Base>`, `nil` | `nil` | The operation class. |
 
 </div>
 
@@ -155,7 +155,7 @@ request parameters.
 
 `.option(name, type:, default: nil, enum: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/configurable.rb#L50)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/configurable.rb#L54)
 
 Defines a configuration option.
 
@@ -168,10 +168,10 @@ call `option` to define child options.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | option name |
-| **`type`** | `Symbol<:symbol, :string, :integer, :boolean, :hash>` |  |  |
-| `default` | `Object`, `nil` | `nil` | default value |
-| `enum` | `Array`, `nil` | `nil` | allowed values |
+| **`name`** | `Symbol` |  | The option name. |
+| **`type`** | `Symbol<:boolean, :hash, :integer, :string, :symbol>` |  | The option type. |
+| `default` | `Object`, `nil` | `nil` | The default value. |
+| `enum` | `Array`, `nil` | `nil` | The allowed values. |
 
 </div>
 
@@ -211,7 +211,7 @@ end
 
 `.request_transformer(transformer_class)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/base.rb#L57)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/base.rb#L59)
 
 Registers a request transformer for this capability.
 
@@ -221,7 +221,7 @@ Registers a request transformer for this capability.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`transformer_class`** | `Class<Transformer::Request::Base>` |  | the transformer class |
+| **`transformer_class`** | `Class<Transformer::Request::Base>` |  | The transformer class. |
 
 </div>
 
@@ -239,7 +239,7 @@ Registers a request transformer for this capability.
 
 `.response_transformer(transformer_class)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/base.rb#L72)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/base.rb#L75)
 
 Registers a response transformer for this capability.
 
@@ -249,7 +249,7 @@ Registers a response transformer for this capability.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`transformer_class`** | `Class<Transformer::Response::Base>` |  | the transformer class |
+| **`transformer_class`** | `Class<Transformer::Response::Base>` |  | The transformer class. |
 
 </div>
 

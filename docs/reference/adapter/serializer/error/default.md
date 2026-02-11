@@ -35,7 +35,7 @@ end
 
 `.api_builder(klass = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/serializer/error/base.rb#L42)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/serializer/error/base.rb#L44)
 
 The API builder for this serializer.
 
@@ -45,7 +45,7 @@ The API builder for this serializer.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `klass` | `Class<Builder::API::Base>`, `nil` | `nil` | the builder class |
+| `klass` | `Class<Builder::API::Base>`, `nil` | `nil` | The builder class. |
 
 </div>
 
@@ -59,7 +59,7 @@ Class&lt;[Builder::API::Base](/reference/adapter/builder/api/base)&gt;, `nil`
 
 `.data_type(name = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/serializer/error/base.rb#L32)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/serializer/error/base.rb#L33)
 
 The data type for this serializer.
 
@@ -69,7 +69,7 @@ The data type for this serializer.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `Symbol`, `nil` | `nil` | the type name |
+| `name` | `Symbol`, `nil` | `nil` | The type name. |
 
 </div>
 

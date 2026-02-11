@@ -77,7 +77,8 @@ module Apiwork
         # @api public
         # Enables an export for this API.
         #
-        # @param name [Symbol] registered export name (built-in: :openapi, :typescript, :zod)
+        # @param name [Symbol]
+        #   The registered export name. Built-in: :openapi, :typescript, :zod.
         # @yield block evaluated in export context
         # @yieldparam export [Configuration]
         # @return [void]
@@ -275,7 +276,8 @@ module Apiwork
         #
         # Included in generated specs (OpenAPI, etc.) as possible error responses.
         #
-        # @param error_code_keys [Array<Symbol>] registered error code keys
+        # @param error_code_keys [Array<Symbol>]
+        #   The registered error code keys.
         # @return [Array<Symbol>]
         # @raise [ConfigurationError] if error code is not registered
         #
@@ -334,16 +336,26 @@ module Apiwork
         # routes for index, show, create, update, destroy actions.
         # Nested resources and custom actions can be defined in the block.
         #
-        # @param name [Symbol] resource name (plural)
-        # @param concerns [Array<Symbol>, nil] (nil) concerns to include
-        # @param constraints [Hash, Proc, nil] (nil) route constraints (regex, lambdas)
-        # @param contract [String, nil] (nil) custom contract path
-        # @param controller [String, nil] (nil) custom controller path
-        # @param defaults [Hash, nil] (nil) default parameters for routes
-        # @param except [Array<Symbol>, nil] (nil) exclude specific CRUD actions
-        # @param only [Array<Symbol>, nil] (nil) limit to specific CRUD actions
-        # @param param [Symbol, nil] (nil) custom parameter name for ID
-        # @param path [String, nil] (nil) custom URL path segment
+        # @param name [Symbol]
+        #   The resource name (plural).
+        # @param concerns [Array<Symbol>, nil] (nil)
+        #   The concerns to include.
+        # @param constraints [Hash, Proc, nil] (nil)
+        #   The route constraints (regex, lambdas).
+        # @param contract [String, nil] (nil)
+        #   The custom contract path.
+        # @param controller [String, nil] (nil)
+        #   The custom controller path.
+        # @param defaults [Hash, nil] (nil)
+        #   The default parameters for routes.
+        # @param except [Array<Symbol>, nil] (nil)
+        #   The CRUD actions to exclude.
+        # @param only [Array<Symbol>, nil] (nil)
+        #   The CRUD actions to include.
+        # @param param [Symbol, nil] (nil)
+        #   The custom parameter name for ID.
+        # @param path [String, nil] (nil)
+        #   The custom URL path segment.
         # @yield block for nested resources and custom actions
         # @yieldparam resource [Resource]
         # @return [void]
@@ -393,16 +405,26 @@ module Apiwork
         # Useful for resources where only one instance exists,
         # like user profile or application settings.
         #
-        # @param name [Symbol] resource name (singular)
-        # @param concerns [Array<Symbol>, nil] (nil) concerns to include
-        # @param constraints [Hash, Proc, nil] (nil) route constraints (regex, lambdas)
-        # @param contract [String, nil] (nil) custom contract path
-        # @param controller [String, nil] (nil) custom controller path
-        # @param defaults [Hash, nil] (nil) default parameters for routes
-        # @param except [Array<Symbol>, nil] (nil) exclude specific CRUD actions
-        # @param only [Array<Symbol>, nil] (nil) limit to specific CRUD actions
-        # @param param [Symbol, nil] (nil) custom parameter name for ID
-        # @param path [String, nil] (nil) custom URL path segment
+        # @param name [Symbol]
+        #   The resource name (singular).
+        # @param concerns [Array<Symbol>, nil] (nil)
+        #   The concerns to include.
+        # @param constraints [Hash, Proc, nil] (nil)
+        #   The route constraints (regex, lambdas).
+        # @param contract [String, nil] (nil)
+        #   The custom contract path.
+        # @param controller [String, nil] (nil)
+        #   The custom controller path.
+        # @param defaults [Hash, nil] (nil)
+        #   The default parameters for routes.
+        # @param except [Array<Symbol>, nil] (nil)
+        #   The CRUD actions to exclude.
+        # @param only [Array<Symbol>, nil] (nil)
+        #   The CRUD actions to include.
+        # @param param [Symbol, nil] (nil)
+        #   The custom parameter name for ID.
+        # @param path [String, nil] (nil)
+        #   The custom URL path segment.
         # @yield block for nested resources and custom actions
         # @yieldparam resource [Resource]
         # @return [void]
@@ -450,7 +472,8 @@ module Apiwork
         # Concerns are reusable blocks of resource configuration that can
         # be included in multiple resources via the `concerns` option.
         #
-        # @param name [Symbol] concern name
+        # @param name [Symbol]
+        #   The concern name.
         # @yield block defining shared actions/configuration
         # @yieldparam resource [Resource]
         # @return [void]
@@ -485,7 +508,8 @@ module Apiwork
         # Accepts the same options as {#resources}: only, except, defaults,
         # constraints, controller, param, path.
         #
-        # @param options [Hash, nil] (nil) options to apply to nested resources
+        # @param options [Hash, nil] (nil)
+        #   The options to apply to nested resources.
         # @yield block containing resource definitions
         # @yieldparam resource [Resource]
         # @return [void]

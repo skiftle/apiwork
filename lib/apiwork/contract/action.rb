@@ -30,7 +30,8 @@ module Apiwork
       #
       # Used in generated specs as the operation summary.
       #
-      # @param value [String, nil] (nil) summary text
+      # @param value [String, nil] (nil)
+      #   The summary.
       # @return [String, nil]
       #
       # @example
@@ -49,7 +50,8 @@ module Apiwork
       # Used in generated specs as the operation description.
       # Supports Markdown formatting.
       #
-      # @param value [String, nil] (nil) description text
+      # @param value [String, nil] (nil)
+      #   The description.
       # @return [String, nil]
       #
       # @example
@@ -67,7 +69,8 @@ module Apiwork
       #
       # Tags help organize actions in generated documentation.
       #
-      # @param tags [Array<String,Symbol>] tag names
+      # @param tags [Array<String, Symbol>]
+      #   The tag names.
       # @return [Array<Symbol>, nil]
       #
       # @example
@@ -103,7 +106,8 @@ module Apiwork
       # @api public
       # The operation ID for this action.
       #
-      # @param value [String, nil] (nil) custom operation ID
+      # @param value [String, nil] (nil)
+      #   The operation ID.
       # @return [String, nil]
       #
       # @example
@@ -119,7 +123,8 @@ module Apiwork
       # @api public
       # Declares the raised error codes for this action.
       #
-      # @param error_code_keys [Symbol] error code keys
+      # @param error_code_keys [Symbol]
+      #   The error code keys.
       # @return [void]
       # @raise [ConfigurationError] if error code is not registered
       #
@@ -153,7 +158,8 @@ module Apiwork
       #
       # Use the block to define query parameters and request body.
       #
-      # @param replace [Boolean] (false) replace inherited definition
+      # @param replace [Boolean] (false)
+      #   Whether to replace inherited definition.
       # @yield block for defining query and body (instance_eval style)
       # @yieldparam request [Action::Request]
       # @return [Action::Request]
@@ -198,7 +204,8 @@ module Apiwork
       #
       # Use the block to define response body or declare no_content.
       #
-      # @param replace [Boolean] (false) replace inherited definition
+      # @param replace [Boolean] (false)
+      #   Whether to replace inherited definition.
       # @yield block for defining body or no_content (instance_eval style)
       # @yieldparam response [Action::Response]
       # @return [Action::Response]

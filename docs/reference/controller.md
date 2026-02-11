@@ -29,8 +29,8 @@ class InvoicesController < ApplicationController
   end
 
   def create
-    invoice = Invoice.create!(contract.body)
-    expose invoice, status: :created
+    invoice = Invoice.create(contract.body[:invoice])
+    expose invoice
   end
 end
 ```
@@ -41,7 +41,7 @@ end
 
 `.skip_contract_validation!(only: nil, except: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L53)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L55)
 
 Skips contract validation for specified actions.
 
@@ -51,8 +51,8 @@ Skips contract validation for specified actions.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`only`** | `Array<Symbol>` |  | skip only for these |
-| **`except`** | `Array<Symbol>` |  | skip for all except these |
+| **`except`** | `Array<Symbol>` |  | Skip for all except these actions. |
+| **`only`** | `Array<Symbol>` |  | Skip only for these actions. |
 
 </div>
 
@@ -76,7 +76,7 @@ skip_contract_validation!
 
 `#context`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L212)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L221)
 
 The context for this controller.
 
@@ -113,7 +113,7 @@ end
 
 `#contract`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L80)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L82)
 
 The contract for this controller.
 
@@ -153,7 +153,7 @@ end
 
 `#expose(data, meta: {}, status: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L119)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L124)
 
 Exposes data as an API response.
 
@@ -167,9 +167,9 @@ is applied according to the API's [API::Base.key_format](/reference/api/base#key
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`data`** | `Object`, `Array` |  | the record(s) to expose |
-| `meta` | `Hash` | `{}` | metadata to include in response (pagination, etc.) |
-| `status` | `Symbol`, `Integer`, `nil` | `nil` | the HTTP status (:ok, or :created for create action) |
+| **`data`** | `Object`, `Array` |  | The record(s) to expose. |
+| `meta` | `Hash` | `{}` | The metadata to include in response (pagination, etc.). |
+| `status` | `Symbol`, `Integer`, `nil` | `nil` | The HTTP status (:ok, or :created for create action). |
 
 </div>
 
@@ -199,7 +199,7 @@ end
 
 ```ruby
 def create
-  invoice = Invoice.create!(contract.body)
+  invoice = Invoice.create(contract.body[:invoice])
   expose invoice, status: :created
 end
 ```
@@ -210,7 +210,7 @@ end
 
 `#expose_error(code_key, detail: nil, path: nil, meta: {})`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L172)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L181)
 
 Exposes an error response using a registered error code.
 
@@ -222,10 +222,10 @@ Defaults to I18n lookup when detail is not provided.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`code_key`** | `Symbol` |  | registered error code (:not_found, :unauthorized, etc.) |
-| `detail` | `String`, `nil` | `nil` | custom error message (uses I18n lookup if nil) |
-| `path` | `Array<String, Symbol>`, `nil` | `nil` | the JSON path to the error |
-| `meta` | `Hash` | `{}` | additional metadata to include |
+| **`code_key`** | `Symbol` |  | The registered error code (:not_found, :unauthorized, etc.). |
+| `detail` | `String`, `nil` | `nil` | The custom error message (uses I18n lookup if nil). |
+| `meta` | `Hash` | `{}` | The additional metadata to include. |
+| `path` | `Array<String, Symbol>`, `nil` | `nil` | The JSON path to the error. |
 
 </div>
 

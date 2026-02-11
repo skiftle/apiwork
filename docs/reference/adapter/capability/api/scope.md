@@ -19,7 +19,7 @@ Use this to query API-wide state when building shared types.
 
 `#configured(capability, key)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/api/scope.rb#L55)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/api/scope.rb#L57)
 
 The configured values for a capability.
 
@@ -29,8 +29,8 @@ The configured values for a capability.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`capability`** | `Symbol` |  | the capability name |
-| **`key`** | `Symbol` |  | the configuration key |
+| **`capability`** | `Symbol` |  | The capability name. |
+| **`key`** | `Symbol` |  | The configuration key. |
 
 </div>
 

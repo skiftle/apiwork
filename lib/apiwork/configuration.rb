@@ -56,7 +56,8 @@ module Apiwork
     # @api public
     # Accesses nested configuration values by key path.
     #
-    # @param keys [Symbol] one or more keys to traverse
+    # @param keys [Symbol]
+    #   One or more keys to traverse.
     #
     # @example
     #   config.dig(:pagination)             # => #<Apiwork::Configuration:...>

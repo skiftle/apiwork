@@ -37,7 +37,7 @@ end
 
 `#option(name, default: nil, enum: nil, type:, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/configuration/option.rb#L69)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/configuration/option.rb#L73)
 
 Defines a nested option.
 
@@ -47,10 +47,10 @@ Defines a nested option.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | the option name |
-| **`type`** | `Symbol<:symbol, :string, :integer, :boolean, :hash>` |  |  |
-| `default` | `Object`, `nil` | `nil` | the default value |
-| `enum` | `Array`, `nil` | `nil` | allowed values |
+| **`name`** | `Symbol` |  | The option name. |
+| **`type`** | `Symbol<:boolean, :hash, :integer, :string, :symbol>` |  | The option type. |
+| `default` | `Object`, `nil` | `nil` | The default value. |
+| `enum` | `Array`, `nil` | `nil` | The allowed values. |
 
 </div>
 

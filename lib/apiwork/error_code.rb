@@ -31,7 +31,8 @@ module Apiwork
       # @!method find(key)
       #   @api public
       #   Finds an error code by key.
-      #   @param key [Symbol] the error code key
+      #   @param key [Symbol]
+      #     The error code key.
       #   @return [ErrorCode::Definition, nil]
       #   @see .find!
       #   @example
@@ -40,7 +41,8 @@ module Apiwork
       # @!method find!(key)
       #   @api public
       #   Finds an error code by key.
-      #   @param key [Symbol] the error code key
+      #   @param key [Symbol]
+      #     The error code key.
       #   @return [ErrorCode::Definition]
       #   @raise [KeyError] if the error code is not found
       #   @see .find
@@ -54,9 +56,12 @@ module Apiwork
       #   Error codes are used with `raises` declarations and `expose_error`
       #   in controllers. Built-in codes (400-504) are pre-registered.
       #
-      #   @param key [Symbol] unique identifier for the error code
-      #   @param status [Integer] the HTTP status code (must be 400-599)
-      #   @param attach_path [Boolean] (false) include request path in error response
+      #   @param key [Symbol]
+      #     The unique identifier for the error code.
+      #   @param attach_path [Boolean] (false)
+      #     Include request path in error response.
+      #   @param status [Integer]
+      #     The HTTP status code (must be 400-599).
       #   @return [ErrorCode::Definition]
       #   @raise [ArgumentError] if status is outside 400-599 range
       #   @see Issue

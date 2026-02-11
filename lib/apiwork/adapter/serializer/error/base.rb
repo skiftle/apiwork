@@ -27,7 +27,8 @@ module Apiwork
             # @api public
             # The data type for this serializer.
             #
-            # @param name [Symbol, nil] (nil) the type name
+            # @param name [Symbol, nil] (nil)
+            #   The type name.
             # @return [Symbol, nil]
             def data_type(name = nil)
               @data_type = name if name
@@ -37,7 +38,8 @@ module Apiwork
             # @api public
             # The API builder for this serializer.
             #
-            # @param klass [Class<Builder::API::Base>, nil] (nil) the builder class
+            # @param klass [Class<Builder::API::Base>, nil] (nil)
+            #   The builder class.
             # @return [Class<Builder::API::Base>, nil]
             def api_builder(klass = nil)
               @api_builder = klass if klass
@@ -55,8 +57,10 @@ module Apiwork
           # @api public
           # Serializes an error.
           #
-          # @param error [Error] the error to serialize
-          # @param context [Hash] serialization context
+          # @param error [Error]
+          #   The error to serialize.
+          # @param context [Hash]
+          #   The serialization context.
           # @return [Hash]
           def serialize(error, context:)
             raise NotImplementedError

@@ -153,16 +153,26 @@ module Apiwork
       #
       # Default actions: :index, :show, :create, :update, :destroy.
       #
-      # @param resource_name [Symbol] resource name (plural)
-      # @param concerns [Array<Symbol>, nil] (nil) concerns to include
-      # @param constraints [Hash, Proc, nil] (nil) route constraints
-      # @param contract [String, nil] (nil) custom contract path
-      # @param controller [String, nil] (nil) custom controller path
-      # @param defaults [Hash, nil] (nil) default route parameters
-      # @param except [Array<Symbol>, nil] (nil) actions to exclude
-      # @param only [Array<Symbol>, nil] (nil) only these CRUD actions
-      # @param param [Symbol, nil] (nil) custom ID parameter
-      # @param path [String, nil] (nil) custom URL segment
+      # @param resource_name [Symbol]
+      #   The resource name (plural).
+      # @param concerns [Array<Symbol>, nil] (nil)
+      #   The concerns to include.
+      # @param constraints [Hash, Proc, nil] (nil)
+      #   The route constraints.
+      # @param contract [String, nil] (nil)
+      #   The custom contract path.
+      # @param controller [String, nil] (nil)
+      #   The custom controller path.
+      # @param defaults [Hash, nil] (nil)
+      #   The default route parameters.
+      # @param except [Array<Symbol>, nil] (nil)
+      #   The actions to exclude.
+      # @param only [Array<Symbol>, nil] (nil)
+      #   The CRUD actions to include.
+      # @param param [Symbol, nil] (nil)
+      #   The custom ID parameter.
+      # @param path [String, nil] (nil)
+      #   The custom URL segment.
       # @yield block for nested resources and custom actions
       # @yieldparam resource [Resource]
       # @return [Hash{Symbol => Resource}]
@@ -220,16 +230,26 @@ module Apiwork
       #
       # Default actions: :show, :create, :update, :destroy.
       #
-      # @param resource_name [Symbol] resource name (singular)
-      # @param concerns [Array<Symbol>, nil] (nil) concerns to include
-      # @param constraints [Hash, Proc, nil] (nil) route constraints
-      # @param contract [String, nil] (nil) custom contract path
-      # @param controller [String, nil] (nil) custom controller path
-      # @param defaults [Hash, nil] (nil) default route parameters
-      # @param except [Array<Symbol>, nil] (nil) actions to exclude
-      # @param only [Array<Symbol>, nil] (nil) only these CRUD actions
-      # @param param [Symbol, nil] (nil) custom ID parameter
-      # @param path [String, nil] (nil) custom URL segment
+      # @param resource_name [Symbol]
+      #   The resource name (singular).
+      # @param concerns [Array<Symbol>, nil] (nil)
+      #   The concerns to include.
+      # @param constraints [Hash, Proc, nil] (nil)
+      #   The route constraints.
+      # @param contract [String, nil] (nil)
+      #   The custom contract path.
+      # @param controller [String, nil] (nil)
+      #   The custom controller path.
+      # @param defaults [Hash, nil] (nil)
+      #   The default route parameters.
+      # @param except [Array<Symbol>, nil] (nil)
+      #   The actions to exclude.
+      # @param only [Array<Symbol>, nil] (nil)
+      #   The CRUD actions to include.
+      # @param param [Symbol, nil] (nil)
+      #   The custom ID parameter.
+      # @param path [String, nil] (nil)
+      #   The custom URL segment.
       # @yield block for nested resources and custom actions
       # @yieldparam resource [Resource]
       # @return [void]
@@ -281,7 +301,8 @@ module Apiwork
       # @api public
       # Applies options to all resources defined in the block.
       #
-      # @param options [Hash] ({}) options to merge into nested resources
+      # @param options [Hash] ({})
+      #   The options to merge into nested resources.
       # @yield block with resource definitions
       # @yieldparam resource [Resource]
       # @return [void]
@@ -361,8 +382,10 @@ module Apiwork
       # @api public
       # Defines a GET action.
       #
-      # @param action_names [Symbol, Array<Symbol>] action name(s)
-      # @param on [Symbol, nil] (nil) [:member, :collection]
+      # @param action_names [Symbol, Array<Symbol>]
+      #   The action name(s).
+      # @param on [Symbol, nil] (nil) [:collection, :member]
+      #   The scope.
       # @return [void]
       #
       # @example Inside member block
@@ -377,8 +400,10 @@ module Apiwork
       # @api public
       # Defines a POST action.
       #
-      # @param action_names [Symbol, Array<Symbol>] action name(s)
-      # @param on [Symbol, nil] (nil) [:member, :collection]
+      # @param action_names [Symbol, Array<Symbol>]
+      #   The action name(s).
+      # @param on [Symbol, nil] (nil) [:collection, :member]
+      #   The scope.
       # @return [void]
       #
       # @example
@@ -390,8 +415,10 @@ module Apiwork
       # @api public
       # Defines a PATCH action.
       #
-      # @param action_names [Symbol, Array<Symbol>] action name(s)
-      # @param on [Symbol, nil] (nil) [:member, :collection]
+      # @param action_names [Symbol, Array<Symbol>]
+      #   The action name(s).
+      # @param on [Symbol, nil] (nil) [:collection, :member]
+      #   The scope.
       # @return [void]
       #
       # @example
@@ -403,8 +430,10 @@ module Apiwork
       # @api public
       # Defines a PUT action.
       #
-      # @param action_names [Symbol, Array<Symbol>] action name(s)
-      # @param on [Symbol, nil] (nil) [:member, :collection]
+      # @param action_names [Symbol, Array<Symbol>]
+      #   The action name(s).
+      # @param on [Symbol, nil] (nil) [:collection, :member]
+      #   The scope.
       # @return [void]
       #
       # @example
@@ -416,8 +445,10 @@ module Apiwork
       # @api public
       # Defines a DELETE action.
       #
-      # @param action_names [Symbol, Array<Symbol>] action name(s)
-      # @param on [Symbol, nil] (nil) [:member, :collection]
+      # @param action_names [Symbol, Array<Symbol>]
+      #   The action name(s).
+      # @param on [Symbol, nil] (nil) [:collection, :member]
+      #   The scope.
       # @return [void]
       #
       # @example
@@ -429,8 +460,10 @@ module Apiwork
       # @api public
       # Defines a reusable concern.
       #
-      # @param concern_name [Symbol] concern name
-      # @param callable [Proc] optional callable instead of block
+      # @param concern_name [Symbol]
+      #   The concern name.
+      # @param callable [Proc]
+      #   Optional callable instead of block.
       # @yield block with resource definitions
       # @yieldparam resource [Resource]
       # @return [void]
@@ -462,8 +495,10 @@ module Apiwork
       # @api public
       # Includes previously defined concerns.
       #
-      # @param concern_names [Array<Symbol>] concern names to include
-      # @param options [Hash] ({}) options passed to the concern
+      # @param concern_names [Array<Symbol>]
+      #   The concern names to include.
+      # @param options [Hash] ({})
+      #   The options passed to the concern.
       # @return [void]
       #
       # @example

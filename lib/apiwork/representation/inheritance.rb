@@ -41,7 +41,8 @@ module Apiwork
       # @api public
       # Resolves a record to its subclass representation.
       #
-      # @param record [ActiveRecord::Base] the record to resolve
+      # @param record [ActiveRecord::Base]
+      #   The record to resolve.
       # @return [Class<Representation::Base>, nil]
       def resolve(record)
         type_value = record.public_send(column)

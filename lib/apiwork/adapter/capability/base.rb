@@ -41,7 +41,8 @@ module Apiwork
           #
           # Used for configuration options, translation keys, and {Adapter::Base.skip_capability}.
           #
-          # @param value [Symbol, nil] (nil) the capability name
+          # @param value [Symbol, nil] (nil)
+          #   The capability name.
           # @return [Symbol, nil]
           def capability_name(value = nil)
             @capability_name = value.to_sym if value
@@ -51,7 +52,8 @@ module Apiwork
           # @api public
           # Registers a request transformer for this capability.
           #
-          # @param transformer_class [Class<Transformer::Request::Base>] the transformer class
+          # @param transformer_class [Class<Transformer::Request::Base>]
+          #   The transformer class.
           # @return [void]
           # @see Transformer::Request::Base
           def request_transformer(transformer_class)
@@ -66,7 +68,8 @@ module Apiwork
           # @api public
           # Registers a response transformer for this capability.
           #
-          # @param transformer_class [Class<Transformer::Response::Base>] the transformer class
+          # @param transformer_class [Class<Transformer::Response::Base>]
+          #   The transformer class.
           # @return [void]
           # @see Transformer::Response::Base
           def response_transformer(transformer_class)
@@ -84,7 +87,8 @@ module Apiwork
           # API builders run once per API at initialization time to register
           # shared types used across all contracts.
           #
-          # @param klass [Class<Builder::API::Base>, nil] (nil) the builder class
+          # @param klass [Class<Builder::API::Base>, nil] (nil)
+          #   The builder class.
           # @yield block evaluated in {Builder::API::Base} context
           # @return [void]
           # @see Builder::API::Base
@@ -102,7 +106,8 @@ module Apiwork
           # Contract builders run per contract to add capability-specific
           # parameters and response shapes.
           #
-          # @param klass [Class<Builder::Contract::Base>, nil] (nil) the builder class
+          # @param klass [Class<Builder::Contract::Base>, nil] (nil)
+          #   The builder class.
           # @yield block evaluated in {Builder::Contract::Base} context
           # @return [void]
           # @see Builder::Contract::Base
@@ -120,7 +125,8 @@ module Apiwork
           # Operations run at request time to process data based on
           # request parameters.
           #
-          # @param klass [Class<Operation::Base>, nil] (nil) the operation class
+          # @param klass [Class<Operation::Base>, nil] (nil)
+          #   The operation class.
           # @yield block evaluated in {Operation::Base} context
           # @return [void]
           # @see Operation::Base

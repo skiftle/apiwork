@@ -24,7 +24,7 @@ Namespace for adapters and the adapter registry.
 
 `.find(name)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter.rb#L34)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter.rb#L37)
 
 Finds an adapter by name.
 
@@ -34,7 +34,7 @@ Finds an adapter by name.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | the adapter name |
+| **`name`** | `Symbol` |  | The adapter name. |
 
 </div>
 
@@ -58,7 +58,7 @@ Apiwork::Adapter.find(:standard)
 
 `.find!(name)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter.rb#L34)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter.rb#L37)
 
 Finds an adapter by name.
 
@@ -68,7 +68,7 @@ Finds an adapter by name.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`name`** | `Symbol` |  | the adapter name |
+| **`name`** | `Symbol` |  | The adapter name. |
 
 </div>
 
@@ -92,7 +92,7 @@ Apiwork::Adapter.find!(:standard)
 
 `.register(klass)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter.rb#L34)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter.rb#L37)
 
 Registers an adapter.
 
@@ -102,7 +102,7 @@ Registers an adapter.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`klass`** | `Class<Adapter::Base>` |  | the adapter class with adapter_name set |
+| **`klass`** | `Class<Adapter::Base>` |  | The adapter class with adapter_name set. |
 
 </div>
 

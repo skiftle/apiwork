@@ -46,7 +46,8 @@ module Apiwork
         # Capabilities are self-contained concerns (pagination, filtering, etc.)
         # that handle both introspection and runtime behavior.
         #
-        # @param klass [Class<Capability::Base>] the capability class
+        # @param klass [Class<Capability::Base>]
+        #   The capability class.
         # @return [void]
         #
         # @example
@@ -65,7 +66,8 @@ module Apiwork
         # @api public
         # Skips an inherited capability by name.
         #
-        # @param name [Symbol] the capability_name to skip
+        # @param name [Symbol]
+        #   The capability name to skip.
         # @return [void]
         #
         # @example

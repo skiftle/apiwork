@@ -42,7 +42,7 @@ Whether this error code attaches the request path.
 
 `#description(locale_key: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code/definition.rb#L47)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code/definition.rb#L48)
 
 The description for this error code.
 
@@ -52,7 +52,7 @@ The description for this error code.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `locale_key` | `String`, `nil` | `nil` | the I18n namespace for API-specific translations |
+| `locale_key` | `String`, `nil` | `nil` | The I18n namespace for API-specific translations. |
 
 </div>
 

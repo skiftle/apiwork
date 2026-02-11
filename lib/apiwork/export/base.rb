@@ -46,7 +46,8 @@ module Apiwork
         # @api public
         # The name for this export.
         #
-        # @param name [Symbol, nil] (nil) the export name to set
+        # @param name [Symbol, nil] (nil)
+        #   The export name.
         # @return [Symbol, nil]
         def export_name(name = nil)
           @export_name = name.to_sym if name
@@ -56,7 +57,8 @@ module Apiwork
         # @api public
         # The output for this export.
         #
-        # @param type [Symbol, nil] (nil) [:hash, :string] :hash for Hash output (json/yaml), :string for String output
+        # @param type [Symbol, nil] (nil) [:hash, :string]
+        #   The output type. :hash for Hash output (json/yaml), :string for String output.
         # @return [Symbol, nil]
         def output(type = nil)
           return @output_type unless type
@@ -115,7 +117,8 @@ module Apiwork
         #
         # Only applies to string exports. Hash exports derive extension from format.
         #
-        # @param value [String, nil] (nil) the file extension (e.g., '.ts')
+        # @param value [String, nil] (nil)
+        #   The file extension (e.g., '.ts').
         # @return [String, nil]
         def file_extension(value = nil)
           return @file_extension unless value
@@ -268,7 +271,8 @@ module Apiwork
       # @api public
       # Transforms a key according to the configured key format.
       #
-      # @param key [String, Symbol] the key to transform
+      # @param key [String, Symbol]
+      #   The key to transform.
       # @return [String]
       def transform_key(key)
         key_string = key.to_s

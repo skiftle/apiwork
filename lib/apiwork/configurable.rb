@@ -26,10 +26,14 @@ module Apiwork
     #   For nested options, use `type: :hash` with a block. Inside the block,
     #   call `option` to define child options.
     #
-    #   @param name [Symbol] option name
-    #   @param type [Symbol] [:symbol, :string, :integer, :boolean, :hash]
-    #   @param default [Object, nil] (nil) default value
-    #   @param enum [Array, nil] (nil) allowed values
+    #   @param name [Symbol]
+    #     The option name.
+    #   @param type [Symbol] [:boolean, :hash, :integer, :string, :symbol]
+    #     The option type.
+    #   @param default [Object, nil] (nil)
+    #     The default value.
+    #   @param enum [Array, nil] (nil)
+    #     The allowed values.
     #   @yield block evaluated in {Configuration::Option} context (for :hash type)
     #   @return [void]
     #   @see Configuration::Option

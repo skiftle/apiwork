@@ -42,7 +42,7 @@ end
 
 `.phase(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/transformer/request/base.rb#L45)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/transformer/request/base.rb#L46)
 
 The phase for this transformer.
 
@@ -52,7 +52,7 @@ The phase for this transformer.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `Symbol<:before, :after>`, `nil` | `nil` | defaults to :before when not set |
+| `value` | `Symbol<:after, :before>`, `nil` | `nil` | The phase. Defaults to `:before` when not set. |
 
 </div>
 
@@ -68,7 +68,7 @@ The phase for this transformer.
 
 `#transform`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/transformer/request/base.rb#L63)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/transformer/request/base.rb#L64)
 
 Transforms the request.
 

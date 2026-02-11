@@ -19,7 +19,7 @@ Use it to transform data at runtime.
 
 `.metadata_shape(klass = nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L66)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L68)
 
 Defines metadata shape for this operation.
 
@@ -33,7 +33,7 @@ type DSL methods and capability options.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `klass` | `Class<MetadataShape>`, `nil` | `nil` | the metadata shape class |
+| `klass` | `Class<MetadataShape>`, `nil` | `nil` | The metadata shape class. |
 
 </div>
 
@@ -61,7 +61,7 @@ metadata_shape PaginationShape
 
 `.target(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L43)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L44)
 
 The target for this operation.
 
@@ -71,7 +71,7 @@ The target for this operation.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `Symbol`, `nil` | `nil` | :collection or :member |
+| `value` | `Symbol<:collection, :member>`, `nil` | `nil` | The target type. |
 
 </div>
 
@@ -87,7 +87,7 @@ The target for this operation.
 
 `#apply`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L104)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L106)
 
 Applies this operation to the data.
 
@@ -160,7 +160,7 @@ The request for this operation.
 
 `#result(data: nil, includes: nil, metadata: nil, serialize_options: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L116)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L122)
 
 Creates a result object.
 
@@ -170,10 +170,10 @@ Creates a result object.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `data` | `Object`, `nil` | `nil` | transformed data |
-| `metadata` | `Hash`, `nil` | `nil` | metadata to add to response |
-| `includes` | `Array`, `nil` | `nil` | associations to preload |
-| `serialize_options` | `Hash`, `nil` | `nil` | options for serialization |
+| `data` | `Object`, `nil` | `nil` | The transformed data. |
+| `metadata` | `Hash`, `nil` | `nil` | The metadata to add to response. |
+| `includes` | `Array`, `nil` | `nil` | The associations to preload. |
+| `serialize_options` | `Hash`, `nil` | `nil` | The options for serialization. |
 
 </div>
 
@@ -187,7 +187,7 @@ Creates a result object.
 
 `#translate(*segments, default: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L141)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L149)
 
 Translates a key using the adapter's i18n convention.
 
@@ -202,8 +202,8 @@ Lookup order:
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`segments`** | `Array<Symbol, String>` |  | key path segments |
-| `default` | `String`, `nil` | `nil` | fallback value if no translation found |
+| **`segments`** | `Array<Symbol, String>` |  | The key path segments. |
+| `default` | `String`, `nil` | `nil` | The fallback value if no translation found. |
 
 </div>
 

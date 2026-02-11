@@ -25,7 +25,7 @@ Namespace for API definitions and the API registry.
 
 `.define(path, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L58)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L61)
 
 Defines a new API at the given path.
 
@@ -39,7 +39,7 @@ types, and configuration.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`path`** | `String` |  | the API path |
+| **`path`** | `String` |  | The API path. |
 
 </div>
 
@@ -72,7 +72,7 @@ end
 
 `.find(path)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L26)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L28)
 
 Finds an API by path.
 
@@ -82,7 +82,7 @@ Finds an API by path.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`path`** | `String` |  | the API path |
+| **`path`** | `String` |  | The API path. |
 
 </div>
 
@@ -106,7 +106,7 @@ Apiwork::API.find('/api/v1')
 
 `.find!(path)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L26)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L28)
 
 Finds an API by path.
 
@@ -116,7 +116,7 @@ Finds an API by path.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`path`** | `String` |  | the API path |
+| **`path`** | `String` |  | The API path. |
 
 </div>
 
@@ -140,7 +140,7 @@ Apiwork::API.find!('/api/v1')
 
 `.introspect(path, locale: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L76)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L81)
 
 The introspection data for an API.
 
@@ -150,8 +150,8 @@ The introspection data for an API.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`path`** | `String` |  | the API path |
-| `locale` | `Symbol`, `nil` | `nil` | the locale for descriptions |
+| **`path`** | `String` |  | The API path. |
+| `locale` | `Symbol`, `nil` | `nil` | The locale for descriptions. |
 
 </div>
 
