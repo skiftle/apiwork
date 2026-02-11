@@ -28,7 +28,7 @@ module Apiwork
     #     string :employee_id
     #   end
     #
-    # @param type_name [Symbol]
+    # @param type_name [Symbol, nil] (nil)
     #   The type to inherit from.
     # @return [Array<Symbol>]
     def extends(type_name = nil)
@@ -46,7 +46,7 @@ module Apiwork
     #     boolean :superuser
     #   end
     #
-    # @param type_name [Symbol]
+    # @param type_name [Symbol, nil] (nil)
     #   The type to merge from.
     # @return [Array<Symbol>]
     def merge(type_name = nil)

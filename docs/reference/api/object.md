@@ -38,7 +38,7 @@ end
 
 `#array(name, as: nil, default: nil, deprecated: false, description: nil, nullable: false, optional: false, required: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L174)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L175)
 
 Defines an array param with element type.
 
@@ -528,7 +528,7 @@ Can be called multiple times to inherit from multiple types.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`type_name`** | `Symbol` |  | The type to inherit from. |
+| `type_name` | `Symbol`, `nil` | `nil` | The type to inherit from. |
 
 </div>
 
@@ -695,7 +695,7 @@ Can be called multiple times to merge from multiple types.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`type_name`** | `Symbol` |  | The type to merge from. |
+| `type_name` | `Symbol`, `nil` | `nil` | The type to merge from. |
 
 </div>
 
@@ -877,7 +877,7 @@ end
 
 `#param(name, type: nil, as: nil, default: nil, deprecated: false, description: nil, discriminator: nil, enum: nil, example: nil, format: nil, max: nil, min: nil, nullable: false, of: nil, optional: false, required: false, shape: nil, value: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L83)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/object.rb#L84)
 
 Defines a param with explicit type.
 
@@ -899,7 +899,7 @@ for static definitions. Use `param` for dynamic param generation.
 | `discriminator` | `Symbol`, `nil` | `nil` | The discriminator field name. Unions only. |
 | `enum` | `Array`, `nil` | `nil` | The allowed values. |
 | `example` | `Object`, `nil` | `nil` | The example value. Metadata included in exports. |
-| `format` | `Symbol<:date, :datetime, :email, :hostname, :ipv4, :ipv6, :password, :url, :uuid>`, `nil` | `nil` | Format hint for exports. Does not change the type, but exports may add validation or documentation based on it. Valid formats by type: `:string`. |
+| `format` | `Symbol<:date, :datetime, :double, :email, :float, :hostname, :int32, :int64, :ipv4, :ipv6, :password, :url, :uuid>`, `nil` | `nil` | Format hint for exports. Does not change the type, but exports may add validation or documentation based on it. Valid formats by type: `:decimal`/`:number` (`:double`, `:float`), `:integer` (`:int32`, `:int64`), `:string` (`:date`, `:datetime`, `:email`, `:hostname`, `:ipv4`, `:ipv6`, `:password`, `:url`, `:uuid`). |
 | `max` | `Integer`, `nil` | `nil` | The maximum. For `:array`: size. For `:decimal`, `:integer`, `:number`: value. For `:string`: length. |
 | `min` | `Integer`, `nil` | `nil` | The minimum. For `:array`: size. For `:decimal`, `:integer`, `:number`: value. For `:string`: length. |
 | `nullable` | `Boolean` | `false` | Whether the value can be `null`. |

@@ -38,9 +38,10 @@ module Apiwork
       #   The discriminator field name. Unions only.
       # @param enum [Array, Symbol, nil] (nil)
       #   The allowed values. Strings and integers only.
-      # @param format [Symbol, nil] (nil) [:date, :datetime, :email, :hostname, :ipv4, :ipv6, :password, :url, :uuid]
+      # @param format [Symbol, nil] (nil) [:date, :datetime, :double, :email, :float, :hostname, :int32, :int64, :ipv4, :ipv6, :password, :url, :uuid]
       #   Format hint for exports. Does not change the type, but exports may add validation or documentation based on it.
-      #   Valid formats by type: `:string`.
+      #   Valid formats by type: `:decimal`/`:number` (`:double`, `:float`), `:integer` (`:int32`, `:int64`),
+      #   `:string` (`:date`, `:datetime`, `:email`, `:hostname`, `:ipv4`, `:ipv6`, `:password`, `:url`, `:uuid`).
       # @param max [Integer, nil] (nil)
       #   The maximum. For `:decimal`, `:integer`, `:number`: value. For `:string`: length.
       # @param min [Integer, nil] (nil)

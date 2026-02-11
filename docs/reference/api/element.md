@@ -361,7 +361,7 @@ end
 
 `#of(type, discriminator: nil, enum: nil, format: nil, max: nil, min: nil, value: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/element.rb#L66)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/element.rb#L67)
 
 Defines the element type.
 
@@ -377,7 +377,7 @@ for static definitions. Use `of` for dynamic element generation.
 | **`type`** | `Symbol<:array, :binary, :boolean, :date, :datetime, :decimal, :integer, :literal, :number, :object, :string, :time, :union, :uuid>` |  | The element type. Custom type references are also allowed. |
 | `discriminator` | `Symbol`, `nil` | `nil` | The discriminator field name. Unions only. |
 | `enum` | `Array`, `Symbol`, `nil` | `nil` | The allowed values. Strings and integers only. |
-| `format` | `Symbol<:date, :datetime, :email, :hostname, :ipv4, :ipv6, :password, :url, :uuid>`, `nil` | `nil` | Format hint for exports. Does not change the type, but exports may add validation or documentation based on it. Valid formats by type: `:string`. |
+| `format` | `Symbol<:date, :datetime, :double, :email, :float, :hostname, :int32, :int64, :ipv4, :ipv6, :password, :url, :uuid>`, `nil` | `nil` | Format hint for exports. Does not change the type, but exports may add validation or documentation based on it. Valid formats by type: `:decimal`/`:number` (`:double`, `:float`), `:integer` (`:int32`, `:int64`), `:string` (`:date`, `:datetime`, `:email`, `:hostname`, `:ipv4`, `:ipv6`, `:password`, `:url`, `:uuid`). |
 | `max` | `Integer`, `nil` | `nil` | The maximum. For `:decimal`, `:integer`, `:number`: value. For `:string`: length. |
 | `min` | `Integer`, `nil` | `nil` | The minimum. For `:decimal`, `:integer`, `:number`: value. For `:string`: length. |
 | `value` | `Object`, `nil` | `nil` | The literal value. Literals only. |
