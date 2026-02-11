@@ -234,7 +234,7 @@ RSpec.describe 'Type merging' do
     end
   end
 
-  describe 'merge! with symbols' do
+  describe 'merge with symbols' do
     it 'inlines params from merged type in introspection' do
       api_class = Apiwork::API.define '/api/test' do
         object :base do
@@ -243,7 +243,7 @@ RSpec.describe 'Type merging' do
         end
 
         object :admin do
-          merge! :base
+          merge :base
           boolean :superuser
         end
       end
@@ -261,7 +261,7 @@ RSpec.describe 'Type merging' do
         end
 
         object :child do
-          merge! :base
+          merge :base
           string :name, description: 'Overridden'
         end
       end
@@ -285,8 +285,8 @@ RSpec.describe 'Type merging' do
         end
 
         object :customer do
-          merge! :contactable
-          merge! :timestamped
+          merge :contactable
+          merge :timestamped
           string :name
         end
       end
@@ -306,7 +306,7 @@ RSpec.describe 'Type merging' do
         end
 
         object :child do
-          merge! :base
+          merge :base
         end
       end
 

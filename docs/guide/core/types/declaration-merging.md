@@ -106,5 +106,5 @@ end
 
 #### See also
 
-- [Type Reuse](./type-reuse.md) — inheritance and composition with `extends` and `merge!`
+- [Type Reuse](./type-reuse.md) — inheritance and composition with `extends` and `merge`
 - [Contract::Base reference](../../../reference/contract/base.md) — type definition methods

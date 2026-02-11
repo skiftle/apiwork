@@ -244,15 +244,15 @@ The data type for this shape.
 
 ---
 
-### #merge!
+### #merge
 
-`#merge!(other)`
+`#merge(other)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L163)
 
 **See also**
 
-- [API::Object#merge!](/reference/api/object#merge!)
+- [API::Object#merge](/reference/api/object#merge)
 
 ---
 

@@ -112,9 +112,9 @@ module Apiwork
         # @!method literal(name, value:, **options)
         #   @api public
         #   @see API::Object#literal
-        # @!method merge!(other)
+        # @!method merge(other)
         #   @api public
-        #   @see API::Object#merge!
+        #   @see API::Object#merge
         # @!method merge_shape!(other)
         #   @api public
         #   @see API::Object#merge_shape!
@@ -176,7 +176,7 @@ module Apiwork
                  :integer,
                  :integer?,
                  :literal,
-                 :merge!,
+                 :merge,
                  :merge_shape!,
                  :number,
                  :number?,

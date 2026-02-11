@@ -4,7 +4,7 @@ order: 9
 
 # Type Reuse
 
-Apiwork provides two ways to reuse types: inheritance with `extends` and composition with `merge!`.
+Apiwork provides two ways to reuse types: inheritance with `extends` and composition with `merge`.
 
 ## Inheritance with extends
 
@@ -94,9 +94,9 @@ Employee:
           type: string
 ```
 
-## Composition with merge!
+## Composition with merge
 
-Use `merge!` to include properties from another type without creating an inheritance relationship. The properties are inlined - no reference appears in the output.
+Use `merge` to include properties from another type without creating an inheritance relationship. The properties are inlined - no reference appears in the output.
 
 ### Basic Usage
 
@@ -107,7 +107,7 @@ object :auditable do
 end
 
 object :invoice do
-  merge! :auditable
+  merge :auditable
   string :number
 end
 ```
@@ -118,9 +118,9 @@ The `:invoice` object has three properties: `created_at`, `updated_at`, and `num
 
 ```ruby
 object :entity do
-  merge! :identifiable
-  merge! :timestamped
-  merge! :auditable
+  merge :identifiable
+  merge :timestamped
+  merge :auditable
   string :name
 end
 ```
@@ -133,14 +133,14 @@ object :base do
 end
 
 object :child do
-  merge! :base
+  merge :base
   string :name, description: "Overridden description"
 end
 ```
 
-## extends vs merge!
+## extends vs merge
 
-| Feature | extends | merge! |
+| Feature | extends | merge |
 |---------|---------|--------|
 | Includes properties | Yes | Yes |
 | Reference in output | Yes (allOf/extends) | No (inlined) |
@@ -150,7 +150,7 @@ end
 - You want a visible inheritance relationship
 - Types share an "is-a" relationship
 
-**Use `merge!` when:**
+**Use `merge` when:**
 - You want to reuse properties without inheritance
 - Types share a "has-properties-of" relationship
 - You're composing from multiple sources

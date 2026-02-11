@@ -680,9 +680,9 @@ literal :version, value: '1.0'
 
 ---
 
-### #merge!
+### #merge
 
-`#merge!(type_name = nil)`
+`#merge(type_name = nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/object.rb#L52)
 
@@ -707,7 +707,7 @@ Can be called multiple times to merge from multiple types.
 
 ```ruby
 object :admin do
-  merge! :user
+  merge :user
   boolean :superuser
 end
 ```

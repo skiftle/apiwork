@@ -42,14 +42,14 @@ module Apiwork
     #
     # @example
     #   object :admin do
-    #     merge! :user
+    #     merge :user
     #     boolean :superuser
     #   end
     #
     # @param type_name [Symbol]
     #   The type to merge from.
     # @return [Array<Symbol>]
-    def merge!(type_name = nil)
+    def merge(type_name = nil)
       @merged << type_name if type_name
       @merged
     end
