@@ -244,6 +244,160 @@ RSpec.describe Apiwork::Export::TypeAnalysis do
     end
   end
 
+  describe '.cycle_breaking_types' do
+    it 'returns empty set when no cycles exist' do
+      types = {
+        address: { shape: { city: { type: :string } }, type: :object },
+        user: { shape: { address: { type: :address }, name: { type: :string } }, type: :object },
+      }
+
+      result = described_class.cycle_breaking_types(types)
+
+      expect(result).to be_empty
+    end
+
+    it 'returns one type for direct mutual recursion (A -> B -> A)' do
+      types = {
+        a: { shape: { b_ref: { type: :b } }, type: :object },
+        b: { shape: { a_ref: { type: :a } }, type: :object },
+      }
+
+      result = described_class.cycle_breaking_types(types)
+
+      expect(result.size).to eq(1)
+      expect(result).to(satisfy { |r| r.include?(:a) || r.include?(:b) })
+    end
+
+    it 'returns the self-referencing type' do
+      types = {
+        node: { shape: { children: { of: :node, type: :array } }, type: :object },
+      }
+
+      result = described_class.cycle_breaking_types(types)
+
+      expect(result).to contain_exactly(:node)
+    end
+
+    it 'returns one type for longer cycles (A -> B -> C -> A)' do
+      types = {
+        a: { shape: { b_ref: { type: :b } }, type: :object },
+        b: { shape: { c_ref: { type: :c } }, type: :object },
+        c: { shape: { a_ref: { type: :a } }, type: :object },
+      }
+
+      result = described_class.cycle_breaking_types(types)
+
+      expect(result.size).to eq(1)
+    end
+
+    it 'returns one type per independent cycle' do
+      types = {
+        a: { shape: { b_ref: { type: :b } }, type: :object },
+        b: { shape: { a_ref: { type: :a } }, type: :object },
+        x: { shape: { y_ref: { type: :y } }, type: :object },
+        y: { shape: { x_ref: { type: :x } }, type: :object },
+      }
+
+      result = described_class.cycle_breaking_types(types)
+
+      expect(result.size).to eq(2)
+    end
+
+    it 'enables correct topological sorting after breaking cycles' do
+      types = {
+        comment: { shape: { commentable: { type: :commentable } }, type: :object },
+        commentable: { type: :union, variants: [{ type: :post }] },
+        post: { shape: { comments: { of: :comment, type: :array } }, type: :object },
+      }
+
+      lazy_types = described_class.cycle_breaking_types(types)
+      sorted = described_class.topological_sort_types(types).map(&:first)
+
+      sorted.each_with_index do |type_name, index|
+        next if lazy_types.include?(type_name)
+
+        deps = described_class.type_references(types[type_name], filter: types.keys)
+        deps.each do |dep|
+          next if lazy_types.include?(dep)
+
+          dep_index = sorted.index(dep)
+          expect(dep_index).to be < index, "#{type_name} should come after #{dep}"
+        end
+      end
+    end
+  end
+
+  describe '.types_in_cycles' do
+    it 'returns empty set when no cycles exist' do
+      types = {
+        address: { shape: { city: { type: :string } }, type: :object },
+        user: { shape: { address: { type: :address }, name: { type: :string } }, type: :object },
+      }
+
+      result = described_class.types_in_cycles(types)
+
+      expect(result).to be_empty
+    end
+
+    it 'detects direct mutual recursion (A -> B -> A)' do
+      types = {
+        a: { shape: { b_ref: { type: :b } }, type: :object },
+        b: { shape: { a_ref: { type: :a } }, type: :object },
+      }
+
+      result = described_class.types_in_cycles(types)
+
+      expect(result).to contain_exactly(:a, :b)
+    end
+
+    it 'detects self-referencing types' do
+      types = {
+        node: { shape: { children: { of: :node, type: :array } }, type: :object },
+      }
+
+      result = described_class.types_in_cycles(types)
+
+      expect(result).to contain_exactly(:node)
+    end
+
+    it 'detects indirect cycles through multiple types (A -> B -> C -> A)' do
+      types = {
+        a: { shape: { b_ref: { type: :b } }, type: :object },
+        b: { shape: { c_ref: { type: :c } }, type: :object },
+        c: { shape: { a_ref: { type: :a } }, type: :object },
+      }
+
+      result = described_class.types_in_cycles(types)
+
+      expect(result).to contain_exactly(:a, :b, :c)
+    end
+
+    it 'detects cycles through union variants' do
+      types = {
+        comment: { shape: { commentable: { type: :commentable } }, type: :object },
+        commentable: { type: :union, variants: [{ type: :post }] },
+        post: { shape: { comments: { of: :comment, type: :array } }, type: :object },
+      }
+
+      result = described_class.types_in_cycles(types)
+
+      expect(result).to contain_exactly(:comment, :commentable, :post)
+    end
+
+    it 'excludes types not part of any cycle' do
+      types = {
+        a: { shape: { b_ref: { type: :b } }, type: :object },
+        b: { shape: { a_ref: { type: :a } }, type: :object },
+        standalone: { shape: { value: { type: :string } }, type: :object },
+      }
+
+      result = described_class.types_in_cycles(types)
+
+      expect(result).to contain_exactly(:a, :b)
+      expect(result).not_to include(:standalone)
+    end
+  end
+
   describe '.primitive_type?' do
     it 'returns true for string' do
       expect(described_class.primitive_type?(:string)).to be true

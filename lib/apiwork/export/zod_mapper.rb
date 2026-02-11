@@ -58,7 +58,7 @@ module Apiwork
         end
       end
 
-      def build_union_schema(type_name, type)
+      def build_union_schema(type_name, type, recursive: false)
         schema_name = pascal_case(type_name)
 
         variant_schemas = type.variants.map do |variant|
@@ -74,11 +74,19 @@ module Apiwork
 
         union_body = variant_schemas.map { |schema| "  #{schema}" }.join(",\n")
 
+        type_annotation = recursive ? ": z.ZodType<#{schema_name}>" : ''
+
         if type.discriminator
           discriminator_key = @export.transform_key(type.discriminator)
-          "export const #{schema_name}Schema = z.discriminatedUnion('#{discriminator_key}', [\n#{union_body}\n]);"
+          union_code = "z.discriminatedUnion('#{discriminator_key}', [\n#{union_body}\n])"
         else
-          "export const #{schema_name}Schema = z.union([\n#{union_body}\n]);"
+          union_code = "z.union([\n#{union_body}\n])"
+        end
+
+        if recursive
+          "export const #{schema_name}Schema#{type_annotation} = z.lazy(() => #{union_code});"
+        else
+          "export const #{schema_name}Schema#{type_annotation} = #{union_code};"
         end
       end
 

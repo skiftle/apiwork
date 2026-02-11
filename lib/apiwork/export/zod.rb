@@ -65,17 +65,16 @@ module Apiwork
 
       def build_type_schemas
         types_hash = surface.types.transform_values(&:to_h)
+        lazy_types = TypeAnalysis.cycle_breaking_types(types_hash)
 
         TypeAnalysis.topological_sort_types(types_hash).map(&:first).map do |type_name|
           type = surface.types[type_name]
+          recursive = lazy_types.include?(type_name)
+
           if type.union?
-            zod_mapper.build_union_schema(type_name, type)
+            zod_mapper.build_union_schema(type_name, type, recursive:)
           else
-            zod_mapper.build_object_schema(
-              type_name,
-              type,
-              recursive: TypeAnalysis.circular_reference?(type_name, types_hash[type_name], filter: :custom_only),
-            )
+            zod_mapper.build_object_schema(type_name, type, recursive:)
           end
         end.join("\n\n")
       end

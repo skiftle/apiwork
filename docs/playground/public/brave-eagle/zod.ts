@@ -8,6 +8,14 @@ export const TaskPrioritySchema = z.enum(['critical', 'high', 'low', 'medium']);
 
 export const TaskStatusSchema = z.enum(['archived', 'completed', 'in_progress', 'pending']);
 
+export const TaskFilterSchema: z.ZodType<TaskFilter> = z.lazy(() => z.object({
+  AND: z.array(TaskFilterSchema).optional(),
+  NOT: TaskFilterSchema.optional(),
+  OR: z.array(TaskFilterSchema).optional(),
+  priority: TaskPriorityFilterSchema.optional(),
+  status: TaskStatusFilterSchema.optional()
+}));
+
 export const CommentSchema = z.object({
   authorName: z.string().nullable(),
   body: z.string(),
@@ -22,6 +30,13 @@ export const IssueSchema = z.object({
   path: z.array(z.string()),
   pointer: z.string()
 });
+
+export const ErrorSchema = z.object({
+  issues: z.array(IssueSchema),
+  layer: LayerSchema
+});
+
+export const ErrorResponseBodySchema = ErrorSchema;
 
 export const OffsetPaginationSchema = z.object({
   current: z.number().int(),
@@ -78,19 +93,6 @@ export const UserSchema = z.object({
   name: z.string()
 });
 
-export const ErrorSchema = z.object({
-  issues: z.array(IssueSchema),
-  layer: LayerSchema
-});
-
-export const TaskFilterSchema: z.ZodType<TaskFilter> = z.lazy(() => z.object({
-  AND: z.array(TaskFilterSchema).optional(),
-  NOT: TaskFilterSchema.optional(),
-  OR: z.array(TaskFilterSchema).optional(),
-  priority: TaskPriorityFilterSchema.optional(),
-  status: TaskStatusFilterSchema.optional()
-}));
-
 export const TaskSchema = z.object({
   archived: z.boolean().nullable(),
   assignee: UserSchema.nullable().optional(),
@@ -104,8 +106,6 @@ export const TaskSchema = z.object({
   title: z.string(),
   updatedAt: z.iso.datetime()
 });
-
-export const ErrorResponseBodySchema = ErrorSchema;
 
 export const TaskArchiveSuccessResponseBodySchema = z.object({
   meta: z.record(z.string(), z.unknown()).optional(),

@@ -4,6 +4,14 @@ export const LayerSchema = z.enum(['contract', 'domain', 'http']);
 
 export const SortDirectionSchema = z.enum(['asc', 'desc']);
 
+export const InvoiceFilterSchema: z.ZodType<InvoiceFilter> = z.lazy(() => z.object({
+  AND: z.array(InvoiceFilterSchema).optional(),
+  NOT: InvoiceFilterSchema.optional(),
+  OR: z.array(InvoiceFilterSchema).optional(),
+  number: z.union([z.string(), StringFilterSchema]).optional(),
+  status: z.union([z.string(), NullableStringFilterSchema]).optional()
+}));
+
 export const CustomerSchema = z.object({
   id: z.string(),
   name: z.string()
@@ -29,11 +37,51 @@ export const IssueSchema = z.object({
   pointer: z.string()
 });
 
+export const ErrorSchema = z.object({
+  issues: z.array(IssueSchema),
+  layer: LayerSchema
+});
+
+export const ErrorResponseBodySchema = ErrorSchema;
+
 export const LineSchema = z.object({
   description: z.string().nullable(),
   id: z.string(),
   price: z.number().nullable(),
   quantity: z.number().int().nullable()
+});
+
+export const InvoiceSchema = z.object({
+  createdAt: z.iso.datetime(),
+  customer: CustomerSchema,
+  customerId: z.string(),
+  id: z.string(),
+  issuedOn: z.iso.date().nullable(),
+  lines: z.array(LineSchema),
+  notes: z.string().nullable(),
+  number: z.string(),
+  status: z.string().nullable(),
+  updatedAt: z.iso.datetime()
+});
+
+export const InvoiceArchiveSuccessResponseBodySchema = z.object({
+  invoice: InvoiceSchema,
+  meta: z.record(z.string(), z.unknown()).optional()
+});
+
+export const InvoiceCreateSuccessResponseBodySchema = z.object({
+  invoice: InvoiceSchema,
+  meta: z.record(z.string(), z.unknown()).optional()
+});
+
+export const InvoiceShowSuccessResponseBodySchema = z.object({
+  invoice: InvoiceSchema,
+  meta: z.record(z.string(), z.unknown()).optional()
+});
+
+export const InvoiceUpdateSuccessResponseBodySchema = z.object({
+  invoice: InvoiceSchema,
+  meta: z.record(z.string(), z.unknown()).optional()
 });
 
 export const LineNestedCreatePayloadSchema = z.object({
@@ -57,6 +105,28 @@ export const LineNestedUpdatePayloadSchema = z.object({
   quantity: z.number().int().nullable().optional()
 });
 
+export const LineNestedPayloadSchema = z.discriminatedUnion('OP', [
+  LineNestedCreatePayloadSchema,
+  LineNestedUpdatePayloadSchema,
+  LineNestedDeletePayloadSchema
+]);
+
+export const InvoiceCreatePayloadSchema = z.object({
+  customerId: z.string(),
+  issuedOn: z.iso.date().nullable().optional(),
+  lines: z.array(LineNestedPayloadSchema).optional(),
+  notes: z.string().nullable().optional(),
+  number: z.string()
+});
+
+export const InvoiceUpdatePayloadSchema = z.object({
+  customerId: z.string().optional(),
+  issuedOn: z.iso.date().nullable().optional(),
+  lines: z.array(LineNestedPayloadSchema).optional(),
+  notes: z.string().nullable().optional(),
+  number: z.string().optional()
+});
+
 export const NullableStringFilterSchema = z.object({
   contains: z.string().optional(),
   endsWith: z.string().optional(),
@@ -74,88 +144,18 @@ export const OffsetPaginationSchema = z.object({
   total: z.number().int()
 });
 
-export const StringFilterSchema = z.object({
-  contains: z.string().optional(),
-  endsWith: z.string().optional(),
-  eq: z.string().optional(),
-  in: z.array(z.string()).optional(),
-  startsWith: z.string().optional()
-});
-
-export const ErrorSchema = z.object({
-  issues: z.array(IssueSchema),
-  layer: LayerSchema
-});
-
-export const InvoiceSchema = z.object({
-  createdAt: z.iso.datetime(),
-  customer: CustomerSchema,
-  customerId: z.string(),
-  id: z.string(),
-  issuedOn: z.iso.date().nullable(),
-  lines: z.array(LineSchema),
-  notes: z.string().nullable(),
-  number: z.string(),
-  status: z.string().nullable(),
-  updatedAt: z.iso.datetime()
-});
-
-export const LineNestedPayloadSchema = z.discriminatedUnion('OP', [
-  LineNestedCreatePayloadSchema,
-  LineNestedUpdatePayloadSchema,
-  LineNestedDeletePayloadSchema
-]);
-
-export const InvoiceFilterSchema: z.ZodType<InvoiceFilter> = z.lazy(() => z.object({
-  AND: z.array(InvoiceFilterSchema).optional(),
-  NOT: InvoiceFilterSchema.optional(),
-  OR: z.array(InvoiceFilterSchema).optional(),
-  number: z.union([z.string(), StringFilterSchema]).optional(),
-  status: z.union([z.string(), NullableStringFilterSchema]).optional()
-}));
-
-export const ErrorResponseBodySchema = ErrorSchema;
-
-export const InvoiceArchiveSuccessResponseBodySchema = z.object({
-  invoice: InvoiceSchema,
-  meta: z.record(z.string(), z.unknown()).optional()
-});
-
-export const InvoiceCreateSuccessResponseBodySchema = z.object({
-  invoice: InvoiceSchema,
-  meta: z.record(z.string(), z.unknown()).optional()
-});
-
 export const InvoiceIndexSuccessResponseBodySchema = z.object({
   invoices: z.array(InvoiceSchema),
   meta: z.record(z.string(), z.unknown()).optional(),
   pagination: OffsetPaginationSchema
 });
 
-export const InvoiceShowSuccessResponseBodySchema = z.object({
-  invoice: InvoiceSchema,
-  meta: z.record(z.string(), z.unknown()).optional()
-});
-
-export const InvoiceUpdateSuccessResponseBodySchema = z.object({
-  invoice: InvoiceSchema,
-  meta: z.record(z.string(), z.unknown()).optional()
-});
-
-export const InvoiceCreatePayloadSchema = z.object({
-  customerId: z.string(),
-  issuedOn: z.iso.date().nullable().optional(),
-  lines: z.array(LineNestedPayloadSchema).optional(),
-  notes: z.string().nullable().optional(),
-  number: z.string()
-});
-
-export const InvoiceUpdatePayloadSchema = z.object({
-  customerId: z.string().optional(),
-  issuedOn: z.iso.date().nullable().optional(),
-  lines: z.array(LineNestedPayloadSchema).optional(),
-  notes: z.string().nullable().optional(),
-  number: z.string().optional()
+export const StringFilterSchema = z.object({
+  contains: z.string().optional(),
+  endsWith: z.string().optional(),
+  eq: z.string().optional(),
+  in: z.array(z.string()).optional(),
+  startsWith: z.string().optional()
 });
 
 export const InvoicesIndexRequestQuerySchema = z.object({

@@ -6,6 +6,26 @@ export const LayerSchema = z.enum(['contract', 'domain', 'http']);
 
 export const SortDirectionSchema = z.enum(['asc', 'desc']);
 
+export const ArticleFilterSchema: z.ZodType<ArticleFilter> = z.lazy(() => z.object({
+  AND: z.array(ArticleFilterSchema).optional(),
+  NOT: ArticleFilterSchema.optional(),
+  OR: z.array(ArticleFilterSchema).optional(),
+  category: CategoryFilterSchema.optional(),
+  publishedOn: z.union([z.iso.date(), NullableDateFilterSchema]).optional(),
+  rating: z.union([z.number(), NullableDecimalFilterSchema]).optional(),
+  status: ArticleStatusFilterSchema.optional(),
+  title: z.union([z.string(), StringFilterSchema]).optional(),
+  viewCount: z.union([z.number().int(), NullableIntegerFilterSchema]).optional()
+}));
+
+export const CategoryFilterSchema: z.ZodType<CategoryFilter> = z.lazy(() => z.object({
+  AND: z.array(CategoryFilterSchema).optional(),
+  NOT: CategoryFilterSchema.optional(),
+  OR: z.array(CategoryFilterSchema).optional(),
+  name: z.union([z.string(), StringFilterSchema]).optional(),
+  slug: z.union([z.string(), StringFilterSchema]).optional()
+}));
+
 export const ArticleCreatePayloadSchema = z.object({
   body: z.string().nullable().optional(),
   publishedOn: z.iso.date().nullable().optional(),
@@ -48,6 +68,34 @@ export const CategorySchema = z.object({
   slug: z.string()
 });
 
+export const ArticleSchema = z.object({
+  body: z.string().nullable(),
+  category: CategorySchema.nullable().optional(),
+  createdAt: z.iso.datetime(),
+  id: z.string(),
+  publishedOn: z.iso.date().nullable(),
+  rating: z.number().nullable(),
+  status: ArticleStatusSchema.nullable(),
+  title: z.string(),
+  updatedAt: z.iso.datetime(),
+  viewCount: z.number().int().nullable()
+});
+
+export const ArticleCreateSuccessResponseBodySchema = z.object({
+  article: ArticleSchema,
+  meta: z.record(z.string(), z.unknown()).optional()
+});
+
+export const ArticleShowSuccessResponseBodySchema = z.object({
+  article: ArticleSchema,
+  meta: z.record(z.string(), z.unknown()).optional()
+});
+
+export const ArticleUpdateSuccessResponseBodySchema = z.object({
+  article: ArticleSchema,
+  meta: z.record(z.string(), z.unknown()).optional()
+});
+
 export const DateFilterBetweenSchema = z.object({
   from: z.iso.date().optional(),
   to: z.iso.date().optional()
@@ -71,34 +119,12 @@ export const IssueSchema = z.object({
   pointer: z.string()
 });
 
-export const OffsetPaginationSchema = z.object({
-  current: z.number().int(),
-  items: z.number().int(),
-  next: z.number().int().nullable().optional(),
-  prev: z.number().int().nullable().optional(),
-  total: z.number().int()
+export const ErrorSchema = z.object({
+  issues: z.array(IssueSchema),
+  layer: LayerSchema
 });
 
-export const StringFilterSchema = z.object({
-  contains: z.string().optional(),
-  endsWith: z.string().optional(),
-  eq: z.string().optional(),
-  in: z.array(z.string()).optional(),
-  startsWith: z.string().optional()
-});
-
-export const ArticleSchema = z.object({
-  body: z.string().nullable(),
-  category: CategorySchema.nullable().optional(),
-  createdAt: z.iso.datetime(),
-  id: z.string(),
-  publishedOn: z.iso.date().nullable(),
-  rating: z.number().nullable(),
-  status: ArticleStatusSchema.nullable(),
-  title: z.string(),
-  updatedAt: z.iso.datetime(),
-  viewCount: z.number().int().nullable()
-});
+export const ErrorResponseBodySchema = ErrorSchema;
 
 export const NullableDateFilterSchema = z.object({
   between: DateFilterBetweenSchema.optional(),
@@ -133,22 +159,12 @@ export const NullableIntegerFilterSchema = z.object({
   null: z.boolean().optional()
 });
 
-export const ErrorSchema = z.object({
-  issues: z.array(IssueSchema),
-  layer: LayerSchema
-});
-
-export const CategoryFilterSchema: z.ZodType<CategoryFilter> = z.lazy(() => z.object({
-  AND: z.array(CategoryFilterSchema).optional(),
-  NOT: CategoryFilterSchema.optional(),
-  OR: z.array(CategoryFilterSchema).optional(),
-  name: z.union([z.string(), StringFilterSchema]).optional(),
-  slug: z.union([z.string(), StringFilterSchema]).optional()
-}));
-
-export const ArticleCreateSuccessResponseBodySchema = z.object({
-  article: ArticleSchema,
-  meta: z.record(z.string(), z.unknown()).optional()
+export const OffsetPaginationSchema = z.object({
+  current: z.number().int(),
+  items: z.number().int(),
+  next: z.number().int().nullable().optional(),
+  prev: z.number().int().nullable().optional(),
+  total: z.number().int()
 });
 
 export const ArticleIndexSuccessResponseBodySchema = z.object({
@@ -157,29 +173,13 @@ export const ArticleIndexSuccessResponseBodySchema = z.object({
   pagination: OffsetPaginationSchema
 });
 
-export const ArticleShowSuccessResponseBodySchema = z.object({
-  article: ArticleSchema,
-  meta: z.record(z.string(), z.unknown()).optional()
+export const StringFilterSchema = z.object({
+  contains: z.string().optional(),
+  endsWith: z.string().optional(),
+  eq: z.string().optional(),
+  in: z.array(z.string()).optional(),
+  startsWith: z.string().optional()
 });
-
-export const ArticleUpdateSuccessResponseBodySchema = z.object({
-  article: ArticleSchema,
-  meta: z.record(z.string(), z.unknown()).optional()
-});
-
-export const ErrorResponseBodySchema = ErrorSchema;
-
-export const ArticleFilterSchema: z.ZodType<ArticleFilter> = z.lazy(() => z.object({
-  AND: z.array(ArticleFilterSchema).optional(),
-  NOT: ArticleFilterSchema.optional(),
-  OR: z.array(ArticleFilterSchema).optional(),
-  category: CategoryFilterSchema.optional(),
-  publishedOn: z.union([z.iso.date(), NullableDateFilterSchema]).optional(),
-  rating: z.union([z.number(), NullableDecimalFilterSchema]).optional(),
-  status: ArticleStatusFilterSchema.optional(),
-  title: z.union([z.string(), StringFilterSchema]).optional(),
-  viewCount: z.union([z.number().int(), NullableIntegerFilterSchema]).optional()
-}));
 
 export const ArticlesIndexRequestQuerySchema = z.object({
   filter: z.union([ArticleFilterSchema, z.array(ArticleFilterSchema)]).optional(),
