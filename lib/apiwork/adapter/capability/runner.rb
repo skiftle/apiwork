@@ -25,16 +25,12 @@ module Apiwork
           end
 
           includes.concat(representation_class.preloads)
-          preloaded = preload_associations(result_data, normalize_includes(includes))
+          preloaded = preload_associations(result_data, includes.flatten.compact)
 
           [preloaded, metadata, serialize_options]
         end
 
         private
-
-        def normalize_includes(includes)
-          includes.flatten.compact
-        end
 
         def preload_associations(data, includes)
           return data if includes.blank?

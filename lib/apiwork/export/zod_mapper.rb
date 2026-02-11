@@ -212,8 +212,8 @@ module Apiwork
           base = 'z.array(z.unknown())'
         end
 
-        base += ".min(#{param.min})" if param.respond_to?(:min) && param.min
-        base += ".max(#{param.max})" if param.respond_to?(:max) && param.max
+        base += ".min(#{param.min})" if param.min
+        base += ".max(#{param.max})" if param.max
         base
       end
 
