@@ -104,7 +104,7 @@ module Apiwork
         #
         # @param name [Symbol]
         #   The registered export name. Built-in: :openapi, :typescript, :zod.
-        # @yield block evaluated in export context
+        # @yield Block evaluated in export context.
         # @yieldparam export [Configuration]
         # @return [void]
         #
@@ -142,20 +142,39 @@ module Apiwork
         end
 
         # @api public
-        # Sets or gets the adapter for this API.
+        # Sets or configures the adapter for this API.
+        #
+        # Without arguments, returns the adapter instance. With a block, configures the current adapter.
+        # Without a name, the built-in `:standard` adapter is used.
+        #
+        # Custom adapters must be registered via {Adapter.register} and referenced by their `adapter_name`.
         #
         # @param name [Symbol, nil] (nil)
-        #   The registered adapter name.
-        # @yield block evaluated in adapter context
-        # @yieldparam adapter [Configuration]
-        # @return [Adapter::Base, nil]
+        #   A registered adapter name matching `adapter_name` in the adapter class.
+        # @yield Block evaluated in adapter configuration context.
+        # @yieldparam config [Configuration]
+        # @return [Adapter::Base, void] the adapter instance when called without block
         #
-        # @example
+        # @example Configure the default :standard adapter
         #   adapter do
         #     pagination do
         #       default_size 25
+        #       max_size 100
         #     end
         #   end
+        #
+        # @example Use a registered custom adapter
+        #   adapter :jsonapi
+        #
+        # @example Use and configure a custom adapter
+        #   adapter :jsonapi do
+        #     pagination do
+        #       strategy :cursor
+        #     end
+        #   end
+        #
+        # @see Adapter::Standard The built-in adapter
+        # @see Adapter.register How to register custom adapters
         def adapter(name = nil, &block)
           @adapter_name = name if name.is_a?(Symbol)
 
@@ -338,7 +357,7 @@ module Apiwork
         # @api public
         # The info for this API.
         #
-        # @yield block for defining API info
+        # @yield Block for defining API info.
         # @yieldparam info [Info]
         # @return [Info, nil]
         #
@@ -388,7 +407,7 @@ module Apiwork
         #   The custom parameter name for ID.
         # @param path [String, nil] (nil)
         #   The custom URL path segment.
-        # @yield block for nested resources and custom actions
+        # @yield Block for nested resources and custom actions.
         # @yieldparam resource [Resource]
         # @return [void]
         #
@@ -457,7 +476,7 @@ module Apiwork
         #   The custom parameter name for ID.
         # @param path [String, nil] (nil)
         #   The custom URL path segment.
-        # @yield block for nested resources and custom actions
+        # @yield Block for nested resources and custom actions.
         # @yieldparam resource [Resource]
         # @return [void]
         #
@@ -506,7 +525,7 @@ module Apiwork
         #
         # @param name [Symbol]
         #   The concern name.
-        # @yield block defining shared actions/configuration
+        # @yield Block defining shared actions and configuration.
         # @yieldparam resource [Resource]
         # @return [void]
         #
@@ -540,9 +559,9 @@ module Apiwork
         # Accepts the same options as {#resources}: only, except, defaults,
         # constraints, controller, param, path.
         #
-        # @param options [Hash, nil] (nil)
+        # @param options [Hash] ({})
         #   The options to apply to nested resources.
-        # @yield block containing resource definitions
+        # @yield Block containing resource definitions.
         # @yieldparam resource [Resource]
         # @return [void]
         #

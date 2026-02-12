@@ -237,7 +237,7 @@ The key format for this export.
 
 `#transform_key(key)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L277)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L278)
 
 Transforms a key according to the configured key format.
 
@@ -254,5 +254,9 @@ Transforms a key according to the configured key format.
 **Returns**
 
 `String`
+
+**See also**
+
+- [#key_format](#key-format)
 
 ---

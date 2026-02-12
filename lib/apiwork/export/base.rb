@@ -274,6 +274,7 @@ module Apiwork
       # @param key [String, Symbol]
       #   The key to transform.
       # @return [String]
+      # @see #key_format
       def transform_key(key)
         key_string = key.to_s
 
