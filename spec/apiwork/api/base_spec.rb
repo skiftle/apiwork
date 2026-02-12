@@ -39,6 +39,15 @@ RSpec.describe 'API path_format' do
       expect(api_class.path_format).to eq(:underscore)
     end
 
+    it 'accepts :pascal format' do
+      api_class = Class.new(Apiwork::API::Base) do
+        mount '/test'
+        path_format :pascal
+      end
+
+      expect(api_class.path_format).to eq(:pascal)
+    end
+
     it 'raises error for invalid format' do
       expect do
         Class.new(Apiwork::API::Base) do
@@ -113,6 +122,26 @@ RSpec.describe 'API path_format' do
 
       it 'transforms full paths' do
         expect(api_class.transform_path('/cool_man/v2')).to eq('/coolMan/v2')
+      end
+    end
+
+    context 'with :pascal format' do
+      before { api_class.path_format :pascal }
+
+      it 'transforms to PascalCase' do
+        expect(api_class.transform_path(:recurring_invoices)).to eq('RecurringInvoices')
+      end
+
+      it 'handles single-word segments' do
+        expect(api_class.transform_path(:invoices)).to eq('Invoices')
+      end
+
+      it 'handles multiple underscores' do
+        expect(api_class.transform_path(:very_long_resource_name)).to eq('VeryLongResourceName')
+      end
+
+      it 'transforms full paths' do
+        expect(api_class.transform_path('/cool_man/v2')).to eq('/CoolMan/V2')
       end
     end
 

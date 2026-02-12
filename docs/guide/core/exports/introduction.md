@@ -59,9 +59,9 @@ curl http://localhost:3000/api/v1/.typescript?key_format=camel
 
 **Universal options** (available for all exports):
 
-| Parameter    | Values                                 | Default          |
-| ------------ | -------------------------------------- | ---------------- |
-| `key_format` | `keep`, `camel`, `kebab`, `underscore` | API's key_format |
+| Parameter    | Values                                          | Default          |
+| ------------ | ----------------------------------------------- | ---------------- |
+| `key_format` | `keep`, `camel`, `pascal`, `kebab`, `underscore` | API's key_format |
 | `locale`     | Any locale symbol                      | —                |
 
 **Serialization** (hash exports only):

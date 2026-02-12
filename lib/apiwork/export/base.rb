@@ -34,7 +34,7 @@ module Apiwork
     class Base
       include Configurable
 
-      option :key_format, enum: %i[keep camel underscore kebab], type: :symbol
+      option :key_format, enum: %i[keep camel pascal kebab underscore], type: :symbol
       option :locale, default: nil, type: :symbol
 
       attr_reader :api_base_path,
@@ -281,6 +281,7 @@ module Apiwork
 
         case key_format
         when :camel then key_string.camelize(:lower)
+        when :pascal then key_string.camelize
         when :kebab then key_string.dasherize
         when :underscore then key_string.underscore
         else key_string

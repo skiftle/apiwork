@@ -22,6 +22,7 @@ Options:
 | ----------------- | ------------ | ------------ |
 | `:keep` (default) | `created_at` | `created_at` |
 | `:camel`          | `created_at` | `createdAt`  |
+| `:pascal`         | `created_at` | `CreatedAt`  |
 | `:kebab`          | `created_at` | `created-at` |
 | `:underscore`     | `created_at` | `created_at` |
 
@@ -40,12 +41,13 @@ end
 
 Options:
 
-| Option            | Example Input         | URL Path             |
-| ----------------- | --------------------- | -------------------- |
-| `:keep` (default) | `:recurring_invoices` | `recurring_invoices` |
-| `:kebab`          | `:recurring_invoices` | `recurring-invoices` |
-| `:camel`          | `:recurring_invoices` | `recurringInvoices`  |
-| `:underscore`     | `:recurring_invoices` | `recurring_invoices` |
+| Option            | Example Input         | URL Path              |
+| ----------------- | --------------------- | --------------------- |
+| `:keep` (default) | `:recurring_invoices` | `recurring_invoices`  |
+| `:camel`          | `:recurring_invoices` | `recurringInvoices`   |
+| `:pascal`         | `:recurring_invoices` | `RecurringInvoices`   |
+| `:kebab`          | `:recurring_invoices` | `recurring-invoices`  |
+| `:underscore`     | `:recurring_invoices` | `recurring_invoices`  |
 
 ### Custom Member and Collection Actions
 
@@ -66,23 +68,32 @@ Apiwork::API.define '/api/v1' do
 end
 ```
 
-::: info Path Segments Only
-`path_format` transforms resource and action names. It does not affect:
+::: info What path_format transforms
+`path_format` transforms all URL path segments:
 
-- The mount path (`/api/v1` stays as written)
+- The base path (`/cool_man` becomes `/cool-man` with `:kebab`)
+- Resource names (`recurring_invoices` becomes `recurring-invoices`)
+- Custom action names (`mark_as_paid` becomes `mark-as-paid`)
+- Explicit `path:` options
+
+It does not affect:
+
 - Route parameters (`:id`, `:post_id`)
 - Query parameters
 - Request/response payload keys (use [key_format](#key-format) for those)
-  :::
+:::
 
 ### Explicit Path Override
 
-Bypass formatting with explicit `path:`:
+Override the resource name with explicit `path:`:
 
 ```ruby
-resources :recurring_invoices, path: 'invoices'
-# Routes: GET /api/v1/invoices (ignores path_format)
+resources :recurring, path: 'recurring_invoices'
+# With path_format :kebab: GET /api/v1/recurring-invoices
+# Controller: RecurringController (unchanged)
 ```
+
+The explicit path is still transformed according to `path_format`.
 
 ### With Key Format
 

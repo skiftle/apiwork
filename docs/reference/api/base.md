@@ -258,7 +258,7 @@ With `:camel`, `user_name` becomes `userName`. With `:kebab`, `user_name` become
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `format` | `Symbol<:camel, :kebab, :keep, :underscore>`, `nil` | `nil` | The key format. Default is `:keep`. |
+| `format` | `Symbol<:camel, :kebab, :keep, :pascal, :underscore>`, `nil` | `nil` | The key format. Default is `:keep`. |
 
 </div>
 
@@ -337,7 +337,7 @@ With `:kebab`, `/api/user_profiles/:id` becomes `/api/user-profiles/:id`.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `format` | `Symbol<:camel, :kebab, :keep, :underscore>`, `nil` | `nil` | The path format. Default is `:keep`. |
+| `format` | `Symbol<:camel, :kebab, :keep, :pascal, :underscore>`, `nil` | `nil` | The path format. Default is `:keep`. |
 
 </div>
 

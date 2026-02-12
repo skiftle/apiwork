@@ -462,8 +462,9 @@ end
 | Value | Input | Output |
 |-------|-------|--------|
 | `:keep` | `issued_on` | `issued_on` |
-| `:camel` | `issuedOn` | `issuedOn` |
-| `:kebab` | `issued-on` | `issued-on` |
+| `:camel` | `issued_on` | `issuedOn` |
+| `:pascal` | `issued_on` | `IssuedOn` |
+| `:kebab` | `issued_on` | `issued-on` |
 | `:underscore` | `issued_on` | `issued_on` |
 
 ### With camelCase
@@ -519,8 +520,10 @@ end
 | Value | Resource | Path |
 |-------|----------|------|
 | `:keep` | `:line_items` | `/line_items` |
-| `:kebab` | `:line_items` | `/line-items` |
 | `:camel` | `:line_items` | `/lineItems` |
+| `:pascal` | `:line_items` | `/LineItems` |
+| `:kebab` | `:line_items` | `/line-items` |
+| `:underscore` | `:line_items` | `/line_items` |
 
 ---
 

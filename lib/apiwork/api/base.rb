@@ -17,6 +17,8 @@ module Apiwork
     #     end
     #   end
     class Base
+      VALID_FORMATS = %i[keep camel pascal kebab underscore].freeze
+
       class << self
         attr_reader :enum_registry,
                     :export_configs,
@@ -45,9 +47,10 @@ module Apiwork
         # normalized to underscore internally, so controllers always receive `params[:user_name]` regardless of
         # format.
         #
-        # With `:camel`, `user_name` becomes `userName`. With `:kebab`, `user_name` becomes `user-name`.
+        # With `:camel`, `user_name` becomes `userName`. With `:pascal`, `user_name` becomes `UserName`.
+        # With `:kebab`, `user_name` becomes `user-name`.
         #
-        # @param format [Symbol, nil] (nil) [:camel, :kebab, :keep, :underscore]
+        # @param format [Symbol, nil] (nil) [:camel, :kebab, :keep, :pascal, :underscore]
         #   The key format. Default is `:keep`.
         # @return [Symbol, nil]
         # @raise [ConfigurationError] if format is invalid
@@ -61,8 +64,7 @@ module Apiwork
         def key_format(format = nil)
           return @key_format if format.nil?
 
-          valid = %i[keep camel underscore kebab]
-          raise ConfigurationError, "key_format must be one of #{valid}" unless valid.include?(format)
+          raise ConfigurationError, "key_format must be one of #{VALID_FORMATS}" unless VALID_FORMATS.include?(format)
 
           @key_format = format
         end
@@ -75,8 +77,9 @@ module Apiwork
         # internally.
         #
         # With `:kebab`, `/api/user_profiles/:id` becomes `/api/user-profiles/:id`.
+        # With `:pascal`, `/api/user_profiles/:id` becomes `/api/UserProfiles/:id`.
         #
-        # @param format [Symbol, nil] (nil) [:camel, :kebab, :keep, :underscore]
+        # @param format [Symbol, nil] (nil) [:camel, :kebab, :keep, :pascal, :underscore]
         #   The path format. Default is `:keep`.
         # @return [Symbol, nil]
         # @raise [ConfigurationError] if format is invalid
@@ -91,8 +94,7 @@ module Apiwork
         def path_format(format = nil)
           return @path_format if format.nil?
 
-          valid = %i[keep kebab camel underscore]
-          raise ConfigurationError, "path_format must be one of #{valid}" unless valid.include?(format)
+          raise ConfigurationError, "path_format must be one of #{VALID_FORMATS}" unless VALID_FORMATS.include?(format)
 
           @path_format = format
         end
@@ -594,15 +596,17 @@ module Apiwork
             next segment if segment.empty?
 
             case @path_format
-            when :kebab then segment.dasherize
             when :camel then segment.camelize(:lower)
+            when :pascal then segment.camelize
+            when :kebab then segment.dasherize
+            when :underscore then segment.underscore
             else segment
             end
           end.join('/')
         end
 
         def normalize_request(request)
-          return request if %i[camel kebab].exclude?(key_format)
+          return request if %i[camel pascal kebab].exclude?(key_format)
 
           request.transform do |hash|
             hash.deep_transform_keys { |key| key.to_s.underscore.to_sym }
@@ -618,6 +622,8 @@ module Apiwork
           case key_format
           when :camel
             result.transform { |hash| hash.deep_transform_keys { |key| key.to_s.camelize(:lower).to_sym } }
+          when :pascal
+            result.transform { |hash| hash.deep_transform_keys { |key| key.to_s.camelize.to_sym } }
           when :kebab
             result.transform { |hash| hash.deep_transform_keys { |key| key.to_s.dasherize.to_sym } }
           else
