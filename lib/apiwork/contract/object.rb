@@ -290,26 +290,21 @@ module Apiwork
           **param_options.except(:name, :type, :shape),
         ) do
           nested_shape.variants.each do |variant|
-            variant_shape = variant[:shape]
-            variant_type = variant[:type]
-            variant_tag = variant[:tag]
-            variant_custom_type = variant[:custom_type]
-
-            if variant_shape.is_a?(API::Object)
-              variant tag: variant_tag do
+            if variant[:shape].is_a?(API::Object)
+              variant tag: variant[:tag] do
                 object do
-                  variant_shape.params.each do |name, param_options|
+                  variant[:shape].params.each do |name, param_options|
                     param(name, **param_options.except(:name, :shape))
                   end
                 end
               end
-            elsif variant_custom_type
-              variant tag: variant_tag do
-                reference variant_custom_type
+            elsif variant[:custom_type]
+              variant tag: variant[:tag] do
+                reference variant[:custom_type]
               end
             else
-              variant tag: variant_tag do
-                send(variant_type)
+              variant tag: variant[:tag] do
+                send(variant[:type])
               end
             end
           end
@@ -417,26 +412,21 @@ module Apiwork
         union = Union.new(@contract_class, discriminator: type_definition.discriminator)
 
         type_definition.variants.each do |variant|
-          variant_shape = variant[:shape]
-          variant_type = variant[:type]
-          variant_tag = variant[:tag]
-          variant_custom_type = variant[:custom_type]
-
-          if variant_shape.is_a?(API::Object)
-            union.variant tag: variant_tag do
+          if variant[:shape].is_a?(API::Object)
+            union.variant tag: variant[:tag] do
               object do
-                variant_shape.params.each do |name, param_options|
+                variant[:shape].params.each do |name, param_options|
                   param(name, **param_options.except(:name, :shape))
                 end
               end
             end
-          elsif variant_custom_type
-            union.variant tag: variant_tag do
-              reference variant_custom_type
+          elsif variant[:custom_type]
+            union.variant tag: variant[:tag] do
+              reference variant[:custom_type]
             end
           else
-            union.variant tag: variant_tag do
-              send(variant_type)
+            union.variant tag: variant[:tag] do
+              send(variant[:type])
             end
           end
         end

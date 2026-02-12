@@ -18,13 +18,10 @@ module Apiwork
       end
 
       def parse(response)
-        body = response.body
         return Result.new(response:) unless body_shape&.params&.any?
 
-        validated = body_shape.validate(body)
-        validated_response = Response.new(body: validated[:params])
-
-        Result.new(issues: validated[:issues], response: validated_response)
+        validated = body_shape.validate(response.body)
+        Result.new(issues: validated[:issues], response: Response.new(body: validated[:params]))
       end
 
       private

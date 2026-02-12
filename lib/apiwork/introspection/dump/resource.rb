@@ -12,9 +12,9 @@ module Apiwork
         end
 
         def to_h
-          resource_segment = @resource.singular ? @resource.name.to_s.singularize : @resource.name.to_s
-
-          formatted_segment = @api_class.transform_path(@resource.path || resource_segment)
+          formatted_segment = @api_class.transform_path(
+            @resource.path || (@resource.singular ? @resource.name.to_s.singularize : @resource.name.to_s),
+          )
 
           resource_path = build_resource_path(formatted_segment)
 

@@ -59,9 +59,6 @@ module Apiwork
                 end
 
                 representation_class.attributes.each do |name, attribute|
-                  enum_option = attribute.enum ? { enum: name } : {}
-                  of_option = attribute.of ? { of: attribute.of } : {}
-
                   param_options = {
                     deprecated: attribute.deprecated?,
                     description: attribute.description,
@@ -69,8 +66,8 @@ module Apiwork
                     format: attribute.format,
                     nullable: attribute.nullable?,
                     type: attribute.type,
-                    **enum_option,
-                    **of_option,
+                    **(attribute.enum ? { enum: name } : {}),
+                    **(attribute.of ? { of: attribute.of } : {}),
                   }
 
                   element = attribute.element
