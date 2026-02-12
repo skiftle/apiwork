@@ -496,10 +496,9 @@ module Apiwork
         end
 
         def build_synthetic_contract(representation_class, api_class)
-          klass = representation_class
           Class.new(Contract::Base) do
             @synthetic = true
-            @representation_class = klass
+            @representation_class = representation_class
             @api_class = api_class
           end
         end

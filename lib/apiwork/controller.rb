@@ -185,11 +185,10 @@ module Apiwork
       meta: {}
     )
       error_code = ErrorCode.find!(code_key)
-      locale_key = api_class.locale_key
 
       issue = Issue.new(
         error_code.key,
-        detail || error_code.description(locale_key:),
+        detail || error_code.description(locale_key: api_class.locale_key),
         meta:,
         path: path || (error_code.attach_path? ? relative_path.split('/').reject(&:blank?) : []),
       )

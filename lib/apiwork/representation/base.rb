@@ -117,15 +117,19 @@ module Apiwork
         # @param value [Class<ActiveRecord::Base>]
         #   The model class.
         # @return [void]
-        # @raise [ArgumentError] if value is not a Class
+        # @raise [ArgumentError] if value is not an ActiveRecord model class
         #
         # @example
         #   model Invoice
         def model(value)
           unless value.is_a?(Class)
             raise ArgumentError,
-                  "model must be a Class constant, got #{value.class}. " \
-                                                     "Use: model Post (not 'Post' or :post)"
+                  "model must be an ActiveRecord model class, got #{value.class}. " \
+                                                                 "Use: model Post (not 'Post' or :post)"
+          end
+          unless value < ActiveRecord::Base
+            raise ArgumentError,
+                  "model must be an ActiveRecord model class, got #{value}"
           end
           @model_class = value
         end
@@ -766,32 +770,10 @@ module Apiwork
           return if @auto_detection_complete
 
           @auto_detection_complete = true
-
           return if @model_class.present?
-          return if abstract?
 
-          representation_name = name.demodulize
-          model_name = representation_name.delete_suffix('Representation')
-          return if model_name.blank?
-
-          namespace = name.deconstantize
-          detected = if namespace.present?
-                       "#{namespace}::#{model_name}".safe_constantize || model_name.safe_constantize
-                     else
-                       model_name.safe_constantize
-                     end
-
-          if detected.present?
-            @model_class = detected
-          else
-            raise ConfigurationError.new(
-              code: :model_not_found,
-              detail: "Could not find model '#{model_name}' for #{name}. " \
-                      "Either create the model, declare it explicitly with 'model YourModel', " \
-                      "or mark this representation as abstract with 'abstract!'",
-              path: [],
-            )
-          end
+          detected = ModelDetector.new(self).detect
+          @model_class = detected if detected
         end
 
         def ensure_sti_auto_configuration_complete
@@ -801,36 +783,15 @@ module Apiwork
           ensure_auto_detection_complete
           return unless @model_class
 
-          auto_configure_inheritance if sti_base_model? && inheritance.nil?
+          model_detector = ModelDetector.new(self)
 
-          return unless sti_subclass_model? && superclass_is_sti_base? && !subclass?
+          auto_configure_inheritance if model_detector.sti_base?(@model_class) && inheritance.nil?
+
+          return unless model_detector.sti_subclass?(@model_class)
+          return unless model_detector.superclass_is_sti_base?(@model_class)
+          return if subclass?
 
           auto_register_subclass
-        end
-
-        def sti_base_model?
-          return false unless @model_class
-          return false unless @model_class.respond_to?(:inheritance_column)
-          return false if @model_class.abstract_class?
-
-          column = @model_class.inheritance_column
-          return false unless column
-
-          begin
-            return false unless @model_class.column_names.include?(column.to_s)
-          rescue ActiveRecord::StatementInvalid, ActiveRecord::NoDatabaseError, ActiveRecord::ConnectionNotEstablished
-            return false
-          end
-
-          @model_class == @model_class.base_class
-        end
-
-        def sti_subclass_model?
-          return false unless @model_class
-          return false unless @model_class.respond_to?(:base_class)
-          return false if @model_class.abstract_class?
-
-          @model_class != @model_class.base_class
         end
 
         def auto_configure_inheritance
@@ -843,13 +804,6 @@ module Apiwork
 
           superclass.inheritance.register(self)
           superclass._abstract = true
-        end
-
-        def superclass_is_sti_base?
-          return false unless superclass.respond_to?(:model_class)
-
-          parent_model = superclass.model_class
-          parent_model && parent_model == @model_class.base_class
         end
       end
 
