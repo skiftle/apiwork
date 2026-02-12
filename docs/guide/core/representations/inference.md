@@ -209,7 +209,7 @@ class PostRepresentation < Apiwork::Representation::Base
 end
 ```
 
-For `has_one` and `has_many`, nullable defaults to `false`. Override if needed:
+For `has_one`, nullable defaults to `false`. Override if needed:
 
 ```ruby
 has_one :profile, nullable: true

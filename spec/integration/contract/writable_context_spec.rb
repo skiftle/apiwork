@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Writable context filtering (on: [:create] / on: [:update])', type: :request do
-  describe 'writable: { on: [:create] } - only writable on create' do
+  describe 'writable: :create - only writable on create' do
     it 'allows setting bio during create' do
       author_params = {
         author: {
@@ -80,7 +80,7 @@ RSpec.describe 'Writable context filtering (on: [:create] / on: [:update])', typ
     end
   end
 
-  describe 'writable: { on: [:update] } - only writable on update' do
+  describe 'writable: :update - only writable on update' do
     it 'rejects verified field during create (already tested above)' do
       # This is already covered by the test in the previous describe block
       # Just confirming verified is not writable on create

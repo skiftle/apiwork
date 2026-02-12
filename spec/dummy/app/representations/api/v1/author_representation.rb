@@ -9,13 +9,13 @@ module Api
       attribute :id, filterable: true, sortable: true
 
       # name is writable on both create and update
-      attribute :name, writable: true, filterable: true, sortable: true
+      attribute :name, filterable: true, sortable: true, writable: true
 
       # bio is only writable on create
-      attribute :bio, writable: { on: [:create] }
+      attribute :bio, writable: :create
 
       # verified is only writable on update
-      attribute :verified, writable: { on: [:update] }
+      attribute :verified, writable: :update
 
       attribute :created_at
       attribute :updated_at

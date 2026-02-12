@@ -152,7 +152,7 @@ Subclasses inherit parent attributes.
 | `preload` | `Symbol`, `Array`, `Hash`, `nil` | `nil` | Associations to preload for this attribute. Use when custom attributes depend on associations. |
 | `sortable` | `Boolean` | `false` | Whether the attribute is sortable. |
 | `type` | `Symbol<:array, :binary, :boolean, :date, :datetime, :decimal, :integer, :number, :object, :string, :time, :unknown, :uuid>`, `nil` | `nil` | The type. If `nil` and name maps to a database column, auto-detected from column type. Defaults to `:unknown` for json/jsonb columns and when no column exists (custom attributes). Use an explicit type or block in those cases. |
-| `writable` | `Boolean`, `Hash<on: :create \| :update>` | `false` | Whether the attribute is writable. Use `[ on: :create ](/reference/ on: :create )` for immutable fields or `[ on: :update ](/reference/ on: :update )` for fields that can only be changed after creation. |
+| `writable` | `Boolean`, `Symbol<:create, :update>` | `false` | The write access. `true` for both create and update, `:create` for create only, `:update` for update only. |
 
 </div>
 
@@ -210,7 +210,7 @@ attribute :status, encode: ->(value) { value.upcase }, decode: ->(value) { value
 **Example: Writable only on create**
 
 ```ruby
-attribute :slug, writable: { on: :create }
+attribute :slug, writable: :create
 ```
 
 **Example: Explicit enum values**
@@ -267,11 +267,11 @@ Subclasses inherit parent associations.
 | `example` | `Object`, `nil` | `nil` | The example. Metadata included in exports. |
 | `filterable` | `Boolean` | `false` | Whether the association is filterable. |
 | `include` | `Symbol<:always, :optional>` | `:optional` | The inclusion strategy. `:always` includes automatically but has circular reference protection. |
-| `nullable` | `Boolean`, `nil` | `nil` | Whether the value can be `null`. If `nil`, auto-detected from foreign key column NULL constraint. |
+| `nullable` | `Boolean`, `nil` | `nil` | Whether the association can be `null`. If `nil`, auto-detected from foreign key column NULL constraint. |
 | `polymorphic` | `Array<Class<Representation::Base>>`, `nil` | `nil` | The allowed representation classes for polymorphic associations. |
 | `representation` | `Class<Representation::Base>`, `nil` | `nil` | The representation class. If `nil`, inferred from the associated model in the same namespace (e.g., `CustomerRepresentation` for `Customer`). |
 | `sortable` | `Boolean` | `false` | Whether the association is sortable. |
-| `writable` | `Boolean`, `Hash<on: :create \| :update>` | `false` | Whether the association is writable. Use `[ on: :create ](/reference/ on: :create )` for immutable associations or `[ on: :update ](/reference/ on: :update )` for associations that can only be changed after creation. |
+| `writable` | `Boolean`, `Symbol<:create, :update>` | `false` | The write access. `true` for both create and update, `:create` for create only, `:update` for update only. |
 
 </div>
 
@@ -454,7 +454,7 @@ example id: 1, total: 99.00, status: 'paid'
 
 ### .has_many
 
-`.has_many(name, allow_destroy: false, deprecated: false, description: nil, example: nil, filterable: false, include: :optional, nullable: nil, representation: nil, sortable: false, writable: false)`
+`.has_many(name, allow_destroy: false, deprecated: false, description: nil, example: nil, filterable: false, include: :optional, representation: nil, sortable: false, writable: false)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L434)
 
@@ -475,10 +475,9 @@ Subclasses inherit parent associations.
 | `example` | `Object`, `nil` | `nil` | The example. Metadata included in exports. |
 | `filterable` | `Boolean` | `false` | Whether the association is filterable. |
 | `include` | `Symbol<:always, :optional>` | `:optional` | The inclusion strategy. `:always` includes automatically but has circular reference protection. |
-| `nullable` | `Boolean`, `nil` | `nil` | Whether the value can be `null`. |
 | `representation` | `Class<Representation::Base>`, `nil` | `nil` | The representation class. If `nil`, inferred from the associated model in the same namespace (e.g., `CustomerRepresentation` for `Customer`). |
 | `sortable` | `Boolean` | `false` | Whether the association is sortable. |
-| `writable` | `Boolean`, `Hash<on: :create \| :update>` | `false` | Whether the association is writable. Use `[ on: :create ](/reference/ on: :create )` for immutable associations or `[ on: :update ](/reference/ on: :update )` for associations that can only be changed after creation. |
+| `writable` | `Boolean`, `Symbol<:create, :update>` | `false` | The write access. `true` for both create and update, `:create` for create only, `:update` for update only. |
 
 </div>
 
@@ -542,10 +541,10 @@ Subclasses inherit parent associations.
 | `example` | `Object`, `nil` | `nil` | The example. Metadata included in exports. |
 | `filterable` | `Boolean` | `false` | Whether the association is filterable. |
 | `include` | `Symbol<:always, :optional>` | `:optional` | The inclusion strategy. `:always` includes automatically but has circular reference protection. |
-| `nullable` | `Boolean`, `nil` | `nil` | Whether the value can be `null`. |
+| `nullable` | `Boolean`, `nil` | `nil` | Whether the association can be `null`. |
 | `representation` | `Class<Representation::Base>`, `nil` | `nil` | The representation class. If `nil`, inferred from the associated model in the same namespace (e.g., `CustomerRepresentation` for `Customer`). |
 | `sortable` | `Boolean` | `false` | Whether the association is sortable. |
-| `writable` | `Boolean`, `Hash<on: :create \| :update>` | `false` | Whether the association is writable. Use `[ on: :create ](/reference/ on: :create )` for immutable associations or `[ on: :update ](/reference/ on: :update )` for associations that can only be changed after creation. |
+| `writable` | `Boolean`, `Symbol<:create, :update>` | `false` | The write access. `true` for both create and update, `:create` for create only, `:update` for update only. |
 
 </div>
 

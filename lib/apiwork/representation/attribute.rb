@@ -141,7 +141,7 @@ module Apiwork
         @filterable = filterable
         @preload = preload
         @sortable = sortable
-        @writable = normalize_writable(writable)
+        @writable = writable
         @encode = encode
         @decode = decode
         @empty = empty
@@ -209,7 +209,7 @@ module Apiwork
       # @return [Boolean]
       # @see #writable_for?
       def writable?
-        @writable[:on].any?
+        [true, :create, :update].include?(@writable)
       end
 
       # @api public
@@ -220,7 +220,7 @@ module Apiwork
       # @return [Boolean]
       # @see #writable?
       def writable_for?(action)
-        @writable[:on].include?(action)
+        [true, action].include?(@writable)
       end
 
       def encode(value)
@@ -244,15 +244,6 @@ module Apiwork
       end
 
       private
-
-      def normalize_writable(value)
-        case value
-        when true  then { on: %i[create update] }
-        when false then { on: [] }
-        when Hash  then { on: Array(value[:on] || %i[create update]) }
-        else            { on: [] }
-        end
-      end
 
       def validate_enum(value)
         return if enum.map(&:to_s).include?(value.to_s)

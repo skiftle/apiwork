@@ -43,7 +43,7 @@ Types, nullability, and enums are detected from your database and models.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `writable` | `bool` / `hash` | `false` | Allow in create/update requests |
+| `writable` | `bool` / `symbol` | `false` | Allow in create/update requests |
 | `filterable` | `bool` | `false` | Mark as filterable (adapter-dependent) |
 | `sortable` | `bool` | `false` | Mark as sortable (adapter-dependent) |
 | `preload` | `symbol` / `array` / `hash` | `nil` | Associations to eager load |
@@ -174,9 +174,9 @@ attribute :title, writable: false       # Read-only (default)
 Control which actions allow writing:
 
 ```ruby
-attribute :bio, writable: { on: [:create] }      # Only on create
-attribute :verified, writable: { on: [:update] } # Only on update
-attribute :name, writable: { on: [:create, :update] }  # Same as true
+attribute :bio, writable: :create       # Only on create
+attribute :verified, writable: :update  # Only on update
+attribute :name, writable: true         # Both create and update
 ```
 
 ### Generated Payload Types
@@ -186,8 +186,8 @@ Apiwork generates separate types for create and update:
 ```ruby
 class AuthorRepresentation < Apiwork::Representation::Base
   attribute :name, writable: true
-  attribute :bio, writable: { on: [:create] }
-  attribute :verified, writable: { on: [:update] }
+  attribute :bio, writable: :create
+  attribute :verified, writable: :update
 end
 ```
 

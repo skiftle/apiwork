@@ -86,7 +86,7 @@ module Apiwork
         @filterable = filterable
         @sortable = sortable
         @include = include
-        @writable = normalize_writable(writable)
+        @writable = writable
         @allow_destroy = allow_destroy
         @nullable = nullable
         @description = description
@@ -132,7 +132,7 @@ module Apiwork
       # @return [Boolean]
       # @see #writable_for?
       def writable?
-        @writable[:on].any?
+        [true, :create, :update].include?(@writable)
       end
 
       # @api public
@@ -143,7 +143,7 @@ module Apiwork
       # @return [Boolean]
       # @see #writable?
       def writable_for?(action)
-        @writable[:on].include?(action)
+        [true, action].include?(@writable)
       end
 
       # @api public
@@ -267,15 +267,6 @@ module Apiwork
 
       def column_for(name)
         @model_class.columns_hash[name.to_s]
-      end
-
-      def normalize_writable(value)
-        case value
-        when true  then { on: %i[create update] }
-        when false then { on: [] }
-        when Hash  then { on: Array(value[:on] || %i[create update]) }
-        else            { on: [] }
-        end
       end
 
       def detect_foreign_key

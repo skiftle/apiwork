@@ -215,9 +215,8 @@ module Apiwork
         #   The type. If `nil` and name maps to a database column, auto-detected from column type.
         #   Defaults to `:unknown` for json/jsonb columns and when no column exists (custom attributes).
         #   Use an explicit type or block in those cases.
-        # @param writable [Boolean, Hash] (false) [Hash: on: :create | :update]
-        #   Whether the attribute is writable. Use `{ on: :create }` for immutable fields or
-        #   `{ on: :update }` for fields that can only be changed after creation.
+        # @param writable [Boolean, Symbol] (false) [:create, :update]
+        #   The write access. `true` for both create and update, `:create` for create only, `:update` for update only.
         # @yieldparam element [Representation::Element]
         # @return [void]
         #
@@ -252,7 +251,7 @@ module Apiwork
         #   attribute :status, encode: ->(value) { value.upcase }, decode: ->(value) { value.downcase }
         #
         # @example Writable only on create
-        #   attribute :slug, writable: { on: :create }
+        #   attribute :slug, writable: :create
         #
         # @example Explicit enum values
         #   attribute :priority, enum: [:low, :medium, :high]
@@ -328,15 +327,14 @@ module Apiwork
         # @param include [Symbol] (:optional) [:always, :optional]
         #   The inclusion strategy. `:always` includes automatically but has circular reference protection.
         # @param nullable [Boolean, nil] (nil)
-        #   Whether the value can be `null`.
+        #   Whether the association can be `null`.
         # @param representation [Class<Representation::Base>, nil] (nil)
         #   The representation class. If `nil`, inferred from the associated model in the same
         #   namespace (e.g., `CustomerRepresentation` for `Customer`).
         # @param sortable [Boolean] (false)
         #   Whether the association is sortable.
-        # @param writable [Boolean, Hash] (false) [Hash: on: :create | :update]
-        #   Whether the association is writable. Use `{ on: :create }` for immutable associations or
-        #   `{ on: :update }` for associations that can only be changed after creation.
+        # @param writable [Boolean, Symbol] (false) [:create, :update]
+        #   The write access. `true` for both create and update, `:create` for create only, `:update` for update only.
         # @return [void]
         #
         # @example Basic
@@ -403,16 +401,13 @@ module Apiwork
         #   Whether the association is filterable.
         # @param include [Symbol] (:optional) [:always, :optional]
         #   The inclusion strategy. `:always` includes automatically but has circular reference protection.
-        # @param nullable [Boolean, nil] (nil)
-        #   Whether the value can be `null`.
         # @param representation [Class<Representation::Base>, nil] (nil)
         #   The representation class. If `nil`, inferred from the associated model in the same
         #   namespace (e.g., `CustomerRepresentation` for `Customer`).
         # @param sortable [Boolean] (false)
         #   Whether the association is sortable.
-        # @param writable [Boolean, Hash] (false) [Hash: on: :create | :update]
-        #   Whether the association is writable. Use `{ on: :create }` for immutable associations or
-        #   `{ on: :update }` for associations that can only be changed after creation.
+        # @param writable [Boolean, Symbol] (false) [:create, :update]
+        #   The write access. `true` for both create and update, `:create` for create only, `:update` for update only.
         # @return [void]
         # @see #has_one
         #
@@ -439,7 +434,6 @@ module Apiwork
           example: nil,
           filterable: false,
           include: :optional,
-          nullable: nil,
           representation: nil,
           sortable: false,
           writable: false
@@ -455,7 +449,6 @@ module Apiwork
               example:,
               filterable:,
               include:,
-              nullable:,
               representation:,
               sortable:,
               writable:,
@@ -481,7 +474,7 @@ module Apiwork
         # @param include [Symbol] (:optional) [:always, :optional]
         #   The inclusion strategy. `:always` includes automatically but has circular reference protection.
         # @param nullable [Boolean, nil] (nil)
-        #   Whether the value can be `null`. If `nil`, auto-detected from foreign key column NULL constraint.
+        #   Whether the association can be `null`. If `nil`, auto-detected from foreign key column NULL constraint.
         # @param polymorphic [Array<Class<Representation::Base>>, nil] (nil)
         #   The allowed representation classes for polymorphic associations.
         # @param representation [Class<Representation::Base>, nil] (nil)
@@ -489,9 +482,8 @@ module Apiwork
         #   namespace (e.g., `CustomerRepresentation` for `Customer`).
         # @param sortable [Boolean] (false)
         #   Whether the association is sortable.
-        # @param writable [Boolean, Hash] (false) [Hash: on: :create | :update]
-        #   Whether the association is writable. Use `{ on: :create }` for immutable associations or
-        #   `{ on: :update }` for associations that can only be changed after creation.
+        # @param writable [Boolean, Symbol] (false) [:create, :update]
+        #   The write access. `true` for both create and update, `:create` for create only, `:update` for update only.
         # @return [void]
         # @see #has_one
         #

@@ -30,7 +30,7 @@ end
 | --------------- | --------------- | ----------- | ---------------------------------------- |
 | `representation`        | Class           | auto        | Associated representation class                  |
 | `include`       | Symbol          | `:optional` | `:always` or `:optional`                 |
-| `writable`      | `bool` / `hash` | `false`     | Allow nested attributes                  |
+| `writable`      | `bool` / `symbol` | `false`     | Allow nested attributes                  |
 | `allow_destroy` | `bool`          | `false`     | Allow destroying nested records          |
 | `filterable`    | `bool`          | `false`     | Mark as filterable (adapter-dependent)   |
 | `sortable`      | `bool`          | `false`     | Mark as sortable (adapter-dependent)     |
@@ -222,8 +222,8 @@ Without `accepts_nested_attributes_for`, Rails silently ignores nested attribute
 ### Context-Specific Writing
 
 ```ruby
-has_many :comments, writable: { on: [:create] }     # Only on create
-has_many :comments, writable: { on: [:update] }     # Only on update
+has_many :comments, writable: :create     # Only on create
+has_many :comments, writable: :update     # Only on update
 has_many :comments, writable: true                   # Both
 ```
 

@@ -440,9 +440,9 @@ Create invoice with lines, and each line creates its product:
 ### Context-Specific Writing
 
 ```ruby
-has_many :lines, writable: { on: [:create] }        # Only on create
-has_many :lines, writable: { on: [:update] }        # Only on update
-has_many :lines, writable: { on: [:create, :update] }  # Both (same as true)
+has_many :lines, writable: :create        # Only on create
+has_many :lines, writable: :update        # Only on update
+has_many :lines, writable: true           # Both create and update
 ```
 
 ---
