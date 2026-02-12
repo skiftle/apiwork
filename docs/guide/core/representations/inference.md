@@ -25,7 +25,7 @@ Everything inferred can be overridden when needed.
 | Polymorphic discriminator | Rails reflection         | `discriminator: :type`  |
 | STI column                | `inheritance_column`     | `discriminated!`        |
 | STI variant tag           | `sti_name`               | `variant as: :custom`   |
-| Allow destroy             | `nested_attributes_options` | `allow_destroy: true` |
+| Allow destroy             | `nested_attributes_options` | (automatic)           |
 | Root key                  | `model_name.element`     | `root :item, :items`    |
 
 ## Model Detection
@@ -272,7 +272,6 @@ end
 # Representation
 class PostRepresentation < Apiwork::Representation::Base
   has_many :comments, writable: true
-  # allow_destroy: true is auto-detected from model
 end
 ```
 

@@ -31,11 +31,10 @@ end
 | `representation`        | Class           | auto        | Associated representation class                  |
 | `include`       | Symbol          | `:optional` | `:always` or `:optional`                 |
 | `writable`      | `bool` / `symbol` | `false`     | Allow nested attributes                  |
-| `allow_destroy` | `bool`          | `false`     | Allow destroying nested records          |
 | `filterable`    | `bool`          | `false`     | Mark as filterable (adapter-dependent)   |
 | `sortable`      | `bool`          | `false`     | Mark as sortable (adapter-dependent)     |
 | `nullable`      | `bool`          | auto        | Allow null (auto-detected from DB)       |
-| `polymorphic`   | Array / Hash    | `nil`       | Polymorphic type mapping                 |
+| `polymorphic`   | Array           | `nil`       | Polymorphic type mapping                 |
 | `description`   | `string`        | `nil`       | API documentation                        |
 | `example`       | `any`           | `nil`       | Example value                            |
 | `deprecated`    | `bool`          | `false`     | Mark as deprecated                       |
@@ -164,7 +163,9 @@ has_many :comments, include: :optional
 # TypeScript: comments?: Comment[]
 ```
 
-### Request Format
+### Request Format (Standard Adapter)
+
+The [standard adapter](../adapters/standard-adapter/introduction.md) uses query parameters for include requests:
 
 **Single Association:**
 
@@ -184,11 +185,11 @@ GET /api/v1/posts/1?include[comments]=true&include[author]=true
 GET /api/v1/posts/1?include[comments][author]=true
 ```
 
-**Depth limit**: Maximum 3 levels of nesting. This prevents circular references and keeps queries efficient.
+**Depth limit**: The standard adapter limits nesting to 3 levels. This prevents circular references and keeps queries efficient.
 
-### N+1 Prevention
+### N+1 Prevention (Standard Adapter)
 
-Apiwork automatically preloads included associations using `ActiveRecord::Associations::Preloader`.
+The standard adapter automatically preloads included associations using `ActiveRecord::Associations::Preloader`.
 
 For more on include query behavior, see [Includes](../adapters/standard-adapter/includes.md).
 
@@ -215,8 +216,8 @@ class Post < ApplicationRecord
 end
 ```
 
-::: info
-Without `accepts_nested_attributes_for`, Rails silently ignores nested attributes. The API accepts the payload but nothing is saved.
+::: warning
+Without `accepts_nested_attributes_for`, Apiwork raises a `ConfigurationError` when the representation loads.
 :::
 
 ### Context-Specific Writing
@@ -227,7 +228,9 @@ has_many :comments, writable: :update     # Only on update
 has_many :comments, writable: true                   # Both
 ```
 
-### Request Format
+### Request Format (Standard Adapter)
+
+The [standard adapter](../adapters/standard-adapter/introduction.md) uses an `OP` field to distinguish operations.
 
 **Create** new records (no `id`):
 
@@ -258,22 +261,22 @@ has_many :comments, writable: true                   # Both
 }
 ```
 
-**Delete** records (include `id` and `_destroy: true`):
+**Delete** records (include `id` and `OP: "delete"`):
 
 ```json
 {
   "post": {
     "comments": [
       {
-        "id": "5",
-        "_destroy": true
+        "OP": "delete",
+        "id": "5"
       }
     ]
   }
 }
 ```
 
-Requires `allow_destroy: true` in Rails model.
+Enabled by `allow_destroy: true` on `accepts_nested_attributes_for` in the model.
 
 **Mixed operations:**
 
@@ -289,8 +292,8 @@ Requires `allow_destroy: true` in Rails model.
         "content": "New comment"
       },
       {
-        "id": "3",
-        "_destroy": true
+        "OP": "delete",
+        "id": "3"
       }
     ]
   }
@@ -352,31 +355,39 @@ end
 
 This creates a post with one comment and two replies in a single request. All standard operations (create, update, delete) work at each level.
 
-### Generated Types
+### Generated Types (Standard Adapter)
 
-The adapter generates a discriminated union for type-safe client code:
+The standard adapter generates three payload variants — create, update, and delete — combined as a discriminated union:
 
 ```typescript
-// Create payload - no id
-export interface CommentNestedCreatePayload {
-  _type: 'create';
-  content?: string;
+export interface LineItemNestedCreatePayload {
+  OP?: 'create';
+  id?: string;
+  productName: string;
+  quantity?: null | number;
+  unitPrice?: null | number;
 }
 
-// Update payload - id required
-export interface CommentNestedUpdatePayload {
-  _type: 'update';
+export interface LineItemNestedUpdatePayload {
+  OP?: 'update';
+  id?: string;
+  productName?: string;
+  quantity?: null | number;
+  unitPrice?: null | number;
+}
+
+export interface LineItemNestedDeletePayload {
+  OP?: 'delete';
   id: string;
-  content?: string;
-  _destroy?: boolean;
 }
 
-export type CommentNestedPayload =
-  | CommentNestedCreatePayload
-  | CommentNestedUpdatePayload;
+export type LineItemNestedPayload =
+  | LineItemNestedCreatePayload
+  | LineItemNestedUpdatePayload
+  | LineItemNestedDeletePayload;
 ```
 
-The `_type` discriminator lets TypeScript narrow the type based on the operation. At runtime, Rails determines create vs update by presence of `id` — the `_type` field is optional.
+The `OP` discriminator lets TypeScript narrow the type based on the operation. `OP` is optional on all variants — at runtime, the adapter determines create vs update by presence of `id`.
 
 ---
 
@@ -399,28 +410,19 @@ Handle associations that can belong to multiple model types.
 
 ### Definition
 
-Two syntaxes are supported:
-
-**Array shorthand** — infers representation from same namespace:
+Pass an array of representation classes:
 
 ```ruby
 class CommentRepresentation < Apiwork::Representation::Base
-  belongs_to :commentable, polymorphic: [:post, :video, :article]
-end
-# Infers PostRepresentation, VideoRepresentation, ArticleRepresentation from same namespace
-```
-
-**Hash with explicit representations** — when representation names don't follow convention:
-
-```ruby
-class CommentRepresentation < Apiwork::Representation::Base
-  belongs_to :commentable, polymorphic: {
-    post: PostRepresentation,
-    video: MediaRepresentation,  # Custom representation
-    article: ArticleRepresentation
-  }
+  belongs_to :commentable, polymorphic: [
+    PostRepresentation,
+    VideoRepresentation,
+    ArticleRepresentation,
+  ]
 end
 ```
+
+Each representation's model determines the polymorphic type value. Symbols and hashes are not accepted — representation classes are required.
 
 ### Rails Setup
 
@@ -440,16 +442,17 @@ Database columns required: `commentable_id` and `commentable_type`.
 
 ### Generated Types
 
-Polymorphic associations generate discriminated unions:
+Polymorphic associations generate discriminated unions. The type field name and key format depend on adapter configuration:
 
 ```typescript
-export type CommentablePolymorphic =
-  | { commentable_type: 'post' } & Post
-  | { commentable_type: 'video' } & Video;
+export type CommentCommentable =
+  | { commentableType: 'post' } & Post
+  | { commentableType: 'video' } & Video
+  | { commentableType: 'image' } & Image;
 
 export interface Comment {
-  content?: string;
-  commentable?: CommentablePolymorphic;
+  body: string;
+  commentable?: CommentCommentable;
 }
 ```
 
