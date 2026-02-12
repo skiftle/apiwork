@@ -49,12 +49,12 @@ module Apiwork
       #
       # @param name [Symbol]
       #   The option name.
-      # @param type [Symbol] [:boolean, :hash, :integer, :string, :symbol]
-      #   The option type.
       # @param default [Object, nil] (nil)
       #   The default value.
       # @param enum [Array, nil] (nil)
       #   The allowed values.
+      # @param type [Symbol] [:boolean, :hash, :integer, :string, :symbol]
+      #   The option type.
       # @yield block for nested options (type: :hash)
       # @yieldparam option [Option]
       # @return [void]

@@ -112,10 +112,10 @@ module Apiwork
           #
           # @param data [Object, nil] (nil)
           #   The transformed data.
-          # @param metadata [Hash, nil] (nil)
-          #   The metadata to add to response.
           # @param includes [Array, nil] (nil)
           #   The associations to preload.
+          # @param metadata [Hash, nil] (nil)
+          #   The metadata to add to response.
           # @param serialize_options [Hash, nil] (nil)
           #   The options for serialization.
           # @return [Result]

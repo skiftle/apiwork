@@ -462,7 +462,7 @@ module Apiwork
       #
       # @param concern_name [Symbol]
       #   The concern name.
-      # @param callable [Proc]
+      # @param callable [Proc, nil] (nil)
       #   Optional callable instead of block.
       # @yield block with resource definitions
       # @yieldparam resource [Resource]

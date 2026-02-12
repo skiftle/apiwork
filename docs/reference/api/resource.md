@@ -85,7 +85,7 @@ Defines a reusable concern.
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | **`concern_name`** | `Symbol` |  | The concern name. |
-| **`callable`** | `Proc` |  | Optional callable instead of block. |
+| `callable` | `Proc`, `nil` | `nil` | Optional callable instead of block. |
 
 </div>
 

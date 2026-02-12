@@ -15,6 +15,10 @@ module Apiwork
     # Inherits all properties from another type.
     # Can be called multiple times to inherit from multiple types.
     #
+    # @param type_name [Symbol, nil] (nil)
+    #   The type to inherit from.
+    # @return [Array<Symbol>]
+    #
     # @example Single inheritance
     #   object :admin do
     #     extends :user
@@ -27,10 +31,6 @@ module Apiwork
     #     extends :contactable
     #     string :employee_id
     #   end
-    #
-    # @param type_name [Symbol, nil] (nil)
-    #   The type to inherit from.
-    # @return [Array<Symbol>]
     def extends(type_name = nil)
       @extends << type_name if type_name
       @extends
@@ -40,15 +40,15 @@ module Apiwork
     # Includes all properties from another type.
     # Can be called multiple times to merge from multiple types.
     #
+    # @param type_name [Symbol, nil] (nil)
+    #   The type to merge from.
+    # @return [Array<Symbol>]
+    #
     # @example
     #   object :admin do
     #     merge :user
     #     boolean :superuser
     #   end
-    #
-    # @param type_name [Symbol, nil] (nil)
-    #   The type to merge from.
-    # @return [Array<Symbol>]
     def merge(type_name = nil)
       @merged << type_name if type_name
       @merged

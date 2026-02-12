@@ -48,9 +48,9 @@ Defines a nested option.
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | **`name`** | `Symbol` |  | The option name. |
-| **`type`** | `Symbol<:boolean, :hash, :integer, :string, :symbol>` |  | The option type. |
 | `default` | `Object`, `nil` | `nil` | The default value. |
 | `enum` | `Array`, `nil` | `nil` | The allowed values. |
+| **`type`** | `Symbol<:boolean, :hash, :integer, :string, :symbol>` |  | The option type. |
 
 </div>
 

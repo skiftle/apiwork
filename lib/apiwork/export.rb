@@ -51,10 +51,10 @@ module Apiwork
       #   The API path.
       # @param format [Symbol, nil] (nil) [:json, :yaml]
       #   The output format. Hash exports only.
-      # @param locale [Symbol, nil] (nil)
-      #   The locale for translations.
       # @param key_format [Symbol, nil] (nil) [:camel, :kebab, :keep, :underscore]
       #   The key format.
+      # @param locale [Symbol, nil] (nil)
+      #   The locale for translations.
       # @param options
       #   Export-specific keyword arguments.
       # @return [String]

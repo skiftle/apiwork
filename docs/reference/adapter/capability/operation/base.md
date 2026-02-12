@@ -171,8 +171,8 @@ Creates a result object.
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `data` | `Object`, `nil` | `nil` | The transformed data. |
-| `metadata` | `Hash`, `nil` | `nil` | The metadata to add to response. |
 | `includes` | `Array`, `nil` | `nil` | The associations to preload. |
+| `metadata` | `Hash`, `nil` | `nil` | The metadata to add to response. |
 | `serialize_options` | `Hash`, `nil` | `nil` | The options for serialization. |
 
 </div>
