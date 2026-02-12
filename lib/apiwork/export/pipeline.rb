@@ -4,19 +4,19 @@ module Apiwork
   module Export
     class Pipeline
       class << self
-        def generate(export_name, api_path, format: nil, key_format: nil, locale: nil, version: nil)
-          Export.generate(export_name, api_path, format:, key_format:, locale:, version:)
+        def generate(export_name, api_base_path, format: nil, key_format: nil, locale: nil, version: nil)
+          Export.generate(export_name, api_base_path, format:, key_format:, locale:, version:)
         end
 
-        def write(api_path: nil, export_name: nil, format: nil, key_format: nil, locale: nil, output:, version: nil)
+        def write(api_base_path: nil, export_name: nil, format: nil, key_format: nil, locale: nil, output:, version: nil)
           raise ArgumentError, 'output path required' unless output
 
-          if Writer.file_path?(output) && (api_path.nil? || export_name.nil?)
+          if Writer.file_path?(output) && (api_base_path.nil? || export_name.nil?)
             raise ArgumentError,
-                  'api_path and export_name required when output is a file'
+                  'api_base_path and export_name required when output is a file'
           end
 
-          api_classes = api_path ? [find_api_class(api_path)] : API.values
+          api_classes = api_base_path ? [find_api_class(api_base_path)] : API.values
 
           start_time = Time.zone.now
           count = 0
@@ -52,23 +52,23 @@ module Apiwork
 
         private
 
-        def find_api_class(api_path)
-          API.find!(api_path)
+        def find_api_class(api_base_path)
+          API.find!(api_base_path)
         end
 
         def generate_file(api_class:, export_name:, format:, key_format:, locale:, output:, version:)
-          api_path = api_class.base_path
+          api_base_path = api_class.base_path
 
           options = { format:, key_format:, locale:, version: }.compact
           options_label = options.any? ? " (#{options.map { |key, value| "#{key}: #{value}" }.join(', ')})" : ''
-          Rails.logger.debug "  ✓ #{api_path} to #{export_name}#{options_label}"
+          Rails.logger.debug "  ✓ #{api_base_path} to #{export_name}#{options_label}"
 
-          content = generate(export_name, api_path, format:, key_format:, locale:, version:)
+          content = generate(export_name, api_base_path, format:, key_format:, locale:, version:)
           export_class = Registry.find!(export_name)
           extension = export_class.file_extension_for(format:)
 
           file_path = Writer.write(
-            api_path:,
+            api_base_path:,
             content:,
             export_name:,
             extension:,

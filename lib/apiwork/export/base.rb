@@ -37,7 +37,7 @@ module Apiwork
       option :key_format, enum: %i[keep camel underscore kebab], type: :symbol
       option :locale, default: nil, type: :symbol
 
-      attr_reader :api_path,
+      attr_reader :api_base_path,
                   :options
 
       class << self
@@ -68,12 +68,12 @@ module Apiwork
           @output_type = type
         end
 
-        def generate(api_path, format: nil, **options)
+        def generate(api_base_path, format: nil, **options)
           format ||= :json
 
           raise ArgumentError, "#{export_name} export does not support #{format} format" if hash_output? && !supports_format?(format)
 
-          export = new(api_path, **options)
+          export = new(api_base_path, **options)
           content = export.generate
           export.serialize(content, format:)
         end
@@ -191,13 +191,13 @@ module Apiwork
         end
       end
 
-      def initialize(api_path, key_format: nil, locale: nil, **options)
-        @api_path = api_path
-        @api_class = API.find!(api_path)
+      def initialize(api_base_path, key_format: nil, locale: nil, **options)
+        @api_base_path = api_base_path
+        @api_class = API.find!(api_base_path)
 
         unless @api_class.export_configs.key?(self.class.export_name)
           raise ConfigurationError,
-                "Export :#{self.class.export_name} is not declared for #{api_path}. " \
+                "Export :#{self.class.export_name} is not declared for #{api_base_path}. " \
                 "Add `export :#{self.class.export_name}` to your API definition."
         end
 

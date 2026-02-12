@@ -16,7 +16,7 @@ namespace :apiwork do
       # Load API definitions
       Dir[Rails.root.join('config/apis/**/*.rb')].sort.each { |file| load file }
 
-      api_path = ENV['API_PATH']
+      api_base_path = ENV['API_PATH']
       export_name = ENV['EXPORT_NAME']&.to_sym
       format = ENV['FORMAT']&.to_sym
       output = ENV['OUTPUT']
@@ -54,7 +54,7 @@ namespace :apiwork do
 
       begin
         Apiwork::Export::Pipeline.write(
-          api_path:,
+          api_base_path:,
           export_name:,
           format:,
           output:,

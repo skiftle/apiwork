@@ -47,8 +47,8 @@ module Apiwork
       #
       # @param export_name [Symbol]
       #   The registered export name. Built-in: `:openapi`, `:typescript`, `:zod`.
-      # @param api_path [String]
-      #   The API path.
+      # @param api_base_path [String]
+      #   The API base path.
       # @param format [Symbol, nil] (nil) [:json, :yaml]
       #   The output format. Hash exports only.
       # @param key_format [Symbol, nil] (nil) [:camel, :kebab, :keep, :underscore]
@@ -65,9 +65,9 @@ module Apiwork
       #   Apiwork::Export.generate(:openapi, '/api/v1')
       #   Apiwork::Export.generate(:openapi, '/api/v1', format: :yaml)
       #   Apiwork::Export.generate(:typescript, '/api/v1', key_format: :camel)
-      def generate(export_name, api_path, format: nil, key_format: nil, locale: nil, **options)
+      def generate(export_name, api_base_path, format: nil, key_format: nil, locale: nil, **options)
         export_class = find!(export_name)
-        export_class.generate(api_path, format:, key_format:, locale:, **options)
+        export_class.generate(api_base_path, format:, key_format:, locale:, **options)
       end
 
       def register_defaults!

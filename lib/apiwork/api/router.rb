@@ -23,7 +23,7 @@ module Apiwork
                               end
 
                   get export_config.endpoint.path || "/.#{export_name}",
-                      defaults: { export_name:, api_path: api_class.base_path },
+                      defaults: { export_name:, api_base_path: api_class.base_path },
                       to: 'apiwork/exports#show'
                 end
               end

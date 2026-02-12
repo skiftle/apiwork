@@ -23,7 +23,7 @@ module Apiwork
       private
 
       def build_info
-        return { title: api_path, version: '1.0.0' } unless data.info
+        return { title: api_base_path, version: '1.0.0' } unless data.info
 
         info = data.info
         {
@@ -32,7 +32,7 @@ module Apiwork
           license: build_license(info.license),
           summary: info.summary,
           termsOfService: info.terms_of_service,
-          title: info.title || api_path,
+          title: info.title || api_base_path,
           version: info.version || '1.0.0',
         }.compact
       end

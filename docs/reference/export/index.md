@@ -84,7 +84,7 @@ Apiwork::Export.find!(:openapi)
 
 ### .generate
 
-`.generate(export_name, api_path, format: nil, key_format: nil, locale: nil, **options)`
+`.generate(export_name, api_base_path, format: nil, key_format: nil, locale: nil, **options)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export.rb#L68)
 
@@ -97,7 +97,7 @@ Generates an export for an API.
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | **`export_name`** | `Symbol` |  | The registered export name. Built-in: `:openapi`, `:typescript`, `:zod`. |
-| **`api_path`** | `String` |  | The API path. |
+| **`api_base_path`** | `String` |  | The API base path. |
 | `format` | `Symbol<:json, :yaml>`, `nil` | `nil` | The output format. Hash exports only. |
 | `key_format` | `Symbol<:camel, :kebab, :keep, :underscore>`, `nil` | `nil` | The key format. |
 | `locale` | `Symbol`, `nil` | `nil` | The locale for translations. |
