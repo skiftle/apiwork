@@ -15,10 +15,10 @@ module Apiwork
 
           {
             resources:,
+            base_path: @api_class.transform_path(@api_class.base_path),
             enums: type_dump_hash[:enums],
             error_codes: build_error_codes(collect_all_error_code_keys(resources)),
             info: build_info,
-            base_path: @api_class.base_path,
             types: type_dump_hash[:types],
           }
         end

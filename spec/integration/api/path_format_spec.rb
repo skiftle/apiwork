@@ -132,6 +132,12 @@ RSpec.describe 'path_format Configuration', type: :request do
 
       expect(resource.path).to eq('test-items')
     end
+
+    it 'transforms base_path in introspection' do
+      introspection = api_class.introspect
+
+      expect(introspection.base_path).to eq('/cool-man')
+    end
   end
 
   describe 'path_format transforms explicit resource path:' do

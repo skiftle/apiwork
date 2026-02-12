@@ -31,7 +31,7 @@ end
 
 `.adapter(name = nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L136)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L157)
 
 Sets or gets the adapter for this API.
 
@@ -81,7 +81,7 @@ The base path for this API.
 
 `.concern(name, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L509)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L530)
 
 Defines a reusable concern for resources.
 
@@ -136,7 +136,7 @@ resources :posts, concerns: [:archivable]
 
 `.enum(name, values: nil, scope: nil, description: nil, example: nil, deprecated: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L214)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L235)
 
 Defines a reusable enumeration type.
 
@@ -171,7 +171,7 @@ enum :status, values: %w[draft sent paid]
 
 `.export(name, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L95)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L116)
 
 Enables an export for this API.
 
@@ -208,7 +208,7 @@ end
 
 `.info(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L333)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L354)
 
 The info for this API.
 
@@ -242,9 +242,15 @@ end
 
 `.key_format(format = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L51)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L61)
 
-Transforms request and response keys.
+Configures key transformation for this API.
+
+Transforms JSON keys in request bodies, response bodies, and query parameters. Incoming requests are
+normalized to underscore internally, so controllers always receive `params[:user_name]` regardless of
+format.
+
+With `:camel`, `user_name` becomes `userName`. With `:kebab`, `user_name` becomes `user-name`.
 
 **Parameters**
 
@@ -252,7 +258,7 @@ Transforms request and response keys.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `format` | `Symbol<:camel, :kebab, :keep, :underscore>`, `nil` | `nil` | The format. |
+| `format` | `Symbol<:camel, :kebab, :keep, :underscore>`, `nil` | `nil` | The key format. Default is `:keep`. |
 
 </div>
 
@@ -260,10 +266,14 @@ Transforms request and response keys.
 
 `Symbol`, `nil`
 
-**Example**
+**Example: camelCase keys**
 
 ```ruby
 key_format :camel
+
+# Client sends: { "userName": "alice" }
+# Controller receives: params[:user_name]
+# Response: { "userName": "alice", "createdAt": "2024-01-01" }
 ```
 
 ---
@@ -272,7 +282,7 @@ key_format :camel
 
 `.object(name, deprecated: false, description: nil, example: nil, scope: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L176)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L197)
 
 Defines a reusable object type.
 
@@ -311,9 +321,15 @@ end
 
 `.path_format(format = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L70)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L91)
 
-Transforms resource and action names in URL paths.
+Configures URL path transformation for this API.
+
+Transforms URL path segments: base path, resource paths, action paths, and explicit `path:` options.
+Path parameters like `:id` and `:user_id` are not transformed. Controllers and params remain underscore
+internally.
+
+With `:kebab`, `/api/user_profiles/:id` becomes `/api/user-profiles/:id`.
 
 **Parameters**
 
@@ -321,7 +337,7 @@ Transforms resource and action names in URL paths.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| `format` | `Symbol<:camel, :kebab, :keep, :underscore>`, `nil` | `nil` | The format. |
+| `format` | `Symbol<:camel, :kebab, :keep, :underscore>`, `nil` | `nil` | The path format. Default is `:keep`. |
 
 </div>
 
@@ -329,10 +345,15 @@ Transforms resource and action names in URL paths.
 
 `Symbol`, `nil`
 
-**Example**
+**Example: kebab-case paths**
 
 ```ruby
 path_format :kebab
+
+resources :user_profiles
+# URL: /user-profiles/:id
+# Controller: UserProfilesController
+# Params: params[:user_profile]
 ```
 
 ---
@@ -341,7 +362,7 @@ path_format :kebab
 
 `.raises(*error_code_keys)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L296)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L317)
 
 API-wide error codes.
 
@@ -374,7 +395,7 @@ api_class.raises  # => [:unauthorized, :forbidden, :not_found]
 
 `.resource(name, concerns: nil, constraints: nil, contract: nil, controller: nil, defaults: nil, except: nil, only: nil, param: nil, path: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L450)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L471)
 
 Defines a singular resource (no index action, no :id in URL).
 
@@ -428,7 +449,7 @@ end
 
 `.resources(name, concerns: nil, constraints: nil, contract: nil, controller: nil, defaults: nil, except: nil, only: nil, param: nil, path: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L383)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L404)
 
 Defines a RESTful resource with standard CRUD actions.
 
@@ -485,7 +506,7 @@ end
 
 `.union(name, deprecated: false, description: nil, discriminator: nil, example: nil, scope: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L260)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L281)
 
 Defines a discriminated union type.
 
@@ -528,7 +549,7 @@ end
 
 `.with_options(options = {}, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L537)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L558)
 
 Applies options to all nested resource definitions.
 

@@ -39,15 +39,25 @@ module Apiwork
         end
 
         # @api public
-        # Transforms request and response keys.
+        # Configures key transformation for this API.
+        #
+        # Transforms JSON keys in request bodies, response bodies, and query parameters. Incoming requests are
+        # normalized to underscore internally, so controllers always receive `params[:user_name]` regardless of
+        # format.
+        #
+        # With `:camel`, `user_name` becomes `userName`. With `:kebab`, `user_name` becomes `user-name`.
         #
         # @param format [Symbol, nil] (nil) [:camel, :kebab, :keep, :underscore]
-        #   The format.
+        #   The key format. Default is `:keep`.
         # @return [Symbol, nil]
         # @raise [ConfigurationError] if format is invalid
         #
-        # @example
+        # @example camelCase keys
         #   key_format :camel
+        #
+        #   # Client sends: { "userName": "alice" }
+        #   # Controller receives: params[:user_name]
+        #   # Response: { "userName": "alice", "createdAt": "2024-01-01" }
         def key_format(format = nil)
           return @key_format if format.nil?
 
@@ -58,15 +68,26 @@ module Apiwork
         end
 
         # @api public
-        # Transforms resource and action names in URL paths.
+        # Configures URL path transformation for this API.
+        #
+        # Transforms URL path segments: base path, resource paths, action paths, and explicit `path:` options.
+        # Path parameters like `:id` and `:user_id` are not transformed. Controllers and params remain underscore
+        # internally.
+        #
+        # With `:kebab`, `/api/user_profiles/:id` becomes `/api/user-profiles/:id`.
         #
         # @param format [Symbol, nil] (nil) [:camel, :kebab, :keep, :underscore]
-        #   The format.
+        #   The path format. Default is `:keep`.
         # @return [Symbol, nil]
         # @raise [ConfigurationError] if format is invalid
         #
-        # @example
+        # @example kebab-case paths
         #   path_format :kebab
+        #
+        #   resources :user_profiles
+        #   # URL: /user-profiles/:id
+        #   # Controller: UserProfilesController
+        #   # Params: params[:user_profile]
         def path_format(format = nil)
           return @path_format if format.nil?
 
