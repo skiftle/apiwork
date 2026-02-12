@@ -266,12 +266,12 @@ Subclasses inherit parent associations.
 | `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
 | `example` | `Object`, `nil` | `nil` | The example. Metadata included in exports. |
 | `filterable` | `Boolean` | `false` | Whether the association is filterable. |
-| `include` | `Symbol<:always, :optional>` | `:optional` | The inclusion strategy. `:always` includes automatically but has circular reference protection. |
+| `include` | `Symbol<:always, :optional>` | `:optional` | The inclusion mode. |
 | `nullable` | `Boolean`, `nil` | `nil` | Whether the association can be `null`. If `nil`, auto-detected from foreign key column NULL constraint. |
 | `polymorphic` | `Array<Class<Representation::Base>>`, `nil` | `nil` | The allowed representation classes for polymorphic associations. |
 | `representation` | `Class<Representation::Base>`, `nil` | `nil` | The representation class. If `nil`, inferred from the associated model in the same namespace (e.g., `CustomerRepresentation` for `Customer`). |
 | `sortable` | `Boolean` | `false` | Whether the association is sortable. |
-| `writable` | `Boolean`, `Symbol<:create, :update>` | `false` | The write access. `true` for both create and update, `:create` for create only, `:update` for update only. |
+| `writable` | `Boolean`, `Symbol<:create, :update>` | `false` | The write access. `true` for both create and update, `:create` for create only, `:update` for update only. Requires `accepts_nested_attributes_for` on the model, where `allow_destroy: true` also enables deletion. |
 
 </div>
 
@@ -454,7 +454,7 @@ example id: 1, total: 99.00, status: 'paid'
 
 ### .has_many
 
-`.has_many(name, allow_destroy: false, deprecated: false, description: nil, example: nil, filterable: false, include: :optional, representation: nil, sortable: false, writable: false)`
+`.has_many(name, deprecated: false, description: nil, example: nil, filterable: false, include: :optional, representation: nil, sortable: false, writable: false)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/base.rb#L434)
 
@@ -469,15 +469,14 @@ Subclasses inherit parent associations.
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | **`name`** | `Symbol` |  | The association name. |
-| `allow_destroy` | `Boolean` | `false` | Whether nested records can be destroyed. Auto-detected from model nested_attributes_options. |
 | `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
 | `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
 | `example` | `Object`, `nil` | `nil` | The example. Metadata included in exports. |
 | `filterable` | `Boolean` | `false` | Whether the association is filterable. |
-| `include` | `Symbol<:always, :optional>` | `:optional` | The inclusion strategy. `:always` includes automatically but has circular reference protection. |
+| `include` | `Symbol<:always, :optional>` | `:optional` | The inclusion mode. |
 | `representation` | `Class<Representation::Base>`, `nil` | `nil` | The representation class. If `nil`, inferred from the associated model in the same namespace (e.g., `CustomerRepresentation` for `Customer`). |
 | `sortable` | `Boolean` | `false` | Whether the association is sortable. |
-| `writable` | `Boolean`, `Symbol<:create, :update>` | `false` | The write access. `true` for both create and update, `:create` for create only, `:update` for update only. |
+| `writable` | `Boolean`, `Symbol<:create, :update>` | `false` | The write access. `true` for both create and update, `:create` for create only, `:update` for update only. Requires `accepts_nested_attributes_for` on the model, where `allow_destroy: true` also enables deletion. |
 
 </div>
 
@@ -540,11 +539,11 @@ Subclasses inherit parent associations.
 | `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
 | `example` | `Object`, `nil` | `nil` | The example. Metadata included in exports. |
 | `filterable` | `Boolean` | `false` | Whether the association is filterable. |
-| `include` | `Symbol<:always, :optional>` | `:optional` | The inclusion strategy. `:always` includes automatically but has circular reference protection. |
+| `include` | `Symbol<:always, :optional>` | `:optional` | The inclusion mode. |
 | `nullable` | `Boolean`, `nil` | `nil` | Whether the association can be `null`. |
 | `representation` | `Class<Representation::Base>`, `nil` | `nil` | The representation class. If `nil`, inferred from the associated model in the same namespace (e.g., `CustomerRepresentation` for `Customer`). |
 | `sortable` | `Boolean` | `false` | Whether the association is sortable. |
-| `writable` | `Boolean`, `Symbol<:create, :update>` | `false` | The write access. `true` for both create and update, `:create` for create only, `:update` for update only. |
+| `writable` | `Boolean`, `Symbol<:create, :update>` | `false` | The write access. `true` for both create and update, `:create` for create only, `:update` for update only. Requires `accepts_nested_attributes_for` on the model, where `allow_destroy: true` also enables deletion. |
 
 </div>
 

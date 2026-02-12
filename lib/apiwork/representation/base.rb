@@ -325,7 +325,7 @@ module Apiwork
         # @param filterable [Boolean] (false)
         #   Whether the association is filterable.
         # @param include [Symbol] (:optional) [:always, :optional]
-        #   The inclusion strategy. `:always` includes automatically but has circular reference protection.
+        #   The inclusion mode.
         # @param nullable [Boolean, nil] (nil)
         #   Whether the association can be `null`.
         # @param representation [Class<Representation::Base>, nil] (nil)
@@ -335,6 +335,7 @@ module Apiwork
         #   Whether the association is sortable.
         # @param writable [Boolean, Symbol] (false) [:create, :update]
         #   The write access. `true` for both create and update, `:create` for create only, `:update` for update only.
+        #   Requires `accepts_nested_attributes_for` on the model, where `allow_destroy: true` also enables deletion.
         # @return [void]
         #
         # @example Basic
@@ -389,8 +390,6 @@ module Apiwork
         #
         # @param name [Symbol]
         #   The association name.
-        # @param allow_destroy [Boolean] (false)
-        #   Whether nested records can be destroyed. Auto-detected from model nested_attributes_options.
         # @param deprecated [Boolean] (false)
         #   Whether deprecated. Metadata included in exports.
         # @param description [String, nil] (nil)
@@ -400,7 +399,7 @@ module Apiwork
         # @param filterable [Boolean] (false)
         #   Whether the association is filterable.
         # @param include [Symbol] (:optional) [:always, :optional]
-        #   The inclusion strategy. `:always` includes automatically but has circular reference protection.
+        #   The inclusion mode.
         # @param representation [Class<Representation::Base>, nil] (nil)
         #   The representation class. If `nil`, inferred from the associated model in the same
         #   namespace (e.g., `CustomerRepresentation` for `Customer`).
@@ -408,6 +407,7 @@ module Apiwork
         #   Whether the association is sortable.
         # @param writable [Boolean, Symbol] (false) [:create, :update]
         #   The write access. `true` for both create and update, `:create` for create only, `:update` for update only.
+        #   Requires `accepts_nested_attributes_for` on the model, where `allow_destroy: true` also enables deletion.
         # @return [void]
         # @see #has_one
         #
@@ -428,7 +428,6 @@ module Apiwork
         #   end
         def has_many(
           name,
-          allow_destroy: false,
           deprecated: false,
           description: nil,
           example: nil,
@@ -443,7 +442,6 @@ module Apiwork
               name,
               :has_many,
               self,
-              allow_destroy:,
               deprecated:,
               description:,
               example:,
@@ -472,7 +470,7 @@ module Apiwork
         # @param filterable [Boolean] (false)
         #   Whether the association is filterable.
         # @param include [Symbol] (:optional) [:always, :optional]
-        #   The inclusion strategy. `:always` includes automatically but has circular reference protection.
+        #   The inclusion mode.
         # @param nullable [Boolean, nil] (nil)
         #   Whether the association can be `null`. If `nil`, auto-detected from foreign key column NULL constraint.
         # @param polymorphic [Array<Class<Representation::Base>>, nil] (nil)
@@ -484,6 +482,7 @@ module Apiwork
         #   Whether the association is sortable.
         # @param writable [Boolean, Symbol] (false) [:create, :update]
         #   The write access. `true` for both create and update, `:create` for create only, `:update` for update only.
+        #   Requires `accepts_nested_attributes_for` on the model, where `allow_destroy: true` also enables deletion.
         # @return [void]
         # @see #has_one
         #
