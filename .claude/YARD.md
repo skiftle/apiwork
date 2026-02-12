@@ -658,8 +658,24 @@ Type only. No description.
 
 - Required for: `&block` methods, mutators
 - Code must be runnable
-- Output shown with `# =>`
+- Output shown with `# =>` — exactly one space before `# =>`, no column alignment
 - Never: foo, bar, baz, test, example
+
+### Return Value Spacing
+
+One space before `# =>`. No column alignment.
+
+```ruby
+# Good
+#   attribute.name # => :title
+#   attribute.type # => :string
+#   attribute.representation_class # => CustomerRepresentation
+
+# Bad — column-aligned
+#   attribute.name                 # => :title
+#   attribute.type                 # => :string
+#   attribute.representation_class # => CustomerRepresentation
+```
 
 ### Domain Terms
 
