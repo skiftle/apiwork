@@ -93,7 +93,7 @@ RSpec.describe 'Contract Imports' do
         create_test_contract do
           import 'UserContract', as: :user
         end
-      end.to raise_error(ArgumentError, /import must be a Class constant/)
+      end.to raise_error(Apiwork::ConfigurationError, /import must be a Class constant/)
     end
 
     it 'validates that import is a Contract class' do
@@ -103,7 +103,7 @@ RSpec.describe 'Contract Imports' do
         create_test_contract do
           import not_a_contract, as: :other
         end
-      end.to raise_error(ArgumentError, /import must be a Contract class/)
+      end.to raise_error(Apiwork::ConfigurationError, /import must be a Contract class/)
     end
 
     it 'validates that alias is a Symbol' do
@@ -112,7 +112,7 @@ RSpec.describe 'Contract Imports' do
         create_test_contract do
           import uc, as: 'user'
         end
-      end.to raise_error(ArgumentError, /import alias must be a Symbol/)
+      end.to raise_error(Apiwork::ConfigurationError, /import alias must be a Symbol/)
     end
   end
 

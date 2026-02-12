@@ -73,7 +73,7 @@ module Apiwork
           @value = value
           @defined = true
         when :object
-          raise ArgumentError, 'object requires a block' unless block
+          raise ConfigurationError, 'object requires a block' unless block
 
           shape = Object.new
           block.arity.positive? ? yield(shape) : shape.instance_eval(&block)
@@ -81,7 +81,7 @@ module Apiwork
           @shape = shape
           @defined = true
         when :array
-          raise ArgumentError, 'array requires a block' unless block
+          raise ConfigurationError, 'array requires a block' unless block
 
           inner = Element.new
           block.arity.positive? ? yield(inner) : inner.instance_eval(&block)
@@ -91,7 +91,7 @@ module Apiwork
           @shape = inner.shape
           @defined = true
         when :union
-          raise ArgumentError, 'union requires a block' unless block
+          raise ConfigurationError, 'union requires a block' unless block
 
           shape = Union.new(discriminator:)
           block.arity.positive? ? yield(shape) : shape.instance_eval(&block)

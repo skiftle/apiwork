@@ -123,7 +123,7 @@ module Apiwork
           required:,
         }
 
-        raise ArgumentError, 'discriminator can only be used with type: :union' if discriminator && type != :union
+        raise ConfigurationError, 'discriminator can only be used with type: :union' if discriminator && type != :union
 
         visited_types ||= @visited_types
         visited_types ||= Set.new
@@ -204,7 +204,7 @@ module Apiwork
         required: false,
         &block
       )
-        raise ArgumentError, 'array requires a block' unless block
+        raise ConfigurationError, 'array requires a block' unless block
 
         element = Element.new(@contract_class)
         block.arity.positive? ? yield(element) : element.instance_eval(&block)
@@ -312,7 +312,7 @@ module Apiwork
       end
 
       def define_literal_param(name, as:, default:, deprecated:, description:, optional:, value:)
-        raise ArgumentError, 'Literal type requires a value parameter' if value.nil?
+        raise ConfigurationError, 'Literal type requires a value parameter' if value.nil?
 
         @params[name] = (@params[name] || {}).merge(
           {
@@ -329,7 +329,7 @@ module Apiwork
       end
 
       def define_union_param(name, as:, default:, discriminator:, optional:, options:, resolved_enum:, &block)
-        raise ArgumentError, 'Union type requires a block with variant definitions' unless block_given?
+        raise ConfigurationError, 'Union type requires a block with variant definitions' unless block_given?
 
         union = Union.new(@contract_class, discriminator:)
         block.arity.positive? ? yield(union) : union.instance_eval(&block)
@@ -526,10 +526,10 @@ module Apiwork
         return nil if enum.nil?
         return enum if enum.is_a?(Array)
 
-        raise ArgumentError, "enum must be a Symbol (reference) or Array (inline values), got #{enum.class}" unless enum.is_a?(Symbol)
+        raise ConfigurationError, "enum must be a Symbol (reference) or Array (inline values), got #{enum.class}" unless enum.is_a?(Symbol)
 
         unless @contract_class.enum?(enum)
-          raise ArgumentError,
+          raise ConfigurationError,
                 "Enum :#{enum} not found. Define it using `enum :#{enum}, %w[...]` in definition scope."
         end
 

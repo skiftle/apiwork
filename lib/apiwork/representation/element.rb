@@ -79,7 +79,7 @@ module Apiwork
       end
 
       def validate!
-        raise ArgumentError, 'must define exactly one type (object, array, or union)' unless @defined
+        raise ConfigurationError, 'must define exactly one type (object, array, or union)' unless @defined
       end
 
       # @api public
@@ -98,7 +98,7 @@ module Apiwork
       def of(type, discriminator: nil, &block)
         case type
         when :object
-          raise ArgumentError, 'object requires a block' unless block
+          raise ConfigurationError, 'object requires a block' unless block
 
           builder = API::Object.new
           block.arity.positive? ? yield(builder) : builder.instance_eval(&block)
@@ -106,7 +106,7 @@ module Apiwork
           @shape = builder
           @defined = true
         when :array
-          raise ArgumentError, 'array requires a block' unless block
+          raise ConfigurationError, 'array requires a block' unless block
 
           inner = API::Element.new
           block.arity.positive? ? yield(inner) : inner.instance_eval(&block)
@@ -116,7 +116,7 @@ module Apiwork
           @shape = inner.shape
           @defined = true
         when :union
-          raise ArgumentError, 'union requires a block' unless block
+          raise ConfigurationError, 'union requires a block' unless block
 
           builder = API::Union.new(discriminator:)
           block.arity.positive? ? yield(builder) : builder.instance_eval(&block)

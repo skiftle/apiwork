@@ -49,7 +49,7 @@ RSpec.describe 'Literal and Discriminated Union Features' do
             end
           end
         end
-      end.to raise_error(ArgumentError, /Literal type requires a value parameter/)
+      end.to raise_error(Apiwork::ConfigurationError, /Literal type requires a value parameter/)
     end
   end
 
@@ -146,7 +146,7 @@ RSpec.describe 'Literal and Discriminated Union Features' do
             end
           end
         end
-      end.to raise_error(ArgumentError, /discriminator can only be used with type: :union/)
+      end.to raise_error(Apiwork::ConfigurationError, /discriminator can only be used with type: :union/)
     end
 
     it 'raises error when using tag without discriminator' do
@@ -164,7 +164,7 @@ RSpec.describe 'Literal and Discriminated Union Features' do
             end
           end
         end
-      end.to raise_error(ArgumentError, /tag can only be used when union has a discriminator/)
+      end.to raise_error(Apiwork::ConfigurationError, /tag can only be used when union has a discriminator/)
     end
 
     it 'raises error when discriminator is present but variant lacks tag' do
@@ -182,7 +182,7 @@ RSpec.describe 'Literal and Discriminated Union Features' do
             end
           end
         end
-      end.to raise_error(ArgumentError, /tag is required for all variants when union has a discriminator/)
+      end.to raise_error(Apiwork::ConfigurationError, /tag is required for all variants when union has a discriminator/)
     end
   end
 end

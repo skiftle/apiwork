@@ -123,12 +123,12 @@ module Apiwork
         #   model Invoice
         def model(value)
           unless value.is_a?(Class)
-            raise ArgumentError,
+            raise ConfigurationError,
                   "model must be an ActiveRecord model class, got #{value.class}. " \
                                                                  "Use: model Post (not 'Post' or :post)"
           end
           unless value < ActiveRecord::Base
-            raise ArgumentError,
+            raise ConfigurationError,
                   "model must be an ActiveRecord model class, got #{value}"
           end
           @model_class = value
@@ -756,12 +756,10 @@ module Apiwork
         end
 
         def serialize_record(record, context: {}, include: nil)
-          if inheritance&.subclasses&.any?
-            subclass_representation = inheritance.resolve(record)
-            return subclass_representation.new(record, context:, include:).as_json if subclass_representation
-          end
+          subclass_representation_class = inheritance.resolve(record) if inheritance&.subclasses&.any?
+          representation_class = subclass_representation_class || self
 
-          new(record, context:, include:).as_json
+          representation_class.new(record, context:, include:).as_json
         end
 
         private

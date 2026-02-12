@@ -75,11 +75,11 @@ module Apiwork
 
       def serialize_variant_aware(record, target_representation_class, nested_includes)
         if target_representation_class.inheritance&.subclasses&.any?
-          subclass_representation = target_representation_class.inheritance.resolve(record)
-          return subclass_representation.new(record, context: @representation.context, include: nested_includes).as_json if subclass_representation
+          subclass_representation_class = target_representation_class.inheritance.resolve(record)
         end
+        representation_class = subclass_representation_class || target_representation_class
 
-        target_representation_class.new(record, context: @representation.context, include: nested_includes).as_json
+        representation_class.new(record, context: @representation.context, include: nested_includes).as_json
       end
 
       def should_include_association?(name, association)

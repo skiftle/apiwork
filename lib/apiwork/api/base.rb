@@ -261,7 +261,7 @@ module Apiwork
           example: nil,
           deprecated: false
         )
-          raise ArgumentError, 'Values must be an array' if values && !values.is_a?(Array)
+          raise ConfigurationError, 'Values must be an array' if values && !values.is_a?(Array)
 
           enum_registry.register(
             name,
@@ -308,7 +308,7 @@ module Apiwork
           scope: nil,
           &block
         )
-          raise ArgumentError, 'Union requires a block' unless block_given?
+          raise ConfigurationError, 'Union requires a block' unless block_given?
 
           type_registry.register(
             name,

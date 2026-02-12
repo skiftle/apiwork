@@ -82,7 +82,7 @@ module Apiwork
           @value = value
           @defined = true
         when :object
-          raise ArgumentError, 'object requires a block' unless block
+          raise ConfigurationError, 'object requires a block' unless block
 
           shape = Object.new(@contract_class)
           block.arity.positive? ? yield(shape) : shape.instance_eval(&block)
@@ -90,7 +90,7 @@ module Apiwork
           @shape = shape
           @defined = true
         when :array
-          raise ArgumentError, 'array requires a block' unless block
+          raise ConfigurationError, 'array requires a block' unless block
 
           inner = Element.new(@contract_class)
           block.arity.positive? ? yield(inner) : inner.instance_eval(&block)
@@ -100,7 +100,7 @@ module Apiwork
           @shape = inner.shape
           @defined = true
         when :union
-          raise ArgumentError, 'union requires a block' unless block
+          raise ConfigurationError, 'union requires a block' unless block
 
           shape = Union.new(@contract_class, discriminator:)
           block.arity.positive? ? yield(shape) : shape.instance_eval(&block)
@@ -121,7 +121,7 @@ module Apiwork
         return nil if enum.nil?
         return enum if enum.is_a?(Array)
 
-        raise ArgumentError, "Enum :#{enum} not found." unless @contract_class.enum?(enum)
+        raise ConfigurationError, "Enum :#{enum} not found." unless @contract_class.enum?(enum)
 
         enum
       end

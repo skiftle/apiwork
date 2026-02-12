@@ -40,7 +40,7 @@ module Apiwork
     #   end
     def variant(deprecated: false, description: nil, partial: false, tag: nil, &block)
       validate_tag!(tag)
-      raise ArgumentError, 'variant requires a block' unless block
+      raise ConfigurationError, 'variant requires a block' unless block
 
       element = build_element
       block.arity.positive? ? yield(element) : element.instance_eval(&block)
@@ -92,11 +92,11 @@ module Apiwork
     end
 
     def validate_tag!(tag)
-      raise ArgumentError, 'tag can only be used when union has a discriminator' if tag.present? && @discriminator.nil?
+      raise ConfigurationError, 'tag can only be used when union has a discriminator' if tag.present? && @discriminator.nil?
 
       return unless @discriminator.present? && tag.blank?
 
-      raise ArgumentError, 'tag is required for all variants when union has a discriminator'
+      raise ConfigurationError, 'tag is required for all variants when union has a discriminator'
     end
   end
 end

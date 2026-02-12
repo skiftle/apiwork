@@ -141,7 +141,7 @@ module Apiwork
         #   end
         def representation(klass)
           unless klass.is_a?(Class) && klass < Representation::Base
-            raise ArgumentError,
+            raise ConfigurationError,
                   'representation must be a Representation class (subclass of Apiwork::Representation::Base), ' \
                   "got #{klass.inspect}"
           end
@@ -354,19 +354,19 @@ module Apiwork
         #   # UserContract's :address becomes :user_address
         def import(klass, as:)
           unless klass.is_a?(Class)
-            raise ArgumentError,
+            raise ConfigurationError,
                   "import must be a Class constant, got #{klass.class}. " \
                                                    "Use: import UserContract, as: :user (not 'UserContract' or :user_contract)"
           end
 
           unless klass < Contract::Base
-            raise ArgumentError,
+            raise ConfigurationError,
                   'import must be a Contract class (subclass of Apiwork::Contract::Base), ' \
                                                    "got #{klass}"
           end
 
           unless as.is_a?(Symbol)
-            raise ArgumentError,
+            raise ConfigurationError,
                   "import alias must be a Symbol, got #{as.class}. " \
                                                    'Use: import UserContract, as: :user'
           end
