@@ -108,4 +108,54 @@ RSpec.describe 'path_format Configuration', type: :request do
       expect(paths).to include('/user-profiles/{id}')
     end
   end
+
+  describe 'path_format transforms base_path' do
+    let(:api_class) do
+      Class.new(Apiwork::API::Base) do
+        mount '/cool_man'
+        key_format :camel
+        path_format :kebab
+
+        resources :test_items
+      end
+    end
+
+    after { Apiwork::API::Registry.unregister('/cool_man') }
+
+    it 'transforms base_path via transform_path method' do
+      expect(api_class.transform_path('/cool_man')).to eq('/cool-man')
+    end
+
+    it 'transforms resource name in introspection' do
+      introspection = api_class.introspect
+      resource = introspection.resources[:test_items]
+
+      expect(resource.path).to eq('test-items')
+    end
+  end
+
+  describe 'path_format transforms explicit resource path:' do
+    let(:api_class) do
+      Class.new(Apiwork::API::Base) do
+        mount '/api/v3'
+        key_format :camel
+        path_format :kebab
+
+        resources :recurring, path: 'recurring_invoices'
+      end
+    end
+
+    after { Apiwork::API::Registry.unregister('/api/v3') }
+
+    it 'transforms explicit path option' do
+      introspection = api_class.introspect
+      resource = introspection.resources[:recurring]
+
+      expect(resource.path).to eq('recurring-invoices')
+    end
+
+    it 'uses transform_path on explicit path' do
+      expect(api_class.transform_path('recurring_invoices')).to eq('recurring-invoices')
+    end
+  end
 end

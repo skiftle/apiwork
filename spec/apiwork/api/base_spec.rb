@@ -49,7 +49,7 @@ RSpec.describe 'API path_format' do
     end
   end
 
-  describe 'transform_path_segment' do
+  describe '#transform_path' do
     let(:api_class) do
       Class.new(Apiwork::API::Base) do
         mount '/test'
@@ -60,7 +60,11 @@ RSpec.describe 'API path_format' do
       before { api_class.path_format :keep }
 
       it 'keeps underscore segments unchanged' do
-        expect(api_class.transform_path_segment(:recurring_invoices)).to eq('recurring_invoices')
+        expect(api_class.transform_path(:recurring_invoices)).to eq('recurring_invoices')
+      end
+
+      it 'keeps full paths unchanged' do
+        expect(api_class.transform_path('/cool_man/v2')).to eq('/cool_man/v2')
       end
     end
 
@@ -68,15 +72,27 @@ RSpec.describe 'API path_format' do
       before { api_class.path_format :kebab }
 
       it 'transforms underscores to dashes' do
-        expect(api_class.transform_path_segment(:recurring_invoices)).to eq('recurring-invoices')
+        expect(api_class.transform_path(:recurring_invoices)).to eq('recurring-invoices')
       end
 
       it 'handles single-word segments' do
-        expect(api_class.transform_path_segment(:invoices)).to eq('invoices')
+        expect(api_class.transform_path(:invoices)).to eq('invoices')
       end
 
       it 'handles multiple underscores' do
-        expect(api_class.transform_path_segment(:very_long_resource_name)).to eq('very-long-resource-name')
+        expect(api_class.transform_path(:very_long_resource_name)).to eq('very-long-resource-name')
+      end
+
+      it 'transforms full paths' do
+        expect(api_class.transform_path('/cool_man/v2')).to eq('/cool-man/v2')
+      end
+
+      it 'transforms multi-segment paths' do
+        expect(api_class.transform_path('/api_v2/user_profiles')).to eq('/api-v2/user-profiles')
+      end
+
+      it 'preserves root path' do
+        expect(api_class.transform_path('/')).to eq('/')
       end
     end
 
@@ -84,15 +100,19 @@ RSpec.describe 'API path_format' do
       before { api_class.path_format :camel }
 
       it 'transforms to lowerCamelCase' do
-        expect(api_class.transform_path_segment(:recurring_invoices)).to eq('recurringInvoices')
+        expect(api_class.transform_path(:recurring_invoices)).to eq('recurringInvoices')
       end
 
       it 'handles single-word segments' do
-        expect(api_class.transform_path_segment(:invoices)).to eq('invoices')
+        expect(api_class.transform_path(:invoices)).to eq('invoices')
       end
 
       it 'handles multiple underscores' do
-        expect(api_class.transform_path_segment(:very_long_resource_name)).to eq('veryLongResourceName')
+        expect(api_class.transform_path(:very_long_resource_name)).to eq('veryLongResourceName')
+      end
+
+      it 'transforms full paths' do
+        expect(api_class.transform_path('/cool_man/v2')).to eq('/coolMan/v2')
       end
     end
 
@@ -100,7 +120,7 @@ RSpec.describe 'API path_format' do
       before { api_class.path_format :underscore }
 
       it 'keeps underscores unchanged' do
-        expect(api_class.transform_path_segment(:recurring_invoices)).to eq('recurring_invoices')
+        expect(api_class.transform_path(:recurring_invoices)).to eq('recurring_invoices')
       end
     end
   end

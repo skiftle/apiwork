@@ -14,8 +14,7 @@ module Apiwork
         def to_h
           resource_segment = @resource.singular ? @resource.name.to_s.singularize : @resource.name.to_s
 
-          formatted_segment = @resource.path ||
-                              @api_class.transform_path_segment(resource_segment)
+          formatted_segment = @api_class.transform_path(@resource.path || resource_segment)
 
           resource_path = build_resource_path(formatted_segment)
 
@@ -93,9 +92,9 @@ module Apiwork
               ''
             end
           elsif adapter_action.member?
-            "/:id/#{@api_class.transform_path_segment(action_name)}"
+            "/:id/#{@api_class.transform_path(action_name)}"
           elsif adapter_action.collection?
-            "/#{@api_class.transform_path_segment(action_name)}"
+            "/#{@api_class.transform_path(action_name)}"
           else
             ''
           end

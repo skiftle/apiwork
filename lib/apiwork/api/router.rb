@@ -14,7 +14,7 @@ module Apiwork
             next if api_class.base_path.blank? || api_class.root_resource.blank?
 
             if api_class.export_configs.any?
-              scope path: api_class.base_path do
+              scope path: api_class.transform_path(api_class.base_path) do
                 api_class.export_configs.each do |export_name, export_config|
                   next unless case export_config.endpoint.mode
                               when :always then true
@@ -30,11 +30,11 @@ module Apiwork
             end
 
             scope module: api_class.namespaces.map(&:to_s).join('/').underscore,
-                  path: api_class.base_path do
+                  path: api_class.transform_path(api_class.base_path) do
               router.draw_resources(self, api_class.root_resource.resources, api_class)
             end
 
-            scope path: api_class.base_path do
+            scope path: api_class.transform_path(api_class.base_path) do
               match '*unmatched', to: 'apiwork/errors#not_found', via: :all
             end
           end
@@ -55,7 +55,7 @@ module Apiwork
             param: resource.param,
           }.compact
 
-          path_option = resource.path || api_class.transform_path_segment(resource.name)
+          path_option = api_class.transform_path(resource.path || resource.name)
           options[:path] = path_option unless path_option == resource.name.to_s
 
           router = self
@@ -65,7 +65,7 @@ module Apiwork
               if resource.member_actions.any?
                 member do
                   resource.member_actions.each_value do |action|
-                    action_path = api_class.transform_path_segment(action.name)
+                    action_path = api_class.transform_path(action.name)
                     if action_path == action.name.to_s
                       send(action.method, action.name)
                     else
@@ -78,7 +78,7 @@ module Apiwork
               if resource.collection_actions.any?
                 collection do
                   resource.collection_actions.each_value do |action|
-                    action_path = api_class.transform_path_segment(action.name)
+                    action_path = api_class.transform_path(action.name)
                     if action_path == action.name.to_s
                       send(action.method, action.name)
                     else

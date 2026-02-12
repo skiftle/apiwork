@@ -564,15 +564,20 @@ module Apiwork
           I18n.translate(key, default:)
         end
 
-        def transform_path_segment(segment)
-          case @path_format
-          when :kebab
-            segment.to_s.dasherize
-          when :camel
-            segment.to_s.camelize(:lower)
-          else
-            segment.to_s
-          end
+        def transform_path(path)
+          path_string = path.to_s
+          return path_string if @path_format == :keep
+          return path_string if path_string == '/'
+
+          path_string.split('/').map do |segment|
+            next segment if segment.empty?
+
+            case @path_format
+            when :kebab then segment.dasherize
+            when :camel then segment.camelize(:lower)
+            else segment
+            end
+          end.join('/')
         end
 
         def normalize_request(request)
