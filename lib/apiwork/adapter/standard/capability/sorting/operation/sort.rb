@@ -45,9 +45,11 @@ module Apiwork
                   elsif value.is_a?(Hash)
                     association = target_klass.reflect_on_association(key)
                     next unless association
-                    next unless representation_class.associations[key]&.sortable?
 
-                    association_resource = representation_class.associations[key]&.representation_class
+                    association_definition = representation_class.associations[key]
+                    next unless association_definition&.sortable?
+
+                    association_resource = association_definition.representation_class
                     next unless association_resource
 
                     nested_query = Sort.new(association.klass.all, association_resource)

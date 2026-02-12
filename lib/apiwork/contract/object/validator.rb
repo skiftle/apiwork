@@ -379,8 +379,6 @@ module Apiwork
           type_shape.copy_type_definition_params(type_definition, type_shape)
 
           Validator.new(type_shape).validate(value, max_depth:, current_depth: current_depth + 1, path: field_path)
-        rescue NameError, ArgumentError
-          nil
         end
 
         def validate_type(name, value, expected_type, path)
