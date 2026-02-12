@@ -65,8 +65,7 @@ module Apiwork
           base_schema = map_param(variant)
 
           if type.discriminator && variant.tag && !reference_contains_discriminator?(variant, type.discriminator)
-            discriminator_key = @export.transform_key(type.discriminator)
-            "#{base_schema}.extend({ #{discriminator_key}: z.literal('#{variant.tag}') })"
+            "#{base_schema}.extend({ #{@export.transform_key(type.discriminator)}: z.literal('#{variant.tag}') })"
           else
             base_schema
           end
@@ -76,12 +75,11 @@ module Apiwork
 
         type_annotation = recursive ? ": z.ZodType<#{schema_name}>" : ''
 
-        if type.discriminator
-          discriminator_key = @export.transform_key(type.discriminator)
-          union_code = "z.discriminatedUnion('#{discriminator_key}', [\n#{union_body}\n])"
-        else
-          union_code = "z.union([\n#{union_body}\n])"
-        end
+        union_code = if type.discriminator
+                       "z.discriminatedUnion('#{@export.transform_key(type.discriminator)}', [\n#{union_body}\n])"
+                     else
+                       "z.union([\n#{union_body}\n])"
+                     end
 
         if recursive
           "export const #{schema_name}Schema#{type_annotation} = z.lazy(() => #{union_code});"

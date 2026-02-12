@@ -49,8 +49,7 @@ module Apiwork
           base_type = map_param(variant)
 
           if type.discriminator && variant.tag && !reference_contains_discriminator?(variant, type.discriminator)
-            discriminator_key = @export.transform_key(type.discriminator)
-            "{ #{discriminator_key}: '#{variant.tag}' } & #{base_type}"
+            "{ #{@export.transform_key(type.discriminator)}: '#{variant.tag}' } & #{base_type}"
           else
             base_type
           end
@@ -173,10 +172,7 @@ module Apiwork
       def map_array_type(param)
         items_type = param.of
 
-        if items_type.nil? && param.shape.any?
-          element_type = map_object_type(param)
-          return "#{element_type}[]"
-        end
+        return "#{map_object_type(param)}[]" if items_type.nil? && param.shape.any?
 
         return 'unknown[]' unless items_type
 

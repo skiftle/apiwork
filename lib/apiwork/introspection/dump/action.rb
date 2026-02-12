@@ -60,10 +60,7 @@ module Apiwork
         end
 
         def raises
-          action_error_codes = @contract_action.raises
-          api_error_codes = api_level_raises
-          auto_error_codes = auto_raises
-          (api_error_codes + action_error_codes + auto_error_codes).uniq.sort_by(&:to_s)
+          (api_level_raises + @contract_action.raises + auto_raises).uniq.sort_by(&:to_s)
         end
 
         def api_level_raises
@@ -91,8 +88,9 @@ module Apiwork
           api_class = @contract_action.contract_class.api_class
           return nil unless api_class
 
-          contract_class = @contract_action.contract_class
-          resource = api_class.root_resource.find_resource { |resource| resource.contract_class == contract_class }
+          resource = api_class.root_resource.find_resource do |candidate|
+            candidate.contract_class == @contract_action.contract_class
+          end
           return nil unless resource
 
           resource.actions[@contract_action.name.to_sym]&.method

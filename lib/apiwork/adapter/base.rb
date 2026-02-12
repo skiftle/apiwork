@@ -189,8 +189,7 @@ module Apiwork
           capability.contract_types(contract_class, representation_class, actions)
         end
 
-        resource_serializer_class = self.class.resource_serializer
-        resource_serializer_class.new(representation_class).contract_types(contract_class)
+        self.class.resource_serializer.new(representation_class).contract_types(contract_class)
 
         build_action_responses(contract_class, representation_class, actions)
       end
@@ -294,15 +293,13 @@ module Apiwork
       end
 
       def resolve_resource_data_type(representation_class)
-        resource_serializer_class = self.class.resource_serializer
-        resource_serializer_class.data_type.call(representation_class)
+        self.class.resource_serializer.data_type.call(representation_class)
       end
 
       def build_error_response_body(api_class, error_serializer_class)
         return if api_class.type?(:error_response_body)
 
-        error_wrapper = self.class.error_wrapper
-        shape_class = error_wrapper.shape_class
+        shape_class = self.class.error_wrapper.shape_class
         return unless shape_class
 
         data_type = error_serializer_class.data_type

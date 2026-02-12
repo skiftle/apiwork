@@ -180,9 +180,9 @@ module Apiwork
           type_definition = shape.contract_class.resolve_custom_type(type_name)
           return type_cache[type_name] = nil unless type_definition
 
-          type_shape = Object.new(shape.contract_class)
-          type_shape.copy_type_definition_params(type_definition, type_shape)
-          type_cache[type_name] = type_shape
+          type_cache[type_name] = Object.new(shape.contract_class).tap do |type_shape|
+            type_shape.copy_type_definition_params(type_definition, type_shape)
+          end
         end
       end
     end

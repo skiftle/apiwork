@@ -385,9 +385,8 @@ module Apiwork
           result[:properties][transform_key(name)] = map_field(field)
         end
 
-        if param.shape.any?
-          required_fields = param.shape.reject { |_name, field| field.optional? }.keys.map { |key| transform_key(key) }
-          result[:required] = required_fields if required_fields.any?
+        if param.shape.any? && (required = param.shape.reject { |_name, field| field.optional? }.keys.map { |key| transform_key(key) }).any?
+          result[:required] = required
         end
 
         result
@@ -396,21 +395,16 @@ module Apiwork
       def map_array(param)
         items_param = param.of
 
-        if items_param.nil? && param.shape.any?
-          items_schema = map_inline_object(param.shape)
-          return { items: items_schema, type: 'array' }
-        end
+        return { items: map_inline_object(param.shape), type: 'array' } if items_param.nil? && param.shape.any?
 
         return { items: {}, type: 'array' } unless items_param
 
-        items_schema = if items_param.reference? && type_exists?(items_param.reference)
-                         { '$ref': "#/components/schemas/#{transform_key(items_param.reference)}" }
-                       else
-                         map_param(items_param)
-                       end
-
         {
-          items: items_schema,
+          items: if items_param.reference? && type_exists?(items_param.reference)
+                   { '$ref': "#/components/schemas/#{transform_key(items_param.reference)}" }
+                 else
+                   map_param(items_param)
+                 end,
           type: 'array',
         }
       end
@@ -422,8 +416,9 @@ module Apiwork
           result[:properties][transform_key(name)] = map_field(field)
         end
 
-        required_fields = shape.reject { |_name, field| field.optional? }.keys.map { |key| transform_key(key) }
-        result[:required] = required_fields if required_fields.any?
+        if (required = shape.reject { |_name, field| field.optional? }.keys.map { |key| transform_key(key) }).any?
+          result[:required] = required
+        end
 
         result
       end

@@ -79,8 +79,7 @@ module Apiwork
           type_definition = shape.contract_class.resolve_custom_type(type_name)
           return hash unless type_definition
 
-          scope_contract_class = type_definition.scope || shape.contract_class
-          representation_class = scope_contract_class.representation_class
+          representation_class = (type_definition.scope || shape.contract_class).representation_class
 
           return representation_class.deserialize(hash) if representation_class
 
