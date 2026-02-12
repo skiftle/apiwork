@@ -76,16 +76,16 @@ module Apiwork
       private
 
       def validate_kind_consistency!(key, new_kind)
-        existing = @store[key]
-        return if existing.kind == new_kind
+        definition = @store[key]
+        return if definition.kind == new_kind
 
         raise ConfigurationError,
-              "Cannot redefine :#{key} as #{new_kind}, already defined as #{existing.kind}"
+              "Cannot redefine :#{key} as #{new_kind}, already defined as #{definition.kind}"
       end
 
       def merge(key, block:, deprecated:, description:, example:)
-        existing = @store[key]
-        @store[key] = existing.merge(
+        definition = @store[key]
+        @store[key] = definition.merge(
           block:,
           deprecated:,
           description:,

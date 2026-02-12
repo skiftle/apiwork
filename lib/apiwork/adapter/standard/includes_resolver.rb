@@ -58,13 +58,12 @@ module Apiwork
 
           visited = visited.dup.add(representation_class.name)
 
-          associations.each_with_object({}) do |(name, association), result|
-            nested_representation_class = association.representation_class
-            result[name] = if nested_representation_class
-                             self.class.new(nested_representation_class).always_included(visited)
-                           else
-                             {}
-                           end
+          associations.transform_values do |association|
+            if association.representation_class
+              self.class.new(association.representation_class).always_included(visited)
+            else
+              {}
+            end
           end
         end
 
@@ -94,13 +93,11 @@ module Apiwork
             association = representation_class.associations[key]
             next unless association
 
-            nested = if value.is_a?(Hash) && association.representation_class.respond_to?(:associations)
-                       self.class.new(association.representation_class).from_params(value, visited)
-                     else
-                       {}
-                     end
-
-            result[key] = nested
+            result[key] = if value.is_a?(Hash) && association.representation_class.respond_to?(:associations)
+                            self.class.new(association.representation_class).from_params(value, visited)
+                          else
+                            {}
+                          end
           end
         end
       end
