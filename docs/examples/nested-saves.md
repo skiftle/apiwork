@@ -156,7 +156,7 @@ GET /clever_rabbit/orders
 **Request**
 
 ```http
-GET /clever_rabbit/orders/d6afdfea-1e99-5a7c-98e0-f05896dbe62f
+GET /clever_rabbit/orders/38948b8f-2c00-5384-8f16-b1105fcd31fb
 ```
 
 **Response** `200`
@@ -164,7 +164,7 @@ GET /clever_rabbit/orders/d6afdfea-1e99-5a7c-98e0-f05896dbe62f
 ```json
 {
   "order": {
-    "id": "d6afdfea-1e99-5a7c-98e0-f05896dbe62f",
+    "id": "38948b8f-2c00-5384-8f16-b1105fcd31fb",
     "orderNumber": "ORD-001",
     "status": "pending",
     "total": null,
@@ -217,7 +217,7 @@ Content-Type: application/json
 ```json
 {
   "order": {
-    "id": "3870eeb2-49db-5e22-857a-ca2bcd2e4612",
+    "id": "38948b8f-2c00-5384-8f16-b1105fcd31fb",
     "orderNumber": "ORD-001",
     "status": "pending",
     "total": null,
@@ -256,7 +256,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-PATCH /clever_rabbit/orders/099aec9e-6aec-5782-9315-9bc452881440
+PATCH /clever_rabbit/orders/38948b8f-2c00-5384-8f16-b1105fcd31fb
 Content-Type: application/json
 
 {
@@ -278,7 +278,7 @@ Content-Type: application/json
 ```json
 {
   "order": {
-    "id": "099aec9e-6aec-5782-9315-9bc452881440",
+    "id": "38948b8f-2c00-5384-8f16-b1105fcd31fb",
     "orderNumber": "ORD-001",
     "status": "pending",
     "total": null,
@@ -286,7 +286,7 @@ Content-Type: application/json
     "updatedAt": "2024-01-01T12:00:00.000Z",
     "lineItems": [
       {
-        "id": "855dd577-4696-5477-8c71-4e8debd866be",
+        "id": "ad73acbb-0926-5060-9b75-5888bde61fc7",
         "productName": "New Item",
         "quantity": 3,
         "unitPrice": "19.99"
@@ -305,7 +305,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-DELETE /clever_rabbit/orders/d7b4402f-dd0a-5398-982d-dacd5b07955c
+DELETE /clever_rabbit/orders/38948b8f-2c00-5384-8f16-b1105fcd31fb
 ```
 
 **Response** `204`
@@ -319,14 +319,14 @@ DELETE /clever_rabbit/orders/d7b4402f-dd0a-5398-982d-dacd5b07955c
 **Request**
 
 ```http
-PATCH /clever_rabbit/orders/26e15ccf-de43-5826-a54e-fcd80f398f17
+PATCH /clever_rabbit/orders/38948b8f-2c00-5384-8f16-b1105fcd31fb
 Content-Type: application/json
 
 {
   "order": {
     "line_items": [
       {
-        "id": "5f3ed1ba-29ae-52cc-a142-856d80fd8e3b",
+        "id": "987c1624-9b7b-5467-910c-4dc0035b91ee",
         "_op": "delete"
       }
     ]

@@ -1,12 +1,12 @@
 {
   "request": {
     "method": "GET",
-    "path": "/bold_falcon/articles/e8c30b71-ec2b-5287-ba57-5143a67ded78"
+    "path": "/bold_falcon/articles/980bb55a-45bc-531b-a571-31b7d4d0a0ce"
   },
   "response": {
     "body": {
       "article": {
-        "id": "e8c30b71-ec2b-5287-ba57-5143a67ded78",
+        "id": "980bb55a-45bc-531b-a571-31b7d4d0a0ce",
         "title": "Getting Started with Rails",
         "body": null,
         "status": "published",

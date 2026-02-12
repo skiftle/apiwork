@@ -117,7 +117,7 @@ GET /wise_tiger/projects
 **Request**
 
 ```http
-GET /wise_tiger/projects/7ce6e5ed-28f5-52ba-83bc-a726660c12bc
+GET /wise_tiger/projects/48b9294b-b5f6-51ea-9c77-a28d821b337d
 ```
 
 **Response** `200`
@@ -125,7 +125,7 @@ GET /wise_tiger/projects/7ce6e5ed-28f5-52ba-83bc-a726660c12bc
 ```json
 {
   "project": {
-    "id": "7ce6e5ed-28f5-52ba-83bc-a726660c12bc",
+    "id": "48b9294b-b5f6-51ea-9c77-a28d821b337d",
     "name": "API Integration",
     "description": "Connect to third-party services",
     "status": "active",
@@ -164,7 +164,7 @@ Content-Type: application/json
 ```json
 {
   "project": {
-    "id": "3161e556-4c18-54ab-8027-a5ac92b19bcb",
+    "id": "48b9294b-b5f6-51ea-9c77-a28d821b337d",
     "name": "New Feature",
     "description": "Implement the new dashboard",
     "status": "active",

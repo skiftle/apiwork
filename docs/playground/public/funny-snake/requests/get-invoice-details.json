@@ -1,12 +1,12 @@
 {
   "request": {
     "method": "GET",
-    "path": "/funny_snake/invoices/3feffae7-450f-582f-8951-90b31f1322f4"
+    "path": "/funny_snake/invoices/657000e8-1cd9-5b78-9ca2-dd399ce78cb4"
   },
   "response": {
     "body": {
       "invoice": {
-        "id": "3feffae7-450f-582f-8951-90b31f1322f4",
+        "id": "657000e8-1cd9-5b78-9ca2-dd399ce78cb4",
         "createdAt": "2024-01-01T12:00:00.000Z",
         "issuedOn": null,
         "notes": null,

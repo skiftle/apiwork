@@ -7,7 +7,7 @@
     "body": {
       "articles": [
         {
-          "id": "7c5847bc-3b03-598a-8718-3ffa3ae2f0fd",
+          "id": "66187cb1-6c7d-57b9-95bb-6de6ad564dad",
           "title": "New Article",
           "body": null,
           "status": "published",
@@ -18,7 +18,7 @@
           "updatedAt": "2024-01-01T12:00:00.000Z"
         },
         {
-          "id": "4927d610-8859-576f-a595-fa2b9ec5a4e0",
+          "id": "980bb55a-45bc-531b-a571-31b7d4d0a0ce",
           "title": "Old Article",
           "body": null,
           "status": "published",

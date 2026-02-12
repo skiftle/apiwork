@@ -1,12 +1,12 @@
 {
   "request": {
     "method": "GET",
-    "path": "/wise_tiger/projects/7ce6e5ed-28f5-52ba-83bc-a726660c12bc"
+    "path": "/wise_tiger/projects/48b9294b-b5f6-51ea-9c77-a28d821b337d"
   },
   "response": {
     "body": {
       "project": {
-        "id": "7ce6e5ed-28f5-52ba-83bc-a726660c12bc",
+        "id": "48b9294b-b5f6-51ea-9c77-a28d821b337d",
         "name": "API Integration",
         "description": "Connect to third-party services",
         "status": "active",

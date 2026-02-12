@@ -14,7 +14,7 @@
   "response": {
     "body": {
       "invoice": {
-        "id": "cd3a4e6a-5247-5f84-876f-e4ff358e30f5",
+        "id": "657000e8-1cd9-5b78-9ca2-dd399ce78cb4",
         "createdAt": "2024-01-01T12:00:00.000Z",
         "issuedOn": "2024-01-15",
         "notes": "First invoice",

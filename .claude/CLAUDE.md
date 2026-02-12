@@ -1225,6 +1225,47 @@ Trust your invariants. Fix construction, not symptoms.
 
 ---
 
+## Class Parameter Validation
+
+DSL methods that accept class arguments must validate with two separate checks and consistent error messages.
+
+**Pattern:**
+
+```ruby
+def representation(klass)
+  unless klass.is_a?(Class)
+    raise ConfigurationError,
+          "<method> must be a <Type> class, got #{klass.class}. " \
+          "Use: <method> Example (not 'Example' or :example)"
+  end
+  unless klass < ExpectedBaseClass
+    raise ConfigurationError,
+          '<method> must be a <Type> class (subclass of Apiwork::<Path>), ' \
+          "got #{klass}"
+  end
+
+  @representation_class = klass
+end
+```
+
+**Rules:**
+
+1. First check: `klass.is_a?(Class)` — catches strings, symbols, instances
+2. Second check: `klass < BaseClass` — catches wrong class hierarchy
+3. Error messages include helpful hints: `"Use: method Example (not 'Example' or :example)"`
+4. Use `ConfigurationError` for DSL misconfigurations, not `ArgumentError`
+
+**When to use `ConfigurationError` vs `ArgumentError`:**
+
+| Error | When |
+|-------|------|
+| `ConfigurationError` | DSL/API definition errors (user configured wrong) |
+| `ArgumentError` | Runtime method call with wrong argument type (programming error) |
+
+DSL methods (`model`, `representation`, `resource_serializer`, etc.) always use `ConfigurationError`.
+
+---
+
 ## Bug Fixing
 
 **Fix root cause, not symptoms.**

@@ -7,18 +7,18 @@
         "body": "This is a great article!",
         "author_name": "Jane Doe",
         "commentable_type": "post",
-        "commentable_id": "f32a709f-0312-5981-a770-feaf25b51a04"
+        "commentable_id": "96988365-65b2-5455-a8a8-491aa772ba47"
       }
     }
   },
   "response": {
     "body": {
       "comment": {
-        "id": "dbce7141-50f8-54be-a575-221af6420d0a",
+        "id": "d1ff1866-6fad-545c-839e-2d972eb5729c",
         "body": "This is a great article!",
         "authorName": "Jane Doe",
         "commentableType": "post",
-        "commentableId": "f32a709f-0312-5981-a770-feaf25b51a04",
+        "commentableId": "96988365-65b2-5455-a8a8-491aa772ba47",
         "createdAt": "2024-01-01T12:00:00.000Z"
       }
     },

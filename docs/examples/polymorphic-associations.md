@@ -172,7 +172,7 @@ GET /gentle_owl/comments
 **Request**
 
 ```http
-GET /gentle_owl/comments/b90c16e5-a438-5967-a734-10adf687faa5
+GET /gentle_owl/comments/d1ff1866-6fad-545c-839e-2d972eb5729c
 ```
 
 **Response** `200`
@@ -180,11 +180,11 @@ GET /gentle_owl/comments/b90c16e5-a438-5967-a734-10adf687faa5
 ```json
 {
   "comment": {
-    "id": "b90c16e5-a438-5967-a734-10adf687faa5",
+    "id": "d1ff1866-6fad-545c-839e-2d972eb5729c",
     "body": "Great post!",
     "authorName": "John Doe",
     "commentableType": "post",
-    "commentableId": "f8bf7c21-5db9-52b1-bee8-5cb65c03ad75",
+    "commentableId": "96988365-65b2-5455-a8a8-491aa772ba47",
     "createdAt": "2024-01-01T12:00:00.000Z"
   }
 }
@@ -206,7 +206,7 @@ Content-Type: application/json
     "body": "This is a great article!",
     "author_name": "Jane Doe",
     "commentable_type": "post",
-    "commentable_id": "f32a709f-0312-5981-a770-feaf25b51a04"
+    "commentable_id": "96988365-65b2-5455-a8a8-491aa772ba47"
   }
 }
 ```
@@ -216,11 +216,11 @@ Content-Type: application/json
 ```json
 {
   "comment": {
-    "id": "dbce7141-50f8-54be-a575-221af6420d0a",
+    "id": "d1ff1866-6fad-545c-839e-2d972eb5729c",
     "body": "This is a great article!",
     "authorName": "Jane Doe",
     "commentableType": "post",
-    "commentableId": "f32a709f-0312-5981-a770-feaf25b51a04",
+    "commentableId": "96988365-65b2-5455-a8a8-491aa772ba47",
     "createdAt": "2024-01-01T12:00:00.000Z"
   }
 }
@@ -242,7 +242,7 @@ Content-Type: application/json
     "body": "Very helpful video!",
     "author_name": "Bob Smith",
     "commentable_type": "video",
-    "commentable_id": "f78a691a-9f85-54c7-a39d-9f47d579942b"
+    "commentable_id": "df4ddc5a-953d-52f5-b5b5-7ddf16fa8f57"
   }
 }
 ```
@@ -252,11 +252,11 @@ Content-Type: application/json
 ```json
 {
   "comment": {
-    "id": "993459b6-a155-510a-9f23-be59835d3fee",
+    "id": "d1ff1866-6fad-545c-839e-2d972eb5729c",
     "body": "Very helpful video!",
     "authorName": "Bob Smith",
     "commentableType": "video",
-    "commentableId": "f78a691a-9f85-54c7-a39d-9f47d579942b",
+    "commentableId": "df4ddc5a-953d-52f5-b5b5-7ddf16fa8f57",
     "createdAt": "2024-01-01T12:00:00.000Z"
   }
 }
@@ -279,11 +279,11 @@ GET /gentle_owl/comments?filter[commentable_type][eq]=post
 {
   "comments": [
     {
-      "id": "050873ac-daa3-53e7-b684-62a96fa68421",
+      "id": "d1ff1866-6fad-545c-839e-2d972eb5729c",
       "body": "Post comment",
       "authorName": "User 1",
       "commentableType": "post",
-      "commentableId": "53f2f96c-84a9-5d43-a211-bd0081ca6808",
+      "commentableId": "96988365-65b2-5455-a8a8-491aa772ba47",
       "createdAt": "2024-01-01T12:00:00.000Z"
     }
   ],

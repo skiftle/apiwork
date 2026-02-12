@@ -95,7 +95,7 @@ GET /funny_snake/invoices
 **Request**
 
 ```http
-GET /funny_snake/invoices/3feffae7-450f-582f-8951-90b31f1322f4
+GET /funny_snake/invoices/657000e8-1cd9-5b78-9ca2-dd399ce78cb4
 ```
 
 **Response** `200`
@@ -103,7 +103,7 @@ GET /funny_snake/invoices/3feffae7-450f-582f-8951-90b31f1322f4
 ```json
 {
   "invoice": {
-    "id": "3feffae7-450f-582f-8951-90b31f1322f4",
+    "id": "657000e8-1cd9-5b78-9ca2-dd399ce78cb4",
     "createdAt": "2024-01-01T12:00:00.000Z",
     "issuedOn": null,
     "notes": null,
@@ -140,7 +140,7 @@ Content-Type: application/json
 ```json
 {
   "invoice": {
-    "id": "cd3a4e6a-5247-5f84-876f-e4ff358e30f5",
+    "id": "657000e8-1cd9-5b78-9ca2-dd399ce78cb4",
     "createdAt": "2024-01-01T12:00:00.000Z",
     "issuedOn": "2024-01-15",
     "notes": "First invoice",
@@ -159,7 +159,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-PATCH /funny_snake/invoices/e50fcc57-8256-563f-9e20-403810b5d084
+PATCH /funny_snake/invoices/657000e8-1cd9-5b78-9ca2-dd399ce78cb4
 Content-Type: application/json
 
 {
@@ -181,7 +181,7 @@ Content-Type: application/json
     "issuedOn": "2024-01-15",
     "status": "sent",
     "notes": "Updated invoice",
-    "id": "e50fcc57-8256-563f-9e20-403810b5d084",
+    "id": "657000e8-1cd9-5b78-9ca2-dd399ce78cb4",
     "createdAt": "2024-01-01T12:00:00.000Z",
     "updatedAt": "2024-01-01T12:00:00.000Z"
   }
@@ -196,7 +196,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-DELETE /funny_snake/invoices/2341b2b7-750c-57d9-8ff8-c325cc922833
+DELETE /funny_snake/invoices/657000e8-1cd9-5b78-9ca2-dd399ce78cb4
 ```
 
 **Response** `204`

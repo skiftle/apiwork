@@ -161,7 +161,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-PATCH /curious_cat/profiles/6f45e345-dbd9-543b-bfd8-0f430bd8299f
+PATCH /curious_cat/profiles/696f7bb0-6a34-5c02-b53f-46e76dd02494
 Content-Type: application/json
 
 {
@@ -209,7 +209,7 @@ Content-Type: application/json
 ```json
 {
   "profile": {
-    "id": "6f45e345-dbd9-543b-bfd8-0f430bd8299f",
+    "id": "696f7bb0-6a34-5c02-b53f-46e76dd02494",
     "name": "Alice",
     "email": "alice@example.com",
     "settings": {

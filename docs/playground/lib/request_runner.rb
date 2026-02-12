@@ -169,5 +169,16 @@ class RequestRunner
     end
 
     connection.execute('PRAGMA foreign_keys = ON')
+
+    reset_model_sequences
+  end
+
+  def reset_model_sequences
+    ActiveRecord::Base.descendants.each do |model_class|
+      next if model_class.abstract_class?
+      next unless model_class.table_name&.start_with?(namespace.underscore)
+
+      model_class.reset_sequence!
+    end
   end
 end

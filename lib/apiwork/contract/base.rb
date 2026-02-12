@@ -140,10 +140,15 @@ module Apiwork
         #     representation InvoiceRepresentation
         #   end
         def representation(klass)
-          unless klass.is_a?(Class) && klass < Representation::Base
+          unless klass.is_a?(Class)
+            raise ConfigurationError,
+                  "representation must be a Representation class, got #{klass.class}. " \
+                  "Use: representation InvoiceRepresentation (not 'InvoiceRepresentation' or :invoice)"
+          end
+          unless klass < Representation::Base
             raise ConfigurationError,
                   'representation must be a Representation class (subclass of Apiwork::Representation::Base), ' \
-                  "got #{klass.inspect}"
+                  "got #{klass}"
           end
 
           @representation_class = klass

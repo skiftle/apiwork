@@ -145,7 +145,7 @@ GET /mighty_wolf/vehicles
 **Request**
 
 ```http
-GET /mighty_wolf/vehicles/244334d1-b797-570d-8abf-3244124aa288
+GET /mighty_wolf/vehicles/7900de74-233c-5bc9-bc0c-6679f7a345a5
 ```
 
 **Response** `200`
@@ -154,7 +154,7 @@ GET /mighty_wolf/vehicles/244334d1-b797-570d-8abf-3244124aa288
 {
   "vehicle": {
     "type": "car",
-    "id": "244334d1-b797-570d-8abf-3244124aa288",
+    "id": "7900de74-233c-5bc9-bc0c-6679f7a345a5",
     "brand": "Volvo",
     "model": "EX30",
     "year": 2024,
@@ -192,7 +192,7 @@ Content-Type: application/json
 {
   "vehicle": {
     "type": "car",
-    "id": "28dc3c84-70c5-5b7c-974d-5295a40b1648",
+    "id": "7900de74-233c-5bc9-bc0c-6679f7a345a5",
     "brand": "Volvo",
     "model": "EX30",
     "year": 2024,
@@ -230,7 +230,7 @@ Content-Type: application/json
 {
   "vehicle": {
     "type": "motorcycle",
-    "id": "5f50c425-905a-59fb-aed6-64946b81714e",
+    "id": "7806556d-7175-57da-9ab8-a1d92437b144",
     "brand": "Harley-Davidson",
     "model": "Street Glide",
     "year": 2023,
@@ -268,7 +268,7 @@ Content-Type: application/json
 {
   "vehicle": {
     "type": "truck",
-    "id": "bc709869-2a84-54ce-8bad-69ffeb2112d5",
+    "id": "0cfa971d-c697-5cff-be68-cf775df891c1",
     "brand": "Ford",
     "model": "F-150",
     "year": 2024,
@@ -296,7 +296,7 @@ GET /mighty_wolf/vehicles?filter[type][eq]=car
   "vehicles": [
     {
       "type": "car",
-      "id": "c325d8ae-b611-5fb6-b350-d3416209d5b3",
+      "id": "7900de74-233c-5bc9-bc0c-6679f7a345a5",
       "brand": "Volvo",
       "model": "EX30",
       "year": null,

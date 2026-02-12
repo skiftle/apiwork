@@ -95,7 +95,19 @@ module Apiwork
         # @example
         #   resource_serializer Serializer::Resource::Default
         def resource_serializer(klass = nil)
-          @resource_serializer = klass if klass
+          if klass
+            unless klass.is_a?(Class)
+              raise ConfigurationError,
+                    "resource_serializer must be a Serializer class, got #{klass.class}. " \
+                    "Use: resource_serializer MySerializer (not 'MySerializer' or :my_serializer)"
+            end
+            unless klass < Serializer::Resource::Base
+              raise ConfigurationError,
+                    'resource_serializer must be a Serializer class (subclass of Apiwork::Adapter::Serializer::Resource::Base), ' \
+                    "got #{klass}"
+            end
+            @resource_serializer = klass
+          end
           @resource_serializer || (superclass.respond_to?(:resource_serializer) && superclass.resource_serializer)
         end
 
@@ -109,7 +121,19 @@ module Apiwork
         # @example
         #   error_serializer Serializer::Error::Default
         def error_serializer(klass = nil)
-          @error_serializer = klass if klass
+          if klass
+            unless klass.is_a?(Class)
+              raise ConfigurationError,
+                    "error_serializer must be a Serializer class, got #{klass.class}. " \
+                    "Use: error_serializer MyErrorSerializer (not 'MyErrorSerializer' or :my_error_serializer)"
+            end
+            unless klass < Serializer::Error::Base
+              raise ConfigurationError,
+                    'error_serializer must be a Serializer class (subclass of Apiwork::Adapter::Serializer::Error::Base), ' \
+                    "got #{klass}"
+            end
+            @error_serializer = klass
+          end
           @error_serializer || (superclass.respond_to?(:error_serializer) && superclass.error_serializer)
         end
 
@@ -123,7 +147,19 @@ module Apiwork
         # @example
         #   member_wrapper Wrapper::Member::Default
         def member_wrapper(klass = nil)
-          @member_wrapper = klass if klass
+          if klass
+            unless klass.is_a?(Class)
+              raise ConfigurationError,
+                    "member_wrapper must be a Wrapper class, got #{klass.class}. " \
+                    "Use: member_wrapper MyWrapper (not 'MyWrapper' or :my_wrapper)"
+            end
+            unless klass < Wrapper::Member::Base
+              raise ConfigurationError,
+                    'member_wrapper must be a Wrapper class (subclass of Apiwork::Adapter::Wrapper::Member::Base), ' \
+                    "got #{klass}"
+            end
+            @member_wrapper = klass
+          end
           @member_wrapper || (superclass.respond_to?(:member_wrapper) && superclass.member_wrapper)
         end
 
@@ -137,7 +173,19 @@ module Apiwork
         # @example
         #   collection_wrapper Wrapper::Collection::Default
         def collection_wrapper(klass = nil)
-          @collection_wrapper = klass if klass
+          if klass
+            unless klass.is_a?(Class)
+              raise ConfigurationError,
+                    "collection_wrapper must be a Wrapper class, got #{klass.class}. " \
+                    "Use: collection_wrapper MyWrapper (not 'MyWrapper' or :my_wrapper)"
+            end
+            unless klass < Wrapper::Collection::Base
+              raise ConfigurationError,
+                    'collection_wrapper must be a Wrapper class (subclass of Apiwork::Adapter::Wrapper::Collection::Base), ' \
+                    "got #{klass}"
+            end
+            @collection_wrapper = klass
+          end
           @collection_wrapper || (superclass.respond_to?(:collection_wrapper) && superclass.collection_wrapper)
         end
 
@@ -151,7 +199,19 @@ module Apiwork
         # @example
         #   error_wrapper Wrapper::Error::Default
         def error_wrapper(klass = nil)
-          @error_wrapper = klass if klass
+          if klass
+            unless klass.is_a?(Class)
+              raise ConfigurationError,
+                    "error_wrapper must be a Wrapper class, got #{klass.class}. " \
+                    "Use: error_wrapper MyWrapper (not 'MyWrapper' or :my_wrapper)"
+            end
+            unless klass < Wrapper::Error::Base
+              raise ConfigurationError,
+                    'error_wrapper must be a Wrapper class (subclass of Apiwork::Adapter::Wrapper::Error::Base), ' \
+                    "got #{klass}"
+            end
+            @error_wrapper = klass
+          end
           @error_wrapper || (superclass.respond_to?(:error_wrapper) && superclass.error_wrapper)
         end
       end

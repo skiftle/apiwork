@@ -15,7 +15,7 @@
   "response": {
     "body": {
       "project": {
-        "id": "3161e556-4c18-54ab-8027-a5ac92b19bcb",
+        "id": "48b9294b-b5f6-51ea-9c77-a28d821b337d",
         "name": "New Feature",
         "description": "Implement the new dashboard",
         "status": "active",

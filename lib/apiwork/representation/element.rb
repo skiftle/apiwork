@@ -125,7 +125,7 @@ module Apiwork
           @discriminator = discriminator
           @defined = true
         else
-          raise ArgumentError, "Representation::Element only supports :object, :array, :union - got #{type.inspect}"
+          raise ConfigurationError, "Representation::Element only supports :object, :array, :union - got #{type.inspect}"
         end
       end
     end

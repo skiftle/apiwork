@@ -50,7 +50,7 @@ RSpec.describe 'Polymorphic associations', type: :integration do
 
           has_many :comments, representation: 'CommentRepresentation'
         end
-      end.to raise_error(Apiwork::ConfigurationError, /class reference, not a string/)
+      end.to raise_error(Apiwork::ConfigurationError, /Representation class, not a string/)
     end
 
     it 'auto-detects discriminator from reflection' do

@@ -258,11 +258,25 @@ module Apiwork
 
       def validate_representation!
         return unless @representation_class
-        return unless @representation_class.is_a?(String)
+        return if @representation_class.is_a?(Class) && @representation_class < Apiwork::Representation::Base
 
-        raise ConfigurationError,
-              'representation must be a class reference, not a string. ' \
-              "Use `representation: #{@representation_class.split('::').last}` instead of `representation: '#{@representation_class}'`"
+        case @representation_class
+        when Symbol
+          raise ConfigurationError,
+                'representation must be a Representation class, not a symbol. ' \
+                "Use: representation: #{@representation_class.to_s.camelize}Representation (not :#{@representation_class})"
+        when String
+          raise ConfigurationError,
+                'representation must be a Representation class, not a string. ' \
+                "Use: representation: #{@representation_class.split('::').last} (not '#{@representation_class}')"
+        when Class
+          raise ConfigurationError,
+                'representation must be a Representation class (subclass of Apiwork::Representation::Base), ' \
+                "got #{@representation_class}"
+        else
+          raise ConfigurationError,
+                "representation must be a Representation class, got #{@representation_class.class}"
+        end
       end
 
       def column_for(name)

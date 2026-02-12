@@ -7,18 +7,18 @@
         "body": "Very helpful video!",
         "author_name": "Bob Smith",
         "commentable_type": "video",
-        "commentable_id": "f78a691a-9f85-54c7-a39d-9f47d579942b"
+        "commentable_id": "df4ddc5a-953d-52f5-b5b5-7ddf16fa8f57"
       }
     }
   },
   "response": {
     "body": {
       "comment": {
-        "id": "993459b6-a155-510a-9f23-be59835d3fee",
+        "id": "d1ff1866-6fad-545c-839e-2d972eb5729c",
         "body": "Very helpful video!",
         "authorName": "Bob Smith",
         "commentableType": "video",
-        "commentableId": "f78a691a-9f85-54c7-a39d-9f47d579942b",
+        "commentableId": "df4ddc5a-953d-52f5-b5b5-7ddf16fa8f57",
         "createdAt": "2024-01-01T12:00:00.000Z"
       }
     },

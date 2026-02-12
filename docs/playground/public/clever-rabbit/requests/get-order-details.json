@@ -1,12 +1,12 @@
 {
   "request": {
     "method": "GET",
-    "path": "/clever_rabbit/orders/d6afdfea-1e99-5a7c-98e0-f05896dbe62f"
+    "path": "/clever_rabbit/orders/38948b8f-2c00-5384-8f16-b1105fcd31fb"
   },
   "response": {
     "body": {
       "order": {
-        "id": "d6afdfea-1e99-5a7c-98e0-f05896dbe62f",
+        "id": "38948b8f-2c00-5384-8f16-b1105fcd31fb",
         "orderNumber": "ORD-001",
         "status": "pending",
         "total": null,

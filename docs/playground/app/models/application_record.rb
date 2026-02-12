@@ -7,8 +7,12 @@ class ApplicationRecord < ActiveRecord::Base
 
   class << self
     def generate_uuid
-      @seq = (@seq || 0) + 1
-      Digest::UUID.uuid_v5(Digest::UUID::DNS_NAMESPACE, "#{name}:#{@seq}")
+      @sequence = (@sequence || 0) + 1
+      Digest::UUID.uuid_v5(Digest::UUID::DNS_NAMESPACE, "#{name}:#{@sequence}")
+    end
+
+    def reset_sequence!
+      @sequence = 0
     end
 
     def inherited(subclass)

@@ -188,7 +188,7 @@ Content-Type: application/json
     "status": "pending",
     "priority": "high",
     "due_date": "2024-02-01",
-    "assignee_id": "3c582e65-52e8-5e6d-8cb0-739fb9373aeb"
+    "assignee_id": "ceec91f6-d3ad-551a-8634-18df05654979"
   }
 }
 ```
@@ -230,7 +230,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-PATCH /brave_eagle/tasks/124b619e-579b-5c5b-bb61-d502076d1d45/archive
+PATCH /brave_eagle/tasks/0ec28309-26a2-5f19-92c0-3b60b8796f2e/archive
 ```
 
 **Response** `200`
@@ -238,7 +238,7 @@ PATCH /brave_eagle/tasks/124b619e-579b-5c5b-bb61-d502076d1d45/archive
 ```json
 {
   "task": {
-    "id": "124b619e-579b-5c5b-bb61-d502076d1d45",
+    "id": "0ec28309-26a2-5f19-92c0-3b60b8796f2e",
     "title": "Old task to archive",
     "description": null,
     "status": "completed",
