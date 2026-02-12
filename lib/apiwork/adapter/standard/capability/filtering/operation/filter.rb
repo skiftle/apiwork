@@ -33,8 +33,9 @@ module Apiwork
                   if (attribute = representation_class.attributes[key])&.filterable?
                     next unless filterable_for_context?(attribute)
 
-                    condition_result = build_column_condition(key, value, target_klass)
-                    conditions << condition_result if condition_result
+                    if (condition = build_column_condition(key, value, target_klass))
+                      conditions << condition
+                    end
 
                   elsif (association = find_filterable_association(key))
                     association_conditions, association_joins = build_join_conditions(key, value, association)
@@ -82,14 +83,16 @@ module Apiwork
                   conditions.compact.reduce(:and) if conditions.any?
                 end
 
-                or_condition = individual_conditions.reduce(:or) if individual_conditions.any?
-
                 all_joins = params
                   .map { |filter_params| build_where_conditions(filter_params, representation_class.model_class)[1] }
                   .reduce({}) { |accumulated, joins| accumulated.deep_merge(joins) }
 
                 with_joins_and_distinct(@relation, all_joins) do |scope|
-                  or_condition ? scope.where(or_condition) : scope
+                  if individual_conditions.any?
+                    scope.where(individual_conditions.reduce(:or))
+                  else
+                    scope
+                  end
                 end
               end
 
@@ -112,10 +115,12 @@ module Apiwork
                   all_joins = all_joins.deep_merge(joins)
                 end
 
-                or_condition = or_conditions.compact.reduce(:or) if or_conditions.any?
-
                 with_joins_and_distinct(scope, all_joins) do |scoped|
-                  or_condition ? scoped.where(or_condition) : scoped
+                  if or_conditions.any?
+                    scoped.where(or_conditions.compact.reduce(:or))
+                  else
+                    scoped
+                  end
                 end
               end
 
@@ -160,8 +165,7 @@ module Apiwork
                   all_joins = all_joins.deep_merge(joins)
                 end
 
-                final_condition = conditions.compact.reduce(:and)
-                [final_condition, all_joins]
+                [conditions.compact.reduce(:and), all_joins]
               end
 
               def process_logical_operator(filters, combinator)
@@ -174,15 +178,13 @@ module Apiwork
                   all_joins = all_joins.deep_merge(joins)
                 end
 
-                combined = collected_conditions.reduce(combinator) if collected_conditions.any?
-                [combined, all_joins]
+                [collected_conditions.any? ? collected_conditions.reduce(combinator) : nil, all_joins]
               end
 
               def filterable_for_context?(attribute)
-                filterable = attribute.filterable?
-                return true unless filterable.is_a?(Proc)
+                return true unless attribute.filterable?.is_a?(Proc)
 
-                representation_class.new(nil, {}).instance_eval(&filterable)
+                representation_class.new(nil, {}).instance_eval(&attribute.filterable?)
               end
 
               def build_column_condition(key, value, target_klass)
@@ -228,9 +230,7 @@ module Apiwork
 
               def build_polymorphic_type_mapping(association)
                 association.polymorphic.each_with_object({}) do |representation_class, mapping|
-                  api_value = representation_class.polymorphic_name
-                  db_value = representation_class.model_class.polymorphic_name
-                  mapping[api_value] = db_value
+                  mapping[representation_class.polymorphic_name] = representation_class.model_class.polymorphic_name
                 end
               end
 
@@ -439,8 +439,7 @@ module Apiwork
 
               def case_sensitive_pattern_match(column, pattern)
                 if sqlite_adapter?
-                  glob_pattern = pattern.tr('%', '*')
-                  Arel::Nodes::InfixOperation.new('GLOB', column, Arel::Nodes.build_quoted(glob_pattern))
+                  Arel::Nodes::InfixOperation.new('GLOB', column, Arel::Nodes.build_quoted(pattern.tr('%', '*')))
                 else
                   column.matches(pattern)
                 end

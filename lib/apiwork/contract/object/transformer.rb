@@ -37,8 +37,9 @@ module Apiwork
                 item.is_a?(Hash) ? Transformer.new(param_options[:shape]).transform(item) : item
               end
             elsif param_options[:type] == :array && param_options[:of] && value.is_a?(Array)
-              result = transform_custom_type_array(value, param_options)
-              transformed[name] = result if result
+              if (array_result = transform_custom_type_array(value, param_options))
+                transformed[name] = array_result
+              end
             end
           end
 
@@ -72,7 +73,8 @@ module Apiwork
             return nil unless first_variant
 
             variant_type_definition = scope_contract_class.resolve_custom_type(first_variant[:type])
-            return nil unless variant_type_definition&.object?
+            return nil unless variant_type_definition
+            return nil unless variant_type_definition.object?
 
             variant_contract_class = variant_type_definition.scope || scope_contract_class
             build_type_shape(variant_type_definition, variant_contract_class)

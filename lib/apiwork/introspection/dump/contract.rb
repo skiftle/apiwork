@@ -97,11 +97,9 @@ module Apiwork
           when Hash
             types << dump[:reference].to_sym if dump[:type] == :reference && dump[:reference]
 
-            of_dump = dump[:of]
-            types << of_dump[:reference].to_sym if of_dump.is_a?(Hash) && of_dump[:type] == :reference && of_dump[:reference]
+            types << dump[:of][:reference].to_sym if dump[:of].is_a?(Hash) && dump[:of][:type] == :reference && dump[:of][:reference]
 
-            enum_value = dump[:enum]
-            enums << enum_value if enum_value.is_a?(Symbol)
+            enums << dump[:enum] if dump[:enum].is_a?(Symbol)
 
             dump.each_value { |value| collect_references(value, types, enums) }
           when Array
@@ -116,8 +114,7 @@ module Apiwork
         end
 
         def resource
-          api_class = @contract_class.api_class
-          api_class.root_resource.find_resource(resource_name)
+          @contract_class.api_class.root_resource.find_resource(resource_name)
         end
 
         def resource_name
