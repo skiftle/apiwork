@@ -680,11 +680,7 @@ module Apiwork
         # @example
         #   InvoiceRepresentation.deserialize(params[:invoice])
         def deserialize(payload)
-          if payload.is_a?(Array)
-            payload.map { |hash| deserialize_hash(hash) }
-          else
-            deserialize_hash(payload)
-          end
+          Deserializer.new(self).deserialize(payload)
         end
 
         # @api public
@@ -753,74 +749,6 @@ module Apiwork
           return nil unless target_model.respond_to?(:inheritance_column)
 
           target_inheritance if column_name.to_sym == target_model.inheritance_column.to_sym
-        end
-
-        def deserialize_hash(hash)
-          return hash unless hash.is_a?(Hash)
-
-          result = hash.dup
-
-          transform_type_columns(result)
-
-          attributes.each do |name, attribute|
-            next unless result.key?(name)
-
-            result[name] = attribute.decode(result[name])
-          end
-
-          associations.each do |name, association|
-            next unless result.key?(name)
-
-            representation_class = association.representation_class
-            next unless representation_class
-
-            value = result[name]
-            result[name] = if association.collection? && value.is_a?(Array)
-                             value.map { |item| representation_class.deserialize(item) }
-                           elsif value.is_a?(Hash)
-                             representation_class.deserialize(value)
-                           else
-                             value
-                           end
-          end
-
-          result
-        end
-
-        def transform_type_columns(hash)
-          transform_sti_type(hash)
-          transform_polymorphic_types(hash)
-        end
-
-        def transform_sti_type(hash)
-          inheritance_config = subclass? ? superclass.inheritance : inheritance
-          return unless inheritance_config&.needs_transform?
-
-          column = inheritance_config.column
-          return unless hash.key?(column)
-
-          api_value = hash[column]
-          db_value = inheritance_config.mapping[api_value]
-          hash[column] = db_value if db_value
-        end
-
-        def transform_polymorphic_types(hash)
-          attributes.each_key do |name|
-            next unless hash.key?(name)
-
-            association = polymorphic_association_for_type_column(name)
-            next unless association
-
-            api_value = hash[name]
-            next unless api_value.is_a?(String)
-
-            poly_representation = association.polymorphic.find do |rep|
-              rep.polymorphic_name == api_value
-            end
-            next unless poly_representation
-
-            hash[name] = poly_representation.model_class.polymorphic_name
-          end
         end
 
         def serialize_record(record, context: {}, include: nil)
@@ -932,111 +860,7 @@ module Apiwork
       end
 
       def as_json
-        fields = {}
-
-        add_discriminator_field(fields) if self.class.subclass?
-
-        self.class.attributes.each do |name, attribute|
-          value = respond_to?(name) ? public_send(name) : record.public_send(name)
-          value = map_type_column_output(name, value)
-          value = attribute.encode(value)
-          fields[name] = value
-        end
-
-        self.class.associations.each do |name, association|
-          next unless should_include_association?(name, association)
-
-          fields[name] = serialize_association(name, association)
-        end
-
-        fields
-      end
-
-      private
-
-      def add_discriminator_field(fields)
-        parent_representation = self.class.superclass
-        return unless parent_representation.inheritance
-
-        fields[parent_representation.inheritance.column] = self.class.sti_name
-      end
-
-      def map_type_column_output(attribute_name, value)
-        return value if value.nil?
-
-        association = self.class.polymorphic_association_for_type_column(attribute_name)
-        if association
-          representation_class = association.find_representation_for_type(value)
-          return representation_class.polymorphic_name if representation_class
-        end
-
-        inheritance = self.class.inheritance_for_column(attribute_name)
-        if inheritance
-          klass = inheritance.subclasses.find { |subclass| subclass.model_class.sti_name == value }
-          return klass.sti_name if klass
-        end
-
-        value
-      end
-
-      def serialize_association(name, association)
-        target = respond_to?(name) ? public_send(name) : record.public_send(name)
-        return nil if target.nil?
-
-        representation_class = association.representation_class
-        return nil unless representation_class
-
-        nested_includes = @include[name] || @include[name.to_s] || @include[name.to_sym] if @include.is_a?(Hash)
-
-        if association.collection?
-          target.map { |record| serialize_variant_aware(record, representation_class, nested_includes) }
-        else
-          serialize_variant_aware(target, representation_class, nested_includes)
-        end
-      end
-
-      def serialize_variant_aware(record, representation_class, nested_includes)
-        if representation_class.inheritance&.subclasses&.any?
-          subclass_representation = representation_class.inheritance.resolve(record)
-          return subclass_representation.new(record, context: context, include: nested_includes).as_json if subclass_representation
-        end
-
-        representation_class.new(record, context: context, include: nested_includes).as_json
-      end
-
-      def should_include_association?(name, association)
-        return explicitly_included?(name) unless association.include == :always
-        return true unless circular_reference?(association)
-
-        false
-      end
-
-      def circular_reference?(association)
-        return false unless association.representation_class
-
-        association.representation_class.associations.values.any? do |nested_association|
-          nested_association.include == :always && nested_association.representation_class == self.class
-        end
-      end
-
-      def explicitly_included?(name)
-        return false if @include.nil?
-
-        case @include
-        when Symbol, String
-          @include.to_sym == name
-        when Array
-          include_symbols.include?(name)
-        when Hash
-          name = name.to_sym
-          @include.key?(name) || @include.key?(name.to_s)
-        else
-          false
-        end
-      end
-
-      def include_symbols
-        @include_symbols ||= @include.map(&:to_sym)
+        Serializer.new(self, @include).serialize
       end
     end
   end
