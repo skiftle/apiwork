@@ -1,4 +1,5 @@
 {
+  "base_path": "/lazy_cow",
   "enums": {
     "layer": {
       "deprecated": false,
@@ -13,7 +14,6 @@
   },
   "error_codes": {},
   "info": null,
-  "path": "/lazy_cow",
   "resources": {
     "status": {
       "actions": {

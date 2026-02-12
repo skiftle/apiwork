@@ -56,7 +56,7 @@ class ExampleGenerator
 
   def generated_dirs
     Apiwork::API.values.map do |api_class|
-      api_class.path.delete_prefix('/').underscore.dasherize
+      api_class.base_path.delete_prefix('/').underscore.dasherize
     end
   end
 
@@ -76,8 +76,8 @@ class ExampleGenerator
   end
 
   def each_api
-    Apiwork::API.values.sort_by(&:path).each do |api_class|
-      namespace = api_class.path.delete_prefix('/').underscore
+    Apiwork::API.values.sort_by(&:base_path).each do |api_class|
+      namespace = api_class.base_path.delete_prefix('/').underscore
       metadata = metadata_for(namespace)
       yield api_class, namespace, metadata
     end
@@ -118,17 +118,17 @@ class ExampleGenerator
   end
 
   def write_typescript(api_class, dir)
-    content = Apiwork::Export::TypeScript.generate(api_class.path)
+    content = Apiwork::Export::TypeScript.generate(api_class.base_path)
     File.write(dir.join('typescript.ts'), content)
   end
 
   def write_zod(api_class, dir)
-    content = Apiwork::Export::Zod.generate(api_class.path)
+    content = Apiwork::Export::Zod.generate(api_class.base_path)
     File.write(dir.join('zod.ts'), content)
   end
 
   def write_openapi(api_class, dir)
-    content = Apiwork::Export::OpenAPI.generate(api_class.path, format: :yaml)
+    content = Apiwork::Export::OpenAPI.generate(api_class.base_path, format: :yaml)
     File.write(dir.join('openapi.yml'), content)
   end
 

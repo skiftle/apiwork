@@ -1,4 +1,5 @@
 {
+  "base_path": "/happy_zebra",
   "enums": {
     "layer": {
       "deprecated": false,
@@ -27,7 +28,6 @@
     }
   },
   "info": null,
-  "path": "/happy_zebra",
   "resources": {
     "users": {
       "actions": {

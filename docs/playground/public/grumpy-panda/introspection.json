@@ -1,4 +1,5 @@
 {
+  "base_path": "/grumpy_panda",
   "enums": {
     "layer": {
       "deprecated": false,
@@ -18,7 +19,6 @@
     }
   },
   "info": null,
-  "path": "/grumpy_panda",
   "resources": {
     "activities": {
       "actions": {

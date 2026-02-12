@@ -1,4 +1,5 @@
 {
+  "base_path": "/bold_falcon",
   "enums": {
     "article_status": {
       "deprecated": false,
@@ -37,7 +38,6 @@
     }
   },
   "info": null,
-  "path": "/bold_falcon",
   "resources": {
     "articles": {
       "actions": {

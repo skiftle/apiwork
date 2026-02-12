@@ -1,4 +1,5 @@
 {
+  "base_path": "/clever_rabbit",
   "enums": {
     "layer": {
       "deprecated": false,
@@ -27,7 +28,6 @@
     }
   },
   "info": null,
-  "path": "/clever_rabbit",
   "resources": {
     "orders": {
       "actions": {

@@ -1,4 +1,5 @@
 {
+  "base_path": "/eager_lion",
   "enums": {
     "layer": {
       "deprecated": false,
@@ -27,7 +28,6 @@
     }
   },
   "info": null,
-  "path": "/eager_lion",
   "resources": {
     "invoices": {
       "actions": {

@@ -1,4 +1,5 @@
 {
+  "base_path": "/curious_cat",
   "enums": {
     "layer": {
       "deprecated": false,
@@ -18,7 +19,6 @@
     }
   },
   "info": null,
-  "path": "/curious_cat",
   "resources": {
     "profiles": {
       "actions": {
