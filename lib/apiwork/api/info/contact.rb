@@ -23,7 +23,7 @@ module Apiwork
         #
         # @example
         #   name 'API Support'
-        #   contact.name  # => "API Support"
+        #   contact.name # => "API Support"
         def name(value = nil)
           return @name if value.nil?
 
@@ -39,7 +39,7 @@ module Apiwork
         #
         # @example
         #   email 'support@example.com'
-        #   contact.email  # => "support@example.com"
+        #   contact.email # => "support@example.com"
         def email(value = nil)
           return @email if value.nil?
 
@@ -55,7 +55,7 @@ module Apiwork
         #
         # @example
         #   url 'https://example.com/support'
-        #   contact.url  # => "https://example.com/support"
+        #   contact.url # => "https://example.com/support"
         def url(value = nil)
           return @url if value.nil?
 

@@ -10,8 +10,8 @@ module Apiwork
     #
     # @example
     #   root_key = InvoiceRepresentation.root_key
-    #   root_key.singular  # => "invoice"
-    #   root_key.plural    # => "invoices"
+    #   root_key.singular # => "invoice"
+    #   root_key.plural # => "invoices"
     class RootKey
       # @api public
       # The plural root key.

@@ -8,12 +8,12 @@ module Apiwork
     # Types can be objects (with shapes) or unions (with variants).
     #
     # @example Object type
-    #   api.types[:address].object?      # => true
+    #   api.types[:address].object? # => true
     #   api.types[:address].shape[:city] # => Param for city field
     #
     # @example Union type
-    #   api.types[:payment_method].union?        # => true
-    #   api.types[:payment_method].variants      # => [Param, ...]
+    #   api.types[:payment_method].union? # => true
+    #   api.types[:payment_method].variants # => [Param, ...]
     #   api.types[:payment_method].discriminator # => :type
     class Type
       def initialize(dump)

@@ -22,7 +22,7 @@ module Apiwork
         #
         # @example
         #   name 'MIT'
-        #   license.name  # => "MIT"
+        #   license.name # => "MIT"
         def name(value = nil)
           return @name if value.nil?
 
@@ -38,7 +38,7 @@ module Apiwork
         #
         # @example
         #   url 'https://opensource.org/licenses/MIT'
-        #   license.url  # => "https://opensource.org/licenses/MIT"
+        #   license.url # => "https://opensource.org/licenses/MIT"
         def url(value = nil)
           return @url if value.nil?
 

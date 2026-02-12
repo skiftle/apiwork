@@ -10,9 +10,9 @@ module Apiwork
       #
       # @example
       #   request = action.request
-      #   request.query?              # => true
-      #   request.body?               # => false
-      #   request.query[:page]        # => Param for page param
+      #   request.query? # => true
+      #   request.body? # => false
+      #   request.query[:page] # => Param for page param
       class Request
         def initialize(dump)
           @dump = dump

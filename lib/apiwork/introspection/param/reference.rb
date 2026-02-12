@@ -7,12 +7,12 @@ module Apiwork
       # Reference param representing a reference to a named type.
       #
       # @example Basic usage
-      #   param.type       # => :reference
+      #   param.type # => :reference
       #   param.reference? # => true
-      #   param.scalar?    # => false
+      #   param.scalar? # => false
       #
       # @example Reference
-      #   param.reference  # => :address
+      #   param.reference # => :address
       class Reference < Base
         # @api public
         # The reference for this param.

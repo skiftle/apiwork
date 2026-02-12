@@ -8,11 +8,11 @@ module Apiwork
       #
       # @example
       #   info = api.info
-      #   info.title            # => "My API"
-      #   info.version          # => "1.0.0"
-      #   info.description      # => "API for managing resources"
-      #   info.contact&.email   # => "support@example.com"
-      #   info.license&.name    # => "MIT"
+      #   info.title # => "My API"
+      #   info.version # => "1.0.0"
+      #   info.description # => "API for managing resources"
+      #   info.contact&.email # => "support@example.com"
+      #   info.license&.name # => "MIT"
       class Info
         def initialize(dump)
           @dump = dump

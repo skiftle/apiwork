@@ -7,16 +7,16 @@ module Apiwork
       # Time param representing time-of-day values.
       #
       # @example Basic usage
-      #   param.type         # => :time
-      #   param.scalar?      # => true
-      #   param.time?        # => true
+      #   param.type # => :time
+      #   param.scalar? # => true
+      #   param.time? # => true
       #
       # @example Capabilities
       #   param.formattable? # => false
       #
       # @example Enum
       #   if param.enum?
-      #     param.enum      # => ["09:00", "17:00"]
+      #     param.enum # => ["09:00", "17:00"]
       #     param.enum_reference? # => false
       #   end
       class Time < Base

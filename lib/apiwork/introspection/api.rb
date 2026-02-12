@@ -11,9 +11,9 @@ module Apiwork
     # @example
     #   api = Apiwork::API.introspect('/api/v1', locale: :fr)
     #
-    #   api.info.title                      # => "Mon API"
-    #   api.types[:address].description     # => "Type d'adresse"
-    #   api.enums[:status].values           # => ["draft", "published"]
+    #   api.info.title # => "Mon API"
+    #   api.types[:address].description # => "Type d'adresse"
+    #   api.enums[:status].values # => ["draft", "published"]
     #
     #   api.resources.each_value do |resource|
     #     resource.actions.each_value do |action|

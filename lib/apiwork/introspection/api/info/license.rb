@@ -9,8 +9,8 @@ module Apiwork
         #
         # @example
         #   license = api.info.license
-        #   license.name  # => "MIT"
-        #   license.url   # => "https://opensource.org/licenses/MIT"
+        #   license.name # => "MIT"
+        #   license.url # => "https://opensource.org/licenses/MIT"
         class License
           def initialize(dump)
             @dump = dump

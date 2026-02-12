@@ -7,15 +7,15 @@ module Apiwork
       # Object param representing structured data with named fields.
       #
       # @example Basic usage
-      #   param.type      # => :object
-      #   param.object?   # => true
-      #   param.scalar?   # => false
+      #   param.type # => :object
+      #   param.object? # => true
+      #   param.scalar? # => false
       #
       # @example Fields
-      #   param.shape     # => { name: Param, email: Param }
+      #   param.shape # => { name: Param, email: Param }
       #
       # @example Partial objects (for updates)
-      #   param.partial?  # => true if all fields are optional
+      #   param.partial? # => true if all fields are optional
       class Object < Base
         # @api public
         # The shape for this param.

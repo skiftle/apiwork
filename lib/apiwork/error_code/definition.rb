@@ -22,8 +22,8 @@ module Apiwork
     #
     # @example
     #   error_code = Apiwork::ErrorCode.find!(:not_found)
-    #   error_code.key     # => :not_found
-    #   error_code.status  # => 404
+    #   error_code.key # => :not_found
+    #   error_code.status # => 404
     #   error_code.attach_path? # => true
     Definition = Struct.new(:key, :status, :attach_path, keyword_init: true) do
       # @api public

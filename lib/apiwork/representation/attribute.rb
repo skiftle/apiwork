@@ -10,8 +10,8 @@ module Apiwork
     #
     # @example
     #   attribute = InvoiceRepresentation.attributes[:title]
-    #   attribute.name       # => :title
-    #   attribute.type       # => :string
+    #   attribute.name # => :title
+    #   attribute.type # => :string
     #   attribute.filterable? # => true
     class Attribute
       ALLOWED_FORMATS = {

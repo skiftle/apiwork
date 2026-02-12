@@ -334,7 +334,7 @@ module Apiwork
         #
         # @example
         #   raises :unauthorized, :forbidden, :not_found
-        #   api_class.raises  # => [:unauthorized, :forbidden, :not_found]
+        #   api_class.raises # => [:unauthorized, :forbidden, :not_found]
         def raises(*error_code_keys)
           return @raises if error_code_keys.empty?
 

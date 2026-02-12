@@ -9,7 +9,7 @@ module Apiwork
   #
   # @example Creating a response
   #   response = Response.new(body: { id: 1, title: "Hello" })
-  #   response.body  # => { id: 1, title: "Hello" }
+  #   response.body # => { id: 1, title: "Hello" }
   #
   # @example Transforming keys
   #   response.transform { |data| camelize(data) }

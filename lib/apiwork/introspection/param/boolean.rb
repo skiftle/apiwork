@@ -7,16 +7,16 @@ module Apiwork
       # Boolean param representing true/false values.
       #
       # @example Basic usage
-      #   param.type         # => :boolean
-      #   param.scalar?      # => true
-      #   param.boolean?     # => true
+      #   param.type # => :boolean
+      #   param.scalar? # => true
+      #   param.boolean? # => true
       #
       # @example Capabilities
       #   param.formattable? # => false
       #
       # @example Enum
       #   if param.enum?
-      #     param.enum      # => [true]
+      #     param.enum # => [true]
       #     param.enum_reference? # => false
       #   end
       class Boolean < Base

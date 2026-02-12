@@ -9,9 +9,9 @@ module Apiwork
     # Provides resolution of records to their correct subclass representation.
     #
     # @example
-    #   ClientRepresentation.inheritance.column      # => :type
-    #   ClientRepresentation.inheritance.subclasses  # => [PersonClientRepresentation, ...]
-    #   ClientRepresentation.inheritance.resolve(record)  # => PersonClientRepresentation
+    #   ClientRepresentation.inheritance.column # => :type
+    #   ClientRepresentation.inheritance.subclasses # => [PersonClientRepresentation, ...]
+    #   ClientRepresentation.inheritance.resolve(record) # => PersonClientRepresentation
     class Inheritance
       # @api public
       # The base class for this inheritance.

@@ -7,21 +7,21 @@ module Apiwork
       # Integer param representing whole number values.
       #
       # @example Basic usage
-      #   param.type       # => :integer
-      #   param.scalar?    # => true
-      #   param.integer?   # => true
-      #   param.numeric?   # => true
+      #   param.type # => :integer
+      #   param.scalar? # => true
+      #   param.integer? # => true
+      #   param.numeric? # => true
       #
       # @example Constraints
-      #   param.min          # => 0 or nil
-      #   param.max          # => 100 or nil
-      #   param.format       # => :int32 or nil
-      #   param.boundable?   # => true
+      #   param.min # => 0 or nil
+      #   param.max # => 100 or nil
+      #   param.format # => :int32 or nil
+      #   param.boundable? # => true
       #   param.formattable? # => true
       #
       # @example Enum
       #   if param.enum?
-      #     param.enum      # => [1, 2, 3]
+      #     param.enum # => [1, 2, 3]
       #     param.enum_reference? # => false
       #   end
       class Integer < Base

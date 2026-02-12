@@ -7,16 +7,16 @@ module Apiwork
       # UUID param representing universally unique identifier values.
       #
       # @example Basic usage
-      #   param.type         # => :uuid
-      #   param.scalar?      # => true
-      #   param.uuid?        # => true
+      #   param.type # => :uuid
+      #   param.scalar? # => true
+      #   param.uuid? # => true
       #
       # @example Capabilities
       #   param.formattable? # => false
       #
       # @example Enum
       #   if param.enum?
-      #     param.enum      # => ["550e8400-e29b-41d4-a716-446655440000"]
+      #     param.enum # => ["550e8400-e29b-41d4-a716-446655440000"]
       #     param.enum_reference? # => false
       #   end
       class UUID < Base

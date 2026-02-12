@@ -372,7 +372,7 @@ module Apiwork
         def validate_custom_type(value, type_name, field_path, max_depth, current_depth)
           return nil unless type_name.is_a?(Symbol)
 
-          type_definition = @shape.contract_class&.resolve_custom_type(type_name)
+          type_definition = @shape.contract_class.resolve_custom_type(type_name)
           return nil unless type_definition&.object?
 
           type_shape = Object.new(@shape.contract_class, action_name: @shape.action_name)
@@ -735,7 +735,6 @@ module Apiwork
 
         def discriminator_optional_in_all_variants?(discriminator, variants)
           contract_class = @shape.contract_class
-          return false unless contract_class
 
           variants.all? do |variant|
             variant_type = variant[:type]

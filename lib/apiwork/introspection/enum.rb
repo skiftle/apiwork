@@ -6,9 +6,9 @@ module Apiwork
     # Wraps enum type definitions.
     #
     # @example
-    #   api.enums[:status].values       # => ["draft", "published", "archived"]
-    #   api.enums[:status].description  # => "Document status"
-    #   api.enums[:status].deprecated?  # => false
+    #   api.enums[:status].values # => ["draft", "published", "archived"]
+    #   api.enums[:status].description # => "Document status"
+    #   api.enums[:status].deprecated? # => false
     class Enum
       def initialize(dump)
         @dump = dump

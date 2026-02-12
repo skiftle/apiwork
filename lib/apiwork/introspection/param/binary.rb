@@ -7,16 +7,16 @@ module Apiwork
       # Binary param representing base64-encoded binary data.
       #
       # @example Basic usage
-      #   param.type         # => :binary
-      #   param.scalar?      # => true
-      #   param.binary?      # => true
+      #   param.type # => :binary
+      #   param.scalar? # => true
+      #   param.binary? # => true
       #
       # @example Capabilities
       #   param.formattable? # => false
       #
       # @example Enum
       #   if param.enum?
-      #     param.enum      # => ["SGVsbG8=", "V29ybGQ="]
+      #     param.enum # => ["SGVsbG8=", "V29ybGQ="]
       #     param.enum_reference? # => false
       #   end
       class Binary < Base

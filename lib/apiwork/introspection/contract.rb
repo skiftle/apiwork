@@ -10,13 +10,13 @@ module Apiwork
     # @example
     #   contract = InvoiceContract.introspect(expand: true)
     #
-    #   contract.actions[:show].response  # => Action::Response
-    #   contract.types[:address].shape    # => { street: ..., city: ... }
-    #   contract.enums[:status].values    # => ["draft", "published"]
+    #   contract.actions[:show].response # => Action::Response
+    #   contract.types[:address].shape # => { street: ..., city: ... }
+    #   contract.enums[:status].values # => ["draft", "published"]
     #
     #   contract.actions.each_value do |action|
-    #     action.request   # => Action::Request
-    #     action.response  # => Action::Response
+    #     action.request # => Action::Request
+    #     action.response # => Action::Response
     #   end
     class Contract
       def initialize(dump)

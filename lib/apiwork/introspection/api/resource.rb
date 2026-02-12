@@ -9,13 +9,13 @@ module Apiwork
       # @example
       #   resource = api.resources[:invoices]
       #
-      #   resource.identifier         # => "invoices"
-      #   resource.path               # => "invoices"
+      #   resource.identifier # => "invoices"
+      #   resource.path # => "invoices"
       #   resource.parent_identifiers # => []
-      #   resource.resources          # => {} or nested resources
+      #   resource.resources # => {} or nested resources
       #
       #   resource.actions.each_value do |action|
-      #     action.request  # => Action::Request
+      #     action.request # => Action::Request
       #     action.response # => Action::Response
       #   end
       class Resource

@@ -7,12 +7,12 @@ module Apiwork
       # Union param representing a value that can be one of several types.
       #
       # @example Basic usage
-      #   param.type      # => :union
-      #   param.union?    # => true
-      #   param.scalar?   # => false
+      #   param.type # => :union
+      #   param.union? # => true
+      #   param.scalar? # => false
       #
       # @example Variants
-      #   param.variants  # => [Param, Param, ...]
+      #   param.variants # => [Param, Param, ...]
       #
       # @example Discriminated unions
       #   param.discriminator # => :type or nil

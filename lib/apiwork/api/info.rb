@@ -29,7 +29,7 @@ module Apiwork
       #
       # @example
       #   title 'Invoice API'
-      #   info.title  # => "Invoice API"
+      #   info.title # => "Invoice API"
       def title(value = nil)
         return @title if value.nil?
 
@@ -45,7 +45,7 @@ module Apiwork
       #
       # @example
       #   version '1.0.0'
-      #   info.version  # => "1.0.0"
+      #   info.version # => "1.0.0"
       def version(value = nil)
         return @version if value.nil?
 
@@ -61,7 +61,7 @@ module Apiwork
       #
       # @example
       #   terms_of_service 'https://example.com/terms'
-      #   info.terms_of_service  # => "https://example.com/terms"
+      #   info.terms_of_service # => "https://example.com/terms"
       def terms_of_service(value = nil)
         return @terms_of_service if value.nil?
 
@@ -157,7 +157,7 @@ module Apiwork
       #
       # @example
       #   summary 'Invoice management API'
-      #   info.summary  # => "Invoice management API"
+      #   info.summary # => "Invoice management API"
       def summary(value = nil)
         return @summary if value.nil?
 
@@ -173,7 +173,7 @@ module Apiwork
       #
       # @example
       #   description 'Full-featured API for managing invoices and payments.'
-      #   info.description  # => "Full-featured..."
+      #   info.description # => "Full-featured..."
       def description(value = nil)
         return @description if value.nil?
 
@@ -189,7 +189,7 @@ module Apiwork
       #
       # @example
       #   tags 'invoices', 'payments'
-      #   info.tags  # => ["invoices", "payments"]
+      #   info.tags # => ["invoices", "payments"]
       def tags(*values)
         return @tags if values.empty?
 

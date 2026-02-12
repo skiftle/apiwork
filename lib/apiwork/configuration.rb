@@ -8,11 +8,11 @@ module Apiwork
   # @see Representation::Base.adapter_config
   #
   # @example Reading values
-  #   config.pagination.default_size  # => 20
-  #   config.pagination.strategy      # => :offset
+  #   config.pagination.default_size # => 20
+  #   config.pagination.strategy # => :offset
   #
   # @example Using dig for dynamic access
-  #   config.dig(:pagination, :default_size)  # => 20
+  #   config.dig(:pagination, :default_size) # => 20
   class Configuration
     def initialize(options_source, storage = {})
       @options = extract_options(options_source)
@@ -60,8 +60,8 @@ module Apiwork
     #   One or more keys to traverse.
     #
     # @example
-    #   config.dig(:pagination)             # => #<Apiwork::Configuration:...>
-    #   config.dig(:pagination, :strategy)  # => :offset
+    #   config.dig(:pagination) # => #<Apiwork::Configuration:...>
+    #   config.dig(:pagination, :strategy) # => :offset
     def dig(*keys)
       keys.compact.reduce(self) { |config, key| config.public_send(key) }
     end
@@ -72,7 +72,7 @@ module Apiwork
     # @return [Hash]
     #
     # @example
-    #   config.to_h  # => { pagination: { strategy: :offset, default_size: 20 } }
+    #   config.to_h # => { pagination: { strategy: :offset, default_size: 20 } }
     def to_h
       @options.each_with_object({}) do |(name, option), result|
         if option.nested?

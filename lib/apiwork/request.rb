@@ -9,8 +9,8 @@ module Apiwork
   #
   # @example Creating a request
   #   request = Request.new(query: { page: 1 }, body: { title: "Hello" })
-  #   request.query  # => { page: 1 }
-  #   request.body   # => { title: "Hello" }
+  #   request.query # => { page: 1 }
+  #   request.body # => { title: "Hello" }
   #
   # @example Transforming keys
   #   request.transform { |data| normalize(data) }

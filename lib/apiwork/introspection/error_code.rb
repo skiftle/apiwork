@@ -6,7 +6,7 @@ module Apiwork
     # Wraps error code definitions.
     #
     # @example
-    #   api.error_codes[:not_found].status      # => 404
+    #   api.error_codes[:not_found].status # => 404
     #   api.error_codes[:not_found].description # => "Resource not found"
     class ErrorCode
       def initialize(dump)

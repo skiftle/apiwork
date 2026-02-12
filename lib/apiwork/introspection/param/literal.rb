@@ -7,12 +7,12 @@ module Apiwork
       # Literal param representing a constant value.
       #
       # @example Basic usage
-      #   param.type     # => :literal
+      #   param.type # => :literal
       #   param.literal? # => true
-      #   param.scalar?  # => false
+      #   param.scalar? # => false
       #
       # @example Value
-      #   param.value    # => "active" or 42 or true
+      #   param.value # => "active" or 42 or true
       class Literal < Base
         # @api public
         # The value for this param.

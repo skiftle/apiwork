@@ -22,7 +22,7 @@ module Apiwork
         #
         # @example
         #   url 'https://api.example.com'
-        #   server.url  # => "https://api.example.com"
+        #   server.url # => "https://api.example.com"
         def url(value = nil)
           return @url if value.nil?
 
@@ -38,7 +38,7 @@ module Apiwork
         #
         # @example
         #   description 'Production'
-        #   server.description  # => "Production"
+        #   server.description # => "Production"
         def description(value = nil)
           return @description if value.nil?
 

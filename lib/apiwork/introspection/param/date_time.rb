@@ -7,16 +7,16 @@ module Apiwork
       # DateTime param representing date and time values with timezone.
       #
       # @example Basic usage
-      #   param.type         # => :datetime
-      #   param.scalar?      # => true
-      #   param.datetime?    # => true
+      #   param.type # => :datetime
+      #   param.scalar? # => true
+      #   param.datetime? # => true
       #
       # @example Capabilities
       #   param.formattable? # => false
       #
       # @example Enum
       #   if param.enum?
-      #     param.enum      # => ["2024-01-01T00:00:00Z"]
+      #     param.enum # => ["2024-01-01T00:00:00Z"]
       #     param.enum_reference? # => false
       #   end
       class DateTime < Base

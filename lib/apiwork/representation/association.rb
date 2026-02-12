@@ -10,8 +10,8 @@ module Apiwork
     #
     # @example
     #   association = InvoiceRepresentation.associations[:customer]
-    #   association.name         # => :customer
-    #   association.type         # => :belongs_to
+    #   association.name # => :customer
+    #   association.type # => :belongs_to
     #   association.representation_class # => CustomerRepresentation
     class Association
       # @api public

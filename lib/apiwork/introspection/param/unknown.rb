@@ -9,9 +9,9 @@ module Apiwork
       # Used as a fallback when the type cannot be determined during introspection.
       #
       # @example Basic usage
-      #   param.type     # => :unknown
+      #   param.type # => :unknown
       #   param.unknown? # => true
-      #   param.scalar?  # => false
+      #   param.scalar? # => false
       class Unknown < Base
         # @api public
         # Whether this param is of unknown type.

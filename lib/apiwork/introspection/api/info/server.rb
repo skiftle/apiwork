@@ -9,8 +9,8 @@ module Apiwork
         #
         # @example
         #   api.info.servers.each do |server|
-        #     puts server.url          # => "https://api.example.com"
-        #     puts server.description  # => "Production server"
+        #     puts server.url # => "https://api.example.com"
+        #     puts server.description # => "Production server"
         #   end
         class Server
           def initialize(dump)

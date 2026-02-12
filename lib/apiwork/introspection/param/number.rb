@@ -7,20 +7,20 @@ module Apiwork
       # Number param representing floating-point number values.
       #
       # @example Basic usage
-      #   param.type       # => :number
-      #   param.scalar?    # => true
-      #   param.number?    # => true
-      #   param.numeric?   # => true
+      #   param.type # => :number
+      #   param.scalar? # => true
+      #   param.number? # => true
+      #   param.numeric? # => true
       #
       # @example Constraints
-      #   param.min          # => 0.0 or nil
-      #   param.max          # => 100.0 or nil
-      #   param.boundable?   # => true
+      #   param.min # => 0.0 or nil
+      #   param.max # => 100.0 or nil
+      #   param.boundable? # => true
       #   param.formattable? # => false
       #
       # @example Enum
       #   if param.enum?
-      #     param.enum      # => [0.5, 1.0, 1.5]
+      #     param.enum # => [0.5, 1.0, 1.5]
       #     param.enum_reference? # => false
       #   end
       class Number < Base

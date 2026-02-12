@@ -8,13 +8,13 @@ module Apiwork
       #
       # @example Response with body
       #   response = action.response
-      #   response.body?        # => true
-      #   response.no_content?  # => false
-      #   response.body         # => Param for response body
+      #   response.body? # => true
+      #   response.no_content? # => false
+      #   response.body # => Param for response body
       #
       # @example No content response
-      #   response.no_content?  # => true
-      #   response.body?        # => false
+      #   response.no_content? # => true
+      #   response.body? # => false
       class Response
         def initialize(dump)
           @dump = dump

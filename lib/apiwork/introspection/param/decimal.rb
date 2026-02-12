@@ -7,20 +7,20 @@ module Apiwork
       # Decimal param representing precise decimal number values.
       #
       # @example Basic usage
-      #   param.type       # => :decimal
-      #   param.scalar?    # => true
-      #   param.decimal?   # => true
-      #   param.numeric?   # => true
+      #   param.type # => :decimal
+      #   param.scalar? # => true
+      #   param.decimal? # => true
+      #   param.numeric? # => true
       #
       # @example Constraints
-      #   param.min          # => 0.0 or nil
-      #   param.max          # => 100.0 or nil
-      #   param.boundable?   # => true
+      #   param.min # => 0.0 or nil
+      #   param.max # => 100.0 or nil
+      #   param.boundable? # => true
       #   param.formattable? # => false
       #
       # @example Enum
       #   if param.enum?
-      #     param.enum      # => [9.99, 19.99, 29.99]
+      #     param.enum # => [9.99, 19.99, 29.99]
       #     param.enum_reference? # => false
       #   end
       class Decimal < Base
