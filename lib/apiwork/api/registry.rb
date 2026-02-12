@@ -5,27 +5,27 @@ module Apiwork
     class Registry < Apiwork::Registry
       class << self
         def register(api_class)
-          return unless api_class.path
+          return unless api_class.base_path
 
-          store[normalize_key(api_class.path)] = api_class
+          store[normalize_key(api_class.base_path)] = api_class
         end
 
-        def find(path)
-          return nil unless path
+        def find(base_path)
+          return nil unless base_path
 
           super
         end
 
-        def unregister(path)
-          delete(path) if path
+        def unregister(base_path)
+          delete(base_path) if base_path
         end
 
         private
 
-        def normalize_key(path)
-          return :root if path == '/'
+        def normalize_key(base_path)
+          return :root if base_path == '/'
 
-          path.delete_prefix('/').underscore.to_sym
+          base_path.delete_prefix('/').underscore.to_sym
         end
       end
     end

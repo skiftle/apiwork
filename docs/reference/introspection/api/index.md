@@ -36,6 +36,20 @@ end
 
 ## Instance Methods
 
+### #base_path
+
+`#base_path`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L32)
+
+The base path for this API.
+
+**Returns**
+
+`String`, `nil`
+
+---
+
 ### #enums
 
 `#enums`
@@ -75,20 +89,6 @@ The info for this API.
 **Returns**
 
 [API::Info](/reference/api/info/), `nil`
-
----
-
-### #path
-
-`#path`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/api.rb#L32)
-
-The path for this API.
-
-**Returns**
-
-`String`, `nil`
 
 ---
 

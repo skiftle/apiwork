@@ -257,7 +257,7 @@ module Apiwork
     end
 
     def relative_path
-      @relative_path ||= request.path.delete_prefix(api_class.path)
+      @relative_path ||= request.path.delete_prefix(api_class.base_path)
     end
 
     def raise_api_not_found_error

@@ -11,8 +11,8 @@ RSpec.describe 'Introspection', type: :integration do
       expect(introspection).to be_a(Apiwork::Introspection::API)
     end
 
-    it 'includes API path' do
-      expect(introspection.path).to eq('/api/v1')
+    it 'includes API base path' do
+      expect(introspection.base_path).to eq('/api/v1')
     end
 
     it 'includes API info' do
@@ -47,7 +47,7 @@ RSpec.describe 'Introspection', type: :integration do
     it 'supports to_h for serialization' do
       hash = introspection.to_h
       expect(hash).to be_a(Hash)
-      expect(hash).to have_key(:path)
+      expect(hash).to have_key(:base_path)
       expect(hash).to have_key(:resources)
     end
   end

@@ -63,6 +63,20 @@ end
 
 ---
 
+### .base_path
+
+`.base_path`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L31)
+
+The base path for this API.
+
+**Returns**
+
+`String`
+
+---
+
 ### .concern
 
 `.concern(name, &block)`
@@ -290,20 +304,6 @@ object :item do
   decimal :amount
 end
 ```
-
----
-
-### .path
-
-`.path`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L31)
-
-The path for this API.
-
-**Returns**
-
-`String`
 
 ---
 

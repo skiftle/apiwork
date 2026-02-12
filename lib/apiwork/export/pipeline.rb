@@ -57,7 +57,7 @@ module Apiwork
         end
 
         def generate_file(api_class:, export_name:, format:, key_format:, locale:, output:, version:)
-          api_path = api_class.path
+          api_path = api_class.base_path
 
           options = { format:, key_format:, locale:, version: }.compact
           options_label = options.any? ? " (#{options.map { |key, value| "#{key}: #{value}" }.join(', ')})" : ''

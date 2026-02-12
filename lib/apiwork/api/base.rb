@@ -25,17 +25,17 @@ module Apiwork
                     :type_registry
 
         # @api public
-        # The path for this API.
+        # The base path for this API.
         #
         # @return [String]
-        attr_reader :path
+        attr_reader :base_path
 
         def locale_key
-          @locale_key ||= path.delete_prefix('/')
+          @locale_key ||= base_path.delete_prefix('/')
         end
 
         def namespaces
-          @namespaces ||= extract_namespaces(path)
+          @namespaces ||= extract_namespaces(base_path)
         end
 
         # @api public
@@ -538,8 +538,8 @@ module Apiwork
           @root_resource.with_options(options, &block)
         end
 
-        def mount(path)
-          @path = path
+        def mount(base_path)
+          @base_path = base_path
           @locale_key = nil
           @namespaces = nil
           @info = nil

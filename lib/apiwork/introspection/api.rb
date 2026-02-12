@@ -26,11 +26,11 @@ module Apiwork
       end
 
       # @api public
-      # The path for this API.
+      # The base path for this API.
       #
       # @return [String, nil]
-      def path
-        @dump[:path]
+      def base_path
+        @dump[:base_path]
       end
 
       # @api public
@@ -79,10 +79,10 @@ module Apiwork
       # @return [Hash]
       def to_h
         {
+          base_path:,
           enums: enums.transform_values(&:to_h),
           error_codes: error_codes.transform_values(&:to_h),
           info: info&.to_h,
-          path: path,
           resources: resources.transform_values(&:to_h),
           types: types.transform_values(&:to_h),
         }
