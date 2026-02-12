@@ -40,7 +40,7 @@ The contact email.
 
 ```ruby
 email 'support@example.com'
-contact.email  # => "support@example.com"
+contact.email # => "support@example.com"
 ```
 
 ---
@@ -71,7 +71,7 @@ The contact name.
 
 ```ruby
 name 'API Support'
-contact.name  # => "API Support"
+contact.name # => "API Support"
 ```
 
 ---
@@ -102,7 +102,7 @@ The contact URL.
 
 ```ruby
 url 'https://example.com/support'
-contact.url  # => "https://example.com/support"
+contact.url # => "https://example.com/support"
 ```
 
 ---

@@ -13,15 +13,15 @@ Union param representing a value that can be one of several types.
 **Example: Basic usage**
 
 ```ruby
-param.type      # => :union
-param.union?    # => true
-param.scalar?   # => false
+param.type # => :union
+param.union? # => true
+param.scalar? # => false
 ```
 
 **Example: Variants**
 
 ```ruby
-param.variants  # => [Param, Param, ...]
+param.variants # => [Param, Param, ...]
 ```
 
 **Example: Discriminated unions**

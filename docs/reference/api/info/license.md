@@ -40,7 +40,7 @@ The license name.
 
 ```ruby
 name 'MIT'
-license.name  # => "MIT"
+license.name # => "MIT"
 ```
 
 ---
@@ -71,7 +71,7 @@ The license URL.
 
 ```ruby
 url 'https://opensource.org/licenses/MIT'
-license.url  # => "https://opensource.org/licenses/MIT"
+license.url # => "https://opensource.org/licenses/MIT"
 ```
 
 ---

@@ -116,7 +116,7 @@ The API description.
 
 ```ruby
 description 'Full-featured API for managing invoices and payments.'
-info.description  # => "Full-featured..."
+info.description # => "Full-featured..."
 ```
 
 ---
@@ -217,7 +217,7 @@ The API summary.
 
 ```ruby
 summary 'Invoice management API'
-info.summary  # => "Invoice management API"
+info.summary # => "Invoice management API"
 ```
 
 ---
@@ -248,7 +248,7 @@ The API tags.
 
 ```ruby
 tags 'invoices', 'payments'
-info.tags  # => ["invoices", "payments"]
+info.tags # => ["invoices", "payments"]
 ```
 
 ---
@@ -279,7 +279,7 @@ The API terms of service.
 
 ```ruby
 terms_of_service 'https://example.com/terms'
-info.terms_of_service  # => "https://example.com/terms"
+info.terms_of_service # => "https://example.com/terms"
 ```
 
 ---
@@ -310,7 +310,7 @@ The API title.
 
 ```ruby
 title 'Invoice API'
-info.title  # => "Invoice API"
+info.title # => "Invoice API"
 ```
 
 ---
@@ -341,7 +341,7 @@ The API version.
 
 ```ruby
 version '1.0.0'
-info.version  # => "1.0.0"
+info.version # => "1.0.0"
 ```
 
 ---

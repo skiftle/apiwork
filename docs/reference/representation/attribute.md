@@ -17,8 +17,8 @@ Used by adapters to build contracts and serialize records.
 
 ```ruby
 attribute = InvoiceRepresentation.attributes[:title]
-attribute.name       # => :title
-attribute.type       # => :string
+attribute.name # => :title
+attribute.type # => :string
 attribute.filterable? # => true
 ```
 

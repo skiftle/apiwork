@@ -17,7 +17,7 @@ preserving immutability.
 
 ```ruby
 response = Response.new(body: { id: 1, title: "Hello" })
-response.body  # => { id: 1, title: "Hello" }
+response.body # => { id: 1, title: "Hello" }
 ```
 
 **Example: Transforming keys**

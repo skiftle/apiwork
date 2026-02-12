@@ -14,9 +14,9 @@ Wraps API contact information.
 
 ```ruby
 contact = api.info.contact
-contact.name   # => "API Support"
-contact.email  # => "support@example.com"
-contact.url    # => "https://example.com/support"
+contact.name # => "API Support"
+contact.email # => "support@example.com"
+contact.url # => "https://example.com/support"
 ```
 
 ## Instance Methods

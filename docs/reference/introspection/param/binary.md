@@ -13,9 +13,9 @@ Binary param representing base64-encoded binary data.
 **Example: Basic usage**
 
 ```ruby
-param.type         # => :binary
-param.scalar?      # => true
-param.binary?      # => true
+param.type # => :binary
+param.scalar? # => true
+param.binary? # => true
 ```
 
 **Example: Capabilities**
@@ -28,7 +28,7 @@ param.formattable? # => false
 
 ```ruby
 if param.enum?
-  param.enum      # => ["SGVsbG8=", "V29ybGQ="]
+  param.enum # => ["SGVsbG8=", "V29ybGQ="]
   param.enum_reference? # => false
 end
 ```

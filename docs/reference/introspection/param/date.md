@@ -13,9 +13,9 @@ Date param representing date values (year, month, day).
 **Example: Basic usage**
 
 ```ruby
-param.type         # => :date
-param.scalar?      # => true
-param.date?        # => true
+param.type # => :date
+param.scalar? # => true
+param.date? # => true
 ```
 
 **Example: Capabilities**
@@ -28,7 +28,7 @@ param.formattable? # => false
 
 ```ruby
 if param.enum?
-  param.enum      # => ["2024-01-01", "2024-12-31"]
+  param.enum # => ["2024-01-01", "2024-12-31"]
   param.enum_reference? # => false
 end
 ```

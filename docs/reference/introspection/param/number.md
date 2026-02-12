@@ -13,18 +13,18 @@ Number param representing floating-point number values.
 **Example: Basic usage**
 
 ```ruby
-param.type       # => :number
-param.scalar?    # => true
-param.number?    # => true
-param.numeric?   # => true
+param.type # => :number
+param.scalar? # => true
+param.number? # => true
+param.numeric? # => true
 ```
 
 **Example: Constraints**
 
 ```ruby
-param.min          # => 0.0 or nil
-param.max          # => 100.0 or nil
-param.boundable?   # => true
+param.min # => 0.0 or nil
+param.max # => 100.0 or nil
+param.boundable? # => true
 param.formattable? # => false
 ```
 
@@ -32,7 +32,7 @@ param.formattable? # => false
 
 ```ruby
 if param.enum?
-  param.enum      # => [0.5, 1.0, 1.5]
+  param.enum # => [0.5, 1.0, 1.5]
   param.enum_reference? # => false
 end
 ```

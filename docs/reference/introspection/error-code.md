@@ -13,7 +13,7 @@ Wraps error code definitions.
 **Example**
 
 ```ruby
-api.error_codes[:not_found].status      # => 404
+api.error_codes[:not_found].status # => 404
 api.error_codes[:not_found].description # => "Resource not found"
 ```
 

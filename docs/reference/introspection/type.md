@@ -15,15 +15,15 @@ Types can be objects (with shapes) or unions (with variants).
 **Example: Object type**
 
 ```ruby
-api.types[:address].object?      # => true
+api.types[:address].object? # => true
 api.types[:address].shape[:city] # => Param for city field
 ```
 
 **Example: Union type**
 
 ```ruby
-api.types[:payment_method].union?        # => true
-api.types[:payment_method].variants      # => [Param, ...]
+api.types[:payment_method].union? # => true
+api.types[:payment_method].variants # => [Param, ...]
 api.types[:payment_method].discriminator # => :type
 ```
 

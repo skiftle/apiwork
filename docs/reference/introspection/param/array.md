@@ -13,23 +13,23 @@ Array param representing ordered collections.
 **Example: Basic usage**
 
 ```ruby
-param.type       # => :array
-param.array?     # => true
-param.scalar?    # => false
+param.type # => :array
+param.array? # => true
+param.scalar? # => false
 ```
 
 **Example: Element type**
 
 ```ruby
-param.of         # => Param (element type) or nil
-param.shape      # => {} or { field: Param, ... }
+param.of # => Param (element type) or nil
+param.shape # => {} or { field: Param, ... }
 ```
 
 **Example: Constraints**
 
 ```ruby
-param.min        # => 1 or nil
-param.max        # => 10 or nil
+param.min # => 1 or nil
+param.max # => 10 or nil
 param.boundable? # => true
 ```
 

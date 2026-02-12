@@ -13,21 +13,21 @@ Object param representing structured data with named fields.
 **Example: Basic usage**
 
 ```ruby
-param.type      # => :object
-param.object?   # => true
-param.scalar?   # => false
+param.type # => :object
+param.object? # => true
+param.scalar? # => false
 ```
 
 **Example: Fields**
 
 ```ruby
-param.shape     # => { name: Param, email: Param }
+param.shape # => { name: Param, email: Param }
 ```
 
 **Example: Partial objects (for updates)**
 
 ```ruby
-param.partial?  # => true if all fields are optional
+param.partial? # => true if all fields are optional
 ```
 
 ## Instance Methods

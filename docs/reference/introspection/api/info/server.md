@@ -14,8 +14,8 @@ Wraps API server information.
 
 ```ruby
 api.info.servers.each do |server|
-  puts server.url          # => "https://api.example.com"
-  puts server.description  # => "Production server"
+  puts server.url # => "https://api.example.com"
+  puts server.description # => "Production server"
 end
 ```
 
