@@ -16,9 +16,9 @@ Contains query parameters and/or body parameters.
 
 ```ruby
 request = action.request
-request.query?              # => true
-request.body?               # => false
-request.query[:page]        # => Param for page param
+request.query? # => true
+request.body? # => false
+request.query[:page] # => Param for page param
 ```
 
 ## Instance Methods

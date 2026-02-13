@@ -14,8 +14,8 @@ Wraps API license information.
 
 ```ruby
 license = api.info.license
-license.name  # => "MIT"
-license.url   # => "https://opensource.org/licenses/MIT"
+license.name # => "MIT"
+license.url # => "https://opensource.org/licenses/MIT"
 ```
 
 ## Instance Methods

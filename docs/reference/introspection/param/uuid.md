@@ -13,9 +13,9 @@ UUID param representing universally unique identifier values.
 **Example: Basic usage**
 
 ```ruby
-param.type         # => :uuid
-param.scalar?      # => true
-param.uuid?        # => true
+param.type # => :uuid
+param.scalar? # => true
+param.uuid? # => true
 ```
 
 **Example: Capabilities**
@@ -28,7 +28,7 @@ param.formattable? # => false
 
 ```ruby
 if param.enum?
-  param.enum      # => ["550e8400-e29b-41d4-a716-446655440000"]
+  param.enum # => ["550e8400-e29b-41d4-a716-446655440000"]
   param.enum_reference? # => false
 end
 ```

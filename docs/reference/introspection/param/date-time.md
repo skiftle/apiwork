@@ -13,9 +13,9 @@ DateTime param representing date and time values with timezone.
 **Example: Basic usage**
 
 ```ruby
-param.type         # => :datetime
-param.scalar?      # => true
-param.datetime?    # => true
+param.type # => :datetime
+param.scalar? # => true
+param.datetime? # => true
 ```
 
 **Example: Capabilities**
@@ -28,7 +28,7 @@ param.formattable? # => false
 
 ```ruby
 if param.enum?
-  param.enum      # => ["2024-01-01T00:00:00Z"]
+  param.enum # => ["2024-01-01T00:00:00Z"]
   param.enum_reference? # => false
 end
 ```

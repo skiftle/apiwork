@@ -13,9 +13,9 @@ Wraps enum type definitions.
 **Example**
 
 ```ruby
-api.enums[:status].values       # => ["draft", "published", "archived"]
-api.enums[:status].description  # => "Document status"
-api.enums[:status].deprecated?  # => false
+api.enums[:status].values # => ["draft", "published", "archived"]
+api.enums[:status].description # => "Document status"
+api.enums[:status].deprecated? # => false
 ```
 
 ## Instance Methods

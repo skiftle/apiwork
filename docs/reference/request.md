@@ -17,8 +17,8 @@ new instances, preserving immutability.
 
 ```ruby
 request = Request.new(query: { page: 1 }, body: { title: "Hello" })
-request.query  # => { page: 1 }
-request.body   # => { title: "Hello" }
+request.query # => { page: 1 }
+request.body # => { title: "Hello" }
 ```
 
 **Example: Transforming keys**

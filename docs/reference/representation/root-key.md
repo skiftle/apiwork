@@ -17,8 +17,8 @@ Used by adapters to structure JSON responses.
 
 ```ruby
 root_key = InvoiceRepresentation.root_key
-root_key.singular  # => "invoice"
-root_key.plural    # => "invoices"
+root_key.singular # => "invoice"
+root_key.plural # => "invoices"
 ```
 
 ## Instance Methods

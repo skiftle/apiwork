@@ -17,8 +17,8 @@ Retrieved via [ErrorCode.find](/reference/introspection/error-code#find) or [Err
 
 ```ruby
 error_code = Apiwork::ErrorCode.find!(:not_found)
-error_code.key     # => :not_found
-error_code.status  # => 404
+error_code.key # => :not_found
+error_code.status # => 404
 error_code.attach_path? # => true
 ```
 

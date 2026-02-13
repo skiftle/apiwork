@@ -15,9 +15,9 @@ Used as a fallback when the type cannot be determined during introspection.
 **Example: Basic usage**
 
 ```ruby
-param.type     # => :unknown
+param.type # => :unknown
 param.unknown? # => true
-param.scalar?  # => false
+param.scalar? # => false
 ```
 
 ## Instance Methods

@@ -13,9 +13,9 @@ Time param representing time-of-day values.
 **Example: Basic usage**
 
 ```ruby
-param.type         # => :time
-param.scalar?      # => true
-param.time?        # => true
+param.type # => :time
+param.scalar? # => true
+param.time? # => true
 ```
 
 **Example: Capabilities**
@@ -28,7 +28,7 @@ param.formattable? # => false
 
 ```ruby
 if param.enum?
-  param.enum      # => ["09:00", "17:00"]
+  param.enum # => ["09:00", "17:00"]
   param.enum_reference? # => false
 end
 ```

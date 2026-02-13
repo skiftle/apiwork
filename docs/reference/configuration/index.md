@@ -13,14 +13,14 @@ Typed access to configuration values with automatic defaults.
 **Example: Reading values**
 
 ```ruby
-config.pagination.default_size  # => 20
-config.pagination.strategy      # => :offset
+config.pagination.default_size # => 20
+config.pagination.strategy # => :offset
 ```
 
 **Example: Using dig for dynamic access**
 
 ```ruby
-config.dig(:pagination, :default_size)  # => 20
+config.dig(:pagination, :default_size) # => 20
 ```
 
 ## Modules
@@ -50,8 +50,8 @@ Accesses nested configuration values by key path.
 **Example**
 
 ```ruby
-config.dig(:pagination)             # => #<Apiwork::Configuration:...>
-config.dig(:pagination, :strategy)  # => :offset
+config.dig(:pagination) # => #<Apiwork::Configuration:...>
+config.dig(:pagination, :strategy) # => :offset
 ```
 
 ---
@@ -71,7 +71,7 @@ Converts the configuration to a hash.
 **Example**
 
 ```ruby
-config.to_h  # => { pagination: { strategy: :offset, default_size: 20 } }
+config.to_h # => { pagination: { strategy: :offset, default_size: 20 } }
 ```
 
 ---

@@ -17,8 +17,8 @@ Used by adapters to build contracts and serialize records.
 
 ```ruby
 association = InvoiceRepresentation.associations[:customer]
-association.name         # => :customer
-association.type         # => :belongs_to
+association.name # => :customer
+association.type # => :belongs_to
 association.representation_class # => CustomerRepresentation
 ```
 

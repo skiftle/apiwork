@@ -414,7 +414,7 @@ Included in generated specs (OpenAPI, etc.) as possible error responses.
 
 ```ruby
 raises :unauthorized, :forbidden, :not_found
-api_class.raises  # => [:unauthorized, :forbidden, :not_found]
+api_class.raises # => [:unauthorized, :forbidden, :not_found]
 ```
 
 ---

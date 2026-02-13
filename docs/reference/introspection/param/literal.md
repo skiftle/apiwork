@@ -13,15 +13,15 @@ Literal param representing a constant value.
 **Example: Basic usage**
 
 ```ruby
-param.type     # => :literal
+param.type # => :literal
 param.literal? # => true
-param.scalar?  # => false
+param.scalar? # => false
 ```
 
 **Example: Value**
 
 ```ruby
-param.value    # => "active" or 42 or true
+param.value # => "active" or 42 or true
 ```
 
 ## Instance Methods

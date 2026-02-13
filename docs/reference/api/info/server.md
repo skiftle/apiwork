@@ -40,7 +40,7 @@ The server description.
 
 ```ruby
 description 'Production'
-server.description  # => "Production"
+server.description # => "Production"
 ```
 
 ---
@@ -71,7 +71,7 @@ The server URL.
 
 ```ruby
 url 'https://api.example.com'
-server.url  # => "https://api.example.com"
+server.url # => "https://api.example.com"
 ```
 
 ---

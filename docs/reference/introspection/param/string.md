@@ -13,18 +13,18 @@ String param representing text values.
 **Example: Basic usage**
 
 ```ruby
-param.type         # => :string
-param.scalar?      # => true
-param.string?      # => true
+param.type # => :string
+param.scalar? # => true
+param.string? # => true
 ```
 
 **Example: Constraints**
 
 ```ruby
-param.min          # => 1 or nil
-param.max          # => 255 or nil
-param.format       # => :email or nil
-param.boundable?   # => true
+param.min # => 1 or nil
+param.max # => 255 or nil
+param.format # => :email or nil
+param.boundable? # => true
 param.formattable? # => true
 ```
 
@@ -32,7 +32,7 @@ param.formattable? # => true
 
 ```ruby
 if param.enum?
-  param.enum      # => ["draft", "published"]
+  param.enum # => ["draft", "published"]
   param.enum_reference? # => false
 end
 ```

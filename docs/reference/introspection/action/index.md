@@ -13,14 +13,14 @@ Wraps action definitions within a resource.
 **Example**
 
 ```ruby
-resource.actions[:show].method     # => :get
-resource.actions[:show].path       # => "/posts/:id"
-resource.actions[:create].request  # => Action::Request
+resource.actions[:show].method # => :get
+resource.actions[:show].path # => "/posts/:id"
+resource.actions[:create].request # => Action::Request
 
 resource.actions.each_value do |action|
-  action.method      # => :get, :post, :patch, :delete
-  action.request     # => Action::Request
-  action.response    # => Action::Response
+  action.method # => :get, :post, :patch, :delete
+  action.request # => Action::Request
+  action.response # => Action::Response
   action.deprecated? # => false
 end
 ```

@@ -14,16 +14,16 @@ Wraps action response definitions.
 
 ```ruby
 response = action.response
-response.body?        # => true
-response.no_content?  # => false
-response.body         # => Param for response body
+response.body? # => true
+response.no_content? # => false
+response.body # => Param for response body
 ```
 
 **Example: No content response**
 
 ```ruby
-response.no_content?  # => true
-response.body?        # => false
+response.no_content? # => true
+response.body? # => false
 ```
 
 ## Instance Methods

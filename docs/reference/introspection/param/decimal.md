@@ -13,18 +13,18 @@ Decimal param representing precise decimal number values.
 **Example: Basic usage**
 
 ```ruby
-param.type       # => :decimal
-param.scalar?    # => true
-param.decimal?   # => true
-param.numeric?   # => true
+param.type # => :decimal
+param.scalar? # => true
+param.decimal? # => true
+param.numeric? # => true
 ```
 
 **Example: Constraints**
 
 ```ruby
-param.min          # => 0.0 or nil
-param.max          # => 100.0 or nil
-param.boundable?   # => true
+param.min # => 0.0 or nil
+param.max # => 100.0 or nil
+param.boundable? # => true
 param.formattable? # => false
 ```
 
@@ -32,7 +32,7 @@ param.formattable? # => false
 
 ```ruby
 if param.enum?
-  param.enum      # => [9.99, 19.99, 29.99]
+  param.enum # => [9.99, 19.99, 29.99]
   param.enum_reference? # => false
 end
 ```

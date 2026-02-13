@@ -13,19 +13,19 @@ Integer param representing whole number values.
 **Example: Basic usage**
 
 ```ruby
-param.type       # => :integer
-param.scalar?    # => true
-param.integer?   # => true
-param.numeric?   # => true
+param.type # => :integer
+param.scalar? # => true
+param.integer? # => true
+param.numeric? # => true
 ```
 
 **Example: Constraints**
 
 ```ruby
-param.min          # => 0 or nil
-param.max          # => 100 or nil
-param.format       # => :int32 or nil
-param.boundable?   # => true
+param.min # => 0 or nil
+param.max # => 100 or nil
+param.format # => :int32 or nil
+param.boundable? # => true
 param.formattable? # => true
 ```
 
@@ -33,7 +33,7 @@ param.formattable? # => true
 
 ```ruby
 if param.enum?
-  param.enum      # => [1, 2, 3]
+  param.enum # => [1, 2, 3]
   param.enum_reference? # => false
 end
 ```

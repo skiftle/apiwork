@@ -13,15 +13,15 @@ Reference param representing a reference to a named type.
 **Example: Basic usage**
 
 ```ruby
-param.type       # => :reference
+param.type # => :reference
 param.reference? # => true
-param.scalar?    # => false
+param.scalar? # => false
 ```
 
 **Example: Reference**
 
 ```ruby
-param.reference  # => :address
+param.reference # => :address
 ```
 
 ## Instance Methods

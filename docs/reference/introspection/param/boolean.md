@@ -13,9 +13,9 @@ Boolean param representing true/false values.
 **Example: Basic usage**
 
 ```ruby
-param.type         # => :boolean
-param.scalar?      # => true
-param.boolean?     # => true
+param.type # => :boolean
+param.scalar? # => true
+param.boolean? # => true
 ```
 
 **Example: Capabilities**
@@ -28,7 +28,7 @@ param.formattable? # => false
 
 ```ruby
 if param.enum?
-  param.enum      # => [true]
+  param.enum # => [true]
   param.enum_reference? # => false
 end
 ```
