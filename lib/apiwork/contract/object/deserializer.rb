@@ -46,7 +46,7 @@ module Apiwork
           representation_class = nested_shape.contract_class.representation_class
           return representation_class.deserialize(hash) if representation_class && nested_shape.params.none? { |_, options| options[:union] }
 
-          Deserializer.new(nested_shape).deserialize(hash)
+          Deserializer.deserialize(nested_shape, hash)
         end
 
         def deserialize_union(hash, union)
@@ -57,7 +57,7 @@ module Apiwork
             representation_class = variant[:shape].contract_class.representation_class
             return representation_class.deserialize(hash) if representation_class
 
-            Deserializer.new(variant[:shape]).deserialize(hash)
+            Deserializer.deserialize(variant[:shape], hash)
           elsif variant[:custom_type]
             deserialize_custom_type(hash, variant[:custom_type])
           else
@@ -89,7 +89,7 @@ module Apiwork
             next item unless item.is_a?(Hash)
 
             if param_options[:shape]
-              Deserializer.new(param_options[:shape]).deserialize(item)
+              Deserializer.deserialize(param_options[:shape], item)
             else
               item
             end

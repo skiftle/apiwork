@@ -4,6 +4,12 @@ module Apiwork
   module Adapter
     module Capability
       class Runner
+        class << self
+          def run(capabilities, data:, representation_class:, request:, wrapper_type:)
+            new(capabilities, wrapper_type:).run(data, representation_class, request)
+          end
+        end
+
         def initialize(capabilities, wrapper_type:)
           @capabilities = capabilities
           @wrapper_type = wrapper_type

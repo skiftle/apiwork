@@ -3,7 +3,13 @@
 module Apiwork
   module API
     class Router
-      def draw
+      class << self
+        def route
+          new.route
+        end
+      end
+
+      def route
         api_classes = Registry.values
         router = self
 

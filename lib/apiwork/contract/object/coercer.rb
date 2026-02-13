@@ -85,11 +85,11 @@ module Apiwork
 
           return coerce_union(value, param_options[:union]) if type == :union
           return coerce_array(value, param_options) if type == :array && value.is_a?(Array)
-          return Coercer.new(param_options[:shape]).coerce(value) if param_options[:shape] && value.is_a?(Hash)
+          return Coercer.coerce(param_options[:shape], value) if param_options[:shape] && value.is_a?(Hash)
 
           if value.is_a?(Hash) && type && !PRIMITIVES.key?(type)
             custom_shape = resolve_custom_shape(type)
-            return Coercer.new(custom_shape).coerce(value) if custom_shape
+            return Coercer.coerce(custom_shape, value) if custom_shape
           end
 
           coerced = coerce_primitive(value, type)
@@ -103,12 +103,12 @@ module Apiwork
 
           array.map do |item|
             if param_options[:shape] && item.is_a?(Hash)
-              Coercer.new(param_options[:shape]).coerce(item)
+              Coercer.coerce(param_options[:shape], item)
             elsif param_options[:of] && PRIMITIVES.key?(param_options[:of])
               coerced = coerce_primitive(item, param_options[:of])
               coerced.nil? ? item : coerced
             elsif custom_shape && item.is_a?(Hash)
-              Coercer.new(custom_shape).coerce(item)
+              Coercer.coerce(custom_shape, item)
             else
               item
             end
@@ -131,7 +131,7 @@ module Apiwork
 
             if matching_variant
               custom_shape = resolve_custom_shape(matching_variant[:type])
-              return Coercer.new(custom_shape).coerce(value) if custom_shape
+              return Coercer.coerce(custom_shape, value) if custom_shape
             end
           end
 
@@ -143,7 +143,7 @@ module Apiwork
               custom_shape = resolve_custom_shape(variant_of)
               if custom_shape
                 return value.map do |item|
-                  item.is_a?(Hash) ? Coercer.new(custom_shape).coerce(item) : item
+                  item.is_a?(Hash) ? Coercer.coerce(custom_shape, item) : item
                 end
               end
             end
@@ -153,7 +153,7 @@ module Apiwork
             custom_shape = resolve_custom_shape(variant_type)
             next unless custom_shape
 
-            return Coercer.new(custom_shape).coerce(value) if value.is_a?(Hash)
+            return Coercer.coerce(custom_shape, value) if value.is_a?(Hash)
           end
 
           value

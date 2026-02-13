@@ -241,8 +241,13 @@ module Apiwork
       private
 
       def apply_capabilities(data, representation_class, request, wrapper_type:)
-        runner = Capability::Runner.new(capabilities, wrapper_type:)
-        runner.run(data, representation_class, request)
+        Capability::Runner.run(
+          capabilities,
+          data:,
+          representation_class:,
+          request:,
+          wrapper_type:,
+        )
       end
 
       def build_action_responses(contract_class, representation_class, actions)

@@ -3,6 +3,12 @@
 module Apiwork
   module Representation
     class Deserializer
+      class << self
+        def deserialize(representation_class, payload)
+          new(representation_class).deserialize(payload)
+        end
+      end
+
       def initialize(representation_class)
         @representation_class = representation_class
       end

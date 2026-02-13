@@ -3,6 +3,12 @@
 module Apiwork
   module Representation
     class Serializer
+      class << self
+        def serialize(representation, includes)
+          new(representation, includes).serialize
+        end
+      end
+
       def initialize(representation, includes)
         @representation = representation
         @representation_class = representation.class

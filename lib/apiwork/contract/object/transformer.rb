@@ -31,10 +31,10 @@ module Apiwork
             end
 
             if param_options[:shape] && value.is_a?(Hash)
-              transformed[name] = Transformer.new(param_options[:shape]).transform(value)
+              transformed[name] = Transformer.transform(param_options[:shape], value)
             elsif param_options[:shape] && value.is_a?(Array)
               transformed[name] = value.map do |item|
-                item.is_a?(Hash) ? Transformer.new(param_options[:shape]).transform(item) : item
+                item.is_a?(Hash) ? Transformer.transform(param_options[:shape], item) : item
               end
             elsif param_options[:type] == :array && param_options[:of] && value.is_a?(Array)
               if (array_result = transform_custom_type_array(value, param_options))
@@ -53,7 +53,7 @@ module Apiwork
           return nil unless custom_type_shape
 
           value.map do |item|
-            item.is_a?(Hash) ? Transformer.new(custom_type_shape).transform(item) : item
+            item.is_a?(Hash) ? Transformer.transform(custom_type_shape, item) : item
           end
         end
 

@@ -684,7 +684,7 @@ module Apiwork
         # @example
         #   InvoiceRepresentation.deserialize(params[:invoice])
         def deserialize(payload)
-          Deserializer.new(self).deserialize(payload)
+          Deserializer.deserialize(self, payload)
         end
 
         # @api public
@@ -812,7 +812,7 @@ module Apiwork
       end
 
       def as_json
-        Serializer.new(self, @include).serialize
+        Serializer.serialize(self, @include)
       end
     end
   end
