@@ -3,6 +3,12 @@
 module Apiwork
   module Export
     class SurfaceResolver
+      class << self
+        def resolve(api)
+          new(api)
+        end
+      end
+
       def initialize(api)
         @api = api
       end

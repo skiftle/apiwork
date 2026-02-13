@@ -3,11 +3,17 @@
 module Apiwork
   module Export
     class TypeScriptMapper
+      class << self
+        def map(export, surface)
+          new(export).map(surface)
+        end
+      end
+
       def initialize(export)
         @export = export
       end
 
-      def generate(surface)
+      def map(surface)
         types = build_enum_types(surface) +
                 build_type_definitions(surface) +
                 build_action_types

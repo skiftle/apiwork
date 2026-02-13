@@ -69,30 +69,74 @@ No blank line between the magic comment and require.
 
 ---
 
-## Which Methods to Test
+## Which Methods to Unit Test
 
 ### Decision Tree
 
 ```
-1. Method is private?                    → Do NOT test
-2. Method is trivial attr_reader?        → Do NOT test (just returns @variable)
-3. Method is @api public?               → MUST test
-4. Method is semi-public (no YARD)?     → Test if it has logic (conditional, computation, transformation)
-5. Method is #initialize?               → Test only if it validates or transforms input
+1. Method is private?                              → NEVER
+2. Method is @api public?                          → MUST test
+3. #initialize with validation or coercion?        → MUST test
+4. Everything else (semi-public)?                  → Do NOT unit test
 ```
 
-### What "trivial" means
+Rule 4 is not a gap. Semi-public methods are tested through integration tests.
+If integration tests don't cover a semi-public method, expand the integration tests.
 
-A trivial getter returns `@variable` or delegates without transformation. Do not test these:
+### What about canonical entry points?
+
+Canonical entry points (`#build`, `#generate`, `#serialize`, etc.) are tested **only if the method is `@api public`**.
+
+Base classes like `Builder::Base#build` and `Serializer::Base#serialize` are `@api public` and get unit tests via rule 2.
+
+Concrete implementations like `Filtering::ContractBuilder#build` or `Pagination::Operation#apply` are internal. They inherit from public base classes but have no `@api public` methods themselves. These are tested through integration tests only.
+
+### What about `attr_reader`?
+
+`@api public` attr_readers that just return `@variable` are tested through `#initialize`.
+The `#initialize` test asserts all public attributes.
+No separate `describe` for trivial attr_readers.
 
 ```ruby
-attr_reader :name          # trivial — skip
-delegate :find, to: :registry  # trivial — skip
+# Issue has @api public attr_reader :code, :detail, :path, :meta
+# These are tested in describe '#initialize':
 
-def root_key               # NOT trivial — has computation
-  @root_key ||= RootKey.new(...)
+it 'creates with required attributes' do
+  issue = described_class.new(:required, 'Field is required')
+
+  expect(issue.code).to eq(:required)     # attr_reader tested here
+  expect(issue.detail).to eq('Field is required')
+  expect(issue.path).to eq([])
+  expect(issue.meta).to eq({})
 end
 ```
+
+### Which classes get unit tests?
+
+A class gets a unit test file if it has at least one method matching rules 2-3.
+
+```
+Has @api public methods?          → yes → unit test file
+Has #initialize with logic?       → yes → unit test file
+None of the above?                → no unit test file (integration only)
+```
+
+**~93 of 182 lib files** have `@api public` methods and get unit tests. The remaining ~89 are internal implementations tested through integration tests.
+
+Classes that do NOT get unit tests:
+
+| Category | Examples |
+|----------|----------|
+| Capability declarations | `Filtering`, `Pagination`, `Sorting` |
+| Concrete builders/operations | `Filtering::ContractBuilder`, `Pagination::Operation` |
+| Constants modules | `Filtering::Constants`, `Writing::Constants` |
+| Error classes (no logic) | `DomainError`, `ConfigurationError`, `HttpError` |
+| Internal registries | `Adapter::Registry`, `API::Registry` |
+| Result/data holders | `Validator::Result`, `RequestParser::Result` |
+| Introspection dump classes | `Dump::Action`, `Dump::API`, `Dump::Contract` |
+| Internal helpers | `Coercer`, `Deserializer`, `ModelDetector` |
+| Mixins | `Abstractable`, `Validatable` |
+| Engine, version | `Engine`, `version.rb` |
 
 ---
 
@@ -784,33 +828,70 @@ context 'without filters' do
 
 ### it — Naming Formulas
 
-| Method category | `it` pattern | Example |
-|-----------------|--------------|---------|
-| Getter | `'returns <what>'` | `it 'returns :domain'` |
-| Getter (conditional) | `'returns <what> when <condition>'` | `it 'returns nil when not set'` |
-| Predicate (true) | `'returns true when <condition>'` | `it 'returns true when abstract'` |
-| Predicate (false) | `'returns false when <condition>'` | `it 'returns false when not abstract'` |
-| Mutator | `'marks <object> as <state>'` | `it 'marks the class as abstract'` |
-| Converter | `'includes all fields'` | `it 'includes all fields'` |
-| Finder (success) | `'returns the <thing>'` | `it 'returns the error code'` |
-| Finder (nil) | `'returns nil when not found'` | `it 'returns nil when not found'` |
+`<what>` is the **return value as written in code** or the **method name as words**.
+
+**Algorithm for `<what>`:**
+
+```
+1. Return is a literal (:domain, 422, "UTC")    → use the literal: 'returns :domain'
+2. Return is the method name's noun              → use it: 'returns the pointer'
+3. Return is nil                                 → 'returns nil when <condition>'
+```
+
+**Algorithm for `<condition>`:**
+
+```
+1. Condition is from a context block             → omit (context already states it)
+2. Condition is about input state                → 'when <state>': 'when not set', 'when empty'
+3. Condition is about a flag                     → 'when <flag>': 'when abstract', 'when optional'
+```
+
+| Method category | `it` pattern | Exact example |
+|-----------------|--------------|---------------|
+| Getter (literal return) | `'returns <literal>'` | `it 'returns :domain'` |
+| Getter (object return) | `'returns the <method name as noun>'` | `it 'returns the pointer'` |
+| Getter (nil path) | `'returns nil when <condition>'` | `it 'returns nil when not set'` |
+| Predicate (true) | `'returns true when <adjective from method name>'` | `it 'returns true when abstract'` |
+| Predicate (false) | `'returns false when not <adjective>'` | `it 'returns false when not abstract'` |
+| Mutator | `'marks the <class noun> as <state>'` | `it 'marks the class as abstract'` |
+| Converter (`to_h`) | `'includes all fields'` | `it 'includes all fields'` — always this exact string |
+| Converter (`to_s`) | `'formats as <output pattern>'` | `it 'formats as [code] at pointer detail'` |
+| Converter (`as_json` delegating) | `'returns the same as to_h'` | `it 'returns the same as to_h'` — always this exact string |
+| Converter (branch, true) | `'includes the <thing>'` | `it 'includes the pointer'` |
+| Converter (branch, false) | `'excludes the <thing>'` | `it 'excludes the pointer'` |
+| Finder (success) | `'returns the <class noun>'` | `it 'returns the error code'` |
+| Finder (nil) | `'returns nil when not found'` | Always this exact string |
 | Finder (raise) | `'raises <Error> when not found'` | `it 'raises KeyError when not found'` |
-| DSL | `'registers the <thing>'` | `it 'registers the attribute'` |
+| DSL (registers) | `'registers the <thing>'` | `it 'registers the attribute'` |
+| DSL (block) | `'passes block to <target class>'` | `it 'passes block to Attribute'` |
 | Config setter (set) | `'sets the <thing>'` | `it 'sets the serializer class'` |
-| Config setter (error) | `'raises ConfigurationError for <reason>'` | `it 'raises ConfigurationError for non-class argument'` |
-| Config setter (inherit) | `'inherits from superclass'` | `it 'inherits from superclass'` |
-| HTTP (success) | `'<verb>s by <mechanism>'` | `it 'filters by exact match'` |
+| Config setter (non-class) | `'raises ConfigurationError for non-class argument'` | Always this exact string |
+| Config setter (wrong hierarchy) | `'raises ConfigurationError for wrong class hierarchy'` | Always this exact string |
+| Config setter (inherit) | `'inherits from superclass'` | Always this exact string |
+| Initialize (defaults) | `'creates with required attributes'` | Always this exact string |
+| Initialize (optionals) | `'accepts <param1> and <param2>'` | `it 'accepts path and meta'` |
+| Initialize (coercion) | `'converts <input> to <output>'` | `it 'converts path elements to symbols except integers'` |
+| HTTP (success) | `'<verbs> by <mechanism>'` | `it 'filters by exact match'` |
 | HTTP (error) | `'returns <status> for <reason>'` | `it 'returns error for invalid input'` |
-| HTTP (empty) | `'returns empty <collection> when <condition>'` | `it 'returns empty array when no matches found'` |
+| HTTP (empty) | `'returns empty array when no matches found'` | Always this exact string |
+| HTTP (create) | `'creates the <model>'` | `it 'creates the post'` |
+| HTTP (update) | `'updates the <model>'` | `it 'updates the post'` |
+| HTTP (delete) | `'deletes the <model>'` | `it 'deletes the post'` |
+| HTTP (show) | `'returns the <model>'` | `it 'returns the post'` |
+| HTTP (index) | `'returns the collection'` | Always this exact string |
+| HTTP (404) | `'returns not found for nonexistent <model>'` | `it 'returns not found for nonexistent post'` |
+| HTTP (422) | `'returns unprocessable entity for invalid input'` | Always this exact string |
 
 **Forbidden patterns:**
 
-| Bad | Good |
-|-----|------|
-| `it 'should return a hash'` | `it 'returns a hash'` |
-| `it 'validates and saves'` | Split into two `it` blocks |
-| `it 'works correctly'` | Be specific using formula |
-| `it 'it returns a hash'` | `it 'returns a hash'` |
+| Bad | Why | Good |
+|-----|-----|------|
+| `it 'should return a hash'` | "should" | `it 'returns a hash'` |
+| `it 'validates and saves'` | Multiple behaviors | Split into two `it` blocks |
+| `it 'works correctly'` | Non-specific | Use formula |
+| `it 'it returns a hash'` | Stutters | `it 'returns a hash'` |
+| `it 'returns the correct value'` | "correct" is filler | `it 'returns :domain'` |
+| `it 'properly handles nil'` | "properly" is filler | `it 'returns nil when not set'` |
 
 ---
 
@@ -988,46 +1069,206 @@ Different method calls?                          → Separate it
 
 ---
 
-## Test Data Vocabulary
+## Test Data
 
-Tests use a **fixed vocabulary**. No exceptions.
+### Forbidden Words
 
-| Domain | Terms |
-|--------|-------|
-| Billing | `invoice`, `item`, `items`, `customer`, `payment`, `currency`, `amount` |
-| Content | `post`, `comment`, `comments`, `author`, `title`, `body`, `published` |
-| Framework | `api`, `resource`, `action`, `contract`, `type`, `enum`, `adapter`, `representation` |
-
-**Forbidden:** `foo`, `bar`, `baz`, `test`, `example`, `sample`, `dummy`, `thing`, `data`
-
-### String Values
-
-Use recognizable, boring values:
-
-```ruby
-title: 'First Post'
-body: 'Rails tutorial'
-detail: 'Field is required'
-path: [:user, :email]
-```
-
-### Numbered Records
-
-```ruby
-let!(:post1) { Post.create!(title: 'First Post', ...) }
-let!(:post2) { Post.create!(title: 'Second Post', ...) }
-let!(:post3) { Post.create!(title: 'Third Post', ...) }
-```
-
-Variable names: `post1`, `post2`, `post3`. Not `first_post`, `published_post`.
+Never use: `foo`, `bar`, `baz`, `test`, `example`, `sample`, `dummy`, `thing`, `data`, `xxx`, `abc`
 
 ### Record Attribute Order
 
-Alphabetical by key name within `create!`:
+Alphabetical by key name. Always.
 
 ```ruby
 Post.create!(body: 'Rails tutorial', created_at: 3.days.ago, published: true, title: 'First Post')
 ```
+
+### Variable Names
+
+Numbered: `post1`, `post2`, `post3`. Never `first_post` or `published_post`.
+
+---
+
+## Integration Test Data Registry
+
+These are the **exact** models and values to use. Copy-paste, do not invent.
+
+### Post (primary model)
+
+```ruby
+let!(:post1) { Post.create!(body: 'Rails tutorial', created_at: 3.days.ago, published: true, title: 'First Post') }
+let!(:post2) { Post.create!(body: 'Ruby guide', created_at: 2.days.ago, published: false, title: 'Second Post') }
+let!(:post3) { Post.create!(body: 'Rails advanced', created_at: 1.hour.ago, published: true, title: 'Third Post') }
+```
+
+Bulk:
+
+```ruby
+before do
+  25.times do |i|
+    Post.create!(body: "Body #{i + 1}", created_at: (25 - i).days.ago, published: i.even?, title: "Post #{i + 1}")
+  end
+end
+```
+
+### Comment (nested under Post)
+
+```ruby
+let!(:comment1) { Comment.create!(author: 'Alice', content: 'Great post', post: post1) }
+let!(:comment2) { Comment.create!(author: 'Bob', content: 'Thanks for sharing', post: post1) }
+let!(:comment3) { Comment.create!(author: 'Alice', content: 'Well written', post: post2) }
+```
+
+### Reply (nested under Comment)
+
+```ruby
+let!(:reply1) { Reply.create!(author: 'Bob', comment: comment1, content: 'Thank you') }
+let!(:reply2) { Reply.create!(author: 'Alice', comment: comment1, content: 'Glad you liked it') }
+```
+
+### Author
+
+```ruby
+let!(:author1) { Author.create!(bio: 'Ruby developer', name: 'Alice', verified: true) }
+let!(:author2) { Author.create!(bio: 'Rails enthusiast', name: 'Bob', verified: false) }
+```
+
+### User + Profile
+
+```ruby
+let!(:user1) { User.create!(email: 'alice@example.com', name: 'Alice') }
+let!(:user2) { User.create!(email: 'bob@example.com', name: 'Bob') }
+let!(:profile1) { Profile.create!(avatar_url: 'https://example.com/alice.jpg', bio: 'Ruby developer', timezone: 'UTC', user: user1) }
+```
+
+### Account (enums)
+
+```ruby
+let!(:account1) { Account.create!(name: 'Acme Corp', status: :active) }
+let!(:account2) { Account.create!(name: 'Beta Inc', status: :inactive) }
+```
+
+### Tag + Tagging (polymorphic)
+
+```ruby
+let!(:tag1) { Tag.create!(name: 'Ruby', slug: 'ruby') }
+let!(:tag2) { Tag.create!(name: 'Rails', slug: 'rails') }
+```
+
+### Client (STI)
+
+```ruby
+let!(:client1) { PersonClient.create!(birth_date: '1990-01-15', email: 'alice@example.com', name: 'Alice') }
+let!(:client2) { CompanyClient.create!(industry: 'Technology', name: 'Acme Corp', registration_number: 'REG-001') }
+```
+
+### Service (nested under Client)
+
+```ruby
+let!(:service1) { Service.create!(client: client1, description: 'Monthly consulting', name: 'Consulting') }
+```
+
+### Attachment (nested under Post)
+
+```ruby
+let!(:attachment1) { Attachment.create!(filename: 'document.pdf', post: post1) }
+let!(:attachment2) { Attachment.create!(filename: 'image.png', post: post1) }
+```
+
+### How many records?
+
+| Scenario | Count |
+|----------|-------|
+| Basic CRUD tests | 3 records |
+| Filtering tests | 3 records (vary the filtered attribute) |
+| Pagination tests | 25 records (bulk, `before` block) |
+| Association tests | 2-3 parent + 2-3 children |
+| Empty collection tests | 0 records (no setup) |
+
+---
+
+## Unit Test Value Registry
+
+Fixed values by type. Do not invent new values.
+
+### Issue values
+
+| Field | Primary value | Secondary value | Empty/default value |
+|-------|--------------|-----------------|---------------------|
+| `code` | `:required` | `:type_invalid` | `:invalid` |
+| `detail` | `'Field is required'` | `'Expected string'` | `'Invalid request'` |
+| `path` | `[:user, :email]` | `[:items, 0, :name]` | `[]` |
+| `meta` | `{ field: :email }` | `{ expected: 'string', got: 'integer' }` | `{}` |
+
+### Error values
+
+| Field | Value |
+|-------|-------|
+| `issue` | `Apiwork::Issue.new(:invalid, 'is invalid', path: [:amount])` |
+| `status` | `422` |
+| `error_code` | `Apiwork::ErrorCode.find!(:unprocessable_entity)` |
+
+### Representation values
+
+| Field | Value |
+|-------|-------|
+| Attribute name | `:title`, `:body`, `:published`, `:amount` |
+| Attribute type | `:string`, `:integer`, `:boolean`, `:datetime` |
+| Association name | `:comments`, `:author`, `:items` |
+
+### Contract values
+
+| Field | Value |
+|-------|-------|
+| Action name | `:index`, `:show`, `:create`, `:update`, `:destroy` |
+| Param name | `:title`, `:body`, `:amount`, `:email` |
+| Param type | `:string`, `:integer`, `:boolean` |
+
+### DSL class setter test values
+
+| Test | Valid class | Invalid (non-class) | Invalid (wrong hierarchy) |
+|------|-----------|---------------------|--------------------------|
+| `resource_serializer` | `Serializer::Resource::Default` | `'NotAClass'` | `String` |
+| `error_serializer` | `Serializer::Error::Default` | `'NotAClass'` | `String` |
+| `member_wrapper` | `Wrapper::Member::Default` | `'NotAClass'` | `String` |
+| `collection_wrapper` | `Wrapper::Collection::Default` | `'NotAClass'` | `String` |
+| `error_wrapper` | `Wrapper::Error::Default` | `'NotAClass'` | `String` |
+
+Non-class argument is always `'NotAClass'`. Wrong hierarchy is always `String`.
+
+### String test values by purpose
+
+| Purpose | Value |
+|---------|-------|
+| Person name | `'Alice'`, `'Bob'` |
+| Email | `'alice@example.com'`, `'bob@example.com'` |
+| URL | `'https://example.com/alice.jpg'` |
+| Title | `'First Post'`, `'Second Post'`, `'Third Post'` |
+| Body/content | `'Rails tutorial'`, `'Ruby guide'`, `'Rails advanced'` |
+| Comment content | `'Great post'`, `'Thanks for sharing'`, `'Well written'` |
+| Company | `'Acme Corp'`, `'Beta Inc'` |
+| Technology | `'Ruby'`, `'Rails'` |
+| Slug | `'ruby'`, `'rails'` |
+| Filename | `'document.pdf'`, `'image.png'` |
+
+### Numeric test values
+
+| Purpose | Value |
+|---------|-------|
+| Positive integer | `42` |
+| Zero | `0` |
+| Negative integer | `-1` |
+| Decimal | `19.99` |
+| Count | `25` (for bulk) |
+
+### Time test values
+
+| Purpose | Value |
+|---------|-------|
+| Past (days) | `3.days.ago`, `2.days.ago`, `1.day.ago` |
+| Past (hours) | `1.hour.ago` |
+| Date string | `'1990-01-15'` |
+| Datetime string | `'2024-01-15T10:30:00Z'` |
 
 ---
 
@@ -1077,12 +1318,22 @@ spec/apiwork/contract/object_array_spec.rb     → array-specific
 Given a class to test:
 
 ```
-1. Create file at spec/apiwork/<path>_spec.rb
-2. Add header (frozen_string_literal + require)
-3. RSpec.describe with class constant
-4. List all public + semi-public methods with logic
-5. Order: class methods (alphabetical), #initialize, instance methods (alphabetical)
-6. For each method:
+1. Does the class qualify? (has @api public methods or #initialize with logic?)
+   No  → skip, integration tests only
+   Yes → continue
+
+2. Create file at spec/apiwork/<path>_spec.rb
+3. Add header (frozen_string_literal + require)
+4. RSpec.describe with class constant
+
+5. List methods to test:
+   a. All @api public methods (except trivial attr_reader — tested via #initialize)
+   b. #initialize if it validates or coerces input
+   c. Nothing else
+
+6. Order: class methods (alphabetical), #initialize, instance methods (alphabetical)
+
+7. For each method:
    a. Categorize (predicate/getter/raiser/mutator/converter/finder/DSL/config setter)
    b. Count code paths (branches, conditionals)
    c. Apply formula for that category → get exact number of it blocks
@@ -1090,7 +1341,8 @@ Given a class to test:
    e. If 3+ it blocks with same setup → wrap in let, else inline
    f. If method has branches → add context blocks per branch
    g. Name it blocks using naming formula table
-7. Verify: under 150 lines? If not, split.
+
+8. Verify: under 150 lines? If not, split.
 ```
 
 ---
@@ -1101,17 +1353,19 @@ Before a test file is done:
 
 1. File starts with `# frozen_string_literal: true` + `require 'rails_helper'`
 2. `RSpec.describe` uses class constant (unit) or string (integration)
-3. Methods tested in class layout order
-4. Each method categorized and formula applied
-5. Edge cases derived from signature
-6. `context` blocks match method branches
-7. `it` names follow naming formula table
-8. No `subject`, no `shared_examples`, no `shared_context`
-9. No comments
-10. AAA structure with blank lines
-11. Test data uses canonical vocabulary
-12. Record attributes in alphabetical order
-13. `let` scoped to nearest `describe`, not top-level
-14. Under 150 lines
-15. `bundle exec rubocop -A` passes
-16. `bundle exec rspec <file>` passes
+3. Only tests `@api public` methods and `#initialize` with logic
+4. No tests for semi-public, private, or internal canonical entry points
+5. Methods tested in class layout order (class methods alphabetical, #initialize, instance methods alphabetical)
+6. Each method categorized and formula applied
+7. Edge cases derived from signature
+8. `context` blocks match method branches
+9. `it` names follow naming formula table
+10. No `subject`, no `shared_examples`, no `shared_context`
+11. No comments
+12. AAA structure with blank lines
+13. Test data from the registry (no invented values)
+14. Record attributes in alphabetical order
+15. `let` scoped to nearest `describe`, not top-level
+16. Under 150 lines
+17. `bundle exec rubocop -A` passes
+18. `bundle exec rspec <file>` passes

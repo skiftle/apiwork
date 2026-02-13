@@ -292,7 +292,7 @@ module Apiwork
       end
 
       def surface
-        @surface ||= SurfaceResolver.new(api)
+        @surface ||= SurfaceResolver.resolve(api)
       end
 
       def build_schemas

@@ -10,17 +10,13 @@ module Apiwork
       option :version, default: '5', enum: %w[4 5], type: :string
 
       def generate
-        mapper.generate(surface)
+        TypeScriptMapper.map(self, surface)
       end
 
       private
 
       def surface
-        @surface ||= SurfaceResolver.new(api)
-      end
-
-      def mapper
-        @mapper ||= TypeScriptMapper.new(self)
+        @surface ||= SurfaceResolver.resolve(api)
       end
     end
   end

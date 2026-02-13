@@ -47,12 +47,8 @@ module Apiwork
         @zod_mapper ||= ZodMapper.new(self)
       end
 
-      def typescript_mapper
-        @typescript_mapper ||= TypeScriptMapper.new(self)
-      end
-
       def surface
-        @surface ||= SurfaceResolver.new(api)
+        @surface ||= SurfaceResolver.resolve(api)
       end
 
       def build_enum_schemas
@@ -127,7 +123,7 @@ module Apiwork
       end
 
       def build_typescript_types
-        typescript_mapper.generate(surface)
+        TypeScriptMapper.map(self, surface)
       end
 
       def traverse_resources(resources: api.resources, &block)

@@ -81,7 +81,7 @@ RSpec.describe Apiwork::Export::SurfaceResolver do
         },
       )
 
-      resolver = described_class.new(introspection)
+      resolver = described_class.resolve(introspection)
 
       expect(resolver.types.keys).to include(:address)
     end
@@ -106,7 +106,7 @@ RSpec.describe Apiwork::Export::SurfaceResolver do
         },
       )
 
-      resolver = described_class.new(introspection)
+      resolver = described_class.resolve(introspection)
 
       expect(resolver.types.keys).to include(:address)
       expect(resolver.types.keys).not_to include(:orphan)
@@ -137,7 +137,7 @@ RSpec.describe Apiwork::Export::SurfaceResolver do
         },
       )
 
-      resolver = described_class.new(introspection)
+      resolver = described_class.resolve(introspection)
 
       expect(resolver.types.keys).to include(:address)
       expect(resolver.types.keys).to include(:country)
@@ -164,7 +164,7 @@ RSpec.describe Apiwork::Export::SurfaceResolver do
         },
       )
 
-      resolver = described_class.new(introspection)
+      resolver = described_class.resolve(introspection)
 
       expect(resolver.types.keys).to include(:child)
       expect(resolver.types.keys).to include(:base_a)
@@ -190,7 +190,7 @@ RSpec.describe Apiwork::Export::SurfaceResolver do
         },
       )
 
-      resolver = described_class.new(introspection)
+      resolver = described_class.resolve(introspection)
 
       expect(resolver.types.keys).to include(:invoice_params)
     end
@@ -214,7 +214,7 @@ RSpec.describe Apiwork::Export::SurfaceResolver do
         },
       )
 
-      resolver = described_class.new(introspection)
+      resolver = described_class.resolve(introspection)
 
       expect(resolver.types.keys).to include(:filter_options)
     end
@@ -247,7 +247,7 @@ RSpec.describe Apiwork::Export::SurfaceResolver do
         },
       )
 
-      resolver = described_class.new(introspection)
+      resolver = described_class.resolve(introspection)
 
       expect(resolver.types.keys).to include(:payment)
     end
@@ -275,7 +275,7 @@ RSpec.describe Apiwork::Export::SurfaceResolver do
         },
       )
 
-      resolver = described_class.new(introspection)
+      resolver = described_class.resolve(introspection)
 
       expect(resolver.types.keys).to include(:invoice)
     end
@@ -306,7 +306,7 @@ RSpec.describe Apiwork::Export::SurfaceResolver do
         },
       )
 
-      resolver = described_class.new(introspection)
+      resolver = described_class.resolve(introspection)
 
       expect(resolver.types.keys).to include(:card_payment)
       expect(resolver.types.keys).to include(:bank_payment)
@@ -340,7 +340,7 @@ RSpec.describe Apiwork::Export::SurfaceResolver do
         },
       )
 
-      resolver = described_class.new(introspection)
+      resolver = described_class.resolve(introspection)
 
       expect(resolver.enums.keys).to include(:invoice_status)
     end
@@ -367,7 +367,7 @@ RSpec.describe Apiwork::Export::SurfaceResolver do
         types: {},
       )
 
-      resolver = described_class.new(introspection)
+      resolver = described_class.resolve(introspection)
 
       expect(resolver.enums.keys).to include(:sort_direction)
     end
@@ -399,7 +399,7 @@ RSpec.describe Apiwork::Export::SurfaceResolver do
         },
       )
 
-      resolver = described_class.new(introspection)
+      resolver = described_class.resolve(introspection)
 
       expect(resolver.enums.keys).to include(:invoice_status)
       expect(resolver.enums.keys).not_to include(:orphan_enum)
@@ -436,7 +436,7 @@ RSpec.describe Apiwork::Export::SurfaceResolver do
         },
       )
 
-      resolver = described_class.new(introspection)
+      resolver = described_class.resolve(introspection)
 
       expect(resolver.enums.keys).to include(:customer_status)
     end
