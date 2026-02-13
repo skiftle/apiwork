@@ -165,8 +165,8 @@ Variables should be named after their class:
 # Good — variable name matches class
 attribute = schema_class.attributes[key]      # Attribute
 association = schema_class.associations[key]  # Association
-type_definition = registry.find(name)         # TypeDefinition
-enum_definition = registry.find(name)         # EnumDefinition
+type_definition = registry.find(name)         # TypeRegistry::Definition
+enum_definition = registry.find(name)         # EnumRegistry::Definition
 
 # Bad — misleading suffix
 attribute_definition = schema_class.attributes[key]  # Class is Attribute, not AttributeDefinition
@@ -497,7 +497,7 @@ end
 | Suffix | Purpose | Example |
 |--------|---------|---------|
 | `*Base` | Abstract parent class | `Adapter::Base`, `Capability::Base` |
-| `*Definition` | Metadata/configuration holder | `TypeDefinition`, `EnumDefinition` |
+| `*Definition` | Metadata/configuration holder | `TypeRegistry::Definition`, `EnumRegistry::Definition` |
 | `*Registry` | Lookup and storage | `API::Registry`, `TypeRegistry` |
 | `*Default` | Concrete standard implementation | `Serializer::Resource::Default` |
 | `*Builder` | Construction logic | `APIBuilder`, `ContractBuilder` |

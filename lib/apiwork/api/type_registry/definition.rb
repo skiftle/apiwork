@@ -3,7 +3,7 @@
 module Apiwork
   module API
     class TypeRegistry
-      class TypeDefinition
+      class Definition
         attr_reader :deprecated,
                     :description,
                     :discriminator,
@@ -59,7 +59,7 @@ module Apiwork
         end
 
         def merge(block:, deprecated:, description:, example:)
-          TypeDefinition.new(
+          Definition.new(
             @name,
             block: merge_blocks(@block, block),
             deprecated: deprecated || @deprecated,

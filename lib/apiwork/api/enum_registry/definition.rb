@@ -3,7 +3,7 @@
 module Apiwork
   module API
     class EnumRegistry
-      class EnumDefinition
+      class Definition
         attr_reader :description,
                     :example,
                     :name,
@@ -36,7 +36,7 @@ module Apiwork
           example:,
           values:
         )
-          EnumDefinition.new(
+          Definition.new(
             @name,
             deprecated: deprecated || @deprecated,
             description: description || @description,

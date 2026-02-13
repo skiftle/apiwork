@@ -23,7 +23,7 @@ module Apiwork
           validate_kind_consistency!(key, kind)
           merge(key, block:, deprecated:, description:, example:)
         else
-          @store[key] = TypeDefinition.new(
+          @store[key] = Definition.new(
             key,
             block:,
             deprecated:,

@@ -4,21 +4,21 @@ module Apiwork
   # @api public
   module API
     class << self
-      # @!method find(path)
+      # @!method find(base_path)
       #   @api public
-      #   Finds an API by path.
-      #   @param path [String]
-      #     The API path.
+      #   Finds an API by base path.
+      #   @param base_path [String]
+      #     The API base path.
       #   @return [Class<API::Base>, nil]
       #   @see .find!
       #   @example
       #     Apiwork::API.find('/api/v1')
       #
-      # @!method find!(path)
+      # @!method find!(base_path)
       #   @api public
-      #   Finds an API by path.
-      #   @param path [String]
-      #     The API path.
+      #   Finds an API by base path.
+      #   @param base_path [String]
+      #     The API base path.
       #   @return [Class<API::Base>]
       #   @raise [KeyError] if the API is not found
       #   @see .find
@@ -34,14 +34,14 @@ module Apiwork
                to: Registry
 
       # @api public
-      # Defines a new API at the given path.
+      # Defines a new API at the given base path.
       #
       # This is the main entry point for creating an Apiwork API.
       # The block receives an API recorder for defining resources,
       # types, and configuration.
       #
-      # @param path [String]
-      #   The API path.
+      # @param base_path [String]
+      #   The API base path.
       # @yield block for API definition
       # @return [Class<API::Base>]
       #
@@ -57,11 +57,11 @@ module Apiwork
       #
       #     resources :invoices
       #   end
-      def define(path, &block)
+      def define(base_path, &block)
         return unless block
 
         Class.new(Base).tap do |klass|
-          klass.mount(path)
+          klass.mount(base_path)
           klass.class_eval(&block)
         end
       end
@@ -69,16 +69,16 @@ module Apiwork
       # @api public
       # The introspection data for an API.
       #
-      # @param path [String]
-      #   The API path.
+      # @param base_path [String]
+      #   The API base path.
       # @param locale [Symbol, nil] (nil)
       #   The locale for descriptions.
       # @return [Introspection::API]
       #
       # @example
       #   Apiwork::API.introspect('/api/v1')
-      def introspect(path, locale: nil)
-        find!(path).introspect(locale:)
+      def introspect(base_path, locale: nil)
+        find!(base_path).introspect(locale:)
       end
     end
   end

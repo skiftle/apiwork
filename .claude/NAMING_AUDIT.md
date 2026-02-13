@@ -29,8 +29,8 @@ Variables should be named after their class:
 # Good
 attribute = schema_class.attributes[key]      # Attribute
 association = schema_class.associations[key]  # Association
-type_definition = registry.find(name)         # TypeDefinition
-enum_definition = registry.find(name)         # EnumDefinition
+type_definition = registry.find(name)         # TypeRegistry::Definition
+enum_definition = registry.find(name)         # EnumRegistry::Definition
 
 # Bad — misleading suffix
 attribute_definition = schema_class.attributes[key]  # Class is Attribute, not AttributeDefinition

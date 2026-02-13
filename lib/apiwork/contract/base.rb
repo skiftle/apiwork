@@ -531,8 +531,10 @@ module Apiwork
         def resolve_custom_type(type_name, visited: Set.new)
           raise ConfigurationError, "Circular import detected while resolving :#{type_name}" if visited.include?(self)
 
-          result = api_class.type_definition(type_name, scope: self)
-          return result if result
+          if api_class
+            result = api_class.type_definition(type_name, scope: self)
+            return result if result
+          end
 
           result = resolve_imported_type(type_name, visited: visited.dup.add(self))
           return result if result
@@ -572,8 +574,10 @@ module Apiwork
         def enum_values(enum_name, visited: Set.new)
           return nil if visited.include?(self)
 
-          result = api_class.enum_values(enum_name, scope: self)
-          return result if result
+          if api_class
+            result = api_class.enum_values(enum_name, scope: self)
+            return result if result
+          end
 
           result = resolve_imported_enum_values(enum_name, visited: visited.dup.add(self))
           return result if result
