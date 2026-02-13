@@ -17,8 +17,30 @@ module Apiwork
         uuid: 'z.uuid()',
       }.freeze
 
+      class << self
+        def map(export, surface)
+          new(export).map(surface)
+        end
+      end
+
       def initialize(export)
         @export = export
+      end
+
+      def map(surface)
+        @surface = surface
+        parts = []
+
+        enum_schemas = build_enum_schemas
+        parts << enum_schemas if enum_schemas.present?
+
+        type_schemas = build_type_schemas
+        parts << type_schemas if type_schemas.present?
+
+        action_schemas = build_action_schemas
+        parts << action_schemas if action_schemas.present?
+
+        parts.join("\n\n")
       end
 
       def build_object_schema(type_name, type, recursive: false)
@@ -283,6 +305,84 @@ module Apiwork
       end
 
       private
+
+      def build_enum_schemas
+        return '' if @surface.enums.empty?
+
+        @surface.enums.map do |name, enum|
+          "export const #{pascal_case(name)}Schema = z.enum([#{enum.values.sort.map { |value| "'#{value}'" }.join(', ')}]);"
+        end.join("\n\n")
+      end
+
+      def build_type_schemas
+        types_hash = @surface.types.transform_values(&:to_h)
+        lazy_types = TypeAnalysis.cycle_breaking_types(types_hash)
+
+        TypeAnalysis.topological_sort_types(types_hash).map(&:first).map do |type_name|
+          type = @surface.types[type_name]
+          recursive = lazy_types.include?(type_name)
+
+          if type.union?
+            build_union_schema(type_name, type, recursive:)
+          else
+            build_object_schema(type_name, type, recursive:)
+          end
+        end.join("\n\n")
+      end
+
+      def build_action_schemas
+        schemas = []
+
+        traverse_resources do |resource|
+          resource_name = resource.identifier.to_sym
+          parent_identifiers = resource.parent_identifiers
+
+          resource.actions.each do |action_name, action|
+            request = action.request
+            if request && (request.query? || request.body?)
+              if request.query?
+                schemas << build_action_request_query_schema(
+                  resource_name,
+                  action_name,
+                  request.query,
+                  parent_identifiers:,
+                )
+              end
+              if request.body?
+                schemas << build_action_request_body_schema(
+                  resource_name,
+                  action_name,
+                  request.body,
+                  parent_identifiers:,
+                )
+              end
+              schemas << build_action_request_schema(
+                resource_name,
+                action_name,
+                { body: request.body, query: request.query },
+                parent_identifiers:,
+              )
+            end
+
+            response = action.response
+            if response.no_content?
+              schemas << "export const #{action_type_name(resource_name, action_name, 'Response', parent_identifiers:)}Schema = z.never();"
+            elsif response.body?
+              schemas << build_action_response_body_schema(resource_name, action_name, response.body, parent_identifiers:)
+              schemas << build_action_response_schema(resource_name, action_name, { body: response.body }, parent_identifiers:)
+            end
+          end
+        end
+
+        schemas.join("\n\n")
+      end
+
+      def traverse_resources(resources: @export.api.resources, &block)
+        resources.each_value do |resource|
+          yield(resource)
+          traverse_resources(resources: resource.resources, &block) if resource.resources.any?
+        end
+      end
 
       def type_or_enum_reference?(symbol)
         @export.api.types.key?(symbol) || @export.api.enums.key?(symbol)

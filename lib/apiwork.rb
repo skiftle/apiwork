@@ -32,7 +32,7 @@ module Apiwork
     end
 
     def draw_routes
-      API::Router.route
+      API::Router.draw
     end
 
     def eager_load_representations!

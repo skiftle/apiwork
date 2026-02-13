@@ -14,25 +14,13 @@ module Apiwork
 
         parts << "import { z } from 'zod';\n"
 
-        enum_schemas = build_enum_schemas
-        if enum_schemas.present?
-          parts << enum_schemas
+        zod_schemas = ZodMapper.map(self, surface)
+        if zod_schemas.present?
+          parts << zod_schemas
           parts << ''
         end
 
-        type_schemas = build_type_schemas
-        if type_schemas.present?
-          parts << type_schemas
-          parts << ''
-        end
-
-        action_schemas = build_action_schemas
-        if action_schemas.present?
-          parts << action_schemas
-          parts << ''
-        end
-
-        typescript_types = build_typescript_types
+        typescript_types = TypeScriptMapper.map(self, surface)
         if typescript_types.present?
           parts << typescript_types
           parts << ''
@@ -43,94 +31,8 @@ module Apiwork
 
       private
 
-      def zod_mapper
-        @zod_mapper ||= ZodMapper.new(self)
-      end
-
       def surface
         @surface ||= SurfaceResolver.resolve(api)
-      end
-
-      def build_enum_schemas
-        return '' if surface.enums.empty?
-
-        surface.enums.map do |name, enum|
-          "export const #{zod_mapper.pascal_case(name)}Schema = z.enum([#{enum.values.sort.map { |value| "'#{value}'" }.join(', ')}]);"
-        end.join("\n\n")
-      end
-
-      def build_type_schemas
-        types_hash = surface.types.transform_values(&:to_h)
-        lazy_types = TypeAnalysis.cycle_breaking_types(types_hash)
-
-        TypeAnalysis.topological_sort_types(types_hash).map(&:first).map do |type_name|
-          type = surface.types[type_name]
-          recursive = lazy_types.include?(type_name)
-
-          if type.union?
-            zod_mapper.build_union_schema(type_name, type, recursive:)
-          else
-            zod_mapper.build_object_schema(type_name, type, recursive:)
-          end
-        end.join("\n\n")
-      end
-
-      def build_action_schemas
-        schemas = []
-
-        traverse_resources do |resource|
-          resource_name = resource.identifier.to_sym
-          parent_identifiers = resource.parent_identifiers
-
-          resource.actions.each do |action_name, action|
-            request = action.request
-            if request && (request.query? || request.body?)
-              if request.query?
-                schemas << zod_mapper.build_action_request_query_schema(
-                  resource_name,
-                  action_name,
-                  request.query,
-                  parent_identifiers:,
-                )
-              end
-              if request.body?
-                schemas << zod_mapper.build_action_request_body_schema(
-                  resource_name,
-                  action_name,
-                  request.body,
-                  parent_identifiers:,
-                )
-              end
-              schemas << zod_mapper.build_action_request_schema(
-                resource_name,
-                action_name,
-                { body: request.body, query: request.query },
-                parent_identifiers:,
-              )
-            end
-
-            response = action.response
-            if response.no_content?
-              schemas << "export const #{zod_mapper.action_type_name(resource_name, action_name, 'Response', parent_identifiers:)} = z.never();"
-            elsif response.body?
-              schemas << zod_mapper.build_action_response_body_schema(resource_name, action_name, response.body, parent_identifiers:)
-              schemas << zod_mapper.build_action_response_schema(resource_name, action_name, { body: response.body }, parent_identifiers:)
-            end
-          end
-        end
-
-        schemas.join("\n\n")
-      end
-
-      def build_typescript_types
-        TypeScriptMapper.map(self, surface)
-      end
-
-      def traverse_resources(resources: api.resources, &block)
-        resources.each_value do |resource|
-          yield(resource)
-          traverse_resources(resources: resource.resources, &block) if resource.resources.any?
-        end
       end
     end
   end

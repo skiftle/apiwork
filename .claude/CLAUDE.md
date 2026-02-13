@@ -885,6 +885,12 @@ Class and instance method names match the class's purpose:
 
 Default is `apply`. Use established domain verb when it fits better.
 
+**Exceptions:**
+
+| Class | Method | Rationale |
+|-------|--------|-----------|
+| `Router` | `draw` | Rails convention ("draw routes") |
+
 Pattern: `initialize` takes configuration, method takes input.
 Class method combines both: `new(config).method(input)`
 
