@@ -52,7 +52,7 @@ module Apiwork
       end
 
       def surface
-        @surface ||= SurfaceResolver.new(data)
+        @surface ||= SurfaceResolver.new(api)
       end
 
       def build_enum_schemas
@@ -190,7 +190,7 @@ module Apiwork
         all_types.sort_by { |type_entry| type_entry[:name] }.map { |type_entry| type_entry[:code] }.join("\n\n")
       end
 
-      def traverse_resources(resources: data.resources, &block)
+      def traverse_resources(resources: api.resources, &block)
         resources.each_value do |resource|
           yield(resource)
           traverse_resources(resources: resource.resources, &block) if resource.resources.any?

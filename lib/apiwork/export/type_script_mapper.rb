@@ -240,13 +240,13 @@ module Apiwork
       private
 
       def type_or_enum_reference?(symbol)
-        @export.data.types.key?(symbol) || @export.data.enums.key?(symbol)
+        @export.api.types.key?(symbol) || @export.api.enums.key?(symbol)
       end
 
       def reference_contains_discriminator?(variant, discriminator)
         return false unless variant.reference?
 
-        referenced_type = @export.data.types[variant.reference]
+        referenced_type = @export.api.types[variant.reference]
         return false unless referenced_type
 
         referenced_type.shape.key?(discriminator)

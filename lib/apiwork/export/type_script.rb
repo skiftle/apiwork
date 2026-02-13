@@ -76,14 +76,14 @@ module Apiwork
       private
 
       def surface
-        @surface ||= SurfaceResolver.new(data)
+        @surface ||= SurfaceResolver.new(api)
       end
 
       def mapper
         @mapper ||= TypeScriptMapper.new(self)
       end
 
-      def traverse_resources(resources: data.resources, &block)
+      def traverse_resources(resources: api.resources, &block)
         resources.each_value do |resource|
           yield(resource)
           traverse_resources(resources: resource.resources, &block) if resource.resources.any?

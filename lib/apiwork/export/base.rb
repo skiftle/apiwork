@@ -208,7 +208,7 @@ module Apiwork
         @options[:key_format] ||= @api_class.key_format || :keep
         validate_options!
 
-        @introspection = @api_class.introspect(locale: @options[:locale])
+        @api = @api_class.introspect(locale: @options[:locale])
       end
 
       def extract_options_from_config(config)
@@ -229,7 +229,7 @@ module Apiwork
       # Generates the export output.
       #
       # Override this method in subclasses to produce the export format.
-      # Access API data via the {#data} method which provides typed access
+      # Access API data via the {#api} method which provides typed access
       # to types, enums, resources, actions, and other introspection data.
       #
       # @return [Hash, String]
@@ -250,15 +250,13 @@ module Apiwork
       end
 
       # @api public
-      # The data for this export.
+      # The API introspection for this export.
       #
       # Primary interface for accessing introspection data in export generators.
       #
       # @return [Introspection::API]
       # @see Introspection::API
-      def data
-        @introspection
-      end
+      attr_reader :api
 
       # @api public
       # The key format for this export.

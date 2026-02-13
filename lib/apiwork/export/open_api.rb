@@ -23,9 +23,9 @@ module Apiwork
       private
 
       def build_info
-        return { title: api_base_path, version: '1.0.0' } unless data.info
+        return { title: api_base_path, version: '1.0.0' } unless api.info
 
-        info = data.info
+        info = api.info
         {
           contact: build_contact(info.contact),
           description: info.description,
@@ -38,9 +38,9 @@ module Apiwork
       end
 
       def build_servers
-        return nil unless data.info&.servers&.any?
+        return nil unless api.info&.servers&.any?
 
-        data.info.servers.map do |server|
+        api.info.servers.map do |server|
           {
             description: server.description,
             url: server.url,
@@ -219,7 +219,7 @@ module Apiwork
             }
 
             raises.each do |code|
-              error_code = data.error_codes[code]
+              error_code = api.error_codes[code]
               responses[error_code.status.to_s.to_sym] = build_union_error_response(error_code.description, error_variant)
             end
           else
@@ -233,7 +233,7 @@ module Apiwork
             }
 
             raises.each do |code|
-              error_code = data.error_codes[code]
+              error_code = api.error_codes[code]
               responses[error_code.status.to_s.to_sym] = build_error_response(error_code.description)
             end
           end
@@ -292,7 +292,7 @@ module Apiwork
       end
 
       def surface
-        @surface ||= SurfaceResolver.new(data)
+        @surface ||= SurfaceResolver.new(api)
       end
 
       def build_schemas
@@ -589,7 +589,7 @@ module Apiwork
         referenced_type.shape.key?(discriminator)
       end
 
-      def traverse_resources(resources: data.resources, &block)
+      def traverse_resources(resources: api.resources, &block)
         resources.each_value do |resource|
           yield(resource)
           traverse_resources(resources: resource.resources, &block) if resource.resources.any?

@@ -26,7 +26,7 @@ class MyExport < Apiwork::Export::Base
 
   def build_resources
     result = {}
-    data.resources.each do |name, resource|
+    api.resources.each do |name, resource|
       result[name] = process_resource(resource)
     end
     result
@@ -42,22 +42,22 @@ end
 
 The `Apiwork::Export::Base` class provides:
 
-### Data Access
+### API Access
 
 ```ruby
-data           # Full introspection data
+api            # Full introspection data (Introspection::API)
 types          # All registered types
 enums          # All registered enums
 metadata       # API metadata (info, etc.)
 path           # API mount path
 ```
 
-The `data` object contains the full introspection output. For details on the format, field types, and properties, see [Introspection](../introspection/).
+The `api` object contains the full introspection output. For details on the format, field types, and properties, see [Introspection](../introspection/).
 
 ### Iteration
 
 ```ruby
-data.resources.each_value do |resource|
+api.resources.each_value do |resource|
   resource.actions.each_value do |action|
     # Called for each action in a resource
   end

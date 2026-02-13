@@ -3,8 +3,8 @@
 module Apiwork
   module Export
     class SurfaceResolver
-      def initialize(data)
-        @data = data
+      def initialize(api)
+        @api = api
       end
 
       def types
@@ -20,18 +20,18 @@ module Apiwork
       def compute_reachable_types
         type_names = collect_type_names_from_actions
         expand_transitive_dependencies(type_names)
-        @data.types.select { |name, _| type_names.include?(name) }
+        @api.types.select { |name, _| type_names.include?(name) }
       end
 
       def compute_reachable_enums
         enum_names = collect_enum_names_from_actions
         collect_enum_names_from_types(types, enum_names)
-        @data.enums.select { |name, _| enum_names.include?(name) }
+        @api.enums.select { |name, _| enum_names.include?(name) }
       end
 
       def collect_type_names_from_actions
         type_names = Set.new
-        @data.resources.each_value do |resource|
+        @api.resources.each_value do |resource|
           collect_types_from_resource(resource, type_names)
         end
         type_names
@@ -73,11 +73,11 @@ module Apiwork
         while added
           added = false
           type_names.dup.each do |type_name|
-            type = @data.types[type_name]
+            type = @api.types[type_name]
             next unless type
 
             collect_reference_names_from_type(type).each do |reference_name|
-              next unless @data.types.key?(reference_name)
+              next unless @api.types.key?(reference_name)
               next if type_names.include?(reference_name)
 
               type_names << reference_name
@@ -115,7 +115,7 @@ module Apiwork
 
       def collect_enum_names_from_actions
         enum_names = Set.new
-        @data.resources.each_value do |resource|
+        @api.resources.each_value do |resource|
           collect_enums_from_resource(resource, enum_names)
         end
         enum_names
@@ -167,7 +167,7 @@ module Apiwork
 
       def collect_enums_from_type_param(param, enum_names)
         enum_names << param.enum if param.enum_reference?
-        enum_names << param.reference if param.reference? && @data.enums.key?(param.reference)
+        enum_names << param.reference if param.reference? && @api.enums.key?(param.reference)
 
         param.shape.each_value { |nested| collect_enums_from_type_param(nested, enum_names) } if param.object?
 
