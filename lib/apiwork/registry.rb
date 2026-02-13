@@ -4,7 +4,7 @@ module Apiwork
   class Registry
     class << self
       def store
-        @store ||= Concurrent::Map.new
+        @store ||= {}
       end
 
       def find(key)
@@ -39,7 +39,7 @@ module Apiwork
       end
 
       def clear!
-        @store = Concurrent::Map.new
+        @store = {}
       end
 
       private

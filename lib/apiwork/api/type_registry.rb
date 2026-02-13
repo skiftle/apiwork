@@ -4,7 +4,7 @@ module Apiwork
   module API
     class TypeRegistry
       def initialize
-        @store = Concurrent::Map.new
+        @store = {}
       end
 
       def register(

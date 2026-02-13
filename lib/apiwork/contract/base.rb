@@ -233,8 +233,8 @@ module Apiwork
         # @api public
         # Defines a fragment type for this contract.
         #
-        # Fragments are only available for merging into other types and never appear as
-        # standalone types. Use fragments to define reusable field groups.
+        # Fragments are only available for merging into other types and never appear as standalone types. Use
+        # fragments to define reusable field groups.
         #
         # @param name [Symbol]
         #   The fragment name.

@@ -48,9 +48,8 @@ module Apiwork
         # @api public
         # The metadata type names for this shape.
         #
-        # Auto-generated type names from capability
-        # {Adapter::Capability::Operation::Base.metadata_shape} definitions. Use with {#merge}
-        # to include capability metadata fields in the shape.
+        # Auto-generated type names from capability {Adapter::Capability::Operation::Base.metadata_shape}
+        # definitions. Use with {#merge} to include capability metadata fields in the shape.
         #
         # @return [Array<Symbol>]
         attr_reader :metadata_type_names

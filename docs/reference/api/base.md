@@ -238,8 +238,8 @@ end
 
 Defines a fragment type for composition.
 
-Fragments are only available for merging into other types and never appear as
-standalone types. Use fragments to define reusable field groups.
+Fragments are only available for merging into other types and never appear as standalone types. Use
+fragments to define reusable field groups.
 
 **Parameters**
 

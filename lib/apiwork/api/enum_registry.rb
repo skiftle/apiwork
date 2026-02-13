@@ -4,7 +4,7 @@ module Apiwork
   module API
     class EnumRegistry
       def initialize
-        @store = Concurrent::Map.new
+        @store = {}
       end
 
       def register(
