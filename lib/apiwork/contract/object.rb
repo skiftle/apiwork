@@ -23,8 +23,7 @@ module Apiwork
     #   end
     class Object < Apiwork::Object
       attr_reader :action_name,
-                  :contract_class,
-                  :visited_types
+                  :contract_class
 
       def initialize(contract_class, action_name: nil, visited_types: nil, wrapped: false)
         super()
