@@ -114,9 +114,9 @@ module Apiwork
             end
 
             response = action.response
-            if response&.no_content?
+            if response.no_content?
               schemas << "export const #{zod_mapper.action_type_name(resource_name, action_name, 'Response', parent_identifiers:)} = z.never();"
-            elsif response&.body?
+            elsif response.body?
               schemas << zod_mapper.build_action_response_body_schema(resource_name, action_name, response.body, parent_identifiers:)
               schemas << zod_mapper.build_action_response_schema(resource_name, action_name, { body: response.body }, parent_identifiers:)
             end
@@ -172,10 +172,10 @@ module Apiwork
 
             response = action.response
 
-            if response&.no_content?
+            if response.no_content?
               type_name = typescript_mapper.action_type_name(resource_name, action_name, 'Response', parent_identifiers:)
               all_types << { code: "export type #{type_name} = never;", name: type_name }
-            elsif response&.body?
+            elsif response.body?
               type_name = typescript_mapper.action_type_name(resource_name, action_name, 'ResponseBody', parent_identifiers:)
               code = typescript_mapper.build_action_response_body_type(resource_name, action_name, response.body, parent_identifiers:)
               all_types << { code:, name: type_name }

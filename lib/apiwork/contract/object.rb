@@ -254,7 +254,7 @@ module Apiwork
       def copy_type_definition_params(type_definition, target_param)
         return unless type_definition.object?
 
-        type_definition.params&.each do |param_name, param_options|
+        type_definition.params.each do |param_name, param_options|
           nested_shape = param_options[:shape]
 
           if param_options[:type] == :array && nested_shape.is_a?(Apiwork::API::Object)

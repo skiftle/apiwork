@@ -35,7 +35,7 @@ module Apiwork
 
         def collect_action_error_codes(resources, error_code_keys)
           resources.each_value do |resource|
-            resource[:actions]&.each_value do |action|
+            resource[:actions].each_value do |action|
               error_code_keys.merge(action[:raises] || [])
             end
 

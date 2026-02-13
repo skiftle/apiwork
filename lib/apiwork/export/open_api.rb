@@ -119,7 +119,7 @@ module Apiwork
       def build_tags(resource_tags, action_tags)
         tags = []
         tags.concat(Array(resource_tags)) if resource_tags&.any?
-        tags.concat(Array(action_tags)) if action_tags&.any?
+        tags.concat(Array(action_tags)) if action_tags.any?
         tags.any? ? tags : nil
       end
 
@@ -151,7 +151,7 @@ module Apiwork
       end
 
       def build_query_parameters(query_params)
-        return [] unless query_params&.any?
+        return [] unless query_params.any?
 
         query_params.map do |name, param|
           {
@@ -200,9 +200,9 @@ module Apiwork
       def build_responses(action_name, response, raises: [])
         responses = {}
 
-        if response&.no_content?
+        if response.no_content?
           responses[:'204'] = { description: 'No content' }
-        elsif response&.body
+        elsif response.body
           body = response.body
 
           if body.union? && body.discriminator.nil?

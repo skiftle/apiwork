@@ -3,9 +3,6 @@
 module Apiwork
   module Contract
     class RequestParser
-      attr_reader :action_name,
-                  :contract_class
-
       class << self
         def parse(contract_class, action_name, request, coerce: false)
           new(contract_class, action_name).parse(request, coerce:)
@@ -50,15 +47,17 @@ module Apiwork
       end
 
       def action
-        @action ||= contract_class.action_for(action_name)
+        @action ||= @contract_class.action_for(@action_name)
       end
 
       def shape_for(part_type)
+        return unless action
+
         case part_type
         when :query
-          action&.request&.query
+          action.request.query
         when :body
-          action&.request&.body
+          action.request.body
         end
       end
 

@@ -49,7 +49,7 @@ Apiwork::Export.register(ProtobufExport)
 
 `.export_name(name = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L52)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L59)
 
 The name for this export.
 
@@ -73,7 +73,7 @@ The name for this export.
 
 `.file_extension(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L123)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L86)
 
 The file extension for this export.
 
@@ -155,7 +155,7 @@ end
 
 `.output(type = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L63)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L70)
 
 The output for this export.
 
@@ -181,7 +181,7 @@ The output for this export.
 
 `#api`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L259)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L47)
 
 The API introspection for this export.
 
@@ -201,7 +201,7 @@ Primary interface for accessing introspection data in export generators.
 
 `#generate`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L237)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L232)
 
 Generates the export output.
 
@@ -223,7 +223,7 @@ to types, enums, resources, actions, and other introspection data.
 
 `#key_format`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L265)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L240)
 
 The key format for this export.
 
@@ -237,7 +237,7 @@ The key format for this export.
 
 `#transform_key(key)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L276)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L251)
 
 Transforms a key according to the configured key format.
 

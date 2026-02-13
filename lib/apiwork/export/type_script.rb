@@ -55,10 +55,10 @@ module Apiwork
 
             response = action.response
 
-            if response&.no_content?
+            if response.no_content?
               type_name = mapper.action_type_name(resource_name, action_name, 'Response', parent_identifiers:)
               types << { code: "export type #{type_name} = never;", name: type_name }
-            elsif response&.body?
+            elsif response.body?
               type_name = mapper.action_type_name(resource_name, action_name, 'ResponseBody', parent_identifiers:)
               code = mapper.build_action_response_body_type(resource_name, action_name, response.body, parent_identifiers:)
               types << { code:, name: type_name }

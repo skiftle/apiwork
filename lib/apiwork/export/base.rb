@@ -37,12 +37,19 @@ module Apiwork
       option :key_format, enum: %i[keep camel pascal kebab underscore], type: :symbol
       option :locale, default: nil, type: :symbol
 
+      # @api public
+      # The API introspection for this export.
+      #
+      # Primary interface for accessing introspection data in export generators.
+      #
+      # @return [Introspection::API]
+      # @see Introspection::API
+      attr_reader :api
+
       attr_reader :api_base_path,
                   :options
 
       class << self
-        attr_reader :output_type
-
         # @api public
         # The name for this export.
         #
@@ -67,6 +74,24 @@ module Apiwork
 
           @output_type = type
         end
+
+        # @api public
+        # The file extension for this export.
+        #
+        # Only applies to string exports. Hash exports derive extension from format.
+        #
+        # @param value [String, nil] (nil)
+        #   The file extension (e.g., '.ts').
+        # @return [String, nil]
+        def file_extension(value = nil)
+          return @file_extension unless value
+
+          raise ConfigurationError, 'file_extension not allowed for output :hash exports' if output_type == :hash
+
+          @file_extension = value
+        end
+
+        attr_reader :output_type
 
         def generate(api_base_path, format: nil, **options)
           format ||= :json
@@ -110,22 +135,6 @@ module Apiwork
           else
             'text/plain; charset=utf-8'
           end
-        end
-
-        # @api public
-        # The file extension for this export.
-        #
-        # Only applies to string exports. Hash exports derive extension from format.
-        #
-        # @param value [String, nil] (nil)
-        #   The file extension (e.g., '.ts').
-        # @return [String, nil]
-        def file_extension(value = nil)
-          return @file_extension unless value
-
-          raise ConfigurationError, 'file_extension not allowed for output :hash exports' if output_type == :hash
-
-          @file_extension = value
         end
 
         def extract_options(source)
@@ -211,20 +220,6 @@ module Apiwork
         @api = @api_class.introspect(locale: @options[:locale])
       end
 
-      def extract_options_from_config(config)
-        self.class.options.keys.each_with_object({}) do |key, hash|
-          value = config.public_send(key)
-          hash[key] = value unless value.nil?
-        end
-      end
-
-      def validate_options!
-        @options.each do |name, value|
-          option = self.class.options[name]
-          option&.validate!(value)
-        end
-      end
-
       # @api public
       # Generates the export output.
       #
@@ -237,26 +232,6 @@ module Apiwork
       def generate
         raise NotImplementedError, "#{self.class} must implement #generate"
       end
-
-      def serialize(content, format:)
-        return content unless content.is_a?(Hash)
-
-        case format
-        when :yaml
-          content.deep_stringify_keys.to_yaml
-        else
-          JSON.pretty_generate(content)
-        end
-      end
-
-      # @api public
-      # The API introspection for this export.
-      #
-      # Primary interface for accessing introspection data in export generators.
-      #
-      # @return [Introspection::API]
-      # @see Introspection::API
-      attr_reader :api
 
       # @api public
       # The key format for this export.
@@ -284,6 +259,31 @@ module Apiwork
         when :kebab then key_string.dasherize
         when :underscore then key_string.underscore
         else key_string
+        end
+      end
+
+      def extract_options_from_config(config)
+        self.class.options.keys.each_with_object({}) do |key, hash|
+          value = config.public_send(key)
+          hash[key] = value unless value.nil?
+        end
+      end
+
+      def validate_options!
+        @options.each do |name, value|
+          option = self.class.options[name]
+          option&.validate!(value)
+        end
+      end
+
+      def serialize(content, format:)
+        return content unless content.is_a?(Hash)
+
+        case format
+        when :yaml
+          content.deep_stringify_keys.to_yaml
+        else
+          JSON.pretty_generate(content)
         end
       end
     end

@@ -54,7 +54,7 @@ module Apiwork
           return hash unless variant
 
           if variant[:shape]
-            representation_class = variant[:shape].contract_class&.representation_class
+            representation_class = variant[:shape].contract_class.representation_class
             return representation_class.deserialize(hash) if representation_class
 
             Deserializer.new(variant[:shape]).deserialize(hash)

@@ -111,11 +111,11 @@ module Apiwork
       def build_action_request_schema(resource_name, action_name, request, parent_identifiers: [])
         nested_properties = []
 
-        if request[:query]&.any?
+        if request[:query].any?
           nested_properties << "  query: #{action_type_name(resource_name, action_name, 'RequestQuery', parent_identifiers:)}Schema"
         end
 
-        if request[:body]&.any?
+        if request[:body].any?
           nested_properties << "  body: #{action_type_name(resource_name, action_name, 'RequestBody', parent_identifiers:)}Schema"
         end
 

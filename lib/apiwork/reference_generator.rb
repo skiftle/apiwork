@@ -331,7 +331,7 @@ module Apiwork
       return File.join(OUTPUT_DIR, 'index.md') if parts.empty?
 
       file_parts = parts.map { |part| dasherize(part) }
-      has_children = @modules_with_children&.include?(path)
+      has_children = @modules_with_children.include?(path)
 
       if has_children
         File.join(OUTPUT_DIR, *file_parts, 'index.md')

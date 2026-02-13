@@ -731,7 +731,7 @@ module Apiwork
         end
 
         def translate_detail(code)
-          locale_key = @shape.contract_class&.api_class&.locale_key
+          locale_key = @shape.contract_class.api_class&.locale_key
 
           if locale_key
             api_key = :"apiwork.apis.#{locale_key}.issues.#{code}.detail"

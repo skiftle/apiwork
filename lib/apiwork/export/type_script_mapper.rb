@@ -91,9 +91,9 @@ module Apiwork
       def build_action_request_type(resource_name, action_name, request, parent_identifiers: [])
         nested_properties = []
 
-        nested_properties << "  query: #{action_type_name(resource_name, action_name, 'RequestQuery', parent_identifiers:)};" if request[:query]&.any?
+        nested_properties << "  query: #{action_type_name(resource_name, action_name, 'RequestQuery', parent_identifiers:)};" if request[:query].any?
 
-        nested_properties << "  body: #{action_type_name(resource_name, action_name, 'RequestBody', parent_identifiers:)};" if request[:body]&.any?
+        nested_properties << "  body: #{action_type_name(resource_name, action_name, 'RequestBody', parent_identifiers:)};" if request[:body].any?
 
         "export interface #{action_type_name(resource_name, action_name, 'Request', parent_identifiers:)} {\n#{nested_properties.join("\n")}\n}"
       end

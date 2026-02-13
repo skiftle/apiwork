@@ -3,9 +3,6 @@
 module Apiwork
   module Contract
     class ResponseParser
-      attr_reader :action_name,
-                  :contract_class
-
       class << self
         def parse(contract_class, action_name, response)
           new(contract_class, action_name).parse(response)
@@ -18,20 +15,20 @@ module Apiwork
       end
 
       def parse(response)
-        return Result.new(response:) unless body_shape&.params&.any?
+        return Result.new(response:) unless action
 
-        validated = body_shape.validate(response.body)
+        shape = action.response.body
+        return Result.new(response:) unless shape
+        return Result.new(response:) unless shape.params.any?
+
+        validated = shape.validate(response.body)
         Result.new(issues: validated.issues, response: Response.new(body: validated.params))
       end
 
       private
 
       def action
-        @action ||= contract_class.action_for(action_name)
-      end
-
-      def body_shape
-        action&.response&.body
+        @action ||= @contract_class.action_for(@action_name)
       end
     end
   end

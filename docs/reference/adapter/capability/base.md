@@ -36,7 +36,7 @@ end
 
 `.api_builder(klass = nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/base.rb#L95)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/base.rb#L87)
 
 Registers an API builder for this capability.
 
@@ -93,7 +93,7 @@ Used for configuration options, translation keys, and [Adapter::Base.skip_capabi
 
 `.contract_builder(klass = nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/base.rb#L114)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/base.rb#L106)
 
 Registers a contract builder for this capability.
 
@@ -124,7 +124,7 @@ parameters and response shapes.
 
 `.operation(klass = nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/base.rb#L133)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/base.rb#L125)
 
 Registers an operation for this capability.
 
@@ -239,7 +239,7 @@ Registers a request transformer for this capability.
 
 `.response_transformer(transformer_class)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/base.rb#L75)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/base.rb#L71)
 
 Registers a response transformer for this capability.
 

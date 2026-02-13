@@ -20,25 +20,17 @@ module Apiwork
       VALID_FORMATS = %i[keep camel pascal kebab underscore].freeze
 
       class << self
-        attr_reader :enum_registry,
-                    :export_configs,
-                    :representation_registry,
-                    :root_resource,
-                    :type_registry
-
         # @api public
         # The base path for this API.
         #
         # @return [String]
         attr_reader :base_path
 
-        def locale_key
-          @locale_key ||= base_path.delete_prefix('/')
-        end
-
-        def namespaces
-          @namespaces ||= extract_namespaces(base_path)
-        end
+        attr_reader :enum_registry,
+                    :export_configs,
+                    :representation_registry,
+                    :root_resource,
+                    :type_registry
 
         # @api public
         # Configures key transformation for this API.
@@ -186,14 +178,6 @@ module Apiwork
           @adapter ||= adapter_class.new
         end
 
-        def adapter_class
-          Adapter.find!(@adapter_name || :standard)
-        end
-
-        def adapter_config
-          @adapter_config ||= Configuration.new(adapter_class)
-        end
-
         # @api public
         # Defines a reusable object type.
         #
@@ -205,8 +189,6 @@ module Apiwork
         #   The description. Metadata included in exports.
         # @param example [Object, nil] (nil)
         #   The example. Metadata included in exports.
-        # @param scope [Class<Contract::Base>, nil] (nil)
-        #   The contract scope for type prefixing.
         # @yieldparam object [API::Object]
         # @return [void]
         #
@@ -216,23 +198,8 @@ module Apiwork
         #     decimal :amount
         #   end
         #
-        def object(
-          name,
-          deprecated: false,
-          description: nil,
-          example: nil,
-          scope: nil,
-          &block
-        )
-          type_registry.register(
-            name,
-            deprecated:,
-            description:,
-            example:,
-            scope:,
-            kind: :object,
-            &block
-          )
+        def object(name, deprecated: false, description: nil, example: nil, &block)
+          register_object(name, deprecated:, description:, example:, &block)
         end
 
         # @api public
@@ -243,8 +210,6 @@ module Apiwork
         #
         # @param name [Symbol]
         #   The fragment name.
-        # @param scope [Class<Contract::Base>, nil] (nil)
-        #   The contract scope for type prefixing.
         # @yieldparam object [API::Object]
         # @return [void]
         #
@@ -258,14 +223,8 @@ module Apiwork
         #     merge :timestamps
         #     string :number
         #   end
-        def fragment(name, scope: nil, &block)
-          type_registry.register(
-            name,
-            scope:,
-            fragment: true,
-            kind: :object,
-            &block
-          )
+        def fragment(name, &block)
+          register_fragment(name, &block)
         end
 
         # @api public
@@ -275,8 +234,6 @@ module Apiwork
         #   The enum name.
         # @param values [Array<String>, nil] (nil)
         #   The allowed values.
-        # @param scope [Class<Contract::Base>, nil] (nil)
-        #   The contract scope for type prefixing.
         # @param description [String, nil] (nil)
         #   The description. Metadata included in exports.
         # @param example [String, nil] (nil)
@@ -287,24 +244,8 @@ module Apiwork
         #
         # @example
         #   enum :status, values: %w[draft sent paid]
-        def enum(
-          name,
-          values: nil,
-          scope: nil,
-          description: nil,
-          example: nil,
-          deprecated: false
-        )
-          raise ConfigurationError, 'Values must be an array' if values && !values.is_a?(Array)
-
-          enum_registry.register(
-            name,
-            values,
-            deprecated:,
-            description:,
-            example:,
-            scope:,
-          )
+        def enum(name, deprecated: false, description: nil, example: nil, values: nil)
+          register_enum(name, deprecated:, description:, example:, values:)
         end
 
         # @api public
@@ -320,8 +261,6 @@ module Apiwork
         #   The discriminator field name.
         # @param example [Object, nil] (nil)
         #   The example. Metadata included in exports.
-        # @param scope [Class<Contract::Base>, nil] (nil)
-        #   The contract scope for type prefixing.
         # @yieldparam union [API::Union]
         # @return [void]
         #
@@ -333,27 +272,8 @@ module Apiwork
         #       end
         #     end
         #   end
-        def union(
-          name,
-          deprecated: false,
-          description: nil,
-          discriminator: nil,
-          example: nil,
-          scope: nil,
-          &block
-        )
-          raise ConfigurationError, 'Union requires a block' unless block_given?
-
-          type_registry.register(
-            name,
-            deprecated:,
-            description:,
-            discriminator:,
-            example:,
-            scope:,
-            kind: :union,
-            &block
-          )
+        def union(name, deprecated: false, description: nil, discriminator: nil, example: nil, &block)
+          register_union(name, deprecated:, description:, discriminator:, example:, &block)
         end
 
         # @api public
@@ -612,6 +532,72 @@ module Apiwork
         #   end
         def with_options(options = {}, &block)
           @root_resource.with_options(options, &block)
+        end
+
+        def register_object(name, deprecated: false, description: nil, example: nil, scope: nil, &block)
+          type_registry.register(
+            name,
+            deprecated:,
+            description:,
+            example:,
+            scope:,
+            kind: :object,
+            &block
+          )
+        end
+
+        def register_fragment(name, scope: nil, &block)
+          type_registry.register(
+            name,
+            scope:,
+            fragment: true,
+            kind: :object,
+            &block
+          )
+        end
+
+        def register_enum(name, deprecated: false, description: nil, example: nil, scope: nil, values: nil)
+          raise ConfigurationError, 'Values must be an array' if values && !values.is_a?(Array)
+
+          enum_registry.register(
+            name,
+            values,
+            deprecated:,
+            description:,
+            example:,
+            scope:,
+          )
+        end
+
+        def register_union(name, deprecated: false, description: nil, discriminator: nil, example: nil, scope: nil, &block)
+          raise ConfigurationError, 'Union requires a block' unless block_given?
+
+          type_registry.register(
+            name,
+            deprecated:,
+            description:,
+            discriminator:,
+            example:,
+            scope:,
+            kind: :union,
+            &block
+          )
+        end
+
+        def adapter_class
+          Adapter.find!(@adapter_name || :standard)
+        end
+
+        def adapter_config
+          @adapter_config ||= Configuration.new(adapter_class)
+        end
+
+        def locale_key
+          @locale_key ||= base_path.delete_prefix('/')
+        end
+
+        def namespaces
+          @namespaces ||= extract_namespaces(base_path)
         end
 
         def mount(base_path)

@@ -96,8 +96,6 @@ module Apiwork
         # @see .representation
         attr_reader :representation_class
 
-        attr_writer :building
-
         # @api public
         # Prefixes types, enums, and unions in introspection output.
         #
@@ -220,7 +218,7 @@ module Apiwork
           example: nil,
           &block
         )
-          api_class.object(
+          api_class.register_object(
             name,
             deprecated:,
             description:,
@@ -252,7 +250,7 @@ module Apiwork
         #     string :number
         #   end
         def fragment(name, &block)
-          api_class.fragment(name, scope: self, &block)
+          api_class.register_fragment(name, scope: self, &block)
         end
 
         # @api public
@@ -301,7 +299,14 @@ module Apiwork
           example: nil,
           values: nil
         )
-          api_class.enum(name, deprecated:, description:, example:, values:, scope: self)
+          api_class.register_enum(
+            name,
+            deprecated:,
+            description:,
+            example:,
+            values:,
+            scope: self,
+          )
         end
 
         # @api public
@@ -355,7 +360,7 @@ module Apiwork
           example: nil,
           &block
         )
-          api_class.union(
+          api_class.register_union(
             name,
             deprecated:,
             description:,
@@ -493,6 +498,8 @@ module Apiwork
         def introspect(expand: false, locale: nil)
           api_class.introspect_contract(self, expand:, locale:)
         end
+
+        attr_writer :building
 
         def actions
           @actions ||= {}

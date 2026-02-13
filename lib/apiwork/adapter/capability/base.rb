@@ -61,10 +61,6 @@ module Apiwork
             @request_transformers << transformer_class
           end
 
-          def request_transformers
-            @request_transformers || []
-          end
-
           # @api public
           # Registers a response transformer for this capability.
           #
@@ -75,10 +71,6 @@ module Apiwork
           def response_transformer(transformer_class)
             @response_transformers ||= []
             @response_transformers << transformer_class
-          end
-
-          def response_transformers
-            @response_transformers || []
           end
 
           # @api public
@@ -136,6 +128,14 @@ module Apiwork
             elsif block
               self._operation_block = block
             end
+          end
+
+          def request_transformers
+            @request_transformers || []
+          end
+
+          def response_transformers
+            @response_transformers || []
           end
 
           def wrap_api_builder_block(callable)

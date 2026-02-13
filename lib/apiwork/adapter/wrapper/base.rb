@@ -14,10 +14,6 @@ module Apiwork
         attr_reader :data
 
         class << self
-          def wrap(...)
-            new(...).wrap
-          end
-
           # @api public
           # Defines the response shape for contract generation.
           #
@@ -37,6 +33,10 @@ module Apiwork
             end
 
             shape_class
+          end
+
+          def wrap(...)
+            new(...).wrap
           end
 
           private

@@ -36,7 +36,7 @@ end
 
 `.shape(klass_or_callable = nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/base.rb#L28)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/base.rb#L24)
 
 Defines the response shape for contract generation.
 
