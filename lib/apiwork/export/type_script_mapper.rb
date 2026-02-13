@@ -7,6 +7,14 @@ module Apiwork
         @export = export
       end
 
+      def generate(surface)
+        types = build_enum_types(surface) +
+                build_type_definitions(surface) +
+                build_action_types
+
+        types.sort_by { |entry| entry[:name] }.map { |entry| entry[:code] }.join("\n\n")
+      end
+
       def build_interface(type_name, type)
         type_name = pascal_case(type_name)
 
@@ -238,6 +246,85 @@ module Apiwork
       end
 
       private
+
+      def build_enum_types(surface)
+        surface.enums.map do |name, enum|
+          { code: build_enum_type(name, enum), name: pascal_case(name) }
+        end
+      end
+
+      def build_type_definitions(surface)
+        TypeAnalysis.topological_sort_types(surface.types.transform_values(&:to_h)).map(&:first).map do |type_name|
+          type = surface.types[type_name]
+          code = type.union? ? build_union_type(type_name, type) : build_interface(type_name, type)
+          { code:, name: pascal_case(type_name) }
+        end
+      end
+
+      def build_action_types
+        types = []
+
+        traverse_resources do |resource|
+          resource_name = resource.identifier.to_sym
+          parent_identifiers = resource.parent_identifiers
+
+          resource.actions.each do |action_name, action|
+            types.concat(build_request_types(resource_name, action_name, action.request, parent_identifiers:))
+            types.concat(build_response_types(resource_name, action_name, action.response, parent_identifiers:))
+          end
+        end
+
+        types
+      end
+
+      def build_request_types(resource_name, action_name, request, parent_identifiers:)
+        types = []
+        return types unless request && (request.query? || request.body?)
+
+        if request.query?
+          type_name = action_type_name(resource_name, action_name, 'RequestQuery', parent_identifiers:)
+          code = build_action_request_query_type(resource_name, action_name, request.query, parent_identifiers:)
+          types << { code:, name: type_name }
+        end
+
+        if request.body?
+          type_name = action_type_name(resource_name, action_name, 'RequestBody', parent_identifiers:)
+          code = build_action_request_body_type(resource_name, action_name, request.body, parent_identifiers:)
+          types << { code:, name: type_name }
+        end
+
+        type_name = action_type_name(resource_name, action_name, 'Request', parent_identifiers:)
+        code = build_action_request_type(resource_name, action_name, { body: request.body, query: request.query }, parent_identifiers:)
+        types << { code:, name: type_name }
+
+        types
+      end
+
+      def build_response_types(resource_name, action_name, response, parent_identifiers:)
+        types = []
+
+        if response.no_content?
+          type_name = action_type_name(resource_name, action_name, 'Response', parent_identifiers:)
+          types << { code: "export type #{type_name} = never;", name: type_name }
+        elsif response.body?
+          type_name = action_type_name(resource_name, action_name, 'ResponseBody', parent_identifiers:)
+          code = build_action_response_body_type(resource_name, action_name, response.body, parent_identifiers:)
+          types << { code:, name: type_name }
+
+          type_name = action_type_name(resource_name, action_name, 'Response', parent_identifiers:)
+          code = build_action_response_type(resource_name, action_name, { body: response.body }, parent_identifiers:)
+          types << { code:, name: type_name }
+        end
+
+        types
+      end
+
+      def traverse_resources(resources: @export.api.resources, &block)
+        resources.each_value do |resource|
+          yield(resource)
+          traverse_resources(resources: resource.resources, &block) if resource.resources.any?
+        end
+      end
 
       def type_or_enum_reference?(symbol)
         @export.api.types.key?(symbol) || @export.api.enums.key?(symbol)

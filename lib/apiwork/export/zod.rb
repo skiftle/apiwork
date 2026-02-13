@@ -127,67 +127,7 @@ module Apiwork
       end
 
       def build_typescript_types
-        all_types = []
-
-        surface.enums.each do |name, enum|
-          type_name = typescript_mapper.pascal_case(name)
-          all_types << { code: "export type #{type_name} = #{enum.values.sort.map { |value| "'#{value}'" }.join(' | ')};", name: type_name }
-        end
-
-        surface.types.each do |name, type|
-          all_types << {
-            code: type.union? ? typescript_mapper.build_union_type(name, type) : typescript_mapper.build_interface(name, type),
-            name: typescript_mapper.pascal_case(name),
-          }
-        end
-
-        traverse_resources do |resource|
-          resource_name = resource.identifier.to_sym
-          parent_identifiers = resource.parent_identifiers
-
-          resource.actions.each do |action_name, action|
-            request = action.request
-            if request && (request.query? || request.body?)
-              if request.query?
-                type_name = typescript_mapper.action_type_name(resource_name, action_name, 'RequestQuery', parent_identifiers:)
-                code = typescript_mapper.build_action_request_query_type(resource_name, action_name, request.query, parent_identifiers:)
-                all_types << { code:, name: type_name }
-              end
-
-              if request.body?
-                type_name = typescript_mapper.action_type_name(resource_name, action_name, 'RequestBody', parent_identifiers:)
-                code = typescript_mapper.build_action_request_body_type(resource_name, action_name, request.body, parent_identifiers:)
-                all_types << { code:, name: type_name }
-              end
-
-              type_name = typescript_mapper.action_type_name(resource_name, action_name, 'Request', parent_identifiers:)
-              code = typescript_mapper.build_action_request_type(
-                resource_name,
-                action_name,
-                { body: request.body, query: request.query },
-                parent_identifiers:,
-              )
-              all_types << { code:, name: type_name }
-            end
-
-            response = action.response
-
-            if response.no_content?
-              type_name = typescript_mapper.action_type_name(resource_name, action_name, 'Response', parent_identifiers:)
-              all_types << { code: "export type #{type_name} = never;", name: type_name }
-            elsif response.body?
-              type_name = typescript_mapper.action_type_name(resource_name, action_name, 'ResponseBody', parent_identifiers:)
-              code = typescript_mapper.build_action_response_body_type(resource_name, action_name, response.body, parent_identifiers:)
-              all_types << { code:, name: type_name }
-
-              type_name = typescript_mapper.action_type_name(resource_name, action_name, 'Response', parent_identifiers:)
-              code = typescript_mapper.build_action_response_type(resource_name, action_name, { body: response.body }, parent_identifiers:)
-              all_types << { code:, name: type_name }
-            end
-          end
-        end
-
-        all_types.sort_by { |type_entry| type_entry[:name] }.map { |type_entry| type_entry[:code] }.join("\n\n")
+        typescript_mapper.generate(surface)
       end
 
       def traverse_resources(resources: api.resources, &block)
