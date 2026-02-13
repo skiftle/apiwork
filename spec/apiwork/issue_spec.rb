@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Apiwork::Issue do
   describe '#initialize' do
-    it 'creates an issue with required attributes' do
+    it 'creates with required attributes' do
       issue = described_class.new(:required, 'Field is required')
 
       expect(issue.code).to eq(:required)
@@ -25,7 +25,7 @@ RSpec.describe Apiwork::Issue do
       expect(issue.meta).to eq({ expected: 'string', got: 'integer' })
     end
 
-    it 'converts path elements to symbols (except integers)' do
+    it 'converts path elements to symbols except integers' do
       issue = described_class.new(
         :required,
         'Required',
@@ -33,6 +33,14 @@ RSpec.describe Apiwork::Issue do
       )
 
       expect(issue.path).to eq([:user, :items, 0, :name])
+    end
+  end
+
+  describe '#as_json' do
+    it 'returns the same as to_h' do
+      issue = described_class.new(:required, 'Required')
+
+      expect(issue.as_json).to eq(issue.to_h)
     end
   end
 
@@ -77,29 +85,25 @@ RSpec.describe Apiwork::Issue do
     end
   end
 
-  describe '#as_json' do
-    it 'returns the same as to_h' do
-      issue = described_class.new(:required, 'Required')
-
-      expect(issue.as_json).to eq(issue.to_h)
-    end
-  end
-
   describe '#to_s' do
-    it 'formats issue as string' do
-      issue = described_class.new(
-        :required,
-        'Field is required',
-        path: [:user, :email],
-      )
+    context 'with path elements' do
+      it 'includes the pointer' do
+        issue = described_class.new(
+          :required,
+          'Field is required',
+          path: [:user, :email],
+        )
 
-      expect(issue.to_s).to eq('[required] at /user/email Field is required')
+        expect(issue.to_s).to eq('[required] at /user/email Field is required')
+      end
     end
 
-    it 'handles empty path' do
-      issue = described_class.new(:invalid, 'Invalid request')
+    context 'without path elements' do
+      it 'excludes the pointer' do
+        issue = described_class.new(:invalid, 'Invalid request')
 
-      expect(issue.to_s).to eq('[invalid] Invalid request')
+        expect(issue.to_s).to eq('[invalid] Invalid request')
+      end
     end
   end
 end
