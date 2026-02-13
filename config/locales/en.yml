@@ -1,5 +1,30 @@
 en:
   apiwork:
+    issues:
+      array_too_large:
+        detail: "Too many items"
+      array_too_small:
+        detail: "Too few items"
+      depth_exceeded:
+        detail: "Too deeply nested"
+      field_missing:
+        detail: "Required"
+      field_unknown:
+        detail: "Unknown field"
+      number_too_large:
+        detail: "Too large"
+      number_too_small:
+        detail: "Too small"
+      string_too_long:
+        detail: "Too long"
+      string_too_short:
+        detail: "Too short"
+      type_invalid:
+        detail: "Invalid type"
+      value_invalid:
+        detail: "Invalid value"
+      value_null:
+        detail: "Cannot be null"
     error_codes:
       bad_request:
         description: "Bad Request"
@@ -45,7 +70,7 @@ en:
       standard:
         capabilities:
           writing:
-            domain_issues:
+            issues:
               required:
                 detail: "Required"
               forbidden:

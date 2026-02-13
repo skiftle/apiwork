@@ -13,6 +13,21 @@ module Apiwork
           end
         end
 
+        ISSUE_DETAILS = {
+          array_too_large: 'Too many items',
+          array_too_small: 'Too few items',
+          depth_exceeded: 'Too deeply nested',
+          field_missing: 'Required',
+          field_unknown: 'Unknown field',
+          number_too_large: 'Too large',
+          number_too_small: 'Too small',
+          string_too_long: 'Too long',
+          string_too_short: 'Too short',
+          type_invalid: 'Invalid type',
+          value_invalid: 'Invalid value',
+          value_null: 'Cannot be null',
+        }.freeze
+
         def initialize(shape)
           @shape = shape
         end
@@ -48,7 +63,7 @@ module Apiwork
         def max_depth_error(current_depth, max_depth, path)
           issues = [Issue.new(
             :depth_exceeded,
-            'Too deeply nested',
+            translate_detail(:depth_exceeded),
             path:,
             meta: { max:, depth: current_depth },
           )]
@@ -76,7 +91,7 @@ module Apiwork
             unless value == expected
               error = Issue.new(
                 :value_invalid,
-                'Invalid value',
+                translate_detail(:value_invalid),
                 meta: {
                   expected:,
                   actual: value,
@@ -124,7 +139,7 @@ module Apiwork
           if param_options[:enum].present?
             Issue.new(
               :value_invalid,
-              'Invalid value',
+              translate_detail(:value_invalid),
               meta: {
                 actual: value,
                 expected: resolve_enum(param_options[:enum]),
@@ -133,7 +148,7 @@ module Apiwork
               path: field_path,
             )
           else
-            Issue.new(:field_missing, 'Required', meta: { field: name, type: param_options[:type] }, path: field_path)
+            Issue.new(:field_missing, translate_detail(:field_missing), meta: { field: name, type: param_options[:type] }, path: field_path)
           end
         end
 
@@ -144,7 +159,7 @@ module Apiwork
 
           Issue.new(
             :value_null,
-            'Cannot be null',
+            translate_detail(:value_null),
             meta: { field: name, type: param_options[:type] },
             path: field_path,
           )
@@ -157,7 +172,7 @@ module Apiwork
 
           Issue.new(
             :value_invalid,
-            'Invalid value',
+            translate_detail(:value_invalid),
             meta: {
               actual: value,
               expected: enum_values,
@@ -225,7 +240,7 @@ module Apiwork
           extra_keys.map do |key|
             Issue.new(
               :field_unknown,
-              'Unknown field',
+              translate_detail(:field_unknown),
               meta: { allowed: @shape.params.keys, field: key },
               path: path + [key],
             )
@@ -247,7 +262,7 @@ module Apiwork
           if max && array.length > max
             issues << Issue.new(
               :array_too_large,
-              'Too many items',
+              translate_detail(:array_too_large),
               meta: { max:, actual: array.length },
               path: field_path,
             )
@@ -257,7 +272,7 @@ module Apiwork
           if min && array.length < min
             issues << Issue.new(
               :array_too_small,
-              'Too few items',
+              translate_detail(:array_too_small),
               meta: { min:, actual: array.length },
               path: field_path,
             )
@@ -309,7 +324,7 @@ module Apiwork
             return {
               issues: [Issue.new(
                 :type_invalid,
-                'Invalid type',
+                translate_detail(:type_invalid),
                 meta: { index:, actual: item.class.name.underscore.to_sym, expected: type_name },
                 path: item_path,
               )],
@@ -361,7 +376,7 @@ module Apiwork
 
           Issue.new(
             :type_invalid,
-            'Invalid type',
+            translate_detail(:type_invalid),
             path:,
             meta: {
               actual: value.class.name.underscore.to_sym,
@@ -379,7 +394,7 @@ module Apiwork
             unless value.is_a?(Hash)
               error = Issue.new(
                 :type_invalid,
-                'Invalid type',
+                translate_detail(:type_invalid),
                 path:,
                 meta: {
                   actual: value.class.name.underscore.to_sym,
@@ -399,7 +414,7 @@ module Apiwork
             unless discriminator_optional_in_all_variants?(discriminator, variants)
               error = Issue.new(
                 :field_missing,
-                'Required',
+                translate_detail(:field_missing),
                 meta: { field: discriminator },
                 path: path + [discriminator],
               )
@@ -434,7 +449,7 @@ module Apiwork
           expected_types = variants.map { |variant| variant[:type] }
           error = Issue.new(
             :type_invalid,
-            'Invalid type',
+            translate_detail(:type_invalid),
             path:,
             meta: {
               actual: value.is_a?(Hash) ? :hash : value.class.name.underscore.to_sym,
@@ -458,7 +473,7 @@ module Apiwork
             valid_tags = variants.filter_map { |variant| variant[:tag] }
             error = Issue.new(
               :value_invalid,
-              'Invalid value',
+              translate_detail(:value_invalid),
               meta: {
                 actual: discriminator_value,
                 expected: valid_tags,
@@ -504,7 +519,7 @@ module Apiwork
             unless value.is_a?(Hash)
               type_error = Issue.new(
                 :type_invalid,
-                'Invalid type',
+                translate_detail(:type_invalid),
                 path:,
                 meta: {
                   actual: value.class.name.underscore.to_sym,
@@ -528,7 +543,7 @@ module Apiwork
             unless value.is_a?(Array)
               type_error = Issue.new(
                 :type_invalid,
-                'Invalid type',
+                translate_detail(:type_invalid),
                 path:,
                 meta: {
                   actual: value.class.name.underscore.to_sym,
@@ -562,7 +577,7 @@ module Apiwork
             unless value.is_a?(Hash)
               type_error = Issue.new(
                 :type_invalid,
-                'Invalid type',
+                translate_detail(:type_invalid),
                 path:,
                 meta: {
                   actual: value.class.name.underscore.to_sym,
@@ -592,7 +607,7 @@ module Apiwork
           if variant[:enum]&.exclude?(value)
             enum_error = Issue.new(
               :value_invalid,
-              'Invalid value',
+              translate_detail(:value_invalid),
               path:,
               meta: {
                 actual: value,
@@ -646,7 +661,7 @@ module Apiwork
           if min_value && value < min_value
             return Issue.new(
               :number_too_small,
-              'Too small',
+              translate_detail(:number_too_small),
               meta: {
                 actual: value,
                 field: name,
@@ -659,7 +674,7 @@ module Apiwork
           if max_value && value > max_value
             return Issue.new(
               :number_too_large,
-              'Too large',
+              translate_detail(:number_too_large),
               meta: {
                 actual: value,
                 field: name,
@@ -683,7 +698,7 @@ module Apiwork
           if min_length && value.length < min_length
             return Issue.new(
               :string_too_short,
-              'Too short',
+              translate_detail(:string_too_short),
               meta: {
                 actual: value.length,
                 field: name,
@@ -696,7 +711,7 @@ module Apiwork
           if max_length && value.length > max_length
             return Issue.new(
               :string_too_long,
-              'Too long',
+              translate_detail(:string_too_long),
               meta: {
                 actual: value.length,
                 field: name,
@@ -713,6 +728,22 @@ module Apiwork
           return false unless type
 
           NUMERIC_TYPES.include?(type.to_sym)
+        end
+
+        def translate_detail(code)
+          locale_key = @shape.contract_class&.api_class&.locale_key
+
+          if locale_key
+            api_key = :"apiwork.apis.#{locale_key}.issues.#{code}.detail"
+            result = I18n.translate(api_key, default: nil)
+            return result if result
+          end
+
+          global_key = :"apiwork.issues.#{code}.detail"
+          result = I18n.translate(global_key, default: nil)
+          return result if result
+
+          ISSUE_DETAILS[code]
         end
       end
     end

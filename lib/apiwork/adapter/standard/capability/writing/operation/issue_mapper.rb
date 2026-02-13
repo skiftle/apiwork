@@ -149,7 +149,7 @@ module Apiwork
               end
 
               def detail_for(code)
-                result = @translator.call(:domain_issues, code, :detail)
+                result = @translator.call(:issues, code, :detail)
                 return result if result
 
                 DETAIL_MAP[code] || code.to_s.humanize

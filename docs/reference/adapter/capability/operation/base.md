@@ -214,9 +214,9 @@ Lookup order:
 **Example**
 
 ```ruby
-translate(:domain_issues, :invalid, :detail)
-# Tries: apiwork.apis.billing.adapters.standard.capabilities.writing.domain_issues.invalid.detail
-# Falls back to: apiwork.adapters.standard.capabilities.writing.domain_issues.invalid.detail
+translate(:issues, :invalid, :detail)
+# Tries: apiwork.apis.billing.adapters.standard.capabilities.writing.issues.invalid.detail
+# Falls back to: apiwork.adapters.standard.capabilities.writing.issues.invalid.detail
 ```
 
 ---

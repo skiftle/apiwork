@@ -143,9 +143,9 @@ module Apiwork
           # @return [String, nil]
           #
           # @example
-          #   translate(:domain_issues, :invalid, :detail)
-          #   # Tries: apiwork.apis.billing.adapters.standard.capabilities.writing.domain_issues.invalid.detail
-          #   # Falls back to: apiwork.adapters.standard.capabilities.writing.domain_issues.invalid.detail
+          #   translate(:issues, :invalid, :detail)
+          #   # Tries: apiwork.apis.billing.adapters.standard.capabilities.writing.issues.invalid.detail
+          #   # Falls back to: apiwork.adapters.standard.capabilities.writing.issues.invalid.detail
           def translate(*segments, default: nil)
             adapter_name = @translation_context[:adapter_name]
             capability_name = @translation_context[:capability_name]
