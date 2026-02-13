@@ -764,7 +764,7 @@ delegate :find,
 ```ruby
 class Schema
   # === Class level: ONE attr_reader with all items ===
-  # @!method name
+  # @!attribute [r] name
   #   @api public
   #   @return [Symbol]
   attr_reader :name,
@@ -772,7 +772,7 @@ class Schema
 
   class << self
     # === Inside class << self: same rules ===
-    # @!method model_class
+    # @!attribute [r] model_class
     #   @api public
     #   @return [Class]
     attr_reader :model_class,

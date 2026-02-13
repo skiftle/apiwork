@@ -391,19 +391,7 @@ module Apiwork
           variants = union.variants
 
           if discriminator
-            unless value.is_a?(Hash)
-              error = Issue.new(
-                :type_invalid,
-                translate_detail(:type_invalid),
-                path:,
-                meta: {
-                  actual: value.class.name.underscore.to_sym,
-                  expected: :object,
-                  field: name,
-                },
-              )
-              return [error, nil]
-            end
+            return [build_type_invalid_error(name, value, :object, path), nil] unless value.is_a?(Hash)
 
             if value.key?(discriminator)
               return validate_discriminated_variant(
@@ -516,19 +504,7 @@ module Apiwork
 
           type_definition = @shape.contract_class.resolve_custom_type(variant_type)
           if type_definition
-            unless value.is_a?(Hash)
-              type_error = Issue.new(
-                :type_invalid,
-                translate_detail(:type_invalid),
-                path:,
-                meta: {
-                  actual: value.class.name.underscore.to_sym,
-                  expected: variant_type,
-                  field: name,
-                },
-              )
-              return [type_error, nil]
-            end
+            return [build_type_invalid_error(name, value, variant_type, path), nil] unless value.is_a?(Hash)
 
             result = validate_with_type_definition(
               type_definition, value, path, current_depth:, max_depth:, exclude_param: discriminator
@@ -540,19 +516,7 @@ module Apiwork
           end
 
           if variant_type == :array
-            unless value.is_a?(Array)
-              type_error = Issue.new(
-                :type_invalid,
-                translate_detail(:type_invalid),
-                path:,
-                meta: {
-                  actual: value.class.name.underscore.to_sym,
-                  expected: :array,
-                  field: name,
-                },
-              )
-              return [type_error, nil]
-            end
+            return [build_type_invalid_error(name, value, :array, path), nil] unless value.is_a?(Array)
 
             if variant_shape || variant_of
               array_issues, array_values = validate_array(
@@ -574,19 +538,7 @@ module Apiwork
           end
 
           if variant_type == :object && variant_shape
-            unless value.is_a?(Hash)
-              type_error = Issue.new(
-                :type_invalid,
-                translate_detail(:type_invalid),
-                path:,
-                meta: {
-                  actual: value.class.name.underscore.to_sym,
-                  expected: :object,
-                  field: name,
-                },
-              )
-              return [type_error, nil]
-            end
+            return [build_type_invalid_error(name, value, :object, path), nil] unless value.is_a?(Hash)
 
             validator = Validator.new(variant_shape)
             result = validator.validate(
@@ -650,6 +602,19 @@ module Apiwork
           type_shape.params.delete(exclude_param) if exclude_param
 
           Validator.new(type_shape).validate(value, max_depth:, path:, current_depth: current_depth + 1)
+        end
+
+        def build_type_invalid_error(name, value, expected, path)
+          Issue.new(
+            :type_invalid,
+            translate_detail(:type_invalid),
+            path:,
+            meta: {
+              expected:,
+              actual: value.class.name.underscore.to_sym,
+              field: name,
+            },
+          )
         end
 
         def validate_numeric_range(name, value, param_options, field_path)
