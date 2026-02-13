@@ -73,42 +73,27 @@ module Apiwork
             end
 
             def build_nested_payload_union
-              build_nested_create_payload
-              build_nested_update_payload
-              build_nested_delete_payload
+              build_nested_payload(:create)
+              build_nested_payload(:update)
+              build_nested_payload(:delete)
               build_nested_union
             end
 
-            def build_nested_create_payload
-              return if type?(:nested_create_payload)
+            def build_nested_payload(action_name)
+              type_name = [:nested, action_name, :payload].join('_').to_sym
+              return if type?(type_name)
 
-              object(:nested_create_payload) do |object|
-                object.literal(Constants::OP, optional: true, value: 'create')
-                object.param(:id, optional: true, type: primary_key_type)
-                collect_writable_params(:create).each do |param_config|
+              writable = action_name != :delete
+
+              object(type_name) do |object|
+                object.literal(Constants::OP, optional: true, value: action_name.to_s)
+                object.param(:id, optional: writable, type: primary_key_type)
+
+                next unless writable
+
+                collect_writable_params(action_name).each do |param_config|
                   object.param(param_config[:name], **param_config[:options])
                 end
-              end
-            end
-
-            def build_nested_update_payload
-              return if type?(:nested_update_payload)
-
-              object(:nested_update_payload) do |object|
-                object.literal(Constants::OP, optional: true, value: 'update')
-                object.param(:id, optional: true, type: primary_key_type)
-                collect_writable_params(:update).each do |param_config|
-                  object.param(param_config[:name], **param_config[:options])
-                end
-              end
-            end
-
-            def build_nested_delete_payload
-              return if type?(:nested_delete_payload)
-
-              object(:nested_delete_payload) do |object|
-                object.literal(Constants::OP, optional: true, value: 'delete')
-                object.param(:id, type: primary_key_type)
               end
             end
 

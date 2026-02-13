@@ -18,21 +18,7 @@ module Apiwork
                 type_name = [name, TYPE_NAME].join('_').to_sym
                 next if type?(type_name)
 
-                enum_name = scoped_enum_name(name)
-
-                union(type_name) do |union|
-                  union.variant do |element|
-                    element.reference(enum_name)
-                  end
-                  union.variant(partial: true) do |element|
-                    element.object do |object|
-                      object.reference(:eq, to: enum_name)
-                      object.array(:in) do |array|
-                        array.reference(enum_name)
-                      end
-                    end
-                  end
-                end
+                build_enum_filter_union(type_name, scoped_enum_name(name))
               end
 
               build_polymorphic_type_filters
@@ -127,25 +113,8 @@ module Apiwork
                 type_name = [name, TYPE_NAME].join('_').to_sym
                 next if type?(type_name)
 
-                allowed_values = association.polymorphic.map(&:polymorphic_name)
-
-                enum name, values: allowed_values
-
-                enum_name = scoped_enum_name(name)
-
-                union(type_name) do |union|
-                  union.variant do |element|
-                    element.reference(enum_name)
-                  end
-                  union.variant(partial: true) do |element|
-                    element.object do |object|
-                      object.reference(:eq, to: enum_name)
-                      object.array(:in) do |array|
-                        array.reference(enum_name)
-                      end
-                    end
-                  end
-                end
+                enum name, values: association.polymorphic.map(&:polymorphic_name)
+                build_enum_filter_union(type_name, scoped_enum_name(name))
               end
             end
 
@@ -162,19 +131,20 @@ module Apiwork
                 next if type?(type_name)
 
                 enum(name, values: inheritance.subclasses.map(&:sti_name))
+                build_enum_filter_union(type_name, scoped_enum_name(name))
+              end
+            end
 
-                enum_name = scoped_enum_name(name)
-
-                union(type_name) do |union|
-                  union.variant do |element|
-                    element.reference(enum_name)
-                  end
-                  union.variant(partial: true) do |element|
-                    element.object do |object|
-                      object.reference(:eq, to: enum_name)
-                      object.array(:in) do |array|
-                        array.reference(enum_name)
-                      end
+            def build_enum_filter_union(type_name, enum_name)
+              union(type_name) do |union|
+                union.variant do |element|
+                  element.reference(enum_name)
+                end
+                union.variant(partial: true) do |element|
+                  element.object do |object|
+                    object.reference(:eq, to: enum_name)
+                    object.array(:in) do |array|
+                      array.reference(enum_name)
                     end
                   end
                 end
