@@ -224,8 +224,6 @@ module Apiwork
       end
 
       def encode(value)
-        validate_enum(value) if enum && value.present?
-
         result = @empty && value.nil? ? '' : value
         @encode ? @encode.call(result) : result
       end
@@ -244,22 +242,6 @@ module Apiwork
       end
 
       private
-
-      def validate_enum(value)
-        return if enum.map(&:to_s).include?(value.to_s)
-
-        issue = Issue.new(
-          :value_invalid,
-          'Invalid value',
-          meta: {
-            actual: value,
-            expected: enum,
-            field: name,
-          },
-          path: [name],
-        )
-        raise ContractError, [issue]
-      end
 
       def detect_enum_values(name)
         return nil unless @model_class.defined_enums.key?(name.to_s)
