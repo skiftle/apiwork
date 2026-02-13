@@ -92,7 +92,7 @@ end
 | `sortable` | Mark as sortable (adapter interprets) |
 | `writable` | Allow in request payloads |
 
-The adapter interprets these options and may generate corresponding contract types, query parameters, and runtime behavior. See [Standard Adapter](../adapters/standard-adapter/introduction.md) for how the built-in adapter handles these options.
+The adapter interprets these options. Apiwork includes a [Standard Adapter](../adapters/standard-adapter/introduction.md) that generates REST API behavior. Custom adapters can provide different behavior.
 
 ## Connecting to Contract
 

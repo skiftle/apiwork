@@ -8,14 +8,14 @@ module Apiwork
       #
       # Subclass to define response type structure for record or collection wrappers.
       # The block is evaluated via instance_exec, providing access to type DSL methods
-      # and helpers like root_key and metadata_shapes.
+      # and helpers like root_key and {#merge_metadata}.
       #
       # @example Custom shape class
       #   class MyShape < Wrapper::Shape
       #     def apply
       #       reference(:invoice)
       #       object?(:meta)
-      #       merge_shape!(metadata_shapes)
+      #       merge_metadata
       #     end
       #   end
       #
@@ -23,7 +23,7 @@ module Apiwork
       #   shape do
       #     reference(root_key.singular.to_sym)
       #     object?(:meta)
-      #     merge_shape!(metadata_shapes)
+      #     merge_metadata
       #   end
       class Shape
         class << self
@@ -51,18 +51,10 @@ module Apiwork
         attr_reader :data_type
 
         # @api public
-        # The metadata shapes for this shape.
-        #
-        # @return [API::Object]
-        attr_reader :metadata_shapes
-
-        # @api public
         # The root key for this shape.
         #
         # @return [RootKey]
         attr_reader :root_key
-
-        attr_reader :target
 
         # @!method array(name, **options, &block)
         #   @api public
@@ -115,9 +107,6 @@ module Apiwork
         # @!method merge(other)
         #   @api public
         #   @see API::Object#merge
-        # @!method merge_shape!(other)
-        #   @api public
-        #   @see API::Object#merge_shape!
         # @!method number(name, **options)
         #   @api public
         #   @see API::Object#number
@@ -177,7 +166,6 @@ module Apiwork
                  :integer?,
                  :literal,
                  :merge,
-                 :merge_shape!,
                  :number,
                  :number?,
                  :object,
@@ -192,13 +180,42 @@ module Apiwork
                  :union?,
                  :uuid,
                  :uuid?,
-                 to: :target
+                 to: :@target
 
         def initialize(target, root_key, metadata_shapes, data_type: nil)
           @target = target
           @root_key = root_key
           @metadata_shapes = metadata_shapes
           @data_type = data_type
+        end
+
+        # @api public
+        # Merges capability metadata fields into the shape.
+        #
+        # Works like {#merge} but with all types from capability
+        # {Capability::Operation::Base.metadata_shape metadata_shape} definitions ready to merge.
+        # Call without arguments to merge at the top level.
+        # Pass a target to merge into a nested object.
+        #
+        # @param target [API::Object] (@target)
+        #   The object to merge into.
+        # @return [void]
+        #
+        # @example Top-level metadata
+        #   shape do
+        #     reference(root_key.singular.to_sym, to: data_type)
+        #     merge_metadata
+        #   end
+        #
+        # @example Nested metadata
+        #   shape do
+        #     reference(root_key.singular.to_sym, to: data_type)
+        #     object(:metadata) do |object|
+        #       merge_metadata(object)
+        #     end
+        #   end
+        def merge_metadata(target = @target)
+          target.merge_shape!(@metadata_shapes)
         end
 
         def apply

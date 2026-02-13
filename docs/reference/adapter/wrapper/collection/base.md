@@ -23,7 +23,7 @@ class MyCollectionWrapper < Wrapper::Collection::Base
       array.reference(data_type)
     end
     object?(:meta)
-    merge_shape!(metadata_shapes)
+    merge_metadata
   end
 
   def wrap

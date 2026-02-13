@@ -550,7 +550,7 @@ end
 
 `#invalid?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L659)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L663)
 
 Whether this contract is invalid.
 
@@ -604,7 +604,7 @@ end
 
 `#valid?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L651)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L655)
 
 Whether this contract is valid.
 

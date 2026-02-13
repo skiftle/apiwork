@@ -58,13 +58,9 @@ class PostContract < Apiwork::Contract::Base
 end
 ```
 
-When a contract is connected to a representation, that contract enters representation mode.
+When a contract is connected to a representation, that contract enters **representation mode**. In this mode, the contract is driven by its representation through an adapter.
 
-In representation mode, the contract is driven by its representation through an adapter. The adapter interprets the representation and defines how resource actions, requests, and responses are derived from it.
-
-The adapter implements the API conventions and enforces consistent behavior across the entire API.
-
-The built-in adapter provides a complete REST API runtime out of the box. For each resource defined in your API definitions, it automatically generates the corresponding resource actions and derives their behavior from the representation as the source of truth.
+Apiwork includes a [Standard Adapter](../adapters/standard-adapter/introduction.md) that provides a complete REST API runtime. You can also create [custom adapters](../adapters/custom-adapters/introduction.md).
 
 All generated behavior remains fully customizable. You can override individual actions, replace them entirely, or extend them by merging additional behavior on top.
 

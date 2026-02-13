@@ -53,7 +53,7 @@ Settings resolve in this order (first defined wins):
 2. **API definition** `adapter` block — API-wide defaults
 3. **Adapter defaults** — built-in fallbacks
 
-For standard adapter options like pagination strategies, see [Standard Adapter: Pagination](../adapters/standard-adapter/pagination.md).
+If using the Standard Adapter, configure pagination strategies with the `adapter` block. See [Standard Adapter: Pagination](../adapters/standard-adapter/pagination.md) for available options.
 
 #### See also
 

@@ -163,35 +163,17 @@ has_many :comments, include: :optional
 # TypeScript: comments?: Comment[]
 ```
 
-### Request Format (Standard Adapter)
+### Include Requests
 
-The [standard adapter](../adapters/standard-adapter/introduction.md) uses query parameters for include requests:
+The adapter handles include requests. See your adapter's documentation for the query format.
 
-**Single Association:**
+::: tip Standard Adapter
+The [Standard Adapter](../adapters/standard-adapter/includes.md) uses query parameters like `?include[comments]=true` with support for nested includes up to 3 levels deep.
+:::
 
-```http
-GET /api/v1/posts/1?include[comments]=true
-```
+### Performance
 
-**Multiple Associations:**
-
-```http
-GET /api/v1/posts/1?include[comments]=true&include[author]=true
-```
-
-**Nested Associations:**
-
-```http
-GET /api/v1/posts/1?include[comments][author]=true
-```
-
-**Depth limit**: The standard adapter limits nesting to 3 levels. This prevents circular references and keeps queries efficient.
-
-### N+1 Prevention (Standard Adapter)
-
-The standard adapter automatically preloads included associations using `ActiveRecord::Associations::Preloader`.
-
-For more on include query behavior, see [Includes](../adapters/standard-adapter/includes.md).
+Adapters typically handle N+1 prevention automatically. See your adapter's documentation for details.
 
 ---
 
@@ -228,77 +210,13 @@ has_many :comments, writable: :update     # Only on update
 has_many :comments, writable: true                   # Both
 ```
 
-### Request Format (Standard Adapter)
+### Request Format
 
-The [standard adapter](../adapters/standard-adapter/introduction.md) uses an `OP` field to distinguish operations.
+The request format for nested operations depends on your adapter. Each adapter defines how to express create, update, and delete operations.
 
-**Create** new records (no `id`):
-
-```json
-{
-  "post": {
-    "title": "New Post",
-    "comments": [
-      { "content": "First comment" },
-      { "content": "Second comment" }
-    ]
-  }
-}
-```
-
-**Update** existing records (include `id`):
-
-```json
-{
-  "post": {
-    "comments": [
-      {
-        "id": "5",
-        "content": "Updated comment"
-      }
-    ]
-  }
-}
-```
-
-**Delete** records (include `id` and `OP: "delete"`):
-
-```json
-{
-  "post": {
-    "comments": [
-      {
-        "OP": "delete",
-        "id": "5"
-      }
-    ]
-  }
-}
-```
-
-Enabled by `allow_destroy: true` on `accepts_nested_attributes_for` in the model.
-
-**Mixed operations:**
-
-```json
-{
-  "post": {
-    "comments": [
-      {
-        "id": "5",
-        "content": "Updated"
-      },
-      {
-        "content": "New comment"
-      },
-      {
-        "OP": "delete",
-        "id": "3"
-      }
-    ]
-  }
-}
-```
+::: tip Standard Adapter
+The [Standard Adapter](../adapters/standard-adapter/serialization.md#writable-associations) uses an `OP` discriminator field to specify operations. See the serialization guide for the complete request format.
+:::
 
 ### Deep Nesting
 
@@ -355,52 +273,30 @@ end
 
 This creates a post with one comment and two replies in a single request. All standard operations (create, update, delete) work at each level.
 
-### Generated Types (Standard Adapter)
+### Generated Types
 
-The standard adapter generates three payload variants — create, update, and delete — combined as a discriminated union:
+Generated payload types depend on your adapter. See your adapter's documentation for the TypeScript/Zod types it generates.
 
-```typescript
-export interface LineItemNestedCreatePayload {
-  OP?: 'create';
-  id?: string;
-  productName: string;
-  quantity?: null | number;
-  unitPrice?: null | number;
-}
-
-export interface LineItemNestedUpdatePayload {
-  OP?: 'update';
-  id?: string;
-  productName?: string;
-  quantity?: null | number;
-  unitPrice?: null | number;
-}
-
-export interface LineItemNestedDeletePayload {
-  OP?: 'delete';
-  id: string;
-}
-
-export type LineItemNestedPayload =
-  | LineItemNestedCreatePayload
-  | LineItemNestedUpdatePayload
-  | LineItemNestedDeletePayload;
-```
-
-The `OP` discriminator lets TypeScript narrow the type based on the operation. `OP` is optional on all variants — at runtime, the adapter determines create vs update by presence of `id`.
+::: tip Standard Adapter
+The [Standard Adapter](../adapters/standard-adapter/serialization.md#generated-types) generates discriminated union types with an `OP` field for create, update, and delete operations.
+:::
 
 ---
 
 ## Query Capabilities
 
-Mark associations for query operations. The adapter interprets these declarations.
+Mark associations for query operations:
 
 ```ruby
 belongs_to :author, filterable: true, sortable: true
 has_many :comments, filterable: true
 ```
 
-The [standard adapter](../adapters/standard-adapter/introduction.md) supports filtering and sorting on associations. See [Filtering](../adapters/standard-adapter/filtering.md) and [Sorting](../adapters/standard-adapter/sorting.md) for query syntax.
+The adapter interprets these declarations. See your adapter's documentation for query syntax.
+
+::: tip Standard Adapter
+The [Standard Adapter](../adapters/standard-adapter/introduction.md) supports nested filtering and sorting. See [Filtering](../adapters/standard-adapter/filtering.md) and [Sorting](../adapters/standard-adapter/sorting.md).
+:::
 
 ---
 

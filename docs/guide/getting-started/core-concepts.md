@@ -116,8 +116,8 @@ Each option does one thing:
 | Option             | What it does                                         |
 | ------------------ | ---------------------------------------------------- |
 | `writable: true`   | Field can be set in create/update requests           |
-| `filterable: true` | Field can be filtered via `?filter[field][op]=value` |
-| `sortable: true`   | Field can be sorted via `?sort[field]=asc`           |
+| `filterable: true` | Field can be filtered via the adapter |
+| `sortable: true`   | Field can be sorted via the adapter |
 
 ::: tip
 You don't need to specify types. Apiwork reads your database columns and infers types, nullability, and defaults automatically.
@@ -159,14 +159,16 @@ The representation declares:
 - Which can be filtered or sorted (from `filterable:` / `sortable:`)
 - How associations nest (from `has_many`, `belongs_to`, etc.)
 
-From this, the adapter generates types and runtime behavior. The [standard adapter](../core/adapters/standard-adapter/introduction.md) creates:
+The adapter interprets these declarations. Apiwork includes a [Standard Adapter](../core/adapters/standard-adapter/introduction.md) that generates:
 
-- Request types for create/update (writable fields only)
-- Response types for all actions (all exposed fields)
-- Filter types (filterable fields only)
-- Sort types (sortable fields only)
+- Filter types and query handling
+- Sort types and query handling
+- Pagination types and query handling
+- Include handling with N+1 prevention
 
-See [Action Defaults](../core/adapters/standard-adapter/action-defaults.md) for what the standard adapter generates, and [Representations](../core/representations/introduction.md) for the full guide.
+Custom adapters can provide different behavior.
+
+See [Action Defaults](../core/adapters/standard-adapter/action-defaults.md) for what the Standard Adapter generates, and [Representations](../core/representations/introduction.md) for the full guide.
 
 ### Customizing Generated Actions
 

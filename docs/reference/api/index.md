@@ -21,11 +21,11 @@ next: false
 
 ### .define
 
-`.define(path, &block)`
+`.define(base_path, &block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L60)
 
-Defines a new API at the given path.
+Defines a new API at the given base path.
 
 This is the main entry point for creating an Apiwork API.
 The block receives an API recorder for defining resources,
@@ -37,7 +37,7 @@ types, and configuration.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`path`** | `String` |  | The API path. |
+| **`base_path`** | `String` |  | The API base path. |
 
 </div>
 
@@ -68,11 +68,11 @@ end
 
 ### .find
 
-`.find(path)`
+`.find(base_path)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L27)
 
-Finds an API by path.
+Finds an API by base path.
 
 **Parameters**
 
@@ -80,7 +80,7 @@ Finds an API by path.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`path`** | `String` |  | The API path. |
+| **`base_path`** | `String` |  | The API base path. |
 
 </div>
 
@@ -102,11 +102,11 @@ Apiwork::API.find('/api/v1')
 
 ### .find!
 
-`.find!(path)`
+`.find!(base_path)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L27)
 
-Finds an API by path.
+Finds an API by base path.
 
 **Parameters**
 
@@ -114,7 +114,7 @@ Finds an API by path.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`path`** | `String` |  | The API path. |
+| **`base_path`** | `String` |  | The API base path. |
 
 </div>
 
@@ -136,7 +136,7 @@ Apiwork::API.find!('/api/v1')
 
 ### .introspect
 
-`.introspect(path, locale: nil)`
+`.introspect(base_path, locale: nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L80)
 
@@ -148,7 +148,7 @@ The introspection data for an API.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| **`path`** | `String` |  | The API path. |
+| **`base_path`** | `String` |  | The API base path. |
 | `locale` | `Symbol`, `nil` | `nil` | The locale for descriptions. |
 
 </div>

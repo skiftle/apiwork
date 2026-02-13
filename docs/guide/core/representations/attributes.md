@@ -235,14 +235,17 @@ Writable attributes are sent in the request body under the resource key:
 
 ## Query Capabilities
 
-Mark attributes for query operations. The adapter interprets these declarations and may provide filtering, sorting, or other query features.
+Mark attributes for query operations:
 
 ```ruby
 attribute :status, filterable: true
 attribute :created_at, sortable: true
 ```
 
-The [standard adapter](../adapters/standard-adapter/introduction.md) supports both filtering and sorting on marked attributes. See [Filtering](../adapters/standard-adapter/filtering.md) and [Sorting](../adapters/standard-adapter/sorting.md) for query syntax.
+Whether an attribute is queryable depends on your adapter. The [Standard Adapter](../adapters/standard-adapter/introduction.md) supports:
+
+- [Filtering](../adapters/standard-adapter/filtering.md) on `filterable: true` attributes
+- [Sorting](../adapters/standard-adapter/sorting.md) on `sortable: true` attributes
 
 ---
 

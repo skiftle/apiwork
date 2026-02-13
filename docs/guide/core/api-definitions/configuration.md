@@ -106,13 +106,9 @@ Apiwork::API.define '/api/v1' do
 end
 ```
 
-## Adapter
+## Adapter Configuration
 
-The adapter handles filtering, sorting, pagination, and serialization.
-
-### Configuring the Built-in Adapter
-
-Without arguments, configure the default adapter:
+The `adapter` block configures the Standard Adapter (default). If using a custom adapter, configuration may differ.
 
 ```ruby
 Apiwork::API.define '/api/v1' do
@@ -125,7 +121,7 @@ Apiwork::API.define '/api/v1' do
 end
 ```
 
-[Standard Adapter](../adapters/standard-adapter/introduction.md) covers pagination strategies, filtering operators, and sorting options.
+See [Standard Adapter](../adapters/standard-adapter/introduction.md) for all configuration options.
 
 ### Using a Custom Adapter
 

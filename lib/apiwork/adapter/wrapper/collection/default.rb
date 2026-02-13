@@ -30,7 +30,7 @@ module Apiwork
             end
 
             object?(:meta)
-            merge_shape!(metadata_shapes)
+            merge_metadata
           end
 
           def wrap

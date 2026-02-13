@@ -16,7 +16,7 @@ module Apiwork
         #     shape do
         #       reference(root_key.singular.to_sym, to: data_type)
         #       object?(:meta)
-        #       merge_shape!(metadata_shapes)
+        #       merge_metadata
         #     end
         #
         #     def wrap
