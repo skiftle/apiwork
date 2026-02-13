@@ -69,7 +69,7 @@ module Apiwork
         def coerce(hash)
           coerced = hash.dup
 
-          shape.params.each do |name, param_options|
+          @shape.params.each do |name, param_options|
             next unless coerced.key?(name)
 
             coerced[name] = coerce_value(coerced[name], param_options)
@@ -79,8 +79,6 @@ module Apiwork
         end
 
         private
-
-        attr_reader :shape, :type_cache
 
         def coerce_value(value, param_options)
           type = param_options[:type]
@@ -175,12 +173,12 @@ module Apiwork
         end
 
         def resolve_custom_shape(type_name)
-          return type_cache[type_name] if type_cache.key?(type_name)
+          return @type_cache[type_name] if @type_cache.key?(type_name)
 
-          type_definition = shape.contract_class.resolve_custom_type(type_name)
-          return type_cache[type_name] = nil unless type_definition
+          type_definition = @shape.contract_class.resolve_custom_type(type_name)
+          return @type_cache[type_name] = nil unless type_definition
 
-          type_cache[type_name] = Object.new(shape.contract_class).tap do |type_shape|
+          @type_cache[type_name] = Object.new(@shape.contract_class).tap do |type_shape|
             type_shape.copy_type_definition_params(type_definition, type_shape)
           end
         end

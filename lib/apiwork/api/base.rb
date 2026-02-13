@@ -692,14 +692,14 @@ module Apiwork
         end
 
         def ensure_contract_built!(contract_class)
-          return if built_contracts.include?(contract_class)
+          return if @built_contracts.include?(contract_class)
 
           ensure_pre_pass_complete!
 
           representation_class = contract_class.representation_class
           return unless representation_class
 
-          built_contracts.add(contract_class)
+          @built_contracts.add(contract_class)
 
           resource = @root_resource.find_resource { |resource| resource.resolve_contract_class == contract_class }
           actions = resource ? resource.actions : {}
@@ -724,8 +724,6 @@ module Apiwork
         end
 
         private
-
-        attr_reader :built_contracts
 
         def extract_namespaces(mount_path)
           return [] if mount_path.nil? || mount_path == '/'
@@ -764,12 +762,12 @@ module Apiwork
         def build_contracts_for_resource(resource)
           contract_class = resource.resolve_contract_class
           return unless contract_class
-          return if built_contracts.include?(contract_class)
+          return if @built_contracts.include?(contract_class)
 
           representation_class = contract_class.representation_class
           return unless representation_class
 
-          built_contracts.add(contract_class)
+          @built_contracts.add(contract_class)
 
           adapter.register_contract(contract_class, representation_class, resource.actions)
         end

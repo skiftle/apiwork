@@ -17,7 +17,7 @@ module Apiwork
         def deserialize(hash)
           deserialized = hash.dup
 
-          shape.params.each do |name, param_options|
+          @shape.params.each do |name, param_options|
             next unless deserialized.key?(name)
 
             value = deserialized[name]
@@ -29,8 +29,6 @@ module Apiwork
         end
 
         private
-
-        attr_reader :shape
 
         def deserialize_value(value, param_options)
           if param_options[:union] && value.is_a?(Hash)
@@ -76,10 +74,10 @@ module Apiwork
         end
 
         def deserialize_custom_type(hash, type_name)
-          type_definition = shape.contract_class.resolve_custom_type(type_name)
+          type_definition = @shape.contract_class.resolve_custom_type(type_name)
           return hash unless type_definition
 
-          representation_class = (type_definition.scope || shape.contract_class).representation_class
+          representation_class = (type_definition.scope || @shape.contract_class).representation_class
 
           return representation_class.deserialize(hash) if representation_class
 

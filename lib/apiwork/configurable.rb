@@ -4,13 +4,15 @@ module Apiwork
   module Configurable
     extend ActiveSupport::Concern
 
-    def self.define(extends: nil, &block)
-      Class.new do
-        include Configurable
+    class << self
+      def define(extends: nil, &block)
+        Class.new do
+          include Configurable
 
-        self.options = extends.options.dup if extends
+          self.options = extends.options.dup if extends
 
-        class_eval(&block) if block
+          class_eval(&block) if block
+        end
       end
     end
 

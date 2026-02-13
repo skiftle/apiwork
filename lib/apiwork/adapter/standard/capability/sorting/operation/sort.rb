@@ -66,7 +66,7 @@ module Apiwork
               def sort_data(params)
                 return @relation if params.blank?
 
-                params = params.reduce({}) { |acc, hash| acc.merge(hash) } if params.is_a?(Array)
+                params = params.each_with_object({}) { |hash, acc| acc.merge!(hash) } if params.is_a?(Array)
                 return @relation unless params.is_a?(Hash)
 
                 orders, joins = build_order_clauses(params, representation_class.model_class)

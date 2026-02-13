@@ -19,7 +19,7 @@ module Apiwork
 
           transformed = params.dup
 
-          shape.params.each do |name, param_options|
+          @shape.params.each do |name, param_options|
             next unless transformed.key?(name)
 
             value = transformed[name]
@@ -48,8 +48,6 @@ module Apiwork
 
         private
 
-        attr_reader :shape
-
         def transform_custom_type_array(value, param_options)
           custom_type_shape = resolve_custom_type_shape(param_options[:of])
           return nil unless custom_type_shape
@@ -60,7 +58,7 @@ module Apiwork
         end
 
         def resolve_custom_type_shape(type_name)
-          contract_class = shape.contract_class
+          contract_class = @shape.contract_class
           type_definition = contract_class.resolve_custom_type(type_name)
           return nil unless type_definition
 
@@ -82,7 +80,7 @@ module Apiwork
         end
 
         def build_type_shape(type_definition, contract_class)
-          type_shape = Object.new(contract_class, action_name: shape.action_name)
+          type_shape = Object.new(contract_class, action_name: @shape.action_name)
           type_shape.copy_type_definition_params(type_definition, type_shape)
           type_shape
         end

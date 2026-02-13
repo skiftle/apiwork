@@ -148,7 +148,7 @@ module Apiwork
                    :union?,
                    :uuid,
                    :uuid?,
-                   to: :object
+                   to: :@object
 
           def initialize(object, options)
             @object = object
@@ -158,10 +158,6 @@ module Apiwork
           def apply
             raise NotImplementedError
           end
-
-          private
-
-          attr_reader :object
         end
       end
     end

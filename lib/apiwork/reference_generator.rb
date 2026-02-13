@@ -11,8 +11,10 @@ module Apiwork
     OUTPUT_DIR = File.join(GEM_ROOT, 'docs/reference')
     GITHUB_URL = 'https://github.com/skiftle/apiwork/blob/main'
 
-    def self.generate
-      new.generate
+    class << self
+      def generate
+        new.generate
+      end
     end
 
     def generate
