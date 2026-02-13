@@ -151,6 +151,8 @@ components:
       - activity
     activityIndexSuccessResponseBody:
       properties:
+        pagination:
+          "$ref": "#/components/schemas/cursorPagination"
         activities:
           items:
             "$ref": "#/components/schemas/activity"
@@ -158,12 +160,10 @@ components:
         meta:
           properties: {}
           type: object
-        pagination:
-          "$ref": "#/components/schemas/cursorPagination"
       type: object
       required:
-      - activities
       - pagination
+      - activities
     activityPage:
       properties:
         after:

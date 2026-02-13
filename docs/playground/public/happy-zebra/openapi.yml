@@ -388,6 +388,8 @@ components:
       - comment
     commentIndexSuccessResponseBody:
       properties:
+        pagination:
+          "$ref": "#/components/schemas/offsetPagination"
         comments:
           items:
             "$ref": "#/components/schemas/comment"
@@ -395,12 +397,10 @@ components:
         meta:
           properties: {}
           type: object
-        pagination:
-          "$ref": "#/components/schemas/offsetPagination"
       type: object
       required:
-      - comments
       - pagination
+      - comments
     commentNestedCreatePayload:
       properties:
         OP:
@@ -585,11 +585,11 @@ components:
       - post
     postIndexSuccessResponseBody:
       properties:
+        pagination:
+          "$ref": "#/components/schemas/offsetPagination"
         meta:
           properties: {}
           type: object
-        pagination:
-          "$ref": "#/components/schemas/offsetPagination"
         posts:
           items:
             "$ref": "#/components/schemas/post"
@@ -871,11 +871,11 @@ components:
       type: object
     userIndexSuccessResponseBody:
       properties:
+        pagination:
+          "$ref": "#/components/schemas/offsetPagination"
         meta:
           properties: {}
           type: object
-        pagination:
-          "$ref": "#/components/schemas/offsetPagination"
         users:
           items:
             "$ref": "#/components/schemas/user"

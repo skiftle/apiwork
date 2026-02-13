@@ -286,6 +286,8 @@ components:
       type: object
     invoiceIndexSuccessResponseBody:
       properties:
+        pagination:
+          "$ref": "#/components/schemas/offsetPagination"
         invoices:
           items:
             "$ref": "#/components/schemas/invoice"
@@ -293,12 +295,10 @@ components:
         meta:
           properties: {}
           type: object
-        pagination:
-          "$ref": "#/components/schemas/offsetPagination"
       type: object
       required:
-      - invoices
       - pagination
+      - invoices
     invoicePage:
       properties:
         number:

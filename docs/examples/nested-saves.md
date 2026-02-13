@@ -344,10 +344,7 @@ Content-Type: application/json
       "detail": "Unknown field",
       "meta": {
         "allowed": [
-          "id",
-          "product_name",
-          "quantity",
-          "unit_price"
+          "id"
         ],
         "field": "_op"
       },

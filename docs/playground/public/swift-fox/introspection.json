@@ -458,6 +458,16 @@
       "example": null,
       "extends": [],
       "shape": {
+        "pagination": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "reference",
+          "reference": "offset_pagination"
+        },
         "contacts": {
           "default": null,
           "deprecated": false,
@@ -490,16 +500,6 @@
           "type": "object",
           "partial": false,
           "shape": {}
-        },
-        "pagination": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": false,
-          "type": "reference",
-          "reference": "offset_pagination"
         }
       },
       "type": "object",
