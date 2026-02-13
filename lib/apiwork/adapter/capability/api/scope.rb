@@ -15,11 +15,11 @@ module Apiwork
             @root_resource = api_class.root_resource
           end
 
-          # @!method has_index_actions?
+          # @!method index_actions?
           #   @api public
           #   Returns whether any resource has index actions.
           #   @return [Boolean]
-          delegate :has_index_actions?, to: :@root_resource
+          delegate :index_actions?, to: :@root_resource
 
           # @!method filter_types
           #   @api public

@@ -32,7 +32,7 @@ module RuboCop
         def check_method_definition(node)
           kwargs = extract_kwargs(node.arguments)
           return if kwargs.size < 2
-          return if has_kwrestarg?(node.arguments)
+          return if kwrestarg?(node.arguments)
           return unless single_line?(kwargs)
 
           sorted_names = kwargs.map { |arg| arg.name.to_s }.sort
@@ -50,7 +50,7 @@ module RuboCop
           args.select { |arg| arg.kwoptarg_type? || arg.kwarg_type? }
         end
 
-        def has_kwrestarg?(args)
+        def kwrestarg?(args)
           args.any?(&:kwrestarg_type?)
         end
 

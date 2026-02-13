@@ -9,7 +9,7 @@ API builders run once per API at initialization time. They register shared [type
 ```ruby
 class APIBuilder < Adapter::Capability::API::Base
   def build
-    return unless scope.has_index_actions?
+    return unless scope.index_actions?
 
     object(:offset_pagination) do |object|
       object.integer(:current)
@@ -61,7 +61,7 @@ The [`scope`](/reference/adapter/capability/api/scope) attribute provides access
 
 | Method | Description |
 |--------|-------------|
-| `scope.has_index_actions?` | Whether any resource has index actions |
+| `scope.index_actions?` | Whether any resource has index actions |
 | `scope.filterable?` | Whether any representation has filterable attributes |
 | `scope.sortable?` | Whether any representation has sortable attributes |
 | `scope.filter_types` | Set of filterable attribute types |
@@ -100,7 +100,7 @@ Registers pagination types based on which strategies are configured:
 ```ruby
 class APIBuilder < Adapter::Capability::API::Base
   def build
-    return unless scope.has_index_actions?
+    return unless scope.index_actions?
 
     if configured(:strategy).include?(:offset)
       object(:offset_pagination) do |object|

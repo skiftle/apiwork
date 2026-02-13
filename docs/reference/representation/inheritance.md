@@ -65,20 +65,6 @@ Mapping of API names to database type values.
 
 ---
 
-### #needs_transform?
-
-`#needs_transform?`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L56)
-
-Whether this inheritance needs type transformation.
-
-**Returns**
-
-`Boolean`
-
----
-
 ### #resolve
 
 `#resolve(record)`
@@ -114,5 +100,19 @@ The subclasses for this inheritance.
 **Returns**
 
 Array&lt;Class&lt;[Representation::Base](/reference/representation/base)&gt;&gt;
+
+---
+
+### #transform?
+
+`#transform?`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L56)
+
+Whether this inheritance requires type transformation.
+
+**Returns**
+
+`Boolean`
 
 ---

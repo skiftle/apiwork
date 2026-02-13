@@ -22,7 +22,7 @@ module Apiwork
         end
 
         @representation_class.associations.each do |name, association|
-          next unless should_include_association?(name, association)
+          next unless include_association?(name, association)
 
           fields[name] = serialize_association(name, association)
         end
@@ -82,7 +82,7 @@ module Apiwork
         representation_class.new(record, context: @representation.context, include: nested_includes).as_json
       end
 
-      def should_include_association?(name, association)
+      def include_association?(name, association)
         return explicitly_included?(name) unless association.include == :always
         return true unless circular_reference?(association)
 

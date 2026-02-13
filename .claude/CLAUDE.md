@@ -931,6 +931,20 @@ def abstract!
 end
 ```
 
+### Predicate Methods
+
+Predicate methods (ending with `?`) name the condition directly. The `?` suffix already signals a question — prefixes like `should_`, `needs_`, `has_`, `is_`, `can_` are redundant.
+
+| Bad | Good | Why |
+|-----|------|-----|
+| `should_include_association?` | `include_association?` | `should_` is redundant |
+| `needs_transform?` | `transform?` | `needs_` is redundant |
+| `has_index_actions?` | `index_actions?` | `has_` is redundant |
+| `is_valid?` | `valid?` | `is_` is redundant |
+| `can_paginate?` | `paginate?` | `can_` is redundant |
+
+**Exception:** Rails DSL methods (`has_one`, `has_many`) follow Rails conventions.
+
 ### Guard Logic
 
 ```ruby

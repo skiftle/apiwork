@@ -56,7 +56,7 @@ module Apiwork
 
       def transform_sti_type(hash)
         inheritance_config = @representation_class.subclass? ? @representation_class.superclass.inheritance : @representation_class.inheritance
-        return unless inheritance_config&.needs_transform?
+        return unless inheritance_config&.transform?
 
         column = inheritance_config.column
         return unless hash.key?(column)

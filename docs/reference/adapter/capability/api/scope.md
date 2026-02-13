@@ -68,9 +68,9 @@ Returns whether any representation has filterable attributes.
 
 ---
 
-### #has_index_actions?
+### #index_actions?
 
-`#has_index_actions?`
+`#index_actions?`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/api/scope.rb#L22)
 

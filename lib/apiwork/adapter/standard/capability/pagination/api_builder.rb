@@ -7,7 +7,7 @@ module Apiwork
         class Pagination
           class APIBuilder < Adapter::Capability::API::Base
             def build
-              return unless scope.has_index_actions?
+              return unless scope.index_actions?
 
               if configured(:strategy).include?(:offset)
                 object(:offset_pagination) do |object|

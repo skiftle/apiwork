@@ -240,6 +240,18 @@ end
 
 ---
 
+### #object
+
+`#object(name, **options, &block)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/metadata_shape.rb#L121)
+
+**See also**
+
+- [API::Object#object](/reference/api/object#object)
+
+---
+
 ### #object?
 
 `#object?(name, **options, &block)`

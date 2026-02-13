@@ -88,8 +88,8 @@ RSpec.describe 'Custom Adapter', type: :integration do
   describe 'Resource index actions' do
     let(:api_class) { Apiwork::API.find!('/api/v1') }
 
-    it 'has_index_actions? responds with boolean' do
-      expect(api_class.root_resource.has_index_actions?).to be(true).or be(false)
+    it 'index_actions? responds with boolean' do
+      expect(api_class.root_resource.index_actions?).to be(true).or be(false)
     end
   end
 

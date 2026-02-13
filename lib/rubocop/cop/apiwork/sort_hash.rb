@@ -63,8 +63,8 @@ module RuboCop
           pairs = node.pairs
           return false if pairs.empty?
           return false unless all_symbol_keys?(pairs)
-          return false if has_kwsplat?(node)
-          return false if has_duplicate_keys?(pairs)
+          return false if kwsplat?(node)
+          return false if duplicate_keys?(pairs)
 
           true
         end
@@ -73,16 +73,16 @@ module RuboCop
           pairs.all? { |pair| pair.key.sym_type? }
         end
 
-        def has_kwsplat?(node)
+        def kwsplat?(node)
           node.children.any? { |child| child.is_a?(Parser::AST::Node) && child.kwsplat_type? }
         end
 
-        def has_duplicate_keys?(pairs)
+        def duplicate_keys?(pairs)
           keys = pairs.map { |pair| key_name(pair) }
           keys.size != keys.uniq.size
         end
 
-        def has_multiline_value?(pairs)
+        def multiline_value?(pairs)
           pairs.any? { |pair| pair.value.loc.first_line != pair.value.loc.last_line }
         end
 
@@ -150,7 +150,7 @@ module RuboCop
 
           lines = ["{\n"]
           sorted_pairs.each_with_index do |pair, index|
-            trailing_comma = index < sorted_pairs.size - 1 || has_trailing_comma?(node)
+            trailing_comma = index < sorted_pairs.size - 1 || trailing_comma?(node)
             lines << "#{pair_indent}#{pair.source}#{trailing_comma ? ',' : ''}\n"
           end
           lines << "#{indent}}"
@@ -182,7 +182,7 @@ module RuboCop
           source_line[/\A\s*/]
         end
 
-        def has_trailing_comma?(node)
+        def trailing_comma?(node)
           last_pair = node.pairs.last
           source_after_last = node.loc.expression.source[last_pair.loc.expression.end_pos - node.loc.expression.begin_pos..]
           source_after_last&.match?(/\A\s*,/)
@@ -195,8 +195,8 @@ module RuboCop
             pairs = ancestor.pairs
             next false if pairs.size < 2
             next false unless all_symbol_keys?(pairs)
-            next false if has_kwsplat?(ancestor)
-            next false if has_duplicate_keys?(pairs)
+            next false if kwsplat?(ancestor)
+            next false if duplicate_keys?(pairs)
 
             sort_pairs(pairs) != pairs
           end

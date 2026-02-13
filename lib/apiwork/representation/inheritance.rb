@@ -50,10 +50,10 @@ module Apiwork
       end
 
       # @api public
-      # Whether this inheritance needs type transformation.
+      # Whether this inheritance requires type transformation.
       #
       # @return [Boolean]
-      def needs_transform?
+      def transform?
         @subclasses.any? { |klass| klass.sti_name != klass.model_class.sti_name }
       end
 
