@@ -41,6 +41,7 @@ module Apiwork
         def build_local_types
           @contract_class.api_class.type_registry.each_pair
             .select { |_name, type_definition| type_definition.scope == @contract_class }
+            .reject { |_, type_definition| type_definition.fragment? }
             .sort_by { |name, _type_definition| name.to_s }
             .each_with_object({}) do |(name, type_definition), result|
               result[name] = @type_dump.build_type(name, type_definition)

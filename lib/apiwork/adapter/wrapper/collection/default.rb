@@ -30,7 +30,7 @@ module Apiwork
             end
 
             object?(:meta)
-            merge_metadata
+            metadata_type_names.each { |type_name| merge(type_name) }
           end
 
           def wrap

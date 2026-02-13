@@ -8,14 +8,14 @@ module Apiwork
       #
       # Subclass to define response type structure for record or collection wrappers.
       # The block is evaluated via instance_exec, providing access to type DSL methods
-      # and helpers like root_key and {#merge_metadata}.
+      # and helpers like root_key and {#metadata_type_names}.
       #
       # @example Custom shape class
       #   class MyShape < Wrapper::Shape
       #     def apply
       #       reference(:invoice)
       #       object?(:meta)
-      #       merge_metadata
+      #       metadata_type_names.each { |type_name| merge(type_name) }
       #     end
       #   end
       #
@@ -23,24 +23,19 @@ module Apiwork
       #   shape do
       #     reference(root_key.singular.to_sym)
       #     object?(:meta)
-      #     merge_metadata
+      #     metadata_type_names.each { |type_name| merge(type_name) }
       #   end
       class Shape
         class << self
           def apply(target, root_key, capabilities, representation_class, type, data_type: nil)
-            metadata_shapes = build_metadata_shapes(capabilities, representation_class, type)
-            new(target, root_key, metadata_shapes, data_type:).apply
+            metadata_type_names = build_metadata_type_names(capabilities, representation_class, type)
+            new(target, root_key, metadata_type_names, data_type:).apply
           end
 
           private
 
-          def build_metadata_shapes(capabilities, representation_class, type)
-            result = ::Apiwork::API::Object.new
-            capabilities.each do |capability|
-              shape = capability.shape(representation_class, type)
-              result.merge_shape!(shape) if shape
-            end
-            result
+          def build_metadata_type_names(capabilities, representation_class, type)
+            capabilities.filter_map { |capability| capability.shape(representation_class, type) }
           end
         end
 
@@ -49,6 +44,16 @@ module Apiwork
         #
         # @return [Symbol, nil]
         attr_reader :data_type
+
+        # @api public
+        # The metadata type names for this shape.
+        #
+        # Auto-generated type names from capability
+        # {Adapter::Capability::Operation::Base.metadata_shape} definitions. Use with {#merge}
+        # to include capability metadata fields in the shape.
+        #
+        # @return [Array<Symbol>]
+        attr_reader :metadata_type_names
 
         # @api public
         # The root key for this shape.
@@ -182,29 +187,11 @@ module Apiwork
                  :uuid?,
                  to: :@target
 
-        def initialize(target, root_key, metadata_shapes, data_type: nil)
+        def initialize(target, root_key, metadata_type_names, data_type: nil)
           @target = target
           @root_key = root_key
-          @metadata_shapes = metadata_shapes
+          @metadata_type_names = metadata_type_names
           @data_type = data_type
-        end
-
-        # @api public
-        # Merges capability metadata fields into the shape.
-        #
-        # Works like {#merge} but with all fields from capability
-        # {Adapter::Capability::Operation::Base.metadata_shape} definitions ready to merge.
-        #
-        # @return [void]
-        #
-        # @example
-        #   shape do
-        #     reference(root_key.singular.to_sym, to: data_type)
-        #     object?(:meta)
-        #     merge_metadata
-        #   end
-        def merge_metadata
-          @target.merge_shape!(@metadata_shapes)
         end
 
         def apply

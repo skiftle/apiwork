@@ -15,6 +15,7 @@ module Apiwork
         description: nil,
         discriminator: nil,
         example: nil,
+        fragment: false,
         &block
       )
         key = scoped_name(scope, name)
@@ -30,6 +31,7 @@ module Apiwork
             description:,
             discriminator:,
             example:,
+            fragment:,
             kind:,
             scope:,
           )

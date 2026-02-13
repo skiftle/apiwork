@@ -20,7 +20,8 @@ module Apiwork
           deprecated: false,
           description: nil,
           discriminator: nil,
-          example: nil
+          example: nil,
+          fragment: false
         )
           @name = name
           @kind = kind
@@ -30,11 +31,16 @@ module Apiwork
           @description = description
           @discriminator = discriminator
           @example = example
+          @fragment = fragment
           @shape = nil
         end
 
         def deprecated?
           @deprecated == true
+        end
+
+        def fragment?
+          @fragment == true
         end
 
         def object?
@@ -66,6 +72,7 @@ module Apiwork
             description: description || @description,
             discriminator: @discriminator,
             example: example || @example,
+            fragment: @fragment,
             kind: @kind,
             scope: @scope,
           )

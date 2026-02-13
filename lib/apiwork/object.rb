@@ -54,17 +54,6 @@ module Apiwork
       @merged
     end
 
-    # Merges params from another shape into this one.
-    # Used internally by capabilities and document shapes.
-    #
-    # @param shape [Apiwork::Object]
-    #   The shape to merge from.
-    # @return [self]
-    def merge_shape!(shape)
-      @params.merge!(shape.params)
-      self
-    end
-
     # @api public
     # Defines a string.
     #

@@ -223,7 +223,16 @@ module Apiwork
 
           object = ::Apiwork::API::Object.new
           metadata_shape_class.apply(object, merged_config(representation_class))
-          object.params.empty? ? nil : object
+          return nil if object.params.empty?
+
+          type_name = resolve_metadata_type_name(representation_class)
+          register_metadata_fragment(
+            representation_class.api_class,
+            type_name,
+            metadata_shape_class,
+            merged_config(representation_class),
+          )
+          type_name
         end
 
         def apply(data, representation_class, request, wrapper_type:)
@@ -252,6 +261,19 @@ module Apiwork
           config.merge(representation_config)
         rescue ConfigurationError
           config
+        end
+
+        def resolve_metadata_type_name(representation_class)
+          prefix = representation_class.name.demodulize.delete_suffix('Representation').underscore
+          [prefix, self.class.capability_name, 'metadata'].join('_').to_sym
+        end
+
+        def register_metadata_fragment(api_class, type_name, metadata_shape_class, config)
+          return if api_class.type_registry.key?(type_name)
+
+          api_class.type_registry.register(type_name, fragment: true, kind: :object) do |shape|
+            metadata_shape_class.apply(shape, config)
+          end
         end
 
         def build_translation_context(representation_class)

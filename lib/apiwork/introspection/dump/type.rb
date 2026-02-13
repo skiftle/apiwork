@@ -16,8 +16,10 @@ module Apiwork
         end
 
         def types
-          @api_class.type_registry.each_pair.sort_by do |name, _type_definition|
-            name.to_s
+          @api_class.type_registry.each_pair
+            .reject { |_, type_definition| type_definition.fragment? }
+            .sort_by do |name, _type_definition|
+              name.to_s
           end.each_with_object({}) do |(qualified_name, type_definition), result|
             result[qualified_name] = build_type(qualified_name, type_definition)
           end

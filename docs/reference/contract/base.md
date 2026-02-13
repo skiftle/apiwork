@@ -83,7 +83,7 @@ Whether this contract is abstract.
 
 `.action(name, replace: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L442)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L452)
 
 Defines or extends an action on this contract.
 
@@ -162,7 +162,7 @@ end
 
 `.enum(name, deprecated: false, description: nil, example: nil, values: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L272)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L277)
 
 Defines or extends an enum for this contract.
 
@@ -262,7 +262,7 @@ end
 
 `.import(klass, as:)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L360)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L370)
 
 Imports types from another contract for reuse.
 
@@ -296,7 +296,7 @@ import UserContract, as: :user
 
 `.introspect(expand: false, locale: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L468)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L478)
 
 Returns introspection data for this contract.
 
@@ -325,9 +325,9 @@ InvoiceContract.introspect
 
 ### .object
 
-`.object(name, deprecated: false, description: nil, example: nil, &block)`
+`.object(name, deprecated: false, description: nil, example: nil, fragment: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L216)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L219)
 
 Defines or extends an object type for this contract.
 
@@ -346,6 +346,7 @@ Multiple calls with the same name merge fields (declaration merging).
 | `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
 | `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
 | `example` | `Object`, `nil` | `nil` | The example. Metadata included in exports. |
+| `fragment` | `Boolean` | `false` | Whether this type is a fragment. Fragments are only available for merging into other types and never appear as standalone types. |
 
 </div>
 
@@ -459,9 +460,9 @@ Class&lt;[Representation::Base](/reference/representation/base)&gt;, `nil`
 
 ### .union
 
-`.union(name, deprecated: false, description: nil, discriminator: nil, example: nil, &block)`
+`.union(name, deprecated: false, description: nil, discriminator: nil, example: nil, fragment: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L325)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L333)
 
 Defines or extends a discriminated union for this contract.
 
@@ -481,6 +482,7 @@ Multiple calls with the same name merge variants (declaration merging).
 | `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
 | `discriminator` | `Symbol`, `nil` | `nil` | The discriminator field name. |
 | `example` | `Object`, `nil` | `nil` | The example. Metadata included in exports. |
+| `fragment` | `Boolean` | `false` | Whether this type is a fragment. Fragments are only available for merging into other types and never appear as standalone types. |
 
 </div>
 
@@ -550,7 +552,7 @@ end
 
 `#invalid?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L663)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L673)
 
 Whether this contract is invalid.
 
@@ -604,7 +606,7 @@ end
 
 `#valid?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L655)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L665)
 
 Whether this contract is valid.
 

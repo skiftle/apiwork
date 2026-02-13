@@ -18,7 +18,7 @@ module Apiwork
         #         array.reference(data_type)
         #       end
         #       object?(:meta)
-        #       merge_metadata
+        #       metadata_type_names.each { |type_name| merge(type_name) }
         #     end
         #
         #     def wrap
