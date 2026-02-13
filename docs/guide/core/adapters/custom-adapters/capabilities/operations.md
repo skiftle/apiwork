@@ -36,7 +36,7 @@ Omit `target` to run for both collection and member responses.
 
 ### metadata_shape
 
-Defines metadata fields added to the response. This is critical for introspection - it tells the type system what shape the metadata will have. Wrappers use [`merge_shape!(metadata_shapes)`](../wrappers.md#merge_shape) to include these fields in response types.
+Defines metadata fields added to the response. This is critical for introspection — it tells the type system what shape the metadata will have. Each `metadata_shape` is registered as a [fragment](/guide/core/types/type-reuse.md#fragments) type. Wrappers use [`metadata_type_names`](../wrappers.md#metadata_type_names) to merge these fields into response types.
 
 ```ruby
 metadata_shape do

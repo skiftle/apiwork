@@ -4,7 +4,7 @@ order: 9
 
 # Type Reuse
 
-Apiwork provides two ways to reuse types: inheritance with `extends` and composition with `merge`.
+Apiwork provides two ways to reuse types: inheritance with `extends` and composition with `merge`. For reusable field groups that should not appear in exports, use `fragment`.
 
 ## Inheritance with extends
 
@@ -154,6 +154,62 @@ end
 - You want to reuse properties without inheritance
 - Types share a "has-properties-of" relationship
 - You're composing from multiple sources
+
+## Fragments
+
+Fragments are types that only exist for merging. They do not appear as standalone types in introspection or exports.
+
+```ruby
+fragment :timestamps do
+  datetime :created_at
+  datetime :updated_at
+end
+
+object :invoice do
+  merge :timestamps
+  string :number
+  decimal :total
+end
+
+object :customer do
+  merge :timestamps
+  string :name
+  string :email
+end
+```
+
+Both `:invoice` and `:customer` include `created_at` and `updated_at` fields. The `:timestamps` fragment itself does not appear in introspection, OpenAPI, TypeScript, or Zod output.
+
+### Contract-scoped Fragments
+
+Fragments defined in a contract follow the same scoping rules as objects:
+
+```ruby
+class InvoiceContract < Contract::Base
+  fragment :auditable do
+    string :created_by
+    string :updated_by
+  end
+
+  object :invoice do
+    merge :auditable
+    string :number
+  end
+end
+```
+
+Contract-scoped fragments are importable via `import`, just like objects.
+
+### When to Use Fragments
+
+| Concept | Use |
+|---------|-----|
+| `object` | Standalone type visible in exports |
+| `fragment` | Reusable field group, invisible in exports |
+| `extends` | Inheritance with visible relationship |
+| `merge` | Composition (works with both objects and fragments) |
+
+Use fragments when you need reusable field groups but do not want them in your generated API specs.
 
 ## Declaration Order
 

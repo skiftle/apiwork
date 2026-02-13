@@ -107,7 +107,7 @@ The base path for this API.
 
 `.concern(name, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L572)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L585)
 
 Defines a reusable concern for resources.
 
@@ -162,7 +162,7 @@ resources :posts, concerns: [:archivable]
 
 `.enum(name, values: nil, scope: nil, description: nil, example: nil, deprecated: false)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L272)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L290)
 
 Defines a reusable enumeration type.
 
@@ -230,11 +230,55 @@ end
 
 ---
 
+### .fragment
+
+`.fragment(name, scope: nil, &block)`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L261)
+
+Defines a fragment type for composition.
+
+Fragments are only available for merging into other types and never appear as
+standalone types. Use fragments to define reusable field groups.
+
+**Parameters**
+
+<div class="params-table">
+
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| **`name`** | `Symbol` |  | The fragment name. |
+| `scope` | `Class<Contract::Base>`, `nil` | `nil` | The contract scope for type prefixing. |
+
+</div>
+
+**Returns**
+
+`void`
+
+**Yields** [API::Object](/reference/api/object)
+
+**Example: Reusable timestamps**
+
+```ruby
+fragment :timestamps do
+  datetime :created_at
+  datetime :updated_at
+end
+
+object :invoice do
+  merge :timestamps
+  string :number
+end
+```
+
+---
+
 ### .info
 
 `.info(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L396)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L409)
 
 The info for this API.
 
@@ -307,9 +351,9 @@ key_format :camel
 
 ### .object
 
-`.object(name, deprecated: false, description: nil, example: nil, fragment: false, scope: nil, &block)`
+`.object(name, deprecated: false, description: nil, example: nil, scope: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L232)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L219)
 
 Defines a reusable object type.
 
@@ -323,7 +367,6 @@ Defines a reusable object type.
 | `deprecated` | `Boolean` | `false` | Whether deprecated. Metadata included in exports. |
 | `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
 | `example` | `Object`, `nil` | `nil` | The example. Metadata included in exports. |
-| `fragment` | `Boolean` | `false` | Whether this type is a fragment. Fragments are only available for merging into other types and never appear as standalone types. |
 | `scope` | `Class<Contract::Base>`, `nil` | `nil` | The contract scope for type prefixing. |
 
 </div>
@@ -340,20 +383,6 @@ Defines a reusable object type.
 object :item do
   string :description
   decimal :amount
-end
-```
-
-**Example: Fragment type for composition**
-
-```ruby
-object :timestamps, fragment: true do
-  datetime :created_at
-  datetime :updated_at
-end
-
-object :invoice do
-  merge :timestamps
-  string :number
 end
 ```
 
@@ -405,7 +434,7 @@ resources :user_profiles
 
 `.raises(*error_code_keys)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L359)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L372)
 
 API-wide error codes.
 
@@ -438,7 +467,7 @@ api_class.raises # => [:unauthorized, :forbidden, :not_found]
 
 `.resource(name, concerns: nil, constraints: nil, contract: nil, controller: nil, defaults: nil, except: nil, only: nil, param: nil, path: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L513)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L526)
 
 Defines a singular resource (no index action, no :id in URL).
 
@@ -492,7 +521,7 @@ end
 
 `.resources(name, concerns: nil, constraints: nil, contract: nil, controller: nil, defaults: nil, except: nil, only: nil, param: nil, path: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L446)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L459)
 
 Defines a RESTful resource with standard CRUD actions.
 
@@ -547,9 +576,9 @@ end
 
 ### .union
 
-`.union(name, deprecated: false, description: nil, discriminator: nil, example: nil, fragment: false, scope: nil, &block)`
+`.union(name, deprecated: false, description: nil, discriminator: nil, example: nil, scope: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L321)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L336)
 
 Defines a discriminated union type.
 
@@ -564,7 +593,6 @@ Defines a discriminated union type.
 | `description` | `String`, `nil` | `nil` | The description. Metadata included in exports. |
 | `discriminator` | `Symbol`, `nil` | `nil` | The discriminator field name. |
 | `example` | `Object`, `nil` | `nil` | The example. Metadata included in exports. |
-| `fragment` | `Boolean` | `false` | Whether this type is a fragment. Fragments are only available for merging into other types and never appear as standalone types. |
 | `scope` | `Class<Contract::Base>`, `nil` | `nil` | The contract scope for type prefixing. |
 
 </div>
@@ -593,7 +621,7 @@ end
 
 `.with_options(options = {}, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L600)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L613)
 
 Applies options to all nested resource definitions.
 

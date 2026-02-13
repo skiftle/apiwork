@@ -24,7 +24,7 @@ class MyMemberWrapper < Adapter::Wrapper::Member::Base
   shape do
     reference(root_key.singular.to_sym, to: data_type)
     object?(:meta)
-    merge_shape!(metadata_shapes)
+    metadata_type_names.each { |type_name| merge(type_name) }
   end
 
   def wrap
@@ -57,7 +57,7 @@ class MyCollectionWrapper < Adapter::Wrapper::Collection::Base
       array.reference(data_type)
     end
     object?(:meta)
-    merge_shape!(metadata_shapes)
+    metadata_type_names.each { |type_name| merge(type_name) }
   end
 
   def wrap
@@ -112,7 +112,7 @@ All [type DSL methods](../../types/objects.md) from `API::Object`:
 | `array`, `array?` | Array field |
 | `reference`, `reference?` | Reference to another type |
 | `extends` | Inherit from another type |
-| `merge_shape!` | Merge fields from another shape |
+| `merge` | Include properties from a named type |
 
 ### Available Helpers
 
@@ -120,11 +120,11 @@ All [type DSL methods](../../types/objects.md) from `API::Object`:
 |--------|-------------|
 | `root_key` | Resource root key (has `.singular` and `.plural`) |
 | `data_type` | Type name from serializer |
-| `metadata_shapes` | Aggregated shapes from [capability operations](./capabilities/operations.md) |
+| `metadata_type_names` | Auto-generated type names from [capability operations](./capabilities/operations.md) |
 
-### merge_shape!
+### metadata_type_names
 
-The `merge_shape!(metadata_shapes)` call merges fields from all capability operations that define a [`metadata_shape`](./capabilities/operations.md#metadata_shape). This is how pagination, filtering metadata, etc. appear in the response type.
+The `metadata_type_names` array contains auto-generated [fragment](/guide/core/types/type-reuse.md#fragments) type names from capability operations that define a [`metadata_shape`](./capabilities/operations.md#metadata_shape). Iterate over them with `merge` to include capability metadata fields (pagination, filtering, etc.) in the response type.
 
 ## Example: JSON:API Wrapper
 
@@ -158,7 +158,7 @@ class EnvelopeMemberWrapper < Adapter::Wrapper::Member::Base
     literal(:success, value: true)
     reference(:data, to: data_type)
     object?(:meta)
-    merge_shape!(metadata_shapes)
+    metadata_type_names.each { |type_name| merge(type_name) }
   end
 
   def wrap

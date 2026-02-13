@@ -170,9 +170,6 @@ module Apiwork
         #   The description. Metadata included in exports.
         # @param example [Object, nil] (nil)
         #   The example. Metadata included in exports.
-        # @param fragment [Boolean] (false)
-        #   Whether this type is a fragment. Fragments are only available for merging into other types
-        #   and never appear as standalone types.
         # @yieldparam object [API::Object]
         # @return [void]
         #
@@ -221,7 +218,6 @@ module Apiwork
           deprecated: false,
           description: nil,
           example: nil,
-          fragment: false,
           &block
         )
           api_class.object(
@@ -229,10 +225,34 @@ module Apiwork
             deprecated:,
             description:,
             example:,
-            fragment:,
             scope: self,
             &block
           )
+        end
+
+        # @api public
+        # Defines a fragment type for this contract.
+        #
+        # Fragments are only available for merging into other types and never appear as
+        # standalone types. Use fragments to define reusable field groups.
+        #
+        # @param name [Symbol]
+        #   The fragment name.
+        # @yieldparam object [API::Object]
+        # @return [void]
+        #
+        # @example Reusable timestamps
+        #   fragment :timestamps do
+        #     datetime :created_at
+        #     datetime :updated_at
+        #   end
+        #
+        #   object :invoice do
+        #     merge :timestamps
+        #     string :number
+        #   end
+        def fragment(name, &block)
+          api_class.fragment(name, scope: self, &block)
         end
 
         # @api public
@@ -302,9 +322,6 @@ module Apiwork
         #   The discriminator field name.
         # @param example [Object, nil] (nil)
         #   The example. Metadata included in exports.
-        # @param fragment [Boolean] (false)
-        #   Whether this type is a fragment. Fragments are only available for merging into other types
-        #   and never appear as standalone types.
         # @yieldparam union [API::Union]
         # @return [void]
         #
@@ -336,7 +353,6 @@ module Apiwork
           description: nil,
           discriminator: nil,
           example: nil,
-          fragment: false,
           &block
         )
           api_class.union(
@@ -345,7 +361,6 @@ module Apiwork
             description:,
             discriminator:,
             example:,
-            fragment:,
             scope: self,
             &block
           )
