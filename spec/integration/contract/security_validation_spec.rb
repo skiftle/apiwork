@@ -18,15 +18,15 @@ RSpec.describe 'Security and edge case validation' do
       large_array = (1..1000).to_a
       result = definition.validate({ items: large_array })
 
-      expect(result[:issues]).to be_empty
-      expect(result[:params][:items].size).to eq(1000)
+      expect(result.issues).to be_empty
+      expect(result.params[:items].size).to eq(1000)
     end
 
     it 'validates all elements in large array' do
       large_array = Array.new(100, 42)
       result = definition.validate({ items: large_array })
 
-      expect(result[:issues]).to be_empty
+      expect(result.issues).to be_empty
     end
   end
 
@@ -40,9 +40,9 @@ RSpec.describe 'Security and edge case validation' do
     it 'handles empty hash when required field missing' do
       result = definition.validate({})
 
-      expect(result[:issues]).not_to be_empty
-      expect(result[:issues].first.code).to eq(:field_missing)
-      expect(result[:issues].first.path).to eq([:name])
+      expect(result.issues).not_to be_empty
+      expect(result.issues.first.code).to eq(:field_missing)
+      expect(result.issues.first.path).to eq([:name])
     end
   end
 
@@ -56,16 +56,16 @@ RSpec.describe 'Security and edge case validation' do
     it 'handles unicode characters' do
       result = definition.validate({ text: '你好世界 🌍 Здравствуй мир' })
 
-      expect(result[:issues]).to be_empty
-      expect(result[:params][:text]).to eq('你好世界 🌍 Здравствуй мир')
+      expect(result.issues).to be_empty
+      expect(result.params[:text]).to eq('你好世界 🌍 Здравствуй мир')
     end
 
     it 'handles very long strings' do
       long_string = 'a' * 100_000
       result = definition.validate({ text: long_string })
 
-      expect(result[:issues]).to be_empty
-      expect(result[:params][:text].length).to eq(100_000)
+      expect(result.issues).to be_empty
+      expect(result.params[:text].length).to eq(100_000)
     end
 
     it 'handles string with max_length constraint' do
@@ -75,8 +75,8 @@ RSpec.describe 'Security and edge case validation' do
 
       result = constrained_def.validate({ text: 'a' * 101 })
 
-      expect(result[:issues]).not_to be_empty
-      expect(result[:issues].first.code).to eq(:string_too_long)
+      expect(result.issues).not_to be_empty
+      expect(result.issues.first.code).to eq(:string_too_long)
     end
   end
 
@@ -91,8 +91,8 @@ RSpec.describe 'Security and edge case validation' do
     it 'rejects object when integer expected' do
       result = definition.validate({ count: { nested: 'value' } })
 
-      expect(result[:issues]).not_to be_empty
-      issue = result[:issues].first
+      expect(result.issues).not_to be_empty
+      issue = result.issues.first
       expect(issue.path).to eq([:count])
       expect(issue.code).to eq(:type_invalid)
     end
@@ -100,8 +100,8 @@ RSpec.describe 'Security and edge case validation' do
     it 'rejects array when boolean expected' do
       result = definition.validate({ active: [true, false] })
 
-      expect(result[:issues]).not_to be_empty
-      expect(result[:issues].first.code).to eq(:type_invalid)
+      expect(result.issues).not_to be_empty
+      expect(result.issues.first.code).to eq(:type_invalid)
     end
   end
 
@@ -116,15 +116,15 @@ RSpec.describe 'Security and edge case validation' do
     it 'handles very large integers' do
       result = definition.validate({ huge_int: 9_999_999_999_999_999_999 })
 
-      expect(result[:issues]).to be_empty
-      expect(result[:params][:huge_int]).to eq(9_999_999_999_999_999_999)
+      expect(result.issues).to be_empty
+      expect(result.params[:huge_int]).to eq(9_999_999_999_999_999_999)
     end
 
     it 'handles very small numbers' do
       result = definition.validate({ precise_number: 0.000000000001 })
 
-      expect(result[:issues]).to be_empty
-      expect(result[:params][:precise_number]).to be_within(0.000000000001).of(0.000000000001)
+      expect(result.issues).to be_empty
+      expect(result.params[:precise_number]).to be_within(0.000000000001).of(0.000000000001)
     end
   end
 
@@ -144,8 +144,8 @@ RSpec.describe 'Security and edge case validation' do
         },
       )
 
-      expect(result[:issues]).not_to be_empty
-      expect(result[:issues].size).to eq(3)
+      expect(result.issues).not_to be_empty
+      expect(result.issues.size).to eq(3)
     end
   end
 end

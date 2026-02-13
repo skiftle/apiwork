@@ -44,9 +44,9 @@ module Apiwork
 
         validated = shape.validate(data)
 
-        return [{}, validated[:issues]] if validated[:issues].any?
+        return [{}, validated.issues] if validated.invalid?
 
-        [shape.transform(shape.deserialize(validated[:params])), []]
+        [shape.transform(shape.deserialize(validated.params)), []]
       end
 
       def action

@@ -21,7 +21,7 @@ module Apiwork
         return Result.new(response:) unless body_shape&.params&.any?
 
         validated = body_shape.validate(response.body)
-        Result.new(issues: validated[:issues], response: Response.new(body: validated[:params]))
+        Result.new(issues: validated.issues, response: Response.new(body: validated.params))
       end
 
       private

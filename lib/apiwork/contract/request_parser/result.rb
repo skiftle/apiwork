@@ -7,7 +7,7 @@ module Apiwork
         attr_reader :issues,
                     :request
 
-        def initialize(issues:, request:)
+        def initialize(issues: [], request:)
           @request = request
           @issues = issues
         end

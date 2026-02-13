@@ -16,41 +16,41 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
         time = Time.zone.parse('2024-01-15T10:30:00Z')
         result = definition.validate({ archived_at: time })
 
-        expect(result[:issues]).to be_empty
-        expect(result[:issues]).to be_empty
-        expect(result[:params][:archived_at]).to eq(time)
+        expect(result.issues).to be_empty
+        expect(result.issues).to be_empty
+        expect(result.params[:archived_at]).to eq(time)
       end
 
       it 'accepts DateTime object' do
         datetime = DateTime.parse('2024-01-15T10:30:00Z')
         result = definition.validate({ archived_at: datetime })
 
-        expect(result[:issues]).to be_empty
-        expect(result[:issues]).to be_empty
+        expect(result.issues).to be_empty
+        expect(result.issues).to be_empty
       end
 
       it 'accepts ActiveSupport::TimeWithZone object' do
         time_with_zone = ActiveSupport::TimeZone['UTC'].parse('2024-01-15T10:30:00')
         result = definition.validate({ archived_at: time_with_zone })
 
-        expect(result[:issues]).to be_empty
-        expect(result[:issues]).to be_empty
+        expect(result.issues).to be_empty
+        expect(result.issues).to be_empty
       end
 
       it 'preserves Time object type and value' do
         time = Time.zone.parse('2024-01-15T10:30:00Z')
         result = definition.validate({ archived_at: time })
 
-        expect(result[:issues]).to be_empty
-        expect(result[:params][:archived_at]).to be_a(Time)
-        expect(result[:params][:archived_at]).to eq(time)
+        expect(result.issues).to be_empty
+        expect(result.params[:archived_at]).to be_a(Time)
+        expect(result.params[:archived_at]).to eq(time)
       end
 
       it 'rejects string without coercion' do
         result = definition.validate({ archived_at: '2024-01-15 10:30:00' })
 
-        expect(result[:issues]).not_to be_empty
-        expect(result[:issues].first.code).to eq(:type_invalid)
+        expect(result.issues).not_to be_empty
+        expect(result.issues.first.code).to eq(:type_invalid)
       end
     end
 
@@ -58,50 +58,50 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
       it 'rejects string' do
         result = definition.validate({ archived_at: '2024-13-45' })
 
-        expect(result[:issues]).not_to be_empty
-        expect(result[:issues].length).to eq(1)
-        expect(result[:issues].first.code).to eq(:type_invalid)
-        expect(result[:issues].first.meta[:expected]).to eq(:datetime)
-        expect(result[:issues].first.meta[:actual]).to eq(:string)
+        expect(result.issues).not_to be_empty
+        expect(result.issues.length).to eq(1)
+        expect(result.issues.first.code).to eq(:type_invalid)
+        expect(result.issues.first.meta[:expected]).to eq(:datetime)
+        expect(result.issues.first.meta[:actual]).to eq(:string)
       end
 
       it 'rejects non-date string' do
         result = definition.validate({ archived_at: 'not-a-date' })
 
-        expect(result[:issues]).not_to be_empty
-        expect(result[:issues].length).to eq(1)
-        expect(result[:issues].first.code).to eq(:type_invalid)
+        expect(result.issues).not_to be_empty
+        expect(result.issues.length).to eq(1)
+        expect(result.issues.first.code).to eq(:type_invalid)
       end
 
       it 'rejects invalid date string' do
         result = definition.validate({ archived_at: '2024-01-32' })
 
-        expect(result[:issues]).not_to be_empty
-        expect(result[:issues].first.code).to eq(:type_invalid)
+        expect(result.issues).not_to be_empty
+        expect(result.issues.first.code).to eq(:type_invalid)
       end
 
       it 'rejects empty string' do
         result = definition.validate({ archived_at: '' })
 
-        expect(result[:issues]).not_to be_empty
+        expect(result.issues).not_to be_empty
         # Empty string is caught by required validation
-        expect(result[:issues].first.code).to eq(:field_missing)
+        expect(result.issues.first.code).to eq(:field_missing)
       end
 
       it 'rejects Integer type' do
         result = definition.validate({ archived_at: 42 })
 
-        expect(result[:issues]).not_to be_empty
-        expect(result[:issues].first.code).to eq(:type_invalid)
-        expect(result[:issues].first.meta[:expected]).to eq(:datetime)
-        expect(result[:issues].first.meta[:actual]).to eq(:integer)
+        expect(result.issues).not_to be_empty
+        expect(result.issues.first.code).to eq(:type_invalid)
+        expect(result.issues.first.meta[:expected]).to eq(:datetime)
+        expect(result.issues.first.meta[:actual]).to eq(:integer)
       end
 
       it 'rejects Boolean type' do
         result = definition.validate({ archived_at: true })
 
-        expect(result[:issues]).not_to be_empty
-        expect(result[:issues].first.code).to eq(:type_invalid)
+        expect(result.issues).not_to be_empty
+        expect(result.issues.first.code).to eq(:type_invalid)
       end
     end
 
@@ -114,14 +114,14 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
       it 'allows nil value' do
         result = definition.validate({ archived_at: nil })
 
-        expect(result[:issues]).to be_empty
-        expect(result[:params]).to eq({})
+        expect(result.issues).to be_empty
+        expect(result.params).to eq({})
       end
 
       it 'allows missing field' do
         result = definition.validate({})
 
-        expect(result[:issues]).to be_empty
+        expect(result.issues).to be_empty
       end
     end
   end
@@ -136,18 +136,18 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
         date = Date.parse('2024-01-15')
         result = definition.validate({ birth_date: date })
 
-        expect(result[:issues]).to be_empty
-        expect(result[:issues]).to be_empty
-        expect(result[:params][:birth_date]).to eq(date)
+        expect(result.issues).to be_empty
+        expect(result.issues).to be_empty
+        expect(result.params[:birth_date]).to eq(date)
       end
 
       it 'rejects string without coercion' do
         result = definition.validate({ birth_date: '2024-01-15' })
 
-        expect(result[:issues]).not_to be_empty
-        expect(result[:issues].first.code).to eq(:type_invalid)
-        expect(result[:issues].first.meta[:expected]).to eq(:date)
-        expect(result[:issues].first.meta[:actual]).to eq(:string)
+        expect(result.issues).not_to be_empty
+        expect(result.issues.first.code).to eq(:type_invalid)
+        expect(result.issues.first.meta[:expected]).to eq(:date)
+        expect(result.issues.first.meta[:actual]).to eq(:string)
       end
     end
 
@@ -155,48 +155,48 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
       it 'rejects invalid date string (Feb 30)' do
         result = definition.validate({ birth_date: '2024-02-30' })
 
-        expect(result[:issues]).not_to be_empty
-        expect(result[:issues].length).to eq(1)
-        expect(result[:issues].first.code).to eq(:type_invalid)
-        expect(result[:issues].first.meta[:expected]).to eq(:date)
-        expect(result[:issues].first.meta[:actual]).to eq(:string)
+        expect(result.issues).not_to be_empty
+        expect(result.issues.length).to eq(1)
+        expect(result.issues.first.code).to eq(:type_invalid)
+        expect(result.issues.first.meta[:expected]).to eq(:date)
+        expect(result.issues.first.meta[:actual]).to eq(:string)
       end
 
       it 'rejects non-date string' do
         result = definition.validate({ birth_date: 'not-a-date' })
 
-        expect(result[:issues]).not_to be_empty
-        expect(result[:issues].first.code).to eq(:type_invalid)
+        expect(result.issues).not_to be_empty
+        expect(result.issues.first.code).to eq(:type_invalid)
       end
 
       it 'rejects invalid month string' do
         result = definition.validate({ birth_date: '2024-13-01' })
 
-        expect(result[:issues]).not_to be_empty
-        expect(result[:issues].first.code).to eq(:type_invalid)
+        expect(result.issues).not_to be_empty
+        expect(result.issues.first.code).to eq(:type_invalid)
       end
 
       it 'rejects empty string' do
         result = definition.validate({ birth_date: '' })
 
-        expect(result[:issues]).not_to be_empty
-        expect(result[:issues].first.code).to eq(:field_missing)
+        expect(result.issues).not_to be_empty
+        expect(result.issues.first.code).to eq(:field_missing)
       end
 
       it 'rejects Integer type' do
         result = definition.validate({ birth_date: 20_240_115 })
 
-        expect(result[:issues]).not_to be_empty
-        expect(result[:issues].first.code).to eq(:type_invalid)
-        expect(result[:issues].first.meta[:expected]).to eq(:date)
-        expect(result[:issues].first.meta[:actual]).to eq(:integer)
+        expect(result.issues).not_to be_empty
+        expect(result.issues.first.code).to eq(:type_invalid)
+        expect(result.issues.first.meta[:expected]).to eq(:date)
+        expect(result.issues.first.meta[:actual]).to eq(:integer)
       end
 
       it 'rejects Time object' do
         result = definition.validate({ birth_date: Time.zone.now })
 
-        expect(result[:issues]).not_to be_empty
-        expect(result[:issues].first.code).to eq(:type_invalid)
+        expect(result.issues).not_to be_empty
+        expect(result.issues.first.code).to eq(:type_invalid)
       end
     end
 
@@ -209,14 +209,14 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
       it 'allows nil value' do
         result = definition.validate({ birth_date: nil })
 
-        expect(result[:issues]).to be_empty
-        expect(result[:params]).to eq({})
+        expect(result.issues).to be_empty
+        expect(result.params).to eq({})
       end
 
       it 'allows missing field' do
         result = definition.validate({})
 
-        expect(result[:issues]).to be_empty
+        expect(result.issues).to be_empty
       end
     end
   end
@@ -230,10 +230,10 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
       it 'returns value_invalid error with allowed values' do
         result = definition.validate({})
 
-        expect(result[:issues]).not_to be_empty
-        expect(result[:issues].length).to eq(1)
+        expect(result.issues).not_to be_empty
+        expect(result.issues.length).to eq(1)
 
-        error = result[:issues].first
+        error = result.issues.first
         expect(error.code).to eq(:value_invalid)
         expect(error.meta[:field]).to eq(:status)
         expect(error.detail).to eq('Invalid value')
@@ -246,9 +246,9 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
       it 'returns value_invalid error with allowed values' do
         result = definition.validate({ status: nil })
 
-        expect(result[:issues]).not_to be_empty
+        expect(result.issues).not_to be_empty
 
-        error = result[:issues].first
+        error = result.issues.first
         expect(error.code).to eq(:value_invalid)
         expect(error.meta[:field]).to eq(:status)
         expect(error.detail).to eq('Invalid value')
@@ -261,9 +261,9 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
       it 'returns value_invalid error with allowed values' do
         result = definition.validate({ status: '' })
 
-        expect(result[:issues]).not_to be_empty
+        expect(result.issues).not_to be_empty
 
-        error = result[:issues].first
+        error = result.issues.first
         expect(error.code).to eq(:value_invalid)
         expect(error.meta[:field]).to eq(:status)
         expect(error.detail).to eq('Invalid value')
@@ -276,11 +276,11 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
       it 'returns value_invalid error' do
         result = definition.validate({ status: 'deleted' })
 
-        expect(result[:issues]).not_to be_empty
-        expect(result[:issues].first.code).to eq(:value_invalid)
-        expect(result[:issues].first.meta[:field]).to eq(:status)
-        expect(result[:issues].first.meta[:expected]).to eq(%w[active inactive archived])
-        expect(result[:issues].first.meta[:actual]).to eq('deleted')
+        expect(result.issues).not_to be_empty
+        expect(result.issues.first.code).to eq(:value_invalid)
+        expect(result.issues.first.meta[:field]).to eq(:status)
+        expect(result.issues.first.meta[:expected]).to eq(%w[active inactive archived])
+        expect(result.issues.first.meta[:actual]).to eq('deleted')
       end
     end
 
@@ -288,8 +288,8 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
       it 'accepts the value' do
         result = definition.validate({ status: 'active' })
 
-        expect(result[:issues]).to be_empty
-        expect(result[:params][:status]).to eq('active')
+        expect(result.issues).to be_empty
+        expect(result.params[:status]).to eq('active')
       end
     end
 
@@ -297,7 +297,7 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
       it 'provides helpful error detail via meta' do
         result = definition.validate({ status: 'deleted' })
 
-        error = result[:issues].first
+        error = result.issues.first
         expect(error.detail).to eq('Invalid value')
         expect(error.meta[:expected]).to include('active', 'inactive', 'archived')
       end
@@ -312,29 +312,29 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
     it 'allows missing field' do
       result = definition.validate({})
 
-      expect(result[:issues]).to be_empty
-      expect(result[:params]).to eq({})
+      expect(result.issues).to be_empty
+      expect(result.params).to eq({})
     end
 
     it 'allows nil value' do
       result = definition.validate({ status: nil })
 
-      expect(result[:issues]).to be_empty
-      expect(result[:params]).to eq({})
+      expect(result.issues).to be_empty
+      expect(result.params).to eq({})
     end
 
     it 'rejects invalid enum value' do
       result = definition.validate({ status: 'deleted' })
 
-      expect(result[:issues]).not_to be_empty
-      expect(result[:issues].first.code).to eq(:value_invalid)
+      expect(result.issues).not_to be_empty
+      expect(result.issues.first.code).to eq(:value_invalid)
     end
 
     it 'accepts valid enum value' do
       result = definition.validate({ status: 'active' })
 
-      expect(result[:issues]).to be_empty
-      expect(result[:params][:status]).to eq('active')
+      expect(result.issues).to be_empty
+      expect(result.params[:status]).to eq('active')
     end
   end
 
@@ -349,8 +349,8 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
       it 'returns field_missing error' do
         result = definition.validate({})
 
-        expect(result[:issues]).not_to be_empty
-        error = result[:issues].first
+        expect(result.issues).not_to be_empty
+        error = result.issues.first
         expect(error.code).to eq(:field_missing)
         expect(error.detail).to eq('Required')
         expect(error.meta[:field]).to eq(:name)
@@ -361,8 +361,8 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
       it 'returns field_missing error' do
         result = definition.validate({ name: nil })
 
-        expect(result[:issues]).not_to be_empty
-        error = result[:issues].first
+        expect(result.issues).not_to be_empty
+        error = result.issues.first
         expect(error.code).to eq(:field_missing)
         expect(error.detail).to eq('Required')
       end
@@ -372,8 +372,8 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
       it 'returns field_missing error' do
         result = definition.validate({ name: '' })
 
-        expect(result[:issues]).not_to be_empty
-        error = result[:issues].first
+        expect(result.issues).not_to be_empty
+        error = result.issues.first
         expect(error.code).to eq(:field_missing)
         expect(error.detail).to eq('Required')
       end
@@ -391,8 +391,8 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
       it 'rejects nil value' do
         result = definition.validate({ address: nil })
 
-        expect(result[:issues]).not_to be_empty
-        error = result[:issues].first
+        expect(result.issues).not_to be_empty
+        error = result.issues.first
         expect(error.code).to eq(:value_null)
         expect(error.meta[:field]).to eq(:address)
         expect(error.detail).to eq('Cannot be null')
@@ -401,15 +401,15 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
       it 'accepts non-nil object value' do
         result = definition.validate({ address: { street: '123 Main St' } })
 
-        expect(result[:issues]).to be_empty
-        expect(result[:params][:address]).to eq({ street: '123 Main St' })
+        expect(result.issues).to be_empty
+        expect(result.params[:address]).to eq({ street: '123 Main St' })
       end
 
       it 'allows missing field when not required' do
         result = definition.validate({})
 
-        expect(result[:issues]).to be_empty
-        expect(result[:params]).to eq({})
+        expect(result.issues).to be_empty
+        expect(result.params).to eq({})
       end
     end
 
@@ -423,22 +423,22 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
       it 'accepts nil value' do
         result = definition.validate({ address: nil })
 
-        expect(result[:issues]).to be_empty
-        expect(result[:params]).to eq({})
+        expect(result.issues).to be_empty
+        expect(result.params).to eq({})
       end
 
       it 'accepts non-nil object value' do
         result = definition.validate({ address: { street: '123 Main St' } })
 
-        expect(result[:issues]).to be_empty
-        expect(result[:params][:address]).to eq({ street: '123 Main St' })
+        expect(result.issues).to be_empty
+        expect(result.params[:address]).to eq({ street: '123 Main St' })
       end
 
       it 'allows missing field when not required' do
         result = definition.validate({})
 
-        expect(result[:issues]).to be_empty
-        expect(result[:params]).to eq({})
+        expect(result.issues).to be_empty
+        expect(result.params).to eq({})
       end
     end
 
@@ -452,8 +452,8 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
       it 'accepts nil value when nullable: true' do
         result = definition.validate({ address: nil })
 
-        expect(result[:issues]).to be_empty
-        expect(result[:params]).to eq({})
+        expect(result.issues).to be_empty
+        expect(result.params).to eq({})
       end
     end
 
@@ -467,8 +467,8 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
       it 'rejects nil value when nullable: false' do
         result = definition.validate({ comments: nil })
 
-        expect(result[:issues]).not_to be_empty
-        error = result[:issues].first
+        expect(result.issues).not_to be_empty
+        error = result.issues.first
         expect(error.code).to eq(:value_null)
         expect(error.meta[:field]).to eq(:comments)
       end
@@ -476,15 +476,15 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
       it 'accepts empty array' do
         result = definition.validate({ comments: [] })
 
-        expect(result[:issues]).to be_empty
-        expect(result[:params][:comments]).to eq([])
+        expect(result.issues).to be_empty
+        expect(result.params[:comments]).to eq([])
       end
 
       it 'accepts non-empty array' do
         result = definition.validate({ comments: [{ content: 'Great!' }] })
 
-        expect(result[:issues]).to be_empty
-        expect(result[:params][:comments]).to eq([{ content: 'Great!' }])
+        expect(result.issues).to be_empty
+        expect(result.params[:comments]).to eq([{ content: 'Great!' }])
       end
     end
   end
@@ -500,22 +500,22 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
       it 'accepts array within max limit' do
         result = definition.validate({ tags: %w[ruby rails api] })
 
-        expect(result[:issues]).to be_empty
-        expect(result[:params][:tags]).to eq(%w[ruby rails api])
+        expect(result.issues).to be_empty
+        expect(result.params[:tags]).to eq(%w[ruby rails api])
       end
 
       it 'accepts array at exactly max limit' do
         result = definition.validate({ tags: %w[a b c] })
 
-        expect(result[:issues]).to be_empty
-        expect(result[:params][:tags]).to eq(%w[a b c])
+        expect(result.issues).to be_empty
+        expect(result.params[:tags]).to eq(%w[a b c])
       end
 
       it 'rejects array exceeding max limit' do
         result = definition.validate({ tags: %w[a b c d] })
 
-        expect(result[:issues]).not_to be_empty
-        error = result[:issues].first
+        expect(result.issues).not_to be_empty
+        error = result.issues.first
         expect(error.code).to eq(:array_too_large)
         expect(error.detail).to eq('Too many items')
         expect(error.meta[:max]).to eq(3)
@@ -525,8 +525,8 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
       it 'accepts empty array' do
         result = definition.validate({ tags: [] })
 
-        expect(result[:issues]).to be_empty
-        expect(result[:params][:tags]).to eq([])
+        expect(result.issues).to be_empty
+        expect(result.params[:tags]).to eq([])
       end
     end
 
@@ -540,22 +540,22 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
       it 'accepts array above min limit' do
         result = definition.validate({ tags: %w[ruby rails api] })
 
-        expect(result[:issues]).to be_empty
-        expect(result[:params][:tags]).to eq(%w[ruby rails api])
+        expect(result.issues).to be_empty
+        expect(result.params[:tags]).to eq(%w[ruby rails api])
       end
 
       it 'accepts array at exactly min limit' do
         result = definition.validate({ tags: %w[a b] })
 
-        expect(result[:issues]).to be_empty
-        expect(result[:params][:tags]).to eq(%w[a b])
+        expect(result.issues).to be_empty
+        expect(result.params[:tags]).to eq(%w[a b])
       end
 
       it 'rejects array below min limit' do
         result = definition.validate({ tags: %w[only_one] })
 
-        expect(result[:issues]).not_to be_empty
-        error = result[:issues].first
+        expect(result.issues).not_to be_empty
+        error = result.issues.first
         expect(error.code).to eq(:array_too_small)
         expect(error.detail).to eq('Too few items')
         expect(error.meta[:min]).to eq(2)
@@ -565,8 +565,8 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
       it 'rejects empty array when min is set' do
         result = definition.validate({ tags: [] })
 
-        expect(result[:issues]).not_to be_empty
-        error = result[:issues].first
+        expect(result.issues).not_to be_empty
+        error = result.issues.first
         expect(error.code).to eq(:array_too_small)
         expect(error.meta[:min]).to eq(2)
         expect(error.meta[:actual]).to eq(0)
@@ -583,34 +583,34 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
       it 'accepts array within range' do
         result = definition.validate({ tags: %w[a b c] })
 
-        expect(result[:issues]).to be_empty
-        expect(result[:params][:tags]).to eq(%w[a b c])
+        expect(result.issues).to be_empty
+        expect(result.params[:tags]).to eq(%w[a b c])
       end
 
       it 'accepts array at min boundary' do
         result = definition.validate({ tags: %w[single] })
 
-        expect(result[:issues]).to be_empty
+        expect(result.issues).to be_empty
       end
 
       it 'accepts array at max boundary' do
         result = definition.validate({ tags: %w[a b c d e] })
 
-        expect(result[:issues]).to be_empty
+        expect(result.issues).to be_empty
       end
 
       it 'rejects array below min' do
         result = definition.validate({ tags: [] })
 
-        expect(result[:issues]).not_to be_empty
-        expect(result[:issues].first.code).to eq(:array_too_small)
+        expect(result.issues).not_to be_empty
+        expect(result.issues.first.code).to eq(:array_too_small)
       end
 
       it 'rejects array above max' do
         result = definition.validate({ tags: %w[a b c d e f] })
 
-        expect(result[:issues]).not_to be_empty
-        expect(result[:issues].first.code).to eq(:array_too_large)
+        expect(result.issues).not_to be_empty
+        expect(result.issues.first.code).to eq(:array_too_large)
       end
     end
 
@@ -624,15 +624,15 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
       it 'accepts empty array' do
         result = definition.validate({ tags: [] })
 
-        expect(result[:issues]).to be_empty
+        expect(result.issues).to be_empty
       end
 
       it 'accepts large array' do
         large_array = (1..100).map(&:to_s)
         result = definition.validate({ tags: large_array })
 
-        expect(result[:issues]).to be_empty
-        expect(result[:params][:tags].length).to eq(100)
+        expect(result.issues).to be_empty
+        expect(result.params[:tags].length).to eq(100)
       end
     end
 
@@ -646,16 +646,16 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
       it 'validates length for object arrays' do
         result = definition.validate({ comments: [{ text: 'hello' }, { text: 'world' }] })
 
-        expect(result[:issues]).to be_empty
-        expect(result[:params][:comments].length).to eq(2)
+        expect(result.issues).to be_empty
+        expect(result.params[:comments].length).to eq(2)
       end
 
       it 'rejects object array exceeding max' do
         comments = (1..11).map { |i| { text: "comment #{i}" } }
         result = definition.validate({ comments: })
 
-        expect(result[:issues]).not_to be_empty
-        expect(result[:issues].first.code).to eq(:array_too_large)
+        expect(result.issues).not_to be_empty
+        expect(result.issues.first.code).to eq(:array_too_large)
       end
     end
   end

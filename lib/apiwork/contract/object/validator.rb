@@ -4,6 +4,7 @@ module Apiwork
   module Contract
     class Object
       class Validator
+        NOT_SET = Module.new.freeze
         NUMERIC_TYPES = Set[:integer, :number, :decimal].freeze
 
         class << self
@@ -24,7 +25,7 @@ module Apiwork
           return max_depth_error(current_depth, max_depth, path) if current_depth > max_depth
 
           @shape.params.each do |name, param_options|
-            param_result = validate_param(
+            param_issues, param_value = validate_param(
               name,
               data[name],
               param_options,
@@ -33,13 +34,13 @@ module Apiwork
               current_depth:,
               max_depth:,
             )
-            issues.concat(param_result[:issues])
-            params[name] = param_result[:value] if param_result[:value_set]
+            issues.concat(param_issues)
+            params[name] = param_value unless param_value.equal?(NOT_SET)
           end
 
           issues.concat(check_unknown_params(data, path))
 
-          { issues:, params: }
+          Result.new(issues:, params:)
         end
 
         private
@@ -51,24 +52,24 @@ module Apiwork
             path:,
             meta: { max:, depth: current_depth },
           )]
-          { issues:, params: {} }
+          Result.new(issues:, params: {})
         end
 
         def validate_param(name, value, param_options, data, path, current_depth:, max_depth:)
           field_path = path + [name]
 
           required_error = validate_required(name, value, param_options, field_path)
-          return { issues: [required_error], value_set: false } if required_error
+          return [[required_error], NOT_SET] if required_error
 
           value = param_options[:default] if value.nil? && param_options[:default]
 
           nullable_error = validate_nullable(name, value, param_options, data, field_path)
-          return { issues: [nullable_error], value_set: false } if nullable_error
+          return [[nullable_error], NOT_SET] if nullable_error
 
-          return { issues: [], value_set: false } if value.nil?
+          return [[], NOT_SET] if value.nil?
 
           enum_error = validate_enum_value(name, value, param_options[:enum], field_path)
-          return { issues: [enum_error], value_set: false } if enum_error
+          return [[enum_error], NOT_SET] if enum_error
 
           if param_options[:type] == :literal
             expected = param_options[:value]
@@ -83,28 +84,24 @@ module Apiwork
                 },
                 path: field_path,
               )
-              return { issues: [error], value_set: false }
+              return [[error], NOT_SET]
             end
-            return {
-              value:,
-              issues: [],
-              value_set: true,
-            }
+            return [[], value]
           end
 
           return validate_union_param(name, value, param_options, field_path, max_depth, current_depth) if param_options[:type] == :union
 
           type_error = validate_type(name, value, param_options[:type], field_path)
-          return { issues: [type_error], value_set: false } if type_error
+          return [[type_error], NOT_SET] if type_error
 
           if param_options[:type] == :string
             length_error = validate_string_length(name, value, param_options, field_path)
-            return { issues: [length_error], value_set: false } if length_error
+            return [[length_error], NOT_SET] if length_error
           end
 
           if numeric_type?(param_options[:type])
             range_error = validate_numeric_range(name, value, param_options, field_path)
-            return { issues: [range_error], value_set: false } if range_error
+            return [[range_error], NOT_SET] if range_error
           end
 
           custom_type_result = validate_custom_type(value, param_options[:type], field_path, max_depth, current_depth)
@@ -186,15 +183,7 @@ module Apiwork
             current_depth:,
             max_depth:,
           )
-          if union_error
-            { issues: [union_error], value_set: false }
-          else
-            {
-              issues: [],
-              value: union_value,
-              value_set: true,
-            }
-          end
+          union_error ? [[union_error], NOT_SET] : [[], union_value]
         end
 
         def validate_shape_or_array(value, param_options, field_path, max_depth, current_depth)
@@ -203,11 +192,7 @@ module Apiwork
           elsif param_options[:type] == :array && value.is_a?(Array)
             validate_array_param(value, param_options, field_path, max_depth, current_depth)
           else
-            {
-              value:,
-              issues: [],
-              value_set: true,
-            }
+            [[], value]
           end
         end
 
@@ -219,15 +204,7 @@ module Apiwork
             current_depth: current_depth + 1,
             path: field_path,
           )
-          if shape_result[:issues].any?
-            { issues: shape_result[:issues], value_set: false }
-          else
-            {
-              issues: [],
-              value: shape_result[:params],
-              value_set: true,
-            }
-          end
+          shape_result.invalid? ? [shape_result.issues, NOT_SET] : [[], shape_result.params]
         end
 
         def validate_array_param(value, param_options, field_path, max_depth, current_depth)
@@ -240,15 +217,7 @@ module Apiwork
               param_options:,
             },
           )
-          if array_issues.empty?
-            {
-              issues: [],
-              value: array_values,
-              value_set: true,
-            }
-          else
-            { issues: array_issues, value_set: false }
-          end
+          array_issues.empty? ? [[], array_values] : [array_issues, NOT_SET]
         end
 
         def check_unknown_params(data, path)
@@ -306,10 +275,10 @@ module Apiwork
                 current_depth: current_depth + 1,
                 path: item_path,
               )
-              if shape_result[:issues].any?
-                issues.concat(shape_result[:issues])
+              if shape_result.invalid?
+                issues.concat(shape_result.issues)
               else
-                values << shape_result[:params]
+                values << shape_result.params
               end
             elsif param_options[:of]
               result = validate_array_item_with_type(item, index, param_options, item_path, current_depth, max_depth)
@@ -323,12 +292,11 @@ module Apiwork
         end
 
         def validate_array_item_with_type(item, index, param_options, item_path, current_depth, max_depth)
-          contract_class = @shape.contract_class
-          type_definition = contract_class.resolve_custom_type(param_options[:of])
+          type_definition = @shape.contract_class.resolve_custom_type(param_options[:of])
 
           if type_definition
             return validate_array_item_with_type_definition(
-              item, index, type_definition, item_path, contract_class, param_options[:of], current_depth, max_depth
+              item, index, type_definition, item_path, param_options[:of], current_depth, max_depth
             )
           end
 
@@ -336,7 +304,7 @@ module Apiwork
           type_error ? { issues: [type_error], value: nil } : { issues: [], value: item }
         end
 
-        def validate_array_item_with_type_definition(item, index, type_definition, item_path, contract_class, type_name, current_depth, max_depth)
+        def validate_array_item_with_type_definition(item, index, type_definition, item_path, type_name, current_depth, max_depth)
           unless item.is_a?(Hash)
             return {
               issues: [Issue.new(
@@ -350,23 +318,19 @@ module Apiwork
           end
 
           if type_definition.union?
-            error, validated_value = validate_union_type_definition_item(
-              item, type_definition, item_path, contract_class, current_depth:, max_depth:
+            error, validated_value = validate_union(
+              index, item, type_definition.shape, item_path, current_depth:, max_depth:
             )
             error ? { issues: [error], value: nil } : { issues: [], value: validated_value }
           else
-            validate_array_item_with_object_type(item, type_definition, item_path, contract_class, current_depth, max_depth)
+            validate_array_item_with_object_type(item, type_definition, item_path, current_depth, max_depth)
           end
         end
 
-        def validate_array_item_with_object_type(item, type_definition, item_path, contract_class, current_depth, max_depth)
-          type_shape = Object.new(contract_class, action_name: @shape.action_name)
-          type_shape.copy_type_definition_params(type_definition, type_shape)
+        def validate_array_item_with_object_type(item, type_definition, item_path, current_depth, max_depth)
+          result = validate_with_type_definition(type_definition, item, item_path, current_depth:, max_depth:)
 
-          validator = Validator.new(type_shape)
-          shape_result = validator.validate(item, max_depth:, current_depth: current_depth + 1, path: item_path)
-
-          shape_result[:issues].any? ? { issues: shape_result[:issues], value: nil } : { issues: [], value: shape_result[:params] }
+          result.invalid? ? { issues: result.issues, value: nil } : { issues: [], value: result.params }
         end
 
         def validate_custom_type(value, type_name, field_path, max_depth, current_depth)
@@ -375,10 +339,8 @@ module Apiwork
           type_definition = @shape.contract_class.resolve_custom_type(type_name)
           return nil unless type_definition&.object?
 
-          type_shape = Object.new(@shape.contract_class, action_name: @shape.action_name)
-          type_shape.copy_type_definition_params(type_definition, type_shape)
-
-          Validator.new(type_shape).validate(value, max_depth:, current_depth: current_depth + 1, path: field_path)
+          result = validate_with_type_definition(type_definition, value, field_path, current_depth:, max_depth:)
+          result.invalid? ? [result.issues, NOT_SET] : [[], result.params]
         end
 
         def validate_type(name, value, expected_type, path)
@@ -410,32 +372,55 @@ module Apiwork
         end
 
         def validate_union(name, value, union, path, current_depth:, max_depth:)
+          discriminator = union.discriminator
           variants = union.variants
 
-          if union.discriminator
-            return validate_discriminated_union(
-              name, value, union, path, current_depth:, max_depth:
-            )
+          if discriminator
+            unless value.is_a?(Hash)
+              error = Issue.new(
+                :type_invalid,
+                'Invalid type',
+                path:,
+                meta: {
+                  actual: value.class.name.underscore.to_sym,
+                  expected: :object,
+                  field: name,
+                },
+              )
+              return [error, nil]
+            end
+
+            if value.key?(discriminator)
+              return validate_discriminated_variant(
+                name, value, variants, discriminator, path, current_depth:, max_depth:
+              )
+            end
+
+            unless discriminator_optional_in_all_variants?(discriminator, variants)
+              error = Issue.new(
+                :field_missing,
+                'Required',
+                meta: { field: discriminator },
+                path: path + [discriminator],
+              )
+              return [error, nil]
+            end
           end
 
-          variant_errors = []
           most_specific_error = nil
 
           variants.each do |variant|
-            variant_type = variant[:type]
-
             error, validated_value = validate_variant(
               name,
               value,
               variant,
               path,
               current_depth:,
+              discriminator:,
               max_depth:,
             )
 
             return [nil, validated_value] if error.nil?
-
-            variant_errors << { error:, type: variant_type }
 
             if error.code == :field_unknown
               most_specific_error = error
@@ -452,7 +437,7 @@ module Apiwork
             'Invalid type',
             path:,
             meta: {
-              actual: value.class.name.underscore.to_sym,
+              actual: value.is_a?(Hash) ? :hash : value.class.name.underscore.to_sym,
               expected: expected_types.join(' | '),
               field: name,
             },
@@ -461,42 +446,7 @@ module Apiwork
           [error, nil]
         end
 
-        def validate_discriminated_union(name, value, union, path, current_depth:, max_depth:)
-          discriminator = union.discriminator
-          variants = union.variants
-
-          unless value.is_a?(Hash)
-            error = Issue.new(
-              :type_invalid,
-              'Invalid type',
-              path:,
-              meta: {
-                actual: value.class.name.underscore.to_sym,
-                expected: :object,
-                field: name,
-              },
-            )
-            return [error, nil]
-          end
-
-          unless value.key?(discriminator)
-            discriminator_optional = discriminator_optional_in_all_variants?(discriminator, variants)
-
-            unless discriminator_optional
-              error = Issue.new(
-                :field_missing,
-                'Required',
-                meta: { field: discriminator },
-                path: path + [discriminator],
-              )
-              return [error, nil]
-            end
-
-            return validate_union_without_discriminator(
-              name, value, union, path, current_depth:, max_depth:
-            )
-          end
-
+        def validate_discriminated_variant(name, value, variants, discriminator, path, current_depth:, max_depth:)
           discriminator_value = value[discriminator]
 
           normalized_discriminator = normalize_discriminator_value(discriminator_value)
@@ -551,13 +501,6 @@ module Apiwork
 
           type_definition = @shape.contract_class.resolve_custom_type(variant_type)
           if type_definition
-            type_shape = Object.new(
-              @shape.contract_class,
-              action_name: @shape.action_name,
-            )
-            type_shape.copy_type_definition_params(type_definition, type_shape)
-            type_shape.params.delete(discriminator) if discriminator
-
             unless value.is_a?(Hash)
               type_error = Issue.new(
                 :type_invalid,
@@ -572,17 +515,13 @@ module Apiwork
               return [type_error, nil]
             end
 
-            validator = Validator.new(type_shape)
-            result = validator.validate(
-              value,
-              max_depth:,
-              path:,
-              current_depth: current_depth + 1,
+            result = validate_with_type_definition(
+              type_definition, value, path, current_depth:, max_depth:, exclude_param: discriminator
             )
 
-            return [result[:issues].first, nil] if result[:issues].any?
+            return [result.issues.first, nil] if result.invalid?
 
-            return [nil, result[:params]]
+            return [nil, result.params]
           end
 
           if variant_type == :array
@@ -642,9 +581,9 @@ module Apiwork
               current_depth: current_depth + 1,
             )
 
-            return [result[:issues].first, nil] if result[:issues].any?
+            return [result.issues.first, nil] if result.invalid?
 
-            return [nil, result[:params]]
+            return [nil, result.params]
           end
 
           type_error = validate_type(name, value, variant_type, path)
@@ -665,70 +604,6 @@ module Apiwork
           end
 
           [nil, value]
-        end
-
-        def validate_union_type_definition_item(item, type_definition, item_path, contract_class, current_depth:, max_depth:)
-          discriminator = type_definition.discriminator
-
-          if discriminator && item.key?(discriminator)
-            discriminator_value = item[discriminator]
-            matching_variant = type_definition.variants.find do |variant|
-              variant[:tag].to_s == discriminator_value.to_s
-            end
-
-            if matching_variant
-              variant_type = matching_variant[:type]
-              variant_type_definition = contract_class.resolve_custom_type(variant_type)
-
-              if variant_type_definition&.object?
-                type_shape = Object.new(contract_class, action_name: @shape.action_name)
-                type_shape.copy_type_definition_params(variant_type_definition, type_shape)
-
-                validator = Validator.new(type_shape)
-                result = validator.validate(item, max_depth:, current_depth: current_depth + 1, path: item_path)
-
-                return [result[:issues].first, nil] if result[:issues].any?
-
-                return [nil, result[:params]]
-              end
-            end
-          end
-
-          best_result = nil
-          fewest_issues = Float::INFINITY
-
-          type_definition.variants.each do |variant|
-            variant_type = variant[:type]
-            variant_type_definition = contract_class.resolve_custom_type(variant_type)
-
-            next unless variant_type_definition&.object?
-
-            type_shape = Object.new(contract_class, action_name: @shape.action_name)
-            type_shape.copy_type_definition_params(variant_type_definition, type_shape)
-            type_shape.params.delete(discriminator) if discriminator
-
-            validator = Validator.new(type_shape)
-            result = validator.validate(item, max_depth:, current_depth: current_depth + 1, path: item_path)
-
-            return [nil, result[:params]] if result[:issues].empty?
-
-            if result[:issues].count < fewest_issues
-              fewest_issues = result[:issues].count
-              best_result = result
-            end
-          end
-
-          if best_result && fewest_issues < Float::INFINITY
-            [best_result[:issues].first, nil]
-          else
-            error = Issue.new(
-              :type_invalid,
-              'Invalid type',
-              meta: { expected: type_definition.name },
-              path: item_path,
-            )
-            [error, nil]
-          end
         end
 
         def discriminator_optional_in_all_variants?(discriminator, variants)
@@ -754,38 +629,12 @@ module Apiwork
           end
         end
 
-        def validate_union_without_discriminator(name, value, union, path, current_depth:, max_depth:)
-          variants = union.variants
-          discriminator = union.discriminator
+        def validate_with_type_definition(type_definition, value, path, current_depth:, exclude_param: nil, max_depth:)
+          type_shape = Object.new(@shape.contract_class, action_name: @shape.action_name)
+          type_shape.copy_type_definition_params(type_definition, type_shape)
+          type_shape.params.delete(exclude_param) if exclude_param
 
-          best_result = nil
-          fewest_issues = Float::INFINITY
-
-          variants.each do |variant|
-            error, validated_value = validate_variant(
-              name,
-              value,
-              variant,
-              path,
-              current_depth:,
-              discriminator:,
-              max_depth:,
-            )
-
-            return [nil, validated_value] if error.nil?
-
-            if best_result.nil? || (error.respond_to?(:code) && error.code == :field_unknown)
-              best_result = [error, nil]
-              fewest_issues = 1
-            end
-          end
-
-          best_result || [Issue.new(
-            :type_invalid,
-            'Invalid type',
-            path:,
-            meta: { field: name },
-          ), nil]
+          Validator.new(type_shape).validate(value, max_depth:, path:, current_depth: current_depth + 1)
         end
 
         def validate_numeric_range(name, value, param_options, field_path)
