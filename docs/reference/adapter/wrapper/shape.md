@@ -42,7 +42,7 @@ end
 
 `#array(name, **options, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L156)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L157)
 
 **See also**
 
@@ -54,7 +54,7 @@ end
 
 `#array?(name, **options, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L156)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L157)
 
 **See also**
 
@@ -66,7 +66,7 @@ end
 
 `#binary(name, **options)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L156)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L157)
 
 **See also**
 
@@ -78,7 +78,7 @@ end
 
 `#binary?(name, **options)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L156)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L157)
 
 **See also**
 
@@ -90,7 +90,7 @@ end
 
 `#boolean(name, **options)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L156)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L157)
 
 **See also**
 
@@ -102,7 +102,7 @@ end
 
 `#boolean?(name, **options)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L156)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L157)
 
 **See also**
 
@@ -114,7 +114,7 @@ end
 
 `#data_type`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L46)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L60)
 
 The data type for this shape.
 
@@ -128,7 +128,7 @@ The data type for this shape.
 
 `#date(name, **options)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L156)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L157)
 
 **See also**
 
@@ -140,7 +140,7 @@ The data type for this shape.
 
 `#date?(name, **options)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L156)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L157)
 
 **See also**
 
@@ -152,7 +152,7 @@ The data type for this shape.
 
 `#datetime(name, **options)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L156)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L157)
 
 **See also**
 
@@ -164,7 +164,7 @@ The data type for this shape.
 
 `#datetime?(name, **options)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L156)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L157)
 
 **See also**
 
@@ -176,7 +176,7 @@ The data type for this shape.
 
 `#decimal(name, **options)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L156)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L157)
 
 **See also**
 
@@ -188,7 +188,7 @@ The data type for this shape.
 
 `#decimal?(name, **options)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L156)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L157)
 
 **See also**
 
@@ -200,7 +200,7 @@ The data type for this shape.
 
 `#extends(type)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L156)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L157)
 
 **See also**
 
@@ -212,7 +212,7 @@ The data type for this shape.
 
 `#integer(name, **options)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L156)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L157)
 
 **See also**
 
@@ -224,7 +224,7 @@ The data type for this shape.
 
 `#integer?(name, **options)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L156)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L157)
 
 **See also**
 
@@ -236,7 +236,7 @@ The data type for this shape.
 
 `#literal(name, value:, **options)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L156)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L157)
 
 **See also**
 
@@ -248,7 +248,7 @@ The data type for this shape.
 
 `#merge(other)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L156)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L157)
 
 **See also**
 
@@ -260,7 +260,7 @@ The data type for this shape.
 
 `#metadata_type_names`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L55)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L60)
 
 The metadata type names for this shape.
 
@@ -277,7 +277,7 @@ definitions. Use with [#merge](#merge) to include capability metadata fields in 
 
 `#number(name, **options)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L156)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L157)
 
 **See also**
 
@@ -289,7 +289,7 @@ definitions. Use with [#merge](#merge) to include capability metadata fields in 
 
 `#number?(name, **options)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L156)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L157)
 
 **See also**
 
@@ -301,7 +301,7 @@ definitions. Use with [#merge](#merge) to include capability metadata fields in 
 
 `#object(name, **options, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L156)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L157)
 
 **See also**
 
@@ -313,7 +313,7 @@ definitions. Use with [#merge](#merge) to include capability metadata fields in 
 
 `#object?(name, **options, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L156)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L157)
 
 **See also**
 
@@ -325,7 +325,7 @@ definitions. Use with [#merge](#merge) to include capability metadata fields in 
 
 `#reference(name, **options)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L156)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L157)
 
 **See also**
 
@@ -337,7 +337,7 @@ definitions. Use with [#merge](#merge) to include capability metadata fields in 
 
 `#reference?(name, **options)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L156)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L157)
 
 **See also**
 
@@ -345,25 +345,11 @@ definitions. Use with [#merge](#merge) to include capability metadata fields in 
 
 ---
 
-### #root_key
-
-`#root_key`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L61)
-
-The root key for this shape.
-
-**Returns**
-
-[RootKey](/reference/representation/root-key)
-
----
-
 ### #string
 
 `#string(name, **options)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L156)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L157)
 
 **See also**
 
@@ -375,7 +361,7 @@ The root key for this shape.
 
 `#string?(name, **options)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L156)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L157)
 
 **See also**
 
@@ -387,7 +373,7 @@ The root key for this shape.
 
 `#time(name, **options)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L156)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L157)
 
 **See also**
 
@@ -399,7 +385,7 @@ The root key for this shape.
 
 `#time?(name, **options)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L156)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L157)
 
 **See also**
 
@@ -411,7 +397,7 @@ The root key for this shape.
 
 `#union(name, **options, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L156)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L157)
 
 **See also**
 
@@ -423,7 +409,7 @@ The root key for this shape.
 
 `#union?(name, **options, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L156)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L157)
 
 **See also**
 
@@ -435,7 +421,7 @@ The root key for this shape.
 
 `#uuid(name, **options)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L156)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L157)
 
 **See also**
 
@@ -447,7 +433,7 @@ The root key for this shape.
 
 `#uuid?(name, **options)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L156)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/shape.rb#L157)
 
 **See also**
 

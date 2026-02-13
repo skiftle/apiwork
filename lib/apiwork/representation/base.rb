@@ -70,7 +70,7 @@ module Apiwork
 
       class_attribute :_adapter_config, default: {}, instance_accessor: false
 
-      # @!method context
+      # @!attribute [r] context
       #   @api public
       #   The serialization context.
       #
@@ -91,7 +91,7 @@ module Apiwork
       #       context[:current_user]&.admin?
       #     end
       #
-      # @!method record
+      # @!attribute [r] record
       #   @api public
       #   The record for this representation.
       #

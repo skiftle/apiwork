@@ -35,7 +35,7 @@ Override this method to register shared types.
 
 `#configured(key)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/api/base.rb#L43)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/api/base.rb#L44)
 
 The configured values for a key.
 
@@ -110,20 +110,6 @@ The options for this API.
 **Returns**
 
 [Configuration](/reference/configuration/)
-
----
-
-### #scope
-
-`#scope`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/api/base.rb#L17)
-
-The scope for this API.
-
-**Returns**
-
-[Scope](/reference/adapter/capability/api/scope)
 
 ---
 

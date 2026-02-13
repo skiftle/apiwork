@@ -14,50 +14,50 @@ module Apiwork
     #   association.type # => :belongs_to
     #   association.representation_class # => CustomerRepresentation
     class Association
-      # @api public
-      # The description for this association.
+      # @!attribute [r] description
+      #   @api public
+      #   The description for this association.
       #
-      # @return [String, nil]
-      attr_reader :description
-
-      # @api public
-      # The example for this association.
+      #   @return [String, nil]
+      # @!attribute [r] example
+      #   @api public
+      #   The example for this association.
       #
-      # @return [Object, nil]
-      attr_reader :example
-
-      # @api public
-      # The inclusion strategy for this association.
+      #   @return [Object, nil]
+      # @!attribute [r] include
+      #   @api public
+      #   The inclusion strategy for this association.
       #
-      # @return [Symbol]
-      attr_reader :include
-
-      # @api public
-      # The name for this association.
+      #   @return [Symbol]
+      # @!attribute [r] name
+      #   @api public
+      #   The name for this association.
       #
-      # @return [Symbol]
-      attr_reader :name
-
-      # @api public
-      # The polymorphic representations for this association.
+      #   @return [Symbol]
+      # @!attribute [r] polymorphic
+      #   @api public
+      #   The polymorphic representations for this association.
       #
-      # @return [Array<Class<Representation::Base>>, nil]
-      attr_reader :polymorphic
-
-      # @api public
-      # The type for this association.
+      #   @return [Array<Class<Representation::Base>>, nil]
+      # @!attribute [r] type
+      #   @api public
+      #   The type for this association.
       #
-      # @return [Symbol]
-      attr_reader :type
-
-      # @api public
-      # The model class for this association.
+      #   @return [Symbol]
+      # @!attribute [r] model_class
+      #   @api public
+      #   The model class for this association.
       #
-      # @return [Class<ActiveRecord::Base>]
-      attr_reader :model_class
-
+      #   @return [Class<ActiveRecord::Base>]
       attr_reader :allow_destroy,
-                  :discriminator
+                  :description,
+                  :discriminator,
+                  :example,
+                  :include,
+                  :model_class,
+                  :name,
+                  :polymorphic,
+                  :type
 
       def initialize(
         name,

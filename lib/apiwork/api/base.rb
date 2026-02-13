@@ -20,13 +20,13 @@ module Apiwork
       VALID_FORMATS = %i[keep camel pascal kebab underscore].freeze
 
       class << self
-        # @api public
-        # The base path for this API.
+        # @!attribute [r] base_path
+        #   @api public
+        #   The base path for this API.
         #
-        # @return [String]
-        attr_reader :base_path
-
-        attr_reader :enum_registry,
+        #   @return [String]
+        attr_reader :base_path,
+                    :enum_registry,
                     :export_configs,
                     :representation_registry,
                     :root_resource,

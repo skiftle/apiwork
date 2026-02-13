@@ -47,7 +47,7 @@ module Apiwork
     class Base
       include Abstractable
 
-      # @!method issues
+      # @!attribute [r] issues
       #   @api public
       #   The issues for this contract.
       #   @return [Array<Issue>]

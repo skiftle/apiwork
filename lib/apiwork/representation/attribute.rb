@@ -21,69 +21,69 @@ module Apiwork
         string: %i[email uuid url date datetime ipv4 ipv6 password hostname],
       }.freeze
 
-      # @api public
-      # The description for this attribute.
+      # @!attribute [r] description
+      #   @api public
+      #   The description for this attribute.
       #
-      # @return [String, nil]
-      attr_reader :description
-
-      # @api public
-      # The enum for this attribute.
+      #   @return [String, nil]
+      # @!attribute [r] enum
+      #   @api public
+      #   The enum for this attribute.
       #
-      # @return [Array<Object>, nil]
-      attr_reader :enum
-
-      # @api public
-      # The example for this attribute.
+      #   @return [Array<Object>, nil]
+      # @!attribute [r] example
+      #   @api public
+      #   The example for this attribute.
       #
-      # @return [Object, nil]
-      attr_reader :example
-
-      # @api public
-      # The format for this attribute.
+      #   @return [Object, nil]
+      # @!attribute [r] format
+      #   @api public
+      #   The format for this attribute.
       #
-      # @return [Symbol, nil]
-      attr_reader :format
-
-      # @api public
-      # The maximum for this attribute.
+      #   @return [Symbol, nil]
+      # @!attribute [r] max
+      #   @api public
+      #   The maximum for this attribute.
       #
-      # @return [Integer, nil]
-      attr_reader :max
-
-      # @api public
-      # The minimum for this attribute.
+      #   @return [Integer, nil]
+      # @!attribute [r] min
+      #   @api public
+      #   The minimum for this attribute.
       #
-      # @return [Integer, nil]
-      attr_reader :min
-
-      # @api public
-      # The name for this attribute.
+      #   @return [Integer, nil]
+      # @!attribute [r] name
+      #   @api public
+      #   The name for this attribute.
       #
-      # @return [Symbol]
-      attr_reader :name
-
-      # @api public
-      # The of for this attribute.
+      #   @return [Symbol]
+      # @!attribute [r] of
+      #   @api public
+      #   The of for this attribute.
       #
-      # @return [Symbol, nil]
-      attr_reader :of
-
-      # @api public
-      # The preload for this attribute.
+      #   @return [Symbol, nil]
+      # @!attribute [r] preload
+      #   @api public
+      #   The preload for this attribute.
       #
-      # @return [Symbol, Array, Hash, nil]
-      attr_reader :preload
-
-      # @api public
-      # The type for this attribute.
+      #   @return [Symbol, Array, Hash, nil]
+      # @!attribute [r] type
+      #   @api public
+      #   The type for this attribute.
       #
-      # @return [Symbol]
-      attr_reader :type
-
-      attr_reader :element,
+      #   @return [Symbol]
+      attr_reader :description,
+                  :element,
                   :empty,
-                  :optional
+                  :enum,
+                  :example,
+                  :format,
+                  :max,
+                  :min,
+                  :name,
+                  :of,
+                  :optional,
+                  :preload,
+                  :type
 
       def initialize(
         name,

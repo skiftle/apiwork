@@ -78,7 +78,7 @@ The data for this wrapper.
 
 `#meta`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/collection/base.rb#L35)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/collection/base.rb#L46)
 
 The meta for this wrapper.
 
@@ -92,27 +92,13 @@ The meta for this wrapper.
 
 `#metadata`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/collection/base.rb#L41)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/collection/base.rb#L46)
 
 The metadata for this wrapper.
 
 **Returns**
 
 `Hash`
-
----
-
-### #root_key
-
-`#root_key`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/wrapper/collection/base.rb#L47)
-
-The root key for this wrapper.
-
-**Returns**
-
-[RootKey](/reference/representation/root-key)
 
 ---
 

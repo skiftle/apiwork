@@ -98,12 +98,11 @@ module Apiwork
           #   The root key for this scope.
           #
           #   @return [Representation::RootKey]
-          delegate :associations,
+          delegate :adapter_config,
+                   :associations,
                    :attributes,
                    :root_key,
                    to: :representation_class
-
-          delegate :adapter_config, to: :representation_class
         end
       end
     end

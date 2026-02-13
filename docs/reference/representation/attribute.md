@@ -42,7 +42,7 @@ Whether this attribute is deprecated.
 
 `#description`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L28)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L74)
 
 The description for this attribute.
 
@@ -56,7 +56,7 @@ The description for this attribute.
 
 `#enum`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L34)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L74)
 
 The enum for this attribute.
 
@@ -70,7 +70,7 @@ The enum for this attribute.
 
 `#example`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L40)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L74)
 
 The example for this attribute.
 
@@ -98,7 +98,7 @@ Whether this attribute is filterable.
 
 `#format`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L46)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L74)
 
 The format for this attribute.
 
@@ -112,7 +112,7 @@ The format for this attribute.
 
 `#max`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L52)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L74)
 
 The maximum for this attribute.
 
@@ -126,7 +126,7 @@ The maximum for this attribute.
 
 `#min`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L58)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L74)
 
 The minimum for this attribute.
 
@@ -140,7 +140,7 @@ The minimum for this attribute.
 
 `#name`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L64)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L74)
 
 The name for this attribute.
 
@@ -168,7 +168,7 @@ Whether this attribute is nullable.
 
 `#of`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L70)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L74)
 
 The of for this attribute.
 
@@ -196,7 +196,7 @@ Whether this attribute is optional.
 
 `#preload`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L76)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L74)
 
 The preload for this attribute.
 
@@ -217,20 +217,6 @@ Whether this attribute is sortable.
 **Returns**
 
 `Boolean`
-
----
-
-### #type
-
-`#type`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/attribute.rb#L82)
-
-The type for this attribute.
-
-**Returns**
-
-`Symbol`
 
 ---
 

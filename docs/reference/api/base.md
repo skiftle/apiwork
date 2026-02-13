@@ -93,7 +93,7 @@ end
 
 `.base_path`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L27)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L28)
 
 The base path for this API.
 

@@ -15,17 +15,18 @@ module Apiwork
   # @example Transforming keys
   #   request.transform { |data| normalize(data) }
   class Request
-    # @api public
-    # The query for this request.
+    # @!attribute [r] query
+    #   @api public
+    #   The query for this request.
     #
-    # @return [Hash]
-    attr_reader :query
-
-    # @api public
-    # The body for this request.
+    #   @return [Hash]
+    # @!attribute [r] body
+    #   @api public
+    #   The body for this request.
     #
-    # @return [Hash]
-    attr_reader :body
+    #   @return [Hash]
+    attr_reader :body,
+                :query
 
     # @api public
     # Creates a new request context.

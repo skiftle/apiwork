@@ -117,20 +117,6 @@ The options for this contract.
 
 ---
 
-### #scope
-
-`#scope`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/contract/base.rb#L17)
-
-The scope for this contract.
-
-**Returns**
-
-[Scope](/reference/adapter/capability/api/scope)
-
----
-
 ### #scoped_enum_name
 
 `#scoped_enum_name(name)`

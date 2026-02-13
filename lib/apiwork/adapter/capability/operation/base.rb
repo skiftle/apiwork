@@ -10,29 +10,30 @@ module Apiwork
         # Operation phase runs on each request.
         # Use it to transform data at runtime.
         class Base
-          # @api public
-          # The data for this operation.
+          # @!attribute [r] data
+          #   @api public
+          #   The data for this operation.
           #
-          # @return [Object]
-          attr_reader :data
-
-          # @api public
-          # The options for this operation.
+          #   @return [Object]
+          # @!attribute [r] options
+          #   @api public
+          #   The options for this operation.
           #
-          # @return [Configuration]
-          attr_reader :options
-
-          # @api public
-          # The request for this operation.
+          #   @return [Configuration]
+          # @!attribute [r] request
+          #   @api public
+          #   The request for this operation.
           #
-          # @return [Request]
-          attr_reader :request
-
-          # @api public
-          # The representation class for this operation.
+          #   @return [Request]
+          # @!attribute [r] representation_class
+          #   @api public
+          #   The representation class for this operation.
           #
-          # @return [Class<Representation::Base>]
-          attr_reader :representation_class
+          #   @return [Class<Representation::Base>]
+          attr_reader :data,
+                      :options,
+                      :representation_class,
+                      :request
 
           class << self
             # @api public

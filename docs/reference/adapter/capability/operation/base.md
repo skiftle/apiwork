@@ -19,7 +19,7 @@ Use it to transform data at runtime.
 
 `.metadata_shape(klass = nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L68)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L69)
 
 Defines metadata shape for this operation.
 
@@ -61,7 +61,7 @@ metadata_shape PaginationShape
 
 `.target(value = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L44)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L45)
 
 The target for this operation.
 
@@ -87,7 +87,7 @@ The target for this operation.
 
 `#apply`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L106)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L107)
 
 Applies this operation to the data.
 
@@ -104,7 +104,7 @@ Return `nil` if no changes are made.
 
 `#data`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L17)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L33)
 
 The data for this operation.
 
@@ -118,7 +118,7 @@ The data for this operation.
 
 `#options`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L23)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L33)
 
 The options for this operation.
 
@@ -132,7 +132,7 @@ The options for this operation.
 
 `#representation_class`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L35)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L33)
 
 The representation class for this operation.
 
@@ -142,25 +142,11 @@ Class&lt;[Representation::Base](/reference/representation/base)&gt;
 
 ---
 
-### #request
-
-`#request`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L29)
-
-The request for this operation.
-
-**Returns**
-
-[Request](/reference/request)
-
----
-
 ### #result
 
 `#result(data: nil, includes: nil, metadata: nil, serialize_options: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L122)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L123)
 
 Creates a result object.
 
@@ -187,7 +173,7 @@ Creates a result object.
 
 `#translate(*segments, default: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L149)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/capability/operation/base.rb#L150)
 
 Translates a key using the adapter's i18n convention.
 

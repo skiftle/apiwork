@@ -56,7 +56,7 @@ Whether this association is deprecated.
 
 `#description`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L21)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L52)
 
 The description for this association.
 
@@ -70,7 +70,7 @@ The description for this association.
 
 `#example`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L27)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L52)
 
 The example for this association.
 
@@ -98,7 +98,7 @@ Whether this association is filterable.
 
 `#include`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L33)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L52)
 
 The inclusion strategy for this association.
 
@@ -112,7 +112,7 @@ The inclusion strategy for this association.
 
 `#model_class`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L57)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L52)
 
 The model class for this association.
 
@@ -126,7 +126,7 @@ The model class for this association.
 
 `#name`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L39)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L52)
 
 The name for this association.
 
@@ -154,7 +154,7 @@ Whether this association is nullable.
 
 `#polymorphic`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L45)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L52)
 
 The polymorphic representations for this association.
 
@@ -217,20 +217,6 @@ Whether this association is sortable.
 **Returns**
 
 `Boolean`
-
----
-
-### #type
-
-`#type`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/association.rb#L51)
-
-The type for this association.
-
-**Returns**
-
-`Symbol`
 
 ---
 

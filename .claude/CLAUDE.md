@@ -744,6 +744,8 @@ Mandatory order for classes and modules:
 
 **All `attr_*` and `delegate` must be grouped together at the top.** Never scatter declarations throughout the file. This applies everywhere: at class level, inside `class << self`, and after `private`.
 
+**Never split `attr_*` or `delegate` for YARD documentation.** If one item needs `@api public`, use YARD directives (`@!attribute` for `attr_*`, `@!method` for `delegate`) above the grouped declaration. See `.claude/YARD.md` for the format.
+
 **Multi-item declarations:** Use one item per line with trailing commas:
 
 ```ruby

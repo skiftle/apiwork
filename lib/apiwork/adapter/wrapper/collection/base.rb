@@ -28,23 +28,24 @@ module Apiwork
         class Base < Wrapper::Base
           self.wrapper_type = :collection
 
-          # @api public
-          # The meta for this wrapper.
+          # @!attribute [r] meta
+          #   @api public
+          #   The meta for this wrapper.
           #
-          # @return [Hash]
-          attr_reader :meta
-
-          # @api public
-          # The metadata for this wrapper.
+          #   @return [Hash]
+          # @!attribute [r] metadata
+          #   @api public
+          #   The metadata for this wrapper.
           #
-          # @return [Hash]
-          attr_reader :metadata
-
-          # @api public
-          # The root key for this wrapper.
+          #   @return [Hash]
+          # @!attribute [r] root_key
+          #   @api public
+          #   The root key for this wrapper.
           #
-          # @return [RootKey]
-          attr_reader :root_key
+          #   @return [RootKey]
+          attr_reader :meta,
+                      :metadata,
+                      :root_key
 
           def initialize(data, metadata, root_key, meta)
             super(data)

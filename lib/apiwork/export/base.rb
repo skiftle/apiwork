@@ -37,16 +37,16 @@ module Apiwork
       option :key_format, enum: %i[keep camel pascal kebab underscore], type: :symbol
       option :locale, default: nil, type: :symbol
 
-      # @api public
-      # The API introspection for this export.
+      # @!attribute [r] api
+      #   @api public
+      #   The API introspection for this export.
       #
-      # Primary interface for accessing introspection data in export generators.
+      #   Primary interface for accessing introspection data in export generators.
       #
-      # @return [Introspection::API]
-      # @see Introspection::API
-      attr_reader :api
-
-      attr_reader :api_base_path,
+      #   @return [Introspection::API]
+      #   @see Introspection::API
+      attr_reader :api,
+                  :api_base_path,
                   :options
 
       class << self

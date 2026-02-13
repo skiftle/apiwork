@@ -644,6 +644,78 @@ Type only. No description.
 
 ---
 
+## YARD Directives for Grouped Declarations
+
+`attr_reader`, `attr_writer`, `attr_accessor`, and `delegate` must never be split because one item needs `@api public`. Use YARD directives above the grouped declaration instead.
+
+**Directive per declaration type:**
+
+| Declaration | Directive |
+|-------------|-----------|
+| `attr_reader` | `@!attribute [r]` |
+| `attr_writer` | `@!attribute [w]` |
+| `attr_accessor` | `@!attribute [rw]` |
+| `delegate` | `@!method` |
+
+```ruby
+# Bad — split for YARD
+# @api public
+# The base path for this API.
+#
+# @return [String]
+attr_reader :base_path
+
+attr_reader :enum_registry,
+            :export_configs,
+            :type_registry
+
+# Good — @!attribute [r] above grouped declaration
+# @!attribute [r] base_path
+#   @api public
+#   The base path for this API.
+#
+#   @return [String]
+attr_reader :base_path,
+            :enum_registry,
+            :export_configs,
+            :type_registry
+```
+
+Multiple directives stack above the declaration:
+
+```ruby
+# @!attribute [r] base_path
+#   @api public
+#   The base path for this API.
+#
+#   @return [String]
+# @!attribute [r] locale_key
+#   @api public
+#   The locale key for this API.
+#
+#   @return [Symbol, nil]
+attr_reader :base_path,
+            :enum_registry,
+            :locale_key,
+            :type_registry
+```
+
+`delegate` uses `@!method`:
+
+```ruby
+# @!method find(key)
+#   @api public
+#   @see Registry#find
+delegate :find,
+         :keys,
+         :values,
+         to: :registry
+```
+
+Indent content 2 spaces under the directive. Follow standard tag order.
+
+---
+
 ## @yield / @yieldparam
 
 | Signal in code | Use |

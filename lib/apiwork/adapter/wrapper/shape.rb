@@ -39,26 +39,27 @@ module Apiwork
           end
         end
 
-        # @api public
-        # The data type for this shape.
+        # @!attribute [r] data_type
+        #   @api public
+        #   The data type for this shape.
         #
-        # @return [Symbol, nil]
-        attr_reader :data_type
-
-        # @api public
-        # The metadata type names for this shape.
+        #   @return [Symbol, nil]
+        # @!attribute [r] metadata_type_names
+        #   @api public
+        #   The metadata type names for this shape.
         #
-        # Auto-generated type names from capability {Adapter::Capability::Operation::Base.metadata_shape}
-        # definitions. Use with {#merge} to include capability metadata fields in the shape.
+        #   Auto-generated type names from capability {Adapter::Capability::Operation::Base.metadata_shape}
+        #   definitions. Use with {#merge} to include capability metadata fields in the shape.
         #
-        # @return [Array<Symbol>]
-        attr_reader :metadata_type_names
-
-        # @api public
-        # The root key for this shape.
+        #   @return [Array<Symbol>]
+        # @!attribute [r] root_key
+        #   @api public
+        #   The root key for this shape.
         #
-        # @return [RootKey]
-        attr_reader :root_key
+        #   @return [RootKey]
+        attr_reader :data_type,
+                    :metadata_type_names,
+                    :root_key
 
         # @!method array(name, **options, &block)
         #   @api public

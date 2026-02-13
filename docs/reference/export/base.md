@@ -181,7 +181,7 @@ The output for this export.
 
 `#api`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L47)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/export/base.rb#L48)
 
 The API introspection for this export.
 
