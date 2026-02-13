@@ -739,8 +739,8 @@ module Apiwork
         end
 
         def polymorphic_association_for_type_column(column_name)
-          associations.values.find do |assoc|
-            assoc.polymorphic? && assoc.discriminator == column_name
+          associations.values.find do |association|
+            association.polymorphic? && association.discriminator == column_name
           end
         end
 

@@ -121,7 +121,7 @@ If the answer is "yes, but…" — rewrite.
 | Public API: simple names (`Contract` not `ContractDefinition`)         |                                                          |
 | Internal: descriptive names (`ContractDefinition`, `ParamValidator`)   |                                                          |
 | Use `_class` suffix for class references: `def initialize(api_class)`  |                                                          |
-| Full names: `attribute` not `attr` (exception: `param`, `attr_reader`) |                                                          |
+| Full names: `attribute` not `attr` (exception: `param`, `arg`, `attr_reader`) |                                                          |
 | Method names: nouns for getters, verbs for actions                     |                                                          |
 | For single-use conversions, inline it                                  |                                                          |
 

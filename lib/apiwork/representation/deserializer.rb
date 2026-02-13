@@ -76,12 +76,12 @@ module Apiwork
           api_value = hash[name]
           next unless api_value.is_a?(String)
 
-          poly_representation = association.polymorphic.find do |rep|
-            rep.polymorphic_name == api_value
+          polymorphic_representation = association.polymorphic.find do |representation|
+            representation.polymorphic_name == api_value
           end
-          next unless poly_representation
+          next unless polymorphic_representation
 
-          hash[name] = poly_representation.model_class.polymorphic_name
+          hash[name] = polymorphic_representation.model_class.polymorphic_name
         end
       end
     end

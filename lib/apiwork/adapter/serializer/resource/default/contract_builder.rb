@@ -180,9 +180,9 @@ module Apiwork
               return union_type_name if existing_type
 
               union(union_type_name, discriminator: association.discriminator) do |union|
-                polymorphic.each do |poly_representation_class|
-                  tag = poly_representation_class.polymorphic_name
-                  alias_name = import_association_contract(poly_representation_class, visited)
+                polymorphic.each do |polymorphic_representation_class|
+                  tag = polymorphic_representation_class.polymorphic_name
+                  alias_name = import_association_contract(polymorphic_representation_class, visited)
                   next unless alias_name
 
                   union.variant(tag:) do |variant|
