@@ -192,30 +192,19 @@ module Apiwork
         # @api public
         # Merges capability metadata fields into the shape.
         #
-        # Works like {#merge} but with all types from capability
-        # {Capability::Operation::Base.metadata_shape metadata_shape} definitions ready to merge.
-        # Call without arguments to merge at the top level.
-        # Pass a target to merge into a nested object.
+        # Works like {#merge} but with all fields from capability
+        # {Adapter::Capability::Operation::Base.metadata_shape} definitions ready to merge.
         #
-        # @param target [API::Object] (@target)
-        #   The object to merge into.
         # @return [void]
         #
-        # @example Top-level metadata
+        # @example
         #   shape do
         #     reference(root_key.singular.to_sym, to: data_type)
+        #     object?(:meta)
         #     merge_metadata
         #   end
-        #
-        # @example Nested metadata
-        #   shape do
-        #     reference(root_key.singular.to_sym, to: data_type)
-        #     object(:metadata) do |object|
-        #       merge_metadata(object)
-        #     end
-        #   end
-        def merge_metadata(target = @target)
-          target.merge_shape!(@metadata_shapes)
+        def merge_metadata
+          @target.merge_shape!(@metadata_shapes)
         end
 
         def apply
