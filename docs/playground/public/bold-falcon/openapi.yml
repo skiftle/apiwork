@@ -278,6 +278,8 @@ components:
       type: object
     articleIndexSuccessResponseBody:
       properties:
+        pagination:
+          "$ref": "#/components/schemas/offsetPagination"
         articles:
           items:
             "$ref": "#/components/schemas/article"
@@ -285,12 +287,10 @@ components:
         meta:
           properties: {}
           type: object
-        pagination:
-          "$ref": "#/components/schemas/offsetPagination"
       type: object
       required:
-      - articles
       - pagination
+      - articles
     articlePage:
       properties:
         number:

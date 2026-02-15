@@ -321,11 +321,11 @@ components:
       type: object
     projectIndexSuccessResponseBody:
       properties:
+        pagination:
+          "$ref": "#/components/schemas/offsetPagination"
         meta:
           properties: {}
           type: object
-        pagination:
-          "$ref": "#/components/schemas/offsetPagination"
         projects:
           items:
             "$ref": "#/components/schemas/project"

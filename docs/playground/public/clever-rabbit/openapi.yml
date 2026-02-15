@@ -360,6 +360,8 @@ components:
       type: object
     orderIndexSuccessResponseBody:
       properties:
+        pagination:
+          "$ref": "#/components/schemas/offsetPagination"
         meta:
           properties: {}
           type: object
@@ -367,12 +369,10 @@ components:
           items:
             "$ref": "#/components/schemas/order"
           type: array
-        pagination:
-          "$ref": "#/components/schemas/offsetPagination"
       type: object
       required:
-      - orders
       - pagination
+      - orders
     orderPage:
       properties:
         number:

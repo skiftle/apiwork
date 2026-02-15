@@ -347,11 +347,11 @@ components:
       - profile
     profileIndexSuccessResponseBody:
       properties:
+        pagination:
+          "$ref": "#/components/schemas/offsetPagination"
         meta:
           properties: {}
           type: object
-        pagination:
-          "$ref": "#/components/schemas/offsetPagination"
         profiles:
           items:
             "$ref": "#/components/schemas/profile"

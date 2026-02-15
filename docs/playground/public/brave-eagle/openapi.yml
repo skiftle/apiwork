@@ -463,11 +463,11 @@ components:
       type: object
     taskIndexSuccessResponseBody:
       properties:
+        pagination:
+          "$ref": "#/components/schemas/offsetPagination"
         meta:
           properties: {}
           type: object
-        pagination:
-          "$ref": "#/components/schemas/offsetPagination"
         tasks:
           items:
             "$ref": "#/components/schemas/task"

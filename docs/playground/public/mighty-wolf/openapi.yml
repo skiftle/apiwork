@@ -534,11 +534,11 @@ components:
       type: object
     vehicleIndexSuccessResponseBody:
       properties:
+        pagination:
+          "$ref": "#/components/schemas/offsetPagination"
         meta:
           properties: {}
           type: object
-        pagination:
-          "$ref": "#/components/schemas/offsetPagination"
         vehicles:
           items:
             "$ref": "#/components/schemas/vehicle"
