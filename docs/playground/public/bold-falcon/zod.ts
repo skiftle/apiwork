@@ -258,7 +258,7 @@ export const ArticlesDestroyRequestSchema = z.object({
   query: ArticlesDestroyRequestQuerySchema
 });
 
-export const ArticlesDestroyResponse = z.never();
+export const ArticlesDestroyResponseSchema = z.never();
 
 export interface Article {
   body: null | string;

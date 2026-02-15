@@ -132,7 +132,7 @@ export const ProfilesUpdateResponseSchema = z.object({
   body: ProfilesUpdateResponseBodySchema
 });
 
-export const ProfilesDestroyResponse = z.never();
+export const ProfilesDestroyResponseSchema = z.never();
 
 export interface Error {
   issues: Issue[];

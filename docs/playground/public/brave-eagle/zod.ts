@@ -210,7 +210,7 @@ export const TasksDestroyRequestSchema = z.object({
   query: TasksDestroyRequestQuerySchema
 });
 
-export const TasksDestroyResponse = z.never();
+export const TasksDestroyResponseSchema = z.never();
 
 export const TasksArchiveRequestQuerySchema = z.object({
   include: TaskIncludeSchema.optional()
