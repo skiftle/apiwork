@@ -236,5 +236,50 @@ RSpec.describe Apiwork::Contract::Object::Coercer do
         expect(coerce('value', type: :unknown_type)).to eq('value')
       end
     end
+
+    context 'array type with hash of spec' do
+      def build_array_shape(of:)
+        shape = Apiwork::Contract::Object.new(contract_class)
+        shape.param(:items, of:, type: :array)
+        shape
+      end
+
+      def coerce_array(items, of:)
+        shape = build_array_shape(of:)
+        result = described_class.coerce(shape, { items: })
+        result[:items]
+      end
+
+      it 'coerces array items with hash of spec' do
+        result = coerce_array(%w[1 2 3], of: { type: :integer })
+
+        expect(result).to eq([1, 2, 3])
+      end
+
+      it 'coerces array items with symbol of spec' do
+        result = coerce_array(%w[1 2 3], of: :integer)
+
+        expect(result).to eq([1, 2, 3])
+      end
+
+      it 'coerces nested array structure' do
+        shape = Apiwork::Contract::Object.new(contract_class)
+        shape.array :matrix do
+          array do
+            integer
+          end
+        end
+
+        result = described_class.coerce(shape, { matrix: [%w[1 2], %w[3 4]] })
+
+        expect(result[:matrix]).to eq([[1, 2], [3, 4]])
+      end
+
+      it 'preserves non-coercible values' do
+        result = coerce_array(%w[abc def], of: { type: :integer })
+
+        expect(result).to eq(%w[abc def])
+      end
+    end
   end
 end

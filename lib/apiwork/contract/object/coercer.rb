@@ -98,15 +98,19 @@ module Apiwork
 
         def coerce_array(array, param_options)
           custom_shape = nil
+          of_spec = param_options[:of]
+          of_type = of_spec.is_a?(Hash) ? of_spec[:type] : of_spec
 
-          custom_shape = resolve_custom_shape(param_options[:of]) if param_options[:of] && !PRIMITIVES.key?(param_options[:of])
+          custom_shape = resolve_custom_shape(of_type) if of_type && !PRIMITIVES.key?(of_type)
 
           array.map do |item|
             if param_options[:shape] && item.is_a?(Hash)
               Coercer.coerce(param_options[:shape], item)
-            elsif param_options[:of] && PRIMITIVES.key?(param_options[:of])
-              coerced = coerce_primitive(item, param_options[:of])
+            elsif of_type && PRIMITIVES.key?(of_type)
+              coerced = coerce_primitive(item, of_type)
               coerced.nil? ? item : coerced
+            elsif of_type == :array && item.is_a?(Array) && of_spec.is_a?(Hash)
+              coerce_array(item, { of: of_spec[:of] })
             elsif custom_shape && item.is_a?(Hash)
               Coercer.coerce(custom_shape, item)
             else
@@ -138,9 +142,10 @@ module Apiwork
           union.variants.each do |variant|
             variant_type = variant[:type]
             variant_of = variant[:of]
+            variant_of_type = variant_of.is_a?(Hash) ? variant_of[:type] : variant_of
 
-            if variant_type == :array && value.is_a?(Array) && variant_of
-              custom_shape = resolve_custom_shape(variant_of)
+            if variant_type == :array && value.is_a?(Array) && variant_of_type
+              custom_shape = resolve_custom_shape(variant_of_type)
               if custom_shape
                 return value.map do |item|
                   item.is_a?(Hash) ? Coercer.coerce(custom_shape, item) : item

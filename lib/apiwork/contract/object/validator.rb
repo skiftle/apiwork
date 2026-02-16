@@ -307,15 +307,18 @@ module Apiwork
         end
 
         def validate_array_item_with_type(item, index, param_options, item_path, current_depth, max_depth)
-          type_definition = @shape.contract_class.resolve_custom_type(param_options[:of])
+          of_spec = param_options[:of]
+          type_name = of_spec.is_a?(Hash) ? of_spec[:type] : of_spec
+
+          type_definition = @shape.contract_class.resolve_custom_type(type_name)
 
           if type_definition
             return validate_array_item_with_type_definition(
-              item, index, type_definition, item_path, param_options[:of], current_depth, max_depth
+              item, index, type_definition, item_path, type_name, current_depth, max_depth
             )
           end
 
-          type_error = validate_type(index, item, param_options[:of], item_path)
+          type_error = validate_type(index, item, type_name, item_path)
           type_error ? { issues: [type_error], value: nil } : { issues: [], value: item }
         end
 

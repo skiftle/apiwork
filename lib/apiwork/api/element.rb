@@ -87,7 +87,7 @@ module Apiwork
           block.arity.positive? ? yield(inner) : inner.instance_eval(&block)
           inner.validate!
           @type = :array
-          @of = inner.of_type
+          @inner = inner
           @shape = inner.shape
           @defined = true
         when :union

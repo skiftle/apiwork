@@ -6,6 +6,7 @@ module Apiwork
                 :discriminator,
                 :enum,
                 :format,
+                :inner,
                 :max,
                 :min,
                 :shape,
@@ -18,9 +19,9 @@ module Apiwork
       @discriminator = nil
       @enum = nil
       @format = nil
+      @inner = nil
       @max = nil
       @min = nil
-      @of = nil
       @shape = nil
       @type = nil
       @value = nil
@@ -313,12 +314,8 @@ module Apiwork
       of(type_name)
     end
 
-    def of_type
-      custom_type || type
-    end
-
-    def of_value
-      @of
+    def item_type
+      @inner&.type
     end
 
     def validate!

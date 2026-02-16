@@ -73,11 +73,6 @@ module Apiwork
     #     end
     #   end
     class Element < Apiwork::Element
-      # Representation::Element uses different of_type semantics - returns the array inner type.
-      def of_type
-        @of
-      end
-
       def validate!
         raise ConfigurationError, 'must define exactly one type (object, array, or union)' unless @defined
       end
@@ -112,7 +107,7 @@ module Apiwork
           block.arity.positive? ? yield(inner) : inner.instance_eval(&block)
           inner.validate!
           @type = :array
-          @of = inner.of_type
+          @inner = inner
           @shape = inner.shape
           @defined = true
         when :union

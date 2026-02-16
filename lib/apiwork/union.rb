@@ -56,7 +56,7 @@ module Apiwork
         format: element.format,
         max: element.max,
         min: element.min,
-        of: element.of_value,
+        of: element.item_type,
         shape: element.shape,
         type: element.type,
         value: element.value,
