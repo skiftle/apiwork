@@ -12,9 +12,8 @@ RSpec.describe 'Model Validation Errors', type: :request do
   # 2. When contract validation passes but ActiveRecord save fails
 
   describe 'Contract vs Model validation' do
-    it 'returns 400 when required field is missing (contract validation from DB schema)' do
-      # Title column has null: false, so contract validation catches this
-      post '/api/v1/posts', as: :json, params: { post: { title: '' } }
+    it 'returns 400 when required field is nil (contract validation from DB schema)' do
+      post '/api/v1/posts', as: :json, params: { post: { title: nil } }
 
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
@@ -23,6 +22,12 @@ RSpec.describe 'Model Validation Errors', type: :request do
       title_issue = json['issues'].find { |i| i['pointer'] == '/post/title' }
       expect(title_issue).to be_present
       expect(title_issue['code']).to eq('field_missing')
+    end
+
+    it 'returns 422 when required field is empty string (model validation via presence)' do
+      post '/api/v1/posts', as: :json, params: { post: { title: '' } }
+
+      expect(response).to have_http_status(:unprocessable_content)
     end
 
     it 'returns 400 for type mismatch (contract validation)' do
@@ -40,7 +45,7 @@ RSpec.describe 'Model Validation Errors', type: :request do
 
   describe 'Error response format' do
     it 'returns consistent error format with all required fields' do
-      post '/api/v1/posts', as: :json, params: { post: { title: '' } }
+      post '/api/v1/posts', as: :json, params: { post: { title: nil } }
 
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
@@ -54,7 +59,7 @@ RSpec.describe 'Model Validation Errors', type: :request do
     end
 
     it 'uses JSON pointer format for field paths' do
-      post '/api/v1/posts', as: :json, params: { post: { title: '' } }
+      post '/api/v1/posts', as: :json, params: { post: { title: nil } }
 
       json = JSON.parse(response.body)
       issue = json['issues'].first
@@ -64,7 +69,7 @@ RSpec.describe 'Model Validation Errors', type: :request do
     end
 
     it 'includes field name in meta' do
-      post '/api/v1/posts', as: :json, params: { post: { title: '' } }
+      post '/api/v1/posts', as: :json, params: { post: { title: nil } }
 
       json = JSON.parse(response.body)
       issue = json['issues'].first
@@ -129,7 +134,7 @@ RSpec.describe 'Model Validation Errors', type: :request do
            params: {
              post: {
                published: 'not-a-boolean',
-               title: '',
+               title: nil,
              },
            }
 

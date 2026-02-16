@@ -128,7 +128,8 @@ module Apiwork
         def validate_required(name, value, param_options, field_path)
           return nil if param_options[:optional]
 
-          missing = if param_options[:type] == :boolean
+          missing = case param_options[:type]
+                    when :boolean, :string
                       value.nil?
                     else
                       value.blank?

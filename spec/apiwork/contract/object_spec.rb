@@ -369,13 +369,10 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
     end
 
     context 'when non-enum required field is empty string' do
-      it 'returns field_missing error' do
+      it 'accepts empty string as valid string value' do
         result = definition.validate({ name: '' })
 
-        expect(result.issues).not_to be_empty
-        error = result.issues.first
-        expect(error.code).to eq(:field_missing)
-        expect(error.detail).to eq('Required')
+        expect(result.issues).to be_empty
       end
     end
   end
