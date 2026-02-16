@@ -2,27 +2,65 @@
 
 module Apiwork
   class Element
-    # @api public
-    # @return [Symbol, nil] the discriminator field name for unions
-    attr_reader :discriminator
-
-    # @api public
-    # @return [Element, nil] the inner element type for nested arrays
-    attr_reader :inner
-
-    # @api public
-    # @return [Object, nil] the nested shape for objects
-    attr_reader :shape
-
-    # @api public
-    # @return [Symbol, nil] the element type
-    attr_reader :type
-
+    # @!attribute [r] custom_type
+    #   @api public
+    #   The custom type name for this element.
+    #
+    #   @return [Symbol, nil]
+    # @!attribute [r] discriminator
+    #   @api public
+    #   The discriminator for this element.
+    #
+    #   @return [Symbol, nil]
+    # @!attribute [r] enum
+    #   @api public
+    #   The allowed values for this element.
+    #
+    #   @return [Array, Symbol, nil]
+    # @!attribute [r] format
+    #   @api public
+    #   The format hint for this element.
+    #
+    #   @return [Symbol, nil]
+    # @!attribute [r] inner
+    #   @api public
+    #   The inner element for nested arrays.
+    #
+    #   @return [Element, nil]
+    # @!attribute [r] max
+    #   @api public
+    #   The maximum constraint for this element.
+    #
+    #   @return [Numeric, nil]
+    # @!attribute [r] min
+    #   @api public
+    #   The minimum constraint for this element.
+    #
+    #   @return [Numeric, nil]
+    # @!attribute [r] shape
+    #   @api public
+    #   The shape for this element.
+    #
+    #   @return [Object, nil]
+    # @!attribute [r] type
+    #   @api public
+    #   The type for this element.
+    #
+    #   @return [Symbol, nil]
+    # @!attribute [r] value
+    #   @api public
+    #   The literal value for this element.
+    #
+    #   @return [Object, nil]
     attr_reader :custom_type,
+                :discriminator,
                 :enum,
                 :format,
+                :inner,
                 :max,
                 :min,
+                :shape,
+                :type,
                 :value
 
     def initialize
