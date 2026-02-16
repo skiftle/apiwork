@@ -238,7 +238,7 @@ export const VehiclesUpdateResponseSchema = z.object({
   body: VehiclesUpdateResponseBodySchema
 });
 
-export const VehiclesDestroyResponse = z.never();
+export const VehiclesDestroyResponseSchema = z.never();
 
 export interface Car {
   brand: string;

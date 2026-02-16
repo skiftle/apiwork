@@ -209,7 +209,7 @@ export const CommentsDestroyRequestSchema = z.object({
   query: CommentsDestroyRequestQuerySchema
 });
 
-export const CommentsDestroyResponse = z.never();
+export const CommentsDestroyResponseSchema = z.never();
 
 export interface Comment {
   authorName: null | string;

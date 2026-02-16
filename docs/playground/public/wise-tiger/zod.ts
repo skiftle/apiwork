@@ -157,7 +157,7 @@ export const ProjectsUpdateResponseSchema = z.object({
   body: ProjectsUpdateResponseBodySchema
 });
 
-export const ProjectsDestroyResponse = z.never();
+export const ProjectsDestroyResponseSchema = z.never();
 
 export interface Error {
   issues: Issue[];

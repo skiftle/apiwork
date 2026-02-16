@@ -218,7 +218,7 @@ export const OrdersUpdateResponseSchema = z.object({
   body: OrdersUpdateResponseBodySchema
 });
 
-export const OrdersDestroyResponse = z.never();
+export const OrdersDestroyResponseSchema = z.never();
 
 export interface Error {
   issues: Issue[];

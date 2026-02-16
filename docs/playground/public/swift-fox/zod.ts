@@ -121,7 +121,7 @@ export const ContactsUpdateResponseSchema = z.object({
   body: ContactsUpdateResponseBodySchema
 });
 
-export const ContactsDestroyResponse = z.never();
+export const ContactsDestroyResponseSchema = z.never();
 
 export interface Contact {
   email: null | string;

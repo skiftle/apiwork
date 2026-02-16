@@ -1,0 +1,62 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/happy_zebra/users",
+    "body": {
+      "user": {
+        "email": "",
+        "username": ""
+      }
+    }
+  },
+  "response": {
+    "body": {
+      "issues": [
+        {
+          "code": "invalid",
+          "detail": "Invalid",
+          "meta": {},
+          "path": [
+            "user",
+            "email"
+          ],
+          "pointer": "/user/email"
+        },
+        {
+          "code": "required",
+          "detail": "Required",
+          "meta": {},
+          "path": [
+            "user",
+            "email"
+          ],
+          "pointer": "/user/email"
+        },
+        {
+          "code": "min",
+          "detail": "Too short",
+          "meta": {
+            "min": 3
+          },
+          "path": [
+            "user",
+            "username"
+          ],
+          "pointer": "/user/username"
+        },
+        {
+          "code": "required",
+          "detail": "Required",
+          "meta": {},
+          "path": [
+            "user",
+            "username"
+          ],
+          "pointer": "/user/username"
+        }
+      ],
+      "layer": "domain"
+    },
+    "status": 422
+  }
+}

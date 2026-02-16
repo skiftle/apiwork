@@ -208,7 +208,7 @@ export const InvoicesUpdateResponseSchema = z.object({
   body: InvoicesUpdateResponseBodySchema
 });
 
-export const InvoicesDestroyResponse = z.never();
+export const InvoicesDestroyResponseSchema = z.never();
 
 export const InvoicesArchiveResponseBodySchema = z.union([InvoiceArchiveSuccessResponseBodySchema, ErrorResponseBodySchema]);
 

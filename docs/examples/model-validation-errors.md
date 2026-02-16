@@ -221,7 +221,7 @@ Content-Type: application/json
 </details>
 
 <details>
-<summary>Missing required fields</summary>
+<summary>Empty required fields</summary>
 
 **Request**
 
@@ -237,18 +237,15 @@ Content-Type: application/json
 }
 ```
 
-**Response** `400`
+**Response** `422`
 
 ```json
 {
   "issues": [
     {
-      "code": "field_missing",
-      "detail": "Required",
-      "meta": {
-        "field": "email",
-        "type": "string"
-      },
+      "code": "invalid",
+      "detail": "Invalid",
+      "meta": {},
       "path": [
         "user",
         "email"
@@ -256,12 +253,31 @@ Content-Type: application/json
       "pointer": "/user/email"
     },
     {
-      "code": "field_missing",
+      "code": "required",
       "detail": "Required",
+      "meta": {},
+      "path": [
+        "user",
+        "email"
+      ],
+      "pointer": "/user/email"
+    },
+    {
+      "code": "min",
+      "detail": "Too short",
       "meta": {
-        "field": "username",
-        "type": "string"
+        "min": 3
       },
+      "path": [
+        "user",
+        "username"
+      ],
+      "pointer": "/user/username"
+    },
+    {
+      "code": "required",
+      "detail": "Required",
+      "meta": {},
       "path": [
         "user",
         "username"
@@ -269,7 +285,7 @@ Content-Type: application/json
       "pointer": "/user/username"
     }
   ],
-  "layer": "contract"
+  "layer": "domain"
 }
 ```
 

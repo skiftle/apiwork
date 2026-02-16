@@ -53,8 +53,8 @@ scenarios:
         email: not-an-email
         username: johndoe
 
-  - title: Missing required fields
-    description: Required field validation error (400)
+  - title: Empty required fields
+    description: Empty string validation error (422)
     order: 3
     method: POST
     path: /happy_zebra/users

@@ -351,7 +351,7 @@ export const UsersDestroyRequestSchema = z.object({
   query: UsersDestroyRequestQuerySchema
 });
 
-export const UsersDestroyResponse = z.never();
+export const UsersDestroyResponseSchema = z.never();
 
 export const PostsIndexRequestQuerySchema = z.object({
   page: PostPageSchema.optional()
@@ -401,7 +401,7 @@ export const PostsUpdateResponseSchema = z.object({
   body: PostsUpdateResponseBodySchema
 });
 
-export const PostsDestroyResponse = z.never();
+export const PostsDestroyResponseSchema = z.never();
 
 export const CommentsIndexRequestQuerySchema = z.object({
   page: CommentPageSchema.optional()
@@ -451,7 +451,7 @@ export const CommentsUpdateResponseSchema = z.object({
   body: CommentsUpdateResponseBodySchema
 });
 
-export const CommentsDestroyResponse = z.never();
+export const CommentsDestroyResponseSchema = z.never();
 
 export interface Comment {
   author: string;

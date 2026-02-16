@@ -116,7 +116,7 @@ module Apiwork
             of: resolve_of(options, scope),
             optional: options[:optional] == true,
             partial: options[:partial] == true,
-            shape: build_nested_shape(options[:shape]),
+            shape: resolve_param_shape(options),
             tag: nil,
             type: reference ? :reference : (options[:type] || :unknown),
             value: options[:type] == :literal ? options[:value] : nil,
@@ -168,6 +168,16 @@ module Apiwork
           return [] unless shape.respond_to?(:variants)
 
           shape.variants.map { |variant| build_variant(variant, nil) }
+        end
+
+        def resolve_param_shape(options)
+          return build_nested_shape(options[:shape]) if options[:shape]
+
+          of = options[:of]
+          return {} unless of
+          return {} unless of.respond_to?(:shape)
+
+          of.shape ? build_nested_shape(of.shape) : {}
         end
 
         def resolve_type_reference(type_value, scope)

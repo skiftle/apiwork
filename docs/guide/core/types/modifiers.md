@@ -17,6 +17,10 @@ Three options control field presence:
 | `nullable: true` | Error         | OK              | Clearable fields |
 | Both             | OK            | OK              | Fully optional   |
 
+::: info
+For strings, `""` is a valid value. To require content, use `presence: true` in your model or `min: 1` in your contract.
+:::
+
 ```ruby
 string :title                                     # required
 string :notes, optional: true                     # can omit

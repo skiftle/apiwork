@@ -114,7 +114,7 @@ export const ActivitiesUpdateResponseSchema = z.object({
   body: ActivitiesUpdateResponseBodySchema
 });
 
-export const ActivitiesDestroyResponse = z.never();
+export const ActivitiesDestroyResponseSchema = z.never();
 
 export interface ActivitiesCreateRequest {
   body: ActivitiesCreateRequestBody;
