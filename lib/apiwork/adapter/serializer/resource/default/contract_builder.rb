@@ -73,7 +73,7 @@ module Apiwork
                   element = attribute.element
                   if element
                     if element.type == :array
-                      param_options[:of] = { type: element.item_type }
+                      param_options[:of] = element.inner
                       param_options[:shape] = element.shape
                     else
                       param_options[:shape] = element.shape

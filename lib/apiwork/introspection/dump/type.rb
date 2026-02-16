@@ -212,19 +212,6 @@ module Apiwork
             }
             result[:of] = resolve_of({ of: of.inner }, scope) if of.type == :array && of.inner
             result
-          elsif of.is_a?(Hash)
-            type_value = of[:type]
-            scoped_name = resolve_scoped_type_name(type_value, scope)
-            resolved_shape = shape ? build_nested_shape(shape) : {}
-            {
-              enum: of[:enum],
-              format: of[:format],
-              max: of[:max],
-              min: of[:min],
-              reference: scoped_name,
-              shape: resolved_shape,
-              type: scoped_name ? :reference : type_value,
-            }
           else
             scoped_name = resolve_scoped_type_name(of, scope)
             resolved_shape = shape ? build_nested_shape(shape) : {}
@@ -266,18 +253,6 @@ module Apiwork
             }
             result[:of] = resolve_variant_of({ of: of.inner }, scope) if of.type == :array && of.inner
             result
-          elsif of.is_a?(Hash)
-            type_value = of[:type]
-            scoped_name = resolve_scoped_type_name(type_value, scope)
-            {
-              enum: of[:enum],
-              format: of[:format],
-              max: of[:max],
-              min: of[:min],
-              reference: scoped_name,
-              shape: {},
-              type: scoped_name ? :reference : type_value,
-            }
           else
             scoped_name = resolve_scoped_type_name(of, scope)
             if scoped_name

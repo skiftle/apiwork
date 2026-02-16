@@ -191,8 +191,6 @@ module Apiwork
 
           if of.is_a?(Element)
             build_of_from_element(of, shape: options[:shape])
-          elsif of.is_a?(Hash)
-            build_of_from_hash(of, shape: options[:shape])
           elsif registered_type?(of)
             reference_name = qualified_name(of, @contract_param)
             { reference: reference_name, shape: {}, type: :reference }
@@ -228,23 +226,6 @@ module Apiwork
           result[:of] = build_of_from_element(element.inner) if element.type == :array && element.inner
 
           result
-        end
-
-        def build_of_from_hash(of_hash, shape: nil)
-          type_value = of_hash[:type]
-          reference = registered_type?(type_value) ? qualified_name(type_value, @contract_param) : nil
-
-          resolved_shape = shape ? build_nested_shape(shape) : {}
-
-          {
-            reference:,
-            enum: of_hash[:enum],
-            format: of_hash[:format],
-            max: of_hash[:max],
-            min: of_hash[:min],
-            shape: resolved_shape,
-            type: reference ? :reference : type_value,
-          }
         end
 
         def build_of_from_symbol(type_symbol, shape: nil)
@@ -312,8 +293,6 @@ module Apiwork
 
           if of.is_a?(Element)
             build_of_from_element(of, shape: variant[:shape])
-          elsif of.is_a?(Hash)
-            build_of_from_hash(of, shape: variant[:shape])
           elsif registered_type?(of)
             reference_name = qualified_name(of, @contract_param)
             { reference: reference_name, shape: {}, type: :reference }
@@ -396,16 +375,6 @@ module Apiwork
             }
             result[:of] = build_api_of({ of: of.inner }) if of.type == :array && of.inner
             result
-          elsif of.is_a?(Hash)
-            {
-              enum: of[:enum],
-              format: of[:format],
-              max: of[:max],
-              min: of[:min],
-              reference: nil,
-              shape: options[:shape] ? build_nested_shape(options[:shape]) : {},
-              type: of[:type],
-            }
           else
             { reference: nil, shape: {}, type: of }
           end
@@ -452,17 +421,6 @@ module Apiwork
             }
             result[:of] = build_api_variant_of({ of: of.inner }) if of.type == :array && of.inner
             result
-          elsif of.is_a?(Hash)
-            {
-              enum: of[:enum],
-              format: of[:format],
-              max: of[:max],
-              min: of[:min],
-              of: of[:of] ? build_api_variant_of({ of: of[:of] }) : nil,
-              reference: nil,
-              shape: {},
-              type: of[:type],
-            }
           else
             { reference: nil, shape: {}, type: of }
           end
