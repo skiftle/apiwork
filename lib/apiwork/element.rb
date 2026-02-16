@@ -2,15 +2,27 @@
 
 module Apiwork
   class Element
+    # @api public
+    # @return [Symbol, nil] the discriminator field name for unions
+    attr_reader :discriminator
+
+    # @api public
+    # @return [Element, nil] the inner element type for nested arrays
+    attr_reader :inner
+
+    # @api public
+    # @return [Object, nil] the nested shape for objects
+    attr_reader :shape
+
+    # @api public
+    # @return [Symbol, nil] the element type
+    attr_reader :type
+
     attr_reader :custom_type,
-                :discriminator,
                 :enum,
                 :format,
-                :inner,
                 :max,
                 :min,
-                :shape,
-                :type,
                 :value
 
     def initialize
@@ -312,10 +324,6 @@ module Apiwork
     #   end
     def reference(type_name)
       of(type_name)
-    end
-
-    def item_type
-      @inner&.type
     end
 
     def validate!

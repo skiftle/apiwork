@@ -74,7 +74,6 @@ module Apiwork
                   if element
                     if element.type == :array
                       param_options[:of] = element.inner
-                      param_options[:shape] = element.shape
                     else
                       param_options[:shape] = element.shape
                       param_options[:discriminator] = element.discriminator if element.discriminator

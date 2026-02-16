@@ -71,7 +71,7 @@ RSpec.describe Apiwork::Representation::Base do
 
         expect(definition.type).to eq(:array)
         expect(definition.element).to be_a(Apiwork::Representation::Element)
-        expect(definition.element.item_type).to eq(:object)
+        expect(definition.element.inner&.type).to eq(:object)
       end
     end
 

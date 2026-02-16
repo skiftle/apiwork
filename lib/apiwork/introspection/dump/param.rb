@@ -185,33 +185,16 @@ module Apiwork
         end
 
         def resolve_of(options)
-          return nil unless options[:of]
-
           of = options[:of]
+          return nil unless of
 
-          if of.is_a?(Element)
-            build_of_from_element(of, shape: options[:shape])
-          elsif registered_type?(of)
-            reference_name = qualified_name(of, @contract_param)
-            { reference: reference_name, shape: {}, type: :reference }
-          elsif of.is_a?(Symbol) && imported_type?(of, @contract_param)
-            { reference: of, shape: {}, type: :reference }
-          else
-            build_of_from_symbol(of, shape: options[:shape])
-          end
+          build_of_from_element(of)
         end
 
-        def build_of_from_element(element, shape: nil)
+        def build_of_from_element(element)
           type_value = element.type
           reference = registered_type?(type_value) ? qualified_name(type_value, @contract_param) : nil
-
-          resolved_shape = if shape
-                             build_nested_shape(shape)
-                           elsif element.shape
-                             build_nested_shape(element.shape)
-                           else
-                             {}
-                           end
+          resolved_shape = element.shape ? build_nested_shape(element.shape) : {}
 
           result = {
             reference:,
@@ -225,14 +208,6 @@ module Apiwork
 
           result[:of] = build_of_from_element(element.inner) if element.type == :array && element.inner
 
-          result
-        end
-
-        def build_of_from_symbol(type_symbol, shape: nil)
-          result = { reference: nil, type: type_symbol }
-          if [:object, :array].include?(type_symbol)
-            result[:shape] = shape ? build_nested_shape(shape) : {}
-          end
           result
         end
 
@@ -287,18 +262,10 @@ module Apiwork
         end
 
         def resolve_variant_of(variant)
-          return nil unless variant[:of]
-
           of = variant[:of]
+          return nil unless of
 
-          if of.is_a?(Element)
-            build_of_from_element(of, shape: variant[:shape])
-          elsif registered_type?(of)
-            reference_name = qualified_name(of, @contract_param)
-            { reference: reference_name, shape: {}, type: :reference }
-          else
-            build_of_from_symbol(of)
-          end
+          build_of_from_element(of)
         end
 
         def resolve_variant_shape(variant, variant_type)
@@ -360,24 +327,20 @@ module Apiwork
         end
 
         def build_api_of(options)
-          return nil unless options[:of]
-
           of = options[:of]
-          if of.is_a?(Element)
-            result = {
-              enum: of.enum,
-              format: of.format,
-              max: of.max,
-              min: of.min,
-              reference: nil,
-              shape: of.shape ? build_nested_shape(of.shape) : {},
-              type: of.type,
-            }
-            result[:of] = build_api_of({ of: of.inner }) if of.type == :array && of.inner
-            result
-          else
-            { reference: nil, shape: {}, type: of }
-          end
+          return nil unless of
+
+          result = {
+            enum: of.enum,
+            format: of.format,
+            max: of.max,
+            min: of.min,
+            reference: nil,
+            shape: of.shape ? build_nested_shape(of.shape) : {},
+            type: of.type,
+          }
+          result[:of] = build_api_of({ of: of.inner }) if of.type == :array && of.inner
+          result
         end
 
         def build_api_variant(variant)
@@ -406,24 +369,20 @@ module Apiwork
         end
 
         def build_api_variant_of(variant)
-          return nil unless variant[:of]
-
           of = variant[:of]
-          if of.is_a?(Element)
-            result = {
-              enum: of.enum,
-              format: of.format,
-              max: of.max,
-              min: of.min,
-              reference: nil,
-              shape: of.shape ? build_nested_shape(of.shape) : {},
-              type: of.type,
-            }
-            result[:of] = build_api_variant_of({ of: of.inner }) if of.type == :array && of.inner
-            result
-          else
-            { reference: nil, shape: {}, type: of }
-          end
+          return nil unless of
+
+          result = {
+            enum: of.enum,
+            format: of.format,
+            max: of.max,
+            min: of.min,
+            reference: nil,
+            shape: of.shape ? build_nested_shape(of.shape) : {},
+            type: of.type,
+          }
+          result[:of] = build_api_variant_of({ of: of.inner }) if of.type == :array && of.inner
+          result
         end
 
         def build_shape(options)

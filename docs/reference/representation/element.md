@@ -92,7 +92,7 @@ end
 
 `#array(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L248)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L261)
 
 Defines an array.
 
@@ -128,7 +128,7 @@ end
 
 `#binary`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L198)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L211)
 
 Defines a binary.
 
@@ -150,7 +150,7 @@ end
 
 `#boolean`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L133)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L146)
 
 Defines a boolean.
 
@@ -172,7 +172,7 @@ end
 
 `#date`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L159)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L172)
 
 Defines a date.
 
@@ -194,7 +194,7 @@ end
 
 `#datetime`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L146)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L159)
 
 Defines a datetime.
 
@@ -216,7 +216,7 @@ end
 
 `#decimal(max: nil, min: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L98)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L111)
 
 Defines a decimal.
 
@@ -253,11 +253,35 @@ end
 
 ---
 
+### #discriminator
+
+`#discriminator`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L7)
+
+**Returns**
+
+`Symbol`, `nil` — the discriminator field name for unions
+
+---
+
+### #inner
+
+`#inner`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L11)
+
+**Returns**
+
+[Element](/reference/api/element), `nil` — the inner element type for nested arrays
+
+---
+
 ### #integer
 
 `#integer(enum: nil, max: nil, min: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L76)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L89)
 
 Defines an integer.
 
@@ -299,7 +323,7 @@ end
 
 `#literal(value:)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L297)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L310)
 
 Defines a literal value.
 
@@ -331,7 +355,7 @@ end
 
 `#number(max: nil, min: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L120)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L133)
 
 Defines a number.
 
@@ -372,7 +396,7 @@ end
 
 `#object(&block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L224)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L237)
 
 Defines an object.
 
@@ -410,7 +434,7 @@ end
 
 `#of(type, discriminator: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/element.rb#L98)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/element.rb#L93)
 
 Defines the element type.
 
@@ -439,7 +463,7 @@ Only complex types (:object, :array, :union) are allowed.
 
 `#reference(type_name)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L312)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L325)
 
 Defines a reference to a named type.
 
@@ -467,11 +491,23 @@ end
 
 ---
 
+### #shape
+
+`#shape`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L15)
+
+**Returns**
+
+`Object`, `nil` — the nested shape for objects
+
+---
+
 ### #string
 
 `#string(enum: nil, format: nil, max: nil, min: nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L52)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L65)
 
 Defines a string.
 
@@ -514,7 +550,7 @@ end
 
 `#time`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L185)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L198)
 
 Defines a time.
 
@@ -532,11 +568,23 @@ end
 
 ---
 
+### #type
+
+`#type`
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L19)
+
+**Returns**
+
+`Symbol`, `nil` — the element type
+
+---
+
 ### #union
 
 `#union(discriminator: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L282)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L295)
 
 Defines a union.
 
@@ -590,7 +638,7 @@ end
 
 `#uuid`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L172)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/element.rb#L185)
 
 Defines a UUID.
 

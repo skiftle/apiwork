@@ -113,7 +113,7 @@ module Apiwork
             max: options[:max],
             min: options[:min],
             nullable: options[:nullable] == true,
-            of: resolve_of(options, scope, shape: options[:shape]),
+            of: resolve_of(options, scope),
             optional: options[:optional] == true,
             partial: options[:partial] == true,
             shape: build_nested_shape(options[:shape]),
@@ -186,41 +186,25 @@ module Apiwork
           end
         end
 
-        def resolve_of(options, scope, shape: nil)
-          return nil unless options[:of]
-
+        def resolve_of(options, scope)
           of = options[:of]
+          return nil unless of
 
-          if of.is_a?(Element)
-            type_value = of.type
-            scoped_name = resolve_scoped_type_name(type_value, scope)
-            resolved_shape = if shape
-                               build_nested_shape(shape)
-                             elsif of.shape
-                               build_nested_shape(of.shape)
-                             else
-                               {}
-                             end
-            result = {
-              enum: of.enum,
-              format: of.format,
-              max: of.max,
-              min: of.min,
-              reference: scoped_name,
-              shape: resolved_shape,
-              type: scoped_name ? :reference : type_value,
-            }
-            result[:of] = resolve_of({ of: of.inner }, scope) if of.type == :array && of.inner
-            result
-          else
-            scoped_name = resolve_scoped_type_name(of, scope)
-            resolved_shape = shape ? build_nested_shape(shape) : {}
-            if scoped_name
-              { reference: scoped_name, shape: {}, type: :reference }
-            else
-              { reference: nil, shape: resolved_shape, type: of }
-            end
-          end
+          type_value = of.type
+          scoped_name = resolve_scoped_type_name(type_value, scope)
+          resolved_shape = of.shape ? build_nested_shape(of.shape) : {}
+
+          result = {
+            enum: of.enum,
+            format: of.format,
+            max: of.max,
+            min: of.min,
+            reference: scoped_name,
+            shape: resolved_shape,
+            type: scoped_name ? :reference : type_value,
+          }
+          result[:of] = resolve_of({ of: of.inner }, scope) if of.type == :array && of.inner
+          result
         end
 
         def resolve_variant_enum(variant, scope)
@@ -234,33 +218,24 @@ module Apiwork
         end
 
         def resolve_variant_of(variant, scope)
-          return nil unless variant[:of]
-
           of = variant[:of]
+          return nil unless of
 
-          if of.is_a?(Element)
-            type_value = of.type
-            scoped_name = resolve_scoped_type_name(type_value, scope)
-            resolved_shape = of.shape ? build_nested_shape(of.shape) : {}
-            result = {
-              enum: of.enum,
-              format: of.format,
-              max: of.max,
-              min: of.min,
-              reference: scoped_name,
-              shape: resolved_shape,
-              type: scoped_name ? :reference : type_value,
-            }
-            result[:of] = resolve_variant_of({ of: of.inner }, scope) if of.type == :array && of.inner
-            result
-          else
-            scoped_name = resolve_scoped_type_name(of, scope)
-            if scoped_name
-              { reference: scoped_name, shape: {}, type: :reference }
-            else
-              { reference: nil, shape: {}, type: of }
-            end
-          end
+          type_value = of.type
+          scoped_name = resolve_scoped_type_name(type_value, scope)
+          resolved_shape = of.shape ? build_nested_shape(of.shape) : {}
+
+          result = {
+            enum: of.enum,
+            format: of.format,
+            max: of.max,
+            min: of.min,
+            reference: scoped_name,
+            shape: resolved_shape,
+            type: scoped_name ? :reference : type_value,
+          }
+          result[:of] = resolve_variant_of({ of: of.inner }, scope) if of.type == :array && of.inner
+          result
         end
 
         def build_enum(qualified_name, enum_definition)

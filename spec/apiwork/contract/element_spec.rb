@@ -44,9 +44,9 @@ RSpec.describe Apiwork::Contract::Element do
       end
 
       expect(element.type).to eq(:array)
-      expect(element.item_type).to eq(:array)
+      expect(element.inner&.type).to eq(:array)
       expect(element.inner.type).to eq(:array)
-      expect(element.inner.item_type).to eq(:string)
+      expect(element.inner.inner&.type).to eq(:string)
     end
 
     it 'preserves constraints through nested arrays' do
@@ -96,8 +96,8 @@ RSpec.describe Apiwork::Contract::Element do
       end
 
       expect(element.type).to eq(:array)
-      expect(element.item_type).to eq(:array)
-      expect(element.inner.item_type).to eq(:object)
+      expect(element.inner&.type).to eq(:array)
+      expect(element.inner.inner&.type).to eq(:object)
       expect(element.inner.inner.shape).to be_a(Apiwork::Contract::Object)
       expect(element.inner.inner.shape.params.keys).to eq(%i[name quantity])
     end

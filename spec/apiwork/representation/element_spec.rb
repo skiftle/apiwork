@@ -32,7 +32,7 @@ RSpec.describe Apiwork::Representation::Element do
       end
 
       expect(element.type).to eq(:array)
-      expect(element.item_type).to eq(:object)
+      expect(element.inner&.type).to eq(:object)
       expect(element.shape).to be_a(Apiwork::API::Object)
     end
 
@@ -43,7 +43,7 @@ RSpec.describe Apiwork::Representation::Element do
       end
 
       expect(element.type).to eq(:array)
-      expect(element.item_type).to eq(:string)
+      expect(element.inner&.type).to eq(:string)
       expect(element.shape).to be_nil
     end
 
@@ -97,26 +97,6 @@ RSpec.describe Apiwork::Representation::Element do
     end
   end
 
-  describe '#item_type' do
-    it 'returns nil for object' do
-      element = described_class.new
-      element.object do
-        string :name
-      end
-
-      expect(element.item_type).to be_nil
-    end
-
-    it 'returns element type for array' do
-      element = described_class.new
-      element.array do
-        integer
-      end
-
-      expect(element.item_type).to eq(:integer)
-    end
-  end
-
   describe '#inner' do
     it 'returns nil for object' do
       element = described_class.new
@@ -158,9 +138,9 @@ RSpec.describe Apiwork::Representation::Element do
       end
 
       expect(element.type).to eq(:array)
-      expect(element.item_type).to eq(:array)
+      expect(element.inner&.type).to eq(:array)
       expect(element.inner.type).to eq(:array)
-      expect(element.inner.item_type).to eq(:string)
+      expect(element.inner.inner&.type).to eq(:string)
     end
 
     it 'preserves constraints through nested arrays' do
@@ -210,8 +190,8 @@ RSpec.describe Apiwork::Representation::Element do
       end
 
       expect(element.type).to eq(:array)
-      expect(element.item_type).to eq(:array)
-      expect(element.inner.item_type).to eq(:object)
+      expect(element.inner&.type).to eq(:array)
+      expect(element.inner.inner&.type).to eq(:object)
       expect(element.inner.inner.shape).to be_a(Apiwork::API::Object)
       expect(element.inner.inner.shape.params.keys).to eq(%i[name age])
     end

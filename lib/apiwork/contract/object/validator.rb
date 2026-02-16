@@ -279,11 +279,14 @@ module Apiwork
             return [issues, []]
           end
 
+          of = param_options[:of]
+          of_shape = of&.shape
+
           array.each_with_index do |item, index|
             item_path = field_path + [index]
 
-            if param_options[:shape]
-              validator = Validator.new(param_options[:shape])
+            if of_shape
+              validator = Validator.new(of_shape)
               shape_result = validator.validate(
                 item,
                 max_depth:,
@@ -295,7 +298,7 @@ module Apiwork
               else
                 values << shape_result.params
               end
-            elsif param_options[:of]
+            elsif of
               result = validate_array_item_with_type(item, index, param_options, item_path, current_depth, max_depth)
               result[:issues].any? ? issues.concat(result[:issues]) : values << result[:value]
             else
@@ -308,7 +311,7 @@ module Apiwork
 
         def validate_array_item_with_type(item, index, param_options, item_path, current_depth, max_depth)
           of = param_options[:of]
-          type_name = of.is_a?(Apiwork::Element) ? of.type : of
+          type_name = of&.type
 
           type_definition = @shape.contract_class.resolve_custom_type(type_name)
 
@@ -521,14 +524,14 @@ module Apiwork
           if variant_type == :array
             return [build_type_invalid_error(name, value, :array, path), nil] unless value.is_a?(Array)
 
-            if variant_shape || variant_of
+            if variant_of
               array_issues, array_values = validate_array(
                 value,
                 {
                   current_depth:,
                   max_depth:,
                   field_path: path,
-                  param_options: { of: variant_of, shape: variant_shape },
+                  param_options: { of: variant_of },
                 },
               )
 

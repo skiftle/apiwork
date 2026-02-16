@@ -219,7 +219,6 @@ module Apiwork
           optional:,
           required:,
           of: element,
-          shape: element.shape,
           type: :array,
         )
       end
@@ -482,16 +481,8 @@ module Apiwork
       end
 
       def define_standard_param(name, as:, default:, of:, optional:, options:, resolved_enum:, shape:, type:, &block)
-        resolved_of = of
-        resolved_shape = shape
-
-        if block_given? && type == :array
-          element = Element.new(@contract_class)
-          block.arity.positive? ? yield(element) : element.instance_eval(&block)
-          element.validate!
-          resolved_of = element
-          resolved_shape = element.shape
-        end
+        resolved_of = resolve_of(of, type, &block)
+        resolved_shape = resolve_shape(shape, type, &block)
 
         @params[name] = (@params[name] || {}).merge(
           {
@@ -506,13 +497,40 @@ module Apiwork
           }.compact,
         )
 
-        if resolved_shape
-          @params[name][:shape] = resolved_shape
-        elsif block_given? && type != :array
+        @params[name][:shape] = resolved_shape if resolved_shape
+      end
+
+      def resolve_of(of, type, &block)
+        return nil unless type == :array
+
+        if block_given?
+          element = Element.new(@contract_class)
+          block.arity.positive? ? yield(element) : element.instance_eval(&block)
+          element.validate!
+          element
+        elsif of.is_a?(Symbol)
+          wrap_symbol_in_element(of)
+        else
+          of
+        end
+      end
+
+      def resolve_shape(shape, type, &block)
+        return nil if type == :array
+
+        if shape
+          shape
+        elsif block_given?
           nested_shape = Object.new(@contract_class, action_name: @action_name)
           block.arity.positive? ? yield(nested_shape) : nested_shape.instance_eval(&block)
-          @params[name][:shape] = nested_shape
+          nested_shape
         end
+      end
+
+      def wrap_symbol_in_element(type_symbol)
+        element = Element.new(@contract_class)
+        element.of(type_symbol)
+        element
       end
 
       def resolve_enum(enum)

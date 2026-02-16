@@ -82,12 +82,12 @@ module Apiwork
           @value = value
           @defined = true
         when :object
-          raise ConfigurationError, 'object requires a block' unless block
-
-          shape = Object.new(@contract_class)
-          block.arity.positive? ? yield(shape) : shape.instance_eval(&block)
           @type = :object
-          @shape = shape
+          if block
+            shape = Object.new(@contract_class)
+            block.arity.positive? ? yield(shape) : shape.instance_eval(&block)
+            @shape = shape
+          end
           @defined = true
         when :array
           raise ConfigurationError, 'array requires a block' unless block

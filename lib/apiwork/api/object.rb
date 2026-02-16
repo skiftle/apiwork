@@ -102,42 +102,32 @@ module Apiwork
         value: nil,
         &block
       )
-        resolved_of = of
-        resolved_shape = shape
+        resolved_of = resolve_of(of, type, &block)
+        resolved_shape = type == :array ? nil : (shape || build_shape(type, discriminator, &block))
+        discriminator = resolved_of&.discriminator if type == :array
 
-        if block && type == :array
-          element = Element.new
-          block.arity.positive? ? yield(element) : element.instance_eval(&block)
-          element.validate!
-          resolved_of = element
-          resolved_shape = element.shape
-          discriminator = element.discriminator
-        else
-          resolved_shape ||= build_shape(type, discriminator, &block)
-        end
+        param_hash = {
+          as:,
+          default:,
+          deprecated:,
+          description:,
+          discriminator:,
+          enum:,
+          example:,
+          format:,
+          max:,
+          min:,
+          name:,
+          nullable:,
+          optional:,
+          required:,
+          type:,
+          value:,
+          of: resolved_of,
+        }
+        param_hash[:shape] = resolved_shape if resolved_shape
 
-        @params[name] = (@params[name] || {}).merge(
-          {
-            as:,
-            default:,
-            deprecated:,
-            description:,
-            discriminator:,
-            enum:,
-            example:,
-            format:,
-            max:,
-            min:,
-            name:,
-            nullable:,
-            optional:,
-            required:,
-            type:,
-            value:,
-            of: resolved_of,
-            shape: resolved_shape,
-          }.compact,
-        )
+        @params[name] = (@params[name] || {}).merge(param_hash.compact)
       end
 
       # @api public
@@ -199,12 +189,32 @@ module Apiwork
           optional:,
           required:,
           of: element,
-          shape: element.shape,
           type: :array,
         )
       end
 
       private
+
+      def resolve_of(of, type, &block)
+        return nil unless type == :array
+
+        if block
+          element = Element.new
+          block.arity.positive? ? yield(element) : element.instance_eval(&block)
+          element.validate!
+          element
+        elsif of.is_a?(Symbol)
+          wrap_symbol_in_element(of)
+        else
+          of
+        end
+      end
+
+      def wrap_symbol_in_element(type_symbol)
+        element = Element.new
+        element.of(type_symbol)
+        element
+      end
 
       def build_shape(type, discriminator, &block)
         return nil unless block

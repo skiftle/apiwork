@@ -173,8 +173,7 @@ module Apiwork
                 element = attribute.element
 
                 if element.type == :array
-                  options[:of] = { type: element.item_type }
-                  options[:shape] = element.shape
+                  options[:of] = element.inner
                 else
                   options[:shape] = element.shape
                   options[:discriminator] = element.discriminator if element.discriminator
