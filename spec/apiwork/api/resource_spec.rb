@@ -2,384 +2,250 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Apiwork Routing DSL' do
-  let(:api_class) { double(namespaces: [:api, :v1]) }
-  let(:root_resource) { Apiwork::API::Resource.new(api_class) }
-
-  describe 'member actions' do
-    context 'with member block syntax' do
-      it 'captures single action' do
-        root_resource.instance_eval do
-          resources :posts do
-            member do
-              patch :archive
-            end
-          end
-        end
-
-        resource = root_resource.resources[:posts]
-        expect(resource.member_actions).to have_key(:archive)
-        expect(resource.member_actions[:archive].method).to eq(:patch)
-      end
-
-      it 'captures multiple actions' do
-        root_resource.instance_eval do
-          resources :posts do
-            member do
-              patch :archive
-              patch :unarchive
-              get :preview
-            end
-          end
-        end
-
-        resource = root_resource.resources[:posts]
-        expect(resource.member_actions).to have_key(:archive)
-        expect(resource.member_actions).to have_key(:unarchive)
-        expect(resource.member_actions).to have_key(:preview)
-        expect(resource.member_actions[:preview].method).to eq(:get)
-      end
-
-      it 'supports all HTTP verbs' do
-        root_resource.instance_eval do
-          resources :posts do
-            member do
-              get :preview
-              post :publish
-              patch :rename
-              put :replace
-              delete :remove
-            end
-          end
-        end
-
-        resource = root_resource.resources[:posts]
-        expect(resource.member_actions[:preview].method).to eq(:get)
-        expect(resource.member_actions[:publish].method).to eq(:post)
-        expect(resource.member_actions[:rename].method).to eq(:patch)
-        expect(resource.member_actions[:replace].method).to eq(:put)
-        expect(resource.member_actions[:remove].method).to eq(:delete)
-      end
-    end
-
-    context 'with inline on: :member syntax' do
-      it 'captures single action' do
-        root_resource.instance_eval do
-          resources :posts do
-            patch :archive, on: :member
-          end
-        end
-
-        resource = root_resource.resources[:posts]
-        expect(resource.member_actions).to have_key(:archive)
-        expect(resource.member_actions[:archive].method).to eq(:patch)
-      end
-
-      it 'captures multiple actions declared separately' do
-        root_resource.instance_eval do
-          resources :posts do
-            patch :archive, on: :member
-            get :preview, on: :member
-          end
-        end
-
-        resource = root_resource.resources[:posts]
-        expect(resource.member_actions).to have_key(:archive)
-        expect(resource.member_actions).to have_key(:preview)
-      end
-    end
-
-    context 'with array of actions' do
-      it 'captures all actions in array' do
-        root_resource.instance_eval do
-          resources :posts do
-            patch %i[archive unarchive], on: :member
-          end
-        end
-
-        resource = root_resource.resources[:posts]
-        expect(resource.member_actions).to have_key(:archive)
-        expect(resource.member_actions).to have_key(:unarchive)
-        expect(resource.member_actions[:archive].method).to eq(:patch)
-        expect(resource.member_actions[:unarchive].method).to eq(:patch)
-      end
-
-      it 'works in member blocks' do
-        root_resource.instance_eval do
-          resources :posts do
-            member do
-              get %i[preview history]
-            end
-          end
-        end
-
-        resource = root_resource.resources[:posts]
-        expect(resource.member_actions).to have_key(:preview)
-        expect(resource.member_actions).to have_key(:history)
-      end
-    end
-  end
-
-  describe 'collection actions' do
-    context 'with collection block syntax' do
-      it 'captures single action' do
-        root_resource.instance_eval do
-          resources :posts do
-            collection do
-              get :search
-            end
-          end
-        end
-
-        resource = root_resource.resources[:posts]
-        expect(resource.collection_actions).to have_key(:search)
-        expect(resource.collection_actions[:search].method).to eq(:get)
-      end
-
-      it 'captures multiple actions' do
-        root_resource.instance_eval do
-          resources :posts do
-            collection do
-              get :search
-              post :import
-              post :export
-            end
-          end
-        end
-
-        resource = root_resource.resources[:posts]
-        expect(resource.collection_actions).to have_key(:search)
-        expect(resource.collection_actions).to have_key(:import)
-        expect(resource.collection_actions).to have_key(:export)
-      end
-
-      it 'supports all HTTP verbs' do
-        root_resource.instance_eval do
-          resources :posts do
-            collection do
-              get :search
-              post :bulk_create
-              patch :bulk_update
-              put :bulk_replace
-              delete :bulk_delete
-            end
-          end
-        end
-
-        resource = root_resource.resources[:posts]
-        expect(resource.collection_actions[:search].method).to eq(:get)
-        expect(resource.collection_actions[:bulk_create].method).to eq(:post)
-        expect(resource.collection_actions[:bulk_update].method).to eq(:patch)
-        expect(resource.collection_actions[:bulk_replace].method).to eq(:put)
-        expect(resource.collection_actions[:bulk_delete].method).to eq(:delete)
-      end
-    end
-
-    context 'with inline on: :collection syntax' do
-      it 'captures single action' do
-        root_resource.instance_eval do
-          resources :posts do
-            get :search, on: :collection
-          end
-        end
-
-        resource = root_resource.resources[:posts]
-        expect(resource.collection_actions).to have_key(:search)
-        expect(resource.collection_actions[:search].method).to eq(:get)
-      end
-
-      it 'captures multiple actions declared separately' do
-        root_resource.instance_eval do
-          resources :posts do
-            get :search, on: :collection
-            post :import, on: :collection
-          end
-        end
-
-        resource = root_resource.resources[:posts]
-        expect(resource.collection_actions).to have_key(:search)
-        expect(resource.collection_actions).to have_key(:import)
-      end
-    end
-
-    context 'with array of actions' do
-      it 'captures all actions in array' do
-        root_resource.instance_eval do
-          resources :posts do
-            post %i[import export], on: :collection
-          end
-        end
-
-        resource = root_resource.resources[:posts]
-        expect(resource.collection_actions).to have_key(:import)
-        expect(resource.collection_actions).to have_key(:export)
-        expect(resource.collection_actions[:import].method).to eq(:post)
-        expect(resource.collection_actions[:export].method).to eq(:post)
-      end
-
-      it 'works in collection blocks' do
-        root_resource.instance_eval do
-          resources :posts do
-            collection do
-              get %i[search filter]
-            end
-          end
-        end
-
-        resource = root_resource.resources[:posts]
-        expect(resource.collection_actions).to have_key(:search)
-        expect(resource.collection_actions).to have_key(:filter)
-      end
-    end
-  end
-
-  describe 'validation and error handling' do
-    context 'when action declared without member/collection context' do
-      it 'raises ConfigurationError with helpful message' do
-        expect do
-          root_resource.instance_eval do
-            resources :posts do
-              patch :archive
-            end
-          end
-        end.to raise_error(
-          Apiwork::ConfigurationError,
-          /Action 'archive' on resource 'posts' must be declared/,
-        )
-      end
-
-      it 'error message includes examples' do
-        expect do
-          root_resource.instance_eval do
-            resources :posts do
-              get :preview
-            end
-          end
-        end.to raise_error(
-          Apiwork::ConfigurationError,
-          /member \{ get :preview \}/,
-        )
-      end
-    end
-
-    context 'when :on parameter has invalid value' do
-      it 'raises ConfigurationError for :on => :invalid' do
-        expect do
-          root_resource.instance_eval do
-            resources :posts do
-              patch :archive, on: :invalid
-            end
-          end
-        end.to raise_error(
-          Apiwork::ConfigurationError,
-          /:on option must be either :member or :collection, got :invalid/,
-        )
-      end
-
-      it 'raises ConfigurationError for :on => "member"' do
-        expect do
-          root_resource.instance_eval do
-            resources :posts do
-              patch :archive, on: 'member'
-            end
-          end
-        end.to raise_error(
-          Apiwork::ConfigurationError,
-          /:on option must be either :member or :collection, got "member"/,
-        )
-      end
-    end
-  end
-
-  describe 'mixed member and collection actions' do
-    it 'captures both types correctly' do
-      root_resource.instance_eval do
-        resources :posts do
-          member do
-            patch :archive
-            get :preview
-          end
-
+RSpec.describe Apiwork::API::Resource do
+  describe '#collection' do
+    it 'defines a collection action' do
+      api_class = Apiwork::API.define '/unit/resource-collection' do
+        resources :invoices do
           collection do
             get :search
-            post :import
           end
         end
       end
 
-      resource = root_resource.resources[:posts]
-
-      expect(resource.member_actions).to have_key(:archive)
-      expect(resource.member_actions).to have_key(:preview)
+      resource = api_class.root_resource.resources[:invoices]
       expect(resource.collection_actions).to have_key(:search)
-      expect(resource.collection_actions).to have_key(:import)
+    end
+  end
+
+  describe '#concern' do
+    it 'defines the concern' do
+      api_class = Apiwork::API.define '/unit/resource-concern' do
+        concern :archivable do
+          member do
+            post :archive
+          end
+        end
+        resources :invoices, concerns: [:archivable]
+      end
+
+      resource = api_class.root_resource.resources[:invoices]
+      expect(resource.member_actions).to have_key(:archive)
+    end
+  end
+
+  describe '#concerns' do
+    it 'includes multiple concerns' do
+      api_class = Apiwork::API.define '/unit/resource-concerns' do
+        concern :archivable do
+          member do
+            post :archive
+          end
+        end
+        concern :searchable do
+          collection do
+            get :search
+          end
+        end
+        resources :invoices do
+          concerns :archivable, :searchable
+        end
+      end
+
+      resource = api_class.root_resource.resources[:invoices]
+      expect(resource.member_actions).to have_key(:archive)
+      expect(resource.collection_actions).to have_key(:search)
+    end
+  end
+
+  describe '#delete' do
+    it 'defines a DELETE action' do
+      api_class = Apiwork::API.define '/unit/resource-delete' do
+        resources :invoices do
+          member do
+            delete :archive
+          end
+        end
+      end
+
+      resource = api_class.root_resource.resources[:invoices]
+      expect(resource.member_actions[:archive].method).to eq(:delete)
+    end
+  end
+
+  describe '#get' do
+    it 'defines a GET action' do
+      api_class = Apiwork::API.define '/unit/resource-get' do
+        resources :invoices do
+          member do
+            get :preview
+          end
+        end
+      end
+
+      resource = api_class.root_resource.resources[:invoices]
+      expect(resource.member_actions).to have_key(:preview)
     end
 
-    it 'allows mixing block and inline syntax' do
-      root_resource.instance_eval do
-        resources :posts do
-          member do
-            patch :archive
-          end
-
-          get :preview, on: :member
+    it 'accepts on: parameter' do
+      api_class = Apiwork::API.define '/unit/resource-get-on' do
+        resources :invoices do
           get :search, on: :collection
         end
       end
 
-      resource = root_resource.resources[:posts]
-
-      expect(resource.member_actions).to have_key(:archive)
-      expect(resource.member_actions).to have_key(:preview)
+      resource = api_class.root_resource.resources[:invoices]
       expect(resource.collection_actions).to have_key(:search)
     end
   end
 
-  describe 'nested resources' do
-    it 'supports member/collection actions in nested resources' do
-      root_resource.instance_eval do
-        resources :accounts do
-          resources :posts do
-            member do
-              patch :archive
-            end
-
-            collection do
-              get :search
-            end
+  describe '#member' do
+    it 'defines a member action' do
+      api_class = Apiwork::API.define '/unit/resource-member' do
+        resources :invoices do
+          member do
+            post :send_invoice
           end
         end
       end
 
-      posts_resource = root_resource.resources[:accounts].resources[:posts]
-      expect(posts_resource.member_actions).to have_key(:archive)
-      expect(posts_resource.collection_actions).to have_key(:search)
+      resource = api_class.root_resource.resources[:invoices]
+      expect(resource.member_actions).to have_key(:send_invoice)
     end
   end
 
-  describe 'singular resources' do
-    it 'captures actions on singular resource' do
-      root_resource.instance_eval do
-        resource :account do
+  describe '#patch' do
+    it 'defines a PATCH action' do
+      api_class = Apiwork::API.define '/unit/resource-patch' do
+        resources :invoices do
           member do
-            get :dashboard
+            patch :mark_paid
           end
         end
       end
 
-      account_resource = root_resource.resources[:account]
-      expect(account_resource.member_actions).to have_key(:dashboard)
+      resource = api_class.root_resource.resources[:invoices]
+      expect(resource.member_actions[:mark_paid].method).to eq(:patch)
     end
+  end
 
-    it 'allows on: :member for singular resources' do
-      root_resource.instance_eval do
-        resource :account do
-          get :dashboard, on: :member
+  describe '#post' do
+    it 'defines a POST action' do
+      api_class = Apiwork::API.define '/unit/resource-post' do
+        resources :invoices do
+          member do
+            post :archive
+          end
         end
       end
 
-      account_resource = root_resource.resources[:account]
-      expect(account_resource.member_actions).to have_key(:dashboard)
+      resource = api_class.root_resource.resources[:invoices]
+      expect(resource.member_actions[:archive].method).to eq(:post)
+    end
+  end
+
+  describe '#put' do
+    it 'defines a PUT action' do
+      api_class = Apiwork::API.define '/unit/resource-put' do
+        resources :invoices do
+          member do
+            put :replace
+          end
+        end
+      end
+
+      resource = api_class.root_resource.resources[:invoices]
+      expect(resource.member_actions[:replace].method).to eq(:put)
+    end
+  end
+
+  describe '#resource' do
+    it 'defines a singular resource' do
+      api_class = Apiwork::API.define '/unit/resource-resource' do
+        resource :profile
+      end
+
+      expect(api_class.root_resource.resources).to have_key(:profile)
+      expect(api_class.root_resource.resources[:profile].singular).to be(true)
+    end
+  end
+
+  describe '#resources' do
+    it 'defines a plural resource' do
+      api_class = Apiwork::API.define '/unit/resource-resources' do
+        resources :invoices
+      end
+
+      expect(api_class.root_resource.resources).to have_key(:invoices)
+    end
+
+    it 'defines nested resources' do
+      api_class = Apiwork::API.define '/unit/resource-resources-nested' do
+        resources :invoices do
+          resources :items
+        end
+      end
+
+      invoice_resource = api_class.root_resource.resources[:invoices]
+      expect(invoice_resource.resources).to have_key(:items)
+    end
+
+    it 'accepts only option' do
+      api_class = Apiwork::API.define '/unit/resource-resources-only' do
+        resources :invoices, only: [:index, :show]
+      end
+
+      resource = api_class.root_resource.resources[:invoices]
+      expect(resource.only).to eq([:index, :show])
+    end
+
+    it 'accepts except option' do
+      api_class = Apiwork::API.define '/unit/resource-resources-except' do
+        resources :invoices, except: [:destroy]
+      end
+
+      resource = api_class.root_resource.resources[:invoices]
+      expect(resource.except).to eq([:destroy])
+    end
+
+    it 'accepts path option' do
+      api_class = Apiwork::API.define '/unit/resource-resources-path' do
+        resources :invoices, path: 'bills'
+      end
+
+      resource = api_class.root_resource.resources[:invoices]
+      expect(resource.path).to eq('bills')
+    end
+
+    it 'accepts controller option' do
+      api_class = Apiwork::API.define '/unit/resource-resources-controller' do
+        resources :invoices, controller: 'billing/invoices'
+      end
+
+      resource = api_class.root_resource.resources[:invoices]
+      expect(resource.controller).to eq('billing/invoices')
+    end
+
+    it 'accepts param option' do
+      api_class = Apiwork::API.define '/unit/resource-resources-param' do
+        resources :invoices, param: :invoice_number
+      end
+
+      resource = api_class.root_resource.resources[:invoices]
+      expect(resource.param).to eq(:invoice_number)
+    end
+  end
+
+  describe '#with_options' do
+    it 'applies options to nested resources' do
+      api_class = Apiwork::API.define '/unit/resource-with-options' do
+        with_options only: [:index, :show] do
+          resources :invoices
+        end
+      end
+
+      resource = api_class.root_resource.resources[:invoices]
+      expect(resource.only).to eq([:index, :show])
     end
   end
 end

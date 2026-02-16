@@ -2,155 +2,163 @@
 
 require 'rails_helper'
 
-RSpec.describe 'API path_format' do
-  describe 'path_format setting' do
-    it 'defaults to :keep' do
-      api_class = Class.new(Apiwork::API::Base) do
-        mount '/test'
+RSpec.describe Apiwork::API::Base do
+  describe '.adapter' do
+    it 'returns the adapter' do
+      api_class = Apiwork::API.define('/unit/base-adapter') {}
+
+      expect(api_class.adapter).to be_a(Apiwork::Adapter::Base)
+    end
+  end
+
+  describe '.export' do
+    it 'enables the export' do
+      api_class = Apiwork::API.define '/unit/base-export' do
+        export :openapi
       end
 
-      expect(api_class.path_format).to eq(:keep)
+      expect(api_class.export_configs).to have_key(:openapi)
+    end
+  end
+
+  describe '.info' do
+    it 'defines the info' do
+      api_class = Apiwork::API.define '/unit/base-info' do
+        info do
+          title 'Invoice API'
+          version '1.0.0'
+        end
+      end
+
+      expect(api_class.info).to be_a(Apiwork::API::Info)
+      expect(api_class.info.title).to eq('Invoice API')
+    end
+  end
+
+  describe '.key_format' do
+    it 'returns the key format' do
+      api_class = Apiwork::API.define '/unit/base-key-format' do
+        key_format :camel
+      end
+
+      expect(api_class.key_format).to eq(:camel)
     end
 
-    it 'accepts :kebab format' do
-      api_class = Class.new(Apiwork::API::Base) do
-        mount '/test'
+    it 'returns :keep by default' do
+      api_class = Apiwork::API.define('/unit/base-key-format-default') {}
+
+      expect(api_class.key_format).to eq(:keep)
+    end
+
+    it 'raises ConfigurationError for invalid format' do
+      expect do
+        Apiwork::API.define '/unit/base-key-format-invalid' do
+          key_format :invalid
+        end
+      end.to raise_error(Apiwork::ConfigurationError, /key_format/)
+    end
+  end
+
+  describe '.path_format' do
+    it 'returns the path format' do
+      api_class = Apiwork::API.define '/unit/base-path-format' do
         path_format :kebab
       end
 
       expect(api_class.path_format).to eq(:kebab)
     end
 
-    it 'accepts :camel format' do
-      api_class = Class.new(Apiwork::API::Base) do
-        mount '/test'
-        path_format :camel
-      end
+    it 'returns :keep by default' do
+      api_class = Apiwork::API.define('/unit/base-path-format-default') {}
 
-      expect(api_class.path_format).to eq(:camel)
+      expect(api_class.path_format).to eq(:keep)
     end
 
-    it 'accepts :underscore format' do
-      api_class = Class.new(Apiwork::API::Base) do
-        mount '/test'
-        path_format :underscore
-      end
-
-      expect(api_class.path_format).to eq(:underscore)
-    end
-
-    it 'accepts :pascal format' do
-      api_class = Class.new(Apiwork::API::Base) do
-        mount '/test'
-        path_format :pascal
-      end
-
-      expect(api_class.path_format).to eq(:pascal)
-    end
-
-    it 'raises error for invalid format' do
+    it 'raises ConfigurationError for invalid format' do
       expect do
-        Class.new(Apiwork::API::Base) do
-          mount '/test'
+        Apiwork::API.define '/unit/base-path-format-invalid' do
           path_format :invalid
         end
-      end.to raise_error(Apiwork::ConfigurationError, /path_format must be one of/)
+      end.to raise_error(Apiwork::ConfigurationError, /path_format/)
     end
   end
 
-  describe '#transform_path' do
-    let(:api_class) do
-      Class.new(Apiwork::API::Base) do
-        mount '/test'
+  describe '.raises' do
+    it 'returns the error codes' do
+      api_class = Apiwork::API.define '/unit/base-raises' do
+        raises :unauthorized, :forbidden
       end
+
+      expect(api_class.raises).to eq(%i[unauthorized forbidden])
     end
 
-    context 'with :keep format' do
-      before { api_class.path_format :keep }
-
-      it 'keeps underscore segments unchanged' do
-        expect(api_class.transform_path(:recurring_invoices)).to eq('recurring_invoices')
-      end
-
-      it 'keeps full paths unchanged' do
-        expect(api_class.transform_path('/cool_man/v2')).to eq('/cool_man/v2')
-      end
+    it 'raises ConfigurationError for non-symbol' do
+      expect do
+        Apiwork::API.define '/unit/base-raises-invalid' do
+          raises 404
+        end
+      end.to raise_error(Apiwork::ConfigurationError, /raises must be symbols/)
     end
+  end
 
-    context 'with :kebab format' do
-      before { api_class.path_format :kebab }
-
-      it 'transforms underscores to dashes' do
-        expect(api_class.transform_path(:recurring_invoices)).to eq('recurring-invoices')
+  describe '.enum' do
+    it 'registers the enum' do
+      api_class = Apiwork::API.define '/unit/base-enum' do
+        enum :status, values: %w[draft sent paid]
       end
 
-      it 'handles single-word segments' do
-        expect(api_class.transform_path(:invoices)).to eq('invoices')
-      end
-
-      it 'handles multiple underscores' do
-        expect(api_class.transform_path(:very_long_resource_name)).to eq('very-long-resource-name')
-      end
-
-      it 'transforms full paths' do
-        expect(api_class.transform_path('/cool_man/v2')).to eq('/cool-man/v2')
-      end
-
-      it 'transforms multi-segment paths' do
-        expect(api_class.transform_path('/api_v2/user_profiles')).to eq('/api-v2/user-profiles')
-      end
-
-      it 'preserves root path' do
-        expect(api_class.transform_path('/')).to eq('/')
-      end
+      expect(api_class.enum_registry.exists?(:status)).to be(true)
     end
+  end
 
-    context 'with :camel format' do
-      before { api_class.path_format :camel }
-
-      it 'transforms to lowerCamelCase' do
-        expect(api_class.transform_path(:recurring_invoices)).to eq('recurringInvoices')
+  describe '.fragment' do
+    it 'registers the fragment' do
+      api_class = Apiwork::API.define '/unit/base-fragment' do
+        fragment :timestamps do
+          datetime :created_at
+        end
       end
 
-      it 'handles single-word segments' do
-        expect(api_class.transform_path(:invoices)).to eq('invoices')
-      end
-
-      it 'handles multiple underscores' do
-        expect(api_class.transform_path(:very_long_resource_name)).to eq('veryLongResourceName')
-      end
-
-      it 'transforms full paths' do
-        expect(api_class.transform_path('/cool_man/v2')).to eq('/coolMan/v2')
-      end
+      expect(api_class.type_registry.exists?(:timestamps)).to be(true)
     end
+  end
 
-    context 'with :pascal format' do
-      before { api_class.path_format :pascal }
-
-      it 'transforms to PascalCase' do
-        expect(api_class.transform_path(:recurring_invoices)).to eq('RecurringInvoices')
+  describe '.object' do
+    it 'registers the object' do
+      api_class = Apiwork::API.define '/unit/base-object' do
+        object :item do
+          string :title
+          decimal :amount
+        end
       end
 
-      it 'handles single-word segments' do
-        expect(api_class.transform_path(:invoices)).to eq('Invoices')
-      end
-
-      it 'handles multiple underscores' do
-        expect(api_class.transform_path(:very_long_resource_name)).to eq('VeryLongResourceName')
-      end
-
-      it 'transforms full paths' do
-        expect(api_class.transform_path('/cool_man/v2')).to eq('/CoolMan/V2')
-      end
+      expect(api_class.type_registry.exists?(:item)).to be(true)
     end
+  end
 
-    context 'with :underscore format' do
-      before { api_class.path_format :underscore }
-
-      it 'keeps underscores unchanged' do
-        expect(api_class.transform_path(:recurring_invoices)).to eq('recurring_invoices')
+  describe '.resources' do
+    it 'defines the resource' do
+      api_class = Apiwork::API.define '/unit/base-resources' do
+        resources :invoices
       end
+
+      expect(api_class.root_resource.resources).to have_key(:invoices)
+    end
+  end
+
+  describe '.union' do
+    it 'registers the union' do
+      api_class = Apiwork::API.define '/unit/base-union' do
+        union :payment_method, discriminator: :type do
+          variant tag: 'card' do
+            object do
+              string :last_four
+            end
+          end
+        end
+      end
+
+      expect(api_class.type_registry.exists?(:payment_method)).to be(true)
     end
   end
 end

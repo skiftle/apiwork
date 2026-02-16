@@ -153,8 +153,9 @@ Given a method, categorize it, then apply the formula mechanically.
 4. Name is `to_h`, `to_s`, `as_json`   → Converter
 5. Name starts with `find`              → Finder
 6. Takes `&block` and defines structure → DSL
-7. Is a class setter (model, adapter)   → Configuration Setter
-8. Returns a value                      → Getter
+7. Accepts keyword args with defaults   → DSL with Options
+8. Is a class setter (model, adapter)   → Configuration Setter
+9. Returns a value                      → Getter
 ```
 
 ### Predicate (`?` methods)
@@ -375,6 +376,93 @@ If the setter supports inheritance, add a 4th test:
     expect(child.resource_serializer).to eq(Serializer::Resource::Default)
   end
 ```
+
+### DSL Method with Options (keyword arguments)
+
+**Formula:** Always exactly 2 contexts: "with defaults" and "with overrides".
+
+This applies to any DSL method that accepts keyword arguments with default values (e.g., `#param`, `#string`, `#integer`, and all sugar methods on Object classes).
+
+**"with defaults"** — Call the method with only required arguments. Assert all boolean defaults.
+
+**"with overrides"** — Call the method with ALL accepted keyword arguments set to non-default values. Assert each one.
+
+```ruby
+describe '#string' do
+  context 'with defaults' do
+    it 'defines a string param' do
+      object = described_class.new
+      object.string(:title)
+
+      expect(object.params[:title][:type]).to eq(:string)
+      expect(object.params[:title][:deprecated]).to be(false)
+      expect(object.params[:title][:nullable]).to be(false)
+      expect(object.params[:title][:optional]).to be(false)
+      expect(object.params[:title][:required]).to be(false)
+    end
+  end
+
+  context 'with overrides' do
+    it 'forwards all options' do
+      object = described_class.new
+      object.string(
+        :title,
+        as: :name,
+        default: 'Untitled',
+        deprecated: true,
+        description: 'The title',
+        enum: %w[draft published],
+        example: 'Invoice #1',
+        format: :email,
+        max: 100,
+        min: 1,
+        nullable: true,
+        optional: true,
+        required: false,
+      )
+
+      param = object.params[:title]
+      expect(param[:as]).to eq(:name)
+      expect(param[:default]).to eq('Untitled')
+      expect(param[:deprecated]).to be(true)
+      expect(param[:description]).to eq('The title')
+      expect(param[:enum]).to eq(%w[draft published])
+      expect(param[:example]).to eq('Invoice #1')
+      expect(param[:format]).to eq(:email)
+      expect(param[:max]).to eq(100)
+      expect(param[:min]).to eq(1)
+      expect(param[:nullable]).to be(true)
+      expect(param[:optional]).to be(true)
+      expect(param[:required]).to be(false)
+    end
+  end
+end
+```
+
+**Rules:**
+
+1. "with defaults" always verifies ALL boolean defaults explicitly (`be(false)` or `be(true)`)
+2. "with overrides" sets EVERY accepted keyword argument to a non-default value
+3. "with overrides" verifies EVERY keyword argument individually
+4. Use `be(true)` / `be(false)` for booleans, `eq(value)` for everything else
+
+**Optional variant methods** (ending with `?`, e.g., `#string?`) get "with defaults" only:
+
+```ruby
+describe '#string?' do
+  context 'with defaults' do
+    it 'defines an optional string param' do
+      object = described_class.new
+      object.string?(:title)
+
+      expect(object.params[:title][:type]).to eq(:string)
+      expect(object.params[:title][:optional]).to be(true)
+    end
+  end
+end
+```
+
+**`it` naming:** `'defines a <type> param'` for defaults, `'forwards all options'` for overrides, `'defines an optional <type> param'` for optional variants.
 
 ---
 
@@ -1272,26 +1360,61 @@ Non-class argument is always `'NotAClass'`. Wrong hierarchy is always `String`.
 
 ---
 
+## API Definition Paths
+
+Tests that call `Apiwork::API.define` must use unique, deterministic base paths.
+
+**Formula:** `/unit/<class>-<method>[-<variant>]`
+
+| Component | Rule | Example |
+|-----------|------|---------|
+| Prefix | Always `/unit/` for unit tests | `/unit/` |
+| `<class>` | Demodulized class name, lowercased | `Base` becomes `base`, `Resource` becomes `resource` |
+| `<method>` | Method name without `.`/`#`, underscores become hyphens | `.key_format` becomes `key-format` |
+| `<variant>` | Only when multiple API definitions in same `describe` | see below |
+
+### Variant rules
+
+| Situation | Variant | Example path |
+|-----------|---------|--------------|
+| Single `it` in describe | none | `/unit/base-adapter` |
+| Primary/happy path | none | `/unit/base-key-format` |
+| Default value test | `default` | `/unit/base-key-format-default` |
+| Error/raises test | `invalid` | `/unit/base-key-format-invalid` |
+| Specific keyword argument | argument name | `/unit/resource-get-on` |
+| Other behavior variant | shortest descriptive word | `/unit/resource-resources-nested` |
+
+### Examples
+
+```ruby
+# .adapter — single it, no variant
+Apiwork::API.define('/unit/base-adapter') {}
+
+# .key_format — 3 tests in same describe
+Apiwork::API.define '/unit/base-key-format' do       # primary
+Apiwork::API.define('/unit/base-key-format-default') {} # default value
+Apiwork::API.define '/unit/base-key-format-invalid' do  # error case
+
+# #resources — many tests in same describe
+Apiwork::API.define '/unit/resource-resources' do         # primary
+Apiwork::API.define '/unit/resource-resources-nested' do  # variant
+Apiwork::API.define '/unit/resource-resources-only' do    # keyword arg
+Apiwork::API.define '/unit/resource-resources-except' do  # keyword arg
+Apiwork::API.define '/unit/resource-resources-path' do    # keyword arg
+```
+
+### Integration tests
+
+Use `/integration/<feature>-<scenario>` for integration tests.
+
+---
+
 ## Intermediate Variables
 
 ```
 Accessing .first on a collection?                → Extract: `issue = json['issues'].first`
 Mapping a collection for comparison?             → Extract: `titles = json['posts'].map { |p| p['title'] }`
 Simple method call on test object?               → Inline: `expect(issue.pointer).to eq(...)`
-```
-
----
-
-## File Size
-
-Target: **under 150 lines** per test file.
-
-If a file exceeds 150 lines, split by `describe` group into separate files:
-
-```
-spec/apiwork/contract/object_spec.rb           → base validation
-spec/apiwork/contract/object_datetime_spec.rb  → datetime-specific
-spec/apiwork/contract/object_array_spec.rb     → array-specific
 ```
 
 ---
@@ -1334,15 +1457,14 @@ Given a class to test:
 6. Order: class methods (alphabetical), #initialize, instance methods (alphabetical)
 
 7. For each method:
-   a. Categorize (predicate/getter/raiser/mutator/converter/finder/DSL/config setter)
+   a. Categorize (predicate/getter/raiser/mutator/converter/finder/DSL/DSL with options/config setter)
    b. Count code paths (branches, conditionals)
    c. Apply formula for that category → get exact number of it blocks
    d. Check signature for edge cases → add it blocks per table
    e. If 3+ it blocks with same setup → wrap in let, else inline
    f. If method has branches → add context blocks per branch
-   g. Name it blocks using naming formula table
-
-8. Verify: under 150 lines? If not, split.
+   g. If DSL with options → add "with defaults" + "with overrides" contexts
+   h. Name it blocks using naming formula table
 ```
 
 ---
@@ -1359,13 +1481,13 @@ Before a test file is done:
 6. Each method categorized and formula applied
 7. Edge cases derived from signature
 8. `context` blocks match method branches
-9. `it` names follow naming formula table
-10. No `subject`, no `shared_examples`, no `shared_context`
-11. No comments
-12. AAA structure with blank lines
-13. Test data from the registry (no invented values)
-14. Record attributes in alphabetical order
-15. `let` scoped to nearest `describe`, not top-level
-16. Under 150 lines
+9. DSL methods with options have "with defaults" + "with overrides" contexts
+10. `it` names follow naming formula table
+11. No `subject`, no `shared_examples`, no `shared_context`
+12. No comments
+13. AAA structure with blank lines
+14. Test data from the registry (no invented values)
+15. Record attributes in alphabetical order
+16. `let` scoped to nearest `describe`, not top-level
 17. `bundle exec rubocop -A` passes
 18. `bundle exec rspec <file>` passes

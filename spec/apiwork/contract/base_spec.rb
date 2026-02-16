@@ -2,61 +2,165 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Abstract Contract' do
-  describe 'abstract behavior' do
-    let(:abstract_contract) do
-      create_test_contract do
-        abstract!
-      end
-    end
+RSpec.describe Apiwork::Contract::Base do
+  describe '.abstract!' do
+    it 'marks the class as abstract' do
+      contract_class = Class.new(described_class)
+      contract_class.abstract!
 
-    let(:concrete_contract) do
-      Class.new(abstract_contract)
-    end
-
-    it 'allows marking class as abstract' do
-      expect(abstract_contract.abstract?).to be true
-    end
-
-    it 'does not inherit abstract flag to subclasses' do
-      expect(concrete_contract.abstract?).to be false
-    end
-
-    it 'subclass can explicitly be marked as abstract again' do
-      another_abstract = Class.new(concrete_contract) do
-        abstract!
-      end
-
-      expect(another_abstract.abstract?).to be true
+      expect(contract_class.abstract?).to be(true)
     end
   end
 
-  describe 'BaseContract pattern' do
-    let(:base_contract) do
-      Class.new(Apiwork::Contract::Base) do
-        abstract!
+  describe '.abstract?' do
+    it 'returns true when abstract' do
+      contract_class = Class.new(described_class)
+      contract_class.abstract!
+
+      expect(contract_class.abstract?).to be(true)
+    end
+
+    it 'returns false when not abstract' do
+      contract_class = Class.new(described_class)
+
+      expect(contract_class.abstract?).to be(false)
+    end
+  end
+
+  describe '.action' do
+    it 'registers the action' do
+      contract_class = create_test_contract do
+        action :create do
+          request do
+            body do
+              string :title
+            end
+          end
+        end
       end
-    end
 
-    let(:post_contract) do
-      Class.new(base_contract)
+      expect(contract_class.actions).to have_key(:create)
+      expect(contract_class.actions[:create]).to be_a(Apiwork::Contract::Action)
     end
+  end
 
-    it 'BaseContract is abstract' do
-      expect(base_contract.abstract?).to be true
-    end
-
-    it 'PostContract inherits from BaseContract but is not abstract' do
-      expect(post_contract.superclass).to eq(base_contract)
-      expect(post_contract.abstract?).to be false
-    end
-
-    it 'PostContract can be marked abstract again' do
-      another_abstract = Class.new(post_contract) do
-        abstract!
+  describe '.identifier' do
+    it 'returns the identifier' do
+      contract_class = create_test_contract do
+        identifier :billing
       end
 
-      expect(another_abstract.abstract?).to be true
+      expect(contract_class.identifier).to eq('billing')
+    end
+
+    it 'returns nil when not set' do
+      contract_class = create_test_contract
+
+      expect(contract_class.identifier).to be_nil
+    end
+  end
+
+  describe '.import' do
+    it 'registers the import' do
+      imported_class = create_test_contract
+      contract_class = create_test_contract do
+        import imported_class, as: :billing
+      end
+
+      expect(contract_class.imports).to have_key(:billing)
+    end
+
+    it 'raises ConfigurationError for non-class argument' do
+      expect do
+        create_test_contract do
+          import 'NotAClass', as: :billing
+        end
+      end.to raise_error(Apiwork::ConfigurationError, /import must be a Class constant/)
+    end
+
+    it 'raises ConfigurationError for wrong class hierarchy' do
+      expect do
+        create_test_contract do
+          import String, as: :billing
+        end
+      end.to raise_error(Apiwork::ConfigurationError, /subclass of/)
+    end
+  end
+
+  describe '.enum' do
+    it 'registers the enum' do
+      contract_class = create_test_contract do
+        enum :status, values: %w[draft sent paid]
+      end
+
+      expect(contract_class.enum?(:status)).to be(true)
+    end
+  end
+
+  describe '.fragment' do
+    it 'registers the fragment' do
+      contract_class = create_test_contract do
+        fragment :timestamps do
+          datetime :created_at
+        end
+      end
+
+      expect(contract_class.type?(:timestamps)).to be(true)
+    end
+  end
+
+  describe '.object' do
+    it 'registers the object' do
+      contract_class = create_test_contract do
+        object :item do
+          string :title
+        end
+      end
+
+      expect(contract_class.type?(:item)).to be(true)
+    end
+  end
+
+  describe '.representation' do
+    it 'sets the representation class' do
+      representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
+      contract_class = create_test_contract do
+        representation representation_class
+      end
+
+      expect(contract_class.representation_class).to eq(representation_class)
+    end
+
+    it 'raises ConfigurationError for non-class argument' do
+      expect do
+        create_test_contract do
+          representation 'NotAClass'
+        end
+      end.to raise_error(Apiwork::ConfigurationError, /must be a Representation class/)
+    end
+
+    it 'raises ConfigurationError for wrong class hierarchy' do
+      expect do
+        create_test_contract do
+          representation String
+        end
+      end.to raise_error(Apiwork::ConfigurationError, /subclass of/)
+    end
+  end
+
+  describe '.union' do
+    it 'registers the union' do
+      contract_class = create_test_contract do
+        union :payment_method, discriminator: :type do
+          variant tag: 'card' do
+            object do
+              string :last_four
+            end
+          end
+        end
+      end
+
+      expect(contract_class.type?(:payment_method)).to be(true)
     end
   end
 end
