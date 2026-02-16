@@ -2,11 +2,12 @@
 
 require 'rails_helper'
 
-RSpec.describe Apiwork::API::Union do
+RSpec.describe Apiwork::Contract::Union do
   describe '#variant' do
     context 'with defaults' do
       it 'defines a variant' do
-        union = described_class.new(discriminator: :type)
+        contract_class = create_test_contract
+        union = described_class.new(contract_class, discriminator: :type)
         union.variant(tag: 'card') do
           object do
             string :last_four
@@ -23,7 +24,8 @@ RSpec.describe Apiwork::API::Union do
 
     context 'with overrides' do
       it 'forwards all options' do
-        union = described_class.new(discriminator: :type)
+        contract_class = create_test_contract
+        union = described_class.new(contract_class, discriminator: :type)
         union.variant(
           deprecated: true,
           description: 'Card payment',

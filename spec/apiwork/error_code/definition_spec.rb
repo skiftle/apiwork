@@ -28,7 +28,7 @@ RSpec.describe Apiwork::ErrorCode::Definition do
   end
 
   describe '#description' do
-    it 'returns the titleized key' do
+    it 'returns the description' do
       definition = described_class.new(attach_path: false, key: :payment_failed, status: 402)
 
       expect(definition.description).to eq('Payment Failed')

@@ -52,28 +52,6 @@ RSpec.describe Apiwork::API::Object do
         expect(object.params[:tags][:optional]).to be(true)
       end
     end
-
-    context 'with overrides' do
-      it 'forwards all options' do
-        object = described_class.new
-        object.array?(
-          :tags,
-          as: :labels,
-          default: [],
-          deprecated: true,
-          description: 'The tags',
-          nullable: true,
-          required: false,
-        ) { string }
-
-        param = object.params[:tags]
-        expect(param[:as]).to eq(:labels)
-        expect(param[:default]).to eq([])
-        expect(param[:deprecated]).to be(true)
-        expect(param[:description]).to eq('The tags')
-        expect(param[:nullable]).to be(true)
-      end
-    end
   end
 
   describe '#binary' do

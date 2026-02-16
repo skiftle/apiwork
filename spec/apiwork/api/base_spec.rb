@@ -11,6 +11,16 @@ RSpec.describe Apiwork::API::Base do
     end
   end
 
+  describe '.enum' do
+    it 'registers the enum' do
+      api_class = Apiwork::API.define '/unit/base-enum' do
+        enum :status, values: %w[draft sent paid]
+      end
+
+      expect(api_class.enum_registry.exists?(:status)).to be(true)
+    end
+  end
+
   describe '.export' do
     it 'enables the export' do
       api_class = Apiwork::API.define '/unit/base-export' do
@@ -18,6 +28,18 @@ RSpec.describe Apiwork::API::Base do
       end
 
       expect(api_class.export_configs).to have_key(:openapi)
+    end
+  end
+
+  describe '.fragment' do
+    it 'registers the fragment' do
+      api_class = Apiwork::API.define '/unit/base-fragment' do
+        fragment :timestamps do
+          datetime :created_at
+        end
+      end
+
+      expect(api_class.type_registry.exists?(:timestamps)).to be(true)
     end
   end
 
@@ -56,6 +78,19 @@ RSpec.describe Apiwork::API::Base do
           key_format :invalid
         end
       end.to raise_error(Apiwork::ConfigurationError, /key_format/)
+    end
+  end
+
+  describe '.object' do
+    it 'registers the object' do
+      api_class = Apiwork::API.define '/unit/base-object' do
+        object :item do
+          string :title
+          decimal :amount
+        end
+      end
+
+      expect(api_class.type_registry.exists?(:item)).to be(true)
     end
   end
 
@@ -98,41 +133,6 @@ RSpec.describe Apiwork::API::Base do
           raises 404
         end
       end.to raise_error(Apiwork::ConfigurationError, /raises must be symbols/)
-    end
-  end
-
-  describe '.enum' do
-    it 'registers the enum' do
-      api_class = Apiwork::API.define '/unit/base-enum' do
-        enum :status, values: %w[draft sent paid]
-      end
-
-      expect(api_class.enum_registry.exists?(:status)).to be(true)
-    end
-  end
-
-  describe '.fragment' do
-    it 'registers the fragment' do
-      api_class = Apiwork::API.define '/unit/base-fragment' do
-        fragment :timestamps do
-          datetime :created_at
-        end
-      end
-
-      expect(api_class.type_registry.exists?(:timestamps)).to be(true)
-    end
-  end
-
-  describe '.object' do
-    it 'registers the object' do
-      api_class = Apiwork::API.define '/unit/base-object' do
-        object :item do
-          string :title
-          decimal :amount
-        end
-      end
-
-      expect(api_class.type_registry.exists?(:item)).to be(true)
     end
   end
 
