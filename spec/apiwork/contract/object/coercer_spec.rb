@@ -250,12 +250,6 @@ RSpec.describe Apiwork::Contract::Object::Coercer do
         result[:items]
       end
 
-      it 'coerces array items with hash of spec' do
-        result = coerce_array(%w[1 2 3], of: { type: :integer })
-
-        expect(result).to eq([1, 2, 3])
-      end
-
       it 'coerces array items with symbol of spec' do
         result = coerce_array(%w[1 2 3], of: :integer)
 
@@ -276,7 +270,7 @@ RSpec.describe Apiwork::Contract::Object::Coercer do
       end
 
       it 'preserves non-coercible values' do
-        result = coerce_array(%w[abc def], of: { type: :integer })
+        result = coerce_array(%w[abc def], of: :integer)
 
         expect(result).to eq(%w[abc def])
       end

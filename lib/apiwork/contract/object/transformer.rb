@@ -49,7 +49,9 @@ module Apiwork
         private
 
         def transform_custom_type_array(value, param_options)
-          custom_type_shape = resolve_custom_type_shape(param_options[:of])
+          of = param_options[:of]
+          type_name = of.is_a?(Apiwork::Element) ? of.type : of
+          custom_type_shape = resolve_custom_type_shape(type_name)
           return nil unless custom_type_shape
 
           value.map do |item|

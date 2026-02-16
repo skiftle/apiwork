@@ -218,7 +218,7 @@ module Apiwork
           nullable:,
           optional:,
           required:,
-          of: build_of_from_element(element),
+          of: element,
           shape: element.shape,
           type: :array,
         )
@@ -263,20 +263,6 @@ module Apiwork
       end
 
       private
-
-      def build_of_from_element(element)
-        result = {
-          enum: element.enum,
-          format: element.format,
-          max: element.max,
-          min: element.min,
-          type: element.type,
-        }.compact
-
-        result[:of] = build_of_from_element(element.inner) if element.type == :array && element.inner
-
-        result
-      end
 
       def copy_nested_object_param(target_param, param_name, param_options, nested_shape)
         target_param.param(
@@ -503,7 +489,7 @@ module Apiwork
           element = Element.new(@contract_class)
           block.arity.positive? ? yield(element) : element.instance_eval(&block)
           element.validate!
-          resolved_of = build_of_from_element(element)
+          resolved_of = element
           resolved_shape = element.shape
         end
 

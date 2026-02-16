@@ -189,28 +189,49 @@ module Apiwork
         def resolve_of(options, scope, shape: nil)
           return nil unless options[:of]
 
-          of_value = options[:of]
+          of = options[:of]
 
-          if of_value.is_a?(Hash)
-            type_value = of_value[:type]
+          if of.is_a?(Element)
+            type_value = of.type
+            scoped_name = resolve_scoped_type_name(type_value, scope)
+            resolved_shape = if shape
+                               build_nested_shape(shape)
+                             elsif of.shape
+                               build_nested_shape(of.shape)
+                             else
+                               {}
+                             end
+            result = {
+              enum: of.enum,
+              format: of.format,
+              max: of.max,
+              min: of.min,
+              reference: scoped_name,
+              shape: resolved_shape,
+              type: scoped_name ? :reference : type_value,
+            }
+            result[:of] = resolve_of({ of: of.inner }, scope) if of.type == :array && of.inner
+            result
+          elsif of.is_a?(Hash)
+            type_value = of[:type]
             scoped_name = resolve_scoped_type_name(type_value, scope)
             resolved_shape = shape ? build_nested_shape(shape) : {}
             {
-              enum: of_value[:enum],
-              format: of_value[:format],
-              max: of_value[:max],
-              min: of_value[:min],
+              enum: of[:enum],
+              format: of[:format],
+              max: of[:max],
+              min: of[:min],
               reference: scoped_name,
               shape: resolved_shape,
               type: scoped_name ? :reference : type_value,
             }
           else
-            scoped_name = resolve_scoped_type_name(of_value, scope)
+            scoped_name = resolve_scoped_type_name(of, scope)
             resolved_shape = shape ? build_nested_shape(shape) : {}
             if scoped_name
               { reference: scoped_name, shape: {}, type: :reference }
             else
-              { reference: nil, shape: resolved_shape, type: of_value }
+              { reference: nil, shape: resolved_shape, type: of }
             end
           end
         end
@@ -228,26 +249,41 @@ module Apiwork
         def resolve_variant_of(variant, scope)
           return nil unless variant[:of]
 
-          of_value = variant[:of]
+          of = variant[:of]
 
-          if of_value.is_a?(Hash)
-            type_value = of_value[:type]
+          if of.is_a?(Element)
+            type_value = of.type
+            scoped_name = resolve_scoped_type_name(type_value, scope)
+            resolved_shape = of.shape ? build_nested_shape(of.shape) : {}
+            result = {
+              enum: of.enum,
+              format: of.format,
+              max: of.max,
+              min: of.min,
+              reference: scoped_name,
+              shape: resolved_shape,
+              type: scoped_name ? :reference : type_value,
+            }
+            result[:of] = resolve_variant_of({ of: of.inner }, scope) if of.type == :array && of.inner
+            result
+          elsif of.is_a?(Hash)
+            type_value = of[:type]
             scoped_name = resolve_scoped_type_name(type_value, scope)
             {
-              enum: of_value[:enum],
-              format: of_value[:format],
-              max: of_value[:max],
-              min: of_value[:min],
+              enum: of[:enum],
+              format: of[:format],
+              max: of[:max],
+              min: of[:min],
               reference: scoped_name,
               shape: {},
               type: scoped_name ? :reference : type_value,
             }
           else
-            scoped_name = resolve_scoped_type_name(of_value, scope)
+            scoped_name = resolve_scoped_type_name(of, scope)
             if scoped_name
               { reference: scoped_name, shape: {}, type: :reference }
             else
-              { reference: nil, shape: {}, type: of_value }
+              { reference: nil, shape: {}, type: of }
             end
           end
         end

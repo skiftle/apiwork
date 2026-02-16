@@ -133,13 +133,13 @@ module Apiwork
           add_if_matches_filter(references, type_to_add, filter)
         end
 
-        def extract_of_field(of_value, references, filter)
-          return unless of_value
+        def extract_of_field(of, references, filter)
+          return unless of
 
-          if of_value.is_a?(Hash)
-            collect_references(of_value, references, filter)
+          if of.is_a?(Hash)
+            collect_references(of, references, filter)
           else
-            add_if_matches_filter(references, of_value, filter)
+            add_if_matches_filter(references, of, filter)
           end
         end
 
