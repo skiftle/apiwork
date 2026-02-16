@@ -25,6 +25,21 @@ module Apiwork
       attr_reader :action_name,
                   :contract_class
 
+      def params
+        return @params if @merged.empty?
+
+        expanded = @params.dup
+        @merged.each do |type_name|
+          merged_type = @contract_class.api_class&.type_registry&.[](type_name)
+          next unless merged_type&.params
+
+          merged_type.params.each do |name, param_options|
+            expanded[name] ||= param_options
+          end
+        end
+        expanded
+      end
+
       def initialize(contract_class, action_name: nil, visited_types: nil, wrapped: false)
         super()
         @contract_class = contract_class

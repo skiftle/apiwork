@@ -73,7 +73,7 @@ module Apiwork
         def validate_param(name, value, param_options, data, path, current_depth:, max_depth:)
           field_path = path + [name]
 
-          required_error = validate_required(name, value, param_options, field_path)
+          required_error = validate_required(name, value, param_options, data, field_path)
           return [[required_error], NOT_SET] if required_error
 
           value = param_options[:default] if value.nil? && param_options[:default]
@@ -125,8 +125,9 @@ module Apiwork
           validate_shape_or_array(value, param_options, field_path, max_depth, current_depth)
         end
 
-        def validate_required(name, value, param_options, field_path)
+        def validate_required(name, value, param_options, data, field_path)
           return nil if param_options[:optional]
+          return nil if param_options[:nullable] && data.key?(name) && value.nil?
 
           missing = case param_options[:type]
                     when :boolean, :string

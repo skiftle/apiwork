@@ -656,4 +656,124 @@ RSpec.describe Apiwork::Contract::Object, '#validate datetime and date types' do
       end
     end
   end
+
+  describe 'nullable validation for non-string types' do
+    context 'when uuid field is nullable but required' do
+      before do
+        definition.uuid :schedule_id, nullable: true
+      end
+
+      it 'allows nil value without field_missing error' do
+        result = definition.validate({ schedule_id: nil })
+
+        expect(result.issues).to be_empty
+      end
+
+      it 'rejects missing field' do
+        result = definition.validate({})
+
+        expect(result.issues).not_to be_empty
+        expect(result.issues.first.code).to eq(:field_missing)
+      end
+
+      it 'accepts valid uuid value' do
+        result = definition.validate({ schedule_id: '550e8400-e29b-41d4-a716-446655440000' })
+
+        expect(result.issues).to be_empty
+      end
+    end
+
+    context 'when integer field is nullable but required' do
+      before do
+        definition.integer :quantity, nullable: true
+      end
+
+      it 'allows nil value without field_missing error' do
+        result = definition.validate({ quantity: nil })
+
+        expect(result.issues).to be_empty
+      end
+    end
+
+    context 'when datetime field is nullable but required' do
+      before do
+        definition.datetime :ends_at, nullable: true
+      end
+
+      it 'allows nil value without field_missing error' do
+        result = definition.validate({ ends_at: nil })
+
+        expect(result.issues).to be_empty
+      end
+    end
+  end
+
+  describe '#params with merged types' do
+    let(:api_class) do
+      Apiwork::API.define '/api/merge-test' do
+        object :pagination do
+          integer :current
+          integer :total
+          integer :items
+        end
+      end
+    end
+
+    let(:contract_class) do
+      klass = Class.new(Apiwork::Contract::Base)
+      klass.instance_variable_set(:@api_class, api_class)
+      klass
+    end
+
+    let(:definition) { described_class.new(contract_class) }
+
+    before do
+      definition.string :name
+      definition.merge(:pagination)
+    end
+
+    it 'includes own params' do
+      expect(definition.params.keys).to include(:name)
+    end
+
+    it 'includes merged type params' do
+      expect(definition.params.keys).to include(:current, :total, :items)
+    end
+
+    it 'prioritizes own params over merged params' do
+      definition.integer :current, description: 'Overridden'
+
+      expect(definition.params[:current][:description]).to eq('Overridden')
+    end
+
+    context 'when validating data with merged fields' do
+      it 'accepts data matching merged type schema' do
+        result = definition.validate(
+          {
+            current: 1,
+            items: 100,
+            name: 'Test',
+            total: 10,
+          },
+        )
+
+        expect(result.issues).to be_empty
+      end
+
+      it 'rejects unknown fields not in merged types' do
+        result = definition.validate(
+          {
+            current: 1,
+            items: 100,
+            name: 'Test',
+            total: 10,
+            unknown_field: 'value',
+          },
+        )
+
+        expect(result.issues).not_to be_empty
+        expect(result.issues.first.code).to eq(:field_unknown)
+      end
+    end
+  end
 end
