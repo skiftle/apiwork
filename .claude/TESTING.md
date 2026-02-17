@@ -1506,13 +1506,13 @@ Unit tests must not mutate global state with keys that exist in production code 
 
 ```
 1. Can I avoid global state entirely?        → Yes → use anonymous classes, create_test_contract
-2. Must I mutate global state (e.g., I18n)?  → Use unique keys with `unit_test_` prefix
+2. Must I mutate global state (e.g., I18n)?  → Use keys that do not exist in production
 3. Need `after` block to clean up?           → Forbidden. Fix the test instead.
 ```
 
 ### I18n Translations
 
-When a test needs `I18n.backend.store_translations`, use keys prefixed with `unit_test_`:
+When a test needs `I18n.backend.store_translations`, use keys that do not exist in locale files:
 
 ```ruby
 it 'returns the API-specific translation' do
@@ -1525,8 +1525,8 @@ end
 
 **Rules:**
 
-1. Never use real keys (`:not_found`, `:bad_request`) that exist in locale files
-2. Prefix with `unit_test_`: `:unit_test_api_specific`, `:unit_test_global_fallback`
+1. Never use keys that exist in locale files (`:not_found`, `:bad_request`, etc.)
+2. Use obviously test-only keys: `:unit_test_api_specific`, `:unit_operation`, etc.
 3. Never use `after { I18n.backend.reload! }` — it interferes with lazy loading
 
 ### Registries and Class State
@@ -1545,7 +1545,7 @@ Apiwork registries (API, Adapter, Export) persist across tests. Avoid registerin
 2. Global state cleanup is fragile (e.g., `I18n.backend.reload!` breaks `store_translations`)
 3. They mask the real problem: the test is mutating shared state with conflicting keys
 
-The fix is always: **use unique keys that cannot conflict.**
+The fix is always: **use keys that cannot conflict with production code or other tests.**
 
 ---
 
