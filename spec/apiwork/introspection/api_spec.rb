@@ -3,6 +3,21 @@
 require 'rails_helper'
 
 RSpec.describe Apiwork::Introspection::API do
+  describe '#initialize' do
+    it 'creates with required attributes' do
+      api = described_class.new(
+        base_path: '/api/v1',
+        enums: {},
+        error_codes: {},
+        info: nil,
+        resources: {},
+        types: {},
+      )
+
+      expect(api.base_path).to eq('/api/v1')
+    end
+  end
+
   describe '#enums' do
     it 'returns the enums' do
       api = described_class.new(
@@ -67,21 +82,6 @@ RSpec.describe Apiwork::Introspection::API do
       )
 
       expect(api.info).to be_nil
-    end
-  end
-
-  describe '#initialize' do
-    it 'creates with required attributes' do
-      api = described_class.new(
-        base_path: '/api/v1',
-        enums: {},
-        error_codes: {},
-        info: nil,
-        resources: {},
-        types: {},
-      )
-
-      expect(api.base_path).to eq('/api/v1')
     end
   end
 

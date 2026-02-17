@@ -100,7 +100,7 @@ RSpec.describe Apiwork::API::Element do
 
   describe '#of' do
     context 'when type is a primitive' do
-      it 'sets the type' do
+      it 'defines the type' do
         element = described_class.new
         element.of(:string)
 

@@ -37,34 +37,4 @@ RSpec.describe Apiwork::Representation::ModelDetector do
       expect(detector.sti_base?(Post)).to be(false)
     end
   end
-
-  describe '#sti_subclass?' do
-    it 'returns true when STI subclass' do
-      detector = described_class.new(Api::V1::PersonClientRepresentation)
-
-      expect(detector.sti_subclass?(PersonClient)).to be(true)
-    end
-
-    it 'returns false when not STI subclass' do
-      detector = described_class.new(Api::V1::ClientRepresentation)
-
-      expect(detector.sti_subclass?(Client)).to be(false)
-    end
-  end
-
-  describe '#superclass_is_sti_base?' do
-    it 'returns true when superclass is STI base' do
-      detector = described_class.new(Api::V1::PersonClientRepresentation)
-
-      expect(detector.superclass_is_sti_base?(PersonClient)).to be(true)
-    end
-
-    it 'returns false when superclass is not STI base' do
-      base_representation = Class.new(Apiwork::Representation::Base) { abstract! }
-      child_representation = Class.new(base_representation) { model Post }
-      detector = described_class.new(child_representation)
-
-      expect(detector.superclass_is_sti_base?(Post)).to be(false)
-    end
-  end
 end

@@ -3,6 +3,23 @@
 require 'rails_helper'
 
 RSpec.describe Apiwork::Introspection::Param::String do
+  describe '#initialize' do
+    it 'creates with required attributes' do
+      param = described_class.new(
+        enum: %w[draft published],
+        format: :email,
+        max: 100,
+        min: 1,
+        type: :string,
+      )
+
+      expect(param.format).to eq(:email)
+      expect(param.min).to eq(1)
+      expect(param.max).to eq(100)
+      expect(param.enum).to eq(%w[draft published])
+    end
+  end
+
   describe '#boundable?' do
     it 'returns true when boundable' do
       expect(described_class.new(type: :string).boundable?).to be(true)
@@ -40,23 +57,6 @@ RSpec.describe Apiwork::Introspection::Param::String do
   describe '#formattable?' do
     it 'returns true when formattable' do
       expect(described_class.new(type: :string).formattable?).to be(true)
-    end
-  end
-
-  describe '#initialize' do
-    it 'creates with required attributes' do
-      param = described_class.new(
-        enum: %w[draft published],
-        format: :email,
-        max: 100,
-        min: 1,
-        type: :string,
-      )
-
-      expect(param.format).to eq(:email)
-      expect(param.min).to eq(1)
-      expect(param.max).to eq(100)
-      expect(param.enum).to eq(%w[draft published])
     end
   end
 

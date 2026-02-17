@@ -29,6 +29,14 @@ RSpec.describe Apiwork::Export do
     end
   end
 
+  describe '.generate' do
+    it 'raises KeyError when not found' do
+      expect do
+        described_class.generate(:nonexistent, '/api/v1')
+      end.to raise_error(KeyError, /nonexistent/)
+    end
+  end
+
   describe '.register' do
     it 'registers the export' do
       export_class = Class.new(Apiwork::Export::Base) do

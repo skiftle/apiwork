@@ -3,6 +3,23 @@
 require 'rails_helper'
 
 RSpec.describe Apiwork::Introspection::Param::Integer do
+  describe '#initialize' do
+    it 'creates with required attributes' do
+      param = described_class.new(
+        enum: [1, 2, 3],
+        format: :int32,
+        max: 100,
+        min: 0,
+        type: :integer,
+      )
+
+      expect(param.format).to eq(:int32)
+      expect(param.min).to eq(0)
+      expect(param.max).to eq(100)
+      expect(param.enum).to eq([1, 2, 3])
+    end
+  end
+
   describe '#boundable?' do
     it 'returns true when boundable' do
       expect(described_class.new(type: :integer).boundable?).to be(true)
@@ -40,23 +57,6 @@ RSpec.describe Apiwork::Introspection::Param::Integer do
   describe '#formattable?' do
     it 'returns true when formattable' do
       expect(described_class.new(type: :integer).formattable?).to be(true)
-    end
-  end
-
-  describe '#initialize' do
-    it 'creates with required attributes' do
-      param = described_class.new(
-        enum: [1, 2, 3],
-        format: :int32,
-        max: 100,
-        min: 0,
-        type: :integer,
-      )
-
-      expect(param.format).to eq(:int32)
-      expect(param.min).to eq(0)
-      expect(param.max).to eq(100)
-      expect(param.enum).to eq([1, 2, 3])
     end
   end
 

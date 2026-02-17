@@ -3,6 +3,15 @@
 require 'rails_helper'
 
 RSpec.describe Apiwork::Introspection::Param::Array do
+  describe '#initialize' do
+    it 'creates with required attributes' do
+      param = described_class.new(max: 100, min: 1, of: nil, shape: nil, type: :array)
+
+      expect(param.min).to eq(1)
+      expect(param.max).to eq(100)
+    end
+  end
+
   describe '#array?' do
     it 'returns true when array' do
       expect(described_class.new(of: nil, shape: nil, type: :array).array?).to be(true)
@@ -12,15 +21,6 @@ RSpec.describe Apiwork::Introspection::Param::Array do
   describe '#boundable?' do
     it 'returns true when boundable' do
       expect(described_class.new(of: nil, shape: nil, type: :array).boundable?).to be(true)
-    end
-  end
-
-  describe '#initialize' do
-    it 'creates with required attributes' do
-      param = described_class.new(max: 100, min: 1, of: nil, shape: nil, type: :array)
-
-      expect(param.min).to eq(1)
-      expect(param.max).to eq(100)
     end
   end
 

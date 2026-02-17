@@ -38,6 +38,7 @@ RSpec.describe Apiwork::API::Object do
         expect(param[:description]).to eq('The tags')
         expect(param[:nullable]).to be(true)
         expect(param[:optional]).to be(true)
+        expect(param[:required]).to be(false)
       end
     end
   end

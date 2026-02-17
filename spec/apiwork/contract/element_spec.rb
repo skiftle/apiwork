@@ -110,7 +110,7 @@ RSpec.describe Apiwork::Contract::Element do
 
   describe '#of' do
     context 'when type is a primitive' do
-      it 'sets the type' do
+      it 'defines the type' do
         contract_class = create_test_contract
         element = described_class.new(contract_class)
         element.of(:string)

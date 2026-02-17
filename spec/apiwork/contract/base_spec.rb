@@ -44,6 +44,28 @@ RSpec.describe Apiwork::Contract::Base do
     end
   end
 
+  describe '.enum' do
+    it 'registers the enum' do
+      contract_class = create_test_contract do
+        enum :status, values: %w[draft sent paid]
+      end
+
+      expect(contract_class.enum?(:status)).to be(true)
+    end
+  end
+
+  describe '.fragment' do
+    it 'registers the fragment' do
+      contract_class = create_test_contract do
+        fragment :timestamps do
+          datetime :created_at
+        end
+      end
+
+      expect(contract_class.type?(:timestamps)).to be(true)
+    end
+  end
+
   describe '.identifier' do
     it 'returns the identifier' do
       contract_class = create_test_contract do
@@ -84,28 +106,6 @@ RSpec.describe Apiwork::Contract::Base do
           import String, as: :billing
         end
       end.to raise_error(Apiwork::ConfigurationError, /subclass of/)
-    end
-  end
-
-  describe '.enum' do
-    it 'registers the enum' do
-      contract_class = create_test_contract do
-        enum :status, values: %w[draft sent paid]
-      end
-
-      expect(contract_class.enum?(:status)).to be(true)
-    end
-  end
-
-  describe '.fragment' do
-    it 'registers the fragment' do
-      contract_class = create_test_contract do
-        fragment :timestamps do
-          datetime :created_at
-        end
-      end
-
-      expect(contract_class.type?(:timestamps)).to be(true)
     end
   end
 

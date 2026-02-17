@@ -1498,6 +1498,57 @@ Simple method call on test object?               → Inline: `expect(issue.point
 
 ---
 
+## Global State in Unit Tests
+
+Unit tests must not mutate global state with keys that exist in production code or other tests.
+
+### Decision Tree
+
+```
+1. Can I avoid global state entirely?        → Yes → use anonymous classes, create_test_contract
+2. Must I mutate global state (e.g., I18n)?  → Use unique keys with `unit_test_` prefix
+3. Need `after` block to clean up?           → Forbidden. Fix the test instead.
+```
+
+### I18n Translations
+
+When a test needs `I18n.backend.store_translations`, use keys prefixed with `unit_test_`:
+
+```ruby
+it 'returns the API-specific translation' do
+  definition = described_class.new(attach_path: false, key: :unit_test_api_specific, status: 404)
+  I18n.backend.store_translations(:en, apiwork: { apis: { 'api/v1': { error_codes: { unit_test_api_specific: { description: 'Resource not found' } } } } })
+
+  expect(definition.description(locale_key: 'api/v1')).to eq('Resource not found')
+end
+```
+
+**Rules:**
+
+1. Never use real keys (`:not_found`, `:bad_request`) that exist in locale files
+2. Prefix with `unit_test_`: `:unit_test_api_specific`, `:unit_test_global_fallback`
+3. Never use `after { I18n.backend.reload! }` — it interferes with lazy loading
+
+### Registries and Class State
+
+Apiwork registries (API, Adapter, Export) persist across tests. Avoid registering with real keys:
+
+1. Use anonymous classes (`Class.new(described_class)`) — they are not registered
+2. Use `create_test_contract` helper — generates isolated contracts
+3. For `Apiwork::API.define`, use deterministic paths per the API Definition Paths section
+
+### Why Not `after` Blocks?
+
+`after` blocks are forbidden because:
+
+1. They create hidden dependencies between setup and teardown
+2. Global state cleanup is fragile (e.g., `I18n.backend.reload!` breaks `store_translations`)
+3. They mask the real problem: the test is mutating shared state with conflicting keys
+
+The fix is always: **use unique keys that cannot conflict.**
+
+---
+
 ## Complete Algorithm
 
 Given a class to test:

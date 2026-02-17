@@ -3,6 +3,16 @@
 require 'rails_helper'
 
 RSpec.describe Apiwork::Introspection::Param::Number do
+  describe '#initialize' do
+    it 'creates with required attributes' do
+      param = described_class.new(enum: [0.5, 1.0], max: 100, min: 0, type: :number)
+
+      expect(param.min).to eq(0)
+      expect(param.max).to eq(100)
+      expect(param.enum).to eq([0.5, 1.0])
+    end
+  end
+
   describe '#boundable?' do
     it 'returns true when boundable' do
       expect(described_class.new(type: :number).boundable?).to be(true)
@@ -40,16 +50,6 @@ RSpec.describe Apiwork::Introspection::Param::Number do
   describe '#formattable?' do
     it 'returns false when not formattable' do
       expect(described_class.new(type: :number).formattable?).to be(false)
-    end
-  end
-
-  describe '#initialize' do
-    it 'creates with required attributes' do
-      param = described_class.new(enum: [0.5, 1.0], max: 100, min: 0, type: :number)
-
-      expect(param.min).to eq(0)
-      expect(param.max).to eq(100)
-      expect(param.enum).to eq([0.5, 1.0])
     end
   end
 

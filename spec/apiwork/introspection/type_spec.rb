@@ -3,6 +3,27 @@
 require 'rails_helper'
 
 RSpec.describe Apiwork::Introspection::Type do
+  describe '#initialize' do
+    it 'creates with required attributes' do
+      type = described_class.new(
+        deprecated: false,
+        description: 'Ruby developer',
+        discriminator: :type,
+        example: { amount: 42 },
+        extends: [:invoice],
+        shape: {},
+        type: :object,
+        variants: [],
+      )
+
+      expect(type.type).to eq(:object)
+      expect(type.description).to eq('Ruby developer')
+      expect(type.discriminator).to eq(:type)
+      expect(type.example).to eq({ amount: 42 })
+      expect(type.extends).to eq([:invoice])
+    end
+  end
+
   describe '#deprecated?' do
     it 'returns true when deprecated' do
       type = described_class.new(
@@ -64,27 +85,6 @@ RSpec.describe Apiwork::Introspection::Type do
       )
 
       expect(type.extends?).to be(false)
-    end
-  end
-
-  describe '#initialize' do
-    it 'creates with required attributes' do
-      type = described_class.new(
-        deprecated: false,
-        description: 'Ruby developer',
-        discriminator: :type,
-        example: { amount: 42 },
-        extends: [:invoice],
-        shape: {},
-        type: :object,
-        variants: [],
-      )
-
-      expect(type.type).to eq(:object)
-      expect(type.description).to eq('Ruby developer')
-      expect(type.discriminator).to eq(:type)
-      expect(type.example).to eq({ amount: 42 })
-      expect(type.extends).to eq([:invoice])
     end
   end
 

@@ -127,6 +127,7 @@ RSpec.describe Apiwork::Representation::Base do
         expect(association.example).to eq({ id: 1 })
         expect(association.filterable?).to be(true)
         expect(association.include).to eq(:always)
+        expect(association.nullable?).to be(true)
         expect(association.representation_class).to eq(target_representation)
         expect(association.sortable?).to be(true)
         expect(association.writable?).to be(true)
@@ -159,6 +160,19 @@ RSpec.describe Apiwork::Representation::Base do
       representation_class = Class.new(described_class) { abstract! }
 
       expect(representation_class.deprecated?).to be(false)
+    end
+  end
+
+  describe '.deserialize' do
+    it 'returns the deserialized hash' do
+      representation_class = Class.new(described_class) do
+        model Post
+        attribute :title, writable: true
+      end
+
+      result = representation_class.deserialize({ title: 'First Post' })
+
+      expect(result).to include(title: 'First Post')
     end
   end
 
@@ -288,6 +302,7 @@ RSpec.describe Apiwork::Representation::Base do
         expect(association.example).to eq({ id: 1 })
         expect(association.filterable?).to be(true)
         expect(association.include).to eq(:always)
+        expect(association.nullable?).to be(true)
         expect(association.representation_class).to eq(target_representation)
         expect(association.sortable?).to be(true)
         expect(association.writable?).to be(true)
@@ -394,6 +409,38 @@ RSpec.describe Apiwork::Representation::Base do
     end
   end
 
+  describe '.serialize' do
+    context 'with single record' do
+      it 'returns the serialized hash' do
+        representation_class = Class.new(described_class) do
+          model Post
+          attribute :title
+        end
+        record = Post.new(title: 'First Post')
+
+        result = representation_class.serialize(record)
+
+        expect(result).to include(title: 'First Post')
+      end
+    end
+
+    context 'with collection' do
+      it 'returns the serialized array' do
+        representation_class = Class.new(described_class) do
+          model Post
+          attribute :title
+        end
+        records = [Post.new(title: 'First Post'), Post.new(title: 'Second Post')]
+
+        result = representation_class.serialize(records)
+
+        expect(result).to be_an(Array)
+        expect(result.length).to eq(2)
+        expect(result.first).to include(title: 'First Post')
+      end
+    end
+  end
+
   describe '.sti_name' do
     context 'when type name is set' do
       it 'returns the STI name' do
@@ -414,6 +461,28 @@ RSpec.describe Apiwork::Representation::Base do
 
         expect(representation_class.sti_name).to eq('Post')
       end
+    end
+  end
+
+  describe '.subclass?' do
+    it 'returns true when subclass' do
+      base = Class.new(described_class) do
+        model Client
+      end
+      sub = Class.new(base) do
+        model PersonClient
+      end
+      inheritance = Apiwork::Representation::Inheritance.new(base)
+      inheritance.register(sub)
+      base.inheritance = inheritance
+
+      expect(sub.subclass?).to be(true)
+    end
+
+    it 'returns false when not subclass' do
+      representation_class = Class.new(described_class) { abstract! }
+
+      expect(representation_class).not_to be_subclass
     end
   end
 

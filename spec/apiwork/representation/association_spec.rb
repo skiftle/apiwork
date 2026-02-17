@@ -24,6 +24,7 @@ RSpec.describe Apiwork::Representation::Association do
 
     context 'with overrides' do
       it 'forwards all options' do
+        target_representation = Class.new(Apiwork::Representation::Base) { abstract! }
         representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
         association = described_class.new(
           :comments,
@@ -35,6 +36,7 @@ RSpec.describe Apiwork::Representation::Association do
           filterable: true,
           include: :always,
           nullable: true,
+          representation: target_representation,
           sortable: true,
           writable: true,
         )
@@ -46,6 +48,7 @@ RSpec.describe Apiwork::Representation::Association do
         expect(association.example).to eq({ id: 1 })
         expect(association.filterable?).to be(true)
         expect(association.include).to eq(:always)
+        expect(association.representation_class).to eq(target_representation)
         expect(association.sortable?).to be(true)
         expect(association.writable?).to be(true)
       end

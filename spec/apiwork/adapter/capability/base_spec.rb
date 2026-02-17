@@ -12,6 +12,18 @@ RSpec.describe Apiwork::Adapter::Capability::Base do
 
       expect(capability_class._api_builder).to eq(builder_class)
     end
+
+    context 'with block' do
+      it 'stores the block' do
+        capability_class = Class.new(described_class) do
+          api_builder do
+            enum(:status, values: %w[active inactive])
+          end
+        end
+
+        expect(capability_class._api_builder_block).to be_a(Proc)
+      end
+    end
   end
 
   describe '.capability_name' do
@@ -39,6 +51,18 @@ RSpec.describe Apiwork::Adapter::Capability::Base do
 
       expect(capability_class._contract_builder).to eq(builder_class)
     end
+
+    context 'with block' do
+      it 'stores the block' do
+        capability_class = Class.new(described_class) do
+          contract_builder do
+            object(:invoice) { string :id }
+          end
+        end
+
+        expect(capability_class._contract_builder_block).to be_a(Proc)
+      end
+    end
   end
 
   describe '.operation' do
@@ -49,6 +73,18 @@ RSpec.describe Apiwork::Adapter::Capability::Base do
       end
 
       expect(capability_class._operation_class).to eq(operation_class)
+    end
+
+    context 'with block' do
+      it 'stores the block' do
+        capability_class = Class.new(described_class) do
+          operation do
+            # operation logic
+          end
+        end
+
+        expect(capability_class._operation_block).to be_a(Proc)
+      end
     end
   end
 
