@@ -76,11 +76,14 @@ No blank line between the magic comment and require.
 ```
 1. Method is private?                              → NEVER
 2. Method is @api public?                          → MUST test
+2b. @api public but delegates to abstract method?  → Skip (tested via concrete subclasses)
 3. #initialize with validation or coercion?        → MUST test
 4. Method has ≥3 code paths?                       → MUST test
 5. File has ≥8 conditional keywords total?         → MUST test entry points
 6. Everything else (semi-public, <3 code paths)?   → Do NOT unit test
 ```
+
+Rule 2b applies to abstract base classes where @api public methods delegate to methods that raise `NotImplementedError`. These methods cannot be meaningfully tested on the base class. The concrete subclasses that implement the abstract method are tested instead. Examples: `Object#string` delegates to abstract `#param`, `Element#string` delegates to abstract `#of`, `Union#variant` calls abstract `#build_element`.
 
 Rule 4 catches semi-public methods with branching logic that integration tests cannot fully exercise.
 
