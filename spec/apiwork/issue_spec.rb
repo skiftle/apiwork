@@ -45,22 +45,26 @@ RSpec.describe Apiwork::Issue do
   end
 
   describe '#pointer' do
-    it 'returns JSON pointer format' do
+    it 'returns the pointer' do
       issue = described_class.new(:required, 'Required', path: [:user, :email])
 
       expect(issue.pointer).to eq('/user/email')
     end
 
-    it 'handles array indices' do
-      issue = described_class.new(:required, 'Required', path: [:items, 0, :name])
+    context 'with array indices in path' do
+      it 'returns the pointer' do
+        issue = described_class.new(:required, 'Required', path: [:items, 0, :name])
 
-      expect(issue.pointer).to eq('/items/0/name')
+        expect(issue.pointer).to eq('/items/0/name')
+      end
     end
 
-    it 'returns empty string for empty path' do
-      issue = described_class.new(:required, 'Required', path: [])
+    context 'with empty path' do
+      it 'returns the pointer' do
+        issue = described_class.new(:required, 'Required', path: [])
 
-      expect(issue.pointer).to eq('')
+        expect(issue.pointer).to eq('')
+      end
     end
   end
 

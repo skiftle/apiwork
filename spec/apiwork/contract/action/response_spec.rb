@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Apiwork::Contract::Action::Response do
   describe '#body' do
-    it 'defines body params' do
+    it 'defines the body' do
       contract_class = create_test_contract
       response = described_class.new(contract_class, :show)
       response.body do

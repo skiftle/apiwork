@@ -13,14 +13,16 @@ RSpec.describe Apiwork::Adapter::Wrapper::Base do
       expect(wrapper_class.shape).to eq(shape_class)
     end
 
-    it 'returns the shape when set with a block' do
-      wrapper_class = Class.new(described_class) do
-        shape do
-          string :label
+    context 'when set with a block' do
+      it 'returns the shape' do
+        wrapper_class = Class.new(described_class) do
+          shape do
+            string :label
+          end
         end
-      end
 
-      expect(wrapper_class.shape).to be < Apiwork::Adapter::Wrapper::Shape
+        expect(wrapper_class.shape).to be < Apiwork::Adapter::Wrapper::Shape
+      end
     end
 
     it 'returns nil when not set' do

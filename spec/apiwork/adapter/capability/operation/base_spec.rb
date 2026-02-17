@@ -13,14 +13,16 @@ RSpec.describe Apiwork::Adapter::Capability::Operation::Base do
       expect(operation_class.metadata_shape).to eq(shape_class)
     end
 
-    it 'returns the metadata shape when set with a block' do
-      operation_class = Class.new(described_class) do
-        metadata_shape do
-          string :label
+    context 'when set with a block' do
+      it 'returns the metadata shape' do
+        operation_class = Class.new(described_class) do
+          metadata_shape do
+            string :label
+          end
         end
-      end
 
-      expect(operation_class.metadata_shape).to be < Apiwork::Adapter::Capability::Operation::MetadataShape
+        expect(operation_class.metadata_shape).to be < Apiwork::Adapter::Capability::Operation::MetadataShape
+      end
     end
 
     it 'returns nil when not set' do
@@ -102,17 +104,19 @@ RSpec.describe Apiwork::Adapter::Capability::Operation::Base do
       expect(operation.translate(:label)).to eq('found')
     end
 
-    it 'returns the default when not found' do
-      request = Apiwork::Request.new(body: {}, query: {})
-      operation = described_class.new(
-        [],
-        Object,
-        {},
-        request,
-        translation_context: { adapter_name: :nonexistent, capability_name: :nonexistent },
-      )
+    context 'when not found' do
+      it 'returns the translation' do
+        request = Apiwork::Request.new(body: {}, query: {})
+        operation = described_class.new(
+          [],
+          Object,
+          {},
+          request,
+          translation_context: { adapter_name: :nonexistent, capability_name: :nonexistent },
+        )
 
-      expect(operation.translate(:missing, default: 'fallback')).to eq('fallback')
+        expect(operation.translate(:missing, default: 'fallback')).to eq('fallback')
+      end
     end
   end
 end
