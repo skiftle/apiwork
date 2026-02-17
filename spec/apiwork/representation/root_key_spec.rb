@@ -14,7 +14,7 @@ RSpec.describe Apiwork::Representation::RootKey do
     end
 
     context 'with overrides' do
-      it 'accepts singular and plural' do
+      it 'accepts plural' do
         root_key = described_class.new('bill', 'bills')
 
         expect(root_key.singular).to eq('bill')

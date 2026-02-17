@@ -14,7 +14,7 @@ RSpec.describe Apiwork::Representation::Inheritance do
   end
 
   describe '#column' do
-    it 'returns the inheritance column' do
+    it 'returns the column' do
       base = Class.new(Apiwork::Representation::Base) do
         abstract!
         model Client
@@ -76,7 +76,7 @@ RSpec.describe Apiwork::Representation::Inheritance do
 
   describe '#transform?' do
     context 'when subclass has different STI name' do
-      it 'returns true' do
+      it 'returns true when transform' do
         base = Class.new(Apiwork::Representation::Base) do
           abstract!
           model Client
@@ -93,7 +93,7 @@ RSpec.describe Apiwork::Representation::Inheritance do
     end
 
     context 'when subclass has same STI name' do
-      it 'returns false' do
+      it 'returns false when not transform' do
         base = Class.new(Apiwork::Representation::Base) do
           abstract!
           model Client

@@ -3,6 +3,14 @@
 require 'rails_helper'
 
 RSpec.describe Apiwork::Introspection::Param::DateTime do
+  describe '#initialize' do
+    it 'creates with required attributes' do
+      param = described_class.new(enum: %w[2024-01-15T10:30:00Z], type: :datetime)
+
+      expect(param.enum).to eq(%w[2024-01-15T10:30:00Z])
+    end
+  end
+
   describe '#datetime?' do
     it 'returns true when datetime' do
       expect(described_class.new(type: :datetime).datetime?).to be(true)

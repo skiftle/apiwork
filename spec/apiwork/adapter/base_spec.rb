@@ -33,7 +33,7 @@ RSpec.describe Apiwork::Adapter::Base do
   end
 
   describe '.collection_wrapper' do
-    it 'sets the collection wrapper' do
+    it 'sets the wrapper class' do
       adapter_class = Class.new(described_class) do
         collection_wrapper Apiwork::Adapter::Wrapper::Collection::Default
       end
@@ -68,7 +68,7 @@ RSpec.describe Apiwork::Adapter::Base do
   end
 
   describe '.error_serializer' do
-    it 'sets the error serializer' do
+    it 'sets the serializer class' do
       adapter_class = Class.new(described_class) do
         error_serializer Apiwork::Adapter::Serializer::Error::Default
       end
@@ -103,7 +103,7 @@ RSpec.describe Apiwork::Adapter::Base do
   end
 
   describe '.error_wrapper' do
-    it 'sets the error wrapper' do
+    it 'sets the wrapper class' do
       adapter_class = Class.new(described_class) do
         error_wrapper Apiwork::Adapter::Wrapper::Error::Default
       end
@@ -138,7 +138,7 @@ RSpec.describe Apiwork::Adapter::Base do
   end
 
   describe '.member_wrapper' do
-    it 'sets the member wrapper' do
+    it 'sets the wrapper class' do
       adapter_class = Class.new(described_class) do
         member_wrapper Apiwork::Adapter::Wrapper::Member::Default
       end
@@ -173,7 +173,7 @@ RSpec.describe Apiwork::Adapter::Base do
   end
 
   describe '.resource_serializer' do
-    it 'sets the resource serializer' do
+    it 'sets the serializer class' do
       adapter_class = Class.new(described_class) do
         resource_serializer Apiwork::Adapter::Serializer::Resource::Default
       end

@@ -16,6 +16,7 @@ RSpec.describe Apiwork::Representation::Association do
         expect(association.example).to be_nil
         expect(association.filterable?).to be(false)
         expect(association.include).to eq(:optional)
+        expect(association.nullable?).to be(false)
         expect(association.polymorphic).to be_nil
         expect(association.sortable?).to be(false)
         expect(association.writable?).to be(false)
@@ -48,6 +49,7 @@ RSpec.describe Apiwork::Representation::Association do
         expect(association.example).to eq({ id: 1 })
         expect(association.filterable?).to be(true)
         expect(association.include).to eq(:always)
+        expect(association.nullable?).to be(true)
         expect(association.representation_class).to eq(target_representation)
         expect(association.sortable?).to be(true)
         expect(association.writable?).to be(true)
@@ -56,14 +58,14 @@ RSpec.describe Apiwork::Representation::Association do
   end
 
   describe '#collection?' do
-    it 'returns true when a collection' do
+    it 'returns true when collection' do
       representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
       association = described_class.new(:comments, :has_many, representation_class)
 
       expect(association.collection?).to be(true)
     end
 
-    it 'returns false when not a collection' do
+    it 'returns false when not collection' do
       representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
       association = described_class.new(:author, :belongs_to, representation_class)
 

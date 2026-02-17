@@ -15,6 +15,11 @@ RSpec.describe Apiwork::Introspection::API do
       )
 
       expect(api.base_path).to eq('/api/v1')
+      expect(api.enums).to eq({})
+      expect(api.error_codes).to eq({})
+      expect(api.info).to be_nil
+      expect(api.resources).to eq({})
+      expect(api.types).to eq({})
     end
   end
 

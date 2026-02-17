@@ -83,7 +83,7 @@ RSpec.describe Apiwork::Configuration::Option do
     end
 
     context 'when type is :hash' do
-      it 'returns the string' do
+      it 'returns the value unchanged' do
         option = described_class.new(:pagination, :hash)
 
         expect(option.cast('value')).to eq('value')
@@ -112,7 +112,7 @@ RSpec.describe Apiwork::Configuration::Option do
     end
 
     context 'when nested and value is a Hash' do
-      it 'validates the children' do
+      it 'raises ConfigurationError when key is unknown' do
         option = described_class.new(:pagination, :hash)
         option.option(:strategy, default: :offset, type: :symbol)
 

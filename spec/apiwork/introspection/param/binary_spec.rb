@@ -3,6 +3,14 @@
 require 'rails_helper'
 
 RSpec.describe Apiwork::Introspection::Param::Binary do
+  describe '#initialize' do
+    it 'creates with required attributes' do
+      param = described_class.new(enum: %w[SGVsbG8=], type: :binary)
+
+      expect(param.enum).to eq(%w[SGVsbG8=])
+    end
+  end
+
   describe '#binary?' do
     it 'returns true when binary' do
       expect(described_class.new(type: :binary).binary?).to be(true)

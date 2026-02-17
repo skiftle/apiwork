@@ -3,6 +3,14 @@
 require 'rails_helper'
 
 RSpec.describe Apiwork::Introspection::Param::Time do
+  describe '#initialize' do
+    it 'creates with required attributes' do
+      param = described_class.new(enum: %w[09:00 17:00], type: :time)
+
+      expect(param.enum).to eq(%w[09:00 17:00])
+    end
+  end
+
   describe '#enum?' do
     it 'returns true when enum' do
       param = described_class.new(enum: %w[09:00 17:00], type: :time)

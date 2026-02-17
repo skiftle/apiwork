@@ -71,35 +71,6 @@ RSpec.describe Apiwork::Representation::Attribute do
     end
   end
 
-  describe '#decode' do
-    context 'with decode proc' do
-      it 'returns the transformed value' do
-        representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
-        attribute = described_class.new(:title, representation_class, decode: ->(value) { value.downcase }, type: :string)
-
-        expect(attribute.decode('FIRST POST')).to eq('first post')
-      end
-    end
-
-    context 'when empty' do
-      it 'returns nil for blank value' do
-        representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
-        attribute = described_class.new(:title, representation_class, empty: true, type: :string)
-
-        expect(attribute.decode('')).to be_nil
-      end
-    end
-
-    context 'without decode proc' do
-      it 'returns the value' do
-        representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
-        attribute = described_class.new(:title, representation_class, type: :string)
-
-        expect(attribute.decode('First Post')).to eq('First Post')
-      end
-    end
-  end
-
   describe '#deprecated?' do
     it 'returns true when deprecated' do
       representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
@@ -113,35 +84,6 @@ RSpec.describe Apiwork::Representation::Attribute do
       attribute = described_class.new(:title, representation_class, type: :string)
 
       expect(attribute.deprecated?).to be(false)
-    end
-  end
-
-  describe '#encode' do
-    context 'when empty and value is nil' do
-      it 'returns empty string' do
-        representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
-        attribute = described_class.new(:title, representation_class, empty: true, type: :string)
-
-        expect(attribute.encode(nil)).to eq('')
-      end
-    end
-
-    context 'with encode proc' do
-      it 'returns the transformed value' do
-        representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
-        attribute = described_class.new(:title, representation_class, encode: ->(value) { value.upcase }, type: :string)
-
-        expect(attribute.encode('first post')).to eq('FIRST POST')
-      end
-    end
-
-    context 'without encode proc' do
-      it 'returns the value' do
-        representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
-        attribute = described_class.new(:title, representation_class, type: :string)
-
-        expect(attribute.encode('First Post')).to eq('First Post')
-      end
     end
   end
 
@@ -245,6 +187,64 @@ RSpec.describe Apiwork::Representation::Attribute do
       attribute = described_class.new(:title, representation_class, type: :string, writable: :create)
 
       expect(attribute.writable_for?(:update)).to be(false)
+    end
+  end
+
+  describe '#decode' do
+    context 'with decode proc' do
+      it 'returns the transformed value' do
+        representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
+        attribute = described_class.new(:title, representation_class, decode: ->(value) { value.downcase }, type: :string)
+
+        expect(attribute.decode('FIRST POST')).to eq('first post')
+      end
+    end
+
+    context 'when empty' do
+      it 'returns nil for blank value' do
+        representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
+        attribute = described_class.new(:title, representation_class, empty: true, type: :string)
+
+        expect(attribute.decode('')).to be_nil
+      end
+    end
+
+    context 'without decode proc' do
+      it 'returns the value' do
+        representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
+        attribute = described_class.new(:title, representation_class, type: :string)
+
+        expect(attribute.decode('First Post')).to eq('First Post')
+      end
+    end
+  end
+
+  describe '#encode' do
+    context 'when empty and value is nil' do
+      it 'returns empty string' do
+        representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
+        attribute = described_class.new(:title, representation_class, empty: true, type: :string)
+
+        expect(attribute.encode(nil)).to eq('')
+      end
+    end
+
+    context 'with encode proc' do
+      it 'returns the transformed value' do
+        representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
+        attribute = described_class.new(:title, representation_class, encode: ->(value) { value.upcase }, type: :string)
+
+        expect(attribute.encode('first post')).to eq('FIRST POST')
+      end
+    end
+
+    context 'without encode proc' do
+      it 'returns the value' do
+        representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
+        attribute = described_class.new(:title, representation_class, type: :string)
+
+        expect(attribute.encode('First Post')).to eq('First Post')
+      end
     end
   end
 end

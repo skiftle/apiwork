@@ -8,6 +8,7 @@ RSpec.describe Apiwork::Introspection::Param::Object do
       param = described_class.new(partial: true, shape: nil, type: :object)
 
       expect(param.partial?).to be(true)
+      expect(param.shape).to eq({})
     end
   end
 

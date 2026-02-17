@@ -13,6 +13,12 @@ RSpec.describe Apiwork::Adapter::Capability::Operation::Base do
       expect(operation_class.metadata_shape).to eq(shape_class)
     end
 
+    it 'returns nil when not set' do
+      operation_class = Class.new(described_class)
+
+      expect(operation_class.metadata_shape).to be_nil
+    end
+
     context 'when set with a block' do
       it 'returns the metadata shape' do
         operation_class = Class.new(described_class) do
@@ -23,12 +29,6 @@ RSpec.describe Apiwork::Adapter::Capability::Operation::Base do
 
         expect(operation_class.metadata_shape).to be < Apiwork::Adapter::Capability::Operation::MetadataShape
       end
-    end
-
-    it 'returns nil when not set' do
-      operation_class = Class.new(described_class)
-
-      expect(operation_class.metadata_shape).to be_nil
     end
   end
 
@@ -105,7 +105,7 @@ RSpec.describe Apiwork::Adapter::Capability::Operation::Base do
     end
 
     context 'when not found' do
-      it 'returns the translation' do
+      it 'returns the default' do
         request = Apiwork::Request.new(body: {}, query: {})
         operation = described_class.new(
           [],

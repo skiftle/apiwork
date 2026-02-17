@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Apiwork::API::Element do
   describe '#array' do
-    it 'sets the type to array' do
+    it 'defines the type' do
       element = described_class.new
       element.array do
         string
@@ -15,7 +15,7 @@ RSpec.describe Apiwork::API::Element do
   end
 
   describe '#binary' do
-    it 'sets the type to binary' do
+    it 'defines the type' do
       element = described_class.new
       element.binary
 
@@ -24,7 +24,7 @@ RSpec.describe Apiwork::API::Element do
   end
 
   describe '#boolean' do
-    it 'sets the type to boolean' do
+    it 'defines the type' do
       element = described_class.new
       element.boolean
 
@@ -33,7 +33,7 @@ RSpec.describe Apiwork::API::Element do
   end
 
   describe '#date' do
-    it 'sets the type to date' do
+    it 'defines the type' do
       element = described_class.new
       element.date
 
@@ -42,7 +42,7 @@ RSpec.describe Apiwork::API::Element do
   end
 
   describe '#datetime' do
-    it 'sets the type to datetime' do
+    it 'defines the type' do
       element = described_class.new
       element.datetime
 
@@ -51,7 +51,7 @@ RSpec.describe Apiwork::API::Element do
   end
 
   describe '#decimal' do
-    it 'sets the type to decimal' do
+    it 'defines the type' do
       element = described_class.new
       element.decimal
 
@@ -60,7 +60,7 @@ RSpec.describe Apiwork::API::Element do
   end
 
   describe '#integer' do
-    it 'sets the type to integer' do
+    it 'defines the type' do
       element = described_class.new
       element.integer
 
@@ -69,7 +69,7 @@ RSpec.describe Apiwork::API::Element do
   end
 
   describe '#literal' do
-    it 'sets the type to literal' do
+    it 'defines the type' do
       element = described_class.new
       element.literal(value: '1.0')
 
@@ -78,7 +78,7 @@ RSpec.describe Apiwork::API::Element do
   end
 
   describe '#number' do
-    it 'sets the type to number' do
+    it 'defines the type' do
       element = described_class.new
       element.number
 
@@ -87,7 +87,7 @@ RSpec.describe Apiwork::API::Element do
   end
 
   describe '#object' do
-    it 'sets the type to object' do
+    it 'defines the type' do
       element = described_class.new
       element.object do
         string :title
@@ -100,7 +100,7 @@ RSpec.describe Apiwork::API::Element do
 
   describe '#of' do
     context 'when type is a primitive' do
-      it 'defines the type' do
+      it 'defines the element type' do
         element = described_class.new
         element.of(:string)
 
@@ -109,7 +109,7 @@ RSpec.describe Apiwork::API::Element do
     end
 
     context 'when type is :object' do
-      it 'sets the type and shape' do
+      it 'defines the element type and shape' do
         element = described_class.new
         element.of(:object) do
           string :title
@@ -120,8 +120,39 @@ RSpec.describe Apiwork::API::Element do
       end
     end
 
+    context 'when type is :literal' do
+      it 'defines the element type' do
+        element = described_class.new
+        element.of(:literal, value: '1.0')
+
+        expect(element.type).to eq(:literal)
+      end
+    end
+
+    context 'when type is :array' do
+      it 'defines the element type' do
+        element = described_class.new
+        element.of(:array) { string }
+
+        expect(element.type).to eq(:array)
+      end
+    end
+
+    context 'when type is :union' do
+      it 'defines the element type' do
+        element = described_class.new
+        element.of(:union, discriminator: :type) do
+          variant tag: 'card' do
+            object { string :last_four }
+          end
+        end
+
+        expect(element.type).to eq(:union)
+      end
+    end
+
     context 'when type is a custom reference' do
-      it 'sets the custom type' do
+      it 'defines the custom type' do
         element = described_class.new
         element.of(:item)
 
@@ -132,7 +163,7 @@ RSpec.describe Apiwork::API::Element do
   end
 
   describe '#reference' do
-    it 'sets the custom type' do
+    it 'defines the custom type' do
       element = described_class.new
       element.reference(:item)
 
@@ -142,7 +173,7 @@ RSpec.describe Apiwork::API::Element do
   end
 
   describe '#string' do
-    it 'sets the type to string' do
+    it 'defines the type' do
       element = described_class.new
       element.string
 
@@ -151,7 +182,7 @@ RSpec.describe Apiwork::API::Element do
   end
 
   describe '#time' do
-    it 'sets the type to time' do
+    it 'defines the type' do
       element = described_class.new
       element.time
 
@@ -160,7 +191,7 @@ RSpec.describe Apiwork::API::Element do
   end
 
   describe '#union' do
-    it 'sets the type to union' do
+    it 'defines the type' do
       element = described_class.new
       element.union(discriminator: :type) do
         variant tag: 'card' do
@@ -175,7 +206,7 @@ RSpec.describe Apiwork::API::Element do
   end
 
   describe '#uuid' do
-    it 'sets the type to uuid' do
+    it 'defines the type' do
       element = described_class.new
       element.uuid
 

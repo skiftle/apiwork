@@ -3,6 +3,14 @@
 require 'rails_helper'
 
 RSpec.describe Apiwork::Introspection::Param::Boolean do
+  describe '#initialize' do
+    it 'creates with required attributes' do
+      param = described_class.new(enum: [true], type: :boolean)
+
+      expect(param.enum).to eq([true])
+    end
+  end
+
   describe '#boolean?' do
     it 'returns true when boolean' do
       expect(described_class.new(type: :boolean).boolean?).to be(true)

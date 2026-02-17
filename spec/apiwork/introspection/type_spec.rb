@@ -21,6 +21,8 @@ RSpec.describe Apiwork::Introspection::Type do
       expect(type.discriminator).to eq(:type)
       expect(type.example).to eq({ amount: 42 })
       expect(type.extends).to eq([:invoice])
+      expect(type.shape).to eq({})
+      expect(type.variants).to eq([])
     end
   end
 

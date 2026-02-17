@@ -14,7 +14,7 @@ RSpec.describe Apiwork::Adapter::Capability::Base do
     end
 
     context 'with block' do
-      it 'stores the block' do
+      it 'registers the API builder block' do
         capability_class = Class.new(described_class) do
           api_builder do
             enum(:status, values: %w[active inactive])
@@ -53,7 +53,7 @@ RSpec.describe Apiwork::Adapter::Capability::Base do
     end
 
     context 'with block' do
-      it 'stores the block' do
+      it 'registers the contract builder block' do
         capability_class = Class.new(described_class) do
           contract_builder do
             object(:invoice) { string :id }
@@ -76,10 +76,10 @@ RSpec.describe Apiwork::Adapter::Capability::Base do
     end
 
     context 'with block' do
-      it 'stores the block' do
+      it 'registers the operation block' do
         capability_class = Class.new(described_class) do
           operation do
-            # operation logic
+            target :collection
           end
         end
 

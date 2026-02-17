@@ -3,6 +3,30 @@
 require 'rails_helper'
 
 RSpec.describe Apiwork::Introspection::API::Info do
+  describe '#initialize' do
+    it 'creates with required attributes' do
+      info = described_class.new(
+        contact: nil,
+        description: 'Ruby developer',
+        license: nil,
+        servers: [],
+        summary: 'Rails tutorial',
+        terms_of_service: 'https://example.com/alice.jpg',
+        title: 'First Post',
+        version: '1.0.0',
+      )
+
+      expect(info.title).to eq('First Post')
+      expect(info.version).to eq('1.0.0')
+      expect(info.description).to eq('Ruby developer')
+      expect(info.summary).to eq('Rails tutorial')
+      expect(info.terms_of_service).to eq('https://example.com/alice.jpg')
+      expect(info.contact).to be_nil
+      expect(info.license).to be_nil
+      expect(info.servers).to eq([])
+    end
+  end
+
   describe '#contact' do
     it 'returns the contact' do
       info = described_class.new(
@@ -32,27 +56,6 @@ RSpec.describe Apiwork::Introspection::API::Info do
       )
 
       expect(info.contact).to be_nil
-    end
-  end
-
-  describe '#initialize' do
-    it 'creates with required attributes' do
-      info = described_class.new(
-        contact: nil,
-        description: 'Ruby developer',
-        license: nil,
-        servers: [],
-        summary: 'Rails tutorial',
-        terms_of_service: 'https://example.com/alice.jpg',
-        title: 'First Post',
-        version: '1.0.0',
-      )
-
-      expect(info.title).to eq('First Post')
-      expect(info.version).to eq('1.0.0')
-      expect(info.description).to eq('Ruby developer')
-      expect(info.summary).to eq('Rails tutorial')
-      expect(info.terms_of_service).to eq('https://example.com/alice.jpg')
     end
   end
 

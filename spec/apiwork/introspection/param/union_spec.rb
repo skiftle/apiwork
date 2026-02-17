@@ -8,6 +8,7 @@ RSpec.describe Apiwork::Introspection::Param::Union do
       param = described_class.new(discriminator: :type, type: :union, variants: [])
 
       expect(param.discriminator).to eq(:type)
+      expect(param.variants).to eq([])
     end
   end
 

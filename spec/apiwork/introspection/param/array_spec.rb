@@ -9,6 +9,8 @@ RSpec.describe Apiwork::Introspection::Param::Array do
 
       expect(param.min).to eq(1)
       expect(param.max).to eq(100)
+      expect(param.of).to be_nil
+      expect(param.shape).to eq({})
     end
   end
 

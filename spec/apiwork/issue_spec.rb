@@ -45,10 +45,12 @@ RSpec.describe Apiwork::Issue do
   end
 
   describe '#pointer' do
-    it 'returns the pointer' do
-      issue = described_class.new(:required, 'Required', path: [:user, :email])
+    context 'with path elements' do
+      it 'returns the pointer' do
+        issue = described_class.new(:required, 'Required', path: [:user, :email])
 
-      expect(issue.pointer).to eq('/user/email')
+        expect(issue.pointer).to eq('/user/email')
+      end
     end
 
     context 'with array indices in path' do

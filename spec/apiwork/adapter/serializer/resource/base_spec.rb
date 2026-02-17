@@ -21,7 +21,7 @@ RSpec.describe Apiwork::Adapter::Serializer::Resource::Base do
   end
 
   describe '.data_type' do
-    it 'registers the data type' do
+    it 'returns the data type' do
       serializer_class = Class.new(described_class) do
         data_type(&:name)
       end

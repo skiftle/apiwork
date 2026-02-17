@@ -99,6 +99,7 @@ RSpec.describe Apiwork::Representation::Base do
         expect(association.deprecated?).to be(false)
         expect(association.filterable?).to be(false)
         expect(association.include).to eq(:optional)
+        expect(association.nullable?).to be(false)
         expect(association.sortable?).to be(false)
         expect(association.writable?).to be(false)
       end
@@ -225,6 +226,7 @@ RSpec.describe Apiwork::Representation::Base do
         expect(association.deprecated?).to be(false)
         expect(association.filterable?).to be(false)
         expect(association.include).to eq(:optional)
+        expect(association.nullable?).to be(false)
         expect(association.sortable?).to be(false)
         expect(association.writable?).to be(false)
       end
@@ -274,6 +276,7 @@ RSpec.describe Apiwork::Representation::Base do
         expect(association.deprecated?).to be(false)
         expect(association.filterable?).to be(false)
         expect(association.include).to eq(:optional)
+        expect(association.nullable?).to be(false)
         expect(association.sortable?).to be(false)
         expect(association.writable?).to be(false)
       end
@@ -500,6 +503,20 @@ RSpec.describe Apiwork::Representation::Base do
       representation_class = Class.new(described_class) { abstract! }
 
       expect(representation_class.type_name).to be_nil
+    end
+  end
+
+  describe '#initialize' do
+    it 'creates with required attributes' do
+      representation_class = Class.new(described_class) do
+        model Post
+      end
+      record = Post.new(title: 'First Post')
+
+      representation = representation_class.new(record, context: { current_user: 'Alice' })
+
+      expect(representation.record).to eq(record)
+      expect(representation.context).to eq({ current_user: 'Alice' })
     end
   end
 end

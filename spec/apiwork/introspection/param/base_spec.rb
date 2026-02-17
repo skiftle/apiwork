@@ -3,6 +3,30 @@
 require 'rails_helper'
 
 RSpec.describe Apiwork::Introspection::Param::Base do
+  describe '#initialize' do
+    it 'creates with required attributes' do
+      param = described_class.new(
+        default: 'Untitled',
+        deprecated: true,
+        description: 'The title',
+        example: 'First Post',
+        nullable: true,
+        optional: true,
+        tag: 'field',
+        type: :string,
+      )
+
+      expect(param.type).to eq(:string)
+      expect(param.description).to eq('The title')
+      expect(param.example).to eq('First Post')
+      expect(param.default).to eq('Untitled')
+      expect(param.tag).to eq('field')
+      expect(param.nullable?).to be(true)
+      expect(param.optional?).to be(true)
+      expect(param.deprecated?).to be(true)
+    end
+  end
+
   describe '#array?' do
     it 'returns false when not array' do
       expect(described_class.new(type: :string).array?).to be(false)
@@ -88,24 +112,6 @@ RSpec.describe Apiwork::Introspection::Param::Base do
   describe '#formattable?' do
     it 'returns false when not formattable' do
       expect(described_class.new(type: :string).formattable?).to be(false)
-    end
-  end
-
-  describe '#initialize' do
-    it 'creates with required attributes' do
-      param = described_class.new(
-        default: 'Untitled',
-        description: 'The title',
-        example: 'First Post',
-        tag: 'field',
-        type: :string,
-      )
-
-      expect(param.type).to eq(:string)
-      expect(param.description).to eq('The title')
-      expect(param.example).to eq('First Post')
-      expect(param.default).to eq('Untitled')
-      expect(param.tag).to eq('field')
     end
   end
 

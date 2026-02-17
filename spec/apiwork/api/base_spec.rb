@@ -11,6 +11,22 @@ RSpec.describe Apiwork::API::Base do
     end
   end
 
+  describe '.concern' do
+    it 'defines a concern' do
+      api_class = Apiwork::API.define '/unit/base-concern' do
+        concern :archivable do
+          member do
+            post :archive
+          end
+        end
+        resources :invoices, concerns: [:archivable]
+      end
+
+      resource = api_class.root_resource.resources[:invoices]
+      expect(resource.member_actions).to have_key(:archive)
+    end
+  end
+
   describe '.enum' do
     it 'registers the enum' do
       api_class = Apiwork::API.define '/unit/base-enum' do
@@ -22,7 +38,7 @@ RSpec.describe Apiwork::API::Base do
   end
 
   describe '.export' do
-    it 'enables the export' do
+    it 'registers the export' do
       api_class = Apiwork::API.define '/unit/base-export' do
         export :openapi
       end
@@ -136,8 +152,19 @@ RSpec.describe Apiwork::API::Base do
     end
   end
 
+  describe '.resource' do
+    it 'defines a singular resource' do
+      api_class = Apiwork::API.define '/unit/base-resource' do
+        resource :profile
+      end
+
+      expect(api_class.root_resource.resources).to have_key(:profile)
+      expect(api_class.root_resource.resources[:profile].singular).to be(true)
+    end
+  end
+
   describe '.resources' do
-    it 'defines the resource' do
+    it 'defines a resource' do
       api_class = Apiwork::API.define '/unit/base-resources' do
         resources :invoices
       end
@@ -159,6 +186,19 @@ RSpec.describe Apiwork::API::Base do
       end
 
       expect(api_class.type_registry.exists?(:payment_method)).to be(true)
+    end
+  end
+
+  describe '.with_options' do
+    it 'forwards all options' do
+      api_class = Apiwork::API.define '/unit/base-with-options' do
+        with_options only: [:index, :show] do
+          resources :invoices
+        end
+      end
+
+      resource = api_class.root_resource.resources[:invoices]
+      expect(resource.only).to eq([:index, :show])
     end
   end
 end

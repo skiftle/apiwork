@@ -40,7 +40,7 @@ RSpec.describe Apiwork::ErrorCode do
       expect(result.attach_path).to be(false)
     end
 
-    it 'raises ArgumentError for invalid status' do
+    it 'raises ArgumentError when status is invalid' do
       expect do
         described_class.register(:invalid_status, status: 200)
       end.to raise_error(ArgumentError, /400-599/)

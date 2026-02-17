@@ -3,6 +3,14 @@
 require 'rails_helper'
 
 RSpec.describe Apiwork::Introspection::Param::UUID do
+  describe '#initialize' do
+    it 'creates with required attributes' do
+      param = described_class.new(enum: %w[550e8400-e29b-41d4-a716-446655440000], type: :uuid)
+
+      expect(param.enum).to eq(%w[550e8400-e29b-41d4-a716-446655440000])
+    end
+  end
+
   describe '#enum?' do
     it 'returns true when enum' do
       param = described_class.new(enum: %w[550e8400-e29b-41d4-a716-446655440000], type: :uuid)

@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Apiwork::Contract::Element do
   describe '#array' do
-    it 'sets the type to array' do
+    it 'defines the type' do
       contract_class = create_test_contract
       element = described_class.new(contract_class)
       element.array do
@@ -16,7 +16,7 @@ RSpec.describe Apiwork::Contract::Element do
   end
 
   describe '#binary' do
-    it 'sets the type to binary' do
+    it 'defines the type' do
       contract_class = create_test_contract
       element = described_class.new(contract_class)
       element.binary
@@ -26,7 +26,7 @@ RSpec.describe Apiwork::Contract::Element do
   end
 
   describe '#boolean' do
-    it 'sets the type to boolean' do
+    it 'defines the type' do
       contract_class = create_test_contract
       element = described_class.new(contract_class)
       element.boolean
@@ -36,7 +36,7 @@ RSpec.describe Apiwork::Contract::Element do
   end
 
   describe '#date' do
-    it 'sets the type to date' do
+    it 'defines the type' do
       contract_class = create_test_contract
       element = described_class.new(contract_class)
       element.date
@@ -46,7 +46,7 @@ RSpec.describe Apiwork::Contract::Element do
   end
 
   describe '#datetime' do
-    it 'sets the type to datetime' do
+    it 'defines the type' do
       contract_class = create_test_contract
       element = described_class.new(contract_class)
       element.datetime
@@ -56,7 +56,7 @@ RSpec.describe Apiwork::Contract::Element do
   end
 
   describe '#decimal' do
-    it 'sets the type to decimal' do
+    it 'defines the type' do
       contract_class = create_test_contract
       element = described_class.new(contract_class)
       element.decimal
@@ -66,7 +66,7 @@ RSpec.describe Apiwork::Contract::Element do
   end
 
   describe '#integer' do
-    it 'sets the type to integer' do
+    it 'defines the type' do
       contract_class = create_test_contract
       element = described_class.new(contract_class)
       element.integer
@@ -76,7 +76,7 @@ RSpec.describe Apiwork::Contract::Element do
   end
 
   describe '#literal' do
-    it 'sets the type to literal' do
+    it 'defines the type' do
       contract_class = create_test_contract
       element = described_class.new(contract_class)
       element.literal(value: '1.0')
@@ -86,7 +86,7 @@ RSpec.describe Apiwork::Contract::Element do
   end
 
   describe '#number' do
-    it 'sets the type to number' do
+    it 'defines the type' do
       contract_class = create_test_contract
       element = described_class.new(contract_class)
       element.number
@@ -96,7 +96,7 @@ RSpec.describe Apiwork::Contract::Element do
   end
 
   describe '#object' do
-    it 'sets the type to object' do
+    it 'defines the type' do
       contract_class = create_test_contract
       element = described_class.new(contract_class)
       element.object do
@@ -110,7 +110,7 @@ RSpec.describe Apiwork::Contract::Element do
 
   describe '#of' do
     context 'when type is a primitive' do
-      it 'defines the type' do
+      it 'defines the element type' do
         contract_class = create_test_contract
         element = described_class.new(contract_class)
         element.of(:string)
@@ -120,7 +120,7 @@ RSpec.describe Apiwork::Contract::Element do
     end
 
     context 'when type is :object' do
-      it 'sets the type and shape' do
+      it 'defines the element type and shape' do
         contract_class = create_test_contract
         element = described_class.new(contract_class)
         element.of(:object) do
@@ -133,7 +133,7 @@ RSpec.describe Apiwork::Contract::Element do
     end
 
     context 'when type is a custom reference' do
-      it 'sets the custom type' do
+      it 'defines the custom type' do
         contract_class = create_test_contract do
           object :item do
             string :title
@@ -160,7 +160,7 @@ RSpec.describe Apiwork::Contract::Element do
   end
 
   describe '#string' do
-    it 'sets the type to string' do
+    it 'defines the type' do
       contract_class = create_test_contract
       element = described_class.new(contract_class)
       element.string
@@ -170,7 +170,7 @@ RSpec.describe Apiwork::Contract::Element do
   end
 
   describe '#time' do
-    it 'sets the type to time' do
+    it 'defines the type' do
       contract_class = create_test_contract
       element = described_class.new(contract_class)
       element.time
@@ -180,7 +180,7 @@ RSpec.describe Apiwork::Contract::Element do
   end
 
   describe '#union' do
-    it 'sets the type to union' do
+    it 'defines the type' do
       contract_class = create_test_contract
       element = described_class.new(contract_class)
       element.union(discriminator: :type) do
@@ -196,7 +196,7 @@ RSpec.describe Apiwork::Contract::Element do
   end
 
   describe '#uuid' do
-    it 'sets the type to uuid' do
+    it 'defines the type' do
       contract_class = create_test_contract
       element = described_class.new(contract_class)
       element.uuid

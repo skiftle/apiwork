@@ -3,6 +3,22 @@
 require 'rails_helper'
 
 RSpec.describe Apiwork::Introspection::API::Resource do
+  describe '#initialize' do
+    it 'creates with required attributes' do
+      resource = described_class.new(
+        actions: {},
+        identifier: 'invoices',
+        parent_identifiers: %w[customers],
+        path: 'invoices',
+        resources: {},
+      )
+
+      expect(resource.identifier).to eq('invoices')
+      expect(resource.path).to eq('invoices')
+      expect(resource.parent_identifiers).to eq(%w[customers])
+    end
+  end
+
   describe '#actions' do
     it 'returns the actions' do
       resource = described_class.new(
@@ -27,22 +43,6 @@ RSpec.describe Apiwork::Introspection::API::Resource do
       )
 
       expect(resource.actions[:show]).to be_a(Apiwork::Introspection::Action)
-    end
-  end
-
-  describe '#initialize' do
-    it 'creates with required attributes' do
-      resource = described_class.new(
-        actions: {},
-        identifier: 'invoices',
-        parent_identifiers: %w[customers],
-        path: 'invoices',
-        resources: {},
-      )
-
-      expect(resource.identifier).to eq('invoices')
-      expect(resource.path).to eq('invoices')
-      expect(resource.parent_identifiers).to eq(%w[customers])
     end
   end
 

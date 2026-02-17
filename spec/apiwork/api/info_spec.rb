@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Apiwork::API::Info do
   describe '#contact' do
-    it 'defines the contact' do
+    it 'defines a contact' do
       info = described_class.new
       info.contact do
         name 'Alice'
@@ -56,7 +56,7 @@ RSpec.describe Apiwork::API::Info do
   end
 
   describe '#license' do
-    it 'defines the license' do
+    it 'defines a license' do
       info = described_class.new
       info.license do
         name 'MIT'
@@ -69,7 +69,7 @@ RSpec.describe Apiwork::API::Info do
   end
 
   describe '#server' do
-    it 'defines the server' do
+    it 'defines a server' do
       info = described_class.new
       info.server do
         url 'https://example.com'

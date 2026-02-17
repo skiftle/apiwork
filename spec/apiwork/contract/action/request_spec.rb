@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Apiwork::Contract::Action::Request do
   describe '#body' do
-    it 'defines the body' do
+    it 'defines a body' do
       contract_class = create_test_contract
       request = described_class.new(contract_class, :create)
       request.body do
@@ -16,7 +16,7 @@ RSpec.describe Apiwork::Contract::Action::Request do
   end
 
   describe '#query' do
-    it 'defines the query' do
+    it 'defines a query' do
       contract_class = create_test_contract
       request = described_class.new(contract_class, :index)
       request.query do

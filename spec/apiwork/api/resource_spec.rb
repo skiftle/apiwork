@@ -19,7 +19,7 @@ RSpec.describe Apiwork::API::Resource do
   end
 
   describe '#concern' do
-    it 'defines the concern' do
+    it 'defines a concern' do
       api_class = Apiwork::API.define '/unit/resource-concern' do
         concern :archivable do
           member do
@@ -192,7 +192,7 @@ RSpec.describe Apiwork::API::Resource do
       expect(invoice_resource.resources).to have_key(:items)
     end
 
-    context 'with options' do
+    context 'with overrides' do
       it 'forwards all options' do
         api_class = Apiwork::API.define '/unit/resource-resources-options' do
           resources :invoices,
@@ -214,7 +214,7 @@ RSpec.describe Apiwork::API::Resource do
   end
 
   describe '#with_options' do
-    it 'forwards the options' do
+    it 'forwards all options' do
       api_class = Apiwork::API.define '/unit/resource-with-options' do
         with_options only: [:index, :show] do
           resources :invoices

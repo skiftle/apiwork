@@ -92,6 +92,7 @@ RSpec.describe Apiwork::API::Object do
         expect(param[:example]).to eq('base64data')
         expect(param[:nullable]).to be(true)
         expect(param[:optional]).to be(true)
+        expect(param[:required]).to be(false)
       end
     end
   end
@@ -145,6 +146,7 @@ RSpec.describe Apiwork::API::Object do
         expect(param[:example]).to be(true)
         expect(param[:nullable]).to be(true)
         expect(param[:optional]).to be(true)
+        expect(param[:required]).to be(false)
       end
     end
   end
@@ -198,6 +200,7 @@ RSpec.describe Apiwork::API::Object do
         expect(param[:example]).to eq('2025-06-15')
         expect(param[:nullable]).to be(true)
         expect(param[:optional]).to be(true)
+        expect(param[:required]).to be(false)
       end
     end
   end
@@ -251,6 +254,7 @@ RSpec.describe Apiwork::API::Object do
         expect(param[:example]).to eq('2025-06-15T12:00:00Z')
         expect(param[:nullable]).to be(true)
         expect(param[:optional]).to be(true)
+        expect(param[:required]).to be(false)
       end
     end
   end
@@ -308,6 +312,7 @@ RSpec.describe Apiwork::API::Object do
         expect(param[:min]).to eq(0)
         expect(param[:nullable]).to be(true)
         expect(param[:optional]).to be(true)
+        expect(param[:required]).to be(false)
       end
     end
   end
@@ -376,6 +381,7 @@ RSpec.describe Apiwork::API::Object do
         expect(param[:min]).to eq(0)
         expect(param[:nullable]).to be(true)
         expect(param[:optional]).to be(true)
+        expect(param[:required]).to be(false)
       end
     end
   end
@@ -478,6 +484,7 @@ RSpec.describe Apiwork::API::Object do
         expect(param[:min]).to eq(-90)
         expect(param[:nullable]).to be(true)
         expect(param[:optional]).to be(true)
+        expect(param[:required]).to be(false)
       end
     end
   end
@@ -529,6 +536,7 @@ RSpec.describe Apiwork::API::Object do
         expect(param[:description]).to eq('The address')
         expect(param[:nullable]).to be(true)
         expect(param[:optional]).to be(true)
+        expect(param[:required]).to be(false)
       end
     end
   end
@@ -635,6 +643,7 @@ RSpec.describe Apiwork::API::Object do
         expect(param[:description]).to eq('The billing address')
         expect(param[:nullable]).to be(true)
         expect(param[:optional]).to be(true)
+        expect(param[:required]).to be(false)
         expect(param[:type]).to eq(:address)
       end
     end
@@ -697,6 +706,7 @@ RSpec.describe Apiwork::API::Object do
         expect(param[:min]).to eq(1)
         expect(param[:nullable]).to be(true)
         expect(param[:optional]).to be(true)
+        expect(param[:required]).to be(false)
       end
     end
   end
@@ -750,6 +760,7 @@ RSpec.describe Apiwork::API::Object do
         expect(param[:example]).to eq('09:00')
         expect(param[:nullable]).to be(true)
         expect(param[:optional]).to be(true)
+        expect(param[:required]).to be(false)
       end
     end
   end
@@ -810,6 +821,7 @@ RSpec.describe Apiwork::API::Object do
         expect(param[:discriminator]).to eq(:type)
         expect(param[:nullable]).to be(true)
         expect(param[:optional]).to be(true)
+        expect(param[:required]).to be(false)
       end
     end
   end
@@ -866,6 +878,7 @@ RSpec.describe Apiwork::API::Object do
         expect(param[:example]).to eq('550e8400-e29b-41d4-a716-446655440000')
         expect(param[:nullable]).to be(true)
         expect(param[:optional]).to be(true)
+        expect(param[:required]).to be(false)
       end
     end
   end
