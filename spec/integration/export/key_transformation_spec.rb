@@ -2,66 +2,61 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Key Transformation in Export Generation', type: :integration do
-  let(:path) { '/api/v1' }
-
-  describe 'TypeScript generation' do
-    describe 'with key_format: :keep (default)' do
-      let(:generator) { Apiwork::Export::TypeScript.new(path, key_format: :keep) }
+RSpec.describe 'Key transformation in exports', type: :integration do
+  describe 'TypeScript' do
+    describe 'with key_format: :keep' do
+      let(:generator) { Apiwork::Export::TypeScript.new('/api/v1') }
       let(:output) { generator.generate }
 
       it 'keeps snake_case property names' do
-        expect(output).to match(/created_at\??: string/)
-        expect(output).to match(/updated_at\??: string/)
+        expect(output).to match(/created_at: string/)
+        expect(output).to match(/updated_at: string/)
       end
 
       it 'keeps snake_case in filter types' do
-        expect(output).to match(/created_at\??: /)
-      end
-
-      it 'keeps snake_case in sort types' do
         expect(output).to include('created_at')
       end
     end
 
     describe 'with key_format: :camel' do
-      let(:generator) { Apiwork::Export::TypeScript.new(path, key_format: :camel) }
+      let(:generator) { Apiwork::Export::TypeScript.new('/api/v1', key_format: :camel) }
       let(:output) { generator.generate }
 
       it 'transforms property names to camelCase' do
-        expect(output).to match(/createdAt\??: string/)
-        expect(output).to match(/updatedAt\??: string/)
-      end
-
-      it 'transforms filter property names to camelCase' do
-        expect(output).to match(/createdAt\??: /)
+        expect(output).to match(/createdAt: string/)
+        expect(output).to match(/updatedAt: string/)
       end
 
       it 'does not contain snake_case for timestamp fields' do
-        expect(output).not_to match(/created_at\??: string/)
-        expect(output).not_to match(/updated_at\??: string/)
+        expect(output).not_to match(/created_at: string/)
+        expect(output).not_to match(/updated_at: string/)
+      end
+
+      it 'keeps single-word properties unchanged' do
+        invoice_interface = extract_interface(output, 'Invoice')
+
+        expect(invoice_interface).to match(/number: string/)
+      end
+
+      it 'keeps id property unchanged' do
+        expect(output).to match(/\bid: (string|number)/)
       end
     end
   end
 
-  describe 'Zod generation' do
-    describe 'with key_format: :keep (default)' do
-      let(:generator) { Apiwork::Export::Zod.new(path, key_format: :keep) }
+  describe 'Zod' do
+    describe 'with key_format: :keep' do
+      let(:generator) { Apiwork::Export::Zod.new('/api/v1') }
       let(:output) { generator.generate }
 
-      it 'keeps snake_case property names in schemas' do
+      it 'keeps snake_case property names' do
         expect(output).to match(/created_at:/)
         expect(output).to match(/updated_at:/)
-      end
-
-      it 'generates valid Zod schema syntax' do
-        expect(output).to include("import { z } from 'zod'")
-        expect(output).to include('z.object({')
       end
     end
 
     describe 'with key_format: :camel' do
-      let(:generator) { Apiwork::Export::Zod.new(path, key_format: :camel) }
+      let(:generator) { Apiwork::Export::Zod.new('/api/v1', key_format: :camel) }
       let(:output) { generator.generate }
 
       it 'transforms property names to camelCase' do
@@ -76,107 +71,62 @@ RSpec.describe 'Key Transformation in Export Generation', type: :integration do
     end
   end
 
-  describe 'OpenAPI generation' do
-    describe 'with key_format: :keep (default)' do
-      let(:generator) { Apiwork::Export::OpenAPI.new(path, key_format: :keep) }
+  describe 'OpenAPI' do
+    describe 'with key_format: :keep' do
+      let(:generator) { Apiwork::Export::OpenAPI.new('/api/v1') }
       let(:spec) { generator.generate }
 
       it 'keeps snake_case property names in schemas' do
-        post_schema = spec[:components][:schemas]['post']
-        properties = post_schema[:properties]
+        invoice_schema = spec[:components][:schemas]['invoice']
+        property_names = invoice_schema[:properties].keys.map(&:to_s)
 
-        expect(properties.keys.map(&:to_s)).to include('created_at')
-        expect(properties.keys.map(&:to_s)).to include('updated_at')
-      end
-
-      it 'keeps snake_case in filter parameters' do
-        filter_schema = spec[:components][:schemas]['post_filter']
-        properties = filter_schema[:properties] if filter_schema
-
-        expect(properties&.keys&.map(&:to_s)).to include('created_at') if properties
+        expect(property_names).to include('created_at')
+        expect(property_names).to include('updated_at')
       end
     end
 
     describe 'with key_format: :camel' do
-      let(:generator) { Apiwork::Export::OpenAPI.new(path, key_format: :camel) }
+      let(:generator) { Apiwork::Export::OpenAPI.new('/api/v1', key_format: :camel) }
       let(:spec) { generator.generate }
 
       it 'transforms property names to camelCase' do
-        post_schema = spec[:components][:schemas]['post']
-        properties = post_schema[:properties]
-        property_names = properties.keys.map(&:to_s)
+        invoice_schema = spec[:components][:schemas]['invoice']
+        property_names = invoice_schema[:properties].keys.map(&:to_s)
 
         expect(property_names).to include('createdAt')
         expect(property_names).to include('updatedAt')
       end
 
       it 'does not contain snake_case for timestamp fields' do
-        post_schema = spec[:components][:schemas]['post']
-        properties = post_schema[:properties]
-        property_names = properties.keys.map(&:to_s)
+        invoice_schema = spec[:components][:schemas]['invoice']
+        property_names = invoice_schema[:properties].keys.map(&:to_s)
 
         expect(property_names).not_to include('created_at')
         expect(property_names).not_to include('updated_at')
       end
-
-      it 'transforms filter property names to camelCase' do
-        filter_schema = spec[:components][:schemas]['post_filter']
-        skip 'No filter schema' unless filter_schema
-
-        properties = filter_schema[:properties]
-        skip 'No properties in filter schema' unless properties
-
-        property_names = properties.keys.map(&:to_s)
-        expect(property_names).to include('createdAt') if property_names.any? { |n| n.include?('reated') }
-      end
     end
   end
 
-  describe 'Consistency across generators' do
-    let(:ts_generator) { Apiwork::Export::TypeScript.new(path, key_format: :camel) }
-    let(:zod_generator) { Apiwork::Export::Zod.new(path, key_format: :camel) }
-    let(:openapi_generator) { Apiwork::Export::OpenAPI.new(path, key_format: :camel) }
+  describe 'V2 API with camelCase default' do
+    let(:ts_output) { Apiwork::Export::TypeScript.new('/api/v2').generate }
 
+    it 'uses camelCase by default from API configuration' do
+      expect(ts_output).to match(/createdAt: string/)
+      expect(ts_output).not_to match(/created_at: string/)
+    end
+  end
+
+  describe 'consistency across generators' do
     it 'applies same transformation across all generators' do
-      ts_output = ts_generator.generate
-      zod_output = zod_generator.generate
-      openapi_spec = openapi_generator.generate
+      ts_output = Apiwork::Export::TypeScript.new('/api/v1', key_format: :camel).generate
+      zod_output = Apiwork::Export::Zod.new('/api/v1', key_format: :camel).generate
+      openapi_spec = Apiwork::Export::OpenAPI.new('/api/v1', key_format: :camel).generate
+
+      invoice_properties = openapi_spec[:components][:schemas]['invoice'][:properties].keys.map(&:to_s)
 
       expect(ts_output).to match(/createdAt/)
       expect(zod_output).to match(/createdAt/)
-      expect(openapi_spec[:components][:schemas]['post'][:properties].keys.map(&:to_s)).to include('createdAt')
-    end
-  end
-
-  describe 'Edge cases' do
-    describe 'single word properties' do
-      let(:generator) { Apiwork::Export::TypeScript.new(path, key_format: :camel) }
-      let(:output) { generator.generate }
-
-      it 'keeps single word properties unchanged' do
-        expect(output).to match(/title\??: string/)
-        # body is nullable, so it includes null in the type union
-        expect(output).to match(/body\??: (null \| )?string/)
-      end
-    end
-
-    describe 'id property' do
-      let(:generator) { Apiwork::Export::TypeScript.new(path, key_format: :camel) }
-      let(:output) { generator.generate }
-
-      it 'keeps id property unchanged' do
-        expect(output).to match(/\bid\??: (string|number)/)
-      end
-    end
-
-    describe 'association references' do
-      let(:generator) { Apiwork::Export::TypeScript.new(path, key_format: :camel) }
-      let(:output) { generator.generate }
-
-      it 'transforms association foreign key names' do
-        comment_interface = extract_interface(output, 'Comment')
-        expect(comment_interface).to match(/postId\??: (string|number)/) if comment_interface.include?('postId')
-      end
+      expect(invoice_properties).to include('createdAt')
     end
   end
 
@@ -184,7 +134,7 @@ RSpec.describe 'Key Transformation in Export Generation', type: :integration do
 
   def extract_interface(output, name)
     pattern = /export interface #{name}\s*\{[^}]*\}/m
-    match = output.match(pattern)
-    match ? match[0] : ''
+    match_data = output.match(pattern)
+    match_data ? match_data[0] : ''
   end
 end

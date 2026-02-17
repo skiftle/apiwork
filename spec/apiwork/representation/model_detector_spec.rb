@@ -5,11 +5,11 @@ require 'rails_helper'
 RSpec.describe Apiwork::Representation::ModelDetector do
   describe '#detect' do
     it 'returns the model class' do
-      detector = described_class.new(Api::V1::PostRepresentation)
+      detector = described_class.new(Api::V1::InvoiceRepresentation)
 
       result = detector.detect
 
-      expect(result).to eq(Post)
+      expect(result).to eq(Invoice)
     end
 
     context 'when abstract' do
@@ -26,15 +26,15 @@ RSpec.describe Apiwork::Representation::ModelDetector do
 
   describe '#sti_base?' do
     it 'returns true when STI base' do
-      detector = described_class.new(Api::V1::ClientRepresentation)
+      detector = described_class.new(Api::V1::CustomerRepresentation)
 
-      expect(detector.sti_base?(Client)).to be(true)
+      expect(detector.sti_base?(Customer)).to be(true)
     end
 
     it 'returns false when not STI base' do
-      detector = described_class.new(Api::V1::PostRepresentation)
+      detector = described_class.new(Api::V1::InvoiceRepresentation)
 
-      expect(detector.sti_base?(Post)).to be(false)
+      expect(detector.sti_base?(Invoice)).to be(false)
     end
   end
 end

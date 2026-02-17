@@ -6,73 +6,73 @@ RSpec.describe Apiwork::Representation::Deserializer do
   describe '#deserialize' do
     it 'returns the deserialized hash' do
       representation_class = Class.new(Apiwork::Representation::Base) do
-        model Post
-        attribute :title
+        model Invoice
+        attribute :number
       end
       deserializer = described_class.new(representation_class)
 
-      result = deserializer.deserialize({ title: 'First Post' })
+      result = deserializer.deserialize({ number: 'INV-001' })
 
-      expect(result).to eq({ title: 'First Post' })
+      expect(result).to eq({ number: 'INV-001' })
     end
 
     context 'with array payload' do
       it 'returns the deserialized array' do
         representation_class = Class.new(Apiwork::Representation::Base) do
-          model Post
-          attribute :title
+          model Invoice
+          attribute :number
         end
         deserializer = described_class.new(representation_class)
 
-        result = deserializer.deserialize([{ title: 'First Post' }, { title: 'Second Post' }])
+        result = deserializer.deserialize([{ number: 'INV-001' }, { number: 'INV-002' }])
 
-        expect(result).to eq([{ title: 'First Post' }, { title: 'Second Post' }])
+        expect(result).to eq([{ number: 'INV-001' }, { number: 'INV-002' }])
       end
     end
 
     context 'with collection association' do
       it 'returns the deserialized hash' do
-        comment_representation = Class.new(Apiwork::Representation::Base) do
-          model Comment
-          attribute :body
+        item_representation = Class.new(Apiwork::Representation::Base) do
+          model Item
+          attribute :description
         end
         representation_class = Class.new(Apiwork::Representation::Base) do
-          model Post
-          attribute :title
-          has_many :comments, representation: comment_representation
+          model Invoice
+          attribute :number
+          has_many :items, representation: item_representation
         end
         deserializer = described_class.new(representation_class)
 
-        result = deserializer.deserialize({ comments: [{ body: 'Rails tutorial' }], title: 'First Post' })
+        result = deserializer.deserialize({ items: [{ description: 'Consulting hours' }], number: 'INV-001' })
 
-        expect(result).to eq({ comments: [{ body: 'Rails tutorial' }], title: 'First Post' })
+        expect(result).to eq({ items: [{ description: 'Consulting hours' }], number: 'INV-001' })
       end
     end
 
     context 'with singular association' do
       it 'returns the deserialized hash' do
-        post_representation = Class.new(Apiwork::Representation::Base) do
-          model Post
-          attribute :title
+        invoice_representation = Class.new(Apiwork::Representation::Base) do
+          model Invoice
+          attribute :number
         end
         representation_class = Class.new(Apiwork::Representation::Base) do
-          model Comment
-          attribute :body
-          belongs_to :post, representation: post_representation
+          model Item
+          attribute :description
+          belongs_to :invoice, representation: invoice_representation
         end
         deserializer = described_class.new(representation_class)
 
-        result = deserializer.deserialize({ body: 'Rails tutorial', post: { title: 'First Post' } })
+        result = deserializer.deserialize({ description: 'Consulting hours', invoice: { number: 'INV-001' } })
 
-        expect(result).to eq({ body: 'Rails tutorial', post: { title: 'First Post' } })
+        expect(result).to eq({ description: 'Consulting hours', invoice: { number: 'INV-001' } })
       end
     end
 
     context 'when key is not present in hash' do
       it 'returns an empty hash' do
         representation_class = Class.new(Apiwork::Representation::Base) do
-          model Post
-          attribute :title
+          model Invoice
+          attribute :number
         end
         deserializer = described_class.new(representation_class)
 

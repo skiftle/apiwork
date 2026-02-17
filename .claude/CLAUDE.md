@@ -1397,10 +1397,9 @@ Tests must use a **fixed vocabulary**.
 
 | Domain        | Terms                                                                                                       |
 | ------------- | ----------------------------------------------------------------------------------------------------------- |
-| Billing       | `invoice`, `item`, `items`, `customer`, `payment`, `currency`                                               |
-| Content       | `post`, `comment`, `comments`, `author`                                                                     |
+| Billing       | `invoice`, `item`, `items`, `adjustment`, `customer`, `payment`, `address`, `receipt`, `service`             |
 | Framework     | `api`, `resource`, `action`, `schema`, `type`, `enum`, `adapter`, `capabilities`, `introspection`, `export` |
-| **Forbidden** | `foo`, `bar`, `baz`, `test`, `example`, `sample`                                                            |
+| **Forbidden** | `foo`, `bar`, `baz`, `test`, `example`, `sample`, `post`, `comment`, `user`                                 |
 
 ---
 
@@ -1479,13 +1478,13 @@ When changing `lib/apiwork/**`, check the corresponding spec file:
 
 | Code Change | Test Action |
 |-------------|-------------|
-| Add `@api public` method | Add tests (per TESTING.md decision tree) |
+| Add `@api public` method | Add tests (per UNIT_TESTS.md decision tree) |
 | Change method behavior | Update affected tests |
 | Remove method | Remove its tests |
 | Rename method | Rename in tests |
 | Change method signature | Update test calls |
 
-If the spec is stale, fix it. If no spec exists, evaluate per TESTING.md decision tree.
+If the spec is stale, fix it. If no spec exists, evaluate per UNIT_TESTS.md decision tree.
 
 **Deleting code without deleting its tests is a bug.**
 **Changing behavior without updating tests is a bug.**
@@ -1739,7 +1738,7 @@ Code changes, then `docs/playground/`, then `rake docs:generate`, then `public/`
 ## After Every Change
 
 1. `bundle exec rubocop -A`
-2. Update specs to match code changes (per TESTING.md decision tree)
+2. Update specs to match code changes (per UNIT_TESTS.md decision tree)
 3. `bundle exec rspec`
 4. If `@api public` was added or changed: `cd docs/playground && bundle exec rake apiwork:docs:reference`
 

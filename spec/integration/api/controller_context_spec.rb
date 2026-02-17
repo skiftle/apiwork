@@ -2,11 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Controller#context', type: :integration do
-  # This tests the Controller#context method which provides context data
-  # to schemas during serialization. The context method is meant to be
-  # overridden in application controllers.
-
+RSpec.describe 'Controller#context', type: :request do
   describe 'Default context' do
     it 'returns empty hash by default' do
       controller_class = Class.new(ApplicationController) do
@@ -19,7 +15,7 @@ RSpec.describe 'Controller#context', type: :integration do
   end
 
   describe 'Context method API' do
-    it 'context method is public and overridable' do
+    it 'is overridable with custom data' do
       controller_class = Class.new(ApplicationController) do
         include Apiwork::Controller
 
@@ -32,7 +28,7 @@ RSpec.describe 'Controller#context', type: :integration do
       expect(controller.context).to eq({ current_user_id: 123, locale: :en })
     end
 
-    it 'context can return any hash' do
+    it 'accepts any hash structure' do
       controller_class = Class.new(ApplicationController) do
         include Apiwork::Controller
 
@@ -52,13 +48,12 @@ RSpec.describe 'Controller#context', type: :integration do
     end
   end
 
-  describe 'Context documentation' do
-    it 'Controller#context is documented as public API' do
-      # Verify that Apiwork::Controller has the context method
+  describe 'Context inheritance' do
+    it 'is defined on Apiwork::Controller' do
       expect(Apiwork::Controller.instance_methods).to include(:context)
     end
 
-    it 'context method can be customized per controller' do
+    it 'can be customized per controller subclass' do
       base_controller = Class.new(ApplicationController) do
         include Apiwork::Controller
       end
@@ -76,8 +71,4 @@ RSpec.describe 'Controller#context', type: :integration do
       expect(custom.context).to eq({ custom: true })
     end
   end
-
-  # NOTE: Testing that context is actually passed through to schemas
-  # would require setting up a full request flow. The current tests
-  # verify the API contract of the context method itself.
 end

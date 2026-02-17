@@ -17,7 +17,7 @@ RSpec.describe Apiwork::Representation::Inheritance do
     it 'returns the column' do
       base = Class.new(Apiwork::Representation::Base) do
         abstract!
-        model Client
+        model Customer
       end
       inheritance = described_class.new(base)
 
@@ -29,16 +29,16 @@ RSpec.describe Apiwork::Representation::Inheritance do
     it 'returns the mapping' do
       base = Class.new(Apiwork::Representation::Base) do
         abstract!
-        model Client
+        model Customer
       end
       sub = Class.new(base) do
-        model PersonClient
+        model PersonCustomer
         type_name :person
       end
       inheritance = described_class.new(base)
       inheritance.register(sub)
 
-      expect(inheritance.mapping).to eq({ 'person' => 'PersonClient' })
+      expect(inheritance.mapping).to eq({ 'person' => 'PersonCustomer' })
     end
   end
 
@@ -47,14 +47,14 @@ RSpec.describe Apiwork::Representation::Inheritance do
       it 'returns the subclass representation' do
         base = Class.new(Apiwork::Representation::Base) do
           abstract!
-          model Client
+          model Customer
         end
         sub = Class.new(base) do
-          model PersonClient
+          model PersonCustomer
         end
         inheritance = described_class.new(base)
         inheritance.register(sub)
-        record = PersonClient.new
+        record = PersonCustomer.new
 
         expect(inheritance.resolve(record)).to eq(sub)
       end
@@ -64,10 +64,10 @@ RSpec.describe Apiwork::Representation::Inheritance do
       it 'returns nil' do
         base = Class.new(Apiwork::Representation::Base) do
           abstract!
-          model Client
+          model Customer
         end
         inheritance = described_class.new(base)
-        record = PersonClient.new
+        record = PersonCustomer.new
 
         expect(inheritance.resolve(record)).to be_nil
       end
@@ -79,10 +79,10 @@ RSpec.describe Apiwork::Representation::Inheritance do
       it 'returns true when transform' do
         base = Class.new(Apiwork::Representation::Base) do
           abstract!
-          model Client
+          model Customer
         end
         sub = Class.new(base) do
-          model PersonClient
+          model PersonCustomer
           type_name :person
         end
         inheritance = described_class.new(base)
@@ -96,10 +96,10 @@ RSpec.describe Apiwork::Representation::Inheritance do
       it 'returns false when not transform' do
         base = Class.new(Apiwork::Representation::Base) do
           abstract!
-          model Client
+          model Customer
         end
         sub = Class.new(base) do
-          model PersonClient
+          model PersonCustomer
         end
         inheritance = described_class.new(base)
         inheritance.register(sub)

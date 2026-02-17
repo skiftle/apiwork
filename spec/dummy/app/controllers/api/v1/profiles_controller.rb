@@ -10,7 +10,7 @@ module Api
       end
 
       def create
-        profile = current_user.create_profile!(contract.body[:profile])
+        profile = Profile.create!(contract.body[:profile])
         expose profile
       end
 
@@ -29,12 +29,8 @@ module Api
       attr_reader :profile
 
       def set_profile
-        @profile = current_user.profile
+        @profile = Profile.first
         raise ActiveRecord::RecordNotFound unless @profile
-      end
-
-      def current_user
-        @current_user ||= User.first || User.create!(name: 'Test User', email: 'test@example.com')
       end
     end
   end

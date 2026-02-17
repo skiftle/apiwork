@@ -30,53 +30,53 @@ RSpec.describe Apiwork::Representation::Base do
     context 'with defaults' do
       it 'registers the attribute' do
         representation_class = Class.new(described_class) do
-          model Post
-          attribute :title
+          model Invoice
+          attribute :number
         end
 
-        expect(representation_class.attributes[:title]).to be_a(Apiwork::Representation::Attribute)
-        expect(representation_class.attributes[:title].name).to eq(:title)
-        expect(representation_class.attributes[:title].type).to eq(:string)
-        expect(representation_class.attributes[:title].deprecated?).to be(false)
-        expect(representation_class.attributes[:title].filterable?).to be(false)
-        expect(representation_class.attributes[:title].sortable?).to be(false)
-        expect(representation_class.attributes[:title].writable?).to be(false)
+        expect(representation_class.attributes[:number]).to be_a(Apiwork::Representation::Attribute)
+        expect(representation_class.attributes[:number].name).to eq(:number)
+        expect(representation_class.attributes[:number].type).to eq(:string)
+        expect(representation_class.attributes[:number].deprecated?).to be(false)
+        expect(representation_class.attributes[:number].filterable?).to be(false)
+        expect(representation_class.attributes[:number].sortable?).to be(false)
+        expect(representation_class.attributes[:number].writable?).to be(false)
       end
     end
 
     context 'with overrides' do
       it 'forwards all options' do
         representation_class = Class.new(described_class) do
-          model Post
-          attribute :title,
+          model Invoice
+          attribute :number,
                     deprecated: true,
-                    description: 'The title',
+                    description: 'The number',
                     enum: %w[draft published],
-                    example: 'First Post',
+                    example: 'INV-001',
                     filterable: true,
                     format: :email,
                     max: 100,
                     min: 1,
                     nullable: true,
                     optional: true,
-                    preload: :comments,
+                    preload: :items,
                     sortable: true,
                     type: :string,
                     writable: true
         end
 
-        attribute = representation_class.attributes[:title]
+        attribute = representation_class.attributes[:number]
         expect(attribute.deprecated?).to be(true)
-        expect(attribute.description).to eq('The title')
+        expect(attribute.description).to eq('The number')
         expect(attribute.enum).to eq(%w[draft published])
-        expect(attribute.example).to eq('First Post')
+        expect(attribute.example).to eq('INV-001')
         expect(attribute.filterable?).to be(true)
         expect(attribute.format).to eq(:email)
         expect(attribute.max).to eq(100)
         expect(attribute.min).to eq(1)
         expect(attribute.nullable?).to be(true)
         expect(attribute.optional?).to be(true)
-        expect(attribute.preload).to eq(:comments)
+        expect(attribute.preload).to eq(:items)
         expect(attribute.sortable?).to be(true)
         expect(attribute.type).to eq(:string)
         expect(attribute.writable?).to be(true)
@@ -89,12 +89,12 @@ RSpec.describe Apiwork::Representation::Base do
       it 'registers the association' do
         representation_class = Class.new(described_class) do
           abstract!
-          belongs_to :author
+          belongs_to :customer
         end
 
-        association = representation_class.associations[:author]
+        association = representation_class.associations[:customer]
         expect(association).to be_a(Apiwork::Representation::Association)
-        expect(association.name).to eq(:author)
+        expect(association.name).to eq(:customer)
         expect(association.type).to eq(:belongs_to)
         expect(association.deprecated?).to be(false)
         expect(association.filterable?).to be(false)
@@ -110,9 +110,9 @@ RSpec.describe Apiwork::Representation::Base do
         target_representation = Class.new(described_class) { abstract! }
         representation_class = Class.new(described_class) do
           abstract!
-          belongs_to :author,
+          belongs_to :customer,
                      deprecated: true,
-                     description: 'The author',
+                     description: 'The customer',
                      example: { id: 1 },
                      filterable: true,
                      include: :always,
@@ -122,9 +122,9 @@ RSpec.describe Apiwork::Representation::Base do
                      writable: true
         end
 
-        association = representation_class.associations[:author]
+        association = representation_class.associations[:customer]
         expect(association.deprecated?).to be(true)
-        expect(association.description).to eq('The author')
+        expect(association.description).to eq('The customer')
         expect(association.example).to eq({ id: 1 })
         expect(association.filterable?).to be(true)
         expect(association.include).to eq(:always)
@@ -167,13 +167,13 @@ RSpec.describe Apiwork::Representation::Base do
   describe '.deserialize' do
     it 'returns the deserialized hash' do
       representation_class = Class.new(described_class) do
-        model Post
-        attribute :title, writable: true
+        model Invoice
+        attribute :number, writable: true
       end
 
-      result = representation_class.deserialize({ title: 'First Post' })
+      result = representation_class.deserialize({ number: 'INV-001' })
 
-      expect(result).to include(title: 'First Post')
+      expect(result).to include(number: 'INV-001')
     end
   end
 
@@ -198,10 +198,10 @@ RSpec.describe Apiwork::Representation::Base do
     it 'returns the example' do
       representation_class = Class.new(described_class) do
         abstract!
-        example id: 1, title: 'First Post'
+        example id: 1, number: 'INV-001'
       end
 
-      expect(representation_class.example).to eq({ id: 1, title: 'First Post' })
+      expect(representation_class.example).to eq({ id: 1, number: 'INV-001' })
     end
 
     it 'returns nil when not set' do
@@ -216,12 +216,12 @@ RSpec.describe Apiwork::Representation::Base do
       it 'registers the association' do
         representation_class = Class.new(described_class) do
           abstract!
-          has_many :comments
+          has_many :items
         end
 
-        association = representation_class.associations[:comments]
+        association = representation_class.associations[:items]
         expect(association).to be_a(Apiwork::Representation::Association)
-        expect(association.name).to eq(:comments)
+        expect(association.name).to eq(:items)
         expect(association.type).to eq(:has_many)
         expect(association.deprecated?).to be(false)
         expect(association.filterable?).to be(false)
@@ -237,9 +237,9 @@ RSpec.describe Apiwork::Representation::Base do
         target_representation = Class.new(described_class) { abstract! }
         representation_class = Class.new(described_class) do
           abstract!
-          has_many :comments,
+          has_many :items,
                    deprecated: true,
-                   description: 'The comments',
+                   description: 'The items',
                    example: [{ id: 1 }],
                    filterable: true,
                    include: :always,
@@ -248,9 +248,9 @@ RSpec.describe Apiwork::Representation::Base do
                    writable: true
         end
 
-        association = representation_class.associations[:comments]
+        association = representation_class.associations[:items]
         expect(association.deprecated?).to be(true)
-        expect(association.description).to eq('The comments')
+        expect(association.description).to eq('The items')
         expect(association.example).to eq([{ id: 1 }])
         expect(association.filterable?).to be(true)
         expect(association.include).to eq(:always)
@@ -266,12 +266,12 @@ RSpec.describe Apiwork::Representation::Base do
       it 'registers the association' do
         representation_class = Class.new(described_class) do
           abstract!
-          has_one :author
+          has_one :address
         end
 
-        association = representation_class.associations[:author]
+        association = representation_class.associations[:address]
         expect(association).to be_a(Apiwork::Representation::Association)
-        expect(association.name).to eq(:author)
+        expect(association.name).to eq(:address)
         expect(association.type).to eq(:has_one)
         expect(association.deprecated?).to be(false)
         expect(association.filterable?).to be(false)
@@ -287,9 +287,9 @@ RSpec.describe Apiwork::Representation::Base do
         target_representation = Class.new(described_class) { abstract! }
         representation_class = Class.new(described_class) do
           abstract!
-          has_one :author,
+          has_one :address,
                   deprecated: true,
-                  description: 'The author',
+                  description: 'The address',
                   example: { id: 1 },
                   filterable: true,
                   include: :always,
@@ -299,9 +299,9 @@ RSpec.describe Apiwork::Representation::Base do
                   writable: true
         end
 
-        association = representation_class.associations[:author]
+        association = representation_class.associations[:address]
         expect(association.deprecated?).to be(true)
-        expect(association.description).to eq('The author')
+        expect(association.description).to eq('The address')
         expect(association.example).to eq({ id: 1 })
         expect(association.filterable?).to be(true)
         expect(association.include).to eq(:always)
@@ -316,10 +316,10 @@ RSpec.describe Apiwork::Representation::Base do
   describe '.model' do
     it 'sets the model class' do
       representation_class = Class.new(described_class) do
-        model Post
+        model Invoice
       end
 
-      expect(representation_class.model_class).to eq(Post)
+      expect(representation_class.model_class).to eq(Invoice)
     end
 
     it 'raises ConfigurationError for non-class argument' do
@@ -342,10 +342,10 @@ RSpec.describe Apiwork::Representation::Base do
   describe '.model_class' do
     it 'returns the model class' do
       representation_class = Class.new(described_class) do
-        model Post
+        model Invoice
       end
 
-      expect(representation_class.model_class).to eq(Post)
+      expect(representation_class.model_class).to eq(Invoice)
     end
   end
 
@@ -353,21 +353,21 @@ RSpec.describe Apiwork::Representation::Base do
     context 'when type name is set' do
       it 'returns the polymorphic name' do
         representation_class = Class.new(described_class) do
-          model Post
-          type_name :article
+          model Invoice
+          type_name :receipt
         end
 
-        expect(representation_class.polymorphic_name).to eq('article')
+        expect(representation_class.polymorphic_name).to eq('receipt')
       end
     end
 
     context 'when type name is not set' do
       it 'returns the polymorphic name' do
         representation_class = Class.new(described_class) do
-          model Post
+          model Invoice
         end
 
-        expect(representation_class.polymorphic_name).to eq('Post')
+        expect(representation_class.polymorphic_name).to eq('Invoice')
       end
     end
   end
@@ -375,7 +375,7 @@ RSpec.describe Apiwork::Representation::Base do
   describe '.root' do
     it 'sets the root key' do
       representation_class = Class.new(described_class) do
-        model Post
+        model Invoice
         root :bill, :bills
       end
 
@@ -389,7 +389,7 @@ RSpec.describe Apiwork::Representation::Base do
     context 'when root is set' do
       it 'returns the root key' do
         representation_class = Class.new(described_class) do
-          model Post
+          model Invoice
           root :bill, :bills
         end
 
@@ -402,12 +402,12 @@ RSpec.describe Apiwork::Representation::Base do
     context 'when root is not set' do
       it 'returns the root key' do
         representation_class = Class.new(described_class) do
-          model Post
+          model Invoice
         end
 
         root_key = representation_class.root_key
-        expect(root_key.singular).to eq('post')
-        expect(root_key.plural).to eq('posts')
+        expect(root_key.singular).to eq('invoice')
+        expect(root_key.plural).to eq('invoices')
       end
     end
   end
@@ -416,30 +416,30 @@ RSpec.describe Apiwork::Representation::Base do
     context 'with single record' do
       it 'returns the serialized hash' do
         representation_class = Class.new(described_class) do
-          model Post
-          attribute :title
+          model Invoice
+          attribute :number
         end
-        record = Post.new(title: 'First Post')
+        invoice = Invoice.new(number: 'INV-001')
 
-        result = representation_class.serialize(record)
+        result = representation_class.serialize(invoice)
 
-        expect(result).to include(title: 'First Post')
+        expect(result).to include(number: 'INV-001')
       end
     end
 
     context 'with collection' do
       it 'returns the serialized array' do
         representation_class = Class.new(described_class) do
-          model Post
-          attribute :title
+          model Invoice
+          attribute :number
         end
-        records = [Post.new(title: 'First Post'), Post.new(title: 'Second Post')]
+        invoices = [Invoice.new(number: 'INV-001'), Invoice.new(number: 'INV-002')]
 
-        result = representation_class.serialize(records)
+        result = representation_class.serialize(invoices)
 
         expect(result).to be_an(Array)
         expect(result.length).to eq(2)
-        expect(result.first).to include(title: 'First Post')
+        expect(result.first).to include(number: 'INV-001')
       end
     end
   end
@@ -448,21 +448,21 @@ RSpec.describe Apiwork::Representation::Base do
     context 'when type name is set' do
       it 'returns the STI name' do
         representation_class = Class.new(described_class) do
-          model Post
-          type_name :article
+          model Invoice
+          type_name :receipt
         end
 
-        expect(representation_class.sti_name).to eq('article')
+        expect(representation_class.sti_name).to eq('receipt')
       end
     end
 
     context 'when type name is not set' do
       it 'returns the STI name' do
         representation_class = Class.new(described_class) do
-          model Post
+          model Invoice
         end
 
-        expect(representation_class.sti_name).to eq('Post')
+        expect(representation_class.sti_name).to eq('Invoice')
       end
     end
   end
@@ -470,10 +470,10 @@ RSpec.describe Apiwork::Representation::Base do
   describe '.subclass?' do
     it 'returns true when subclass' do
       base = Class.new(described_class) do
-        model Client
+        model Customer
       end
       sub = Class.new(base) do
-        model PersonClient
+        model PersonCustomer
       end
       inheritance = Apiwork::Representation::Inheritance.new(base)
       inheritance.register(sub)
@@ -493,10 +493,10 @@ RSpec.describe Apiwork::Representation::Base do
     it 'returns the type name' do
       representation_class = Class.new(described_class) do
         abstract!
-        type_name :article
+        type_name :receipt
       end
 
-      expect(representation_class.type_name).to eq('article')
+      expect(representation_class.type_name).to eq('receipt')
     end
 
     it 'returns nil when not set' do
@@ -509,13 +509,13 @@ RSpec.describe Apiwork::Representation::Base do
   describe '#initialize' do
     it 'creates with required attributes' do
       representation_class = Class.new(described_class) do
-        model Post
+        model Invoice
       end
-      record = Post.new(title: 'First Post')
+      invoice = Invoice.new(number: 'INV-001')
 
-      representation = representation_class.new(record, context: { current_user: 'Alice' })
+      representation = representation_class.new(invoice, context: { current_user: 'Alice' })
 
-      expect(representation.record).to eq(record)
+      expect(representation.record).to eq(invoice)
       expect(representation.context).to eq({ current_user: 'Alice' })
     end
   end

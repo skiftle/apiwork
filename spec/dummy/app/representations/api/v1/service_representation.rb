@@ -6,7 +6,7 @@ module Api
       attribute :name
       attribute :description
 
-      belongs_to :client
+      belongs_to :customer
     end
   end
 end

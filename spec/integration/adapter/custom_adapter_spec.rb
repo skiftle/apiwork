@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Custom Adapter', type: :integration do
+RSpec.describe 'Custom adapter', type: :integration do
   describe 'Adapter::Base subclassing' do
     let(:custom_adapter_class) do
       Class.new(Apiwork::Adapter::Base) do
@@ -10,12 +10,13 @@ RSpec.describe 'Custom Adapter', type: :integration do
       end
     end
 
-    it 'can define adapter_name' do
+    it 'defines adapter_name' do
       expect(custom_adapter_class.adapter_name).to eq(:billing)
     end
 
-    it 'can be instantiated' do
+    it 'instantiates from Base' do
       adapter = custom_adapter_class.new
+
       expect(adapter).to be_a(Apiwork::Adapter::Base)
     end
 
@@ -24,28 +25,30 @@ RSpec.describe 'Custom Adapter', type: :integration do
     end
   end
 
-  describe 'Adapter registration' do
-    it 'registers adapters in the registry' do
+  describe 'adapter registration' do
+    it 'registers the standard adapter' do
       expect(Apiwork::Adapter.exists?(:standard)).to be(true)
     end
 
-    it 'can find registered adapters' do
+    it 'finds registered adapters' do
       standard_adapter_class = Apiwork::Adapter.find!(:standard)
+
       expect(standard_adapter_class).to be_a(Class)
       expect(standard_adapter_class.ancestors).to include(Apiwork::Adapter::Base)
     end
 
-    it 'can register new adapters' do
+    it 'registers new adapters' do
       invoice_adapter_class = Class.new(Apiwork::Adapter::Base) do
-        adapter_name :invoice_adapter
+        adapter_name :invoice_processing
       end
 
       Apiwork::Adapter.register(invoice_adapter_class)
-      expect(Apiwork::Adapter.exists?(:invoice_adapter)).to be(true)
+
+      expect(Apiwork::Adapter.exists?(:invoice_processing)).to be(true)
     end
   end
 
-  describe 'Adapter::Base methods' do
+  describe 'Adapter::Base interface' do
     let(:adapter) { Apiwork::Adapter::Standard.new }
 
     it 'responds to apply_request_transformers' do
@@ -61,46 +64,31 @@ RSpec.describe 'Custom Adapter', type: :integration do
     end
   end
 
-  describe 'RepresentationRegistry features' do
+  describe 'representation registry features' do
     let(:api_class) { Apiwork::API.find!('/api/v1') }
     let(:registry) { api_class.representation_registry }
 
-    it 'provides feature methods for conditional registration' do
-      expect(registry).to respond_to(:filter_types)
-      expect(registry).to respond_to(:nullable_filter_types)
-      expect(registry).to respond_to(:sortable?)
-      expect(registry).to respond_to(:filterable?)
-    end
-
-    it 'filter_types returns array of types' do
+    it 'provides filter_types' do
       expect(registry.filter_types).to be_an(Array)
     end
 
-    it 'filterable? responds with boolean' do
+    it 'provides filterable? predicate' do
       expect(registry.filterable?).to be(true).or be(false)
     end
 
-    it 'sortable? responds with boolean' do
+    it 'provides sortable? predicate' do
       expect(registry.sortable?).to be(true).or be(false)
     end
   end
 
-  describe 'Resource index actions' do
+  describe 'API adapter configuration' do
     let(:api_class) { Apiwork::API.find!('/api/v1') }
 
-    it 'index_actions? responds with boolean' do
-      expect(api_class.root_resource.index_actions?).to be(true).or be(false)
-    end
-  end
-
-  describe 'Adapter configuration via API DSL' do
-    let(:api_class) { Apiwork::API.find!('/api/v1') }
-
-    it 'API has adapter_config available' do
+    it 'exposes adapter_config' do
       expect(api_class.adapter_config).to be_a(Apiwork::Configuration)
     end
 
-    it 'adapter instance is accessible via api.adapter' do
+    it 'exposes adapter instance' do
       expect(api_class.adapter).to be_a(Apiwork::Adapter::Base)
     end
   end

@@ -5,7 +5,7 @@ Apiwork::API.define '/api/v2' do
   export :typescript
 
   info do
-    title 'Test API V2'
+    title 'Billing API V2'
     version '2.0.0'
     description 'API with kebab-case paths'
   end
@@ -13,5 +13,5 @@ Apiwork::API.define '/api/v2' do
   key_format :camel
   path_format :kebab
 
-  resources :user_profiles
+  resources :customer_addresses
 end

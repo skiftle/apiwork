@@ -3,294 +3,194 @@
 require 'rails_helper'
 
 RSpec.describe 'Introspection', type: :integration do
-  let(:api_class) { Apiwork::API.find!('/api/v1') }
-  let(:introspection) { api_class.introspect }
+  let(:introspection) { Apiwork::API.introspect('/api/v1') }
 
-  describe 'API.introspect' do
-    it 'returns introspection data for an API' do
+  describe 'API introspection' do
+    it 'returns Introspection::API instance with base path' do
       expect(introspection).to be_a(Apiwork::Introspection::API)
-    end
-
-    it 'includes API base path' do
       expect(introspection.base_path).to eq('/api/v1')
     end
 
-    it 'includes API info' do
-      expect(introspection.info).to be_present
-      expect(introspection.info.to_h[:title]).to eq('Test API')
+    it 'includes API title' do
+      expect(introspection.info.to_h[:title]).to eq('Billing API')
     end
 
-    it 'includes resources' do
-      expect(introspection.resources).to be_a(Hash)
-      expect(introspection.resources).to have_key(:posts)
-      expect(introspection.resources).to have_key(:comments)
+    it 'includes all top-level resources' do
+      resource_keys = introspection.resources.keys
+
+      expect(resource_keys).to include(:invoices)
+      expect(resource_keys).to include(:customers)
+      expect(resource_keys).to include(:payments)
+      expect(resource_keys).to include(:services)
+      expect(resource_keys).to include(:activities)
+      expect(resource_keys).to include(:receipts)
+      expect(resource_keys).to include(:profile)
     end
 
-    it 'includes types' do
-      expect(introspection.types).to be_a(Hash)
-      expect(introspection.types).to have_key(:error_detail)
-      expect(introspection.types).to have_key(:pagination_params)
+    it 'includes types for resources and shared objects' do
+      type_keys = introspection.types.keys
+
+      expect(type_keys).to include(:error_detail, :pagination_params, :invoice, :payment, :customer)
     end
 
-    it 'includes enums' do
-      expect(introspection.enums).to be_a(Hash)
-      expect(introspection.enums).to have_key(:sort_direction)
-      expect(introspection.enums).to have_key(:post_status)
+    it 'includes enums from model definitions' do
+      enum_keys = introspection.enums.keys
+
+      expect(enum_keys).to include(:sort_direction, :invoice_status, :payment_method, :payment_status)
     end
 
-    it 'includes error_codes' do
-      expect(introspection.error_codes).to be_a(Hash)
-      expect(introspection.error_codes).to have_key(:bad_request)
-      expect(introspection.error_codes).to have_key(:internal_server_error)
+    it 'includes error codes' do
+      error_code_keys = introspection.error_codes.keys
+
+      expect(error_code_keys).to include(:bad_request, :internal_server_error, :not_found, :unprocessable_entity)
     end
 
-    it 'supports to_h for serialization' do
+    it 'serializes to hash with to_h' do
       hash = introspection.to_h
-      expect(hash).to be_a(Hash)
+
       expect(hash).to have_key(:base_path)
+      expect(hash).to have_key(:resources)
+      expect(hash).to have_key(:types)
+      expect(hash).to have_key(:enums)
+      expect(hash).to have_key(:error_codes)
+    end
+  end
+
+  describe 'resource introspection' do
+    let(:invoices_resource) { introspection.resources[:invoices] }
+
+    it 'includes identifier and path' do
+      expect(invoices_resource.identifier).to eq('invoices')
+      expect(invoices_resource.path).to eq('invoices')
+    end
+
+    it 'includes all invoice actions including custom ones' do
+      action_keys = invoices_resource.actions.keys
+
+      expect(action_keys).to include(:index, :show, :create, :update, :destroy)
+      expect(action_keys).to include(:send_invoice, :void, :search, :bulk_create)
+    end
+
+    it 'includes nested items resource' do
+      expect(invoices_resource.resources).to have_key(:items)
+    end
+
+    it 'serializes resource to hash' do
+      hash = invoices_resource.to_h
+
+      expect(hash).to have_key(:identifier)
+      expect(hash).to have_key(:path)
+      expect(hash).to have_key(:actions)
       expect(hash).to have_key(:resources)
     end
   end
 
-  describe 'Introspection::API::Resource' do
-    let(:posts_resource) { introspection.resources[:posts] }
+  describe 'action introspection' do
+    let(:invoices_resource) { introspection.resources[:invoices] }
+    let(:show_action) { invoices_resource.actions[:show] }
+    let(:create_action) { invoices_resource.actions[:create] }
+    let(:destroy_action) { invoices_resource.actions[:destroy] }
+    let(:index_action) { invoices_resource.actions[:index] }
 
-    it 'includes resource identifier' do
-      expect(posts_resource.identifier).to eq('posts')
+    it 'includes HTTP method' do
+      expect(show_action.method).to eq(:get)
+      expect(create_action.method).to eq(:post)
+      expect(destroy_action.method).to eq(:delete)
     end
-
-    it 'includes resource path' do
-      expect(posts_resource.path).to eq('posts')
-    end
-
-    it 'includes actions' do
-      expect(posts_resource.actions).to be_a(Hash)
-      expect(posts_resource.actions).to have_key(:index)
-      expect(posts_resource.actions).to have_key(:show)
-      expect(posts_resource.actions).to have_key(:create)
-    end
-
-    it 'includes nested resources' do
-      expect(posts_resource.resources).to be_a(Hash)
-      expect(posts_resource.resources).to have_key(:comments)
-    end
-
-    it 'supports to_h for serialization' do
-      hash = posts_resource.to_h
-
-      expect(hash).to be_a(Hash)
-      expect(hash).to have_key(:identifier)
-      expect(hash).to have_key(:path)
-      expect(hash).to have_key(:actions)
-    end
-  end
-
-  describe 'Introspection::Action' do
-    let(:posts_resource) { introspection.resources[:posts] }
-    let(:show_action) { posts_resource.actions[:show] }
-    let(:create_action) { posts_resource.actions[:create] }
 
     it 'includes action path' do
       expect(show_action.path).to be_a(String)
     end
 
-    it 'includes HTTP method' do
-      expect(show_action.method).to eq(:get)
-      expect(create_action.method).to eq(:post)
+    it 'includes summary and description when provided' do
+      expect(show_action.summary).to eq('Get an invoice')
+      expect(index_action.description).to eq('Returns a paginated list of all invoices')
     end
 
-    it 'includes request definition' do
+    it 'includes deprecated status' do
+      expect(show_action.deprecated?).to be(false)
+      expect(destroy_action.deprecated?).to be(true)
+    end
+
+    it 'includes custom operation_id when specified' do
+      expect(destroy_action.operation_id).to eq('deleteInvoice')
+    end
+
+    it 'includes raises error codes' do
+      expect(show_action.raises).to include(:not_found, :forbidden)
+      expect(create_action.raises).to include(:unprocessable_entity)
+    end
+
+    it 'includes tags when specified' do
+      expect(index_action.tags).to include(:invoices, :public)
+    end
+
+    it 'includes request with body for create and query for index' do
       expect(create_action.request).to be_present
+      expect(create_action.request.body?).to be(true)
+      expect(index_action.request.query?).to be(true)
     end
 
     it 'includes response definition' do
       expect(show_action.response).to be_present
     end
 
-    it 'includes raises error codes' do
-      expect(show_action).to respond_to(:raises)
-    end
-
-    it 'includes summary' do
-      expect(show_action).to respond_to(:summary)
-    end
-
-    it 'includes deprecated status' do
-      expect(show_action).to respond_to(:deprecated?)
-      expect(show_action.deprecated?).to be(false)
-    end
-
-    it 'supports to_h for serialization' do
+    it 'serializes action to hash' do
       hash = show_action.to_h
 
-      expect(hash).to be_a(Hash)
       expect(hash).to have_key(:path)
       expect(hash).to have_key(:method)
+      expect(hash).to have_key(:raises)
+      expect(hash).to have_key(:summary)
     end
   end
 
-  describe 'Introspection::Enum' do
-    let(:sort_enum) { introspection.enums[:sort_direction] }
-
-    it 'includes enum values' do
-      expect(sort_enum.values).to eq(%w[asc desc])
+  describe 'enum introspection' do
+    it 'includes sort_direction values' do
+      expect(introspection.enums[:sort_direction].values).to eq(%w[asc desc])
     end
 
-    it 'includes enum description' do
-      expect(sort_enum).to respond_to(:description)
+    it 'includes invoice_status values' do
+      expect(introspection.enums[:invoice_status].values).to eq(%w[draft sent paid overdue void])
     end
 
-    it 'includes deprecated status' do
-      expect(sort_enum).to respond_to(:deprecated?)
+    it 'includes payment_method values' do
+      expect(introspection.enums[:payment_method].values).to eq(%w[credit_card bank_transfer cash])
     end
 
-    it 'supports to_h for serialization' do
-      hash = sort_enum.to_h
+    it 'includes payment_status values' do
+      expect(introspection.enums[:payment_status].values).to eq(%w[pending completed failed refunded])
+    end
 
-      expect(hash).to be_a(Hash)
-      expect(hash).to have_key(:values)
+    it 'serializes enum to hash' do
+      expect(introspection.enums[:sort_direction].to_h).to have_key(:values)
     end
   end
 
-  describe 'Introspection::Type' do
-    let(:error_type) { introspection.types[:error_detail] }
+  describe 'type introspection' do
+    it 'includes error_detail as object type with shape and params' do
+      error_type = introspection.types[:error_detail]
 
-    it 'includes type kind (object or union)' do
       expect(error_type.type).to eq(:object)
-    end
-
-    it 'object? returns true for object types' do
       expect(error_type.object?).to be(true)
+      expect(error_type.shape.keys).to include(:code, :message, :field)
+      expect(error_type.shape[:code].type).to eq(:string)
+      expect(error_type.shape[:code].scalar?).to be(true)
     end
 
-    it 'includes shape for object types' do
-      expect(error_type.shape).to be_a(Hash)
-    end
+    it 'serializes type to hash' do
+      hash = introspection.types[:error_detail].to_h
 
-    it 'includes description' do
-      expect(error_type).to respond_to(:description)
-    end
-
-    it 'supports to_h for serialization' do
-      hash = error_type.to_h
-
-      expect(hash).to be_a(Hash)
       expect(hash).to have_key(:type)
+      expect(hash).to have_key(:shape)
     end
   end
 
-  describe 'Contract.introspect' do
-    it 'returns introspection data for a contract' do
-      contract = Api::V1::PostContract
-      contract.action_for(:index)
-
-      introspection = contract.introspect
-
-      expect(introspection).to be_a(Apiwork::Introspection::Contract)
-    end
-
-    it 'includes actions' do
-      contract = Api::V1::PostContract
-      contract.action_for(:index)
-      contract.action_for(:show)
-
-      introspection = contract.introspect
-
-      expect(introspection.actions).to be_a(Hash)
-      expect(introspection.actions).to have_key(:index)
-      expect(introspection.actions).to have_key(:show)
-    end
-
-    it 'includes types' do
-      contract = Api::V1::PostContract
-      contract.action_for(:index)
-
-      introspection = contract.introspect
-
-      expect(introspection.types).to be_a(Hash)
-    end
-
-    it 'includes enums' do
-      contract = Api::V1::PostContract
-      contract.action_for(:index)
-
-      introspection = contract.introspect
-
-      expect(introspection.enums).to be_a(Hash)
-    end
-
-    it 'supports to_h for serialization' do
-      contract = Api::V1::PostContract
-      contract.action_for(:index)
-
-      introspection = contract.introspect
-      hash = introspection.to_h
-
-      expect(hash).to be_a(Hash)
-      expect(hash).to have_key(:actions)
-    end
-  end
-
-  describe 'Introspection::Action::Request' do
-    let(:posts_resource) { introspection.resources[:posts] }
-    let(:index_action) { posts_resource.actions[:index] }
-    let(:create_action) { posts_resource.actions[:create] }
-
-    it 'includes query parameters' do
-      expect(index_action.request).to respond_to(:query)
-    end
-
-    it 'includes body parameters' do
-      expect(create_action.request).to respond_to(:body)
-    end
-
-    it 'query? returns true when query parameters exist' do
-      expect(index_action.request).to respond_to(:query?)
-    end
-
-    it 'body? returns true when body parameters exist' do
-      expect(create_action.request).to respond_to(:body?)
-    end
-  end
-
-  describe 'Introspection::Action::Response' do
-    let(:show_action) { introspection.resources[:posts].actions[:show] }
-
-    it 'includes body definition' do
-      expect(show_action.response).to respond_to(:body)
-    end
-
-    it 'no_content? returns true for no-content responses' do
-      expect(show_action.response).to respond_to(:no_content?)
-    end
-  end
-
-  describe 'Introspection::Param' do
-    let(:error_type) { introspection.types[:error_detail] }
-    let(:code_param) { error_type.shape[:code] }
-
-    it 'includes param type' do
-      expect(code_param.type).to eq(:string)
-    end
-
-    it 'includes nullable status' do
-      expect(code_param).to respond_to(:nullable?)
-    end
-
-    it 'includes optional status' do
-      expect(code_param).to respond_to(:optional?)
-    end
-
-    it 'includes deprecated status' do
-      expect(code_param).to respond_to(:deprecated?)
-    end
-
-    it 'includes description' do
-      expect(code_param).to respond_to(:description)
-    end
-
-    it 'scalar? returns true for scalar types' do
-      expect(code_param.scalar?).to be(true)
+  describe 'error code introspection' do
+    it 'includes status codes and serializes to hash' do
+      expect(introspection.error_codes[:bad_request].status).to eq(400)
+      expect(introspection.error_codes[:not_found].status).to eq(404)
+      expect(introspection.error_codes[:bad_request].to_h).to have_key(:status)
     end
   end
 end

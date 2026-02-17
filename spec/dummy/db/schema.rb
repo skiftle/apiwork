@@ -10,101 +10,116 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_26_000001) do
-  create_table "accounts", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.integer "first_day_of_week", default: 1
-    t.string "name"
-    t.integer "status", default: 0, null: false
-    t.datetime "updated_at", null: false
-  end
-
+ActiveRecord::Schema[8.1].define(version: 2026_02_01_000012) do
   create_table "activities", force: :cascade do |t|
-    t.string "action", null: false
+    t.string "action"
     t.datetime "created_at", null: false
     t.boolean "read", default: false
-    t.integer "target_id"
+    t.bigint "target_id"
     t.string "target_type"
     t.datetime "updated_at", null: false
     t.index ["action"], name: "index_activities_on_action"
     t.index ["read"], name: "index_activities_on_read"
   end
 
+  create_table "addresses", force: :cascade do |t|
+    t.string "city"
+    t.string "country"
+    t.datetime "created_at", null: false
+    t.integer "customer_id", null: false
+    t.string "street"
+    t.datetime "updated_at", null: false
+    t.string "zip"
+    t.index ["customer_id"], name: "index_addresses_on_customer_id"
+  end
+
+  create_table "adjustments", force: :cascade do |t|
+    t.decimal "amount", precision: 10, scale: 2
+    t.datetime "created_at", null: false
+    t.string "description", null: false
+    t.integer "item_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["item_id"], name: "index_adjustments_on_item_id"
+  end
+
   create_table "attachments", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.string "filename"
-    t.integer "post_id", null: false
+    t.string "filename", null: false
+    t.integer "invoice_id", null: false
     t.datetime "updated_at", null: false
-    t.index ["post_id"], name: "index_attachments_on_post_id"
+    t.index ["invoice_id"], name: "index_attachments_on_invoice_id"
   end
 
-  create_table "authors", force: :cascade do |t|
-    t.text "bio"
-    t.datetime "created_at", null: false
-    t.string "name"
-    t.datetime "updated_at", null: false
-    t.boolean "verified"
-  end
-
-  create_table "clients", force: :cascade do |t|
-    t.date "birth_date"
+  create_table "customers", force: :cascade do |t|
+    t.date "born_on"
     t.datetime "created_at", null: false
     t.string "email"
     t.string "industry"
-    t.string "name", null: false
-    t.string "registration_number"
-    t.string "type", null: false
-    t.datetime "updated_at", null: false
-    t.index ["type"], name: "index_clients_on_type"
-  end
-
-  create_table "comments", force: :cascade do |t|
-    t.string "author"
-    t.text "content", null: false
-    t.datetime "created_at", null: false
-    t.integer "post_id", null: false
-    t.datetime "updated_at", null: false
-    t.index ["post_id"], name: "index_comments_on_post_id"
-  end
-
-  create_table "posts", force: :cascade do |t|
-    t.text "body"
-    t.datetime "created_at", null: false
     t.json "metadata"
-    t.boolean "published", default: false
-    t.string "title", null: false
+    t.string "name", null: false
+    t.string "phone"
+    t.string "registration_number"
+    t.string "type"
     t.datetime "updated_at", null: false
+    t.index ["type"], name: "index_customers_on_type"
+  end
+
+  create_table "invoices", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "customer_id", null: false
+    t.date "due_on"
+    t.json "metadata"
+    t.text "notes"
+    t.string "number", null: false
+    t.boolean "sent", default: false
+    t.integer "status", default: 0
+    t.datetime "updated_at", null: false
+    t.index ["customer_id"], name: "index_invoices_on_customer_id"
+  end
+
+  create_table "items", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "description", null: false
+    t.integer "invoice_id", null: false
+    t.integer "quantity", default: 1
+    t.decimal "unit_price", precision: 10, scale: 2
+    t.datetime "updated_at", null: false
+    t.index ["invoice_id"], name: "index_items_on_invoice_id"
+  end
+
+  create_table "payments", force: :cascade do |t|
+    t.decimal "amount", precision: 10, scale: 2
+    t.datetime "created_at", null: false
+    t.integer "customer_id", null: false
+    t.integer "invoice_id", null: false
+    t.integer "method", default: 0
+    t.datetime "paid_at"
+    t.string "reference"
+    t.integer "status", default: 0
+    t.datetime "updated_at", null: false
+    t.index ["customer_id"], name: "index_payments_on_customer_id"
+    t.index ["invoice_id"], name: "index_payments_on_invoice_id"
   end
 
   create_table "profiles", force: :cascade do |t|
-    t.string "avatar_url"
     t.decimal "balance", precision: 10, scale: 2
     t.string "bio"
     t.datetime "created_at", null: false
+    t.string "email"
     t.string "external_id"
+    t.string "name"
     t.time "preferred_contact_time"
-    t.string "timezone", default: "UTC"
+    t.string "timezone"
     t.datetime "updated_at", null: false
-    t.integer "user_id", null: false
-    t.index ["user_id"], name: "index_profiles_on_user_id"
-  end
-
-  create_table "replies", force: :cascade do |t|
-    t.string "author", null: false
-    t.integer "comment_id", null: false
-    t.text "content", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["comment_id"], name: "index_replies_on_comment_id"
   end
 
   create_table "services", force: :cascade do |t|
-    t.integer "client_id", null: false
     t.datetime "created_at", null: false
-    t.text "description"
+    t.integer "customer_id", null: false
+    t.string "description"
     t.string "name", null: false
     t.datetime "updated_at", null: false
-    t.index ["client_id"], name: "index_services_on_client_id"
+    t.index ["customer_id"], name: "index_services_on_customer_id"
   end
 
   create_table "taggings", force: :cascade do |t|
@@ -133,10 +148,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_26_000001) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "attachments", "posts"
-  add_foreign_key "comments", "posts"
-  add_foreign_key "profiles", "users"
-  add_foreign_key "replies", "comments"
-  add_foreign_key "services", "clients"
+  add_foreign_key "addresses", "customers"
+  add_foreign_key "adjustments", "items"
+  add_foreign_key "attachments", "invoices"
+  add_foreign_key "invoices", "customers"
+  add_foreign_key "items", "invoices"
+  add_foreign_key "payments", "customers"
+  add_foreign_key "payments", "invoices"
+  add_foreign_key "services", "customers"
   add_foreign_key "taggings", "tags"
 end

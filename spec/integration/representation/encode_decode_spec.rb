@@ -2,137 +2,52 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Encode and Decode attribute options', type: :request do
-  describe 'decode: on attribute' do
-    it 'transforms input value before storing in database' do
-      user_params = {
-        user: {
-          email: 'john.doe@customer.com',
-          name: 'John Doe',
-        },
-      }
+RSpec.describe 'Representation encode and decode', type: :integration do
+  describe 'encode on serialize' do
+    it 'transforms output value through encode lambda' do
+      customer = PersonCustomer.create!(email: 'BILLING@ACME.COM', name: 'Acme Corp')
 
-      post '/api/v1/users', as: :json, params: user_params
+      result = Api::V1::CustomerRepresentation.serialize(customer)
 
-      expect(response).to have_http_status(:created)
-
-      created_user = User.last
-      # deserialize transforms 'john.doe@customer.com' to 'JOHN.DOE@CUSTOMER.COM' before storing
-      expect(created_user.email).to eq('JOHN.DOE@CUSTOMER.COM')
-    end
-
-    it 'applies decoding on update operations' do
-      user_record = User.create!(email: 'ORIGINAL@CUSTOMER.COM', name: 'Jane')
-
-      patch_params = {
-        user: {
-          email: 'updated@customer.com',
-        },
-      }
-
-      patch "/api/v1/users/#{user_record.id}", as: :json, params: patch_params
-
-      expect(response).to have_http_status(:ok)
-
-      user_record.reload
-      # deserialize transforms 'updated@customer.com' to 'UPDATED@CUSTOMER.COM'
-      expect(user_record.email).to eq('UPDATED@CUSTOMER.COM')
-    end
-
-    it 'handles nil values in decoding' do
-      user_params = {
-        user: {
-          email: nil,
-          name: 'John',
-        },
-      }
-
-      post '/api/v1/users', as: :json, params: user_params
-
-      # email is nullable, so nil is accepted
-      expect(response).to have_http_status(:created)
-
-      created_user = User.last
-      expect(created_user.email).to be_nil
+      expect(result[:email]).to eq('billing@acme.com')
     end
   end
 
-  describe 'encode: on attribute' do
-    it 'transforms output value when reading from database' do
-      User.create!(email: 'STORED@UPPERCASE.COM', name: 'John')
+  describe 'decode on deserialize' do
+    it 'transforms input value through decode lambda' do
+      result = Api::V1::CustomerRepresentation.deserialize({ email: 'anna@example.com', name: 'Anna Svensson', type: 'person' })
 
-      get '/api/v1/users'
-
-      expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-
-      # serialize transforms 'STORED@UPPERCASE.COM' to 'stored@uppercase.com' in output
-      expect(json['users'].first['email']).to eq('stored@uppercase.com')
-    end
-
-    it 'applies encoding on show endpoint' do
-      user_record = User.create!(email: 'DATABASE@VALUE.COM', name: 'Jane')
-
-      get "/api/v1/users/#{user_record.id}"
-
-      expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-
-      # serialize transforms 'DATABASE@VALUE.COM' to 'database@value.com' in output
-      expect(json['user']['email']).to eq('database@value.com')
+      expect(result[:email]).to eq('ANNA@EXAMPLE.COM')
     end
   end
 
-  describe 'serialize and deserialize together' do
-    it 'applies both transformations in full lifecycle' do
-      # Step 1: Create with deserialize (input -> DB)
-      user_params = {
-        user: {
-          email: 'lowercase@input.com',
-          name: 'Jane Doe',
-        },
-      }
+  describe 'nil safety' do
+    it 'handles nil through encode safely' do
+      customer = CompanyCustomer.create!(email: nil, industry: 'Technology', name: 'Acme Corp')
 
-      post '/api/v1/users', as: :json, params: user_params
-      expect(response).to have_http_status(:created)
+      result = Api::V1::CustomerRepresentation.serialize(customer)
 
-      created_user = User.last
-      # Stored in uppercase due to deserialize
-      expect(created_user.email).to eq('LOWERCASE@INPUT.COM')
-
-      # Step 2: Read with serialize (DB -> output)
-      get "/api/v1/users/#{created_user.id}"
-      expect(response).to have_http_status(:ok)
-
-      json = JSON.parse(response.body)
-      # Output in lowercase due to serialize
-      expect(json['user']['email']).to eq('lowercase@input.com')
+      expect(result[:email]).to be_nil
     end
 
-    it 'round-trips correctly through create and update' do
-      # Create
-      user_params = { user: { email: 'original@billing.com', name: 'User' } }
-      post '/api/v1/users', as: :json, params: user_params
+    it 'handles nil through decode safely' do
+      result = Api::V1::CustomerRepresentation.deserialize({ email: nil, name: 'Acme Corp', type: 'company' })
 
-      user_id = JSON.parse(response.body)['user']['id']
+      expect(result[:email]).to be_nil
+    end
+  end
 
-      # Verify stored in uppercase
-      expect(User.find(user_id).email).to eq('ORIGINAL@BILLING.COM')
+  describe 'round-trip' do
+    it 'maintains symmetry through deserialize, create, and serialize' do
+      deserialized = Api::V1::CustomerRepresentation.deserialize({ email: 'anna@example.com', name: 'Anna Svensson', type: 'person' })
 
-      # Update
-      patch_params = { user: { email: 'updated@billing.com' } }
-      patch "/api/v1/users/#{user_id}", as: :json, params: patch_params
-      expect(response).to have_http_status(:ok)
+      expect(deserialized[:email]).to eq('ANNA@EXAMPLE.COM')
 
-      # Verify updated in uppercase
-      expect(User.find(user_id).email).to eq('UPDATED@BILLING.COM')
+      customer = PersonCustomer.create!(deserialized.slice(:email, :name))
 
-      # Read
-      get "/api/v1/users/#{user_id}"
-      json = JSON.parse(response.body)
+      result = Api::V1::CustomerRepresentation.serialize(customer)
 
-      # Verify output in lowercase
-      expect(json['user']['email']).to eq('updated@billing.com')
+      expect(result[:email]).to eq('anna@example.com')
     end
   end
 end

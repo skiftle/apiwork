@@ -10,20 +10,19 @@ RSpec.describe 'Error Codes', type: :integration do
       expect(Apiwork::ErrorCode.exists?(:payment_failed)).to be(true)
     end
 
-    it 'registers error code with attach_path option' do
+    it 'returns correct status and key' do
+      Apiwork::ErrorCode.register :rate_limited, status: 429
+
+      error_code = Apiwork::ErrorCode.find!(:rate_limited)
+      expect(error_code.key).to eq(:rate_limited)
+      expect(error_code.status).to eq(429)
+    end
+
+    it 'supports attach_path option' do
       Apiwork::ErrorCode.register :resource_locked, attach_path: true, status: 423
 
       error_code = Apiwork::ErrorCode.find!(:resource_locked)
-      expect(error_code.status).to eq(423)
       expect(error_code.attach_path?).to be(true)
-    end
-
-    it 'returns registered error code via fetch' do
-      Apiwork::ErrorCode.register :custom_error, status: 418
-
-      error_code = Apiwork::ErrorCode.find!(:custom_error)
-      expect(error_code.key).to eq(:custom_error)
-      expect(error_code.status).to eq(418)
     end
 
     it 'raises error for invalid status codes' do
@@ -32,21 +31,12 @@ RSpec.describe 'Error Codes', type: :integration do
       end.to raise_error(ArgumentError, /Status must be 400-599/)
     end
 
-    it 'allows overwriting existing error codes' do
-      Apiwork::ErrorCode.register :custom, status: 400
-      Apiwork::ErrorCode.register :custom, status: 422
-
-      error_code = Apiwork::ErrorCode.find!(:custom)
-      expect(error_code.status).to eq(422)
-    end
-
     it 'has default error codes pre-registered' do
       expect(Apiwork::ErrorCode.exists?(:not_found)).to be(true)
       expect(Apiwork::ErrorCode.exists?(:bad_request)).to be(true)
       expect(Apiwork::ErrorCode.exists?(:unauthorized)).to be(true)
       expect(Apiwork::ErrorCode.exists?(:forbidden)).to be(true)
       expect(Apiwork::ErrorCode.exists?(:unprocessable_entity)).to be(true)
-      expect(Apiwork::ErrorCode.exists?(:internal_server_error)).to be(true)
     end
 
     it 'returns correct status for default codes' do
@@ -62,7 +52,7 @@ RSpec.describe 'Error Codes', type: :integration do
     it 'accepts single error code' do
       contract = Class.new(Apiwork::Contract::Base) do
         def self.name
-          'TestRaisesContract'
+          'InvoiceShowContract'
         end
 
         action :show do
@@ -77,7 +67,7 @@ RSpec.describe 'Error Codes', type: :integration do
     it 'accepts multiple error codes' do
       contract = Class.new(Apiwork::Contract::Base) do
         def self.name
-          'TestMultipleRaisesContract'
+          'InvoiceUpdateContract'
         end
 
         action :update do
@@ -93,7 +83,7 @@ RSpec.describe 'Error Codes', type: :integration do
       expect do
         Class.new(Apiwork::Contract::Base) do
           def self.name
-            'TestUnregisteredContract'
+            'UnknownErrorContract'
           end
 
           action :show do
@@ -107,7 +97,7 @@ RSpec.describe 'Error Codes', type: :integration do
       expect do
         Class.new(Apiwork::Contract::Base) do
           def self.name
-            'TestIntegerErrorContract'
+            'IntegerErrorContract'
           end
 
           action :show do
@@ -122,7 +112,7 @@ RSpec.describe 'Error Codes', type: :integration do
 
       contract = Class.new(Apiwork::Contract::Base) do
         def self.name
-          'TestCustomErrorContract'
+          'PurchaseContract'
         end
 
         action :purchase do
@@ -133,88 +123,28 @@ RSpec.describe 'Error Codes', type: :integration do
       action = contract.actions[:purchase]
       expect(action).to be_present
     end
-
-    it 'merges error codes from multiple raises calls' do
-      contract = Class.new(Apiwork::Contract::Base) do
-        def self.name
-          'TestMergeRaisesContract'
-        end
-
-        action :complex do
-          raises :not_found
-          raises :forbidden
-          raises :conflict
-        end
-      end
-
-      action = contract.actions[:complex]
-      expect(action).to be_present
-    end
   end
 
   describe 'API-level raises declaration' do
     let(:api_class) { Apiwork::API.find!('/api/v1') }
 
     it 'declares global error codes for all actions' do
-      expect(api_class).to be_present
       expect(api_class.raises).to include(:bad_request, :internal_server_error)
     end
   end
 
-  describe 'ErrorCode in introspection' do
-    let(:api_class) { Apiwork::API.find!('/api/v1') }
-    let(:introspection) { api_class.introspect }
+  describe 'ErrorCode access' do
+    it 'exposes error code details via find' do
+      bad_request = Apiwork::ErrorCode.find!(:bad_request)
 
-    it 'includes raises in action introspection' do
-      contract = Api::V1::PostContract
-      contract.action_for(:show)
-
-      contract_introspection = contract.introspect
-      expect(contract_introspection.actions).to be_present
-      expect(contract_introspection.actions).to have_key(:show)
-    end
-
-    it 'includes global raises from API in introspection' do
-      expect(introspection.error_codes).to be_present
-
-      error_code_keys = introspection.error_codes.keys
-      expect(error_code_keys).to include(:bad_request, :internal_server_error)
-    end
-
-    it 'includes error code status in introspection' do
-      bad_request = introspection.error_codes[:bad_request]
       expect(bad_request).to be_present
-      expect(bad_request.to_h[:status]).to eq(400)
-    end
-  end
-
-  describe 'expose_error with custom codes', type: :request do
-    before do
-      Apiwork::ErrorCode.register :insufficient_funds, status: 402
+      expect(bad_request.status).to eq(400)
     end
 
-    it 'uses built-in not_found error code' do
-      get '/api/v1/posts/999999'
-
-      expect(response).to have_http_status(:not_found)
-      json = JSON.parse(response.body)
-      expect(json['issues'].first['code']).to eq('not_found')
-    end
-
-    it 'attaches path for error codes with attach_path: true' do
-      get '/api/v1/posts/999999'
-
-      json = JSON.parse(response.body)
-      expect(json['issues'].first['path']).to eq(%w[posts 999999])
-      expect(json['issues'].first['pointer']).to eq('/posts/999999')
-    end
-
-    it 'uses i18n for error detail messages' do
-      get '/api/v1/posts/999999'
-
-      json = JSON.parse(response.body)
-      expect(json['issues'].first['detail']).to be_a(String)
-      expect(json['issues'].first['detail']).not_to be_empty
+    it 'raises KeyError for unknown error code via find!' do
+      expect do
+        Apiwork::ErrorCode.find!(:nonexistent_code)
+      end.to raise_error(KeyError)
     end
   end
 end

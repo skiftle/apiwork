@@ -9,8 +9,6 @@ module Api
       attribute :updated_at
 
       belongs_to :tag, representation: TagRepresentation, include: :optional
-      # Note: taggable polymorphic association is not exposed in API
-      # The polymorphic relationship is handled internally by Rails
     end
   end
 end

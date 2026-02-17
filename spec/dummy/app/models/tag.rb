@@ -2,9 +2,8 @@
 
 class Tag < ApplicationRecord
   has_many :taggings, dependent: :destroy
-  has_many :posts, through: :taggings, source: :taggable, source_type: 'Post'
-  has_many :comments, through: :taggings, source: :taggable, source_type: 'Comment'
-  has_many :authors, through: :taggings, source: :taggable, source_type: 'Author'
+  has_many :invoices, through: :taggings, source: :taggable, source_type: 'Invoice'
+  has_many :customers, through: :taggings, source: :taggable, source_type: 'Customer'
 
   validates :name, presence: true
   validates :slug, presence: true, uniqueness: true
