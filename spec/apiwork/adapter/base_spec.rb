@@ -22,7 +22,7 @@ RSpec.describe Apiwork::Adapter::Base do
   describe '.capability' do
     it 'registers the capability' do
       capability_class = Class.new(Apiwork::Adapter::Capability::Base) do
-        capability_name :unit_test_cap
+        capability_name :unit_test_capability
       end
       adapter_class = Class.new(described_class) do
         capability capability_class

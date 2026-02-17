@@ -89,7 +89,7 @@ RSpec.describe Apiwork::Adapter::Capability::Operation::Base do
       I18n.backend.store_translations(
         :en,
         {
-          apiwork: { adapters: { unit_op: { capabilities: { unit_cap: { label: 'found' } } } } },
+          apiwork: { adapters: { unit_operation: { capabilities: { unit_capability: { label: 'found' } } } } },
         },
       )
       request = Apiwork::Request.new(body: {}, query: {})
@@ -98,7 +98,7 @@ RSpec.describe Apiwork::Adapter::Capability::Operation::Base do
         Object,
         {},
         request,
-        translation_context: { adapter_name: :unit_op, capability_name: :unit_cap },
+        translation_context: { adapter_name: :unit_operation, capability_name: :unit_capability },
       )
 
       expect(operation.translate(:label)).to eq('found')

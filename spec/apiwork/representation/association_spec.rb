@@ -119,12 +119,12 @@ RSpec.describe Apiwork::Representation::Association do
   describe '#polymorphic?' do
     it 'returns true when polymorphic' do
       representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
-      poly_representation = Class.new(Apiwork::Representation::Base) { abstract! }
+      polymorphic_representation = Class.new(Apiwork::Representation::Base) { abstract! }
       association = described_class.new(
         :commentable,
         :belongs_to,
         representation_class,
-        polymorphic: [poly_representation],
+        polymorphic: [polymorphic_representation],
       )
 
       expect(association.polymorphic?).to be(true)
