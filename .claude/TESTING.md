@@ -77,19 +77,23 @@ No blank line between the magic comment and require.
 1. Method is private?                              → NEVER
 2. Method is @api public?                          → MUST test
 3. #initialize with validation or coercion?        → MUST test
-4. Everything else (semi-public)?                  → Do NOT unit test
+4. Method has ≥3 code paths?                       → MUST test
+5. Everything else (semi-public, <3 code paths)?   → Do NOT unit test
 ```
 
-Rule 4 is not a gap. Semi-public methods are tested through integration tests.
-If integration tests don't cover a semi-public method, expand the integration tests.
+Rule 4 catches semi-public methods with branching logic that integration tests cannot fully exercise. A method with ≥3 code paths has enough complexity to break independently.
+
+Rule 5 applies to simple semi-public methods (getters, setters, delegators with 1-2 code paths). These are adequately tested through integration tests.
 
 ### What about canonical entry points?
 
-Canonical entry points (`#build`, `#generate`, `#serialize`, etc.) are tested **only if the method is `@api public`**.
+Canonical entry points (`#build`, `#generate`, `#serialize`, `#coerce`, etc.) are tested if they match rules 2 or 4.
 
 Base classes like `Builder::Base#build` and `Serializer::Base#serialize` are `@api public` and get unit tests via rule 2.
 
-Concrete implementations like `Filtering::ContractBuilder#build` or `Pagination::Operation#apply` are internal. They inherit from public base classes but have no `@api public` methods themselves. These are tested through integration tests only.
+Concrete implementations like `Coercer#coerce` or `SurfaceResolver.resolve` have no `@api public` methods but have ≥3 code paths. These get unit tests via rule 4.
+
+Concrete implementations with <3 code paths (e.g., `Filtering::ContractBuilder#build` that delegates without branching) are tested through integration tests only.
 
 ### What about `attr_reader`?
 
@@ -113,30 +117,75 @@ end
 
 ### Which classes get unit tests?
 
-A class gets a unit test file if it has at least one method matching rules 2-3.
+A class gets a unit test file if it has at least one method matching rules 2-4.
 
 ```
-Has @api public methods?          → yes → unit test file
-Has #initialize with logic?       → yes → unit test file
-None of the above?                → no unit test file (integration only)
+Has @api public methods?                              → yes → unit test file
+Has #initialize with logic?                           → yes → unit test file
+Has any non-private method with ≥3 code paths?        → yes → unit test file
+None of the above?                                    → no unit test file (integration only)
 ```
 
-**~93 of 182 lib files** have `@api public` methods and get unit tests. The remaining ~89 are internal implementations tested through integration tests.
-
-Classes that do NOT get unit tests:
+Classes that do NOT get unit tests (no `@api public`, no methods with ≥3 code paths):
 
 | Category | Examples |
 |----------|----------|
 | Capability declarations | `Filtering`, `Pagination`, `Sorting` |
-| Concrete builders/operations | `Filtering::ContractBuilder`, `Pagination::Operation` |
+| Concrete builders (<3 code paths) | `Filtering::ContractBuilder`, `Pagination::Operation` |
 | Constants modules | `Filtering::Constants`, `Writing::Constants` |
 | Error classes (no logic) | `DomainError`, `ConfigurationError`, `HttpError` |
 | Internal registries | `Adapter::Registry`, `API::Registry` |
 | Result/data holders | `Validator::Result`, `RequestParser::Result` |
 | Introspection dump classes | `Dump::Action`, `Dump::API`, `Dump::Contract` |
-| Internal helpers | `Coercer`, `Deserializer`, `ModelDetector` |
 | Mixins | `Abstractable`, `Validatable` |
 | Engine, version | `Engine`, `version.rb` |
+
+### How to count code paths
+
+Code paths = 1 + count of conditional keywords in the method body.
+
+**Count each occurrence of:** `if`, `elsif`, `unless`, `when`, `rescue`, ternary (`? :`).
+
+Postfix conditions count: `return if x` counts as `if`. `value unless y` counts as `unless`.
+
+**Do NOT count:** `else` (replaces the default path, does not add one), `case` (grouping keyword, not a branch), `end`, `&&`, `||`, `&.`, block iterations (`.each`, `.map`, `.select`).
+
+**Examples:**
+
+```
+def name                                     → 1 path (no conditionals)
+  @name
+end
+
+def validate!                                → 2 paths (1 + if)
+  return if abstract?
+  check_model
+end
+
+def key_format                               → 2 paths (1 + ternary)
+  @key_format ? @key_format : :keep
+end
+
+def resolve(name)                            → 4 paths (1 + unless + if + elsif)
+  return nil unless name
+  result = registry.find(name)
+  if result.nil?
+    raise KeyError
+  elsif result.deprecated?
+    warn "Deprecated"
+    result
+  end
+end
+
+def coerce(value, type)                      → 5 paths (1 + 4 when)
+  case type
+  when :string then value.to_s
+  when :integer then Integer(value)
+  when :boolean then parse_boolean(value)
+  when :datetime then Time.iso8601(value)
+  end
+end
+```
 
 ---
 
@@ -599,11 +648,15 @@ end
 
 ## Describe Block Order
 
-Follow the class layout order from CLAUDE.md:
+Follow the class layout order from CLAUDE.md (`@api public` first, then semi-public):
 
-1. `class << self` methods: `describe '.method'` (alphabetical)
-2. `#initialize`: `describe '#initialize'`
-3. Public instance methods: `describe '#method'` (alphabetical)
+1. `class << self` methods — `@api public` (alphabetical)
+2. `class << self` methods — semi-public with ≥3 code paths (alphabetical)
+3. `#initialize`
+4. Instance methods — `@api public` (alphabetical)
+5. Instance methods — semi-public with ≥3 code paths (alphabetical)
+
+Skip sections that have no methods. A class with only semi-public methods (no `@api public`) uses sections 2, 3, 5 only.
 
 Within each `describe`:
 1. Happy path `it` blocks first
@@ -1441,7 +1494,7 @@ Simple method call on test object?               → Inline: `expect(issue.point
 Given a class to test:
 
 ```
-1. Does the class qualify? (has @api public methods or #initialize with logic?)
+1. Does the class qualify? (has @api public methods, #initialize with logic, or non-private methods with ≥3 code paths?)
    No  → skip, integration tests only
    Yes → continue
 
@@ -1452,9 +1505,10 @@ Given a class to test:
 5. List methods to test:
    a. All @api public methods (except trivial attr_reader — tested via #initialize)
    b. #initialize if it validates or coerces input
-   c. Nothing else
+   c. All non-private methods with ≥3 code paths
+   d. Nothing else
 
-6. Order: class methods (alphabetical), #initialize, instance methods (alphabetical)
+6. Order: class methods @api public (alphabetical), class methods semi-public ≥3 (alphabetical), #initialize, instance methods @api public (alphabetical), instance methods semi-public ≥3 (alphabetical)
 
 7. For each method:
    a. Categorize (predicate/getter/raiser/mutator/converter/finder/DSL/DSL with options/config setter)
@@ -1475,9 +1529,9 @@ Before a test file is done:
 
 1. File starts with `# frozen_string_literal: true` + `require 'rails_helper'`
 2. `RSpec.describe` uses class constant (unit) or string (integration)
-3. Only tests `@api public` methods and `#initialize` with logic
-4. No tests for semi-public, private, or internal canonical entry points
-5. Methods tested in class layout order (class methods alphabetical, #initialize, instance methods alphabetical)
+3. Tests `@api public` methods, `#initialize` with logic, and non-private methods with ≥3 code paths
+4. No tests for private methods or semi-public methods with <3 code paths
+5. Methods tested in class layout order (@api public first alphabetical, then semi-public ≥3 alphabetical, within each section)
 6. Each method categorized and formula applied
 7. Edge cases derived from signature
 8. `context` blocks match method branches
