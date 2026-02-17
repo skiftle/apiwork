@@ -23,7 +23,7 @@ RSpec.describe Apiwork::Representation::Association do
     end
 
     context 'with overrides' do
-      it 'accepts all options' do
+      it 'forwards all options' do
         representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
         association = described_class.new(
           :comments,

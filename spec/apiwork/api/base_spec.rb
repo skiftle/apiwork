@@ -66,7 +66,7 @@ RSpec.describe Apiwork::API::Base do
       expect(api_class.key_format).to eq(:camel)
     end
 
-    it 'returns :keep by default' do
+    it 'returns :keep when not set' do
       api_class = Apiwork::API.define('/unit/base-key-format-default') {}
 
       expect(api_class.key_format).to eq(:keep)
@@ -103,7 +103,7 @@ RSpec.describe Apiwork::API::Base do
       expect(api_class.path_format).to eq(:kebab)
     end
 
-    it 'returns :keep by default' do
+    it 'returns :keep when not set' do
       api_class = Apiwork::API.define('/unit/base-path-format-default') {}
 
       expect(api_class.path_format).to eq(:keep)

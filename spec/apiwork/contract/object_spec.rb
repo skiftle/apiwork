@@ -592,7 +592,7 @@ RSpec.describe Apiwork::Contract::Object do
     end
 
     context 'with overrides' do
-      it 'stores all options' do
+      it 'forwards all options' do
         contract_class = create_test_contract
         object = described_class.new(contract_class)
         object.param(

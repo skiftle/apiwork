@@ -332,21 +332,25 @@ RSpec.describe Apiwork::Representation::Base do
   end
 
   describe '.polymorphic_name' do
-    it 'returns the type name when set' do
-      representation_class = Class.new(described_class) do
-        model Post
-        type_name :article
-      end
+    context 'when type name is set' do
+      it 'returns the polymorphic name' do
+        representation_class = Class.new(described_class) do
+          model Post
+          type_name :article
+        end
 
-      expect(representation_class.polymorphic_name).to eq('article')
+        expect(representation_class.polymorphic_name).to eq('article')
+      end
     end
 
-    it 'returns the model polymorphic name when not set' do
-      representation_class = Class.new(described_class) do
-        model Post
-      end
+    context 'when type name is not set' do
+      it 'returns the polymorphic name' do
+        representation_class = Class.new(described_class) do
+          model Post
+        end
 
-      expect(representation_class.polymorphic_name).to eq('Post')
+        expect(representation_class.polymorphic_name).to eq('Post')
+      end
     end
   end
 
@@ -364,44 +368,52 @@ RSpec.describe Apiwork::Representation::Base do
   end
 
   describe '.root_key' do
-    it 'returns the root key when set' do
-      representation_class = Class.new(described_class) do
-        model Post
-        root :bill, :bills
-      end
+    context 'when root is set' do
+      it 'returns the root key' do
+        representation_class = Class.new(described_class) do
+          model Post
+          root :bill, :bills
+        end
 
-      root_key = representation_class.root_key
-      expect(root_key.singular).to eq('bill')
-      expect(root_key.plural).to eq('bills')
+        root_key = representation_class.root_key
+        expect(root_key.singular).to eq('bill')
+        expect(root_key.plural).to eq('bills')
+      end
     end
 
-    it 'returns the model root key when not set' do
-      representation_class = Class.new(described_class) do
-        model Post
-      end
+    context 'when root is not set' do
+      it 'returns the root key' do
+        representation_class = Class.new(described_class) do
+          model Post
+        end
 
-      root_key = representation_class.root_key
-      expect(root_key.singular).to eq('post')
-      expect(root_key.plural).to eq('posts')
+        root_key = representation_class.root_key
+        expect(root_key.singular).to eq('post')
+        expect(root_key.plural).to eq('posts')
+      end
     end
   end
 
   describe '.sti_name' do
-    it 'returns the type name when set' do
-      representation_class = Class.new(described_class) do
-        model Post
-        type_name :article
-      end
+    context 'when type name is set' do
+      it 'returns the STI name' do
+        representation_class = Class.new(described_class) do
+          model Post
+          type_name :article
+        end
 
-      expect(representation_class.sti_name).to eq('article')
+        expect(representation_class.sti_name).to eq('article')
+      end
     end
 
-    it 'returns the model STI name when not set' do
-      representation_class = Class.new(described_class) do
-        model Post
-      end
+    context 'when type name is not set' do
+      it 'returns the STI name' do
+        representation_class = Class.new(described_class) do
+          model Post
+        end
 
-      expect(representation_class.sti_name).to eq('Post')
+        expect(representation_class.sti_name).to eq('Post')
+      end
     end
   end
 

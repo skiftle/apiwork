@@ -31,7 +31,7 @@ RSpec.describe Apiwork::Representation::Attribute do
     end
 
     context 'with overrides' do
-      it 'accepts all options' do
+      it 'forwards all options' do
         representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
         attribute = described_class.new(
           :title,

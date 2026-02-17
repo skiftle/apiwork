@@ -560,7 +560,7 @@ RSpec.describe Apiwork::API::Object do
     end
 
     context 'with overrides' do
-      it 'stores all options' do
+      it 'forwards all options' do
         object = described_class.new
         object.param(
           :amount,
