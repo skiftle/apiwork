@@ -78,22 +78,27 @@ No blank line between the magic comment and require.
 2. Method is @api public?                          → MUST test
 3. #initialize with validation or coercion?        → MUST test
 4. Method has ≥3 code paths?                       → MUST test
-5. Everything else (semi-public, <3 code paths)?   → Do NOT unit test
+5. File has ≥8 conditional keywords total?         → MUST test entry points
+6. Everything else (semi-public, <3 code paths)?   → Do NOT unit test
 ```
 
-Rule 4 catches semi-public methods with branching logic that integration tests cannot fully exercise. A method with ≥3 code paths has enough complexity to break independently.
+Rule 4 catches semi-public methods with branching logic that integration tests cannot fully exercise.
 
-Rule 5 applies to simple semi-public methods (getters, setters, delegators with 1-2 code paths). These are adequately tested through integration tests.
+Rule 5 is a safety net for classes where complex branching lives in private methods called from simple public entry points. Count ALL conditional keywords in the entire file (including private). If ≥8: test every non-private method that delegates to private logic. This catches classes like `SurfaceResolver` (0 non-private conditionals, 31 private) and `Serializer` (2 non-private, 18 private).
+
+Rule 6 applies to simple semi-public methods in simple classes. These are adequately tested through integration tests.
 
 ### What about canonical entry points?
 
-Canonical entry points (`#build`, `#generate`, `#serialize`, `#coerce`, etc.) are tested if they match rules 2 or 4.
+Canonical entry points (`#build`, `#generate`, `#serialize`, `#coerce`, etc.) are tested if they match rules 2, 4, or 5.
 
 Base classes like `Builder::Base#build` and `Serializer::Base#serialize` are `@api public` and get unit tests via rule 2.
 
-Concrete implementations like `Coercer#coerce` or `SurfaceResolver.resolve` have no `@api public` methods but have ≥3 code paths. These get unit tests via rule 4.
+Concrete implementations like `Coercer#coerce` have ≥3 code paths in the method itself. These get unit tests via rule 4.
 
-Concrete implementations with <3 code paths (e.g., `Filtering::ContractBuilder#build` that delegates without branching) are tested through integration tests only.
+Concrete implementations like `SurfaceResolver.resolve` or `Serializer#serialize` have simple public methods that delegate to complex private logic. The file has ≥8 total conditionals. These get unit tests via rule 5 — test the entry point with inputs that exercise the private branches.
+
+Concrete implementations with <3 code paths in a file with <8 total conditionals (e.g., `Filtering::ContractBuilder#build`) are tested through integration tests only.
 
 ### What about `attr_reader`?
 
@@ -117,16 +122,17 @@ end
 
 ### Which classes get unit tests?
 
-A class gets a unit test file if it has at least one method matching rules 2-4.
+A class gets a unit test file if it has at least one method matching rules 2-5.
 
 ```
 Has @api public methods?                              → yes → unit test file
 Has #initialize with logic?                           → yes → unit test file
 Has any non-private method with ≥3 code paths?        → yes → unit test file
+File has ≥8 conditional keywords total?               → yes → unit test file (test entry points)
 None of the above?                                    → no unit test file (integration only)
 ```
 
-Classes that do NOT get unit tests (no `@api public`, no methods with ≥3 code paths):
+Classes that do NOT get unit tests (no `@api public`, no methods with ≥3 code paths, file has <8 total conditionals):
 
 | Category | Examples |
 |----------|----------|
@@ -1494,7 +1500,7 @@ Simple method call on test object?               → Inline: `expect(issue.point
 Given a class to test:
 
 ```
-1. Does the class qualify? (has @api public methods, #initialize with logic, or non-private methods with ≥3 code paths?)
+1. Does the class qualify? (has @api public methods, #initialize with logic, non-private methods with ≥3 code paths, or file has ≥8 total conditionals?)
    No  → skip, integration tests only
    Yes → continue
 
@@ -1506,7 +1512,8 @@ Given a class to test:
    a. All @api public methods (except trivial attr_reader — tested via #initialize)
    b. #initialize if it validates or coerces input
    c. All non-private methods with ≥3 code paths
-   d. Nothing else
+   d. If file has ≥8 total conditionals: all non-private entry points that delegate to private logic
+   e. Nothing else
 
 6. Order: class methods @api public (alphabetical), class methods semi-public ≥3 (alphabetical), #initialize, instance methods @api public (alphabetical), instance methods semi-public ≥3 (alphabetical)
 
@@ -1529,8 +1536,8 @@ Before a test file is done:
 
 1. File starts with `# frozen_string_literal: true` + `require 'rails_helper'`
 2. `RSpec.describe` uses class constant (unit) or string (integration)
-3. Tests `@api public` methods, `#initialize` with logic, and non-private methods with ≥3 code paths
-4. No tests for private methods or semi-public methods with <3 code paths
+3. Tests `@api public` methods, `#initialize` with logic, non-private methods with ≥3 code paths, and entry points for files with ≥8 total conditionals
+4. No tests for private methods or simple semi-public methods in simple files
 5. Methods tested in class layout order (@api public first alphabetical, then semi-public ≥3 alphabetical, within each section)
 6. Each method categorized and formula applied
 7. Edge cases derived from signature
