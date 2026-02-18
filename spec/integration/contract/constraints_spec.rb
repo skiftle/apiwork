@@ -140,8 +140,8 @@ RSpec.describe 'Contract constraints', type: :integration do
         action :create do
           request do
             body do
-              string :notes, default: 'Net 30 payment terms', optional: true
-              boolean :notify, default: true, optional: true
+              string? :notes, default: 'Net 30 payment terms'
+              boolean? :notify, default: true
               param :items, max: 5, min: 2, of: :string, type: :array
             end
           end

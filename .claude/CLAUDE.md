@@ -1032,6 +1032,17 @@ def initialize(name, type, schema_class,
 end
 ```
 
+### Contract Optional Params
+
+Use the `?` shorthand for optional params. Never pass `optional: true` explicitly.
+
+| Bad | Good |
+|-----|------|
+| `string :notes, optional: true` | `string? :notes` |
+| `integer :count, optional: true` | `integer? :count` |
+| `boolean :sent, default: false, optional: true` | `boolean? :sent, default: false` |
+| `array :items, default: [], optional: true do` | `array? :items, default: [] do` |
+
 ---
 
 ## Ruby Style

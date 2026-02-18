@@ -24,7 +24,7 @@ module Api
           body do
             object :invoice do
               string :number
-              string :notes, optional: true
+              string? :notes
               boolean :sent, default: false
               integer :customer_id
             end
@@ -38,9 +38,9 @@ module Api
         request do
           body do
             object :invoice do
-              string :number, optional: true
-              string :notes, optional: true
-              boolean :sent, optional: true
+              string? :number
+              string? :notes
+              boolean? :sent
             end
           end
         end
@@ -50,15 +50,15 @@ module Api
         request do
           body do
             string :recipient_email, format: :email
-            string :callback_url, format: :url, optional: true
-            string :message, max: 500, min: 1, optional: true
-            boolean :notify_customer, default: true, optional: true
+            string? :callback_url, format: :url
+            string? :message, max: 500, min: 1
+            boolean? :notify_customer, default: true
           end
         end
 
         response do
           body do
-            datetime :sent_at, optional: true
+            datetime? :sent_at
           end
         end
       end
@@ -66,14 +66,14 @@ module Api
       action :void do
         request do
           body do
-            string :reason, optional: true
+            string? :reason
           end
         end
 
         response do
           body do
-            datetime :voided_at, optional: true
-            string :void_reason, optional: true
+            datetime? :voided_at
+            string? :void_reason
           end
         end
       end
@@ -81,14 +81,14 @@ module Api
       action :search do
         request do
           query do
-            string :q, default: '', optional: true
+            string? :q, default: ''
           end
         end
 
         response do
           body do
-            string :search_query, optional: true
-            integer :result_count, optional: true
+            string? :search_query
+            integer? :result_count
           end
         end
       end
@@ -96,11 +96,11 @@ module Api
       action :bulk_create do
         request do
           body do
-            array :invoices, default: [], optional: true do
+            array? :invoices, default: [] do
               object do
                 string :number
                 integer :customer_id
-                boolean :sent, default: false, optional: true
+                boolean? :sent, default: false
               end
             end
           end

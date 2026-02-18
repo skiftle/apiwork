@@ -87,7 +87,7 @@ RSpec.describe 'Contract validation', type: :integration do
           request do
             body do
               string :number
-              string :notes, optional: true
+              string? :notes
             end
           end
         end
