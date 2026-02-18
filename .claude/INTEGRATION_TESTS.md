@@ -11,9 +11,10 @@ For unit test rules, see `UNIT_TESTS.md`.
 ## Commands
 
 ```bash
-bundle exec rspec spec/integration/                         # all integration tests
-bundle exec rspec spec/integration/adapter/filtering_spec.rb  # single file
-bundle exec rspec spec/integration/adapter/filtering_spec.rb:42  # single test
+bundle exec rspec spec/integration/                                    # all integration tests
+bundle exec rspec spec/integration/adapter/standard/filtering/         # subdirectory
+bundle exec rspec spec/integration/adapter/standard/sorting_spec.rb    # single file
+bundle exec rspec spec/integration/adapter/standard/sorting_spec.rb:42 # single test
 ```
 
 ---
@@ -22,19 +23,101 @@ bundle exec rspec spec/integration/adapter/filtering_spec.rb:42  # single test
 
 ```
 spec/integration/
-├── adapter/          # Filtering, sorting, pagination, includes, preload, configuration
-├── api/              # CRUD, nested resources, singular resource, routing, path format
-├── contract/         # Custom actions, types, imports, inheritance, validation
-├── export/           # OpenAPI, TypeScript, Zod generation
-├── introspection/    # API.introspect, Contract.introspect
-└── representation/   # Encode/decode, nested attributes, STI, polymorphic, associations
+├── adapter/
+│   ├── configuration_spec.rb
+│   ├── custom_adapter_spec.rb
+│   └── standard/
+│       ├── filtering/
+│       │   ├── string_spec.rb
+│       │   ├── numeric_spec.rb
+│       │   ├── temporal_spec.rb
+│       │   ├── boolean_enum_spec.rb
+│       │   ├── association_spec.rb
+│       │   ├── logical_spec.rb
+│       │   └── errors_spec.rb
+│       ├── sorting_spec.rb
+│       ├── pagination/
+│       │   ├── offset_spec.rb
+│       │   └── cursor_spec.rb
+│       ├── includes_spec.rb
+│       ├── writing/
+│       │   ├── body_params_spec.rb
+│       │   ├── nested_attributes_spec.rb
+│       │   └── custom_actions_spec.rb
+│       ├── validation_spec.rb
+│       ├── sti_spec.rb
+│       ├── singular_resource_spec.rb
+│       ├── nested_resources_spec.rb
+│       ├── action_restrictions_spec.rb
+│       └── response_format_spec.rb
+├── api/
+│   ├── concerns_spec.rb
+│   └── controller_context_spec.rb
+├── contract/
+│   ├── types_spec.rb
+│   ├── imports_spec.rb
+│   ├── inheritance_spec.rb
+│   └── error_codes_spec.rb
+├── export/
+│   ├── typescript/
+│   │   ├── resources_spec.rb
+│   │   ├── enums_and_types_spec.rb
+│   │   ├── actions_spec.rb
+│   │   └── modifiers_spec.rb
+│   ├── zod/
+│   │   ├── resources_spec.rb
+│   │   ├── enums_and_types_spec.rb
+│   │   ├── actions_spec.rb
+│   │   └── modifiers_spec.rb
+│   ├── openapi/
+│   │   ├── paths_spec.rb
+│   │   ├── schemas_spec.rb
+│   │   ├── metadata_spec.rb
+│   │   └── operations_spec.rb
+│   ├── key_format_spec.rb
+│   └── type_merging_spec.rb
+├── introspection/
+│   └── introspection_spec.rb
+└── representation/
+    ├── attributes_spec.rb
+    ├── encode_decode_spec.rb
+    ├── sti_spec.rb
+    ├── associations_spec.rb
+    ├── polymorphic_spec.rb
+    └── inline_types_spec.rb
 ```
+
+### Domain Boundaries
+
+| Domain | Tests | Type | Interface |
+|--------|-------|------|-----------|
+| `adapter/standard/` | Standard adapter runtime | `:request` | HTTP |
+| `adapter/` (root) | Adapter configuration | `:integration` | Ruby API |
+| `api/` | API DSL definitions | `:integration` | Ruby API |
+| `contract/` | Type system, imports, inheritance | `:integration` | Ruby API |
+| `export/` | TypeScript, Zod, OpenAPI generation | `:integration` | `.generate` |
+| `introspection/` | API structure inspection | `:integration` | `.introspect` |
+| `representation/` | Serialization, deserialization | `:integration` | `.serialize` / `.deserialize` |
+
+**All HTTP tests belong in `adapter/standard/`.** No HTTP requests in any other domain.
+
+### What We Do NOT Test
+
+| Thing | Reason |
+|-------|--------|
+| Basic CRUD (create, read, update, delete) | Rails ActiveRecord |
+| 404 for missing records | Rails rescue_from |
+| Model validations themselves | ActiveRecord::Validations |
+| Route generation | Rails Router |
+| Association creation/deletion | ActiveRecord |
+
+Test only behavior that apiwork implements.
 
 ### File Naming
 
 `spec/integration/<domain>/<feature>_spec.rb`
 
-One file per feature. Max 200 lines per file.
+One file per feature. Max 200 lines per file. Subdirectories for complex domains (filtering, pagination, writing, exports).
 
 ---
 
@@ -42,12 +125,12 @@ One file per feature. Max 200 lines per file.
 
 ### Type A: HTTP Request (`type: :request`)
 
-Tests the full HTTP pipeline through the dummy Rails app. Uses database records, HTTP verbs, and JSON response parsing.
+Tests the full HTTP pipeline through the dummy Rails app. Only in `adapter/standard/`.
 
 ```ruby
-RSpec.describe 'Filtering', type: :request do
+RSpec.describe 'String filtering', type: :request do
   let!(:customer1) { Customer.create!(name: 'Acme Corp') }
-  let!(:invoice1) { Invoice.create!(customer: customer1, due_on: 3.days.from_now, number: 'INV-001', status: :draft) }
+  let!(:invoice1) { Invoice.create!(customer: customer1, number: 'INV-001', status: :draft) }
 
   describe 'GET /api/v1/invoices' do
     it 'filters by exact match' do
@@ -64,10 +147,10 @@ end
 
 ### Type B: Definition Pipeline (`type: :integration`)
 
-Tests inline `API.define` with introspection or export. No HTTP requests, no database records.
+Tests DSL definitions, introspection, exports, or serialization. No HTTP requests.
 
 ```ruby
-RSpec.describe 'TypeScript Generation', type: :integration do
+RSpec.describe 'TypeScript resource generation', type: :integration do
   let(:path) { '/api/v1' }
   let(:generator) { Apiwork::Export::TypeScript.new(path) }
   let(:output) { generator.generate }
@@ -76,6 +159,22 @@ RSpec.describe 'TypeScript Generation', type: :integration do
     it 'generates Invoice interface' do
       expect(output).to include('export interface Invoice')
     end
+  end
+end
+```
+
+### Type C: Direct Serialization (`type: :integration`)
+
+Tests representation serialization and deserialization. Uses database records but no HTTP.
+
+```ruby
+RSpec.describe 'Representation encode and decode', type: :integration do
+  it 'transforms output value through encode lambda' do
+    customer1 = PersonCustomer.create!(email: 'BILLING@ACME.COM', name: 'Acme Corp')
+
+    result = Api::V1::CustomerRepresentation.serialize(customer1)
+
+    expect(result[:email]).to eq('billing@acme.com')
   end
 end
 ```
@@ -102,10 +201,10 @@ No blank line between the magic comment and require.
 
 | Test type | Format | Example |
 |-----------|--------|---------|
-| HTTP | String + `type: :request` | `RSpec.describe 'Filtering', type: :request` |
-| Non-HTTP | String + `type: :integration` | `RSpec.describe 'TypeScript Generation', type: :integration` |
+| HTTP | String + `type: :request` | `RSpec.describe 'String filtering', type: :request` |
+| Non-HTTP | String + `type: :integration` | `RSpec.describe 'TypeScript resource generation', type: :integration` |
 
-Feature names, not class names. `'Filtering'` not `Apiwork::Adapter::Standard::Capability::Filtering`.
+Feature names, not class names. `'String filtering'` not `Apiwork::Adapter::Standard::Capability::Filtering`.
 
 ### describe (nested)
 
@@ -130,11 +229,12 @@ Must start with: `when`, `with`, `without`, `if`.
 | HTTP delete | `'deletes the <model>'` | `it 'deletes the invoice'` |
 | HTTP show | `'returns the <model>'` | `it 'returns the invoice'` |
 | HTTP index | `'returns the collection'` | Always this exact string |
-| HTTP 404 | `'returns not found for nonexistent <model>'` | `it 'returns not found for nonexistent invoice'` |
 | HTTP 422 | `'returns unprocessable entity for invalid input'` | Always this exact string |
 | Export includes | `'generates <thing>'` | `it 'generates Invoice interface'` |
 | Export matches | `'includes <pattern>'` | `it 'includes invoice_status enum'` |
 | Introspection | `'returns <thing>'` | `it 'returns all resource names'` |
+| Serialize | `'serializes <thing>'` | `it 'serializes email through encode lambda'` |
+| Deserialize | `'deserializes <thing>'` | `it 'deserializes type to class name'` |
 
 ---
 
@@ -145,9 +245,10 @@ Must start with: `when`, `with`, `without`, `if`.
 ```ruby
 expect(response).to have_http_status(:ok)
 expect(response).to have_http_status(:created)
+expect(response).to have_http_status(:no_content)
 expect(response).to have_http_status(:bad_request)
 expect(response).to have_http_status(:not_found)
-expect(response).to have_http_status(:unprocessable_entity)
+expect(response).to have_http_status(:unprocessable_content)
 ```
 
 Use symbols, not integers.
@@ -162,38 +263,26 @@ Always in this exact order:
 5. Data assertions
 
 ```ruby
-it 'returns the invoice' do
-  get "/api/v1/invoices/#{invoice1.id}"
+it 'filters by exact match' do
+  get '/api/v1/invoices', params: { filter: { number: { eq: 'INV-001' } } }
 
   expect(response).to have_http_status(:ok)
   json = JSON.parse(response.body)
-  expect(json['invoice']['number']).to eq('INV-001')
+  expect(json['invoices'].length).to eq(1)
+  expect(json['invoices'][0]['number']).to eq('INV-001')
 end
 ```
 
 ### Error Response
 
 ```ruby
-it 'returns error for invalid input' do
-  get '/api/v1/invoices', params: { filter: { invalid_field: { eq: 'value' } } }
+it 'returns error for unknown filter field' do
+  get '/api/v1/invoices', params: { filter: { nonexistent: { eq: 'value' } } }
 
   expect(response).to have_http_status(:bad_request)
   json = JSON.parse(response.body)
-  expect(json['issues']).to be_present
-end
-```
-
-For specific error details:
-
-```ruby
-it 'returns validation error with pointer' do
-  post '/api/v1/invoices', as: :json, params: { invoice: { notes: 'Missing number' } }
-
-  expect(response).to have_http_status(:unprocessable_entity)
-  json = JSON.parse(response.body)
-  issue = json['issues'].first
-  expect(issue['code']).to eq('required')
-  expect(issue['pointer']).to eq('/invoice/number')
+  issue = json['issues'].find { |i| i['code'] == 'field_unknown' }
+  expect(issue).to be_present
 end
 ```
 
@@ -232,6 +321,16 @@ expect(output).to match(/number\??: string/)
 ```
 
 Use `include` for exact substring, `match` for regex.
+
+### Serialization
+
+```ruby
+result = Api::V1::InvoiceRepresentation.serialize(invoice1)
+expect(result[:number]).to eq('INV-001')
+
+results = Api::V1::InvoiceRepresentation.serialize([invoice1, invoice2])
+expect(results.length).to eq(2)
+```
 
 ---
 
@@ -277,7 +376,6 @@ end
 
 | Scenario | Count |
 |----------|-------|
-| Basic CRUD tests | 3 records |
 | Filtering tests | 3 records (vary the filtered attribute) |
 | Pagination tests | 25 records (bulk, `before` block) |
 | Association tests | 2-3 parent + 2-3 children |
@@ -370,36 +468,102 @@ let!(:profile1) { Profile.create!(bio: 'Billing administrator', email: 'admin@bi
 
 ---
 
-## Integration Test Formulas
+## adapter/standard/ Test Coverage
 
-### CRUD Endpoint
+All standard adapter runtime behavior tested via HTTP. One file per capability.
 
-For each CRUD action, test these scenarios mechanically:
+### Filtering
 
-| Action | Required tests |
-|--------|---------------|
-| `index` | returns collection, respects pagination, returns empty when no records |
-| `show` | returns record, returns 404 for nonexistent |
-| `create` | creates record (change count by 1), returns 422 for invalid input |
-| `update` | updates record, returns 404, returns 422 |
-| `destroy` | deletes record (change count by -1), returns 404 |
+| File | Operators | Model |
+|------|-----------|-------|
+| `filtering/string_spec.rb` | eq, contains, starts_with, ends_with, in, null | Invoice (number, notes) |
+| `filtering/numeric_spec.rb` | eq, gt, gte, lt, lte, between, in, null | Item (quantity, unit_price) |
+| `filtering/temporal_spec.rb` | eq, gt, lt, between, null (date, datetime, time) | Invoice (due_on, created_at), Profile (preferred_contact_time) |
+| `filtering/boolean_enum_spec.rb` | boolean eq/null, enum eq/in, enum value_invalid | Invoice (sent, status) |
+| `filtering/association_spec.rb` | Direct and nested association filters | Item filter by invoice.number |
+| `filtering/logical_spec.rb` | AND, OR, NOT, nested combinations | Invoice (status, sent) |
+| `filtering/errors_spec.rb` | field_unknown, operator_invalid, type mismatch | Invoice |
 
-### Capability (filtering, sorting, pagination)
+### Sorting
 
-| Capability | Required tests |
-|------------|---------------|
-| Filtering | 1 per operator used (eq, contains, gt, in, etc.) + invalid field + invalid operator |
-| Sorting | ascending + descending + invalid field |
-| Pagination | first page + last page + page size + out of range |
-| Including | valid include + nested include + invalid include |
+| File | Tests |
+|------|-------|
+| `sorting_spec.rb` | asc, desc, multi-field, association sort, error cases |
 
-### Export
+### Pagination
 
-| Export type | Required tests |
-|-------------|---------------|
-| TypeScript | generates interfaces for each resource + generates enum types + generates request/response types |
-| Zod | generates schemas for each resource + generates enum schemas + generates action schemas |
-| OpenAPI | generates paths + generates schemas + valid YAML structure |
+| File | Tests |
+|------|-------|
+| `pagination/offset_spec.rb` | page number/size, metadata (current/next/prev/total/items), out of range, max size |
+| `pagination/cursor_spec.rb` | first page, after/before cursors, last page, cursor_invalid error |
+
+### Includes
+
+| File | Tests |
+|------|-------|
+| `includes_spec.rb` | optional omitted, optional requested, always-included, multiple, nested, unknown error |
+
+### Writing
+
+| File | Tests |
+|------|-------|
+| `writing/body_params_spec.rb` | writable fields, unknown field rejection, partial update, decode transformer |
+| `writing/nested_attributes_spec.rb` | create/update/delete nested, OP field, mixed ops, deep nesting |
+| `writing/custom_actions_spec.rb` | member body, collection query, collection body, unknown field error, defaults |
+
+### Validation
+
+| File | Tests |
+|------|-------|
+| `validation_spec.rb` | contract 400 (field_missing, type_invalid, field_unknown, multiple, empty body), model 422, error format (issues structure, pointer), nested error paths, update validation |
+
+### Other Runtime
+
+| File | Tests |
+|------|-------|
+| `sti_spec.rb` | Create person/company via type, update preserves type, index mixed types, delete STI |
+| `singular_resource_spec.rb` | Show/create/update/destroy without :id |
+| `nested_resources_spec.rb` | Parent scoping, cross-parent isolation, create under parent, non-nested coexistence |
+| `action_restrictions_spec.rb` | only: restricts actions, except: restricts actions |
+| `response_format_spec.rb` | Singular/plural root key, custom root key, pagination metadata, empty collection, key_format :camel, path_format :kebab |
+
+---
+
+## Export Test Coverage
+
+### TypeScript
+
+| File | Tests |
+|------|-------|
+| `typescript/resources_spec.rb` | Interfaces for Invoice, Item, Customer (STI), nullable, optional, enum attrs, association types |
+| `typescript/enums_and_types_spec.rb` | Status/Method enums, custom objects (error_detail, pagination_params), sorted values, type ordering |
+| `typescript/actions_spec.rb` | Create/Update request, Show/Index response, custom action types, destroy void, writable payloads |
+| `typescript/modifiers_spec.rb` | JSDoc description/example, deprecated, key_format :camel, optional vs nullable |
+
+### Zod
+
+| File | Tests |
+|------|-------|
+| `zod/resources_spec.rb` | z.object schemas, field types, nullable/optional, .int(), inferred types |
+| `zod/enums_and_types_spec.rb` | z.enum, custom z.object, inferred enum types, discriminated unions, sorted values |
+| `zod/actions_spec.rb` | Request/response schemas, custom action schemas, destroy z.never(), writable payloads |
+| `zod/modifiers_spec.rb` | min/max constraints, uuid validation, key_format :camel, optional+nullable combo |
+
+### OpenAPI
+
+| File | Tests |
+|------|-------|
+| `openapi/paths_spec.rb` | All endpoint paths, nested paths, custom actions, restricted resources, singular, kebab paths |
+| `openapi/schemas_spec.rb` | Component schemas, enums, custom types, STI oneOf, nullable, arrays, $ref |
+| `openapi/metadata_spec.rb` | Info block, contact, license, servers, tags, openapi version |
+| `openapi/operations_spec.rb` | Request bodies, response schemas, query params, path params, error responses, deprecated, operationId, 204 |
+
+### Cross-cutting
+
+| File | Tests |
+|------|-------|
+| `key_format_spec.rb` | TypeScript/Zod/OpenAPI all apply :camel consistently |
+| `type_merging_spec.rb` | Declaration merging, metadata last-wins |
 
 ---
 
@@ -410,7 +574,7 @@ For each CRUD action, test these scenarios mechanically:
 
 require 'rails_helper'
 
-RSpec.describe 'TypeScript Generation', type: :integration do
+RSpec.describe 'TypeScript resource generation', type: :integration do
   let(:path) { '/api/v1' }
   let(:generator) { Apiwork::Export::TypeScript.new(path) }
   let(:output) { generator.generate }
@@ -506,6 +670,7 @@ Numbered: `invoice1`, `invoice2`, `invoice3`. Never `first_invoice` or `paid_inv
 | `be_present` / `be_a(Hash)` for structures | Verify specific keys and values |
 | `if` in assertions | Split into separate `it` blocks |
 | Comments | Structure and names carry meaning |
+| Testing Rails behavior | CRUD, 404, model validations, route generation |
 
 ---
 
@@ -526,5 +691,7 @@ Before an integration test file is done:
 11. Record attributes in alphabetical order
 12. Max 200 lines per file
 13. Verify specific values, not `be_present` / `be_a`
-14. `bundle exec rubocop -A` passes
-15. `bundle exec rspec <file>` passes
+14. No HTTP requests outside `adapter/standard/`
+15. No testing Rails framework behavior
+16. `bundle exec rubocop -A` passes
+17. `bundle exec rspec <file>` passes

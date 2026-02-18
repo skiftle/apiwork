@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Controller#context', type: :request do
+RSpec.describe 'Controller context', type: :integration do
   describe 'Default context' do
     it 'returns empty hash by default' do
       controller_class = Class.new(ApplicationController) do
@@ -14,7 +14,7 @@ RSpec.describe 'Controller#context', type: :request do
     end
   end
 
-  describe 'Context method API' do
+  describe 'Custom context' do
     it 'is overridable with custom data' do
       controller_class = Class.new(ApplicationController) do
         include Apiwork::Controller

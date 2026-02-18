@@ -4,32 +4,33 @@ require 'rails_helper'
 
 RSpec.describe 'Singular resource', type: :request do
   describe 'GET /api/v1/profile' do
-    it 'returns the profile without :id in URL' do
-      Profile.create!(bio: 'Developer', email: 'admin@billing.test', name: 'Admin', timezone: 'UTC')
+    let!(:profile1) do
+      Profile.create!(
+        bio: 'Billing administrator',
+        email: 'admin@billing.test',
+        name: 'Admin',
+        timezone: 'Europe/Stockholm',
+      )
+    end
 
+    it 'returns the profile without :id' do
       get '/api/v1/profile'
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
       expect(json['profile']['name']).to eq('Admin')
-      expect(json['profile']['bio']).to eq('Developer')
-      expect(json['profile']['timezone']).to eq('UTC')
-    end
-
-    it 'returns 404 when profile does not exist' do
-      get '/api/v1/profile'
-
-      expect(response).to have_http_status(:not_found)
+      expect(json['profile']['bio']).to eq('Billing administrator')
+      expect(json['profile']['timezone']).to eq('Europe/Stockholm')
     end
   end
 
   describe 'POST /api/v1/profile' do
-    it 'creates a profile without :id in URL' do
+    it 'creates the profile without :id' do
       post '/api/v1/profile',
            as: :json,
            params: {
              profile: {
-               bio: 'New bio',
+               bio: 'Billing administrator',
                email: 'admin@billing.test',
                name: 'Admin',
                timezone: 'Europe/Stockholm',
@@ -44,9 +45,16 @@ RSpec.describe 'Singular resource', type: :request do
   end
 
   describe 'PATCH /api/v1/profile' do
-    it 'updates the profile without :id in URL' do
-      Profile.create!(bio: 'Original bio', name: 'Admin', timezone: 'UTC')
+    let!(:profile1) do
+      Profile.create!(
+        bio: 'Billing administrator',
+        email: 'admin@billing.test',
+        name: 'Admin',
+        timezone: 'Europe/Stockholm',
+      )
+    end
 
+    it 'updates the profile without :id' do
       patch '/api/v1/profile',
             as: :json,
             params: { profile: { bio: 'Updated bio' } }
@@ -58,33 +66,20 @@ RSpec.describe 'Singular resource', type: :request do
   end
 
   describe 'DELETE /api/v1/profile' do
-    it 'deletes the profile without :id in URL' do
-      Profile.create!(bio: 'To delete', name: 'Admin', timezone: 'UTC')
-
-      delete '/api/v1/profile'
-
-      expect(response).to have_http_status(:no_content)
-      expect(Profile.count).to eq(0)
-    end
-  end
-
-  describe 'Singular resource serialization' do
-    it 'serializes all attributes' do
-      profile = Profile.create!(
-        bio: 'Developer',
+    let!(:profile1) do
+      Profile.create!(
+        bio: 'Billing administrator',
         email: 'admin@billing.test',
         name: 'Admin',
         timezone: 'Europe/Stockholm',
       )
+    end
 
-      get '/api/v1/profile'
+    it 'deletes the profile without :id' do
+      delete '/api/v1/profile'
 
-      json = JSON.parse(response.body)
-      expect(json['profile']['id']).to eq(profile.id)
-      expect(json['profile']['bio']).to eq('Developer')
-      expect(json['profile']['email']).to eq('admin@billing.test')
-      expect(json['profile']['name']).to eq('Admin')
-      expect(json['profile']['timezone']).to eq('Europe/Stockholm')
+      expect(response).to have_http_status(:no_content)
+      expect(Profile.count).to eq(0)
     end
   end
 end

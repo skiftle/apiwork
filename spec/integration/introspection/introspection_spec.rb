@@ -6,8 +6,7 @@ RSpec.describe 'Introspection', type: :integration do
   let(:introspection) { Apiwork::API.introspect('/api/v1') }
 
   describe 'API introspection' do
-    it 'returns Introspection::API instance with base path' do
-      expect(introspection).to be_a(Apiwork::Introspection::API)
+    it 'returns introspection with base path' do
       expect(introspection.base_path).to eq('/api/v1')
     end
 
@@ -56,7 +55,7 @@ RSpec.describe 'Introspection', type: :integration do
     end
   end
 
-  describe 'resource introspection' do
+  describe 'Resource introspection' do
     let(:invoices_resource) { introspection.resources[:invoices] }
 
     it 'includes identifier and path' do
@@ -85,7 +84,7 @@ RSpec.describe 'Introspection', type: :integration do
     end
   end
 
-  describe 'action introspection' do
+  describe 'Action introspection' do
     let(:invoices_resource) { introspection.resources[:invoices] }
     let(:show_action) { invoices_resource.actions[:show] }
     let(:create_action) { invoices_resource.actions[:create] }
@@ -99,7 +98,7 @@ RSpec.describe 'Introspection', type: :integration do
     end
 
     it 'includes action path' do
-      expect(show_action.path).to be_a(String)
+      expect(show_action.path).to include('invoices')
     end
 
     it 'includes summary and description when provided' do
@@ -126,13 +125,13 @@ RSpec.describe 'Introspection', type: :integration do
     end
 
     it 'includes request with body for create and query for index' do
-      expect(create_action.request).to be_present
       expect(create_action.request.body?).to be(true)
       expect(index_action.request.query?).to be(true)
     end
 
     it 'includes response definition' do
-      expect(show_action.response).to be_present
+      expect(show_action.response.to_h).to have_key(:body)
+      expect(show_action.response.to_h).to have_key(:no_content)
     end
 
     it 'serializes action to hash' do
@@ -145,7 +144,7 @@ RSpec.describe 'Introspection', type: :integration do
     end
   end
 
-  describe 'enum introspection' do
+  describe 'Enum introspection' do
     it 'includes sort_direction values' do
       expect(introspection.enums[:sort_direction].values).to eq(%w[asc desc])
     end
@@ -167,7 +166,7 @@ RSpec.describe 'Introspection', type: :integration do
     end
   end
 
-  describe 'type introspection' do
+  describe 'Type introspection' do
     it 'includes error_detail as object type with shape and params' do
       error_type = introspection.types[:error_detail]
 
@@ -186,7 +185,7 @@ RSpec.describe 'Introspection', type: :integration do
     end
   end
 
-  describe 'error code introspection' do
+  describe 'Error code introspection' do
     it 'includes status codes and serializes to hash' do
       expect(introspection.error_codes[:bad_request].status).to eq(400)
       expect(introspection.error_codes[:not_found].status).to eq(404)

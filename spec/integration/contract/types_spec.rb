@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Contract Types', type: :integration do
-  describe 'object types' do
+RSpec.describe 'Contract types', type: :integration do
+  describe 'Object types' do
     it 'defines a reusable custom object type' do
       api = Apiwork::API.define '/integration/types-object' do
         object :address do
@@ -33,7 +33,7 @@ RSpec.describe 'Contract Types', type: :integration do
     end
   end
 
-  describe 'enum types' do
+  describe 'Enum types' do
     it 'defines a reusable enumeration type' do
       api = Apiwork::API.define '/integration/types-enum' do
         enum :invoice_status, values: %i[draft sent paid overdue void]
@@ -62,7 +62,7 @@ RSpec.describe 'Contract Types', type: :integration do
     end
   end
 
-  describe 'union types' do
+  describe 'Union types' do
     it 'defines a discriminated union type' do
       api = Apiwork::API.define '/integration/types-union' do
         union :notification, discriminator: :type do
@@ -109,7 +109,7 @@ RSpec.describe 'Contract Types', type: :integration do
     end
   end
 
-  describe 'fragment types' do
+  describe 'Fragment types' do
     it 'defines a reusable fragment for composition' do
       api = Apiwork::API.define '/integration/types-fragment' do
         fragment :timestamps do
@@ -128,7 +128,7 @@ RSpec.describe 'Contract Types', type: :integration do
     end
   end
 
-  describe 'type scoping' do
+  describe 'Type scoping' do
     it 'scopes types to a contract' do
       api = Apiwork::API.define '/integration/types-scoped' do
         enum :status, values: %i[active inactive]
@@ -141,7 +141,7 @@ RSpec.describe 'Contract Types', type: :integration do
     end
   end
 
-  describe 'existing V1 API types' do
+  describe 'Existing V1 API types' do
     let(:api_class) { Apiwork::API.find!('/api/v1') }
 
     it 'has API-level object types defined' do
@@ -160,7 +160,7 @@ RSpec.describe 'Contract Types', type: :integration do
     end
   end
 
-  describe 'type checking methods' do
+  describe 'Type checking methods' do
     it 'returns true for existing types and false for missing' do
       api = Apiwork::API.define '/integration/types-check' do
         object :invoice do

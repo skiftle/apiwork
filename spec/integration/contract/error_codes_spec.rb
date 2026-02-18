@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Error Codes', type: :integration do
+RSpec.describe 'Error codes', type: :integration do
   describe 'ErrorCode.register' do
     it 'registers a custom error code' do
       Apiwork::ErrorCode.register :payment_failed, status: 402
@@ -48,7 +48,7 @@ RSpec.describe 'Error Codes', type: :integration do
     end
   end
 
-  describe 'Action#raises declaration' do
+  describe 'Action raises declaration' do
     it 'accepts single error code' do
       contract = Class.new(Apiwork::Contract::Base) do
         def self.name
@@ -61,7 +61,7 @@ RSpec.describe 'Error Codes', type: :integration do
       end
 
       action = contract.actions[:show]
-      expect(action).to be_present
+      expect(action.raises).to include(:not_found)
     end
 
     it 'accepts multiple error codes' do
@@ -76,7 +76,7 @@ RSpec.describe 'Error Codes', type: :integration do
       end
 
       action = contract.actions[:update]
-      expect(action).to be_present
+      expect(action.raises).to include(:not_found, :forbidden, :conflict)
     end
 
     it 'raises ConfigurationError for unregistered error code' do
@@ -93,7 +93,7 @@ RSpec.describe 'Error Codes', type: :integration do
       end.to raise_error(Apiwork::ConfigurationError, /Unknown error code :totally_unknown_error/)
     end
 
-    it 'raises ConfigurationError when passing integer instead of symbol' do
+    it 'raises ConfigurationError for integer instead of symbol' do
       expect do
         Class.new(Apiwork::Contract::Base) do
           def self.name
@@ -121,7 +121,7 @@ RSpec.describe 'Error Codes', type: :integration do
       end
 
       action = contract.actions[:purchase]
-      expect(action).to be_present
+      expect(action.raises).to include(:insufficient_credits)
     end
   end
 
@@ -137,7 +137,7 @@ RSpec.describe 'Error Codes', type: :integration do
     it 'exposes error code details via find' do
       bad_request = Apiwork::ErrorCode.find!(:bad_request)
 
-      expect(bad_request).to be_present
+      expect(bad_request.key).to eq(:bad_request)
       expect(bad_request.status).to eq(400)
     end
 

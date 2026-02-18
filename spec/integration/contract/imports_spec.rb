@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Contract Imports', type: :integration do
-  describe 'basic import' do
+RSpec.describe 'Contract imports', type: :integration do
+  describe 'Basic import' do
     let(:invoice_contract) do
       create_test_contract do
         object :address do
@@ -75,7 +75,7 @@ RSpec.describe 'Contract Imports', type: :integration do
     end
   end
 
-  describe 'import validation' do
+  describe 'Import validation' do
     it 'raises ConfigurationError for string argument' do
       expect do
         create_test_contract do
@@ -105,7 +105,7 @@ RSpec.describe 'Contract Imports', type: :integration do
     end
   end
 
-  describe 'type resolution priority' do
+  describe 'Type resolution priority' do
     it 'prefers local types over imported types' do
       base_contract = create_test_contract do
         object :metadata do

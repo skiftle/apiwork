@@ -1,0 +1,84 @@
+# frozen_string_literal: true
+
+require 'rails_helper'
+
+RSpec.describe 'Cursor pagination', type: :request do
+  let!(:customer1) { Customer.create!(email: 'billing@acme.com', name: 'Acme Corp') }
+  let!(:invoice1) { Invoice.create!(customer: customer1, number: 'INV-001', status: :draft) }
+
+  before do
+    25.times do |i|
+      Activity.create!(
+        action: "action_#{format('%03d', i + 1)}",
+        created_at: (25 - i).days.ago,
+        read: i.even?,
+        target: invoice1,
+      )
+    end
+  end
+
+  describe 'GET /api/v1/activities' do
+    it 'returns first page without cursor' do
+      get '/api/v1/activities', params: { page: { size: 10 } }
+
+      expect(response).to have_http_status(:ok)
+      json = JSON.parse(response.body)
+      expect(json['activities'].length).to eq(10)
+      expect(json['pagination']['prev']).to be_nil
+    end
+
+    it 'returns next page with after cursor' do
+      get '/api/v1/activities', params: { page: { size: 10 } }
+      json = JSON.parse(response.body)
+      next_cursor = json['pagination']['next']
+      first_page_ids = json['activities'].map { |a| a['id'] }
+
+      get '/api/v1/activities', params: { page: { after: next_cursor, size: 10 } }
+
+      expect(response).to have_http_status(:ok)
+      json = JSON.parse(response.body)
+      second_page_ids = json['activities'].map { |a| a['id'] }
+      expect(second_page_ids).not_to include(*first_page_ids)
+      expect(json['activities'].length).to eq(10)
+    end
+
+    it 'returns prev page with before cursor' do
+      get '/api/v1/activities', params: { page: { size: 10 } }
+      json = JSON.parse(response.body)
+      next_cursor = json['pagination']['next']
+
+      get '/api/v1/activities', params: { page: { after: next_cursor, size: 10 } }
+      json = JSON.parse(response.body)
+      prev_cursor = json['pagination']['prev']
+
+      get '/api/v1/activities', params: { page: { before: prev_cursor, size: 10 } }
+
+      expect(response).to have_http_status(:ok)
+      json = JSON.parse(response.body)
+      expect(json['activities'].length).to eq(10)
+    end
+
+    it 'returns next as null on last page' do
+      get '/api/v1/activities', params: { page: { size: 10 } }
+      json = JSON.parse(response.body)
+
+      get '/api/v1/activities', params: { page: { after: json['pagination']['next'], size: 10 } }
+      json = JSON.parse(response.body)
+
+      get '/api/v1/activities', params: { page: { after: json['pagination']['next'], size: 10 } }
+
+      expect(response).to have_http_status(:ok)
+      json = JSON.parse(response.body)
+      expect(json['activities'].length).to eq(5)
+      expect(json['pagination']['next']).to be_nil
+    end
+
+    it 'returns prev as null on first page' do
+      get '/api/v1/activities', params: { page: { size: 10 } }
+
+      expect(response).to have_http_status(:ok)
+      json = JSON.parse(response.body)
+      expect(json['pagination']['prev']).to be_nil
+    end
+  end
+end

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Contract Inheritance', type: :integration do
+RSpec.describe 'Contract inheritance', type: :integration do
   def create_child_contract(parent, &block)
     child = Class.new(parent)
     child.instance_variable_set(:@api_class, TestApiHelper.api_class)
@@ -10,7 +10,7 @@ RSpec.describe 'Contract Inheritance', type: :integration do
     child
   end
 
-  describe 'object inheritance' do
+  describe 'Object inheritance' do
     let(:parent_contract) do
       create_test_contract do
         object :address do
@@ -50,7 +50,7 @@ RSpec.describe 'Contract Inheritance', type: :integration do
     end
   end
 
-  describe 'enum inheritance' do
+  describe 'Enum inheritance' do
     let(:parent_contract) do
       create_test_contract do
         enum :status, values: %w[active inactive]
@@ -74,7 +74,7 @@ RSpec.describe 'Contract Inheritance', type: :integration do
     end
   end
 
-  describe 'union inheritance' do
+  describe 'Union inheritance' do
     let(:parent_contract) do
       create_test_contract do
         union :payment_method, discriminator: :type do
@@ -96,7 +96,7 @@ RSpec.describe 'Contract Inheritance', type: :integration do
     end
   end
 
-  describe 'multi-level inheritance' do
+  describe 'Multi-level inheritance' do
     let(:grandparent_contract) do
       create_test_contract do
         object :base_type do
@@ -126,7 +126,7 @@ RSpec.describe 'Contract Inheritance', type: :integration do
     end
   end
 
-  describe 'inheritance with imports' do
+  describe 'Inheritance with imports' do
     let(:external_contract) do
       create_test_contract do
         object :external_type do

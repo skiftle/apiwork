@@ -126,7 +126,7 @@ RSpec.describe 'Type merging in exports', type: :integration do
     end
   end
 
-  describe 'merge with symbols' do
+  describe 'Merge with symbols' do
     it 'inlines params from merged type in introspection' do
       api_class = Apiwork::API.define '/api/merging-test-9' do
         object :base do
@@ -165,7 +165,7 @@ RSpec.describe 'Type merging in exports', type: :integration do
     end
   end
 
-  describe 'contract-scoped merging' do
+  describe 'Contract-scoped merging' do
     it 'merges params within contract scope' do
       contract_class = create_test_contract do
         identifier :invoice
