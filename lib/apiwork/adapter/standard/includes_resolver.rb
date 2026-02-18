@@ -71,7 +71,7 @@ module Apiwork
           return {} if hash.blank?
           return {} if visited.include?(representation_class.name)
 
-          visited = visited.dup.add(representation_class.name)
+          visited_with_current = visited.dup.add(representation_class.name)
 
           if hash.is_a?(Array)
             return hash.each_with_object({}) do |item, result|
@@ -94,7 +94,7 @@ module Apiwork
             next unless association
 
             result[key] = if value.is_a?(Hash) && association.representation_class.respond_to?(:associations)
-                            self.class.new(association.representation_class).from_params(value, visited)
+                            self.class.new(association.representation_class).from_params(value, visited_with_current)
                           else
                             {}
                           end
