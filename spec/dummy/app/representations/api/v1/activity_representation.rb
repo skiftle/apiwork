@@ -10,12 +10,12 @@ module Api
       end
 
       with_options filterable: true, sortable: true do
-        attribute :id
         attribute :action
-        attribute :target_type
-        attribute :target_id
-        attribute :read
         attribute :created_at
+        attribute :id
+        attribute :read
+        attribute :target_id
+        attribute :target_type
         attribute :updated_at
       end
     end

@@ -3,18 +3,19 @@
 module Api
   module V1
     class CustomerRepresentation < Apiwork::Representation::Base
-      attribute :name, writable: true
-      attribute :email,
-                writable: true,
-                filterable: true,
-                sortable: true,
-                nullable: true,
-                encode: ->(value) { value&.downcase },
-                decode: ->(value) { value&.upcase }
-      attribute :phone, writable: true
+      with_options writable: true do
+        attribute :email,
+                  decode: ->(value) { value&.upcase },
+                  encode: ->(value) { value&.downcase },
+                  filterable: true,
+                  nullable: true,
+                  sortable: true
+        attribute :name
+        attribute :phone
+      end
 
-      has_many :services
       has_one :address
+      has_many :services
     end
   end
 end

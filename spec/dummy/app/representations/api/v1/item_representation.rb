@@ -3,16 +3,22 @@
 module Api
   module V1
     class ItemRepresentation < Apiwork::Representation::Base
-      attribute :id, filterable: true, sortable: true
-      attribute :description, writable: true, filterable: true, sortable: true
-      attribute :quantity, filterable: true, sortable: true, writable: true
-      attribute :unit_price, filterable: true, sortable: true, writable: true
-      attribute :invoice_id, writable: true
-      attribute :created_at, filterable: true, sortable: true
-      attribute :updated_at, filterable: true, sortable: true
+      with_options filterable: true, sortable: true do
+        attribute :created_at
+        attribute :id
+        attribute :updated_at
 
-      belongs_to :invoice, filterable: true, sortable: true
+        with_options writable: true do
+          attribute :description
+          attribute :quantity
+          attribute :unit_price
+        end
+      end
+
+      attribute :invoice_id, writable: true
+
       has_many :adjustments, writable: true
+      belongs_to :invoice, filterable: true, sortable: true
     end
   end
 end

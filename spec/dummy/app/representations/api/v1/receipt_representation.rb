@@ -5,6 +5,7 @@ module Api
     class ReceiptRepresentation < Apiwork::Representation::Base
       model Invoice
       root :receipt
+
       description 'A billing receipt'
       example({ id: 1, number: 'INV-001' })
 

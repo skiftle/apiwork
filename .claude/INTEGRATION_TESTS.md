@@ -161,6 +161,83 @@ has_many :items
 
 The `representation:` option is auto-detected from the associated model in the same namespace (e.g., `Api::V1::ItemRepresentation` for `:items`). Only specify it when the association name does not match the model name or when the representation lives in a different namespace.
 
+### Declaration ordering
+
+All declarations in dummy app definitions must follow a deterministic order. No exceptions.
+
+**Section order within a representation class:**
+
+| Order | Section | Rule |
+|-------|---------|------|
+| 1 | Identity DSL | `model`, `root`, `type_name` — alphabetical |
+| 2 | Metadata DSL | `abstract!`, `deprecated!`, `description`, `example` — alphabetical |
+| 3 | Configuration blocks | `adapter do...end` |
+| 4 | `with_options` blocks | Ordered by first attribute name inside the block |
+| 5 | Standalone attributes | `attribute` — alphabetical by name |
+| 6 | Associations | `belongs_to`, `has_one`, `has_many` — alphabetical by name regardless of type |
+
+**Keyword arguments** within each declaration: alphabetical.
+
+`with_options` is required when 3 or more attributes share identical options. Attributes inside `with_options` follow the same alphabetical rule. Nested `with_options` is allowed.
+
+```ruby
+# Bad — 3+ attributes repeat the same options
+attribute :balance, filterable: true, sortable: true
+attribute :created_at, filterable: true, sortable: true
+attribute :id, filterable: true, sortable: true
+
+# Good — with_options eliminates repetition
+with_options filterable: true, sortable: true do
+  attribute :balance
+  attribute :created_at
+  attribute :id
+end
+```
+
+```ruby
+# Bad — wrong section order, wrong alphabetical order
+class ReceiptRepresentation < Apiwork::Representation::Base
+  description 'A billing receipt'
+  model Invoice
+  root :receipt
+
+  attribute :id, sortable: true, filterable: true
+  attribute :number, filterable: true, sortable: true
+end
+
+# Good — identity first, then metadata, keyword args alphabetical
+class ReceiptRepresentation < Apiwork::Representation::Base
+  model Invoice
+  root :receipt
+
+  description 'A billing receipt'
+  example({ id: 1, number: 'INV-001' })
+
+  attribute :id, filterable: true, sortable: true
+  attribute :number, filterable: true, sortable: true
+end
+```
+
+```ruby
+# Bad — attributes and associations not alphabetical
+class InvoiceRepresentation < Apiwork::Representation::Base
+  attribute :name, writable: true
+  attribute :email, writable: true
+
+  has_many :services
+  has_one :address
+end
+
+# Good — alphabetical by name
+class InvoiceRepresentation < Apiwork::Representation::Base
+  attribute :email, writable: true
+  attribute :name, writable: true
+
+  has_one :address
+  has_many :services
+end
+```
+
 ---
 
 ## Two Test Types

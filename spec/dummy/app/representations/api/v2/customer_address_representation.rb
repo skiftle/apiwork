@@ -5,13 +5,13 @@ module Api
     class CustomerAddressRepresentation < Apiwork::Representation::Base
       model Address
 
-      attribute :id
-      attribute :street, writable: true
       attribute :city, writable: true
-      attribute :zip, writable: true
       attribute :country, writable: true
       attribute :created_at
+      attribute :id
+      attribute :street, writable: true
       attribute :updated_at
+      attribute :zip, writable: true
     end
   end
 end

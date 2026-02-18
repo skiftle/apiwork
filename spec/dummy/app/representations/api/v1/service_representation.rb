@@ -3,8 +3,8 @@
 module Api
   module V1
     class ServiceRepresentation < Apiwork::Representation::Base
-      attribute :name
       attribute :description
+      attribute :name
 
       belongs_to :customer
     end
