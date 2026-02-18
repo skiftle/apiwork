@@ -10,7 +10,7 @@ RSpec.describe 'Key format across exports', type: :integration do
       expect(output).to match(/createdAt: string/)
     end
 
-    it 'includes no snake_case timestamp fields' do
+    it 'excludes snake_case timestamp fields' do
       expect(output).not_to match(/created_at: string/)
     end
   end
@@ -25,7 +25,7 @@ RSpec.describe 'Key format across exports', type: :integration do
       expect(property_names).to include('createdAt')
     end
 
-    it 'includes no snake_case for timestamp fields' do
+    it 'excludes snake_case timestamp fields' do
       schema = spec[:components][:schemas].values.first
       property_names = schema[:properties].keys.map(&:to_s)
 
@@ -34,17 +34,21 @@ RSpec.describe 'Key format across exports', type: :integration do
   end
 
   describe 'Consistency across generators' do
-    it 'applies same camelCase transformation across all generators' do
-      ts_output = Apiwork::Export::TypeScript.new('/api/v1', key_format: :camel).generate
-      openapi_spec = Apiwork::Export::OpenAPI.new('/api/v1', key_format: :camel).generate
-      invoice_properties = openapi_spec[:components][:schemas]['invoice'][:properties].keys.map(&:to_s)
+    it 'generates camelCase keys in TypeScript' do
+      output = Apiwork::Export::TypeScript.new('/api/v1', key_format: :camel).generate
 
-      expect(ts_output).to match(/createdAt/)
+      expect(output).to match(/createdAt/)
+    end
+
+    it 'generates camelCase keys in OpenAPI' do
+      spec = Apiwork::Export::OpenAPI.new('/api/v1', key_format: :camel).generate
+      invoice_properties = spec[:components][:schemas]['invoice'][:properties].keys.map(&:to_s)
+
       expect(invoice_properties).to include('createdAt')
     end
   end
 
-  describe 'V1 with default key_format :keep' do
+  context 'with default key_format :keep' do
     it 'keeps snake_case in TypeScript' do
       output = Apiwork::Export::TypeScript.new('/api/v1').generate
 

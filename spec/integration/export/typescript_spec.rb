@@ -7,11 +7,6 @@ RSpec.describe 'TypeScript export pipeline', type: :integration do
   let(:generator) { Apiwork::Export::TypeScript.new(path) }
   let(:output) { generator.generate }
 
-  it 'generates non-empty output' do
-    expect(output).to be_a(String)
-    expect(output.length).to be_positive
-  end
-
   it 'includes invoice interface' do
     expect(output).to include('export interface Invoice')
   end

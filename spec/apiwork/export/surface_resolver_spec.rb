@@ -128,455 +128,451 @@ RSpec.describe Apiwork::Export::SurfaceResolver do
     }
   end
 
-  describe '.resolve' do
-    describe 'type reachability' do
-      it 'includes types referenced in response body' do
-        api = build_api(
-          resources: { invoices: build_resource(
-            actions: {
-              show: build_action(response_body: reference_param(:invoice)),
-            },
-          ) },
-          types: { invoice: object_type },
-        )
+  describe '#enums' do
+    it 'includes enums referenced in action query' do
+      api = build_api(
+        enums: { status: { values: %w[draft sent paid] } },
+        resources: { invoices: build_resource(
+          actions: {
+            index: build_action(query: { status: string_param(enum: :status) }),
+          },
+        ) },
+      )
 
-        surface = described_class.resolve(api)
+      surface = described_class.resolve(api)
 
-        expect(surface.types.keys).to eq([:invoice])
-      end
-
-      it 'includes types referenced in request body' do
-        api = build_api(
-          resources: { invoices: build_resource(
-            actions: {
-              create: build_action(body: { invoice: reference_param(:invoice) }),
-            },
-          ) },
-          types: { invoice: object_type },
-        )
-
-        surface = described_class.resolve(api)
-
-        expect(surface.types.keys).to eq([:invoice])
-      end
-
-      it 'includes types referenced in request query' do
-        api = build_api(
-          resources: { invoices: build_resource(
-            actions: {
-              index: build_action(query: { filter: reference_param(:invoice) }),
-            },
-          ) },
-          types: { invoice: object_type },
-        )
-
-        surface = described_class.resolve(api)
-
-        expect(surface.types.keys).to eq([:invoice])
-      end
-
-      it 'excludes unreferenced types' do
-        api = build_api(
-          resources: { invoices: build_resource(
-            actions: {
-              show: build_action(response_body: reference_param(:invoice)),
-            },
-          ) },
-          types: { invoice: object_type, receipt: object_type },
-        )
-
-        surface = described_class.resolve(api)
-
-        expect(surface.types.keys).to eq([:invoice])
-      end
+      expect(surface.enums.keys).to eq([:status])
     end
 
-    describe 'transitive dependencies' do
-      it 'includes transitively referenced types' do
-        api = build_api(
-          resources: { invoices: build_resource(
-            actions: {
-              show: build_action(response_body: reference_param(:invoice)),
-            },
-          ) },
-          types: {
-            invoice: object_type(shape: { item: reference_param(:item) }),
-            item: object_type,
+    it 'includes enums referenced in action body' do
+      api = build_api(
+        enums: { status: { values: %w[draft sent paid] } },
+        resources: { invoices: build_resource(
+          actions: {
+            create: build_action(body: { status: string_param(enum: :status) }),
           },
-        )
+        ) },
+      )
 
-        surface = described_class.resolve(api)
+      surface = described_class.resolve(api)
 
-        expect(surface.types.keys).to contain_exactly(:invoice, :item)
-      end
-
-      it 'includes deeply nested transitive types' do
-        api = build_api(
-          resources: { invoices: build_resource(
-            actions: {
-              show: build_action(response_body: reference_param(:invoice)),
-            },
-          ) },
-          types: {
-            adjustment: object_type,
-            invoice: object_type(shape: { item: reference_param(:item) }),
-            item: object_type(shape: { adjustment: reference_param(:adjustment) }),
-          },
-        )
-
-        surface = described_class.resolve(api)
-
-        expect(surface.types.keys).to contain_exactly(:invoice, :item, :adjustment)
-      end
-
-      it 'includes types from extends' do
-        api = build_api(
-          resources: { invoices: build_resource(
-            actions: {
-              show: build_action(response_body: reference_param(:invoice)),
-            },
-          ) },
-          types: {
-            invoice: object_type(extends: [:receipt]),
-            receipt: object_type,
-          },
-        )
-
-        surface = described_class.resolve(api)
-
-        expect(surface.types.keys).to contain_exactly(:invoice, :receipt)
-      end
-
-      it 'includes types referenced in type shape' do
-        api = build_api(
-          resources: { invoices: build_resource(
-            actions: {
-              show: build_action(response_body: reference_param(:invoice)),
-            },
-          ) },
-          types: {
-            customer: object_type,
-            invoice: object_type(shape: { customer: reference_param(:customer) }),
-          },
-        )
-
-        surface = described_class.resolve(api)
-
-        expect(surface.types.keys).to contain_exactly(:invoice, :customer)
-      end
+      expect(surface.enums.keys).to eq([:status])
     end
 
-    describe 'union type references' do
-      it 'includes types from union variants' do
-        api = build_api(
-          resources: { invoices: build_resource(
-            actions: {
-              show: build_action(response_body: reference_param(:payment)),
-            },
-          ) },
-          types: {
-            invoice: object_type,
-            payment: union_type(variants: [reference_param(:invoice), reference_param(:receipt)]),
-            receipt: object_type,
-          },
-        )
-
-        surface = described_class.resolve(api)
-
-        expect(surface.types.keys).to contain_exactly(:payment, :invoice, :receipt)
-      end
-
-      it 'includes types from type with union shape field' do
-        api = build_api(
-          resources: { invoices: build_resource(
-            actions: {
-              show: build_action(response_body: reference_param(:invoice)),
-            },
-          ) },
-          types: {
-            customer: object_type,
-            invoice: object_type(
-              shape: {
-                payment: union_param(variants: [reference_param(:customer), reference_param(:service)]),
-              },
-            ),
-            service: object_type,
-          },
-        )
-
-        surface = described_class.resolve(api)
-
-        expect(surface.types.keys).to contain_exactly(:invoice, :customer, :service)
-      end
-    end
-
-    describe 'array and object params' do
-      it 'includes types from array element' do
-        api = build_api(
-          resources: { invoices: build_resource(
-            actions: {
-              index: build_action(response_body: array_param(of: reference_param(:item))),
-            },
-          ) },
-          types: { item: object_type },
-        )
-
-        surface = described_class.resolve(api)
-
-        expect(surface.types.keys).to eq([:item])
-      end
-
-      it 'includes types from nested object shape' do
-        api = build_api(
-          resources: { invoices: build_resource(
-            actions: {
-              show: build_action(
-                response_body: object_param(
-                  shape: {
-                    customer: reference_param(:customer),
-                  },
-                ),
-              ),
-            },
-          ) },
-          types: { customer: object_type },
-        )
-
-        surface = described_class.resolve(api)
-
-        expect(surface.types.keys).to eq([:customer])
-      end
-
-      it 'includes types from array shape' do
-        api = build_api(
-          resources: { invoices: build_resource(
-            actions: {
-              index: build_action(
-                response_body: array_param(
-                  shape: { item: reference_param(:item) },
-                ),
-              ),
-            },
-          ) },
-          types: { item: object_type },
-        )
-
-        surface = described_class.resolve(api)
-
-        expect(surface.types.keys).to eq([:item])
-      end
-    end
-
-    describe 'nested resources' do
-      it 'includes types from nested resource actions' do
-        api = build_api(
-          resources: { invoices: build_resource(
-            actions: {},
-            resources: { items: build_resource(
-              actions: {
-                show: build_action(response_body: reference_param(:item)),
-              },
-            ) },
-          ) },
-          types: { item: object_type },
-        )
-
-        surface = described_class.resolve(api)
-
-        expect(surface.types.keys).to eq([:item])
-      end
-    end
-
-    describe 'enum reachability' do
-      it 'includes enums referenced directly in actions' do
-        api = build_api(
-          enums: { status: { values: %w[draft sent paid] } },
-          resources: { invoices: build_resource(
+    it 'includes enums from nested resource actions' do
+      api = build_api(
+        enums: { status: { values: %w[draft sent paid] } },
+        resources: { invoices: build_resource(
+          actions: {},
+          resources: { items: build_resource(
             actions: {
               index: build_action(query: { status: string_param(enum: :status) }),
             },
           ) },
-        )
+        ) },
+      )
 
-        surface = described_class.resolve(api)
+      surface = described_class.resolve(api)
 
-        expect(surface.enums.keys).to eq([:status])
-      end
-
-      it 'includes enums referenced in resolved types' do
-        api = build_api(
-          enums: { status: { values: %w[draft sent paid] } },
-          resources: { invoices: build_resource(
-            actions: {
-              show: build_action(response_body: reference_param(:invoice)),
-            },
-          ) },
-          types: {
-            invoice: object_type(shape: { status: string_param(enum: :status) }),
-          },
-        )
-
-        surface = described_class.resolve(api)
-
-        expect(surface.enums.keys).to eq([:status])
-      end
-
-      it 'includes enums referenced via type reference pointing to enum' do
-        api = build_api(
-          enums: { status: { values: %w[draft sent paid] } },
-          resources: { invoices: build_resource(
-            actions: {
-              show: build_action(response_body: reference_param(:invoice)),
-            },
-          ) },
-          types: {
-            invoice: object_type(shape: { status: reference_param(:status) }),
-          },
-        )
-
-        surface = described_class.resolve(api)
-
-        expect(surface.enums.keys).to eq([:status])
-      end
-
-      it 'excludes unreferenced enums' do
-        api = build_api(
-          enums: { priority: { values: %w[low high] }, status: { values: %w[draft sent paid] } },
-          resources: { invoices: build_resource(
-            actions: {
-              show: build_action(response_body: reference_param(:invoice)),
-            },
-          ) },
-          types: { invoice: object_type },
-        )
-
-        surface = described_class.resolve(api)
-
-        expect(surface.enums).to be_empty
-      end
-
-      it 'includes enums from request body' do
-        api = build_api(
-          enums: { status: { values: %w[draft sent paid] } },
-          resources: { invoices: build_resource(
-            actions: {
-              create: build_action(body: { status: string_param(enum: :status) }),
-            },
-          ) },
-        )
-
-        surface = described_class.resolve(api)
-
-        expect(surface.enums.keys).to eq([:status])
-      end
-
-      it 'includes enums from nested resource actions' do
-        api = build_api(
-          enums: { status: { values: %w[draft sent paid] } },
-          resources: { invoices: build_resource(
-            actions: {},
-            resources: { items: build_resource(
-              actions: {
-                index: build_action(query: { status: string_param(enum: :status) }),
-              },
-            ) },
-          ) },
-        )
-
-        surface = described_class.resolve(api)
-
-        expect(surface.enums.keys).to eq([:status])
-      end
-
-      it 'includes enums from union type variants' do
-        api = build_api(
-          enums: { status: { values: %w[draft sent paid] } },
-          resources: { invoices: build_resource(
-            actions: {
-              show: build_action(response_body: reference_param(:payment)),
-            },
-          ) },
-          types: {
-            payment: union_type(
-              variants: [
-                object_param(shape: { status: string_param(enum: :status) }),
-              ],
-            ),
-          },
-        )
-
-        surface = described_class.resolve(api)
-
-        expect(surface.enums.keys).to eq([:status])
-      end
+      expect(surface.enums.keys).to eq([:status])
     end
 
-    describe 'edge cases' do
-      it 'returns empty types and enums when no resources' do
-        api = build_api(
-          enums: { status: { values: %w[draft sent paid] } },
-          types: { invoice: object_type },
-        )
-
-        surface = described_class.resolve(api)
-
-        expect(surface.types).to be_empty
-        expect(surface.enums).to be_empty
-      end
-
-      it 'ignores references to undefined types' do
-        api = build_api(
-          resources: { invoices: build_resource(
-            actions: {
-              show: build_action(response_body: reference_param(:invoice)),
-            },
-          ) },
-          types: {
-            invoice: object_type(shape: { customer: reference_param(:customer) }),
+    it 'includes enums referenced in resolved types' do
+      api = build_api(
+        enums: { status: { values: %w[draft sent paid] } },
+        resources: { invoices: build_resource(
+          actions: {
+            show: build_action(response_body: reference_param(:invoice)),
           },
-        )
+        ) },
+        types: {
+          invoice: object_type(shape: { status: string_param(enum: :status) }),
+        },
+      )
 
-        surface = described_class.resolve(api)
+      surface = described_class.resolve(api)
 
-        expect(surface.types.keys).to eq([:invoice])
-      end
+      expect(surface.enums.keys).to eq([:status])
+    end
 
-      it 'handles no_content responses' do
-        api = build_api(
-          resources: { invoices: build_resource(
-            actions: {
-              destroy: build_action,
-            },
-          ) },
-          types: { invoice: object_type },
-        )
+    it 'includes enums referenced via type reference pointing to enum' do
+      api = build_api(
+        enums: { status: { values: %w[draft sent paid] } },
+        resources: { invoices: build_resource(
+          actions: {
+            show: build_action(response_body: reference_param(:invoice)),
+          },
+        ) },
+        types: {
+          invoice: object_type(shape: { status: reference_param(:status) }),
+        },
+      )
 
-        surface = described_class.resolve(api)
+      surface = described_class.resolve(api)
 
-        expect(surface.types).to be_empty
-      end
+      expect(surface.enums.keys).to eq([:status])
+    end
 
-      it 'includes types from action union params' do
-        api = build_api(
-          resources: { invoices: build_resource(
-            actions: {
-              create: build_action(
-                body: {
-                  target: union_param(
-                    variants: [reference_param(:invoice),
-                               reference_param(:receipt)],
-                  ),
+    it 'includes enums from union type variants' do
+      api = build_api(
+        enums: { status: { values: %w[draft sent paid] } },
+        resources: { invoices: build_resource(
+          actions: {
+            show: build_action(response_body: reference_param(:payment)),
+          },
+        ) },
+        types: {
+          payment: union_type(
+            variants: [
+              object_param(shape: { status: string_param(enum: :status) }),
+            ],
+          ),
+        },
+      )
+
+      surface = described_class.resolve(api)
+
+      expect(surface.enums.keys).to eq([:status])
+    end
+
+    it 'excludes unreferenced enums' do
+      api = build_api(
+        enums: { priority: { values: %w[low high] }, status: { values: %w[draft sent paid] } },
+        resources: { invoices: build_resource(
+          actions: {
+            show: build_action(response_body: reference_param(:invoice)),
+          },
+        ) },
+        types: { invoice: object_type },
+      )
+
+      surface = described_class.resolve(api)
+
+      expect(surface.enums).to be_empty
+    end
+
+    it 'returns empty when no resources' do
+      api = build_api(
+        enums: { status: { values: %w[draft sent paid] } },
+      )
+
+      surface = described_class.resolve(api)
+
+      expect(surface.enums).to be_empty
+    end
+  end
+
+  describe '#types' do
+    it 'includes types referenced in response body' do
+      api = build_api(
+        resources: { invoices: build_resource(
+          actions: {
+            show: build_action(response_body: reference_param(:invoice)),
+          },
+        ) },
+        types: { invoice: object_type },
+      )
+
+      surface = described_class.resolve(api)
+
+      expect(surface.types.keys).to eq([:invoice])
+    end
+
+    it 'includes types referenced in request body' do
+      api = build_api(
+        resources: { invoices: build_resource(
+          actions: {
+            create: build_action(body: { invoice: reference_param(:invoice) }),
+          },
+        ) },
+        types: { invoice: object_type },
+      )
+
+      surface = described_class.resolve(api)
+
+      expect(surface.types.keys).to eq([:invoice])
+    end
+
+    it 'includes types referenced in request query' do
+      api = build_api(
+        resources: { invoices: build_resource(
+          actions: {
+            index: build_action(query: { filter: reference_param(:invoice) }),
+          },
+        ) },
+        types: { invoice: object_type },
+      )
+
+      surface = described_class.resolve(api)
+
+      expect(surface.types.keys).to eq([:invoice])
+    end
+
+    it 'includes types from array element' do
+      api = build_api(
+        resources: { invoices: build_resource(
+          actions: {
+            index: build_action(response_body: array_param(of: reference_param(:item))),
+          },
+        ) },
+        types: { item: object_type },
+      )
+
+      surface = described_class.resolve(api)
+
+      expect(surface.types.keys).to eq([:item])
+    end
+
+    it 'includes types from nested object shape' do
+      api = build_api(
+        resources: { invoices: build_resource(
+          actions: {
+            show: build_action(
+              response_body: object_param(
+                shape: {
+                  customer: reference_param(:customer),
                 },
               ),
+            ),
+          },
+        ) },
+        types: { customer: object_type },
+      )
+
+      surface = described_class.resolve(api)
+
+      expect(surface.types.keys).to eq([:customer])
+    end
+
+    it 'includes types from array shape' do
+      api = build_api(
+        resources: { invoices: build_resource(
+          actions: {
+            index: build_action(
+              response_body: array_param(
+                shape: { item: reference_param(:item) },
+              ),
+            ),
+          },
+        ) },
+        types: { item: object_type },
+      )
+
+      surface = described_class.resolve(api)
+
+      expect(surface.types.keys).to eq([:item])
+    end
+
+    it 'includes types from nested resource actions' do
+      api = build_api(
+        resources: { invoices: build_resource(
+          actions: {},
+          resources: { items: build_resource(
+            actions: {
+              show: build_action(response_body: reference_param(:item)),
             },
           ) },
-          types: { invoice: object_type, receipt: object_type },
-        )
+        ) },
+        types: { item: object_type },
+      )
 
-        surface = described_class.resolve(api)
+      surface = described_class.resolve(api)
 
-        expect(surface.types.keys).to contain_exactly(:invoice, :receipt)
-      end
+      expect(surface.types.keys).to eq([:item])
+    end
+
+    it 'includes types from action union params' do
+      api = build_api(
+        resources: { invoices: build_resource(
+          actions: {
+            create: build_action(
+              body: {
+                target: union_param(
+                  variants: [reference_param(:invoice),
+                             reference_param(:receipt)],
+                ),
+              },
+            ),
+          },
+        ) },
+        types: { invoice: object_type, receipt: object_type },
+      )
+
+      surface = described_class.resolve(api)
+
+      expect(surface.types.keys).to contain_exactly(:invoice, :receipt)
+    end
+
+    it 'includes transitively referenced types' do
+      api = build_api(
+        resources: { invoices: build_resource(
+          actions: {
+            show: build_action(response_body: reference_param(:invoice)),
+          },
+        ) },
+        types: {
+          invoice: object_type(shape: { item: reference_param(:item) }),
+          item: object_type,
+        },
+      )
+
+      surface = described_class.resolve(api)
+
+      expect(surface.types.keys).to contain_exactly(:invoice, :item)
+    end
+
+    it 'includes deeply nested transitive types' do
+      api = build_api(
+        resources: { invoices: build_resource(
+          actions: {
+            show: build_action(response_body: reference_param(:invoice)),
+          },
+        ) },
+        types: {
+          adjustment: object_type,
+          invoice: object_type(shape: { item: reference_param(:item) }),
+          item: object_type(shape: { adjustment: reference_param(:adjustment) }),
+        },
+      )
+
+      surface = described_class.resolve(api)
+
+      expect(surface.types.keys).to contain_exactly(:invoice, :item, :adjustment)
+    end
+
+    it 'includes types from extends' do
+      api = build_api(
+        resources: { invoices: build_resource(
+          actions: {
+            show: build_action(response_body: reference_param(:invoice)),
+          },
+        ) },
+        types: {
+          invoice: object_type(extends: [:receipt]),
+          receipt: object_type,
+        },
+      )
+
+      surface = described_class.resolve(api)
+
+      expect(surface.types.keys).to contain_exactly(:invoice, :receipt)
+    end
+
+    it 'includes types referenced in type shape' do
+      api = build_api(
+        resources: { invoices: build_resource(
+          actions: {
+            show: build_action(response_body: reference_param(:invoice)),
+          },
+        ) },
+        types: {
+          customer: object_type,
+          invoice: object_type(shape: { customer: reference_param(:customer) }),
+        },
+      )
+
+      surface = described_class.resolve(api)
+
+      expect(surface.types.keys).to contain_exactly(:invoice, :customer)
+    end
+
+    it 'includes types from union variants' do
+      api = build_api(
+        resources: { invoices: build_resource(
+          actions: {
+            show: build_action(response_body: reference_param(:payment)),
+          },
+        ) },
+        types: {
+          invoice: object_type,
+          payment: union_type(variants: [reference_param(:invoice), reference_param(:receipt)]),
+          receipt: object_type,
+        },
+      )
+
+      surface = described_class.resolve(api)
+
+      expect(surface.types.keys).to contain_exactly(:payment, :invoice, :receipt)
+    end
+
+    it 'includes types from union fields in type shapes' do
+      api = build_api(
+        resources: { invoices: build_resource(
+          actions: {
+            show: build_action(response_body: reference_param(:invoice)),
+          },
+        ) },
+        types: {
+          customer: object_type,
+          invoice: object_type(
+            shape: {
+              payment: union_param(variants: [reference_param(:customer), reference_param(:service)]),
+            },
+          ),
+          service: object_type,
+        },
+      )
+
+      surface = described_class.resolve(api)
+
+      expect(surface.types.keys).to contain_exactly(:invoice, :customer, :service)
+    end
+
+    it 'excludes unreferenced types' do
+      api = build_api(
+        resources: { invoices: build_resource(
+          actions: {
+            show: build_action(response_body: reference_param(:invoice)),
+          },
+        ) },
+        types: { invoice: object_type, receipt: object_type },
+      )
+
+      surface = described_class.resolve(api)
+
+      expect(surface.types.keys).to eq([:invoice])
+    end
+
+    it 'excludes references to undefined types' do
+      api = build_api(
+        resources: { invoices: build_resource(
+          actions: {
+            show: build_action(response_body: reference_param(:invoice)),
+          },
+        ) },
+        types: {
+          invoice: object_type(shape: { customer: reference_param(:customer) }),
+        },
+      )
+
+      surface = described_class.resolve(api)
+
+      expect(surface.types.keys).to eq([:invoice])
+    end
+
+    it 'returns empty for no_content responses' do
+      api = build_api(
+        resources: { invoices: build_resource(
+          actions: {
+            destroy: build_action,
+          },
+        ) },
+        types: { invoice: object_type },
+      )
+
+      surface = described_class.resolve(api)
+
+      expect(surface.types).to be_empty
+    end
+
+    it 'returns empty when no resources' do
+      api = build_api(
+        types: { invoice: object_type },
+      )
+
+      surface = described_class.resolve(api)
+
+      expect(surface.types).to be_empty
     end
   end
 end

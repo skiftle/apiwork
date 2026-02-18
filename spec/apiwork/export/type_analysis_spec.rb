@@ -32,12 +32,12 @@ RSpec.describe Apiwork::Export::TypeAnalysis do
     context 'with self-referencing type' do
       it 'returns the self-referencing type' do
         all_types = {
-          category: { shape: { parent: { reference: :category, type: :reference } }, type: :object },
+          invoice: { shape: { parent: { reference: :invoice, type: :reference } }, type: :object },
         }
 
         result = described_class.cycle_breaking_types(all_types)
 
-        expect(result).to contain_exactly(:category)
+        expect(result).to contain_exactly(:invoice)
       end
     end
 
@@ -53,6 +53,20 @@ RSpec.describe Apiwork::Export::TypeAnalysis do
 
         expect(result.size).to eq(1)
       end
+    end
+  end
+
+  describe '.primitive_type?' do
+    it 'returns true for primitive types' do
+      expect(described_class.primitive_type?(:string)).to be(true)
+      expect(described_class.primitive_type?(:integer)).to be(true)
+      expect(described_class.primitive_type?(:boolean)).to be(true)
+      expect(described_class.primitive_type?(:unknown)).to be(true)
+    end
+
+    it 'returns false for custom types' do
+      expect(described_class.primitive_type?(:invoice)).to be(false)
+      expect(described_class.primitive_type?(:customer)).to be(false)
     end
   end
 
@@ -85,7 +99,7 @@ RSpec.describe Apiwork::Export::TypeAnalysis do
     end
 
     context 'with long chain' do
-      it 'sorts types in dependency order' do
+      it 'returns types in dependency order' do
         all_types = {
           adjustment: { shape: { item: { reference: :item, type: :reference } }, type: :object },
           customer: { shape: {}, type: :object },
@@ -146,20 +160,6 @@ RSpec.describe Apiwork::Export::TypeAnalysis do
 
         expect(result).to eq([:customer])
       end
-    end
-  end
-
-  describe '.primitive_type?' do
-    it 'returns true for primitive types' do
-      expect(described_class.primitive_type?(:string)).to be(true)
-      expect(described_class.primitive_type?(:integer)).to be(true)
-      expect(described_class.primitive_type?(:boolean)).to be(true)
-      expect(described_class.primitive_type?(:unknown)).to be(true)
-    end
-
-    it 'returns false for custom types' do
-      expect(described_class.primitive_type?(:invoice)).to be(false)
-      expect(described_class.primitive_type?(:customer)).to be(false)
     end
   end
 end

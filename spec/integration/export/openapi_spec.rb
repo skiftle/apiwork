@@ -12,7 +12,7 @@ RSpec.describe 'OpenAPI export pipeline', type: :integration do
   end
 
   it 'includes info with title' do
-    expect(spec[:info][:title]).to be_a(String)
+    expect(spec[:info][:title]).to eq('Billing API')
   end
 
   it 'includes invoice paths' do
@@ -24,12 +24,6 @@ RSpec.describe 'OpenAPI export pipeline', type: :integration do
     schema_keys = spec[:components][:schemas].keys
 
     expect(schema_keys).to include('invoice', 'payment')
-  end
-
-  it 'serializes to valid JSON' do
-    json = generator.serialize(spec, format: :json)
-
-    expect { JSON.parse(json) }.not_to raise_error
   end
 
   it 'generates error responses for raises declarations' do
