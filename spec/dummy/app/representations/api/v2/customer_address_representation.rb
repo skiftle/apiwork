@@ -5,13 +5,16 @@ module Api
     class CustomerAddressRepresentation < ApplicationRepresentation
       model Address
 
-      attribute :city, writable: true
-      attribute :country, writable: true
       attribute :created_at
       attribute :id
-      attribute :street, writable: true
       attribute :updated_at
-      attribute :zip, writable: true
+
+      with_options writable: true do
+        attribute :city
+        attribute :country
+        attribute :street
+        attribute :zip
+      end
     end
   end
 end
