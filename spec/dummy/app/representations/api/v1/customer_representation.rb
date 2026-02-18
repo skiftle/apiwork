@@ -14,7 +14,7 @@ module Api
       attribute :phone, writable: true
 
       has_many :services
-      has_one :address, include: :optional
+      has_one :address
     end
   end
 end

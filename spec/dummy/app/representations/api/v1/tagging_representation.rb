@@ -8,7 +8,7 @@ module Api
       attribute :created_at
       attribute :updated_at
 
-      belongs_to :tag, representation: TagRepresentation, include: :optional
+      belongs_to :tag
     end
   end
 end

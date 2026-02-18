@@ -11,7 +11,7 @@ module Api
       attribute :id, filterable: true, sortable: true
       attribute :number, filterable: true, sortable: true
 
-      has_many :items, representation: ItemRepresentation, sortable: false
+      has_many :items
     end
   end
 end

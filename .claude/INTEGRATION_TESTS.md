@@ -133,6 +133,36 @@ One file per feature. Max 200 lines per file. Subdirectories for complex domains
 
 ---
 
+## Dummy App Definitions
+
+Representations, contracts, and API definitions in `spec/dummy/` must only specify options that **deviate from defaults**. Never repeat a default value.
+
+### Association defaults (do not specify)
+
+| Option | Default | Only specify when |
+|--------|---------|-------------------|
+| `include:` | `:optional` | Using `:always` |
+| `representation:` | Auto-detected from model | Association name differs from model, or cross-namespace |
+| `sortable:` | `false` | Using `true` |
+| `filterable:` | `false` | Using `true` |
+| `writable:` | `false` | Using `true`, `:create`, or `:update` |
+| `deprecated:` | `false` | Using `true` |
+| `nullable:` | Auto-detected for `belongs_to` | Overriding the auto-detected value |
+
+```ruby
+# Bad — repeats defaults
+belongs_to :tag, representation: TagRepresentation, include: :optional
+has_many :items, representation: ItemRepresentation, sortable: false
+
+# Good — only non-default options
+belongs_to :tag
+has_many :items
+```
+
+The `representation:` option is auto-detected from the associated model in the same namespace (e.g., `Api::V1::ItemRepresentation` for `:items`). Only specify it when the association name does not match the model name or when the representation lives in a different namespace.
+
+---
+
 ## Two Test Types
 
 ### Type A: HTTP Request (`type: :request`)

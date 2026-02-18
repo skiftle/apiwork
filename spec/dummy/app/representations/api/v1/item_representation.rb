@@ -11,8 +11,8 @@ module Api
       attribute :created_at, filterable: true, sortable: true
       attribute :updated_at, filterable: true, sortable: true
 
-      belongs_to :invoice, representation: InvoiceRepresentation, filterable: true, sortable: true
-      has_many :adjustments, representation: AdjustmentRepresentation, writable: true
+      belongs_to :invoice, filterable: true, sortable: true
+      has_many :adjustments, writable: true
     end
   end
 end

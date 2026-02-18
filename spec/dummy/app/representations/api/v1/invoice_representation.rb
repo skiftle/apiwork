@@ -20,10 +20,10 @@ module Api
 
       attribute :customer_id, writable: true
 
-      has_many :items, representation: ItemRepresentation, writable: true
+      has_many :items, writable: true
       has_many :attachments
       has_many :payments
-      has_many :taggings, representation: TaggingRepresentation, filterable: true, sortable: true
+      has_many :taggings, filterable: true, sortable: true
     end
   end
 end
