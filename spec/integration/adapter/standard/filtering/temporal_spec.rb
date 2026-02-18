@@ -33,6 +33,18 @@ RSpec.describe 'Temporal filtering', type: :request do
       end
     end
 
+    context 'with date gte operator' do
+      it 'filters by date greater than or equal' do
+        get '/api/v1/invoices', params: { filter: { due_on: { gte: '2026-03-15' } } }
+
+        expect(response).to have_http_status(:ok)
+        json = JSON.parse(response.body)
+        expect(json['invoices'].length).to eq(2)
+        numbers = json['invoices'].map { |inv| inv['number'] }
+        expect(numbers).to contain_exactly('INV-002', 'INV-003')
+      end
+    end
+
     context 'with date lt operator' do
       it 'filters by date less than' do
         get '/api/v1/invoices', params: { filter: { due_on: { lt: '2026-03-15' } } }
@@ -41,6 +53,18 @@ RSpec.describe 'Temporal filtering', type: :request do
         json = JSON.parse(response.body)
         expect(json['invoices'].length).to eq(1)
         expect(json['invoices'][0]['number']).to eq('INV-001')
+      end
+    end
+
+    context 'with date lte operator' do
+      it 'filters by date less than or equal' do
+        get '/api/v1/invoices', params: { filter: { due_on: { lte: '2026-03-15' } } }
+
+        expect(response).to have_http_status(:ok)
+        json = JSON.parse(response.body)
+        expect(json['invoices'].length).to eq(2)
+        numbers = json['invoices'].map { |inv| inv['number'] }
+        expect(numbers).to contain_exactly('INV-001', 'INV-002')
       end
     end
 
@@ -53,6 +77,18 @@ RSpec.describe 'Temporal filtering', type: :request do
         expect(json['invoices'].length).to eq(2)
         numbers = json['invoices'].map { |inv| inv['number'] }
         expect(numbers).to contain_exactly('INV-001', 'INV-002')
+      end
+    end
+
+    context 'with date in operator' do
+      it 'filters by multiple dates' do
+        get '/api/v1/invoices', params: { filter: { due_on: { in: %w[2026-03-01 2026-03-31] } } }
+
+        expect(response).to have_http_status(:ok)
+        json = JSON.parse(response.body)
+        expect(json['invoices'].length).to eq(2)
+        numbers = json['invoices'].map { |inv| inv['number'] }
+        expect(numbers).to contain_exactly('INV-001', 'INV-003')
       end
     end
 
@@ -71,8 +107,7 @@ RSpec.describe 'Temporal filtering', type: :request do
 
     context 'with datetime gt operator' do
       it 'filters by datetime greater than' do
-        get '/api/v1/invoices',
-            params: { filter: { created_at: { gt: 1.minute.ago.iso8601 } } }
+        get '/api/v1/invoices', params: { filter: { created_at: { gt: 1.minute.ago.iso8601 } } }
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
@@ -82,8 +117,7 @@ RSpec.describe 'Temporal filtering', type: :request do
 
     context 'with datetime lt operator' do
       it 'filters by datetime less than' do
-        get '/api/v1/invoices',
-            params: { filter: { created_at: { lt: 1.minute.ago.iso8601 } } }
+        get '/api/v1/invoices', params: { filter: { created_at: { lt: 1.minute.ago.iso8601 } } }
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)

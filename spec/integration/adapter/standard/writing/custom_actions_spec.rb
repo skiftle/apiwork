@@ -10,7 +10,7 @@ RSpec.describe 'Custom actions', type: :request do
     it 'updates the invoice with body params' do
       patch "/api/v1/invoices/#{invoice1.id}/send_invoice",
             as: :json,
-            params: { message: 'Please review', notify_customer: false }
+            params: { message: 'Please review', notify_customer: false, recipient_email: 'billing@acme.com' }
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
@@ -22,7 +22,7 @@ RSpec.describe 'Custom actions', type: :request do
     it 'applies default values in custom action body' do
       patch "/api/v1/invoices/#{invoice1.id}/send_invoice",
             as: :json,
-            params: {}
+            params: { recipient_email: 'billing@acme.com' }
 
       expect(response).to have_http_status(:ok)
     end

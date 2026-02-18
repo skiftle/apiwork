@@ -113,4 +113,49 @@ RSpec.describe 'OpenAPI operation generation', type: :integration do
       expect(invoices_index[:description]).to eq('Returns a paginated list of all invoices')
     end
   end
+
+  describe 'Error response structure' do
+    it 'generates error response with $ref to error_response_body' do
+      show_op = spec[:paths]['/invoices/{id}']['get']
+      not_found = show_op[:responses][:'404']
+
+      expect(not_found[:content][:'application/json'][:schema]).to eq(
+        {
+          '$ref': '#/components/schemas/error_response_body',
+        },
+      )
+    end
+
+    it 'generates error response body referencing error schema' do
+      error_response = spec[:components][:schemas]['error_response_body']
+
+      expect(error_response).to eq({ '$ref': '#/components/schemas/error' })
+    end
+
+    it 'generates error schema with issues array' do
+      error_schema = spec[:components][:schemas]['error']
+
+      expect(error_schema[:properties]['issues'][:type]).to eq('array')
+      expect(error_schema[:properties]['issues'][:items]).to eq(
+        {
+          '$ref': '#/components/schemas/issue',
+        },
+      )
+    end
+
+    it 'generates issue schema with code and detail fields' do
+      issue_schema = spec[:components][:schemas]['issue']
+
+      expect(issue_schema[:properties].keys).to include('code', 'detail', 'path', 'pointer')
+      expect(issue_schema[:required]).to include('code', 'detail')
+    end
+  end
+
+  describe '204 No Content' do
+    it 'generates 204 response for standard destroy action' do
+      receipt_destroy = spec[:paths]['/receipts/{id}']['delete']
+
+      expect(receipt_destroy[:responses]).to eq({ '204': { description: 'No content' } })
+    end
+  end
 end

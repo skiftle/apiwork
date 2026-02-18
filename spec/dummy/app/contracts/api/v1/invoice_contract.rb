@@ -6,14 +6,14 @@ module Api
       representation InvoiceRepresentation
 
       action :index do
-        summary "List all invoices"
-        description "Returns a paginated list of all invoices"
+        summary 'List all invoices'
+        description 'Returns a paginated list of all invoices'
         tags :invoices, :public
       end
 
       action :show do
-        summary "Get an invoice"
-        description "Returns a single invoice by ID"
+        summary 'Get an invoice'
+        description 'Returns a single invoice by ID'
         raises :not_found, :forbidden
       end
 
@@ -49,8 +49,10 @@ module Api
       action :send_invoice do
         request do
           body do
-            string :message, optional: true
-            boolean :notify_customer, optional: true, default: true
+            string :recipient_email, format: :email
+            string :callback_url, format: :url, optional: true
+            string :message, max: 500, min: 1, optional: true
+            boolean :notify_customer, default: true, optional: true
           end
         end
 
@@ -79,7 +81,7 @@ module Api
       action :search do
         request do
           query do
-            string :q, optional: true, default: ''
+            string :q, default: '', optional: true
           end
         end
 
@@ -94,11 +96,11 @@ module Api
       action :bulk_create do
         request do
           body do
-            array :invoices, optional: true, default: [] do
+            array :invoices, default: [], optional: true do
               object do
                 string :number
                 integer :customer_id
-                boolean :sent, optional: true, default: false
+                boolean :sent, default: false, optional: true
               end
             end
           end
@@ -106,9 +108,9 @@ module Api
       end
 
       action :destroy do
-        summary "Delete an invoice"
+        summary 'Delete an invoice'
         deprecated!
-        operation_id "deleteInvoice"
+        operation_id 'deleteInvoice'
 
         response replace: true do
           body do

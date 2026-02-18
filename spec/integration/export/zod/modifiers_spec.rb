@@ -7,9 +7,47 @@ RSpec.describe 'Zod modifier generation', type: :integration do
   let(:generator) { Apiwork::Export::Zod.new(path) }
   let(:output) { generator.generate }
 
-  describe 'UUID validation' do
-    it 'generates uuid fields with z.uuid()' do
+  describe 'Format validators' do
+    it 'generates z.uuid() for uuid-formatted fields' do
       expect(output).to include('z.uuid()')
+    end
+
+    it 'generates z.email() for email-formatted fields' do
+      expect(output).to include('recipient_email: z.email()')
+    end
+
+    it 'generates z.url() for url-formatted fields' do
+      expect(output).to include('callback_url: z.url()')
+    end
+
+    it 'combines format with optional modifier' do
+      expect(output).to include('z.url().optional()')
+    end
+  end
+
+  describe 'Min and max constraints' do
+    it 'generates .min() on string fields' do
+      expect(output).to include('z.string().min(1)')
+    end
+
+    it 'generates .max() on string fields' do
+      expect(output).to include('.max(500)')
+    end
+
+    it 'generates combined .min().max() on string fields' do
+      expect(output).to include('z.string().min(1).max(500)')
+    end
+
+    it 'generates .min() on integer pagination fields' do
+      expect(output).to match(/number: z\.number\(\)\.int\(\)\.min\(1\)/)
+    end
+
+    it 'generates combined .min().max() on integer pagination fields' do
+      expect(output).to match(/size: z\.number\(\)\.int\(\)\.min\(1\)\.max\(200\)/)
+    end
+
+    it 'combines min/max with optional modifier' do
+      expect(output).to include('z.string().min(1).max(500).optional()')
     end
   end
 
@@ -27,7 +65,7 @@ RSpec.describe 'Zod modifier generation', type: :integration do
 
   describe 'Combined optional and nullable' do
     it 'generates nullable optional fields with both modifiers' do
-      expect(output).to match(/\.nullable\(\)\.optional\(\)|\.optional\(\)\.nullable\(\)/)
+      expect(output).to match(/\.nullable\(\)\.optional\(\)/)
     end
   end
 

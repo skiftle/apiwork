@@ -9,5 +9,5 @@ class Customer < ApplicationRecord
   has_many :tags, through: :taggings
   has_many :activities, as: :target, dependent: :destroy
 
-  validates :name, presence: true
+  validates :name, presence: true, uniqueness: true
 end

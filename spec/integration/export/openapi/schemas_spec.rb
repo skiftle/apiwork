@@ -111,4 +111,78 @@ RSpec.describe 'OpenAPI schema generation', type: :integration do
       expect(parsed['openapi']).to eq('3.1.0')
     end
   end
+
+  describe '$ref references' do
+    it 'generates $ref for association in resource schema' do
+      invoice_schema = spec[:components][:schemas]['invoice']
+
+      expect(invoice_schema[:properties]['items'][:items]).to eq({ '$ref': '#/components/schemas/item' })
+    end
+
+    it 'generates $ref for belongs_to association' do
+      payment_schema = spec[:components][:schemas]['payment']
+
+      expect(payment_schema[:properties]['invoice']).to eq({ '$ref': '#/components/schemas/invoice' })
+    end
+
+    it 'generates $ref for response body schema' do
+      show_op = spec[:paths]['/invoices/{id}']['get']
+      response_schema = show_op[:responses][:'200'][:content][:'application/json'][:schema]
+
+      expect(response_schema).to eq({ '$ref': '#/components/schemas/invoice_show_success_response_body' })
+    end
+
+    it 'generates $ref for payload in request body' do
+      create_op = spec[:paths]['/invoices']['post']
+      body_schema = create_op[:requestBody][:content][:'application/json'][:schema]
+
+      expect(body_schema[:properties]['invoice']).to eq({ '$ref': '#/components/schemas/invoice_create_payload' })
+    end
+  end
+
+  describe 'Required fields' do
+    it 'includes required array on resource schema' do
+      invoice_schema = spec[:components][:schemas]['invoice']
+
+      expect(invoice_schema[:required]).to include('id', 'number', 'created_at')
+    end
+
+    it 'includes required array on payload schema' do
+      payload = spec[:components][:schemas]['invoice_create_payload']
+
+      expect(payload[:required]).to include('customer_id', 'number')
+    end
+
+    it 'excludes optional fields from required array' do
+      payload = spec[:components][:schemas]['invoice_create_payload']
+
+      expect(payload[:required]).not_to include('notes', 'sent')
+    end
+  end
+
+  describe 'Format annotations' do
+    it 'generates date format for date fields' do
+      invoice_schema = spec[:components][:schemas]['invoice']
+
+      expect(invoice_schema[:properties]['due_on'][:format]).to eq('date')
+    end
+
+    it 'generates date-time format for datetime fields' do
+      invoice_schema = spec[:components][:schemas]['invoice']
+
+      expect(invoice_schema[:properties]['created_at'][:format]).to eq('date-time')
+    end
+
+    it 'generates uuid format for uuid fields' do
+      profile_schema = spec[:components][:schemas]['profile']
+
+      expect(profile_schema[:properties]['external_id'][:format]).to eq('uuid')
+    end
+
+    it 'generates time format for time fields' do
+      profile_schema = spec[:components][:schemas]['profile']
+
+      expect(profile_schema[:properties]['preferred_contact_time'][:format]).to eq('time')
+    end
+  end
 end

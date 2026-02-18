@@ -97,5 +97,36 @@ RSpec.describe 'Cursor pagination', type: :request do
         end
       end
     end
+
+    context 'with invalid cursor' do
+      it 'returns error for garbage after cursor' do
+        get '/api/v1/activities', params: { page: { after: 'not-a-valid-cursor', size: 10 } }
+
+        expect(response).to have_http_status(:bad_request)
+        json = JSON.parse(response.body)
+        issue = json['issues'].find { |i| i['code'] == 'value_invalid' }
+        expect(issue['path']).to eq(%w[page after])
+      end
+
+      it 'returns error for garbage before cursor' do
+        get '/api/v1/activities', params: { page: { before: '!!!garbage!!!', size: 10 } }
+
+        expect(response).to have_http_status(:bad_request)
+        json = JSON.parse(response.body)
+        issue = json['issues'].find { |i| i['code'] == 'value_invalid' }
+        expect(issue['path']).to eq(%w[page before])
+      end
+    end
+
+    context 'with size exceeding max' do
+      it 'returns error for size above max_size' do
+        get '/api/v1/activities', params: { page: { size: 10_000 } }
+
+        expect(response).to have_http_status(:bad_request)
+        json = JSON.parse(response.body)
+        issue = json['issues'].find { |i| i['code'] == 'number_too_large' }
+        expect(issue).to be_present
+      end
+    end
   end
 end
