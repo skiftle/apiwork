@@ -125,7 +125,7 @@ RSpec.describe 'Cursor pagination', type: :request do
         expect(response).to have_http_status(:bad_request)
         json = JSON.parse(response.body)
         issue = json['issues'].find { |i| i['code'] == 'number_too_large' }
-        expect(issue).to be_present
+        expect(issue['code']).to eq('number_too_large')
       end
     end
   end

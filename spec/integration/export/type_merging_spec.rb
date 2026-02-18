@@ -58,7 +58,7 @@ RSpec.describe 'Type merging in exports', type: :integration do
 
       expect(definition.params[:name][:type]).to eq(:string)
       expect(definition.params[:name][:description]).to eq('Full name')
-      expect(definition.params[:email]).to be_present
+      expect(definition.params[:email][:type]).to eq(:string)
     end
 
     it 'raises on kind mismatch' do

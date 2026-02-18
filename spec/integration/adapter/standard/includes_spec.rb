@@ -63,7 +63,7 @@ RSpec.describe 'Includes', type: :request do
         expect(response).to have_http_status(:bad_request)
         json = JSON.parse(response.body)
         issue = json['issues'].find { |i| i['code'] == 'field_unknown' }
-        expect(issue).to be_present
+        expect(issue['code']).to eq('field_unknown')
       end
     end
   end
@@ -113,7 +113,6 @@ RSpec.describe 'Includes', type: :request do
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
       expect(json['invoice']['number']).to eq('INV-UPDATED')
-      expect(json['invoice']['items']).to be_present
       expect(json['invoice']['items'].length).to eq(2)
     end
 
@@ -140,7 +139,7 @@ RSpec.describe 'Includes', type: :request do
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
       expect(json['invoices'].length).to eq(1)
-      expect(json['invoices'][0]['items']).to be_present
+      expect(json['invoices'][0]['items'].length).to be_positive
     end
 
     it 'includes items combined with sorting' do
@@ -153,7 +152,7 @@ RSpec.describe 'Includes', type: :request do
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
       expect(json['invoices'][0]['number']).to eq('INV-002')
-      expect(json['invoices'][0]['items']).to be_present
+      expect(json['invoices'][0]['items'].length).to be_positive
     end
   end
 end

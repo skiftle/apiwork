@@ -39,6 +39,7 @@ RSpec.describe 'Singular resource', type: :request do
 
       get '/api/v1/profile'
 
+      expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
       expect(json['profile']['id']).to eq(profile.id)
       expect(json['profile']['name']).to eq('Admin')

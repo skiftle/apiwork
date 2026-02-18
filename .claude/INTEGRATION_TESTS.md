@@ -27,64 +27,76 @@ spec/integration/
 │   ├── configuration_spec.rb
 │   ├── custom_adapter_spec.rb
 │   └── standard/
-│       ├── filtering/
-│       │   ├── string_spec.rb
-│       │   ├── numeric_spec.rb
-│       │   ├── temporal_spec.rb
-│       │   ├── boolean_enum_spec.rb
-│       │   ├── association_spec.rb
-│       │   ├── logical_spec.rb
-│       │   └── errors_spec.rb
-│       ├── sorting_spec.rb
-│       ├── pagination/
-│       │   ├── offset_spec.rb
-│       │   └── cursor_spec.rb
-│       ├── includes_spec.rb
-│       ├── writing/
-│       │   ├── body_params_spec.rb
-│       │   ├── nested_attributes_spec.rb
-│       │   └── custom_actions_spec.rb
-│       ├── validation_spec.rb
-│       ├── sti_spec.rb
-│       ├── singular_resource_spec.rb
-│       ├── nested_resources_spec.rb
 │       ├── action_restrictions_spec.rb
-│       └── response_format_spec.rb
+│       ├── domain_errors_spec.rb
+│       ├── filtering/
+│       │   ├── association_spec.rb
+│       │   ├── boolean_enum_spec.rb
+│       │   ├── datetime_spec.rb
+│       │   ├── errors_spec.rb
+│       │   ├── logical_spec.rb
+│       │   ├── numeric_spec.rb
+│       │   ├── string_spec.rb
+│       │   └── temporal_spec.rb
+│       ├── includes_spec.rb
+│       ├── nested_resources_spec.rb
+│       ├── pagination/
+│       │   ├── cursor_spec.rb
+│       │   └── offset_spec.rb
+│       ├── preload_spec.rb
+│       ├── response_format_spec.rb
+│       ├── singular_resource_spec.rb
+│       ├── sorting_spec.rb
+│       ├── sti_spec.rb
+│       ├── validation_spec.rb
+│       └── writing/
+│           ├── body_params_spec.rb
+│           ├── custom_actions_spec.rb
+│           └── nested_attributes_spec.rb
 ├── api/
 │   ├── concerns_spec.rb
 │   └── controller_context_spec.rb
 ├── contract/
-│   ├── types_spec.rb
+│   ├── coercion_spec.rb
+│   ├── constraints_spec.rb
+│   ├── error_codes_spec.rb
 │   ├── imports_spec.rb
 │   ├── inheritance_spec.rb
-│   └── error_codes_spec.rb
+│   ├── types_spec.rb
+│   └── validation_spec.rb
 ├── export/
-│   ├── typescript/
-│   │   ├── resources_spec.rb
-│   │   ├── enums_and_types_spec.rb
-│   │   ├── actions_spec.rb
-│   │   └── modifiers_spec.rb
-│   ├── zod/
-│   │   ├── resources_spec.rb
-│   │   ├── enums_and_types_spec.rb
-│   │   ├── actions_spec.rb
-│   │   └── modifiers_spec.rb
+│   ├── key_format_spec.rb
 │   ├── openapi/
+│   │   ├── metadata_spec.rb
+│   │   ├── operations_spec.rb
 │   │   ├── paths_spec.rb
 │   │   ├── schemas_spec.rb
-│   │   ├── metadata_spec.rb
-│   │   └── operations_spec.rb
-│   ├── key_format_spec.rb
-│   └── type_merging_spec.rb
+│   │   └── unions_spec.rb
+│   ├── type_merging_spec.rb
+│   ├── typescript/
+│   │   ├── actions_spec.rb
+│   │   ├── advanced_types_spec.rb
+│   │   ├── enums_and_types_spec.rb
+│   │   ├── modifiers_spec.rb
+│   │   └── resources_spec.rb
+│   └── zod/
+│       ├── actions_spec.rb
+│       ├── advanced_types_spec.rb
+│       ├── enums_and_types_spec.rb
+│       ├── modifiers_spec.rb
+│       └── resources_spec.rb
 ├── introspection/
-│   └── introspection_spec.rb
+│   ├── introspection_spec.rb
+│   └── param_types_spec.rb
 └── representation/
+    ├── associations_spec.rb
     ├── attributes_spec.rb
     ├── encode_decode_spec.rb
-    ├── sti_spec.rb
-    ├── associations_spec.rb
+    ├── inline_types_spec.rb
+    ├── nullable_spec.rb
     ├── polymorphic_spec.rb
-    └── inline_types_spec.rb
+    ├── sti_spec.rb
+    └── writable_spec.rb
 ```
 
 ### Domain Boundaries
@@ -282,7 +294,7 @@ it 'returns error for unknown filter field' do
   expect(response).to have_http_status(:bad_request)
   json = JSON.parse(response.body)
   issue = json['issues'].find { |i| i['code'] == 'field_unknown' }
-  expect(issue).to be_present
+  expect(issue['code']).to eq('field_unknown')
 end
 ```
 
@@ -482,6 +494,7 @@ All standard adapter runtime behavior tested via HTTP. One file per capability.
 | `filtering/boolean_enum_spec.rb` | boolean eq/null, enum eq/in, enum value_invalid | Invoice (sent, status) |
 | `filtering/association_spec.rb` | Direct and nested association filters | Item filter by invoice.number |
 | `filtering/logical_spec.rb` | AND, OR, NOT, nested combinations | Invoice (status, sent) |
+| `filtering/datetime_spec.rb` | datetime-specific operators and edge cases | Invoice (created_at) |
 | `filtering/errors_spec.rb` | field_unknown, operator_invalid, type mismatch | Invoice |
 
 ### Sorting
@@ -525,6 +538,8 @@ All standard adapter runtime behavior tested via HTTP. One file per capability.
 | `singular_resource_spec.rb` | Show/create/update/destroy without :id |
 | `nested_resources_spec.rb` | Parent scoping, cross-parent isolation, create under parent, non-nested coexistence |
 | `action_restrictions_spec.rb` | only: restricts actions, except: restricts actions |
+| `domain_errors_spec.rb` | Domain-specific error handling |
+| `preload_spec.rb` | Attribute preload associations, capability runner preloads |
 | `response_format_spec.rb` | Singular/plural root key, custom root key, pagination metadata, empty collection, key_format :camel, path_format :kebab |
 
 ---
@@ -538,6 +553,7 @@ All standard adapter runtime behavior tested via HTTP. One file per capability.
 | `typescript/resources_spec.rb` | Interfaces for Invoice, Item, Customer (STI), nullable, optional, enum attrs, association types |
 | `typescript/enums_and_types_spec.rb` | Status/Method enums, custom objects (error_detail, pagination_params), sorted values, type ordering |
 | `typescript/actions_spec.rb` | Create/Update request, Show/Index response, custom action types, destroy void, writable payloads |
+| `typescript/advanced_types_spec.rb` | Advanced type generation (unions, intersections, complex types) |
 | `typescript/modifiers_spec.rb` | JSDoc description/example, deprecated, key_format :camel, optional vs nullable |
 
 ### Zod
@@ -547,6 +563,7 @@ All standard adapter runtime behavior tested via HTTP. One file per capability.
 | `zod/resources_spec.rb` | z.object schemas, field types, nullable/optional, .int(), inferred types |
 | `zod/enums_and_types_spec.rb` | z.enum, custom z.object, inferred enum types, discriminated unions, sorted values |
 | `zod/actions_spec.rb` | Request/response schemas, custom action schemas, destroy z.never(), writable payloads |
+| `zod/advanced_types_spec.rb` | Advanced type generation (unions, intersections, complex types) |
 | `zod/modifiers_spec.rb` | min/max constraints, uuid validation, key_format :camel, optional+nullable combo |
 
 ### OpenAPI
@@ -555,6 +572,7 @@ All standard adapter runtime behavior tested via HTTP. One file per capability.
 |------|-------|
 | `openapi/paths_spec.rb` | All endpoint paths, nested paths, custom actions, restricted resources, singular, kebab paths |
 | `openapi/schemas_spec.rb` | Component schemas, enums, custom types, STI oneOf, nullable, arrays, $ref |
+| `openapi/unions_spec.rb` | Union type generation in OpenAPI specs |
 | `openapi/metadata_spec.rb` | Info block, contact, license, servers, tags, openapi version |
 | `openapi/operations_spec.rb` | Request bodies, response schemas, query params, path params, error responses, deprecated, operationId, 204 |
 

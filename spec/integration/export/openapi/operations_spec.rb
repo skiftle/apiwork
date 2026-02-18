@@ -55,7 +55,7 @@ RSpec.describe 'OpenAPI operation generation', type: :integration do
       search_op = spec[:paths]['/invoices/search']['get']
       query_params = search_op[:parameters].select { |param| param[:in] == 'query' }
 
-      expect(query_params).to be_present
+      expect(query_params.length).to be_positive
     end
   end
 

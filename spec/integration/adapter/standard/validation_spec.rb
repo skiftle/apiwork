@@ -37,7 +37,7 @@ RSpec.describe 'Validation', type: :request do
         expect(response).to have_http_status(:bad_request)
         json = JSON.parse(response.body)
         issue = json['issues'].find { |i| i['code'] == 'field_unknown' }
-        expect(issue).to be_present
+        expect(issue['code']).to eq('field_unknown')
       end
 
       it 'returns multiple errors at once' do
@@ -61,7 +61,6 @@ RSpec.describe 'Validation', type: :request do
         expect(response).to have_http_status(:bad_request)
         json = JSON.parse(response.body)
         issue = json['issues'].find { |i| i['pointer'] == '/invoice/number' }
-        expect(issue).to be_present
         expect(issue['code']).to eq('field_missing')
       end
 
@@ -109,6 +108,7 @@ RSpec.describe 'Validation', type: :request do
              as: :json,
              params: { invoice: { customer_id: customer1.id } }
 
+        expect(response).to have_http_status(:bad_request)
         json = JSON.parse(response.body)
         issue = json['issues'].find { |i| i['pointer'] == '/invoice/number' }
         expect(issue['pointer']).to eq('/invoice/number')
@@ -157,7 +157,6 @@ RSpec.describe 'Validation', type: :request do
         expect(response).to have_http_status(:bad_request)
         json = JSON.parse(response.body)
         issue = json['issues'].find { |i| i['pointer'] == '/invoice/sent' }
-        expect(issue).to be_present
         expect(issue['code']).to eq('type_invalid')
       end
     end

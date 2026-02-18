@@ -14,7 +14,7 @@ RSpec.describe 'Filtering errors', type: :request do
         expect(response).to have_http_status(:bad_request)
         json = JSON.parse(response.body)
         issue = json['issues'].find { |i| i['code'] == 'field_unknown' }
-        expect(issue).to be_present
+        expect(issue['code']).to eq('field_unknown')
       end
     end
 

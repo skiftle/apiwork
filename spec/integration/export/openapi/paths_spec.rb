@@ -29,7 +29,7 @@ RSpec.describe 'OpenAPI path generation', type: :integration do
     it 'generates nested collection path' do
       nested_path = spec[:paths].keys.find { |key| key.include?('items') && key.include?('invoice') }
 
-      expect(nested_path).to be_present
+      expect(nested_path).not_to be_nil
     end
   end
 
@@ -61,8 +61,8 @@ RSpec.describe 'OpenAPI path generation', type: :integration do
     end
 
     it 'includes only get operations on restricted resources' do
-      expect(spec[:paths]['/restricted_invoices']['get']).to be_present
-      expect(spec[:paths]['/restricted_invoices/{id}']['get']).to be_present
+      expect(spec[:paths]['/restricted_invoices']['get']).to have_key(:operationId)
+      expect(spec[:paths]['/restricted_invoices/{id}']['get']).to have_key(:operationId)
       expect(spec[:paths]['/restricted_invoices']).not_to have_key('post')
     end
   end
