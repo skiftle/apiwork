@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class ProfileContract < Apiwork::Contract::Base
+    class ProfileContract < ApplicationContract
       representation ProfileRepresentation
 
       action :show

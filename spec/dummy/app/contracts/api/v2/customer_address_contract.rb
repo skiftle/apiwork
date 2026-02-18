@@ -2,7 +2,7 @@
 
 module Api
   module V2
-    class CustomerAddressContract < Apiwork::Contract::Base
+    class CustomerAddressContract < ApplicationContract
       representation CustomerAddressRepresentation
 
       action :index

@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class InvoiceRepresentation < Apiwork::Representation::Base
+    class InvoiceRepresentation < ApplicationRepresentation
       with_options filterable: true, sortable: true do
         attribute :created_at
         attribute :id

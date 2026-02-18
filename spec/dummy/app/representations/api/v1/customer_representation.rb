@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class CustomerRepresentation < Apiwork::Representation::Base
+    class CustomerRepresentation < ApplicationRepresentation
       with_options writable: true do
         attribute :email,
                   decode: ->(value) { value&.upcase },

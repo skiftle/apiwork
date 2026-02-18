@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class ServiceRepresentation < Apiwork::Representation::Base
+    class ServiceRepresentation < ApplicationRepresentation
       attribute :description
       attribute :name
 

@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class InvoiceContract < Apiwork::Contract::Base
+    class InvoiceContract < ApplicationContract
       representation InvoiceRepresentation
 
       action :index do

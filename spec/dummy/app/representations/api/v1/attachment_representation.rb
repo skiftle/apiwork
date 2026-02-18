@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class AttachmentRepresentation < Apiwork::Representation::Base
+    class AttachmentRepresentation < ApplicationRepresentation
       attribute :created_at
       attribute :filename
       attribute :id

@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class TaggingContract < Apiwork::Contract::Base
+    class TaggingContract < ApplicationContract
       representation TaggingRepresentation
     end
   end

@@ -2,9 +2,7 @@
 
 module Api
   module OverrideTest
-    class InvoiceRepresentation < Apiwork::Representation::Base
-      model Invoice
-
+    class InvoiceRepresentation < ApplicationRepresentation
       attribute :id
       attribute :number, writable: true
       attribute :status

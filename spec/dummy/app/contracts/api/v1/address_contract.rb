@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class AddressContract < Apiwork::Contract::Base
+    class AddressContract < ApplicationContract
       representation AddressRepresentation
     end
   end

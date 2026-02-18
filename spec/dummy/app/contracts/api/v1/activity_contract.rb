@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class ActivityContract < Apiwork::Contract::Base
+    class ActivityContract < ApplicationContract
       representation ActivityRepresentation
     end
   end

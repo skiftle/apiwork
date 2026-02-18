@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class AdjustmentRepresentation < Apiwork::Representation::Base
+    class AdjustmentRepresentation < ApplicationRepresentation
       attribute :amount, writable: true
       attribute :created_at
       attribute :description, writable: true

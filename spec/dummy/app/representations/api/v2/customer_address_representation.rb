@@ -2,7 +2,7 @@
 
 module Api
   module V2
-    class CustomerAddressRepresentation < Apiwork::Representation::Base
+    class CustomerAddressRepresentation < ApplicationRepresentation
       model Address
 
       attribute :city, writable: true

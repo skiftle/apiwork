@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class ReceiptContract < Apiwork::Contract::Base
+    class ReceiptContract < ApplicationContract
       representation ReceiptRepresentation
 
       action :create do

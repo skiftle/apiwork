@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class TagRepresentation < Apiwork::Representation::Base
+    class TagRepresentation < ApplicationRepresentation
       attribute :created_at
       attribute :id
       attribute :name

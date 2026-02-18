@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class ProfileRepresentation < Apiwork::Representation::Base
+    class ProfileRepresentation < ApplicationRepresentation
       deprecated!
       description 'Billing profile with personal settings'
       example({ name: 'Admin', email: 'admin@billing.test', timezone: 'Europe/Stockholm' })

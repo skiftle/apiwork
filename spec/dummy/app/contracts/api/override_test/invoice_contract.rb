@@ -2,7 +2,7 @@
 
 module Api
   module OverrideTest
-    class InvoiceContract < Apiwork::Contract::Base
+    class InvoiceContract < ApplicationContract
       representation InvoiceRepresentation
     end
   end

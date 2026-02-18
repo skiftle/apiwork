@@ -2,7 +2,7 @@
 
 module Api
   module InferenceTest
-    class InvoiceRepresentation < Apiwork::Representation::Base
+    class InvoiceRepresentation < ApplicationRepresentation
       attribute :id
       attribute :number
       attribute :status

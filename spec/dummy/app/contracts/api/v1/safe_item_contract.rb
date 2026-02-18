@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class SafeItemContract < Apiwork::Contract::Base
+    class SafeItemContract < ApplicationContract
       representation SafeItemRepresentation
     end
   end

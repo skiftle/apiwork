@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class ReceiptRepresentation < Apiwork::Representation::Base
+    class ReceiptRepresentation < ApplicationRepresentation
       model Invoice
       root :receipt
 

@@ -3,7 +3,6 @@
 module Api
   module V1
     class CompanyCustomerRepresentation < CustomerRepresentation
-      model CompanyCustomer
       type_name :company
 
       attribute :industry, writable: true

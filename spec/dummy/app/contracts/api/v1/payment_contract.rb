@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class PaymentContract < Apiwork::Contract::Base
+    class PaymentContract < ApplicationContract
       representation PaymentRepresentation
     end
   end

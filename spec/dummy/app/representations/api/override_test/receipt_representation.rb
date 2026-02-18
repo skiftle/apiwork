@@ -2,7 +2,7 @@
 
 module Api
   module OverrideTest
-    class ReceiptRepresentation < Apiwork::Representation::Base
+    class ReceiptRepresentation < ApplicationRepresentation
       model Invoice
       root :receipt
 

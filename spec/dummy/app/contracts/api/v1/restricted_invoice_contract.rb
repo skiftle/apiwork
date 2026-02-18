@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class RestrictedInvoiceContract < Apiwork::Contract::Base
+    class RestrictedInvoiceContract < ApplicationContract
       representation RestrictedInvoiceRepresentation
     end
   end

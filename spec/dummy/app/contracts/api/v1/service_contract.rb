@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class ServiceContract < Apiwork::Contract::Base
+    class ServiceContract < ApplicationContract
       representation ServiceRepresentation
     end
   end

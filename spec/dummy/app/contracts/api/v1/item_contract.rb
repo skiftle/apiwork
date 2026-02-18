@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class ItemContract < Apiwork::Contract::Base
+    class ItemContract < ApplicationContract
       representation ItemRepresentation
     end
   end

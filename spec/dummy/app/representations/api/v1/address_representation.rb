@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class AddressRepresentation < Apiwork::Representation::Base
+    class AddressRepresentation < ApplicationRepresentation
       attribute :city, writable: true
       attribute :country, deprecated: true, example: 'SE', writable: :update
       attribute :created_at

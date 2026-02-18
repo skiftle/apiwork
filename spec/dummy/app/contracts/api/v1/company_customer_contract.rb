@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class CompanyCustomerContract < Apiwork::Contract::Base
+    class CompanyCustomerContract < ApplicationContract
       representation CompanyCustomerRepresentation
     end
   end

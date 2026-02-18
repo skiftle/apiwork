@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class TaggingRepresentation < Apiwork::Representation::Base
+    class TaggingRepresentation < ApplicationRepresentation
       attribute :created_at
       attribute :id
       attribute :tag_id, type: :integer, writable: true

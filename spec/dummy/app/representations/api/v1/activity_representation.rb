@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class ActivityRepresentation < Apiwork::Representation::Base
+    class ActivityRepresentation < ApplicationRepresentation
       adapter do
         pagination do
           strategy :cursor

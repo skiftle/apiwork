@@ -2,7 +2,7 @@
 
 module Api
   module InferenceTest
-    class InvoiceContract < Apiwork::Contract::Base
+    class InvoiceContract < ApplicationContract
       representation InvoiceRepresentation
     end
   end

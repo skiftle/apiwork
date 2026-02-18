@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class PersonCustomerContract < Apiwork::Contract::Base
+    class PersonCustomerContract < ApplicationContract
       representation PersonCustomerRepresentation
     end
   end

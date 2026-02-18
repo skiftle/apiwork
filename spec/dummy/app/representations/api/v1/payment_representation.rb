@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class PaymentRepresentation < Apiwork::Representation::Base
+    class PaymentRepresentation < ApplicationRepresentation
       with_options writable: true do
         attribute :amount
         attribute :method, filterable: true

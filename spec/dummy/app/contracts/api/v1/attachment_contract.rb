@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class AttachmentContract < Apiwork::Contract::Base
+    class AttachmentContract < ApplicationContract
       representation AttachmentRepresentation
     end
   end
