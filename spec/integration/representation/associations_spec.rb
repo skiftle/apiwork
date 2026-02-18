@@ -34,10 +34,11 @@ RSpec.describe 'Representation association serialization', type: :integration do
         expect(result[:address][:country]).to eq('SE')
       end
 
-      it 'serializes has_one association as hash' do
+      it 'serializes has_one association with expected keys' do
         result = Api::V1::CustomerRepresentation.serialize(customer1, include: { address: true })
 
-        expect(result[:address]).to be_a(Hash)
+        expect(result[:address]).to have_key(:street)
+        expect(result[:address]).to have_key(:city)
       end
     end
 

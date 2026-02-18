@@ -130,8 +130,8 @@ RSpec.describe 'Contract coercion', type: :integration do
     it 'coerces string to datetime' do
       result = shape.coerce({ due_on: Date.current, sent_at: '2026-03-15T10:30:00Z' })
 
-      expect(result[:sent_at]).to be_a(ActiveSupport::TimeWithZone)
       expect(result[:sent_at].year).to eq(2026)
+      expect(result[:sent_at].month).to eq(3)
     end
   end
 

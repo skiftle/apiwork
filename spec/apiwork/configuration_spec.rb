@@ -3,6 +3,19 @@
 require 'rails_helper'
 
 RSpec.describe Apiwork::Configuration do
+  describe '#dig' do
+    it 'returns the value' do
+      options = {
+        pagination: Apiwork::Configuration::Option.new(:pagination, :hash) do
+          option :strategy, default: :offset, type: :symbol
+        end,
+      }
+      config = described_class.new(options)
+
+      expect(config.dig(:pagination, :strategy)).to eq(:offset)
+    end
+  end
+
   describe '#method_missing' do
     context 'when option is unknown' do
       it 'raises ConfigurationError' do
@@ -65,19 +78,6 @@ RSpec.describe Apiwork::Configuration do
 
         expect(config.pagination.strategy).to eq(:cursor)
       end
-    end
-  end
-
-  describe '#dig' do
-    it 'returns the value' do
-      options = {
-        pagination: Apiwork::Configuration::Option.new(:pagination, :hash) do
-          option :strategy, default: :offset, type: :symbol
-        end,
-      }
-      config = described_class.new(options)
-
-      expect(config.dig(:pagination, :strategy)).to eq(:offset)
     end
   end
 

@@ -3,13 +3,13 @@
 require 'rails_helper'
 
 RSpec.describe Apiwork::Adapter::Standard::Capability::Filtering::Operation::Filter::Builder do
-  let(:column) { Arel::Table.new(:invoices)[:status] }
-  let(:field_name) { :status }
-  let(:allowed_types) { [String, Hash] }
-  let(:valid_operators) { %i[eq in] }
-  let(:builder) { described_class.new(column, field_name, allowed_types:) }
-
   describe '#initialize' do
+    let(:column) { Arel::Table.new(:invoices)[:status] }
+    let(:field_name) { :status }
+    let(:allowed_types) { [String, Hash] }
+    let(:valid_operators) { %i[eq in] }
+    let(:builder) { described_class.new(column, field_name, allowed_types:) }
+
     it 'stores column' do
       expect(builder.column).to eq(column)
     end
@@ -32,6 +32,12 @@ RSpec.describe Apiwork::Adapter::Standard::Capability::Filtering::Operation::Fil
   end
 
   describe '#build' do
+    let(:column) { Arel::Table.new(:invoices)[:status] }
+    let(:field_name) { :status }
+    let(:allowed_types) { [String, Hash] }
+    let(:valid_operators) { %i[eq in] }
+    let(:builder) { described_class.new(column, field_name, allowed_types:) }
+
     context 'when value type is allowed' do
       it 'delegates to OperatorBuilder' do
         result = builder.build({ eq: 'draft' }, valid_operators:) do |operator, value|

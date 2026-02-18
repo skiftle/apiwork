@@ -47,7 +47,6 @@ RSpec.describe 'Validation', type: :request do
 
         expect(response).to have_http_status(:bad_request)
         json = JSON.parse(response.body)
-        expect(json['issues'].length).to be >= 2
         pointers = json['issues'].map { |i| i['pointer'] }
         expect(pointers).to include('/invoice/number')
         expect(pointers).to include('/invoice/sent')
@@ -69,7 +68,8 @@ RSpec.describe 'Validation', type: :request do
 
         expect(response).to have_http_status(:bad_request)
         json = JSON.parse(response.body)
-        expect(json['issues'].length).to be >= 1
+        issue = json['issues'].first
+        expect(issue['code']).to eq('field_missing')
       end
     end
   end
@@ -130,7 +130,7 @@ RSpec.describe 'Validation', type: :request do
                },
              }
 
-        expect(response.status).to be_between(400, 422)
+        expect(response).to have_http_status(:unprocessable_content)
       end
     end
   end

@@ -27,7 +27,6 @@ RSpec.describe 'Custom adapter', type: :integration do
     it 'finds registered adapters' do
       standard_adapter_class = Apiwork::Adapter.find!(:standard)
 
-      expect(standard_adapter_class).to be_a(Class)
       expect(standard_adapter_class.ancestors).to include(Apiwork::Adapter::Base)
     end
 
@@ -46,13 +45,13 @@ RSpec.describe 'Custom adapter', type: :integration do
     it 'exposes adapter_config' do
       api_class = Apiwork::API.find!('/api/v1')
 
-      expect(api_class.adapter_config).to be_a(Apiwork::Configuration)
+      expect(api_class.adapter_config.pagination.strategy).to eq(:offset)
     end
 
     it 'exposes adapter instance' do
       api_class = Apiwork::API.find!('/api/v1')
 
-      expect(api_class.adapter).to be_a(Apiwork::Adapter::Base)
+      expect(api_class.adapter.class.adapter_name).to eq(:standard)
     end
   end
 end

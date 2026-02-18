@@ -46,8 +46,8 @@ RSpec.describe 'Filtering errors', type: :request do
 
         expect(response).to have_http_status(:bad_request)
         json = JSON.parse(response.body)
-        expect(json['issues']).to be_an(Array)
-        expect(json['issues'].length).to be >= 1
+        issue = json['issues'].first
+        expect(issue['code']).to eq('type_invalid')
       end
     end
   end

@@ -171,7 +171,7 @@ RSpec.describe 'Contract validation', type: :integration do
       expect(result).to be_invalid
       codes = result.issues.map(&:code)
       expect(codes).to include(:field_missing)
-      expect(result.issues.length).to be >= 2
+      expect(result.issues.length).to eq(2)
     end
 
     it 'includes code, detail, path, and meta on each issue' do

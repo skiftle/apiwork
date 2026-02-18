@@ -139,7 +139,7 @@ RSpec.describe 'Includes', type: :request do
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
       expect(json['invoices'].length).to eq(1)
-      expect(json['invoices'][0]['items'].length).to be_positive
+      expect(json['invoices'][0]['items'].length).to eq(2)
     end
 
     it 'includes items combined with sorting' do
@@ -152,7 +152,7 @@ RSpec.describe 'Includes', type: :request do
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
       expect(json['invoices'][0]['number']).to eq('INV-002')
-      expect(json['invoices'][0]['items'].length).to be_positive
+      expect(json['invoices'][0]['items'].length).to eq(1)
     end
   end
 end

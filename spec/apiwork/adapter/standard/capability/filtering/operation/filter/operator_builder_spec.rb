@@ -3,12 +3,12 @@
 require 'rails_helper'
 
 RSpec.describe Apiwork::Adapter::Standard::Capability::Filtering::Operation::Filter::OperatorBuilder do
-  let(:column) { Arel::Table.new(:invoices)[:total] }
-  let(:field_name) { :total }
-  let(:valid_operators) { %i[eq gt lt] }
-  let(:builder) { described_class.new(column, field_name, valid_operators:) }
-
   describe '#initialize' do
+    let(:column) { Arel::Table.new(:invoices)[:total] }
+    let(:field_name) { :total }
+    let(:valid_operators) { %i[eq gt lt] }
+    let(:builder) { described_class.new(column, field_name, valid_operators:) }
+
     it 'stores column' do
       expect(builder.column).to eq(column)
     end
@@ -23,6 +23,11 @@ RSpec.describe Apiwork::Adapter::Standard::Capability::Filtering::Operation::Fil
   end
 
   describe '#build' do
+    let(:column) { Arel::Table.new(:invoices)[:total] }
+    let(:field_name) { :total }
+    let(:valid_operators) { %i[eq gt lt] }
+    let(:builder) { described_class.new(column, field_name, valid_operators:) }
+
     context 'when operator is valid' do
       it 'yields operator and value to block' do
         yielded = []

@@ -25,7 +25,7 @@ RSpec.describe 'Response format', type: :request do
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
       expect(json).to have_key('invoices')
-      expect(json['invoices']).to be_an(Array)
+      expect(json['invoices'].length).to eq(2)
     end
 
     it 'includes pagination metadata in collection response' do
@@ -83,7 +83,7 @@ RSpec.describe 'Response format', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['addresses']).to be_an(Array)
+      expect(json['addresses'].length).to eq(1)
     end
 
     it 'applies camelCase key format' do

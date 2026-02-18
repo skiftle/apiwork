@@ -3,9 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe Apiwork::Adapter::Standard::Capability::Writing::Operation::IssueMapper do
-  let(:translator) { ->(_, _, _) { nil } }
-  let(:root_path) { [] }
-
   IssueMapperMockError = Struct.new(:attribute, :type, :options, keyword_init: true) do
     def initialize(attribute:, options: {}, type:)
       super(attribute:, options:, type:)
@@ -96,6 +93,8 @@ RSpec.describe Apiwork::Adapter::Standard::Capability::Writing::Operation::Issue
   end
 
   describe '.map' do
+    let(:translator) { ->(_, _, _) { nil } }
+    let(:root_path) { [] }
     let(:issues) { described_class.map(record, translator, root_path:) }
 
     context 'when record does not respond to errors' do

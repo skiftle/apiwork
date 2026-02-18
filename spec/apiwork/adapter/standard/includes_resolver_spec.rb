@@ -60,6 +60,200 @@ RSpec.describe Apiwork::Adapter::Standard::IncludesResolver do
     end
   end
 
+  describe '#always_included' do
+    let(:resolver) { described_class.new(representation_class) }
+
+    context 'when no associations have include: :always' do
+      let(:representation_class) do
+        build_representation_class(
+          associations: {
+            customer: { include: :optional },
+          },
+        )
+      end
+
+      it 'returns empty hash' do
+        result = resolver.always_included
+
+        expect(result).to eq({})
+      end
+    end
+
+    context 'when associations have include: :always' do
+      let(:customer_representation) { build_representation_class(name: 'CustomerRepresentation') }
+      let(:representation_class) do
+        build_representation_class(
+          associations: {
+            customer: { include: :always, representation_class: customer_representation },
+          },
+        )
+      end
+
+      it 'returns hash with association name' do
+        result = resolver.always_included
+
+        expect(result).to eq({ customer: {} })
+      end
+    end
+
+    context 'when nested associations have include: :always' do
+      let(:address_representation) { build_representation_class(name: 'AddressRepresentation') }
+      let(:customer_representation) do
+        build_representation_class(
+          associations: {
+            address: { include: :always, representation_class: address_representation },
+          },
+          name: 'CustomerRepresentation',
+        )
+      end
+      let(:representation_class) do
+        build_representation_class(
+          associations: {
+            customer: { include: :always, representation_class: customer_representation },
+          },
+        )
+      end
+
+      it 'includes nested always-included associations' do
+        result = resolver.always_included
+
+        expect(result).to eq({ customer: { address: {} } })
+      end
+    end
+  end
+
+  describe '#format' do
+    let(:resolver) { described_class.new(representation_class) }
+
+    let(:representation_class) { build_representation_class }
+
+    context 'when hash is blank' do
+      it 'returns empty array' do
+        result = resolver.format({})
+
+        expect(result).to eq([])
+      end
+    end
+
+    context 'when hash has single key with empty value' do
+      it 'returns key as symbol' do
+        result = resolver.format({ customer: {} })
+
+        expect(result).to eq(:customer)
+      end
+    end
+
+    context 'when hash has single key with nested value' do
+      it 'returns hash with formatted nested value' do
+        result = resolver.format({ customer: { address: {} } })
+
+        expect(result).to eq({ customer: :address })
+      end
+    end
+
+    context 'when hash has multiple keys' do
+      it 'returns array of formatted items' do
+        result = resolver.format({ customer: {}, payment: {} })
+
+        expect(result).to contain_exactly(:customer, :payment)
+      end
+    end
+
+    context 'when hash has deeply nested values' do
+      it 'recursively formats nested values' do
+        result = resolver.format({ customer: { address: { city: {} } } })
+
+        expect(result).to eq({ customer: { address: :city } })
+      end
+    end
+
+    context 'when hash has multiple keys with nested values' do
+      it 'returns array with formatted items' do
+        result = resolver.format(
+          {
+            customer: { address: {} },
+            payment: { method: {} },
+          },
+        )
+
+        expect(result).to contain_exactly(
+          { customer: :address },
+          { payment: :method },
+        )
+      end
+    end
+  end
+
+  describe '#from_params' do
+    let(:resolver) { described_class.new(representation_class) }
+
+    let(:customer_representation) { build_representation_class(name: 'CustomerRepresentation') }
+    let(:representation_class) do
+      build_representation_class(
+        associations: {
+          customer: { include: :optional, representation_class: customer_representation },
+        },
+      )
+    end
+
+    context 'when params is empty' do
+      it 'returns empty hash' do
+        result = resolver.from_params({})
+
+        expect(result).to eq({})
+      end
+    end
+
+    context 'when params contains association' do
+      it 'returns hash with association' do
+        result = resolver.from_params({ customer: {} })
+
+        expect(result).to eq({ customer: {} })
+      end
+    end
+  end
+
+  describe '#merge' do
+    let(:resolver) { described_class.new(representation_class) }
+
+    let(:representation_class) { build_representation_class }
+
+    context 'when override is blank' do
+      it 'returns base unchanged' do
+        result = resolver.merge({ customer: {} }, {})
+
+        expect(result).to eq({ customer: {} })
+      end
+    end
+
+    context 'when override has values' do
+      it 'deep merges override into base' do
+        result = resolver.merge({ customer: {} }, { payment: {} })
+
+        expect(result).to eq({ customer: {}, payment: {} })
+      end
+    end
+
+    context 'when override has nested values' do
+      it 'deep merges nested values' do
+        result = resolver.merge(
+          { customer: { address: {} } },
+          { customer: { billing: {} } },
+        )
+
+        expect(result).to eq({ customer: { address: {}, billing: {} } })
+      end
+    end
+
+    context 'when override has string keys' do
+      it 'symbolizes keys' do
+        result = resolver.merge({ customer: {} }, { 'payment' => {} })
+
+        expect(result).to eq({ customer: {}, payment: {} })
+      end
+    end
+  end
+
   describe '#resolve' do
     let(:resolver) { described_class.new(representation_class) }
 
@@ -293,200 +487,6 @@ RSpec.describe Apiwork::Adapter::Standard::IncludesResolver do
         result = resolver.resolve({ payment: {} }, include_always: true)
 
         expect(result).to contain_exactly(:customer, :payment)
-      end
-    end
-  end
-
-  describe '#always_included' do
-    let(:resolver) { described_class.new(representation_class) }
-
-    context 'when no associations have include: :always' do
-      let(:representation_class) do
-        build_representation_class(
-          associations: {
-            customer: { include: :optional },
-          },
-        )
-      end
-
-      it 'returns empty hash' do
-        result = resolver.always_included
-
-        expect(result).to eq({})
-      end
-    end
-
-    context 'when associations have include: :always' do
-      let(:customer_representation) { build_representation_class(name: 'CustomerRepresentation') }
-      let(:representation_class) do
-        build_representation_class(
-          associations: {
-            customer: { include: :always, representation_class: customer_representation },
-          },
-        )
-      end
-
-      it 'returns hash with association name' do
-        result = resolver.always_included
-
-        expect(result).to eq({ customer: {} })
-      end
-    end
-
-    context 'when nested associations have include: :always' do
-      let(:address_representation) { build_representation_class(name: 'AddressRepresentation') }
-      let(:customer_representation) do
-        build_representation_class(
-          associations: {
-            address: { include: :always, representation_class: address_representation },
-          },
-          name: 'CustomerRepresentation',
-        )
-      end
-      let(:representation_class) do
-        build_representation_class(
-          associations: {
-            customer: { include: :always, representation_class: customer_representation },
-          },
-        )
-      end
-
-      it 'includes nested always-included associations' do
-        result = resolver.always_included
-
-        expect(result).to eq({ customer: { address: {} } })
-      end
-    end
-  end
-
-  describe '#from_params' do
-    let(:resolver) { described_class.new(representation_class) }
-
-    let(:customer_representation) { build_representation_class(name: 'CustomerRepresentation') }
-    let(:representation_class) do
-      build_representation_class(
-        associations: {
-          customer: { include: :optional, representation_class: customer_representation },
-        },
-      )
-    end
-
-    context 'when params is empty' do
-      it 'returns empty hash' do
-        result = resolver.from_params({})
-
-        expect(result).to eq({})
-      end
-    end
-
-    context 'when params contains association' do
-      it 'returns hash with association' do
-        result = resolver.from_params({ customer: {} })
-
-        expect(result).to eq({ customer: {} })
-      end
-    end
-  end
-
-  describe '#merge' do
-    let(:resolver) { described_class.new(representation_class) }
-
-    let(:representation_class) { build_representation_class }
-
-    context 'when override is blank' do
-      it 'returns base unchanged' do
-        result = resolver.merge({ customer: {} }, {})
-
-        expect(result).to eq({ customer: {} })
-      end
-    end
-
-    context 'when override has values' do
-      it 'deep merges override into base' do
-        result = resolver.merge({ customer: {} }, { payment: {} })
-
-        expect(result).to eq({ customer: {}, payment: {} })
-      end
-    end
-
-    context 'when override has nested values' do
-      it 'deep merges nested values' do
-        result = resolver.merge(
-          { customer: { address: {} } },
-          { customer: { billing: {} } },
-        )
-
-        expect(result).to eq({ customer: { address: {}, billing: {} } })
-      end
-    end
-
-    context 'when override has string keys' do
-      it 'symbolizes keys' do
-        result = resolver.merge({ customer: {} }, { 'payment' => {} })
-
-        expect(result).to eq({ customer: {}, payment: {} })
-      end
-    end
-  end
-
-  describe '#format' do
-    let(:resolver) { described_class.new(representation_class) }
-
-    let(:representation_class) { build_representation_class }
-
-    context 'when hash is blank' do
-      it 'returns empty array' do
-        result = resolver.format({})
-
-        expect(result).to eq([])
-      end
-    end
-
-    context 'when hash has single key with empty value' do
-      it 'returns key as symbol' do
-        result = resolver.format({ customer: {} })
-
-        expect(result).to eq(:customer)
-      end
-    end
-
-    context 'when hash has single key with nested value' do
-      it 'returns hash with formatted nested value' do
-        result = resolver.format({ customer: { address: {} } })
-
-        expect(result).to eq({ customer: :address })
-      end
-    end
-
-    context 'when hash has multiple keys' do
-      it 'returns array of formatted items' do
-        result = resolver.format({ customer: {}, payment: {} })
-
-        expect(result).to contain_exactly(:customer, :payment)
-      end
-    end
-
-    context 'when hash has deeply nested values' do
-      it 'recursively formats nested values' do
-        result = resolver.format({ customer: { address: { city: {} } } })
-
-        expect(result).to eq({ customer: { address: :city } })
-      end
-    end
-
-    context 'when hash has multiple keys with nested values' do
-      it 'returns array with formatted items' do
-        result = resolver.format(
-          {
-            customer: { address: {} },
-            payment: { method: {} },
-          },
-        )
-
-        expect(result).to contain_exactly(
-          { customer: :address },
-          { payment: :method },
-        )
       end
     end
   end

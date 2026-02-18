@@ -11,7 +11,7 @@ RSpec.describe 'Attribute preload', type: :integration do
     end
   end
 
-  describe '.preloads' do
+  describe 'preload attribute declarations' do
     it 'returns preload associations from attributes' do
       representation_class = Class.new(Apiwork::Representation::Base) do
         abstract!
@@ -85,7 +85,6 @@ RSpec.describe 'Attribute preload', type: :integration do
 
       preloaded_data, = runner.run(relation, representation_class, double(:request))
 
-      expect(preloaded_data).to be_a(ActiveRecord::Relation)
       expect(preloaded_data.includes_values).to include(:items)
     end
 
