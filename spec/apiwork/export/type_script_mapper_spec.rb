@@ -1,0 +1,424 @@
+# frozen_string_literal: true
+
+require 'rails_helper'
+
+RSpec.describe Apiwork::Export::TypeScriptMapper do
+  let(:export) { stub_export }
+  let(:mapper) { described_class.new(export) }
+
+  describe '#map_primitive' do
+    it 'maps string to string' do
+      param = build_param(type: :string)
+
+      expect(mapper.map_primitive(param)).to eq('string')
+    end
+
+    it 'maps integer to number' do
+      param = build_param(type: :integer)
+
+      expect(mapper.map_primitive(param)).to eq('number')
+    end
+
+    it 'maps number to number' do
+      param = build_param(type: :number)
+
+      expect(mapper.map_primitive(param)).to eq('number')
+    end
+
+    it 'maps decimal to number' do
+      param = build_param(type: :decimal)
+
+      expect(mapper.map_primitive(param)).to eq('number')
+    end
+
+    it 'maps boolean to boolean' do
+      param = build_param(type: :boolean)
+
+      expect(mapper.map_primitive(param)).to eq('boolean')
+    end
+
+    it 'maps date to string' do
+      param = build_param(type: :date)
+
+      expect(mapper.map_primitive(param)).to eq('string')
+    end
+
+    it 'maps datetime to string' do
+      param = build_param(type: :datetime)
+
+      expect(mapper.map_primitive(param)).to eq('string')
+    end
+
+    it 'maps time to string' do
+      param = build_param(type: :time)
+
+      expect(mapper.map_primitive(param)).to eq('string')
+    end
+
+    it 'maps uuid to string' do
+      param = build_param(type: :uuid)
+
+      expect(mapper.map_primitive(param)).to eq('string')
+    end
+
+    it 'maps binary to string' do
+      param = build_param(type: :binary)
+
+      expect(mapper.map_primitive(param)).to eq('string')
+    end
+
+    it 'maps unknown to unknown' do
+      param = build_param(type: :unknown)
+
+      expect(mapper.map_primitive(param)).to eq('unknown')
+    end
+  end
+
+  describe '#map_field' do
+    context 'with nullable param' do
+      it 'prepends null in sorted order' do
+        param = build_param(nullable: true, type: :string)
+
+        expect(mapper.map_field(param)).to eq('null | string')
+      end
+    end
+
+    context 'with nullable reference' do
+      it 'prepends null in sorted order' do
+        invoice_type = build_type(shape: { number: { type: :string } })
+        export_with_types = stub_export(types: { invoice: invoice_type })
+        mapper_with_types = described_class.new(export_with_types)
+
+        param = build_param(nullable: true, reference: :invoice, type: :reference)
+
+        expect(mapper_with_types.map_field(param)).to eq('Invoice | null')
+      end
+    end
+
+    context 'with inline enum' do
+      it 'returns sorted values as union' do
+        param = build_param(enum: %w[paid draft sent], type: :string)
+
+        expect(mapper.map_field(param)).to eq("'draft' | 'paid' | 'sent'")
+      end
+    end
+
+    context 'with enum reference' do
+      it 'returns PascalCase enum name' do
+        invoice_status_enum = build_enum(values: %w[draft sent paid])
+        export_with_enums = stub_export(enums: { invoice_status: invoice_status_enum })
+        mapper_with_enums = described_class.new(export_with_enums)
+
+        param = build_param(enum: :invoice_status, type: :string)
+
+        expect(mapper_with_enums.map_field(param)).to eq('InvoiceStatus')
+      end
+    end
+
+    context 'with nullable enum' do
+      it 'returns sorted union with null' do
+        param = build_param(enum: %w[draft sent], nullable: true, type: :string)
+
+        expect(mapper.map_field(param)).to eq("'draft' | 'sent' | null")
+      end
+    end
+  end
+
+  describe '#map_param' do
+    context 'with object type' do
+      it 'returns Record for empty shape' do
+        param = build_param(shape: {}, type: :object)
+
+        expect(mapper.map_param(param)).to eq('Record<string, unknown>')
+      end
+
+      it 'returns inline object with properties' do
+        param = build_param(
+          shape: {
+            count: { type: :integer },
+            name: { type: :string },
+          },
+          type: :object,
+        )
+
+        expect(mapper.map_param(param)).to eq('{ count: number; name: string }')
+      end
+
+      it 'marks optional fields in partial objects' do
+        param = build_param(
+          partial: true,
+          shape: {
+            name: { type: :string },
+          },
+          type: :object,
+        )
+
+        expect(mapper.map_param(param)).to eq('{ name?: string }')
+      end
+    end
+
+    context 'with array type' do
+      it 'returns typed array' do
+        param = build_param(of: { type: :string }, shape: {}, type: :array)
+
+        expect(mapper.map_param(param)).to eq('string[]')
+      end
+
+      it 'returns unknown array for untyped' do
+        param = build_param(of: nil, shape: {}, type: :array)
+
+        expect(mapper.map_param(param)).to eq('unknown[]')
+      end
+
+      it 'wraps union element in parentheses' do
+        param = build_param(
+          of: {
+            discriminator: nil,
+            type: :union,
+            variants: [{ type: :string }, { type: :integer }],
+          },
+          shape: {},
+          type: :array,
+        )
+
+        expect(mapper.map_param(param)).to eq('(number | string)[]')
+      end
+
+      it 'returns inline object array for shape without of' do
+        param = build_param(
+          of: nil,
+          shape: {
+            name: { type: :string },
+          },
+          type: :array,
+        )
+
+        expect(mapper.map_param(param)).to eq('{ name: string }[]')
+      end
+    end
+
+    context 'with union type' do
+      it 'returns sorted variants' do
+        param = build_param(
+          discriminator: nil,
+          type: :union,
+          variants: [
+            { type: :string },
+            { type: :integer },
+          ],
+        )
+
+        expect(mapper.map_param(param)).to eq('number | string')
+      end
+    end
+
+    context 'with literal type' do
+      it 'maps string literal' do
+        param = build_param(type: :literal, value: 'create')
+
+        expect(mapper.map_param(param)).to eq("'create'")
+      end
+
+      it 'maps number literal' do
+        param = build_param(type: :literal, value: 42)
+
+        expect(mapper.map_param(param)).to eq('42')
+      end
+
+      it 'maps boolean literal' do
+        param = build_param(type: :literal, value: true)
+
+        expect(mapper.map_param(param)).to eq('true')
+      end
+
+      it 'maps nil literal' do
+        param = build_param(type: :literal, value: nil)
+
+        expect(mapper.map_param(param)).to eq('null')
+      end
+    end
+
+    context 'with reference type' do
+      it 'returns PascalCase name' do
+        invoice_type = build_type(shape: { number: { type: :string } })
+        export_with_types = stub_export(types: { invoice: invoice_type })
+        mapper_with_types = described_class.new(export_with_types)
+
+        param = build_param(reference: :invoice, type: :reference)
+
+        expect(mapper_with_types.map_param(param)).to eq('Invoice')
+      end
+    end
+  end
+
+  describe '#build_interface' do
+    it 'builds interface with properties' do
+      type = build_type(
+        shape: {
+          amount: { type: :decimal },
+          number: { type: :string },
+        },
+      )
+
+      result = mapper.build_interface(:invoice, type)
+
+      expect(result).to include('export interface Invoice {')
+      expect(result).to include('  amount: number;')
+      expect(result).to include('  number: string;')
+    end
+
+    it 'builds interface with extends' do
+      type = build_type(
+        extends: [:base_record],
+        shape: { name: { type: :string } },
+      )
+
+      result = mapper.build_interface(:extended_record, type)
+
+      expect(result).to include('export interface ExtendedRecord extends BaseRecord {')
+      expect(result).to include('  name: string;')
+    end
+
+    it 'builds type alias for extends-only without properties' do
+      type = build_type(extends: [:base_record], shape: {})
+
+      result = mapper.build_interface(:simple_record, type)
+
+      expect(result).to eq('export type SimpleRecord = BaseRecord;')
+    end
+
+    it 'includes JSDoc description' do
+      type = build_type(
+        description: 'An invoice record',
+        shape: { name: { type: :string } },
+      )
+
+      result = mapper.build_interface(:invoice, type)
+
+      expect(result).to include('/** An invoice record */')
+    end
+
+    it 'includes JSDoc example' do
+      type = build_type(
+        description: 'An invoice',
+        example: 'INV-001',
+        shape: { name: { type: :string } },
+      )
+
+      result = mapper.build_interface(:invoice, type)
+
+      expect(result).to include('@example "INV-001"')
+    end
+  end
+
+  describe '#build_union_type' do
+    it 'builds union type with sorted variants' do
+      type = build_union_type(
+        variants: [
+          { type: :string },
+          { type: :integer },
+        ],
+      )
+
+      result = mapper.build_union_type(:mixed, type)
+
+      expect(result).to eq('export type Mixed = string | number;')
+    end
+
+    it 'injects discriminator tag for variants without it in shape' do
+      invoice_type = build_type(shape: { number: { type: :string } })
+      export_with_types = stub_export(types: { invoice: invoice_type })
+      mapper_with_types = described_class.new(export_with_types)
+
+      type = build_union_type(
+        discriminator: :kind,
+        variants: [
+          { reference: :invoice, tag: 'invoice', type: :reference },
+        ],
+      )
+
+      result = mapper_with_types.build_union_type(:tagged, type)
+
+      expect(result).to include("{ kind: 'invoice' } & Invoice")
+    end
+
+    it 'skips tag injection when discriminator exists in referenced shape' do
+      invoice_type = build_type(shape: { kind: { type: :string } })
+      export_with_types = stub_export(types: { invoice: invoice_type })
+      mapper_with_types = described_class.new(export_with_types)
+
+      type = build_union_type(
+        discriminator: :kind,
+        variants: [
+          { reference: :invoice, tag: 'invoice', type: :reference },
+        ],
+      )
+
+      result = mapper_with_types.build_union_type(:tagged, type)
+
+      expect(result).to eq('export type Tagged = Invoice;')
+    end
+
+    it 'includes JSDoc description' do
+      type = build_union_type(
+        description: 'A mixed type',
+        variants: [{ type: :string }],
+      )
+
+      result = mapper.build_union_type(:mixed, type)
+
+      expect(result).to include('/** A mixed type */')
+    end
+  end
+
+  describe '#build_enum_type' do
+    it 'builds sorted enum type' do
+      enum = build_enum(values: %w[paid draft sent])
+
+      result = mapper.build_enum_type(:invoice_status, enum)
+
+      expect(result).to eq("export type InvoiceStatus = 'draft' | 'paid' | 'sent';")
+    end
+
+    it 'uses PascalCase for enum name' do
+      enum = build_enum(values: %w[asc desc])
+
+      result = mapper.build_enum_type(:sort_direction, enum)
+
+      expect(result).to include('export type SortDirection')
+    end
+  end
+
+  describe '#action_type_name' do
+    it 'generates standard action type name' do
+      result = mapper.action_type_name(:invoices, :create, 'RequestBody')
+
+      expect(result).to eq('InvoicesCreateRequestBody')
+    end
+
+    it 'generates action type name with parent identifiers' do
+      result = mapper.action_type_name(:items, :index, 'Request', parent_identifiers: ['invoices'])
+
+      expect(result).to eq('InvoicesItemsIndexRequest')
+    end
+  end
+
+  describe '#jsdoc' do
+    it 'returns nil without description or example' do
+      expect(mapper.jsdoc).to be_nil
+    end
+
+    it 'returns single-line JSDoc for description only' do
+      expect(mapper.jsdoc(description: 'A test')).to eq('/** A test */')
+    end
+
+    it 'returns multi-line JSDoc for description and example' do
+      result = mapper.jsdoc(description: 'A test', example: 'INV-001')
+
+      expect(result).to include('/**')
+      expect(result).to include(' * A test')
+      expect(result).to include(' * @example "INV-001"')
+      expect(result).to include(' */')
+    end
+  end
+end
