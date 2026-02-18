@@ -53,6 +53,18 @@ RSpec.describe 'Validation', type: :request do
         expect(pointers).to include('/invoice/sent')
       end
 
+      it 'returns field_missing for null required field' do
+        post '/api/v1/invoices',
+             as: :json,
+             params: { invoice: { customer_id: customer1.id, number: nil } }
+
+        expect(response).to have_http_status(:bad_request)
+        json = JSON.parse(response.body)
+        issue = json['issues'].find { |i| i['pointer'] == '/invoice/number' }
+        expect(issue).to be_present
+        expect(issue['code']).to eq('field_missing')
+      end
+
       it 'returns error for empty body' do
         post '/api/v1/invoices', as: :json, params: {}
 
@@ -135,6 +147,18 @@ RSpec.describe 'Validation', type: :request do
         expect(response).to have_http_status(:unprocessable_content)
         invoice1.reload
         expect(invoice1.number).to eq('INV-001')
+      end
+
+      it 'returns type_invalid on update with wrong data type' do
+        patch "/api/v1/invoices/#{invoice1.id}",
+              as: :json,
+              params: { invoice: { sent: 'invalid' } }
+
+        expect(response).to have_http_status(:bad_request)
+        json = JSON.parse(response.body)
+        issue = json['issues'].find { |i| i['pointer'] == '/invoice/sent' }
+        expect(issue).to be_present
+        expect(issue['code']).to eq('type_invalid')
       end
     end
   end

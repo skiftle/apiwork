@@ -80,5 +80,22 @@ RSpec.describe 'Cursor pagination', type: :request do
       json = JSON.parse(response.body)
       expect(json['pagination']['prev']).to be_nil
     end
+
+    context 'with filtering' do
+      it 'returns only matching records' do
+        get '/api/v1/activities',
+            params: {
+              filter: { read: { eq: true } },
+              page: { size: 5 },
+            }
+
+        expect(response).to have_http_status(:ok)
+        json = JSON.parse(response.body)
+        expect(json['activities'].length).to eq(5)
+        json['activities'].each do |activity|
+          expect(activity['read']).to be(true)
+        end
+      end
+    end
   end
 end

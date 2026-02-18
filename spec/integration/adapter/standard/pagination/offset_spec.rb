@@ -82,5 +82,32 @@ RSpec.describe 'Offset pagination', type: :request do
       issue = json['issues'].find { |i| i['code'] == 'number_too_large' }
       expect(issue).to be_present
     end
+
+    it 'rejects negative page number' do
+      get '/api/v1/invoices', params: { page: { number: -1, size: 10 } }
+
+      expect(response).to have_http_status(:bad_request)
+      json = JSON.parse(response.body)
+      issue = json['issues'].find { |i| i['code'] == 'number_too_small' }
+      expect(issue).to be_present
+    end
+
+    context 'with filtering' do
+      it 'reflects filtered count in pagination metadata' do
+        get '/api/v1/invoices',
+            params: {
+              filter: { status: { eq: 'draft' } },
+              page: { number: 1, size: 5 },
+            }
+
+        expect(response).to have_http_status(:ok)
+        json = JSON.parse(response.body)
+        expect(json['invoices'].length).to eq(5)
+        json['invoices'].each do |invoice|
+          expect(invoice['status']).to eq('draft')
+        end
+        expect(json['pagination']['items']).to eq(13)
+      end
+    end
   end
 end

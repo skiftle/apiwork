@@ -59,6 +59,24 @@ RSpec.describe 'STI', type: :request do
       expect(customer1.type).to eq('PersonCustomer')
       expect(customer1.name).to eq('Updated Person')
     end
+
+    it 'updates CompanyCustomer-specific attributes' do
+      company = CompanyCustomer.create!(
+        email: 'billing@acme.com',
+        industry: 'Technology',
+        name: 'Acme Corp',
+        registration_number: 'SE556000-0000',
+      )
+
+      patch "/api/v1/customers/#{company.id}",
+            as: :json,
+            params: { customer: { industry: 'Healthcare' } }
+
+      expect(response).to have_http_status(:ok)
+      json = JSON.parse(response.body)
+      expect(json['customer']['industry']).to eq('Healthcare')
+      expect(json['customer']['type']).to eq('company')
+    end
   end
 
   describe 'GET /api/v1/customers' do
@@ -89,10 +107,25 @@ RSpec.describe 'STI', type: :request do
       PersonCustomer.create!(born_on: '1985-06-15', email: 'anna@example.com', name: 'Anna Svensson')
     end
 
-    it 'deletes the customer' do
+    it 'deletes PersonCustomer' do
       expect do
         delete "/api/v1/customers/#{customer1.id}"
       end.to change(PersonCustomer, :count).by(-1)
+
+      expect(response).to have_http_status(:no_content)
+    end
+
+    it 'deletes CompanyCustomer' do
+      company = CompanyCustomer.create!(
+        email: 'billing@acme.com',
+        industry: 'Technology',
+        name: 'Acme Corp',
+        registration_number: 'SE556000-0000',
+      )
+
+      expect do
+        delete "/api/v1/customers/#{company.id}"
+      end.to change(CompanyCustomer, :count).by(-1)
 
       expect(response).to have_http_status(:no_content)
     end

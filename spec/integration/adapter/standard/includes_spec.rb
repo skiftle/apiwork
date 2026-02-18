@@ -85,4 +85,75 @@ RSpec.describe 'Includes', type: :request do
       expect(json['invoice'].keys).not_to include('items')
     end
   end
+
+  describe 'POST /api/v1/invoices with include' do
+    it 'includes items on create response' do
+      post '/api/v1/invoices?include[items]=true',
+           headers: { 'CONTENT_TYPE' => 'application/json' },
+           params: {
+             invoice: {
+               customer_id: customer1.id,
+               number: 'INV-NEW',
+             },
+           }.to_json
+
+      expect(response).to have_http_status(:created)
+      json = JSON.parse(response.body)
+      expect(json['invoice']).to have_key('items')
+      expect(json['invoice']['items']).to eq([])
+    end
+  end
+
+  describe 'PATCH /api/v1/invoices/:id with include' do
+    it 'includes items on update response' do
+      patch "/api/v1/invoices/#{invoice1.id}?include[items]=true",
+            headers: { 'CONTENT_TYPE' => 'application/json' },
+            params: { invoice: { number: 'INV-UPDATED' } }.to_json
+
+      expect(response).to have_http_status(:ok)
+      json = JSON.parse(response.body)
+      expect(json['invoice']['number']).to eq('INV-UPDATED')
+      expect(json['invoice']['items']).to be_present
+      expect(json['invoice']['items'].length).to eq(2)
+    end
+
+    it 'omits items when not requested on update' do
+      patch "/api/v1/invoices/#{invoice2.id}",
+            as: :json,
+            params: { invoice: { number: 'INV-CHANGED' } }
+
+      expect(response).to have_http_status(:ok)
+      json = JSON.parse(response.body)
+      expect(json['invoice']['number']).to eq('INV-CHANGED')
+      expect(json['invoice'].keys).not_to include('items')
+    end
+  end
+
+  describe 'GET /api/v1/invoices with include and filtering' do
+    it 'includes items combined with filtering' do
+      get '/api/v1/invoices',
+          params: {
+            filter: { number: { eq: 'INV-001' } },
+            include: { items: true },
+          }
+
+      expect(response).to have_http_status(:ok)
+      json = JSON.parse(response.body)
+      expect(json['invoices'].length).to eq(1)
+      expect(json['invoices'][0]['items']).to be_present
+    end
+
+    it 'includes items combined with sorting' do
+      get '/api/v1/invoices',
+          params: {
+            include: { items: true },
+            sort: { number: 'desc' },
+          }
+
+      expect(response).to have_http_status(:ok)
+      json = JSON.parse(response.body)
+      expect(json['invoices'][0]['number']).to eq('INV-002')
+      expect(json['invoices'][0]['items']).to be_present
+    end
+  end
 end

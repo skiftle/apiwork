@@ -4,16 +4,14 @@ require 'rails_helper'
 
 RSpec.describe 'Singular resource', type: :request do
   describe 'GET /api/v1/profile' do
-    let!(:profile1) do
+    it 'returns the profile without :id' do
       Profile.create!(
         bio: 'Billing administrator',
         email: 'admin@billing.test',
         name: 'Admin',
         timezone: 'Europe/Stockholm',
       )
-    end
 
-    it 'returns the profile without :id' do
       get '/api/v1/profile'
 
       expect(response).to have_http_status(:ok)
@@ -21,6 +19,34 @@ RSpec.describe 'Singular resource', type: :request do
       expect(json['profile']['name']).to eq('Admin')
       expect(json['profile']['bio']).to eq('Billing administrator')
       expect(json['profile']['timezone']).to eq('Europe/Stockholm')
+    end
+
+    it 'returns 404 when profile does not exist' do
+      get '/api/v1/profile'
+
+      expect(response).to have_http_status(:not_found)
+    end
+
+    it 'serializes all profile attributes' do
+      profile = Profile.create!(
+        balance: 150.75,
+        bio: 'Billing administrator',
+        email: 'admin@billing.test',
+        external_id: '550e8400-e29b-41d4-a716-446655440000',
+        name: 'Admin',
+        timezone: 'Europe/Stockholm',
+      )
+
+      get '/api/v1/profile'
+
+      json = JSON.parse(response.body)
+      expect(json['profile']['id']).to eq(profile.id)
+      expect(json['profile']['name']).to eq('Admin')
+      expect(json['profile']['email']).to eq('admin@billing.test')
+      expect(json['profile']['bio']).to eq('Billing administrator')
+      expect(json['profile']['timezone']).to eq('Europe/Stockholm')
+      expect(json['profile']['external_id']).to eq('550e8400-e29b-41d4-a716-446655440000')
+      expect(json['profile']['balance']).to eq('150.75')
     end
   end
 

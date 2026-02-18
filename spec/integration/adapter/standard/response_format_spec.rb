@@ -95,4 +95,30 @@ RSpec.describe 'Response format', type: :request do
       expect(json['addresses'].first).to have_key('updatedAt')
     end
   end
+
+  describe 'GET /api/v2/customer-addresses/:id' do
+    let!(:address1) do
+      Address.create!(city: 'Stockholm', country: 'SE', customer: customer1, street: '123 Main St', zip: '111 22')
+    end
+
+    it 'responds to kebab-case show path' do
+      get "/api/v2/customer-addresses/#{address1.id}"
+
+      expect(response).to have_http_status(:ok)
+      json = JSON.parse(response.body)
+      expect(json['address']['city']).to eq('Stockholm')
+    end
+  end
+
+  describe 'DELETE /api/v2/customer-addresses/:id' do
+    let!(:address1) do
+      Address.create!(city: 'Stockholm', country: 'SE', customer: customer1, street: '123 Main St', zip: '111 22')
+    end
+
+    it 'responds to kebab-case destroy path' do
+      delete "/api/v2/customer-addresses/#{address1.id}"
+
+      expect(response).to have_http_status(:no_content)
+    end
+  end
 end

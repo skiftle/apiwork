@@ -121,5 +121,31 @@ RSpec.describe 'Nested attributes', type: :request do
       expect(Adjustment.count).to eq(2)
       expect(Item.last.adjustments.pluck(:description)).to contain_exactly('Discount 10%', 'Rush fee')
     end
+
+    it 'destroys deeply nested adjustment with OP delete' do
+      invoice1 = Invoice.create!(customer: customer1, number: 'INV-001')
+      item1 = Item.create!(description: 'Consulting hours', invoice: invoice1, quantity: 10, unit_price: 150.00)
+      adjustment1 = Adjustment.create!(amount: 10.00, description: 'Discount', item: item1)
+
+      patch "/api/v1/invoices/#{invoice1.id}",
+            as: :json,
+            params: {
+              invoice: {
+                items: [
+                  {
+                    OP: 'update',
+                    adjustments: [{ OP: 'delete', id: adjustment1.id }],
+                    description: 'Consulting hours',
+                    id: item1.id,
+                    invoice_id: invoice1.id,
+                    quantity: 10,
+                  },
+                ],
+              },
+            }
+
+      expect(response).to have_http_status(:ok)
+      expect(Adjustment.find_by(id: adjustment1.id)).to be_nil
+    end
   end
 end

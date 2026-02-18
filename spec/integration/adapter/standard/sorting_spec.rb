@@ -39,6 +39,24 @@ RSpec.describe 'Sorting', type: :request do
       expect(json['invoices'].length).to eq(3)
     end
 
+    it 'sorts by created_at descending' do
+      get '/api/v1/invoices', params: { sort: { created_at: 'desc' } }
+
+      expect(response).to have_http_status(:ok)
+      json = JSON.parse(response.body)
+      numbers = json['invoices'].map { |inv| inv['number'] }
+      expect(numbers).to eq(%w[INV-003 INV-002 INV-001])
+    end
+
+    it 'defaults to id ascending when no sort specified' do
+      get '/api/v1/invoices'
+
+      expect(response).to have_http_status(:ok)
+      json = JSON.parse(response.body)
+      ids = json['invoices'].map { |inv| inv['id'] }
+      expect(ids).to eq(ids.sort)
+    end
+
     it 'returns error for unknown sort field' do
       get '/api/v1/invoices', params: { sort: { nonexistent: 'asc' } }
 
@@ -46,6 +64,37 @@ RSpec.describe 'Sorting', type: :request do
       json = JSON.parse(response.body)
       issue = json['issues'].find { |i| i['code'] == 'field_unknown' }
       expect(issue).to be_present
+    end
+
+    context 'with filtering' do
+      it 'sorts filtered results' do
+        get '/api/v1/invoices',
+            params: {
+              filter: { status: { eq: 'draft' } },
+              sort: { number: 'desc' },
+            }
+
+        expect(response).to have_http_status(:ok)
+        json = JSON.parse(response.body)
+        expect(json['invoices'].length).to eq(1)
+        expect(json['invoices'][0]['number']).to eq('INV-001')
+      end
+    end
+
+    context 'with pagination' do
+      it 'preserves sort order across pages' do
+        get '/api/v1/invoices',
+            params: {
+              page: { number: 1, size: 2 },
+              sort: { number: 'asc' },
+            }
+
+        expect(response).to have_http_status(:ok)
+        json = JSON.parse(response.body)
+        expect(json['invoices'].length).to eq(2)
+        numbers = json['invoices'].map { |inv| inv['number'] }
+        expect(numbers).to eq(%w[INV-001 INV-002])
+      end
     end
   end
 
