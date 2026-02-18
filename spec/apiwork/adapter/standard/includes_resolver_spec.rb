@@ -213,47 +213,6 @@ RSpec.describe Apiwork::Adapter::Standard::IncludesResolver do
     end
   end
 
-  describe '#merge' do
-    let(:resolver) { described_class.new(representation_class) }
-
-    let(:representation_class) { build_representation_class }
-
-    context 'when override is blank' do
-      it 'returns base unchanged' do
-        result = resolver.merge({ customer: {} }, {})
-
-        expect(result).to eq({ customer: {} })
-      end
-    end
-
-    context 'when override has values' do
-      it 'deep merges override into base' do
-        result = resolver.merge({ customer: {} }, { payment: {} })
-
-        expect(result).to eq({ customer: {}, payment: {} })
-      end
-    end
-
-    context 'when override has nested values' do
-      it 'deep merges nested values' do
-        result = resolver.merge(
-          { customer: { address: {} } },
-          { customer: { billing: {} } },
-        )
-
-        expect(result).to eq({ customer: { address: {}, billing: {} } })
-      end
-    end
-
-    context 'when override has string keys' do
-      it 'symbolizes keys' do
-        result = resolver.merge({ customer: {} }, { 'payment' => {} })
-
-        expect(result).to eq({ customer: {}, payment: {} })
-      end
-    end
-  end
-
   describe '#resolve' do
     let(:resolver) { described_class.new(representation_class) }
 

@@ -7,9 +7,9 @@ RSpec.describe Apiwork::Representation::Association do
     context 'with defaults' do
       it 'creates with required attributes' do
         representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
-        association = described_class.new(:comments, :has_many, representation_class)
+        association = described_class.new(:items, :has_many, representation_class)
 
-        expect(association.name).to eq(:comments)
+        expect(association.name).to eq(:items)
         expect(association.type).to eq(:has_many)
         expect(association.deprecated?).to be(false)
         expect(association.description).to be_nil
@@ -28,11 +28,11 @@ RSpec.describe Apiwork::Representation::Association do
         target_representation = Class.new(Apiwork::Representation::Base) { abstract! }
         representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
         association = described_class.new(
-          :comments,
+          :items,
           :has_many,
           representation_class,
           deprecated: true,
-          description: 'The comments',
+          description: 'The items',
           example: { id: 1 },
           filterable: true,
           include: :always,
@@ -42,10 +42,10 @@ RSpec.describe Apiwork::Representation::Association do
           writable: true,
         )
 
-        expect(association.name).to eq(:comments)
+        expect(association.name).to eq(:items)
         expect(association.type).to eq(:has_many)
         expect(association.deprecated?).to be(true)
-        expect(association.description).to eq('The comments')
+        expect(association.description).to eq('The items')
         expect(association.example).to eq({ id: 1 })
         expect(association.filterable?).to be(true)
         expect(association.include).to eq(:always)
@@ -60,14 +60,14 @@ RSpec.describe Apiwork::Representation::Association do
   describe '#collection?' do
     it 'returns true when collection' do
       representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
-      association = described_class.new(:comments, :has_many, representation_class)
+      association = described_class.new(:items, :has_many, representation_class)
 
       expect(association.collection?).to be(true)
     end
 
     it 'returns false when not collection' do
       representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
-      association = described_class.new(:author, :belongs_to, representation_class)
+      association = described_class.new(:customer, :belongs_to, representation_class)
 
       expect(association.collection?).to be(false)
     end
@@ -76,14 +76,14 @@ RSpec.describe Apiwork::Representation::Association do
   describe '#deprecated?' do
     it 'returns true when deprecated' do
       representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
-      association = described_class.new(:comments, :has_many, representation_class, deprecated: true)
+      association = described_class.new(:items, :has_many, representation_class, deprecated: true)
 
       expect(association.deprecated?).to be(true)
     end
 
     it 'returns false when not deprecated' do
       representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
-      association = described_class.new(:comments, :has_many, representation_class)
+      association = described_class.new(:items, :has_many, representation_class)
 
       expect(association.deprecated?).to be(false)
     end
@@ -92,14 +92,14 @@ RSpec.describe Apiwork::Representation::Association do
   describe '#filterable?' do
     it 'returns true when filterable' do
       representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
-      association = described_class.new(:comments, :has_many, representation_class, filterable: true)
+      association = described_class.new(:items, :has_many, representation_class, filterable: true)
 
       expect(association.filterable?).to be(true)
     end
 
     it 'returns false when not filterable' do
       representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
-      association = described_class.new(:comments, :has_many, representation_class)
+      association = described_class.new(:items, :has_many, representation_class)
 
       expect(association.filterable?).to be(false)
     end
@@ -108,14 +108,14 @@ RSpec.describe Apiwork::Representation::Association do
   describe '#nullable?' do
     it 'returns true when nullable' do
       representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
-      association = described_class.new(:comments, :has_many, representation_class, nullable: true)
+      association = described_class.new(:items, :has_many, representation_class, nullable: true)
 
       expect(association.nullable?).to be(true)
     end
 
     it 'returns false when not nullable' do
       representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
-      association = described_class.new(:comments, :has_many, representation_class, nullable: false)
+      association = described_class.new(:items, :has_many, representation_class, nullable: false)
 
       expect(association.nullable?).to be(false)
     end
@@ -126,7 +126,7 @@ RSpec.describe Apiwork::Representation::Association do
       representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
       polymorphic_representation = Class.new(Apiwork::Representation::Base) { abstract! }
       association = described_class.new(
-        :commentable,
+        :billable,
         :belongs_to,
         representation_class,
         polymorphic: [polymorphic_representation],
@@ -137,7 +137,7 @@ RSpec.describe Apiwork::Representation::Association do
 
     it 'returns false when not polymorphic' do
       representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
-      association = described_class.new(:comments, :has_many, representation_class)
+      association = described_class.new(:items, :has_many, representation_class)
 
       expect(association.polymorphic?).to be(false)
     end
@@ -148,7 +148,7 @@ RSpec.describe Apiwork::Representation::Association do
       representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
       target_representation = Class.new(Apiwork::Representation::Base) { abstract! }
       association = described_class.new(
-        :comments,
+        :items,
         :has_many,
         representation_class,
         representation: target_representation,
@@ -159,7 +159,7 @@ RSpec.describe Apiwork::Representation::Association do
 
     it 'returns nil when not set' do
       representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
-      association = described_class.new(:comments, :has_many, representation_class)
+      association = described_class.new(:items, :has_many, representation_class)
 
       expect(association.representation_class).to be_nil
     end
@@ -168,14 +168,14 @@ RSpec.describe Apiwork::Representation::Association do
   describe '#singular?' do
     it 'returns true when singular' do
       representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
-      association = described_class.new(:author, :belongs_to, representation_class)
+      association = described_class.new(:customer, :belongs_to, representation_class)
 
       expect(association.singular?).to be(true)
     end
 
     it 'returns false when not singular' do
       representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
-      association = described_class.new(:comments, :has_many, representation_class)
+      association = described_class.new(:items, :has_many, representation_class)
 
       expect(association.singular?).to be(false)
     end
@@ -184,14 +184,14 @@ RSpec.describe Apiwork::Representation::Association do
   describe '#sortable?' do
     it 'returns true when sortable' do
       representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
-      association = described_class.new(:comments, :has_many, representation_class, sortable: true)
+      association = described_class.new(:items, :has_many, representation_class, sortable: true)
 
       expect(association.sortable?).to be(true)
     end
 
     it 'returns false when not sortable' do
       representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
-      association = described_class.new(:comments, :has_many, representation_class)
+      association = described_class.new(:items, :has_many, representation_class)
 
       expect(association.sortable?).to be(false)
     end
@@ -200,14 +200,14 @@ RSpec.describe Apiwork::Representation::Association do
   describe '#writable?' do
     it 'returns true when writable' do
       representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
-      association = described_class.new(:comments, :has_many, representation_class, writable: true)
+      association = described_class.new(:items, :has_many, representation_class, writable: true)
 
       expect(association.writable?).to be(true)
     end
 
     it 'returns false when not writable' do
       representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
-      association = described_class.new(:comments, :has_many, representation_class)
+      association = described_class.new(:items, :has_many, representation_class)
 
       expect(association.writable?).to be(false)
     end
@@ -216,14 +216,14 @@ RSpec.describe Apiwork::Representation::Association do
   describe '#writable_for?' do
     it 'returns true when writable for the action' do
       representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
-      association = described_class.new(:comments, :has_many, representation_class, writable: :create)
+      association = described_class.new(:items, :has_many, representation_class, writable: :create)
 
       expect(association.writable_for?(:create)).to be(true)
     end
 
     it 'returns false when not writable for the action' do
       representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
-      association = described_class.new(:comments, :has_many, representation_class, writable: :create)
+      association = described_class.new(:items, :has_many, representation_class, writable: :create)
 
       expect(association.writable_for?(:update)).to be(false)
     end

@@ -65,7 +65,7 @@ RSpec.describe 'Adapter configuration', type: :integration do
     it 'returns adapter instance when called without block' do
       api_class = Apiwork::API.find!('/api/v1')
 
-      expect(api_class.adapter).to be_a(Apiwork::Adapter::Base)
+      expect(api_class.adapter.class.adapter_name).to eq(:standard)
     end
 
     it 'stores adapter config when called with block' do
