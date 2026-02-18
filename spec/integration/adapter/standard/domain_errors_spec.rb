@@ -12,9 +12,9 @@ RSpec.describe 'Domain errors', type: :request do
            params: { invoice: { customer_id: customer1.id, number: '' } }
 
       expect(response).to have_http_status(:unprocessable_content)
-      json = JSON.parse(response.body)
-      expect(json['layer']).to eq('domain')
-      issue = json['issues'].find { |i| i['code'] == 'required' }
+      body = response.parsed_body
+      expect(body['layer']).to eq('domain')
+      issue = body['issues'].find { |i| i['code'] == 'required' }
       expect(issue['detail']).to eq('Required')
       expect(issue['path']).to eq(%w[invoice number])
       expect(issue['pointer']).to eq('/invoice/number')
@@ -29,8 +29,8 @@ RSpec.describe 'Domain errors', type: :request do
            params: { invoice: { customer_id: customer1.id, number: 'INV-001' } }
 
       expect(response).to have_http_status(:unprocessable_content)
-      json = JSON.parse(response.body)
-      issue = json['issues'].find { |i| i['code'] == 'unique' }
+      body = response.parsed_body
+      issue = body['issues'].find { |i| i['code'] == 'unique' }
       expect(issue['detail']).to eq('Already taken')
       expect(issue['path']).to eq(%w[invoice number])
       expect(issue['meta']).to eq({})
@@ -42,8 +42,8 @@ RSpec.describe 'Domain errors', type: :request do
            params: { invoice: { customer_id: customer1.id, number: 'AB' } }
 
       expect(response).to have_http_status(:unprocessable_content)
-      json = JSON.parse(response.body)
-      issue = json['issues'].find { |i| i['code'] == 'min' }
+      body = response.parsed_body
+      issue = body['issues'].find { |i| i['code'] == 'min' }
       expect(issue['detail']).to eq('Too short')
       expect(issue['path']).to eq(%w[invoice number])
       expect(issue['meta']).to eq({ 'min' => 3 })
@@ -55,8 +55,8 @@ RSpec.describe 'Domain errors', type: :request do
            params: { invoice: { customer_id: customer1.id, number: "INV-#{'A' * 17}" } }
 
       expect(response).to have_http_status(:unprocessable_content)
-      json = JSON.parse(response.body)
-      issue = json['issues'].find { |i| i['code'] == 'max' }
+      body = response.parsed_body
+      issue = body['issues'].find { |i| i['code'] == 'max' }
       expect(issue['detail']).to eq('Too long')
       expect(issue['path']).to eq(%w[invoice number])
       expect(issue['meta']).to eq({ 'max' => 20 })
@@ -68,8 +68,8 @@ RSpec.describe 'Domain errors', type: :request do
            params: { invoice: { customer_id: customer1.id, number: 'BAD-001' } }
 
       expect(response).to have_http_status(:unprocessable_content)
-      json = JSON.parse(response.body)
-      issue = json['issues'].find { |i| i['path'] == %w[invoice] }
+      body = response.parsed_body
+      issue = body['issues'].find { |i| i['path'] == %w[invoice] }
       expect(issue['code']).to eq('invalid')
       expect(issue['detail']).to eq('Invalid')
       expect(issue['pointer']).to eq('/invoice')
@@ -81,8 +81,8 @@ RSpec.describe 'Domain errors', type: :request do
            params: { invoice: { customer_id: customer1.id, number: 'BAD-001' } }
 
       expect(response).to have_http_status(:unprocessable_content)
-      json = JSON.parse(response.body)
-      issue = json['issues'].find { |i| i['code'] == 'billing_format' }
+      body = response.parsed_body
+      issue = body['issues'].find { |i| i['code'] == 'billing_format' }
       expect(issue['detail']).to eq('Billing format')
       expect(issue['path']).to eq(%w[invoice number])
     end
@@ -104,8 +104,8 @@ RSpec.describe 'Domain errors', type: :request do
            }
 
       expect(response).to have_http_status(:unprocessable_content)
-      json = JSON.parse(response.body)
-      issue = json['issues'].find { |i| i['code'] == 'required' }
+      body = response.parsed_body
+      issue = body['issues'].find { |i| i['code'] == 'required' }
       expect(issue['path']).to eq(%w[invoice items 1 description])
       expect(issue['pointer']).to eq('/invoice/items/1/description')
     end
@@ -124,8 +124,8 @@ RSpec.describe 'Domain errors', type: :request do
            }
 
       expect(response).to have_http_status(:unprocessable_content)
-      json = JSON.parse(response.body)
-      issue = json['issues'].find { |i| i['code'] == 'gt' }
+      body = response.parsed_body
+      issue = body['issues'].find { |i| i['code'] == 'gt' }
       expect(issue['detail']).to eq('Too small')
       expect(issue['path']).to eq(%w[invoice items 0 quantity])
       expect(issue['meta']).to eq({ 'gt' => 0 })
@@ -145,8 +145,8 @@ RSpec.describe 'Domain errors', type: :request do
            }
 
       expect(response).to have_http_status(:unprocessable_content)
-      json = JSON.parse(response.body)
-      issue = json['issues'].find { |i| i['code'] == 'lt' }
+      body = response.parsed_body
+      issue = body['issues'].find { |i| i['code'] == 'lt' }
       expect(issue['detail']).to eq('Too large')
       expect(issue['path']).to eq(%w[invoice items 0 quantity])
       expect(issue['meta']).to eq({ 'lt' => 10_000 })
@@ -166,8 +166,8 @@ RSpec.describe 'Domain errors', type: :request do
            }
 
       expect(response).to have_http_status(:unprocessable_content)
-      json = JSON.parse(response.body)
-      issue = json['issues'].find { |i| i['code'] == 'gte' }
+      body = response.parsed_body
+      issue = body['issues'].find { |i| i['code'] == 'gte' }
       expect(issue['detail']).to eq('Too small')
       expect(issue['path']).to eq(%w[invoice items 0 unit_price])
       expect(issue['meta']).to eq({ 'gte' => 0 })
@@ -187,8 +187,8 @@ RSpec.describe 'Domain errors', type: :request do
            }
 
       expect(response).to have_http_status(:unprocessable_content)
-      json = JSON.parse(response.body)
-      issue = json['issues'].find { |i| i['code'] == 'unique' }
+      body = response.parsed_body
+      issue = body['issues'].find { |i| i['code'] == 'unique' }
       expect(issue['detail']).to eq('Already taken')
       expect(issue['path']).to eq(%w[customer name])
     end

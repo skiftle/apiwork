@@ -15,9 +15,9 @@ RSpec.describe 'Numeric filtering', type: :request do
         get '/api/v1/items', params: { filter: { quantity: { eq: 10 } } }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['items'].length).to eq(1)
-        expect(json['items'][0]['description']).to eq('Consulting hours')
+        body = response.parsed_body
+        expect(body['items'].length).to eq(1)
+        expect(body['items'][0]['description']).to eq('Consulting hours')
       end
     end
 
@@ -26,9 +26,9 @@ RSpec.describe 'Numeric filtering', type: :request do
         get '/api/v1/items', params: { filter: { quantity: { gt: 5 } } }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['items'].length).to eq(1)
-        expect(json['items'][0]['description']).to eq('Consulting hours')
+        body = response.parsed_body
+        expect(body['items'].length).to eq(1)
+        expect(body['items'][0]['description']).to eq('Consulting hours')
       end
     end
 
@@ -37,9 +37,9 @@ RSpec.describe 'Numeric filtering', type: :request do
         get '/api/v1/items', params: { filter: { quantity: { gte: 5 } } }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['items'].length).to eq(2)
-        descriptions = json['items'].map { |item| item['description'] }
+        body = response.parsed_body
+        expect(body['items'].length).to eq(2)
+        descriptions = body['items'].map { |item| item['description'] }
         expect(descriptions).to contain_exactly('Consulting hours', 'Support contract')
       end
     end
@@ -49,9 +49,9 @@ RSpec.describe 'Numeric filtering', type: :request do
         get '/api/v1/items', params: { filter: { unit_price: { lt: 200.00 } } }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['items'].length).to eq(1)
-        expect(json['items'][0]['description']).to eq('Consulting hours')
+        body = response.parsed_body
+        expect(body['items'].length).to eq(1)
+        expect(body['items'][0]['description']).to eq('Consulting hours')
       end
     end
 
@@ -60,9 +60,9 @@ RSpec.describe 'Numeric filtering', type: :request do
         get '/api/v1/items', params: { filter: { unit_price: { lte: 200.00 } } }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['items'].length).to eq(2)
-        descriptions = json['items'].map { |item| item['description'] }
+        body = response.parsed_body
+        expect(body['items'].length).to eq(2)
+        descriptions = body['items'].map { |item| item['description'] }
         expect(descriptions).to contain_exactly('Consulting hours', 'Support contract')
       end
     end
@@ -72,9 +72,9 @@ RSpec.describe 'Numeric filtering', type: :request do
         get '/api/v1/items', params: { filter: { unit_price: { between: { from: 100.00, to: 250.00 } } } }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['items'].length).to eq(2)
-        descriptions = json['items'].map { |item| item['description'] }
+        body = response.parsed_body
+        expect(body['items'].length).to eq(2)
+        descriptions = body['items'].map { |item| item['description'] }
         expect(descriptions).to contain_exactly('Consulting hours', 'Support contract')
       end
     end
@@ -84,9 +84,9 @@ RSpec.describe 'Numeric filtering', type: :request do
         get '/api/v1/items', params: { filter: { quantity: { in: [1, 10] } } }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['items'].length).to eq(2)
-        descriptions = json['items'].map { |item| item['description'] }
+        body = response.parsed_body
+        expect(body['items'].length).to eq(2)
+        descriptions = body['items'].map { |item| item['description'] }
         expect(descriptions).to contain_exactly('Consulting hours', 'Software license')
       end
     end
@@ -98,9 +98,9 @@ RSpec.describe 'Numeric filtering', type: :request do
         get '/api/v1/items', params: { filter: { unit_price: { null: true } } }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['items'].length).to eq(1)
-        expect(json['items'][0]['description']).to eq('Free trial')
+        body = response.parsed_body
+        expect(body['items'].length).to eq(1)
+        expect(body['items'][0]['description']).to eq('Free trial')
       end
     end
   end

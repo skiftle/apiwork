@@ -144,7 +144,7 @@ class RequestRunner
   end
 
   def build_response_data
-    body = response.body.present? ? JSON.parse(response.body) : nil
+    body = response.body.present? ? response.parsed_body : nil
 
     {
       body:,

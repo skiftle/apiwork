@@ -33,9 +33,9 @@ RSpec.describe 'Logical filtering', type: :request do
             }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['invoices'].length).to eq(1)
-        expect(json['invoices'][0]['number']).to eq('INV-003')
+        body = response.parsed_body
+        expect(body['invoices'].length).to eq(1)
+        expect(body['invoices'][0]['number']).to eq('INV-003')
       end
     end
 
@@ -44,9 +44,9 @@ RSpec.describe 'Logical filtering', type: :request do
         get '/api/v1/invoices?filter[OR][0][number][eq]=INV-001&filter[OR][1][number][eq]=INV-003'
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['invoices'].length).to eq(2)
-        numbers = json['invoices'].map { |inv| inv['number'] }
+        body = response.parsed_body
+        expect(body['invoices'].length).to eq(2)
+        numbers = body['invoices'].map { |inv| inv['number'] }
         expect(numbers).to contain_exactly('INV-001', 'INV-003')
       end
     end
@@ -56,9 +56,9 @@ RSpec.describe 'Logical filtering', type: :request do
         get '/api/v1/invoices', params: { filter: { NOT: { number: { eq: 'INV-001' } } } }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['invoices'].length).to eq(2)
-        numbers = json['invoices'].map { |inv| inv['number'] }
+        body = response.parsed_body
+        expect(body['invoices'].length).to eq(2)
+        numbers = body['invoices'].map { |inv| inv['number'] }
         expect(numbers).to contain_exactly('INV-002', 'INV-003')
       end
     end
@@ -79,9 +79,9 @@ RSpec.describe 'Logical filtering', type: :request do
             }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['invoices'].length).to eq(2)
-        numbers = json['invoices'].map { |inv| inv['number'] }
+        body = response.parsed_body
+        expect(body['invoices'].length).to eq(2)
+        numbers = body['invoices'].map { |inv| inv['number'] }
         expect(numbers).to contain_exactly('INV-001', 'INV-003')
       end
     end

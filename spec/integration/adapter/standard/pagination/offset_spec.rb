@@ -21,65 +21,65 @@ RSpec.describe 'Offset pagination', type: :request do
       get '/api/v1/invoices'
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      expect(json['invoices'].length).to eq(20)
-      expect(json['pagination']['current']).to eq(1)
+      body = response.parsed_body
+      expect(body['invoices'].length).to eq(20)
+      expect(body['pagination']['current']).to eq(1)
     end
 
     it 'returns specific page' do
       get '/api/v1/invoices', params: { page: { number: 2, size: 10 } }
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      expect(json['invoices'].length).to eq(10)
-      expect(json['pagination']['current']).to eq(2)
+      body = response.parsed_body
+      expect(body['invoices'].length).to eq(10)
+      expect(body['pagination']['current']).to eq(2)
     end
 
     it 'returns pagination metadata' do
       get '/api/v1/invoices', params: { page: { number: 1, size: 10 } }
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      expect(json['pagination']['current']).to eq(1)
-      expect(json['pagination']['next']).to eq(2)
-      expect(json['pagination']['prev']).to be_nil
-      expect(json['pagination']['total']).to eq(3)
-      expect(json['pagination']['items']).to eq(25)
+      body = response.parsed_body
+      expect(body['pagination']['current']).to eq(1)
+      expect(body['pagination']['next']).to eq(2)
+      expect(body['pagination']['prev']).to be_nil
+      expect(body['pagination']['total']).to eq(3)
+      expect(body['pagination']['items']).to eq(25)
     end
 
     it 'returns prev as null on first page' do
       get '/api/v1/invoices', params: { page: { number: 1, size: 10 } }
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      expect(json['pagination']['prev']).to be_nil
+      body = response.parsed_body
+      expect(body['pagination']['prev']).to be_nil
     end
 
     it 'returns next as null on last page' do
       get '/api/v1/invoices', params: { page: { number: 3, size: 10 } }
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      expect(json['pagination']['next']).to be_nil
-      expect(json['invoices'].length).to eq(5)
+      body = response.parsed_body
+      expect(body['pagination']['next']).to be_nil
+      expect(body['invoices'].length).to eq(5)
     end
 
     it 'returns empty array when out of range' do
       get '/api/v1/invoices', params: { page: { number: 100, size: 10 } }
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      expect(json['invoices']).to eq([])
-      expect(json['pagination']['total']).to eq(3)
-      expect(json['pagination']['items']).to eq(25)
+      body = response.parsed_body
+      expect(body['invoices']).to eq([])
+      expect(body['pagination']['total']).to eq(3)
+      expect(body['pagination']['items']).to eq(25)
     end
 
     it 'returns error when page size exceeds max' do
       get '/api/v1/invoices', params: { page: { number: 1, size: 10_000 } }
 
       expect(response).to have_http_status(:bad_request)
-      json = JSON.parse(response.body)
-      issue = json['issues'].find { |i| i['code'] == 'number_too_large' }
+      body = response.parsed_body
+      issue = body['issues'].find { |i| i['code'] == 'number_too_large' }
       expect(issue['code']).to eq('number_too_large')
     end
 
@@ -87,8 +87,8 @@ RSpec.describe 'Offset pagination', type: :request do
       get '/api/v1/invoices', params: { page: { number: -1, size: 10 } }
 
       expect(response).to have_http_status(:bad_request)
-      json = JSON.parse(response.body)
-      issue = json['issues'].find { |i| i['code'] == 'number_too_small' }
+      body = response.parsed_body
+      issue = body['issues'].find { |i| i['code'] == 'number_too_small' }
       expect(issue['code']).to eq('number_too_small')
     end
 
@@ -101,12 +101,12 @@ RSpec.describe 'Offset pagination', type: :request do
             }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['invoices'].length).to eq(5)
-        json['invoices'].each do |invoice|
+        body = response.parsed_body
+        expect(body['invoices'].length).to eq(5)
+        body['invoices'].each do |invoice|
           expect(invoice['status']).to eq('draft')
         end
-        expect(json['pagination']['items']).to eq(13)
+        expect(body['pagination']['items']).to eq(13)
       end
     end
   end

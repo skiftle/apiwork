@@ -39,9 +39,9 @@ RSpec.describe 'Datetime filtering', type: :request do
         get '/api/v1/invoices', params: { filter: { created_at: { eq: '2026-03-15T14:30:00Z' } } }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['invoices'].length).to eq(1)
-        expect(json['invoices'][0]['number']).to eq('INV-002')
+        body = response.parsed_body
+        expect(body['invoices'].length).to eq(1)
+        expect(body['invoices'][0]['number']).to eq('INV-002')
       end
     end
 
@@ -50,9 +50,9 @@ RSpec.describe 'Datetime filtering', type: :request do
         get '/api/v1/invoices', params: { filter: { created_at: { gt: '2026-03-15T14:30:00Z' } } }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['invoices'].length).to eq(1)
-        expect(json['invoices'][0]['number']).to eq('INV-003')
+        body = response.parsed_body
+        expect(body['invoices'].length).to eq(1)
+        expect(body['invoices'][0]['number']).to eq('INV-003')
       end
     end
 
@@ -61,9 +61,9 @@ RSpec.describe 'Datetime filtering', type: :request do
         get '/api/v1/invoices', params: { filter: { created_at: { gte: '2026-03-15T14:30:00Z' } } }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['invoices'].length).to eq(2)
-        numbers = json['invoices'].map { |inv| inv['number'] }
+        body = response.parsed_body
+        expect(body['invoices'].length).to eq(2)
+        numbers = body['invoices'].map { |inv| inv['number'] }
         expect(numbers).to contain_exactly('INV-002', 'INV-003')
       end
     end
@@ -73,9 +73,9 @@ RSpec.describe 'Datetime filtering', type: :request do
         get '/api/v1/invoices', params: { filter: { created_at: { lt: '2026-03-15T14:30:00Z' } } }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['invoices'].length).to eq(1)
-        expect(json['invoices'][0]['number']).to eq('INV-001')
+        body = response.parsed_body
+        expect(body['invoices'].length).to eq(1)
+        expect(body['invoices'][0]['number']).to eq('INV-001')
       end
     end
 
@@ -84,9 +84,9 @@ RSpec.describe 'Datetime filtering', type: :request do
         get '/api/v1/invoices', params: { filter: { created_at: { lte: '2026-03-15T14:30:00Z' } } }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['invoices'].length).to eq(2)
-        numbers = json['invoices'].map { |inv| inv['number'] }
+        body = response.parsed_body
+        expect(body['invoices'].length).to eq(2)
+        numbers = body['invoices'].map { |inv| inv['number'] }
         expect(numbers).to contain_exactly('INV-001', 'INV-002')
       end
     end
@@ -97,9 +97,9 @@ RSpec.describe 'Datetime filtering', type: :request do
             params: { filter: { created_at: { between: { from: '2026-03-01T00:00:00Z', to: '2026-03-15T23:59:59Z' } } } }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['invoices'].length).to eq(2)
-        numbers = json['invoices'].map { |inv| inv['number'] }
+        body = response.parsed_body
+        expect(body['invoices'].length).to eq(2)
+        numbers = body['invoices'].map { |inv| inv['number'] }
         expect(numbers).to contain_exactly('INV-001', 'INV-002')
       end
     end
@@ -110,9 +110,9 @@ RSpec.describe 'Datetime filtering', type: :request do
             params: { filter: { created_at: { in: %w[2026-03-01T10:00:00Z 2026-03-31T09:00:00Z] } } }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['invoices'].length).to eq(2)
-        numbers = json['invoices'].map { |inv| inv['number'] }
+        body = response.parsed_body
+        expect(body['invoices'].length).to eq(2)
+        numbers = body['invoices'].map { |inv| inv['number'] }
         expect(numbers).to contain_exactly('INV-001', 'INV-003')
       end
     end

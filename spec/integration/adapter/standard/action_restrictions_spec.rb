@@ -12,16 +12,16 @@ RSpec.describe 'Action restrictions', type: :request do
       get '/api/v1/restricted_invoices'
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      expect(json).to have_key('invoices')
+      body = response.parsed_body
+      expect(body).to have_key('invoices')
     end
 
     it 'returns the invoice on show' do
       get "/api/v1/restricted_invoices/#{invoice1.id}"
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      expect(json['invoice']['number']).to eq('INV-001')
+      body = response.parsed_body
+      expect(body['invoice']['number']).to eq('INV-001')
     end
 
     it 'returns 404 on create' do
@@ -58,16 +58,16 @@ RSpec.describe 'Action restrictions', type: :request do
       get '/api/v1/safe_items'
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      expect(json).to have_key('items')
+      body = response.parsed_body
+      expect(body).to have_key('items')
     end
 
     it 'returns the item on show' do
       get "/api/v1/safe_items/#{item1.id}"
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      expect(json['item']['description']).to eq('Consulting hours')
+      body = response.parsed_body
+      expect(body['item']['description']).to eq('Consulting hours')
     end
 
     it 'creates the item' do

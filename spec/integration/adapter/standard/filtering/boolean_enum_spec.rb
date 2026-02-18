@@ -27,9 +27,9 @@ RSpec.describe 'Boolean and enum filtering', type: :request do
         get '/api/v1/invoices', params: { filter: { sent: { eq: true } } }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['invoices'].length).to eq(2)
-        numbers = json['invoices'].map { |inv| inv['number'] }
+        body = response.parsed_body
+        expect(body['invoices'].length).to eq(2)
+        numbers = body['invoices'].map { |inv| inv['number'] }
         expect(numbers).to contain_exactly('INV-001', 'INV-003')
       end
     end
@@ -39,9 +39,9 @@ RSpec.describe 'Boolean and enum filtering', type: :request do
         get '/api/v1/invoices', params: { filter: { sent: { eq: false } } }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['invoices'].length).to eq(1)
-        expect(json['invoices'][0]['number']).to eq('INV-002')
+        body = response.parsed_body
+        expect(body['invoices'].length).to eq(1)
+        expect(body['invoices'][0]['number']).to eq('INV-002')
       end
     end
 
@@ -52,9 +52,9 @@ RSpec.describe 'Boolean and enum filtering', type: :request do
         get '/api/v1/invoices', params: { filter: { sent: { null: true } } }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['invoices'].length).to eq(1)
-        expect(json['invoices'][0]['number']).to eq('INV-004')
+        body = response.parsed_body
+        expect(body['invoices'].length).to eq(1)
+        expect(body['invoices'][0]['number']).to eq('INV-004')
       end
     end
 
@@ -63,9 +63,9 @@ RSpec.describe 'Boolean and enum filtering', type: :request do
         get '/api/v1/invoices', params: { filter: { status: { eq: 'sent' } } }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['invoices'].length).to eq(1)
-        expect(json['invoices'][0]['number']).to eq('INV-002')
+        body = response.parsed_body
+        expect(body['invoices'].length).to eq(1)
+        expect(body['invoices'][0]['number']).to eq('INV-002')
       end
     end
 
@@ -74,9 +74,9 @@ RSpec.describe 'Boolean and enum filtering', type: :request do
         get '/api/v1/invoices', params: { filter: { status: { in: %w[draft paid] } } }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['invoices'].length).to eq(2)
-        numbers = json['invoices'].map { |inv| inv['number'] }
+        body = response.parsed_body
+        expect(body['invoices'].length).to eq(2)
+        numbers = body['invoices'].map { |inv| inv['number'] }
         expect(numbers).to contain_exactly('INV-001', 'INV-003')
       end
     end
@@ -86,8 +86,8 @@ RSpec.describe 'Boolean and enum filtering', type: :request do
         get '/api/v1/invoices', params: { filter: { status: { eq: 'nonexistent' } } }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['invoices']).to eq([])
+        body = response.parsed_body
+        expect(body['invoices']).to eq([])
       end
     end
   end

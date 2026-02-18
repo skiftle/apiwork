@@ -15,10 +15,10 @@ RSpec.describe 'Singular resource', type: :request do
       get '/api/v1/profile'
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      expect(json['profile']['name']).to eq('Admin')
-      expect(json['profile']['bio']).to eq('Billing administrator')
-      expect(json['profile']['timezone']).to eq('Europe/Stockholm')
+      body = response.parsed_body
+      expect(body['profile']['name']).to eq('Admin')
+      expect(body['profile']['bio']).to eq('Billing administrator')
+      expect(body['profile']['timezone']).to eq('Europe/Stockholm')
     end
 
     it 'returns 404 when profile does not exist' do
@@ -40,14 +40,14 @@ RSpec.describe 'Singular resource', type: :request do
       get '/api/v1/profile'
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      expect(json['profile']['id']).to eq(profile.id)
-      expect(json['profile']['name']).to eq('Admin')
-      expect(json['profile']['email']).to eq('admin@billing.test')
-      expect(json['profile']['bio']).to eq('Billing administrator')
-      expect(json['profile']['timezone']).to eq('Europe/Stockholm')
-      expect(json['profile']['external_id']).to eq('550e8400-e29b-41d4-a716-446655440000')
-      expect(json['profile']['balance']).to eq('150.75')
+      body = response.parsed_body
+      expect(body['profile']['id']).to eq(profile.id)
+      expect(body['profile']['name']).to eq('Admin')
+      expect(body['profile']['email']).to eq('admin@billing.test')
+      expect(body['profile']['bio']).to eq('Billing administrator')
+      expect(body['profile']['timezone']).to eq('Europe/Stockholm')
+      expect(body['profile']['external_id']).to eq('550e8400-e29b-41d4-a716-446655440000')
+      expect(body['profile']['balance']).to eq('150.75')
     end
   end
 
@@ -65,9 +65,9 @@ RSpec.describe 'Singular resource', type: :request do
            }
 
       expect(response).to have_http_status(:created)
-      json = JSON.parse(response.body)
-      expect(json['profile']['name']).to eq('Admin')
-      expect(json['profile']['timezone']).to eq('Europe/Stockholm')
+      body = response.parsed_body
+      expect(body['profile']['name']).to eq('Admin')
+      expect(body['profile']['timezone']).to eq('Europe/Stockholm')
     end
   end
 
@@ -87,8 +87,8 @@ RSpec.describe 'Singular resource', type: :request do
             params: { profile: { bio: 'Updated bio' } }
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      expect(json['profile']['bio']).to eq('Updated bio')
+      body = response.parsed_body
+      expect(body['profile']['bio']).to eq('Updated bio')
     end
   end
 

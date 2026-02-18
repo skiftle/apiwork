@@ -17,8 +17,8 @@ RSpec.describe 'STI', type: :request do
            }
 
       expect(response).to have_http_status(:created)
-      json = JSON.parse(response.body)
-      expect(json['customer']['type']).to eq('person')
+      body = response.parsed_body
+      expect(body['customer']['type']).to eq('person')
       expect(PersonCustomer.last.name).to eq('Anna Svensson')
     end
 
@@ -36,8 +36,8 @@ RSpec.describe 'STI', type: :request do
            }
 
       expect(response).to have_http_status(:created)
-      json = JSON.parse(response.body)
-      expect(json['customer']['type']).to eq('company')
+      body = response.parsed_body
+      expect(body['customer']['type']).to eq('company')
       expect(CompanyCustomer.last.name).to eq('Acme Corp')
     end
   end
@@ -53,8 +53,8 @@ RSpec.describe 'STI', type: :request do
             params: { customer: { name: 'Updated Person' } }
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      expect(json['customer']['type']).to eq('person')
+      body = response.parsed_body
+      expect(body['customer']['type']).to eq('person')
       customer1.reload
       expect(customer1.type).to eq('PersonCustomer')
       expect(customer1.name).to eq('Updated Person')
@@ -73,9 +73,9 @@ RSpec.describe 'STI', type: :request do
             params: { customer: { industry: 'Healthcare' } }
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      expect(json['customer']['industry']).to eq('Healthcare')
-      expect(json['customer']['type']).to eq('company')
+      body = response.parsed_body
+      expect(body['customer']['industry']).to eq('Healthcare')
+      expect(body['customer']['type']).to eq('company')
     end
   end
 
@@ -96,8 +96,8 @@ RSpec.describe 'STI', type: :request do
       get '/api/v1/customers'
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      types = json['customers'].map { |c| c['type'] }
+      body = response.parsed_body
+      types = body['customers'].map { |c| c['type'] }
       expect(types).to contain_exactly('person', 'company')
     end
   end

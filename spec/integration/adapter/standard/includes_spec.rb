@@ -19,8 +19,8 @@ RSpec.describe 'Includes', type: :request do
         get '/api/v1/invoices'
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['invoices'].first.keys).not_to include('items')
+        body = response.parsed_body
+        expect(body['invoices'].first.keys).not_to include('items')
       end
     end
 
@@ -29,8 +29,8 @@ RSpec.describe 'Includes', type: :request do
         get '/api/v1/invoices', params: { include: { items: true } }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        first_invoice = json['invoices'].find { |inv| inv['number'] == 'INV-001' }
+        body = response.parsed_body
+        first_invoice = body['invoices'].find { |inv| inv['number'] == 'INV-001' }
         expect(first_invoice['items'].length).to eq(2)
       end
 
@@ -38,8 +38,8 @@ RSpec.describe 'Includes', type: :request do
         get '/api/v1/invoices', params: { include: { attachments: true, items: true } }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        first_invoice = json['invoices'].find { |inv| inv['number'] == 'INV-001' }
+        body = response.parsed_body
+        first_invoice = body['invoices'].find { |inv| inv['number'] == 'INV-001' }
         expect(first_invoice['items'].length).to eq(2)
         expect(first_invoice['attachments'].length).to eq(2)
       end
@@ -48,8 +48,8 @@ RSpec.describe 'Includes', type: :request do
         get '/api/v1/invoices', params: { include: { items: { adjustments: true } } }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        first_invoice = json['invoices'].find { |inv| inv['number'] == 'INV-001' }
+        body = response.parsed_body
+        first_invoice = body['invoices'].find { |inv| inv['number'] == 'INV-001' }
         expect(first_invoice['items'].length).to eq(2)
         first_item = first_invoice['items'].find { |item| item['description'] == 'Consulting hours' }
         expect(first_item['adjustments'].length).to eq(1)
@@ -61,8 +61,8 @@ RSpec.describe 'Includes', type: :request do
         get '/api/v1/invoices', params: { include: { nonexistent: true } }
 
         expect(response).to have_http_status(:bad_request)
-        json = JSON.parse(response.body)
-        issue = json['issues'].find { |i| i['code'] == 'field_unknown' }
+        body = response.parsed_body
+        issue = body['issues'].find { |i| i['code'] == 'field_unknown' }
         expect(issue['code']).to eq('field_unknown')
       end
     end
@@ -73,16 +73,16 @@ RSpec.describe 'Includes', type: :request do
       get "/api/v1/invoices/#{invoice1.id}", params: { include: { items: true } }
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      expect(json['invoice']['items'].length).to eq(2)
+      body = response.parsed_body
+      expect(body['invoice']['items'].length).to eq(2)
     end
 
     it 'omits optional association on show when not requested' do
       get "/api/v1/invoices/#{invoice1.id}"
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      expect(json['invoice'].keys).not_to include('items')
+      body = response.parsed_body
+      expect(body['invoice'].keys).not_to include('items')
     end
   end
 
@@ -98,9 +98,9 @@ RSpec.describe 'Includes', type: :request do
            }.to_json
 
       expect(response).to have_http_status(:created)
-      json = JSON.parse(response.body)
-      expect(json['invoice']).to have_key('items')
-      expect(json['invoice']['items']).to eq([])
+      body = response.parsed_body
+      expect(body['invoice']).to have_key('items')
+      expect(body['invoice']['items']).to eq([])
     end
   end
 
@@ -111,9 +111,9 @@ RSpec.describe 'Includes', type: :request do
             params: { invoice: { number: 'INV-UPDATED' } }.to_json
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      expect(json['invoice']['number']).to eq('INV-UPDATED')
-      expect(json['invoice']['items'].length).to eq(2)
+      body = response.parsed_body
+      expect(body['invoice']['number']).to eq('INV-UPDATED')
+      expect(body['invoice']['items'].length).to eq(2)
     end
 
     it 'omits items when not requested on update' do
@@ -122,9 +122,9 @@ RSpec.describe 'Includes', type: :request do
             params: { invoice: { number: 'INV-CHANGED' } }
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      expect(json['invoice']['number']).to eq('INV-CHANGED')
-      expect(json['invoice'].keys).not_to include('items')
+      body = response.parsed_body
+      expect(body['invoice']['number']).to eq('INV-CHANGED')
+      expect(body['invoice'].keys).not_to include('items')
     end
   end
 
@@ -137,9 +137,9 @@ RSpec.describe 'Includes', type: :request do
           }
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      expect(json['invoices'].length).to eq(1)
-      expect(json['invoices'][0]['items'].length).to eq(2)
+      body = response.parsed_body
+      expect(body['invoices'].length).to eq(1)
+      expect(body['invoices'][0]['items'].length).to eq(2)
     end
 
     it 'includes items combined with sorting' do
@@ -150,9 +150,9 @@ RSpec.describe 'Includes', type: :request do
           }
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      expect(json['invoices'][0]['number']).to eq('INV-002')
-      expect(json['invoices'][0]['items'].length).to eq(1)
+      body = response.parsed_body
+      expect(body['invoices'][0]['number']).to eq('INV-002')
+      expect(body['invoices'][0]['items'].length).to eq(1)
     end
   end
 end

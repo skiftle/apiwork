@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 Apiwork::API.define '/api/v1' do
-  export :openapi
-  export :zod
-  export :typescript
+  key_format :keep
 
-  raises :bad_request, :internal_server_error
+  export :openapi
+  export :typescript
+  export :zod
 
   info do
     title 'Billing API'
@@ -35,7 +35,7 @@ Apiwork::API.define '/api/v1' do
     end
   end
 
-  key_format :keep
+  raises :bad_request, :internal_server_error
 
   adapter do
     pagination do

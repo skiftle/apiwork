@@ -17,8 +17,8 @@ RSpec.describe 'Sorting', type: :request do
       get '/api/v1/invoices', params: { sort: { number: 'asc' } }
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      numbers = json['invoices'].map { |inv| inv['number'] }
+      body = response.parsed_body
+      numbers = body['invoices'].map { |inv| inv['number'] }
       expect(numbers).to eq(%w[INV-001 INV-002 INV-003])
     end
 
@@ -26,8 +26,8 @@ RSpec.describe 'Sorting', type: :request do
       get '/api/v1/invoices', params: { sort: { number: 'desc' } }
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      numbers = json['invoices'].map { |inv| inv['number'] }
+      body = response.parsed_body
+      numbers = body['invoices'].map { |inv| inv['number'] }
       expect(numbers).to eq(%w[INV-003 INV-002 INV-001])
     end
 
@@ -35,16 +35,16 @@ RSpec.describe 'Sorting', type: :request do
       get '/api/v1/invoices', params: { sort: { number: 'desc', status: 'asc' } }
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      expect(json['invoices'].length).to eq(3)
+      body = response.parsed_body
+      expect(body['invoices'].length).to eq(3)
     end
 
     it 'sorts by created_at descending' do
       get '/api/v1/invoices', params: { sort: { created_at: 'desc' } }
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      numbers = json['invoices'].map { |inv| inv['number'] }
+      body = response.parsed_body
+      numbers = body['invoices'].map { |inv| inv['number'] }
       expect(numbers).to eq(%w[INV-003 INV-002 INV-001])
     end
 
@@ -52,8 +52,8 @@ RSpec.describe 'Sorting', type: :request do
       get '/api/v1/invoices'
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      ids = json['invoices'].map { |inv| inv['id'] }
+      body = response.parsed_body
+      ids = body['invoices'].map { |inv| inv['id'] }
       expect(ids).to eq(ids.sort)
     end
 
@@ -61,8 +61,8 @@ RSpec.describe 'Sorting', type: :request do
       get '/api/v1/invoices', params: { sort: { nonexistent: 'asc' } }
 
       expect(response).to have_http_status(:bad_request)
-      json = JSON.parse(response.body)
-      issue = json['issues'].find { |i| i['code'] == 'field_unknown' }
+      body = response.parsed_body
+      issue = body['issues'].find { |i| i['code'] == 'field_unknown' }
       expect(issue['code']).to eq('field_unknown')
     end
 
@@ -75,9 +75,9 @@ RSpec.describe 'Sorting', type: :request do
             }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['invoices'].length).to eq(1)
-        expect(json['invoices'][0]['number']).to eq('INV-001')
+        body = response.parsed_body
+        expect(body['invoices'].length).to eq(1)
+        expect(body['invoices'][0]['number']).to eq('INV-001')
       end
     end
 
@@ -90,9 +90,9 @@ RSpec.describe 'Sorting', type: :request do
             }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['invoices'].length).to eq(2)
-        numbers = json['invoices'].map { |inv| inv['number'] }
+        body = response.parsed_body
+        expect(body['invoices'].length).to eq(2)
+        numbers = body['invoices'].map { |inv| inv['number'] }
         expect(numbers).to eq(%w[INV-001 INV-002])
       end
     end
@@ -103,8 +103,8 @@ RSpec.describe 'Sorting', type: :request do
       get '/api/v1/items', params: { sort: { invoice: { number: 'asc' } } }
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      descriptions = json['items'].map { |item| item['description'] }
+      body = response.parsed_body
+      descriptions = body['items'].map { |item| item['description'] }
       expect(descriptions).to eq(['Consulting hours', 'Software license', 'Support contract'])
     end
   end

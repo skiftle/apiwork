@@ -16,9 +16,9 @@ RSpec.describe 'Temporal filtering', type: :request do
         get '/api/v1/invoices', params: { filter: { due_on: { eq: '2026-03-01' } } }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['invoices'].length).to eq(1)
-        expect(json['invoices'][0]['number']).to eq('INV-001')
+        body = response.parsed_body
+        expect(body['invoices'].length).to eq(1)
+        expect(body['invoices'][0]['number']).to eq('INV-001')
       end
     end
 
@@ -27,9 +27,9 @@ RSpec.describe 'Temporal filtering', type: :request do
         get '/api/v1/invoices', params: { filter: { due_on: { gt: '2026-03-15' } } }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['invoices'].length).to eq(1)
-        expect(json['invoices'][0]['number']).to eq('INV-003')
+        body = response.parsed_body
+        expect(body['invoices'].length).to eq(1)
+        expect(body['invoices'][0]['number']).to eq('INV-003')
       end
     end
 
@@ -38,9 +38,9 @@ RSpec.describe 'Temporal filtering', type: :request do
         get '/api/v1/invoices', params: { filter: { due_on: { gte: '2026-03-15' } } }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['invoices'].length).to eq(2)
-        numbers = json['invoices'].map { |inv| inv['number'] }
+        body = response.parsed_body
+        expect(body['invoices'].length).to eq(2)
+        numbers = body['invoices'].map { |inv| inv['number'] }
         expect(numbers).to contain_exactly('INV-002', 'INV-003')
       end
     end
@@ -50,9 +50,9 @@ RSpec.describe 'Temporal filtering', type: :request do
         get '/api/v1/invoices', params: { filter: { due_on: { lt: '2026-03-15' } } }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['invoices'].length).to eq(1)
-        expect(json['invoices'][0]['number']).to eq('INV-001')
+        body = response.parsed_body
+        expect(body['invoices'].length).to eq(1)
+        expect(body['invoices'][0]['number']).to eq('INV-001')
       end
     end
 
@@ -61,9 +61,9 @@ RSpec.describe 'Temporal filtering', type: :request do
         get '/api/v1/invoices', params: { filter: { due_on: { lte: '2026-03-15' } } }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['invoices'].length).to eq(2)
-        numbers = json['invoices'].map { |inv| inv['number'] }
+        body = response.parsed_body
+        expect(body['invoices'].length).to eq(2)
+        numbers = body['invoices'].map { |inv| inv['number'] }
         expect(numbers).to contain_exactly('INV-001', 'INV-002')
       end
     end
@@ -73,9 +73,9 @@ RSpec.describe 'Temporal filtering', type: :request do
         get '/api/v1/invoices', params: { filter: { due_on: { between: { from: '2026-03-01', to: '2026-03-15' } } } }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['invoices'].length).to eq(2)
-        numbers = json['invoices'].map { |inv| inv['number'] }
+        body = response.parsed_body
+        expect(body['invoices'].length).to eq(2)
+        numbers = body['invoices'].map { |inv| inv['number'] }
         expect(numbers).to contain_exactly('INV-001', 'INV-002')
       end
     end
@@ -85,9 +85,9 @@ RSpec.describe 'Temporal filtering', type: :request do
         get '/api/v1/invoices', params: { filter: { due_on: { in: %w[2026-03-01 2026-03-31] } } }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['invoices'].length).to eq(2)
-        numbers = json['invoices'].map { |inv| inv['number'] }
+        body = response.parsed_body
+        expect(body['invoices'].length).to eq(2)
+        numbers = body['invoices'].map { |inv| inv['number'] }
         expect(numbers).to contain_exactly('INV-001', 'INV-003')
       end
     end
@@ -99,9 +99,9 @@ RSpec.describe 'Temporal filtering', type: :request do
         get '/api/v1/invoices', params: { filter: { due_on: { null: true } } }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['invoices'].length).to eq(1)
-        expect(json['invoices'][0]['number']).to eq('INV-004')
+        body = response.parsed_body
+        expect(body['invoices'].length).to eq(1)
+        expect(body['invoices'][0]['number']).to eq('INV-004')
       end
     end
 
@@ -110,8 +110,8 @@ RSpec.describe 'Temporal filtering', type: :request do
         get '/api/v1/invoices', params: { filter: { created_at: { gt: 1.minute.ago.iso8601 } } }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['invoices'].length).to eq(3)
+        body = response.parsed_body
+        expect(body['invoices'].length).to eq(3)
       end
     end
 
@@ -120,8 +120,8 @@ RSpec.describe 'Temporal filtering', type: :request do
         get '/api/v1/invoices', params: { filter: { created_at: { lt: 1.minute.ago.iso8601 } } }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['invoices']).to eq([])
+        body = response.parsed_body
+        expect(body['invoices']).to eq([])
       end
     end
   end

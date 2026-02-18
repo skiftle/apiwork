@@ -16,9 +16,9 @@ RSpec.describe 'String filtering', type: :request do
         get '/api/v1/invoices', params: { filter: { number: { eq: 'INV-001' } } }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['invoices'].length).to eq(1)
-        expect(json['invoices'][0]['number']).to eq('INV-001')
+        body = response.parsed_body
+        expect(body['invoices'].length).to eq(1)
+        expect(body['invoices'][0]['number']).to eq('INV-001')
       end
     end
 
@@ -27,8 +27,8 @@ RSpec.describe 'String filtering', type: :request do
         get '/api/v1/invoices', params: { filter: { number: { contains: 'INV' } } }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['invoices'].length).to eq(3)
+        body = response.parsed_body
+        expect(body['invoices'].length).to eq(3)
       end
     end
 
@@ -37,9 +37,9 @@ RSpec.describe 'String filtering', type: :request do
         get '/api/v1/invoices', params: { filter: { number: { starts_with: 'INV-00' } } }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['invoices'].length).to eq(3)
-        numbers = json['invoices'].map { |inv| inv['number'] }
+        body = response.parsed_body
+        expect(body['invoices'].length).to eq(3)
+        numbers = body['invoices'].map { |inv| inv['number'] }
         expect(numbers).to contain_exactly('INV-001', 'INV-002', 'INV-003')
       end
     end
@@ -49,9 +49,9 @@ RSpec.describe 'String filtering', type: :request do
         get '/api/v1/invoices', params: { filter: { number: { ends_with: '001' } } }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['invoices'].length).to eq(1)
-        expect(json['invoices'][0]['number']).to eq('INV-001')
+        body = response.parsed_body
+        expect(body['invoices'].length).to eq(1)
+        expect(body['invoices'][0]['number']).to eq('INV-001')
       end
     end
 
@@ -60,9 +60,9 @@ RSpec.describe 'String filtering', type: :request do
         get '/api/v1/invoices', params: { filter: { number: { in: %w[INV-001 INV-003] } } }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['invoices'].length).to eq(2)
-        numbers = json['invoices'].map { |inv| inv['number'] }
+        body = response.parsed_body
+        expect(body['invoices'].length).to eq(2)
+        numbers = body['invoices'].map { |inv| inv['number'] }
         expect(numbers).to contain_exactly('INV-001', 'INV-003')
       end
     end
@@ -72,9 +72,9 @@ RSpec.describe 'String filtering', type: :request do
         get '/api/v1/invoices', params: { filter: { notes: { null: true } } }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['invoices'].length).to eq(2)
-        numbers = json['invoices'].map { |inv| inv['number'] }
+        body = response.parsed_body
+        expect(body['invoices'].length).to eq(2)
+        numbers = body['invoices'].map { |inv| inv['number'] }
         expect(numbers).to contain_exactly('INV-001', 'INV-003')
       end
 
@@ -82,9 +82,9 @@ RSpec.describe 'String filtering', type: :request do
         get '/api/v1/invoices', params: { filter: { notes: { null: false } } }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['invoices'].length).to eq(1)
-        expect(json['invoices'][0]['number']).to eq('INV-002')
+        body = response.parsed_body
+        expect(body['invoices'].length).to eq(1)
+        expect(body['invoices'][0]['number']).to eq('INV-002')
       end
     end
 
@@ -93,8 +93,8 @@ RSpec.describe 'String filtering', type: :request do
         get '/api/v1/invoices', params: { filter: { number: { eq: 'INV-999' } } }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['invoices']).to eq([])
+        body = response.parsed_body
+        expect(body['invoices']).to eq([])
       end
     end
   end

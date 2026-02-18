@@ -13,8 +13,8 @@ RSpec.describe 'Custom actions', type: :request do
             params: { message: 'Please review', notify_customer: false, recipient_email: 'billing@acme.com' }
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      expect(json['invoice']['sent']).to be(true)
+      body = response.parsed_body
+      expect(body['invoice']['sent']).to be(true)
       invoice1.reload
       expect(invoice1.sent).to be(true)
     end
@@ -33,8 +33,8 @@ RSpec.describe 'Custom actions', type: :request do
             params: { unknown_field: 'value' }
 
       expect(response).to have_http_status(:bad_request)
-      json = JSON.parse(response.body)
-      issue = json['issues'].find { |i| i['code'] == 'field_unknown' }
+      body = response.parsed_body
+      issue = body['issues'].find { |i| i['code'] == 'field_unknown' }
       expect(issue['code']).to eq('field_unknown')
     end
   end
@@ -44,8 +44,8 @@ RSpec.describe 'Custom actions', type: :request do
       patch "/api/v1/invoices/#{invoice1.id}/void", as: :json
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      expect(json['invoice']['status']).to eq('void')
+      body = response.parsed_body
+      expect(body['invoice']['status']).to eq('void')
       invoice1.reload
       expect(invoice1.void?).to be(true)
     end
@@ -58,9 +58,9 @@ RSpec.describe 'Custom actions', type: :request do
       get '/api/v1/invoices/search', params: { q: 'INV-001' }
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      expect(json['invoices'].length).to eq(1)
-      expect(json['invoices'][0]['number']).to eq('INV-001')
+      body = response.parsed_body
+      expect(body['invoices'].length).to eq(1)
+      expect(body['invoices'][0]['number']).to eq('INV-001')
     end
   end
 
@@ -78,8 +78,8 @@ RSpec.describe 'Custom actions', type: :request do
       end.to change(Invoice, :count).by(2)
 
       expect(response).to have_http_status(:created)
-      json = JSON.parse(response.body)
-      expect(json['invoices'].length).to eq(2)
+      body = response.parsed_body
+      expect(body['invoices'].length).to eq(2)
     end
   end
 end

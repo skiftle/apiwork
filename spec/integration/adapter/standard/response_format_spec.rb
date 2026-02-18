@@ -12,9 +12,9 @@ RSpec.describe 'Response format', type: :request do
       get "/api/v1/invoices/#{invoice1.id}"
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      expect(json).to have_key('invoice')
-      expect(json['invoice']['number']).to eq('INV-001')
+      body = response.parsed_body
+      expect(body).to have_key('invoice')
+      expect(body['invoice']['number']).to eq('INV-001')
     end
   end
 
@@ -23,20 +23,20 @@ RSpec.describe 'Response format', type: :request do
       get '/api/v1/invoices'
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      expect(json).to have_key('invoices')
-      expect(json['invoices'].length).to eq(2)
+      body = response.parsed_body
+      expect(body).to have_key('invoices')
+      expect(body['invoices'].length).to eq(2)
     end
 
     it 'includes pagination metadata in collection response' do
       get '/api/v1/invoices'
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      expect(json).to have_key('pagination')
-      expect(json['pagination']).to have_key('current')
-      expect(json['pagination']).to have_key('total')
-      expect(json['pagination']).to have_key('items')
+      body = response.parsed_body
+      expect(body).to have_key('pagination')
+      expect(body['pagination']).to have_key('current')
+      expect(body['pagination']).to have_key('total')
+      expect(body['pagination']).to have_key('items')
     end
 
     it 'returns empty array for empty collection' do
@@ -45,8 +45,8 @@ RSpec.describe 'Response format', type: :request do
       get '/api/v1/invoices'
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      expect(json['invoices']).to eq([])
+      body = response.parsed_body
+      expect(body['invoices']).to eq([])
     end
   end
 
@@ -55,10 +55,10 @@ RSpec.describe 'Response format', type: :request do
       get "/api/v1/receipts/#{invoice1.id}"
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      expect(json).to have_key('receipt')
-      expect(json).not_to have_key('invoice')
-      expect(json['receipt']['number']).to eq('INV-001')
+      body = response.parsed_body
+      expect(body).to have_key('receipt')
+      expect(body).not_to have_key('invoice')
+      expect(body['receipt']['number']).to eq('INV-001')
     end
   end
 
@@ -67,9 +67,9 @@ RSpec.describe 'Response format', type: :request do
       get '/api/v1/receipts'
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      expect(json).to have_key('receipts')
-      expect(json).not_to have_key('invoices')
+      body = response.parsed_body
+      expect(body).to have_key('receipts')
+      expect(body).not_to have_key('invoices')
     end
   end
 
@@ -82,17 +82,17 @@ RSpec.describe 'Response format', type: :request do
       get '/api/v2/customer-addresses'
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      expect(json['addresses'].length).to eq(1)
+      body = response.parsed_body
+      expect(body['addresses'].length).to eq(1)
     end
 
     it 'applies camelCase key format' do
       get '/api/v2/customer-addresses'
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      expect(json['addresses'].first).to have_key('createdAt')
-      expect(json['addresses'].first).to have_key('updatedAt')
+      body = response.parsed_body
+      expect(body['addresses'].first).to have_key('createdAt')
+      expect(body['addresses'].first).to have_key('updatedAt')
     end
   end
 
@@ -105,8 +105,8 @@ RSpec.describe 'Response format', type: :request do
       get "/api/v2/customer-addresses/#{address1.id}"
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      expect(json['address']['city']).to eq('Stockholm')
+      body = response.parsed_body
+      expect(body['address']['city']).to eq('Stockholm')
     end
   end
 

@@ -13,8 +13,8 @@ RSpec.describe 'Validation', type: :request do
              params: { invoice: { customer_id: customer1.id } }
 
         expect(response).to have_http_status(:bad_request)
-        json = JSON.parse(response.body)
-        issue = json['issues'].find { |i| i['pointer'] == '/invoice/number' }
+        body = response.parsed_body
+        issue = body['issues'].find { |i| i['pointer'] == '/invoice/number' }
         expect(issue['code']).to eq('field_missing')
       end
 
@@ -24,8 +24,8 @@ RSpec.describe 'Validation', type: :request do
              params: { invoice: { customer_id: customer1.id, number: 'INV-001', sent: 'not-a-boolean' } }
 
         expect(response).to have_http_status(:bad_request)
-        json = JSON.parse(response.body)
-        issue = json['issues'].find { |i| i['pointer'] == '/invoice/sent' }
+        body = response.parsed_body
+        issue = body['issues'].find { |i| i['pointer'] == '/invoice/sent' }
         expect(issue['code']).to eq('type_invalid')
       end
 
@@ -35,8 +35,8 @@ RSpec.describe 'Validation', type: :request do
              params: { invoice: { customer_id: customer1.id, number: 'INV-001', unknown_field: 'value' } }
 
         expect(response).to have_http_status(:bad_request)
-        json = JSON.parse(response.body)
-        issue = json['issues'].find { |i| i['code'] == 'field_unknown' }
+        body = response.parsed_body
+        issue = body['issues'].find { |i| i['code'] == 'field_unknown' }
         expect(issue['code']).to eq('field_unknown')
       end
 
@@ -46,8 +46,8 @@ RSpec.describe 'Validation', type: :request do
              params: { invoice: { sent: 'not-a-boolean' } }
 
         expect(response).to have_http_status(:bad_request)
-        json = JSON.parse(response.body)
-        pointers = json['issues'].map { |i| i['pointer'] }
+        body = response.parsed_body
+        pointers = body['issues'].map { |i| i['pointer'] }
         expect(pointers).to include('/invoice/number')
         expect(pointers).to include('/invoice/sent')
       end
@@ -58,8 +58,8 @@ RSpec.describe 'Validation', type: :request do
              params: { invoice: { customer_id: customer1.id, number: nil } }
 
         expect(response).to have_http_status(:bad_request)
-        json = JSON.parse(response.body)
-        issue = json['issues'].find { |i| i['pointer'] == '/invoice/number' }
+        body = response.parsed_body
+        issue = body['issues'].find { |i| i['pointer'] == '/invoice/number' }
         expect(issue['code']).to eq('field_missing')
       end
 
@@ -67,8 +67,8 @@ RSpec.describe 'Validation', type: :request do
         post '/api/v1/invoices', as: :json, params: {}
 
         expect(response).to have_http_status(:bad_request)
-        json = JSON.parse(response.body)
-        issue = json['issues'].first
+        body = response.parsed_body
+        issue = body['issues'].first
         expect(issue['code']).to eq('field_missing')
       end
     end
@@ -94,8 +94,8 @@ RSpec.describe 'Validation', type: :request do
              params: { invoice: { customer_id: customer1.id } }
 
         expect(response).to have_http_status(:bad_request)
-        json = JSON.parse(response.body)
-        issue = json['issues'].first
+        body = response.parsed_body
+        issue = body['issues'].first
         expect(issue).to have_key('code')
         expect(issue).to have_key('detail')
         expect(issue).to have_key('pointer')
@@ -109,8 +109,8 @@ RSpec.describe 'Validation', type: :request do
              params: { invoice: { customer_id: customer1.id } }
 
         expect(response).to have_http_status(:bad_request)
-        json = JSON.parse(response.body)
-        issue = json['issues'].find { |i| i['pointer'] == '/invoice/number' }
+        body = response.parsed_body
+        issue = body['issues'].find { |i| i['pointer'] == '/invoice/number' }
         expect(issue['pointer']).to eq('/invoice/number')
         expect(issue['path']).to eq(%w[invoice number])
       end
@@ -155,8 +155,8 @@ RSpec.describe 'Validation', type: :request do
               params: { invoice: { sent: 'invalid' } }
 
         expect(response).to have_http_status(:bad_request)
-        json = JSON.parse(response.body)
-        issue = json['issues'].find { |i| i['pointer'] == '/invoice/sent' }
+        body = response.parsed_body
+        issue = body['issues'].find { |i| i['pointer'] == '/invoice/sent' }
         expect(issue['code']).to eq('type_invalid')
       end
     end

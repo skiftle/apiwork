@@ -22,63 +22,63 @@ RSpec.describe 'Cursor pagination', type: :request do
       get '/api/v1/activities', params: { page: { size: 10 } }
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      expect(json['activities'].length).to eq(10)
-      expect(json['pagination']['prev']).to be_nil
+      body = response.parsed_body
+      expect(body['activities'].length).to eq(10)
+      expect(body['pagination']['prev']).to be_nil
     end
 
     it 'returns next page with after cursor' do
       get '/api/v1/activities', params: { page: { size: 10 } }
-      json = JSON.parse(response.body)
-      next_cursor = json['pagination']['next']
-      first_page_ids = json['activities'].map { |a| a['id'] }
+      body = response.parsed_body
+      next_cursor = body['pagination']['next']
+      first_page_ids = body['activities'].map { |a| a['id'] }
 
       get '/api/v1/activities', params: { page: { after: next_cursor, size: 10 } }
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      second_page_ids = json['activities'].map { |a| a['id'] }
+      body = response.parsed_body
+      second_page_ids = body['activities'].map { |a| a['id'] }
       expect(second_page_ids).not_to include(*first_page_ids)
-      expect(json['activities'].length).to eq(10)
+      expect(body['activities'].length).to eq(10)
     end
 
     it 'returns prev page with before cursor' do
       get '/api/v1/activities', params: { page: { size: 10 } }
-      json = JSON.parse(response.body)
-      next_cursor = json['pagination']['next']
+      body = response.parsed_body
+      next_cursor = body['pagination']['next']
 
       get '/api/v1/activities', params: { page: { after: next_cursor, size: 10 } }
-      json = JSON.parse(response.body)
-      prev_cursor = json['pagination']['prev']
+      body = response.parsed_body
+      prev_cursor = body['pagination']['prev']
 
       get '/api/v1/activities', params: { page: { before: prev_cursor, size: 10 } }
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      expect(json['activities'].length).to eq(10)
+      body = response.parsed_body
+      expect(body['activities'].length).to eq(10)
     end
 
     it 'returns next as null on last page' do
       get '/api/v1/activities', params: { page: { size: 10 } }
-      json = JSON.parse(response.body)
+      body = response.parsed_body
 
-      get '/api/v1/activities', params: { page: { after: json['pagination']['next'], size: 10 } }
-      json = JSON.parse(response.body)
+      get '/api/v1/activities', params: { page: { after: body['pagination']['next'], size: 10 } }
+      body = response.parsed_body
 
-      get '/api/v1/activities', params: { page: { after: json['pagination']['next'], size: 10 } }
+      get '/api/v1/activities', params: { page: { after: body['pagination']['next'], size: 10 } }
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      expect(json['activities'].length).to eq(5)
-      expect(json['pagination']['next']).to be_nil
+      body = response.parsed_body
+      expect(body['activities'].length).to eq(5)
+      expect(body['pagination']['next']).to be_nil
     end
 
     it 'returns prev as null on first page' do
       get '/api/v1/activities', params: { page: { size: 10 } }
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      expect(json['pagination']['prev']).to be_nil
+      body = response.parsed_body
+      expect(body['pagination']['prev']).to be_nil
     end
 
     context 'with filtering' do
@@ -90,9 +90,9 @@ RSpec.describe 'Cursor pagination', type: :request do
             }
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['activities'].length).to eq(5)
-        json['activities'].each do |activity|
+        body = response.parsed_body
+        expect(body['activities'].length).to eq(5)
+        body['activities'].each do |activity|
           expect(activity['read']).to be(true)
         end
       end
@@ -103,8 +103,8 @@ RSpec.describe 'Cursor pagination', type: :request do
         get '/api/v1/activities', params: { page: { after: 'not-a-valid-cursor', size: 10 } }
 
         expect(response).to have_http_status(:bad_request)
-        json = JSON.parse(response.body)
-        issue = json['issues'].find { |i| i['code'] == 'value_invalid' }
+        body = response.parsed_body
+        issue = body['issues'].find { |i| i['code'] == 'value_invalid' }
         expect(issue['path']).to eq(%w[page after])
       end
 
@@ -112,8 +112,8 @@ RSpec.describe 'Cursor pagination', type: :request do
         get '/api/v1/activities', params: { page: { before: '!!!garbage!!!', size: 10 } }
 
         expect(response).to have_http_status(:bad_request)
-        json = JSON.parse(response.body)
-        issue = json['issues'].find { |i| i['code'] == 'value_invalid' }
+        body = response.parsed_body
+        issue = body['issues'].find { |i| i['code'] == 'value_invalid' }
         expect(issue['path']).to eq(%w[page before])
       end
     end
@@ -123,8 +123,8 @@ RSpec.describe 'Cursor pagination', type: :request do
         get '/api/v1/activities', params: { page: { size: 10_000 } }
 
         expect(response).to have_http_status(:bad_request)
-        json = JSON.parse(response.body)
-        issue = json['issues'].find { |i| i['code'] == 'number_too_large' }
+        body = response.parsed_body
+        issue = body['issues'].find { |i| i['code'] == 'number_too_large' }
         expect(issue['code']).to eq('number_too_large')
       end
     end

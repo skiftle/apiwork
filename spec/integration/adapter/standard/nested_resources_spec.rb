@@ -15,9 +15,9 @@ RSpec.describe 'Nested resources', type: :request do
       get "/api/v1/invoices/#{invoice1.id}/items"
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      expect(json['items'].length).to eq(2)
-      descriptions = json['items'].map { |i| i['description'] }
+      body = response.parsed_body
+      expect(body['items'].length).to eq(2)
+      descriptions = body['items'].map { |i| i['description'] }
       expect(descriptions).to contain_exactly('Consulting hours', 'Software license')
     end
 
@@ -28,8 +28,8 @@ RSpec.describe 'Nested resources', type: :request do
         get "/api/v1/invoices/#{empty_invoice.id}/items"
 
         expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['items']).to eq([])
+        body = response.parsed_body
+        expect(body['items']).to eq([])
       end
     end
   end
@@ -39,9 +39,9 @@ RSpec.describe 'Nested resources', type: :request do
       get "/api/v1/invoices/#{invoice1.id}/items/#{item1.id}"
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      expect(json['item']['id']).to eq(item1.id)
-      expect(json['item']['description']).to eq('Consulting hours')
+      body = response.parsed_body
+      expect(body['item']['id']).to eq(item1.id)
+      expect(body['item']['description']).to eq('Consulting hours')
     end
 
     it 'returns 404 for item from different invoice' do
@@ -73,8 +73,8 @@ RSpec.describe 'Nested resources', type: :request do
       end.to change(Item, :count).by(1)
 
       expect(response).to have_http_status(:created)
-      json = JSON.parse(response.body)
-      expect(json['item']['description']).to eq('Consulting hours')
+      body = response.parsed_body
+      expect(body['item']['description']).to eq('Consulting hours')
       expect(Item.last.invoice_id).to eq(invoice1.id)
     end
   end
@@ -86,8 +86,8 @@ RSpec.describe 'Nested resources', type: :request do
             params: { item: { description: 'Updated hours', invoice_id: invoice1.id, quantity: 20 } }
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      expect(json['item']['description']).to eq('Updated hours')
+      body = response.parsed_body
+      expect(body['item']['description']).to eq('Updated hours')
     end
 
     it 'returns 404 for item from different invoice' do
@@ -120,8 +120,8 @@ RSpec.describe 'Nested resources', type: :request do
       get '/api/v1/items'
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      descriptions = json['items'].map { |i| i['description'] }
+      body = response.parsed_body
+      descriptions = body['items'].map { |i| i['description'] }
       expect(descriptions).to include('Consulting hours', 'Software license', 'Support contract')
     end
   end

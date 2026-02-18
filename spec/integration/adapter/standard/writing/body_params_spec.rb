@@ -19,10 +19,10 @@ RSpec.describe 'Body params', type: :request do
            }
 
       expect(response).to have_http_status(:created)
-      json = JSON.parse(response.body)
-      expect(json['invoice']['number']).to eq('INV-001')
-      expect(json['invoice']['notes']).to eq('Net 30 payment terms')
-      expect(json['invoice']['sent']).to be(false)
+      body = response.parsed_body
+      expect(body['invoice']['number']).to eq('INV-001')
+      expect(body['invoice']['notes']).to eq('Net 30 payment terms')
+      expect(body['invoice']['sent']).to be(false)
     end
 
     it 'returns error for unknown field in body' do
@@ -37,8 +37,8 @@ RSpec.describe 'Body params', type: :request do
            }
 
       expect(response).to have_http_status(:bad_request)
-      json = JSON.parse(response.body)
-      issue = json['issues'].find { |i| i['code'] == 'field_unknown' }
+      body = response.parsed_body
+      issue = body['issues'].find { |i| i['code'] == 'field_unknown' }
       expect(issue['code']).to eq('field_unknown')
     end
   end
@@ -65,8 +65,8 @@ RSpec.describe 'Body params', type: :request do
             params: { invoice: { unknown_field: 'value' } }
 
       expect(response).to have_http_status(:bad_request)
-      json = JSON.parse(response.body)
-      issue = json['issues'].find { |i| i['code'] == 'field_unknown' }
+      body = response.parsed_body
+      issue = body['issues'].find { |i| i['code'] == 'field_unknown' }
       expect(issue['code']).to eq('field_unknown')
     end
   end

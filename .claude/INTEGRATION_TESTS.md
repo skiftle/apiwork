@@ -238,6 +238,49 @@ class InvoiceRepresentation < Apiwork::Representation::Base
 end
 ```
 
+**Section order within a contract class:**
+
+| Order | Section |
+|-------|---------|
+| 1 | `abstract!` |
+| 2 | `representation` |
+| 3 | `identifier` |
+| 4 | `import` |
+| 5 | Type definitions (`object`, `enum`, `union`, `fragment`) |
+| 6 | `action` blocks |
+
+**Section order within an `action` block:**
+
+| Order | Section |
+|-------|---------|
+| 1 | `summary` |
+| 2 | `description` |
+| 3 | `tags` |
+| 4 | `operation_id` |
+| 5 | `deprecated!` |
+| 6 | `raises` |
+| 7 | `request` |
+| 8 | `response` |
+
+Inside `body` and `query` blocks: required params before optional params.
+
+**Section order within an `Apiwork::API.define` block:**
+
+| Order | Section |
+|-------|---------|
+| 1 | `key_format` / `path_format` |
+| 2 | `export` (alphabetical: openapi, typescript, zod) |
+| 3 | `info` |
+| 4 | `raises` |
+| 5 | `adapter` |
+| 6 | Type definitions (`object`, `enum`, `union`, `fragment`) |
+| 7 | `concern` |
+| 8 | `resources` / `resource` |
+
+Inside resources: `member` before `collection` before nested `resources`/`resource`.
+
+HTTP verbs in REST order: `get`, `post`, `patch`, `put`, `delete`.
+
 ---
 
 ## Two Test Types
@@ -256,9 +299,9 @@ RSpec.describe 'String filtering', type: :request do
       get '/api/v1/invoices', params: { filter: { number: { eq: 'INV-001' } } }
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      expect(json['invoices'].length).to eq(1)
-      expect(json['invoices'][0]['number']).to eq('INV-001')
+      body = response.parsed_body
+      expect(body['invoices'].length).to eq(1)
+      expect(body['invoices'][0]['number']).to eq('INV-001')
     end
   end
 end
@@ -378,7 +421,7 @@ Always in this exact order:
 1. HTTP verb call
 2. Blank line
 3. Status assertion
-4. `json = JSON.parse(response.body)`
+4. `body = response.parsed_body`
 5. Data assertions
 
 ```ruby
@@ -386,9 +429,9 @@ it 'filters by exact match' do
   get '/api/v1/invoices', params: { filter: { number: { eq: 'INV-001' } } }
 
   expect(response).to have_http_status(:ok)
-  json = JSON.parse(response.body)
-  expect(json['invoices'].length).to eq(1)
-  expect(json['invoices'][0]['number']).to eq('INV-001')
+  body = response.parsed_body
+  expect(body['invoices'].length).to eq(1)
+  expect(body['invoices'][0]['number']).to eq('INV-001')
 end
 ```
 
@@ -399,8 +442,8 @@ it 'returns error for unknown filter field' do
   get '/api/v1/invoices', params: { filter: { nonexistent: { eq: 'value' } } }
 
   expect(response).to have_http_status(:bad_request)
-  json = JSON.parse(response.body)
-  issue = json['issues'].find { |i| i['code'] == 'field_unknown' }
+  body = response.parsed_body
+  issue = body['issues'].find { |i| i['code'] == 'field_unknown' }
   expect(issue['code']).to eq('field_unknown')
 end
 ```
@@ -416,7 +459,7 @@ end.to change(Invoice, :count).by(1)
 ### Equality and Collections
 
 ```ruby
-expect(json['invoices'].length).to eq(2)
+expect(body['invoices'].length).to eq(2)
 expect(numbers).to include('INV-001', 'INV-003')
 expect(ids).to contain_exactly(invoice1.id, invoice3.id)
 ```
@@ -426,8 +469,8 @@ Use `contain_exactly` for order-independent, `eq` for exact match with order.
 ### Boolean
 
 ```ruby
-expect(json['invoice']['sent']).to be(true)
-expect(json['invoice']['sent']).to be(false)
+expect(body['invoice']['sent']).to be(true)
+expect(body['invoice']['sent']).to be(false)
 ```
 
 Use `be(true)` / `be(false)`, not `be_truthy` / `be_falsey`.

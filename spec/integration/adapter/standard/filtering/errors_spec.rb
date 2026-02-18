@@ -12,8 +12,8 @@ RSpec.describe 'Filtering errors', type: :request do
         get '/api/v1/invoices', params: { filter: { nonexistent: { eq: 'value' } } }
 
         expect(response).to have_http_status(:bad_request)
-        json = JSON.parse(response.body)
-        issue = json['issues'].find { |i| i['code'] == 'field_unknown' }
+        body = response.parsed_body
+        issue = body['issues'].find { |i| i['code'] == 'field_unknown' }
         expect(issue['code']).to eq('field_unknown')
       end
     end
@@ -23,8 +23,8 @@ RSpec.describe 'Filtering errors', type: :request do
         get '/api/v1/invoices', params: { filter: { number: { invalid_op: 'value' } } }
 
         expect(response).to have_http_status(:bad_request)
-        json = JSON.parse(response.body)
-        issue = json['issues'].find { |i| i['code'] == 'field_unknown' }
+        body = response.parsed_body
+        issue = body['issues'].find { |i| i['code'] == 'field_unknown' }
         expect(issue['path']).to eq(%w[filter number invalid_op])
       end
     end
@@ -34,8 +34,8 @@ RSpec.describe 'Filtering errors', type: :request do
         get '/api/v1/invoices', params: { filter: { number: { null: true } } }
 
         expect(response).to have_http_status(:bad_request)
-        json = JSON.parse(response.body)
-        issue = json['issues'].find { |i| i['code'] == 'field_unknown' }
+        body = response.parsed_body
+        issue = body['issues'].find { |i| i['code'] == 'field_unknown' }
         expect(issue['path']).to eq(%w[filter number null])
       end
     end
@@ -45,8 +45,8 @@ RSpec.describe 'Filtering errors', type: :request do
         get '/api/v1/invoices', params: { filter: { id: { eq: 'not_a_number' } } }
 
         expect(response).to have_http_status(:bad_request)
-        json = JSON.parse(response.body)
-        issue = json['issues'].first
+        body = response.parsed_body
+        issue = body['issues'].first
         expect(issue['code']).to eq('type_invalid')
       end
     end

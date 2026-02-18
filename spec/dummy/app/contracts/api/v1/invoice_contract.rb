@@ -24,9 +24,9 @@ module Api
           body do
             object :invoice do
               string :number
-              string? :notes
               boolean :sent, default: false
               integer :customer_id
+              string? :notes
             end
           end
         end
@@ -109,8 +109,8 @@ module Api
 
       action :destroy do
         summary 'Delete an invoice'
-        deprecated!
         operation_id 'deleteInvoice'
+        deprecated!
 
         response replace: true do
           body do
