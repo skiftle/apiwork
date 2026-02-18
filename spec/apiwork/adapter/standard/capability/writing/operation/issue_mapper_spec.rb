@@ -96,7 +96,7 @@ RSpec.describe Apiwork::Adapter::Standard::Capability::Writing::Operation::Issue
   end
 
   describe '.map' do
-    subject(:issues) { described_class.map(record, translator, root_path:) }
+    let(:issues) { described_class.map(record, translator, root_path:) }
 
     context 'when record does not respond to errors' do
       let(:record) do

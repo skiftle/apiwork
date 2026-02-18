@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe Apiwork::Adapter::Standard::IncludesResolver do
   IncludesResolverMockAssociation = Struct.new(:include, :representation_class, keyword_init: true)
 
-  def build_representation_class(associations: {}, name: 'TestRepresentation')
+  def build_representation_class(associations: {}, name: 'InvoiceRepresentation')
     klass = Class.new do
       class << self
         attr_accessor :associations_hash, :class_name
@@ -61,7 +61,7 @@ RSpec.describe Apiwork::Adapter::Standard::IncludesResolver do
   end
 
   describe '#resolve' do
-    subject(:resolver) { described_class.new(representation_class) }
+    let(:resolver) { described_class.new(representation_class) }
 
     context 'when params is empty' do
       let(:representation_class) { build_representation_class }
@@ -149,7 +149,7 @@ RSpec.describe Apiwork::Adapter::Standard::IncludesResolver do
       it 'extracts all associations' do
         result = resolver.resolve(
           {
-            customer: { name: { eq: 'test' } },
+            customer: { name: { eq: 'Acme' } },
             payment: { amount: { gt: 100 } },
           },
         )
@@ -174,7 +174,7 @@ RSpec.describe Apiwork::Adapter::Standard::IncludesResolver do
         result = resolver.resolve(
           {
             OR: [
-              { customer: { name: { eq: 'test' } } },
+              { customer: { name: { eq: 'Acme' } } },
               { payment: { amount: { gt: 100 } } },
             ],
           },
@@ -200,7 +200,7 @@ RSpec.describe Apiwork::Adapter::Standard::IncludesResolver do
         result = resolver.resolve(
           {
             AND: [
-              { customer: { name: { eq: 'test' } } },
+              { customer: { name: { eq: 'Acme' } } },
               { payment: { amount: { gt: 100 } } },
             ],
           },
@@ -221,7 +221,7 @@ RSpec.describe Apiwork::Adapter::Standard::IncludesResolver do
       end
 
       it 'extracts associations from negated branch' do
-        result = resolver.resolve({ NOT: { customer: { name: { eq: 'test' } } } })
+        result = resolver.resolve({ NOT: { customer: { name: { eq: 'Acme' } } } })
 
         expect(result).to eq(:customer)
       end
@@ -298,7 +298,7 @@ RSpec.describe Apiwork::Adapter::Standard::IncludesResolver do
   end
 
   describe '#always_included' do
-    subject(:resolver) { described_class.new(representation_class) }
+    let(:resolver) { described_class.new(representation_class) }
 
     context 'when no associations have include: :always' do
       let(:representation_class) do
@@ -360,7 +360,7 @@ RSpec.describe Apiwork::Adapter::Standard::IncludesResolver do
   end
 
   describe '#from_params' do
-    subject(:resolver) { described_class.new(representation_class) }
+    let(:resolver) { described_class.new(representation_class) }
 
     let(:customer_representation) { build_representation_class(name: 'CustomerRepresentation') }
     let(:representation_class) do
@@ -389,7 +389,7 @@ RSpec.describe Apiwork::Adapter::Standard::IncludesResolver do
   end
 
   describe '#merge' do
-    subject(:resolver) { described_class.new(representation_class) }
+    let(:resolver) { described_class.new(representation_class) }
 
     let(:representation_class) { build_representation_class }
 
@@ -430,7 +430,7 @@ RSpec.describe Apiwork::Adapter::Standard::IncludesResolver do
   end
 
   describe '#format' do
-    subject(:resolver) { described_class.new(representation_class) }
+    let(:resolver) { described_class.new(representation_class) }
 
     let(:representation_class) { build_representation_class }
 
