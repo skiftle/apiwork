@@ -11,10 +11,11 @@ For unit test rules, see `UNIT_TESTS.md`.
 ## Commands
 
 ```bash
-bundle exec rspec spec/integration/                                    # all integration tests
-bundle exec rspec spec/integration/adapter/standard/filtering/         # subdirectory
-bundle exec rspec spec/integration/adapter/standard/sorting_spec.rb    # single file
-bundle exec rspec spec/integration/adapter/standard/sorting_spec.rb:42 # single test
+bundle exec rspec spec/integration/                                              # all integration tests
+bundle exec rspec spec/integration/adapter/standard/capability/filtering/        # subdirectory
+bundle exec rspec spec/integration/adapter/standard/capability/sorting/          # capability
+bundle exec rspec spec/integration/adapter/standard/capability/sorting/types_spec.rb    # single file
+bundle exec rspec spec/integration/adapter/standard/capability/sorting/types_spec.rb:42 # single test
 ```
 
 ---
@@ -26,33 +27,45 @@ spec/integration/
 ├── adapter/
 │   ├── configuration_spec.rb
 │   ├── custom_adapter_spec.rb
-│   └── standard/
-│       ├── action_restrictions_spec.rb
-│       ├── domain_errors_spec.rb
-│       ├── filtering/
-│       │   ├── association_spec.rb
-│       │   ├── boolean_enum_spec.rb
-│       │   ├── datetime_spec.rb
-│       │   ├── errors_spec.rb
-│       │   ├── logical_spec.rb
-│       │   ├── numeric_spec.rb
-│       │   ├── string_spec.rb
-│       │   └── temporal_spec.rb
-│       ├── includes_spec.rb
-│       ├── nested_resources_spec.rb
-│       ├── pagination/
-│       │   ├── cursor_spec.rb
-│       │   └── offset_spec.rb
-│       ├── preload_spec.rb
-│       ├── response_format_spec.rb
-│       ├── singular_resource_spec.rb
-│       ├── sorting_spec.rb
-│       ├── sti_spec.rb
-│       ├── validation_spec.rb
-│       └── writing/
-│           ├── body_params_spec.rb
-│           ├── custom_actions_spec.rb
-│           └── nested_attributes_spec.rb
+│   ├── serializer/
+│   │   └── types_spec.rb
+│   ├── standard/
+│   │   ├── action_restrictions_spec.rb
+│   │   ├── capability/
+│   │   │   ├── filtering/
+│   │   │   │   ├── association_spec.rb
+│   │   │   │   ├── boolean_enum_spec.rb
+│   │   │   │   ├── datetime_spec.rb
+│   │   │   │   ├── errors_spec.rb
+│   │   │   │   ├── logical_spec.rb
+│   │   │   │   ├── numeric_spec.rb
+│   │   │   │   ├── string_spec.rb
+│   │   │   │   ├── temporal_spec.rb
+│   │   │   │   └── types_spec.rb
+│   │   │   ├── including/
+│   │   │   │   ├── request_spec.rb
+│   │   │   │   └── types_spec.rb
+│   │   │   ├── pagination/
+│   │   │   │   ├── cursor_spec.rb
+│   │   │   │   ├── offset_spec.rb
+│   │   │   │   └── types_spec.rb
+│   │   │   ├── sorting/
+│   │   │   │   ├── request_spec.rb
+│   │   │   │   └── types_spec.rb
+│   │   │   └── writing/
+│   │   │       ├── body_params_spec.rb
+│   │   │       ├── custom_actions_spec.rb
+│   │   │       ├── nested_attributes_spec.rb
+│   │   │       └── types_spec.rb
+│   │   ├── domain_errors_spec.rb
+│   │   ├── nested_resources_spec.rb
+│   │   ├── preload_spec.rb
+│   │   ├── response_format_spec.rb
+│   │   ├── singular_resource_spec.rb
+│   │   ├── sti_spec.rb
+│   │   └── validation_spec.rb
+│   └── wrapper/
+│       └── types_spec.rb
 ├── api/
 │   ├── concerns_spec.rb
 │   └── controller_context_spec.rb
@@ -103,7 +116,10 @@ spec/integration/
 
 | Domain | Tests | Type | Interface |
 |--------|-------|------|-----------|
-| `adapter/standard/` | Standard adapter runtime | `:request` | HTTP |
+| `adapter/standard/capability/` | Capability HTTP runtime and generated types | `:request` / `:integration` | HTTP / `.introspect` |
+| `adapter/standard/` (root) | Cross-capability runtime (validation, STI, nested resources) | `:request` | HTTP |
+| `adapter/serializer/` | Resource object types, attribute mapping, STI unions, error types | `:integration` | `.introspect` |
+| `adapter/wrapper/` | Response body types (member, collection, error) | `:integration` | `.introspect` |
 | `adapter/` (root) | Adapter configuration | `:integration` | Ruby API |
 | `api/` | API DSL definitions | `:integration` | Ruby API |
 | `contract/` | Type system, imports, inheritance | `:integration` | Ruby API |
@@ -112,6 +128,10 @@ spec/integration/
 | `representation/` | Serialization, deserialization | `:integration` | `.serialize` / `.deserialize` |
 
 **All HTTP tests belong in `adapter/standard/`.** No HTTP requests in any other domain.
+
+Each capability directory contains two test types:
+- `types_spec.rb` — Verifies generated types via introspection (`type: :integration`)
+- `request_spec.rb` or feature-specific specs — Verifies HTTP runtime (`type: :request`)
 
 ### What We Do NOT Test
 
@@ -130,6 +150,11 @@ Test only behavior that apiwork implements.
 `spec/integration/<domain>/<feature>_spec.rb`
 
 One file per feature. Max 200 lines per file. Subdirectories for complex domains (filtering, pagination, writing, exports).
+
+Capability directories use consistent file names:
+- `types_spec.rb` — Generated types verified via introspection
+- `request_spec.rb` — HTTP runtime tests (for capabilities with a single request spec)
+- Feature-specific names for capabilities with multiple request specs (e.g., `string_spec.rb`, `logical_spec.rb`)
 
 ---
 
@@ -630,49 +655,137 @@ let!(:profile1) { Profile.create!(bio: 'Billing administrator', email: 'admin@bi
 
 ---
 
-## adapter/standard/ Test Coverage
+## adapter/ Test Coverage
 
-All standard adapter runtime behavior tested via HTTP. One file per capability.
+### Serializer Types (`adapter/serializer/types_spec.rb`)
 
-### Filtering
+| Group | Tests |
+|-------|-------|
+| Resource object | type :object, includes all attributes and associations |
+| Attribute types | string, integer, boolean, date, datetime mapping |
+| Nullable | nullable/non-nullable detection from schema |
+| Enum attributes | enum reference on enum columns |
+| Association references | has_many as array of references, belongs_to as reference |
+| STI union | type :union, discriminator :type, person/company variants |
+| STI variants | inherited + own attributes per variant |
+| Enum types | invoice_status, payment_method, payment_status values |
+| Error types | error object (issues + layer), issue object fields, layer enum |
+
+### Wrapper Types (`adapter/wrapper/types_spec.rb`)
+
+| Group | Tests |
+|-------|-------|
+| Member response body | type :object, singular root key as reference, optional meta |
+| Collection response body | type :object, plural root key as array of references, optional meta, pagination reference |
+| Cursor collection | cursor_pagination reference |
+| Create/update response | singular root key as reference |
+| Custom action response | send_invoice, void, search, bulk_create bodies |
+| Error response body | type :object, extends :error |
+| Singular resource | singular root key as reference |
+
+### Capability: Filtering
+
+#### HTTP Runtime (`capability/filtering/`)
 
 | File | Operators | Model |
 |------|-----------|-------|
-| `filtering/string_spec.rb` | eq, contains, starts_with, ends_with, in, null | Invoice (number, notes) |
-| `filtering/numeric_spec.rb` | eq, gt, gte, lt, lte, between, in, null | Item (quantity, unit_price) |
-| `filtering/temporal_spec.rb` | eq, gt, lt, between, null (date, datetime, time) | Invoice (due_on, created_at), Profile (preferred_contact_time) |
-| `filtering/boolean_enum_spec.rb` | boolean eq/null, enum eq/in, enum value_invalid | Invoice (sent, status) |
-| `filtering/association_spec.rb` | Direct and nested association filters | Item filter by invoice.number |
-| `filtering/logical_spec.rb` | AND, OR, NOT, nested combinations | Invoice (status, sent) |
-| `filtering/datetime_spec.rb` | datetime-specific operators and edge cases | Invoice (created_at) |
-| `filtering/errors_spec.rb` | field_unknown, operator_invalid, type mismatch | Invoice |
+| `string_spec.rb` | eq, contains, starts_with, ends_with, in, null | Invoice (number, notes) |
+| `numeric_spec.rb` | eq, gt, gte, lt, lte, between, in, null | Item (quantity, unit_price) |
+| `temporal_spec.rb` | eq, gt, lt, between, null (date, datetime, time) | Invoice (due_on, created_at), Profile (preferred_contact_time) |
+| `boolean_enum_spec.rb` | boolean eq/null, enum eq/in, enum value_invalid | Invoice (sent, status) |
+| `association_spec.rb` | Direct and nested association filters | Item filter by invoice.number |
+| `logical_spec.rb` | AND, OR, NOT, nested combinations | Invoice (status, sent) |
+| `datetime_spec.rb` | datetime-specific operators and edge cases | Invoice (created_at) |
+| `errors_spec.rb` | field_unknown, operator_invalid, type mismatch | Invoice |
 
-### Sorting
+#### Generated Types (`capability/filtering/types_spec.rb`)
+
+| Group | Tests |
+|-------|-------|
+| Filter object | type :object, operator params per attribute |
+| Logical operators | AND (array of self-references), OR, NOT |
+| Shorthand unions | string shorthand as union (string \| object) |
+| Nullable filters | null operator as boolean |
+| Enum filters | enum reference on filter params |
+| Boolean filters | eq as boolean param |
+| Association filters | nested filter object references |
+| Global types | string/numeric/date/datetime/boolean/enum filter objects |
+| Between type | lower + upper params |
+
+### Capability: Sorting
+
+#### HTTP Runtime (`capability/sorting/request_spec.rb`)
+
+| Tests |
+|-------|
+| asc, desc, multi-field, association sort, error cases |
+
+#### Generated Types (`capability/sorting/types_spec.rb`)
+
+| Group | Tests |
+|-------|-------|
+| Sort object | type :object, sort_direction references per sortable attribute |
+| Association sort | nested sort object references |
+| Sort direction enum | asc, desc values |
+
+### Capability: Pagination
+
+#### HTTP Runtime (`capability/pagination/`)
 
 | File | Tests |
 |------|-------|
-| `sorting_spec.rb` | asc, desc, multi-field, association sort, error cases |
+| `offset_spec.rb` | page number/size, metadata (current/next/prev/total/items), out of range, max size |
+| `cursor_spec.rb` | first page, after/before cursors, last page, cursor_invalid error |
 
-### Pagination
+#### Generated Types (`capability/pagination/types_spec.rb`)
+
+| Group | Tests |
+|-------|-------|
+| Offset page | type :object, number (integer), size (integer), both optional |
+| Cursor page | type :object, after (string), before (string), size (integer), all optional |
+| Offset pagination metadata | type :object, current_page, next_page, prev_page, total_pages, total_items |
+| Cursor pagination metadata | type :object, has_next_page, has_prev_page, start_cursor, end_cursor |
+
+### Capability: Including
+
+#### HTTP Runtime (`capability/including/request_spec.rb`)
+
+| Tests |
+|-------|
+| optional omitted, optional requested, always-included, multiple, nested, unknown error |
+
+#### Generated Types (`capability/including/types_spec.rb`)
+
+| Group | Tests |
+|-------|-------|
+| Include object | type :object, params per includable association |
+| Leaf associations | boolean params |
+| Nested associations | union (boolean \| reference to nested include object) |
+| Nested include object | type :object with nested association params |
+
+### Capability: Writing
+
+#### HTTP Runtime (`capability/writing/`)
 
 | File | Tests |
 |------|-------|
-| `pagination/offset_spec.rb` | page number/size, metadata (current/next/prev/total/items), out of range, max size |
-| `pagination/cursor_spec.rb` | first page, after/before cursors, last page, cursor_invalid error |
+| `body_params_spec.rb` | writable fields, unknown field rejection, partial update, decode transformer |
+| `nested_attributes_spec.rb` | create/update/delete nested, OP field, mixed ops, deep nesting |
+| `custom_actions_spec.rb` | member body, collection query, collection body, unknown field error, defaults |
 
-### Includes
+#### Generated Types (`capability/writing/types_spec.rb`)
 
-| File | Tests |
-|------|-------|
-| `includes_spec.rb` | optional omitted, optional requested, always-included, multiple, nested, unknown error |
-
-### Writing
-
-| File | Tests |
-|------|-------|
-| `writing/body_params_spec.rb` | writable fields, unknown field rejection, partial update, decode transformer |
-| `writing/nested_attributes_spec.rb` | create/update/delete nested, OP field, mixed ops, deep nesting |
-| `writing/custom_actions_spec.rb` | member body, collection query, collection body, unknown field error, defaults |
+| Group | Tests |
+|-------|-------|
+| Create payload | type :object, writable attributes, required/optional, enum references, excludes non-writable |
+| Update payload | type :object, all writable attributes optional |
+| Nested payload union | type :union, OP discriminator, create/update/delete variants |
+| Nested create payload | OP literal 'create', optional id, writable fields |
+| Nested update payload | OP literal 'update', optional id, writable fields |
+| Nested delete payload | only OP and id, id required |
+| Deep nesting | items adjustments nested payload chain |
+| STI payloads | customer create/update as union with type discriminator |
+| Writable association | items as optional array of nested payload references |
 
 ### Validation
 
