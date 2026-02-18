@@ -344,4 +344,49 @@ RSpec.describe Apiwork::Export::OpenAPI do
       expect { JSON.parse(json) }.not_to raise_error
     end
   end
+
+  describe 'Key ordering' do
+    it 'orders top-level keys according to specification' do
+      keys = spec.keys
+
+      expect(keys).to eq(%i[openapi info servers paths components])
+    end
+  end
+
+  describe 'Required fields' do
+    it 'lists non-optional fields in required array' do
+      invoice_schema = schemas['invoice']
+
+      expect(invoice_schema[:required]).to be_an(Array)
+      expect(invoice_schema[:required]).to include('number', 'count', 'active')
+    end
+  end
+
+  describe 'Simple union variants' do
+    it 'includes correct types in oneOf' do
+      mixed_schema = schemas['mixed_type']
+      types = mixed_schema[:oneOf].map { |variant| variant[:type] }
+
+      expect(types).to contain_exactly('string', 'integer')
+    end
+  end
+
+  describe 'Discriminated union structure' do
+    it 'includes required discriminator in variant allOf' do
+      tagged_schema = schemas['tagged_variant']
+      first_variant = tagged_schema[:oneOf].first
+      discriminator_part = first_variant[:allOf].last
+
+      expect(discriminator_part[:required]).to eq(['kind'])
+      expect(discriminator_part[:type]).to eq('object')
+    end
+
+    it 'generates mapping for reference variants' do
+      tagged_schema = schemas['tagged_variant']
+      mapping = tagged_schema[:discriminator][:mapping]
+
+      expect(mapping).to include('invoice' => '#/components/schemas/invoice')
+      expect(mapping).to include('payment' => '#/components/schemas/payment')
+    end
+  end
 end

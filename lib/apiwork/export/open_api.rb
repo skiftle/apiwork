@@ -509,8 +509,8 @@ module Apiwork
         result[:format] = format_value if format_value
 
         if param.boundable?
-          result[:minimum] = param.min if param.min
-          result[:maximum] = param.max if param.max
+          result[:minimum] = param.min unless param.min.nil?
+          result[:maximum] = param.max unless param.max.nil?
         end
 
         result

@@ -232,8 +232,8 @@ module Apiwork
           base = 'z.array(z.unknown())'
         end
 
-        base += ".min(#{param.min})" if param.min
-        base += ".max(#{param.max})" if param.max
+        base += ".min(#{param.min})" unless param.min.nil?
+        base += ".max(#{param.max})" unless param.max.nil?
         base
       end
 
@@ -273,8 +273,8 @@ module Apiwork
                     end
 
         if param.boundable?
-          base_type += ".min(#{param.min})" if param.min
-          base_type += ".max(#{param.max})" if param.max
+          base_type += ".min(#{param.min})" unless param.min.nil?
+          base_type += ".max(#{param.max})" unless param.max.nil?
         end
 
         base_type

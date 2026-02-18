@@ -156,6 +156,24 @@ RSpec.describe Apiwork::Export::ZodMapper do
 
       expect(mapper.map_primitive(param)).to eq('z.number()')
     end
+
+    it 'maps int64 to z.number().int()' do
+      param = build_param(format: :int64, type: :string)
+
+      expect(mapper.map_primitive(param)).to eq('z.number().int()')
+    end
+
+    it 'maps double to z.number()' do
+      param = build_param(format: :double, type: :string)
+
+      expect(mapper.map_primitive(param)).to eq('z.number()')
+    end
+
+    it 'maps unknown format to z.string()' do
+      param = build_param(format: :custom, type: :string)
+
+      expect(mapper.map_primitive(param)).to eq('z.string()')
+    end
   end
 
   describe '#map_field' do
@@ -212,6 +230,14 @@ RSpec.describe Apiwork::Export::ZodMapper do
         param = build_param(nullable: true, reference: :invoice, type: :reference)
 
         expect(mapper_with_types.map_field(param)).to eq('InvoiceSchema.nullable()')
+      end
+    end
+
+    context 'with force_optional false' do
+      it 'suppresses optional modifier' do
+        param = build_param(optional: true, type: :string)
+
+        expect(mapper.map_field(param, force_optional: false)).to eq('z.string()')
       end
     end
   end
@@ -279,6 +305,12 @@ RSpec.describe Apiwork::Export::ZodMapper do
 
         expect(mapper.map_param(param)).to eq('z.array(z.string()).min(1).max(10)')
       end
+
+      it 'appends min constraint with zero value' do
+        param = build_param(max: 5, min: 0, of: { type: :string }, shape: {}, type: :array)
+
+        expect(mapper.map_param(param)).to eq('z.array(z.string()).min(0).max(5)')
+      end
     end
 
     context 'with union type' do
@@ -334,6 +366,12 @@ RSpec.describe Apiwork::Export::ZodMapper do
         param = build_param(type: :literal, value: nil)
 
         expect(mapper.map_param(param)).to eq('z.null()')
+      end
+
+      it 'maps false literal' do
+        param = build_param(type: :literal, value: false)
+
+        expect(mapper.map_param(param)).to eq('z.literal(false)')
       end
     end
 
@@ -405,6 +443,15 @@ RSpec.describe Apiwork::Export::ZodMapper do
       expect(result).to include(': z.ZodType<Invoice>')
       expect(result).to include('z.lazy(() => z.object({')
     end
+
+    it 'builds merged and extended schema for multiple extends with properties' do
+      type = build_type(extends: [:base_record, :timestamped], shape: { name: { type: :string } })
+
+      result = mapper.build_object_schema(:full_record, type)
+
+      expect(result).to include('BaseRecordSchema.merge(TimestampedSchema).extend({')
+      expect(result).to include('  name: z.string()')
+    end
   end
 
   describe '#build_union_schema' do
@@ -455,6 +502,39 @@ RSpec.describe Apiwork::Export::ZodMapper do
       expect(result).to include(': z.ZodType<Mixed>')
       expect(result).to include('z.lazy(() => z.union([')
     end
+
+    it 'builds non-discriminated union' do
+      type = build_union_type(
+        variants: [
+          { type: :string },
+          { type: :integer },
+        ],
+      )
+
+      result = mapper.build_union_schema(:mixed, type)
+
+      expect(result).to include('export const MixedSchema = z.union([')
+      expect(result).to include('  z.string()')
+      expect(result).to include('  z.number().int()')
+    end
+
+    it 'skips tag injection when discriminator exists in referenced shape' do
+      invoice_type = build_type(shape: { kind: { type: :string }, number: { type: :string } })
+      export_with_types = stub_export(types: { invoice: invoice_type })
+      mapper_with_types = described_class.new(export_with_types)
+
+      type = build_union_type(
+        discriminator: :kind,
+        variants: [
+          { reference: :invoice, tag: 'invoice', type: :reference },
+        ],
+      )
+
+      result = mapper_with_types.build_union_schema(:tagged, type)
+
+      expect(result).not_to include('.extend')
+      expect(result).to include('InvoiceSchema')
+    end
   end
 
   describe '#build_enum_schemas (via build_enum_type pattern)' do
@@ -481,6 +561,78 @@ RSpec.describe Apiwork::Export::ZodMapper do
       result = mapper.action_type_name(:items, :index, 'Request', parent_identifiers: ['invoices'])
 
       expect(result).to eq('InvoicesItemsIndexRequest')
+    end
+
+    it 'generates action type name with multiple parent identifiers' do
+      result = mapper.action_type_name(:adjustments, :create, 'RequestBody', parent_identifiers: %w[invoices items])
+
+      expect(result).to eq('InvoicesItemsAdjustmentsCreateRequestBody')
+    end
+  end
+
+  describe '#build_action_request_query_schema' do
+    it 'builds z.object schema for query parameters' do
+      query_params = {
+        page: build_param(optional: true, type: :integer),
+        search: build_param(optional: true, type: :string),
+      }
+
+      result = mapper.build_action_request_query_schema(:invoices, :index, query_params)
+
+      expect(result).to include('InvoicesIndexRequestQuerySchema = z.object({')
+      expect(result).to include('  page: z.number().int().optional()')
+      expect(result).to include('  search: z.string().optional()')
+    end
+  end
+
+  describe '#build_action_request_body_schema' do
+    it 'builds z.object schema for body parameters' do
+      body_params = {
+        amount: build_param(type: :decimal),
+        number: build_param(type: :string),
+      }
+
+      result = mapper.build_action_request_body_schema(:invoices, :create, body_params)
+
+      expect(result).to include('InvoicesCreateRequestBodySchema = z.object({')
+      expect(result).to include('  amount: z.number()')
+      expect(result).to include('  number: z.string()')
+    end
+  end
+
+  describe '#build_action_request_schema' do
+    it 'builds z.object schema with query and body nested schemas' do
+      request = {
+        body: { name: build_param(type: :string) },
+        query: { page: build_param(type: :integer) },
+      }
+
+      result = mapper.build_action_request_schema(:invoices, :create, request)
+
+      expect(result).to include('InvoicesCreateRequestSchema = z.object({')
+      expect(result).to include('  query: InvoicesCreateRequestQuerySchema')
+      expect(result).to include('  body: InvoicesCreateRequestBodySchema')
+    end
+  end
+
+  describe '#build_action_response_body_schema' do
+    it 'builds schema for response body' do
+      response_body = build_param(shape: { id: { type: :integer } }, type: :object)
+
+      result = mapper.build_action_response_body_schema(:invoices, :show, response_body)
+
+      expect(result).to include('InvoicesShowResponseBodySchema = z.object({ id: z.number().int() })')
+    end
+  end
+
+  describe '#build_action_response_schema' do
+    it 'builds z.object schema with body nested schema' do
+      response = { body: build_param(type: :string) }
+
+      result = mapper.build_action_response_schema(:invoices, :show, response)
+
+      expect(result).to include('InvoicesShowResponseSchema = z.object({')
+      expect(result).to include('  body: InvoicesShowResponseBodySchema')
     end
   end
 end

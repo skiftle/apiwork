@@ -236,6 +236,12 @@ RSpec.describe Apiwork::Export::TypeScriptMapper do
 
         expect(mapper.map_param(param)).to eq('null')
       end
+
+      it 'maps false literal' do
+        param = build_param(type: :literal, value: false)
+
+        expect(mapper.map_param(param)).to eq('false')
+      end
     end
 
     context 'with reference type' do
@@ -309,6 +315,18 @@ RSpec.describe Apiwork::Export::TypeScriptMapper do
 
       expect(result).to include('@example "INV-001"')
     end
+
+    it 'builds interface with multiple extends' do
+      type = build_type(
+        extends: [:base_record, :timestamped],
+        shape: { name: { type: :string } },
+      )
+
+      result = mapper.build_interface(:full_record, type)
+
+      expect(result).to include('export interface FullRecord extends BaseRecord, Timestamped {')
+      expect(result).to include('  name: string;')
+    end
   end
 
   describe '#build_union_type' do
@@ -369,6 +387,26 @@ RSpec.describe Apiwork::Export::TypeScriptMapper do
 
       expect(result).to include('/** A mixed type */')
     end
+
+    it 'builds discriminated union with multiple variants' do
+      invoice_type = build_type(shape: { number: { type: :string } })
+      payment_type = build_type(shape: { amount: { type: :decimal } })
+      export_with_types = stub_export(types: { invoice: invoice_type, payment: payment_type })
+      mapper_with_types = described_class.new(export_with_types)
+
+      type = build_union_type(
+        discriminator: :kind,
+        variants: [
+          { reference: :invoice, tag: 'invoice', type: :reference },
+          { reference: :payment, tag: 'payment', type: :reference },
+        ],
+      )
+
+      result = mapper_with_types.build_union_type(:tagged, type)
+
+      expect(result).to include("{ kind: 'invoice' } & Invoice")
+      expect(result).to include("{ kind: 'payment' } & Payment")
+    end
   end
 
   describe '#build_enum_type' do
@@ -387,6 +425,14 @@ RSpec.describe Apiwork::Export::TypeScriptMapper do
 
       expect(result).to include('export type SortDirection')
     end
+
+    it 'includes JSDoc description' do
+      enum = build_enum(description: 'Sorting direction', values: %w[asc desc])
+
+      result = mapper.build_enum_type(:sort_direction, enum)
+
+      expect(result).to include('/** Sorting direction */')
+    end
   end
 
   describe '#action_type_name' do
@@ -400,6 +446,12 @@ RSpec.describe Apiwork::Export::TypeScriptMapper do
       result = mapper.action_type_name(:items, :index, 'Request', parent_identifiers: ['invoices'])
 
       expect(result).to eq('InvoicesItemsIndexRequest')
+    end
+
+    it 'generates action type name with multiple parent identifiers' do
+      result = mapper.action_type_name(:adjustments, :create, 'RequestBody', parent_identifiers: %w[invoices items])
+
+      expect(result).to eq('InvoicesItemsAdjustmentsCreateRequestBody')
     end
   end
 
@@ -419,6 +471,98 @@ RSpec.describe Apiwork::Export::TypeScriptMapper do
       expect(result).to include(' * A test')
       expect(result).to include(' * @example "INV-001"')
       expect(result).to include(' */')
+    end
+
+    it 'returns multi-line JSDoc for example only' do
+      result = mapper.jsdoc(example: 'INV-001')
+
+      expect(result).to include('/**')
+      expect(result).to include(' * @example "INV-001"')
+      expect(result).to include(' */')
+    end
+  end
+
+  describe '#format_example' do
+    it 'formats string value with quotes' do
+      expect(mapper.format_example('INV-001')).to eq('"INV-001"')
+    end
+
+    it 'formats numeric value as string' do
+      expect(mapper.format_example(42)).to eq('42')
+    end
+
+    it 'formats hash as JSON' do
+      expect(mapper.format_example({ key: 'value' })).to eq('{"key":"value"}')
+    end
+
+    it 'formats array as JSON' do
+      expect(mapper.format_example([1, 2, 3])).to eq('[1,2,3]')
+    end
+  end
+
+  describe '#build_action_request_query_type' do
+    it 'builds interface with query parameters' do
+      query_params = {
+        page: build_param(optional: true, type: :integer),
+        search: build_param(optional: true, type: :string),
+      }
+
+      result = mapper.build_action_request_query_type(:invoices, :index, query_params)
+
+      expect(result).to include('export interface InvoicesIndexRequestQuery {')
+      expect(result).to include('  page?: number;')
+      expect(result).to include('  search?: string;')
+    end
+  end
+
+  describe '#build_action_request_body_type' do
+    it 'builds interface with body parameters' do
+      body_params = {
+        amount: build_param(type: :decimal),
+        number: build_param(type: :string),
+      }
+
+      result = mapper.build_action_request_body_type(:invoices, :create, body_params)
+
+      expect(result).to include('export interface InvoicesCreateRequestBody {')
+      expect(result).to include('  amount: number;')
+      expect(result).to include('  number: string;')
+    end
+  end
+
+  describe '#build_action_request_type' do
+    it 'builds interface with query and body nested types' do
+      request = {
+        body: { name: build_param(type: :string) },
+        query: { page: build_param(type: :integer) },
+      }
+
+      result = mapper.build_action_request_type(:invoices, :create, request)
+
+      expect(result).to include('export interface InvoicesCreateRequest {')
+      expect(result).to include('  query: InvoicesCreateRequestQuery;')
+      expect(result).to include('  body: InvoicesCreateRequestBody;')
+    end
+  end
+
+  describe '#build_action_response_body_type' do
+    it 'builds type alias for response body' do
+      response_body = build_param(shape: { id: { type: :integer } }, type: :object)
+
+      result = mapper.build_action_response_body_type(:invoices, :show, response_body)
+
+      expect(result).to include('export type InvoicesShowResponseBody =')
+    end
+  end
+
+  describe '#build_action_response_type' do
+    it 'builds interface with body property' do
+      response = { body: build_param(type: :string) }
+
+      result = mapper.build_action_response_type(:invoices, :show, response)
+
+      expect(result).to include('export interface InvoicesShowResponse {')
+      expect(result).to include('  body: InvoicesShowResponseBody;')
     end
   end
 end
