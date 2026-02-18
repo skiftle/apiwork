@@ -543,6 +543,30 @@ RSpec.describe Apiwork::Export::TypeScriptMapper do
       expect(result).to include('  query: InvoicesCreateRequestQuery;')
       expect(result).to include('  body: InvoicesCreateRequestBody;')
     end
+
+    it 'builds interface with query only' do
+      request = {
+        body: {},
+        query: { page: build_param(type: :integer) },
+      }
+
+      result = mapper.build_action_request_type(:invoices, :index, request)
+
+      expect(result).to include('  query: InvoicesIndexRequestQuery;')
+      expect(result).not_to include('body:')
+    end
+
+    it 'builds interface with body only' do
+      request = {
+        body: { name: build_param(type: :string) },
+        query: {},
+      }
+
+      result = mapper.build_action_request_type(:invoices, :create, request)
+
+      expect(result).to include('  body: InvoicesCreateRequestBody;')
+      expect(result).not_to include('query:')
+    end
   end
 
   describe '#build_action_response_body_type' do

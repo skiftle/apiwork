@@ -240,6 +240,14 @@ RSpec.describe Apiwork::Export::ZodMapper do
         expect(mapper.map_field(param, force_optional: false)).to eq('z.string()')
       end
     end
+
+    context 'with force_optional true' do
+      it 'forces optional modifier on non-optional param' do
+        param = build_param(type: :string)
+
+        expect(mapper.map_field(param, force_optional: true)).to eq('z.string().optional()')
+      end
+    end
   end
 
   describe '#map_param' do
@@ -310,6 +318,18 @@ RSpec.describe Apiwork::Export::ZodMapper do
         param = build_param(max: 5, min: 0, of: { type: :string }, shape: {}, type: :array)
 
         expect(mapper.map_param(param)).to eq('z.array(z.string()).min(0).max(5)')
+      end
+
+      it 'appends min constraint only' do
+        param = build_param(min: 1, of: { type: :string }, shape: {}, type: :array)
+
+        expect(mapper.map_param(param)).to eq('z.array(z.string()).min(1)')
+      end
+
+      it 'appends max constraint only' do
+        param = build_param(max: 10, of: { type: :string }, shape: {}, type: :array)
+
+        expect(mapper.map_param(param)).to eq('z.array(z.string()).max(10)')
       end
     end
 
@@ -451,6 +471,18 @@ RSpec.describe Apiwork::Export::ZodMapper do
 
       expect(result).to include('BaseRecordSchema.merge(TimestampedSchema).extend({')
       expect(result).to include('  name: z.string()')
+    end
+
+    it 'wraps in z.lazy when recursive even with extends' do
+      type = build_type(
+        extends: [:base_record],
+        shape: { name: { type: :string } },
+      )
+
+      result = mapper.build_object_schema(:recursive_record, type, recursive: true)
+
+      expect(result).to include(': z.ZodType<RecursiveRecord>')
+      expect(result).to include('z.lazy(() => z.object({')
     end
   end
 
@@ -612,6 +644,30 @@ RSpec.describe Apiwork::Export::ZodMapper do
       expect(result).to include('InvoicesCreateRequestSchema = z.object({')
       expect(result).to include('  query: InvoicesCreateRequestQuerySchema')
       expect(result).to include('  body: InvoicesCreateRequestBodySchema')
+    end
+
+    it 'builds schema with query only' do
+      request = {
+        body: {},
+        query: { page: build_param(type: :integer) },
+      }
+
+      result = mapper.build_action_request_schema(:invoices, :index, request)
+
+      expect(result).to include('  query: InvoicesIndexRequestQuerySchema')
+      expect(result).not_to include('body:')
+    end
+
+    it 'builds schema with body only' do
+      request = {
+        body: { name: build_param(type: :string) },
+        query: {},
+      }
+
+      result = mapper.build_action_request_schema(:invoices, :create, request)
+
+      expect(result).to include('  body: InvoicesCreateRequestBodySchema')
+      expect(result).not_to include('query:')
     end
   end
 

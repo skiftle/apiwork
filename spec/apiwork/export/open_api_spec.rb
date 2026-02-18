@@ -53,10 +53,22 @@ RSpec.describe Apiwork::Export::OpenAPI do
         integer :min_field, max: 100, min: 0
       end
 
+      object :receipt do
+        string :number
+      end
+
       object :payment do
         integer :id
         reference :invoice
+        reference :receipt, nullable: true
         string :method
+      end
+
+      object :line_item do
+        string :name
+        array :tags do
+          string
+        end
       end
 
       object :base_record do
@@ -66,6 +78,10 @@ RSpec.describe Apiwork::Export::OpenAPI do
       object :extended_record do
         extends :base_record
         string :name
+      end
+
+      object :simple_record do
+        extends :base_record
       end
 
       union :mixed_type do
@@ -387,6 +403,49 @@ RSpec.describe Apiwork::Export::OpenAPI do
 
       expect(mapping).to include('invoice' => '#/components/schemas/invoice')
       expect(mapping).to include('payment' => '#/components/schemas/payment')
+    end
+  end
+
+  describe 'Array mapping' do
+    it 'generates typed array with items' do
+      tags_property = schemas['line_item'][:properties]['tags']
+
+      expect(tags_property[:type]).to eq('array')
+      expect(tags_property[:items][:type]).to eq('string')
+    end
+  end
+
+  describe 'Nullable reference' do
+    it 'generates oneOf with $ref and null type' do
+      receipt_property = schemas['payment'][:properties]['receipt']
+
+      expect(receipt_property[:oneOf]).to be_an(Array)
+      expect(receipt_property[:oneOf]).to include({ '$ref': '#/components/schemas/receipt' })
+      expect(receipt_property[:oneOf]).to include({ type: 'null' })
+    end
+  end
+
+  describe 'Extends-only mapping' do
+    it 'generates $ref directly for single extends without properties' do
+      simple_schema = schemas['simple_record']
+
+      expect(simple_schema).to eq({ '$ref': '#/components/schemas/base_record' })
+    end
+  end
+
+  describe 'Nested resource paths' do
+    it 'generates paths for nested resources' do
+      nested_paths = spec[:paths].keys.select { |path| path.include?('/items') }
+
+      expect(nested_paths).not_to be_empty
+    end
+  end
+
+  describe 'YAML serialization' do
+    it 'serializes to valid YAML' do
+      yaml = generator.serialize(spec, format: :yaml)
+
+      expect { YAML.safe_load(yaml) }.not_to raise_error
     end
   end
 end
