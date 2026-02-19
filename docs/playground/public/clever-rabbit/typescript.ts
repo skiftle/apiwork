@@ -24,7 +24,6 @@ export interface LineItem {
 
 export interface LineItemNestedCreatePayload {
   OP?: 'create';
-  id?: string;
   productName: string;
   quantity?: null | number;
   unitPrice?: null | number;
@@ -187,7 +186,6 @@ export interface ShippingAddressNestedCreatePayload {
   OP?: 'create';
   city: string;
   country: string;
-  id?: string;
   postalCode: string;
   street: string;
 }

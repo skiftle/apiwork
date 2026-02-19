@@ -87,7 +87,7 @@ module Apiwork
 
               object(type_name) do |object|
                 object.literal(Constants::OP, optional: true, value: action_name.to_s)
-                object.param(:id, optional: writable, type: primary_key_type)
+                object.param(:id, optional: action_name != :delete, type: primary_key_type) unless action_name == :create
 
                 next unless writable
 

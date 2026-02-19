@@ -644,18 +644,6 @@
           "type": "literal",
           "value": "create"
         },
-        "id": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        },
         "product_name": {
           "default": null,
           "deprecated": false,
@@ -1745,18 +1733,6 @@
           "example": null,
           "nullable": false,
           "optional": false,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        },
-        "id": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
           "type": "string",
           "format": null,
           "max": null,

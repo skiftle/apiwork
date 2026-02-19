@@ -35,8 +35,7 @@ export const CommentCreatePayloadSchema = z.object({
 export const CommentNestedCreatePayloadSchema = z.object({
   OP: z.literal('create').optional(),
   author: z.string(),
-  body: z.string(),
-  id: z.string().optional()
+  body: z.string()
 });
 
 export const CommentNestedDeletePayloadSchema = z.object({
@@ -94,7 +93,6 @@ export const ProfileIncludeSchema = z.object({
 export const ProfileNestedCreatePayloadSchema = z.object({
   OP: z.literal('create').optional(),
   bio: z.string().nullable().optional(),
-  id: z.string().optional(),
   website: z.string().nullable().optional()
 });
 
@@ -197,7 +195,6 @@ export const PostIndexSuccessResponseBodySchema = z.object({
 export const PostNestedCreatePayloadSchema = z.object({
   OP: z.literal('create').optional(),
   comments: z.array(CommentNestedPayloadSchema).optional(),
-  id: z.string().optional(),
   title: z.string()
 });
 
@@ -479,7 +476,6 @@ export interface CommentNestedCreatePayload {
   OP?: 'create';
   author: string;
   body: string;
-  id?: string;
 }
 
 export interface CommentNestedDeletePayload {
@@ -616,7 +612,6 @@ export interface PostIndexSuccessResponseBody {
 export interface PostNestedCreatePayload {
   OP?: 'create';
   comments?: CommentNestedPayload[];
-  id?: string;
   title: string;
 }
 
@@ -720,7 +715,6 @@ export interface ProfileInclude {
 export interface ProfileNestedCreatePayload {
   OP?: 'create';
   bio?: null | string;
-  id?: string;
   website?: null | string;
 }
 

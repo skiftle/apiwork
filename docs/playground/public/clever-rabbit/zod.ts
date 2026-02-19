@@ -28,7 +28,6 @@ export const LineItemSchema = z.object({
 
 export const LineItemNestedCreatePayloadSchema = z.object({
   OP: z.literal('create').optional(),
-  id: z.string().optional(),
   productName: z.string(),
   quantity: z.number().int().nullable().optional(),
   unitPrice: z.number().nullable().optional()
@@ -86,7 +85,6 @@ export const ShippingAddressNestedCreatePayloadSchema = z.object({
   OP: z.literal('create').optional(),
   city: z.string(),
   country: z.string(),
-  id: z.string().optional(),
   postalCode: z.string(),
   street: z.string()
 });
@@ -246,7 +244,6 @@ export interface LineItem {
 
 export interface LineItemNestedCreatePayload {
   OP?: 'create';
-  id?: string;
   productName: string;
   quantity?: null | number;
   unitPrice?: null | number;
@@ -409,7 +406,6 @@ export interface ShippingAddressNestedCreatePayload {
   OP?: 'create';
   city: string;
   country: string;
-  id?: string;
   postalCode: string;
   street: string;
 }

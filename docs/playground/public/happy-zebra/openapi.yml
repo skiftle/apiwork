@@ -410,8 +410,6 @@ components:
           type: string
         body:
           type: string
-        id:
-          type: string
       type: object
       required:
       - author
@@ -607,8 +605,6 @@ components:
           items:
             "$ref": "#/components/schemas/commentNestedPayload"
           type: array
-        id:
-          type: string
         title:
           type: string
       type: object
@@ -729,8 +725,6 @@ components:
           type:
           - string
           - 'null'
-        id:
-          type: string
         website:
           type:
           - string

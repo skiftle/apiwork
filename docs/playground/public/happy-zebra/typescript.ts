@@ -24,7 +24,6 @@ export interface CommentNestedCreatePayload {
   OP?: 'create';
   author: string;
   body: string;
-  id?: string;
 }
 
 export interface CommentNestedDeletePayload {
@@ -161,7 +160,6 @@ export interface PostIndexSuccessResponseBody {
 export interface PostNestedCreatePayload {
   OP?: 'create';
   comments?: CommentNestedPayload[];
-  id?: string;
   title: string;
 }
 
@@ -265,7 +263,6 @@ export interface ProfileInclude {
 export interface ProfileNestedCreatePayload {
   OP?: 'create';
   bio?: null | string;
-  id?: string;
   website?: null | string;
 }
 

@@ -1449,18 +1449,6 @@
           "max": null,
           "min": null
         },
-        "id": {
-          "default": null,
-          "deprecated": false,
-          "description": null,
-          "example": null,
-          "nullable": false,
-          "optional": true,
-          "type": "string",
-          "format": null,
-          "max": null,
-          "min": null
-        },
         "price": {
           "default": null,
           "deprecated": false,

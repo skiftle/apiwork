@@ -103,9 +103,8 @@ RSpec.describe 'Writing types', type: :integration do
       expect(param.optional?).to be(true)
     end
 
-    it 'has optional id' do
-      expect(payload.shape[:id].type).to eq(:integer)
-      expect(payload.shape[:id].optional?).to be(true)
+    it 'does not include id' do
+      expect(payload.shape.keys).not_to include(:id)
     end
 
     it 'includes writable fields' do
@@ -166,7 +165,8 @@ RSpec.describe 'Writing types', type: :integration do
     it 'has adjustment nested create payload with writable fields' do
       payload = types[:adjustment_nested_create_payload]
 
-      expect(payload.shape.keys).to include(:OP, :id, :amount, :description)
+      expect(payload.shape.keys).to include(:OP, :amount, :description)
+      expect(payload.shape.keys).not_to include(:id)
     end
 
     it 'has adjustment nested delete payload with only OP and id' do

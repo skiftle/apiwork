@@ -425,8 +425,6 @@ components:
           type:
           - string
           - 'null'
-        id:
-          type: string
         price:
           type:
           - number

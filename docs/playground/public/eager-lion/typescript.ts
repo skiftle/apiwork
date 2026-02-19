@@ -163,7 +163,6 @@ export interface Line {
 export interface LineNestedCreatePayload {
   OP?: 'create';
   description?: null | string;
-  id?: string;
   price?: null | number;
   quantity?: null | number;
 }

@@ -47,7 +47,6 @@ export const LineSchema = z.object({
 export const LineNestedCreatePayloadSchema = z.object({
   OP: z.literal('create').optional(),
   description: z.string().nullable().optional(),
-  id: z.string().optional(),
   price: z.number().nullable().optional(),
   quantity: z.number().int().nullable().optional()
 });
@@ -381,7 +380,6 @@ export interface Line {
 export interface LineNestedCreatePayload {
   OP?: 'create';
   description?: null | string;
-  id?: string;
   price?: null | number;
   quantity?: null | number;
 }
