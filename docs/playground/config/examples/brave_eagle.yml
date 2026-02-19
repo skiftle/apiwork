@@ -51,7 +51,7 @@ scenarios:
     description: Single task with associations
     order: 2
     method: GET
-    path: /brave_eagle/tasks/:id
+    path: /brave_eagle/tasks/:task_id
     setup:
       - create: user
         fields:
@@ -81,11 +81,6 @@ scenarios:
     order: 3
     method: POST
     path: /brave_eagle/tasks
-    setup:
-      - create: user
-        fields:
-          name: Alice Brown
-          email: alice@example.com
     body:
       task:
         title: New feature implementation
@@ -93,7 +88,6 @@ scenarios:
         status: pending
         priority: high
         due_date: "2024-02-01"
-        assignee_id: :user_id
 
   - title: Archive a task (deprecated)
     description: Deprecated action example

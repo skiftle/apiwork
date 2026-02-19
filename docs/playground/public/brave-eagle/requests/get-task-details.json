@@ -1,13 +1,22 @@
 {
   "request": {
     "method": "GET",
-    "path": "/brave_eagle/tasks/eaa10144-98eb-559c-abf3-2ad6e649e9bf"
+    "path": "/brave_eagle/tasks/0ec28309-26a2-5f19-92c0-3b60b8796f2e"
   },
   "response": {
     "body": {
-      "status": 404,
-      "error": "Not Found"
+      "task": {
+        "id": "0ec28309-26a2-5f19-92c0-3b60b8796f2e",
+        "title": "Implement login",
+        "description": "Add OAuth2 support",
+        "status": "in_progress",
+        "priority": "critical",
+        "dueDate": "2024-02-01T00:00:00.000Z",
+        "archived": false,
+        "createdAt": "2024-01-01T12:00:00.000Z",
+        "updatedAt": "2024-01-01T12:00:00.000Z"
+      }
     },
-    "status": 404
+    "status": 200
   }
 }

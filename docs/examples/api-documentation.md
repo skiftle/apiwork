@@ -158,15 +158,24 @@ GET /brave_eagle/tasks
 **Request**
 
 ```http
-GET /brave_eagle/tasks/eaa10144-98eb-559c-abf3-2ad6e649e9bf
+GET /brave_eagle/tasks/0ec28309-26a2-5f19-92c0-3b60b8796f2e
 ```
 
-**Response** `404`
+**Response** `200`
 
 ```json
 {
-  "status": 404,
-  "error": "Not Found"
+  "task": {
+    "id": "0ec28309-26a2-5f19-92c0-3b60b8796f2e",
+    "title": "Implement login",
+    "description": "Add OAuth2 support",
+    "status": "in_progress",
+    "priority": "critical",
+    "dueDate": "2024-02-01T00:00:00.000Z",
+    "archived": false,
+    "createdAt": "2024-01-01T12:00:00.000Z",
+    "updatedAt": "2024-01-01T12:00:00.000Z"
+  }
 }
 ```
 
@@ -187,38 +196,26 @@ Content-Type: application/json
     "description": "Implement the new dashboard widget",
     "status": "pending",
     "priority": "high",
-    "due_date": "2024-02-01",
-    "assignee_id": "ceec91f6-d3ad-551a-8634-18df05654979"
+    "due_date": "2024-02-01"
   }
 }
 ```
 
-**Response** `400`
+**Response** `201`
 
 ```json
 {
-  "issues": [
-    {
-      "code": "field_unknown",
-      "detail": "Unknown field",
-      "meta": {
-        "allowed": [
-          "title",
-          "description",
-          "status",
-          "priority",
-          "due_date"
-        ],
-        "field": "assignee_id"
-      },
-      "path": [
-        "task",
-        "assignee_id"
-      ],
-      "pointer": "/task/assignee_id"
-    }
-  ],
-  "layer": "contract"
+  "task": {
+    "id": "0ec28309-26a2-5f19-92c0-3b60b8796f2e",
+    "title": "New feature implementation",
+    "description": "Implement the new dashboard widget",
+    "status": "pending",
+    "priority": "high",
+    "dueDate": "2024-02-01T00:00:00.000Z",
+    "archived": false,
+    "createdAt": "2024-01-01T12:00:00.000Z",
+    "updatedAt": "2024-01-01T12:00:00.000Z"
+  }
 }
 ```
 
