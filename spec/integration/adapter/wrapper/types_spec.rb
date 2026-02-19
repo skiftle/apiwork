@@ -51,25 +51,6 @@ RSpec.describe 'Wrapper types', type: :integration do
       expect(param.type).to eq(:object)
       expect(param.optional?).to be(true)
     end
-
-    it 'has pagination metadata reference' do
-      param = body.shape[:pagination]
-
-      expect(param.type).to eq(:reference)
-      expect(param.reference).to eq(:offset_pagination)
-      expect(param.optional?).to be(false)
-    end
-  end
-
-  describe 'cursor collection response body' do
-    let(:body) { types[:activity_index_success_response_body] }
-
-    it 'has cursor pagination metadata reference' do
-      param = body.shape[:pagination]
-
-      expect(param.type).to eq(:reference)
-      expect(param.reference).to eq(:cursor_pagination)
-    end
   end
 
   describe 'create response body' do

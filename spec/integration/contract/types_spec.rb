@@ -150,13 +150,13 @@ RSpec.describe 'Contract types', type: :integration do
     end
 
     it 'has API-level enums defined' do
-      expect(api_class.enum_registry.key?(:sort_direction)).to be(true)
-      expect(api_class.enum_values(:sort_direction)).to eq(%i[asc desc])
+      expect(api_class.enum_registry.key?(:method)).to be(true)
+      expect(api_class.enum_values(:method)).to eq(%i[credit_card bank_transfer cash])
     end
 
     it 'exposes types via type registry' do
       expect(api_class.type?(:error_detail)).to be(true)
-      expect(api_class.enum?(:sort_direction)).to be(true)
+      expect(api_class.enum?(:method)).to be(true)
     end
   end
 

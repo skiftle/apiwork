@@ -35,7 +35,7 @@ RSpec.describe 'Introspection', type: :integration do
     it 'includes enums from model definitions' do
       enum_keys = introspection.enums.keys
 
-      expect(enum_keys).to include(:sort_direction, :invoice_status, :payment_method, :payment_status)
+      expect(enum_keys).to include(:invoice_status, :layer, :payment_method, :payment_status)
     end
 
     it 'includes error codes' do
@@ -145,8 +145,8 @@ RSpec.describe 'Introspection', type: :integration do
   end
 
   describe 'Enum introspection' do
-    it 'includes sort_direction values' do
-      expect(introspection.enums[:sort_direction].values).to eq(%w[asc desc])
+    it 'includes layer values' do
+      expect(introspection.enums[:layer].values).to eq(%w[http contract domain])
     end
 
     it 'includes invoice_status values' do
@@ -162,7 +162,7 @@ RSpec.describe 'Introspection', type: :integration do
     end
 
     it 'serializes enum to hash' do
-      expect(introspection.enums[:sort_direction].to_h).to have_key(:values)
+      expect(introspection.enums[:invoice_status].to_h).to have_key(:values)
     end
   end
 

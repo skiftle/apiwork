@@ -136,25 +136,24 @@ RSpec.describe 'Introspection param types', type: :integration do
       expect(param.scalar?).to be(false)
     end
 
-    it 'returns union param for filter fields' do
-      param = introspection.types[:invoice_filter].shape[:number]
+    it 'returns union type with predicates' do
+      customer = introspection.types[:customer]
 
-      expect(param.type).to eq(:union)
-      expect(param.union?).to be(true)
-      expect(param.variants).not_to be_empty
-      expect(param.scalar?).to be(false)
+      expect(customer.type).to eq(:union)
+      expect(customer.union?).to be(true)
+      expect(customer.variants).not_to be_empty
     end
   end
 
   describe 'Param base predicates' do
     it 'returns optional true for optional params' do
-      param = introspection.types[:invoice_create_payload].shape[:notes]
+      param = introspection.types[:invoice_show_success_response_body].shape[:meta]
 
       expect(param.optional?).to be(true)
     end
 
     it 'returns optional false for required params' do
-      param = introspection.types[:invoice_create_payload].shape[:number]
+      param = introspection.types[:invoice].shape[:number]
 
       expect(param.optional?).to be(false)
     end
