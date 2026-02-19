@@ -107,15 +107,15 @@ scenarios:
       - create: line_item
         fields:
           order_id: :order_id
-          product_name: Widget to Remove
-          quantity: 1
-          unit_price: 29.99
-      - create: line_item
-        fields:
-          order_id: :order_id
           product_name: Widget to Keep
           quantity: 2
           unit_price: 19.99
+      - create: line_item
+        fields:
+          order_id: :order_id
+          product_name: Widget to Remove
+          quantity: 1
+          unit_price: 29.99
     body:
       order:
         line_items:

@@ -348,9 +348,9 @@ Content-Type: application/json
     "lineItems": [
       {
         "id": "ad73acbb-0926-5060-9b75-5888bde61fc7",
-        "productName": "Widget to Remove",
-        "quantity": 1,
-        "unitPrice": "29.99"
+        "productName": "Widget to Keep",
+        "quantity": 2,
+        "unitPrice": "19.99"
       }
     ],
     "shippingAddress": null
