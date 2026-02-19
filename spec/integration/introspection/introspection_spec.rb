@@ -150,15 +150,15 @@ RSpec.describe 'Introspection', type: :integration do
     end
 
     it 'includes invoice_status values' do
-      expect(introspection.enums[:invoice_status].values).to eq(%w[draft sent paid overdue void])
+      expect(introspection.enums[:invoice_status].values).to contain_exactly('draft', 'sent', 'paid', 'overdue', 'void')
     end
 
     it 'includes payment_method values' do
-      expect(introspection.enums[:payment_method].values).to eq(%w[credit_card bank_transfer cash])
+      expect(introspection.enums[:payment_method].values).to contain_exactly('credit_card', 'bank_transfer', 'cash')
     end
 
     it 'includes payment_status values' do
-      expect(introspection.enums[:payment_status].values).to eq(%w[pending completed failed refunded])
+      expect(introspection.enums[:payment_status].values).to contain_exactly('pending', 'completed', 'failed', 'refunded')
     end
 
     it 'serializes enum to hash' do

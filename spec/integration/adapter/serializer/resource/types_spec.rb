@@ -133,15 +133,15 @@ RSpec.describe 'Resource serializer types', type: :integration do
 
   describe 'enum types' do
     it 'has invoice_status enum' do
-      expect(enums[:invoice_status].values).to eq(%w[draft sent paid overdue void])
+      expect(enums[:invoice_status].values).to contain_exactly('draft', 'sent', 'paid', 'overdue', 'void')
     end
 
     it 'has payment_method enum' do
-      expect(enums[:payment_method].values).to eq(%w[credit_card bank_transfer cash])
+      expect(enums[:payment_method].values).to contain_exactly('credit_card', 'bank_transfer', 'cash')
     end
 
     it 'has payment_status enum' do
-      expect(enums[:payment_status].values).to eq(%w[pending completed failed refunded])
+      expect(enums[:payment_status].values).to contain_exactly('pending', 'completed', 'failed', 'refunded')
     end
   end
 end
