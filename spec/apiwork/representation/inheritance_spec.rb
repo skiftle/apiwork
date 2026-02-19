@@ -31,12 +31,12 @@ RSpec.describe Apiwork::Representation::Inheritance do
         abstract!
         model Customer
       end
-      sub = Class.new(base) do
+      subclass = Class.new(base) do
         model PersonCustomer
         type_name :person
       end
       inheritance = described_class.new(base)
-      inheritance.register(sub)
+      inheritance.register(subclass)
 
       expect(inheritance.mapping).to eq({ 'person' => 'PersonCustomer' })
     end
@@ -49,14 +49,14 @@ RSpec.describe Apiwork::Representation::Inheritance do
           abstract!
           model Customer
         end
-        sub = Class.new(base) do
+        subclass = Class.new(base) do
           model PersonCustomer
         end
         inheritance = described_class.new(base)
-        inheritance.register(sub)
+        inheritance.register(subclass)
         record = PersonCustomer.new
 
-        expect(inheritance.resolve(record)).to eq(sub)
+        expect(inheritance.resolve(record)).to eq(subclass)
       end
     end
 
@@ -81,12 +81,12 @@ RSpec.describe Apiwork::Representation::Inheritance do
           abstract!
           model Customer
         end
-        sub = Class.new(base) do
+        subclass = Class.new(base) do
           model PersonCustomer
           type_name :person
         end
         inheritance = described_class.new(base)
-        inheritance.register(sub)
+        inheritance.register(subclass)
 
         expect(inheritance.transform?).to be(true)
       end
@@ -98,11 +98,11 @@ RSpec.describe Apiwork::Representation::Inheritance do
           abstract!
           model Customer
         end
-        sub = Class.new(base) do
+        subclass = Class.new(base) do
           model PersonCustomer
         end
         inheritance = described_class.new(base)
-        inheritance.register(sub)
+        inheritance.register(subclass)
 
         expect(inheritance.transform?).to be(false)
       end

@@ -136,10 +136,10 @@ RSpec.describe 'Contract inheritance', type: :integration do
     end
 
     let(:parent_contract) do
-      ec = external_contract
+      imported_contract = external_contract
 
       create_test_contract do
-        import ec, as: :ext
+        import imported_contract, as: :ext
 
         object :parent_type do
           string :name
@@ -161,10 +161,8 @@ RSpec.describe 'Contract inheritance', type: :integration do
         end
       end
 
-      oc = other_contract
-
       child = create_child_contract(parent_contract) do
-        import oc, as: :other
+        import other_contract, as: :other
       end
 
       expect(child.resolve_custom_type(:parent_type)).not_to be_nil

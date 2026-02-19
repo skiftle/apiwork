@@ -415,12 +415,12 @@ RSpec.describe Apiwork::Adapter::Standard::Capability::Writing::Operation::Issue
       end
 
       it 'includes association name in path' do
-        association_issue = issues.find { |i| i.path.include?(:items) }
+        association_issue = issues.find { |issue| issue.path.include?(:items) }
         expect(association_issue.path).to include(:items)
       end
 
       it 'includes index in path' do
-        association_issue = issues.find { |i| i.path.include?(:items) }
+        association_issue = issues.find { |issue| issue.path.include?(:items) }
         expect(association_issue.path).to eq([:items, 0, :description])
       end
     end
@@ -444,12 +444,12 @@ RSpec.describe Apiwork::Adapter::Standard::Capability::Writing::Operation::Issue
       end
 
       it 'includes correct index for first item' do
-        association_issues = issues.select { |i| i.path.include?(:items) }
+        association_issues = issues.select { |issue| issue.path.include?(:items) }
         expect(association_issues.first.path).to eq([:items, 0, :description])
       end
 
       it 'includes correct index for second item' do
-        association_issues = issues.select { |i| i.path.include?(:items) }
+        association_issues = issues.select { |issue| issue.path.include?(:items) }
         expect(association_issues.last.path).to eq([:items, 1, :quantity])
       end
     end
@@ -466,7 +466,7 @@ RSpec.describe Apiwork::Adapter::Standard::Capability::Writing::Operation::Issue
       end
 
       it 'includes association name in path without index' do
-        association_issue = issues.find { |i| i.path.include?(:payment) }
+        association_issue = issues.find { |issue| issue.path.include?(:payment) }
         expect(association_issue.path).to eq([:payment, :amount])
       end
     end

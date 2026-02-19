@@ -6,12 +6,12 @@ RSpec.describe 'Offset pagination', type: :request do
   let!(:customer1) { Customer.create!(email: 'billing@acme.com', name: 'Acme Corp') }
 
   before do
-    25.times do |i|
+    25.times do |index|
       Invoice.create!(
         customer: customer1,
-        due_on: (25 - i).days.from_now,
-        number: "INV-#{format('%03d', i + 1)}",
-        status: i.even? ? :draft : :sent,
+        due_on: (25 - index).days.from_now,
+        number: "INV-#{format('%03d', index + 1)}",
+        status: index.even? ? :draft : :sent,
       )
     end
   end
@@ -79,7 +79,7 @@ RSpec.describe 'Offset pagination', type: :request do
 
       expect(response).to have_http_status(:bad_request)
       body = response.parsed_body
-      issue = body['issues'].find { |i| i['code'] == 'number_too_large' }
+      issue = body['issues'].find { |issue| issue['code'] == 'number_too_large' }
       expect(issue['code']).to eq('number_too_large')
     end
 
@@ -88,7 +88,7 @@ RSpec.describe 'Offset pagination', type: :request do
 
       expect(response).to have_http_status(:bad_request)
       body = response.parsed_body
-      issue = body['issues'].find { |i| i['code'] == 'number_too_small' }
+      issue = body['issues'].find { |issue| issue['code'] == 'number_too_small' }
       expect(issue['code']).to eq('number_too_small')
     end
 

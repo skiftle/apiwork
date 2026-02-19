@@ -36,13 +36,13 @@ RSpec.describe 'Including types', type: :integration do
     end
 
     it 'has boolean variant' do
-      boolean_variant = param.variants.find { |v| v.type == :boolean }
+      boolean_variant = param.variants.find { |variant| variant.type == :boolean }
 
       expect(boolean_variant).not_to be_nil
     end
 
     it 'has reference variant to nested include type' do
-      ref_variant = param.variants.find { |v| v.respond_to?(:reference) }
+      ref_variant = param.variants.find { |variant| variant.respond_to?(:reference) }
 
       expect(ref_variant).not_to be_nil
       expect(ref_variant.reference).to eq(:item_include)

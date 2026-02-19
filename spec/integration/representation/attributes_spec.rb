@@ -38,7 +38,7 @@ RSpec.describe 'Representation attribute serialization', type: :integration do
       results = Api::V1::InvoiceRepresentation.serialize([invoice1, invoice2])
 
       expect(results.length).to eq(2)
-      numbers = results.map { |r| r[:number] }
+      numbers = results.map { |result| result[:number] }
       expect(numbers).to contain_exactly('INV-001', 'INV-002')
     end
 

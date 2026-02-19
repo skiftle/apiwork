@@ -14,7 +14,7 @@ RSpec.describe 'Validation', type: :request do
 
         expect(response).to have_http_status(:bad_request)
         body = response.parsed_body
-        issue = body['issues'].find { |i| i['pointer'] == '/invoice/number' }
+        issue = body['issues'].find { |issue| issue['pointer'] == '/invoice/number' }
         expect(issue['code']).to eq('field_missing')
       end
 
@@ -25,7 +25,7 @@ RSpec.describe 'Validation', type: :request do
 
         expect(response).to have_http_status(:bad_request)
         body = response.parsed_body
-        issue = body['issues'].find { |i| i['pointer'] == '/invoice/sent' }
+        issue = body['issues'].find { |issue| issue['pointer'] == '/invoice/sent' }
         expect(issue['code']).to eq('type_invalid')
       end
 
@@ -36,7 +36,7 @@ RSpec.describe 'Validation', type: :request do
 
         expect(response).to have_http_status(:bad_request)
         body = response.parsed_body
-        issue = body['issues'].find { |i| i['code'] == 'field_unknown' }
+        issue = body['issues'].find { |issue| issue['code'] == 'field_unknown' }
         expect(issue['code']).to eq('field_unknown')
       end
 
@@ -47,7 +47,7 @@ RSpec.describe 'Validation', type: :request do
 
         expect(response).to have_http_status(:bad_request)
         body = response.parsed_body
-        pointers = body['issues'].map { |i| i['pointer'] }
+        pointers = body['issues'].map { |issue| issue['pointer'] }
         expect(pointers).to include('/invoice/number')
         expect(pointers).to include('/invoice/sent')
       end
@@ -59,7 +59,7 @@ RSpec.describe 'Validation', type: :request do
 
         expect(response).to have_http_status(:bad_request)
         body = response.parsed_body
-        issue = body['issues'].find { |i| i['pointer'] == '/invoice/number' }
+        issue = body['issues'].find { |issue| issue['pointer'] == '/invoice/number' }
         expect(issue['code']).to eq('field_missing')
       end
 
@@ -110,7 +110,7 @@ RSpec.describe 'Validation', type: :request do
 
         expect(response).to have_http_status(:bad_request)
         body = response.parsed_body
-        issue = body['issues'].find { |i| i['pointer'] == '/invoice/number' }
+        issue = body['issues'].find { |issue| issue['pointer'] == '/invoice/number' }
         expect(issue['pointer']).to eq('/invoice/number')
         expect(issue['path']).to eq(%w[invoice number])
       end
@@ -156,7 +156,7 @@ RSpec.describe 'Validation', type: :request do
 
         expect(response).to have_http_status(:bad_request)
         body = response.parsed_body
-        issue = body['issues'].find { |i| i['pointer'] == '/invoice/sent' }
+        issue = body['issues'].find { |issue| issue['pointer'] == '/invoice/sent' }
         expect(issue['code']).to eq('type_invalid')
       end
     end

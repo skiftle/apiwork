@@ -16,10 +16,10 @@ RSpec.describe 'Contract imports', type: :integration do
     end
 
     it 'imports object types from another contract' do
-      ic = invoice_contract
+      imported_contract = invoice_contract
 
       importing_contract = create_test_contract do
-        import ic, as: :invoice
+        import imported_contract, as: :invoice
 
         action :create do
           request do
@@ -35,10 +35,10 @@ RSpec.describe 'Contract imports', type: :integration do
     end
 
     it 'imports enum types from another contract' do
-      ic = invoice_contract
+      imported_contract = invoice_contract
 
       importing_contract = create_test_contract do
-        import ic, as: :invoice
+        import imported_contract, as: :invoice
 
         action :create do
           request do
@@ -54,20 +54,18 @@ RSpec.describe 'Contract imports', type: :integration do
     end
 
     it 'supports multiple imports' do
-      ic = invoice_contract
+      first_contract = invoice_contract
 
-      customer_contract = create_test_contract do
+      second_contract = create_test_contract do
         object :contact do
           string :name
           string :email
         end
       end
 
-      cc = customer_contract
-
       importing_contract = create_test_contract do
-        import ic, as: :invoice
-        import cc, as: :customer
+        import first_contract, as: :invoice
+        import second_contract, as: :customer
       end
 
       expect(importing_contract.resolve_custom_type(:invoice_address)).not_to be_nil
@@ -95,11 +93,11 @@ RSpec.describe 'Contract imports', type: :integration do
     end
 
     it 'raises ConfigurationError for non-Symbol alias' do
-      ic = create_test_contract
+      imported_contract = create_test_contract
 
       expect do
         create_test_contract do
-          import ic, as: 'invoice'
+          import imported_contract, as: 'invoice'
         end
       end.to raise_error(Apiwork::ConfigurationError, /import alias must be a Symbol/)
     end
@@ -113,10 +111,8 @@ RSpec.describe 'Contract imports', type: :integration do
         end
       end
 
-      bc = base_contract
-
       importing_contract = create_test_contract do
-        import bc, as: :base
+        import base_contract, as: :base
 
         object :metadata do
           string :version

@@ -52,7 +52,7 @@ RSpec.describe 'Filtering types', type: :integration do
     end
 
     it 'has raw string variant and filter reference variant' do
-      variant_types = param.variants.map { |v| v.respond_to?(:reference) ? v.reference : v.type }
+      variant_types = param.variants.map { |variant| variant.respond_to?(:reference) ? variant.reference : variant.type }
 
       expect(variant_types).to include(:string)
       expect(variant_types).to include(:string_filter)
@@ -63,7 +63,7 @@ RSpec.describe 'Filtering types', type: :integration do
     let(:param) { types[:invoice_filter].shape[:notes] }
 
     it 'references nullable filter variant' do
-      variant_types = param.variants.map { |v| v.respond_to?(:reference) ? v.reference : v.type }
+      variant_types = param.variants.map { |variant| variant.respond_to?(:reference) ? variant.reference : variant.type }
 
       expect(variant_types).to include(:nullable_string_filter)
     end
@@ -86,7 +86,7 @@ RSpec.describe 'Filtering types', type: :integration do
     end
 
     it 'has enum reference variant' do
-      variant_refs = filter.variants.select { |v| v.respond_to?(:reference) }.map(&:reference)
+      variant_refs = filter.variants.select { |variant| variant.respond_to?(:reference) }.map(&:reference)
 
       expect(variant_refs).to include(:invoice_status)
     end
@@ -96,7 +96,7 @@ RSpec.describe 'Filtering types', type: :integration do
     let(:param) { types[:invoice_filter].shape[:sent] }
 
     it 'has type union with boolean and filter reference' do
-      variant_types = param.variants.map { |v| v.respond_to?(:reference) ? v.reference : v.type }
+      variant_types = param.variants.map { |variant| variant.respond_to?(:reference) ? variant.reference : variant.type }
 
       expect(variant_types).to include(:boolean)
       expect(variant_types).to include(:nullable_boolean_filter)

@@ -7,11 +7,11 @@ RSpec.describe 'Cursor pagination', type: :request do
   let!(:invoice1) { Invoice.create!(customer: customer1, number: 'INV-001', status: :draft) }
 
   before do
-    25.times do |i|
+    25.times do |index|
       Activity.create!(
-        action: "action_#{format('%03d', i + 1)}",
-        created_at: (25 - i).days.ago,
-        read: i.even?,
+        action: "action_#{format('%03d', index + 1)}",
+        created_at: (25 - index).days.ago,
+        read: index.even?,
         target: invoice1,
       )
     end
@@ -31,13 +31,13 @@ RSpec.describe 'Cursor pagination', type: :request do
       get '/api/v1/activities', params: { page: { size: 10 } }
       body = response.parsed_body
       next_cursor = body['pagination']['next']
-      first_page_ids = body['activities'].map { |a| a['id'] }
+      first_page_ids = body['activities'].map { |activity| activity['id'] }
 
       get '/api/v1/activities', params: { page: { after: next_cursor, size: 10 } }
 
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
-      second_page_ids = body['activities'].map { |a| a['id'] }
+      second_page_ids = body['activities'].map { |activity| activity['id'] }
       expect(second_page_ids).not_to include(*first_page_ids)
       expect(body['activities'].length).to eq(10)
     end
@@ -104,7 +104,7 @@ RSpec.describe 'Cursor pagination', type: :request do
 
         expect(response).to have_http_status(:bad_request)
         body = response.parsed_body
-        issue = body['issues'].find { |i| i['code'] == 'value_invalid' }
+        issue = body['issues'].find { |issue| issue['code'] == 'value_invalid' }
         expect(issue['path']).to eq(%w[page after])
       end
 
@@ -113,7 +113,7 @@ RSpec.describe 'Cursor pagination', type: :request do
 
         expect(response).to have_http_status(:bad_request)
         body = response.parsed_body
-        issue = body['issues'].find { |i| i['code'] == 'value_invalid' }
+        issue = body['issues'].find { |issue| issue['code'] == 'value_invalid' }
         expect(issue['path']).to eq(%w[page before])
       end
     end
@@ -124,7 +124,7 @@ RSpec.describe 'Cursor pagination', type: :request do
 
         expect(response).to have_http_status(:bad_request)
         body = response.parsed_body
-        issue = body['issues'].find { |i| i['code'] == 'number_too_large' }
+        issue = body['issues'].find { |issue| issue['code'] == 'number_too_large' }
         expect(issue['code']).to eq('number_too_large')
       end
     end

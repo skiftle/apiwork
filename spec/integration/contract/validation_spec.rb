@@ -161,7 +161,7 @@ RSpec.describe 'Contract validation', type: :integration do
       result = shape.validate({ nonexistent: 'value', number: 'INV-001', quantity: 10 })
 
       expect(result).to be_invalid
-      issue = result.issues.find { |i| i.code == :field_unknown }
+      issue = result.issues.find { |issue| issue.code == :field_unknown }
       expect(issue.meta[:field]).to eq(:nonexistent)
     end
 

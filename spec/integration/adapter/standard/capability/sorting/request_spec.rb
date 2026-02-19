@@ -53,7 +53,7 @@ RSpec.describe 'Sorting', type: :request do
 
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
-      ids = body['invoices'].map { |inv| inv['id'] }
+      ids = body['invoices'].map { |invoice| invoice['id'] }
       expect(ids).to eq(ids.sort)
     end
 
@@ -62,7 +62,7 @@ RSpec.describe 'Sorting', type: :request do
 
       expect(response).to have_http_status(:bad_request)
       body = response.parsed_body
-      issue = body['issues'].find { |i| i['code'] == 'field_unknown' }
+      issue = body['issues'].find { |issue| issue['code'] == 'field_unknown' }
       expect(issue['code']).to eq('field_unknown')
     end
 

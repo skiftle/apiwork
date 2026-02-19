@@ -17,7 +17,7 @@ RSpec.describe 'Nested resources', type: :request do
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
       expect(body['items'].length).to eq(2)
-      descriptions = body['items'].map { |i| i['description'] }
+      descriptions = body['items'].map { |item| item['description'] }
       expect(descriptions).to contain_exactly('Consulting hours', 'Software license')
     end
 
@@ -121,7 +121,7 @@ RSpec.describe 'Nested resources', type: :request do
 
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
-      descriptions = body['items'].map { |i| i['description'] }
+      descriptions = body['items'].map { |item| item['description'] }
       expect(descriptions).to include('Consulting hours', 'Software license', 'Support contract')
     end
   end
