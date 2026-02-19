@@ -214,7 +214,7 @@ module Apiwork
         end
 
         def validate_shape_object(value, nested_shape, field_path, max_depth, current_depth)
-          validator = Validator.new(nested_shape)
+          validator = Validator.new(normalize_shape(nested_shape))
           shape_result = validator.validate(
             value,
             max_depth:,
@@ -288,7 +288,7 @@ module Apiwork
             item_path = field_path + [index]
 
             if of_shape
-              validator = Validator.new(of_shape)
+              validator = Validator.new(normalize_shape(of_shape))
               shape_result = validator.validate(
                 item,
                 max_depth:,
@@ -548,7 +548,7 @@ module Apiwork
           if variant_type == :object && variant_shape
             return [build_type_invalid_error(name, value, :object, path), nil] unless value.is_a?(Hash)
 
-            validator = Validator.new(variant_shape)
+            validator = Validator.new(normalize_shape(variant_shape))
             result = validator.validate(
               value,
               max_depth:,
@@ -701,6 +701,16 @@ module Apiwork
           return false unless type
 
           NUMERIC_TYPES.include?(type.to_sym)
+        end
+
+        def normalize_shape(shape)
+          return shape if shape.is_a?(Contract::Object)
+
+          contract_shape = Object.new(@shape.contract_class, action_name: @shape.action_name)
+          shape.params.each do |name, param_options|
+            contract_shape.params[name] = param_options
+          end
+          contract_shape
         end
 
         def translate_detail(code)

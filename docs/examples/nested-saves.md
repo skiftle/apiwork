@@ -326,38 +326,35 @@ Content-Type: application/json
   "order": {
     "line_items": [
       {
-        "id": "987c1624-9b7b-5467-910c-4dc0035b91ee",
-        "_op": "delete"
+        "OP": "delete",
+        "id": "987c1624-9b7b-5467-910c-4dc0035b91ee"
       }
     ]
   }
 }
 ```
 
-**Response** `400`
+**Response** `200`
 
 ```json
 {
-  "issues": [
-    {
-      "code": "field_unknown",
-      "detail": "Unknown field",
-      "meta": {
-        "allowed": [
-          "id"
-        ],
-        "field": "_op"
-      },
-      "path": [
-        "order",
-        "line_items",
-        "0",
-        "_op"
-      ],
-      "pointer": "/order/line_items/0/_op"
-    }
-  ],
-  "layer": "contract"
+  "order": {
+    "id": "38948b8f-2c00-5384-8f16-b1105fcd31fb",
+    "orderNumber": "ORD-001",
+    "status": "pending",
+    "total": null,
+    "createdAt": "2024-01-01T12:00:00.000Z",
+    "updatedAt": "2024-01-01T12:00:00.000Z",
+    "lineItems": [
+      {
+        "id": "ad73acbb-0926-5060-9b75-5888bde61fc7",
+        "productName": "Widget to Remove",
+        "quantity": 1,
+        "unitPrice": "29.99"
+      }
+    ],
+    "shippingAddress": null
+  }
 }
 ```
 

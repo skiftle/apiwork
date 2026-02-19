@@ -42,9 +42,45 @@
   },
   "response": {
     "body": {
-      "status": 500,
-      "error": "Internal Server Error"
+      "profile": {
+        "id": "696f7bb0-6a34-5c02-b53f-46e76dd02494",
+        "name": "Alice",
+        "email": "alice@example.com",
+        "settings": {
+          "theme": "dark",
+          "notifications": true,
+          "language": "en"
+        },
+        "tags": [
+          "developer",
+          "typescript"
+        ],
+        "addresses": [
+          {
+            "street": "123 Main St",
+            "city": "Stockholm",
+            "zip": "12345",
+            "primary": true
+          }
+        ],
+        "preferences": {
+          "ui": {
+            "theme": "compact",
+            "sidebarCollapsed": false
+          },
+          "notifications": {
+            "email": true,
+            "push": false
+          }
+        },
+        "metadata": {
+          "source": "api",
+          "version": 2
+        },
+        "createdAt": "2024-01-01T12:00:00.000Z",
+        "updatedAt": "2024-01-01T12:00:00.000Z"
+      }
     },
-    "status": 500
+    "status": 201
   }
 }

@@ -648,7 +648,12 @@ module Apiwork
           return request if %i[camel pascal kebab].exclude?(key_format)
 
           request.transform do |hash|
-            hash.deep_transform_keys { |key| key.to_s.underscore.to_sym }
+            hash.deep_transform_keys do |key|
+              key_string = key.to_s
+              next key if key_string.match?(/\A[A-Z]+\z/)
+
+              key_string.underscore.to_sym
+            end
           end
         end
 
