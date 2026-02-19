@@ -264,6 +264,8 @@ module Apiwork
       end
 
       def map_primitive(param)
+        return 'z.unknown()' if param.unknown?
+
         format = param.format&.to_sym if param.formattable?
 
         base_type = if format

@@ -80,7 +80,8 @@ module Apiwork
           return unless type_definition.shape.respond_to?(:merged)
 
           type_definition.shape.merged.each do |merged_name|
-            merged_type = @api_class.type_registry[merged_name]
+            resolved_name = resolve_scoped_type_name(merged_name, type_definition.scope) || merged_name
+            merged_type = @api_class.type_registry[resolved_name]
             next unless merged_type&.params
 
             merged_type.params.each do |name, param_options|
