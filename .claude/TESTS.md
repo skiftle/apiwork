@@ -345,6 +345,8 @@ Simple method call on test object?               → Inline: `expect(issue.point
 
 These are the **exact** models and values to use. Copy-paste, do not invent.
 
+Number variables only when there are multiple instances (e.g., `invoice1`, `invoice2`). Single instances use plain names (e.g., `customer`, `service`).
+
 ### Canonical Test World
 
 | Domain | Terms |
@@ -356,10 +358,10 @@ These are the **exact** models and values to use. Copy-paste, do not invent.
 ### Invoice (primary model)
 
 ```ruby
-let!(:customer1) { Customer.create!(email: 'billing@acme.com', name: 'Acme Corp') }
-let!(:invoice1) { Invoice.create!(customer: customer1, due_on: 3.days.from_now, number: 'INV-001', status: :draft) }
-let!(:invoice2) { Invoice.create!(customer: customer1, due_on: 2.days.from_now, notes: 'Rush delivery', number: 'INV-002', status: :sent) }
-let!(:invoice3) { Invoice.create!(customer: customer1, due_on: 1.day.from_now, number: 'INV-003', status: :paid) }
+let!(:customer) { Customer.create!(email: 'billing@acme.com', name: 'Acme Corp') }
+let!(:invoice1) { Invoice.create!(customer:, due_on: 3.days.from_now, number: 'INV-001', status: :draft) }
+let!(:invoice2) { Invoice.create!(customer:, due_on: 2.days.from_now, notes: 'Rush delivery', number: 'INV-002', status: :sent) }
+let!(:invoice3) { Invoice.create!(customer:, due_on: 1.day.from_now, number: 'INV-003', status: :paid) }
 ```
 
 ### Item (nested under Invoice)
@@ -387,20 +389,20 @@ let!(:customer2) { CompanyCustomer.create!(email: 'billing@acme.com', industry: 
 ### Address (has_one on Customer)
 
 ```ruby
-let!(:address1) { Address.create!(city: 'Stockholm', country: 'SE', customer: customer1, street: '123 Main St', zip: '111 22') }
+let!(:address) { Address.create!(city: 'Stockholm', country: 'SE', customer: customer1, street: '123 Main St', zip: '111 22') }
 ```
 
 ### Payment
 
 ```ruby
-let!(:payment1) { Payment.create!(amount: 1500.00, customer: customer1, invoice: invoice1, method: :credit_card, reference: 'ch_abc123', status: :completed) }
-let!(:payment2) { Payment.create!(amount: 500.00, customer: customer1, invoice: invoice2, method: :bank_transfer, reference: 'bt_def456', status: :pending) }
+let!(:payment1) { Payment.create!(amount: 1500.00, customer:, invoice: invoice1, method: :credit_card, reference: 'ch_abc123', status: :completed) }
+let!(:payment2) { Payment.create!(amount: 500.00, customer:, invoice: invoice2, method: :bank_transfer, reference: 'bt_def456', status: :pending) }
 ```
 
 ### Service (nested under Customer)
 
 ```ruby
-let!(:service1) { Service.create!(customer: customer1, description: 'Monthly consulting', name: 'Consulting') }
+let!(:service) { Service.create!(customer:, description: 'Monthly consulting', name: 'Consulting') }
 ```
 
 ### Attachment (nested under Invoice)
@@ -415,7 +417,7 @@ let!(:attachment2) { Attachment.create!(filename: 'image.png', invoice: invoice1
 ```ruby
 let!(:tag1) { Tag.create!(name: 'Priority', slug: 'priority') }
 let!(:tag2) { Tag.create!(name: 'Urgent', slug: 'urgent') }
-let!(:tagging1) { Tagging.create!(tag: tag1, taggable: invoice1) }
+let!(:tagging) { Tagging.create!(tag: tag1, taggable: invoice1) }
 ```
 
 ### Activity (cursor pagination)
@@ -429,7 +431,7 @@ let!(:activity3) { Activity.create!(action: 'payment.received', target: invoice2
 ### Profile (singular resource)
 
 ```ruby
-let!(:profile1) { Profile.create!(bio: 'Billing administrator', email: 'admin@billing.test', name: 'Admin', timezone: 'Europe/Stockholm') }
+let!(:profile) { Profile.create!(bio: 'Billing administrator', email: 'admin@billing.test', name: 'Admin', timezone: 'Europe/Stockholm') }
 ```
 
 ### Bulk records (pagination)
@@ -438,7 +440,7 @@ let!(:profile1) { Profile.create!(bio: 'Billing administrator', email: 'admin@bi
 before do
   25.times do |i|
     Invoice.create!(
-      customer: customer1,
+      customer:,
       due_on: (25 - i).days.from_now,
       number: "INV-#{format('%03d', i + 1)}",
       status: i.even? ? :draft : :sent,

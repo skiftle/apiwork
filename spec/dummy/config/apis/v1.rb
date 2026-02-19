@@ -79,7 +79,14 @@ Apiwork::API.define '/api/v1' do
 
   resources :payments
 
-  resources :services
+  resources :services do
+    member do
+      patch :archive
+      patch :deactivate
+      patch :expire
+      patch :restrict
+    end
+  end
 
   resources :activities
 

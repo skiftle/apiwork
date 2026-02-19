@@ -3,7 +3,9 @@
 module Api
   module V1
     class ServicesController < V1Controller
-      before_action :set_service, only: %i[show update destroy]
+      skip_contract_validation! only: [:deactivate]
+
+      before_action :set_service, only: %i[show update destroy archive deactivate expire restrict]
 
       def index
         expose Service.all
@@ -26,6 +28,22 @@ module Api
       def destroy
         service.destroy
         expose service
+      end
+
+      def archive
+        expose_error :forbidden, detail: 'Service is archived', meta: { reason: 'archived' }, path: [:service]
+      end
+
+      def deactivate
+        expose service
+      end
+
+      def expire
+        expose_error :not_found
+      end
+
+      def restrict
+        expose_error :forbidden
       end
 
       private
