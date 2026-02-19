@@ -73,6 +73,7 @@ spec/integration/
 │   ├── inheritance_spec.rb
 │   ├── types_spec.rb
 │   └── validation_spec.rb
+├── controller/
 ├── export/
 │   ├── key_format_spec.rb
 │   ├── openapi_spec.rb
@@ -107,11 +108,12 @@ spec/integration/
 | `adapter/` (root) | Adapter configuration | `:integration` | Ruby API |
 | `api/` | API DSL definitions, route generation | `:integration` | Ruby API / Rails routes |
 | `contract/` | Type system, imports, inheritance | `:integration` | Ruby API |
+| `controller/` | Controller-level features (expose_error, skip_contract_validation!, expose options) | `:request` | HTTP |
 | `export/` | TypeScript, Zod, OpenAPI generation | `:integration` | `.generate` |
 | `introspection/` | API structure inspection | `:integration` | `.introspect` |
 | `representation/` | Serialization, deserialization | `:integration` | `.serialize` / `.deserialize` |
 
-**All HTTP tests belong in `adapter/standard/`.** No HTTP requests in any other domain.
+**HTTP tests belong in `adapter/standard/` or `controller/`.** Adapter pipeline tests (capabilities, validation, response format) go in `adapter/standard/`. Controller-level features (`expose_error`, `skip_contract_validation!`, `expose` options) go in `controller/`. No HTTP requests in any other domain.
 
 Each capability directory contains two test types:
 - `types_spec.rb` — Verifies generated types via introspection (`type: :integration`)
@@ -134,7 +136,7 @@ Capability directories use consistent file names:
 
 ### Type A: HTTP Request (`type: :request`)
 
-Tests the full HTTP pipeline through the dummy Rails app. Only in `adapter/standard/`.
+Tests the full HTTP pipeline through the dummy Rails app. In `adapter/standard/` or `controller/`.
 
 ```ruby
 RSpec.describe 'String filtering', type: :request do
@@ -594,7 +596,7 @@ end
 | `be_present` / `be_a(Hash)` for structures | Verify specific keys and values |
 | `if` in assertions | Split into separate `it` blocks |
 | Testing Rails behavior | CRUD, 404, model validations |
-| HTTP requests outside `adapter/standard/` | Wrong domain |
+| HTTP requests outside `adapter/standard/` and `controller/` | Wrong domain |
 
 ---
 
@@ -611,7 +613,7 @@ Before an integration test file is done:
 7. Test data from the registry in `TESTS.md` (no invented values)
 8. Max 200 lines per file
 9. Verify specific values, not `be_present` / `be_a`
-10. No HTTP requests outside `adapter/standard/`
+10. No HTTP requests outside `adapter/standard/` and `controller/`
 11. No testing Rails framework behavior
 12. `bundle exec rubocop -A` passes
 13. `bundle exec rspec <file>` passes
