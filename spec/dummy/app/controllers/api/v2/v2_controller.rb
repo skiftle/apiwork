@@ -2,12 +2,7 @@
 
 module Api
   module V2
-    class V2Controller < ApplicationController
-      include Apiwork::Controller
-
-      rescue_from ActiveRecord::RecordNotFound do
-        expose_error :not_found
-      end
+    class V2Controller < ApiController
     end
   end
 end

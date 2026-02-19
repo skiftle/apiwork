@@ -2,12 +2,7 @@
 
 module Api
   module OverrideTest
-    class OverrideTestController < ApplicationController
-      include Apiwork::Controller
-
-      rescue_from ActiveRecord::RecordNotFound do
-        expose_error :not_found
-      end
+    class OverrideTestController < ApiController
     end
   end
 end

@@ -14,19 +14,19 @@ module Api
       end
 
       def create
-        customer = Customer.first || Customer.create!(name: 'Default Customer')
-        address = Address.create!(contract.body[:customer_address].merge(customer:))
+        customer = Customer.first || Customer.create(name: 'Default Customer')
+        address = Address.create(contract.body[:customer_address].merge(customer:))
         expose address
       end
 
       def update
-        address.update!(contract.body[:customer_address])
+        address.update(contract.body[:customer_address])
         expose address
       end
 
       def destroy
-        address.destroy!
-        head :no_content
+        address.destroy
+        expose address
       end
 
       private

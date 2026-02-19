@@ -10,18 +10,18 @@ module Api
       end
 
       def create
-        profile = Profile.create!(contract.body[:profile])
+        profile = Profile.create(contract.body[:profile])
         expose profile
       end
 
       def update
-        profile.update!(contract.body[:profile])
+        profile.update(contract.body[:profile])
         expose profile
       end
 
       def destroy
-        profile.destroy!
-        head :no_content
+        profile.destroy
+        expose profile
       end
 
       private
