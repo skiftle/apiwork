@@ -26,6 +26,8 @@ Apiwork/KeywordShorthand:
 Apiwork/SortHash:
   Enabled: true
   ShorthandsFirst: true
+  ExcludeMethods:
+    - enum
 
 Apiwork/SortKeywords:
   Enabled: true
@@ -33,7 +35,6 @@ Apiwork/SortKeywords:
   Methods:
     - attribute
     - belongs_to
-    - enum
     - field
     - has_many
     - has_one

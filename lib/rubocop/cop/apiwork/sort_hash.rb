@@ -65,8 +65,20 @@ module RuboCop
           return false unless all_symbol_keys?(pairs)
           return false if kwsplat?(node)
           return false if duplicate_keys?(pairs)
+          return false if excluded_method?(node)
 
           true
+        end
+
+        def excluded_method?(node)
+          parent = node.parent
+          return false unless parent&.send_type?
+
+          excluded_methods.include?(parent.method_name.to_s)
+        end
+
+        def excluded_methods
+          cop_config['ExcludeMethods'] || []
         end
 
         def all_symbol_keys?(pairs)

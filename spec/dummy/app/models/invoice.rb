@@ -11,7 +11,7 @@ class Invoice < ApplicationRecord
 
   accepts_nested_attributes_for :items, allow_destroy: true
 
-  enum :status, { draft: 0, overdue: 3, paid: 2, sent: 1, void: 4 }
+  enum :status, { draft: 0, sent: 1, paid: 2, overdue: 3, void: 4 }
 
   scope :search,
         lambda { |query|
