@@ -13,9 +13,9 @@ module Api
       end
 
       def create
-        receipt = Invoice.new(contract.body[:receipt])
-        receipt.notes = "Auto-generated receipt"
-        receipt.save
+        receipt = Invoice.create(contract.body[:receipt]) do |receipt|
+          receipt.notes = 'Auto-generated receipt'
+        end
         expose receipt
       end
 

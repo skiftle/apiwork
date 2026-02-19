@@ -14,14 +14,12 @@ module Api
       end
 
       def create
-        params = sti_params(contract.body[:customer])
-        customer = Customer.create(params)
+        customer = Customer.create(contract.body[:customer])
         expose customer
       end
 
       def update
-        params = sti_params(contract.body[:customer])
-        customer.update(params)
+        customer.update(contract.body[:customer])
         expose customer
       end
 
@@ -36,14 +34,6 @@ module Api
 
       def set_customer
         @customer = Customer.find(params[:id])
-      end
-
-      def sti_params(params)
-        if params[:kind]
-          params.merge(type: params.delete(:kind))
-        else
-          params
-        end
       end
     end
   end

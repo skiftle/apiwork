@@ -39,27 +39,12 @@ module Api
       end
 
       def search
-        query_string = contract.query[:q]
-        invoices = if query_string.present?
-          Invoice.where('number LIKE ? OR notes LIKE ?', "%#{query_string}%", "%#{query_string}%")
-        else
-          Invoice.all
-        end
-        expose invoices
+        expose Invoice.search(contract.query[:q])
       end
 
       def bulk_create
-        invoices_params = contract.body[:invoices] || []
-        created_ids = invoices_params.map do |invoice_params|
-          record = Invoice.create(
-            number: invoice_params[:number],
-            customer_id: invoice_params[:customer_id],
-            sent: invoice_params[:sent] || false
-          )
-          record.id
-        end
-        invoices = Invoice.where(id: created_ids)
-        expose invoices, status: :created
+        invoices = Invoice.create(contract.body[:invoices])
+        expose Invoice.where(id: invoices.map(&:id)), status: :created
       end
 
       private

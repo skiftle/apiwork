@@ -29,8 +29,7 @@ module Api
       attr_reader :profile
 
       def set_profile
-        @profile = Profile.first
-        raise ActiveRecord::RecordNotFound unless @profile
+        @profile = Profile.first!
       end
     end
   end

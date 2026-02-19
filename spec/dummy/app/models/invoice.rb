@@ -13,6 +13,12 @@ class Invoice < ApplicationRecord
 
   enum :status, { draft: 0, sent: 1, paid: 2, overdue: 3, void: 4 } # rubocop:disable Apiwork/SortHash
 
+  scope :search, lambda { |query|
+    return all if query.blank?
+
+    where('number LIKE ? OR notes LIKE ?', "%#{query}%", "%#{query}%")
+  }
+
   validates :number, length: { maximum: 20, minimum: 3 }, presence: true, uniqueness: true
   validate :validate_number_format
 
