@@ -1,2 +1,1 @@
-# Inherit from parent directory
 inherit_from: ../../.rubocop.yml
