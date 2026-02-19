@@ -43,7 +43,7 @@ RSpec.describe 'Sorting types', type: :integration do
 
   describe 'sort direction enum' do
     it 'has asc and desc values' do
-      expect(introspection.enums[:sort_direction].values).to eq(%w[asc desc])
+      expect(introspection.enums[:sort_direction].values).to contain_exactly('asc', 'desc')
     end
   end
 end

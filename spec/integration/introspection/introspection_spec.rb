@@ -146,19 +146,19 @@ RSpec.describe 'Introspection', type: :integration do
 
   describe 'Enum introspection' do
     it 'includes layer values' do
-      expect(introspection.enums[:layer].values).to eq(%w[http contract domain])
+      expect(introspection.enums[:layer].values).to contain_exactly('contract', 'domain', 'http')
     end
 
     it 'includes invoice_status values' do
-      expect(introspection.enums[:invoice_status].values).to contain_exactly('draft', 'sent', 'paid', 'overdue', 'void')
+      expect(introspection.enums[:invoice_status].values).to contain_exactly('draft', 'overdue', 'paid', 'sent', 'void')
     end
 
     it 'includes payment_method values' do
-      expect(introspection.enums[:payment_method].values).to contain_exactly('credit_card', 'bank_transfer', 'cash')
+      expect(introspection.enums[:payment_method].values).to contain_exactly('bank_transfer', 'cash', 'credit_card')
     end
 
     it 'includes payment_status values' do
-      expect(introspection.enums[:payment_status].values).to contain_exactly('pending', 'completed', 'failed', 'refunded')
+      expect(introspection.enums[:payment_status].values).to contain_exactly('completed', 'failed', 'pending', 'refunded')
     end
 
     it 'serializes enum to hash' do

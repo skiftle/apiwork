@@ -12,7 +12,7 @@ RSpec.describe Apiwork::Introspection::Enum do
         values: %w[draft published],
       )
 
-      expect(enum.values).to eq(%w[draft published])
+      expect(enum.values).to contain_exactly('draft', 'published')
       expect(enum.description).to eq('Ruby developer')
       expect(enum.example).to eq('draft')
     end

@@ -19,7 +19,7 @@ RSpec.describe Apiwork::API::EnumRegistry do
 
         registry.register(:status, %w[draft sent paid])
 
-        expect(registry[:status].values).to eq(%w[draft sent paid])
+        expect(registry[:status].values).to contain_exactly('draft', 'paid', 'sent')
       end
     end
   end

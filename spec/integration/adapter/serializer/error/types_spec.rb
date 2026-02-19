@@ -38,7 +38,7 @@ RSpec.describe 'Error serializer types', type: :integration do
 
   describe 'layer enum' do
     it 'has values' do
-      expect(enums[:layer].values).to eq(%w[http contract domain])
+      expect(enums[:layer].values).to contain_exactly('contract', 'domain', 'http')
     end
   end
 

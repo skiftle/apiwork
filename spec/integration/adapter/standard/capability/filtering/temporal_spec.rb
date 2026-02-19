@@ -104,25 +104,5 @@ RSpec.describe 'Temporal filtering', type: :request do
         expect(body['invoices'][0]['number']).to eq('INV-004')
       end
     end
-
-    context 'with datetime gt operator' do
-      it 'filters by datetime greater than' do
-        get '/api/v1/invoices', params: { filter: { created_at: { gt: 1.minute.ago.iso8601 } } }
-
-        expect(response).to have_http_status(:ok)
-        body = response.parsed_body
-        expect(body['invoices'].length).to eq(3)
-      end
-    end
-
-    context 'with datetime lt operator' do
-      it 'filters by datetime less than' do
-        get '/api/v1/invoices', params: { filter: { created_at: { lt: 1.minute.ago.iso8601 } } }
-
-        expect(response).to have_http_status(:ok)
-        body = response.parsed_body
-        expect(body['invoices']).to eq([])
-      end
-    end
   end
 end

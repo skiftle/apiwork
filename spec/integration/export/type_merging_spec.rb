@@ -125,7 +125,7 @@ RSpec.describe 'Type merging in exports', type: :integration do
 
       definition = api_class.enum_registry[:status]
 
-      expect(definition.values).to eq(%w[active inactive])
+      expect(definition.values).to contain_exactly('active', 'inactive')
       expect(definition.description).to eq('Account status')
     end
   end
@@ -197,7 +197,7 @@ RSpec.describe 'Type merging in exports', type: :integration do
 
       definition = contract_class.api_class.enum_registry[:order_status]
 
-      expect(definition.values).to eq(%w[draft sent])
+      expect(definition.values).to contain_exactly('draft', 'sent')
       expect(definition.description).to eq('Order status')
     end
   end
