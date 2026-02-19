@@ -28,7 +28,10 @@ spec/integration/
 │   ├── configuration_spec.rb
 │   ├── custom_adapter_spec.rb
 │   ├── serializer/
-│   │   └── types_spec.rb
+│   │   ├── error/
+│   │   │   └── types_spec.rb
+│   │   └── resource/
+│   │       └── types_spec.rb
 │   ├── standard/
 │   │   ├── action_restrictions_spec.rb
 │   │   ├── capability/
@@ -65,7 +68,10 @@ spec/integration/
 │   │   ├── sti_spec.rb
 │   │   └── validation_spec.rb
 │   └── wrapper/
-│       └── types_spec.rb
+│       ├── collection/
+│       │   └── types_spec.rb
+│       └── member/
+│           └── types_spec.rb
 ├── api/
 │   ├── concerns_spec.rb
 │   └── controller_context_spec.rb
@@ -118,8 +124,10 @@ spec/integration/
 |--------|-------|------|-----------|
 | `adapter/standard/capability/` | Capability HTTP runtime and generated types | `:request` / `:integration` | HTTP / `.introspect` |
 | `adapter/standard/` (root) | Cross-capability runtime (validation, STI, nested resources) | `:request` | HTTP |
-| `adapter/serializer/` | Resource object types, attribute mapping, STI unions, error types | `:integration` | `.introspect` |
-| `adapter/wrapper/` | Response body types (member, collection, error) | `:integration` | `.introspect` |
+| `adapter/serializer/resource/` | Resource object types, attribute mapping, STI unions, enums | `:integration` | `.introspect` |
+| `adapter/serializer/error/` | Error types (error, issue, layer) and error response body | `:integration` | `.introspect` |
+| `adapter/wrapper/member/` | Member, create, update, custom action, singular response bodies | `:integration` | `.introspect` |
+| `adapter/wrapper/collection/` | Collection response body | `:integration` | `.introspect` |
 | `adapter/` (root) | Adapter configuration | `:integration` | Ruby API |
 | `api/` | API DSL definitions | `:integration` | Ruby API |
 | `contract/` | Type system, imports, inheritance | `:integration` | Ruby API |
@@ -657,7 +665,7 @@ let!(:profile1) { Profile.create!(bio: 'Billing administrator', email: 'admin@bi
 
 ## adapter/ Test Coverage
 
-### Serializer Types (`adapter/serializer/types_spec.rb`)
+### Resource Serializer Types (`adapter/serializer/resource/types_spec.rb`)
 
 | Group | Tests |
 |-------|-------|
@@ -669,18 +677,31 @@ let!(:profile1) { Profile.create!(bio: 'Billing administrator', email: 'admin@bi
 | STI union | type :union, discriminator :type, person/company variants |
 | STI variants | inherited + own attributes per variant |
 | Enum types | invoice_status, payment_method, payment_status values |
-| Error types | error object (issues + layer), issue object fields, layer enum |
 
-### Wrapper Types (`adapter/wrapper/types_spec.rb`)
+### Error Serializer Types (`adapter/serializer/error/types_spec.rb`)
+
+| Group | Tests |
+|-------|-------|
+| Error object | type :object, issues + layer shape |
+| Issue object | code, detail, meta, path, pointer fields |
+| Layer enum | http, contract, domain values |
+| Error response body | type :object, extends :error |
+
+### Member Wrapper Types (`adapter/wrapper/member/types_spec.rb`)
 
 | Group | Tests |
 |-------|-------|
 | Member response body | type :object, singular root key as reference, optional meta |
-| Collection response body | type :object, plural root key as array of references, optional meta, pagination reference |
-| Cursor collection | cursor_pagination reference |
-| Create/update response | singular root key as reference |
+| Create response body | singular root key as reference, optional meta |
+| Update response body | singular root key as reference |
 | Custom action response | send_invoice, void, search, bulk_create bodies |
-| Error response body | type :object, extends :error |
+| Singular resource | singular root key as reference |
+
+### Collection Wrapper Types (`adapter/wrapper/collection/types_spec.rb`)
+
+| Group | Tests |
+|-------|-------|
+| Collection response body | type :object, plural root key as array of references, optional meta |
 | Singular resource | singular root key as reference |
 
 ### Capability: Filtering

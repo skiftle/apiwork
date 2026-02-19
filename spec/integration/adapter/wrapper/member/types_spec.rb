@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Wrapper types', type: :integration do
+RSpec.describe 'Member wrapper types', type: :integration do
   let(:introspection) { Apiwork::API.introspect('/api/v1') }
   let(:types) { introspection.types }
 
@@ -18,30 +18,6 @@ RSpec.describe 'Wrapper types', type: :integration do
 
       expect(param.type).to eq(:reference)
       expect(param.reference).to eq(:invoice)
-      expect(param.optional?).to be(false)
-    end
-
-    it 'has optional meta object' do
-      param = body.shape[:meta]
-
-      expect(param.type).to eq(:object)
-      expect(param.optional?).to be(true)
-    end
-  end
-
-  describe 'collection response body' do
-    let(:body) { types[:invoice_index_success_response_body] }
-
-    it 'has type object' do
-      expect(body.type).to eq(:object)
-    end
-
-    it 'has plural root key as array of references' do
-      param = body.shape[:invoices]
-
-      expect(param.type).to eq(:array)
-      expect(param.of.type).to eq(:reference)
-      expect(param.of.reference).to eq(:invoice)
       expect(param.optional?).to be(false)
     end
 
@@ -106,19 +82,6 @@ RSpec.describe 'Wrapper types', type: :integration do
 
       expect(body.type).to eq(:object)
       expect(body.shape).to have_key(:invoices)
-    end
-  end
-
-  describe 'error response body' do
-    let(:body) { types[:error_response_body] }
-
-    it 'has type object' do
-      expect(body.type).to eq(:object)
-    end
-
-    it 'extends error type' do
-      expect(body.extends?).to be(true)
-      expect(body.extends).to include(:error)
     end
   end
 
