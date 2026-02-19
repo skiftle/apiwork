@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Body params', type: :request do
-  let!(:customer1) { Customer.create!(email: 'billing@acme.com', name: 'Acme Corp') }
+  let!(:customer) { Customer.create!(email: 'billing@acme.com', name: 'Acme Corp') }
 
   describe 'POST /api/v1/invoices' do
     it 'creates the invoice with writable fields' do
@@ -11,7 +11,7 @@ RSpec.describe 'Body params', type: :request do
            as: :json,
            params: {
              invoice: {
-               customer_id: customer1.id,
+               customer_id: customer.id,
                notes: 'Net 30 payment terms',
                number: 'INV-001',
                sent: false,
@@ -30,7 +30,7 @@ RSpec.describe 'Body params', type: :request do
            as: :json,
            params: {
              invoice: {
-               customer_id: customer1.id,
+               customer_id: customer.id,
                number: 'INV-001',
                unknown_field: 'value',
              },
@@ -45,7 +45,7 @@ RSpec.describe 'Body params', type: :request do
 
   describe 'PATCH /api/v1/invoices/:id' do
     let!(:invoice1) do
-      Invoice.create!(customer: customer1, notes: 'Net 30 payment terms', number: 'INV-001', status: :draft)
+      Invoice.create!(customer: customer, notes: 'Net 30 payment terms', number: 'INV-001', status: :draft)
     end
 
     it 'updates only provided fields' do

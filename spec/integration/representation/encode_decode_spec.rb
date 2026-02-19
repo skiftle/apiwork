@@ -5,9 +5,9 @@ require 'rails_helper'
 RSpec.describe 'Representation encode and decode', type: :integration do
   describe 'encode on serialize' do
     it 'serializes email through encode lambda' do
-      customer1 = PersonCustomer.create!(email: 'BILLING@ACME.COM', name: 'Acme Corp')
+      customer = PersonCustomer.create!(email: 'BILLING@ACME.COM', name: 'Acme Corp')
 
-      result = Api::V1::CustomerRepresentation.serialize(customer1)
+      result = Api::V1::CustomerRepresentation.serialize(customer)
 
       expect(result[:email]).to eq('billing@acme.com')
     end
@@ -23,9 +23,9 @@ RSpec.describe 'Representation encode and decode', type: :integration do
 
   describe 'nil safety' do
     it 'serializes nil through encode without error' do
-      customer1 = CompanyCustomer.create!(email: nil, industry: 'Technology', name: 'Acme Corp')
+      customer = CompanyCustomer.create!(email: nil, industry: 'Technology', name: 'Acme Corp')
 
-      result = Api::V1::CustomerRepresentation.serialize(customer1)
+      result = Api::V1::CustomerRepresentation.serialize(customer)
 
       expect(result[:email]).to be_nil
     end
@@ -43,9 +43,9 @@ RSpec.describe 'Representation encode and decode', type: :integration do
 
       expect(deserialized[:email]).to eq('ANNA@EXAMPLE.COM')
 
-      customer1 = PersonCustomer.create!(deserialized.slice(:email, :name))
+      customer = PersonCustomer.create!(deserialized.slice(:email, :name))
 
-      result = Api::V1::CustomerRepresentation.serialize(customer1)
+      result = Api::V1::CustomerRepresentation.serialize(customer)
 
       expect(result[:email]).to eq('anna@example.com')
     end

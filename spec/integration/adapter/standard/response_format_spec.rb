@@ -3,9 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe 'Response format', type: :request do
-  let!(:customer1) { Customer.create!(email: 'billing@acme.com', name: 'Acme Corp') }
-  let!(:invoice1) { Invoice.create!(customer: customer1, due_on: 3.days.from_now, number: 'INV-001', status: :draft) }
-  let!(:invoice2) { Invoice.create!(customer: customer1, due_on: 2.days.from_now, number: 'INV-002', status: :sent) }
+  let!(:customer) { Customer.create!(email: 'billing@acme.com', name: 'Acme Corp') }
+  let!(:invoice1) { Invoice.create!(customer: customer, due_on: 3.days.from_now, number: 'INV-001', status: :draft) }
+  let!(:invoice2) { Invoice.create!(customer: customer, due_on: 2.days.from_now, number: 'INV-002', status: :sent) }
 
   describe 'GET /api/v1/invoices/:id' do
     it 'wraps response in singular root key' do
@@ -74,8 +74,8 @@ RSpec.describe 'Response format', type: :request do
   end
 
   describe 'GET /api/format-test/customer-addresses' do
-    let!(:address1) do
-      Address.create!(city: 'Stockholm', country: 'SE', customer: customer1, street: '123 Main St', zip: '111 22')
+    let!(:address) do
+      Address.create!(city: 'Stockholm', country: 'SE', customer: customer, street: '123 Main St', zip: '111 22')
     end
 
     it 'responds to kebab-case path' do
@@ -97,12 +97,12 @@ RSpec.describe 'Response format', type: :request do
   end
 
   describe 'GET /api/format-test/customer-addresses/:id' do
-    let!(:address1) do
-      Address.create!(city: 'Stockholm', country: 'SE', customer: customer1, street: '123 Main St', zip: '111 22')
+    let!(:address) do
+      Address.create!(city: 'Stockholm', country: 'SE', customer: customer, street: '123 Main St', zip: '111 22')
     end
 
     it 'responds to kebab-case show path' do
-      get "/api/format-test/customer-addresses/#{address1.id}"
+      get "/api/format-test/customer-addresses/#{address.id}"
 
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
@@ -111,12 +111,12 @@ RSpec.describe 'Response format', type: :request do
   end
 
   describe 'DELETE /api/format-test/customer-addresses/:id' do
-    let!(:address1) do
-      Address.create!(city: 'Stockholm', country: 'SE', customer: customer1, street: '123 Main St', zip: '111 22')
+    let!(:address) do
+      Address.create!(city: 'Stockholm', country: 'SE', customer: customer, street: '123 Main St', zip: '111 22')
     end
 
     it 'responds to kebab-case destroy path' do
-      delete "/api/format-test/customer-addresses/#{address1.id}"
+      delete "/api/format-test/customer-addresses/#{address.id}"
 
       expect(response).to have_http_status(:no_content)
     end

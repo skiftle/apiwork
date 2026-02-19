@@ -3,9 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe 'Nested resources', type: :request do
-  let!(:customer1) { Customer.create!(email: 'billing@acme.com', name: 'Acme Corp') }
-  let!(:invoice1) { Invoice.create!(customer: customer1, number: 'INV-001', status: :draft) }
-  let!(:invoice2) { Invoice.create!(customer: customer1, number: 'INV-002', status: :sent) }
+  let!(:customer) { Customer.create!(email: 'billing@acme.com', name: 'Acme Corp') }
+  let!(:invoice1) { Invoice.create!(customer: customer, number: 'INV-001', status: :draft) }
+  let!(:invoice2) { Invoice.create!(customer: customer, number: 'INV-002', status: :sent) }
   let!(:item1) { Item.create!(description: 'Consulting hours', invoice: invoice1, quantity: 10, unit_price: 150.00) }
   let!(:item2) { Item.create!(description: 'Software license', invoice: invoice1, quantity: 1, unit_price: 500.00) }
   let!(:item3) { Item.create!(description: 'Support contract', invoice: invoice2, quantity: 1, unit_price: 200.00) }
@@ -23,7 +23,7 @@ RSpec.describe 'Nested resources', type: :request do
 
     context 'when invoice has no items' do
       it 'returns empty array' do
-        empty_invoice = Invoice.create!(customer: customer1, number: 'INV-003')
+        empty_invoice = Invoice.create!(customer: customer, number: 'INV-003')
 
         get "/api/v1/invoices/#{empty_invoice.id}/items"
 

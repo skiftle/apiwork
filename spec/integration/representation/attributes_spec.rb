@@ -3,12 +3,12 @@
 require 'rails_helper'
 
 RSpec.describe 'Representation attribute serialization', type: :integration do
-  let!(:customer1) { PersonCustomer.create!(email: 'BILLING@ACME.COM', name: 'Acme Corp') }
+  let!(:customer) { PersonCustomer.create!(email: 'BILLING@ACME.COM', name: 'Acme Corp') }
 
   describe 'serialize' do
     it 'serializes all attribute types' do
       invoice1 = Invoice.create!(
-        customer: customer1,
+        customer: customer,
         due_on: Date.new(2026, 3, 15),
         metadata: { 'priority' => 'high' },
         notes: 'Rush delivery',
@@ -28,12 +28,12 @@ RSpec.describe 'Representation attribute serialization', type: :integration do
       expect(result[:id]).to eq(invoice1.id)
       expect(result[:created_at]).to eq(invoice1.created_at)
       expect(result[:updated_at]).to eq(invoice1.updated_at)
-      expect(result[:customer_id]).to eq(customer1.id)
+      expect(result[:customer_id]).to eq(customer.id)
     end
 
     it 'serializes a collection of records' do
-      invoice1 = Invoice.create!(customer: customer1, due_on: 3.days.from_now, number: 'INV-001', status: :draft)
-      invoice2 = Invoice.create!(customer: customer1, due_on: 2.days.from_now, number: 'INV-002', status: :sent)
+      invoice1 = Invoice.create!(customer: customer, due_on: 3.days.from_now, number: 'INV-001', status: :draft)
+      invoice2 = Invoice.create!(customer: customer, due_on: 2.days.from_now, number: 'INV-002', status: :sent)
 
       results = Api::V1::InvoiceRepresentation.serialize([invoice1, invoice2])
 
@@ -43,7 +43,7 @@ RSpec.describe 'Representation attribute serialization', type: :integration do
     end
 
     it 'serializes read-only attributes in output' do
-      invoice1 = Invoice.create!(customer: customer1, number: 'INV-001', status: :draft)
+      invoice1 = Invoice.create!(customer: customer, number: 'INV-001', status: :draft)
 
       result = Api::V1::InvoiceRepresentation.serialize(invoice1)
 

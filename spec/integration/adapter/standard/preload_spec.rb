@@ -3,9 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe 'Attribute preload', type: :integration do
-  let!(:customer1) { Customer.create!(email: 'billing@acme.com', name: 'Acme Corp') }
+  let!(:customer) { Customer.create!(email: 'billing@acme.com', name: 'Acme Corp') }
   let!(:invoice1) do
-    Invoice.create!(customer: customer1, number: 'INV-001', status: :draft).tap do |invoice|
+    Invoice.create!(customer: customer, number: 'INV-001', status: :draft).tap do |invoice|
       invoice.items.create!(description: 'Consulting hours', quantity: 2, unit_price: 150.00)
       invoice.items.create!(description: 'Software license', quantity: 1, unit_price: 500.00)
     end

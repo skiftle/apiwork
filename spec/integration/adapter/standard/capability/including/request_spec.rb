@@ -3,9 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe 'Includes', type: :request do
-  let!(:customer1) { Customer.create!(email: 'billing@acme.com', name: 'Acme Corp') }
-  let!(:invoice1) { Invoice.create!(customer: customer1, due_on: 3.days.from_now, number: 'INV-001', status: :draft) }
-  let!(:invoice2) { Invoice.create!(customer: customer1, due_on: 2.days.from_now, number: 'INV-002', status: :sent) }
+  let!(:customer) { Customer.create!(email: 'billing@acme.com', name: 'Acme Corp') }
+  let!(:invoice1) { Invoice.create!(customer: customer, due_on: 3.days.from_now, number: 'INV-001', status: :draft) }
+  let!(:invoice2) { Invoice.create!(customer: customer, due_on: 2.days.from_now, number: 'INV-002', status: :sent) }
   let!(:item1) { Item.create!(description: 'Consulting hours', invoice: invoice1, quantity: 10, unit_price: 150.00) }
   let!(:item2) { Item.create!(description: 'Software license', invoice: invoice1, quantity: 1, unit_price: 500.00) }
   let!(:item3) { Item.create!(description: 'Support contract', invoice: invoice2, quantity: 1, unit_price: 200.00) }
@@ -92,7 +92,7 @@ RSpec.describe 'Includes', type: :request do
            headers: { 'CONTENT_TYPE' => 'application/json' },
            params: {
              invoice: {
-               customer_id: customer1.id,
+               customer_id: customer.id,
                number: 'INV-NEW',
              },
            }.to_json

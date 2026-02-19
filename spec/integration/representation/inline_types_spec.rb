@@ -3,12 +3,12 @@
 require 'rails_helper'
 
 RSpec.describe 'Representation JSON column handling', type: :integration do
-  let!(:customer1) { PersonCustomer.create!(email: 'BILLING@ACME.COM', name: 'Acme Corp') }
+  let!(:customer) { PersonCustomer.create!(email: 'BILLING@ACME.COM', name: 'Acme Corp') }
 
   describe 'serialize' do
     it 'serializes metadata hash' do
       invoice1 = Invoice.create!(
-        customer: customer1,
+        customer: customer,
         metadata: { 'priority' => 'high', 'department' => 'billing' },
         number: 'INV-001',
         status: :draft,
@@ -21,7 +21,7 @@ RSpec.describe 'Representation JSON column handling', type: :integration do
 
     it 'serializes nil metadata' do
       invoice1 = Invoice.create!(
-        customer: customer1,
+        customer: customer,
         metadata: nil,
         number: 'INV-001',
         status: :draft,
@@ -34,7 +34,7 @@ RSpec.describe 'Representation JSON column handling', type: :integration do
 
     it 'serializes metadata with nested structure' do
       invoice1 = Invoice.create!(
-        customer: customer1,
+        customer: customer,
         metadata: { 'tags' => %w[priority urgent], 'config' => { 'auto_send' => true } },
         number: 'INV-001',
         status: :draft,

@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Nested attributes', type: :request do
-  let!(:customer1) { Customer.create!(email: 'billing@acme.com', name: 'Acme Corp') }
+  let!(:customer) { Customer.create!(email: 'billing@acme.com', name: 'Acme Corp') }
 
   describe 'POST /api/v1/invoices' do
     it 'creates the invoice with nested items' do
@@ -11,7 +11,7 @@ RSpec.describe 'Nested attributes', type: :request do
            as: :json,
            params: {
              invoice: {
-               customer_id: customer1.id,
+               customer_id: customer.id,
                items: [
                  { OP: 'create', description: 'Consulting hours', invoice_id: 0, quantity: 10, unit_price: 150.00 },
                  { OP: 'create', description: 'Software license', invoice_id: 0, quantity: 1, unit_price: 500.00 },
@@ -28,7 +28,7 @@ RSpec.describe 'Nested attributes', type: :request do
   end
 
   describe 'PATCH /api/v1/invoices/:id' do
-    let!(:invoice1) { Invoice.create!(customer: customer1, number: 'INV-001') }
+    let!(:invoice1) { Invoice.create!(customer: customer, number: 'INV-001') }
     let!(:item1) { Item.create!(description: 'Consulting hours', invoice: invoice1, quantity: 10, unit_price: 150.00) }
     let!(:item2) { Item.create!(description: 'Software license', invoice: invoice1, quantity: 1, unit_price: 500.00) }
 
@@ -98,7 +98,7 @@ RSpec.describe 'Nested attributes', type: :request do
            as: :json,
            params: {
              invoice: {
-               customer_id: customer1.id,
+               customer_id: customer.id,
                items: [
                  {
                    OP: 'create',
@@ -123,7 +123,7 @@ RSpec.describe 'Nested attributes', type: :request do
     end
 
     it 'destroys deeply nested adjustment with OP delete' do
-      invoice1 = Invoice.create!(customer: customer1, number: 'INV-001')
+      invoice1 = Invoice.create!(customer: customer, number: 'INV-001')
       item1 = Item.create!(description: 'Consulting hours', invoice: invoice1, quantity: 10, unit_price: 150.00)
       adjustment1 = Adjustment.create!(amount: 10.00, description: 'Discount', item: item1)
 

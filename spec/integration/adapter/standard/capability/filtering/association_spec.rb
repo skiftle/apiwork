@@ -3,10 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe 'Association filtering', type: :request do
-  let!(:customer1) { Customer.create!(email: 'billing@acme.com', name: 'Acme Corp') }
-  let!(:invoice1) { Invoice.create!(customer: customer1, due_on: 3.days.from_now, number: 'INV-001', status: :draft) }
+  let!(:customer) { Customer.create!(email: 'billing@acme.com', name: 'Acme Corp') }
+  let!(:invoice1) { Invoice.create!(customer: customer, due_on: 3.days.from_now, number: 'INV-001', status: :draft) }
   let!(:invoice2) do
-    Invoice.create!(customer: customer1, due_on: 2.days.from_now, notes: 'Rush delivery', number: 'INV-002', status: :sent)
+    Invoice.create!(customer: customer, due_on: 2.days.from_now, notes: 'Rush delivery', number: 'INV-002', status: :sent)
   end
   let!(:item1) { Item.create!(description: 'Consulting hours', invoice: invoice1, quantity: 10, unit_price: 150.00) }
   let!(:item2) { Item.create!(description: 'Software license', invoice: invoice1, quantity: 1, unit_price: 500.00) }

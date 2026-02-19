@@ -3,10 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe 'Sorting', type: :request do
-  let!(:customer1) { Customer.create!(email: 'billing@acme.com', name: 'Acme Corp') }
-  let!(:invoice1) { Invoice.create!(customer: customer1, due_on: 3.days.from_now, number: 'INV-001', status: :draft) }
-  let!(:invoice2) { Invoice.create!(customer: customer1, due_on: 2.days.from_now, number: 'INV-002', status: :sent) }
-  let!(:invoice3) { Invoice.create!(customer: customer1, due_on: 1.day.from_now, number: 'INV-003', status: :paid) }
+  let!(:customer) { Customer.create!(email: 'billing@acme.com', name: 'Acme Corp') }
+  let!(:invoice1) { Invoice.create!(customer: customer, due_on: 3.days.from_now, number: 'INV-001', status: :draft) }
+  let!(:invoice2) { Invoice.create!(customer: customer, due_on: 2.days.from_now, number: 'INV-002', status: :sent) }
+  let!(:invoice3) { Invoice.create!(customer: customer, due_on: 1.day.from_now, number: 'INV-003', status: :paid) }
 
   let!(:item1) { Item.create!(description: 'Consulting hours', invoice: invoice1, quantity: 10, unit_price: 150.00) }
   let!(:item2) { Item.create!(description: 'Software license', invoice: invoice2, quantity: 1, unit_price: 500.00) }

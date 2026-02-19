@@ -3,13 +3,13 @@
 require 'rails_helper'
 
 RSpec.describe 'Domain errors', type: :request do
-  let!(:customer1) { Customer.create!(email: 'billing@acme.com', name: 'Acme Corp') }
+  let!(:customer) { Customer.create!(email: 'billing@acme.com', name: 'Acme Corp') }
 
   describe 'POST /api/v1/invoices' do
     it 'returns required for blank field' do
       post '/api/v1/invoices',
            as: :json,
-           params: { invoice: { customer_id: customer1.id, number: '' } }
+           params: { invoice: { customer_id: customer.id, number: '' } }
 
       expect(response).to have_http_status(:unprocessable_content)
       body = response.parsed_body
@@ -22,11 +22,11 @@ RSpec.describe 'Domain errors', type: :request do
     end
 
     it 'returns unique for duplicate value' do
-      Invoice.create!(customer: customer1, number: 'INV-001')
+      Invoice.create!(customer: customer, number: 'INV-001')
 
       post '/api/v1/invoices',
            as: :json,
-           params: { invoice: { customer_id: customer1.id, number: 'INV-001' } }
+           params: { invoice: { customer_id: customer.id, number: 'INV-001' } }
 
       expect(response).to have_http_status(:unprocessable_content)
       body = response.parsed_body
@@ -39,7 +39,7 @@ RSpec.describe 'Domain errors', type: :request do
     it 'returns min with meta for too short value' do
       post '/api/v1/invoices',
            as: :json,
-           params: { invoice: { customer_id: customer1.id, number: 'AB' } }
+           params: { invoice: { customer_id: customer.id, number: 'AB' } }
 
       expect(response).to have_http_status(:unprocessable_content)
       body = response.parsed_body
@@ -52,7 +52,7 @@ RSpec.describe 'Domain errors', type: :request do
     it 'returns max with meta for too long value' do
       post '/api/v1/invoices',
            as: :json,
-           params: { invoice: { customer_id: customer1.id, number: "INV-#{'A' * 17}" } }
+           params: { invoice: { customer_id: customer.id, number: "INV-#{'A' * 17}" } }
 
       expect(response).to have_http_status(:unprocessable_content)
       body = response.parsed_body
@@ -65,7 +65,7 @@ RSpec.describe 'Domain errors', type: :request do
     it 'returns invalid for record-level error' do
       post '/api/v1/invoices',
            as: :json,
-           params: { invoice: { customer_id: customer1.id, number: 'BAD-001' } }
+           params: { invoice: { customer_id: customer.id, number: 'BAD-001' } }
 
       expect(response).to have_http_status(:unprocessable_content)
       body = response.parsed_body
@@ -78,7 +78,7 @@ RSpec.describe 'Domain errors', type: :request do
     it 'returns custom code for domain-specific validation' do
       post '/api/v1/invoices',
            as: :json,
-           params: { invoice: { customer_id: customer1.id, number: 'BAD-001' } }
+           params: { invoice: { customer_id: customer.id, number: 'BAD-001' } }
 
       expect(response).to have_http_status(:unprocessable_content)
       body = response.parsed_body
@@ -94,7 +94,7 @@ RSpec.describe 'Domain errors', type: :request do
            as: :json,
            params: {
              invoice: {
-               customer_id: customer1.id,
+               customer_id: customer.id,
                items: [
                  { OP: 'create', description: 'Consulting hours', invoice_id: 0, quantity: 10, unit_price: 150.00 },
                  { OP: 'create', description: '', invoice_id: 0, quantity: 10, unit_price: 150.00 },
@@ -115,7 +115,7 @@ RSpec.describe 'Domain errors', type: :request do
            as: :json,
            params: {
              invoice: {
-               customer_id: customer1.id,
+               customer_id: customer.id,
                items: [
                  { OP: 'create', description: 'Consulting hours', invoice_id: 0, quantity: 0, unit_price: 150.00 },
                ],
@@ -136,7 +136,7 @@ RSpec.describe 'Domain errors', type: :request do
            as: :json,
            params: {
              invoice: {
-               customer_id: customer1.id,
+               customer_id: customer.id,
                items: [
                  { OP: 'create', description: 'Consulting hours', invoice_id: 0, quantity: 10_000, unit_price: 150.00 },
                ],
@@ -157,7 +157,7 @@ RSpec.describe 'Domain errors', type: :request do
            as: :json,
            params: {
              invoice: {
-               customer_id: customer1.id,
+               customer_id: customer.id,
                items: [
                  { OP: 'create', description: 'Consulting hours', invoice_id: 0, quantity: 1, unit_price: -1.00 },
                ],

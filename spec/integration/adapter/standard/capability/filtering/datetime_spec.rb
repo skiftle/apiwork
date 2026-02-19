@@ -3,11 +3,11 @@
 require 'rails_helper'
 
 RSpec.describe 'Datetime filtering', type: :request do
-  let!(:customer1) { Customer.create!(email: 'billing@acme.com', name: 'Acme Corp') }
+  let!(:customer) { Customer.create!(email: 'billing@acme.com', name: 'Acme Corp') }
   let!(:invoice1) do
     Invoice.create!(
       created_at: '2026-03-01 10:00:00',
-      customer: customer1,
+      customer: customer,
       due_on: '2026-03-01',
       number: 'INV-001',
       status: :draft,
@@ -16,7 +16,7 @@ RSpec.describe 'Datetime filtering', type: :request do
   let!(:invoice2) do
     Invoice.create!(
       created_at: '2026-03-15 14:30:00',
-      customer: customer1,
+      customer: customer,
       due_on: '2026-03-15',
       notes: 'Rush delivery',
       number: 'INV-002',
@@ -26,7 +26,7 @@ RSpec.describe 'Datetime filtering', type: :request do
   let!(:invoice3) do
     Invoice.create!(
       created_at: '2026-03-31 09:00:00',
-      customer: customer1,
+      customer: customer,
       due_on: '2026-03-31',
       number: 'INV-003',
       status: :paid,

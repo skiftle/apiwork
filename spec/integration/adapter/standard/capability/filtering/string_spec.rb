@@ -3,12 +3,12 @@
 require 'rails_helper'
 
 RSpec.describe 'String filtering', type: :request do
-  let!(:customer1) { Customer.create!(email: 'billing@acme.com', name: 'Acme Corp') }
-  let!(:invoice1) { Invoice.create!(customer: customer1, due_on: 3.days.from_now, number: 'INV-001', status: :draft) }
+  let!(:customer) { Customer.create!(email: 'billing@acme.com', name: 'Acme Corp') }
+  let!(:invoice1) { Invoice.create!(customer: customer, due_on: 3.days.from_now, number: 'INV-001', status: :draft) }
   let!(:invoice2) do
-    Invoice.create!(customer: customer1, due_on: 2.days.from_now, notes: 'Rush delivery', number: 'INV-002', status: :sent)
+    Invoice.create!(customer: customer, due_on: 2.days.from_now, notes: 'Rush delivery', number: 'INV-002', status: :sent)
   end
-  let!(:invoice3) { Invoice.create!(customer: customer1, due_on: 1.day.from_now, number: 'INV-003', status: :paid) }
+  let!(:invoice3) { Invoice.create!(customer: customer, due_on: 1.day.from_now, number: 'INV-003', status: :paid) }
 
   describe 'GET /api/v1/invoices' do
     context 'with eq operator' do

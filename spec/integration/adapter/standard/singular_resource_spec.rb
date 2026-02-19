@@ -72,7 +72,7 @@ RSpec.describe 'Singular resource', type: :request do
   end
 
   describe 'PATCH /api/v1/profile' do
-    let!(:profile1) do
+    let!(:profile) do
       Profile.create!(
         bio: 'Billing administrator',
         email: 'admin@billing.test',
@@ -93,7 +93,7 @@ RSpec.describe 'Singular resource', type: :request do
   end
 
   describe 'DELETE /api/v1/profile' do
-    let!(:profile1) do
+    let!(:profile) do
       Profile.create!(
         bio: 'Billing administrator',
         email: 'admin@billing.test',

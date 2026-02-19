@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe 'Cursor pagination', type: :request do
-  let!(:customer1) { Customer.create!(email: 'billing@acme.com', name: 'Acme Corp') }
-  let!(:invoice1) { Invoice.create!(customer: customer1, number: 'INV-001', status: :draft) }
+  let!(:customer) { Customer.create!(email: 'billing@acme.com', name: 'Acme Corp') }
+  let!(:invoice1) { Invoice.create!(customer: customer, number: 'INV-001', status: :draft) }
 
   before do
     25.times do |index|

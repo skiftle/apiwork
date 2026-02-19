@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe 'Representation polymorphic associations', type: :integration do
-  let!(:customer1) { PersonCustomer.create!(email: 'ANNA@EXAMPLE.COM', name: 'Anna Svensson') }
-  let!(:invoice1) { Invoice.create!(customer: customer1, number: 'INV-001', status: :draft) }
+  let!(:customer) { PersonCustomer.create!(email: 'ANNA@EXAMPLE.COM', name: 'Anna Svensson') }
+  let!(:invoice1) { Invoice.create!(customer: customer, number: 'INV-001', status: :draft) }
   let!(:tag1) { Tag.create!(name: 'Priority', slug: 'priority') }
   let!(:tag2) { Tag.create!(name: 'Urgent', slug: 'urgent') }
   let!(:tagging1) { Tagging.create!(tag: tag1, taggable: invoice1) }

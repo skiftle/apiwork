@@ -3,12 +3,12 @@
 require 'rails_helper'
 
 RSpec.describe 'Offset pagination', type: :request do
-  let!(:customer1) { Customer.create!(email: 'billing@acme.com', name: 'Acme Corp') }
+  let!(:customer) { Customer.create!(email: 'billing@acme.com', name: 'Acme Corp') }
 
   before do
     25.times do |index|
       Invoice.create!(
-        customer: customer1,
+        customer: customer,
         due_on: (25 - index).days.from_now,
         number: "INV-#{format('%03d', index + 1)}",
         status: index.even? ? :draft : :sent,

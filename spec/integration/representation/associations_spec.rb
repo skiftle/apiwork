@@ -3,13 +3,13 @@
 require 'rails_helper'
 
 RSpec.describe 'Representation association serialization', type: :integration do
-  let!(:customer1) { PersonCustomer.create!(email: 'ANNA@EXAMPLE.COM', name: 'Anna Svensson') }
+  let!(:customer) { PersonCustomer.create!(email: 'ANNA@EXAMPLE.COM', name: 'Anna Svensson') }
 
-  let!(:address1) do
+  let!(:address) do
     Address.create!(
       city: 'Stockholm',
       country: 'SE',
-      customer: customer1,
+      customer: customer,
       street: '123 Main St',
       zip: '111 22',
     )
@@ -18,7 +18,7 @@ RSpec.describe 'Representation association serialization', type: :integration do
   describe 'has_one' do
     context 'without include' do
       it 'serializes without optional association key' do
-        result = Api::V1::CustomerRepresentation.serialize(customer1)
+        result = Api::V1::CustomerRepresentation.serialize(customer)
 
         expect(result).not_to have_key(:address)
       end
@@ -26,7 +26,7 @@ RSpec.describe 'Representation association serialization', type: :integration do
 
     context 'with include' do
       it 'serializes address data when included' do
-        result = Api::V1::CustomerRepresentation.serialize(customer1, include: { address: true })
+        result = Api::V1::CustomerRepresentation.serialize(customer, include: { address: true })
 
         expect(result[:address][:street]).to eq('123 Main St')
         expect(result[:address][:city]).to eq('Stockholm')
@@ -35,7 +35,7 @@ RSpec.describe 'Representation association serialization', type: :integration do
       end
 
       it 'serializes has_one association with expected keys' do
-        result = Api::V1::CustomerRepresentation.serialize(customer1, include: { address: true })
+        result = Api::V1::CustomerRepresentation.serialize(customer, include: { address: true })
 
         expect(result[:address]).to have_key(:street)
         expect(result[:address]).to have_key(:city)
@@ -54,7 +54,7 @@ RSpec.describe 'Representation association serialization', type: :integration do
 
     context 'with collection' do
       it 'serializes association for each record in collection' do
-        results = Api::V1::CustomerRepresentation.serialize([customer1], include: { address: true })
+        results = Api::V1::CustomerRepresentation.serialize([customer], include: { address: true })
 
         expect(results.length).to eq(1)
         expect(results.first[:address][:street]).to eq('123 Main St')
@@ -63,9 +63,9 @@ RSpec.describe 'Representation association serialization', type: :integration do
 
     context 'when association is destroyed' do
       it 'serializes nil after association is destroyed' do
-        address1.destroy!
+        address.destroy!
 
-        result = Api::V1::CustomerRepresentation.serialize(customer1.reload, include: { address: true })
+        result = Api::V1::CustomerRepresentation.serialize(customer.reload, include: { address: true })
 
         expect(result[:address]).to be_nil
       end
@@ -73,7 +73,7 @@ RSpec.describe 'Representation association serialization', type: :integration do
   end
 
   describe 'belongs_to' do
-    let!(:invoice1) { Invoice.create!(customer: customer1, number: 'INV-001', status: :draft) }
+    let!(:invoice1) { Invoice.create!(customer: customer, number: 'INV-001', status: :draft) }
 
     let!(:item1) do
       Item.create!(description: 'Consulting hours', invoice: invoice1, quantity: 10, unit_price: 150.00)
@@ -105,14 +105,14 @@ RSpec.describe 'Representation association serialization', type: :integration do
 
   describe 'include: :always' do
     it 'serializes always-included association without explicit include' do
-      result = Api::V1::AddressRepresentation.serialize(address1)
+      result = Api::V1::AddressRepresentation.serialize(address)
 
       expect(result[:customer][:name]).to eq('Anna Svensson')
       expect(result[:customer][:email]).to eq('anna@example.com')
     end
 
     it 'serializes always-included association in collection' do
-      results = Api::V1::AddressRepresentation.serialize([address1])
+      results = Api::V1::AddressRepresentation.serialize([address])
 
       expect(results.length).to eq(1)
       expect(results.first[:customer][:name]).to eq('Anna Svensson')

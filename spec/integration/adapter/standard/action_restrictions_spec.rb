@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe 'Action restrictions', type: :request do
-  let!(:customer1) { Customer.create!(email: 'billing@acme.com', name: 'Acme Corp') }
-  let!(:invoice1) { Invoice.create!(customer: customer1, number: 'INV-001', status: :draft) }
+  let!(:customer) { Customer.create!(email: 'billing@acme.com', name: 'Acme Corp') }
+  let!(:invoice1) { Invoice.create!(customer: customer, number: 'INV-001', status: :draft) }
   let!(:item1) { Item.create!(description: 'Consulting hours', invoice: invoice1, quantity: 1, unit_price: 100.00) }
 
   describe 'restricted_invoices with only: [:index, :show]' do
@@ -27,7 +27,7 @@ RSpec.describe 'Action restrictions', type: :request do
     it 'returns 404 on create' do
       post '/api/v1/restricted_invoices',
            as: :json,
-           params: { invoice: { customer_id: customer1.id, number: 'INV-002' } }
+           params: { invoice: { customer_id: customer.id, number: 'INV-002' } }
 
       expect(response).to have_http_status(:not_found)
     end

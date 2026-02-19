@@ -3,14 +3,14 @@
 require 'rails_helper'
 
 RSpec.describe 'Validation', type: :request do
-  let!(:customer1) { Customer.create!(email: 'billing@acme.com', name: 'Acme Corp') }
+  let!(:customer) { Customer.create!(email: 'billing@acme.com', name: 'Acme Corp') }
 
   describe 'contract validation (400)' do
     describe 'POST /api/v1/invoices' do
       it 'returns error for required field missing' do
         post '/api/v1/invoices',
              as: :json,
-             params: { invoice: { customer_id: customer1.id } }
+             params: { invoice: { customer_id: customer.id } }
 
         expect(response).to have_http_status(:bad_request)
         body = response.parsed_body
@@ -21,7 +21,7 @@ RSpec.describe 'Validation', type: :request do
       it 'returns error for wrong data type' do
         post '/api/v1/invoices',
              as: :json,
-             params: { invoice: { customer_id: customer1.id, number: 'INV-001', sent: 'not-a-boolean' } }
+             params: { invoice: { customer_id: customer.id, number: 'INV-001', sent: 'not-a-boolean' } }
 
         expect(response).to have_http_status(:bad_request)
         body = response.parsed_body
@@ -32,7 +32,7 @@ RSpec.describe 'Validation', type: :request do
       it 'returns error for unknown field' do
         post '/api/v1/invoices',
              as: :json,
-             params: { invoice: { customer_id: customer1.id, number: 'INV-001', unknown_field: 'value' } }
+             params: { invoice: { customer_id: customer.id, number: 'INV-001', unknown_field: 'value' } }
 
         expect(response).to have_http_status(:bad_request)
         body = response.parsed_body
@@ -55,7 +55,7 @@ RSpec.describe 'Validation', type: :request do
       it 'returns field_missing for null required field' do
         post '/api/v1/invoices',
              as: :json,
-             params: { invoice: { customer_id: customer1.id, number: nil } }
+             params: { invoice: { customer_id: customer.id, number: nil } }
 
         expect(response).to have_http_status(:bad_request)
         body = response.parsed_body
@@ -79,7 +79,7 @@ RSpec.describe 'Validation', type: :request do
       it 'returns unprocessable entity for invalid input' do
         post '/api/v1/invoices',
              as: :json,
-             params: { invoice: { customer_id: customer1.id, number: '' } }
+             params: { invoice: { customer_id: customer.id, number: '' } }
 
         expect(response).to have_http_status(:unprocessable_content)
       end
@@ -91,7 +91,7 @@ RSpec.describe 'Validation', type: :request do
       it 'returns issues array with required fields' do
         post '/api/v1/invoices',
              as: :json,
-             params: { invoice: { customer_id: customer1.id } }
+             params: { invoice: { customer_id: customer.id } }
 
         expect(response).to have_http_status(:bad_request)
         body = response.parsed_body
@@ -106,7 +106,7 @@ RSpec.describe 'Validation', type: :request do
       it 'formats pointer as JSON pointer path' do
         post '/api/v1/invoices',
              as: :json,
-             params: { invoice: { customer_id: customer1.id } }
+             params: { invoice: { customer_id: customer.id } }
 
         expect(response).to have_http_status(:bad_request)
         body = response.parsed_body
@@ -124,7 +124,7 @@ RSpec.describe 'Validation', type: :request do
              as: :json,
              params: {
                invoice: {
-                 customer_id: customer1.id,
+                 customer_id: customer.id,
                  items: [{ description: '' }],
                  number: 'INV-001',
                },
@@ -136,7 +136,7 @@ RSpec.describe 'Validation', type: :request do
   end
 
   describe 'update validation' do
-    let!(:invoice1) { Invoice.create!(customer: customer1, number: 'INV-001', status: :draft) }
+    let!(:invoice1) { Invoice.create!(customer: customer, number: 'INV-001', status: :draft) }
 
     describe 'PATCH /api/v1/invoices/:id' do
       it 'does not persist changes on model validation failure' do

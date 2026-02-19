@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe 'Custom actions', type: :request do
-  let!(:customer1) { Customer.create!(email: 'billing@acme.com', name: 'Acme Corp') }
-  let!(:invoice1) { Invoice.create!(customer: customer1, number: 'INV-001', sent: false, status: :draft) }
+  let!(:customer) { Customer.create!(email: 'billing@acme.com', name: 'Acme Corp') }
+  let!(:invoice1) { Invoice.create!(customer: customer, number: 'INV-001', sent: false, status: :draft) }
 
   describe 'PATCH /api/v1/invoices/:id/send_invoice' do
     it 'updates the invoice with body params' do
@@ -52,7 +52,7 @@ RSpec.describe 'Custom actions', type: :request do
   end
 
   describe 'GET /api/v1/invoices/search' do
-    let!(:invoice2) { Invoice.create!(customer: customer1, number: 'INV-002', status: :sent) }
+    let!(:invoice2) { Invoice.create!(customer: customer, number: 'INV-002', status: :sent) }
 
     it 'returns collection with query params' do
       get '/api/v1/invoices/search', params: { q: 'INV-001' }
@@ -71,8 +71,8 @@ RSpec.describe 'Custom actions', type: :request do
              as: :json,
              params: {
                invoices: [
-                 { customer_id: customer1.id, number: 'INV-002' },
-                 { customer_id: customer1.id, number: 'INV-003', sent: true },
+                 { customer_id: customer.id, number: 'INV-002' },
+                 { customer_id: customer.id, number: 'INV-003', sent: true },
                ],
              }
       end.to change(Invoice, :count).by(2)

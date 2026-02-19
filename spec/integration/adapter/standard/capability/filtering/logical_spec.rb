@@ -3,13 +3,13 @@
 require 'rails_helper'
 
 RSpec.describe 'Logical filtering', type: :request do
-  let!(:customer1) { Customer.create!(email: 'billing@acme.com', name: 'Acme Corp') }
+  let!(:customer) { Customer.create!(email: 'billing@acme.com', name: 'Acme Corp') }
   let!(:invoice1) do
-    Invoice.create!(customer: customer1, due_on: 3.days.from_now, number: 'INV-001', sent: true, status: :draft)
+    Invoice.create!(customer: customer, due_on: 3.days.from_now, number: 'INV-001', sent: true, status: :draft)
   end
   let!(:invoice2) do
     Invoice.create!(
-      customer: customer1,
+      customer: customer,
       due_on: 2.days.from_now,
       notes: 'Rush delivery',
       number: 'INV-002',
@@ -18,7 +18,7 @@ RSpec.describe 'Logical filtering', type: :request do
     )
   end
   let!(:invoice3) do
-    Invoice.create!(customer: customer1, due_on: 1.day.from_now, number: 'INV-003', sent: true, status: :paid)
+    Invoice.create!(customer: customer, due_on: 1.day.from_now, number: 'INV-003', sent: true, status: :paid)
   end
 
   describe 'GET /api/v1/invoices' do
