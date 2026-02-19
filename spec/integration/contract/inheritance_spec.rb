@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe 'Contract inheritance', type: :integration do
   def create_child_contract(parent, &block)
     child = Class.new(parent)
-    child.instance_variable_set(:@api_class, TestApiHelper.api_class)
+    child.instance_variable_set(:@api_class, ApiTestHelper.api_class)
     child.class_eval(&block) if block_given?
     child
   end
