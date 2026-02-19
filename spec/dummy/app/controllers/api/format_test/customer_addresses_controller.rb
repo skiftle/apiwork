@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module Api
-  module V2
-    class CustomerAddressesController < V2Controller
+  module FormatTest
+    class CustomerAddressesController < FormatTestController
       before_action :set_address, only: %i[show update destroy]
 
       def index

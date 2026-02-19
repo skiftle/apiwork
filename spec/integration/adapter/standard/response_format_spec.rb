@@ -73,13 +73,13 @@ RSpec.describe 'Response format', type: :request do
     end
   end
 
-  describe 'GET /api/v2/customer-addresses' do
+  describe 'GET /api/format-test/customer-addresses' do
     let!(:address1) do
       Address.create!(city: 'Stockholm', country: 'SE', customer: customer1, street: '123 Main St', zip: '111 22')
     end
 
     it 'responds to kebab-case path' do
-      get '/api/v2/customer-addresses'
+      get '/api/format-test/customer-addresses'
 
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
@@ -87,7 +87,7 @@ RSpec.describe 'Response format', type: :request do
     end
 
     it 'applies camelCase key format' do
-      get '/api/v2/customer-addresses'
+      get '/api/format-test/customer-addresses'
 
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
@@ -96,13 +96,13 @@ RSpec.describe 'Response format', type: :request do
     end
   end
 
-  describe 'GET /api/v2/customer-addresses/:id' do
+  describe 'GET /api/format-test/customer-addresses/:id' do
     let!(:address1) do
       Address.create!(city: 'Stockholm', country: 'SE', customer: customer1, street: '123 Main St', zip: '111 22')
     end
 
     it 'responds to kebab-case show path' do
-      get "/api/v2/customer-addresses/#{address1.id}"
+      get "/api/format-test/customer-addresses/#{address1.id}"
 
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
@@ -110,13 +110,13 @@ RSpec.describe 'Response format', type: :request do
     end
   end
 
-  describe 'DELETE /api/v2/customer-addresses/:id' do
+  describe 'DELETE /api/format-test/customer-addresses/:id' do
     let!(:address1) do
       Address.create!(city: 'Stockholm', country: 'SE', customer: customer1, street: '123 Main St', zip: '111 22')
     end
 
     it 'responds to kebab-case destroy path' do
-      delete "/api/v2/customer-addresses/#{address1.id}"
+      delete "/api/format-test/customer-addresses/#{address1.id}"
 
       expect(response).to have_http_status(:no_content)
     end

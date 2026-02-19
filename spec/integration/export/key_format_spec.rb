@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe 'Key format across exports', type: :integration do
-  describe 'TypeScript with V2 camelCase' do
-    let(:output) { Apiwork::Export::TypeScript.new('/api/v2').generate }
+  describe 'TypeScript with camelCase key_format' do
+    let(:output) { Apiwork::Export::TypeScript.new('/api/format-test').generate }
 
     it 'generates camelCase property names' do
       expect(output).to match(/createdAt: string/)
@@ -15,8 +15,8 @@ RSpec.describe 'Key format across exports', type: :integration do
     end
   end
 
-  describe 'OpenAPI with V2 camelCase' do
-    let(:spec) { Apiwork::Export::OpenAPI.new('/api/v2').generate }
+  describe 'OpenAPI with camelCase key_format' do
+    let(:spec) { Apiwork::Export::OpenAPI.new('/api/format-test').generate }
 
     it 'generates camelCase property names in schemas' do
       schema = spec[:components][:schemas].values.first

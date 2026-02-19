@@ -74,7 +74,8 @@ spec/integration/
 │           └── types_spec.rb
 ├── api/
 │   ├── concerns_spec.rb
-│   └── controller_context_spec.rb
+│   ├── controller_context_spec.rb
+│   └── routing_spec.rb
 ├── contract/
 │   ├── coercion_spec.rb
 │   ├── constraints_spec.rb
@@ -85,26 +86,12 @@ spec/integration/
 │   └── validation_spec.rb
 ├── export/
 │   ├── key_format_spec.rb
-│   ├── openapi/
-│   │   ├── metadata_spec.rb
-│   │   ├── operations_spec.rb
-│   │   ├── paths_spec.rb
-│   │   ├── schemas_spec.rb
-│   │   └── unions_spec.rb
+│   ├── openapi_spec.rb
 │   ├── type_merging_spec.rb
-│   ├── typescript/
-│   │   ├── actions_spec.rb
-│   │   ├── advanced_types_spec.rb
-│   │   ├── enums_and_types_spec.rb
-│   │   ├── modifiers_spec.rb
-│   │   └── resources_spec.rb
-│   └── zod/
-│       ├── actions_spec.rb
-│       ├── advanced_types_spec.rb
-│       ├── enums_and_types_spec.rb
-│       ├── modifiers_spec.rb
-│       └── resources_spec.rb
+│   ├── typescript_spec.rb
+│   └── zod_spec.rb
 ├── introspection/
+│   ├── info_spec.rb
 │   ├── introspection_spec.rb
 │   └── param_types_spec.rb
 └── representation/
@@ -129,7 +116,7 @@ spec/integration/
 | `adapter/wrapper/member/` | Member, create, update, custom action, singular response bodies | `:integration` | `.introspect` |
 | `adapter/wrapper/collection/` | Collection response body | `:integration` | `.introspect` |
 | `adapter/` (root) | Adapter configuration | `:integration` | Ruby API |
-| `api/` | API DSL definitions | `:integration` | Ruby API |
+| `api/` | API DSL definitions, route generation | `:integration` | Ruby API / Rails routes |
 | `contract/` | Type system, imports, inheritance | `:integration` | Ruby API |
 | `export/` | TypeScript, Zod, OpenAPI generation | `:integration` | `.generate` |
 | `introspection/` | API structure inspection | `:integration` | `.introspect` |
@@ -148,7 +135,6 @@ Each capability directory contains two test types:
 | Basic CRUD (create, read, update, delete) | Rails ActiveRecord |
 | 404 for missing records | Rails rescue_from |
 | Model validations themselves | ActiveRecord::Validations |
-| Route generation | Rails Router |
 | Association creation/deletion | ActiveRecord |
 
 Test only behavior that apiwork implements.
@@ -830,35 +816,23 @@ let!(:profile1) { Profile.create!(bio: 'Billing administrator', email: 'admin@bi
 
 ## Export Test Coverage
 
-### TypeScript
+### TypeScript (`typescript_spec.rb`)
 
-| File | Tests |
-|------|-------|
-| `typescript/resources_spec.rb` | Interfaces for Invoice, Item, Customer (STI), nullable, optional, enum attrs, association types |
-| `typescript/enums_and_types_spec.rb` | Status/Method enums, custom objects (error_detail, pagination_params), sorted values, type ordering |
-| `typescript/actions_spec.rb` | Create/Update request, Show/Index response, custom action types, destroy void, writable payloads |
-| `typescript/advanced_types_spec.rb` | Advanced type generation (unions, intersections, complex types) |
-| `typescript/modifiers_spec.rb` | JSDoc description/example, deprecated, key_format :camel, optional vs nullable |
+| Tests |
+|-------|
+| Invoice interface, InvoiceStatus enum type, action request body type, Payment interface |
 
-### Zod
+### Zod (`zod_spec.rb`)
 
-| File | Tests |
-|------|-------|
-| `zod/resources_spec.rb` | z.object schemas, field types, nullable/optional, .int(), inferred types |
-| `zod/enums_and_types_spec.rb` | z.enum, custom z.object, inferred enum types, discriminated unions, sorted values |
-| `zod/actions_spec.rb` | Request/response schemas, custom action schemas, destroy z.never(), writable payloads |
-| `zod/advanced_types_spec.rb` | Advanced type generation (unions, intersections, complex types) |
-| `zod/modifiers_spec.rb` | min/max constraints, uuid validation, key_format :camel, optional+nullable combo |
+| Tests |
+|-------|
+| Zod import, InvoiceSchema z.object, InvoiceStatusSchema z.enum, request body schema, response body schema |
 
-### OpenAPI
+### OpenAPI (`openapi_spec.rb`)
 
-| File | Tests |
-|------|-------|
-| `openapi/paths_spec.rb` | All endpoint paths, nested paths, custom actions, restricted resources, singular, kebab paths |
-| `openapi/schemas_spec.rb` | Component schemas, enums, custom types, STI oneOf, nullable, arrays, $ref |
-| `openapi/unions_spec.rb` | Union type generation in OpenAPI specs |
-| `openapi/metadata_spec.rb` | Info block, contact, license, servers, tags, openapi version |
-| `openapi/operations_spec.rb` | Request bodies, response schemas, query params, path params, error responses, deprecated, operationId, 204 |
+| Tests |
+|-------|
+| OpenAPI version, info title, invoice paths, component schemas, error responses for raises, 422 for create, 204 for destroy |
 
 ### Cross-cutting
 
@@ -972,7 +946,7 @@ Numbered: `invoice1`, `invoice2`, `invoice3`. Never `first_invoice` or `paid_inv
 | `be_present` / `be_a(Hash)` for structures | Verify specific keys and values |
 | `if` in assertions | Split into separate `it` blocks |
 | Comments | Structure and names carry meaning |
-| Testing Rails behavior | CRUD, 404, model validations, route generation |
+| Testing Rails behavior | CRUD, 404, model validations |
 
 ---
 

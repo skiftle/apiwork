@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-Apiwork::API.define '/api/v2' do
+Apiwork::API.define '/api/format-test' do
   key_format :camel
   path_format :kebab
 
@@ -8,9 +8,9 @@ Apiwork::API.define '/api/v2' do
   export :typescript
 
   info do
-    title 'Billing API V2'
-    version '2.0.0'
-    description 'API with kebab-case paths'
+    title 'Format Test API'
+    version '1.0.0'
+    description 'API testing camelCase keys and kebab-case paths'
   end
 
   resources :customer_addresses
