@@ -3,7 +3,7 @@
 class Invoice < ApplicationRecord
   belongs_to :customer
   has_many :items, dependent: :destroy
-  has_many :payments
+  has_many :payments, dependent: :destroy
   has_many :attachments, dependent: :destroy
   has_many :taggings, as: :taggable, dependent: :destroy
   has_many :tags, through: :taggings
@@ -11,13 +11,14 @@ class Invoice < ApplicationRecord
 
   accepts_nested_attributes_for :items, allow_destroy: true
 
-  enum :status, { draft: 0, sent: 1, paid: 2, overdue: 3, void: 4 } # rubocop:disable Apiwork/SortHash
+  enum :status, { draft: 0, overdue: 3, paid: 2, sent: 1, void: 4 }
 
-  scope :search, lambda { |query|
-    return all if query.blank?
+  scope :search,
+        lambda { |query|
+          return all if query.blank?
 
-    where('number LIKE ? OR notes LIKE ?', "%#{query}%", "%#{query}%")
-  }
+          where('number LIKE ? OR notes LIKE ?', "%#{query}%", "%#{query}%")
+        }
 
   validates :number, length: { maximum: 20, minimum: 3 }, presence: true, uniqueness: true
   validate :validate_number_format

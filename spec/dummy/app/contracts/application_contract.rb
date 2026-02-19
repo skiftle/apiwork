@@ -3,7 +3,7 @@
 class ApplicationContract < Apiwork::Contract::Base
   abstract!
 
-  def hash(cool: false, ahh: true)
+  def hash(ahh: true, cool: false)
     object.hash
   end
 end

@@ -15,7 +15,9 @@ AllCops:
   TargetRubyVersion: 3.2
   SuggestExtensions: false
   Exclude:
-    - "spec/dummy/**/*"
+    - "spec/dummy/bin/**/*"
+    - "spec/dummy/db/**/*"
+    - "spec/dummy/Rakefile"
     - "vendor/**/*"
 
 Apiwork/KeywordShorthand:

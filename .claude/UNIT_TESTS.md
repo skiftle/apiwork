@@ -5,67 +5,8 @@ Rules for writing unit tests in this repository.
 This document is deterministic. Given a class, there is exactly **one** way to write its test.
 Follow every rule. No variation. No judgment calls.
 
----
-
-## Commands
-
-```bash
-bundle exec rspec                                        # all tests
-bundle exec rspec spec/apiwork/issue_spec.rb             # single file
-bundle exec rspec spec/apiwork/issue_spec.rb:42          # single test
-bundle exec rubocop -A                                   # lint + auto-fix
-```
-
----
-
-## File Organization
-
-```
-spec/
-├── apiwork/       # Unit tests (mirrors lib/apiwork/)
-├── integration/   # Cross-domain tests
-├── dummy/         # Test Rails app
-└── support/       # Helpers
-```
-
-### Mapping
-
-| Source | Test |
-|--------|------|
-| `lib/apiwork/issue.rb` | `spec/apiwork/issue_spec.rb` |
-| `lib/apiwork/contract/object.rb` | `spec/apiwork/contract/object_spec.rb` |
-| Cross-domain behavior | `spec/integration/<domain>/<feature>_spec.rb` |
-
-**Rule:** If unsure whether unit or integration, choose integration.
-
----
-
-## Unit vs Integration
-
-**Unit:** Tests one class. Minimal setup. No HTTP requests. No database records.
-
-**Integration:** Tests behavior across domains. Uses the dummy Rails app, database records, HTTP requests.
-
-| Unit | Integration |
-|------|-------------|
-| `Apiwork::Issue` | Filtering API |
-| `Apiwork::Contract::Object` validation | CRUD endpoints |
-| `Apiwork::Representation::Attribute` | Export generation |
-| Error class behavior | Nested includes |
-
----
-
-## File Header
-
-Every test file starts with exactly:
-
-```ruby
-# frozen_string_literal: true
-
-require 'rails_helper'
-```
-
-No blank line between the magic comment and require.
+For shared test rules (assertions, test data, forbidden patterns), see `TESTS.md`.
+For integration test patterns, see `INTEGRATION_TESTS.md`.
 
 ---
 
@@ -673,41 +614,62 @@ Within each `describe`:
 
 ---
 
-## `let` vs Inline — Decision Tree
+## `it` Naming Formulas
+
+`<what>` is the **return value as written in code** or the **method name as words**.
+
+**Algorithm for `<what>`:**
 
 ```
-1. Same object used in 3+ it blocks in same describe?  → let
-2. Database record that must exist before test?         → let!
-3. Object used in 1-2 it blocks?                       → inline in the it block
-4. Setup shared across 3+ it blocks?                   → before
-5. Bulk data (10+ records)?                             → before with loop
+1. Return is a literal (:domain, 422, "UTC")    → use the literal: 'returns :domain'
+2. Return is the method name's noun              → use it: 'returns the pointer'
+3. Return is nil                                 → 'returns nil when <condition>'
 ```
 
-Never use `let` at the `RSpec.describe` level in unit tests. Keep `let` as close to its usage as possible.
+**Algorithm for `<condition>`:**
 
-```ruby
-# Good — let scoped to the describe that uses it
-describe '#pointer' do
-  let(:issue) { described_class.new(:required, 'Required', path: [:user, :email]) }
-
-  it 'returns JSON pointer format' do
-    expect(issue.pointer).to eq('/user/email')
-  end
-
-  # ... 2 more it blocks using issue
-end
-
-# Bad — let at top level used by one describe
-RSpec.describe Apiwork::Issue do
-  let(:issue) { described_class.new(:required, 'Required') }
-
-  describe '#code' do
-    it 'returns the code' do
-      expect(issue.code).to eq(:required)
-    end
-  end
-end
 ```
+1. Condition is from a context block             → omit (context already states it)
+2. Condition is about input state                → 'when <state>': 'when not set', 'when empty'
+3. Condition is about a flag                     → 'when <flag>': 'when abstract', 'when optional'
+```
+
+| Method category | `it` pattern | Exact example |
+|-----------------|--------------|---------------|
+| Getter (literal return) | `'returns <literal>'` | `it 'returns :domain'` |
+| Getter (object return) | `'returns the <method name as noun>'` | `it 'returns the pointer'` |
+| Getter (nil path) | `'returns nil when <condition>'` | `it 'returns nil when not set'` |
+| Predicate (true) | `'returns true when <adjective from method name>'` | `it 'returns true when abstract'` |
+| Predicate (false) | `'returns false when not <adjective>'` | `it 'returns false when not abstract'` |
+| Mutator | `'marks the <class noun> as <state>'` | `it 'marks the class as abstract'` |
+| Converter (`to_h`) | `'includes all fields'` | `it 'includes all fields'` — always this exact string |
+| Converter (`to_s`) | `'formats as <output pattern>'` | `it 'formats as [code] at pointer detail'` |
+| Converter (`as_json` delegating) | `'returns the same as to_h'` | `it 'returns the same as to_h'` — always this exact string |
+| Converter (branch, true) | `'includes the <thing>'` | `it 'includes the pointer'` |
+| Converter (branch, false) | `'excludes the <thing>'` | `it 'excludes the pointer'` |
+| Finder (success) | `'returns the <class noun>'` | `it 'returns the error code'` |
+| Finder (nil) | `'returns nil when not found'` | Always this exact string |
+| Finder (raise) | `'raises <Error> when not found'` | `it 'raises KeyError when not found'` |
+| DSL (registers) | `'registers the <thing>'` | `it 'registers the attribute'` |
+| DSL (block) | `'passes block to <target class>'` | `it 'passes block to Attribute'` |
+| Config setter (set) | `'sets the <thing>'` | `it 'sets the serializer class'` |
+| Config setter (non-class) | `'raises ConfigurationError for non-class argument'` | Always this exact string |
+| Config setter (wrong hierarchy) | `'raises ConfigurationError for wrong class hierarchy'` | Always this exact string |
+| Config setter (inherit) | `'inherits from superclass'` | Always this exact string |
+| Initialize (defaults) | `'creates with required attributes'` | Always this exact string |
+| Initialize (optionals) | `'accepts <param1> and <param2>'` | `it 'accepts path and meta'` |
+| Initialize (coercion) | `'converts <input> to <output>'` | `it 'converts path elements to symbols except integers'` |
+
+**Forbidden patterns:**
+
+| Bad | Why | Good |
+|-----|-----|------|
+| `it 'should return a hash'` | "should" | `it 'returns a hash'` |
+| `it 'validates and saves'` | Multiple behaviors | Split into two `it` blocks |
+| `it 'works correctly'` | Non-specific | Use formula |
+| `it 'it returns a hash'` | Stutters | `it 'returns a hash'` |
+| `it 'returns the correct value'` | "correct" is filler | `it 'returns :domain'` |
+| `it 'properly handles nil'` | "properly" is filler | `it 'returns nil when not set'` |
 
 ---
 
@@ -778,471 +740,6 @@ let(:definition) { described_class.new(contract_class) }
 
 ---
 
----
-
-## Naming
-
-### RSpec.describe
-
-| Test type | Format | Example |
-|-----------|--------|---------|
-| Unit | Class constant | `RSpec.describe Apiwork::Issue` |
-
-### describe (nested)
-
-| Purpose | Format | Example |
-|---------|--------|---------|
-| Instance method | `'#method'` | `describe '#pointer'` |
-| Class method | `'.method'` | `describe '.find'` |
-| Nested class | Class constant | `describe Apiwork::Representation::Attribute` |
-
-### context
-
-Must start with: `when`, `with`, `without`, `if`.
-
-```ruby
-context 'when the path is empty' do
-context 'with valid datetime values' do
-context 'without filters' do
-```
-
-### it — Naming Formulas
-
-`<what>` is the **return value as written in code** or the **method name as words**.
-
-**Algorithm for `<what>`:**
-
-```
-1. Return is a literal (:domain, 422, "UTC")    → use the literal: 'returns :domain'
-2. Return is the method name's noun              → use it: 'returns the pointer'
-3. Return is nil                                 → 'returns nil when <condition>'
-```
-
-**Algorithm for `<condition>`:**
-
-```
-1. Condition is from a context block             → omit (context already states it)
-2. Condition is about input state                → 'when <state>': 'when not set', 'when empty'
-3. Condition is about a flag                     → 'when <flag>': 'when abstract', 'when optional'
-```
-
-| Method category | `it` pattern | Exact example |
-|-----------------|--------------|---------------|
-| Getter (literal return) | `'returns <literal>'` | `it 'returns :domain'` |
-| Getter (object return) | `'returns the <method name as noun>'` | `it 'returns the pointer'` |
-| Getter (nil path) | `'returns nil when <condition>'` | `it 'returns nil when not set'` |
-| Predicate (true) | `'returns true when <adjective from method name>'` | `it 'returns true when abstract'` |
-| Predicate (false) | `'returns false when not <adjective>'` | `it 'returns false when not abstract'` |
-| Mutator | `'marks the <class noun> as <state>'` | `it 'marks the class as abstract'` |
-| Converter (`to_h`) | `'includes all fields'` | `it 'includes all fields'` — always this exact string |
-| Converter (`to_s`) | `'formats as <output pattern>'` | `it 'formats as [code] at pointer detail'` |
-| Converter (`as_json` delegating) | `'returns the same as to_h'` | `it 'returns the same as to_h'` — always this exact string |
-| Converter (branch, true) | `'includes the <thing>'` | `it 'includes the pointer'` |
-| Converter (branch, false) | `'excludes the <thing>'` | `it 'excludes the pointer'` |
-| Finder (success) | `'returns the <class noun>'` | `it 'returns the error code'` |
-| Finder (nil) | `'returns nil when not found'` | Always this exact string |
-| Finder (raise) | `'raises <Error> when not found'` | `it 'raises KeyError when not found'` |
-| DSL (registers) | `'registers the <thing>'` | `it 'registers the attribute'` |
-| DSL (block) | `'passes block to <target class>'` | `it 'passes block to Attribute'` |
-| Config setter (set) | `'sets the <thing>'` | `it 'sets the serializer class'` |
-| Config setter (non-class) | `'raises ConfigurationError for non-class argument'` | Always this exact string |
-| Config setter (wrong hierarchy) | `'raises ConfigurationError for wrong class hierarchy'` | Always this exact string |
-| Config setter (inherit) | `'inherits from superclass'` | Always this exact string |
-| Initialize (defaults) | `'creates with required attributes'` | Always this exact string |
-| Initialize (optionals) | `'accepts <param1> and <param2>'` | `it 'accepts path and meta'` |
-| Initialize (coercion) | `'converts <input> to <output>'` | `it 'converts path elements to symbols except integers'` |
-**Forbidden patterns:**
-
-| Bad | Why | Good |
-|-----|-----|------|
-| `it 'should return a hash'` | "should" | `it 'returns a hash'` |
-| `it 'validates and saves'` | Multiple behaviors | Split into two `it` blocks |
-| `it 'works correctly'` | Non-specific | Use formula |
-| `it 'it returns a hash'` | Stutters | `it 'returns a hash'` |
-| `it 'returns the correct value'` | "correct" is filler | `it 'returns :domain'` |
-| `it 'properly handles nil'` | "properly" is filler | `it 'returns nil when not set'` |
-
----
-
-## Assertions
-
-### Equality
-
-```ruby
-expect(issue.code).to eq(:required)
-expect(issue.path).to eq([:user, :name])
-expect(result.length).to eq(2)
-```
-
-### Boolean
-
-```ruby
-expect(representation_class.abstract?).to be(true)
-expect(representation_class.abstract?).to be(false)
-```
-
-Use `be(true)` / `be(false)`, not `be_truthy` / `be_falsey`.
-
-### Nil / Empty / Present
-
-```ruby
-expect(definition.element).to be_nil
-expect(result.issues).to be_empty
-expect(json['issues']).to be_present
-```
-
-### Collections
-
-```ruby
-expect(result.length).to eq(2)
-expect(numbers).to include('INV-001', 'INV-003')
-expect(ids).to contain_exactly(invoice1.id, invoice3.id)
-```
-
-Use `contain_exactly` for order-independent, `eq` for exact match with order.
-
-### Type
-
-```ruby
-expect(output).to be_a(String)
-expect(definition.element).to be_a(Apiwork::Representation::Element)
-```
-
-### Errors
-
-```ruby
-expect do
-  Class.new(described_class) do
-    resource_serializer 'NotAClass'
-  end
-end.to raise_error(Apiwork::ConfigurationError, /must be a Serializer class/)
-```
-
-### String Matching
-
-```ruby
-expect(output).to include('export interface Invoice')
-expect(output).to match(/number\??: string/)
-```
-
-Use `include` for exact substring, `match` for regex.
-
----
-
-## Arrange / Act / Assert
-
-Every `it` block follows AAA with blank lines separating each phase.
-
-### Arrange + Assert (no separate act)
-
-```ruby
-it 'returns :domain' do
-  error = described_class.new(issue)
-
-  expect(error.layer).to eq(:domain)
-end
-```
-
-### Arrange + Act + Assert
-
-```ruby
-it 'converts path elements to symbols' do
-  issue = described_class.new(
-    :required,
-    'Required',
-    path: ['user', 'items', 0, 'name'],
-  )
-
-  expect(issue.path).to eq([:user, :items, 0, :name])
-end
-```
-
-**Rule:** One blank line between arrange and assert. No blank lines within the assert phase.
-
----
-
-## Multiple Assertions per `it`
-
-### When allowed
-
-Multiple assertions test **one object's state after one action**:
-
-```ruby
-it 'creates an issue with required attributes' do
-  issue = described_class.new(:required, 'Field is required')
-
-  expect(issue.code).to eq(:required)
-  expect(issue.detail).to eq('Field is required')
-  expect(issue.path).to eq([])
-  expect(issue.meta).to eq({})
-end
-```
-
-### When to split
-
-Different **inputs** or **behaviors** require separate `it` blocks:
-
-```ruby
-it 'returns JSON pointer format' do
-  issue = described_class.new(:required, 'Required', path: [:user, :email])
-
-  expect(issue.pointer).to eq('/user/email')
-end
-
-it 'handles array indices' do
-  issue = described_class.new(:required, 'Required', path: [:items, 0, :name])
-
-  expect(issue.pointer).to eq('/items/0/name')
-end
-```
-
-### Decision: same `it` or separate?
-
-```
-Same object, same action, multiple properties?  → Same it
-Different input values for same method?          → Separate it
-Different method calls?                          → Separate it
-```
-
----
-
-## Test Data
-
-### Forbidden Words
-
-Never use: `foo`, `bar`, `baz`, `test`, `example`, `sample`, `dummy`, `thing`, `data`, `xxx`, `abc`
-
-### Record Attribute Order
-
-Alphabetical by key name. Always.
-
-```ruby
-Invoice.create!(customer: customer1, due_on: 3.days.from_now, number: 'INV-001', status: :draft)
-```
-
-### Variable Names
-
-Numbered: `invoice1`, `invoice2`, `invoice3`. Never `first_invoice` or `paid_invoice`.
-
----
-
-## Test Data Registry
-
-See `INTEGRATION_TESTS.md` for the full test data registry with all models and values.
-
----
-
-## Unit Test Value Registry
-
-Fixed values by type. Do not invent new values.
-
-### Issue values
-
-| Field | Primary value | Secondary value | Empty/default value |
-|-------|--------------|-----------------|---------------------|
-| `code` | `:required` | `:type_invalid` | `:invalid` |
-| `detail` | `'Field is required'` | `'Expected string'` | `'Invalid request'` |
-| `path` | `[:user, :email]` | `[:items, 0, :name]` | `[]` |
-| `meta` | `{ field: :email }` | `{ expected: 'string', got: 'integer' }` | `{}` |
-
-### Error values
-
-| Field | Value |
-|-------|-------|
-| `issue` | `Apiwork::Issue.new(:invalid, 'is invalid', path: [:amount])` |
-| `status` | `422` |
-| `error_code` | `Apiwork::ErrorCode.find!(:unprocessable_entity)` |
-
-### Representation values
-
-| Field | Value |
-|-------|-------|
-| Attribute name | `:number`, `:notes`, `:status`, `:amount` |
-| Attribute type | `:string`, `:integer`, `:boolean`, `:datetime` |
-| Association name | `:items`, `:customer`, `:payments` |
-
-### Contract values
-
-| Field | Value |
-|-------|-------|
-| Action name | `:index`, `:show`, `:create`, `:update`, `:destroy` |
-| Param name | `:number`, `:notes`, `:amount`, `:email` |
-| Param type | `:string`, `:integer`, `:boolean` |
-
-### DSL class setter test values
-
-| Test | Valid class | Invalid (non-class) | Invalid (wrong hierarchy) |
-|------|-----------|---------------------|--------------------------|
-| `resource_serializer` | `Serializer::Resource::Default` | `'NotAClass'` | `String` |
-| `error_serializer` | `Serializer::Error::Default` | `'NotAClass'` | `String` |
-| `member_wrapper` | `Wrapper::Member::Default` | `'NotAClass'` | `String` |
-| `collection_wrapper` | `Wrapper::Collection::Default` | `'NotAClass'` | `String` |
-| `error_wrapper` | `Wrapper::Error::Default` | `'NotAClass'` | `String` |
-
-Non-class argument is always `'NotAClass'`. Wrong hierarchy is always `String`.
-
-### String test values by purpose
-
-| Purpose | Value |
-|---------|-------|
-| Person name | `'Anna Svensson'`, `'Erik Lindberg'` |
-| Email | `'anna@example.com'`, `'billing@acme.com'` |
-| Company | `'Acme Corp'`, `'Beta Inc'` |
-| Invoice number | `'INV-001'`, `'INV-002'`, `'INV-003'` |
-| Notes | `'Net 30 payment terms'`, `'Rush delivery'`, `'Prepaid quarterly'` |
-| Item description | `'Consulting hours'`, `'Software license'`, `'Support contract'` |
-| Adjustment description | `'Discount 10%'`, `'Early payment bonus'` |
-| Payment reference | `'ch_abc123'`, `'bt_def456'` |
-| Tag name | `'Priority'`, `'Urgent'` |
-| Tag slug | `'priority'`, `'urgent'` |
-| Filename | `'document.pdf'`, `'image.png'` |
-| Street | `'123 Main St'`, `'456 Oak Ave'` |
-| City | `'Stockholm'`, `'Gothenburg'` |
-
-### Numeric test values
-
-| Purpose | Value |
-|---------|-------|
-| Positive integer | `42` |
-| Zero | `0` |
-| Negative integer | `-1` |
-| Decimal | `19.99` |
-| Count | `25` (for bulk) |
-
-### Time test values
-
-| Purpose | Value |
-|---------|-------|
-| Past (days) | `3.days.ago`, `2.days.ago`, `1.day.ago` |
-| Past (hours) | `1.hour.ago` |
-| Date string | `'1990-01-15'` |
-| Datetime string | `'2024-01-15T10:30:00Z'` |
-
----
-
-## API Definition Paths
-
-Tests that call `Apiwork::API.define` must use unique, deterministic base paths.
-
-**Formula:** `/unit/<class>-<method>[-<variant>]`
-
-| Component | Rule | Example |
-|-----------|------|---------|
-| Prefix | Always `/unit/` for unit tests | `/unit/` |
-| `<class>` | Demodulized class name, lowercased | `Base` becomes `base`, `Resource` becomes `resource` |
-| `<method>` | Method name without `.`/`#`, underscores become hyphens | `.key_format` becomes `key-format` |
-| `<variant>` | Only when multiple API definitions in same `describe` | see below |
-
-### Variant rules
-
-| Situation | Variant | Example path |
-|-----------|---------|--------------|
-| Single `it` in describe | none | `/unit/base-adapter` |
-| Primary/happy path | none | `/unit/base-key-format` |
-| Default value test | `default` | `/unit/base-key-format-default` |
-| Error/raises test | `invalid` | `/unit/base-key-format-invalid` |
-| Specific keyword argument | argument name | `/unit/resource-get-on` |
-| Other behavior variant | shortest descriptive word | `/unit/resource-resources-nested` |
-
-### Examples
-
-```ruby
-# .adapter — single it, no variant
-Apiwork::API.define('/unit/base-adapter') {}
-
-# .key_format — 3 tests in same describe
-Apiwork::API.define '/unit/base-key-format' do       # primary
-Apiwork::API.define('/unit/base-key-format-default') {} # default value
-Apiwork::API.define '/unit/base-key-format-invalid' do  # error case
-
-# #resources — many tests in same describe
-Apiwork::API.define '/unit/resource-resources' do         # primary
-Apiwork::API.define '/unit/resource-resources-nested' do  # variant
-Apiwork::API.define '/unit/resource-resources-only' do    # keyword arg
-Apiwork::API.define '/unit/resource-resources-except' do  # keyword arg
-Apiwork::API.define '/unit/resource-resources-path' do    # keyword arg
-```
-
----
-
-## Intermediate Variables
-
-```
-Accessing .first on a collection?                → Extract: `issue = json['issues'].first`
-Mapping a collection for comparison?             → Extract: `numbers = result.map { |r| r[:number] }`
-Simple method call on test object?               → Inline: `expect(issue.pointer).to eq(...)`
-```
-
----
-
-## Forbidden
-
-| Pattern | Why |
-|---------|-----|
-| `subject` | Ambiguous, hides what is tested |
-| `shared_examples` | Makes tests harder to read locally |
-| `shared_context` | Use `let` or helpers instead |
-| `instance_variable_get` | Use semi-public methods |
-| `allow(...).to receive(...)` on internals | Test behavior, not calls |
-| `before(:all)` | Use `let!` or `before` (per-example) |
-| `after` blocks | Clean up should be automatic (transactional fixtures) |
-| Nested `context` deeper than 2 levels | Flatten or split file |
-| `described_class` outside unit tests | Use the actual class or string |
-| Comments | Structure and names carry meaning |
-
----
-
-## Global State in Unit Tests
-
-Unit tests must not mutate global state with keys that exist in production code or other tests.
-
-### Decision Tree
-
-```
-1. Can I avoid global state entirely?        → Yes → use anonymous classes, create_test_contract
-2. Must I mutate global state (e.g., I18n)?  → Use keys that do not exist in production
-3. Need `after` block to clean up?           → Forbidden. Fix the test instead.
-```
-
-### I18n Translations
-
-When a test needs `I18n.backend.store_translations`, use keys that do not exist in locale files:
-
-```ruby
-it 'returns the API-specific translation' do
-  definition = described_class.new(attach_path: false, key: :unit_test_api_specific, status: 404)
-  I18n.backend.store_translations(:en, apiwork: { apis: { 'api/v1': { error_codes: { unit_test_api_specific: { description: 'Resource not found' } } } } })
-
-  expect(definition.description(locale_key: 'api/v1')).to eq('Resource not found')
-end
-```
-
-**Rules:**
-
-1. Never use keys that exist in locale files (`:not_found`, `:bad_request`, etc.)
-2. Use obviously test-only keys: `:unit_test_api_specific`, `:unit_operation`, etc.
-3. Never use `after { I18n.backend.reload! }` — it interferes with lazy loading
-
-### Registries and Class State
-
-Apiwork registries (API, Adapter, Export) persist across tests. Avoid registering with real keys:
-
-1. Use anonymous classes (`Class.new(described_class)`) — they are not registered
-2. Use `create_test_contract` helper — generates isolated contracts
-3. For `Apiwork::API.define`, use deterministic paths per the API Definition Paths section
-
-### Why Not `after` Blocks?
-
-`after` blocks are forbidden because:
-
-1. They create hidden dependencies between setup and teardown
-2. Global state cleanup is fragile (e.g., `I18n.backend.reload!` breaks `store_translations`)
-3. They mask the real problem: the test is mutating shared state with conflicting keys
-
-The fix is always: **use keys that cannot conflict with production code or other tests.**
-
----
-
 ## Complete Algorithm
 
 Given a class to test:
@@ -1280,10 +777,10 @@ Given a class to test:
 
 ## Checklist
 
-Before a test file is done:
+Before a unit test file is done:
 
 1. File starts with `# frozen_string_literal: true` + `require 'rails_helper'`
-2. `RSpec.describe` uses class constant (unit) or string (integration)
+2. `RSpec.describe` uses class constant
 3. Tests `@api public` methods, `#initialize` with logic, non-private methods with ≥3 code paths, and entry points for files with ≥8 total conditionals (per decision tree above)
 4. No tests for private methods or simple semi-public methods in simple files
 5. Methods tested in class layout order (@api public first alphabetical, then semi-public ≥3 alphabetical, within each section)
@@ -1292,11 +789,6 @@ Before a test file is done:
 8. `context` blocks match method branches
 9. DSL methods with options have "with defaults" + "with overrides" contexts
 10. `it` names follow naming formula table
-11. No `subject`, no `shared_examples`, no `shared_context`
-12. No comments
-13. AAA structure with blank lines
-14. Test data from the registry (no invented values)
-15. Record attributes in alphabetical order
-16. `let` scoped to nearest `describe`, not top-level
-17. `bundle exec rubocop -A` passes
-18. `bundle exec rspec <file>` passes
+11. Test data from the registry in `TESTS.md` (no invented values)
+12. `bundle exec rubocop -A` passes
+13. `bundle exec rspec <file>` passes
