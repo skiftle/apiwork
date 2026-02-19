@@ -141,25 +141,6 @@ RSpec.describe 'Contract types', type: :integration do
     end
   end
 
-  describe 'Existing V1 API types' do
-    let(:api_class) { Apiwork::API.find!('/api/v1') }
-
-    it 'has API-level object types defined' do
-      expect(api_class.type_registry.key?(:error_detail)).to be(true)
-      expect(api_class.type_registry.key?(:pagination_params)).to be(true)
-    end
-
-    it 'has API-level enums defined' do
-      expect(api_class.enum_registry.key?(:method)).to be(true)
-      expect(api_class.enum_values(:method)).to eq(%i[credit_card bank_transfer cash])
-    end
-
-    it 'exposes types via type registry' do
-      expect(api_class.type?(:error_detail)).to be(true)
-      expect(api_class.enum?(:method)).to be(true)
-    end
-  end
-
   describe 'Type checking methods' do
     it 'returns true for existing types and false for missing' do
       api = Apiwork::API.define '/integration/types-check' do

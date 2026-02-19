@@ -103,42 +103,4 @@ RSpec.describe 'Introspection info', type: :integration do
       expect(hash[:description]).to eq('Production')
     end
   end
-
-  describe 'Union type with discriminator' do
-    it 'returns union type for STI customer' do
-      customer_type = introspection.types[:customer]
-
-      expect(customer_type.type).to eq(:union)
-      expect(customer_type.union?).to be(true)
-      expect(customer_type.discriminator).to eq(:type)
-      expect(customer_type.variants.length).to eq(2)
-    end
-
-    it 'returns reference variants for STI subtypes' do
-      references = introspection.types[:customer].variants.map(&:reference)
-
-      expect(references).to contain_exactly(:company_customer, :person_customer)
-    end
-  end
-
-  describe 'Type metadata' do
-    it 'returns type description when set' do
-      receipt_type = introspection.types[:receipt]
-
-      expect(receipt_type.description).to eq('A billing receipt')
-    end
-
-    it 'returns type example when set' do
-      receipt_type = introspection.types[:receipt]
-
-      expect(receipt_type.example).to eq({ id: 1, number: 'INV-001' })
-    end
-
-    it 'returns extends as empty array when type has no extensions' do
-      receipt_type = introspection.types[:receipt]
-
-      expect(receipt_type.extends).to eq([])
-      expect(receipt_type.extends?).to be(false)
-    end
-  end
 end

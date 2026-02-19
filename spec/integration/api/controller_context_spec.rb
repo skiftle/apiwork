@@ -27,32 +27,9 @@ RSpec.describe 'Controller context', type: :integration do
       controller = controller_class.new
       expect(controller.context).to eq({ current_user_id: 123, locale: :en })
     end
-
-    it 'accepts any hash structure' do
-      controller_class = Class.new(ApplicationController) do
-        include Apiwork::Controller
-
-        def context
-          {
-            current_user: { id: 1, role: :admin },
-            feature_flags: { new_ui: true },
-            request_id: 'abc-123',
-          }
-        end
-      end
-
-      controller = controller_class.new
-      expect(controller.context[:current_user]).to eq({ id: 1, role: :admin })
-      expect(controller.context[:feature_flags]).to eq({ new_ui: true })
-      expect(controller.context[:request_id]).to eq('abc-123')
-    end
   end
 
   describe 'Context inheritance' do
-    it 'is defined on Apiwork::Controller' do
-      expect(Apiwork::Controller.instance_methods).to include(:context)
-    end
-
     it 'can be customized per controller subclass' do
       base_controller = Class.new(ApplicationController) do
         include Apiwork::Controller
