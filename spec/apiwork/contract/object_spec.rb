@@ -940,4 +940,154 @@ RSpec.describe Apiwork::Contract::Object do
       end
     end
   end
+
+  describe 'nullable validation for non-string types' do
+    let(:contract_class) { create_test_contract }
+    let(:definition) { described_class.new(contract_class) }
+
+    context 'when uuid field is nullable but required' do
+      before do
+        definition.uuid :schedule_id, nullable: true
+      end
+
+      it 'allows nil value without field_missing error' do
+        result = definition.validate({ schedule_id: nil })
+
+        expect(result.issues).to be_empty
+      end
+
+      it 'rejects missing field' do
+        result = definition.validate({})
+
+        expect(result.issues).not_to be_empty
+        expect(result.issues.first.code).to eq(:field_missing)
+      end
+
+      it 'accepts valid uuid value' do
+        result = definition.validate({ schedule_id: '550e8400-e29b-41d4-a716-446655440000' })
+
+        expect(result.issues).to be_empty
+      end
+    end
+
+    context 'when integer field is nullable but required' do
+      before do
+        definition.integer :quantity, nullable: true
+      end
+
+      it 'allows nil value without field_missing error' do
+        result = definition.validate({ quantity: nil })
+
+        expect(result.issues).to be_empty
+      end
+
+      it 'rejects missing field' do
+        result = definition.validate({})
+
+        expect(result.issues).not_to be_empty
+        expect(result.issues.first.code).to eq(:field_missing)
+      end
+    end
+
+    context 'when datetime field is nullable but required' do
+      before do
+        definition.datetime :ends_at, nullable: true
+      end
+
+      it 'allows nil value without field_missing error' do
+        result = definition.validate({ ends_at: nil })
+
+        expect(result.issues).to be_empty
+      end
+
+      it 'rejects missing field' do
+        result = definition.validate({})
+
+        expect(result.issues).not_to be_empty
+        expect(result.issues.first.code).to eq(:field_missing)
+      end
+    end
+
+    context 'when decimal field is nullable but required' do
+      before do
+        definition.decimal :amount, nullable: true
+      end
+
+      it 'allows nil value without field_missing error' do
+        result = definition.validate({ amount: nil })
+
+        expect(result.issues).to be_empty
+      end
+
+      it 'rejects missing field' do
+        result = definition.validate({})
+
+        expect(result.issues).not_to be_empty
+        expect(result.issues.first.code).to eq(:field_missing)
+      end
+    end
+  end
+
+  describe '#params with merged types' do
+    let(:contract_class) do
+      create_test_contract do
+        object :pagination do
+          integer :current
+          integer :items
+          integer :total
+        end
+      end
+    end
+
+    let(:definition) { described_class.new(contract_class) }
+
+    before do
+      definition.string :name
+      definition.merge(:pagination)
+    end
+
+    it 'includes own params' do
+      expect(definition.params.keys).to include(:name)
+    end
+
+    it 'includes merged type params' do
+      expect(definition.params.keys).to include(:current, :items, :total)
+    end
+
+    it 'prioritizes own params over merged params' do
+      definition.integer :current, description: 'Overridden'
+
+      expect(definition.params[:current][:description]).to eq('Overridden')
+    end
+
+    context 'when validating data with merged fields' do
+      it 'accepts data matching merged type schema' do
+        result = definition.validate(
+          {
+            current: 1,
+            items: 100,
+            name: 'Invoice',
+            total: 10,
+          },
+        )
+
+        expect(result.issues).to be_empty
+      end
+
+      it 'rejects unknown fields not in merged types' do
+        result = definition.validate(
+          {
+            current: 1,
+            items: 100,
+            name: 'Invoice',
+            total: 10,
+            unknown_field: 'value',
+          },
+        )
+
+        expect(result.issues).not_to be_empty
+        expect(result.issues.first.code).to eq(:field_unknown)
+      end
+    end
+  end
 end
