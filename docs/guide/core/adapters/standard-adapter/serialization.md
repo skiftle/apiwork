@@ -76,7 +76,7 @@ See [Encode & Decode Transformers](../../representations/serialization.md#encode
 
 When associations are marked `writable: true`, the adapter accepts nested data for create, update, and delete operations.
 
-For association configuration, see [Associations](../../representations/associations.md).
+For association configuration, see [Associations](../../representations/associations/introduction.md).
 
 ### Create
 

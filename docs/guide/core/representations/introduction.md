@@ -45,8 +45,8 @@ The [adapter](../adapters/introduction.md) then derives filter types, sort optio
 
 ## Next Steps
 
-- [Attributes](./attributes.md) — declaring scalar fields and their options
-- [Associations](./associations.md) — exposing relations and nested writes
+- [Attributes](./attributes/introduction.md) — declaring scalar fields and their options
+- [Associations](./associations/introduction.md) — exposing relations and nested writes
 - [Inference](./inference.md) — how models and types are resolved
 - [Configuration](./configuration.md) — root key, metadata, and global options
 - [Serialization](./serialization.md) — how records are rendered in responses
