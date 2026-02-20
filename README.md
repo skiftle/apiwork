@@ -2,72 +2,11 @@
 
 [![CI](https://github.com/skiftle/apiwork/workflows/CI/badge.svg)](https://github.com/skiftle/apiwork/actions/workflows/ci.yml)
 
-# Apiwork
-
 Apiwork is a contract-driven API layer for Rails.
 
 It helps you define your API boundary explicitly instead of spreading structure across controllers, serializers, validation logic, and documentation. You define the contract once — and that definition validates requests, shapes responses, and can generate OpenAPI specs and typed client artifacts.
 
 Apiwork does not replace Rails. It works alongside it. Controllers stay controllers. ActiveRecord stays ActiveRecord. Domain logic stays where it belongs.
-
----
-
-## Core Concepts
-
-### Contracts
-
-A contract defines what your API accepts and returns.
-
-Incoming requests are validated against the contract before reaching your application code. Invalid input is rejected with structured errors at the boundary.
-
-There is no separate validation layer and no manual type checking in controllers. The contract executes at runtime.
-
-You can define contracts entirely by hand.
-
----
-
-### Representations
-
-For endpoints backed by ActiveRecord models, representations reduce repetition.
-
-A representation describes how a model is exposed through the API — which attributes are readable, which are writable, and how associations are handled.
-
-It builds on metadata Rails already knows from your models and database: column types, enums, nullability, and associations.
-
-The database remains the source of truth. The API boundary reflects it intentionally.
-
----
-
-### Adapters
-
-Adapters encode API conventions.
-
-They define how filtering works, how pagination behaves, how nested writes are processed, and how related records are handled.
-
-Apiwork ships with a built-in adapter that supports:
-
-- Operator-based filtering
-- Sorting
-- Cursor and offset pagination
-- Nested writes
-- Single-table inheritance
-- Polymorphic associations
-
-You can implement your own adapter to capture different conventions or performance strategies.
-
----
-
-## Generated Specifications
-
-Because contracts and representations are structured and introspectable, Apiwork can generate:
-
-- OpenAPI specifications
-- TypeScript types
-- Zod schemas
-
-These artifacts are derived from the same definitions that validate requests at runtime.
-
-There is no parallel schema layer and no drift between validation and generated types.
 
 ---
 
@@ -87,14 +26,6 @@ It gives you:
 - A single source of truth
 
 All while staying aligned with Rails conventions.
-
----
-
-## Installation
-
-```bash
-bundle add apiwork
-```
 
 ---
 
@@ -123,10 +54,6 @@ If bundler is not being used to manage dependencies, install the gem by executin
 ```bash
 gem install apiwork
 ```
-
-## Usage
-
-Read more on [apiwork.dev](https://apiwork.dev).
 
 ## Development
 
