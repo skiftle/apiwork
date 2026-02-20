@@ -40,6 +40,11 @@ Apiwork ships with a complete REST adapter. It provides:
 
 For minor changes, [extend the standard adapter](./standard-adapter/extending.md).
 
-## Custom Adapters
+## Next Steps
 
-For complete control over response format and query logic, build a [custom adapter](./custom-adapters/introduction.md). Custom adapters let you implement JSON:API, HAL, or any format while keeping type-safe contracts.
+- [Standard Adapter](./standard-adapter/introduction.md) — the built-in REST adapter
+- [Custom Adapters](./custom-adapters/introduction.md) — build your own for JSON:API, HAL, or any format
+
+#### See also
+
+- [Adapter::Base reference](../../../reference/adapter/base.md) — all adapter methods and options

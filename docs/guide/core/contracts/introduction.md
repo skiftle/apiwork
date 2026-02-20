@@ -4,9 +4,17 @@ order: 1
 
 # Introduction
 
-Contracts define the data structures at your API boundary.
+A contract defines what a request accepts and what a response returns. It is the boundary between the outside world and your domain logic.
 
-You declare shapes using [types](../types/introduction.md). At runtime, Apiwork validates incoming requests against these definitions — coercing values into declared types, enforcing constraints, and rejecting invalid data.
+## What Contracts Do
+
+Every contract enforces:
+
+- **Validate requests** — coerce values into declared types, enforce constraints, reject invalid data with structured errors
+- **Shape responses** — define what the API returns, checked in development
+- **Describe the API** — the same definitions that execute at runtime are used to generate exports
+
+Contracts are the most fundamental building block in Apiwork. They can be written entirely by hand.
 
 ## A Minimal Contract
 
@@ -23,23 +31,11 @@ class PostContract < Apiwork::Contract::Base
 end
 ```
 
-The `create` action expects a request body with `title` and `body`, both strings.
-
-## Automatic Contract Creation
-
-Not every representation needs an explicit contract. When Apiwork encounters a representation without a matching contract — through an association or STI variant — it creates one automatically.
-
-```ruby
-class OrderRepresentation < Apiwork::Representation::Base
-  has_many :lines  # LineRepresentation exists, but no LineContract
-end
-```
-
-Apiwork generates a contract for `LineRepresentation` on the fly. You only need to create a contract if you have an endpoint for the resource or need to customize the generated types.
+The `create` action expects a request body with `title` and `body`, both strings. Invalid requests are rejected before your controller runs.
 
 ## Naming Convention
 
-Apiwork finds the contract from the controller name:
+Apiwork resolves contracts from the controller name:
 
 | Controller                    | Contract                   |
 | ----------------------------- | -------------------------- |
@@ -48,9 +44,9 @@ Apiwork finds the contract from the controller name:
 
 Singular form of the controller name.
 
-## Connecting to a Representation
+## Representation Mode
 
-Add `representation` to connect the contract to its representation:
+Connect a contract to a [representation](../representations/introduction.md) to enter representation mode:
 
 ```ruby
 class PostContract < Apiwork::Contract::Base
@@ -58,76 +54,12 @@ class PostContract < Apiwork::Contract::Base
 end
 ```
 
-When a contract is connected to a representation, that contract enters **representation mode**. In this mode, the contract is driven by its representation through an adapter.
+In this mode, the contract is driven by its representation through an [adapter](../adapters/introduction.md). Request bodies, response shapes, filter types, and sort options are derived automatically. All generated behavior remains fully customizable.
 
-Apiwork includes a [Standard Adapter](../adapters/standard-adapter/introduction.md) that provides a complete REST API runtime. You can also create [custom adapters](../adapters/custom-adapters/introduction.md).
+## Next Steps
 
-All generated behavior remains fully customizable. You can override individual actions, replace them entirely, or extend them by merging additional behavior on top.
-
-Now responses are serialized through the representation. See [Representations](../representations/introduction.md).
-
-## Sharing Types Between Contracts
-
-Not every domain concept needs an endpoint. An `Address` might only appear nested inside orders or users. A `LineItem` might be used across invoices and quotes.
-
-These concepts still benefit from typed definitions. Define them in a contract:
-
-```ruby
-class AddressContract < Apiwork::Contract::Base
-  object :address do
-    string :street
-    string :city
-    string :postal_code
-    string :country
-  end
-end
-```
-
-Then [import](./imports.md) where needed:
-
-```ruby
-class OrderContract < Apiwork::Contract::Base
-  import AddressContract, as: :address
-
-  action :create do
-    request do
-      body do
-        reference :shipping_address, to: :address
-        reference :billing_address, to: :address
-      end
-    end
-  end
-end
-```
-
-`AddressContract` has no endpoint — it exists purely to define the `Address` type.
-
-`OrderContract` imports it and references the type in its actions.
-
-::: info Import prefix
-Imported types are prefixed with the `as:` name. An `:address` type from `as: :address` becomes just `:address`. Other types like `:details` would become `:address_details`.
-:::
-
-## What Happens at Runtime
-
-**Request validation:**
-
-1. Request comes in
-2. Contract extracts query and body params
-3. Values are coerced to declared types
-4. Validation runs against the contract
-5. If valid, controller receives clean data
-6. If invalid, returns 400 with structured errors
-
-**Response checking:**
-
-- After your controller runs, Apiwork checks the response against the contract
-- Mismatches are logged to Rails logger in development
-- No errors returned to clients, no checks in production
-
-::: info Strict in, lenient out
-Request validation is strict: invalid data returns 400 Bad Request. Response checking is lenient: mismatches are logged but never break your API.
-:::
+- [Actions](./actions.md) — defining request and response shapes per action
+- [Imports](./imports.md) — sharing types between contracts
 
 #### See also
 
