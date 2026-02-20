@@ -60,7 +60,7 @@ export interface AuthorUpdatePayload {
 The actual request format (how payloads are sent) depends on your adapter. See your adapter's documentation for details.
 
 ::: tip Standard Adapter
-The [Standard Adapter](../../adapters/standard-adapter/serialization.md) wraps writable attributes under the resource key in the request body.
+The [Standard Adapter](../../adapters/standard-adapter/writing.md) wraps writable attributes under the resource key in the request body.
 :::
 
 ## Examples

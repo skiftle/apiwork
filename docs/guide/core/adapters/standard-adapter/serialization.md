@@ -1,5 +1,5 @@
 ---
-order: 7
+order: 8
 ---
 
 # Serialization
@@ -72,105 +72,7 @@ The adapter uses `Representation.deserialize()` for decoding. Nested association
 
 See [Encode & Decode Transformers](../../representations/serialization.md#encode-decode-transformers) for customizing value transformations.
 
-## Writable Associations
-
-When associations are marked `writable: true`, the adapter accepts nested data for create, update, and delete operations.
-
-For association configuration, see [Associations](../../representations/associations/introduction.md).
-
-### Create
-
-New records have no `id`:
-
-```json
-{
-  "post": {
-    "title": "New Post",
-    "comments": [
-      { "content": "First comment" },
-      { "content": "Second comment" }
-    ]
-  }
-}
-```
-
-### Update
-
-Existing records include `id`:
-
-```json
-{
-  "post": {
-    "comments": [
-      { "id": "5", "content": "Updated comment" }
-    ]
-  }
-}
-```
-
-### Delete
-
-Include `id` and `OP: "delete"`:
-
-```json
-{
-  "post": {
-    "comments": [
-      { "OP": "delete", "id": "5" }
-    ]
-  }
-}
-```
-
-Requires `allow_destroy: true` on `accepts_nested_attributes_for` in the model.
-
-### Mixed Operations
-
-Combine operations in one request:
-
-```json
-{
-  "post": {
-    "comments": [
-      { "id": "5", "content": "Updated" },
-      { "content": "New comment" },
-      { "OP": "delete", "id": "3" }
-    ]
-  }
-}
-```
-
-### Deep Nesting
-
-Nest arbitrarily deep:
-
-```json
-{
-  "post": {
-    "comments": [
-      {
-        "content": "New comment",
-        "reactions": [
-          { "emoji": "👍" }
-        ]
-      }
-    ]
-  }
-}
-```
-
-### Generated Types
-
-TypeScript payloads use a discriminated union:
-
-```typescript
-type CommentPayload =
-  | { content: string }                    // Create
-  | { id: string; content?: string }       // Update
-  | { OP: "delete"; id: string }           // Delete
-```
-
-The `OP` field acts as a discriminator. Only `"delete"` is valid.
+For nested write operations (create, update, delete), see [Writing](./writing.md).
 
 ## Custom Adapters
 

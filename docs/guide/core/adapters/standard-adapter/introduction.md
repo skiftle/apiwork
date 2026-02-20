@@ -60,9 +60,11 @@ Invalid or unsupported queries fail fast before reaching the database.
 ## Next Steps
 
 - [Action Defaults](./action-defaults.md)
+- [Writing](./writing.md)
 - [Filtering](./filtering.md)
 - [Sorting](./sorting.md)
 - [Pagination](./pagination.md)
 - [Includes](./includes.md)
+- [Serialization](./serialization.md)
 - [Validation](./validation.md)
 - [Extending](./extending.md)

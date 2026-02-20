@@ -40,7 +40,7 @@ has_many :items, writable: true        # Both
 The request format for nested operations depends on your adapter. Each adapter defines how to express create, update, and delete operations.
 
 ::: tip Standard Adapter
-The [Standard Adapter](../../adapters/standard-adapter/serialization.md#writable-associations) uses an `OP` discriminator field to specify operations. See the serialization guide for the complete request format.
+The [Standard Adapter](../../adapters/standard-adapter/writing.md#nested-associations) uses an `OP` discriminator field to specify operations. See the writing guide for the complete request format.
 :::
 
 ## Deep Nesting
@@ -84,7 +84,7 @@ This enables creating an invoice with items and adjustments in a single request.
 Generated payload types depend on your adapter. See your adapter's documentation for the TypeScript/Zod types it generates.
 
 ::: tip Standard Adapter
-The [Standard Adapter](../../adapters/standard-adapter/serialization.md#generated-types) generates discriminated union types with an `OP` field for create, update, and delete operations.
+The [Standard Adapter](../../adapters/standard-adapter/writing.md#generated-types) generates discriminated union types with an `OP` field for create, update, and delete operations.
 :::
 
 ## Examples
