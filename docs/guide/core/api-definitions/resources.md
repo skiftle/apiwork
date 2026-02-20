@@ -1,5 +1,5 @@
 ---
-order: 3
+order: 2
 ---
 
 # Resources
@@ -9,6 +9,56 @@ Resources define your API endpoints. They follow Rails routing conventions:
 - Define which endpoints exist
 - Link each endpoint to its [contract](../contracts/introduction.md)
 - Form part of the API's metadata for [exports](./exports.md)
+
+## Path and Namespace
+
+The path you pass to `define` determines two things:
+
+1. **Mount point** — where your routes live (`/api/v1/posts`)
+2. **Namespace** — where Apiwork looks for controllers and contracts
+
+```ruby
+Apiwork::API.define '/api/v1' do
+  resources :posts
+end
+
+# Path: /api/v1 maps to namespace Api::V1
+# Controller: Api::V1::PostsController
+# Contract: Api::V1::PostContract
+# Representation: Api::V1::PostRepresentation
+```
+
+The conversion is straightforward: `/api/v1` becomes `Api::V1`.
+
+For APIs without a prefix:
+
+```ruby
+Apiwork::API.define '/' do
+  resources :posts
+end
+
+# Routes at /posts
+# No namespace prefix
+```
+
+## Multiple APIs
+
+You can define multiple APIs, each completely independent:
+
+```ruby
+# config/apis/api_v1.rb
+Apiwork::API.define '/api/v1' do
+  resources :posts, only: [:index, :show]
+end
+
+# config/apis/api_v2.rb
+Apiwork::API.define '/api/v2' do
+  resources :posts
+  resources :articles
+end
+```
+
+Each API has its own namespace with controllers, contracts, and representations.
 
 ## Plural Resources
 

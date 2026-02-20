@@ -4,19 +4,22 @@ order: 1
 
 # Introduction
 
-The API definition describes the shape of your API:
+The API definition is the entry point to Apiwork. It declares which resources your API exposes and how the boundary is configured.
 
-- Which [resources](./resources.md) exist
-- Which actions they offer
-- How everything is organized
+## What API Definitions Do
 
-It's also where you:
+Every API definition establishes:
 
-- [Configure](./configuration.md) settings (key format, pagination)
-- Define [resources](./resources.md)
-- Define [global types](./types.md)
-- Enable [exports](./exports.md)
-- Add [metadata](./metadata.md) (title, version, servers)
+- **Base path** — where routes are mounted (`/api/v1`)
+- **Namespace** — where Apiwork resolves controllers, contracts, and representations
+- **Resources** — which endpoints exist and how they are nested
+- **Configuration** — key format, adapter, pagination, and global defaults
+- **Exports** — which formats to generate (OpenAPI, TypeScript, Zod)
+- **Metadata** — title, version, and servers for documentation and exports
+
+## A Minimal Definition
+
+API definitions live in `config/apis/`. A minimal definition declares a base path and its resources:
 
 ```ruby
 # config/apis/api_v1.rb
@@ -26,63 +29,17 @@ Apiwork::API.define '/api/v1' do
 end
 ```
 
-::: info
-Each API definition is independent. Different API versions can have different configurations without affecting each other.
-:::
+The base path determines both the mount point and the namespace. `/api/v1` maps to `Api::V1` — so `resources :posts` expects `Api::V1::PostsController`, `Api::V1::PostContract`, and `Api::V1::PostRepresentation`.
 
-## Path and Namespace
+Each definition is independent. Different API versions can have different configurations without affecting each other.
 
-The path you pass to `define` determines two things:
+## Next Steps
 
-1. **Mount point** - where your routes live (`/api/v1/posts`)
-2. **Namespace** - where Apiwork looks for controllers and contracts
-
-```ruby
-# config/apis/api_v1.rb
-Apiwork::API.define '/api/v1' do
-  resources :posts
-end
-
-# Path: /api/v1 maps to namespace Api::V1
-# Controller: Api::V1::PostsController
-# Contract: Api::V1::PostContract
-# Representation: Api::V1::PostRepresentation
-```
-
-The conversion is straightforward: `/api/v1` becomes `Api::V1`.
-
-## Root Mount
-
-For APIs without a prefix:
-
-```ruby
-# config/apis/root.rb
-Apiwork::API.define '/' do
-  resources :posts
-end
-
-# Routes at /posts
-# No namespace prefix
-```
-
-## Multiple APIs
-
-You can define multiple APIs, each completely independent:
-
-```ruby
-# config/apis/api_v1.rb
-Apiwork::API.define '/api/v1' do
-  resources :posts, only: [:index, :show]
-end
-
-# config/apis/api_v2.rb
-Apiwork::API.define '/api/v2' do
-  resources :posts
-  resources :articles
-end
-```
-
-Each API has its own namespace with controllers, contracts, and representations.
+- [Resources](./resources.md) — declaring endpoints, nesting, and action filtering
+- [Configuration](./configuration.md) — key format, adapter, pagination defaults
+- [Types](./types.md) — global types shared across contracts
+- [Exports](./exports.md) — enabling OpenAPI, TypeScript, and Zod generation
+- [Metadata](./metadata.md) — title, version, servers, and contact info
 
 #### See also
 
