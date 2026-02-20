@@ -11,7 +11,7 @@ Create your own exports.
 ```ruby
 class MyExport < Apiwork::Export::Base
   export_name :my_export
-  content_type 'application/json'
+  output :hash
   file_extension '.json'
 
   def generate
@@ -37,6 +37,17 @@ class MyExport < Apiwork::Export::Base
   end
 end
 ```
+
+## Output Type
+
+Set the output type for your export:
+
+```ruby
+output :hash    # Returns a Hash — serialized to JSON or YAML by the framework
+output :string  # Returns a String — written as-is (use for TypeScript, Zod, etc.)
+```
+
+For `:hash` exports, the framework handles serialization to JSON or YAML based on the requested format. For `:string` exports, set `file_extension` to control the file type (e.g., `.ts`).
 
 ## Base Class Helpers
 

@@ -85,6 +85,25 @@ const validated = PostCreateRequestSchema.parse(formData);
 const post = PostRepresentation.parse(await response.json());
 ```
 
+## Format Validation
+
+When string, integer, or number params have a `format` hint, Zod schemas include built-in validators:
+
+| Format | Zod output |
+|--------|------------|
+| `:email` | `z.email()` |
+| `:uuid` | `z.uuid()` |
+| `:url` | `z.url()` |
+| `:ipv4` | `z.ipv4()` |
+| `:ipv6` | `z.ipv6()` |
+| `:date` | `z.iso.date()` |
+| `:datetime` | `z.iso.datetime()` |
+| `:int32`, `:int64` | `z.number().int()` |
+| `:float`, `:double` | `z.number()` |
+| `:password`, `:hostname` | `z.string()` |
+
+Formats are set in your type definitions. See [Format Hints](../types/types.md#format-hints).
+
 ## Ordering
 
 Schemas are sorted in topological order so dependencies come first.

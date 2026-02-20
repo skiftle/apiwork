@@ -56,9 +56,35 @@ Errors are categorized into layers. A response contains errors from only one lay
 | `contract` | Request violates the API contract   | 400         |
 | `domain`   | Domain rules rejected valid input   | 422         |
 
+## Custom Error Codes
+
+Register custom error codes for use with `raises` declarations:
+
+```ruby
+# config/initializers/apiwork.rb
+Apiwork::ErrorCode.register :resource_locked, status: 423
+Apiwork::ErrorCode.register :quota_exceeded, status: 429
+```
+
+| Parameter | Description |
+|-----------|-------------|
+| `key` | Unique symbol identifier |
+| `status:` | HTTP status code (400-599) |
+| `attach_path:` | Include request path in error response (default: `false`) |
+
+Then use in your API:
+
+```ruby
+Apiwork::API.define '/api/v1' do
+  raises :resource_locked, :quota_exceeded
+end
+```
+
+Apiwork pre-registers 20 built-in codes (400-504). See [HTTP Errors](./http-errors.md) for the full list.
+
 ### `http`
 
-Transport-level responses like "not found" or "forbidden". Apiwork provides 20 built-in codes. See [HTTP Errors](./http-errors.md).
+Transport-level responses like "not found" or "forbidden". See [HTTP Errors](./http-errors.md).
 
 ### `contract`
 

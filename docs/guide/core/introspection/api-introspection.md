@@ -49,15 +49,51 @@ comments.parent_identifiers # => ["posts"]
 
 ---
 
+## Info
+
+The `info` object exposes API metadata:
+
+```ruby
+info = api.info
+
+info.title              # => "My API"
+info.version            # => "1.0.0"
+info.description        # => "Full description"
+info.summary            # => "Short summary"
+info.terms_of_service   # => "https://example.com/tos"
+```
+
+Nested objects for contact, license, and servers:
+
+```ruby
+info.contact&.name      # => "API Support"
+info.contact&.email     # => "api@example.com"
+info.contact&.url       # => "https://example.com/support"
+
+info.license&.name      # => "MIT"
+info.license&.url       # => "https://opensource.org/licenses/MIT"
+
+info.servers.each do |server|
+  server.url            # => "https://api.example.com"
+  server.description    # => "Production"
+end
+```
+
+---
+
 ## Actions
 
 ```ruby
 action = api.resources[:invoices].actions[:create]
 
-action.method     # => :post
-action.path       # => "/invoices"
-action.raises     # => [:bad_request, :not_found, :unprocessable_entity]
-action.deprecated? # => false
+action.method       # => :post
+action.path         # => "/invoices"
+action.raises       # => [:bad_request, :not_found, :unprocessable_entity]
+action.deprecated?  # => false
+action.tags         # => ["Invoices"]
+action.operation_id # => "createInvoice"
+action.summary      # => "Create a new invoice"
+action.description  # => "Creates an invoice and returns it"
 ```
 
 ---
@@ -81,6 +117,17 @@ response.no_content?  # => false
 body = response.body
 body.object?          # => true
 body.shape[:invoice]  # => Param for the invoice
+```
+
+---
+
+## Error Codes
+
+```ruby
+error_code = api.error_codes[:not_found]
+
+error_code.status      # => 404
+error_code.description # => "Not found"
 ```
 
 ---

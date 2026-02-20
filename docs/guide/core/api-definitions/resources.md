@@ -235,6 +235,20 @@ collection do
 end
 ```
 
+### `on:` Parameter
+
+Define member or collection actions without a block:
+
+```ruby
+resources :posts do
+  get :preview, on: :member
+  get :search, on: :collection
+  patch :publish, :archive, on: :member
+end
+```
+
+Equivalent to wrapping in `member do` or `collection do` blocks.
+
 ## Concerns
 
 Concerns extract reusable routing patterns.

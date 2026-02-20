@@ -112,7 +112,29 @@ With `include[comments]=true`:
 
 ---
 
+## Depth Limit
+
+Nested includes resolve up to 3 levels deep. Beyond that, the adapter stops generating include parameters for deeper associations.
+
+```http
+GET /posts?include[comments][author][company]=true    # 3 levels — OK
+```
+
+## Circular References
+
+When an association forms a cycle (e.g., `Post -> Comments -> Post`), the adapter detects it and falls back to a boolean parameter for the circular reference. This prevents infinite recursion while still allowing the include.
+
+## Polymorphic Associations
+
+Polymorphic associations support boolean includes only — no nested structure:
+
+```http
+GET /posts?include[commentable]=true    # Boolean — OK
+```
+
+Nested includes on polymorphic associations are not supported because the target representation varies at runtime.
+
 ## N+1 Prevention
 
-The adapter eager loads associations to prevent N+1 queries.
+The adapter eager loads associations to prevent N+1 queries. When filtering by an association, the adapter also eager loads it to avoid N+1 in the filter query.
 

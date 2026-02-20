@@ -236,6 +236,30 @@ type: 'text'
 type: z.literal('text')
 ```
 
+## Format Hints
+
+The `format` option adds semantic metadata to exports. It does not change the Ruby type or validation — it provides hints for OpenAPI documentation and Zod validators.
+
+```ruby
+string :email, format: :email
+string :website, format: :url
+integer :count, format: :int32
+```
+
+| Type | Valid formats |
+|------|--------------|
+| `:string` | `:date`, `:datetime`, `:email`, `:hostname`, `:ipv4`, `:ipv6`, `:password`, `:url`, `:uuid` |
+| `:integer` | `:int32`, `:int64` |
+| `:decimal`, `:number` | `:double`, `:float` |
+
+**Effect on exports:**
+
+| Export | Behavior |
+|--------|----------|
+| OpenAPI | Sets `format` on the schema property |
+| Zod | Adds built-in validators (e.g., `z.email()`, `z.uuid()`) |
+| TypeScript | No effect — types remain `string`, `number` |
+
 ## Type Coercion
 
 Query parameters and form data arrive as strings. Apiwork coerces them to their declared types before validation:

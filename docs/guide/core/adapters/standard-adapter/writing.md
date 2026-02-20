@@ -143,6 +143,22 @@ type ItemNestedPayload =
 
 `OP` is optional on all variants. When omitted, the adapter infers the operation: records without `id` are created, records with `id` are updated.
 
+::: warning
+`OP` must be uppercase. Lowercase `op` is not recognized.
+:::
+
+## Single Table Inheritance
+
+When a representation uses [STI](../../representations/single-table-inheritance.md), the adapter generates a discriminated union for create and update payloads. The inheritance column acts as the discriminator:
+
+```typescript
+type InvoiceCreatePayload =
+  | { type: 'standard'; number: string }
+  | { type: 'recurring'; number: string; interval: string };
+```
+
+Each STI subclass representation becomes a variant. The adapter imports the subclass contracts and combines them into a union.
+
 ## Validation Errors
 
 Nested writes produce validation errors with full paths including array indexes. See [Validation: Nested Records](./validation.md#nested-records).

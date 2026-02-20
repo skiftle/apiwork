@@ -218,9 +218,13 @@ Structure: `filter[association][field][operator]=value`
 GET /posts?filter[comments][author][role][eq]=moderator
 ```
 
+### Polymorphic Associations
+
+Polymorphic associations cannot be filtered. The adapter skips them during filter generation because the target table varies at runtime.
+
 ### Auto-Join
 
-The adapter automatically joins required tables. Filtering by an association includes it in the query.
+The adapter automatically joins required tables. Filtering by an association includes it in the query. `DISTINCT` is applied to prevent duplicate rows from joins.
 
 ---
 

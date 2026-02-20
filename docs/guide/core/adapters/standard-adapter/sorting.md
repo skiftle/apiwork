@@ -71,6 +71,10 @@ Structure: `sort[association][field]=direction`
 GET /posts?sort[author][company][name]=asc
 ```
 
+### Polymorphic Associations
+
+Polymorphic associations cannot be sorted. The adapter skips them during sort generation because the target table varies at runtime.
+
 ### Auto-Join
 
 The adapter automatically joins required tables and applies `DISTINCT` to prevent duplicate rows from joins.
