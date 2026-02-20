@@ -1,244 +1,83 @@
----
-order: 3
----
-
 # Core Concepts
 
-Apiwork is built around four core layers: **API definitions**, **contracts**, **representations**, and **adapters**.
+Apiwork is structured around a small set of explicit concepts: API definitions, contracts, representations, and adapters. Together, they define and interpret a boundary that remains structured and introspectable.
 
-API definitions describe your API surface and endpoints. Contracts define the data model and constraints at the boundary. Representations act as a bridge between your domain models and the contract, while adapters interpret representations and provide the runtime.
+Each concept has a clearly defined responsibility. They form a layered system that connects your Rails domain to the outside world without redefining it.
 
-Together they form a single source of truth that drives both [introspection](../core/introspection/introduction.md) and [execution](../core/adapters/introduction.md).
+This section explains how those pieces relate. It does not describe usage in detail. Its purpose is to clarify how responsibility flows through the system.
 
-You can use Apiwork with just API definitions and contracts, or add representations and adapters to run a fully executable API. Apiwork ships with a built-in adapter that provides a complete API runtime out of the box.
+## API Definitions
 
-## API Definition
+API definitions describe your API surface.
 
-The API definition lives in `config/apis/` and declares what resources your API exposes.
+They declare which resources exist, how they are nested, which artifacts should be generated, and how the boundary should be configured. They establish the base path of the API, determine which resources are exposed, and specify which exports — such as OpenAPI, TypeScript, or Zod — should be derived.
 
-```ruby
-Apiwork::API.define '/api/v1' do
-  resources :posts do
-    resources :comments
-  end
-end
-```
+API definitions are also where boundary-level configuration lives: key formatting strategy, adapter selection, adapter options, and global defaults that shape how the API is experienced externally.
 
-This creates RESTful routes for posts and nested comments. Apiwork uses the Rails router — `resources` maps directly to Rails' `resources`.
+They define structure and configuration at the boundary. They do not execute validation or runtime behavior themselves.
 
-You can also declare which [exports](../core/exports/introduction.md) to generate:
+## Contracts
 
-```ruby
-Apiwork::API.define '/api/v1' do
-  export :openapi
-  export :typescript
-  export :zod
+Contracts define the boundary itself.
 
-  resources :posts
-end
-```
+A contract specifies what a request accepts and what a response returns. Incoming data is validated before it reaches your domain logic. Outgoing data is shaped according to explicit definitions. If input does not conform, it is rejected at the boundary.
 
-These become available at `/.openapi`, `/.typescript`, and `/.zod`.
+Contracts are expressed through a declarative DSL. Instead of imperatively validating parameters in controllers, you describe the structure of the boundary directly in Ruby. The DSL keeps definitions concise while enforcing strictness at the edge of the system.
 
-::: info
-The path in `define '/api/v1'` combines with where you mount Apiwork in `routes.rb`. If you mount at `/` and define at `/api/v1`, your routes become `/api/v1/posts`.
-:::
+Contracts execute at runtime. They are not passive schemas written for documentation. The same definitions that validate requests in production describe the API externally.
 
-See [API Definitions](../core/api-definitions/introduction.md) for the full guide.
+Structure is declared once. It is executed at runtime and described through introspection. There is no secondary schema to maintain.
 
-## Contract
+Contracts can be written entirely by hand. They are the most fundamental building block in Apiwork.
 
-Contracts validate requests and define response shapes. They live in `app/contracts/`.
+## Representations
 
-```ruby
-class PostContract < ApplicationContract
-  action :create do
-    request do
-      body do
-        string :title
-        string :body
-      end
-    end
+Representations connect contracts to your domain models.
 
-    response do
-      body do
-        integer :id
-        string :title
-        string :body
-        datetime :created_at
-      end
-    end
-  end
-end
-```
+When working with ActiveRecord-backed endpoints, representations remove duplication by reflecting metadata Rails already derives from your models and database. Column types, enums, nullability, and associations are not redefined — they are surfaced deliberately at the boundary.
 
-This defines what goes in and what comes out. The contract validates incoming requests and documents response shapes for generated exports.
+A representation declares which attributes are exposed, which are writable, and how relationships appear in responses. It also determines which fields participate in conventions such as filtering, sorting, pagination, and nested writes.
 
-## Controller
+From this declaration, contracts and runtime behavior are derived consistently.
 
-Controllers include `Apiwork::Controller` and have two differences from standard Rails:
+Representations do not replace your data model. The database remains the underlying source of truth. The boundary reflects it explicitly. The domain stays expressive on the inside — the API remains predictable on the outside.
 
-- Use `expose` to return data
-- Use `contract.query` and `contract.body` for validated params
+Representations are optional. They exist to make conventional APIs declarative rather than manually assembled.
 
-```ruby
-def create
-  post = Post.create(contract.body[:post])
-  expose post
-end
-```
+## Adapters
 
-- `contract.query` — URL parameters (filters, sorting, pagination)
-- `contract.body` — request body (create/update payloads)
+Adapters encode the conventions of your API.
 
-::: tip
-Requests with undefined fields are rejected. `contract.query` and `contract.body` contain only validated fields.
-:::
+While representations describe how a model is exposed, adapters interpret those declarations and turn them into executable behavior. They derive contracts dynamically and define how declarative structure becomes consistent runtime semantics.
 
-## Representation
+An adapter determines how filtering is interpreted, how sorting is applied, how pagination works, how nested writes are processed, and how relationships are included in responses.
 
-Writing contracts by hand means defining every request type, response type, filter, and sort — for every action. That adds up.
+In this sense, the adapter expresses how declarative intent becomes concrete behavior. It captures the conventions of your API and applies them consistently.
 
-A representation sits between your model and contract. It describes what to expose and how: filtering, sorting, writing. Apiwork uses this to build the contract and handle requests.
+## Introspection
 
-```ruby
-class PostRepresentation < ApplicationRepresentation
-  attribute :id
-  attribute :title, writable: true, filterable: true
-  attribute :body, writable: true
-  attribute :published, filterable: true
-  attribute :created_at, sortable: true
-end
-```
+Introspection makes the boundary self-describing.
 
-Each option does one thing:
+The structure defined by API definitions, contracts, representations, and adapters is available as a coherent model. The system can examine the same definitions that drive execution and derive a complete description of the API.
 
-| Option             | What it does                                         |
-| ------------------ | ---------------------------------------------------- |
-| `writable: true`   | Field can be set in create/update requests           |
-| `filterable: true` | Field can be filtered via the adapter |
-| `sortable: true`   | Field can be sorted via the adapter |
+All exports — including OpenAPI specifications, TypeScript definitions, and Zod schemas — are derived from this model.
 
-::: tip
-You don't need to specify types. Apiwork reads your database columns and infers types, nullability, and defaults automatically.
-:::
+Execution and generation rely on the same structure. What runs in production is what is exported.
 
-### Associations
+## Errors
 
-Representations can include associations:
+Errors are part of the boundary.
 
-```ruby
-has_many :comments, writable: true
-belongs_to :author
-has_one :profile, include: :always
-```
+Apiwork enforces a unified error structure across the system. Errors occur in distinct layers — transport-level responses, contract validation failures, or domain-level rejections — and a request fails in only one layer. If contract validation fails, domain logic does not run.
 
-- `writable: true` — allows nested attributes in create/update
-- `include: :always` — always includes the association in responses
+All error responses share a consistent structure. Each response identifies where the failure occurred and describes the issues found. Because the format is deterministic, clients can respond programmatically without relying on unpredictable error shapes.
 
-### From Representation to Contract
+Success and failure follow the same boundary rules.
 
-Use `representation` to connect a contract to its representation:
+## How the Concepts Relate
 
-```ruby
-class PostContract < ApplicationContract
-  representation PostRepresentation
-end
-```
+The system forms a directional model. ActiveRecord models define the underlying data and associations. Representations declare how that data is exposed at the boundary — which attributes exist, which are writable, and how relationships appear. Adapters interpret those declarations and derive executable contracts. Contracts validate incoming requests and shape outgoing responses at runtime. Introspection exposes the resulting model for tooling and exports.
 
-This single line generates typed definitions for all CRUD actions based on the representation's attributes and options.
+Structure is declared once. It is interpreted consistently, executed at runtime, and described through introspection.
 
-::: tip
-You can also write contracts entirely by hand without representations. This is useful for non-CRUD endpoints or custom APIs. See [Contracts](../core/contracts/introduction.md).
-:::
-
-The representation declares:
-
-- Which fields exist (from `attribute`)
-- Which can be written (from `writable: true`)
-- Which can be filtered or sorted (from `filterable:` / `sortable:`)
-- How associations nest (from `has_many`, `belongs_to`, etc.)
-
-The adapter interprets these declarations. Apiwork includes a [Standard Adapter](../core/adapters/standard-adapter/introduction.md) that generates:
-
-- Filter types and query handling
-- Sort types and query handling
-- Pagination types and query handling
-- Include handling with N+1 prevention
-
-Custom adapters can provide different behavior.
-
-See [Action Defaults](../core/adapters/standard-adapter/action-defaults.md) for what the Standard Adapter generates, and [Representations](../core/representations/introduction.md) for the full guide.
-
-### Customizing Generated Actions
-
-The defaults usually work. But you can extend or replace any action:
-
-```ruby
-class PostContract < ApplicationContract
-  representation PostRepresentation
-
-  action :index do
-    request do
-      query do
-        string? :status
-      end
-    end
-  end
-
-  action :destroy do
-    response replace: true do
-      body do
-        datetime :deleted_at
-      end
-    end
-  end
-end
-```
-
-See [Actions](../core/contracts/actions.md) for all action options.
-
-## How They Connect
-
-Here's how everything fits together:
-
-```text
-┌─────────────────────────────────────────────────────────────┐
-│  config/apis/api_v1.rb                                      │
-│  API Definition — declares resources and exports            │
-└─────────────────────────────┬───────────────────────────────┘
-                              │
-                              ▼
-┌─────────────────────────────────────────────────────────────┐
-│  app/contracts/api/v1/post_contract.rb                      │
-│  Contract — validates requests, uses representation for types      │
-└─────────────────────────────┬───────────────────────────────┘
-                              │
-                              ▼
-┌─────────────────────────────────────────────────────────────┐
-│  app/representations/api/v1/post_representation.rb                          │
-│  Representation — defines attributes, associations, permissions │
-└─────────────────────────────┬───────────────────────────────┘
-                              │
-                              ▼
-┌─────────────────────────────────────────────────────────────┐
-│  app/models/post.rb                                         │
-│  Model — database columns, validations, associations        │
-└─────────────────────────────────────────────────────────────┘
-```
-
-**Request flow:**
-
-1. Request arrives at `/api/v1/posts`
-2. API definition routes to `PostsController`
-3. Contract validates the request using representation types
-4. Controller processes the request
-5. Representation serializes the response
-
-Representation is the single source of truth. Contracts and serialization both derive from it.
-
-## Next Steps
-
-Next:
-
-- [Quick Start](./quick-start.md) — build a complete API with validation, filtering, and exports
+Rails remains dynamic internally. Apiwork makes the external boundary explicit, structured, and contract-driven — without introducing a parallel system.

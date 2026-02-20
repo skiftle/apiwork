@@ -2,15 +2,94 @@
 
 [![CI](https://github.com/skiftle/apiwork/workflows/CI/badge.svg)](https://github.com/skiftle/apiwork/actions/workflows/ci.yml)
 
-Apiwork provides a contract-driven API layer for Rails:
+Apiwork is a contract-driven API layer for Rails.
 
-- **API Definitions** declare resources, mount points, and global configuration like key format.
-- **Contracts** define the shape of requests and responses with typed parameters and validation.
-- **Schemas** connect contracts to ActiveRecord models, inferring types from your database schema.
-- **Runtime** handles filtering, sorting, pagination, and includes based on what contracts allow.
-- **Specs** generate OpenAPI, TypeScript, and Zod output from the same contract definitions.
+It makes the API boundary explicit by defining _contracts_ that validate incoming requests, shape outgoing responses, and serve as the single
+source of truth for runtime behavior and generated artifacts.
 
-Types flow from your database through contracts to generated specs. You define structure once — behaviour and documentation follow.
+Apiwork does not replace Rails. Controllers remain controllers.
+ActiveRecord remains ActiveRecord. Apiwork operates at the boundary.
+
+Full documentation: https://apiwork.dev
+
+---
+
+## Core Concepts
+
+### Contracts
+
+A _contract_ defines what your API accepts and returns.
+
+```ruby
+contract do
+  param :name, Types::String
+  param :age,  Types::Integer.optional
+end
+```
+
+Incoming requests are validated before your domain logic runs.\
+Invalid requests are rejected with structured errors.
+
+---
+
+### Representations
+
+For ActiveRecord-backed endpoints, _representations_ describe how a
+model appears through the API by building on metadata Rails already
+knows: column types, enums, nullability, and associations.
+
+From this, Apiwork derives request validation, filtering, sorting,
+pagination, and response shaping.
+
+The database remains the source of truth. The API boundary reflects it.
+
+---
+
+### Adapters
+
+_Adapters_ encode API conventions such as filtering behavior, pagination
+strategy, and nested writes.
+
+Apiwork ships with a built-in adapter and allows custom adapters to
+encode domain-specific or performance-specific conventions.
+
+---
+
+## Generated Artifacts
+
+Because contracts are structured and introspectable, Apiwork can
+generate:
+
+- OpenAPI specifications
+- TypeScript types
+- Zod schemas
+
+These are derived from the same definitions that validate requests at
+runtime.
+
+What runs in production is what your clients compile against.
+
+---
+
+## Installation
+
+```bash
+bundle add apiwork
+```
+
+---
+
+## Documentation
+
+For guides, advanced usage, and architectural details, see:
+
+https://apiwork.dev
+
+---
+
+## Status
+
+Apiwork is under active development.
 
 ## Installation
 

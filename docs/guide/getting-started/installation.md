@@ -4,7 +4,7 @@ order: 2
 
 # Installation
 
-This guide covers installing Apiwork in a Rails application. After setup, you'll have the directory structure for contracts and schemas, plus generators for creating new resources.
+This guide covers installing Apiwork in a Rails application. After setup, your application will have the directory structure for and API definitions contracts, and representations, and generators for scaffolding new resources.
 
 ## Requirements
 
@@ -43,7 +43,7 @@ config/
 └── apis/
 ```
 
-These sit alongside your existing `app/controllers/` and `app/models/`. Your contracts and schemas inherit from these application-level base classes, just like controllers inherit from `ApplicationController`.
+These sit alongside your existing `app/controllers/` and `app/models/`. Your contracts and representations inherit from these application-level base classes, just like controllers inherit from `ApplicationController`.
 
 The generator also adds the following to your `config/routes.rb`:
 
@@ -73,14 +73,14 @@ Apiwork::API.define '/api/v1' do
 end
 ```
 
-The path `/api/v1` determines both the mount point and the namespace. Apiwork expects:
+The base path `/api/v1` determines both the mount point and the namespace. Apiwork expects:
 
 - Controllers in `Api::V1::` (e.g. `Api::V1::PostsController`)
 - Contracts in `Api::V1::` (e.g. `Api::V1::PostContract`)
 - Representations in `Api::V1::` (e.g. `Api::V1::PostRepresentation`)
 
 ::: tip
-For a root-level API with no path prefix, use `rails generate apiwork:api /`. This creates `config/apis/root.rb`.
+For a root-level API with no base path prefix, use `rails generate apiwork:api /`. This creates `config/apis/root.rb`.
 :::
 
 ### apiwork:contract
@@ -103,12 +103,12 @@ module Api
 end
 ```
 
-### apiwork:schema
+### apiwork:representation
 
 Creates a representation for a resource:
 
 ```bash
-rails generate apiwork:schema api/v1/invoice
+rails generate apiwork:representation api/v1/invoice
 ```
 
 This generates:
