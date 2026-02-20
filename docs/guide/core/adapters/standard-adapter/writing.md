@@ -21,6 +21,10 @@ Writable attributes are sent under the resource root key:
 
 Which attributes are writable depends on your representation. See [Attributes: Writable](../../representations/attributes/writable.md) and [Associations: Writable](../../representations/associations/writable.md).
 
+::: tip Client-Generated IDs
+To accept client-generated UUIDs on create, add `attribute :id, writable: true, optional: true` to your representation. The `id` field then appears as an optional parameter in the create payload.
+:::
+
 For HTTP methods, status codes, and contract shapes per action, see [Action Defaults](./action-defaults.md).
 
 ## Nested Associations
