@@ -20,13 +20,13 @@ A representation describes how a model appears through the API — which attribu
 
 The database remains the underlying source of truth. The API boundary reflects it deliberately. The domain stays expressive and dynamic on the inside — the boundary makes it explicit.
 
-## Conventions Captured
+## The Conventions Captured
 
 From representations, _adapters_ derive contracts and implement runtime behavior. An adapter encodes the conventions of your API — how filtering works, how pagination behaves, how nested writes are processed — and applies them consistently across endpoints.
 
 Apiwork ships with a built-in adapter that handles operator-based filtering, sorting, cursor and offset pagination, nested writes, single-table inheritance, and polymorphic associations. It gives you a powerful API out of the box — but adapters remain a first-class architectural concept. You can implement your own to encode different conventions, performance strategies, or domain-specific behavior.
 
-## Runtime and Specification in Sync
+## The Specification Derived
 
 Because the boundary is structured and introspectable, Apiwork derives OpenAPI specifications, TypeScript types, and Zod schemas from the same definitions that validate requests at runtime.
 

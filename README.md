@@ -2,15 +2,13 @@
 
 [![CI](https://github.com/skiftle/apiwork/workflows/CI/badge.svg)](https://github.com/skiftle/apiwork/actions/workflows/ci.yml)
 
+# Apiwork
+
 Apiwork is a contract-driven API layer for Rails.
 
-It makes the API boundary explicit by defining _contracts_ that validate incoming requests, shape outgoing responses, and serve as the single
-source of truth for runtime behavior and generated artifacts.
+It helps you define your API boundary explicitly instead of spreading structure across controllers, serializers, validation logic, and documentation. You define the contract once — and that definition validates requests, shapes responses, and can generate OpenAPI specs and typed client artifacts.
 
-Apiwork does not replace Rails. Controllers remain controllers.
-ActiveRecord remains ActiveRecord. Apiwork operates at the boundary.
-
-Full documentation: https://apiwork.dev
+Apiwork does not replace Rails. It works alongside it. Controllers stay controllers. ActiveRecord stays ActiveRecord. Domain logic stays where it belongs.
 
 ---
 
@@ -18,56 +16,77 @@ Full documentation: https://apiwork.dev
 
 ### Contracts
 
-A _contract_ defines what your API accepts and returns.
+A contract defines what your API accepts and returns.
 
-```ruby
-contract do
-  param :name, Types::String
-  param :age,  Types::Integer.optional
-end
-```
+Incoming requests are validated against the contract before reaching your application code. Invalid input is rejected with structured errors at the boundary.
 
-Incoming requests are validated before your domain logic runs.\
-Invalid requests are rejected with structured errors.
+There is no separate validation layer and no manual type checking in controllers. The contract executes at runtime.
+
+You can define contracts entirely by hand.
 
 ---
 
 ### Representations
 
-For ActiveRecord-backed endpoints, _representations_ describe how a
-model appears through the API by building on metadata Rails already
-knows: column types, enums, nullability, and associations.
+For endpoints backed by ActiveRecord models, representations reduce repetition.
 
-From this, Apiwork derives request validation, filtering, sorting,
-pagination, and response shaping.
+A representation describes how a model is exposed through the API — which attributes are readable, which are writable, and how associations are handled.
 
-The database remains the source of truth. The API boundary reflects it.
+It builds on metadata Rails already knows from your models and database: column types, enums, nullability, and associations.
+
+The database remains the source of truth. The API boundary reflects it intentionally.
 
 ---
 
 ### Adapters
 
-_Adapters_ encode API conventions such as filtering behavior, pagination
-strategy, and nested writes.
+Adapters encode API conventions.
 
-Apiwork ships with a built-in adapter and allows custom adapters to
-encode domain-specific or performance-specific conventions.
+They define how filtering works, how pagination behaves, how nested writes are processed, and how related records are handled.
+
+Apiwork ships with a built-in adapter that supports:
+
+- Operator-based filtering
+- Sorting
+- Cursor and offset pagination
+- Nested writes
+- Single-table inheritance
+- Polymorphic associations
+
+You can implement your own adapter to capture different conventions or performance strategies.
 
 ---
 
-## Generated Artifacts
+## Generated Specifications
 
-Because contracts are structured and introspectable, Apiwork can
-generate:
+Because contracts and representations are structured and introspectable, Apiwork can generate:
 
 - OpenAPI specifications
 - TypeScript types
 - Zod schemas
 
-These are derived from the same definitions that validate requests at
-runtime.
+These artifacts are derived from the same definitions that validate requests at runtime.
 
-What runs in production is what your clients compile against.
+There is no parallel schema layer and no drift between validation and generated types.
+
+---
+
+## Why Use Apiwork?
+
+Rails is dynamic and expressive inside the application.  
+Modern clients are typed and explicit at the boundary.
+
+Apiwork strengthens that boundary without changing your architecture.
+
+It gives you:
+
+- Explicit and predictable APIs
+- Runtime validation
+- Consistent conventions
+- Generated typed artifacts
+- A single source of truth
+
+All while staying aligned with Rails conventions.
 
 ---
 
