@@ -4,7 +4,56 @@ order: 7
 
 # Configuration
 
-Override representation-level settings for root keys and adapter options.
+Representation-level settings for root keys, metadata, abstract declarations, and adapter options.
+
+## Metadata
+
+Add documentation to your representation for export generation:
+
+```ruby
+class InvoiceRepresentation < Apiwork::Representation::Base
+  description "A customer invoice with line items and payment tracking"
+  example { id: 1, number: "INV-2024-001", status: "sent" }
+end
+```
+
+| Method | Purpose |
+|--------|---------|
+| `description` | Human-readable text shown in OpenAPI, TypeScript, and Zod exports |
+| `example` | Example value shown in generated exports |
+
+These appear on the generated response type for this representation.
+
+### Deprecation
+
+Mark a representation as deprecated:
+
+```ruby
+class LegacyInvoiceRepresentation < Apiwork::Representation::Base
+  deprecated!
+end
+```
+
+The representation and its generated types are marked as deprecated in all exports. Deprecated representations continue to function at runtime.
+
+## Abstract Representations
+
+Mark a representation as abstract when it should not be used directly:
+
+```ruby
+class ApplicationRepresentation < Apiwork::Representation::Base
+  abstract!
+end
+
+class InvoiceRepresentation < ApplicationRepresentation
+  attribute :id
+  attribute :number
+end
+```
+
+Abstract representations are not registered with the adapter and do not generate types. They exist as base classes for shared configuration.
+
+Apiwork also marks representations as abstract automatically when they serve as the base class in a [Single Table Inheritance](./single-table-inheritance.md) hierarchy.
 
 ## Root Key
 
@@ -57,4 +106,4 @@ If using the Standard Adapter, configure pagination strategies with the `adapter
 
 #### See also
 
-- [Representation::Base reference](../../../reference/representation/base.md) — `root` and `adapter` methods
+- [Representation::Base reference](../../../reference/representation/base.md) — all representation methods and options

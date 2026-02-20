@@ -23,8 +23,8 @@ Everything inferred can be overridden when needed.
 | Association nullable      | Foreign key constraint   | `nullable: true`        |
 | Foreign key column        | Rails reflection         | (automatic)             |
 | Polymorphic discriminator | Rails reflection         | `discriminator: :type`  |
-| STI column                | `inheritance_column`     | `discriminated!`        |
-| STI variant tag           | `sti_name`               | `variant as: :custom`   |
+| STI column                | `inheritance_column`     | (automatic)             |
+| STI variant tag           | `sti_name`               | `type_name 'custom'`    |
 | Allow destroy             | `nested_attributes_options` | (automatic)           |
 | Root key                  | `model_name.element`     | `root :item, :items`    |
 

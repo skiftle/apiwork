@@ -59,7 +59,9 @@ In this mode, the contract is driven by its representation through an [adapter](
 ## Next Steps
 
 - [Actions](./actions.md) — defining request and response shapes per action
+- [Types](./types.md) — reusable objects, unions, enums, and fragments
 - [Imports](./imports.md) — sharing types between contracts
+- [Validation](./validation.md) — the request lifecycle and error handling
 
 #### See also
 
