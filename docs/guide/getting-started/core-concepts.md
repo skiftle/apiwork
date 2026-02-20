@@ -1,3 +1,7 @@
+---
+order: 3
+---
+
 # Core Concepts
 
 Apiwork is structured around a small set of explicit concepts: API definitions, contracts, representations, and adapters. Together, they define and interpret a boundary that remains structured and introspectable.
@@ -8,7 +12,7 @@ This section explains how those pieces relate. It does not describe usage in det
 
 ## API Definitions
 
-API definitions describe your API surface.
+[API definitions](../core/api-definitions/introduction.md) describe your API surface.
 
 They declare which resources exist, how they are nested, which artifacts should be generated, and how the boundary should be configured. They establish the base path of the API, determine which resources are exposed, and specify which exports — such as OpenAPI, TypeScript, or Zod — should be derived.
 
@@ -18,7 +22,7 @@ They define structure and configuration at the boundary. They do not execute val
 
 ## Contracts
 
-Contracts define the boundary itself.
+[Contracts](../core/contracts/introduction.md) define the boundary itself.
 
 A contract specifies what a request accepts and what a response returns. Incoming data is validated before it reaches your domain logic. Outgoing data is shaped according to explicit definitions. If input does not conform, it is rejected at the boundary.
 
@@ -32,7 +36,7 @@ Contracts can be written entirely by hand. They are the most fundamental buildin
 
 ## Representations
 
-Representations connect contracts to your domain models.
+[Representations](../core/representations/introduction.md) connect contracts to your domain models.
 
 When working with ActiveRecord-backed endpoints, representations remove duplication by reflecting metadata Rails already derives from your models and database. Column types, enums, nullability, and associations are not redefined — they are surfaced deliberately at the boundary.
 
@@ -46,7 +50,7 @@ Representations are optional. They exist to make conventional APIs declarative r
 
 ## Adapters
 
-Adapters encode the conventions of your API.
+[Adapters](../core/adapters/introduction.md) encode the conventions of your API.
 
 While representations describe how a model is exposed, adapters interpret those declarations and turn them into executable behavior. They derive contracts dynamically and define how declarative structure becomes consistent runtime semantics.
 
@@ -56,7 +60,7 @@ In this sense, the adapter expresses how declarative intent becomes concrete beh
 
 ## Introspection
 
-Introspection makes the boundary self-describing.
+[Introspection](../core/introspection/introduction.md) makes the boundary self-describing.
 
 The structure defined by API definitions, contracts, representations, and adapters is available as a coherent model. The system can examine the same definitions that drive execution and derive a complete description of the API.
 
@@ -66,7 +70,7 @@ Execution and generation rely on the same structure. What runs in production is 
 
 ## Errors
 
-Errors are part of the boundary.
+[Errors](../core/errors/introduction.md) are part of the boundary.
 
 Apiwork enforces a unified error structure across the system. Errors occur in distinct layers — transport-level responses, contract validation failures, or domain-level rejections — and a request fails in only one layer. If contract validation fails, domain logic does not run.
 

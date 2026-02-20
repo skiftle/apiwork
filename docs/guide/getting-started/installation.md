@@ -126,10 +126,3 @@ end
 ::: info
 Contracts and representations follow the same namespace structure as your controllers. If your controller is `Api::V1::InvoicesController`, your contract is `Api::V1::InvoiceContract` and your representation is `Api::V1::InvoiceRepresentation`.
 :::
-
-## Next Steps
-
-With Apiwork installed, you're ready to learn how it works.
-
-- [Core Concepts](./core-concepts.md) — understand API definitions, representations, and contracts
-- [Quick Start](./quick-start.md) — build a complete API with validation, filtering, and exports

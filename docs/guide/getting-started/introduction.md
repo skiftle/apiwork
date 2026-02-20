@@ -43,11 +43,3 @@ Apiwork operates at the boundary, strengthening what Rails already does well rat
 The result is an API boundary that serves as a single source of truth — explicit enough to reason about, structured enough for tooling, and consistent enough to scale across teams and strongly typed clients.
 
 The same definitions that run in production shape your documentation, your client types, and the interface the outside world depends on — allowing Rails to remain dynamic on the inside while the boundary presented to the outside world remains contract-driven and type-safe.
-
-## Next Steps
-
-The following guides explain how this works in practice.
-
-- [Installation](./installation.md)
-- [Core Concepts](./core-concepts.md)
-- [Quick Start](./quick-start.md)
