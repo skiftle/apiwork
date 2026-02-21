@@ -4,26 +4,67 @@ module Apiwork
   # @api public
   module ErrorCode
     DEFAULTS = {
-      bad_gateway: { status: 502 },
-      bad_request: { status: 400 },
-      conflict: { status: 409 },
-      forbidden: { status: 403 },
-      gateway_timeout: { status: 504 },
-      gone: { status: 410 },
-      internal_server_error: { status: 500 },
-      locked: { status: 423 },
-      method_not_allowed: { status: 405 },
-      not_acceptable: { status: 406 },
-      not_found: { attach_path: true, status: 404 },
-      not_implemented: { status: 501 },
-      payment_required: { status: 402 },
-      precondition_failed: { status: 412 },
-      request_timeout: { status: 408 },
-      service_unavailable: { status: 503 },
-      too_many_requests: { status: 429 },
-      unauthorized: { status: 401 },
-      unprocessable_entity: { status: 422 },
-      unsupported_media_type: { status: 415 },
+      bad_gateway: {
+        status: 502,
+      },
+      bad_request: {
+        status: 400,
+      },
+      conflict: {
+        status: 409,
+      },
+      forbidden: {
+        status: 403,
+      },
+      gateway_timeout: {
+        status: 504,
+      },
+      gone: {
+        status: 410,
+      },
+      internal_server_error: {
+        status: 500,
+      },
+      locked: {
+        status: 423,
+      },
+      method_not_allowed: {
+        status: 405,
+      },
+      not_acceptable: {
+        status: 406,
+      },
+      not_found: {
+        attach_path: true,
+        status: 404,
+      },
+      not_implemented: {
+        status: 501,
+      },
+      payment_required: {
+        status: 402,
+      },
+      precondition_failed: {
+        status: 412,
+      },
+      request_timeout: {
+        status: 408,
+      },
+      service_unavailable: {
+        status: 503,
+      },
+      too_many_requests: {
+        status: 429,
+      },
+      unauthorized: {
+        status: 401,
+      },
+      unprocessable_entity: {
+        status: 422,
+      },
+      unsupported_media_type: {
+        status: 415,
+      },
     }.freeze
 
     class << self
