@@ -19,7 +19,7 @@ coercion, or constraint checks. Access via `contract.issues`.
 
 `#as_json`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L67)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L68)
 
 Converts this issue to a hash for JSON serialization.
 
@@ -33,7 +33,7 @@ Converts this issue to a hash for JSON serialization.
 
 `#code`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L14)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L30)
 
 The code for this issue.
 
@@ -47,7 +47,7 @@ The code for this issue.
 
 `#detail`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L20)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L30)
 
 The detail for this issue.
 
@@ -61,7 +61,7 @@ The detail for this issue.
 
 `#meta`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L26)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L30)
 
 The meta for this issue.
 
@@ -71,25 +71,11 @@ The meta for this issue.
 
 ---
 
-### #path
-
-`#path`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L32)
-
-The path for this issue.
-
-**Returns**
-
-`Array<Symbol, Integer>`
-
----
-
 ### #pointer
 
 `#pointer`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L45)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L46)
 
 The pointer for this issue.
 
@@ -103,7 +89,7 @@ The pointer for this issue.
 
 `#to_h`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L53)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L54)
 
 Converts this issue to a hash.
 
@@ -117,7 +103,7 @@ Converts this issue to a hash.
 
 `#to_s`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L75)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L76)
 
 Converts this issue to a string.
 

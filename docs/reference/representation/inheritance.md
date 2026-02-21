@@ -27,7 +27,7 @@ ClientRepresentation.inheritance.resolve(record) # => PersonClientRepresentation
 
 `#base_class`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L20)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L26)
 
 The base class for this inheritance.
 
@@ -41,7 +41,7 @@ Class&lt;[Representation::Base](/reference/representation/base)&gt;
 
 `#column`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L37)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L38)
 
 The column for this inheritance.
 
@@ -55,7 +55,7 @@ The column for this inheritance.
 
 `#mapping`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L64)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L65)
 
 Mapping of API names to database type values.
 
@@ -69,7 +69,7 @@ Mapping of API names to database type values.
 
 `#resolve(record)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L47)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L48)
 
 Resolves a record to its subclass representation.
 
@@ -89,25 +89,11 @@ Class&lt;[Representation::Base](/reference/representation/base)&gt;, `nil`
 
 ---
 
-### #subclasses
-
-`#subclasses`
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L26)
-
-The subclasses for this inheritance.
-
-**Returns**
-
-Array&lt;Class&lt;[Representation::Base](/reference/representation/base)&gt;&gt;
-
----
-
 ### #transform?
 
 `#transform?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L56)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/inheritance.rb#L57)
 
 Whether this inheritance requires type transformation.
 
