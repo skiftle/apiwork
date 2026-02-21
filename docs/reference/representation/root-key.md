@@ -27,23 +27,9 @@ root_key.plural # => "invoices"
 
 `#plural`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/root_key.rb#L20)
-
-The plural root key.
-
-**Returns**
-
-`String`
-
----
-
-### #singular
-
-`#singular`
-
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/representation/root_key.rb#L26)
 
-The singular root key.
+The plural root key.
 
 **Returns**
 

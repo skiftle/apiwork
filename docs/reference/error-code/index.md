@@ -18,7 +18,7 @@ next: false
 
 `.find(key)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code.rb#L73)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code.rb#L114)
 
 Finds an error code by key.
 
@@ -52,7 +52,7 @@ Apiwork::ErrorCode.find(:not_found)
 
 `.find!(key)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code.rb#L73)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code.rb#L114)
 
 Finds an error code by key.
 
@@ -86,7 +86,7 @@ Apiwork::ErrorCode.find!(:not_found)
 
 `.register(key, attach_path: false, status:)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code.rb#L73)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code.rb#L114)
 
 Registers a custom error code for use in API responses.
 

@@ -21,15 +21,15 @@ Defining contracts manually without schemas
 <details>
 <summary>Database Table</summary>
 
-| Column     | Type     | Nullable | Default |
-| ---------- | -------- | -------- | ------- |
-| id         | string   |          |         |
-| created_at | datetime |          |         |
-| issued_on  | date     | ✓        |         |
-| notes      | string   | ✓        |         |
-| number     | string   |          |         |
-| status     | string   | ✓        |         |
-| updated_at | datetime |          |         |
+| Column | Type | Nullable | Default |
+|--------|------|----------|---------|
+| id | string |  |  |
+| created_at | datetime |  |  |
+| issued_on | date | ✓ |  |
+| notes | string | ✓ |  |
+| number | string |  |  |
+| status | string | ✓ |  |
+| updated_at | datetime |  |  |
 
 </details>
 
@@ -46,6 +46,8 @@ Defining contracts manually without schemas
 <<< @/playground/app/controllers/funny_snake/invoices_controller.rb
 
 ---
+
+
 
 ## Request Examples
 
@@ -198,6 +200,7 @@ DELETE /funny_snake/invoices/657000e8-1cd9-5b78-9ca2-dd399ce78cb4
 ```
 
 **Response** `204`
+
 
 </details>
 
