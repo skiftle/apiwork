@@ -151,7 +151,7 @@ Rails/Delegate:
 
 Rails/ReflectionClassName:
   Exclude:
-    - "docs/playground/app/schemas/**/*"
+    - "docs/playground/app/representations/**/*"
 
 Rails/HttpPositionalArguments:
   Enabled: false
