@@ -101,8 +101,8 @@ end
 - TypeScript: `never`
 - Zod: `z.never()`
 
-::: info Default for destroy
-The adapter uses `no_content!` by default for destroy actions. Override with `replace: true` if you need to return data.
+::: info
+The [standard adapter](../adapters/standard-adapter/introduction.md) uses `no_content!` by default for destroy actions. Override with `replace: true` if you need to return data.
 :::
 
 ## Raises

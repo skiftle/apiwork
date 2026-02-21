@@ -41,48 +41,42 @@ The generated output includes:
 import { z } from "zod";
 
 // Enums
-export const StatusSchema = z.enum(["draft", "published", "archived"]);
+export const StatusSchema = z.enum(["draft", "sent", "paid"]);
 
-// Custom types
-export const AddressSchema = z.object({
-  street: z.string(),
-  city: z.string(),
-  country: z.string(),
+// Resource schema
+export const InvoiceSchema = z.object({
+  id: z.string(),
+  number: z.string(),
+  status: StatusSchema.nullable(),
+  issuedOn: z.iso.date().nullable(),
+  createdAt: z.iso.datetime(),
 });
 
-// Resource schemas
-export const PostRepresentation = z.object({
-  id: z.number(),
-  title: z.string(),
-  body: z.string(),
-  status: StatusSchema,
-  createdAt: z.string(),
+// Payload schema (inner fields)
+export const InvoiceCreatePayloadSchema = z.object({
+  number: z.string(),
+  status: StatusSchema.nullable().optional(),
+  issuedOn: z.iso.date().nullable().optional(),
 });
 
-// Request schemas
-export const PostCreateRequestSchema = z.object({
-  post: z.object({
-    title: z.string(),
-    body: z.string().optional(),
-    status: StatusSchema.optional(),
-  }),
+// Request body schema (with root key wrapper)
+export const InvoicesCreateRequestBodySchema = z.object({
+  invoice: InvoiceCreatePayloadSchema,
 });
+
+// Response body schema (success or error)
+export const InvoiceCreateSuccessResponseBodySchema = z.object({
+  invoice: InvoiceSchema,
+});
+
+export const InvoicesCreateResponseBodySchema = z.union([
+  InvoiceCreateSuccessResponseBodySchema,
+  ErrorResponseBodySchema,
+]);
 
 // Inferred types
 export type Status = z.infer<typeof StatusSchema>;
-export type Post = z.infer<typeof PostRepresentation>;
-```
-
-## Usage
-
-```typescript
-import { PostCreateRequestSchema, PostRepresentation } from "./api/schemas";
-
-// Validate request before sending
-const validated = PostCreateRequestSchema.parse(formData);
-
-// Validate response from API
-const post = PostRepresentation.parse(await response.json());
+export interface Invoice { ... }
 ```
 
 ## Format Validation
@@ -111,10 +105,10 @@ Schemas are sorted in topological order so dependencies come first.
 For recursive schemas, Apiwork uses `z.lazy()`:
 
 ```typescript
-export const CategoryRepresentation: z.ZodType<Category> = z.lazy(() =>
+export const CategorySchema: z.ZodType<Category> = z.lazy(() =>
   z.object({
     name: z.string(),
-    children: z.array(CategoryRepresentation),
+    children: z.array(CategorySchema),
   })
 );
 ```

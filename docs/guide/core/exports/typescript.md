@@ -37,62 +37,37 @@ The generated output includes:
 
 ```typescript
 // Enums
-export type Status = 'draft' | 'published' | 'archived';
+export type Status = 'draft' | 'sent' | 'paid';
 
-// Custom types
-export interface Address {
-  street: string;
-  city: string;
-  country: string;
-}
-
-// Resource types
-export interface Post {
-  id: number;
-  title: string;
-  body: string;
-  status: Status;
+// Resource type
+export interface Invoice {
+  id: string;
+  number: string;
+  status: null | string;
+  issuedOn: null | string;
   createdAt: string;
 }
 
-// Request types
-export interface PostCreateRequest {
-  post: {
-    title: string;
-    body?: string;
-    status?: Status;
-  };
+// Payload type (inner fields)
+export interface InvoiceCreatePayload {
+  number: string;
+  status?: null | string;
+  issuedOn?: null | string;
 }
 
-// Response types
-export interface PostShowResponse {
-  post: Post;
+// Request body (with root key wrapper)
+export interface InvoicesCreateRequestBody {
+  invoice: InvoiceCreatePayload;
 }
 
-export interface PostIndexResponse {
-  posts: Post[];
+// Response body (success or error)
+export interface InvoiceCreateSuccessResponseBody {
+  invoice: Invoice;
 }
-```
 
-## Usage
-
-Download and use in your frontend:
-
-```bash
-curl http://localhost:3000/api/v1/.typescript > src/api/types.ts
-```
-
-```typescript
-import { Post, PostCreateRequest } from './api/types';
-
-async function createPost(data: PostCreateRequest): Promise<Post> {
-  const response = await fetch('/api/v1/posts', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
-  });
-  return response.json();
-}
+export type InvoicesCreateResponseBody =
+  | InvoiceCreateSuccessResponseBody
+  | ErrorResponseBody;
 ```
 
 ## Type Ordering

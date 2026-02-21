@@ -4,7 +4,7 @@ order: 2
 
 # Generation
 
-Three ways to generate declared exports:
+There are three ways to generate declared exports:
 
 | Method       | Best For    |
 | ------------ | ----------- |
@@ -14,7 +14,7 @@ Three ways to generate declared exports:
 
 ## Endpoints
 
-By default, endpoints are mounted in development only:
+Each declared export is available as an endpoint at your API's base path:
 
 | Format     | Endpoint                  |
 | ---------- | ------------------------- |
@@ -22,7 +22,7 @@ By default, endpoints are mounted in development only:
 | TypeScript | `GET /api/v1/.typescript` |
 | Zod        | `GET /api/v1/.zod`        |
 
-Endpoints generate on each request — convenient for development, but not ideal for production traffic.
+Endpoints are only available in development by default and generate on each request, so changes to your API definition are reflected immediately.
 
 ### Query Parameters
 

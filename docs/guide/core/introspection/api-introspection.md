@@ -14,15 +14,15 @@ api = Apiwork::API.introspect('/api/v1')
 
 ## Accessors
 
-| Method | Returns |
-|--------|---------|
-| `path` | API mount path |
-| `info` | [Info](../../../reference/introspection/api/info/) object |
-| `resources` | Hash of [Resource](../../../reference/introspection/api/resource.md) objects |
-| `types` | Hash of [Type](../../../reference/introspection/type.md) objects |
-| `enums` | Hash of [Enum](../../../reference/introspection/enum.md) objects |
-| `error_codes` | Hash of [ErrorCode](../../../reference/introspection/error-code.md) objects |
-| `raises` | Array of API-level error code symbols |
+| Method        | Returns                                                                      |
+| ------------- | ---------------------------------------------------------------------------- |
+| `base_path`   | API base path                                                                |
+| `info`        | [Info](../../../reference/introspection/api/info/) object                    |
+| `resources`   | Hash of [Resource](../../../reference/introspection/api/resource.md) objects |
+| `types`       | Hash of [Type](../../../reference/introspection/type.md) objects             |
+| `enums`       | Hash of [Enum](../../../reference/introspection/enum.md) objects             |
+| `error_codes` | Hash of [ErrorCode](../../../reference/introspection/error-code.md) objects  |
+| `raises`      | Array of API-level error code symbols                                        |
 
 ---
 
