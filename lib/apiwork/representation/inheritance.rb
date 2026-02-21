@@ -13,17 +13,18 @@ module Apiwork
     #   ClientRepresentation.inheritance.subclasses # => [PersonClientRepresentation, ...]
     #   ClientRepresentation.inheritance.resolve(record) # => PersonClientRepresentation
     class Inheritance
-      # @api public
-      # The base class for this inheritance.
+      # @!attribute [r] base_class
+      #   @api public
+      #   The base class for this inheritance.
       #
-      # @return [Class<Representation::Base>]
-      attr_reader :base_class
-
-      # @api public
-      # The subclasses for this inheritance.
+      #   @return [Class<Representation::Base>]
+      # @!attribute [r] subclasses
+      #   @api public
+      #   The subclasses for this inheritance.
       #
-      # @return [Array<Class<Representation::Base>>]
-      attr_reader :subclasses
+      #   @return [Array<Class<Representation::Base>>]
+      attr_reader :base_class,
+                  :subclasses
 
       def initialize(base_class)
         @base_class = base_class
