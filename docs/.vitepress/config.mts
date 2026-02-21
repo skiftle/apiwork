@@ -4,6 +4,23 @@ import { generateSidebar } from "vitepress-sidebar";
 export default defineConfig({
   title: "Apiwork",
   description: "The modern API layer for Rails",
+  cleanUrls: true,
+  lastUpdated: true,
+  sitemap: {
+    hostname: "https://apiwork.dev",
+  },
+  head: [
+    ["link", { rel: "icon", href: "/favicon.ico" }],
+    ["meta", { property: "og:type", content: "website" }],
+    ["meta", { property: "og:title", content: "Apiwork" }],
+    [
+      "meta",
+      {
+        property: "og:description",
+        content: "The modern API layer for Rails",
+      },
+    ],
+  ],
   markdown: {
     lineNumbers: false,
     headers: {
@@ -12,6 +29,7 @@ export default defineConfig({
   },
   themeConfig: {
     outline: [2, 3],
+    externalLinkIcon: true,
     nav: [
       { text: "Guide", link: "/guide/" },
       { text: "Examples", link: "/examples/" },
@@ -25,6 +43,13 @@ export default defineConfig({
     ],
     editLink: {
       pattern: "https://github.com/apiwork/apiwork/edit/main/docs/:path",
+    },
+    footer: {
+      message: "Released under the MIT License.",
+      copyright: "Copyright 2024-present Apiwork contributors",
+    },
+    lastUpdated: {
+      text: "Last updated",
     },
     sidebar: generateSidebar([
       {
