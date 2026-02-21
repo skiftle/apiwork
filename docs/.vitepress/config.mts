@@ -31,9 +31,9 @@ export default defineConfig({
     outline: [2, 3],
     externalLinkIcon: true,
     nav: [
-      { text: "Guide", link: "/guide/" },
-      { text: "Examples", link: "/examples/" },
-      { text: "Reference", link: "/reference/" },
+      { text: "Guide", link: "/guide/", activeMatch: "/guide/" },
+      { text: "Examples", link: "/examples/", activeMatch: "/examples/" },
+      { text: "Reference", link: "/reference/", activeMatch: "/reference/" },
     ],
     search: {
       provider: "local",
