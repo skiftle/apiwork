@@ -104,7 +104,7 @@ Both `has_one` and `has_many` associations are deserialized using their represen
 
 ## Encode & Decode Transformers
 
-Define transformers on attributes to customize serialization and deserialization. See [Encode & Decode](attributes.md#encode-decode) and [Empty & Nullable](attributes.md#empty-nullable) for details.
+Define transformers on attributes to customize serialization and deserialization. See [Encode & Decode](attributes/encode-decode.md) and [Empty & Nullable](attributes/encode-decode.md#empty-nullable) for details.
 
 #### See also
 

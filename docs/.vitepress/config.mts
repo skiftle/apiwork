@@ -1,19 +1,10 @@
 import { defineConfig } from "vitepress";
 import { generateSidebar } from "vitepress-sidebar";
-import { createCssVariablesTheme } from "shiki";
-
-const cssVariablesTheme = createCssVariablesTheme({
-  name: "css-variables",
-  variablePrefix: "--shiki-",
-  variableDefaults: {},
-  fontStyle: true,
-});
 
 export default defineConfig({
   title: "Apiwork",
   description: "The modern API layer for Rails",
   markdown: {
-    theme: cssVariablesTheme,
     lineNumbers: false,
     headers: {
       level: [2, 3],
@@ -21,6 +12,20 @@ export default defineConfig({
   },
   themeConfig: {
     outline: [2, 3],
+    nav: [
+      { text: "Guide", link: "/guide/" },
+      { text: "Examples", link: "/examples/" },
+      { text: "Reference", link: "/reference/" },
+    ],
+    search: {
+      provider: "local",
+    },
+    socialLinks: [
+      { icon: "github", link: "https://github.com/apiwork/apiwork" },
+    ],
+    editLink: {
+      pattern: "https://github.com/apiwork/apiwork/edit/main/docs/:path",
+    },
     sidebar: generateSidebar([
       {
         documentRootPath: ".",
