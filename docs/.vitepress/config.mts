@@ -37,6 +37,16 @@ const sidebar = generateSidebar([
   },
 ]);
 
+for (const item of sidebar["/guide/"].items) {
+  delete item.collapsed;
+  delete item.link;
+}
+
+sidebar["/reference/"].items = [{
+  text: "Apiwork",
+  items: sidebar["/reference/"].items,
+}];
+
 export default defineConfig({
   title: "Apiwork",
   description: "The modern API layer for Rails",
