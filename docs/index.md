@@ -3,8 +3,8 @@ layout: home
 
 hero:
   name: Apiwork
-  text: The modern API layer for Rails
-  tagline: Define your API once. Get validation, serialization, TypeScript types, OpenAPI specs, and Zod schemas — all from a single source of truth.
+  text: A contract-driven API layer for Rails
+  tagline: Define your API once — and generate everything from it
   actions:
     - theme: brand
       text: Get Started
