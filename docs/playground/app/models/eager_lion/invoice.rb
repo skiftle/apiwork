@@ -7,6 +7,8 @@ module EagerLion
 
     accepts_nested_attributes_for :lines, allow_destroy: true
 
+    enum :status, draft: 'draft', sent: 'sent', paid: 'paid'
+
     validates :number, presence: true
   end
 end

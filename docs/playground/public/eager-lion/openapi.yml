@@ -202,6 +202,10 @@ components:
         number:
           type: string
         status:
+          enum:
+          - draft
+          - sent
+          - paid
           type:
           - string
           - 'null'
@@ -280,9 +284,7 @@ components:
           - type: string
           - "$ref": "#/components/schemas/stringFilter"
         status:
-          oneOf:
-          - type: string
-          - "$ref": "#/components/schemas/nullableStringFilter"
+          "$ref": "#/components/schemas/invoiceStatusFilter"
       type: object
     invoiceIndexSuccessResponseBody:
       properties:
@@ -342,6 +344,32 @@ components:
           - desc
           type: string
       type: object
+    invoiceStatusFilter:
+      oneOf:
+      - enum:
+        - draft
+        - sent
+        - paid
+        type: string
+      - properties:
+          eq:
+            enum:
+            - draft
+            - sent
+            - paid
+            type: string
+          in:
+            items:
+              enum:
+              - draft
+              - sent
+              - paid
+              type: string
+            type: array
+        type: object
+        required:
+        - eq
+        - in
     invoiceUpdatePayload:
       properties:
         customerId:
@@ -474,23 +502,6 @@ components:
           type:
           - integer
           - 'null'
-      type: object
-    nullableStringFilter:
-      properties:
-        contains:
-          type: string
-        endsWith:
-          type: string
-        eq:
-          type: string
-        in:
-          items:
-            type: string
-          type: array
-        'null':
-          type: boolean
-        startsWith:
-          type: string
       type: object
     offsetPagination:
       properties:

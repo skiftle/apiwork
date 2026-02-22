@@ -8,14 +8,14 @@ module FunnySnake
       datetime :updated_at
       string :number
       date :issued_on
-      string :status
+      string :status, enum: %w[draft sent paid]
       string :notes
     end
 
     object :payload do
       string :number
       date :issued_on
-      string :status
+      string :status, enum: %w[draft sent paid]
       string :notes
     end
 

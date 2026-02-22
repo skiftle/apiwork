@@ -6,7 +6,7 @@ export const InvoiceSchema = z.object({
   issuedOn: z.iso.date(),
   notes: z.string(),
   number: z.string(),
-  status: z.string(),
+  status: z.enum(['draft', 'sent', 'paid']),
   updatedAt: z.iso.datetime()
 });
 
@@ -14,7 +14,7 @@ export const InvoicePayloadSchema = z.object({
   issuedOn: z.iso.date(),
   notes: z.string(),
   number: z.string(),
-  status: z.string()
+  status: z.enum(['draft', 'sent', 'paid'])
 });
 
 export const InvoicesIndexResponseBodySchema = z.object({ invoices: z.array(InvoiceSchema) });
@@ -65,7 +65,7 @@ export interface Invoice {
   issuedOn: string;
   notes: string;
   number: string;
-  status: string;
+  status: 'draft' | 'paid' | 'sent';
   updatedAt: string;
 }
 
@@ -73,7 +73,7 @@ export interface InvoicePayload {
   issuedOn: string;
   notes: string;
   number: string;
-  status: string;
+  status: 'draft' | 'paid' | 'sent';
 }
 
 export interface InvoicesCreateRequest {

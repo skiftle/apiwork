@@ -4,7 +4,7 @@ export interface Invoice {
   issuedOn: string;
   notes: string;
   number: string;
-  status: string;
+  status: 'draft' | 'paid' | 'sent';
   updatedAt: string;
 }
 
@@ -12,7 +12,7 @@ export interface InvoicePayload {
   issuedOn: string;
   notes: string;
   number: string;
-  status: string;
+  status: 'draft' | 'paid' | 'sent';
 }
 
 export interface InvoicesCreateRequest {

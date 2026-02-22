@@ -19,7 +19,7 @@ export interface Invoice {
   lines: Line[];
   notes: null | string;
   number: string;
-  status: null | string;
+  status: InvoiceStatus | null;
   updatedAt: string;
 }
 
@@ -46,7 +46,7 @@ export interface InvoiceFilter {
   NOT?: InvoiceFilter;
   OR?: InvoiceFilter[];
   number?: StringFilter | string;
-  status?: NullableStringFilter | string;
+  status?: InvoiceStatusFilter;
 }
 
 export interface InvoiceIndexSuccessResponseBody {
@@ -71,6 +71,10 @@ export interface InvoiceSort {
   status?: SortDirection;
   updatedAt?: SortDirection;
 }
+
+export type InvoiceStatus = 'draft' | 'paid' | 'sent';
+
+export type InvoiceStatusFilter = InvoiceStatus | { eq?: InvoiceStatus; in?: InvoiceStatus[] };
 
 export interface InvoiceUpdatePayload {
   customerId?: string;
@@ -180,15 +184,6 @@ export interface LineNestedUpdatePayload {
   id?: string;
   price?: null | number;
   quantity?: null | number;
-}
-
-export interface NullableStringFilter {
-  contains?: string;
-  endsWith?: string;
-  eq?: string;
-  in?: string[];
-  null?: boolean;
-  startsWith?: string;
 }
 
 export interface OffsetPagination {

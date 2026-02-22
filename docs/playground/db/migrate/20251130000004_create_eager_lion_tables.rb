@@ -13,7 +13,7 @@ class CreateEagerLionTables < ActiveRecord::Migration[8.1]
       t.string :number, null: false
       t.date :issued_on
       t.string :notes
-      t.string :status
+      t.string :status, default: 'draft'
 
       t.timestamps
     end

@@ -127,6 +127,10 @@ components:
         number:
           type: string
         status:
+          enum:
+          - draft
+          - sent
+          - paid
           type: string
         updatedAt:
           type: string
@@ -150,6 +154,10 @@ components:
         number:
           type: string
         status:
+          enum:
+          - draft
+          - sent
+          - paid
           type: string
       type: object
       required:

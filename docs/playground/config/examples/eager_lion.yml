@@ -36,10 +36,12 @@ scenarios:
       - create: invoice
         fields:
           number: INV-001
+          status: sent
           customer_id: :customer_id
       - create: invoice
         fields:
           number: INV-002
+          status: draft
           customer_id: :customer_id
 
   - title: Get invoice details
@@ -54,6 +56,7 @@ scenarios:
       - create: invoice
         fields:
           number: INV-001
+          status: sent
           customer_id: :customer_id
 
   - title: Create a new invoice
@@ -68,12 +71,13 @@ scenarios:
     body:
       invoice:
         number: INV-001
+        status: sent
         customer_id: :customer_id
         issued_on: "2024-01-15"
         notes: First invoice
 
   - title: Update an invoice
-    description: Modify invoice notes
+    description: Modify invoice status and notes
     order: 4
     method: PATCH
     path: /eager_lion/invoices/:id
@@ -84,11 +88,11 @@ scenarios:
       - create: invoice
         fields:
           number: INV-001
+          status: draft
           customer_id: :customer_id
     body:
       invoice:
-        number: INV-001
-        customer_id: :customer_id
+        status: sent
         notes: Updated notes
 
   - title: Delete an invoice
@@ -103,4 +107,5 @@ scenarios:
       - create: invoice
         fields:
           number: INV-001
+          status: draft
           customer_id: :customer_id

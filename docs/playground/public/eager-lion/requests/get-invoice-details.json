@@ -12,7 +12,7 @@
         "number": "INV-001",
         "issuedOn": null,
         "notes": null,
-        "status": null,
+        "status": "sent",
         "customerId": "9428d849-05a5-5c52-a90a-906eac07ecd2",
         "lines": [],
         "customer": {

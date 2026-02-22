@@ -362,6 +362,11 @@
           "nullable": false,
           "optional": false,
           "type": "string",
+          "enum": [
+            "draft",
+            "sent",
+            "paid"
+          ],
           "format": null,
           "max": null,
           "min": null
@@ -427,6 +432,11 @@
           "nullable": false,
           "optional": false,
           "type": "string",
+          "enum": [
+            "draft",
+            "sent",
+            "paid"
+          ],
           "format": null,
           "max": null,
           "min": null

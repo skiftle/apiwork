@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+export const InvoiceStatusSchema = z.enum(['draft', 'paid', 'sent']);
+
 export const LayerSchema = z.enum(['contract', 'domain', 'http']);
 
 export const SortDirectionSchema = z.enum(['asc', 'desc']);
@@ -9,7 +11,7 @@ export const InvoiceFilterSchema: z.ZodType<InvoiceFilter> = z.lazy(() => z.obje
   NOT: InvoiceFilterSchema.optional(),
   OR: z.array(InvoiceFilterSchema).optional(),
   number: z.union([z.string(), StringFilterSchema]).optional(),
-  status: z.union([z.string(), NullableStringFilterSchema]).optional()
+  status: InvoiceStatusFilterSchema.optional()
 }));
 
 export const CustomerSchema = z.object({
@@ -28,6 +30,11 @@ export const InvoiceSortSchema = z.object({
   status: SortDirectionSchema.optional(),
   updatedAt: SortDirectionSchema.optional()
 });
+
+export const InvoiceStatusFilterSchema = z.union([
+  InvoiceStatusSchema,
+  z.object({ eq: InvoiceStatusSchema, in: z.array(InvoiceStatusSchema) }).partial()
+]);
 
 export const IssueSchema = z.object({
   code: z.string(),
@@ -64,15 +71,6 @@ export const LineNestedUpdatePayloadSchema = z.object({
   quantity: z.number().int().nullable().optional()
 });
 
-export const NullableStringFilterSchema = z.object({
-  contains: z.string().optional(),
-  endsWith: z.string().optional(),
-  eq: z.string().optional(),
-  in: z.array(z.string()).optional(),
-  null: z.boolean().optional(),
-  startsWith: z.string().optional()
-});
-
 export const OffsetPaginationSchema = z.object({
   current: z.number().int(),
   items: z.number().int(),
@@ -103,7 +101,7 @@ export const InvoiceSchema = z.object({
   lines: z.array(LineSchema),
   notes: z.string().nullable(),
   number: z.string(),
-  status: z.string().nullable(),
+  status: InvoiceStatusSchema.nullable(),
   updatedAt: z.iso.datetime()
 });
 
@@ -236,7 +234,7 @@ export interface Invoice {
   lines: Line[];
   notes: null | string;
   number: string;
-  status: null | string;
+  status: InvoiceStatus | null;
   updatedAt: string;
 }
 
@@ -263,7 +261,7 @@ export interface InvoiceFilter {
   NOT?: InvoiceFilter;
   OR?: InvoiceFilter[];
   number?: StringFilter | string;
-  status?: NullableStringFilter | string;
+  status?: InvoiceStatusFilter;
 }
 
 export interface InvoiceIndexSuccessResponseBody {
@@ -288,6 +286,10 @@ export interface InvoiceSort {
   status?: SortDirection;
   updatedAt?: SortDirection;
 }
+
+export type InvoiceStatus = 'draft' | 'paid' | 'sent';
+
+export type InvoiceStatusFilter = InvoiceStatus | { eq?: InvoiceStatus; in?: InvoiceStatus[] };
 
 export interface InvoiceUpdatePayload {
   customerId?: string;
@@ -397,15 +399,6 @@ export interface LineNestedUpdatePayload {
   id?: string;
   price?: null | number;
   quantity?: null | number;
-}
-
-export interface NullableStringFilter {
-  contains?: string;
-  endsWith?: string;
-  eq?: string;
-  in?: string[];
-  null?: boolean;
-  startsWith?: string;
 }
 
 export interface OffsetPagination {
