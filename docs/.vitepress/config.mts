@@ -11,7 +11,7 @@ const sidebar = generateSidebar([
     useFolderLinkFromIndexFile: true,
     sortMenusByFrontmatterOrder: true,
     frontmatterOrderDefaultValue: 999,
-    collapseDepth: 2,
+    collapsed: true,
   },
   {
     documentRootPath: ".",
@@ -36,17 +36,15 @@ const sidebar = generateSidebar([
   },
 ]);
 
-for (const item of sidebar["/guide/"].items) {
-  delete item.collapsed;
-  delete item.link;
-}
+const guideItems = sidebar["/guide/"].items;
+sidebar["/guide/"].items = [
+  { text: "Getting Started", items: guideItems.filter((i) => !i.items) },
+  { text: "Core", items: guideItems.filter((i) => i.items) },
+];
 
-for (const item of sidebar["/reference/"].items) {
-  if (item.items) {
-    delete item.collapsed;
-    delete item.link;
-  }
-}
+sidebar["/reference/"].items = [
+  { text: "Apiwork", items: sidebar["/reference/"].items },
+];
 
 export default defineConfig({
   title: "Apiwork",

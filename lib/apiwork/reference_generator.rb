@@ -8,7 +8,7 @@ require 'active_support/core_ext/object/blank'
 module Apiwork
   class ReferenceGenerator
     GEM_ROOT = File.expand_path('../..', __dir__)
-    OUTPUT_DIR = File.join(GEM_ROOT, 'docs/reference/apiwork')
+    OUTPUT_DIR = File.join(GEM_ROOT, 'docs/reference')
     GITHUB_URL = 'https://github.com/skiftle/apiwork/blob/main'
 
     class << self
@@ -482,18 +482,18 @@ module Apiwork
       without_apiwork = resolved.delete_prefix('Apiwork::')
       parts = without_apiwork.split('::')
 
-      return '/reference/apiwork/' if parts.empty?
+      return '/reference/' if parts.empty?
 
       file_parts = parts.map { |part| dasherize(part) }
       has_children = modules_with_children_for_links.include?(full_path)
 
       if has_children
-        "/reference/apiwork/#{File.join(*file_parts)}/"
+        "/reference/#{File.join(*file_parts)}/"
       else
         folders = file_parts[0..-2]
         filename = file_parts.last
         relative_path = folders.any? ? File.join(*folders, filename) : filename
-        "/reference/apiwork/#{relative_path}"
+        "/reference/#{relative_path}"
       end
     end
 
