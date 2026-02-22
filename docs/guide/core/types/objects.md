@@ -262,4 +262,4 @@ Both work the same at runtime. The difference is in the exports:
 
 #### See also
 
-- [Contract::Base reference](../../../reference/contract/base.md) — `object` method
+- [Contract::Base reference](../../../reference/apiwork/contract/base.md) — `object` method

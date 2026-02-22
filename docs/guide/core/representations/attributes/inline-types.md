@@ -493,4 +493,4 @@ attribute :flexible_data  # stays :unknown
 
 #### See also
 
-- [Representation::Element](/reference/representation/element.md) — block context reference
+- [Representation::Element](/reference/apiwork/representation/element.md) — block context reference

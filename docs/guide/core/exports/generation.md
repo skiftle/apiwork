@@ -176,4 +176,4 @@ end
 #### See also
 
 - [Custom Exports](./custom-exports.md) — building your own export formats
-- [Export reference](../../../reference/export/base) — programmatic generation API
+- [Export reference](../../../reference/apiwork/export/base) — programmatic generation API

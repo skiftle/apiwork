@@ -128,5 +128,5 @@ STI requires:
 
 #### See also
 
-- [Representation::Base reference](../../../reference/representation/base.md) — `type_name`, `sti_name`, `inheritance`
-- [Representation::Inheritance reference](../../../reference/representation/inheritance.md) — inheritance metadata
+- [Representation::Base reference](../../../reference/apiwork/representation/base.md) — `type_name`, `sti_name`, `inheritance`
+- [Representation::Inheritance reference](../../../reference/apiwork/representation/inheritance.md) — inheritance metadata

@@ -149,4 +149,4 @@ See [Custom Adapters](../adapters/custom-adapters/) for creating your own.
 
 #### See also
 
-- [API::Base reference](../../../reference/api/base.md) — all configuration methods and options
+- [API::Base reference](../../../reference/apiwork/api/base.md) — all configuration methods and options

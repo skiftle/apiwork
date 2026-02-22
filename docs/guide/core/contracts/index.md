@@ -64,4 +64,4 @@ In this mode, the contract is driven by its representation through an [adapter](
 
 #### See also
 
-- [Contract::Base reference](../../../reference/contract/base.md) — all contract methods and options
+- [Contract::Base reference](../../../reference/apiwork/contract/base.md) — all contract methods and options

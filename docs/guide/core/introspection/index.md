@@ -100,4 +100,4 @@ action.request.to_h
 - [API Introspection](./api-introspection.md) - entry point for full API
 - [Contract Introspection](./contract-introspection.md) - entry point for single contract
 
-See the [reference documentation](../../../reference/introspection/api/) for complete method details.
+See the [reference documentation](../../../reference/apiwork/introspection/api/) for complete method details.

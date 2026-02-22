@@ -113,4 +113,4 @@ This asymmetry is intentional. Clients depend on the request contract — breaki
 
 - [Errors](../errors/) — the unified error model
 - [Contract Errors](../errors/contract-errors.md) — all contract error codes
-- [Contract::Base reference](../../../reference/contract/base.md) — all contract methods and options
+- [Contract::Base reference](../../../reference/apiwork/contract/base.md) — all contract methods and options

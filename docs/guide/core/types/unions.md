@@ -268,4 +268,4 @@ export const FilterSchema = z.discriminatedUnion('kind', [
 
 #### See also
 
-- [Contract::Base reference](../../../reference/contract/base.md) — `union` method
+- [Contract::Base reference](../../../reference/apiwork/contract/base.md) — `union` method

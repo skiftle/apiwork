@@ -301,4 +301,4 @@ Summaries and descriptions can be translated. Define them in locale files instea
 
 #### See also
 
-- [Contract::Action reference](../../../reference/contract/action/) — all action methods and options
+- [Contract::Action reference](../../../reference/apiwork/contract/action/) — all action methods and options

@@ -165,4 +165,4 @@ end
 
 - [API Configuration](../../../api-definitions/configuration.md)
 - [Representation Configuration](../../../representations/configuration.md)
-- [Capability::Base reference](/reference/adapter/capability/base)
+- [Capability::Base reference](/reference/apiwork/adapter/capability/base)

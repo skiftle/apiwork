@@ -106,4 +106,4 @@ If using the Standard Adapter, configure pagination strategies with the `adapter
 
 #### See also
 
-- [Representation::Base reference](../../../reference/representation/base.md) — all representation methods and options
+- [Representation::Base reference](../../../reference/apiwork/representation/base.md) — all representation methods and options

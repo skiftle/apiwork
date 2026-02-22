@@ -42,4 +42,4 @@ Each definition is independent. Different API versions can have different config
 
 #### See also
 
-- [API::Base reference](../../../reference/api/base.md) — all API definition methods and options
+- [API::Base reference](../../../reference/apiwork/api/base.md) — all API definition methods and options

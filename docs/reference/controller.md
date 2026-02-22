@@ -118,15 +118,15 @@ end
 The contract for this controller.
 
 Contains parsed query parameters and request body with type coercion applied.
-Access parameters via [Contract::Base#query](/reference/contract/base#query) and [Contract::Base#body](/reference/contract/base#body).
+Access parameters via [Contract::Base#query](/reference/apiwork/contract/base#query) and [Contract::Base#body](/reference/apiwork/contract/base#body).
 
 **Returns**
 
-[Contract::Base](/reference/contract/base)
+[Contract::Base](/reference/apiwork/contract/base)
 
 **See also**
 
-- [Contract::Base](/reference/contract/base)
+- [Contract::Base](/reference/apiwork/contract/base)
 
 **Example: Access parsed parameters**
 
@@ -157,9 +157,9 @@ end
 
 Exposes data as an API response.
 
-When a representation is linked via [Contract::Base.representation](/reference/contract/base#representation), data is serialized
+When a representation is linked via [Contract::Base.representation](/reference/apiwork/contract/base#representation), data is serialized
 through the representation. Otherwise, data is rendered as-is. Key transformation
-is applied according to the API's [API::Base.key_format](/reference/api/base#key-format).
+is applied according to the API's [API::Base.key_format](/reference/apiwork/api/base#key-format).
 
 **Parameters**
 
@@ -175,7 +175,7 @@ is applied according to the API's [API::Base.key_format](/reference/api/base#key
 
 **See also**
 
-- [Representation::Base](/reference/representation/base)
+- [Representation::Base](/reference/apiwork/representation/base)
 
 **Example: Expose a single record**
 
@@ -231,7 +231,7 @@ Defaults to I18n lookup when detail is not provided.
 
 **See also**
 
-- [ErrorCode](/reference/introspection/error-code)
+- [ErrorCode](/reference/apiwork/introspection/error-code)
 - [Issue](/reference/issue)
 
 **Example: Not found error**

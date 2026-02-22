@@ -37,4 +37,4 @@ Once declared, exports can be generated via endpoints, rake tasks, or code.
 
 #### See also
 
-- [Export reference](../../../reference/export/base) — programmatic generation API
+- [Export reference](../../../reference/apiwork/export/base) — programmatic generation API

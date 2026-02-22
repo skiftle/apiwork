@@ -38,4 +38,4 @@ Apiwork detects types, nullability, and enum values from your database. The adap
 
 #### See also
 
-- [Representation::Element](/reference/representation/element.md) — block context reference
+- [Representation::Element](/reference/apiwork/representation/element.md) — block context reference

@@ -158,4 +158,4 @@ Appears in the OpenAPI export as possible responses.
 
 #### See also
 
-- [Export reference](../../../reference/export/base) — programmatic generation API
+- [Export reference](../../../reference/apiwork/export/base) — programmatic generation API

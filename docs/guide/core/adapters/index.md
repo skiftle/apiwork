@@ -46,4 +46,4 @@ For minor changes, [extend the standard adapter](./standard-adapter/extending.md
 
 #### See also
 
-- [Adapter::Base reference](../../../reference/adapter/base.md) — all adapter methods and options
+- [Adapter::Base reference](../../../reference/apiwork/adapter/base.md) — all adapter methods and options

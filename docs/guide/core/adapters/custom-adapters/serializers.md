@@ -11,7 +11,7 @@ Serializers convert records and errors to response data. An adapter uses two ser
 
 ## Resource Serializers
 
-Resource serializers inherit from [`Adapter::Serializer::Resource::Base`](/reference/adapter/serializer/resource/base):
+Resource serializers inherit from [`Adapter::Serializer::Resource::Base`](/reference/apiwork/adapter/serializer/resource/base):
 
 ```ruby
 class MyResourceSerializer < Adapter::Serializer::Resource::Base
@@ -61,7 +61,7 @@ The `representation_class` attribute provides access to the representation class
 
 ## Error Serializers
 
-Error serializers inherit from [`Adapter::Serializer::Error::Base`](/reference/adapter/serializer/error/base):
+Error serializers inherit from [`Adapter::Serializer::Error::Base`](/reference/apiwork/adapter/serializer/error/base):
 
 ```ruby
 class MyErrorSerializer < Adapter::Serializer::Error::Base
@@ -153,7 +153,7 @@ end
 
 #### See also
 
-- [Serializer::Resource::Base reference](/reference/adapter/serializer/resource/base)
-- [Serializer::Error::Base reference](/reference/adapter/serializer/error/base)
+- [Serializer::Resource::Base reference](/reference/apiwork/adapter/serializer/resource/base)
+- [Serializer::Error::Base reference](/reference/apiwork/adapter/serializer/error/base)
 - [Error Handling](../../errors/)
 - [Wrappers](./wrappers.md)

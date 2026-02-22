@@ -79,4 +79,4 @@ See [Exports](../exports/) for endpoints, rake tasks, and programmatic generatio
 
 #### See also
 
-- [Export reference](../../../reference/export/base) — programmatic generation API
+- [Export reference](../../../reference/apiwork/export/base) — programmatic generation API

@@ -61,5 +61,5 @@ See [Types](../types/) for all available types and modifiers.
 
 #### See also
 
-- [API::Base reference](../../../reference/api/base.md) — `object`, `union`, `enum`, `fragment` methods
+- [API::Base reference](../../../reference/apiwork/api/base.md) — `object`, `union`, `enum`, `fragment` methods
 - [Type Reuse](../types/type-reuse.md) — extends, merge, and fragments

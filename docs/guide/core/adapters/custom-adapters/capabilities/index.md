@@ -3,7 +3,7 @@ order: 4
 ---
 # Capabilities
 
-A capability encapsulates a specific feature (filtering, pagination, sorting) with its own configuration, transformers, builders, and operations. While each capability is self-contained, all capabilities operate on the same response data in sequence, so their effects combine. Capabilities inherit from [`Adapter::Capability::Base`](/reference/adapter/capability/base).
+A capability encapsulates a specific feature (filtering, pagination, sorting) with its own configuration, transformers, builders, and operations. While each capability is self-contained, all capabilities operate on the same response data in sequence, so their effects combine. Capabilities inherit from [`Adapter::Capability::Base`](/reference/apiwork/adapter/capability/base).
 
 ```ruby
 class Filtering < Adapter::Capability::Base
@@ -148,5 +148,5 @@ The [standard adapter](../../standard-adapter/) includes these capabilities:
 
 #### See also
 
-- [Capability::Base reference](/reference/adapter/capability/base)
+- [Capability::Base reference](/reference/apiwork/adapter/capability/base)
 - [Standard Adapter](../../standard-adapter/)

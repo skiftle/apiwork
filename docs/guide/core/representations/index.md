@@ -53,4 +53,4 @@ The [adapter](../adapters/) then derives filter types, sort options, request pay
 
 #### See also
 
-- [Representation::Base reference](../../../reference/representation/base.md) — all representation methods and options
+- [Representation::Base reference](../../../reference/apiwork/representation/base.md) — all representation methods and options

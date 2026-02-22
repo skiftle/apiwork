@@ -123,5 +123,5 @@ capability Capability::Pagination
 
 #### See also
 
-- [Adapter::Base reference](/reference/adapter/base)
+- [Adapter::Base reference](/reference/apiwork/adapter/base)
 - [Standard Adapter](../standard-adapter/)

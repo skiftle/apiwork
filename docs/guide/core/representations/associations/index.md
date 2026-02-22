@@ -35,4 +35,4 @@ Apiwork detects the associated representation and nullable from your model. The 
 
 #### See also
 
-- [Representation::Base reference](../../../../reference/representation/base.md) — all association options
+- [Representation::Base reference](../../../../reference/apiwork/representation/base.md) — all association options

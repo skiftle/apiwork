@@ -124,4 +124,4 @@ const ExampleSchema = z.object({
 
 #### See also
 
-- [Contract::Object reference](../../../reference/contract/object.md) — all field options
+- [Contract::Object reference](../../../reference/apiwork/contract/object.md) — all field options

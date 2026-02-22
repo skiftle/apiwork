@@ -32,7 +32,7 @@ const sidebar = generateSidebar([
     useFolderLinkFromIndexFile: true,
     sortMenusByFrontmatterOrder: true,
     frontmatterOrderDefaultValue: 999,
-    sortFolderTo: "top",
+    sortFolderTo: null,
     collapsed: true,
   },
 ]);
@@ -42,10 +42,12 @@ for (const item of sidebar["/guide/"].items) {
   delete item.link;
 }
 
-sidebar["/reference/"].items = [{
-  text: "Apiwork",
-  items: sidebar["/reference/"].items,
-}];
+for (const item of sidebar["/reference/"].items) {
+  if (item.items) {
+    delete item.collapsed;
+    delete item.link;
+  }
+}
 
 export default defineConfig({
   title: "Apiwork",
