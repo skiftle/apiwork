@@ -6,7 +6,7 @@ order: 3
 
 Contracts can define reusable types that are referenced across actions. These types are scoped to the contract and automatically prefixed with the contract's identifier.
 
-For the full type system — primitives, modifiers, and scoping — see [Types](../types/introduction.md).
+For the full type system — primitives, modifiers, and scoping — see [Types](../types/).
 
 ## Objects
 
@@ -164,5 +164,5 @@ Types defined at the [API level](../api-definitions/types.md) are not prefixed.
 
 #### See also
 
-- [Types](../types/introduction.md) — the full type system
+- [Types](../types/) — the full type system
 - [Imports](./imports.md) — sharing types between contracts

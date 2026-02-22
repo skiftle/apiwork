@@ -7,7 +7,7 @@ order: 2
 Resources define your API endpoints. They follow Rails routing conventions:
 
 - Define which endpoints exist
-- Link each endpoint to its [contract](../contracts/introduction.md)
+- Link each endpoint to its [contract](../contracts/)
 - Form part of the API's metadata for [exports](./exports.md)
 
 ## Path and Namespace

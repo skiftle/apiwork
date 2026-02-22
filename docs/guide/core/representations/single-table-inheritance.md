@@ -65,7 +65,7 @@ VehicleRepresentation.inheritance.subclasses  # => [CarRepresentation, ...]
 
 ## Serialization
 
-The adapter handles serialization. The [standard adapter](../adapters/standard-adapter/introduction.md):
+The adapter handles serialization. The [standard adapter](../adapters/standard-adapter/):
 
 - Resolves each record to its correct subclass representation
 - Adds the discriminator field to the output

@@ -57,7 +57,7 @@ end
 
 ---
 
-See [Types](../types/introduction.md) for all available types and modifiers.
+See [Types](../types/) for all available types and modifiers.
 
 #### See also
 
