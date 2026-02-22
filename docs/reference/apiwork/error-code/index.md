@@ -111,7 +111,7 @@ in controllers. Built-in codes (400-504) are pre-registered.
 
 **See also**
 
-- [Issue](/reference/issue)
+- [Issue](/reference/apiwork/issue)
 
 **Example: Register custom error code**
 

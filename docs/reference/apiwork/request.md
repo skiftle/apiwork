@@ -64,7 +64,7 @@ Creates a new request context.
 
 **Returns**
 
-[Request](/reference/request) — a new instance of Request
+[Request](/reference/apiwork/request) — a new instance of Request
 
 ---
 
@@ -78,7 +78,7 @@ Transforms both query and body with the same block.
 
 **Returns**
 
-[Request](/reference/request)
+[Request](/reference/apiwork/request)
 
 **Example**
 
@@ -98,7 +98,7 @@ Transforms only the body.
 
 **Returns**
 
-[Request](/reference/request)
+[Request](/reference/apiwork/request)
 
 **Example**
 
@@ -118,7 +118,7 @@ Transforms only the query.
 
 **Returns**
 
-[Request](/reference/request)
+[Request](/reference/apiwork/request)
 
 **Example**
 

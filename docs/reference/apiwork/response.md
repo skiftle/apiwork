@@ -62,7 +62,7 @@ Creates a new response context.
 
 **Returns**
 
-[Response](/reference/response) — a new instance of Response
+[Response](/reference/apiwork/response) — a new instance of Response
 
 ---
 
@@ -76,7 +76,7 @@ Transforms the body parameters.
 
 **Returns**
 
-[Response](/reference/response)
+[Response](/reference/apiwork/response)
 
 **Example**
 
@@ -96,7 +96,7 @@ Transforms the body parameters.
 
 **Returns**
 
-[Response](/reference/response)
+[Response](/reference/apiwork/response)
 
 **Example**
 

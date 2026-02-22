@@ -613,7 +613,7 @@ The issues for this contract.
 
 **Returns**
 
-Array&lt;[Issue](/reference/issue)&gt;
+Array&lt;[Issue](/reference/apiwork/issue)&gt;
 
 ---
 

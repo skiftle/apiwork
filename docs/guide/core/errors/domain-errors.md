@@ -45,4 +45,4 @@ See your adapter's documentation for details on how it handles domain validation
 #### See also
 
 - [Standard Adapter: Validation](../adapters/standard-adapter/validation.md) — Rails validation mapping, error codes, nested records
-- [Issue reference](../../../reference/issue.md) — issue object structure
+- [Issue reference](../../../reference/apiwork/issue.md) — issue object structure

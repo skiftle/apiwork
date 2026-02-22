@@ -232,7 +232,7 @@ Defaults to I18n lookup when detail is not provided.
 **See also**
 
 - [ErrorCode](/reference/apiwork/introspection/error-code)
-- [Issue](/reference/issue)
+- [Issue](/reference/apiwork/issue)
 
 **Example: Not found error**
 

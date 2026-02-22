@@ -86,5 +86,5 @@ Status must be 400-599.
 
 #### See also
 
-- [Issue reference](../../../reference/issue.md) — issue object structure
+- [Issue reference](../../../reference/apiwork/issue.md) — issue object structure
 - [ErrorCode reference](../../../reference/apiwork/error-code/) — registering custom error codes

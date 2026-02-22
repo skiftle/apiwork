@@ -35,6 +35,6 @@ Transforms the response.
 
 **Returns**
 
-[Response](/reference/response)
+[Response](/reference/apiwork/response)
 
 ---

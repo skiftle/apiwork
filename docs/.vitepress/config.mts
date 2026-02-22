@@ -32,7 +32,6 @@ const sidebar = generateSidebar([
     useFolderLinkFromIndexFile: true,
     sortMenusByFrontmatterOrder: true,
     frontmatterOrderDefaultValue: 999,
-    sortFolderTo: null,
     collapsed: true,
   },
 ]);

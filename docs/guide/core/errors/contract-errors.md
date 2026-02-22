@@ -207,4 +207,4 @@ Invalid discriminator value:
 
 #### See also
 
-- [Issue reference](../../../reference/issue.md) — issue object structure
+- [Issue reference](../../../reference/apiwork/issue.md) — issue object structure
