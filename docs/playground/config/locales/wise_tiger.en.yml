@@ -2,25 +2,6 @@ en:
   apiwork:
     apis:
       wise_tiger:
-        schemas:
-          project:
-            attributes:
-              id:
-                description: Unique project identifier
-              name:
-                description: Human-readable project name
-              description:
-                description: Detailed project description
-              status:
-                description: Current project lifecycle status
-              priority:
-                description: Project priority for resource allocation
-              deadline:
-                description: Target completion date
-              created_at:
-                description: Timestamp when project was created
-              updated_at:
-                description: Timestamp of last modification
         contracts:
           project:
             actions:
@@ -39,3 +20,22 @@ en:
               destroy:
                 summary: Delete a project
                 description: Permanently removes a project
+        representations:
+          project:
+            attributes:
+              id:
+                description: Unique project identifier
+              name:
+                description: Human-readable project name
+              description:
+                description: Detailed project description
+              status:
+                description: Current project lifecycle status
+              priority:
+                description: Project priority for resource allocation
+              deadline:
+                description: Target completion date
+              created_at:
+                description: Timestamp when project was created
+              updated_at:
+                description: Timestamp of last modification

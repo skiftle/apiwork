@@ -1,56 +1,6 @@
 import { defineConfig } from "vitepress";
 import { generateSidebar } from "vitepress-sidebar";
 
-const sidebar = generateSidebar([
-  {
-    documentRootPath: ".",
-    scanStartPath: "guide",
-    resolvePath: "/guide/",
-    useTitleFromFileHeading: true,
-    useTitleFromFrontmatter: true,
-    useFolderTitleFromIndexFile: true,
-    useFolderLinkFromIndexFile: true,
-    sortMenusByFrontmatterOrder: true,
-    frontmatterOrderDefaultValue: 999,
-    excludeByGlobPattern: ["index.md"],
-    collapseDepth: 2,
-  },
-  {
-    documentRootPath: ".",
-    scanStartPath: "examples",
-    resolvePath: "/examples/",
-    useTitleFromFileHeading: true,
-    useFolderTitleFromIndexFile: true,
-    sortMenusByFrontmatterOrder: true,
-    frontmatterOrderDefaultValue: 999,
-    collapsed: true,
-  },
-  {
-    documentRootPath: ".",
-    scanStartPath: "reference",
-    resolvePath: "/reference/",
-    useTitleFromFileHeading: true,
-    useFolderTitleFromIndexFile: true,
-    useFolderLinkFromIndexFile: true,
-    sortMenusByFrontmatterOrder: true,
-    frontmatterOrderDefaultValue: 999,
-    sortFolderTo: "top",
-    collapsed: true,
-  },
-]);
-
-function addIntroductionLinks(items, basePath) {
-  for (const item of items) {
-    if (item.items) {
-      const folderPath = basePath + item.text.toLowerCase().replace(/ /g, "-");
-      addIntroductionLinks(item.items, folderPath + "/");
-      item.items.unshift({ text: "Introduction", link: folderPath + "/" });
-    }
-  }
-}
-
-addIntroductionLinks(sidebar["/guide/"].items, "");
-
 export default defineConfig({
   title: "Apiwork",
   description: "The modern API layer for Rails",
@@ -101,6 +51,43 @@ export default defineConfig({
     lastUpdated: {
       text: "Last updated",
     },
-    sidebar,
+    sidebar: generateSidebar([
+      {
+        documentRootPath: ".",
+        scanStartPath: "guide",
+        resolvePath: "/guide/",
+        useTitleFromFileHeading: true,
+        includeFolderIndexFile: true,
+        useFolderLinkFromIndexFile: true,
+        hyphenToSpace: true,
+        capitalizeFirst: true,
+        capitalizeEachWords: true,
+        sortMenusByFrontmatterOrder: true,
+        frontmatterOrderDefaultValue: 999,
+        collapseDepth: 2,
+      },
+      {
+        documentRootPath: ".",
+        scanStartPath: "examples",
+        resolvePath: "/examples/",
+        useTitleFromFileHeading: true,
+        useFolderTitleFromIndexFile: true,
+        sortMenusByFrontmatterOrder: true,
+        frontmatterOrderDefaultValue: 999,
+        collapsed: true,
+      },
+      {
+        documentRootPath: ".",
+        scanStartPath: "reference",
+        resolvePath: "/reference/",
+        useTitleFromFileHeading: true,
+        useFolderTitleFromIndexFile: true,
+        useFolderLinkFromIndexFile: true,
+        sortMenusByFrontmatterOrder: true,
+        frontmatterOrderDefaultValue: 999,
+        sortFolderTo: "top",
+        collapsed: true,
+      },
+    ]),
   },
 });
