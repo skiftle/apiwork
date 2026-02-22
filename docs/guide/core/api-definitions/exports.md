@@ -75,7 +75,7 @@ Default paths:
 
 ---
 
-See [Exports](../exports/introduction.md) for endpoints, rake tasks, and programmatic generation.
+See [Exports](../exports/) for endpoints, rake tasks, and programmatic generation.
 
 #### See also
 

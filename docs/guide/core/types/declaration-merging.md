@@ -73,7 +73,7 @@ interface Address {
 
 ## Extending Generated Types
 
-When using [`representation`](../representations/introduction.md), types are generated that you don't control directly — filter types, sort types, pagination types. Declaration merging makes it possible to add metadata like descriptions to these types.
+When using [`representation`](../representations/), types are generated that you don't control directly — filter types, sort types, pagination types. Declaration merging makes it possible to add metadata like descriptions to these types.
 
 ```ruby
 class InvoiceContract < Apiwork::Contract::Base

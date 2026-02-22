@@ -111,6 +111,6 @@ This asymmetry is intentional. Clients depend on the request contract — breaki
 
 #### See also
 
-- [Errors](../errors/introduction.md) — the unified error model
+- [Errors](../errors/) — the unified error model
 - [Contract Errors](../errors/contract-errors.md) — all contract error codes
 - [Contract::Base reference](../../../reference/contract/base.md) — all contract methods and options

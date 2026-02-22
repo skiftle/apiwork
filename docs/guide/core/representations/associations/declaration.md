@@ -42,7 +42,7 @@ end
 `filterable` and `sortable` are declarations — the adapter interprets them at runtime. See your adapter's documentation for query syntax.
 
 ::: tip Standard Adapter
-The [Standard Adapter](../../adapters/standard-adapter/introduction.md) supports nested [filtering](../../adapters/standard-adapter/filtering.md) and [sorting](../../adapters/standard-adapter/sorting.md) on marked associations.
+The [Standard Adapter](../../adapters/standard-adapter/) supports nested [filtering](../../adapters/standard-adapter/filtering.md) and [sorting](../../adapters/standard-adapter/sorting.md) on marked associations.
 :::
 
 ## Auto-Detection

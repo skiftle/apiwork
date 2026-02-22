@@ -4,7 +4,7 @@ order: 4
 
 # API Builders
 
-API builders run once per API at initialization time. They register shared [types](../../../types/introduction.md) used across all contracts. API builders inherit from [`Adapter::Capability::API::Base`](/reference/adapter/capability/api/base).
+API builders run once per API at initialization time. They register shared [types](../../../types/) used across all contracts. API builders inherit from [`Adapter::Capability::API::Base`](/reference/adapter/capability/api/base).
 
 ```ruby
 class APIBuilder < Adapter::Capability::API::Base
@@ -161,4 +161,4 @@ end
 
 - [Capability::API::Base reference](/reference/adapter/capability/api/base)
 - [Capability::API::Scope reference](/reference/adapter/capability/api/scope)
-- [Types](../../../types/introduction.md)
+- [Types](../../../types/)

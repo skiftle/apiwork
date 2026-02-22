@@ -202,7 +202,7 @@ With minimal code, you now have:
 3. **[Filtering](../core/adapters/standard-adapter/filtering.md)** — `filterable: true` fields can be filtered via `?filter[field][op]=value`
 4. **[Sorting](../core/adapters/standard-adapter/sorting.md)** — `sortable: true` fields can be sorted via `?sort[field]=asc|desc`
 5. **[Pagination](../core/adapters/standard-adapter/pagination.md)** — Built-in offset-based pagination via `?page[number]=1&page[size]=10`
-6. **[Exports](../core/exports/introduction.md)** — OpenAPI, TypeScript, and Zod exports generated from the same source
+6. **[Exports](../core/exports/)** — OpenAPI, TypeScript, and Zod exports generated from the same source
 
 ## There's More
 
@@ -217,6 +217,6 @@ This was the simplest possible example. Apiwork also supports:
 
 ## Next Steps
 
-- [Adapters](../core/adapters/introduction.md) — filtering, sorting, pagination, and eager loading in depth
-- [Contracts](../core/contracts/introduction.md) — custom validation and action-specific params
-- [Representations](../core/representations/introduction.md) — associations, computed attributes, and more
+- [Adapters](../core/adapters/) — filtering, sorting, pagination, and eager loading in depth
+- [Contracts](../core/contracts/) — custom validation and action-specific params
+- [Representations](../core/representations/) — associations, computed attributes, and more

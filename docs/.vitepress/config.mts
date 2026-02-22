@@ -1,6 +1,42 @@
 import { defineConfig } from "vitepress";
 import { generateSidebar } from "vitepress-sidebar";
 
+const sidebar = generateSidebar([
+  {
+    documentRootPath: ".",
+    scanStartPath: "guide",
+    resolvePath: "/guide/",
+    useTitleFromFileHeading: true,
+    useFolderTitleFromIndexFile: true,
+    useFolderLinkFromIndexFile: true,
+    sortMenusByFrontmatterOrder: true,
+    frontmatterOrderDefaultValue: 999,
+    collapseDepth: 2,
+  },
+  {
+    documentRootPath: ".",
+    scanStartPath: "examples",
+    resolvePath: "/examples/",
+    useTitleFromFileHeading: true,
+    useFolderTitleFromIndexFile: true,
+    sortMenusByFrontmatterOrder: true,
+    frontmatterOrderDefaultValue: 999,
+    collapsed: true,
+  },
+  {
+    documentRootPath: ".",
+    scanStartPath: "reference",
+    resolvePath: "/reference/",
+    useTitleFromFileHeading: true,
+    useFolderTitleFromIndexFile: true,
+    useFolderLinkFromIndexFile: true,
+    sortMenusByFrontmatterOrder: true,
+    frontmatterOrderDefaultValue: 999,
+    sortFolderTo: "top",
+    collapsed: true,
+  },
+]);
+
 export default defineConfig({
   title: "Apiwork",
   description: "The modern API layer for Rails",
@@ -51,39 +87,6 @@ export default defineConfig({
     lastUpdated: {
       text: "Last updated",
     },
-    sidebar: generateSidebar([
-      {
-        documentRootPath: ".",
-        scanStartPath: "guide",
-        resolvePath: "/guide/",
-        useTitleFromFileHeading: true,
-        useFolderTitleFromIndexFile: true,
-        sortMenusByFrontmatterOrder: true,
-        frontmatterOrderDefaultValue: 999,
-        collapseDepth: 2,
-      },
-      {
-        documentRootPath: ".",
-        scanStartPath: "examples",
-        resolvePath: "/examples/",
-        useTitleFromFileHeading: true,
-        useFolderTitleFromIndexFile: true,
-        sortMenusByFrontmatterOrder: true,
-        frontmatterOrderDefaultValue: 999,
-        collapsed: true,
-      },
-      {
-        documentRootPath: ".",
-        scanStartPath: "reference",
-        resolvePath: "/reference/",
-        useTitleFromFileHeading: true,
-        useFolderTitleFromIndexFile: true,
-        useFolderLinkFromIndexFile: true,
-        sortMenusByFrontmatterOrder: true,
-        frontmatterOrderDefaultValue: 999,
-        sortFolderTo: "top",
-        collapsed: true,
-      },
-    ]),
+    sidebar,
   },
 });

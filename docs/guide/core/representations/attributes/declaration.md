@@ -62,7 +62,7 @@ Types, nullability, and enums are detected from your database and models.
 `filterable` and `sortable` are declarations — the adapter interprets them at runtime. See your adapter's documentation for query syntax and supported operators.
 
 ::: tip Standard Adapter
-The [Standard Adapter](../../adapters/standard-adapter/introduction.md) supports [filtering](../../adapters/standard-adapter/filtering.md) and [sorting](../../adapters/standard-adapter/sorting.md) on marked attributes.
+The [Standard Adapter](../../adapters/standard-adapter/) supports [filtering](../../adapters/standard-adapter/filtering.md) and [sorting](../../adapters/standard-adapter/sorting.md) on marked attributes.
 :::
 
 ## Batch Configuration
