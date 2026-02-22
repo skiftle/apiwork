@@ -15,6 +15,10 @@ AllCops:
   TargetRubyVersion: 3.2
   SuggestExtensions: false
   Exclude:
+    - "docs/playground/bin/**/*"
+    - "docs/playground/db/**/*"
+    - "docs/playground/log/**/*"
+    - "docs/playground/tmp/**/*"
     - "spec/dummy/bin/**/*"
     - "spec/dummy/db/**/*"
     - "spec/dummy/Rakefile"
