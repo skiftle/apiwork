@@ -76,7 +76,7 @@ end
 
 ### Scope Queries
 
-The [`scope`](/reference/adapter/capability/contract/scope) attribute provides access to the [representation](../../../representations/) and actions:
+The [`scope`](/reference/adapter/capability/contract/scope) attribute provides access to the [representation](../../../representations/introduction.md) and actions:
 
 | Method | Description |
 |--------|-------------|
@@ -190,4 +190,4 @@ end
 - [Capability::Contract::Base reference](/reference/adapter/capability/contract/base)
 - [Capability::Contract::Scope reference](/reference/adapter/capability/contract/scope)
 - [Contract Actions](../../../contracts/actions.md)
-- [Representations](../../../representations/)
+- [Representations](../../../representations/introduction.md)

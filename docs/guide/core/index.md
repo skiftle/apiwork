@@ -1,4 +1,4 @@
 ---
 order: 2
 ---
-# Contracts
+# Core

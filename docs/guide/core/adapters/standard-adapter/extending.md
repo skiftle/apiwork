@@ -35,7 +35,7 @@ end
 
 ## When to Use Custom Adapters
 
-For larger changes, create a [custom adapter](../custom-adapters/) instead:
+For larger changes, create a [custom adapter](../custom-adapters/introduction.md) instead:
 
 - Different response format (JSON:API, HAL)
 - Custom pagination strategy

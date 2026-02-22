@@ -106,5 +106,5 @@ end
 
 #### See also
 
-- [API Definitions](../../api-definitions/)
+- [API Definitions](../../api-definitions/introduction.md)
 - [Adapter Configuration](../../api-definitions/configuration.md#adapter)

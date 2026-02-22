@@ -121,7 +121,7 @@ Apiwork::API.define '/api/v1' do
 end
 ```
 
-See [Standard Adapter](../adapters/standard-adapter/) for all configuration options.
+See [Standard Adapter](../adapters/standard-adapter/introduction.md) for all configuration options.
 
 ### Using a Custom Adapter
 
@@ -145,7 +145,7 @@ Apiwork::API.define '/api/v1' do
 end
 ```
 
-See [Custom Adapters](../adapters/custom-adapters/) for creating your own.
+See [Custom Adapters](../adapters/custom-adapters/introduction.md) for creating your own.
 
 #### See also
 

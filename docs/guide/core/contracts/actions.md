@@ -102,7 +102,7 @@ end
 - Zod: `z.never()`
 
 ::: info
-The [standard adapter](../adapters/standard-adapter/) uses `no_content!` by default for destroy actions. Override with `replace: true` if you need to return data.
+The [standard adapter](../adapters/standard-adapter/introduction.md) uses `no_content!` by default for destroy actions. Override with `replace: true` if you need to return data.
 :::
 
 ## Raises

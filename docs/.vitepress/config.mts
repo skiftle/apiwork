@@ -39,14 +39,14 @@ export default defineConfig({
       provider: "local",
     },
     socialLinks: [
-      { icon: "github", link: "https://github.com/apiwork/apiwork" },
+      { icon: "github", link: "https://github.com/skiftle/apiwork" },
     ],
     editLink: {
-      pattern: "https://github.com/apiwork/apiwork/edit/main/docs/:path",
+      pattern: "https://github.com/skiftle/apiwork/edit/main/docs/:path",
     },
     footer: {
       message: "Released under the MIT License.",
-      copyright: "Copyright 2024-present Apiwork contributors",
+      copyright: "Copyright 2026-present Skiftle",
     },
     lastUpdated: {
       text: "Last updated",
@@ -57,11 +57,7 @@ export default defineConfig({
         scanStartPath: "guide",
         resolvePath: "/guide/",
         useTitleFromFileHeading: true,
-        includeFolderIndexFile: true,
-        useFolderLinkFromIndexFile: true,
-        hyphenToSpace: true,
-        capitalizeFirst: true,
-        capitalizeEachWords: true,
+        useFolderTitleFromIndexFile: true,
         sortMenusByFrontmatterOrder: true,
         frontmatterOrderDefaultValue: 999,
         collapseDepth: 2,

@@ -95,7 +95,7 @@ Apiwork::Export.register(MyExport)
 
 ## Using Your Export
 
-Once registered, enable it in your [API definition](/guide/core/api-definitions/):
+Once registered, enable it in your [API definition](/guide/core/api-definitions/introduction):
 
 ```ruby
 Apiwork::API.define '/api/v1' do

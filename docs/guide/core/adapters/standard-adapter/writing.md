@@ -31,7 +31,7 @@ For HTTP methods, status codes, and contract shapes per action, see [Action Defa
 
 When associations are marked `writable: true`, the adapter accepts nested data for create, update, and delete operations.
 
-For association configuration, see [Associations](../../representations/associations/).
+For association configuration, see [Associations](../../representations/associations/introduction.md).
 
 ### Create
 

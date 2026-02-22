@@ -55,7 +55,7 @@ Incoming requests go through a pipeline:
 1. **Transform** — API and adapter transformations (key casing, etc.)
 2. **Unwrap** — Extract data from root key wrapper
 3. **Coerce** — [Convert strings to typed values](../../types/types.md#type-coercion)
-4. **Validate** — Check against [contract definitions](../../contracts/)
+4. **Validate** — Check against [contract definitions](../../contracts/introduction.md)
 5. **Decode** — Apply `Representation.deserialize()` which runs decode transformers
 
 ::: info Under the Hood

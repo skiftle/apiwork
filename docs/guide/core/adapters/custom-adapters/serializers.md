@@ -7,7 +7,7 @@ order: 2
 Serializers convert records and errors to response data. An adapter uses two serializer types:
 
 - **Resource serializer** - converts records and collections
-- **Error serializer** - converts [errors](../../errors/) (contract, domain, HTTP)
+- **Error serializer** - converts [errors](../../errors/introduction.md) (contract, domain, HTTP)
 
 ## Resource Serializers
 
@@ -155,5 +155,5 @@ end
 
 - [Serializer::Resource::Base reference](/reference/adapter/serializer/resource/base)
 - [Serializer::Error::Base reference](/reference/adapter/serializer/error/base)
-- [Error Handling](../../errors/)
+- [Error Handling](../../errors/introduction.md)
 - [Wrappers](./wrappers.md)
