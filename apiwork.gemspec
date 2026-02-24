@@ -3,12 +3,13 @@
 require_relative 'lib/apiwork/version'
 
 Gem::Specification.new do |s|
-  s.name     = 'apiwork'
-  s.version  = Apiwork::VERSION
-  s.authors  = ['skiftle']
-  s.summary  = 'The craft of API design'
+  s.name = 'apiwork'
+  s.version = Apiwork::VERSION
+  s.authors = ['skiftle']
+  s.summary = 'Typed APIs for Rails'
+  s.description = 'Define your API once — and generate everything from it'
   s.homepage = 'https://apiwork.dev'
-  s.license  = 'MIT'
+  s.license = 'MIT'
 
   s.required_ruby_version = '>= 3.2'
 
@@ -24,8 +25,10 @@ Gem::Specification.new do |s|
 
   s.files = Dir['{app,lib}/**/*', 'LICENSE.txt', 'Rakefile', 'README.md']
 
-  s.metadata['changelog_uri']         = 'https://github.com/skiftle/apiwork/blob/main/CHANGELOG.md'
-  s.metadata['homepage_uri']          = 'https://apiwork.dev'
+  s.metadata['bug_tracker_uri'] = 'https://github.com/skiftle/apiwork/issues'
+  s.metadata['changelog_uri'] = 'https://github.com/skiftle/apiwork/blob/main/CHANGELOG.md'
+  s.metadata['documentation_uri'] = 'https://apiwork.dev/guide/introduction'
+  s.metadata['homepage_uri'] = 'https://apiwork.dev'
   s.metadata['rubygems_mfa_required'] = 'true'
-  s.metadata['source_code_uri']       = 'https://github.com/skiftle/apiwork'
+  s.metadata['source_code_uri'] = 'https://github.com/skiftle/apiwork'
 end
