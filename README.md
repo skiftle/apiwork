@@ -1,5 +1,9 @@
 # Apiwork
 
+[![Gem Version](https://img.shields.io/gem/v/apiwork)](https://rubygems.org/gems/apiwork)
+[![CI](https://github.com/skiftle/apiwork/actions/workflows/ci.yml/badge.svg)](https://github.com/skiftle/apiwork/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE.txt)
+
 Typed APIs for Rails.
 
 Apiwork lets you define your API once and derive validation, serialization, querying, and typed exports from the same definition.
