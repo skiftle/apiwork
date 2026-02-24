@@ -237,6 +237,7 @@ module Apiwork
       @modules = modules
       @modules_with_children = build_modules_with_children(modules)
 
+      write_root_index
       modules.each.with_index(1) do |mod, order|
         filepath = module_filepath(mod[:path])
         FileUtils.mkdir_p(File.dirname(filepath))
@@ -245,6 +246,22 @@ module Apiwork
       end
 
       write_namespace_indexes
+    end
+
+    def write_root_index
+      children = find_direct_children('Apiwork')
+      parts = []
+      parts << "---\norder: 2\n---\n"
+      parts << "# Reference\n"
+      parts << "Complete API reference for Apiwork's public classes.\n"
+
+      if children.any?
+        parts << "## Modules\n"
+        render_child_links(parts, 'Apiwork', children)
+      end
+
+      FileUtils.mkdir_p(OUTPUT_DIR)
+      File.write(File.join(OUTPUT_DIR, 'index.md'), parts.join("\n"))
     end
 
     def write_namespace_indexes
@@ -337,8 +354,6 @@ module Apiwork
 
     def cleanup_old_files
       Dir.glob(File.join(OUTPUT_DIR, '**/*')).each do |entry|
-        next if entry == File.join(OUTPUT_DIR, 'index.md')
-
         FileUtils.rm_rf(entry)
       end
     end
