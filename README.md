@@ -4,6 +4,10 @@
 [![CI](https://github.com/skiftle/apiwork/actions/workflows/ci.yml/badge.svg)](https://github.com/skiftle/apiwork/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE.txt)
 
+![OpenAPI](https://img.shields.io/badge/OpenAPI-exports-6BA539?logo=openapiinitiative&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-exports-3178C6?logo=typescript&logoColor=white)
+![Zod](https://img.shields.io/badge/Zod-exports-3068B7?logo=zod&logoColor=white)
+
 Typed APIs for Rails.
 
 Apiwork lets you define your API once and derive validation, serialization, querying, and typed exports from the same definition.
