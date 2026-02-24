@@ -55,12 +55,11 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.2'
-          bundler-cache: true
-          working-directory: docs/playground
       - env:
           RAILS_ENV: test
         run: |
           cd docs/playground
+          bundle install
           bundle exec rake db:setup
           bundle exec rake apiwork:docs:reference
           bundle exec rake docs:generate
