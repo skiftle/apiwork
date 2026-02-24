@@ -44,7 +44,8 @@ docs/.vitepress/cache
 docs/.vitepress/dist
 docs/reference/
 docs/examples/
-docs/playground/public/
+docs/playground/public/*
+!docs/playground/public/.keep
 
 # Docs playground - logs, tmp, databases
 docs/playground/log/
