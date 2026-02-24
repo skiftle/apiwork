@@ -7,6 +7,10 @@
 /spec/reports/
 /tmp/
 
+# Dummy app - secrets
+/spec/dummy/config/master.key
+/spec/dummy/config/credentials.yml.enc
+
 # Dummy app - logs
 /spec/dummy/log/*.log
 /spec/dummy/log/*.log.*
