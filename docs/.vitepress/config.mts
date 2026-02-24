@@ -49,6 +49,7 @@ sidebar["/reference/"].items = [
 export default defineConfig({
   title: "Apiwork",
   description: "The modern API layer for Rails",
+  srcExclude: ["**/playground/vendor/**"],
   cleanUrls: true,
   lastUpdated: true,
   sitemap: {
