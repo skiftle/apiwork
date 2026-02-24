@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'yard'
 require 'fileutils'
 require 'active_support/core_ext/string/inflections'
 require 'active_support/core_ext/object/blank'
@@ -22,6 +21,8 @@ module Apiwork
     end
 
     def generate
+      require 'yard'
+
       parse_source
       modules = extract_modules
       write_files(modules)
