@@ -42,6 +42,9 @@
 docs/node_modules
 docs/.vitepress/cache
 docs/.vitepress/dist
+docs/reference/
+docs/examples/
+docs/playground/public/
 
 # Docs playground - logs, tmp, databases
 docs/playground/log/

@@ -6,9 +6,6 @@ on:
   pull_request:
   workflow_dispatch:
 
-permissions:
-  contents: write
-
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
@@ -29,17 +26,10 @@ jobs:
   test:
     name: Test (Ruby ${{ matrix.ruby }})
     runs-on: ubuntu-latest
-    continue-on-error: ${{ matrix.experimental }}
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - ruby: '3.2'
-            experimental: false
-          - ruby: '3.3'
-            experimental: false
-          - ruby: '3.4'
-            experimental: false
+        ruby: ['3.2', '3.3', '3.4']
     steps:
       - uses: actions/checkout@v6
       - uses: ruby/setup-ruby@v1
@@ -49,56 +39,48 @@ jobs:
       - run: RAILS_ENV=test bundle exec rake -f spec/dummy/Rakefile db:schema:load
       - run: bundle exec rspec
 
-  generate-docs:
-    name: Generate Docs
+  deploy-docs:
+    name: Deploy Docs
     needs: [lint, test]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
     steps:
       - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Check for relevant changes
-        id: changes
-        run: |
-          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -qE '^(lib/|docs/(\.vitepress|guide|playground/(app|config|db))/)'; then
-            echo "skip=false" >> $GITHUB_OUTPUT
-          else
-            echo "skip=true" >> $GITHUB_OUTPUT
-          fi
-
       - uses: ruby/setup-ruby@v1
-        if: steps.changes.outputs.skip != 'true'
         with:
           ruby-version: '3.2'
           bundler-cache: true
           working-directory: docs/playground
-
-      - name: Generate and commit
-        if: steps.changes.outputs.skip != 'true'
-        env:
+      - env:
           RAILS_ENV: test
         run: |
           cd docs/playground
           bundle exec rake db:setup
           bundle exec rake apiwork:docs:reference
           bundle exec rake docs:generate
-          cd ../..
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/reference/ docs/playground/public/ docs/examples/
-          git diff --staged --quiet || git commit -m "chore: regenerate docs"
-          git push
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: cd docs && npm ci && npm run build
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/.vitepress/dist
+      - uses: actions/deploy-pages@v4
+        id: deploy
 
   all-green:
-    name: All tests passing
+    name: All checks passing
     if: always()
-    needs: [lint, test, generate-docs]
+    needs: [lint, test, deploy-docs]
     runs-on: ubuntu-latest
     steps:
       - run: |
           [[ "${{ needs.lint.result }}" == "success" ]] || exit 1
           [[ "${{ needs.test.result }}" == "success" ]] || exit 1
-          [[ "${{ needs.generate-docs.result }}" =~ ^(success|skipped)$ ]] || exit 1
+          [[ "${{ needs.deploy-docs.result }}" =~ ^(success|skipped)$ ]] || exit 1

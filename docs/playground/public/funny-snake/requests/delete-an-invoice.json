@@ -1,9 +1,0 @@
-{
-  "request": {
-    "method": "DELETE",
-    "path": "/funny_snake/invoices/657000e8-1cd9-5b78-9ca2-dd399ce78cb4"
-  },
-  "response": {
-    "status": 204
-  }
-}
