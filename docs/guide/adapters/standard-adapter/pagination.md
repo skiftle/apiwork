@@ -1,0 +1,209 @@
+---
+order: 6
+---
+
+# Pagination
+
+The standard adapter supports two pagination strategies: offset-based (traditional page numbers) and cursor-based (for large datasets).
+
+**Offset** works well for UIs with page numbers. **Cursor** is better for large datasets or real-time updates.
+
+## Configuration
+
+Set pagination at the API level, or [override per representation](#per-representation-override):
+
+```ruby
+Apiwork::API.define '/api/v1' do
+  adapter do
+    pagination do
+      strategy :offset        # or :cursor
+      default_size 20
+      max_size 100
+    end
+  end
+end
+```
+
+| Option | Default | Description |
+|--------|---------|-------------|
+| `strategy` | `:offset` | `:offset` or `:cursor` |
+| `default_size` | `20` | Items per page when not specified |
+| `max_size` | `100` | Maximum allowed page size |
+
+## Offset-Based Pagination
+
+### Query Format
+
+```http
+GET /posts?page[number]=2&page[size]=20
+```
+
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `page[number]` | `1` | Page number (1-based) |
+| `page[size]` | `default_size` | Items per page |
+
+### Response
+
+```json
+{
+  "posts": [...],
+  "pagination": {
+    "current": 2,
+    "next": 3,
+    "prev": 1,
+    "total": 5,
+    "items": 100
+  }
+}
+```
+
+| Field | Description |
+|-------|-------------|
+| `current` | Current page number |
+| `next` | Next page number (`null` if last) |
+| `prev` | Previous page number (`null` if first) |
+| `total` | Total number of pages |
+| `items` | Total count of all records |
+
+### Out of Range
+
+If a client requests a page that doesn't exist, they get an empty array with pagination metadata:
+
+```json
+{
+  "posts": [],
+  "pagination": {
+    "current": 999,
+    "next": null,
+    "prev": 998,
+    "total": 5,
+    "items": 100
+  }
+}
+```
+
+## Cursor-Based Pagination
+
+For large datasets and real-time feeds, cursor pagination is more efficient. Offset slows down on later pages because the database has to skip more rows. Cursor uses indexed lookups, so performance stays consistent regardless of position in the dataset.
+
+Instead of page numbers, clients navigate using cursor tokens. These are encoded strings that clients pass back unchanged.
+
+### Configuration
+
+```ruby
+adapter do
+  pagination do
+    strategy :cursor
+    default_size 20
+  end
+end
+```
+
+### Query Format
+
+**First page:**
+
+```http
+GET /posts?page[size]=20
+```
+
+**Next page:**
+
+```http
+GET /posts?page[size]=20&page[after]=eyJpZCI6MTAwfQ
+```
+
+**Previous page:**
+
+```http
+GET /posts?page[size]=20&page[before]=eyJpZCI6ODF9
+```
+
+| Parameter | Description |
+|-----------|-------------|
+| `page[size]` | Items per page |
+| `page[after]` | Cursor for forward pagination |
+| `page[before]` | Cursor for backward pagination |
+
+`after` and `before` cannot be used in the same request.
+
+### Response
+
+```json
+{
+  "posts": [...],
+  "pagination": {
+    "next": "eyJpZCI6MTAwfQ",
+    "prev": "eyJpZCI6ODF9"
+  }
+}
+```
+
+| Field | Description |
+|-------|-------------|
+| `next` | Cursor for next page (`null` if last) |
+| `prev` | Cursor for previous page (`null` if first) |
+
+### Cursor Format
+
+Under the hood, cursors are base64-encoded JSON containing the primary key:
+
+```json
+{"id": 100}
+```
+
+Clients should treat cursors as opaque strings. Parsing or constructing them manually is not supported.
+
+### Limitations
+
+- Composite primary keys aren't supported
+- No total count — calculating totals defeats the performance benefit
+
+## Per-Representation Override
+
+Pagination can be overridden at the representation level for specific resources:
+
+```ruby
+class ActivityRepresentation < Apiwork::Representation::Base
+  adapter do
+    pagination do
+      strategy :cursor
+      default_size 50
+      max_size 200
+    end
+  end
+end
+```
+
+This takes precedence over the API-level defaults for this representation only.
+
+## Error Codes
+
+| Code | Cause |
+|------|-------|
+| `value_invalid` | Cursor couldn't be decoded |
+
+```json
+{
+  "layer": "contract",
+  "issues": [
+    {
+      "code": "value_invalid",
+      "detail": "Invalid value",
+      "path": ["page", "after"],
+      "pointer": "/page/after",
+      "meta": { "field": "after", "expected": "cursor" }
+    }
+  ]
+}
+```
+
+## Examples
+
+See [Cursor Pagination](/examples/cursor-pagination.md) for a complete working example with configuration and response shape.
+
+#### See also
+
+- [API Configuration](../../api-definitions/configuration.md) — API-level adapter settings
+- [Representation Configuration](../../representations/configuration.md) — per-representation adapter overrides

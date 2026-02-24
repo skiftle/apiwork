@@ -1,0 +1,12 @@
+{
+  "packages": {
+    ".": {
+      "release-type": "ruby",
+      "package-name": "apiwork",
+      "version-file": "lib/apiwork/version.rb",
+      "changelog-path": "CHANGELOG.md",
+      "bump-minor-pre-major": true,
+      "bump-patch-for-minor-pre-major": true
+    }
+  }
+}

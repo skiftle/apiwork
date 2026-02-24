@@ -1,0 +1,66 @@
+# frozen_string_literal: true
+
+module Apiwork
+  module Adapter
+    module Builder
+      module API
+        # @api public
+        # Base class for API-phase type builders.
+        #
+        # API phase runs once per API at initialization time.
+        # Use it to register shared types used across all contracts.
+        #
+        # @example
+        #   module Builder
+        #     class API < Adapter::Builder::API::Base
+        #       def build
+        #         enum(:status, values: %w[active inactive])
+        #         object(:error) do |object|
+        #           object.string(:message)
+        #         end
+        #       end
+        #     end
+        #   end
+        class Base
+          attr_reader :data_type
+
+          # @!method enum(name, values:, **options, &block)
+          #   @api public
+          #   @see API::Base#enum
+          # @!method enum?(name)
+          #   @api public
+          #   @see API::Base#enum?
+          # @!method object(name, **options, &block)
+          #   @api public
+          #   @see API::Base#object
+          # @!method type?(name)
+          #   @api public
+          #   @see API::Base#type?
+          # @!method union(name, **options, &block)
+          #   @api public
+          #   @see API::Base#union
+          delegate :enum,
+                   :enum?,
+                   :object,
+                   :type?,
+                   :union,
+                   to: :@api_class
+
+          def initialize(api_class, data_type: nil)
+            @api_class = api_class
+            @data_type = data_type
+          end
+
+          # @api public
+          # Builds API-level types.
+          #
+          # Override this method to register shared types.
+          # @return [void]
+          def build
+            raise NotImplementedError
+          end
+        end
+      end
+    end
+  end
+end

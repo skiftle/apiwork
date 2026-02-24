@@ -1,0 +1,21 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/clever_rabbit/orders/38948b8f-2c00-5384-8f16-b1105fcd31fb"
+  },
+  "response": {
+    "body": {
+      "order": {
+        "id": "38948b8f-2c00-5384-8f16-b1105fcd31fb",
+        "orderNumber": "ORD-001",
+        "status": "pending",
+        "total": null,
+        "createdAt": "2024-01-01T12:00:00.000Z",
+        "updatedAt": "2024-01-01T12:00:00.000Z",
+        "lineItems": [],
+        "shippingAddress": null
+      }
+    },
+    "status": 200
+  }
+}

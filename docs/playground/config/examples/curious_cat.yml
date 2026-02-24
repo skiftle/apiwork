@@ -1,0 +1,97 @@
+title: Inline Types
+description: Define typed JSON columns with object shapes, arrays, and nested structures
+order: 12
+
+sections:
+  - title: API Definition
+    files:
+      - config/apis/curious_cat.rb
+  - title: Models
+    files:
+      - app/models/curious_cat/profile.rb
+  - title: Representations
+    files:
+      - app/representations/curious_cat/profile_representation.rb
+  - title: Contracts
+    files:
+      - app/contracts/curious_cat/profile_contract.rb
+  - title: Controllers
+    files:
+      - app/controllers/curious_cat/profiles_controller.rb
+
+scenarios:
+  - title: Create a profile with all inline types
+    description: Create a new profile with all structured data fields
+    order: 1
+    method: POST
+    path: /curious_cat/profiles
+    body:
+      profile:
+        name: Alice
+        email: alice@example.com
+        settings:
+          theme: dark
+          notifications: true
+          language: en
+        tags:
+          - developer
+          - typescript
+        addresses:
+          - street: 123 Main St
+            city: Stockholm
+            zip: "12345"
+            primary: true
+        preferences:
+          ui:
+            theme: compact
+            sidebarCollapsed: false
+          notifications:
+            email: true
+            push: false
+        metadata:
+          source: api
+          version: 2
+
+  - title: Update profile settings and tags
+    description: Update structured fields on existing profile
+    order: 2
+    method: PATCH
+    path: /curious_cat/profiles/:id
+    setup:
+      - create: profile
+        fields:
+          name: Alice
+          email: alice@example.com
+          settings:
+            theme: dark
+            notifications: true
+            language: en
+          tags:
+            - developer
+          addresses:
+            - street: 123 Main St
+              city: Stockholm
+              zip: "12345"
+              primary: true
+          preferences:
+            ui:
+              theme: compact
+              sidebar_collapsed: false
+            notifications:
+              email: true
+              push: false
+          metadata:
+            source: api
+    body:
+      profile:
+        settings:
+          theme: light
+          notifications: false
+          language: sv
+        tags:
+          - developer
+          - ruby
+          - rails
+        metadata:
+          source: api
+          version: 3

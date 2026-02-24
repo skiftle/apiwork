@@ -1,0 +1,72 @@
+# frozen_string_literal: true
+
+module Apiwork
+  module Adapter
+    module Serializer
+      module Error
+        # @api public
+        # Base class for error serializers.
+        #
+        # Error serializers handle serialization of errors and define
+        # error-related types at the API level.
+        #
+        # @example
+        #   class MyErrorSerializer < Serializer::Error::Base
+        #     api_builder Builder::API
+        #
+        #     def serialize(error, context:)
+        #       { errors: error.issues.map(&:to_h) }
+        #     end
+        #   end
+        class Base
+          class << self
+            def serialize(error, context:)
+              new.serialize(error, context:)
+            end
+
+            # @api public
+            # The data type for this serializer.
+            #
+            # @param name [Symbol, nil] (nil)
+            #   The type name.
+            # @return [Symbol, nil]
+            def data_type(name = nil)
+              @data_type = name if name
+              @data_type
+            end
+
+            # @api public
+            # The API builder for this serializer.
+            #
+            # @param klass [Class<Builder::API::Base>, nil] (nil)
+            #   The builder class.
+            # @return [Class<Builder::API::Base>, nil]
+            def api_builder(klass = nil)
+              @api_builder = klass if klass
+              @api_builder
+            end
+          end
+
+          def api_types(api_class)
+            builder_class = self.class.api_builder
+            return unless builder_class
+
+            builder_class.new(api_class, data_type: self.class.data_type).build
+          end
+
+          # @api public
+          # Serializes an error.
+          #
+          # @param error [Error]
+          #   The error to serialize.
+          # @param context [Hash]
+          #   The serialization context.
+          # @return [Hash]
+          def serialize(error, context:)
+            raise NotImplementedError
+          end
+        end
+      end
+    end
+  end
+end

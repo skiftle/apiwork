@@ -1,0 +1,77 @@
+title: Key and Path Formats
+description: "PascalCase keys with `key_format :pascal` and kebab-case paths with `path_format :kebab`"
+order: 15
+
+sections:
+  - title: API Definition
+    files:
+      - config/apis/nimble_gecko.rb
+  - title: Models
+    files:
+      - app/models/nimble_gecko/meal_plan.rb
+      - app/models/nimble_gecko/cooking_step.rb
+  - title: Representations
+    files:
+      - app/representations/nimble_gecko/meal_plan_representation.rb
+      - app/representations/nimble_gecko/cooking_step_representation.rb
+  - title: Contracts
+    files:
+      - app/contracts/nimble_gecko/meal_plan_contract.rb
+  - title: Controllers
+    files:
+      - app/controllers/nimble_gecko/meal_plans_controller.rb
+
+scenarios:
+  - title: Create meal plan with PascalCase body
+    description: "Request uses PascalCase keys like `CookTime` and `ServingSize`"
+    order: 1
+    method: POST
+    path: /nimble_gecko/meal-plans
+    body:
+      MealPlan:
+        Title: Pasta Carbonara
+        CookTime: 30
+        ServingSize: 4
+        CookingSteps:
+          - StepNumber: 1
+            Instruction: Boil salted water
+            DurationMinutes: 10
+          - StepNumber: 2
+            Instruction: Cook pasta until al dente
+            DurationMinutes: 8
+          - StepNumber: 3
+            Instruction: Mix with egg yolk sauce
+            DurationMinutes: 5
+
+  - title: List meal plans
+    description: Response returns PascalCase keys on kebab-case path
+    order: 2
+    method: GET
+    path: /nimble_gecko/meal-plans
+    setup:
+      - create: meal_plan
+        fields:
+          title: Pasta Carbonara
+          cook_time: 30
+          serving_size: 4
+      - create: meal_plan
+        fields:
+          title: Caesar Salad
+          cook_time: 15
+          serving_size: 2
+
+  - title: Update meal plan with PascalCase body
+    description: Partial update using PascalCase keys
+    order: 3
+    method: PATCH
+    path: /nimble_gecko/meal-plans/:id
+    setup:
+      - create: meal_plan
+        fields:
+          title: Pasta Carbonara
+          cook_time: 30
+          serving_size: 4
+    body:
+      MealPlan:
+        CookTime: 25
+        ServingSize: 6

@@ -1,0 +1,27 @@
+title: Hash Responses
+description: Expose plain hashes instead of ActiveRecord models
+order: 19
+
+sections:
+  - title: API Definition
+    files:
+      - config/apis/lazy_cow.rb
+  - title: Contracts
+    files:
+      - app/contracts/lazy_cow/status_contract.rb
+  - title: Controllers
+    files:
+      - app/controllers/lazy_cow/statuses_controller.rb
+
+scenarios:
+  - title: Health check
+    description: Returns system health status
+    order: 1
+    method: GET
+    path: /lazy_cow/status/health
+
+  - title: System statistics
+    description: Returns usage metrics
+    order: 2
+    method: GET
+    path: /lazy_cow/status/stats

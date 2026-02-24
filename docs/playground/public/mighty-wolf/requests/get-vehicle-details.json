@@ -1,0 +1,22 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/mighty_wolf/vehicles/7900de74-233c-5bc9-bc0c-6679f7a345a5"
+  },
+  "response": {
+    "body": {
+      "vehicle": {
+        "type": "car",
+        "id": "7900de74-233c-5bc9-bc0c-6679f7a345a5",
+        "brand": "Volvo",
+        "model": "EX30",
+        "year": 2024,
+        "color": "red",
+        "createdAt": "2024-01-01T12:00:00.000Z",
+        "updatedAt": "2024-01-01T12:00:00.000Z",
+        "doors": 4
+      }
+    },
+    "status": 200
+  }
+}

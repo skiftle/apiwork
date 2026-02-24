@@ -1,0 +1,42 @@
+title: Union Types
+description: Discriminated unions for polymorphic request and response shapes
+order: 11
+
+sections:
+  - title: API Definition
+    files:
+      - config/apis/bright_parrot.rb
+  - title: Contracts
+    files:
+      - app/contracts/bright_parrot/notification_contract.rb
+  - title: Controllers
+    files:
+      - app/controllers/bright_parrot/notifications_controller.rb
+
+scenarios:
+  - title: Create email preference
+    description: Send a preference with `channel` set to `email`
+    order: 1
+    method: POST
+    path: /bright_parrot/notifications
+    body:
+      preference:
+        channel: email
+        address: alice@example.com
+        digest: true
+
+  - title: Create SMS preference
+    description: Send a preference with `channel` set to `sms`
+    order: 2
+    method: POST
+    path: /bright_parrot/notifications
+    body:
+      preference:
+        channel: sms
+        phoneNumber: "+1234567890"
+
+  - title: List preferences
+    description: Returns a collection of mixed preference types
+    order: 3
+    method: GET
+    path: /bright_parrot/notifications

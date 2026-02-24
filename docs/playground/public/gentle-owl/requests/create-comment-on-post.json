@@ -1,0 +1,28 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/gentle_owl/comments",
+    "body": {
+      "comment": {
+        "body": "This is a great article!",
+        "authorName": "Jane Doe",
+        "commentableType": "post",
+        "commentableId": "96988365-65b2-5455-a8a8-491aa772ba47"
+      }
+    }
+  },
+  "response": {
+    "body": {
+      "comment": {
+        "id": "d1ff1866-6fad-545c-839e-2d972eb5729c",
+        "body": "This is a great article!",
+        "authorName": "Jane Doe",
+        "commentableType": "post",
+        "commentableId": "96988365-65b2-5455-a8a8-491aa772ba47",
+        "createdAt": "2024-01-01T12:00:00.000Z",
+        "updatedAt": "2024-01-01T12:00:00.000Z"
+      }
+    },
+    "status": 201
+  }
+}

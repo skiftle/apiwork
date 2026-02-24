@@ -1,0 +1,28 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/swift_fox/contacts",
+    "body": {
+      "contact": {
+        "name": "John Doe",
+        "email": "John.Doe@Example.COM",
+        "phone": "",
+        "notes": ""
+      }
+    }
+  },
+  "response": {
+    "body": {
+      "contact": {
+        "id": "a8683ee9-6e2e-525c-84e5-103a4b4230cb",
+        "name": "John Doe",
+        "email": "john.doe@example.com",
+        "phone": "",
+        "notes": "",
+        "createdAt": "2024-01-01T12:00:00.000Z",
+        "updatedAt": "2024-01-01T12:00:00.000Z"
+      }
+    },
+    "status": 201
+  }
+}

@@ -1,0 +1,647 @@
+---
+openapi: 3.1.0
+info:
+  title: "/happy_zebra"
+  version: 1.0.0
+paths:
+  "/users":
+    get:
+      operationId: usersIndex
+      parameters:
+      - in: query
+        name: filter
+        required: false
+        schema:
+          oneOf:
+          - "$ref": "#/components/schemas/userFilter"
+          - items:
+              "$ref": "#/components/schemas/userFilter"
+            type: array
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/userInclude"
+      - in: query
+        name: page
+        required: false
+        schema:
+          "$ref": "#/components/schemas/userPage"
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/userIndexSuccessResponseBody"
+          description: Successful response
+    post:
+      operationId: usersCreate
+      parameters:
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/userInclude"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                user:
+                  "$ref": "#/components/schemas/userCreatePayload"
+              type: object
+              required:
+              - user
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/userCreateSuccessResponseBody"
+          description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
+  "/users/{id}":
+    get:
+      operationId: usersShow
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/userInclude"
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/userShowSuccessResponseBody"
+          description: Successful response
+    patch:
+      operationId: usersUpdate
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/userInclude"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                user:
+                  "$ref": "#/components/schemas/userUpdatePayload"
+              type: object
+              required:
+              - user
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/userUpdateSuccessResponseBody"
+          description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
+    delete:
+      operationId: usersDestroy
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/userInclude"
+      responses:
+        '204':
+          description: No content
+  "/posts":
+    get:
+      operationId: postsIndex
+      parameters:
+      - in: query
+        name: page
+        required: false
+        schema:
+          "$ref": "#/components/schemas/postPage"
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/postIndexSuccessResponseBody"
+          description: Successful response
+  "/comments":
+    get:
+      operationId: commentsIndex
+      parameters:
+      - in: query
+        name: page
+        required: false
+        schema:
+          "$ref": "#/components/schemas/commentPage"
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/commentIndexSuccessResponseBody"
+          description: Successful response
+components:
+  schemas:
+    comment:
+      properties:
+        author:
+          type: string
+        body:
+          type: string
+        id:
+          type: string
+      type: object
+      required:
+      - author
+      - body
+      - id
+    commentIndexSuccessResponseBody:
+      properties:
+        pagination:
+          "$ref": "#/components/schemas/offsetPagination"
+        comments:
+          items:
+            "$ref": "#/components/schemas/comment"
+          type: array
+        meta:
+          properties: {}
+          type: object
+      type: object
+      required:
+      - pagination
+      - comments
+    commentNestedCreatePayload:
+      properties:
+        OP:
+          const: create
+          type: string
+        author:
+          type: string
+        body:
+          type: string
+      type: object
+      required:
+      - author
+      - body
+    commentNestedDeletePayload:
+      properties:
+        OP:
+          const: delete
+          type: string
+        id:
+          type: string
+      type: object
+      required:
+      - id
+    commentNestedPayload:
+      oneOf:
+      - "$ref": "#/components/schemas/commentNestedCreatePayload"
+      - "$ref": "#/components/schemas/commentNestedUpdatePayload"
+      - "$ref": "#/components/schemas/commentNestedDeletePayload"
+      discriminator:
+        mapping:
+          create: "#/components/schemas/commentNestedCreatePayload"
+          update: "#/components/schemas/commentNestedUpdatePayload"
+          delete: "#/components/schemas/commentNestedDeletePayload"
+        propertyName: OP
+    commentNestedUpdatePayload:
+      properties:
+        OP:
+          const: update
+          type: string
+        author:
+          type: string
+        body:
+          type: string
+        id:
+          type: string
+      type: object
+    commentPage:
+      properties:
+        number:
+          type: integer
+          minimum: 1
+        size:
+          type: integer
+          minimum: 1
+          maximum: 100
+      type: object
+    error:
+      properties:
+        issues:
+          items:
+            "$ref": "#/components/schemas/issue"
+          type: array
+        layer:
+          enum:
+          - http
+          - contract
+          - domain
+          type: string
+      type: object
+      required:
+      - issues
+      - layer
+    errorResponseBody:
+      "$ref": "#/components/schemas/error"
+    issue:
+      properties:
+        code:
+          type: string
+        detail:
+          type: string
+        meta:
+          properties: {}
+          type: object
+        path:
+          items:
+            type: string
+          type: array
+        pointer:
+          type: string
+      type: object
+      required:
+      - code
+      - detail
+      - meta
+      - path
+      - pointer
+    offsetPagination:
+      properties:
+        current:
+          type: integer
+        items:
+          type: integer
+        next:
+          type:
+          - integer
+          - 'null'
+        prev:
+          type:
+          - integer
+          - 'null'
+        total:
+          type: integer
+      type: object
+      required:
+      - current
+      - items
+      - total
+    post:
+      properties:
+        comments:
+          items:
+            "$ref": "#/components/schemas/comment"
+          type: array
+        id:
+          type: string
+        title:
+          type: string
+      type: object
+      required:
+      - comments
+      - id
+      - title
+    postIndexSuccessResponseBody:
+      properties:
+        pagination:
+          "$ref": "#/components/schemas/offsetPagination"
+        meta:
+          properties: {}
+          type: object
+        posts:
+          items:
+            "$ref": "#/components/schemas/post"
+          type: array
+      type: object
+      required:
+      - pagination
+      - posts
+    postNestedCreatePayload:
+      properties:
+        OP:
+          const: create
+          type: string
+        comments:
+          items:
+            "$ref": "#/components/schemas/commentNestedPayload"
+          type: array
+        title:
+          type: string
+      type: object
+      required:
+      - title
+    postNestedDeletePayload:
+      properties:
+        OP:
+          const: delete
+          type: string
+        id:
+          type: string
+      type: object
+      required:
+      - id
+    postNestedPayload:
+      oneOf:
+      - "$ref": "#/components/schemas/postNestedCreatePayload"
+      - "$ref": "#/components/schemas/postNestedUpdatePayload"
+      - "$ref": "#/components/schemas/postNestedDeletePayload"
+      discriminator:
+        mapping:
+          create: "#/components/schemas/postNestedCreatePayload"
+          update: "#/components/schemas/postNestedUpdatePayload"
+          delete: "#/components/schemas/postNestedDeletePayload"
+        propertyName: OP
+    postNestedUpdatePayload:
+      properties:
+        OP:
+          const: update
+          type: string
+        comments:
+          items:
+            "$ref": "#/components/schemas/commentNestedPayload"
+          type: array
+        id:
+          type: string
+        title:
+          type: string
+      type: object
+    postPage:
+      properties:
+        number:
+          type: integer
+          minimum: 1
+        size:
+          type: integer
+          minimum: 1
+          maximum: 100
+      type: object
+    profile:
+      properties:
+        bio:
+          type:
+          - string
+          - 'null'
+        createdAt:
+          type: string
+          format: date-time
+        id:
+          type: string
+        updatedAt:
+          type: string
+          format: date-time
+        user:
+          "$ref": "#/components/schemas/user"
+        website:
+          type:
+          - string
+          - 'null'
+      type: object
+      required:
+      - bio
+      - createdAt
+      - id
+      - updatedAt
+      - website
+    profileInclude:
+      properties:
+        user:
+          type: boolean
+      type: object
+    profileNestedCreatePayload:
+      properties:
+        OP:
+          const: create
+          type: string
+        bio:
+          type:
+          - string
+          - 'null'
+        website:
+          type:
+          - string
+          - 'null'
+      type: object
+    profileNestedDeletePayload:
+      properties:
+        OP:
+          const: delete
+          type: string
+        id:
+          type: string
+      type: object
+      required:
+      - id
+    profileNestedPayload:
+      oneOf:
+      - "$ref": "#/components/schemas/profileNestedCreatePayload"
+      - "$ref": "#/components/schemas/profileNestedUpdatePayload"
+      - "$ref": "#/components/schemas/profileNestedDeletePayload"
+      discriminator:
+        mapping:
+          create: "#/components/schemas/profileNestedCreatePayload"
+          update: "#/components/schemas/profileNestedUpdatePayload"
+          delete: "#/components/schemas/profileNestedDeletePayload"
+        propertyName: OP
+    profileNestedUpdatePayload:
+      properties:
+        OP:
+          const: update
+          type: string
+        bio:
+          type:
+          - string
+          - 'null'
+        id:
+          type: string
+        website:
+          type:
+          - string
+          - 'null'
+      type: object
+    stringFilter:
+      properties:
+        contains:
+          type: string
+        endsWith:
+          type: string
+        eq:
+          type: string
+        in:
+          items:
+            type: string
+          type: array
+        startsWith:
+          type: string
+      type: object
+    user:
+      properties:
+        createdAt:
+          type: string
+          format: date-time
+        email:
+          type: string
+        id:
+          type: string
+        posts:
+          items:
+            "$ref": "#/components/schemas/post"
+          type: array
+        profile:
+          "$ref": "#/components/schemas/profile"
+        updatedAt:
+          type: string
+          format: date-time
+        username:
+          type: string
+      type: object
+      required:
+      - createdAt
+      - email
+      - id
+      - posts
+      - profile
+      - updatedAt
+      - username
+    userCreatePayload:
+      properties:
+        email:
+          type: string
+        posts:
+          items:
+            "$ref": "#/components/schemas/postNestedPayload"
+          type: array
+        profile:
+          "$ref": "#/components/schemas/profileNestedPayload"
+        username:
+          type: string
+      type: object
+      required:
+      - email
+      - username
+    userCreateSuccessResponseBody:
+      properties:
+        meta:
+          properties: {}
+          type: object
+        user:
+          "$ref": "#/components/schemas/user"
+      type: object
+      required:
+      - user
+    userFilter:
+      properties:
+        AND:
+          items:
+            "$ref": "#/components/schemas/userFilter"
+          type: array
+        NOT:
+          "$ref": "#/components/schemas/userFilter"
+        OR:
+          items:
+            "$ref": "#/components/schemas/userFilter"
+          type: array
+        email:
+          oneOf:
+          - type: string
+          - "$ref": "#/components/schemas/stringFilter"
+        username:
+          oneOf:
+          - type: string
+          - "$ref": "#/components/schemas/stringFilter"
+      type: object
+    userInclude:
+      properties:
+        profile:
+          "$ref": "#/components/schemas/profileInclude"
+      type: object
+    userIndexSuccessResponseBody:
+      properties:
+        pagination:
+          "$ref": "#/components/schemas/offsetPagination"
+        meta:
+          properties: {}
+          type: object
+        users:
+          items:
+            "$ref": "#/components/schemas/user"
+          type: array
+      type: object
+      required:
+      - pagination
+      - users
+    userPage:
+      properties:
+        number:
+          type: integer
+          minimum: 1
+        size:
+          type: integer
+          minimum: 1
+          maximum: 100
+      type: object
+    userShowSuccessResponseBody:
+      properties:
+        meta:
+          properties: {}
+          type: object
+        user:
+          "$ref": "#/components/schemas/user"
+      type: object
+      required:
+      - user
+    userUpdatePayload:
+      properties:
+        email:
+          type: string
+        posts:
+          items:
+            "$ref": "#/components/schemas/postNestedPayload"
+          type: array
+        profile:
+          "$ref": "#/components/schemas/profileNestedPayload"
+        username:
+          type: string
+      type: object
+    userUpdateSuccessResponseBody:
+      properties:
+        meta:
+          properties: {}
+          type: object
+        user:
+          "$ref": "#/components/schemas/user"
+      type: object
+      required:
+      - user

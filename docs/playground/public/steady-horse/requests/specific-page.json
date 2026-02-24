@@ -1,0 +1,44 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/steady_horse/products?page[number]=2&page[size]=3"
+  },
+  "response": {
+    "body": {
+      "products": [
+        {
+          "id": "5ce18568-b578-5e99-b0fa-807d16a49d0f",
+          "name": "Notebook",
+          "price": "8.99",
+          "category": "office",
+          "createdAt": "2024-01-01T12:00:00.000Z",
+          "updatedAt": "2024-01-01T12:00:00.000Z"
+        },
+        {
+          "id": "de39e4db-cbc3-5392-a6d0-467af1c5b29d",
+          "name": "Monitor Stand",
+          "price": "79.99",
+          "category": "office",
+          "createdAt": "2024-01-01T12:00:00.000Z",
+          "updatedAt": "2024-01-01T12:00:00.000Z"
+        },
+        {
+          "id": "040ac486-238a-5942-abec-ad251c0cbb51",
+          "name": "Webcam",
+          "price": "59.99",
+          "category": "electronics",
+          "createdAt": "2024-01-01T12:00:00.000Z",
+          "updatedAt": "2024-01-01T12:00:00.000Z"
+        }
+      ],
+      "pagination": {
+        "items": 8,
+        "total": 3,
+        "current": 2,
+        "next": 3,
+        "prev": 1
+      }
+    },
+    "status": 200
+  }
+}

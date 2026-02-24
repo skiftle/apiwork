@@ -1,0 +1,594 @@
+---
+openapi: 3.1.0
+info:
+  title: "/calm_turtle"
+  version: 1.0.0
+paths:
+  "/customers":
+    get:
+      operationId: customersIndex
+      parameters:
+      - in: query
+        name: filter
+        required: false
+        schema:
+          oneOf:
+          - "$ref": "#/components/schemas/customerFilter"
+          - items:
+              "$ref": "#/components/schemas/customerFilter"
+            type: array
+      - in: query
+        name: page
+        required: false
+        schema:
+          "$ref": "#/components/schemas/customerPage"
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/customerIndexSuccessResponseBody"
+          description: Successful response
+    post:
+      operationId: customersCreate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                customer:
+                  "$ref": "#/components/schemas/customerCreatePayload"
+              type: object
+              required:
+              - customer
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/customerCreateSuccessResponseBody"
+          description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
+  "/customers/{id}":
+    get:
+      operationId: customersShow
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/customerShowSuccessResponseBody"
+          description: Successful response
+    patch:
+      operationId: customersUpdate
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                customer:
+                  "$ref": "#/components/schemas/customerUpdatePayload"
+              type: object
+              required:
+              - customer
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/customerUpdateSuccessResponseBody"
+          description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
+    delete:
+      operationId: customersDestroy
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No content
+  "/orders":
+    get:
+      operationId: ordersIndex
+      parameters:
+      - in: query
+        name: filter
+        required: false
+        schema:
+          oneOf:
+          - "$ref": "#/components/schemas/orderFilter"
+          - items:
+              "$ref": "#/components/schemas/orderFilter"
+            type: array
+      - in: query
+        name: page
+        required: false
+        schema:
+          "$ref": "#/components/schemas/orderPage"
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/orderIndexSuccessResponseBody"
+          description: Successful response
+    post:
+      operationId: ordersCreate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                order:
+                  "$ref": "#/components/schemas/orderCreatePayload"
+              type: object
+              required:
+              - order
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/orderCreateSuccessResponseBody"
+          description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
+  "/orders/{id}":
+    get:
+      operationId: ordersShow
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/orderShowSuccessResponseBody"
+          description: Successful response
+    patch:
+      operationId: ordersUpdate
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                order:
+                  "$ref": "#/components/schemas/orderUpdatePayload"
+              type: object
+              required:
+              - order
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/orderUpdateSuccessResponseBody"
+          description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
+    delete:
+      operationId: ordersDestroy
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No content
+components:
+  schemas:
+    customer:
+      properties:
+        billingCity:
+          type:
+          - string
+          - 'null'
+        billingCountry:
+          type:
+          - string
+          - 'null'
+        billingStreet:
+          type:
+          - string
+          - 'null'
+        createdAt:
+          type: string
+          format: date-time
+        id:
+          type: string
+        name:
+          type: string
+        updatedAt:
+          type: string
+          format: date-time
+      type: object
+      required:
+      - billingCity
+      - billingCountry
+      - billingStreet
+      - createdAt
+      - id
+      - name
+      - updatedAt
+    customerCreatePayload:
+      properties:
+        billingCity:
+          type:
+          - string
+          - 'null'
+        billingCountry:
+          type:
+          - string
+          - 'null'
+        billingStreet:
+          type:
+          - string
+          - 'null'
+        name:
+          type: string
+      type: object
+      required:
+      - name
+    customerCreateSuccessResponseBody:
+      properties:
+        customer:
+          "$ref": "#/components/schemas/customer"
+        meta:
+          properties: {}
+          type: object
+      type: object
+      required:
+      - customer
+    customerFilter:
+      properties:
+        AND:
+          items:
+            "$ref": "#/components/schemas/customerFilter"
+          type: array
+        NOT:
+          "$ref": "#/components/schemas/customerFilter"
+        OR:
+          items:
+            "$ref": "#/components/schemas/customerFilter"
+          type: array
+        name:
+          oneOf:
+          - type: string
+          - "$ref": "#/components/schemas/stringFilter"
+      type: object
+    customerIndexSuccessResponseBody:
+      properties:
+        pagination:
+          "$ref": "#/components/schemas/offsetPagination"
+        customers:
+          items:
+            "$ref": "#/components/schemas/customer"
+          type: array
+        meta:
+          properties: {}
+          type: object
+      type: object
+      required:
+      - pagination
+      - customers
+    customerPage:
+      properties:
+        number:
+          type: integer
+          minimum: 1
+        size:
+          type: integer
+          minimum: 1
+          maximum: 100
+      type: object
+    customerShowSuccessResponseBody:
+      properties:
+        customer:
+          "$ref": "#/components/schemas/customer"
+        meta:
+          properties: {}
+          type: object
+      type: object
+      required:
+      - customer
+    customerUpdatePayload:
+      properties:
+        billingCity:
+          type:
+          - string
+          - 'null'
+        billingCountry:
+          type:
+          - string
+          - 'null'
+        billingStreet:
+          type:
+          - string
+          - 'null'
+        name:
+          type: string
+      type: object
+    customerUpdateSuccessResponseBody:
+      properties:
+        customer:
+          "$ref": "#/components/schemas/customer"
+        meta:
+          properties: {}
+          type: object
+      type: object
+      required:
+      - customer
+    error:
+      properties:
+        issues:
+          items:
+            "$ref": "#/components/schemas/issue"
+          type: array
+        layer:
+          enum:
+          - http
+          - contract
+          - domain
+          type: string
+      type: object
+      required:
+      - issues
+      - layer
+    errorResponseBody:
+      "$ref": "#/components/schemas/error"
+    issue:
+      properties:
+        code:
+          type: string
+        detail:
+          type: string
+        meta:
+          properties: {}
+          type: object
+        path:
+          items:
+            type: string
+          type: array
+        pointer:
+          type: string
+      type: object
+      required:
+      - code
+      - detail
+      - meta
+      - path
+      - pointer
+    offsetPagination:
+      properties:
+        current:
+          type: integer
+        items:
+          type: integer
+        next:
+          type:
+          - integer
+          - 'null'
+        prev:
+          type:
+          - integer
+          - 'null'
+        total:
+          type: integer
+      type: object
+      required:
+      - current
+      - items
+      - total
+    order:
+      properties:
+        createdAt:
+          type: string
+          format: date-time
+        customerId:
+          type: string
+        id:
+          type: string
+        orderNumber:
+          type: string
+        shippingCity:
+          type:
+          - string
+          - 'null'
+        shippingCountry:
+          type:
+          - string
+          - 'null'
+        shippingStreet:
+          type:
+          - string
+          - 'null'
+        updatedAt:
+          type: string
+          format: date-time
+      type: object
+      required:
+      - createdAt
+      - customerId
+      - id
+      - orderNumber
+      - shippingCity
+      - shippingCountry
+      - shippingStreet
+      - updatedAt
+    orderCreatePayload:
+      properties:
+        customerId:
+          type: string
+        orderNumber:
+          type: string
+        shippingCity:
+          type:
+          - string
+          - 'null'
+        shippingCountry:
+          type:
+          - string
+          - 'null'
+        shippingStreet:
+          type:
+          - string
+          - 'null'
+      type: object
+      required:
+      - customerId
+      - orderNumber
+    orderCreateSuccessResponseBody:
+      properties:
+        meta:
+          properties: {}
+          type: object
+        order:
+          "$ref": "#/components/schemas/order"
+      type: object
+      required:
+      - order
+    orderFilter:
+      properties:
+        AND:
+          items:
+            "$ref": "#/components/schemas/orderFilter"
+          type: array
+        NOT:
+          "$ref": "#/components/schemas/orderFilter"
+        OR:
+          items:
+            "$ref": "#/components/schemas/orderFilter"
+          type: array
+        orderNumber:
+          oneOf:
+          - type: string
+          - "$ref": "#/components/schemas/stringFilter"
+      type: object
+    orderIndexSuccessResponseBody:
+      properties:
+        pagination:
+          "$ref": "#/components/schemas/offsetPagination"
+        meta:
+          properties: {}
+          type: object
+        orders:
+          items:
+            "$ref": "#/components/schemas/order"
+          type: array
+      type: object
+      required:
+      - pagination
+      - orders
+    orderPage:
+      properties:
+        number:
+          type: integer
+          minimum: 1
+        size:
+          type: integer
+          minimum: 1
+          maximum: 100
+      type: object
+    orderShowSuccessResponseBody:
+      properties:
+        meta:
+          properties: {}
+          type: object
+        order:
+          "$ref": "#/components/schemas/order"
+      type: object
+      required:
+      - order
+    orderUpdatePayload:
+      properties:
+        customerId:
+          type: string
+        orderNumber:
+          type: string
+        shippingCity:
+          type:
+          - string
+          - 'null'
+        shippingCountry:
+          type:
+          - string
+          - 'null'
+        shippingStreet:
+          type:
+          - string
+          - 'null'
+      type: object
+    orderUpdateSuccessResponseBody:
+      properties:
+        meta:
+          properties: {}
+          type: object
+        order:
+          "$ref": "#/components/schemas/order"
+      type: object
+      required:
+      - order
+    stringFilter:
+      properties:
+        contains:
+          type: string
+        endsWith:
+          type: string
+        eq:
+          type: string
+        in:
+          items:
+            type: string
+          type: array
+        startsWith:
+          type: string
+      type: object

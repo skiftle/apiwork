@@ -1,0 +1,46 @@
+/.bundle/
+/.yardoc
+/_yardoc/
+/coverage/
+/doc/
+/pkg/
+/spec/reports/
+/tmp/
+
+# Dummy app - logs
+/spec/dummy/log/*.log
+/spec/dummy/log/*.log.*
+
+# Dummy app - databases
+/spec/dummy/db/*.sqlite3
+/spec/dummy/db/*.sqlite3-*
+/spec/dummy/storage/*.sqlite3
+/spec/dummy/storage/*.sqlite3-*
+
+# Dummy app - temporary files
+/spec/dummy/tmp/*
+!/spec/dummy/tmp/.keep
+
+# OS files
+.DS_Store
+
+# Gem files
+*.gem
+
+# RSpec status file
+.rspec_status
+
+# Claude Code - local files
+/.claude/*.local.json
+/.claude/plans/
+
+
+docs/node_modules
+docs/.vitepress/cache
+docs/.vitepress/dist
+
+# Docs playground - logs, tmp, databases
+docs/playground/log/
+docs/playground/tmp/
+docs/playground/db/*.sqlite3
+docs/playground/db/*.sqlite3-*

@@ -1,0 +1,21 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/bright_parrot/notifications",
+    "body": {
+      "preference": {
+        "channel": "email",
+        "address": "alice@example.com",
+        "digest": true
+      }
+    }
+  },
+  "response": {
+    "body": {
+      "address": "alice@example.com",
+      "digest": true,
+      "channel": "email"
+    },
+    "status": 201
+  }
+}

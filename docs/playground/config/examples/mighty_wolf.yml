@@ -1,0 +1,117 @@
+title: Single Table Inheritance
+description: Single Table Inheritance with automatic variant serialization and TypeScript union types
+order: 9
+
+sections:
+  - title: API Definition
+    files:
+      - config/apis/mighty_wolf.rb
+  - title: Models
+    files:
+      - app/models/mighty_wolf/vehicle.rb
+      - app/models/mighty_wolf/car.rb
+      - app/models/mighty_wolf/truck.rb
+      - app/models/mighty_wolf/motorcycle.rb
+  - title: Representations
+    files:
+      - app/representations/mighty_wolf/vehicle_representation.rb
+      - app/representations/mighty_wolf/car_representation.rb
+      - app/representations/mighty_wolf/truck_representation.rb
+      - app/representations/mighty_wolf/motorcycle_representation.rb
+  - title: Contracts
+    files:
+      - app/contracts/mighty_wolf/vehicle_contract.rb
+  - title: Controllers
+    files:
+      - app/controllers/mighty_wolf/vehicles_controller.rb
+
+scenarios:
+  - title: List all vehicles
+    description: Returns all vehicle types
+    order: 1
+    method: GET
+    path: /mighty_wolf/vehicles
+    setup:
+      - create: vehicle
+        fields:
+          type: MightyWolf::Car
+          brand: Volvo
+          model: EX30
+          doors: 4
+      - create: vehicle
+        fields:
+          type: MightyWolf::Motorcycle
+          brand: Harley-Davidson
+          model: Street Glide
+          engine_cc: 1868
+      - create: vehicle
+        fields:
+          type: MightyWolf::Truck
+          brand: Ford
+          model: F-150
+          payload_capacity: 5000
+
+  - title: Get vehicle details
+    description: Fetch vehicle with type-specific fields
+    order: 2
+    method: GET
+    path: /mighty_wolf/vehicles/:id
+    setup:
+      - create: vehicle
+        fields:
+          type: MightyWolf::Car
+          brand: Volvo
+          model: EX30
+          year: 2024
+          color: red
+          doors: 4
+
+  - title: Create a car
+    description: Create car with type-specific fields
+    order: 3
+    method: POST
+    path: /mighty_wolf/vehicles
+    body:
+      vehicle:
+        type: car
+        brand: Volvo
+        model: EX30
+        year: 2024
+        color: red
+        doors: 4
+
+  - title: Create a truck
+    description: Create truck with type-specific fields
+    order: 4
+    method: POST
+    path: /mighty_wolf/vehicles
+    body:
+      vehicle:
+        type: truck
+        brand: Ford
+        model: F-150
+        year: 2024
+        color: blue
+        payloadCapacity: 5000
+
+  - title: Filter by vehicle type
+    description: Filter vehicles by STI type
+    order: 5
+    method: GET
+    path: /mighty_wolf/vehicles?filter[type][eq]=car
+    setup:
+      - create: vehicle
+        fields:
+          type: MightyWolf::Car
+          brand: Volvo
+          model: EX30
+      - create: vehicle
+        fields:
+          type: MightyWolf::Motorcycle
+          brand: Harley-Davidson
+          model: Street Glide
+      - create: vehicle
+        fields:
+          type: MightyWolf::Truck
+          brand: Ford
+          model: F-150

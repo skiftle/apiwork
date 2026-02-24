@@ -1,0 +1,70 @@
+title: Documentation I18n
+description: Translatable API documentation with built-in I18n support
+order: 18
+
+sections:
+  - title: API Definition
+    files:
+      - config/apis/wise_tiger.rb
+  - title: Models
+    files:
+      - app/models/wise_tiger/project.rb
+  - title: Representations
+    files:
+      - app/representations/wise_tiger/project_representation.rb
+  - title: Contracts
+    files:
+      - app/contracts/wise_tiger/project_contract.rb
+  - title: Controllers
+    files:
+      - app/controllers/wise_tiger/projects_controller.rb
+  - title: Locales
+    files:
+      - config/locales/wise_tiger.en.yml
+
+scenarios:
+  - title: List all projects
+    description: Returns projects with I18n-documented fields
+    order: 1
+    method: GET
+    path: /wise_tiger/projects
+    setup:
+      - create: project
+        fields:
+          name: Website Redesign
+          description: Complete overhaul of the company website
+          status: active
+          priority: high
+      - create: project
+        fields:
+          name: Mobile App
+          description: Native iOS and Android apps
+          status: paused
+          priority: medium
+
+  - title: Get project details
+    description: Single project with all documented attributes
+    order: 2
+    method: GET
+    path: /wise_tiger/projects/:id
+    setup:
+      - create: project
+        fields:
+          name: API Integration
+          description: Connect to third-party services
+          status: active
+          priority: critical
+          deadline: "2024-06-01"
+
+  - title: Create a project
+    description: Create with documented fields
+    order: 3
+    method: POST
+    path: /wise_tiger/projects
+    body:
+      project:
+        name: New Feature
+        description: Implement the new dashboard
+        status: active
+        priority: high
+        deadline: "2024-03-15"

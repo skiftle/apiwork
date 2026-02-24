@@ -1,0 +1,147 @@
+title: Offset Pagination
+description: Offset-based pagination with page number and page size query parameters
+order: 4
+
+sections:
+  - title: API Definition
+    files:
+      - config/apis/steady_horse.rb
+  - title: Models
+    files:
+      - app/models/steady_horse/product.rb
+  - title: Representations
+    files:
+      - app/representations/steady_horse/product_representation.rb
+  - title: Contracts
+    files:
+      - app/contracts/steady_horse/product_contract.rb
+  - title: Controllers
+    files:
+      - app/controllers/steady_horse/products_controller.rb
+
+scenarios:
+  - title: First page (default)
+    description: Returns the first page of products with pagination metadata
+    order: 1
+    method: GET
+    path: /steady_horse/products
+    setup:
+      - create: product
+        fields:
+          name: Wireless Keyboard
+          price: 49.99
+          category: electronics
+      - create: product
+        fields:
+          name: USB-C Cable
+          price: 12.99
+          category: electronics
+      - create: product
+        fields:
+          name: Desk Lamp
+          price: 34.99
+          category: office
+      - create: product
+        fields:
+          name: Notebook
+          price: 8.99
+          category: office
+      - create: product
+        fields:
+          name: Monitor Stand
+          price: 79.99
+          category: office
+      - create: product
+        fields:
+          name: Webcam
+          price: 59.99
+          category: electronics
+      - create: product
+        fields:
+          name: Mouse Pad
+          price: 14.99
+          category: accessories
+      - create: product
+        fields:
+          name: Headphones
+          price: 89.99
+          category: electronics
+
+  - title: Specific page
+    description: Request page 2 with 3 items per page
+    order: 2
+    method: GET
+    path: /steady_horse/products?page[number]=2&page[size]=3
+    setup:
+      - create: product
+        fields:
+          name: Wireless Keyboard
+          price: 49.99
+          category: electronics
+      - create: product
+        fields:
+          name: USB-C Cable
+          price: 12.99
+          category: electronics
+      - create: product
+        fields:
+          name: Desk Lamp
+          price: 34.99
+          category: office
+      - create: product
+        fields:
+          name: Notebook
+          price: 8.99
+          category: office
+      - create: product
+        fields:
+          name: Monitor Stand
+          price: 79.99
+          category: office
+      - create: product
+        fields:
+          name: Webcam
+          price: 59.99
+          category: electronics
+      - create: product
+        fields:
+          name: Mouse Pad
+          price: 14.99
+          category: accessories
+      - create: product
+        fields:
+          name: Headphones
+          price: 89.99
+          category: electronics
+
+  - title: Custom page size
+    description: Request 2 items per page
+    order: 3
+    method: GET
+    path: /steady_horse/products?page[size]=2
+    setup:
+      - create: product
+        fields:
+          name: Wireless Keyboard
+          price: 49.99
+          category: electronics
+      - create: product
+        fields:
+          name: USB-C Cable
+          price: 12.99
+          category: electronics
+      - create: product
+        fields:
+          name: Desk Lamp
+          price: 34.99
+          category: office
+      - create: product
+        fields:
+          name: Notebook
+          price: 8.99
+          category: office
+      - create: product
+        fields:
+          name: Monitor Stand
+          price: 79.99
+          category: office

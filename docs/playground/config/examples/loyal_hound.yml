@@ -1,0 +1,140 @@
+title: Includes
+description: Load associations on demand with include query parameters
+order: 6
+
+sections:
+  - title: API Definition
+    files:
+      - config/apis/loyal_hound.rb
+  - title: Models
+    files:
+      - app/models/loyal_hound/author.rb
+      - app/models/loyal_hound/book.rb
+      - app/models/loyal_hound/review.rb
+  - title: Representations
+    files:
+      - app/representations/loyal_hound/book_representation.rb
+      - app/representations/loyal_hound/author_representation.rb
+      - app/representations/loyal_hound/review_representation.rb
+  - title: Contracts
+    files:
+      - app/contracts/loyal_hound/book_contract.rb
+  - title: Controllers
+    files:
+      - app/controllers/loyal_hound/books_controller.rb
+
+scenarios:
+  - title: List without includes
+    description: "Associations are omitted by default when `include` is `:optional`"
+    order: 1
+    method: GET
+    path: /loyal_hound/books
+    setup:
+      - create: author
+        fields:
+          name: Jane Austen
+      - create: book
+        fields:
+          title: Pride and Prejudice
+          author_id: :author_id
+          published_on: "1813-01-28"
+      - create: review
+        fields:
+          book_id: :book_id
+          rating: 5
+          body: A timeless classic
+      - create: book
+        fields:
+          title: Sense and Sensibility
+          author_id: :author_id
+          published_on: "1811-10-30"
+
+  - title: Include author
+    description: Add `include[author]=true` to load the author association
+    order: 2
+    method: GET
+    path: /loyal_hound/books?include[author]=true
+    setup:
+      - create: author
+        fields:
+          name: Jane Austen
+      - create: book
+        fields:
+          title: Pride and Prejudice
+          author_id: :author_id
+          published_on: "1813-01-28"
+      - create: book
+        fields:
+          title: Sense and Sensibility
+          author_id: :author_id
+          published_on: "1811-10-30"
+
+  - title: Include reviews
+    description: Add `include[reviews]=true` to load the reviews association
+    order: 3
+    method: GET
+    path: /loyal_hound/books?include[reviews]=true
+    setup:
+      - create: author
+        fields:
+          name: Jane Austen
+      - create: book
+        fields:
+          title: Pride and Prejudice
+          author_id: :author_id
+          published_on: "1813-01-28"
+      - create: review
+        fields:
+          book_id: :book_id
+          rating: 5
+          body: A timeless classic
+      - create: review
+        fields:
+          book_id: :book_id
+          rating: 4
+          body: Beautifully written
+
+  - title: Include both
+    description: Load author and reviews in a single request
+    order: 4
+    method: GET
+    path: /loyal_hound/books?include[author]=true&include[reviews]=true
+    setup:
+      - create: author
+        fields:
+          name: Jane Austen
+      - create: book
+        fields:
+          title: Pride and Prejudice
+          author_id: :author_id
+          published_on: "1813-01-28"
+      - create: review
+        fields:
+          book_id: :book_id
+          rating: 5
+          body: A timeless classic
+
+  - title: Show with includes
+    description: Includes work on single-record endpoints too
+    order: 5
+    method: GET
+    path: /loyal_hound/books/:id?include[author]=true&include[reviews]=true
+    setup:
+      - create: author
+        fields:
+          name: Jane Austen
+      - create: book
+        fields:
+          title: Pride and Prejudice
+          author_id: :author_id
+          published_on: "1813-01-28"
+      - create: review
+        fields:
+          book_id: :book_id
+          rating: 5
+          body: A timeless classic
+      - create: review
+        fields:
+          book_id: :book_id
+          rating: 4
+          body: Beautifully written

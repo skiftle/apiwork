@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/brave_eagle/tasks/eaa10144-98eb-559c-abf3-2ad6e649e9bf"
+  },
+  "response": {
+    "body": {
+      "status": 404,
+      "error": "Not Found"
+    },
+    "status": 404
+  }
+}

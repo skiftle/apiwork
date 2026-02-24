@@ -1,0 +1,452 @@
+---
+openapi: 3.1.0
+info:
+  title: "/eager_lion"
+  version: 1.0.0
+paths:
+  "/invoices":
+    get:
+      operationId: invoicesIndex
+      parameters:
+      - in: query
+        name: filter
+        required: false
+        schema:
+          oneOf:
+          - "$ref": "#/components/schemas/invoiceFilter"
+          - items:
+              "$ref": "#/components/schemas/invoiceFilter"
+            type: array
+      - in: query
+        name: page
+        required: false
+        schema:
+          "$ref": "#/components/schemas/invoicePage"
+      - in: query
+        name: sort
+        required: false
+        schema:
+          oneOf:
+          - "$ref": "#/components/schemas/invoiceSort"
+          - items:
+              "$ref": "#/components/schemas/invoiceSort"
+            type: array
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/invoiceIndexSuccessResponseBody"
+          description: Successful response
+    post:
+      operationId: invoicesCreate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                invoice:
+                  "$ref": "#/components/schemas/invoiceCreatePayload"
+              type: object
+              required:
+              - invoice
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/invoiceCreateSuccessResponseBody"
+          description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
+  "/invoices/{id}":
+    get:
+      operationId: invoicesShow
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/invoiceShowSuccessResponseBody"
+          description: Successful response
+    patch:
+      operationId: invoicesUpdate
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                invoice:
+                  "$ref": "#/components/schemas/invoiceUpdatePayload"
+              type: object
+              required:
+              - invoice
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/invoiceUpdateSuccessResponseBody"
+          description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
+    delete:
+      operationId: invoicesDestroy
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No content
+components:
+  schemas:
+    customer:
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+      type: object
+      required:
+      - id
+      - name
+    error:
+      properties:
+        issues:
+          items:
+            "$ref": "#/components/schemas/issue"
+          type: array
+        layer:
+          enum:
+          - http
+          - contract
+          - domain
+          type: string
+      type: object
+      required:
+      - issues
+      - layer
+    errorResponseBody:
+      "$ref": "#/components/schemas/error"
+    invoice:
+      properties:
+        createdAt:
+          type: string
+          format: date-time
+        customer:
+          "$ref": "#/components/schemas/customer"
+        customerId:
+          type: string
+        id:
+          type: string
+        issuedOn:
+          type:
+          - string
+          - 'null'
+          format: date
+        lines:
+          items:
+            "$ref": "#/components/schemas/line"
+          type: array
+        notes:
+          type:
+          - string
+          - 'null'
+        number:
+          type: string
+        status:
+          enum:
+          - draft
+          - sent
+          - paid
+          type: string
+        updatedAt:
+          type: string
+          format: date-time
+      type: object
+      required:
+      - createdAt
+      - customer
+      - customerId
+      - id
+      - issuedOn
+      - lines
+      - notes
+      - number
+      - status
+      - updatedAt
+    invoiceCreatePayload:
+      properties:
+        customerId:
+          type: string
+        issuedOn:
+          type:
+          - string
+          - 'null'
+          format: date
+        notes:
+          type:
+          - string
+          - 'null'
+        number:
+          type: string
+        status:
+          enum:
+          - draft
+          - sent
+          - paid
+          type: string
+      type: object
+      required:
+      - customerId
+      - number
+    invoiceCreateSuccessResponseBody:
+      properties:
+        invoice:
+          "$ref": "#/components/schemas/invoice"
+        meta:
+          properties: {}
+          type: object
+      type: object
+      required:
+      - invoice
+    invoiceFilter:
+      properties:
+        AND:
+          items:
+            "$ref": "#/components/schemas/invoiceFilter"
+          type: array
+        NOT:
+          "$ref": "#/components/schemas/invoiceFilter"
+        OR:
+          items:
+            "$ref": "#/components/schemas/invoiceFilter"
+          type: array
+        number:
+          oneOf:
+          - type: string
+          - "$ref": "#/components/schemas/stringFilter"
+        status:
+          "$ref": "#/components/schemas/invoiceStatusFilter"
+      type: object
+    invoiceIndexSuccessResponseBody:
+      properties:
+        pagination:
+          "$ref": "#/components/schemas/offsetPagination"
+        invoices:
+          items:
+            "$ref": "#/components/schemas/invoice"
+          type: array
+        meta:
+          properties: {}
+          type: object
+      type: object
+      required:
+      - pagination
+      - invoices
+    invoicePage:
+      properties:
+        number:
+          type: integer
+          minimum: 1
+        size:
+          type: integer
+          minimum: 1
+          maximum: 100
+      type: object
+    invoiceShowSuccessResponseBody:
+      properties:
+        invoice:
+          "$ref": "#/components/schemas/invoice"
+        meta:
+          properties: {}
+          type: object
+      type: object
+      required:
+      - invoice
+    invoiceSort:
+      properties:
+        createdAt:
+          enum:
+          - asc
+          - desc
+          type: string
+        issuedOn:
+          enum:
+          - asc
+          - desc
+          type: string
+        status:
+          enum:
+          - asc
+          - desc
+          type: string
+        updatedAt:
+          enum:
+          - asc
+          - desc
+          type: string
+      type: object
+    invoiceStatusFilter:
+      oneOf:
+      - enum:
+        - draft
+        - sent
+        - paid
+        type: string
+      - properties:
+          eq:
+            enum:
+            - draft
+            - sent
+            - paid
+            type: string
+          in:
+            items:
+              enum:
+              - draft
+              - sent
+              - paid
+              type: string
+            type: array
+        type: object
+        required:
+        - eq
+        - in
+    invoiceUpdatePayload:
+      properties:
+        customerId:
+          type: string
+        issuedOn:
+          type:
+          - string
+          - 'null'
+          format: date
+        notes:
+          type:
+          - string
+          - 'null'
+        number:
+          type: string
+        status:
+          enum:
+          - draft
+          - sent
+          - paid
+          type: string
+      type: object
+    invoiceUpdateSuccessResponseBody:
+      properties:
+        invoice:
+          "$ref": "#/components/schemas/invoice"
+        meta:
+          properties: {}
+          type: object
+      type: object
+      required:
+      - invoice
+    issue:
+      properties:
+        code:
+          type: string
+        detail:
+          type: string
+        meta:
+          properties: {}
+          type: object
+        path:
+          items:
+            type: string
+          type: array
+        pointer:
+          type: string
+      type: object
+      required:
+      - code
+      - detail
+      - meta
+      - path
+      - pointer
+    line:
+      properties:
+        description:
+          type:
+          - string
+          - 'null'
+        id:
+          type: string
+        price:
+          type:
+          - number
+          - 'null'
+        quantity:
+          type:
+          - integer
+          - 'null'
+      type: object
+      required:
+      - description
+      - id
+      - price
+      - quantity
+    offsetPagination:
+      properties:
+        current:
+          type: integer
+        items:
+          type: integer
+        next:
+          type:
+          - integer
+          - 'null'
+        prev:
+          type:
+          - integer
+          - 'null'
+        total:
+          type: integer
+      type: object
+      required:
+      - current
+      - items
+      - total
+    stringFilter:
+      properties:
+        contains:
+          type: string
+        endsWith:
+          type: string
+        eq:
+          type: string
+        in:
+          items:
+            type: string
+          type: array
+        startsWith:
+          type: string
+      type: object

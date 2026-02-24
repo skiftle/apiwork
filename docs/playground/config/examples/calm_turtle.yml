@@ -1,0 +1,84 @@
+title: Type Imports
+description: Share type definitions between contracts with import
+order: 13
+
+sections:
+  - title: API Definition
+    files:
+      - config/apis/calm_turtle.rb
+  - title: Models
+    files:
+      - app/models/calm_turtle/customer.rb
+      - app/models/calm_turtle/order.rb
+  - title: Representations
+    files:
+      - app/representations/calm_turtle/customer_representation.rb
+      - app/representations/calm_turtle/order_representation.rb
+  - title: Contracts
+    files:
+      - app/contracts/calm_turtle/customer_contract.rb
+      - app/contracts/calm_turtle/order_contract.rb
+  - title: Controllers
+    files:
+      - app/controllers/calm_turtle/customers_controller.rb
+      - app/controllers/calm_turtle/orders_controller.rb
+
+scenarios:
+  - title: Create customer
+    description: Create a customer with billing address fields
+    order: 1
+    method: POST
+    path: /calm_turtle/customers
+    body:
+      customer:
+        name: Acme Corp
+        billingStreet: 123 Main St
+        billingCity: Springfield
+        billingCountry: US
+
+  - title: Create order
+    description: Create an order with shipping address fields
+    order: 2
+    method: POST
+    path: /calm_turtle/orders
+    setup:
+      - create: customer
+        fields:
+          name: Acme Corp
+          billing_street: 123 Main St
+          billing_city: Springfield
+          billing_country: US
+    body:
+      order:
+        orderNumber: ORD-001
+        customerId: :customer_id
+        shippingStreet: 456 Oak Ave
+        shippingCity: Shelbyville
+        shippingCountry: US
+
+  - title: List orders
+    description: Returns orders with shipping address fields
+    order: 3
+    method: GET
+    path: /calm_turtle/orders
+    setup:
+      - create: customer
+        fields:
+          name: Acme Corp
+          billing_street: 123 Main St
+          billing_city: Springfield
+          billing_country: US
+      - create: order
+        fields:
+          order_number: ORD-001
+          customer_id: :customer_id
+          shipping_street: 456 Oak Ave
+          shipping_city: Shelbyville
+          shipping_country: US
+      - create: order
+        fields:
+          order_number: ORD-002
+          customer_id: :customer_id
+          shipping_street: 789 Elm Blvd
+          shipping_city: Capital City
+          shipping_country: US

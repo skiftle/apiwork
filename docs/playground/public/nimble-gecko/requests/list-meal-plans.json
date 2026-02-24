@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/nimble_gecko/meal-plans"
+  },
+  "response": {
+    "body": {
+      "status": 404,
+      "error": "Not Found"
+    },
+    "status": 404
+  }
+}

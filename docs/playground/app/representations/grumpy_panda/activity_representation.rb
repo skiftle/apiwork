@@ -1,0 +1,18 @@
+# frozen_string_literal: true
+
+module GrumpyPanda
+  class ActivityRepresentation < Apiwork::Representation::Base
+    adapter do
+      pagination do
+        strategy :cursor
+        default_size 3
+      end
+    end
+
+    attribute :id
+    attribute :action, writable: true
+    attribute :occurred_at, writable: true
+    attribute :created_at
+    attribute :updated_at
+  end
+end

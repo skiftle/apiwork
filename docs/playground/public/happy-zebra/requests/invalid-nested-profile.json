@@ -1,0 +1,36 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/happy_zebra/users",
+    "body": {
+      "user": {
+        "email": "john@example.com",
+        "username": "johndoe",
+        "profile": {
+          "bio": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Extra text to push this well over the five hundred character limit that exists."
+        }
+      }
+    }
+  },
+  "response": {
+    "body": {
+      "issues": [
+        {
+          "code": "max",
+          "detail": "Too long",
+          "meta": {
+            "max": 500
+          },
+          "path": [
+            "user",
+            "profile",
+            "bio"
+          ],
+          "pointer": "/user/profile/bio"
+        }
+      ],
+      "layer": "domain"
+    },
+    "status": 422
+  }
+}

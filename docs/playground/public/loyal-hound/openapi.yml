@@ -1,0 +1,401 @@
+---
+openapi: 3.1.0
+info:
+  title: "/loyal_hound"
+  version: 1.0.0
+paths:
+  "/books":
+    get:
+      operationId: booksIndex
+      parameters:
+      - in: query
+        name: filter
+        required: false
+        schema:
+          oneOf:
+          - "$ref": "#/components/schemas/bookFilter"
+          - items:
+              "$ref": "#/components/schemas/bookFilter"
+            type: array
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/bookInclude"
+      - in: query
+        name: page
+        required: false
+        schema:
+          "$ref": "#/components/schemas/bookPage"
+      - in: query
+        name: sort
+        required: false
+        schema:
+          oneOf:
+          - "$ref": "#/components/schemas/bookSort"
+          - items:
+              "$ref": "#/components/schemas/bookSort"
+            type: array
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/bookIndexSuccessResponseBody"
+          description: Successful response
+    post:
+      operationId: booksCreate
+      parameters:
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/bookInclude"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                book:
+                  "$ref": "#/components/schemas/bookCreatePayload"
+              type: object
+              required:
+              - book
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/bookCreateSuccessResponseBody"
+          description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
+  "/books/{id}":
+    get:
+      operationId: booksShow
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/bookInclude"
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/bookShowSuccessResponseBody"
+          description: Successful response
+    patch:
+      operationId: booksUpdate
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/bookInclude"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                book:
+                  "$ref": "#/components/schemas/bookUpdatePayload"
+              type: object
+              required:
+              - book
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/bookUpdateSuccessResponseBody"
+          description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
+    delete:
+      operationId: booksDestroy
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/bookInclude"
+      responses:
+        '204':
+          description: No content
+components:
+  schemas:
+    author:
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+      type: object
+      required:
+      - id
+      - name
+    book:
+      properties:
+        author:
+          "$ref": "#/components/schemas/author"
+        authorId:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        id:
+          type: string
+        publishedOn:
+          type:
+          - string
+          - 'null'
+          format: date
+        reviews:
+          items:
+            "$ref": "#/components/schemas/review"
+          type: array
+        title:
+          type: string
+        updatedAt:
+          type: string
+          format: date-time
+      type: object
+      required:
+      - authorId
+      - createdAt
+      - id
+      - publishedOn
+      - title
+      - updatedAt
+    bookCreatePayload:
+      properties:
+        authorId:
+          type: string
+        publishedOn:
+          type:
+          - string
+          - 'null'
+          format: date
+        title:
+          type: string
+      type: object
+      required:
+      - authorId
+      - title
+    bookCreateSuccessResponseBody:
+      properties:
+        book:
+          "$ref": "#/components/schemas/book"
+        meta:
+          properties: {}
+          type: object
+      type: object
+      required:
+      - book
+    bookFilter:
+      properties:
+        AND:
+          items:
+            "$ref": "#/components/schemas/bookFilter"
+          type: array
+        NOT:
+          "$ref": "#/components/schemas/bookFilter"
+        OR:
+          items:
+            "$ref": "#/components/schemas/bookFilter"
+          type: array
+        title:
+          oneOf:
+          - type: string
+          - "$ref": "#/components/schemas/stringFilter"
+      type: object
+    bookInclude:
+      properties:
+        author:
+          type: boolean
+        reviews:
+          type: boolean
+      type: object
+    bookIndexSuccessResponseBody:
+      properties:
+        pagination:
+          "$ref": "#/components/schemas/offsetPagination"
+        books:
+          items:
+            "$ref": "#/components/schemas/book"
+          type: array
+        meta:
+          properties: {}
+          type: object
+      type: object
+      required:
+      - pagination
+      - books
+    bookPage:
+      properties:
+        number:
+          type: integer
+          minimum: 1
+        size:
+          type: integer
+          minimum: 1
+          maximum: 100
+      type: object
+    bookShowSuccessResponseBody:
+      properties:
+        book:
+          "$ref": "#/components/schemas/book"
+        meta:
+          properties: {}
+          type: object
+      type: object
+      required:
+      - book
+    bookSort:
+      properties:
+        publishedOn:
+          enum:
+          - asc
+          - desc
+          type: string
+      type: object
+    bookUpdatePayload:
+      properties:
+        authorId:
+          type: string
+        publishedOn:
+          type:
+          - string
+          - 'null'
+          format: date
+        title:
+          type: string
+      type: object
+    bookUpdateSuccessResponseBody:
+      properties:
+        book:
+          "$ref": "#/components/schemas/book"
+        meta:
+          properties: {}
+          type: object
+      type: object
+      required:
+      - book
+    error:
+      properties:
+        issues:
+          items:
+            "$ref": "#/components/schemas/issue"
+          type: array
+        layer:
+          enum:
+          - http
+          - contract
+          - domain
+          type: string
+      type: object
+      required:
+      - issues
+      - layer
+    errorResponseBody:
+      "$ref": "#/components/schemas/error"
+    issue:
+      properties:
+        code:
+          type: string
+        detail:
+          type: string
+        meta:
+          properties: {}
+          type: object
+        path:
+          items:
+            type: string
+          type: array
+        pointer:
+          type: string
+      type: object
+      required:
+      - code
+      - detail
+      - meta
+      - path
+      - pointer
+    offsetPagination:
+      properties:
+        current:
+          type: integer
+        items:
+          type: integer
+        next:
+          type:
+          - integer
+          - 'null'
+        prev:
+          type:
+          - integer
+          - 'null'
+        total:
+          type: integer
+      type: object
+      required:
+      - current
+      - items
+      - total
+    review:
+      properties:
+        body:
+          type:
+          - string
+          - 'null'
+        id:
+          type: string
+        rating:
+          type: integer
+      type: object
+      required:
+      - body
+      - id
+      - rating
+    stringFilter:
+      properties:
+        contains:
+          type: string
+        endsWith:
+          type: string
+        eq:
+          type: string
+        in:
+          items:
+            type: string
+          type: array
+        startsWith:
+          type: string
+      type: object

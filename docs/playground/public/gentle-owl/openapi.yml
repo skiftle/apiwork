@@ -1,0 +1,474 @@
+---
+openapi: 3.1.0
+info:
+  title: "/gentle_owl"
+  version: 1.0.0
+paths:
+  "/comments":
+    get:
+      operationId: commentsIndex
+      parameters:
+      - in: query
+        name: filter
+        required: false
+        schema:
+          oneOf:
+          - "$ref": "#/components/schemas/commentFilter"
+          - items:
+              "$ref": "#/components/schemas/commentFilter"
+            type: array
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/commentInclude"
+      - in: query
+        name: page
+        required: false
+        schema:
+          "$ref": "#/components/schemas/commentPage"
+      - in: query
+        name: sort
+        required: false
+        schema:
+          oneOf:
+          - "$ref": "#/components/schemas/commentSort"
+          - items:
+              "$ref": "#/components/schemas/commentSort"
+            type: array
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/commentIndexSuccessResponseBody"
+          description: Successful response
+    post:
+      operationId: commentsCreate
+      parameters:
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/commentInclude"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                comment:
+                  "$ref": "#/components/schemas/commentCreatePayload"
+              type: object
+              required:
+              - comment
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/commentCreateSuccessResponseBody"
+          description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
+  "/comments/{id}":
+    get:
+      operationId: commentsShow
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/commentInclude"
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/commentShowSuccessResponseBody"
+          description: Successful response
+    patch:
+      operationId: commentsUpdate
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/commentInclude"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                comment:
+                  "$ref": "#/components/schemas/commentUpdatePayload"
+              type: object
+              required:
+              - comment
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/commentUpdateSuccessResponseBody"
+          description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
+    delete:
+      operationId: commentsDestroy
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/commentInclude"
+      responses:
+        '204':
+          description: No content
+components:
+  schemas:
+    comment:
+      properties:
+        authorName:
+          type:
+          - string
+          - 'null'
+        body:
+          type: string
+        commentable:
+          "$ref": "#/components/schemas/commentCommentable"
+        commentableId:
+          type: string
+        commentableType:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        id:
+          type: string
+        updatedAt:
+          type: string
+          format: date-time
+      type: object
+      required:
+      - authorName
+      - body
+      - commentableId
+      - commentableType
+      - createdAt
+      - id
+      - updatedAt
+    commentCommentable:
+      oneOf:
+      - allOf:
+        - "$ref": "#/components/schemas/post"
+        - properties:
+            commentableType:
+              const: post
+              type: string
+          required:
+          - commentableType
+          type: object
+      - allOf:
+        - "$ref": "#/components/schemas/video"
+        - properties:
+            commentableType:
+              const: video
+              type: string
+          required:
+          - commentableType
+          type: object
+      discriminator:
+        mapping:
+          post: "#/components/schemas/post"
+          video: "#/components/schemas/video"
+        propertyName: commentableType
+    commentCommentableTypeFilter:
+      oneOf:
+      - enum:
+        - post
+        - video
+        type: string
+      - properties:
+          eq:
+            enum:
+            - post
+            - video
+            type: string
+          in:
+            items:
+              enum:
+              - post
+              - video
+              type: string
+            type: array
+        type: object
+        required:
+        - eq
+        - in
+    commentCreatePayload:
+      properties:
+        authorName:
+          type:
+          - string
+          - 'null'
+        body:
+          type: string
+        commentableId:
+          type: string
+        commentableType:
+          enum:
+          - post
+          - video
+          type: string
+      type: object
+      required:
+      - body
+      - commentableId
+      - commentableType
+    commentCreateSuccessResponseBody:
+      properties:
+        comment:
+          "$ref": "#/components/schemas/comment"
+        meta:
+          properties: {}
+          type: object
+      type: object
+      required:
+      - comment
+    commentFilter:
+      properties:
+        AND:
+          items:
+            "$ref": "#/components/schemas/commentFilter"
+          type: array
+        NOT:
+          "$ref": "#/components/schemas/commentFilter"
+        OR:
+          items:
+            "$ref": "#/components/schemas/commentFilter"
+          type: array
+        commentableType:
+          "$ref": "#/components/schemas/commentCommentableTypeFilter"
+      type: object
+    commentInclude:
+      properties:
+        commentable:
+          type: boolean
+      type: object
+    commentIndexSuccessResponseBody:
+      properties:
+        pagination:
+          "$ref": "#/components/schemas/offsetPagination"
+        comments:
+          items:
+            "$ref": "#/components/schemas/comment"
+          type: array
+        meta:
+          properties: {}
+          type: object
+      type: object
+      required:
+      - pagination
+      - comments
+    commentPage:
+      properties:
+        number:
+          type: integer
+          minimum: 1
+        size:
+          type: integer
+          minimum: 1
+          maximum: 100
+      type: object
+    commentShowSuccessResponseBody:
+      properties:
+        comment:
+          "$ref": "#/components/schemas/comment"
+        meta:
+          properties: {}
+          type: object
+      type: object
+      required:
+      - comment
+    commentSort:
+      properties:
+        createdAt:
+          enum:
+          - asc
+          - desc
+          type: string
+        updatedAt:
+          enum:
+          - asc
+          - desc
+          type: string
+      type: object
+    commentUpdatePayload:
+      properties:
+        authorName:
+          type:
+          - string
+          - 'null'
+        body:
+          type: string
+        commentableId:
+          type: string
+        commentableType:
+          enum:
+          - post
+          - video
+          type: string
+      type: object
+    commentUpdateSuccessResponseBody:
+      properties:
+        comment:
+          "$ref": "#/components/schemas/comment"
+        meta:
+          properties: {}
+          type: object
+      type: object
+      required:
+      - comment
+    error:
+      properties:
+        issues:
+          items:
+            "$ref": "#/components/schemas/issue"
+          type: array
+        layer:
+          enum:
+          - http
+          - contract
+          - domain
+          type: string
+      type: object
+      required:
+      - issues
+      - layer
+    errorResponseBody:
+      "$ref": "#/components/schemas/error"
+    issue:
+      properties:
+        code:
+          type: string
+        detail:
+          type: string
+        meta:
+          properties: {}
+          type: object
+        path:
+          items:
+            type: string
+          type: array
+        pointer:
+          type: string
+      type: object
+      required:
+      - code
+      - detail
+      - meta
+      - path
+      - pointer
+    offsetPagination:
+      properties:
+        current:
+          type: integer
+        items:
+          type: integer
+        next:
+          type:
+          - integer
+          - 'null'
+        prev:
+          type:
+          - integer
+          - 'null'
+        total:
+          type: integer
+      type: object
+      required:
+      - current
+      - items
+      - total
+    post:
+      properties:
+        body:
+          type:
+          - string
+          - 'null'
+        comments:
+          items:
+            "$ref": "#/components/schemas/comment"
+          type: array
+        createdAt:
+          type: string
+          format: date-time
+        id:
+          type: string
+        title:
+          type: string
+        updatedAt:
+          type: string
+          format: date-time
+      type: object
+      required:
+      - body
+      - createdAt
+      - id
+      - title
+      - updatedAt
+    video:
+      properties:
+        comments:
+          items:
+            "$ref": "#/components/schemas/comment"
+          type: array
+        createdAt:
+          type: string
+          format: date-time
+        duration:
+          type:
+          - integer
+          - 'null'
+        id:
+          type: string
+        title:
+          type: string
+        updatedAt:
+          type: string
+          format: date-time
+        url:
+          type: string
+      type: object
+      required:
+      - createdAt
+      - duration
+      - id
+      - title
+      - updatedAt
+      - url

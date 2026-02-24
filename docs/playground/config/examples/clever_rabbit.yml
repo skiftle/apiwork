@@ -1,0 +1,122 @@
+title: Nested Saves
+description: Create, update, and delete nested records in a single request
+order: 7
+
+sections:
+  - title: API Definition
+    files:
+      - config/apis/clever_rabbit.rb
+  - title: Models
+    files:
+      - app/models/clever_rabbit/order.rb
+      - app/models/clever_rabbit/line_item.rb
+      - app/models/clever_rabbit/shipping_address.rb
+  - title: Representations
+    files:
+      - app/representations/clever_rabbit/order_representation.rb
+      - app/representations/clever_rabbit/line_item_representation.rb
+      - app/representations/clever_rabbit/shipping_address_representation.rb
+  - title: Contracts
+    files:
+      - app/contracts/clever_rabbit/order_contract.rb
+  - title: Controllers
+    files:
+      - app/controllers/clever_rabbit/orders_controller.rb
+
+scenarios:
+  - title: List all orders
+    description: Returns orders with nested data
+    order: 1
+    method: GET
+    path: /clever_rabbit/orders
+    setup:
+      - create: order
+        fields:
+          order_number: ORD-001
+      - create: order
+        fields:
+          order_number: ORD-002
+
+  - title: Get order details
+    description: Fetch order with line items
+    order: 2
+    method: GET
+    path: /clever_rabbit/orders/:id
+    setup:
+      - create: order
+        fields:
+          order_number: ORD-001
+
+  - title: Create order with nested records
+    description: Create order with line items and address
+    order: 3
+    method: POST
+    path: /clever_rabbit/orders
+    body:
+      order:
+        orderNumber: ORD-001
+        lineItems:
+          - productName: Widget
+            quantity: 2
+            unitPrice: 29.99
+          - productName: Gadget
+            quantity: 1
+            unitPrice: 49.99
+        shippingAddress:
+          street: 123 Main St
+          city: Springfield
+          postalCode: "12345"
+          country: USA
+
+  - title: Update order with new items
+    description: Replace order line items
+    order: 4
+    method: PATCH
+    path: /clever_rabbit/orders/:id
+    setup:
+      - create: order
+        fields:
+          order_number: ORD-001
+    body:
+      order:
+        lineItems:
+          - productName: New Item
+            quantity: 3
+            unitPrice: 19.99
+
+  - title: Delete an order
+    description: Remove order and nested records
+    order: 5
+    method: DELETE
+    path: /clever_rabbit/orders/:id
+    setup:
+      - create: order
+        fields:
+          order_number: ORD-001
+
+  - title: Remove nested record
+    description: Delete line item using OP
+    order: 6
+    method: PATCH
+    path: /clever_rabbit/orders/:order_id
+    setup:
+      - create: order
+        fields:
+          order_number: ORD-001
+      - create: line_item
+        fields:
+          order_id: :order_id
+          product_name: Widget to Keep
+          quantity: 2
+          unit_price: 19.99
+      - create: line_item
+        fields:
+          order_id: :order_id
+          product_name: Widget to Remove
+          quantity: 1
+          unit_price: 29.99
+    body:
+      order:
+        lineItems:
+          - OP: 'delete'
+            id: :line_item_id

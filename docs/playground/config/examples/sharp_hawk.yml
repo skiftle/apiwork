@@ -1,0 +1,60 @@
+title: Write Modes
+description: Control which fields are accepted on create vs update
+order: 8
+
+sections:
+  - title: API Definition
+    files:
+      - config/apis/sharp_hawk.rb
+  - title: Models
+    files:
+      - app/models/sharp_hawk/account.rb
+  - title: Representations
+    files:
+      - app/representations/sharp_hawk/account_representation.rb
+  - title: Contracts
+    files:
+      - app/contracts/sharp_hawk/account_contract.rb
+  - title: Controllers
+    files:
+      - app/controllers/sharp_hawk/accounts_controller.rb
+
+scenarios:
+  - title: Create account
+    description: Email and name are accepted, role and verified are not allowed on create
+    order: 1
+    method: POST
+    path: /sharp_hawk/accounts
+    body:
+      account:
+        email: alice@example.com
+        name: Alice Johnson
+
+  - title: Update account
+    description: Name, role, and verified are accepted, email is not allowed on update
+    order: 2
+    method: PATCH
+    path: /sharp_hawk/accounts/:id
+    setup:
+      - create: account
+        fields:
+          email: alice@example.com
+          name: Alice Johnson
+    body:
+      account:
+        name: Alice Smith
+        role: admin
+        verified: true
+
+  - title: Show account
+    description: All fields are returned in the response regardless of write mode
+    order: 3
+    method: GET
+    path: /sharp_hawk/accounts/:id
+    setup:
+      - create: account
+        fields:
+          email: alice@example.com
+          name: Alice Johnson
+          role: admin
+          verified: true

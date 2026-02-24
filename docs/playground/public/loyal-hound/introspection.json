@@ -1,0 +1,1385 @@
+{
+  "base_path": "/loyal_hound",
+  "enums": {
+    "layer": {
+      "deprecated": false,
+      "description": null,
+      "example": null,
+      "values": [
+        "http",
+        "contract",
+        "domain"
+      ]
+    },
+    "sort_direction": {
+      "deprecated": false,
+      "description": null,
+      "example": null,
+      "values": [
+        "asc",
+        "desc"
+      ]
+    }
+  },
+  "error_codes": {
+    "unprocessable_entity": {
+      "description": "Unprocessable Entity",
+      "status": 422
+    }
+  },
+  "info": null,
+  "resources": {
+    "books": {
+      "actions": {
+        "index": {
+          "deprecated": false,
+          "description": null,
+          "method": "get",
+          "operation_id": null,
+          "path": "/books",
+          "raises": [],
+          "request": {
+            "body": {},
+            "query": {
+              "filter": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": true,
+                "type": "union",
+                "discriminator": null,
+                "variants": [
+                  {
+                    "default": null,
+                    "deprecated": false,
+                    "description": null,
+                    "example": null,
+                    "nullable": false,
+                    "optional": false,
+                    "type": "reference",
+                    "reference": "book_filter"
+                  },
+                  {
+                    "default": null,
+                    "deprecated": false,
+                    "description": null,
+                    "example": null,
+                    "nullable": false,
+                    "optional": false,
+                    "type": "array",
+                    "max": null,
+                    "min": null,
+                    "of": {
+                      "default": null,
+                      "deprecated": null,
+                      "description": null,
+                      "example": null,
+                      "nullable": null,
+                      "optional": null,
+                      "type": "reference",
+                      "reference": "book_filter"
+                    },
+                    "shape": {}
+                  }
+                ]
+              },
+              "include": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": true,
+                "type": "reference",
+                "reference": "book_include"
+              },
+              "page": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": true,
+                "type": "reference",
+                "reference": "book_page"
+              },
+              "sort": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": true,
+                "type": "union",
+                "discriminator": null,
+                "variants": [
+                  {
+                    "default": null,
+                    "deprecated": false,
+                    "description": null,
+                    "example": null,
+                    "nullable": false,
+                    "optional": false,
+                    "type": "reference",
+                    "reference": "book_sort"
+                  },
+                  {
+                    "default": null,
+                    "deprecated": false,
+                    "description": null,
+                    "example": null,
+                    "nullable": false,
+                    "optional": false,
+                    "type": "array",
+                    "max": null,
+                    "min": null,
+                    "of": {
+                      "default": null,
+                      "deprecated": null,
+                      "description": null,
+                      "example": null,
+                      "nullable": null,
+                      "optional": null,
+                      "type": "reference",
+                      "reference": "book_sort"
+                    },
+                    "shape": {}
+                  }
+                ]
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "default": null,
+              "deprecated": null,
+              "description": null,
+              "example": null,
+              "nullable": null,
+              "optional": null,
+              "type": "union",
+              "discriminator": null,
+              "variants": [
+                {
+                  "default": null,
+                  "deprecated": null,
+                  "description": null,
+                  "example": null,
+                  "nullable": null,
+                  "optional": null,
+                  "type": "reference",
+                  "reference": "book_index_success_response_body"
+                },
+                {
+                  "default": null,
+                  "deprecated": null,
+                  "description": null,
+                  "example": null,
+                  "nullable": null,
+                  "optional": null,
+                  "type": "reference",
+                  "reference": "error_response_body"
+                }
+              ]
+            },
+            "no_content": false
+          },
+          "summary": null,
+          "tags": []
+        },
+        "show": {
+          "deprecated": false,
+          "description": null,
+          "method": "get",
+          "operation_id": null,
+          "path": "/books/:id",
+          "raises": [],
+          "request": {
+            "body": {},
+            "query": {
+              "include": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": true,
+                "type": "reference",
+                "reference": "book_include"
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "default": null,
+              "deprecated": null,
+              "description": null,
+              "example": null,
+              "nullable": null,
+              "optional": null,
+              "type": "union",
+              "discriminator": null,
+              "variants": [
+                {
+                  "default": null,
+                  "deprecated": null,
+                  "description": null,
+                  "example": null,
+                  "nullable": null,
+                  "optional": null,
+                  "type": "reference",
+                  "reference": "book_show_success_response_body"
+                },
+                {
+                  "default": null,
+                  "deprecated": null,
+                  "description": null,
+                  "example": null,
+                  "nullable": null,
+                  "optional": null,
+                  "type": "reference",
+                  "reference": "error_response_body"
+                }
+              ]
+            },
+            "no_content": false
+          },
+          "summary": null,
+          "tags": []
+        },
+        "create": {
+          "deprecated": false,
+          "description": null,
+          "method": "post",
+          "operation_id": null,
+          "path": "/books",
+          "raises": [
+            "unprocessable_entity"
+          ],
+          "request": {
+            "body": {
+              "book": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": false,
+                "type": "reference",
+                "reference": "book_create_payload"
+              }
+            },
+            "query": {
+              "include": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": true,
+                "type": "reference",
+                "reference": "book_include"
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "default": null,
+              "deprecated": null,
+              "description": null,
+              "example": null,
+              "nullable": null,
+              "optional": null,
+              "type": "union",
+              "discriminator": null,
+              "variants": [
+                {
+                  "default": null,
+                  "deprecated": null,
+                  "description": null,
+                  "example": null,
+                  "nullable": null,
+                  "optional": null,
+                  "type": "reference",
+                  "reference": "book_create_success_response_body"
+                },
+                {
+                  "default": null,
+                  "deprecated": null,
+                  "description": null,
+                  "example": null,
+                  "nullable": null,
+                  "optional": null,
+                  "type": "reference",
+                  "reference": "error_response_body"
+                }
+              ]
+            },
+            "no_content": false
+          },
+          "summary": null,
+          "tags": []
+        },
+        "update": {
+          "deprecated": false,
+          "description": null,
+          "method": "patch",
+          "operation_id": null,
+          "path": "/books/:id",
+          "raises": [
+            "unprocessable_entity"
+          ],
+          "request": {
+            "body": {
+              "book": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": false,
+                "type": "reference",
+                "reference": "book_update_payload"
+              }
+            },
+            "query": {
+              "include": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": true,
+                "type": "reference",
+                "reference": "book_include"
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "default": null,
+              "deprecated": null,
+              "description": null,
+              "example": null,
+              "nullable": null,
+              "optional": null,
+              "type": "union",
+              "discriminator": null,
+              "variants": [
+                {
+                  "default": null,
+                  "deprecated": null,
+                  "description": null,
+                  "example": null,
+                  "nullable": null,
+                  "optional": null,
+                  "type": "reference",
+                  "reference": "book_update_success_response_body"
+                },
+                {
+                  "default": null,
+                  "deprecated": null,
+                  "description": null,
+                  "example": null,
+                  "nullable": null,
+                  "optional": null,
+                  "type": "reference",
+                  "reference": "error_response_body"
+                }
+              ]
+            },
+            "no_content": false
+          },
+          "summary": null,
+          "tags": []
+        },
+        "destroy": {
+          "deprecated": false,
+          "description": null,
+          "method": "delete",
+          "operation_id": null,
+          "path": "/books/:id",
+          "raises": [],
+          "request": {
+            "body": {},
+            "query": {
+              "include": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": true,
+                "type": "reference",
+                "reference": "book_include"
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "default": null,
+              "deprecated": null,
+              "description": null,
+              "example": null,
+              "nullable": null,
+              "optional": null,
+              "type": null
+            },
+            "no_content": true
+          },
+          "summary": null,
+          "tags": []
+        }
+      },
+      "identifier": "books",
+      "parent_identifiers": [],
+      "path": "books",
+      "resources": {}
+    }
+  },
+  "types": {
+    "author": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {
+        "id": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "name": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "author_create_payload": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {},
+      "type": "object",
+      "variants": []
+    },
+    "author_update_payload": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {},
+      "type": "object",
+      "variants": []
+    },
+    "book": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {
+        "author": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "reference",
+          "reference": "author"
+        },
+        "author_id": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "created_at": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "datetime"
+        },
+        "id": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "published_on": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": true,
+          "optional": false,
+          "type": "date"
+        },
+        "reviews": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "array",
+          "max": null,
+          "min": null,
+          "of": {
+            "default": null,
+            "deprecated": null,
+            "description": null,
+            "example": null,
+            "nullable": null,
+            "optional": null,
+            "type": "reference",
+            "reference": "review"
+          },
+          "shape": {}
+        },
+        "title": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "updated_at": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "datetime"
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "book_create_payload": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {
+        "author_id": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "published_on": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": true,
+          "optional": true,
+          "type": "date"
+        },
+        "title": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "book_create_success_response_body": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {
+        "book": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "reference",
+          "reference": "book"
+        },
+        "meta": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "object",
+          "partial": false,
+          "shape": {}
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "book_filter": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {
+        "AND": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "array",
+          "max": null,
+          "min": null,
+          "of": {
+            "default": null,
+            "deprecated": null,
+            "description": null,
+            "example": null,
+            "nullable": null,
+            "optional": null,
+            "type": "reference",
+            "reference": "book_filter"
+          },
+          "shape": {}
+        },
+        "NOT": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "reference",
+          "reference": "book_filter"
+        },
+        "OR": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "array",
+          "max": null,
+          "min": null,
+          "of": {
+            "default": null,
+            "deprecated": null,
+            "description": null,
+            "example": null,
+            "nullable": null,
+            "optional": null,
+            "type": "reference",
+            "reference": "book_filter"
+          },
+          "shape": {}
+        },
+        "title": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "union",
+          "discriminator": null,
+          "variants": [
+            {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "string",
+              "format": null,
+              "max": null,
+              "min": null
+            },
+            {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "reference",
+              "reference": "string_filter"
+            }
+          ]
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "book_include": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {
+        "author": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "boolean"
+        },
+        "reviews": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "boolean"
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "book_index_success_response_body": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {
+        "pagination": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "reference",
+          "reference": "offset_pagination"
+        },
+        "books": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "array",
+          "max": null,
+          "min": null,
+          "of": {
+            "default": null,
+            "deprecated": null,
+            "description": null,
+            "example": null,
+            "nullable": null,
+            "optional": null,
+            "type": "reference",
+            "reference": "book"
+          },
+          "shape": {}
+        },
+        "meta": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "object",
+          "partial": false,
+          "shape": {}
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "book_page": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {
+        "number": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "integer",
+          "format": null,
+          "max": null,
+          "min": 1
+        },
+        "size": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "integer",
+          "format": null,
+          "max": 100,
+          "min": 1
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "book_show_success_response_body": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {
+        "book": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "reference",
+          "reference": "book"
+        },
+        "meta": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "object",
+          "partial": false,
+          "shape": {}
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "book_sort": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {
+        "published_on": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "reference",
+          "reference": "sort_direction"
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "book_update_payload": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {
+        "author_id": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "published_on": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": true,
+          "optional": true,
+          "type": "date"
+        },
+        "title": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "book_update_success_response_body": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {
+        "book": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "reference",
+          "reference": "book"
+        },
+        "meta": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "object",
+          "partial": false,
+          "shape": {}
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "error": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {
+        "issues": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "array",
+          "max": null,
+          "min": null,
+          "of": {
+            "default": null,
+            "deprecated": null,
+            "description": null,
+            "example": null,
+            "nullable": null,
+            "optional": null,
+            "type": "reference",
+            "reference": "issue"
+          },
+          "shape": {}
+        },
+        "layer": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "reference",
+          "reference": "layer"
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "error_response_body": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [
+        "error"
+      ],
+      "shape": {},
+      "type": "object",
+      "variants": []
+    },
+    "issue": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {
+        "code": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "detail": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "meta": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "object",
+          "partial": false,
+          "shape": {}
+        },
+        "path": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "array",
+          "max": null,
+          "min": null,
+          "of": {
+            "default": null,
+            "deprecated": null,
+            "description": null,
+            "example": null,
+            "nullable": null,
+            "optional": null,
+            "type": "string",
+            "format": null,
+            "max": null,
+            "min": null
+          },
+          "shape": {}
+        },
+        "pointer": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "offset_pagination": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {
+        "current": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "integer",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "items": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "integer",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "next": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": true,
+          "optional": true,
+          "type": "integer",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "prev": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": true,
+          "optional": true,
+          "type": "integer",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "total": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "integer",
+          "format": null,
+          "max": null,
+          "min": null
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "review": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {
+        "body": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": true,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "id": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "rating": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "integer",
+          "format": null,
+          "max": null,
+          "min": null
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "review_create_payload": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {},
+      "type": "object",
+      "variants": []
+    },
+    "review_update_payload": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {},
+      "type": "object",
+      "variants": []
+    },
+    "string_filter": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {
+        "contains": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "ends_with": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "eq": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "in": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "array",
+          "max": null,
+          "min": null,
+          "of": {
+            "default": null,
+            "deprecated": null,
+            "description": null,
+            "example": null,
+            "nullable": null,
+            "optional": null,
+            "type": "string",
+            "format": null,
+            "max": null,
+            "min": null
+          },
+          "shape": {}
+        },
+        "starts_with": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        }
+      },
+      "type": "object",
+      "variants": []
+    }
+  }
+}

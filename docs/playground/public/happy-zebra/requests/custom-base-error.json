@@ -1,0 +1,29 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/happy_zebra/users",
+    "body": {
+      "user": {
+        "email": "same@example.com",
+        "username": "same@example.com"
+      }
+    }
+  },
+  "response": {
+    "body": {
+      "issues": [
+        {
+          "code": "conflict",
+          "detail": "Conflict",
+          "meta": {},
+          "path": [
+            "user"
+          ],
+          "pointer": "/user"
+        }
+      ],
+      "layer": "domain"
+    },
+    "status": 422
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/wise_tiger/projects/48b9294b-b5f6-51ea-9c77-a28d821b337d"
+  },
+  "response": {
+    "body": {
+      "project": {
+        "id": "48b9294b-b5f6-51ea-9c77-a28d821b337d",
+        "name": "API Integration",
+        "description": "Connect to third-party services",
+        "status": "active",
+        "priority": "critical",
+        "deadline": "2024-06-01",
+        "createdAt": "2024-01-01T12:00:00.000Z",
+        "updatedAt": "2024-01-01T12:00:00.000Z"
+      }
+    },
+    "status": 200
+  }
+}

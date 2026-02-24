@@ -1,0 +1,19 @@
+{
+  "request": {
+    "method": "PATCH",
+    "path": "/nimble_gecko/meal-plans/60e6912b-2e98-5f0c-892b-391c9c742417",
+    "body": {
+      "MealPlan": {
+        "CookTime": 25,
+        "ServingSize": 6
+      }
+    }
+  },
+  "response": {
+    "body": {
+      "status": 404,
+      "error": "Not Found"
+    },
+    "status": 404
+  }
+}

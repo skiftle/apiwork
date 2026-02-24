@@ -1,0 +1,33 @@
+name: Release
+on:
+  push:
+    branches: [main, master]
+permissions:
+  contents: write
+  pull-requests: write
+  id-token: write
+jobs:
+  release-please:
+    name: Release Please
+    runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+    steps:
+      - uses: googleapis/release-please-action@v4
+        id: release
+  publish:
+    name: Publish to RubyGems
+    needs: release-please
+    if: ${{ needs.release-please.outputs.release_created }}
+    runs-on: ubuntu-latest
+    environment: rubygems
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+      - uses: rubygems/configure-rubygems-credentials@main
+      - run: gem build apiwork.gemspec
+      - run: gem push apiwork-*.gem

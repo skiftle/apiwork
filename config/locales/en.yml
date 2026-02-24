@@ -1,0 +1,119 @@
+en:
+  apiwork:
+    issues:
+      array_too_large:
+        detail: "Too many items"
+      array_too_small:
+        detail: "Too few items"
+      depth_exceeded:
+        detail: "Too deeply nested"
+      field_missing:
+        detail: "Required"
+      field_unknown:
+        detail: "Unknown field"
+      number_too_large:
+        detail: "Too large"
+      number_too_small:
+        detail: "Too small"
+      string_too_long:
+        detail: "Too long"
+      string_too_short:
+        detail: "Too short"
+      type_invalid:
+        detail: "Invalid type"
+      value_invalid:
+        detail: "Invalid value"
+      value_null:
+        detail: "Cannot be null"
+    error_codes:
+      bad_request:
+        description: "Bad Request"
+      unauthorized:
+        description: "Unauthorized"
+      payment_required:
+        description: "Payment Required"
+      forbidden:
+        description: "Forbidden"
+      not_found:
+        description: "Not Found"
+      method_not_allowed:
+        description: "Method Not Allowed"
+      not_acceptable:
+        description: "Not Acceptable"
+      request_timeout:
+        description: "Request Timeout"
+      conflict:
+        description: "Conflict"
+      gone:
+        description: "Gone"
+      precondition_failed:
+        description: "Precondition Failed"
+      unsupported_media_type:
+        description: "Unsupported Media Type"
+      unprocessable_entity:
+        description: "Unprocessable Entity"
+      locked:
+        description: "Locked"
+      too_many_requests:
+        description: "Too Many Requests"
+      internal_server_error:
+        description: "Internal Server Error"
+      not_implemented:
+        description: "Not Implemented"
+      bad_gateway:
+        description: "Bad Gateway"
+      service_unavailable:
+        description: "Service Unavailable"
+      gateway_timeout:
+        description: "Gateway Timeout"
+    adapters:
+      standard:
+        capabilities:
+          writing:
+            issues:
+              required:
+                detail: "Required"
+              forbidden:
+                detail: "Must be blank"
+              unique:
+                detail: "Already taken"
+              format:
+                detail: "Invalid format"
+              accepted:
+                detail: "Must be accepted"
+              confirmed:
+                detail: "Does not match"
+              min:
+                detail: "Too short"
+              max:
+                detail: "Too long"
+              length:
+                detail: "Wrong length"
+              number:
+                detail: "Not a number"
+              integer:
+                detail: "Not an integer"
+              gt:
+                detail: "Too small"
+              gte:
+                detail: "Too small"
+              lt:
+                detail: "Too large"
+              lte:
+                detail: "Too large"
+              eq:
+                detail: "Wrong value"
+              ne:
+                detail: "Reserved value"
+              odd:
+                detail: "Must be odd"
+              even:
+                detail: "Must be even"
+              in:
+                detail: "Invalid value"
+              not_in:
+                detail: "Reserved value"
+              associated:
+                detail: "Invalid"
+              invalid:
+                detail: "Invalid"

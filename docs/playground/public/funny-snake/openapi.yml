@@ -1,0 +1,183 @@
+---
+openapi: 3.1.0
+info:
+  title: "/funny_snake"
+  version: 1.0.0
+paths:
+  "/invoices":
+    get:
+      operationId: invoicesIndex
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  invoices:
+                    items:
+                      "$ref": "#/components/schemas/invoice"
+                    type: array
+                type: object
+                required:
+                - invoices
+          description: Successful response
+    post:
+      operationId: invoicesCreate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                invoice:
+                  "$ref": "#/components/schemas/invoiceCreatePayload"
+              type: object
+              required:
+              - invoice
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  invoice:
+                    "$ref": "#/components/schemas/invoice"
+                type: object
+                required:
+                - invoice
+          description: Successful response
+  "/invoices/{id}":
+    get:
+      operationId: invoicesShow
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  invoice:
+                    "$ref": "#/components/schemas/invoice"
+                type: object
+                required:
+                - invoice
+          description: Successful response
+    patch:
+      operationId: invoicesUpdate
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                invoice:
+                  "$ref": "#/components/schemas/invoiceUpdatePayload"
+              type: object
+              required:
+              - invoice
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  invoice:
+                    "$ref": "#/components/schemas/invoice"
+                type: object
+                required:
+                - invoice
+          description: Successful response
+    delete:
+      operationId: invoicesDestroy
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No content
+components:
+  schemas:
+    invoice:
+      properties:
+        createdAt:
+          type: string
+          format: date-time
+        id:
+          type: string
+          format: uuid
+        issuedOn:
+          type: string
+          format: date
+        notes:
+          type: string
+        number:
+          type: string
+        status:
+          enum:
+          - draft
+          - sent
+          - paid
+          type: string
+        updatedAt:
+          type: string
+          format: date-time
+      type: object
+      required:
+      - createdAt
+      - id
+      - issuedOn
+      - notes
+      - number
+      - status
+      - updatedAt
+    invoiceCreatePayload:
+      properties:
+        issuedOn:
+          type: string
+          format: date
+        notes:
+          type: string
+        number:
+          type: string
+        status:
+          enum:
+          - draft
+          - sent
+          - paid
+          type: string
+      type: object
+      required:
+      - issuedOn
+      - notes
+      - number
+      - status
+    invoiceUpdatePayload:
+      properties:
+        issuedOn:
+          type: string
+          format: date
+        notes:
+          type: string
+        number:
+          type: string
+        status:
+          enum:
+          - draft
+          - sent
+          - paid
+          type: string
+      type: object

@@ -1,0 +1,31 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/mighty_wolf/vehicles?filter[type][eq]=car"
+  },
+  "response": {
+    "body": {
+      "vehicles": [
+        {
+          "type": "car",
+          "id": "7900de74-233c-5bc9-bc0c-6679f7a345a5",
+          "brand": "Volvo",
+          "model": "EX30",
+          "year": null,
+          "color": null,
+          "createdAt": "2024-01-01T12:00:00.000Z",
+          "updatedAt": "2024-01-01T12:00:00.000Z",
+          "doors": null
+        }
+      ],
+      "pagination": {
+        "items": 1,
+        "total": 1,
+        "current": 1,
+        "next": null,
+        "prev": null
+      }
+    },
+    "status": 200
+  }
+}

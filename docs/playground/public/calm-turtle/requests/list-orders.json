@@ -1,0 +1,40 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/calm_turtle/orders"
+  },
+  "response": {
+    "body": {
+      "orders": [
+        {
+          "id": "f951f663-b887-5470-8c0c-03e090cd26eb",
+          "orderNumber": "ORD-001",
+          "customerId": "75753994-5ee6-5196-ace1-7c3b6c63ed95",
+          "shippingStreet": "456 Oak Ave",
+          "shippingCity": "Shelbyville",
+          "shippingCountry": "US",
+          "createdAt": "2024-01-01T12:00:00.000Z",
+          "updatedAt": "2024-01-01T12:00:00.000Z"
+        },
+        {
+          "id": "2e6425b6-4cdb-5ca7-9764-8bd9171ba992",
+          "orderNumber": "ORD-002",
+          "customerId": "75753994-5ee6-5196-ace1-7c3b6c63ed95",
+          "shippingStreet": "789 Elm Blvd",
+          "shippingCity": "Capital City",
+          "shippingCountry": "US",
+          "createdAt": "2024-01-01T12:00:00.000Z",
+          "updatedAt": "2024-01-01T12:00:00.000Z"
+        }
+      ],
+      "pagination": {
+        "items": 2,
+        "total": 1,
+        "current": 1,
+        "next": null,
+        "prev": null
+      }
+    },
+    "status": 200
+  }
+}

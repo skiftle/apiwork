@@ -1,0 +1,293 @@
+{
+  "base_path": "/lazy_cow",
+  "enums": {
+    "layer": {
+      "deprecated": false,
+      "description": null,
+      "example": null,
+      "values": [
+        "http",
+        "contract",
+        "domain"
+      ]
+    }
+  },
+  "error_codes": {},
+  "info": null,
+  "resources": {
+    "status": {
+      "actions": {
+        "health": {
+          "deprecated": false,
+          "description": null,
+          "method": "get",
+          "operation_id": null,
+          "path": "/status/health",
+          "raises": [],
+          "request": {
+            "body": {},
+            "query": {}
+          },
+          "response": {
+            "body": {
+              "default": null,
+              "deprecated": null,
+              "description": null,
+              "example": null,
+              "nullable": null,
+              "optional": null,
+              "type": "object",
+              "partial": null,
+              "shape": {
+                "status": {
+                  "default": null,
+                  "deprecated": false,
+                  "description": null,
+                  "example": null,
+                  "nullable": false,
+                  "optional": false,
+                  "type": "string",
+                  "format": null,
+                  "max": null,
+                  "min": null
+                },
+                "timestamp": {
+                  "default": null,
+                  "deprecated": false,
+                  "description": null,
+                  "example": null,
+                  "nullable": false,
+                  "optional": false,
+                  "type": "datetime"
+                },
+                "version": {
+                  "default": null,
+                  "deprecated": false,
+                  "description": null,
+                  "example": null,
+                  "nullable": false,
+                  "optional": false,
+                  "type": "string",
+                  "format": null,
+                  "max": null,
+                  "min": null
+                }
+              }
+            },
+            "no_content": false
+          },
+          "summary": null,
+          "tags": []
+        },
+        "stats": {
+          "deprecated": false,
+          "description": null,
+          "method": "get",
+          "operation_id": null,
+          "path": "/status/stats",
+          "raises": [],
+          "request": {
+            "body": {},
+            "query": {}
+          },
+          "response": {
+            "body": {
+              "default": null,
+              "deprecated": null,
+              "description": null,
+              "example": null,
+              "nullable": null,
+              "optional": null,
+              "type": "object",
+              "partial": null,
+              "shape": {
+                "posts_count": {
+                  "default": null,
+                  "deprecated": false,
+                  "description": null,
+                  "example": null,
+                  "nullable": false,
+                  "optional": false,
+                  "type": "integer",
+                  "format": null,
+                  "max": null,
+                  "min": null
+                },
+                "uptime_seconds": {
+                  "default": null,
+                  "deprecated": false,
+                  "description": null,
+                  "example": null,
+                  "nullable": false,
+                  "optional": false,
+                  "type": "integer",
+                  "format": null,
+                  "max": null,
+                  "min": null
+                },
+                "users_count": {
+                  "default": null,
+                  "deprecated": false,
+                  "description": null,
+                  "example": null,
+                  "nullable": false,
+                  "optional": false,
+                  "type": "integer",
+                  "format": null,
+                  "max": null,
+                  "min": null
+                }
+              }
+            },
+            "no_content": false
+          },
+          "summary": null,
+          "tags": []
+        }
+      },
+      "identifier": "status",
+      "parent_identifiers": [],
+      "path": "status",
+      "resources": {}
+    }
+  },
+  "types": {
+    "error": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {
+        "issues": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "array",
+          "max": null,
+          "min": null,
+          "of": {
+            "default": null,
+            "deprecated": null,
+            "description": null,
+            "example": null,
+            "nullable": null,
+            "optional": null,
+            "type": "reference",
+            "reference": "issue"
+          },
+          "shape": {}
+        },
+        "layer": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "reference",
+          "reference": "layer"
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "error_response_body": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [
+        "error"
+      ],
+      "shape": {},
+      "type": "object",
+      "variants": []
+    },
+    "issue": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {
+        "code": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "detail": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "meta": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "object",
+          "partial": false,
+          "shape": {}
+        },
+        "path": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "array",
+          "max": null,
+          "min": null,
+          "of": {
+            "default": null,
+            "deprecated": null,
+            "description": null,
+            "example": null,
+            "nullable": null,
+            "optional": null,
+            "type": "string",
+            "format": null,
+            "max": null,
+            "min": null
+          },
+          "shape": {}
+        },
+        "pointer": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        }
+      },
+      "type": "object",
+      "variants": []
+    }
+  }
+}

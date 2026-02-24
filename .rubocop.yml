@@ -1,0 +1,11 @@
+inherit_gem:
+  rubocop-skiftle: rubocop-gem.yml
+
+AllCops:
+  Exclude:
+    - "**/bin/**/*"
+    - "**/db/**/*"
+    - "**/log/**/*"
+    - "**/tmp/**/*"
+    - "**/vendor/**/*"
+    - "spec/dummy/Rakefile"

@@ -1,0 +1,75 @@
+title: Cursor Pagination
+description: Cursor-based pagination for navigating large datasets
+order: 5
+
+sections:
+  - title: API Definition
+    files:
+      - config/apis/grumpy_panda.rb
+  - title: Models
+    files:
+      - app/models/grumpy_panda/activity.rb
+  - title: Representations
+    files:
+      - app/representations/grumpy_panda/activity_representation.rb
+  - title: Contracts
+    files:
+      - app/contracts/grumpy_panda/activity_contract.rb
+  - title: Controllers
+    files:
+      - app/controllers/grumpy_panda/activities_controller.rb
+
+scenarios:
+  - title: First page
+    description: Returns first page with next_cursor
+    order: 1
+    method: GET
+    path: /grumpy_panda/activities
+    setup:
+      - create: activity
+        fields:
+          action: user.login
+          occurred_at: "2024-01-01T10:00:00Z"
+      - create: activity
+        fields:
+          action: user.logout
+          occurred_at: "2024-01-01T11:00:00Z"
+      - create: activity
+        fields:
+          action: post.create
+          occurred_at: "2024-01-01T12:00:00Z"
+      - create: activity
+        fields:
+          action: post.update
+          occurred_at: "2024-01-01T13:00:00Z"
+      - create: activity
+        fields:
+          action: post.delete
+          occurred_at: "2024-01-01T14:00:00Z"
+
+  - title: Next page
+    description: Fetch next page using cursor from previous response
+    order: 2
+    method: GET
+    path: /grumpy_panda/activities?page[after]=eyJpZCI6IjRjMzkyNzVmLWVjMTQtNWEzNy04NThkLTg0ZWI2ODk5YjU1ZCJ9
+    setup:
+      - create: activity
+        fields:
+          action: user.login
+          occurred_at: "2024-01-01T10:00:00Z"
+      - create: activity
+        fields:
+          action: user.logout
+          occurred_at: "2024-01-01T11:00:00Z"
+      - create: activity
+        fields:
+          action: post.create
+          occurred_at: "2024-01-01T12:00:00Z"
+      - create: activity
+        fields:
+          action: post.update
+          occurred_at: "2024-01-01T13:00:00Z"
+      - create: activity
+        fields:
+          action: post.delete
+          occurred_at: "2024-01-01T14:00:00Z"

@@ -1,0 +1,19 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/bright_parrot/notifications",
+    "body": {
+      "preference": {
+        "channel": "sms",
+        "phoneNumber": "+1234567890"
+      }
+    }
+  },
+  "response": {
+    "body": {
+      "phoneNumber": "+1234567890",
+      "channel": "sms"
+    },
+    "status": 201
+  }
+}

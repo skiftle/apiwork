@@ -1,0 +1,44 @@
+title: Value Transforms
+description: Transform values on input/output and handle nil/empty string conversion
+order: 14
+
+sections:
+  - title: API Definition
+    files:
+      - config/apis/swift_fox.rb
+  - title: Models
+    files:
+      - app/models/swift_fox/contact.rb
+  - title: Representations
+    files:
+      - app/representations/swift_fox/contact_representation.rb
+  - title: Contracts
+    files:
+      - app/contracts/swift_fox/contact_contract.rb
+  - title: Controllers
+    files:
+      - app/controllers/swift_fox/contacts_controller.rb
+
+scenarios:
+  - title: Create with transforms
+    description: Email decoded, empty strings handled
+    order: 1
+    method: POST
+    path: /swift_fox/contacts
+    body:
+      contact:
+        name: John Doe
+        email: John.Doe@Example.COM
+        phone: ""
+        notes: ""
+
+  - title: Show transformed data
+    description: Email encoded in response
+    order: 2
+    method: GET
+    path: /swift_fox/contacts/:id
+    setup:
+      - create: contact
+        fields:
+          name: Jane Doe
+          email: JANE@EXAMPLE.COM

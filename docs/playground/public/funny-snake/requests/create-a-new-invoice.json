@@ -1,0 +1,28 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/funny_snake/invoices",
+    "body": {
+      "invoice": {
+        "number": "INV-001",
+        "issuedOn": "2024-01-15",
+        "status": "draft",
+        "notes": "First invoice"
+      }
+    }
+  },
+  "response": {
+    "body": {
+      "invoice": {
+        "id": "657000e8-1cd9-5b78-9ca2-dd399ce78cb4",
+        "createdAt": "2024-01-01T12:00:00.000Z",
+        "issuedOn": "2024-01-15",
+        "notes": "First invoice",
+        "number": "INV-001",
+        "status": "draft",
+        "updatedAt": "2024-01-01T12:00:00.000Z"
+      }
+    },
+    "status": 201
+  }
+}

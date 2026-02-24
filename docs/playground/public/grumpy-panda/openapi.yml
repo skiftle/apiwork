@@ -1,0 +1,262 @@
+---
+openapi: 3.1.0
+info:
+  title: "/grumpy_panda"
+  version: 1.0.0
+paths:
+  "/activities":
+    get:
+      operationId: activitiesIndex
+      parameters:
+      - in: query
+        name: page
+        required: false
+        schema:
+          "$ref": "#/components/schemas/activityPage"
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/activityIndexSuccessResponseBody"
+          description: Successful response
+    post:
+      operationId: activitiesCreate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                activity:
+                  "$ref": "#/components/schemas/activityCreatePayload"
+              type: object
+              required:
+              - activity
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/activityCreateSuccessResponseBody"
+          description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
+  "/activities/{id}":
+    get:
+      operationId: activitiesShow
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/activityShowSuccessResponseBody"
+          description: Successful response
+    patch:
+      operationId: activitiesUpdate
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                activity:
+                  "$ref": "#/components/schemas/activityUpdatePayload"
+              type: object
+              required:
+              - activity
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/activityUpdateSuccessResponseBody"
+          description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
+    delete:
+      operationId: activitiesDestroy
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No content
+components:
+  schemas:
+    activity:
+      properties:
+        action:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        id:
+          type: string
+        occurredAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      type: object
+      required:
+      - action
+      - createdAt
+      - id
+      - occurredAt
+      - updatedAt
+    activityCreatePayload:
+      properties:
+        action:
+          type: string
+        occurredAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+      type: object
+      required:
+      - action
+    activityCreateSuccessResponseBody:
+      properties:
+        activity:
+          "$ref": "#/components/schemas/activity"
+        meta:
+          properties: {}
+          type: object
+      type: object
+      required:
+      - activity
+    activityIndexSuccessResponseBody:
+      properties:
+        pagination:
+          "$ref": "#/components/schemas/cursorPagination"
+        activities:
+          items:
+            "$ref": "#/components/schemas/activity"
+          type: array
+        meta:
+          properties: {}
+          type: object
+      type: object
+      required:
+      - pagination
+      - activities
+    activityPage:
+      properties:
+        after:
+          type: string
+        before:
+          type: string
+        size:
+          type: integer
+          minimum: 1
+          maximum: 100
+      type: object
+    activityShowSuccessResponseBody:
+      properties:
+        activity:
+          "$ref": "#/components/schemas/activity"
+        meta:
+          properties: {}
+          type: object
+      type: object
+      required:
+      - activity
+    activityUpdatePayload:
+      properties:
+        action:
+          type: string
+        occurredAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+      type: object
+    activityUpdateSuccessResponseBody:
+      properties:
+        activity:
+          "$ref": "#/components/schemas/activity"
+        meta:
+          properties: {}
+          type: object
+      type: object
+      required:
+      - activity
+    cursorPagination:
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        prev:
+          type:
+          - string
+          - 'null'
+      type: object
+    error:
+      properties:
+        issues:
+          items:
+            "$ref": "#/components/schemas/issue"
+          type: array
+        layer:
+          enum:
+          - http
+          - contract
+          - domain
+          type: string
+      type: object
+      required:
+      - issues
+      - layer
+    errorResponseBody:
+      "$ref": "#/components/schemas/error"
+    issue:
+      properties:
+        code:
+          type: string
+        detail:
+          type: string
+        meta:
+          properties: {}
+          type: object
+        path:
+          items:
+            type: string
+          type: array
+        pointer:
+          type: string
+      type: object
+      required:
+      - code
+      - detail
+      - meta
+      - path
+      - pointer

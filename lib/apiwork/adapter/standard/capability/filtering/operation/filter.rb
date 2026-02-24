@@ -1,0 +1,462 @@
+# frozen_string_literal: true
+
+module Apiwork
+  module Adapter
+    class Standard
+      module Capability
+        class Filtering
+          class Operation
+            class Filter
+              attr_reader :representation_class
+
+              class << self
+                def apply(relation, representation_class, params)
+                  new(relation, representation_class).apply(params)
+                end
+              end
+
+              def initialize(relation, representation_class)
+                @relation = relation
+                @representation_class = representation_class
+              end
+
+              def apply(params)
+                data = filter_data(params)
+                includes = IncludesResolver.resolve(representation_class, params)
+                { data:, includes: }
+              end
+
+              def build_where_conditions(filter, target_klass = representation_class.model_class)
+                filter.each_with_object([[], {}]) do |(key, value), (conditions, joins)|
+                  key = key.to_sym
+
+                  if (attribute = representation_class.attributes[key])&.filterable?
+                    next unless filterable_for_context?(attribute)
+
+                    if (condition = build_column_condition(key, value, target_klass))
+                      conditions << condition
+                    end
+
+                  elsif (association = find_filterable_association(key))
+                    association_conditions, association_joins = build_join_conditions(key, value, association)
+                    conditions.concat(association_conditions)
+                    joins.deep_merge!(association_joins)
+                  end
+                end
+              end
+
+              private
+
+              def filter_data(params)
+                return @relation if params.blank?
+
+                case params
+                when Hash
+                  apply_hash_filter(params)
+                when Array
+                  apply_array_filter(params)
+                end
+              end
+
+              def apply_hash_filter(params)
+                logical_operators, regular_attributes = separate_logical_operators(params)
+
+                scope = @relation
+
+                if regular_attributes.present?
+                  conditions, joins = build_where_conditions(regular_attributes, representation_class.model_class)
+                  scope = with_joins_and_distinct(scope, joins) { |scoped| scoped.where(conditions.reduce(:and)) } if conditions.any?
+                end
+
+                scope = apply_not(scope, logical_operators[Constants::NOT]) if logical_operators.key?(Constants::NOT)
+                scope = apply_or(scope, logical_operators[Constants::OR]) if logical_operators.key?(Constants::OR)
+                scope = apply_and(scope, logical_operators[Constants::AND]) if logical_operators.key?(Constants::AND)
+
+                scope
+              end
+
+              def apply_array_filter(params)
+                return @relation if params.empty?
+
+                individual_conditions = params.filter_map do |filter_hash|
+                  conditions, _joins = build_where_conditions(filter_hash, representation_class.model_class)
+                  conditions.compact.reduce(:and) if conditions.any?
+                end
+
+                all_joins = params
+                  .map { |filter_params| build_where_conditions(filter_params, representation_class.model_class)[1] }
+                  .each_with_object({}) { |joins, accumulated| accumulated.deep_merge!(joins) }
+
+                with_joins_and_distinct(@relation, all_joins) do |scope|
+                  if individual_conditions.any?
+                    scope.where(individual_conditions.reduce(:or))
+                  else
+                    scope
+                  end
+                end
+              end
+
+              def apply_not(scope, filter_params)
+                condition, joins = build_conditions_recursive(filter_params)
+                return scope if condition.nil?
+
+                with_joins_and_distinct(scope, joins) { |scoped| scoped.where.not(condition) }
+              end
+
+              def apply_or(scope, conditions_array)
+                return scope if conditions_array.blank?
+
+                or_conditions = []
+                all_joins = {}
+
+                conditions_array.each do |filter_hash|
+                  conditions, joins = build_conditions_recursive(filter_hash)
+                  or_conditions << conditions if conditions
+                  all_joins = all_joins.deep_merge(joins)
+                end
+
+                with_joins_and_distinct(scope, all_joins) do |scoped|
+                  if or_conditions.any?
+                    scoped.where(or_conditions.compact.reduce(:or))
+                  else
+                    scoped
+                  end
+                end
+              end
+
+              def apply_and(scope, conditions_array)
+                return scope if conditions_array.blank?
+
+                conditions_array.reduce(scope) do |current_scope, filter_hash|
+                  Filter.apply(current_scope, representation_class, filter_hash)[:data]
+                end
+              end
+
+              def build_conditions_recursive(filter_params)
+                return [nil, {}] if filter_params.blank?
+                return [nil, {}] unless filter_params.is_a?(Hash)
+
+                logical_operators, regular_attributes = separate_logical_operators(filter_params)
+
+                conditions = []
+                all_joins = {}
+
+                if regular_attributes.present?
+                  attribute_conditions, joins = build_where_conditions(regular_attributes, representation_class.model_class)
+                  conditions << attribute_conditions.reduce(:and) if attribute_conditions.any?
+                  all_joins = all_joins.deep_merge(joins)
+                end
+
+                if logical_operators.key?(Constants::AND)
+                  condition, joins = process_logical_operator(logical_operators[Constants::AND], :and)
+                  conditions << condition if condition
+                  all_joins = all_joins.deep_merge(joins)
+                end
+
+                if logical_operators.key?(Constants::OR)
+                  condition, joins = process_logical_operator(logical_operators[Constants::OR], :or)
+                  conditions << condition if condition
+                  all_joins = all_joins.deep_merge(joins)
+                end
+
+                if logical_operators.key?(Constants::NOT)
+                  not_condition, joins = build_conditions_recursive(logical_operators[Constants::NOT])
+                  conditions << not_condition.not if not_condition
+                  all_joins = all_joins.deep_merge(joins)
+                end
+
+                [conditions.compact.reduce(:and), all_joins]
+              end
+
+              def process_logical_operator(filters, combinator)
+                collected_conditions = []
+                all_joins = {}
+
+                filters.each do |filter_hash|
+                  condition, joins = build_conditions_recursive(filter_hash)
+                  collected_conditions << condition if condition
+                  all_joins = all_joins.deep_merge(joins)
+                end
+
+                [collected_conditions.any? ? collected_conditions.reduce(combinator) : nil, all_joins]
+              end
+
+              def filterable_for_context?(attribute)
+                return true unless attribute.filterable?.is_a?(Proc)
+
+                representation_class.new(nil, {}).instance_eval(&attribute.filterable?)
+              end
+
+              def build_column_condition(key, value, target_klass)
+                association = representation_class.polymorphic_association_for_type_column(key)
+                value = transform_polymorphic_filter_value(value, association) if association
+
+                inheritance = representation_class.inheritance_for_column(key)
+                value = transform_sti_filter_value(value, inheritance) if inheritance
+
+                column_type = target_klass.type_for_attribute(key).type
+                return nil if column_type.nil?
+
+                case column_type
+                when :uuid
+                  build_uuid_where_clause(key, value, target_klass)
+                when :string, :text, :binary
+                  build_string_where_clause(key, value, target_klass)
+                when :date, :datetime
+                  build_date_where_clause(key, value, target_klass)
+                when :time
+                  build_time_where_clause(key, value, target_klass)
+                when :decimal, :integer, :float
+                  build_numeric_where_clause(key, value, target_klass)
+                when :boolean
+                  build_boolean_where_clause(key, value, target_klass)
+                end
+              end
+
+              def transform_polymorphic_filter_value(value, association)
+                mapping = build_polymorphic_type_mapping(association)
+
+                case value
+                when String
+                  mapping[value] || value
+                when Hash
+                  value.transform_values { |item| transform_polymorphic_filter_value(item, association) }
+                when Array
+                  value.map { |item| transform_polymorphic_filter_value(item, association) }
+                else
+                  value
+                end
+              end
+
+              def build_polymorphic_type_mapping(association)
+                association.polymorphic.each_with_object({}) do |representation_class, mapping|
+                  mapping[representation_class.polymorphic_name] = representation_class.model_class.polymorphic_name
+                end
+              end
+
+              def transform_sti_filter_value(value, inheritance)
+                mapping = inheritance.mapping
+
+                case value
+                when String
+                  mapping[value] || value
+                when Hash
+                  value.transform_values { |item| transform_sti_filter_value(item, inheritance) }
+                when Array
+                  value.map { |item| transform_sti_filter_value(item, inheritance) }
+                else
+                  value
+                end
+              end
+
+              def find_filterable_association(key)
+                association = representation_class.associations[key]
+                return unless association
+                return unless association.filterable?
+
+                association
+              end
+
+              def build_join_conditions(key, value, association)
+                reflection = representation_class.model_class.reflect_on_association(key)
+                return [[], {}] unless reflection
+                return [[], {}] unless association.representation_class
+
+                nested_query = Filter.new(reflection.klass.all, association.representation_class)
+                nested_conditions, nested_joins = nested_query.build_where_conditions(value, reflection.klass)
+
+                [nested_conditions, { key => (nested_joins.any? ? nested_joins : {}) }]
+              end
+
+              def build_uuid_where_clause(key, value, target_klass)
+                column = target_klass.arel_table[key]
+
+                normalizer = lambda do |value|
+                  case value
+                  when String
+                    value.include?(',') ? { in: value.split(',') } : { eq: value }
+                  when Array
+                    { in: value }
+                  else
+                    value
+                  end
+                end
+
+                builder = Builder.new(column, key, allowed_types: [Hash])
+
+                builder.build(value, normalizer:, valid_operators: Constants::NULLABLE_UUID_OPERATORS) do |operator, compare|
+                  case operator
+                  when :eq then column.eq(compare)
+                  when :in then column.in(compare)
+                  when :null then handle_null_operator(column, compare)
+                  end
+                end
+              end
+
+              def build_string_where_clause(key, value, target_klass)
+                column = target_klass.arel_table[key]
+
+                normalizer = ->(value) { value.is_a?(String) || value.nil? ? { eq: value } : value }
+
+                builder = Builder.new(column, key, allowed_types: [Hash])
+
+                builder.build(
+                  value,
+                  normalizer:,
+                  valid_operators: Constants::NULLABLE_STRING_OPERATORS,
+                ) do |operator, compare|
+                  case operator
+                  when :eq then column.eq(compare)
+                  when :contains then case_sensitive_pattern_match(column, "%#{compare}%")
+                  when :starts_with then case_sensitive_pattern_match(column, "#{compare}%")
+                  when :ends_with then case_sensitive_pattern_match(column, "%#{compare}")
+                  when :in then column.in(compare)
+                  when :null then handle_null_operator(column, compare)
+                  end
+                end
+              end
+
+              def build_date_where_clause(key, value, target_klass)
+                column = target_klass.arel_table[key]
+
+                return handle_nil_value(column) if value.nil?
+                return column.eq(value) unless value.is_a?(Hash)
+
+                normalizer = ->(value) { value }
+
+                builder = Builder.new(column, key, allowed_types: [Hash])
+
+                builder.build(value, normalizer:, valid_operators: Constants::NULLABLE_DATE_OPERATORS) do |operator, compare|
+                  case operator
+                  when :null then handle_null_operator(column, compare)
+                  when :between
+                    from_date = compare[:from]
+                    to_date = compare[:to]
+                    next unless from_date && to_date
+
+                    column.gteq(from_date.beginning_of_day).and(column.lteq(to_date.end_of_day))
+                  when :eq then column.eq(compare)
+                  when :gt then column.gt(compare)
+                  when :gte then column.gteq(compare)
+                  when :lt then column.lt(compare)
+                  when :lte then column.lteq(compare)
+                  when :in then column.in(Array(compare))
+                  end
+                end
+              end
+
+              def handle_nil_value(column)
+                column.eq(nil)
+              end
+
+              def build_time_where_clause(key, value, target_klass)
+                column = target_klass.arel_table[key]
+
+                return handle_nil_value(column) if value.nil?
+                return column.eq(value) unless value.is_a?(Hash)
+
+                normalizer = ->(value) { value }
+
+                builder = Builder.new(column, key, allowed_types: [Hash])
+
+                builder.build(value, normalizer:, valid_operators: Constants::NULLABLE_DATE_OPERATORS) do |operator, compare|
+                  case operator
+                  when :null then handle_null_operator(column, compare)
+                  when :between
+                    from_time = compare[:from]
+                    to_time = compare[:to]
+                    next unless from_time && to_time
+
+                    column.gteq(from_time).and(column.lteq(to_time))
+                  when :eq then column.eq(compare)
+                  when :gt then column.gt(compare)
+                  when :gte then column.gteq(compare)
+                  when :lt then column.lt(compare)
+                  when :lte then column.lteq(compare)
+                  when :in then column.in(Array(compare))
+                  end
+                end
+              end
+
+              def build_numeric_where_clause(key, value, target_klass)
+                column = target_klass.arel_table[key]
+
+                normalizer = ->(value) { value.is_a?(Numeric) || value.nil? ? { eq: value } : value }
+
+                builder = Builder.new(column, key, allowed_types: [Hash])
+
+                builder.build(
+                  value,
+                  normalizer:,
+                  valid_operators: Constants::NULLABLE_NUMERIC_OPERATORS,
+                ) do |operator, compare|
+                  case operator
+                  when :eq then column.eq(compare)
+                  when :gt then column.gt(compare)
+                  when :gte then column.gteq(compare)
+                  when :lt then column.lt(compare)
+                  when :lte then column.lteq(compare)
+                  when :between
+                    from_number = compare[:from]
+                    to_number = compare[:to]
+                    next unless from_number && to_number
+
+                    column.between(from_number..to_number)
+                  when :in
+                    column.in(Array(compare))
+                  when :null
+                    handle_null_operator(column, compare)
+                  end
+                end
+              end
+
+              def build_boolean_where_clause(key, value, target_klass)
+                column = target_klass.arel_table[key]
+
+                normalizer = ->(value) { [true, false, nil].include?(value) ? { eq: value } : value }
+
+                builder = Builder.new(column, key, allowed_types: [Hash])
+
+                builder.build(
+                  value,
+                  normalizer:,
+                  valid_operators: Constants::NULLABLE_BOOLEAN_OPERATORS,
+                ) do |operator, compare|
+                  case operator
+                  when :eq then column.eq(compare)
+                  when :null then handle_null_operator(column, compare)
+                  end
+                end
+              end
+
+              def handle_null_operator(column, compare)
+                compare ? column.eq(nil) : column.not_eq(nil)
+              end
+
+              def sqlite_adapter?
+                @sqlite_adapter ||= representation_class.model_class.connection.adapter_name == 'SQLite'
+              end
+
+              def case_sensitive_pattern_match(column, pattern)
+                if sqlite_adapter?
+                  Arel::Nodes::InfixOperation.new('GLOB', column, Arel::Nodes.build_quoted(pattern.tr('%', '*')))
+                else
+                  column.matches(pattern)
+                end
+              end
+
+              def separate_logical_operators(params)
+                [params.slice(*Constants::LOGICAL_OPERATORS), params.except(*Constants::LOGICAL_OPERATORS)]
+              end
+
+              def with_joins_and_distinct(scope, joins)
+                result = yield(joins.present? ? scope.joins(joins) : scope)
+                joins.present? ? result.distinct : result
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+end

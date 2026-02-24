@@ -1,0 +1,27 @@
+{
+  "request": {
+    "method": "PATCH",
+    "path": "/sharp_hawk/accounts/8324758d-5d34-504c-922a-694658537a93",
+    "body": {
+      "account": {
+        "name": "Alice Smith",
+        "role": "admin",
+        "verified": true
+      }
+    }
+  },
+  "response": {
+    "body": {
+      "account": {
+        "id": "8324758d-5d34-504c-922a-694658537a93",
+        "email": "alice@example.com",
+        "name": "Alice Smith",
+        "role": "admin",
+        "verified": true,
+        "createdAt": "2024-01-01T12:00:00.000Z",
+        "updatedAt": "2024-01-01T12:00:00.000Z"
+      }
+    },
+    "status": 200
+  }
+}

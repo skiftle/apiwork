@@ -1,0 +1,118 @@
+title: Validation Errors
+description: ActiveRecord validation errors captured and presented in a unified format
+order: 16
+
+sections:
+  - title: API Definition
+    files:
+      - config/apis/happy_zebra.rb
+  - title: Models
+    files:
+      - app/models/happy_zebra/user.rb
+      - app/models/happy_zebra/profile.rb
+      - app/models/happy_zebra/post.rb
+      - app/models/happy_zebra/comment.rb
+  - title: Representations
+    files:
+      - app/representations/happy_zebra/user_representation.rb
+      - app/representations/happy_zebra/profile_representation.rb
+      - app/representations/happy_zebra/post_representation.rb
+      - app/representations/happy_zebra/comment_representation.rb
+  - title: Contracts
+    files:
+      - app/contracts/happy_zebra/user_contract.rb
+      - app/contracts/happy_zebra/post_contract.rb
+      - app/contracts/happy_zebra/comment_contract.rb
+  - title: Controllers
+    files:
+      - app/controllers/happy_zebra/users_controller.rb
+      - app/controllers/happy_zebra/posts_controller.rb
+      - app/controllers/happy_zebra/comments_controller.rb
+
+scenarios:
+  - title: Create valid user
+    description: Successfully create user with profile
+    order: 1
+    method: POST
+    path: /happy_zebra/users
+    body:
+      user:
+        email: john@example.com
+        username: johndoe
+        profile:
+          bio: Software developer
+          website: https://example.com
+
+  - title: Invalid email format
+    description: Format validation error (422)
+    order: 2
+    method: POST
+    path: /happy_zebra/users
+    body:
+      user:
+        email: not-an-email
+        username: johndoe
+
+  - title: Empty required fields
+    description: Presence validation error (422)
+    order: 3
+    method: POST
+    path: /happy_zebra/users
+    body:
+      user:
+        email: ""
+        username: ""
+
+  - title: Invalid nested profile
+    description: Nested length validation error (422)
+    order: 4
+    method: POST
+    path: /happy_zebra/users
+    body:
+      user:
+        email: john@example.com
+        username: johndoe
+        profile:
+          bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Extra text to push this well over the five hundred character limit that exists."
+
+  - title: Create with deep nesting
+    description: User with posts and comments
+    order: 5
+    method: POST
+    path: /happy_zebra/users
+    body:
+      user:
+        email: deep@example.com
+        username: deepuser
+        posts:
+          - title: My First Post
+            comments:
+              - body: Great post!
+                author: Jane
+              - body: Thanks for sharing
+                author: Bob
+
+  - title: Custom base error
+    description: Base-level validation error (422)
+    order: 6
+    method: POST
+    path: /happy_zebra/users
+    body:
+      user:
+        email: same@example.com
+        username: same@example.com
+
+  - title: Deep nested validation error
+    description: Validation error at comment level
+    order: 7
+    method: POST
+    path: /happy_zebra/users
+    body:
+      user:
+        email: deep@example.com
+        username: deepuser
+        posts:
+          - title: My Post
+            comments:
+              - body: ""
+                author: ""

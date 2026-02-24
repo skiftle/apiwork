@@ -1,0 +1,282 @@
+---
+openapi: 3.1.0
+info:
+  title: "/swift_fox"
+  version: 1.0.0
+paths:
+  "/contacts":
+    get:
+      operationId: contactsIndex
+      parameters:
+      - in: query
+        name: page
+        required: false
+        schema:
+          "$ref": "#/components/schemas/contactPage"
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/contactIndexSuccessResponseBody"
+          description: Successful response
+    post:
+      operationId: contactsCreate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                contact:
+                  "$ref": "#/components/schemas/contactCreatePayload"
+              type: object
+              required:
+              - contact
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/contactCreateSuccessResponseBody"
+          description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
+  "/contacts/{id}":
+    get:
+      operationId: contactsShow
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/contactShowSuccessResponseBody"
+          description: Successful response
+    patch:
+      operationId: contactsUpdate
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                contact:
+                  "$ref": "#/components/schemas/contactUpdatePayload"
+              type: object
+              required:
+              - contact
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/contactUpdateSuccessResponseBody"
+          description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
+    delete:
+      operationId: contactsDestroy
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No content
+components:
+  schemas:
+    contact:
+      properties:
+        createdAt:
+          type: string
+          format: date-time
+        email:
+          type:
+          - string
+          - 'null'
+        id:
+          type: string
+        name:
+          type: string
+        notes:
+          type: string
+        phone:
+          type: string
+        updatedAt:
+          type: string
+          format: date-time
+      type: object
+      required:
+      - createdAt
+      - email
+      - id
+      - name
+      - notes
+      - phone
+      - updatedAt
+    contactCreatePayload:
+      properties:
+        email:
+          type:
+          - string
+          - 'null'
+        name:
+          type: string
+        notes:
+          type: string
+        phone:
+          type: string
+      type: object
+      required:
+      - name
+    contactCreateSuccessResponseBody:
+      properties:
+        contact:
+          "$ref": "#/components/schemas/contact"
+        meta:
+          properties: {}
+          type: object
+      type: object
+      required:
+      - contact
+    contactIndexSuccessResponseBody:
+      properties:
+        pagination:
+          "$ref": "#/components/schemas/offsetPagination"
+        contacts:
+          items:
+            "$ref": "#/components/schemas/contact"
+          type: array
+        meta:
+          properties: {}
+          type: object
+      type: object
+      required:
+      - pagination
+      - contacts
+    contactPage:
+      properties:
+        number:
+          type: integer
+          minimum: 1
+        size:
+          type: integer
+          minimum: 1
+          maximum: 100
+      type: object
+    contactShowSuccessResponseBody:
+      properties:
+        contact:
+          "$ref": "#/components/schemas/contact"
+        meta:
+          properties: {}
+          type: object
+      type: object
+      required:
+      - contact
+    contactUpdatePayload:
+      properties:
+        email:
+          type:
+          - string
+          - 'null'
+        name:
+          type: string
+        notes:
+          type: string
+        phone:
+          type: string
+      type: object
+    contactUpdateSuccessResponseBody:
+      properties:
+        contact:
+          "$ref": "#/components/schemas/contact"
+        meta:
+          properties: {}
+          type: object
+      type: object
+      required:
+      - contact
+    error:
+      properties:
+        issues:
+          items:
+            "$ref": "#/components/schemas/issue"
+          type: array
+        layer:
+          enum:
+          - http
+          - contract
+          - domain
+          type: string
+      type: object
+      required:
+      - issues
+      - layer
+    errorResponseBody:
+      "$ref": "#/components/schemas/error"
+    issue:
+      properties:
+        code:
+          type: string
+        detail:
+          type: string
+        meta:
+          properties: {}
+          type: object
+        path:
+          items:
+            type: string
+          type: array
+        pointer:
+          type: string
+      type: object
+      required:
+      - code
+      - detail
+      - meta
+      - path
+      - pointer
+    offsetPagination:
+      properties:
+        current:
+          type: integer
+        items:
+          type: integer
+        next:
+          type:
+          - integer
+          - 'null'
+        prev:
+          type:
+          - integer
+          - 'null'
+        total:
+          type: integer
+      type: object
+      required:
+      - current
+      - items
+      - total

@@ -1,0 +1,1393 @@
+{
+  "base_path": "/wise_tiger",
+  "enums": {
+    "layer": {
+      "deprecated": false,
+      "description": null,
+      "example": null,
+      "values": [
+        "http",
+        "contract",
+        "domain"
+      ]
+    },
+    "project_priority": {
+      "deprecated": false,
+      "description": null,
+      "example": null,
+      "values": [
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ]
+    },
+    "project_status": {
+      "deprecated": false,
+      "description": null,
+      "example": null,
+      "values": [
+        "active",
+        "archived",
+        "completed",
+        "paused"
+      ]
+    },
+    "sort_direction": {
+      "deprecated": false,
+      "description": null,
+      "example": null,
+      "values": [
+        "asc",
+        "desc"
+      ]
+    }
+  },
+  "error_codes": {
+    "unprocessable_entity": {
+      "description": "Unprocessable Entity",
+      "status": 422
+    }
+  },
+  "info": {
+    "contact": null,
+    "description": "API for managing projects with I18n-powered documentation",
+    "license": null,
+    "servers": [],
+    "summary": null,
+    "terms_of_service": null,
+    "title": "Project Management API",
+    "version": "1.0.0"
+  },
+  "resources": {
+    "projects": {
+      "actions": {
+        "index": {
+          "deprecated": false,
+          "description": "Returns a paginated list of projects with optional filtering",
+          "method": "get",
+          "operation_id": null,
+          "path": "/projects",
+          "raises": [],
+          "request": {
+            "body": {},
+            "query": {
+              "filter": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": true,
+                "type": "union",
+                "discriminator": null,
+                "variants": [
+                  {
+                    "default": null,
+                    "deprecated": false,
+                    "description": null,
+                    "example": null,
+                    "nullable": false,
+                    "optional": false,
+                    "type": "reference",
+                    "reference": "project_filter"
+                  },
+                  {
+                    "default": null,
+                    "deprecated": false,
+                    "description": null,
+                    "example": null,
+                    "nullable": false,
+                    "optional": false,
+                    "type": "array",
+                    "max": null,
+                    "min": null,
+                    "of": {
+                      "default": null,
+                      "deprecated": null,
+                      "description": null,
+                      "example": null,
+                      "nullable": null,
+                      "optional": null,
+                      "type": "reference",
+                      "reference": "project_filter"
+                    },
+                    "shape": {}
+                  }
+                ]
+              },
+              "page": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": true,
+                "type": "reference",
+                "reference": "project_page"
+              },
+              "sort": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": true,
+                "type": "union",
+                "discriminator": null,
+                "variants": [
+                  {
+                    "default": null,
+                    "deprecated": false,
+                    "description": null,
+                    "example": null,
+                    "nullable": false,
+                    "optional": false,
+                    "type": "reference",
+                    "reference": "project_sort"
+                  },
+                  {
+                    "default": null,
+                    "deprecated": false,
+                    "description": null,
+                    "example": null,
+                    "nullable": false,
+                    "optional": false,
+                    "type": "array",
+                    "max": null,
+                    "min": null,
+                    "of": {
+                      "default": null,
+                      "deprecated": null,
+                      "description": null,
+                      "example": null,
+                      "nullable": null,
+                      "optional": null,
+                      "type": "reference",
+                      "reference": "project_sort"
+                    },
+                    "shape": {}
+                  }
+                ]
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "default": null,
+              "deprecated": null,
+              "description": null,
+              "example": null,
+              "nullable": null,
+              "optional": null,
+              "type": "union",
+              "discriminator": null,
+              "variants": [
+                {
+                  "default": null,
+                  "deprecated": null,
+                  "description": null,
+                  "example": null,
+                  "nullable": null,
+                  "optional": null,
+                  "type": "reference",
+                  "reference": "project_index_success_response_body"
+                },
+                {
+                  "default": null,
+                  "deprecated": null,
+                  "description": null,
+                  "example": null,
+                  "nullable": null,
+                  "optional": null,
+                  "type": "reference",
+                  "reference": "error_response_body"
+                }
+              ]
+            },
+            "no_content": false
+          },
+          "summary": "List all projects",
+          "tags": []
+        },
+        "show": {
+          "deprecated": false,
+          "description": "Returns a single project by ID with all attributes",
+          "method": "get",
+          "operation_id": null,
+          "path": "/projects/:id",
+          "raises": [],
+          "request": {
+            "body": {},
+            "query": {}
+          },
+          "response": {
+            "body": {
+              "default": null,
+              "deprecated": null,
+              "description": null,
+              "example": null,
+              "nullable": null,
+              "optional": null,
+              "type": "union",
+              "discriminator": null,
+              "variants": [
+                {
+                  "default": null,
+                  "deprecated": null,
+                  "description": null,
+                  "example": null,
+                  "nullable": null,
+                  "optional": null,
+                  "type": "reference",
+                  "reference": "project_show_success_response_body"
+                },
+                {
+                  "default": null,
+                  "deprecated": null,
+                  "description": null,
+                  "example": null,
+                  "nullable": null,
+                  "optional": null,
+                  "type": "reference",
+                  "reference": "error_response_body"
+                }
+              ]
+            },
+            "no_content": false
+          },
+          "summary": "Get project details",
+          "tags": []
+        },
+        "create": {
+          "deprecated": false,
+          "description": "Creates a project and returns the created resource",
+          "method": "post",
+          "operation_id": null,
+          "path": "/projects",
+          "raises": [
+            "unprocessable_entity"
+          ],
+          "request": {
+            "body": {
+              "project": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": false,
+                "type": "reference",
+                "reference": "project_create_payload"
+              }
+            },
+            "query": {}
+          },
+          "response": {
+            "body": {
+              "default": null,
+              "deprecated": null,
+              "description": null,
+              "example": null,
+              "nullable": null,
+              "optional": null,
+              "type": "union",
+              "discriminator": null,
+              "variants": [
+                {
+                  "default": null,
+                  "deprecated": null,
+                  "description": null,
+                  "example": null,
+                  "nullable": null,
+                  "optional": null,
+                  "type": "reference",
+                  "reference": "project_create_success_response_body"
+                },
+                {
+                  "default": null,
+                  "deprecated": null,
+                  "description": null,
+                  "example": null,
+                  "nullable": null,
+                  "optional": null,
+                  "type": "reference",
+                  "reference": "error_response_body"
+                }
+              ]
+            },
+            "no_content": false
+          },
+          "summary": "Create a new project",
+          "tags": []
+        },
+        "update": {
+          "deprecated": false,
+          "description": "Updates an existing project with the provided attributes",
+          "method": "patch",
+          "operation_id": null,
+          "path": "/projects/:id",
+          "raises": [
+            "unprocessable_entity"
+          ],
+          "request": {
+            "body": {
+              "project": {
+                "default": null,
+                "deprecated": false,
+                "description": null,
+                "example": null,
+                "nullable": false,
+                "optional": false,
+                "type": "reference",
+                "reference": "project_update_payload"
+              }
+            },
+            "query": {}
+          },
+          "response": {
+            "body": {
+              "default": null,
+              "deprecated": null,
+              "description": null,
+              "example": null,
+              "nullable": null,
+              "optional": null,
+              "type": "union",
+              "discriminator": null,
+              "variants": [
+                {
+                  "default": null,
+                  "deprecated": null,
+                  "description": null,
+                  "example": null,
+                  "nullable": null,
+                  "optional": null,
+                  "type": "reference",
+                  "reference": "project_update_success_response_body"
+                },
+                {
+                  "default": null,
+                  "deprecated": null,
+                  "description": null,
+                  "example": null,
+                  "nullable": null,
+                  "optional": null,
+                  "type": "reference",
+                  "reference": "error_response_body"
+                }
+              ]
+            },
+            "no_content": false
+          },
+          "summary": "Update a project",
+          "tags": []
+        },
+        "destroy": {
+          "deprecated": false,
+          "description": "Permanently removes a project",
+          "method": "delete",
+          "operation_id": null,
+          "path": "/projects/:id",
+          "raises": [],
+          "request": {
+            "body": {},
+            "query": {}
+          },
+          "response": {
+            "body": {
+              "default": null,
+              "deprecated": null,
+              "description": null,
+              "example": null,
+              "nullable": null,
+              "optional": null,
+              "type": null
+            },
+            "no_content": true
+          },
+          "summary": "Delete a project",
+          "tags": []
+        }
+      },
+      "identifier": "projects",
+      "parent_identifiers": [],
+      "path": "projects",
+      "resources": {}
+    }
+  },
+  "types": {
+    "error": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {
+        "issues": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "array",
+          "max": null,
+          "min": null,
+          "of": {
+            "default": null,
+            "deprecated": null,
+            "description": null,
+            "example": null,
+            "nullable": null,
+            "optional": null,
+            "type": "reference",
+            "reference": "issue"
+          },
+          "shape": {}
+        },
+        "layer": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "reference",
+          "reference": "layer"
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "error_response_body": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [
+        "error"
+      ],
+      "shape": {},
+      "type": "object",
+      "variants": []
+    },
+    "issue": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {
+        "code": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "detail": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "meta": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "object",
+          "partial": false,
+          "shape": {}
+        },
+        "path": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "array",
+          "max": null,
+          "min": null,
+          "of": {
+            "default": null,
+            "deprecated": null,
+            "description": null,
+            "example": null,
+            "nullable": null,
+            "optional": null,
+            "type": "string",
+            "format": null,
+            "max": null,
+            "min": null
+          },
+          "shape": {}
+        },
+        "pointer": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "offset_pagination": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {
+        "current": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "integer",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "items": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "integer",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "next": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": true,
+          "optional": true,
+          "type": "integer",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "prev": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": true,
+          "optional": true,
+          "type": "integer",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "total": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "integer",
+          "format": null,
+          "max": null,
+          "min": null
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "project": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {
+        "created_at": {
+          "default": null,
+          "deprecated": false,
+          "description": "Timestamp when project was created",
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "datetime"
+        },
+        "deadline": {
+          "default": null,
+          "deprecated": false,
+          "description": "Target completion date",
+          "example": null,
+          "nullable": true,
+          "optional": false,
+          "type": "date"
+        },
+        "description": {
+          "default": null,
+          "deprecated": false,
+          "description": "Detailed project description",
+          "example": null,
+          "nullable": true,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "id": {
+          "default": null,
+          "deprecated": false,
+          "description": "Unique project identifier",
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "name": {
+          "default": null,
+          "deprecated": false,
+          "description": "Human-readable project name",
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "priority": {
+          "default": null,
+          "deprecated": false,
+          "description": "Project priority for resource allocation",
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "enum": "project_priority",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "status": {
+          "default": null,
+          "deprecated": false,
+          "description": "Current project lifecycle status",
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "enum": "project_status",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "updated_at": {
+          "default": null,
+          "deprecated": false,
+          "description": "Timestamp of last modification",
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "datetime"
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "project_create_payload": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {
+        "deadline": {
+          "default": null,
+          "deprecated": false,
+          "description": "Target completion date",
+          "example": null,
+          "nullable": true,
+          "optional": true,
+          "type": "date"
+        },
+        "description": {
+          "default": null,
+          "deprecated": false,
+          "description": "Detailed project description",
+          "example": null,
+          "nullable": true,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "name": {
+          "default": null,
+          "deprecated": false,
+          "description": "Human-readable project name",
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "priority": {
+          "default": null,
+          "deprecated": false,
+          "description": "Project priority for resource allocation",
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "enum": "project_priority",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "status": {
+          "default": null,
+          "deprecated": false,
+          "description": "Current project lifecycle status",
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "enum": "project_status",
+          "format": null,
+          "max": null,
+          "min": null
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "project_create_success_response_body": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {
+        "meta": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "object",
+          "partial": false,
+          "shape": {}
+        },
+        "project": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "reference",
+          "reference": "project"
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "project_filter": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {
+        "AND": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "array",
+          "max": null,
+          "min": null,
+          "of": {
+            "default": null,
+            "deprecated": null,
+            "description": null,
+            "example": null,
+            "nullable": null,
+            "optional": null,
+            "type": "reference",
+            "reference": "project_filter"
+          },
+          "shape": {}
+        },
+        "NOT": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "reference",
+          "reference": "project_filter"
+        },
+        "OR": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "array",
+          "max": null,
+          "min": null,
+          "of": {
+            "default": null,
+            "deprecated": null,
+            "description": null,
+            "example": null,
+            "nullable": null,
+            "optional": null,
+            "type": "reference",
+            "reference": "project_filter"
+          },
+          "shape": {}
+        },
+        "priority": {
+          "default": null,
+          "deprecated": false,
+          "description": "Project priority for resource allocation",
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "reference",
+          "reference": "project_priority_filter"
+        },
+        "status": {
+          "default": null,
+          "deprecated": false,
+          "description": "Current project lifecycle status",
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "reference",
+          "reference": "project_status_filter"
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "project_index_success_response_body": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {
+        "pagination": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "reference",
+          "reference": "offset_pagination"
+        },
+        "meta": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "object",
+          "partial": false,
+          "shape": {}
+        },
+        "projects": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "array",
+          "max": null,
+          "min": null,
+          "of": {
+            "default": null,
+            "deprecated": null,
+            "description": null,
+            "example": null,
+            "nullable": null,
+            "optional": null,
+            "type": "reference",
+            "reference": "project"
+          },
+          "shape": {}
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "project_page": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {
+        "number": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "integer",
+          "format": null,
+          "max": null,
+          "min": 1
+        },
+        "size": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "integer",
+          "format": null,
+          "max": 100,
+          "min": 1
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "project_priority_filter": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {},
+      "type": "union",
+      "variants": [
+        {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "reference",
+          "reference": "project_priority"
+        },
+        {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "object",
+          "partial": true,
+          "shape": {
+            "eq": {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "reference",
+              "reference": "project_priority"
+            },
+            "in": {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "array",
+              "max": null,
+              "min": null,
+              "of": {
+                "default": null,
+                "deprecated": null,
+                "description": null,
+                "example": null,
+                "nullable": null,
+                "optional": null,
+                "type": "reference",
+                "reference": "project_priority"
+              },
+              "shape": {}
+            }
+          }
+        }
+      ]
+    },
+    "project_show_success_response_body": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {
+        "meta": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "object",
+          "partial": false,
+          "shape": {}
+        },
+        "project": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "reference",
+          "reference": "project"
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "project_sort": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {
+        "created_at": {
+          "default": null,
+          "deprecated": false,
+          "description": "Timestamp when project was created",
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "reference",
+          "reference": "sort_direction"
+        },
+        "deadline": {
+          "default": null,
+          "deprecated": false,
+          "description": "Target completion date",
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "reference",
+          "reference": "sort_direction"
+        },
+        "updated_at": {
+          "default": null,
+          "deprecated": false,
+          "description": "Timestamp of last modification",
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "reference",
+          "reference": "sort_direction"
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "project_status_filter": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {},
+      "type": "union",
+      "variants": [
+        {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "reference",
+          "reference": "project_status"
+        },
+        {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "object",
+          "partial": true,
+          "shape": {
+            "eq": {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "reference",
+              "reference": "project_status"
+            },
+            "in": {
+              "default": null,
+              "deprecated": false,
+              "description": null,
+              "example": null,
+              "nullable": false,
+              "optional": false,
+              "type": "array",
+              "max": null,
+              "min": null,
+              "of": {
+                "default": null,
+                "deprecated": null,
+                "description": null,
+                "example": null,
+                "nullable": null,
+                "optional": null,
+                "type": "reference",
+                "reference": "project_status"
+              },
+              "shape": {}
+            }
+          }
+        }
+      ]
+    },
+    "project_update_payload": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {
+        "deadline": {
+          "default": null,
+          "deprecated": false,
+          "description": "Target completion date",
+          "example": null,
+          "nullable": true,
+          "optional": true,
+          "type": "date"
+        },
+        "description": {
+          "default": null,
+          "deprecated": false,
+          "description": "Detailed project description",
+          "example": null,
+          "nullable": true,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "name": {
+          "default": null,
+          "deprecated": false,
+          "description": "Human-readable project name",
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "priority": {
+          "default": null,
+          "deprecated": false,
+          "description": "Project priority for resource allocation",
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "enum": "project_priority",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "status": {
+          "default": null,
+          "deprecated": false,
+          "description": "Current project lifecycle status",
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "enum": "project_status",
+          "format": null,
+          "max": null,
+          "min": null
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "project_update_success_response_body": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {
+        "meta": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "object",
+          "partial": false,
+          "shape": {}
+        },
+        "project": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": false,
+          "type": "reference",
+          "reference": "project"
+        }
+      },
+      "type": "object",
+      "variants": []
+    },
+    "string_filter": {
+      "deprecated": false,
+      "description": null,
+      "discriminator": null,
+      "example": null,
+      "extends": [],
+      "shape": {
+        "contains": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "ends_with": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "eq": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        },
+        "in": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "array",
+          "max": null,
+          "min": null,
+          "of": {
+            "default": null,
+            "deprecated": null,
+            "description": null,
+            "example": null,
+            "nullable": null,
+            "optional": null,
+            "type": "string",
+            "format": null,
+            "max": null,
+            "min": null
+          },
+          "shape": {}
+        },
+        "starts_with": {
+          "default": null,
+          "deprecated": false,
+          "description": null,
+          "example": null,
+          "nullable": false,
+          "optional": true,
+          "type": "string",
+          "format": null,
+          "max": null,
+          "min": null
+        }
+      },
+      "type": "object",
+      "variants": []
+    }
+  }
+}

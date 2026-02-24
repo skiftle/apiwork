@@ -1,0 +1,26 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/eager_lion/invoices/534ec78b-1e57-5f61-ae31-cd61470deb95"
+  },
+  "response": {
+    "body": {
+      "invoice": {
+        "id": "534ec78b-1e57-5f61-ae31-cd61470deb95",
+        "number": "INV-001",
+        "issuedOn": null,
+        "notes": null,
+        "status": "sent",
+        "customerId": "9428d849-05a5-5c52-a90a-906eac07ecd2",
+        "createdAt": "2024-01-01T12:00:00.000Z",
+        "updatedAt": "2024-01-01T12:00:00.000Z",
+        "lines": [],
+        "customer": {
+          "id": "9428d849-05a5-5c52-a90a-906eac07ecd2",
+          "name": "Acme Corp"
+        }
+      }
+    },
+    "status": 200
+  }
+}

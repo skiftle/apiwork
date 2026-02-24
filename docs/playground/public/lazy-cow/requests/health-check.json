@@ -1,0 +1,14 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/lazy_cow/status/health"
+  },
+  "response": {
+    "body": {
+      "status": "ok",
+      "timestamp": "2024-01-01T12:00:00.000Z",
+      "version": "1.0.0"
+    },
+    "status": 200
+  }
+}

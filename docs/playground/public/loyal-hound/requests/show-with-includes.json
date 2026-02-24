@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/loyal_hound/books/e56dbc23-e351-57f2-808e-651847b3d1c5?include[author]=true&include[reviews]=true"
+  },
+  "response": {
+    "body": {
+      "status": 404,
+      "error": "Not Found"
+    },
+    "status": 404
+  }
+}
