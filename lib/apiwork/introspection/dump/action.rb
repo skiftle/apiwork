@@ -23,7 +23,7 @@ module Apiwork
 
         private
 
-        def i18n_lookup(field)
+        def i18n_lookup(*segments)
           contract_class = @contract_action.contract_class
           return nil unless contract_class.name
 
@@ -32,7 +32,7 @@ module Apiwork
             contract_class.name.demodulize.delete_suffix('Contract').underscore,
             :actions,
             @contract_action.name,
-            field,
+            *segments,
           )
         end
 
@@ -50,13 +50,14 @@ module Apiwork
         end
 
         def build_response(response)
-          return { body: {}, no_content: false } unless response
-          return { body: {}, no_content: true } if response.no_content?
+          return { body: {}, description: i18n_lookup(:response, :description), no_content: false } unless response
+          return { body: {}, description: response.description || i18n_lookup(:response, :description), no_content: true } if response.no_content?
 
+          description = response.description || i18n_lookup(:response, :description)
           body_shape = response.body
-          return { body: {}, no_content: false } unless body_shape
+          return { description:, body: {}, no_content: false } unless body_shape
 
-          { body: Param.new(body_shape).to_h, no_content: false }
+          { description:, body: Param.new(body_shape).to_h, no_content: false }
         end
 
         def raises

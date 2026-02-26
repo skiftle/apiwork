@@ -113,7 +113,7 @@ RSpec.describe Apiwork::Introspection::Action do
         path: '/invoices/:id',
         raises: [],
         request: { body: {}, query: {} },
-        response: { body: nil, no_content: false },
+        response: { body: nil, description: nil, no_content: false },
         summary: nil,
         tags: [],
       )
@@ -127,7 +127,7 @@ RSpec.describe Apiwork::Introspection::Action do
           path: '/invoices/:id',
           raises: [],
           request: { body: {}, query: {} },
-          response: { body: nil, no_content: false },
+          response: { body: nil, description: nil, no_content: false },
           summary: nil,
           tags: [],
         },

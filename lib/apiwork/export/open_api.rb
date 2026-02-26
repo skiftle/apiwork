@@ -200,8 +200,10 @@ module Apiwork
       def build_responses(action_name, response, raises: [])
         responses = {}
 
+        response_description = response.description || ''
+
         if response.no_content?
-          responses[:'204'] = { description: 'No content' }
+          responses[:'204'] = { description: response_description }
         elsif response.body
           responses[:'200'] = {
             content: {
@@ -209,7 +211,7 @@ module Apiwork
                 schema: map_param(response.body),
               },
             },
-            description: 'Successful response',
+            description: response_description,
           }
 
           raises.each do |code|
@@ -228,10 +230,10 @@ module Apiwork
                 },
               },
             },
-            description: 'Successful response',
+            description: response_description,
           }
         else
-          responses[:'204'] = { description: 'No content' }
+          responses[:'204'] = { description: '' }
         end
 
         responses

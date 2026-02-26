@@ -15,7 +15,29 @@ module Apiwork
           @contract_class = contract_class
           @action_name = action_name
           @body = nil
+          @description = nil
           @no_content = false
+        end
+
+        # @api public
+        # The description for this response.
+        #
+        # Metadata included in exports.
+        #
+        # @param value [String, nil] (nil)
+        #   The description.
+        # @return [String, nil]
+        #
+        # @example
+        #   action :show do
+        #     response do
+        #       description 'Returns the invoice'
+        #     end
+        #   end
+        def description(value = nil)
+          return @description if value.nil?
+
+          @description = value
         end
 
         # @api public

@@ -83,6 +83,25 @@ action :show do
 end
 ```
 
+### description
+
+Set a description for the response. This appears in [OpenAPI exports](../exports/openapi.md) as the response description.
+
+```ruby
+action :show do
+  response do
+    description 'Returns the invoice'
+
+    body do
+      integer :id
+      string :title
+    end
+  end
+end
+```
+
+Response descriptions can also be defined via [translations](../api-definitions/metadata.md#translations).
+
 ### no_content!
 
 For actions that return HTTP 204 No Content:

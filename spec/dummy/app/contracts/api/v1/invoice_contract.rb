@@ -15,6 +15,10 @@ module Api
         summary 'Get an invoice'
         description 'Returns a single invoice by ID'
         raises :not_found, :forbidden
+
+        response do
+          description 'The invoice'
+        end
       end
 
       action :create do

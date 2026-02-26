@@ -29,6 +29,14 @@ module Apiwork
         end
 
         # @api public
+        # The description for this response.
+        #
+        # @return [String, nil]
+        def description
+          @dump[:description]
+        end
+
+        # @api public
         # Whether this response has no content.
         #
         # @return [Boolean]
@@ -49,7 +57,7 @@ module Apiwork
         #
         # @return [Hash]
         def to_h
-          { body: body&.to_h, no_content: no_content? }
+          { description:, body: body&.to_h, no_content: no_content? }
         end
       end
     end

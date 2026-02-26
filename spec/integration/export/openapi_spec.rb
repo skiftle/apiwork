@@ -26,6 +26,12 @@ RSpec.describe 'OpenAPI export pipeline', type: :integration do
     expect(schema_keys).to include('invoice', 'payment')
   end
 
+  it 'includes response description' do
+    show_operation = spec[:paths]['/invoices/{id}']['get']
+
+    expect(show_operation[:responses][:'200'][:description]).to eq('The invoice')
+  end
+
   it 'generates error responses for raises declarations' do
     show_operation = spec[:paths]['/invoices/{id}']['get']
 
@@ -41,6 +47,6 @@ RSpec.describe 'OpenAPI export pipeline', type: :integration do
   it 'generates 204 no content for destroy' do
     receipt_destroy = spec[:paths]['/receipts/{id}']['delete']
 
-    expect(receipt_destroy[:responses]).to eq({ '204': { description: 'No content' } })
+    expect(receipt_destroy[:responses]).to eq({ '204': { description: '' } })
   end
 end

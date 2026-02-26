@@ -58,6 +58,7 @@ RSpec.describe Apiwork::Introspection::Action::Response do
       expect(response.to_h).to eq(
         {
           body: nil,
+          description: nil,
           no_content: true,
         },
       )

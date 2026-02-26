@@ -72,6 +72,8 @@ en:
               index:
                 summary: List invoices
                 description: Returns a paginated list of invoices
+                response:
+                  description: A paginated list of invoices
               create:
                 summary: Create an invoice
         representations:

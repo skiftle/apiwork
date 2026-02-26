@@ -16,6 +16,10 @@ module BraveEagle
       description 'Returns a single task by ID'
       tags 'Tasks'
       operation_id 'getTask'
+
+      response do
+        description 'The task'
+      end
     end
 
     action :create do
