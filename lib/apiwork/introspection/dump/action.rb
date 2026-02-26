@@ -56,7 +56,7 @@ module Apiwork
           body_shape = response.body
           return { body: {}, no_content: false } unless body_shape
 
-          { body: Param.new(body_shape, result_wrapper: response.result_wrapper).to_h, no_content: false }
+          { body: Param.new(body_shape).to_h, no_content: false }
         end
 
         def raises

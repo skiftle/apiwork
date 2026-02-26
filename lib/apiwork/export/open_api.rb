@@ -203,39 +203,18 @@ module Apiwork
         if response.no_content?
           responses[:'204'] = { description: 'No content' }
         elsif response.body
-          body = response.body
-
-          if body.union? && body.discriminator.nil?
-            success_variant = body.variants[0]
-            error_variant = body.variants[1]
-
-            responses[:'200'] = {
-              content: {
-                'application/json': {
-                  schema: map_param(success_variant),
-                },
+          responses[:'200'] = {
+            content: {
+              'application/json': {
+                schema: map_param(response.body),
               },
-              description: 'Successful response',
-            }
+            },
+            description: 'Successful response',
+          }
 
-            raises.each do |code|
-              error_code = api.error_codes[code]
-              responses[error_code.status.to_s.to_sym] = build_union_error_response(error_code.description, error_variant)
-            end
-          else
-            responses[:'200'] = {
-              content: {
-                'application/json': {
-                  schema: map_param(body),
-                },
-              },
-              description: 'Successful response',
-            }
-
-            raises.each do |code|
-              error_code = api.error_codes[code]
-              responses[error_code.status.to_s.to_sym] = build_error_response(error_code.description)
-            end
+          raises.each do |code|
+            error_code = api.error_codes[code]
+            responses[error_code.status.to_s.to_sym] = build_error_response(error_code.description)
           end
         elsif response
           responses[:'200'] = {
@@ -275,17 +254,6 @@ module Apiwork
                 required: ['issues'],
                 type: 'object',
               },
-            },
-          },
-        }
-      end
-
-      def build_union_error_response(description, error_variant)
-        {
-          description:,
-          content: {
-            'application/json': {
-              schema: map_param(error_variant),
             },
           },
         }

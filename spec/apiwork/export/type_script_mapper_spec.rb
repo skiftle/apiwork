@@ -121,13 +121,32 @@ RSpec.describe Apiwork::Export::TypeScriptMapper do
     let(:export) { stub_export }
     let(:mapper) { described_class.new(export) }
 
-    it 'builds interface with body property' do
-      response = { body: build_param(type: :string) }
+    it 'builds success-only type when no raises' do
+      response = stub_response
 
-      result = mapper.build_action_response_type(:invoices, :show, response)
+      result = mapper.build_action_response_type(:invoices, :show, response, raises: [])
 
-      expect(result).to include('export interface InvoicesShowResponse {')
-      expect(result).to include('  body: InvoicesShowResponseBody;')
+      expect(result).to eq('export type InvoicesShowResponse = { status: 200; body: InvoicesShowResponseBody };')
+    end
+
+    it 'builds no content type' do
+      response = stub_response(no_content: true)
+
+      result = mapper.build_action_response_type(:invoices, :destroy, response, raises: [])
+
+      expect(result).to eq('export type InvoicesDestroyResponse = { status: 204 };')
+    end
+
+    it 'builds discriminated union with error statuses' do
+      export_with_errors = stub_export(error_codes: { unprocessable_entity: stub_error_code(status: 422) })
+      mapper_with_errors = described_class.new(export_with_errors)
+      response = stub_response
+
+      result = mapper_with_errors.build_action_response_type(:invoices, :create, response, raises: [:unprocessable_entity])
+
+      expect(result).to include('export type InvoicesCreateResponse =')
+      expect(result).to include('{ status: 200; body: InvoicesCreateResponseBody }')
+      expect(result).to include('{ status: 422; body: ErrorResponseBody }')
     end
   end
 

@@ -270,15 +270,17 @@ module Apiwork
         else
           build_custom_action_response(contract_class, representation_class, action, contract_action)
         end
+
+        build_request_query_type(contract_class, action.name, contract_action)
+        build_request_body_type(contract_class, action.name, contract_action)
       end
 
       def build_member_action_response(contract_class, representation_class, action, contract_action)
-        result_wrapper = build_result_wrapper(contract_class, representation_class, action.name, :member)
+        build_response_body_type(contract_class, representation_class, action.name, :member)
         member_shape_class = self.class.member_wrapper.shape_class
         data_type = resolve_resource_data_type(representation_class)
 
         contract_action.response do |response|
-          response.result_wrapper = result_wrapper
           response.body do |body|
             member_shape_class.apply(body, representation_class.root_key, capabilities, representation_class, :member, data_type:)
           end
@@ -286,12 +288,11 @@ module Apiwork
       end
 
       def build_collection_action_response(contract_class, representation_class, action, contract_action)
-        result_wrapper = build_result_wrapper(contract_class, representation_class, action.name, :collection)
+        build_response_body_type(contract_class, representation_class, action.name, :collection)
         collection_shape_class = self.class.collection_wrapper.shape_class
         data_type = resolve_resource_data_type(representation_class)
 
         contract_action.response do |response|
-          response.result_wrapper = result_wrapper
           response.body do |body|
             collection_shape_class.apply(body, representation_class.root_key, capabilities, representation_class, :collection, data_type:)
           end
@@ -308,23 +309,51 @@ module Apiwork
         end
       end
 
-      def build_result_wrapper(contract_class, representation_class, action_name, response_type)
-        success_type_name = [action_name, 'success_response_body'].join('_').to_sym
+      def build_response_body_type(contract_class, representation_class, action_name, response_type)
+        type_name = [action_name, 'response_body'].join('_').to_sym
+        return if contract_class.type?(type_name)
 
-        unless contract_class.type?(success_type_name)
-          shape_class = if response_type == :collection
-                          self.class.collection_wrapper.shape_class
-                        else
-                          self.class.member_wrapper.shape_class
-                        end
-          data_type = resolve_resource_data_type(representation_class)
+        shape_class = if response_type == :collection
+                        self.class.collection_wrapper.shape_class
+                      else
+                        self.class.member_wrapper.shape_class
+                      end
+        data_type = resolve_resource_data_type(representation_class)
 
-          contract_class.object(success_type_name) do |object|
-            shape_class.apply(object, representation_class.root_key, capabilities, representation_class, response_type, data_type:)
-          end
+        contract_class.object(type_name) do |object|
+          shape_class.apply(object, representation_class.root_key, capabilities, representation_class, response_type, data_type:)
         end
+      end
 
-        { error_type: :error_response_body, success_type: contract_class.scoped_type_name(success_type_name) }
+      def build_request_query_type(contract_class, action_name, contract_action)
+        request = contract_action.request
+        return unless request.query.params.any?
+
+        type_name = [action_name, 'request_query'].join('_').to_sym
+        return if contract_class.type?(type_name)
+
+        contract_class.object(type_name) do |object|
+          request.query.params.each { |name, param| object.param(name, **normalize_request_param(param)) }
+        end
+      end
+
+      def build_request_body_type(contract_class, action_name, contract_action)
+        request = contract_action.request
+        return unless request.body.params.any?
+
+        type_name = [action_name, 'request_body'].join('_').to_sym
+        return if contract_class.type?(type_name)
+
+        contract_class.object(type_name) do |object|
+          request.body.params.each { |name, param| object.param(name, **normalize_request_param(param)) }
+        end
+      end
+
+      def normalize_request_param(param)
+        options = param.except(:name, :custom_type, :union, :partial)
+        options[:type] = param[:custom_type] if param[:custom_type]
+        options[:shape] = param[:union] if param[:union]
+        options
       end
 
       def resolve_resource_data_type(representation_class)

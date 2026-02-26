@@ -116,18 +116,25 @@ module Apiwork
         "export type #{action_type_name(resource_name, action_name, 'ResponseBody', parent_identifiers:)} = #{map_param(response_body_definition)};"
       end
 
-      def build_action_response_type(resource_name, action_name, response, parent_identifiers: [])
-        "export interface #{action_type_name(
-          resource_name,
-          action_name,
-          'Response',
-          parent_identifiers:,
-        )} {\n  body: #{action_type_name(
-          resource_name,
-          action_name,
-          'ResponseBody',
-          parent_identifiers:,
-        )};\n}"
+      def build_action_response_type(resource_name, action_name, response, parent_identifiers: [], raises:)
+        type_name = action_type_name(resource_name, action_name, 'Response', parent_identifiers:)
+
+        success_variant = if response.no_content?
+                            '{ status: 204 }'
+                          else
+                            body_ref = action_type_name(resource_name, action_name, 'ResponseBody', parent_identifiers:)
+                            "{ status: 200; body: #{body_ref} }"
+                          end
+
+        error_statuses = resolve_error_statuses(raises)
+
+        if error_statuses.empty?
+          "export type #{type_name} = #{success_variant};"
+        else
+          error_variants = error_statuses.map { |status| "{ status: #{status}; body: #{pascal_case(:error_response_body)} }" }
+          all_variants = ([success_variant] + error_variants).map { |variant| "  | #{variant}" }.join("\n")
+          "export type #{type_name} =\n#{all_variants};"
+        end
       end
 
       def action_type_name(resource_name, action_name, suffix, parent_identifiers: [])
@@ -253,6 +260,10 @@ module Apiwork
 
       private
 
+      def resolve_error_statuses(raises)
+        raises.map { |code| @export.api.error_codes[code].status }.uniq.sort
+      end
+
       def build_enum_types(surface)
         surface.enums.map do |name, enum|
           { code: build_enum_type(name, enum), name: pascal_case(name) }
@@ -276,7 +287,7 @@ module Apiwork
 
           resource.actions.each do |action_name, action|
             types.concat(build_request_types(resource_name, action_name, action.request, parent_identifiers:))
-            types.concat(build_response_types(resource_name, action_name, action.response, parent_identifiers:))
+            types.concat(build_response_types(resource_name, action_name, action, parent_identifiers:))
           end
         end
 
@@ -306,21 +317,19 @@ module Apiwork
         types
       end
 
-      def build_response_types(resource_name, action_name, response, parent_identifiers:)
+      def build_response_types(resource_name, action_name, action, parent_identifiers:)
         types = []
+        response = action.response
 
-        if response.no_content?
-          type_name = action_type_name(resource_name, action_name, 'Response', parent_identifiers:)
-          types << { code: "export type #{type_name} = never;", name: type_name }
-        elsif response.body?
+        if response.body?
           type_name = action_type_name(resource_name, action_name, 'ResponseBody', parent_identifiers:)
           code = build_action_response_body_type(resource_name, action_name, response.body, parent_identifiers:)
           types << { code:, name: type_name }
-
-          type_name = action_type_name(resource_name, action_name, 'Response', parent_identifiers:)
-          code = build_action_response_type(resource_name, action_name, { body: response.body }, parent_identifiers:)
-          types << { code:, name: type_name }
         end
+
+        type_name = action_type_name(resource_name, action_name, 'Response', parent_identifiers:)
+        code = build_action_response_type(resource_name, action_name, response, parent_identifiers:, raises: action.raises)
+        types << { code:, name: type_name }
 
         types
       end

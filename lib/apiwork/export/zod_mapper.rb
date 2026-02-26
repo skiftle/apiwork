@@ -153,18 +153,27 @@ module Apiwork
         "export const #{action_type_name(resource_name, action_name, 'ResponseBody', parent_identifiers:)}Schema = #{map_param(response_body)};"
       end
 
-      def build_action_response_schema(resource_name, action_name, response, parent_identifiers: [])
-        "export const #{action_type_name(
-          resource_name,
-          action_name,
-          'Response',
-          parent_identifiers:,
-        )}Schema = z.object({\n  body: #{action_type_name(
-          resource_name,
-          action_name,
-          'ResponseBody',
-          parent_identifiers:,
-        )}Schema\n});"
+      def build_action_response_schema(resource_name, action_name, response, parent_identifiers: [], raises:)
+        schema_name = action_type_name(resource_name, action_name, 'Response', parent_identifiers:)
+
+        success_variant = if response.no_content?
+                            'z.object({ status: z.literal(204) })'
+                          else
+                            body_ref = "#{action_type_name(resource_name, action_name, 'ResponseBody', parent_identifiers:)}Schema"
+                            "z.object({ status: z.literal(200), body: #{body_ref} })"
+                          end
+
+        error_statuses = resolve_error_statuses(raises)
+
+        if error_statuses.empty?
+          "export const #{schema_name}Schema = #{success_variant};"
+        else
+          error_variants = error_statuses.map do |status|
+            "z.object({ status: z.literal(#{status}), body: #{pascal_case(:error_response_body)}Schema })"
+          end
+          all_variants = ([success_variant] + error_variants).map { |variant| "  #{variant}" }.join(",\n")
+          "export const #{schema_name}Schema = z.discriminatedUnion('status', [\n#{all_variants}\n]);"
+        end
       end
 
       def action_type_name(resource_name, action_name, suffix, parent_identifiers: [])
@@ -367,12 +376,9 @@ module Apiwork
             end
 
             response = action.response
-            if response.no_content?
-              schemas << "export const #{action_type_name(resource_name, action_name, 'Response', parent_identifiers:)}Schema = z.never();"
-            elsif response.body?
-              schemas << build_action_response_body_schema(resource_name, action_name, response.body, parent_identifiers:)
-              schemas << build_action_response_schema(resource_name, action_name, { body: response.body }, parent_identifiers:)
-            end
+            schemas << build_action_response_body_schema(resource_name, action_name, response.body, parent_identifiers:) if response.body?
+
+            schemas << build_action_response_schema(resource_name, action_name, response, parent_identifiers:, raises: action.raises)
           end
         end
 
@@ -397,6 +403,10 @@ module Apiwork
         return false unless referenced_type
 
         referenced_type.shape.key?(discriminator)
+      end
+
+      def resolve_error_statuses(raises)
+        raises.map { |code| @export.api.error_codes[code].status }.uniq.sort
       end
 
       def resolve_enum_schema(param)

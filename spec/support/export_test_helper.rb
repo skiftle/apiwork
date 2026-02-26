@@ -19,8 +19,16 @@ module ExportTestHelper
     Apiwork::Introspection::Enum.new({ values: }.merge(options))
   end
 
-  def stub_export(enums: {}, resources: {}, types: {})
-    api_stub = Struct.new(:types, :enums, :resources).new(types, enums, resources)
+  def stub_response(no_content: false)
+    Struct.new(:no_content) { alias_method :no_content?, :no_content }.new(no_content)
+  end
+
+  def stub_error_code(status:)
+    Struct.new(:status).new(status)
+  end
+
+  def stub_export(enums: {}, error_codes: {}, resources: {}, types: {})
+    api_stub = Struct.new(:types, :enums, :resources, :error_codes).new(types, enums, resources, error_codes)
     export = Struct.new(:api).new(api_stub)
     export.define_singleton_method(:transform_key, &:to_s)
     export

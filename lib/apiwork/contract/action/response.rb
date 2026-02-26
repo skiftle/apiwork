@@ -11,13 +11,10 @@ module Apiwork
         attr_reader :action_name,
                     :contract_class
 
-        attr_accessor :result_wrapper
-
         def initialize(contract_class, action_name)
           @contract_class = contract_class
           @action_name = action_name
           @body = nil
-          @result_wrapper = nil
           @no_content = false
         end
 

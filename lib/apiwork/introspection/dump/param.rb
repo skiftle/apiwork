@@ -4,17 +4,14 @@ module Apiwork
   module Introspection
     module Dump
       class Param
-        def initialize(contract_param, result_wrapper: nil, visited: Set.new)
+        def initialize(contract_param, visited: Set.new)
           @contract_param = contract_param
-          @result_wrapper = result_wrapper
           @visited = visited
           @import_prefix_cache = {}
         end
 
         def to_h
           return nil unless @contract_param
-
-          return build_result_wrapped if @result_wrapper
 
           result = {}
 
@@ -30,38 +27,6 @@ module Apiwork
         end
 
         private
-
-        def build_result_wrapped
-          success_type = @result_wrapper[:success_type]
-          error_type = @result_wrapper[:error_type]
-
-          success_variant = if success_type
-                              { reference: success_type, type: :reference }
-                            else
-                              { reference: nil, shape: build_success_params, type: :object }
-                            end
-
-          error_variant = if error_type
-                            { reference: error_type, type: :reference }
-                          else
-                            { reference: nil, shape: {}, type: :object }
-                          end
-
-          {
-            type: :union,
-            variants: [success_variant, error_variant],
-          }
-        end
-
-        def build_success_params
-          success_params = {}
-          @contract_param.params.sort_by { |name, _options| name.to_s }.each do |name, param_options|
-            dumped = build_param(name, param_options)
-            dumped[:optional] = true if param_options[:optional]
-            success_params[name] = dumped
-          end
-          success_params
-        end
 
         def build_param(name, options)
           return build_union_param(options) if options[:type] == :union

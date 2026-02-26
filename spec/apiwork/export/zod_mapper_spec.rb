@@ -121,13 +121,32 @@ RSpec.describe Apiwork::Export::ZodMapper do
     let(:export) { stub_export }
     let(:mapper) { described_class.new(export) }
 
-    it 'builds z.object schema with body nested schema' do
-      response = { body: build_param(type: :string) }
+    it 'builds success-only schema when no raises' do
+      response = stub_response
 
-      result = mapper.build_action_response_schema(:invoices, :show, response)
+      result = mapper.build_action_response_schema(:invoices, :show, response, raises: [])
 
-      expect(result).to include('InvoicesShowResponseSchema = z.object({')
-      expect(result).to include('  body: InvoicesShowResponseBodySchema')
+      expect(result).to eq('export const InvoicesShowResponseSchema = z.object({ status: z.literal(200), body: InvoicesShowResponseBodySchema });')
+    end
+
+    it 'builds no content schema' do
+      response = stub_response(no_content: true)
+
+      result = mapper.build_action_response_schema(:invoices, :destroy, response, raises: [])
+
+      expect(result).to eq('export const InvoicesDestroyResponseSchema = z.object({ status: z.literal(204) });')
+    end
+
+    it 'builds discriminated union with error statuses' do
+      export_with_errors = stub_export(error_codes: { unprocessable_entity: stub_error_code(status: 422) })
+      mapper_with_errors = described_class.new(export_with_errors)
+      response = stub_response
+
+      result = mapper_with_errors.build_action_response_schema(:invoices, :create, response, raises: [:unprocessable_entity])
+
+      expect(result).to include("z.discriminatedUnion('status'")
+      expect(result).to include('z.object({ status: z.literal(200), body: InvoicesCreateResponseBodySchema })')
+      expect(result).to include('z.object({ status: z.literal(422), body: ErrorResponseBodySchema })')
     end
   end
 

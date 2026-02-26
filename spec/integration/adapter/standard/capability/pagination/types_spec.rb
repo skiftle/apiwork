@@ -119,7 +119,7 @@ RSpec.describe 'Pagination types', type: :integration do
 
   describe 'collection response body pagination' do
     it 'has offset pagination reference in collection response' do
-      body = types[:invoice_index_success_response_body]
+      body = types[:invoice_index_response_body]
       param = body.shape[:pagination]
 
       expect(param.type).to eq(:reference)
@@ -128,7 +128,7 @@ RSpec.describe 'Pagination types', type: :integration do
     end
 
     it 'has cursor pagination reference in cursor collection response' do
-      body = types[:activity_index_success_response_body]
+      body = types[:activity_index_response_body]
       param = body.shape[:pagination]
 
       expect(param.type).to eq(:reference)
