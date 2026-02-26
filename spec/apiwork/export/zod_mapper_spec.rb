@@ -146,7 +146,7 @@ RSpec.describe Apiwork::Export::ZodMapper do
 
       expect(result).to include("z.discriminatedUnion('status'")
       expect(result).to include('z.object({ status: z.literal(200), body: InvoicesCreateResponseBodySchema })')
-      expect(result).to include('z.object({ status: z.literal(422), body: ErrorResponseBodySchema })')
+      expect(result).to include('z.object({ status: z.literal(422), body: ErrorSchema })')
     end
   end
 

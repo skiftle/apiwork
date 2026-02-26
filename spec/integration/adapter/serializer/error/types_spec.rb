@@ -41,17 +41,4 @@ RSpec.describe 'Error serializer types', type: :integration do
       expect(enums[:layer].values).to contain_exactly('contract', 'domain', 'http')
     end
   end
-
-  describe 'error response body' do
-    let(:body) { types[:error_response_body] }
-
-    it 'has type object' do
-      expect(body.type).to eq(:object)
-    end
-
-    it 'extends error type' do
-      expect(body.extends?).to be(true)
-      expect(body.extends).to include(:error)
-    end
-  end
 end

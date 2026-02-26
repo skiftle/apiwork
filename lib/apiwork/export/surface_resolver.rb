@@ -56,7 +56,7 @@ module Apiwork
         action.request.query.each_value { |param| collect_types_from_param(param, type_names) }
         action.request.body.each_value { |param| collect_types_from_param(param, type_names) }
         collect_types_from_param(action.response.body, type_names) if action.response.body
-        type_names << :error_response_body if action.raises.any? && @api.types.key?(:error_response_body)
+        type_names << :error if action.raises.any? && @api.types.key?(:error)
       end
 
       def collect_types_from_param(param, type_names)

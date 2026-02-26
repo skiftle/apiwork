@@ -132,7 +132,7 @@ module Apiwork
         if error_statuses.empty?
           "export type #{type_name} = #{success_variant};"
         else
-          error_variants = error_statuses.map { |status| "{ status: #{status}; body: #{pascal_case(:error_response_body)} }" }
+          error_variants = error_statuses.map { |status| "{ status: #{status}; body: #{pascal_case(:error)} }" }
           all_variants = ([success_variant] + error_variants).map { |variant| "  | #{variant}" }.join("\n")
           "export type #{type_name} =\n#{all_variants};"
         end

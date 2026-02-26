@@ -171,7 +171,7 @@ module Apiwork
           "export const #{schema_name}Schema = #{success_variant};"
         else
           error_variants = error_statuses.map do |status|
-            "z.object({ status: z.literal(#{status}), body: #{pascal_case(:error_response_body)}Schema })"
+            "z.object({ status: z.literal(#{status}), body: #{pascal_case(:error)}Schema })"
           end
           all_variants = ([success_variant] + error_variants).map { |variant| "  #{variant}" }.join(",\n")
           "export const #{schema_name}Schema = z.discriminatedUnion('status', [\n#{all_variants}\n]);"

@@ -146,7 +146,7 @@ RSpec.describe Apiwork::Export::TypeScriptMapper do
 
       expect(result).to include('export type InvoicesCreateResponse =')
       expect(result).to include('{ status: 200; body: InvoicesCreateResponseBody }')
-      expect(result).to include('{ status: 422; body: ErrorResponseBody }')
+      expect(result).to include('{ status: 422; body: Error }')
     end
   end
 
