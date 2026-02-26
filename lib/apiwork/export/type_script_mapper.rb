@@ -16,7 +16,8 @@ module Apiwork
       def map(surface)
         types = build_enum_types(surface) +
                 build_type_definitions(surface) +
-                build_action_types
+                build_action_types +
+                build_action_response_types
 
         types.sort_by { |entry| entry[:name] }.map { |entry| entry[:code] }.join("\n\n")
       end
@@ -258,10 +259,75 @@ module Apiwork
         end
       end
 
-      private
+      def build_action_types
+        types = []
 
-      def resolve_error_statuses(raises)
-        raises.map { |code| @export.api.error_codes[code].status }.uniq.sort
+        traverse_resources do |resource|
+          resource_name = resource.identifier.to_sym
+          parent_identifiers = resource.parent_identifiers
+
+          resource.actions.each do |action_name, action|
+            types.concat(build_request_types(resource_name, action_name, action.request, parent_identifiers:))
+
+            response = action.response
+            next unless response.body?
+
+            type_name = action_type_name(resource_name, action_name, 'ResponseBody', parent_identifiers:)
+            code = build_action_response_body_type(resource_name, action_name, response.body, parent_identifiers:)
+            types << { code:, name: type_name }
+          end
+        end
+
+        types
+      end
+
+      def build_action_response_types
+        types = []
+
+        traverse_resources do |resource|
+          resource_name = resource.identifier.to_sym
+          parent_identifiers = resource.parent_identifiers
+
+          resource.actions.each do |action_name, action|
+            type_name = action_type_name(resource_name, action_name, 'Response', parent_identifiers:)
+            code = build_action_response_type(resource_name, action_name, action.response, parent_identifiers:, raises: action.raises)
+            types << { code:, name: type_name }
+          end
+        end
+
+        types
+      end
+
+      def build_action_response_envelope_types
+        types = []
+
+        traverse_resources do |resource|
+          resource_name = resource.identifier.to_sym
+          parent_identifiers = resource.parent_identifiers
+
+          resource.actions.each do |action_name, action|
+            type_name = action_type_name(resource_name, action_name, 'Response', parent_identifiers:)
+            response = action.response
+
+            code = if response.no_content?
+                     "export interface #{type_name} {}"
+                   else
+                     body_ref = action_type_name(resource_name, action_name, 'ResponseBody', parent_identifiers:)
+                     "export interface #{type_name} {\n  body: #{body_ref};\n}"
+                   end
+
+            types << { code:, name: type_name }
+          end
+        end
+
+        types
+      end
+
+      def traverse_resources(resources: @export.api.resources, &block)
+        resources.each_value do |resource|
+          yield(resource)
+          traverse_resources(resources: resource.resources, &block) if resource.resources.any?
+        end
       end
 
       def build_enum_types(surface)
@@ -278,20 +344,10 @@ module Apiwork
         end
       end
 
-      def build_action_types
-        types = []
+      private
 
-        traverse_resources do |resource|
-          resource_name = resource.identifier.to_sym
-          parent_identifiers = resource.parent_identifiers
-
-          resource.actions.each do |action_name, action|
-            types.concat(build_request_types(resource_name, action_name, action.request, parent_identifiers:))
-            types.concat(build_response_types(resource_name, action_name, action, parent_identifiers:))
-          end
-        end
-
-        types
+      def resolve_error_statuses(raises)
+        raises.map { |code| @export.api.error_codes[code].status }.uniq.sort
       end
 
       def build_request_types(resource_name, action_name, request, parent_identifiers:)
@@ -315,30 +371,6 @@ module Apiwork
         types << { code:, name: type_name }
 
         types
-      end
-
-      def build_response_types(resource_name, action_name, action, parent_identifiers:)
-        types = []
-        response = action.response
-
-        if response.body?
-          type_name = action_type_name(resource_name, action_name, 'ResponseBody', parent_identifiers:)
-          code = build_action_response_body_type(resource_name, action_name, response.body, parent_identifiers:)
-          types << { code:, name: type_name }
-        end
-
-        type_name = action_type_name(resource_name, action_name, 'Response', parent_identifiers:)
-        code = build_action_response_type(resource_name, action_name, response, parent_identifiers:, raises: action.raises)
-        types << { code:, name: type_name }
-
-        types
-      end
-
-      def traverse_resources(resources: @export.api.resources, &block)
-        resources.each_value do |resource|
-          yield(resource)
-          traverse_resources(resources: resource.resources, &block) if resource.resources.any?
-        end
       end
 
       def type_or_enum_reference?(symbol)
