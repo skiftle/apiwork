@@ -14,8 +14,8 @@ module Apiwork
       end
 
       def map(surface)
-        types = build_enum_types(surface) +
-                build_type_definitions(surface) +
+        types = build_enum_types(surface.enums) +
+                build_type_definitions(surface.types) +
                 build_action_types +
                 build_action_response_types
 
@@ -298,31 +298,6 @@ module Apiwork
         types
       end
 
-      def build_action_response_envelope_types
-        types = []
-
-        traverse_resources do |resource|
-          resource_name = resource.identifier.to_sym
-          parent_identifiers = resource.parent_identifiers
-
-          resource.actions.each do |action_name, action|
-            type_name = action_type_name(resource_name, action_name, 'Response', parent_identifiers:)
-            response = action.response
-
-            code = if response.no_content?
-                     "export interface #{type_name} {}"
-                   else
-                     body_ref = action_type_name(resource_name, action_name, 'ResponseBody', parent_identifiers:)
-                     "export interface #{type_name} {\n  body: #{body_ref};\n}"
-                   end
-
-            types << { code:, name: type_name }
-          end
-        end
-
-        types
-      end
-
       def traverse_resources(resources: @export.api.resources, &block)
         resources.each_value do |resource|
           yield(resource)
@@ -330,15 +305,15 @@ module Apiwork
         end
       end
 
-      def build_enum_types(surface)
-        surface.enums.map do |name, enum|
+      def build_enum_types(enums)
+        enums.map do |name, enum|
           { code: build_enum_type(name, enum), name: pascal_case(name) }
         end
       end
 
-      def build_type_definitions(surface)
-        TypeAnalysis.topological_sort_types(surface.types.transform_values(&:to_h)).map(&:first).map do |type_name|
-          type = surface.types[type_name]
+      def build_type_definitions(types)
+        TypeAnalysis.topological_sort_types(types.transform_values(&:to_h)).map(&:first).map do |type_name|
+          type = types[type_name]
           code = type.union? ? build_union_type(type_name, type) : build_interface(type_name, type)
           { code:, name: pascal_case(type_name) }
         end

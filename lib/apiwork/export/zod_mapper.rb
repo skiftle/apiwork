@@ -30,10 +30,10 @@ module Apiwork
       def map(surface)
         parts = []
 
-        enum_schemas = build_enum_schemas(surface)
+        enum_schemas = build_enum_schemas(surface.enums)
         parts << enum_schemas if enum_schemas.present?
 
-        type_schemas = build_type_schemas(surface)
+        type_schemas = build_type_schemas(surface.types)
         parts << type_schemas if type_schemas.present?
 
         action_schemas = build_action_schemas
@@ -317,20 +317,20 @@ module Apiwork
         name.to_s.camelize(:upper)
       end
 
-      def build_enum_schemas(surface)
-        return '' if surface.enums.empty?
+      def build_enum_schemas(enums)
+        return '' if enums.empty?
 
-        surface.enums.map do |name, enum|
+        enums.map do |name, enum|
           "export const #{pascal_case(name)}Schema = z.enum([#{enum.values.sort.map { |value| "'#{value}'" }.join(', ')}]);"
         end.join("\n\n")
       end
 
-      def build_type_schemas(surface)
-        types_hash = surface.types.transform_values(&:to_h)
+      def build_type_schemas(types)
+        types_hash = types.transform_values(&:to_h)
         lazy_types = TypeAnalysis.cycle_breaking_types(types_hash)
 
         TypeAnalysis.topological_sort_types(types_hash).map(&:first).map do |type_name|
-          type = surface.types[type_name]
+          type = types[type_name]
           recursive = lazy_types.include?(type_name)
 
           if type.union?
@@ -392,29 +392,6 @@ module Apiwork
 
           resource.actions.each do |action_name, action|
             schemas << build_action_response_schema(resource_name, action_name, action.response, parent_identifiers:, raises: action.raises)
-          end
-        end
-
-        schemas.join("\n\n")
-      end
-
-      def build_action_response_envelope_schemas
-        schemas = []
-
-        traverse_resources do |resource|
-          resource_name = resource.identifier.to_sym
-          parent_identifiers = resource.parent_identifiers
-
-          resource.actions.each do |action_name, action|
-            schema_name = "#{action_type_name(resource_name, action_name, 'Response', parent_identifiers:)}Schema"
-            response = action.response
-
-            schemas << if response.no_content?
-                         "export const #{schema_name} = z.object({});"
-                       else
-                         body_ref = "#{action_type_name(resource_name, action_name, 'ResponseBody', parent_identifiers:)}Schema"
-                         "export const #{schema_name} = z.object({ body: #{body_ref} });"
-                       end
           end
         end
 

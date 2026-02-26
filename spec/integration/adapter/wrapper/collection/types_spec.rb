@@ -7,7 +7,7 @@ RSpec.describe 'Collection wrapper types', type: :integration do
   let(:types) { introspection.types }
 
   describe 'collection response body' do
-    let(:body) { types[:invoice_index_response_body] }
+    let(:body) { types[:invoices_index_response_body] }
 
     it 'has type object' do
       expect(body.type).to eq(:object)
