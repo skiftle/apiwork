@@ -727,8 +727,9 @@ module Apiwork
           @built_contracts.add(contract_class)
 
           resource = @root_resource.find_resource { |resource| resource.resolve_contract_class == contract_class }
+          resource_actions = resource ? resource.actions : {}
 
-          adapter.register_contract(contract_class, representation_class, resource:)
+          adapter.register_contract(contract_class, representation_class, resource_actions:)
         end
 
         def ensure_pre_pass_complete!
@@ -791,7 +792,7 @@ module Apiwork
 
           @built_contracts.add(contract_class)
 
-          adapter.register_contract(contract_class, contract_class.representation_class, resource:)
+          adapter.register_contract(contract_class, contract_class.representation_class, resource_actions: resource.actions)
         end
       end
     end

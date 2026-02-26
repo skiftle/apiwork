@@ -127,8 +127,8 @@ RSpec.describe 'Introspection param types', type: :integration do
     end
 
     it 'returns object param for meta shapes' do
-      body_params = introspection.types[:invoices_create_response_body].shape
-      param = body_params[:meta]
+      body = introspection.resources[:invoices].actions[:create].response.body
+      param = body.shape[:meta]
 
       expect(param.type).to eq(:object)
       expect(param.object?).to be(true)
@@ -147,7 +147,7 @@ RSpec.describe 'Introspection param types', type: :integration do
 
   describe 'Param base predicates' do
     it 'returns optional true for optional params' do
-      param = introspection.types[:invoices_show_response_body].shape[:meta]
+      param = introspection.resources[:invoices].actions[:show].response.body.shape[:meta]
 
       expect(param.optional?).to be(true)
     end

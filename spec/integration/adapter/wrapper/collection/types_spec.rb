@@ -4,10 +4,9 @@ require 'rails_helper'
 
 RSpec.describe 'Collection wrapper types', type: :integration do
   let(:introspection) { Apiwork::API.introspect('/api/v1') }
-  let(:types) { introspection.types }
 
   describe 'collection response body' do
-    let(:body) { types[:invoices_index_response_body] }
+    let(:body) { introspection.resources[:invoices].actions[:index].response.body }
 
     it 'has type object' do
       expect(body.type).to eq(:object)

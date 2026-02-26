@@ -4,10 +4,10 @@ require 'rails_helper'
 
 RSpec.describe 'Member wrapper types', type: :integration do
   let(:introspection) { Apiwork::API.introspect('/api/v1') }
-  let(:types) { introspection.types }
+  let(:resources) { introspection.resources }
 
   describe 'member response body' do
-    let(:body) { types[:invoices_show_response_body] }
+    let(:body) { resources[:invoices].actions[:show].response.body }
 
     it 'has type object' do
       expect(body.type).to eq(:object)
@@ -30,7 +30,7 @@ RSpec.describe 'Member wrapper types', type: :integration do
   end
 
   describe 'create response body' do
-    let(:body) { types[:invoices_create_response_body] }
+    let(:body) { resources[:invoices].actions[:create].response.body }
 
     it 'has singular root key as reference' do
       param = body.shape[:invoice]
@@ -45,7 +45,7 @@ RSpec.describe 'Member wrapper types', type: :integration do
   end
 
   describe 'update response body' do
-    let(:body) { types[:invoices_update_response_body] }
+    let(:body) { resources[:invoices].actions[:update].response.body }
 
     it 'has singular root key as reference' do
       param = body.shape[:invoice]
@@ -57,28 +57,28 @@ RSpec.describe 'Member wrapper types', type: :integration do
 
   describe 'custom action response body' do
     it 'has send_invoice response body' do
-      body = types[:invoices_send_invoice_response_body]
+      body = resources[:invoices].actions[:send_invoice].response.body
 
       expect(body.type).to eq(:object)
       expect(body.shape).to have_key(:invoice)
     end
 
     it 'has void response body' do
-      body = types[:invoices_void_response_body]
+      body = resources[:invoices].actions[:void].response.body
 
       expect(body.type).to eq(:object)
       expect(body.shape).to have_key(:invoice)
     end
 
     it 'has search collection response body' do
-      body = types[:invoices_search_response_body]
+      body = resources[:invoices].actions[:search].response.body
 
       expect(body.type).to eq(:object)
       expect(body.shape).to have_key(:invoices)
     end
 
     it 'has bulk_create collection response body' do
-      body = types[:invoices_bulk_create_response_body]
+      body = resources[:invoices].actions[:bulk_create].response.body
 
       expect(body.type).to eq(:object)
       expect(body.shape).to have_key(:invoices)
@@ -86,31 +86,23 @@ RSpec.describe 'Member wrapper types', type: :integration do
   end
 
   describe 'create request body' do
-    let(:body) { types[:invoices_create_request_body] }
-
-    it 'has type object' do
-      expect(body.type).to eq(:object)
-    end
+    let(:body) { resources[:invoices].actions[:create].request.body }
 
     it 'has invoice param' do
-      expect(body.shape).to have_key(:invoice)
+      expect(body).to have_key(:invoice)
     end
   end
 
   describe 'update request body' do
-    let(:body) { types[:invoices_update_request_body] }
-
-    it 'has type object' do
-      expect(body.type).to eq(:object)
-    end
+    let(:body) { resources[:invoices].actions[:update].request.body }
 
     it 'has invoice param' do
-      expect(body.shape).to have_key(:invoice)
+      expect(body).to have_key(:invoice)
     end
   end
 
   describe 'singular resource response body' do
-    let(:body) { types[:profile_show_response_body] }
+    let(:body) { resources[:profile].actions[:show].response.body }
 
     it 'has singular root key' do
       expect(body.shape).to have_key(:profile)

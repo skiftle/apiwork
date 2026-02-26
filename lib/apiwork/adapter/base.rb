@@ -214,16 +214,14 @@ module Apiwork
         build_error_response_body(api_class, error_serializer_class)
       end
 
-      def register_contract(contract_class, representation_class, resource: nil)
-        resource_actions = resource ? resource.actions : {}
-
+      def register_contract(contract_class, representation_class, resource_actions: {})
         capabilities.each do |capability|
           capability.contract_types(contract_class, representation_class, resource_actions)
         end
 
         self.class.resource_serializer.new(representation_class).contract_types(contract_class)
 
-        build_action_responses(contract_class, representation_class, resource_actions, resource.name) if resource
+        build_action_responses(contract_class, representation_class, resource_actions) if resource_actions.any?
       end
 
       def apply_request_transformers(request, phase:)
@@ -252,35 +250,29 @@ module Apiwork
         )
       end
 
-      def build_action_responses(contract_class, representation_class, actions, resource_name)
-        actions.each_value do |action|
-          build_action_response(contract_class, representation_class, action, resource_name)
+      def build_action_responses(contract_class, representation_class, resource_actions)
+        resource_actions.each_value do |action|
+          build_action_response(contract_class, representation_class, action)
         end
       end
 
-      def build_action_response(contract_class, representation_class, action, resource_name)
+      def build_action_response(contract_class, representation_class, action)
         contract_action = contract_class.action(action.name)
         return if contract_action.resets_response?
 
         case action.name
         when :index
-          build_collection_action_response(contract_class, representation_class, action, contract_action, resource_name)
+          build_collection_action_response(contract_class, representation_class, action, contract_action)
         when :show, :create, :update
-          build_member_action_response(contract_class, representation_class, action, contract_action, resource_name)
+          build_member_action_response(contract_class, representation_class, action, contract_action)
         when :destroy
           contract_action.response { no_content! }
         else
-          build_custom_action_response(contract_class, representation_class, action, contract_action, resource_name)
+          build_custom_action_response(contract_class, representation_class, action, contract_action)
         end
-
-        build_request_query_type(contract_class, action.name, contract_action, resource_name)
-        build_request_body_type(contract_class, action.name, contract_action, resource_name)
-        build_request_type(contract_class, action.name, contract_action, resource_name)
-        build_response_type(contract_class, action.name, contract_action, resource_name)
       end
 
-      def build_member_action_response(contract_class, representation_class, action, contract_action, resource_name)
-        build_response_body_type(contract_class, representation_class, action.name, :member, resource_name)
+      def build_member_action_response(contract_class, representation_class, action, contract_action)
         member_shape_class = self.class.member_wrapper.shape_class
         data_type = resolve_resource_data_type(representation_class)
 
@@ -291,8 +283,7 @@ module Apiwork
         end
       end
 
-      def build_collection_action_response(contract_class, representation_class, action, contract_action, resource_name)
-        build_response_body_type(contract_class, representation_class, action.name, :collection, resource_name)
+      def build_collection_action_response(contract_class, representation_class, action, contract_action)
         collection_shape_class = self.class.collection_wrapper.shape_class
         data_type = resolve_resource_data_type(representation_class)
 
@@ -303,101 +294,14 @@ module Apiwork
         end
       end
 
-      def build_custom_action_response(contract_class, representation_class, action, contract_action, resource_name)
+      def build_custom_action_response(contract_class, representation_class, action, contract_action)
         if action.method == :delete
           contract_action.response { no_content! }
         elsif action.collection?
-          build_collection_action_response(contract_class, representation_class, action, contract_action, resource_name)
+          build_collection_action_response(contract_class, representation_class, action, contract_action)
         elsif action.member?
-          build_member_action_response(contract_class, representation_class, action, contract_action, resource_name)
+          build_member_action_response(contract_class, representation_class, action, contract_action)
         end
-      end
-
-      def build_response_body_type(contract_class, representation_class, action_name, response_type, resource_name)
-        type_name = build_action_type_name(resource_name, action_name, 'response_body')
-        api_class = contract_class.api_class
-        return if api_class.type_registry.key?(type_name)
-
-        shape_class = if response_type == :collection
-                        self.class.collection_wrapper.shape_class
-                      else
-                        self.class.member_wrapper.shape_class
-                      end
-        data_type = resolve_resource_data_type(representation_class)
-
-        api_class.register_object(type_name) do |object|
-          shape_class.apply(object, representation_class.root_key, capabilities, representation_class, response_type, data_type:)
-        end
-      end
-
-      def build_request_query_type(contract_class, action_name, contract_action, resource_name)
-        request = contract_action.request
-        return unless request.query.params.any?
-
-        type_name = build_action_type_name(resource_name, action_name, 'request_query')
-        api_class = contract_class.api_class
-        return if api_class.type_registry.key?(type_name)
-
-        api_class.register_object(type_name) do |object|
-          request.query.params.each { |name, param| object.param(name, **normalize_request_param(param)) }
-        end
-      end
-
-      def build_request_body_type(contract_class, action_name, contract_action, resource_name)
-        request = contract_action.request
-        return unless request.body.params.any?
-
-        type_name = build_action_type_name(resource_name, action_name, 'request_body')
-        api_class = contract_class.api_class
-        return if api_class.type_registry.key?(type_name)
-
-        api_class.register_object(type_name) do |object|
-          request.body.params.each { |name, param| object.param(name, **normalize_request_param(param)) }
-        end
-      end
-
-      def build_request_type(contract_class, action_name, contract_action, resource_name)
-        request = contract_action.request
-        return unless request.query.params.any? || request.body.params.any?
-
-        type_name = build_action_type_name(resource_name, action_name, 'request')
-        api_class = contract_class.api_class
-        return if api_class.type_registry.key?(type_name)
-
-        query_type_name = build_action_type_name(resource_name, action_name, 'request_query')
-        body_type_name = build_action_type_name(resource_name, action_name, 'request_body')
-
-        api_class.register_object(type_name) do |object|
-          object.param(:query, type: query_type_name) if request.query.params.any?
-          object.param(:body, type: body_type_name) if request.body.params.any?
-        end
-      end
-
-      def build_response_type(contract_class, action_name, contract_action, resource_name)
-        type_name = build_action_type_name(resource_name, action_name, 'response')
-        api_class = contract_class.api_class
-        return if api_class.type_registry.key?(type_name)
-
-        body_type_name = build_action_type_name(resource_name, action_name, 'response_body')
-
-        if contract_action.response.no_content?
-          api_class.register_object(type_name) { |_object| }
-        else
-          api_class.register_object(type_name) do |object|
-            object.param(:body, type: body_type_name)
-          end
-        end
-      end
-
-      def build_action_type_name(resource_name, action_name, suffix)
-        [resource_name, action_name, suffix].join('_').to_sym
-      end
-
-      def normalize_request_param(param)
-        options = param.except(:name, :custom_type, :union, :partial)
-        options[:type] = param[:custom_type] if param[:custom_type]
-        options[:shape] = param[:union] if param[:union]
-        options
       end
 
       def resolve_resource_data_type(representation_class)

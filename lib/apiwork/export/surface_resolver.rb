@@ -21,35 +21,7 @@ module Apiwork
         @enums ||= compute_reachable_enums
       end
 
-      def action_types
-        @action_types ||= compute_action_types
-      end
-
       private
-
-      def compute_action_types
-        type_names = Set.new
-        @api.resources.each_value do |resource|
-          collect_action_type_names_from_resource(resource, type_names)
-        end
-        @api.types.select { |name, _| type_names.include?(name) }
-      end
-
-      def collect_action_type_names_from_resource(resource, type_names, parent_identifiers: [])
-        identifier = resource.identifier
-        prefix = (parent_identifiers + [identifier]).join('_')
-
-        resource.actions.each_key do |action_name|
-          %w[request_query request_body request response_body response].each do |suffix|
-            type_name = [prefix, action_name, suffix].join('_').to_sym
-            type_names << type_name if @api.types.key?(type_name)
-          end
-        end
-
-        resource.resources.each_value do |nested|
-          collect_action_type_names_from_resource(nested, type_names, parent_identifiers: parent_identifiers + [identifier])
-        end
-      end
 
       def compute_reachable_types
         type_names = collect_type_names_from_actions
