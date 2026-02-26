@@ -27,6 +27,10 @@ module BraveEagle
       description 'Creates a task and returns the created resource'
       tags 'Tasks'
       operation_id 'createTask'
+
+      request do
+        description 'The task to create'
+      end
     end
 
     action :update do

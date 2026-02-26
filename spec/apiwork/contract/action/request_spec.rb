@@ -3,6 +3,23 @@
 require 'rails_helper'
 
 RSpec.describe Apiwork::Contract::Action::Request do
+  describe '#description' do
+    it 'returns the description' do
+      contract_class = create_test_contract
+      request = described_class.new(contract_class, :create)
+      request.description 'The invoice to create'
+
+      expect(request.description).to eq('The invoice to create')
+    end
+
+    it 'returns nil when not set' do
+      contract_class = create_test_contract
+      request = described_class.new(contract_class, :create)
+
+      expect(request.description).to be_nil
+    end
+  end
+
   describe '#body' do
     it 'defines a body' do
       contract_class = create_test_contract

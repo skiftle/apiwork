@@ -156,6 +156,30 @@ Appears in the OpenAPI export as possible responses.
 
 [Action metadata](../contracts/actions.md#metadata) controls `summary`, `description`, `tags`, and `operation_id` per action.
 
+## Request & Response Description
+
+Set a description per request or response using `description` inside the respective block:
+
+```ruby
+action :create do
+  request do
+    description 'The invoice to create'
+  end
+end
+
+action :show do
+  response do
+    description 'Returns the invoice'
+  end
+end
+```
+
+Request descriptions map to OpenAPI's `requestBody.description`.
+
+::: info
+The OpenAPI spec requires a `description` field on every response object. When not set, Apiwork defaults to an empty string. Descriptions can also be defined via [translations](../api-definitions/metadata.md#translations).
+:::
+
 #### See also
 
 - [Export reference](../../reference/export/base) — programmatic generation API

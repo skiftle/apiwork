@@ -76,6 +76,8 @@ en:
                   description: A paginated list of invoices
               create:
                 summary: Create an invoice
+                request:
+                  description: The invoice to create
         representations:
           invoice:
             attributes:

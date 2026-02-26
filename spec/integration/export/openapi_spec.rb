@@ -32,6 +32,12 @@ RSpec.describe 'OpenAPI export pipeline', type: :integration do
     expect(show_operation[:responses][:'200'][:description]).to eq('The invoice')
   end
 
+  it 'includes request description' do
+    create_operation = spec[:paths]['/invoices']['post']
+
+    expect(create_operation[:requestBody][:description]).to eq('The invoice to create')
+  end
+
   it 'generates error responses for raises declarations' do
     show_operation = spec[:paths]['/invoices/{id}']['get']
 

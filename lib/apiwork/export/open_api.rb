@@ -106,7 +106,11 @@ module Apiwork
           query_params = request.query? ? build_query_parameters(request.query) : []
           all_params = path_params + query_params
           operation[:parameters] = all_params if all_params.any?
-          operation[:requestBody] = build_request_body(request.body) if request.body?
+          if request.body?
+            request_body = build_request_body(request.body)
+            request_body[:description] = request.description if request.description
+            operation[:requestBody] = request_body
+          end
         elsif path_params.any?
           operation[:parameters] = path_params
         end

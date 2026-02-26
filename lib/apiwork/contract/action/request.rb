@@ -16,6 +16,28 @@ module Apiwork
           @action_name = action_name
           @query = nil
           @body = nil
+          @description = nil
+        end
+
+        # @api public
+        # The description for this request.
+        #
+        # Metadata included in exports.
+        #
+        # @param value [String, nil] (nil)
+        #   The description.
+        # @return [String, nil]
+        #
+        # @example
+        #   action :create do
+        #     request do
+        #       description 'The invoice to create'
+        #     end
+        #   end
+        def description(value = nil)
+          return @description if value.nil?
+
+          @description = value
         end
 
         # @api public

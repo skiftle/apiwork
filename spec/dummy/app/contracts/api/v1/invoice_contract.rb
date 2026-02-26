@@ -25,6 +25,8 @@ module Api
         raises :unprocessable_entity
 
         request do
+          description 'The invoice to create'
+
           body do
             object :invoice do
               string :number

@@ -19,6 +19,14 @@ module Apiwork
         end
 
         # @api public
+        # The description for this request.
+        #
+        # @return [String, nil]
+        def description
+          @dump[:description]
+        end
+
+        # @api public
         # The query for this request.
         #
         # @return [Hash{Symbol => Param}]
@@ -56,6 +64,7 @@ module Apiwork
         # @return [Hash]
         def to_h
           {
+            description:,
             body: body.transform_values(&:to_h),
             query: query.transform_values(&:to_h),
           }

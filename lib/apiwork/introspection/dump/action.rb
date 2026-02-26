@@ -37,10 +37,11 @@ module Apiwork
         end
 
         def build_request(request)
-          return { body: {}, query: {} } unless request
+          return { body: {}, description: i18n_lookup(:request, :description), query: {} } unless request
 
           {
             body: build_param(request.body),
+            description: request.description || i18n_lookup(:request, :description),
             query: build_param(request.query),
           }
         end
