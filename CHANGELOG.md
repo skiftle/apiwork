@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.2.0](https://github.com/skiftle/apiwork/compare/apiwork/v0.1.2...apiwork/v0.2.0) (2026-02-26)
+
+
+### ⚠ BREAKING CHANGES
+
+* replace result_wrapper with symmetric per-action types
+
+### Features
+
+* replace result_wrapper with symmetric per-action types ([a9da6dc](https://github.com/skiftle/apiwork/commit/a9da6dc8e5f69a54552c9a83c5e07b0c02208a32))
+
+
+### Bug Fixes
+
+* avoid frozen lockfile for playground in CI ([d49da1c](https://github.com/skiftle/apiwork/commit/d49da1c38a7a27236b0e467688f827471be9a2ca))
+
 ## [0.1.2](https://github.com/skiftle/apiwork/compare/apiwork/v0.1.1...apiwork/v0.1.2) (2026-02-24)
 
 
