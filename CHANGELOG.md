@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.3.0](https://github.com/skiftle/apiwork/compare/apiwork/v0.2.0...apiwork/v0.3.0) (2026-02-27)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove redundant :error_response_body type
+* remove per-action types from type registry
+* use plural resource names for per-action types and add request/response wrappers
+
+### Features
+
+* add description to request for OpenAPI exports ([c5685e1](https://github.com/skiftle/apiwork/commit/c5685e142df38c34d82f50921eb4b7c131175e39))
+* add description to response for OpenAPI exports ([0df5b82](https://github.com/skiftle/apiwork/commit/0df5b8277bf2e582d6b7c6b17559b96daea890f9))
+* add Sorbus export for typed client contracts ([b284cb7](https://github.com/skiftle/apiwork/commit/b284cb7af863e5ac975e0fe53bf6ee7f218ab949))
+* expose per-action schema builders for external composition ([530a5d3](https://github.com/skiftle/apiwork/commit/530a5d3c0a3bbfc21286cefa9573f78b3a29c94d))
+* remove per-action types from type registry ([ff8d042](https://github.com/skiftle/apiwork/commit/ff8d0420fe168ef5aab9af972ec50c81123b73b0))
+* remove redundant :error_response_body type ([3f715cb](https://github.com/skiftle/apiwork/commit/3f715cbe58c30613ba1f412ee4d93274e9355e1a))
+* use plural resource names for per-action types and add request/response wrappers ([acde604](https://github.com/skiftle/apiwork/commit/acde60498637dad618a3a922b212ecb9daaff8ea))
+
 ## [0.2.0](https://github.com/skiftle/apiwork/compare/apiwork/v0.1.2...apiwork/v0.2.0) (2026-02-26)
 
 
