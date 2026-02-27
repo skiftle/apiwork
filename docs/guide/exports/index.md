@@ -7,7 +7,7 @@ Exports describe the API in formats that external tools understand. They come fr
 
 ## What Exports Do
 
-- **Generate specifications** — OpenAPI, TypeScript, and Zod from one source
+- **Generate specifications** — OpenAPI, TypeScript, Zod, and Sorbus from one source
 - **Stay in sync** — when the API changes, exports change with it
 - **Extend** — build custom exports for any format
 
@@ -22,6 +22,7 @@ Apiwork::API.define '/api/v1' do
   export :openapi
   export :typescript
   export :zod
+  export :sorbus
 end
 ```
 
@@ -30,9 +31,10 @@ Once declared, exports can be generated via endpoints, rake tasks, or code.
 ## Next Steps
 
 - [Generation](./generation.md) — endpoints, rake tasks, and programmatic generation
-- [OpenAPI](./openapi.md) — OpenAPI specification export
+- [OpenAPI](./openapi.md) — OpenAPI specification
 - [TypeScript](./typescript.md) — TypeScript type definitions
-- [Zod](./zod.md) — Zod schema export
+- [Zod](./zod.md) — Zod schemas
+- [Sorbus](./sorbus.md) — Sorbus contract
 - [Custom Exports](./custom-exports.md) — building custom export formats
 
 #### See also

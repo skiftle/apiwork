@@ -74,6 +74,7 @@ module Apiwork
         register(OpenAPI)
         register(TypeScript)
         register(Zod)
+        register(Sorbus)
       end
     end
   end

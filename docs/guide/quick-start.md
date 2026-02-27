@@ -32,12 +32,13 @@ Apiwork::API.define '/api/v1' do
   export :openapi
   export :typescript
   export :zod
+  export :sorbus
 
   resources :posts
 end
 ```
 
-The `export` declarations tell Apiwork to generate documentation at `/.openapi`, `/.typescript`, and `/.zod`.
+The `export` declarations tell Apiwork to generate exports at `/.openapi`, `/.typescript`, `/.zod`, and `/.sorbus`.
 
 ## 3. Routes
 
@@ -199,6 +200,7 @@ curl "http://localhost:3000/api/v1/posts?page[number]=1&page[size]=10"
 curl http://localhost:3000/api/v1/.openapi
 curl http://localhost:3000/api/v1/.typescript
 curl http://localhost:3000/api/v1/.zod
+curl http://localhost:3000/api/v1/.sorbus
 ```
 
 ## What You Got
@@ -210,7 +212,7 @@ The application now has:
 3. **[Filtering](./adapters/standard-adapter/filtering.md)** — `filterable: true` attributes can be filtered via `?filter[field][op]=value`
 4. **[Sorting](./adapters/standard-adapter/sorting.md)** — `sortable: true` attributes can be sorted via `?sort[field]=asc|desc`
 5. **[Pagination](./adapters/standard-adapter/pagination.md)** — Built-in offset-based pagination via `?page[number]=1&page[size]=10`
-6. **[Exports](./exports/)** — OpenAPI, TypeScript, and Zod exports generated from the same source
+6. **[Exports](./exports/)** — OpenAPI, TypeScript, Zod, and [Sorbus](./exports/sorbus.md) exports generated from the same source
 
 ## Additional Features
 

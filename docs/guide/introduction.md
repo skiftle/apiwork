@@ -13,7 +13,7 @@ Apiwork exists so you don't have to leave Rails to get typed APIs. ActiveRecord,
 
 You describe your domain once. Apiwork maps every Rails concept to its typed equivalent — enums to typed enums, STI and polymorphic associations to discriminated unions, columns and nullability to typed fields — and builds the full boundary: validation, serialization, filtering, sorting, pagination, nested writes, and typed exports.
 
-What validates requests in production is what generates your OpenAPI, TypeScript, and Zod. Nothing drifts.
+What validates requests in production is what generates your OpenAPI, TypeScript, Zod, and Sorbus exports. Nothing drifts.
 
 ## Define Your Domain
 
@@ -43,7 +43,7 @@ From this representation, Apiwork generates:
 - **Sorting** — `?sort[issued_on]=desc`
 - **Pagination** — offset or cursor-based
 - **Nested writes** — create or update related records in one request
-- **OpenAPI, TypeScript, Zod** — generated from the same definitions that run in production
+- **OpenAPI, TypeScript, Zod, [Sorbus](./exports/sorbus.md)** — generated from the same definitions that run in production
 
 The controller stays thin:
 
@@ -61,7 +61,7 @@ end
 
 ## How It Works
 
-You write a representation. Apiwork builds contracts from it — typed rules that validate every request and shape every response at runtime. Adapters read those contracts and apply filtering, sorting, pagination, and nested writes. Exports read the same contracts and generate OpenAPI, TypeScript, and Zod.
+You write a representation. Apiwork builds contracts from it — typed rules that validate every request and shape every response at runtime. Adapters read those contracts and apply filtering, sorting, pagination, and nested writes. Exports read the same contracts and generate OpenAPI, TypeScript, Zod, and Sorbus.
 
 One description flows through the entire stack. That's how nothing drifts.
 

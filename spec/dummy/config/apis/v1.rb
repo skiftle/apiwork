@@ -6,6 +6,7 @@ Apiwork::API.define '/api/v1' do
   export :openapi
   export :typescript
   export :zod
+  export :sorbus
 
   info do
     title 'Billing API'

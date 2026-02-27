@@ -27,6 +27,22 @@ module ExportTestHelper
     Struct.new(:status).new(status)
   end
 
+  def build_resource(actions: {}, identifier:, resources: {})
+    Apiwork::Introspection::API::Resource.new(
+      {
+        actions:,
+        identifier:,
+        resources:,
+        parent_identifiers: [],
+        path: identifier,
+      },
+    )
+  end
+
+  def build_surface(enums: {}, types: {})
+    Struct.new(:enums, :types).new(enums, types)
+  end
+
   def stub_export(enums: {}, error_codes: {}, resources: {}, types: {})
     api_stub = Struct.new(:types, :enums, :resources, :error_codes).new(types, enums, resources, error_codes)
     export = Struct.new(:api).new(api_stub)

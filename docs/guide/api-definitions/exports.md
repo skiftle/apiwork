@@ -13,6 +13,7 @@ Apiwork::API.define '/api/v1' do
   export :openapi
   export :typescript
   export :zod
+  export :sorbus
 end
 ```
 
@@ -72,6 +73,7 @@ Default paths:
 | `export :openapi`    | `GET /api/v1/.openapi`    |
 | `export :typescript` | `GET /api/v1/.typescript` |
 | `export :zod`        | `GET /api/v1/.zod`        |
+| `export :sorbus`     | `GET /api/v1/.sorbus`     |
 
 See [Exports](../exports/) for endpoints, rake tasks, and programmatic generation.
 

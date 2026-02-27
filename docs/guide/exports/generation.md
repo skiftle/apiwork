@@ -21,6 +21,7 @@ Each declared export is available as an endpoint at the API's base path:
 | OpenAPI    | `GET /api/v1/.openapi`    |
 | TypeScript | `GET /api/v1/.typescript` |
 | Zod        | `GET /api/v1/.zod`        |
+| Sorbus     | `GET /api/v1/.sorbus`     |
 
 Endpoints are only available in development by default and generate on each request, so changes to the API definition are reflected immediately.
 
@@ -112,7 +113,8 @@ public/exports/
 │   └── v1/
 │       ├── openapi.json
 │       ├── typescript.ts
-│       └── zod.ts
+│       ├── zod.ts
+│       └── sorbus.ts
 ```
 
 ### Options
