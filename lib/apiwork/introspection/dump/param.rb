@@ -4,9 +4,8 @@ module Apiwork
   module Introspection
     module Dump
       class Param
-        def initialize(contract_param, visited: Set.new)
+        def initialize(contract_param)
           @contract_param = contract_param
-          @visited = visited
           @import_prefix_cache = {}
         end
 
@@ -247,7 +246,7 @@ module Apiwork
           elsif shape.is_a?(Apiwork::API::Union)
             dump_api_union(shape)
           else
-            Param.new(shape, visited: @visited).to_h
+            Param.new(shape).to_h
           end
         end
 
