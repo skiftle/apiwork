@@ -1,4 +1,8 @@
-# Apiwork
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/public/logo-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="docs/public/logo-light.svg">
+  <img alt="Apiwork" src="docs/public/logo-light.svg" width="280">
+</picture>
 
 [![Gem Version](https://img.shields.io/gem/v/apiwork)](https://rubygems.org/gems/apiwork)
 [![CI](https://github.com/skiftle/apiwork/actions/workflows/ci.yml/badge.svg)](https://github.com/skiftle/apiwork/actions/workflows/ci.yml)
