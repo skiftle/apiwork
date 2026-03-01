@@ -69,7 +69,8 @@ export default defineConfig({
     hostname: "https://apiwork.dev",
   },
   head: [
-    ["link", { rel: "icon", href: "/favicon.ico" }],
+    ["link", { rel: "icon", href: "/icon-light.svg", type: "image/svg+xml", media: "(prefers-color-scheme: light)" }],
+    ["link", { rel: "icon", href: "/icon-dark.svg", type: "image/svg+xml", media: "(prefers-color-scheme: dark)" }],
     ["meta", { property: "og:type", content: "website" }],
     ["meta", { property: "og:title", content: "Apiwork" }],
     [
@@ -87,6 +88,10 @@ export default defineConfig({
     },
   },
   themeConfig: {
+    logo: {
+      light: "/icon-light.svg",
+      dark: "/icon-dark.svg",
+    },
     outline: [2, 3],
     externalLinkIcon: true,
     nav: [

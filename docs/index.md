@@ -5,6 +5,10 @@ hero:
   name: Apiwork
   text: Typed APIs for Rails
   tagline: Define your API once — and generate everything from it
+  image:
+    light: /icon-light.svg
+    dark: /icon-dark.svg
+    alt: Apiwork
   actions:
     - theme: brand
       text: Get Started
