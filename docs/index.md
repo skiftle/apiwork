@@ -34,7 +34,7 @@ features:
     title: Nested Writes
     details: Create, update, and delete nested records in one request. Fully typed payloads with structured error paths at every level.
 
-  - icon: "✍"
-    title: Contracts Without ActiveRecord
-    details: Contracts work standalone. Define any request or response shape by hand — for webhooks, external APIs, or anything outside ActiveRecord.
+  - icon: "⚡"
+    title: Prisma Ergonomics, Rails Power
+    details: Sorbus is the typed TypeScript client, purpose-built for Apiwork. It turns your API into a Prisma-like experience — end-to-end types derived from your database, backed by the full power of Rails.
 ---

@@ -115,4 +115,5 @@ The TypeScript and Zod exports produce standalone files — types and schemas th
 
 #### See also
 
+- [Sorbus client](../sorbus.md) — typed API calls from the generated contract
 - [Export reference](../../reference/export/base) — programmatic generation API

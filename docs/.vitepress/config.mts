@@ -37,9 +37,22 @@ const sidebar = generateSidebar([
 ]);
 
 const guideItems = sidebar["/guide/"].items;
+const ecosystem = ["Sorbus (TypeScript)"];
 sidebar["/guide/"].items = [
-  { text: "Getting Started", items: guideItems.filter((i) => !i.items) },
-  { text: "Core", items: guideItems.filter((i) => i.items) },
+  {
+    text: "Getting Started",
+    items: guideItems.filter(
+      (i) => !i.items && !ecosystem.includes(i.text),
+    ),
+  },
+  {
+    text: "Core",
+    items: guideItems.filter((i) => i.items && !ecosystem.includes(i.text)),
+  },
+  {
+    text: "Ecosystem",
+    items: guideItems.filter((i) => ecosystem.includes(i.text)),
+  },
 ];
 
 sidebar["/reference/"].items = [
