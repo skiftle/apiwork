@@ -34,16 +34,14 @@ const sidebar = generateSidebar([
     frontmatterOrderDefaultValue: 999,
     collapsed: true,
   },
-]);
+]) as Record<string, { items: any[] }>;
 
 const guideItems = sidebar["/guide/"].items;
 const ecosystem = ["Sorbus (TypeScript)"];
 sidebar["/guide/"].items = [
   {
     text: "Getting Started",
-    items: guideItems.filter(
-      (i) => !i.items && !ecosystem.includes(i.text),
-    ),
+    items: guideItems.filter((i) => !i.items && !ecosystem.includes(i.text)),
   },
   {
     text: "Core",
@@ -69,8 +67,24 @@ export default defineConfig({
     hostname: "https://apiwork.dev",
   },
   head: [
-    ["link", { rel: "icon", href: "/icon-light.svg", type: "image/svg+xml", media: "(prefers-color-scheme: light)" }],
-    ["link", { rel: "icon", href: "/icon-dark.svg", type: "image/svg+xml", media: "(prefers-color-scheme: dark)" }],
+    [
+      "link",
+      {
+        rel: "icon",
+        href: "/logo-light.svg",
+        type: "image/svg+xml",
+        media: "(prefers-color-scheme: light)",
+      },
+    ],
+    [
+      "link",
+      {
+        rel: "icon",
+        href: "/logo-dark.svg",
+        type: "image/svg+xml",
+        media: "(prefers-color-scheme: dark)",
+      },
+    ],
     ["meta", { property: "og:type", content: "website" }],
     ["meta", { property: "og:title", content: "Apiwork" }],
     [
@@ -89,8 +103,8 @@ export default defineConfig({
   },
   themeConfig: {
     logo: {
-      light: "/icon-light.svg",
-      dark: "/icon-dark.svg",
+      light: "/logo-light.svg",
+      dark: "/logo-dark.svg",
     },
     outline: [2, 3],
     externalLinkIcon: true,

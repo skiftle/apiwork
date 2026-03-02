@@ -6,8 +6,8 @@ hero:
   text: Typed APIs for Rails
   tagline: Define your API once — and generate everything from it
   image:
-    light: /icon-light.svg
-    dark: /icon-dark.svg
+    light: /logo-light.svg
+    dark: /logo-dark.svg
     alt: Apiwork
   actions:
     - theme: brand
@@ -16,6 +16,9 @@ hero:
     - theme: alt
       text: See Examples
       link: /examples/
+    - theme: alt
+      text: View on GitHub
+      link: https://github.com/skiftle/apiwork
 
 features:
   - icon: "🔁"
