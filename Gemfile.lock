@@ -113,6 +113,7 @@ GEM
       addressable (~> 2.8)
       bigdecimal (>= 3.1, < 5)
     language_server-protocol (3.17.0.5)
+    lefthook (1.13.6)
     lint_roller (1.1.0)
     logger (1.7.0)
     loofah (2.25.0)
@@ -320,6 +321,7 @@ PLATFORMS
 DEPENDENCIES
   apiwork!
   bundler-audit (~> 0.9)
+  lefthook (~> 1.0)
   rake (~> 13.0)
   rspec (~> 3.0)
   rspec-rails (~> 8.0)

@@ -1,0 +1,4 @@
+pre-push:
+  commands:
+    lint:
+      run: bundle exec rubocop --parallel
