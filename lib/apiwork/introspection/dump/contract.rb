@@ -44,7 +44,7 @@ module Apiwork
             .reject { |_, type_definition| type_definition.fragment? }
             .sort_by { |name, _type_definition| name.to_s }
             .each_with_object({}) do |(name, type_definition), result|
-              result[name] = @type_dump.build_type(name, type_definition)
+            result[name] = @type_dump.build_type(name, type_definition)
           end
         end
 
@@ -53,7 +53,7 @@ module Apiwork
             .select { |_name, enum_definition| enum_definition.scope == @contract_class }
             .sort_by { |name, _enum_definition| name.to_s }
             .each_with_object({}) do |(name, enum_definition), result|
-              result[name] = @type_dump.build_enum(name, enum_definition)
+            result[name] = @type_dump.build_enum(name, enum_definition)
           end
         end
 
