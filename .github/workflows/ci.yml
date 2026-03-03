@@ -72,7 +72,7 @@ jobs:
           cache: pnpm
           cache-dependency-path: docs/pnpm-lock.yaml
       - run: cd docs && pnpm install --frozen-lockfile && pnpm run build
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v4
         with:
           path: docs/.vitepress/dist
       - uses: actions/deploy-pages@v4
