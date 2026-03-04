@@ -84,12 +84,14 @@ module Apiwork
         end
 
         def action_path_segment(action_name, adapter_action)
+          param = @resource.param || :id
+
           if adapter_action.crud?
             case action_name
             when :index, :create
               ''
             when :show, :update, :destroy
-              @resource.singular ? '' : '/:id'
+              @resource.singular ? '' : "/:#{param}"
             else
               ''
             end
@@ -97,7 +99,7 @@ module Apiwork
             if @resource.singular
               "/#{@api_class.transform_path(action_name)}"
             else
-              "/:id/#{@api_class.transform_path(action_name)}"
+              "/:#{param}/#{@api_class.transform_path(action_name)}"
             end
           elsif adapter_action.collection?
             "/#{@api_class.transform_path(action_name)}"
