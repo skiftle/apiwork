@@ -4,11 +4,12 @@ module Apiwork
   module Introspection
     module Dump
       class Resource
-        def initialize(resource, api_class, parent_identifiers: [], parent_param: nil)
+        def initialize(resource, api_class, parent_identifiers: [], parent_param: nil, parent_singular: false)
           @resource = resource
           @api_class = api_class
           @parent_identifiers = parent_identifiers
           @parent_param = parent_param
+          @parent_singular = parent_singular
         end
 
         def to_h
@@ -57,6 +58,7 @@ module Apiwork
 
         def build_resource_path(formatted_segment)
           return formatted_segment if @parent_identifiers.empty?
+          return formatted_segment if @parent_singular
 
           ":#{@parent_param || "#{@parent_identifiers.last.singularize}_id"}/#{formatted_segment}"
         end
@@ -65,15 +67,15 @@ module Apiwork
           return {} unless @resource.resources.any?
 
           child_parent_identifiers = @parent_identifiers + [@resource.name.to_s]
-          child_parent_param = @resource.param&.to_s || "#{@resource.name.to_s.singularize}_id"
+
+          nested_options = {
+            parent_identifiers: child_parent_identifiers,
+            parent_singular: @resource.singular,
+          }
+          nested_options[:parent_param] = @resource.param&.to_s || "#{@resource.name.to_s.singularize}_id" unless @resource.singular
 
           @resource.resources.transform_values do |nested_resource|
-            Resource.new(
-              nested_resource,
-              @api_class,
-              parent_identifiers: child_parent_identifiers,
-              parent_param: child_parent_param,
-            ).to_h
+            Resource.new(nested_resource, @api_class, **nested_options).to_h
           end
         end
 
@@ -87,12 +89,16 @@ module Apiwork
             when :index, :create
               ''
             when :show, :update, :destroy
-              '/:id'
+              @resource.singular ? '' : '/:id'
             else
               ''
             end
           elsif adapter_action.member?
-            "/:id/#{@api_class.transform_path(action_name)}"
+            if @resource.singular
+              "/#{@api_class.transform_path(action_name)}"
+            else
+              "/:id/#{@api_class.transform_path(action_name)}"
+            end
           elsif adapter_action.collection?
             "/#{@api_class.transform_path(action_name)}"
           else

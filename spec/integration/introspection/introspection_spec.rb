@@ -84,6 +84,21 @@ RSpec.describe 'Introspection', type: :integration do
     end
   end
 
+  describe 'Singular resource introspection' do
+    let(:profile_resource) { introspection.resources[:profile] }
+
+    it 'generates paths without :id for CRUD actions' do
+      expect(profile_resource.actions[:show].path).to eq('/profile')
+      expect(profile_resource.actions[:create].path).to eq('/profile')
+      expect(profile_resource.actions[:update].path).to eq('/profile')
+      expect(profile_resource.actions[:destroy].path).to eq('/profile')
+    end
+
+    it 'does not include :index action' do
+      expect(profile_resource.actions.keys).not_to include(:index)
+    end
+  end
+
   describe 'Action introspection' do
     let(:invoices_resource) { introspection.resources[:invoices] }
     let(:show_action) { invoices_resource.actions[:show] }
