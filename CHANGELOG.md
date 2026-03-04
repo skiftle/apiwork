@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.1](https://github.com/skiftle/apiwork/compare/apiwork/v0.3.0...apiwork/v0.3.1) (2026-03-04)
+
+
+### Bug Fixes
+
+* generate correct introspection paths for singular resources ([1034545](https://github.com/skiftle/apiwork/commit/10345455c735417b7de46add9445beef4cb1b781))
+* use resource param option in introspection action paths ([491dd24](https://github.com/skiftle/apiwork/commit/491dd24955ecd4162dd2ff5554ec31c3d6bab04c))
+
 ## [0.3.0](https://github.com/skiftle/apiwork/compare/apiwork/v0.2.0...apiwork/v0.3.0) (2026-02-27)
 
 
