@@ -437,6 +437,8 @@ module Apiwork
               most_specific_error = error
             elsif error.code == :value_invalid && (most_specific_error.nil? || most_specific_error.code != :field_unknown)
               most_specific_error = error
+            elsif error.path.length > path.length && most_specific_error.nil?
+              most_specific_error = error
             end
           end
 
