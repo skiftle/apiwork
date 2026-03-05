@@ -69,20 +69,6 @@ RSpec.describe Apiwork::Introspection::Param::Base do
     end
   end
 
-  describe '#default?' do
-    it 'returns true when default' do
-      param = described_class.new(default: 'Untitled', type: :string)
-
-      expect(param.default?).to be(true)
-    end
-
-    it 'returns false when not default' do
-      param = described_class.new(type: :string)
-
-      expect(param.default?).to be(false)
-    end
-  end
-
   describe '#deprecated?' do
     it 'returns true when deprecated' do
       param = described_class.new(deprecated: true, type: :string)

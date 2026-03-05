@@ -65,14 +65,6 @@ module Apiwork
         end
 
         # @api public
-        # Whether this param has a default.
-        #
-        # @return [Boolean]
-        def default?
-          @dump.key?(:default)
-        end
-
-        # @api public
         # The tag for this param.
         #
         # @return [String, nil]
