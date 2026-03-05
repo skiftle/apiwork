@@ -8,11 +8,12 @@ module Apiwork
           class ContractBuilder < Adapter::Capability::Contract::Base
             def build
               build_enums
-              build_payload_types
               build_nested_payload_union if api_class.representation_registry.nested_writable?(representation_class)
 
               %i[create update].each do |action_name|
                 next unless scope.action?(action_name)
+
+                build_payload_type(action_name)
 
                 payload_type_name = [action_name, 'payload'].join('_').to_sym
                 next unless type?(payload_type_name)
@@ -26,6 +27,11 @@ module Apiwork
                   end
                 end
               end
+
+              return unless representation_class.subclass?
+
+              build_payload_type(:create)
+              build_payload_type(:update)
             end
 
             private
@@ -36,11 +42,6 @@ module Apiwork
 
                 enum(name, values: attribute.enum)
               end
-            end
-
-            def build_payload_types
-              build_payload_type(:create)
-              build_payload_type(:update)
             end
 
             def build_payload_type(action_name)
@@ -55,6 +56,9 @@ module Apiwork
               type_name = [action_name, 'payload'].join('_').to_sym
               return if type?(type_name)
 
+              writable_params = collect_writable_params(action_name)
+              return if writable_params.empty? && !representation_class.subclass?
+
               object(type_name, description: representation_class.description) do |object|
                 if representation_class.subclass?
                   parent_inheritance = representation_class.superclass.inheritance
@@ -66,7 +70,7 @@ module Apiwork
                   )
                 end
 
-                collect_writable_params(action_name).each do |param_config|
+                writable_params.each do |param_config|
                   object.param(param_config[:name], **param_config[:options])
                 end
               end

@@ -176,6 +176,13 @@ RSpec.describe 'Writing types', type: :integration do
     end
   end
 
+  describe 'read-only representation' do
+    it 'excludes payload types' do
+      expect(types[:receipt_create_payload]).to be_nil
+      expect(types[:receipt_update_payload]).to be_nil
+    end
+  end
+
   describe 'STI payloads' do
     it 'has customer create payload as union with type discriminator' do
       union = types[:customer_create_payload]
