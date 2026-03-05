@@ -15,7 +15,7 @@ module Apiwork
               if sti_base_representation?
                 build_sti_response_union_type
               else
-                register_type(representation_class.root_key.singular.to_sym) unless type?(scoped_type_name(nil))
+                register_type(representation_class.root_key.singular.to_sym)
 
                 scoped_type_name(nil)
               end
