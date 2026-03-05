@@ -156,6 +156,13 @@ module Apiwork
 
             next if discriminator
 
+            if PRIMITIVES.key?(variant_type) && !value.is_a?(Hash) && !value.is_a?(Array)
+              coerced = coerce_primitive(value, variant_type)
+              return coerced unless coerced.nil?
+
+              next
+            end
+
             custom_shape = resolve_custom_shape(variant_type)
             next unless custom_shape
 
