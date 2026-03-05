@@ -450,7 +450,7 @@ module Apiwork
             translate_detail(:type_invalid),
             path:,
             meta: {
-              actual: value.is_a?(Hash) ? :hash : value.class.name.underscore.to_sym,
+              actual: value.is_a?(Hash) ? :object : value.class.name.underscore.to_sym,
               expected: expected_types.join(' | '),
               field: name,
             },
