@@ -114,6 +114,7 @@ RSpec.describe Apiwork::Introspection::API do
         enums: {},
         error_codes: {},
         info: nil,
+        locales: %i[en sv],
         resources: {},
         types: {},
       )
@@ -124,6 +125,7 @@ RSpec.describe Apiwork::Introspection::API do
           enums: {},
           error_codes: {},
           info: nil,
+          locales: %i[en sv],
           resources: {},
           types: {},
         },

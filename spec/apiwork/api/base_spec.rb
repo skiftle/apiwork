@@ -134,6 +134,30 @@ RSpec.describe Apiwork::API::Base do
     end
   end
 
+  describe '.locales' do
+    it 'returns the locales' do
+      api_class = Apiwork::API.define '/unit/base-locales' do
+        locales :en, :sv, :it
+      end
+
+      expect(api_class.locales).to eq(%i[en sv it])
+    end
+
+    it 'returns empty array when not set' do
+      api_class = Apiwork::API.define('/unit/base-locales-default') {}
+
+      expect(api_class.locales).to eq([])
+    end
+
+    it 'raises ConfigurationError for non-symbol' do
+      expect do
+        Apiwork::API.define '/unit/base-locales-invalid' do
+          locales 'en'
+        end
+      end.to raise_error(Apiwork::ConfigurationError, /locales must be symbols/)
+    end
+  end
+
   describe '.raises' do
     it 'returns the error codes' do
       api_class = Apiwork::API.define '/unit/base-raises' do

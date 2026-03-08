@@ -107,6 +107,18 @@ Apiwork::Export.generate(:openapi, '/api/v1', locale: :sv)
 
 Error message translations are covered in [Validation — Translating Custom Codes](../adapters/standard-adapter/validation.md#translating-custom-codes) and [HTTP Errors — Custom Codes](../errors/http-errors.md#custom-codes).
 
+## Locales
+
+For APIs that support multiple languages, declare the supported locales:
+
+```ruby
+Apiwork::API.define '/api/v1' do
+  locales :en, :sv, :it
+end
+```
+
+The `locale:` parameter in introspection and exports is validated against these locales. Without `locales`, passing `locale:` raises an error. The declared locales are included in introspection output.
+
 ## Raises
 
 API-level `raises` declares which errors all endpoints can raise:
@@ -121,4 +133,4 @@ These appear in generated [OpenAPI exports](../exports/openapi.md) as possible r
 
 #### See also
 
-- [API::Base reference](../../reference/api/base.md) — `info` and `raises` methods
+- [API::Base reference](../../reference/api/base.md) — `info`, `locales`, and `raises` methods

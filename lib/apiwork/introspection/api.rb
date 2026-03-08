@@ -66,6 +66,14 @@ module Apiwork
       end
 
       # @api public
+      # The supported locales for this API.
+      #
+      # @return [Array<Symbol>]
+      def locales
+        @dump[:locales]
+      end
+
+      # @api public
       # The error codes for this API.
       #
       # @return [Hash{Symbol => ErrorCode}]
@@ -80,6 +88,7 @@ module Apiwork
       def to_h
         {
           base_path:,
+          locales:,
           enums: enums.transform_values(&:to_h),
           error_codes: error_codes.transform_values(&:to_h),
           info: info&.to_h,

@@ -277,6 +277,30 @@ module Apiwork
         end
 
         # @api public
+        # Supported locales for this API.
+        #
+        # Declares which locales this API supports. Used by introspection
+        # to validate locale parameters and included in introspection output.
+        #
+        # @param locale_keys [Array<Symbol>]
+        #   The locale identifiers.
+        # @return [Array<Symbol>]
+        # @raise [ConfigurationError] if any locale is not a Symbol
+        #
+        # @example
+        #   locales :en, :sv, :it
+        #   api_class.locales # => [:en, :sv, :it]
+        def locales(*locale_keys)
+          return @locales if locale_keys.empty?
+
+          locale_keys = locale_keys.flatten.uniq
+          locale_keys.each do |locale_key|
+            raise ConfigurationError, "locales must be symbols, got #{locale_key.class}: #{locale_key}" unless locale_key.is_a?(Symbol)
+          end
+          @locales = locale_keys
+        end
+
+        # @api public
         # API-wide error codes.
         #
         # Included in generated specs (OpenAPI, etc.) as possible error responses.
@@ -605,6 +629,7 @@ module Apiwork
           @locale_key = nil
           @namespaces = nil
           @info = nil
+          @locales = []
           @raises = []
           @export_configs = {}
           @adapter_config = nil

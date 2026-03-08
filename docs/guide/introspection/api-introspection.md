@@ -16,6 +16,7 @@ api = Apiwork::API.introspect('/api/v1')
 | ------------- | ---------------------------------------------------------------------------- |
 | `base_path`   | API base path                                                                |
 | `info`        | [Info](../../reference/introspection/api/info/) object                    |
+| `locales`     | Array of supported locale symbols                                            |
 | `resources`   | Hash of [Resource](../../reference/introspection/api/resource.md) objects |
 | `types`       | Hash of [Type](../../reference/introspection/type.md) objects             |
 | `enums`       | Hash of [Enum](../../reference/introspection/enum.md) objects             |
@@ -120,13 +121,23 @@ error_code.description # => "Not found"
 
 ## Locale
 
+For APIs with multiple languages, declare supported locales:
+
+```ruby
+Apiwork::API.define '/api/v1' do
+  locales :en, :sv, :it
+end
+```
+
 The `locale:` option produces translated descriptions:
 
 ```ruby
 api = Apiwork::API.introspect('/api/v1', locale: :sv)
 ```
 
-Translations come from I18n files.
+The `locale:` parameter is validated against the declared locales. Without `locales`, passing `locale:` raises an error.
+
+Translations come from I18n files. The declared locales are included in introspection output via `api.locales`.
 
 ## Caching
 

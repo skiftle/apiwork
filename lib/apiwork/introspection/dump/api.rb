@@ -19,6 +19,7 @@ module Apiwork
             enums: type_dump_hash[:enums],
             error_codes: build_error_codes(collect_all_error_code_keys(resources)),
             info: build_info,
+            locales: @api_class.locales,
             types: type_dump_hash[:types],
           }
         end
