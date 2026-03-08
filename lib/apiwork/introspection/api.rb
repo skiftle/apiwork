@@ -34,6 +34,14 @@ module Apiwork
       end
 
       # @api public
+      # The fingerprint for this API.
+      #
+      # @return [String]
+      def fingerprint
+        @dump[:fingerprint]
+      end
+
+      # @api public
       # The info for this API.
       #
       # @return [API::Info, nil]
@@ -88,6 +96,7 @@ module Apiwork
       def to_h
         {
           base_path:,
+          fingerprint:,
           locales:,
           enums: enums.transform_values(&:to_h),
           error_codes: error_codes.transform_values(&:to_h),

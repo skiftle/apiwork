@@ -558,6 +558,18 @@ module Apiwork
           @root_resource.with_options(options, &block)
         end
 
+        # @api public
+        # The fingerprint for this API.
+        #
+        # A 16-character hex digest derived from the application name and {.base_path}.
+        #
+        # @return [String]
+        def fingerprint
+          @fingerprint ||= Digest::SHA256.hexdigest(
+            [Rails.application.class.module_parent_name, base_path].join(':'),
+          )[0, 16]
+        end
+
         def register_object(name, deprecated: false, description: nil, example: nil, scope: nil, &block)
           type_registry.register(
             name,
@@ -626,6 +638,7 @@ module Apiwork
 
         def mount(base_path)
           @base_path = base_path
+          @fingerprint = nil
           @locale_key = nil
           @namespaces = nil
           @info = nil

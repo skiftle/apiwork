@@ -18,6 +18,7 @@ module Apiwork
             base_path: @api_class.transform_path(@api_class.base_path),
             enums: type_dump_hash[:enums],
             error_codes: build_error_codes(collect_all_error_code_keys(resources)),
+            fingerprint: @api_class.fingerprint,
             info: build_info,
             locales: @api_class.locales,
             types: type_dump_hash[:types],
