@@ -248,7 +248,7 @@ integer :count, format: :int32
 
 | Type | Valid formats |
 |------|--------------|
-| `:string` | `:date`, `:datetime`, `:email`, `:hostname`, `:ipv4`, `:ipv6`, `:password`, `:url`, `:uuid` |
+| `:string` | `:date`, `:datetime`, `:email`, `:hostname`, `:ipv4`, `:ipv6`, `:password`, `:text`, `:url`, `:uuid` |
 | `:integer` | `:int32`, `:int64` |
 | `:decimal`, `:number` | `:double`, `:float` |
 

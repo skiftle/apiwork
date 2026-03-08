@@ -94,7 +94,7 @@ When string, integer, or number params have a `format` hint, Zod schemas include
 | `:datetime` | `z.iso.datetime()` |
 | `:int32`, `:int64` | `z.number().int()` |
 | `:float`, `:double` | `z.number()` |
-| `:password`, `:hostname` | `z.string()` |
+| `:password`, `:hostname`, `:text` | `z.string()` |
 
 Formats are set in the type definitions. See [Format Hints](../types/types.md#format-hints).
 

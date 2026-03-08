@@ -18,7 +18,7 @@ module Apiwork
         decimal: %i[float double],
         integer: %i[int32 int64],
         number: %i[float double],
-        string: %i[email uuid url date datetime ipv4 ipv6 password hostname],
+        string: %i[date datetime email hostname ipv4 ipv6 password text url uuid],
       }.freeze
 
       # @!attribute [r] description
