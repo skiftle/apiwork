@@ -4,11 +4,12 @@ module Apiwork
   module Introspection
     module Dump
       class Resource
-        def initialize(resource, api_class, parent_identifiers: [], parent_param: nil, parent_singular: false)
+        def initialize(resource, api_class, parent_identifiers: [], parent_param: nil, parent_path: nil, parent_singular: false)
           @resource = resource
           @api_class = api_class
           @parent_identifiers = parent_identifiers
           @parent_param = parent_param
+          @parent_path = parent_path
           @parent_singular = parent_singular
         end
 
@@ -57,10 +58,11 @@ module Apiwork
         end
 
         def build_resource_path(formatted_segment)
-          return formatted_segment if @parent_identifiers.empty?
-          return formatted_segment if @parent_singular
+          return formatted_segment if @parent_path.nil?
+          return "#{@parent_path}/#{formatted_segment}" if @parent_singular
 
-          ":#{@parent_param || "#{@parent_identifiers.last.singularize}_id"}/#{formatted_segment}"
+          param = @parent_param || "#{@parent_identifiers.last.singularize}_id"
+          "#{@parent_path}/:#{param}/#{formatted_segment}"
         end
 
         def build_nested_resources(resource_path)
@@ -70,6 +72,7 @@ module Apiwork
 
           nested_options = {
             parent_identifiers: child_parent_identifiers,
+            parent_path: resource_path,
             parent_singular: @resource.singular,
           }
           nested_options[:parent_param] = @resource.param&.to_s || "#{@resource.name.to_s.singularize}_id" unless @resource.singular

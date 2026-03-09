@@ -74,6 +74,19 @@ RSpec.describe 'Introspection', type: :integration do
       expect(invoices_resource.resources).to have_key(:items)
     end
 
+    it 'includes parent path segments in nested resource paths' do
+      items_resource = invoices_resource.resources[:items]
+
+      expect(items_resource.path).to eq('invoices/:invoice_id/items')
+    end
+
+    it 'includes parent path segments in nested action paths' do
+      items_resource = invoices_resource.resources[:items]
+
+      expect(items_resource.actions[:index].path).to eq('/invoices/:invoice_id/items')
+      expect(items_resource.actions[:show].path).to eq('/invoices/:invoice_id/items/:id')
+    end
+
     it 'serializes resource to hash' do
       hash = invoices_resource.to_h
 

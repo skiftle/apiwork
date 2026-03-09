@@ -9,12 +9,12 @@ RSpec.describe Apiwork::Introspection::API::Resource do
         actions: {},
         identifier: 'invoices',
         parent_identifiers: %w[customers],
-        path: 'invoices',
+        path: 'customers/:customer_id/invoices',
         resources: {},
       )
 
       expect(resource.identifier).to eq('invoices')
-      expect(resource.path).to eq('invoices')
+      expect(resource.path).to eq('customers/:customer_id/invoices')
       expect(resource.parent_identifiers).to eq(%w[customers])
     end
   end
@@ -54,7 +54,7 @@ RSpec.describe Apiwork::Introspection::API::Resource do
         parent_identifiers: [],
         path: 'invoices',
         resources: {
-          items: { actions: {}, identifier: 'items', parent_identifiers: %w[invoices], path: 'items', resources: {} },
+          items: { actions: {}, identifier: 'items', parent_identifiers: %w[invoices], path: 'invoices/:invoice_id/items', resources: {} },
         },
       )
 
