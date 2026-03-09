@@ -1,5 +1,30 @@
 # Changelog
 
+## [0.4.0](https://github.com/skiftle/apiwork/compare/apiwork/v0.3.1...apiwork/v0.4.0) (2026-03-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* add locales DSL for declaring supported API locales
+
+### Features
+
+* add :text string format for multiline text hints ([4c6cf17](https://github.com/skiftle/apiwork/commit/4c6cf1736049eedeb27dec23d3c528e5073f874e))
+* add fingerprint to API for stable client-side identification ([dc581aa](https://github.com/skiftle/apiwork/commit/dc581aa1e2d4550b75811cdd792f64df7dd5c599))
+* add locales DSL for declaring supported API locales ([2286a69](https://github.com/skiftle/apiwork/commit/2286a69c6e8bc718dafe916d3bddb332624553ac))
+
+
+### Bug Fixes
+
+* accept empty objects and arrays for required fields in validation ([e21b938](https://github.com/skiftle/apiwork/commit/e21b938cdf3bdf6650a5c0c828a3cc1f07d965a5))
+* coerce primitive union variants for filter shorthand ([a2ae2d5](https://github.com/skiftle/apiwork/commit/a2ae2d5ee69b382c2cb8c14dd5fed181bc4b385b))
+* include parent path segments in introspection resource paths ([3e8f977](https://github.com/skiftle/apiwork/commit/3e8f977e49a9efedeeeb10c8c5fc79723ae1e641))
+* merge representation fields into any contract-defined types ([9c8b79f](https://github.com/skiftle/apiwork/commit/9c8b79f449bf252eb823d4466a21a4cb5a9eb2bf))
+* promote deeper-path errors in union validation ([0c91493](https://github.com/skiftle/apiwork/commit/0c914936283c184148955ce764862a9c4d7eaaa0))
+* remove redundant default? predicate from introspection params ([179f22e](https://github.com/skiftle/apiwork/commit/179f22e3634f074bcda3188b34814367b3abdecd))
+* skip empty payload types for read-only representations ([48a114d](https://github.com/skiftle/apiwork/commit/48a114d05670b8c050359b28dda331b185c2fca4))
+* use "object" instead of "hash" in union type error meta ([6ce9f27](https://github.com/skiftle/apiwork/commit/6ce9f27708a7ff0e141379e9e28ff90289207ffa))
+
 ## [0.3.1](https://github.com/skiftle/apiwork/compare/apiwork/v0.3.0...apiwork/v0.3.1) (2026-03-04)
 
 
