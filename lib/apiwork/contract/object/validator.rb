@@ -129,14 +129,7 @@ module Apiwork
           return nil if param_options[:optional]
           return nil if param_options[:nullable] && data.key?(name) && value.nil?
 
-          missing = case param_options[:type]
-                    when :boolean, :string
-                      value.nil?
-                    else
-                      value.blank?
-                    end
-
-          return nil unless missing
+          return nil unless value.nil?
 
           if param_options[:enum].present?
             Issue.new(

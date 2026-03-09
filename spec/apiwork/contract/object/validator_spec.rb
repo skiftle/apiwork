@@ -85,6 +85,50 @@ RSpec.describe Apiwork::Contract::Object::Validator do
       end
     end
 
+    context 'when required object field is an empty hash' do
+      it 'returns no issues' do
+        contract_class = create_test_contract do
+          action :create do
+            request do
+              body do
+                param :address, type: :object do
+                  string? :street
+                end
+              end
+            end
+          end
+        end
+        shape = contract_class.action_for(:create).request.body
+        validator = described_class.new(shape)
+
+        result = validator.validate({ address: {} })
+
+        expect(result).to be_valid
+      end
+    end
+
+    context 'when required array field is an empty array' do
+      it 'returns no issues' do
+        contract_class = create_test_contract do
+          action :create do
+            request do
+              body do
+                array :tags do
+                  string
+                end
+              end
+            end
+          end
+        end
+        shape = contract_class.action_for(:create).request.body
+        validator = described_class.new(shape)
+
+        result = validator.validate({ tags: [] })
+
+        expect(result).to be_valid
+      end
+    end
+
     context 'when non-nullable field is null' do
       it 'returns value_null issue' do
         contract_class = create_test_contract do
