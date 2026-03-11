@@ -52,7 +52,7 @@ module Apiwork
 
         def build_response(response)
           return { body: {}, description: i18n_lookup(:response, :description), no_content: false } unless response
-          return { body: {}, description: response.description || i18n_lookup(:response, :description), no_content: true } if response.no_content?
+          return { body: nil, description: response.description || i18n_lookup(:response, :description), no_content: true } if response.no_content?
 
           description = response.description || i18n_lookup(:response, :description)
           body_shape = response.body
